@@ -700,4 +700,3 @@ public final class SmartGroupsListSamples {
     }
 }
 ```
-

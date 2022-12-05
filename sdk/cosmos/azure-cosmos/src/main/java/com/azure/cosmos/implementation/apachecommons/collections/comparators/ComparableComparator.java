@@ -103,4 +103,3 @@ public class ComparableComparator<E extends Comparable<? super E>> implements Co
             null != object && object.getClass().equals(this.getClass());
     }
 }
-

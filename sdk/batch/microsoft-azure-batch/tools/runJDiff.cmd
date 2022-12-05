@@ -117,5 +117,4 @@ javadoc -doclet jdiff.JDiff -docletpath %JDIFF% -d %MEDIASERVICEOUTPUT% -stats -
 :: management
 javadoc -doclet jdiff.JDiff -docletpath %JDIFF% -d %MANAGEMENTOUTPUT% -stats -oldapi %OLDMANAGEMENTAPI% -newapi %NEWMANAGEMENTAPI% d:\software\jdiff\Null.java 
 :: core
-javadoc -doclet jdiff.JDiff -docletpath %JDIFF% -d %COREOUTPUT% -stats -oldapi %OLDCOREAPI% -newapi %NEWCOREAPI% d:\software\jdiff\Null.java 
-
+javadoc -doclet jdiff.JDiff -docletpath %JDIFF% -d %COREOUTPUT% -stats -oldapi %OLDCOREAPI% -newapi %NEWCOREAPI% d:\software\jdiff\Null.java

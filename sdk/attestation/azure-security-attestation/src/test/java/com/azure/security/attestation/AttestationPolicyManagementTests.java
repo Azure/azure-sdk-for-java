@@ -203,4 +203,3 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
     }
 
 }
-

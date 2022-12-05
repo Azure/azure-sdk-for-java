@@ -147,4 +147,3 @@ public class ReportGenerator {
                 .collect(Collectors.toList());
     }
 }
-

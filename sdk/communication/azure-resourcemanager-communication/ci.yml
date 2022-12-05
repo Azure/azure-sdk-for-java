@@ -34,4 +34,3 @@ extends:
       - name: azure-resourcemanager-communication
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagercommunication
-

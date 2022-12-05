@@ -18,4 +18,3 @@ class SparkBridgeImplementationInternalSpec extends UnitSpec {
   }
   //scalastyle:on multiple.string.literals
 }
-

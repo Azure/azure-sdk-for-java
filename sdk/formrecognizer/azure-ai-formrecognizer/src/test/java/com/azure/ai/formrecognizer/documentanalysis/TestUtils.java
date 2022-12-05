@@ -318,4 +318,3 @@ public final class TestUtils {
         return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
     }
 }
-

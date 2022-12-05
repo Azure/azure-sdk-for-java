@@ -50,4 +50,3 @@ public final class CertificatePropertiesPage implements Page<CertificateProperti
         return IterableStream.of(items);
     }
 }
-

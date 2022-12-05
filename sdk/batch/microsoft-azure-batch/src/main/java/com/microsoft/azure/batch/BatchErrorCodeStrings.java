@@ -574,4 +574,3 @@ public final class BatchErrorCodeStrings {
      */
     public static final String UnsupportedQueryParameter = "UnsupportedQueryParameter";
 }
-

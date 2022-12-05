@@ -188,4 +188,3 @@ public class ReadmeSamples {
         // END: readme-sample-consumeEventsUsingEventProcessor
     }
 }
-

@@ -61,4 +61,3 @@ public final class TableServiceErrorOdataError {
         return this;
     }
 }
-

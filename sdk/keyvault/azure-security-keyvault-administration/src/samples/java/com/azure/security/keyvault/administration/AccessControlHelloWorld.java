@@ -78,4 +78,3 @@ public class AccessControlHelloWorld {
         System.out.printf("Deleted role assignment with name: %s %n", createdRoleAssignment.getName());
     }
 }
-

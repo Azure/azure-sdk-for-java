@@ -286,4 +286,3 @@ public class RegistryArtifactAsyncIntegrationTests extends ContainerRegistryClie
         assertEquals(registryEndpoint, client.getRegistryEndpoint());
     }
 }
-

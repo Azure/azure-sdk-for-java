@@ -246,4 +246,3 @@ public final class QueryInfo extends JsonSerializable {
         return super.hashCode();
     }
 }
-

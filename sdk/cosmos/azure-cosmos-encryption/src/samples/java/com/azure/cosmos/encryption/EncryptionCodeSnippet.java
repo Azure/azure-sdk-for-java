@@ -202,4 +202,3 @@ public class EncryptionCodeSnippet {
         public boolean sensitiveBoolean;
     }
 }
-

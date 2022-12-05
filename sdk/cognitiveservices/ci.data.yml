@@ -88,4 +88,3 @@ extends:
       - name: azure-cognitiveservices-qnamaker
         groupId: com.microsoft.azure.cognitiveservices
         safeName: azurecognitiveservicesqnamaker
-

@@ -188,5 +188,3 @@ directive:
     $["x-ms-client-name"] = "OciAnnotations";
     delete $["x-accessibility"]
 ```
-
-

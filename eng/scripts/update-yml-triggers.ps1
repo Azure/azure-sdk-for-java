@@ -158,4 +158,3 @@ foreach ($sd in $serviceDirectories)
 
   UpdateYmlTriggerPaths $sd $includePath $ciYml $pkgDirectories -rootServiceIncludeOnly $rootServiceIncludeOnly
 }
-

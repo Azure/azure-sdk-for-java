@@ -33,4 +33,3 @@ extends:
       - name: azure-communication-callautomation
         groupId: com.azure
         safeName: azurecommunicationcallautomation
-

@@ -31,5 +31,3 @@ spring:
           queueSupply-out-0:
             producer:
               entity-type: queue
-
-

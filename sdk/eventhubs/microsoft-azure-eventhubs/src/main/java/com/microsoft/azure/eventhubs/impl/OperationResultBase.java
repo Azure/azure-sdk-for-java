@@ -27,4 +27,3 @@ class OperationResultBase<T, E extends Exception> implements OperationResult<T, 
         onError.accept(error);
     }
 }
-

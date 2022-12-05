@@ -50,4 +50,3 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [SDK_README_NEXT_STEPS]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor
 [monitor_exporter]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor
 .java
-

@@ -55,4 +55,3 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [get_batch_logs]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/src/samples/java/com/azure/monitor/query/LogsQueryBatchSample.java
 [get_servertimeout_logs]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/src/samples/java/com/azure/monitor/query/ServerTimeoutSample.java
 [get_metrics]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-query/src/samples/java/com/azure/monitor/query/MetricsQuerySample.java
-

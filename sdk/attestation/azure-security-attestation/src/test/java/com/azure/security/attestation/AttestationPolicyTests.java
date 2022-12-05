@@ -490,4 +490,3 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         }
     }
 }
-

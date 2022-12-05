@@ -1114,4 +1114,3 @@ public final class VirtualMachinesStopSamples {
     }
 }
 ```
-

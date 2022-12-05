@@ -45,4 +45,3 @@ public interface CosmosRepository<T, ID extends Serializable> extends PagingAndS
     Iterable<T> findAll(PartitionKey partitionKey);
 
 }
-

@@ -85,4 +85,3 @@ public class ManagerLiveTests extends ResourceManagerTestBase {
             .genericResources().manager().httpPipeline());
     }
 }
-

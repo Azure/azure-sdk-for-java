@@ -42,4 +42,3 @@ com.azure.spring.cloud.autoconfigure.jdbc.AzureJdbcAutoConfiguration
 
 org.springframework.boot.diagnostics.FailureAnalyzer=\
 com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureCompatibilityNotMetFailureAnalyzer
-

@@ -155,4 +155,3 @@ public final class QueryPreparationTimes {
         return stringBuilder.toString();
     }
 }
-

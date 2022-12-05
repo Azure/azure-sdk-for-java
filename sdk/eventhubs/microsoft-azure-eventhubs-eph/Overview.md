@@ -276,4 +276,4 @@ bottom of a problem.
 
 ## Tracing
 
-Event Processor Host can trace its execution for debugging and problem diagnosis, using the well-known SLF4J library. 
+Event Processor Host can trace its execution for debugging and problem diagnosis, using the well-known SLF4J library.

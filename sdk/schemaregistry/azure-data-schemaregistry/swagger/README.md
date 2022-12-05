@@ -27,5 +27,3 @@ license-header: MICROSOFT_MIT_SMALL
 context-client-method-parameter: true
 models-subpackage: implementation.models
 ```
-
-

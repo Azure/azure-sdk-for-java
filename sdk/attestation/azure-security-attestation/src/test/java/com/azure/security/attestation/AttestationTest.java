@@ -730,4 +730,3 @@ public class AttestationTest extends AttestationClientTestBase {
 
     }
 }
-

@@ -153,4 +153,3 @@ public final class MacAddress {
         return UNKNOWN_MAC_ADDRESS;
     }
 }
-

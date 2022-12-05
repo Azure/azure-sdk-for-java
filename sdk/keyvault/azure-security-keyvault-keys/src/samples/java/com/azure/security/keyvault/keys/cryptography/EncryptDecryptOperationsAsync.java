@@ -50,4 +50,3 @@ public class EncryptDecryptOperationsAsync {
         Thread.sleep(5000);
     }
 }
-

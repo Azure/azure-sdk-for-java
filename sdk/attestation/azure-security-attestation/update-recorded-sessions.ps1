@@ -1,5 +1,3 @@
-
-
 $sourceSessionRecordPath = ".\target\test-classes\session-records"
 $targetSessionRecordPath = ".\src\test\resources"
 $targetSessionRecordsPattern = $targetSessionRecordPath + "\*.json"

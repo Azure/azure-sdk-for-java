@@ -15,4 +15,3 @@ ADD ${AGENT_URL} ./BOOT-INF/classes/
 ENTRYPOINT ["java","org.springframework.boot.loader.JarLauncher", \
             "-javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar", \
             "--TEST_CLASS=EventSender"]
-

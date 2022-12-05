@@ -126,4 +126,3 @@ public class CosmosAnnotationUnitTest {
         Assert.isTrue(timeToLive == TestConstants.TIME_TO_LIVE, "should be the same time to live");
     }
 }
-

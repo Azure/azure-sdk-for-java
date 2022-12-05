@@ -104,4 +104,3 @@ public class AttestationSignersTest extends AttestationClientTestBase {
         });
     }
 }
-

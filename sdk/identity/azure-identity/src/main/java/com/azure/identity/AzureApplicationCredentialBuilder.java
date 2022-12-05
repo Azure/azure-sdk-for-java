@@ -109,4 +109,3 @@ class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureAppli
         return output;
     }
 }
-

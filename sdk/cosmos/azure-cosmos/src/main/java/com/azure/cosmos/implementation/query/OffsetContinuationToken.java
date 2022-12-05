@@ -73,4 +73,3 @@ public final class OffsetContinuationToken extends JsonSerializable {
         return super.toJson();
     }
 }
-

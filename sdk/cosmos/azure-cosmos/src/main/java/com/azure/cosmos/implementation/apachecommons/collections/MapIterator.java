@@ -84,4 +84,3 @@ public interface MapIterator<K, V> extends Iterator<K> {
      */
     V setValue(V value);
 }
-

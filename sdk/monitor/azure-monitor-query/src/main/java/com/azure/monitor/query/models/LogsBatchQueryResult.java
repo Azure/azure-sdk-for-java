@@ -49,4 +49,3 @@ public final class LogsBatchQueryResult extends LogsQueryResult {
         return status;
     }
 }
-

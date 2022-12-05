@@ -42,4 +42,3 @@ class RowSerializerPollSpec extends UnitSpec with BasicLoggingTrait {
   }
   //scalastyle:on multiple.string.literals
 }
-

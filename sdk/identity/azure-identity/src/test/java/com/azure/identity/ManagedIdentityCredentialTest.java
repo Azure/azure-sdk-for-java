@@ -202,4 +202,3 @@ public class ManagedIdentityCredentialTest {
             cred.managedIdentityServiceCredential,  instanceOf(VirtualMachineMsiCredential.class));
     }
 }
-

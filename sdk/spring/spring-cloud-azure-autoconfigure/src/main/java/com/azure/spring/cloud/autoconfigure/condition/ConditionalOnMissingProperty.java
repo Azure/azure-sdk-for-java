@@ -47,4 +47,3 @@ public @interface ConditionalOnMissingProperty {
     String[] name() default {};
 
 }
-

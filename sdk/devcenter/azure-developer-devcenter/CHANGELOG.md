@@ -16,4 +16,3 @@
 
 ### Features Added
 Initial release for the azure-developer-devcenter Java SDK.
-

@@ -300,4 +300,3 @@ public class ReactiveCosmosTemplatePartitionIT {
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
     }
 }
-

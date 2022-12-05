@@ -31,4 +31,3 @@ class DevBoxTests extends DevCenterClientTestBase {
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxDeleteResponse.waitForCompletion().getStatus());
     }
 }
-

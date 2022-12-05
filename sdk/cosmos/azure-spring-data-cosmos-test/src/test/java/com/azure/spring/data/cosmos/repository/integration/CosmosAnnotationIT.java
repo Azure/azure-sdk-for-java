@@ -136,4 +136,3 @@ public class CosmosAnnotationIT {
             TestConstants.EXCLUDED_PATHS);
     }
 }
-

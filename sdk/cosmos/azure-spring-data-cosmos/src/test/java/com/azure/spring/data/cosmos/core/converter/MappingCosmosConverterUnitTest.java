@@ -154,4 +154,3 @@ public class MappingCosmosConverterUnitTest {
         assertThat(jsonNode.get(TestConstants.PROPERTY_ETAG_DEFAULT).asText()).isEqualTo(etagValue);
     }
 }
-

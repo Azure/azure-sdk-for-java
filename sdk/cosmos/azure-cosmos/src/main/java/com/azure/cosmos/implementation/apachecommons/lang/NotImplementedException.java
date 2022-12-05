@@ -56,4 +56,3 @@ public class NotImplementedException extends UnsupportedOperationException {
         return this.code;
     }
 }
-

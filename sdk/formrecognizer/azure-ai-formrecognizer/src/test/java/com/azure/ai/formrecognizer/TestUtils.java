@@ -177,4 +177,3 @@ final class TestUtils {
             : syncPoller;
     }
 }
-

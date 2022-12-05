@@ -2480,4 +2480,3 @@ public class ShareFileClient {
         return this.shareFileAsyncClient.generateSas(shareServiceSasSignatureValues, context);
     }
 }
-

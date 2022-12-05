@@ -672,4 +672,3 @@ public final class VMIngestionDetailsSamples {
     }
 }
 ```
-

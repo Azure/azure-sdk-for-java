@@ -118,4 +118,3 @@ public class SynchronousEventSubscriber extends BaseSubscriber<PartitionEvent> {
         }
     }
 }
-

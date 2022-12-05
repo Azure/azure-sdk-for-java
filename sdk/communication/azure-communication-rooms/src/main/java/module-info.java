@@ -17,4 +17,3 @@ module com.azure.communication.rooms {
     opens com.azure.communication.rooms.implementation.models
         to com.fasterxml.jackson.databind, com.azure.core;
 }
-

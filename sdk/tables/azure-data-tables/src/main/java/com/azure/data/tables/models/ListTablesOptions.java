@@ -55,4 +55,3 @@ public final class ListTablesOptions {
         return this;
     }
 }
-

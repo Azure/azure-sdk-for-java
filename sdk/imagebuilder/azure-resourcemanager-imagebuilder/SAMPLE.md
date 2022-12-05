@@ -449,4 +449,3 @@ public final class VirtualMachineImageTemplatesUpdateSamples {
     }
 }
 ```
-

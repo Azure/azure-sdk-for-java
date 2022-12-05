@@ -175,4 +175,3 @@ public final class FormPage {
         this.selectionMarks = selectionMarks;
     }
 }
-

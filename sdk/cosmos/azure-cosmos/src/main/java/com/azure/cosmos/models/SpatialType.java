@@ -38,4 +38,3 @@ public enum SpatialType {
         return this.overWireValue;
     }
 }
-

@@ -95,5 +95,3 @@ function SyncVersionClientFile([String]$GroupId) {
 if ($MyInvocation.InvocationName -ne ".") {
     SyncVersionClientFile -GroupId "com.azure"
 }
-
-

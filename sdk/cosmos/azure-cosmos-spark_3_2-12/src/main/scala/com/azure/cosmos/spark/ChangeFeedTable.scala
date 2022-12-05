@@ -180,4 +180,3 @@ private class ChangeFeedTable(val session: SparkSession,
       })
   }
 }
-

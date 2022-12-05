@@ -556,4 +556,3 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         return autoScale;
     }
 }
-

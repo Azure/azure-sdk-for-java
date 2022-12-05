@@ -386,4 +386,3 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         return this.workQueue.size();
     }
 }
-

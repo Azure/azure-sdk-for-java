@@ -275,4 +275,3 @@ public final class LoadTestingClientBuilder
         return new LoadTestingClient(new LoadTestingAsyncClient(buildInnerClient()));
     }
 }
-

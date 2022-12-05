@@ -226,4 +226,3 @@ public interface PrettyPrinter
      */
     void beforeObjectEntries(JsonGenerator gen) throws IOException;
 }
-

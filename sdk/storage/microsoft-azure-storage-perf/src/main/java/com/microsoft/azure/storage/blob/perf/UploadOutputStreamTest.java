@@ -35,4 +35,3 @@ public class UploadOutputStreamTest extends BlobTestBase<PerfStressOptions> {
         throw new UnsupportedOperationException();
     }
 }
-

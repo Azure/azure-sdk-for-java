@@ -108,4 +108,3 @@ public class AadAuthenticationFilterPropertiesTests {
     static class Config {
     }
 }
-

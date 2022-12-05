@@ -108,4 +108,3 @@ public class MethodAzureListenerTestEndpoint extends AbstractAzureListenerEndpoi
         this.messageHandlerMethodFactory = messageHandlerMethodFactory;
     }
 }
-

@@ -51,4 +51,3 @@ public enum ConflictResolutionMode {
         return this.overWireValue;
     }
 }
-

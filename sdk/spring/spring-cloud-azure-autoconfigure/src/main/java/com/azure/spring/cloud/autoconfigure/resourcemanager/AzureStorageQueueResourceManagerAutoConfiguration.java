@@ -53,4 +53,3 @@ public class AzureStorageQueueResourceManagerAutoConfiguration extends AzureServ
     }
 
 }
-

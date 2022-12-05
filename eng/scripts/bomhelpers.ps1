@@ -369,4 +369,4 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
   }
     
   Write-Output "Sources prepared for the patch release for $artifactId."
-}  
+}

@@ -67,4 +67,3 @@ public final class KeyOperation extends ExpandableStringEnum<KeyOperation> {
         return values(KeyOperation.class);
     }
 }
-

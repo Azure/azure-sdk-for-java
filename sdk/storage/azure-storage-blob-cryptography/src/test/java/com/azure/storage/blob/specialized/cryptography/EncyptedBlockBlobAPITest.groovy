@@ -1987,5 +1987,3 @@ class EncyptedBlockBlobAPITest extends APISpec {
         }
     }
 }
-
-

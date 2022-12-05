@@ -956,4 +956,3 @@ private[cosmos] class CosmosRowConverter(
     }
 }
 // scalastyle:on
-

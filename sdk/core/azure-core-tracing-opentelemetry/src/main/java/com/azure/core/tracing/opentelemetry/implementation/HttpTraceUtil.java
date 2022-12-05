@@ -179,4 +179,3 @@ public final class HttpTraceUtil {
         return span.setStatus(openTelemetryStatusCode, message);
     }
 }
-

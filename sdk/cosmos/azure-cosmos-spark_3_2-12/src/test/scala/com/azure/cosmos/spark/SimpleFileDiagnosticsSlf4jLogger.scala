@@ -77,4 +77,3 @@ private[spark] final class SimpleFileDiagnosticsSlf4jLogger(classType: Class[_])
   }
 }
 // // scalastyle:on multiple.string.literals
-

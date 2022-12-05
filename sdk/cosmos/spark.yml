@@ -30,4 +30,4 @@ stages:
       DatabricksEndpoint: $(spark-databricks-endpoint)
       DatabricksToken: $(spark-databricks-token)
       SparkVersion: 'azure-cosmos-spark_3-3_2-12'
-      ClusterName: 'oltp-ci-spark33-2workers-ds3v2'      
+      ClusterName: 'oltp-ci-spark33-2workers-ds3v2'

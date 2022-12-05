@@ -741,4 +741,3 @@ public final class SourceControlConfigurationsListSamples {
     }
 }
 ```
-

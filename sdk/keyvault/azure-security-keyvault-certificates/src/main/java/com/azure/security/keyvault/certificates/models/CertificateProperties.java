@@ -285,4 +285,3 @@ public class CertificateProperties {
         return input1;
     }
 }
-

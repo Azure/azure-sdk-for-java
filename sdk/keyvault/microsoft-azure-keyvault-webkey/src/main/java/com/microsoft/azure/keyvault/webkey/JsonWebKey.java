@@ -1183,4 +1183,3 @@ public class JsonWebKey {
             .put(JsonWebKeyCurveName.P_384, "secp384r1").put(JsonWebKeyCurveName.P_521, "secp521r1")
             .put(JsonWebKeyCurveName.P_256K, "secp256k1").build();
 }
-

@@ -146,4 +146,3 @@ public class AadB2cResourceServerAutoConfiguration {
         return decoder;
     }
 }
-

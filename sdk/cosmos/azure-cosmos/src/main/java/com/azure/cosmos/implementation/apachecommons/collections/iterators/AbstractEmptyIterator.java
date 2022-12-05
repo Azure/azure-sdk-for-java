@@ -71,4 +71,3 @@ abstract class AbstractEmptyIterator<E> {
         // do nothing
     }
 }
-

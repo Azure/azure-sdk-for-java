@@ -72,4 +72,3 @@ public final class DynamicClassifyDocumentResultCollection extends IterableStrea
         this.statistics = statistics;
     }
 }
-

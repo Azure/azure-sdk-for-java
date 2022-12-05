@@ -372,4 +372,3 @@ public final class NetworkFunctionListOperationsSamples {
     }
 }
 ```
-

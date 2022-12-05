@@ -68,4 +68,3 @@ public final class QueryMetricsConstants {
     public static final String FetchExecutionRangesText = "Partition Execution Timeline";
     public static final String SchedulingMetricsText = "Scheduling Metrics";
 }
-

@@ -28,5 +28,3 @@ public class BomDependencyErrorInfo {
         return this.dependencyWithConflict;
     }
 }
-
-

@@ -2241,4 +2241,3 @@ public final class TransactionsListByInvoiceSamples {
     }
 }
 ```
-

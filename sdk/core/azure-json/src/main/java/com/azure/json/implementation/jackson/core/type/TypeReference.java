@@ -56,4 +56,3 @@ public abstract class TypeReference<T> implements Comparable<TypeReference<T>>
     public int compareTo(TypeReference<T> o) { return 0; }
     // just need an implementation, not a good one... hence ^^^
 }
-

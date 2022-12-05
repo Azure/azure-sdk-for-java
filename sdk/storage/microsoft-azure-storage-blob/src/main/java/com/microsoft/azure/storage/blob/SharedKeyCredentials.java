@@ -277,4 +277,3 @@ public final class SharedKeyCredentials implements ICredentials {
         }
     }
 }
-

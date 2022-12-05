@@ -137,4 +137,3 @@ public final class ContainerRegistryRedirectPolicy implements HttpPipelinePolicy
         }
     }
 }
-

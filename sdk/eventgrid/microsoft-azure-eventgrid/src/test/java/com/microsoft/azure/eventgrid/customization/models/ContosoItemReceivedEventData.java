@@ -19,4 +19,3 @@ public class ContosoItemReceivedEventData {
         return this.itemUri;
     }
 }
-

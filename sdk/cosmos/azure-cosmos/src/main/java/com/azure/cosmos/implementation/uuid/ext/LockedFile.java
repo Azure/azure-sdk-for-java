@@ -289,5 +289,3 @@ class LockedFile
         }
     }
 }
-
-

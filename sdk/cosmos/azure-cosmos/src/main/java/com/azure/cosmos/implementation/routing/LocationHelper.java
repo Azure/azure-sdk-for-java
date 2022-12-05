@@ -49,4 +49,3 @@ public class LocationHelper {
         return dataCenter.replace(" ", "");
     }
 }
-

@@ -38,4 +38,3 @@ class CheckNameAvailabilityResultImpl
         return innerModel().message();
     }
 }
-

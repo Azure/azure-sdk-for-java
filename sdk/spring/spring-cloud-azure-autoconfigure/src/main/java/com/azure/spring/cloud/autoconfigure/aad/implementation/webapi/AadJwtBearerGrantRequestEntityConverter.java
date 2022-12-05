@@ -22,4 +22,3 @@ public class AadJwtBearerGrantRequestEntityConverter extends JwtBearerGrantReque
         return parameters;
     }
 }
-

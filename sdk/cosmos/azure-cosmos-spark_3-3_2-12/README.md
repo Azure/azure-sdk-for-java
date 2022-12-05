@@ -144,5 +144,3 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [azure_cosmos_db_partition]: https://docs.microsoft.com/azure/cosmos-db/partition-data
 [sql_queries_in_cosmos]: https://docs.microsoft.com/azure/cosmos-db/tutorial-query-sql-api
 [sql_queries_getting_started]: https://docs.microsoft.com/azure/cosmos-db/sql-query-getting-started
-
-

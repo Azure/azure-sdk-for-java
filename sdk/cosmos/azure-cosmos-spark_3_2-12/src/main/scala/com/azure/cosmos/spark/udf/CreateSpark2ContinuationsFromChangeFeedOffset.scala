@@ -117,4 +117,3 @@ class CreateSpark2ContinuationsFromChangeFeedOffset extends UDF2[Map[String, Str
     lsnsByPkRangeId.toMap
   }
 }
-

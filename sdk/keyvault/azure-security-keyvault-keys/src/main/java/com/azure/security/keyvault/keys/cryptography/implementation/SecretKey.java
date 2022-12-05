@@ -127,4 +127,3 @@ public final class SecretKey {
         properties.tags = tags;
     }
 }
-

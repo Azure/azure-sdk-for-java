@@ -566,4 +566,3 @@ public class AttestationTokenTests extends AttestationClientTestBase {
 
 
 }
-

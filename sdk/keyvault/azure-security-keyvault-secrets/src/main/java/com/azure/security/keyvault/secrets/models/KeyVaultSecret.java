@@ -135,4 +135,3 @@ public class KeyVaultSecret {
         properties.tags = tags;
     }
 }
-

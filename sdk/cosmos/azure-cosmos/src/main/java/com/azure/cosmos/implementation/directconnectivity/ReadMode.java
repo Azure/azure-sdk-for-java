@@ -9,4 +9,3 @@ public enum ReadMode {
     BoundedStaleness,
     Any
 }
-

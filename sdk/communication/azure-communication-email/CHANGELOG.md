@@ -22,4 +22,3 @@ The initial release of the Azure Communication Services SDK for Email has the fo
 
 - send emails to multiple recipients with attachments
 - get the status of a sent message
-

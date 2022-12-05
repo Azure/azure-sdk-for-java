@@ -38,4 +38,3 @@ public final class AnomalyDetectionConfigurationHelper {
         accessor.setMetricId(configuration, metricId);
     }
 }
-

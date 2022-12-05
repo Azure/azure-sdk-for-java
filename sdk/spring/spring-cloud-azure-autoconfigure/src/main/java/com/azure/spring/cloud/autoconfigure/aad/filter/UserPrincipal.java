@@ -223,4 +223,3 @@ public class UserPrincipal implements Serializable {
         return PERSONAL_ACCOUNT_TENANT_ID.equals(getTenantId());
     }
 }
-

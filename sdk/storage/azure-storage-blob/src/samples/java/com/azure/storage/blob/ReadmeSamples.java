@@ -375,4 +375,3 @@ public class ReadmeSamples {
         // END: readme-sample-setProxy2
     }
 }
-

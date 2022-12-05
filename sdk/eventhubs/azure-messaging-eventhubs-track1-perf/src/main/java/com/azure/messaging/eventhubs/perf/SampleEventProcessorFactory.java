@@ -44,4 +44,3 @@ class SampleEventProcessorFactory implements IEventProcessorFactory<SamplePartit
         return samplePartitionProcessor;
     }
 }
-

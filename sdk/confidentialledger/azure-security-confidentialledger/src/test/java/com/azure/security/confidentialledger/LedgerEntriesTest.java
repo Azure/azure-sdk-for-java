@@ -97,4 +97,3 @@ public final class LedgerEntriesTest extends ConfidentialLedgerClientTestBase {
         });
     }
 }
-

@@ -1364,4 +1364,3 @@ public final class VirtualNetworkRulesListByServerSamples {
     }
 }
 ```
-

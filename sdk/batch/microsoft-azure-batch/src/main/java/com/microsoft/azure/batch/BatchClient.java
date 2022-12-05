@@ -212,4 +212,3 @@ public class BatchClient {
         }
     }
 }
-

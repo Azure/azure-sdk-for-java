@@ -168,5 +168,3 @@ public final class ManagedIdentityCredential implements TokenCredential {
             .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClientOptions, request, error));
     }
 }
-
-

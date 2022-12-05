@@ -241,4 +241,3 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
         return false;
     }
 }
-

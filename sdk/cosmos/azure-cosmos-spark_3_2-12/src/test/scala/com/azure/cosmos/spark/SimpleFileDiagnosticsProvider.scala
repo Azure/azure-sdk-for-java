@@ -54,4 +54,3 @@ private[spark] object SimpleFileDiagnosticsProvider {
     }
   }
 }
-

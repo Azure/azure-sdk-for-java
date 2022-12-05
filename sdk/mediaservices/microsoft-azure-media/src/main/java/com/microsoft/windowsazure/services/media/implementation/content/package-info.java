@@ -19,4 +19,3 @@ package com.microsoft.windowsazure.services.media.implementation.content;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.microsoft.windowsazure.services.media.implementation.ODataDateAdapter;
-

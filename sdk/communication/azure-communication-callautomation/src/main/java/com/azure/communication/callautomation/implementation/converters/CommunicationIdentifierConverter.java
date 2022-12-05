@@ -150,4 +150,3 @@ public class CommunicationIdentifierConverter {
         return CommunicationIdentifierModelKind.UNKNOWN;
     }
 }
-

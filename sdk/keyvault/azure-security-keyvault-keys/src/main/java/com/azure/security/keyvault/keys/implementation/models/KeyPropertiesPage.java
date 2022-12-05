@@ -48,4 +48,3 @@ public final class KeyPropertiesPage implements Page<KeyProperties> {
         return IterableStream.of(items);
     }
 }
-

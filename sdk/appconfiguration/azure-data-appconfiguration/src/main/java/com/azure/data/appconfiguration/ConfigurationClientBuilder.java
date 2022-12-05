@@ -557,4 +557,3 @@ public final class ConfigurationClientBuilder implements
         }
     }
 }
-

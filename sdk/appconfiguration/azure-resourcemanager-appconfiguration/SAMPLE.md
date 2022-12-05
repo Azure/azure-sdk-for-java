@@ -772,4 +772,3 @@ public final class PrivateLinkResourcesListByConfigurationStoreSamples {
     }
 }
 ```
-

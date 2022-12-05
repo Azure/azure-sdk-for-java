@@ -58,4 +58,3 @@ public class CopyDocumentModel {
             copiedModel.getCreatedOn());
     }
 }
-

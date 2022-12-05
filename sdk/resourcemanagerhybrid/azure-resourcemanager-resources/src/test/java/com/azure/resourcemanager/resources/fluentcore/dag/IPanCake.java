@@ -13,4 +13,3 @@ interface IPancake extends Indexable, Creatable<IPancake> {
     IPancake withInstantPancake(Creatable<IPancake> anotherPancake);
     IPancake withDelayedPancake(Creatable<IPancake> anotherPancake);
 }
-

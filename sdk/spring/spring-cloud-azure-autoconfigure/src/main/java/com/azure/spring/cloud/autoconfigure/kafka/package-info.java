@@ -5,4 +5,3 @@
  * Spring Cloud Azure's auto-configuration for Spring Boot Kafka.
  */
 package com.azure.spring.cloud.autoconfigure.kafka;
-

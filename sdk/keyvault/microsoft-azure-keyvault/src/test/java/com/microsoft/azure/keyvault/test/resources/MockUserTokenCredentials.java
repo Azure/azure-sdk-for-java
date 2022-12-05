@@ -56,4 +56,3 @@ public class MockUserTokenCredentials extends UserTokenCredentials {
                 false);
     }
 }
-

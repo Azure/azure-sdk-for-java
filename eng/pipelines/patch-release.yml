@@ -17,4 +17,3 @@ extends:
       groupId: com.azure
       safeName: azuresdktemplatethree
       ServiceDirectory: template
-

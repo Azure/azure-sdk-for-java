@@ -91,4 +91,3 @@ public final class CommunicationRoom {
         return this.roomJoinPolicy;
     }
 }
-

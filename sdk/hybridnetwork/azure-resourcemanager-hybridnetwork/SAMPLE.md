@@ -1156,4 +1156,3 @@ public final class VendorsListSamples {
     }
 }
 ```
-

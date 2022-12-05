@@ -39,4 +39,3 @@ public final class RenderingSessionStatus extends ExpandableStringEnum<Rendering
         return values(RenderingSessionStatus.class);
     }
 }
-

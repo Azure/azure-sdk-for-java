@@ -536,4 +536,3 @@ public class MediaServicesLicenseTemplateSerializerTests {
     }
 
 }
-

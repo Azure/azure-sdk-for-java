@@ -758,4 +758,3 @@ public class FlatteningSerializerTests {
         return school;
     }
 }
-

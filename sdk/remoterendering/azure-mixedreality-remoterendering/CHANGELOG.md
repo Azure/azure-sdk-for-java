@@ -118,4 +118,3 @@ This is a Public Preview version, so breaking changes are possible in subsequent
 #### Dependency updates
 - Updated `azure-core` to `1.25.0`.
 - Updated `azure-mixedreality-authentication` to `1.1.5`.
-

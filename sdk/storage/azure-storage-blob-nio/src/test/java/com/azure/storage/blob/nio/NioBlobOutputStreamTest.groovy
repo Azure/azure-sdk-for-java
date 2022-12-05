@@ -289,4 +289,3 @@ class NioBlobOutputStreamTest extends APISpec {
         thrown(ClosedFileSystemException)
     }
 }
-

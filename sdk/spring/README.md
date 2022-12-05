@@ -181,4 +181,3 @@ This project collects usage data and sends it to Microsoft to help improve our p
 [codeofconduct]: https://opensource.microsoft.com/codeofconduct/faq/
 [codeofconduct-faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [privacy-statement]: https://privacy.microsoft.com/privacystatement
-

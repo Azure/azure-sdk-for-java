@@ -60,4 +60,3 @@ public class CopyModel {
             copiedModel.getTrainingCompletedOn());
     }
 }
-

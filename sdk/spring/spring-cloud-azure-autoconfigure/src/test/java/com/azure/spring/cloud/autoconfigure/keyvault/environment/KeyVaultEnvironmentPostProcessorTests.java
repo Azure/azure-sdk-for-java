@@ -286,4 +286,3 @@ class KeyVaultEnvironmentPostProcessorTests {
                 () -> new KeyVaultEnvironmentPostProcessor().postProcessEnvironment(environment, application));
     }
 }
-

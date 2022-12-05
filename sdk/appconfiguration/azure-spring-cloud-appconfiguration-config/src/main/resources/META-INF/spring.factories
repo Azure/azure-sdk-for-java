@@ -3,4 +3,3 @@ com.azure.spring.cloud.config.AppConfigurationAutoConfiguration, com.azure.sprin
 
 org.springframework.cloud.bootstrap.BootstrapConfiguration=\
 com.azure.spring.cloud.config.AppConfigurationBootstrapConfiguration
-

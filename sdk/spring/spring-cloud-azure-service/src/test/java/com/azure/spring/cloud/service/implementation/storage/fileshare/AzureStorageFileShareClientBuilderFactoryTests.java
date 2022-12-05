@@ -149,4 +149,3 @@ class AzureStorageFileShareClientBuilderFactoryTests extends
         }
     }
 }
-

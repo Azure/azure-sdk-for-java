@@ -101,4 +101,3 @@ public @interface EnableReactiveCosmosRepositories {
      */
     String reactiveCosmosTemplateRef() default "reactiveCosmosTemplate";
 }
-

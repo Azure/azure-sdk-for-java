@@ -37,4 +37,3 @@ generic-response-type: true
 custom-types-subpackage: models
 enable-sync-stack: true
 ```
-

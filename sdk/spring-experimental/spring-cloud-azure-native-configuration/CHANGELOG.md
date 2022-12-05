@@ -24,4 +24,3 @@
     - spring-cloud-azure-starter-eventhubs
     - spring-cloud-azure-starter-integration-storage-queue
     - spring-cloud-azure-starter-integration-eventhubs
-

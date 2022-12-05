@@ -69,4 +69,3 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
         return inner.processSync(context, next);
     }
 }
-

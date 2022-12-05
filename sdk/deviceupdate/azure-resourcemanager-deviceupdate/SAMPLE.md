@@ -785,4 +785,3 @@ public final class ResourceProviderCheckNameAvailabilitySamples {
     }
 }
 ```
-

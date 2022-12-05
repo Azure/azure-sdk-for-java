@@ -714,4 +714,3 @@ public class CompareToBuilder implements Builder<Integer> {
         return Integer.valueOf(toComparison());
     }
 }
-

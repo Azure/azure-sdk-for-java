@@ -719,4 +719,3 @@ public final class ResourceProviderUpdateOrderItemSamples {
     }
 }
 ```
-

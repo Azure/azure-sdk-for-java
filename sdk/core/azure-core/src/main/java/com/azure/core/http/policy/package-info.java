@@ -5,4 +5,3 @@
  * Package containing HttpPipelinePolicy interface and its implementations.
  */
 package com.azure.core.http.policy;
-

@@ -69,4 +69,3 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagereventgrid
         releaseInBatch: ${{ parameters.release_azureresourcemanagereventgrid }}
-

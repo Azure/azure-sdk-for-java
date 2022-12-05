@@ -521,4 +521,3 @@ public final class ResourceSkusListSamples {
     }
 }
 ```
-

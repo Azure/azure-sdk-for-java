@@ -287,4 +287,3 @@ final class Asn1DerSignatureEncoding {
         return bigLen.intValue();
     }
 }
-

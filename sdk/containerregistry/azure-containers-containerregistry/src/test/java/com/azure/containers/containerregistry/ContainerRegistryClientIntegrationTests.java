@@ -194,4 +194,3 @@ public class ContainerRegistryClientIntegrationTests extends ContainerRegistryCl
         assertThrows(ClientAuthenticationException.class, () -> throwableRegistryClient.listRepositoryNames().stream().collect(Collectors.toList()));
     }
 }
-

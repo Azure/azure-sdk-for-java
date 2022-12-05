@@ -429,4 +429,3 @@ public abstract class RestProxyBase {
         return ReflectionSerializable.serializeAsXmlSerializable(bodyContent);
     }
 }
-

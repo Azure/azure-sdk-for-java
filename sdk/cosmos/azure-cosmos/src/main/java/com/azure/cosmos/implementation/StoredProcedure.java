@@ -58,4 +58,3 @@ public class StoredProcedure extends Resource {
         BridgeInternal.setProperty(this, Constants.Properties.BODY, body);
     }
 }
-

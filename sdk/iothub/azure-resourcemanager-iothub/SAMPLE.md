@@ -1125,4 +1125,3 @@ public final class ResourceProviderCommonGetSubscriptionQuotaSamples {
     }
 }
 ```
-

@@ -38,4 +38,3 @@ class MessageOperationResult implements OperationResult<Message, Exception> {
         onError.accept(error);
     }
 }
-

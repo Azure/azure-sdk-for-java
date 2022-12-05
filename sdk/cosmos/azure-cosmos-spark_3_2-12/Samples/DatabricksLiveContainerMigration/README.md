@@ -72,5 +72,3 @@ Select the latest Azure Databricks runtime version which supports Spark 3.0 or h
 ```shell
     %sh rm -r /dbfs/tmp/LiveMigration_checkpoint
 ```
-
-

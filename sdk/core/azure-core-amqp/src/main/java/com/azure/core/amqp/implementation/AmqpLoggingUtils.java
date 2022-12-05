@@ -89,4 +89,3 @@ public final class AmqpLoggingUtils {
             .addKeyValue("shutdownMessage", shutdownSignal);
     }
 }
-

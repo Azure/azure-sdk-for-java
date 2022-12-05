@@ -101,4 +101,3 @@ public @interface EnableCosmosRepositories {
      */
     String cosmosTemplateRef() default "cosmosTemplate";
 }
-

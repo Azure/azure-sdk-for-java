@@ -36,4 +36,3 @@ public interface KeyValue<K, V> {
      */
     V getValue();
 }
-

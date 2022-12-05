@@ -782,4 +782,3 @@ public final class TimeSeriesDatabaseConnectionsListSamples {
     }
 }
 ```
-

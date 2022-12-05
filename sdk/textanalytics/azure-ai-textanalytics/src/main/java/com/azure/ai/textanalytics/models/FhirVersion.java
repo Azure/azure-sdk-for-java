@@ -26,4 +26,3 @@ public final class FhirVersion extends ExpandableStringEnum<FhirVersion> {
         return fromString(name, FhirVersion.class);
     }
 }
-

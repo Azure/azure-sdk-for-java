@@ -428,4 +428,3 @@ public final class SchemaRegistryApacheAvroSerializer {
         }
     }
 }
-

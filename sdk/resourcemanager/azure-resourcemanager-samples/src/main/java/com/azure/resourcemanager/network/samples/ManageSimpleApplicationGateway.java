@@ -174,4 +174,3 @@ public final class ManageSimpleApplicationGateway {
 
     }
 }
-

@@ -315,4 +315,3 @@ public abstract class AzureListenerAnnotationBeanPostProcessorAdapter<T>
     public abstract String getDefaultAzureListenerAnnotationBeanPostProcessorBeanName();
 
 }
-

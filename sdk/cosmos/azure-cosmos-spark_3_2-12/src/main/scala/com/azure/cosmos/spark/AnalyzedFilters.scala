@@ -16,4 +16,3 @@ import org.apache.spark.sql.sources.Filter
 private case class AnalyzedFilters(cosmosParametrizedQuery: CosmosParameterizedQuery,
                                    filtersToBePushedDownToCosmos: Array[Filter],
                                    filtersNotSupportedByCosmos: Array[Filter])
-

@@ -230,4 +230,3 @@ public class ProjectRepositorySortIT {
         validateLastPage(result, 5);
     }
 }
-

@@ -112,4 +112,3 @@ class CertificateClientBuilderFactoryTests extends
         }
     }
 }
-

@@ -304,4 +304,3 @@ public class BarrierRequestHelperTest {
         }
     }
 }
-

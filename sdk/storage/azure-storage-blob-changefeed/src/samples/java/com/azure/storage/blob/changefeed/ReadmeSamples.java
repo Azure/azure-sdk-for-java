@@ -106,4 +106,3 @@ public class ReadmeSamples {
         // END: readme-sample-changefeedPollForEventsWithCursor
     }
 }
-

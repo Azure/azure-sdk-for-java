@@ -32,4 +32,3 @@ public final class AgeUnit extends ExpandableStringEnum<AgeUnit> {
         return fromString(name, AgeUnit.class);
     }
 }
-

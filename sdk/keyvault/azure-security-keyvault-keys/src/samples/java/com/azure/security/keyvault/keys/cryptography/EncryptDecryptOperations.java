@@ -50,4 +50,3 @@ public class EncryptDecryptOperations {
         System.out.printf("Returned plaintext size is %d bytes \n", decryptResult.getPlainText().length);
     }
 }
-

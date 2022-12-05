@@ -175,4 +175,3 @@ class SparkE2EGatewayWriteITest
   //scalastyle:on multiple.string.literals
   //scalastyle:on null
 }
-

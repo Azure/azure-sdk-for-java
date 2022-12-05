@@ -200,4 +200,3 @@ This package's
 and
 [samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples)
 demonstrate the new API.
-

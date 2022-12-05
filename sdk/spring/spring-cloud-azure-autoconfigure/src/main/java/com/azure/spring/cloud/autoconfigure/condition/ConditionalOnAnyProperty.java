@@ -69,4 +69,3 @@ public @interface ConditionalOnAnyProperty {
     boolean matchIfMissing() default false;
 
 }
-

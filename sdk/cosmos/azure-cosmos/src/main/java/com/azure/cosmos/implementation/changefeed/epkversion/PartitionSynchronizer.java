@@ -27,4 +27,3 @@ public interface PartitionSynchronizer {
      */
     Mono<FeedRangeGoneHandler> getFeedRangeGoneHandler(Lease lease);
 }
-

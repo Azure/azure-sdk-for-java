@@ -277,4 +277,3 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 }
-

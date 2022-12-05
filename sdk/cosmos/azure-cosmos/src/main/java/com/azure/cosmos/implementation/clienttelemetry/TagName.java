@@ -42,4 +42,3 @@ public enum TagName {
         return this.value;
     }
 }
-
