@@ -412,7 +412,3 @@ beta_com.azure:azure-communication-common;1.3.0-beta.1
 unreleased_com.azure:azure-identity-providers-core;1.0.0
 unreleased_com.azure:azure-identity-providers-jdbc-mysql;1.0.0
 unreleased_com.azure:azure-identity-providers-jdbc-postgresql;1.0.0
-unreleased_com.azure.spring:spring-cloud-azure-resourcemanager;6.0.0-beta.3
-unreleased_com.azure.spring:spring-cloud-azure-autoconfigure;6.0.0-beta.3
-unreleased_com.azure.spring:spring-integration-azure-storage-queue;6.0.0-beta.3
-unreleased_com.azure.spring:spring-integration-azure-eventhubs;6.0.0-beta.3
