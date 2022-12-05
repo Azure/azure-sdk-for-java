@@ -39,6 +39,10 @@ public final class MicrosoftGraphOpenShift extends MicrosoftGraphChangeTrackedEn
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphOpenShift class. */
+    public MicrosoftGraphOpenShift() {
+    }
+
     /**
      * Get the draftOpenShift property: openShiftItem.
      *

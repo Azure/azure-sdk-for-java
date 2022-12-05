@@ -17,8 +17,7 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntity {
     /*
-     * Number of times the operation was attempted before being marked
-     * successful or failed.
+     * Number of times the operation was attempted before being marked successful or failed.
      */
     @JsonProperty(value = "attemptsCount")
     private Integer attemptsCount;
@@ -54,16 +53,14 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
     private MicrosoftGraphTeamsAsyncOperationStatus status;
 
     /*
-     * The ID of the object that's created or modified as result of this async
-     * operation, typically a team.
+     * The ID of the object that's created or modified as result of this async operation, typically a team.
      */
     @JsonProperty(value = "targetResourceId")
     private String targetResourceId;
 
     /*
-     * The location of the object that's created or modified as result of this
-     * async operation. This URL should be treated as an opaque value and not
-     * parsed into its component paths.
+     * The location of the object that's created or modified as result of this async operation. This URL should be
+     * treated as an opaque value and not parsed into its component paths.
      */
     @JsonProperty(value = "targetResourceLocation")
     private String targetResourceLocation;
@@ -72,6 +69,10 @@ public final class MicrosoftGraphTeamsAsyncOperation extends MicrosoftGraphEntit
      * teamsAsyncOperation
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphTeamsAsyncOperation class. */
+    public MicrosoftGraphTeamsAsyncOperation() {
+    }
 
     /**
      * Get the attemptsCount property: Number of times the operation was attempted before being marked successful or

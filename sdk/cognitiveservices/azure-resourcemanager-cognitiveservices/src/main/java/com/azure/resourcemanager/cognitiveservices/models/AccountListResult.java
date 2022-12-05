@@ -24,6 +24,10 @@ public final class AccountListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<AccountInner> value;
 
+    /** Creates an instance of AccountListResult class. */
+    public AccountListResult() {
+    }
+
     /**
      * Get the nextLink property: The link used to get the next page of accounts.
      *

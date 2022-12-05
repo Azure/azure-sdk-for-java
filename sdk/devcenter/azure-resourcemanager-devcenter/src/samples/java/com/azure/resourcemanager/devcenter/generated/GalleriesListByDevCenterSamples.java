@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Galleries ListByDevCenter. */
 public final class GalleriesListByDevCenterSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-10-12-preview/examples/Galleries_List.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Galleries_List.json
      */
     /**
      * Sample code: Galleries_ListByDevCenter.

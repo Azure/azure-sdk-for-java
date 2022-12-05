@@ -18,16 +18,14 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphConversation extends MicrosoftGraphEntity {
     /*
-     * Indicates whether any of the posts within this Conversation has at least
-     * one attachment.
+     * Indicates whether any of the posts within this Conversation has at least one attachment.
      */
     @JsonProperty(value = "hasAttachments")
     private Boolean hasAttachments;
 
     /*
-     * The Timestamp type represents date and time information using ISO 8601
-     * format and is always in UTC time. For example, midnight UTC on Jan 1,
-     * 2014 would look like this: '2014-01-01T00:00:00Z'
+     * The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For
+     * example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
      */
     @JsonProperty(value = "lastDeliveredDateTime")
     private OffsetDateTime lastDeliveredDateTime;
@@ -39,8 +37,8 @@ public final class MicrosoftGraphConversation extends MicrosoftGraphEntity {
     private String preview;
 
     /*
-     * The topic of the conversation. This property can be set when the
-     * conversation is created, but it cannot be updated.
+     * The topic of the conversation. This property can be set when the conversation is created, but it cannot be
+     * updated.
      */
     @JsonProperty(value = "topic")
     private String topic;
@@ -52,8 +50,7 @@ public final class MicrosoftGraphConversation extends MicrosoftGraphEntity {
     private List<String> uniqueSenders;
 
     /*
-     * A collection of all the conversation threads in the conversation. A
-     * navigation property. Read-only. Nullable.
+     * A collection of all the conversation threads in the conversation. A navigation property. Read-only. Nullable.
      */
     @JsonProperty(value = "threads")
     private List<MicrosoftGraphConversationThread> threads;
@@ -62,6 +59,10 @@ public final class MicrosoftGraphConversation extends MicrosoftGraphEntity {
      * conversation
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphConversation class. */
+    public MicrosoftGraphConversation() {
+    }
 
     /**
      * Get the hasAttachments property: Indicates whether any of the posts within this Conversation has at least one

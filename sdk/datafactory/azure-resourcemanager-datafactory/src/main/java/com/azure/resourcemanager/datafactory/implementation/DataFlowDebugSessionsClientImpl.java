@@ -70,7 +70,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
-    private interface DataFlowDebugSessionsService {
+    public interface DataFlowDebugSessionsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"

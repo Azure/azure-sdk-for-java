@@ -83,7 +83,7 @@ public interface GalleryImage
     /** @return the hypervisor generation. */
     HyperVGeneration hyperVGeneration();
 
-    /** @return the security type, whether trusted l. */
+    /** @return the security type, whether trusted launch or confidential VM. */
     SecurityTypes securityType();
 
     /** @return the tags associated with the image. */

@@ -313,8 +313,7 @@ public class EventGridCustomization extends Customization {
 
         customization.getRawEditor()
             .addFile("src/main/java/com/azure/messaging/eventgrid/implementation/SystemEventMappingNames.java", sb.toString());
-
-        replaceClassAnnotation(customization);
+        
         customizeMediaJobOutputAsset(customization);
         customizeStorageDirectoryDeletedEventData(customization);
         customizeAcsRecordingFileStatusUpdatedEventDataDuration(customization);
@@ -464,48 +463,6 @@ public class EventGridCustomization extends Customization {
     public void customizeMediaJobOutputAsset(LibraryCustomization customization) {
         PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
         packageModels.getClass("MediaJobOutputAsset").setModifier(Modifier.PUBLIC | Modifier.FINAL);
-    }
-    
-    public void replaceClassAnnotation(LibraryCustomization customization) {
-        // HealthcareFhirResource events
-        PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
-        packageModels.getClass("HealthcareFhirResourceCreatedEventData").removeAnnotation("@Immutable");
-        packageModels.getClass("HealthcareFhirResourceDeletedEventData").removeAnnotation("@Immutable");
-        packageModels.getClass("HealthcareFhirResourceUpdatedEventData").removeAnnotation("@Immutable");
-        // Communication events
-        packageModels.getClass("AcsUserDisconnectedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        // Api Management events
-        packageModels.getClass("ApiManagementApiCreatedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementApiDeletedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementApiReleaseCreatedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementApiReleaseDeletedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementApiReleaseUpdatedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementApiUpdatedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementProductCreatedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementProductDeletedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementProductUpdatedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementSubscriptionCreatedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementSubscriptionDeletedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementSubscriptionUpdatedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementUserCreatedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementUserDeletedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
-        packageModels.getClass("ApiManagementUserUpdatedEventData").removeAnnotation("@Fluent")
-            .addAnnotation("@Immutable");
     }
     
     public static String getConstantName(String name) {

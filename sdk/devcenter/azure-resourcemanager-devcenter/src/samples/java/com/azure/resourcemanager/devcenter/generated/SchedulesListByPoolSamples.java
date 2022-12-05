@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Schedules ListByPool. */
 public final class SchedulesListByPoolSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-10-12-preview/examples/Schedules_ListByPool.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Schedules_ListByPool.json
      */
     /**
      * Sample code: Schedules_ListByPool.

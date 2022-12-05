@@ -18,8 +18,7 @@ public final class DocumentPage {
     private int pageNumber;
 
     /*
-     * The general orientation of the content in clockwise direction, measured
-     * in degrees between (-180, 180].
+     * The general orientation of the content in clockwise direction, measured in degrees between (-180, 180].
      */
     @JsonProperty(value = "angle")
     private Float angle;
@@ -37,8 +36,8 @@ public final class DocumentPage {
     private Float height;
 
     /*
-     * The unit used by the width, height, and polygon properties. For images,
-     * the unit is "pixel". For PDF, the unit is "inch".
+     * The unit used by the width, height, and polygon properties. For images, the unit is "pixel". For PDF, the unit
+     * is "inch".
      */
     @JsonProperty(value = "unit")
     private LengthUnit unit;
@@ -62,11 +61,13 @@ public final class DocumentPage {
     private List<DocumentSelectionMark> selectionMarks;
 
     /*
-     * Extracted lines from the page, potentially containing both textual and
-     * visual elements.
+     * Extracted lines from the page, potentially containing both textual and visual elements.
      */
     @JsonProperty(value = "lines")
     private List<DocumentLine> lines;
+
+    /** Creates an instance of DocumentPage class. */
+    public DocumentPage() {}
 
     /**
      * Get the pageNumber property: 1-based page number in the input document.

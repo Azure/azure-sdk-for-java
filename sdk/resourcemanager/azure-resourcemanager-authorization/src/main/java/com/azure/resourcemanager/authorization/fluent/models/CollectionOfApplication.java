@@ -33,6 +33,10 @@ public final class CollectionOfApplication {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of CollectionOfApplication class. */
+    public CollectionOfApplication() {
+    }
+
     /**
      * Get the value property: The value property.
      *

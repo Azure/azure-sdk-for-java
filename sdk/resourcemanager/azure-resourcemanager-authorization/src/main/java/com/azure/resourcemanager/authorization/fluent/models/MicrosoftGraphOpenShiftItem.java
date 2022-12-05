@@ -28,6 +28,10 @@ public final class MicrosoftGraphOpenShiftItem extends MicrosoftGraphShiftItem {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphOpenShiftItem class. */
+    public MicrosoftGraphOpenShiftItem() {
+    }
+
     /**
      * Get the openSlotCount property: Count of the number of slots for the given open shift.
      *

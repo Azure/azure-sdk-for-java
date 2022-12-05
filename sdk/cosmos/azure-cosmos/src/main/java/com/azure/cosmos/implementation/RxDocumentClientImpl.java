@@ -2269,6 +2269,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 List<T> finalList = new ArrayList<>();
                                 HashMap<String, String> headers = new HashMap<>();
                                 ConcurrentMap<String, QueryMetrics> aggregatedQueryMetrics = new ConcurrentHashMap<>();
+                                List<ClientSideRequestStatistics> aggregateRequestStatistics = new ArrayList<>();
                                 double requestCharge = 0;
                                 for (FeedResponse<Document> page : feedList) {
                                     ConcurrentMap<String, QueryMetrics> pageQueryMetrics =
@@ -2282,11 +2283,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     // TODO: this does double serialization: FIXME
                                     finalList.addAll(page.getResults().stream().map(document ->
                                         ModelBridgeInternal.toObjectFromJsonSerializable(document, klass)).collect(Collectors.toList()));
+                                    aggregateRequestStatistics.addAll(BridgeInternal.getClientSideRequestStatisticsList(page.getCosmosDiagnostics()));
                                 }
+                                CosmosDiagnostics aggregatedDiagnostics = BridgeInternal.createCosmosDiagnostics(aggregatedQueryMetrics);
+                                BridgeInternal.addClientSideDiagnosticsToFeed(aggregatedDiagnostics, aggregateRequestStatistics);
                                 headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
                                     .toString(requestCharge));
                                 FeedResponse<T> frp = BridgeInternal
-                                    .createFeedResponse(finalList, headers);
+                                    .createFeedResponseWithQueryMetrics(
+                                        finalList,
+                                        headers,
+                                        aggregatedQueryMetrics,
+                                        null,
+                                        false,
+                                        false,
+                                        aggregatedDiagnostics);
                                 return frp;
                             });
                     });

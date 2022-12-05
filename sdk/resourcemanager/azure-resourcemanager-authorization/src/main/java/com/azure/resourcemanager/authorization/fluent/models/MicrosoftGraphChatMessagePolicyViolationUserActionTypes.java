@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphChatMessagePolicyViolationUserActionTypes. */
+/** chatMessagePolicyViolationUserActionTypes. */
 public final class MicrosoftGraphChatMessagePolicyViolationUserActionTypes
     extends ExpandableStringEnum<MicrosoftGraphChatMessagePolicyViolationUserActionTypes> {
     /** Static value none for MicrosoftGraphChatMessagePolicyViolationUserActionTypes. */
@@ -32,7 +32,11 @@ public final class MicrosoftGraphChatMessagePolicyViolationUserActionTypes
         return fromString(name, MicrosoftGraphChatMessagePolicyViolationUserActionTypes.class);
     }
 
-    /** @return known MicrosoftGraphChatMessagePolicyViolationUserActionTypes values. */
+    /**
+     * Gets known MicrosoftGraphChatMessagePolicyViolationUserActionTypes values.
+     *
+     * @return known MicrosoftGraphChatMessagePolicyViolationUserActionTypes values.
+     */
     public static Collection<MicrosoftGraphChatMessagePolicyViolationUserActionTypes> values() {
         return values(MicrosoftGraphChatMessagePolicyViolationUserActionTypes.class);
     }

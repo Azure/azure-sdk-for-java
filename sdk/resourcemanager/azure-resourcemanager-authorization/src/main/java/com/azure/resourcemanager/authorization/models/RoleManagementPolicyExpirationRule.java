@@ -26,6 +26,10 @@ public final class RoleManagementPolicyExpirationRule extends RoleManagementPoli
     @JsonProperty(value = "maximumDuration")
     private String maximumDuration;
 
+    /** Creates an instance of RoleManagementPolicyExpirationRule class. */
+    public RoleManagementPolicyExpirationRule() {
+    }
+
     /**
      * Get the isExpirationRequired property: The value indicating whether expiration is required.
      *

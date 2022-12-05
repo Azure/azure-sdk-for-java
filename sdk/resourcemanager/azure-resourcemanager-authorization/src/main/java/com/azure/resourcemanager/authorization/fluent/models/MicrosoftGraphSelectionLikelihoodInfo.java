@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphSelectionLikelihoodInfo. */
+/** selectionLikelihoodInfo. */
 public final class MicrosoftGraphSelectionLikelihoodInfo
     extends ExpandableStringEnum<MicrosoftGraphSelectionLikelihoodInfo> {
     /** Static value notSpecified for MicrosoftGraphSelectionLikelihoodInfo. */
@@ -28,7 +28,11 @@ public final class MicrosoftGraphSelectionLikelihoodInfo
         return fromString(name, MicrosoftGraphSelectionLikelihoodInfo.class);
     }
 
-    /** @return known MicrosoftGraphSelectionLikelihoodInfo values. */
+    /**
+     * Gets known MicrosoftGraphSelectionLikelihoodInfo values.
+     *
+     * @return known MicrosoftGraphSelectionLikelihoodInfo values.
+     */
     public static Collection<MicrosoftGraphSelectionLikelihoodInfo> values() {
         return values(MicrosoftGraphSelectionLikelihoodInfo.class);
     }

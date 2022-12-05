@@ -7,7 +7,7 @@ package com.azure.resourcemanager.batch.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ComputeNodeFillType. */
+/** How tasks should be distributed across compute nodes. */
 public enum ComputeNodeFillType {
     /** Enum value Spread. */
     SPREAD("Spread"),
@@ -30,6 +30,9 @@ public enum ComputeNodeFillType {
      */
     @JsonCreator
     public static ComputeNodeFillType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ComputeNodeFillType[] items = ComputeNodeFillType.values();
         for (ComputeNodeFillType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum ComputeNodeFillType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

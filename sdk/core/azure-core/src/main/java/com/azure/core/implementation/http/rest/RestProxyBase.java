@@ -11,6 +11,7 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.exception.TooManyRedirectsException;
 import com.azure.core.http.ContentType;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
@@ -22,7 +23,6 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.implementation.TypeUtil;
-import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.BinaryData;
@@ -281,7 +281,7 @@ public abstract class RestProxyBase {
         SerializerAdapter serializerAdapter, boolean isAsync, final Object[] args) throws IOException {
         final Object bodyContentObject = methodParser.setBody(args, serializer);
         if (bodyContentObject == null) {
-            HttpHeadersHelper.setNoKeyFormatting(request.getHeaders(), "content-length", "Content-Length", "0");
+            request.setHeader(HttpHeaderName.CONTENT_LENGTH, "0");
         } else {
             // We read the content type from the @BodyParam annotation
             String contentType = methodParser.getBodyContentType();
@@ -296,12 +296,11 @@ public abstract class RestProxyBase {
                 }
             }
 
-            HttpHeadersHelper.setNoKeyFormatting(request.getHeaders(), "content-type", "Content-Type", contentType);
+            request.setHeader(HttpHeaderName.CONTENT_TYPE, contentType);
             if (bodyContentObject instanceof BinaryData) {
                 BinaryData binaryData = (BinaryData) bodyContentObject;
                 if (binaryData.getLength() != null) {
-                    HttpHeadersHelper.setNoKeyFormatting(request.getHeaders(), "content-length", "Content-Length",
-                        binaryData.getLength().toString());
+                    request.setHeader(HttpHeaderName.CONTENT_LENGTH, binaryData.getLength().toString());
                 }
                 // The request body is not read here. The call to `toFluxByteBuffer()` lazily converts the underlying
                 // content of BinaryData to a Flux<ByteBuffer> which is then read by HttpClient implementations when
@@ -345,7 +344,7 @@ public abstract class RestProxyBase {
 
         final String contentType = httpResponse.getHeaderValue("Content-Type");
         if ("application/octet-stream".equalsIgnoreCase(contentType)) {
-            String contentLength = HttpHeadersHelper.getValueNoKeyFormatting(httpResponse.getHeaders(), "content-length");
+            String contentLength = httpResponse.getHeaderValue(HttpHeaderName.CONTENT_LENGTH);
             exceptionMessage.append("(").append(contentLength).append("-byte body)");
         } else if (responseContent == null || responseContent.length == 0) {
             exceptionMessage.append("(empty body)");

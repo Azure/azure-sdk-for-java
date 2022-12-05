@@ -26,6 +26,10 @@ public final class MicrosoftGraphDeleted {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphDeleted class. */
+    public MicrosoftGraphDeleted() {
+    }
+
     /**
      * Get the state property: Represents the state of the deleted item.
      *

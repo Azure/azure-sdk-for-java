@@ -479,9 +479,9 @@ public final class TextAnalyticsClientImpl {
 
     /**
      * The API returns a list of entities with personal information (\"SSN\", \"Bank Account\" etc) in the document. For
-     * the list of supported entity types, check &lt;a href="https://aka.ms/tanerpii"&gt;Supported Entity Types in Text
-     * Analytics API&lt;/a&gt;. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text Analytics
-     * API&lt;/a&gt; for the list of enabled languages.
+     * the list of supported entity types, check &lt;a href="https://aka.ms/azsdk/language/pii"&gt;Supported Entity
+     * Types in Text Analytics API&lt;/a&gt;. See the &lt;a href="https://aka.ms/talangs"&gt;Supported languages in Text
+     * Analytics API&lt;/a&gt; for the list of enabled languages.
      *
      * @param input Collection of documents to analyze.
      * @param modelVersion (Optional) This value indicates which model will be used for scoring. If a model-version is
