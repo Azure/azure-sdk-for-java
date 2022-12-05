@@ -77,14 +77,14 @@ public class MultiTenantDBCosmosTemplateUnitTest {
         CosmosEntityInformation<Person, String> personInfo = new CosmosEntityInformation<>(Person.class);
 
         // Create DB1 and add TEST_PERSON_1 to it
-        cosmosTemplate.setNameAndCreateDatabase(testDB1);
+        cosmosTemplate.setNameAndCreateDatabaseIfNotExists(testDB1);
         cosmosTemplate.createContainerIfNotExists(personInfo);
         cosmosTemplate.deleteAll(personInfo.getContainerName(), Person.class);
         assertThat(cosmosTemplate.getDatabaseName()).isEqualTo(testDB1);
         cosmosTemplate.insert(TEST_PERSON_1, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_1)));
 
         // Create DB2 and add TEST_PERSON_2 to it
-        cosmosTemplate.setNameAndCreateDatabase(testDB2);
+        cosmosTemplate.setNameAndCreateDatabaseIfNotExists(testDB2);
         cosmosTemplate.createContainerIfNotExists(personInfo);
         cosmosTemplate.deleteAll(personInfo.getContainerName(), Person.class);
         assertThat(cosmosTemplate.getDatabaseName()).isEqualTo(testDB2);
@@ -99,7 +99,7 @@ public class MultiTenantDBCosmosTemplateUnitTest {
         Assert.assertEquals(expectedResultsDB2, resultDB2);
 
         // Check that DB1 has the correct contents
-        cosmosTemplate.setNameAndCreateDatabase(testDB1);
+        cosmosTemplate.setNameAndCreateDatabaseIfNotExists(testDB1);
         List<Person> expectedResultsDB1 = new ArrayList<>();
         expectedResultsDB1.add(TEST_PERSON_1);
         Iterable<Person> iterableDB1 = cosmosTemplate.findAll(personInfo.getContainerName(), Person.class);

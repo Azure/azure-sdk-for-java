@@ -156,7 +156,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         return this.databaseName;
     }
 
-    public void setNameAndCreateDatabase(String dbName) {
+    public void setNameAndCreateDatabaseIfNotExists(String dbName) {
         this.databaseName = dbName;
 
         createDatabaseIfNotExists()

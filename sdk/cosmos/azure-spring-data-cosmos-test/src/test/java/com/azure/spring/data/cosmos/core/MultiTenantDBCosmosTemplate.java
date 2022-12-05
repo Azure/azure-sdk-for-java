@@ -76,8 +76,8 @@ public class MultiTenantDBCosmosTemplate extends CosmosTemplate {
     }
 
     @Override
-    public void setNameAndCreateDatabase(String dbName) {
-        super.setNameAndCreateDatabase(dbName);
+    public void setNameAndCreateDatabaseIfNotExists(String dbName) {
+        super.setNameAndCreateDatabaseIfNotExists(dbName);
     }
 
     public String getDatabaseName() {
