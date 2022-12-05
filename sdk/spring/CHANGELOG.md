@@ -4,6 +4,13 @@
 Upgrade Spring Boot dependencies version to 2.7.6 and Spring Cloud dependencies version to 2021.0.5
 Upgrade Spring Boot dependencies version to 2.7.4 and Spring Cloud dependencies version to 2021.0.4
 
+### Spring Cloud Azure Starter
+This section includes changes in `spring-cloud-azure-starter` module.
+
+#### Features Added
+- GA the `spring-cloud-azure-starter-jdbc-mysql`. This starter supports Azure hosted MySQL service authenticating with Azure AD[#30024](https://github.com/Azure/azure-sdk-for-java/pull/30024).
+- GA the `spring-cloud-azure-starter-jdbc-postgresql`. This starter supports Azure hosted PostgreSQL service authenticating with Azure AD[#30024](https://github.com/Azure/azure-sdk-for-java/pull/30024).
+
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
