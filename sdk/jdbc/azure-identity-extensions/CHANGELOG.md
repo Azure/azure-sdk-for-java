@@ -10,9 +10,9 @@ This is the 1.0.0 GA version of Azure identity extensions library for Java.
 
 ### Breaking Changes
 
-- Move `azure-identity-providers-core, `azure-identity-providers-jdbc-mysql`, `azure-identity-providers-jdbc-postgresql` into one module [#32282](https://github.com/Azure/azure-sdk-for-java/pull/32282).
-- Rename `com.azure.identity.providers.mysql.AzureIdentityMysqlAuthenticationPlugin` to `com.azure.identity.extensions.jdbc.mysql.AzureMysqlAuthenticationPlugin`.
-- Rename `com.azure.identity.providers.postgresql.AzureIdentityPostgresqlAuthenticationPlugin` to `com.azure.identity.extensions.jdbc.postgresql.AzurePostgresqlAuthenticationPlugin`.
+- Move `azure-identity-providers-core`, `azure-identity-providers-jdbc-mysql`, `azure-identity-providers-jdbc-postgresql` into one module: `azure-identity-extensions` [#32282](https://github.com/Azure/azure-sdk-for-java/pull/32282), [#32370](https://github.com/Azure/azure-sdk-for-java/pull/32370).
+- Rename `com.azure.identity.providers.mysql.AzureIdentityMysqlAuthenticationPlugin` to `com.azure.identity.extensions.jdbc.mysql.AzureMysqlAuthenticationPlugin` [#32401](https://github.com/Azure/azure-sdk-for-java/pull/32401).
+- Rename `com.azure.identity.providers.postgresql.AzureIdentityPostgresqlAuthenticationPlugin` to `com.azure.identity.extensions.jdbc.postgresql.AzurePostgresqlAuthenticationPlugin` [#32401](https://github.com/Azure/azure-sdk-for-java/pull/32401).
 
 ### Bugs Fixed
 
