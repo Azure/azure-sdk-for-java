@@ -413,7 +413,6 @@ public final class PageBlobClient extends BlobClientBase {
     public Response<PageBlobItem> uploadPagesWithResponse(PageRange pageRange, InputStream body, byte[] contentMd5,
         PageBlobRequestConditions pageBlobRequestConditions, Duration timeout, Context context) {
         Objects.requireNonNull(body, "'body' cannot be null.");
-        final long length = pageRange.getEnd() - pageRange.getStart() + 1;
         BinaryData bData = BinaryData.fromStream(body);
 
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.uploadPagesWithResponse(pageRange, bData,
