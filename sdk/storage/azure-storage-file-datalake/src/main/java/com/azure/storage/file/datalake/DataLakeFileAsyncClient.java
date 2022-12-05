@@ -1171,8 +1171,9 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         PathHttpHeaders headers = new PathHttpHeaders().setTransactionalContentHash(appendOptions.getContentMd5());
         context = context == null ? Context.NONE : context;
 
-        return this.dataLakeStorage.getPaths().appendDataWithResponseAsync(
-            data, fileOffset, null, length, null, null, appendOptions.isFlush(), headers, leaseAccessConditions, getCpkInfo(), context)
+        return this.dataLakeStorage.getPaths().appendDataNoCustomHeadersWithResponseAsync(data, fileOffset, null,
+                length, null, null, null, null, null, appendOptions.isFlush(), headers, leaseAccessConditions,
+                getCpkInfo(), context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -1298,7 +1299,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         context = context == null ? Context.NONE : context;
 
         return this.dataLakeStorage.getPaths().flushDataWithResponseAsync(null, position, retainUncommittedData, close,
-            (long) 0, null, httpHeaders, lac, mac, getCpkInfo(),
+            (long) 0, null, null, null, null, httpHeaders, lac, mac, getCpkInfo(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified(),
