@@ -59,6 +59,86 @@ public class ClientRetryPolicyTest {
     }
 
     @Test(groups = "unit")
+    public void shouldRetryOnGatewayTimeout() throws Exception {
+        ThrottlingRetryOptions throttlingRetryOptions = new ThrottlingRetryOptions();
+        GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
+        Mockito.doReturn(new URI("http://localhost")).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(true));
+        ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(mockDiagnosticsClientContext(), endpointManager, true, throttlingRetryOptions, null);
+
+        Exception exception = ReadTimeoutException.INSTANCE;
+        CosmosException cosmosException = BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.REQUEST_TIMEOUT, exception);
+        BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
+
+        RxDocumentServiceRequest dsr;
+        Mono<ShouldRetryResult> shouldRetry;
+
+        //Data Plane Read
+        dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
+            OperationType.Read, "/dbs/db/colls/col/docs/doc", ResourceType.Document);
+
+        clientRetryPolicy.onBeforeSendRequest(dsr);
+        shouldRetry = clientRetryPolicy.shouldRetry(cosmosException);
+
+        validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+            .nullException()
+            .shouldRetry(true)
+            .build());
+
+        //Data Plane Write
+        dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
+            OperationType.Create, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
+
+        clientRetryPolicy.onBeforeSendRequest(dsr);
+
+        shouldRetry = clientRetryPolicy.shouldRetry(cosmosException);
+
+        validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+            .nullException()
+            .shouldRetry(true)
+            .build());
+
+        //Metadata Read
+        dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
+            OperationType.Read, "/dbs/db/colls/col/docs/doc", ResourceType.Database);
+
+        clientRetryPolicy.onBeforeSendRequest(dsr);
+
+        shouldRetry = clientRetryPolicy.shouldRetry(cosmosException);
+
+        validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+            .nullException()
+            .shouldRetry(true)
+            .build());
+
+        //Query Plan
+        dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
+            OperationType.QueryPlan, "/dbs/db/colls/col/docs/doc", ResourceType.Document);
+
+        clientRetryPolicy.onBeforeSendRequest(dsr);
+
+        shouldRetry = clientRetryPolicy.shouldRetry(cosmosException);
+
+        validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+            .nullException()
+            .shouldRetry(true)
+            .build());
+
+        //Metadata Write - Should not Retry
+        dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
+            OperationType.Create, "/dbs/db/colls/col/docs/docId", ResourceType.Database);
+
+        clientRetryPolicy.onBeforeSendRequest(dsr);
+
+        shouldRetry = clientRetryPolicy.shouldRetry(cosmosException);
+
+        validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+            .nullException()
+            .shouldRetry(false)
+            .build());
+    }
+
+    @Test(groups = "unit")
     public void tcpNetworkFailureOnRead() throws Exception {
         ThrottlingRetryOptions retryOptions = new ThrottlingRetryOptions();
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);

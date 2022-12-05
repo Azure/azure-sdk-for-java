@@ -125,6 +125,14 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             } else if (clientException != null &&
                 WebExceptionUtility.isReadTimeoutException(clientException) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT)) {
+
+                boolean canFailoverOnTimeout = gatewayRequestCanFailoverOnTimeout(request);
+
+                //if operation is data plane, metadata read, or query plan it can be retied on a different endpoint.
+                if(canFailoverOnTimeout) {
+                    return shouldRetryOnEndpointFailureAsync(this.isReadRequest, true, true);
+                }
+
                 // if operationType is QueryPlan / AddressRefresh then just retry
                 if (this.request.getOperationType() == OperationType.QueryPlan || this.request.isAddressRefresh()) {
                     return shouldRetryQueryPlanAndAddress();
@@ -150,6 +158,30 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         }
 
         return this.throttlingRetry.shouldRetry(e);
+    }
+    private boolean gatewayRequestCanFailoverOnTimeout(RxDocumentServiceRequest request) {
+        //Query Plan requests
+        if(request.getResourceType() == ResourceType.Document
+            && request.getOperationType() == OperationType.QueryPlan) {
+            return true;
+        }
+
+        //Meta data request check
+        boolean isMetaDataRequest = (request.getOperationType() != OperationType.ExecuteJavaScript
+            && request.getResourceType() == ResourceType.StoredProcedure)
+            || request.getResourceType() != ResourceType.Document;
+
+        //Data Plane Read & Write
+        if(!isMetaDataRequest) {
+            return true;
+        }
+
+        //Meta Data Read
+        if(isMetaDataRequest && request.isReadOnly()) {
+            return true;
+        }
+
+        return false;
     }
 
     private Mono<ShouldRetryResult> shouldRetryQueryPlanAndAddress() {
