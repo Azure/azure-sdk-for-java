@@ -156,6 +156,16 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         return this.databaseName;
     }
 
+    public void setNameAndCreateDatabase(String dbName) {
+        this.databaseName = dbName;
+
+        createDatabaseIfNotExists()
+            .publishOn(Schedulers.parallel())
+            .onErrorResume(throwable ->
+                CosmosExceptionUtils.exceptionHandler("Failed to create database", throwable,
+                    this.responseDiagnosticsProcessor));
+    }
+
     /**
      * Sets the application context
      *

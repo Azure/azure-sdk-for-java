@@ -75,14 +75,9 @@ public class MultiTenantDBCosmosTemplate extends CosmosTemplate {
         super.databaseName = cosmosFactory.getDatabaseName();
     }
 
-    public void setDatabaseName(String dbName) {
-        super.databaseName = dbName;
-
-        final Mono<CosmosDatabaseResponse> response = createDatabaseIfNotExists()
-            .publishOn(Schedulers.parallel())
-            .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to create database", throwable,
-                    this.responseDiagnosticsProcessor));
+    @Override
+    public void setNameAndCreateDatabase(String dbName) {
+        super.setNameAndCreateDatabase(dbName);
     }
 
     public String getDatabaseName() {

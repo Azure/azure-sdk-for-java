@@ -66,13 +66,13 @@ public class MultiTenantDBCosmosTemplateUnitTest {
 
             CosmosEntityInformation<Person, String> personInfo = new CosmosEntityInformation<>(Person.class);
 
-            cosmosTemplate.setDatabaseName(testDB1);
+            cosmosTemplate.setNameAndCreateDatabase(testDB1);
             cosmosTemplate.createContainerIfNotExists(personInfo);
             cosmosTemplate.deleteAll(personInfo.getContainerName(), Person.class);
             assertThat(cosmosTemplate.getDatabaseName()).isEqualTo(testDB1);
             cosmosTemplate.insert(TEST_PERSON_1, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_1)));
 
-            cosmosTemplate.setDatabaseName(testDB2);
+            cosmosTemplate.setNameAndCreateDatabase(testDB2);
             cosmosTemplate.createContainerIfNotExists(personInfo);
             cosmosTemplate.deleteAll(personInfo.getContainerName(), Person.class);
             assertThat(cosmosTemplate.getDatabaseName()).isEqualTo(testDB2);
