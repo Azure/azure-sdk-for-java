@@ -1,3 +1,30 @@
+- [Azure identity JDBC PostgreSQL plugin library for Java](#azure-identity-jdbc-postgresql-plugin-library-for-java)
+  - [Getting started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Include the package](#include-the-package)
+      - [Include direct dependency](#include-direct-dependency)
+    - [Prepare the Azure Database for PostgreSQL](#prepare-the-azure-database-for-postgresql)
+      - [Prepare the working environment](#prepare-the-working-environment)
+      - [Create an Azure Database for PostgreSQL server](#create-an-azure-database-for-postgresql-server)
+      - [Configure a firewall rule for your PostgreSQL server](#configure-a-firewall-rule-for-your-postgresql-server)
+      - [Enable Azure AD-based authentication](#enable-azure-ad-based-authentication)
+  - [Key concepts](#key-concepts)
+    - [Azure AD authentication with PostgreSQL](#azure-ad-authentication-with-postgresql)
+    - [Architecture](#architecture)
+    - [Token as password](#token-as-password)
+  - [Examples](#examples)
+    - [Authenticating with DefaultAzureCredential](#authenticating-with-defaultazurecredential)
+    - [Connect using managed identity](#connect-using-managed-identity)
+    - [Connect using service principal](#connect-using-service-principal)
+    - [Cloud Configuration](#cloud-configuration)
+    - [Customize Credential](#customize-credential)
+      - [Customize CredentialProvider](#customize-credentialprovider)
+      - [Configure CredentialProvider](#configure-credentialprovider)
+  - [JDBC Parameters](#jdbc-parameters)
+  - [Troubleshooting](#troubleshooting)
+  - [Next steps](#next-steps)
+  - [Contributing](#contributing)
+
 # Azure identity JDBC PostgreSQL plugin library for Java
 
 This package contains the jdbc authentication plugin to authenticate with Azure Active Directory (Azure AD) for Azure hosted PostgreSQL services.
@@ -268,7 +295,7 @@ the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/C
 
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
-[postgresql_source]: https://github.com/Azure/azure-sdk-for-java/blob/1c01c245289ba57d5807ad2f10bf628cf31fa010/sdk/jdbc/azure-identity-extensions
+[postgresql_source]: https://github.com/Azure/azure-sdk-for-java/tree/release/jdbc/1.0.0/sdk/jdbc/azure-identity-extensions
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [postgresql_product_docs]: https://docs.microsoft.com/azure/postgresql/single-server/overview
 [quick_start_postgresql]: https://aka.ms/passwordless/quickstart/postgresql
