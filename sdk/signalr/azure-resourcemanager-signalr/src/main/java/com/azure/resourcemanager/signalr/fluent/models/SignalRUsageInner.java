@@ -24,8 +24,7 @@ public final class SignalRUsageInner {
     private Long currentValue;
 
     /*
-     * The maximum permitted value for the usage quota. If there is no limit,
-     * this value will be -1.
+     * The maximum permitted value for the usage quota. If there is no limit, this value will be -1.
      */
     @JsonProperty(value = "limit")
     private Long limit;
@@ -37,11 +36,15 @@ public final class SignalRUsageInner {
     private SignalRUsageName name;
 
     /*
-     * Representing the units of the usage quota. Possible values are: Count,
-     * Bytes, Seconds, Percent, CountPerSecond, BytesPerSecond.
+     * Representing the units of the usage quota. Possible values are: Count, Bytes, Seconds, Percent, CountPerSecond,
+     * BytesPerSecond.
      */
     @JsonProperty(value = "unit")
     private String unit;
+
+    /** Creates an instance of SignalRUsageInner class. */
+    public SignalRUsageInner() {
+    }
 
     /**
      * Get the id property: Fully qualified ARM resource id.

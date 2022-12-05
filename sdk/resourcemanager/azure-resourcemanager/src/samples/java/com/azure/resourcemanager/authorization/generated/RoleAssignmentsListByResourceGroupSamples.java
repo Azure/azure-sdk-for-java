@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for RoleAssignments ListByResourceGroup. */
 public final class RoleAssignmentsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2015-07-01/examples/GetRoleAssignmentsForResourceGroup.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2022-04-01/examples/RoleAssignments_ListForResourceGroup.json
      */
     /**
      * Sample code: List role assignments for resource group.
@@ -23,6 +23,6 @@ public final class RoleAssignmentsListByResourceGroupSamples {
             .manager()
             .roleServiceClient()
             .getRoleAssignments()
-            .listByResourceGroup("rgname", null, Context.NONE);
+            .listByResourceGroup("testrg", null, null, Context.NONE);
     }
 }

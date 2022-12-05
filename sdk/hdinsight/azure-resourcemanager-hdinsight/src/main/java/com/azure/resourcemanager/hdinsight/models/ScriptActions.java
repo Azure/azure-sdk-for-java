@@ -16,11 +16,13 @@ public interface ScriptActions {
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param scriptName The name of the script.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
      */
-    void delete(String resourceGroupName, String clusterName, String scriptName);
+    Response<Void> deleteWithResponse(String resourceGroupName, String clusterName, String scriptName, Context context);
 
     /**
      * Deletes a specified persisted script action of the cluster.
@@ -28,13 +30,11 @@ public interface ScriptActions {
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param scriptName The name of the script.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String clusterName, String scriptName, Context context);
+    void delete(String resourceGroupName, String clusterName, String scriptName);
 
     /**
      * Lists all the persisted script actions for the specified cluster.
@@ -44,7 +44,7 @@ public interface ScriptActions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the persisted script action for the cluster.
+     * @return the persisted script action for the cluster as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RuntimeScriptActionDetail> listByCluster(String resourceGroupName, String clusterName);
 
@@ -57,10 +57,25 @@ public interface ScriptActions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the persisted script action for the cluster.
+     * @return the persisted script action for the cluster as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RuntimeScriptActionDetail> listByCluster(
         String resourceGroupName, String clusterName, Context context);
+
+    /**
+     * Gets the script execution detail for the given script execution ID.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param scriptExecutionId The script execution Id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the script execution detail for the given script execution ID along with {@link Response}.
+     */
+    Response<RuntimeScriptActionDetail> getExecutionDetailWithResponse(
+        String resourceGroupName, String clusterName, String scriptExecutionId, Context context);
 
     /**
      * Gets the script execution detail for the given script execution ID.
@@ -77,19 +92,19 @@ public interface ScriptActions {
         String resourceGroupName, String clusterName, String scriptExecutionId);
 
     /**
-     * Gets the script execution detail for the given script execution ID.
+     * Gets the async operation status of execution operation.
      *
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
-     * @param scriptExecutionId The script execution Id.
+     * @param operationId The long running operation id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the script execution detail for the given script execution ID.
+     * @return the async operation status of execution operation along with {@link Response}.
      */
-    Response<RuntimeScriptActionDetail> getExecutionDetailWithResponse(
-        String resourceGroupName, String clusterName, String scriptExecutionId, Context context);
+    Response<AsyncOperationResult> getExecutionAsyncOperationStatusWithResponse(
+        String resourceGroupName, String clusterName, String operationId, Context context);
 
     /**
      * Gets the async operation status of execution operation.
@@ -104,19 +119,4 @@ public interface ScriptActions {
      */
     AsyncOperationResult getExecutionAsyncOperationStatus(
         String resourceGroupName, String clusterName, String operationId);
-
-    /**
-     * Gets the async operation status of execution operation.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster.
-     * @param operationId The long running operation id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the async operation status of execution operation.
-     */
-    Response<AsyncOperationResult> getExecutionAsyncOperationStatusWithResponse(
-        String resourceGroupName, String clusterName, String operationId, Context context);
 }

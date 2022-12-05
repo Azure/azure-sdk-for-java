@@ -19,6 +19,10 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
     @JsonProperty(value = "properties")
     private VirtualMachineRunCommandProperties innerProperties;
 
+    /** Creates an instance of VirtualMachineRunCommandUpdate class. */
+    public VirtualMachineRunCommandUpdate() {
+    }
+
     /**
      * Get the innerProperties property: Describes the properties of a Virtual Machine run command.
      *

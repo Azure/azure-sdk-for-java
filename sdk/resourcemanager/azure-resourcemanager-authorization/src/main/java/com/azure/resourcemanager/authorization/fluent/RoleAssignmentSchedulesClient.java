@@ -47,19 +47,6 @@ public interface RoleAssignmentSchedulesClient {
      *
      * @param scope The scope of the role assignment schedule.
      * @param roleAssignmentScheduleName The name (guid) of the role assignment schedule to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role assignment schedule for a resource scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RoleAssignmentScheduleInner get(String scope, String roleAssignmentScheduleName);
-
-    /**
-     * Get the specified role assignment schedule for a resource scope.
-     *
-     * @param scope The scope of the role assignment schedule.
-     * @param roleAssignmentScheduleName The name (guid) of the role assignment schedule to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -69,6 +56,19 @@ public interface RoleAssignmentSchedulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RoleAssignmentScheduleInner> getWithResponse(
         String scope, String roleAssignmentScheduleName, Context context);
+
+    /**
+     * Get the specified role assignment schedule for a resource scope.
+     *
+     * @param scope The scope of the role assignment schedule.
+     * @param roleAssignmentScheduleName The name (guid) of the role assignment schedule to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified role assignment schedule for a resource scope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RoleAssignmentScheduleInner get(String scope, String roleAssignmentScheduleName);
 
     /**
      * Gets role assignment schedules for a resource scope.

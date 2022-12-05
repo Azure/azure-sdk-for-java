@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MountState. */
+/** Mount state. */
 public final class MountState extends ExpandableStringEnum<MountState> {
     /** Static value MountRequested for MountState. */
     public static final MountState MOUNT_REQUESTED = fromString("MountRequested");

@@ -28,6 +28,10 @@ public final class IoTSecurityDeviceRecommendation {
     @JsonProperty(value = "devicesCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long devicesCount;
 
+    /** Creates an instance of IoTSecurityDeviceRecommendation class. */
+    public IoTSecurityDeviceRecommendation() {
+    }
+
     /**
      * Get the recommendationDisplayName property: Display name of the recommendation.
      *

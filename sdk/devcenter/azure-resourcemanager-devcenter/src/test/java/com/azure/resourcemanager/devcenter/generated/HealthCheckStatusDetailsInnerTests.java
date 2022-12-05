@@ -14,7 +14,7 @@ public final class HealthCheckStatusDetailsInnerTests {
         HealthCheckStatusDetailsInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"startDateTime\":\"2021-06-21T18:07:23Z\",\"endDateTime\":\"2021-10-07T20:30:06Z\",\"healthChecks\":[{\"status\":\"Unknown\",\"displayName\":\"qxvcxgfrpdsofb\",\"startDateTime\":\"2021-11-10T10:23:55Z\",\"endDateTime\":\"2021-05-16T02:04:45Z\",\"errorType\":\"buswdvzyy\",\"recommendedAction\":\"cnunvjsr\",\"additionalDetails\":\"f\"},{\"status\":\"Passed\",\"displayName\":\"pqgik\",\"startDateTime\":\"2021-06-06T07:15:31Z\",\"endDateTime\":\"2021-09-23T00:06:59Z\",\"errorType\":\"dyuxzej\",\"recommendedAction\":\"psew\",\"additionalDetails\":\"oi\"}]},\"id\":\"ukry\",\"name\":\"xtqmieoxor\",\"type\":\"gufhyaomtbg\"}")
+                    "{\"properties\":{\"startDateTime\":\"2021-01-15T20:49Z\",\"endDateTime\":\"2021-04-16T00:49:55Z\",\"healthChecks\":[{\"status\":\"Passed\",\"displayName\":\"ujitcjedftww\",\"startDateTime\":\"2021-04-17T00:18:26Z\",\"endDateTime\":\"2021-01-22T13:54:08Z\",\"errorType\":\"v\",\"recommendedAction\":\"pzfoqoui\",\"additionalDetails\":\"bxarzgszufoxci\"},{\"status\":\"Passed\",\"displayName\":\"doamciodhkha\",\"startDateTime\":\"2021-06-05T04:56:19Z\",\"endDateTime\":\"2021-11-22T06:47:21Z\",\"errorType\":\"bon\",\"recommendedAction\":\"ntoe\",\"additionalDetails\":\"kdwbwhkszz\"}]},\"id\":\"rvexztvb\",\"name\":\"qgsfraoyzkoow\",\"type\":\"lmnguxaw\"}")
                 .toObject(HealthCheckStatusDetailsInner.class);
     }
 

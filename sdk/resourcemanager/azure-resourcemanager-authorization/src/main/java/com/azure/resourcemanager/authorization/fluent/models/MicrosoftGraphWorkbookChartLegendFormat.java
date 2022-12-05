@@ -32,6 +32,10 @@ public final class MicrosoftGraphWorkbookChartLegendFormat extends MicrosoftGrap
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWorkbookChartLegendFormat class. */
+    public MicrosoftGraphWorkbookChartLegendFormat() {
+    }
+
     /**
      * Get the fill property: workbookChartFill.
      *

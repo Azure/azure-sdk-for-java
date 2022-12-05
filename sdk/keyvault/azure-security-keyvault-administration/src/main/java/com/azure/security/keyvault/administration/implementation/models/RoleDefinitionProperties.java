@@ -41,6 +41,9 @@ public final class RoleDefinitionProperties {
     @JsonProperty(value = "assignableScopes")
     private List<RoleScope> assignableScopes;
 
+    /** Creates an instance of RoleDefinitionProperties class. */
+    public RoleDefinitionProperties() {}
+
     /**
      * Get the roleName property: The role name.
      *

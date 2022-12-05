@@ -619,7 +619,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                     : 0;
             }
 
-            LOGGER.atInfo()
+            LOGGER.atVerbose()
                 .addKeyValue("prefetch", getPrefetch())
                 .addKeyValue(NUMBER_OF_REQUESTED_MESSAGES_KEY, r)
                 .addKeyValue("linkCredits", linkCredits)

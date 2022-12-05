@@ -14,6 +14,10 @@ import java.time.Duration;
 @JsonTypeName("AmqpC2DRejectedMessagesNotInAllowedRange")
 @Fluent
 public final class AmqpC2DRejectedMessagesNotInAllowedRange extends TimeWindowCustomAlertRule {
+    /** Creates an instance of AmqpC2DRejectedMessagesNotInAllowedRange class. */
+    public AmqpC2DRejectedMessagesNotInAllowedRange() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public AmqpC2DRejectedMessagesNotInAllowedRange withTimeWindowSize(Duration timeWindowSize) {

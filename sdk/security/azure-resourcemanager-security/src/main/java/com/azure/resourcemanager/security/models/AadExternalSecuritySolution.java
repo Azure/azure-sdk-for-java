@@ -21,6 +21,10 @@ public final class AadExternalSecuritySolution extends ExternalSecuritySolutionI
     @JsonProperty(value = "properties")
     private AadSolutionProperties properties;
 
+    /** Creates an instance of AadExternalSecuritySolution class. */
+    public AadExternalSecuritySolution() {
+    }
+
     /**
      * Get the properties property: The external security solution properties for AAD solutions.
      *

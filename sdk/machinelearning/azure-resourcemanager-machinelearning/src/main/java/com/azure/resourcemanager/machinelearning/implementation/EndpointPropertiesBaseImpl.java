@@ -9,6 +9,7 @@ import com.azure.resourcemanager.machinelearning.fluent.models.EndpointPropertie
 import com.azure.resourcemanager.machinelearning.models.EndpointAuthKeys;
 import com.azure.resourcemanager.machinelearning.models.EndpointAuthMode;
 import com.azure.resourcemanager.machinelearning.models.EndpointPropertiesBase;
+import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 
@@ -50,11 +51,11 @@ public final class EndpointPropertiesBaseImpl implements EndpointPropertiesBase 
         }
     }
 
-    public String scoringUri() {
+    public URL scoringUri() {
         return this.innerModel().scoringUri();
     }
 
-    public String swaggerUri() {
+    public URL swaggerUri() {
         return this.innerModel().swaggerUri();
     }
 

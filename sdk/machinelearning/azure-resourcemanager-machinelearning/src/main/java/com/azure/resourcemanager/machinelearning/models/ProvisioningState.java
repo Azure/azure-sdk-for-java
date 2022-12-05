@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProvisioningState. */
+/**
+ * The current deployment state of workspace resource. The provisioningState is to indicate states for resource
+ * provisioning.
+ */
 public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
     /** Static value Unknown for ProvisioningState. */
     public static final ProvisioningState UNKNOWN = fromString("Unknown");

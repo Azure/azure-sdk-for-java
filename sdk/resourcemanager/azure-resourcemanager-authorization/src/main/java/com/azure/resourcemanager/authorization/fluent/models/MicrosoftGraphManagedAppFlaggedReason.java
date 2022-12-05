@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphManagedAppFlaggedReason. */
+/** managedAppFlaggedReason. */
 public final class MicrosoftGraphManagedAppFlaggedReason
     extends ExpandableStringEnum<MicrosoftGraphManagedAppFlaggedReason> {
     /** Static value none for MicrosoftGraphManagedAppFlaggedReason. */
@@ -28,7 +28,11 @@ public final class MicrosoftGraphManagedAppFlaggedReason
         return fromString(name, MicrosoftGraphManagedAppFlaggedReason.class);
     }
 
-    /** @return known MicrosoftGraphManagedAppFlaggedReason values. */
+    /**
+     * Gets known MicrosoftGraphManagedAppFlaggedReason values.
+     *
+     * @return known MicrosoftGraphManagedAppFlaggedReason values.
+     */
     public static Collection<MicrosoftGraphManagedAppFlaggedReason> values() {
         return values(MicrosoftGraphManagedAppFlaggedReason.class);
     }

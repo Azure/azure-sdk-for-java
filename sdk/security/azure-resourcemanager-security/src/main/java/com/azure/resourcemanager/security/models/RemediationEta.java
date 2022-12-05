@@ -24,6 +24,10 @@ public final class RemediationEta {
     @JsonProperty(value = "justification", required = true)
     private String justification;
 
+    /** Creates an instance of RemediationEta class. */
+    public RemediationEta() {
+    }
+
     /**
      * Get the eta property: ETA for remediation.
      *

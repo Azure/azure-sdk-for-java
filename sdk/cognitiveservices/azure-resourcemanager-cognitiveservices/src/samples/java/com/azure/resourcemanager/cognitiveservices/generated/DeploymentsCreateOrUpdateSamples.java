@@ -12,7 +12,7 @@ import com.azure.resourcemanager.cognitiveservices.models.DeploymentScaleType;
 /** Samples for Deployments CreateOrUpdate. */
 public final class DeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/PutDeployment.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/PutDeployment.json
      */
     /**
      * Sample code: PutDeployment.

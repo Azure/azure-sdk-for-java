@@ -48,19 +48,6 @@ public interface RoleManagementPoliciesClient extends InnerSupportsDelete<Void> 
      *
      * @param scope The scope of the role management policy.
      * @param roleManagementPolicyName The name (guid) of the role management policy to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role management policy for a resource scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RoleManagementPolicyInner get(String scope, String roleManagementPolicyName);
-
-    /**
-     * Get the specified role management policy for a resource scope.
-     *
-     * @param scope The scope of the role management policy.
-     * @param roleManagementPolicyName The name (guid) of the role management policy to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -69,6 +56,19 @@ public interface RoleManagementPoliciesClient extends InnerSupportsDelete<Void> 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RoleManagementPolicyInner> getWithResponse(String scope, String roleManagementPolicyName, Context context);
+
+    /**
+     * Get the specified role management policy for a resource scope.
+     *
+     * @param scope The scope of the role management policy.
+     * @param roleManagementPolicyName The name (guid) of the role management policy to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified role management policy for a resource scope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RoleManagementPolicyInner get(String scope, String roleManagementPolicyName);
 
     /**
      * Update a role management policy.
@@ -106,21 +106,6 @@ public interface RoleManagementPoliciesClient extends InnerSupportsDelete<Void> 
      * @param scope The scope of the role management policy to upsert.
      * @param roleManagementPolicyName The name (guid) of the role management policy to upsert.
      * @param parameters Parameters for the role management policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return role management policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RoleManagementPolicyInner update(
-        String scope, String roleManagementPolicyName, RoleManagementPolicyInner parameters);
-
-    /**
-     * Update a role management policy.
-     *
-     * @param scope The scope of the role management policy to upsert.
-     * @param roleManagementPolicyName The name (guid) of the role management policy to upsert.
-     * @param parameters Parameters for the role management policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -130,6 +115,21 @@ public interface RoleManagementPoliciesClient extends InnerSupportsDelete<Void> 
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RoleManagementPolicyInner> updateWithResponse(
         String scope, String roleManagementPolicyName, RoleManagementPolicyInner parameters, Context context);
+
+    /**
+     * Update a role management policy.
+     *
+     * @param scope The scope of the role management policy to upsert.
+     * @param roleManagementPolicyName The name (guid) of the role management policy to upsert.
+     * @param parameters Parameters for the role management policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role management policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RoleManagementPolicyInner update(
+        String scope, String roleManagementPolicyName, RoleManagementPolicyInner parameters);
 
     /**
      * Delete a role management policy.
@@ -162,18 +162,6 @@ public interface RoleManagementPoliciesClient extends InnerSupportsDelete<Void> 
      *
      * @param scope The scope of the role management policy to upsert.
      * @param roleManagementPolicyName The name (guid) of the role management policy to upsert.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String scope, String roleManagementPolicyName);
-
-    /**
-     * Delete a role management policy.
-     *
-     * @param scope The scope of the role management policy to upsert.
-     * @param roleManagementPolicyName The name (guid) of the role management policy to upsert.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -182,6 +170,18 @@ public interface RoleManagementPoliciesClient extends InnerSupportsDelete<Void> 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String scope, String roleManagementPolicyName, Context context);
+
+    /**
+     * Delete a role management policy.
+     *
+     * @param scope The scope of the role management policy to upsert.
+     * @param roleManagementPolicyName The name (guid) of the role management policy to upsert.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String scope, String roleManagementPolicyName);
 
     /**
      * Gets role management policies for a resource scope.

@@ -13,17 +13,6 @@ public interface GovernanceRulesOperations {
      * Get a specific governanceRule for the requested scope by ruleId.
      *
      * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific governanceRule for the requested scope by ruleId.
-     */
-    GovernanceRule get(String ruleId);
-
-    /**
-     * Get a specific governanceRule for the requested scope by ruleId.
-     *
-     * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -33,14 +22,15 @@ public interface GovernanceRulesOperations {
     Response<GovernanceRule> getWithResponse(String ruleId, Context context);
 
     /**
-     * Delete a GovernanceRule over a given scope.
+     * Get a specific governanceRule for the requested scope by ruleId.
      *
      * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific governanceRule for the requested scope by ruleId.
      */
-    void delete(String ruleId);
+    GovernanceRule get(String ruleId);
 
     /**
      * Delete a GovernanceRule over a given scope.
@@ -55,15 +45,14 @@ public interface GovernanceRulesOperations {
     Response<Void> deleteWithResponse(String ruleId, Context context);
 
     /**
-     * Execute a security GovernanceRule on the given subscription.
+     * Delete a GovernanceRule over a given scope.
      *
      * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
-     * @param executeGovernanceRuleParams GovernanceRule over a subscription scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void ruleIdExecuteSingleSubscription(String ruleId, ExecuteGovernanceRuleParams executeGovernanceRuleParams);
+    void delete(String ruleId);
 
     /**
      * Execute a security GovernanceRule on the given subscription.
@@ -87,24 +76,6 @@ public interface GovernanceRulesOperations {
      */
     void ruleIdExecuteSingleSubscription(
         String ruleId, ExecuteGovernanceRuleParams executeGovernanceRuleParams, Context context);
-
-    /**
-     * Execute a security GovernanceRule on the given security connector.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param securityConnectorName The security connector name.
-     * @param ruleId The security GovernanceRule key - unique key for the standard GovernanceRule.
-     * @param executeGovernanceRuleParams GovernanceRule over a subscription scope.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void ruleIdExecuteSingleSecurityConnector(
-        String resourceGroupName,
-        String securityConnectorName,
-        String ruleId,
-        ExecuteGovernanceRuleParams executeGovernanceRuleParams);
 
     /**
      * Execute a security GovernanceRule on the given security connector.

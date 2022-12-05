@@ -7,7 +7,7 @@ package com.azure.resourcemanager.cognitiveservices.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ResourceSkuRestrictionsType. */
+/** The type of restrictions. */
 public enum ResourceSkuRestrictionsType {
     /** Enum value Location. */
     LOCATION("Location"),
@@ -30,6 +30,9 @@ public enum ResourceSkuRestrictionsType {
      */
     @JsonCreator
     public static ResourceSkuRestrictionsType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ResourceSkuRestrictionsType[] items = ResourceSkuRestrictionsType.values();
         for (ResourceSkuRestrictionsType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum ResourceSkuRestrictionsType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

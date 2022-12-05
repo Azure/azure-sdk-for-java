@@ -27,6 +27,10 @@ public final class DefenderForDatabasesGcpOffering extends CloudOffering {
     private DefenderForDatabasesGcpOfferingDefenderForDatabasesArcAutoProvisioning
         defenderForDatabasesArcAutoProvisioning;
 
+    /** Creates an instance of DefenderForDatabasesGcpOffering class. */
+    public DefenderForDatabasesGcpOffering() {
+    }
+
     /**
      * Get the arcAutoProvisioning property: The ARC autoprovisioning configuration.
      *

@@ -16,8 +16,7 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphLinkedResource extends MicrosoftGraphEntity {
     /*
-     * Field indicating the app name of the source that is sending the
-     * linkedResource.
+     * Field indicating the app name of the source that is sending the linkedResource.
      */
     @JsonProperty(value = "applicationName")
     private String applicationName;
@@ -29,8 +28,7 @@ public final class MicrosoftGraphLinkedResource extends MicrosoftGraphEntity {
     private String displayName;
 
     /*
-     * Id of the object that is associated with this task on the
-     * third-party/partner system.
+     * Id of the object that is associated with this task on the third-party/partner system.
      */
     @JsonProperty(value = "externalId")
     private String externalId;
@@ -45,6 +43,10 @@ public final class MicrosoftGraphLinkedResource extends MicrosoftGraphEntity {
      * linkedResource
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphLinkedResource class. */
+    public MicrosoftGraphLinkedResource() {
+    }
 
     /**
      * Get the applicationName property: Field indicating the app name of the source that is sending the linkedResource.

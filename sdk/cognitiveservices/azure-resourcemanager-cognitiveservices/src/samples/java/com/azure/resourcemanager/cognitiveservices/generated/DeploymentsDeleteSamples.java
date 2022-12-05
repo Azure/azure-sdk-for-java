@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Deployments Delete. */
 public final class DeploymentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/DeleteDeployment.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/DeleteDeployment.json
      */
     /**
      * Sample code: DeleteDeployment.

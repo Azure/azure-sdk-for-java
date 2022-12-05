@@ -47,6 +47,10 @@ public final class IoTSecuritySolutionModelInner extends ProxyResource {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of IoTSecuritySolutionModelInner class. */
+    public IoTSecuritySolutionModelInner() {
+    }
+
     /**
      * Get the location property: The resource location.
      *

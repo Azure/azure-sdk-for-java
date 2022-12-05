@@ -15,18 +15,30 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.elastic.fluent.AllTrafficFiltersClient;
+import com.azure.resourcemanager.elastic.fluent.AssociateTrafficFiltersClient;
+import com.azure.resourcemanager.elastic.fluent.CreateAndAssociateIpFiltersClient;
+import com.azure.resourcemanager.elastic.fluent.CreateAndAssociatePLFiltersClient;
 import com.azure.resourcemanager.elastic.fluent.DeploymentInfoesClient;
+import com.azure.resourcemanager.elastic.fluent.DetachAndDeleteTrafficFiltersClient;
+import com.azure.resourcemanager.elastic.fluent.DetachTrafficFiltersClient;
+import com.azure.resourcemanager.elastic.fluent.ExternalUsersClient;
+import com.azure.resourcemanager.elastic.fluent.ListAssociatedTrafficFiltersClient;
 import com.azure.resourcemanager.elastic.fluent.MicrosoftElastic;
+import com.azure.resourcemanager.elastic.fluent.MonitorOperationsClient;
 import com.azure.resourcemanager.elastic.fluent.MonitoredResourcesClient;
 import com.azure.resourcemanager.elastic.fluent.MonitorsClient;
 import com.azure.resourcemanager.elastic.fluent.OperationsClient;
 import com.azure.resourcemanager.elastic.fluent.TagRulesClient;
+import com.azure.resourcemanager.elastic.fluent.TrafficFiltersClient;
+import com.azure.resourcemanager.elastic.fluent.UpgradableVersionsClient;
 import com.azure.resourcemanager.elastic.fluent.VMCollectionsClient;
 import com.azure.resourcemanager.elastic.fluent.VMHostsClient;
 import com.azure.resourcemanager.elastic.fluent.VMIngestionsClient;
@@ -36,15 +48,12 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the MicrosoftElasticImpl type. */
 @ServiceClient(builder = MicrosoftElasticBuilder.class)
 public final class MicrosoftElasticImpl implements MicrosoftElastic {
-    private final ClientLogger logger = new ClientLogger(MicrosoftElasticImpl.class);
-
     /** The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000). */
     private final String subscriptionId;
 
@@ -165,6 +174,18 @@ public final class MicrosoftElasticImpl implements MicrosoftElastic {
         return this.deploymentInfoes;
     }
 
+    /** The ExternalUsersClient object to access its operations. */
+    private final ExternalUsersClient externalUsers;
+
+    /**
+     * Gets the ExternalUsersClient object to access its operations.
+     *
+     * @return the ExternalUsersClient object.
+     */
+    public ExternalUsersClient getExternalUsers() {
+        return this.externalUsers;
+    }
+
     /** The TagRulesClient object to access its operations. */
     private final TagRulesClient tagRules;
 
@@ -213,6 +234,126 @@ public final class MicrosoftElasticImpl implements MicrosoftElastic {
         return this.vMCollections;
     }
 
+    /** The UpgradableVersionsClient object to access its operations. */
+    private final UpgradableVersionsClient upgradableVersions;
+
+    /**
+     * Gets the UpgradableVersionsClient object to access its operations.
+     *
+     * @return the UpgradableVersionsClient object.
+     */
+    public UpgradableVersionsClient getUpgradableVersions() {
+        return this.upgradableVersions;
+    }
+
+    /** The MonitorOperationsClient object to access its operations. */
+    private final MonitorOperationsClient monitorOperations;
+
+    /**
+     * Gets the MonitorOperationsClient object to access its operations.
+     *
+     * @return the MonitorOperationsClient object.
+     */
+    public MonitorOperationsClient getMonitorOperations() {
+        return this.monitorOperations;
+    }
+
+    /** The AllTrafficFiltersClient object to access its operations. */
+    private final AllTrafficFiltersClient allTrafficFilters;
+
+    /**
+     * Gets the AllTrafficFiltersClient object to access its operations.
+     *
+     * @return the AllTrafficFiltersClient object.
+     */
+    public AllTrafficFiltersClient getAllTrafficFilters() {
+        return this.allTrafficFilters;
+    }
+
+    /** The ListAssociatedTrafficFiltersClient object to access its operations. */
+    private final ListAssociatedTrafficFiltersClient listAssociatedTrafficFilters;
+
+    /**
+     * Gets the ListAssociatedTrafficFiltersClient object to access its operations.
+     *
+     * @return the ListAssociatedTrafficFiltersClient object.
+     */
+    public ListAssociatedTrafficFiltersClient getListAssociatedTrafficFilters() {
+        return this.listAssociatedTrafficFilters;
+    }
+
+    /** The CreateAndAssociateIpFiltersClient object to access its operations. */
+    private final CreateAndAssociateIpFiltersClient createAndAssociateIpFilters;
+
+    /**
+     * Gets the CreateAndAssociateIpFiltersClient object to access its operations.
+     *
+     * @return the CreateAndAssociateIpFiltersClient object.
+     */
+    public CreateAndAssociateIpFiltersClient getCreateAndAssociateIpFilters() {
+        return this.createAndAssociateIpFilters;
+    }
+
+    /** The CreateAndAssociatePLFiltersClient object to access its operations. */
+    private final CreateAndAssociatePLFiltersClient createAndAssociatePLFilters;
+
+    /**
+     * Gets the CreateAndAssociatePLFiltersClient object to access its operations.
+     *
+     * @return the CreateAndAssociatePLFiltersClient object.
+     */
+    public CreateAndAssociatePLFiltersClient getCreateAndAssociatePLFilters() {
+        return this.createAndAssociatePLFilters;
+    }
+
+    /** The AssociateTrafficFiltersClient object to access its operations. */
+    private final AssociateTrafficFiltersClient associateTrafficFilters;
+
+    /**
+     * Gets the AssociateTrafficFiltersClient object to access its operations.
+     *
+     * @return the AssociateTrafficFiltersClient object.
+     */
+    public AssociateTrafficFiltersClient getAssociateTrafficFilters() {
+        return this.associateTrafficFilters;
+    }
+
+    /** The DetachAndDeleteTrafficFiltersClient object to access its operations. */
+    private final DetachAndDeleteTrafficFiltersClient detachAndDeleteTrafficFilters;
+
+    /**
+     * Gets the DetachAndDeleteTrafficFiltersClient object to access its operations.
+     *
+     * @return the DetachAndDeleteTrafficFiltersClient object.
+     */
+    public DetachAndDeleteTrafficFiltersClient getDetachAndDeleteTrafficFilters() {
+        return this.detachAndDeleteTrafficFilters;
+    }
+
+    /** The DetachTrafficFiltersClient object to access its operations. */
+    private final DetachTrafficFiltersClient detachTrafficFilters;
+
+    /**
+     * Gets the DetachTrafficFiltersClient object to access its operations.
+     *
+     * @return the DetachTrafficFiltersClient object.
+     */
+    public DetachTrafficFiltersClient getDetachTrafficFilters() {
+        return this.detachTrafficFilters;
+    }
+
+    /** The TrafficFiltersClient object to access its operations. */
+    private final TrafficFiltersClient trafficFilters;
+
+    /**
+     * Gets the TrafficFiltersClient object to access its operations.
+     *
+     * @return the TrafficFiltersClient object.
+     */
+    public TrafficFiltersClient getTrafficFilters() {
+        return this.trafficFilters;
+    }
+
     /**
      * Initializes an instance of MicrosoftElastic client.
      *
@@ -236,15 +377,26 @@ public final class MicrosoftElasticImpl implements MicrosoftElastic {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-07-01";
+        this.apiVersion = "2022-07-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.monitors = new MonitorsClientImpl(this);
         this.monitoredResources = new MonitoredResourcesClientImpl(this);
         this.deploymentInfoes = new DeploymentInfoesClientImpl(this);
+        this.externalUsers = new ExternalUsersClientImpl(this);
         this.tagRules = new TagRulesClientImpl(this);
         this.vMHosts = new VMHostsClientImpl(this);
         this.vMIngestions = new VMIngestionsClientImpl(this);
         this.vMCollections = new VMCollectionsClientImpl(this);
+        this.upgradableVersions = new UpgradableVersionsClientImpl(this);
+        this.monitorOperations = new MonitorOperationsClientImpl(this);
+        this.allTrafficFilters = new AllTrafficFiltersClientImpl(this);
+        this.listAssociatedTrafficFilters = new ListAssociatedTrafficFiltersClientImpl(this);
+        this.createAndAssociateIpFilters = new CreateAndAssociateIpFiltersClientImpl(this);
+        this.createAndAssociatePLFilters = new CreateAndAssociatePLFiltersClientImpl(this);
+        this.associateTrafficFilters = new AssociateTrafficFiltersClientImpl(this);
+        this.detachAndDeleteTrafficFilters = new DetachAndDeleteTrafficFiltersClientImpl(this);
+        this.detachTrafficFilters = new DetachTrafficFiltersClientImpl(this);
+        this.trafficFilters = new TrafficFiltersClientImpl(this);
     }
 
     /**
@@ -263,10 +415,7 @@ public final class MicrosoftElasticImpl implements MicrosoftElastic {
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -330,7 +479,7 @@ public final class MicrosoftElasticImpl implements MicrosoftElastic {
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -389,4 +538,6 @@ public final class MicrosoftElasticImpl implements MicrosoftElastic {
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MicrosoftElasticImpl.class);
 }

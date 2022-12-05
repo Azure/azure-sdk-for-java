@@ -31,6 +31,10 @@ public final class PrivateEndpointConnectionInner extends AzureEntityResource {
     @JsonProperty(value = "location")
     private String location;
 
+    /** Creates an instance of PrivateEndpointConnectionInner class. */
+    public PrivateEndpointConnectionInner() {
+    }
+
     /**
      * Get the properties property: Resource properties.
      *

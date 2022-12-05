@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LoadBalancerType. */
+/** Load Balancer Type. */
 public final class LoadBalancerType extends ExpandableStringEnum<LoadBalancerType> {
     /** Static value PublicIp for LoadBalancerType. */
     public static final LoadBalancerType PUBLIC_IP = fromString("PublicIp");

@@ -40,18 +40,6 @@ public interface RegulatoryComplianceStandardsClient {
      * Supported regulatory compliance details state for selected standard.
      *
      * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return regulatory compliance standard details and state.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RegulatoryComplianceStandardInner get(String regulatoryComplianceStandardName);
-
-    /**
-     * Supported regulatory compliance details state for selected standard.
-     *
-     * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -61,4 +49,16 @@ public interface RegulatoryComplianceStandardsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RegulatoryComplianceStandardInner> getWithResponse(
         String regulatoryComplianceStandardName, Context context);
+
+    /**
+     * Supported regulatory compliance details state for selected standard.
+     *
+     * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return regulatory compliance standard details and state.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RegulatoryComplianceStandardInner get(String regulatoryComplianceStandardName);
 }

@@ -58,7 +58,7 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterSecuri")
-    private interface SecurityContactsService {
+    public interface SecurityContactsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityContacts")
         @ExpectedResponses({200})
@@ -356,20 +356,6 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
      * Get Default Security contact configurations for the subscription.
      *
      * @param securityContactName Name of the security contact object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return default Security contact configurations for the subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecurityContactInner get(String securityContactName) {
-        return getAsync(securityContactName).block();
-    }
-
-    /**
-     * Get Default Security contact configurations for the subscription.
-     *
-     * @param securityContactName Name of the security contact object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -379,6 +365,20 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityContactInner> getWithResponse(String securityContactName, Context context) {
         return getWithResponseAsync(securityContactName, context).block();
+    }
+
+    /**
+     * Get Default Security contact configurations for the subscription.
+     *
+     * @param securityContactName Name of the security contact object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return default Security contact configurations for the subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SecurityContactInner get(String securityContactName) {
+        return getWithResponse(securityContactName, Context.NONE).getValue();
     }
 
     /**
@@ -507,21 +507,6 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
      *
      * @param securityContactName Name of the security contact object.
      * @param securityContact Security contact object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details and configurations for notifications coming from Microsoft Defender for Cloud.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecurityContactInner create(String securityContactName, SecurityContactInner securityContact) {
-        return createAsync(securityContactName, securityContact).block();
-    }
-
-    /**
-     * Create security contact configurations for the subscription.
-     *
-     * @param securityContactName Name of the security contact object.
-     * @param securityContact Security contact object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -533,6 +518,21 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
     public Response<SecurityContactInner> createWithResponse(
         String securityContactName, SecurityContactInner securityContact, Context context) {
         return createWithResponseAsync(securityContactName, securityContact, context).block();
+    }
+
+    /**
+     * Create security contact configurations for the subscription.
+     *
+     * @param securityContactName Name of the security contact object.
+     * @param securityContact Security contact object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contact details and configurations for notifications coming from Microsoft Defender for Cloud.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SecurityContactInner create(String securityContactName, SecurityContactInner securityContact) {
+        return createWithResponse(securityContactName, securityContact, Context.NONE).getValue();
     }
 
     /**
@@ -637,19 +637,6 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
      * Delete security contact configurations for the subscription.
      *
      * @param securityContactName Name of the security contact object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String securityContactName) {
-        deleteAsync(securityContactName).block();
-    }
-
-    /**
-     * Delete security contact configurations for the subscription.
-     *
-     * @param securityContactName Name of the security contact object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -659,6 +646,19 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String securityContactName, Context context) {
         return deleteWithResponseAsync(securityContactName, context).block();
+    }
+
+    /**
+     * Delete security contact configurations for the subscription.
+     *
+     * @param securityContactName Name of the security contact object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String securityContactName) {
+        deleteWithResponse(securityContactName, Context.NONE);
     }
 
     /**

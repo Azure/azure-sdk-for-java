@@ -41,17 +41,6 @@ public final class SignalRPrivateEndpointConnectionsImpl implements SignalRPriva
         return Utils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
     }
 
-    public PrivateEndpointConnection get(
-        String privateEndpointConnectionName, String resourceGroupName, String resourceName) {
-        PrivateEndpointConnectionInner inner =
-            this.serviceClient().get(privateEndpointConnectionName, resourceGroupName, resourceName);
-        if (inner != null) {
-            return new PrivateEndpointConnectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PrivateEndpointConnection> getWithResponse(
         String privateEndpointConnectionName, String resourceGroupName, String resourceName, Context context) {
         Response<PrivateEndpointConnectionInner> inner =
@@ -69,13 +58,10 @@ public final class SignalRPrivateEndpointConnectionsImpl implements SignalRPriva
         }
     }
 
-    public PrivateEndpointConnection update(
-        String privateEndpointConnectionName,
-        String resourceGroupName,
-        String resourceName,
-        PrivateEndpointConnectionInner parameters) {
+    public PrivateEndpointConnection get(
+        String privateEndpointConnectionName, String resourceGroupName, String resourceName) {
         PrivateEndpointConnectionInner inner =
-            this.serviceClient().update(privateEndpointConnectionName, resourceGroupName, resourceName, parameters);
+            this.serviceClient().get(privateEndpointConnectionName, resourceGroupName, resourceName);
         if (inner != null) {
             return new PrivateEndpointConnectionImpl(inner, this.manager());
         } else {
@@ -100,6 +86,20 @@ public final class SignalRPrivateEndpointConnectionsImpl implements SignalRPriva
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PrivateEndpointConnectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PrivateEndpointConnection update(
+        String privateEndpointConnectionName,
+        String resourceGroupName,
+        String resourceName,
+        PrivateEndpointConnectionInner parameters) {
+        PrivateEndpointConnectionInner inner =
+            this.serviceClient().update(privateEndpointConnectionName, resourceGroupName, resourceName, parameters);
+        if (inner != null) {
+            return new PrivateEndpointConnectionImpl(inner, this.manager());
         } else {
             return null;
         }

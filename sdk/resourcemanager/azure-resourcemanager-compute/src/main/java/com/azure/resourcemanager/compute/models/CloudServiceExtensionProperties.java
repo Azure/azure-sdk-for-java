@@ -86,6 +86,10 @@ public final class CloudServiceExtensionProperties {
     @JsonProperty(value = "rolesAppliedTo")
     private List<String> rolesAppliedTo;
 
+    /** Creates an instance of CloudServiceExtensionProperties class. */
+    public CloudServiceExtensionProperties() {
+    }
+
     /**
      * Get the publisher property: The name of the extension handler publisher.
      *

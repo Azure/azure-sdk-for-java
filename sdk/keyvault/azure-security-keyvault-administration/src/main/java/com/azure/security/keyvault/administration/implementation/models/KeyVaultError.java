@@ -16,6 +16,9 @@ public final class KeyVaultError {
     @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private Error error;
 
+    /** Creates an instance of KeyVaultError class. */
+    public KeyVaultError() {}
+
     /**
      * Get the error property: The key vault server error.
      *
