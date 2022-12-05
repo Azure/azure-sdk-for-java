@@ -27,64 +27,69 @@ public class ClientTests {
             .addRole("webpubsub.joinLeaveGroup")
             .addRole("webpubsub.sendToGroup"))).subscribeOn(Schedulers.boundedElastic());
 
+        // client
         WebPubSubAsyncClient asyncClient = new WebPubSubClientBuilder()
             .credential(new WebPubSubClientCredential(accessToken
                 .map(WebPubSubClientAccessToken::getUrl)))
             .buildAsyncClient();
 
-        asyncClient.receiveGroupMessages().doOnNext(m -> {
-            System.out.println("data1: " + m.getData());
-        }).subscribe();
+        // group data messages
+        asyncClient.receiveGroupMessages().subscribe(message -> {
+            System.out.println("group: " + message.getGroup() + ", data: " + message.getData());
+        });
 
+        // start
         asyncClient.start().block();
 
-        long ackId = 0;
+        // join group1
+        printResult(asyncClient.joinGroup("group1"));
 
-        asyncClient.joinGroup("group1", ++ackId).block();
+        // send message to group1
+        printResult(asyncClient.sendMessageToGroup("group1",
+            BinaryData.fromString("abc"), WebPubSubDataType.TEXT));
 
-        WebPubSubResult result = asyncClient.sendMessageToGroup("group1",
-            BinaryData.fromString("abc"), WebPubSubDataType.TEXT,
-            ++ackId, false, false).block();
-        if (result != null) {
-            System.out.println("result: " + result.getAckId());
-        }
+        // join group1
+        printResult(asyncClient.joinGroup("group2"));
 
-        asyncClient.leaveGroup("group1", ++ackId).block();
+        // send message to group1
+        printResult(asyncClient.sendMessageToGroup("group1",
+            BinaryData.fromObject(Map.of("hello", "world")), WebPubSubDataType.JSON));
 
-        result = asyncClient.sendMessageToGroup("group1",
-            BinaryData.fromObject(Map.of("hello", "world")), WebPubSubDataType.JSON,
-            ++ackId, false, false).block();
-        if (result != null) {
-            System.out.println("result: " + result.getAckId());
-        }
+        // send message to group2
+        printResult(asyncClient.sendMessageToGroup("group2",
+            BinaryData.fromObject(Map.of("hello", "group2")), WebPubSubDataType.JSON));
 
-        result = asyncClient.sendMessageToGroup("group1",
-            BinaryData.fromString("binary"), WebPubSubDataType.BINARY,
-            ++ackId, false, false).block();
-        if (result != null) {
-            System.out.println("result: " + result.getAckId());
-        }
+        // leave group1
+        printResult(asyncClient.leaveGroup("group1"));
+
+        // send message to group2
+        printResult(asyncClient.sendMessageToGroup("group2",
+            BinaryData.fromString("binary"), WebPubSubDataType.BINARY));
 
         asyncClient.stop().block();
 
 
-        asyncClient.receiveGroupMessages().doOnNext(m -> {
-            System.out.println("data2: " + m.getData());
-        }).subscribe();
-
-        asyncClient.start().block();
-
-        asyncClient.joinGroup("group1", ++ackId).block();
-
-        result = asyncClient.sendMessageToGroup("group1",
-            BinaryData.fromString("dfg"), WebPubSubDataType.TEXT,
-            ++ackId, false, false).block();
-        if (result != null) {
-            System.out.println("result: " + result.getAckId());
-        }
-
-        asyncClient.stop().block();
+        // start for more data
+//        asyncClient.receiveGroupMessages().doOnNext(m -> {
+//            System.out.println("new data: " + m.getData());
+//        }).subscribe();
+//
+//        asyncClient.start().block();
+//
+//        asyncClient.joinGroup("group1").block();
+//
+//        result = asyncClient.sendMessageToGroup("group1",
+//            BinaryData.fromString("dfg"), WebPubSubDataType.TEXT).block();
+//        if (result != null) {
+//            System.out.println("result: " + result.getAckId());
+//        }
+//
+//        asyncClient.stop().block();
 
         Thread.sleep(5 * 1000);
+    }
+
+    private static void printResult(Mono<WebPubSubResult> result) {
+        System.out.println("ack: " + result.block().getAckId());
     }
 }

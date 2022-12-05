@@ -23,6 +23,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.concurrent.Queues;
 
 import java.net.URI;
 import java.util.Base64;
@@ -41,7 +42,9 @@ public class WebPubSubAsyncClient {
 
     private Session session;
 
-    private Sinks.Many<WebPubSubMessage> messageSink = Sinks.many().multicast().onBackpressureBuffer();
+    private Sinks.Many<GroupDataMessage> groupDataMessageSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
+
+    private Sinks.Many<AckMessage> ackMessageSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
     WebPubSubAsyncClient(Mono<String> clientAccessUriProvider) {
         this.clientAccessUriProvider = clientAccessUriProvider;
@@ -67,8 +70,11 @@ public class WebPubSubAsyncClient {
         return Mono.fromCallable(() -> {
             if (session != null && session.isOpen()) {
                 session.close(CloseReasons.NORMAL_CLOSURE.getCloseReason());
-                messageSink.tryEmitComplete();
-                messageSink = Sinks.many().multicast().onBackpressureBuffer();
+
+                groupDataMessageSink.tryEmitComplete();
+                groupDataMessageSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
+                ackMessageSink.tryEmitComplete();
+                ackMessageSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
             }
             return (Void) null;
         }).subscribeOn(Schedulers.boundedElastic());
@@ -79,10 +85,8 @@ public class WebPubSubAsyncClient {
     }
 
     public Mono<WebPubSubResult> joinGroup(String group, long ackId) {
-        return Mono.fromCallable(() -> {
-            session.getBasicRemote().sendObject(new JoinGroupMessage().setGroup(group).setAckId(ackId));
-            return new WebPubSubResult();
-        }).subscribeOn(Schedulers.boundedElastic()).then(waitForAckMessage(ackId));
+        return sendMessage(new JoinGroupMessage().setGroup(group).setAckId(ackId))
+            .then(waitForAckMessage(ackId));
     }
 
     public Mono<WebPubSubResult> leaveGroup(String group) {
@@ -90,10 +94,8 @@ public class WebPubSubAsyncClient {
     }
 
     public Mono<WebPubSubResult> leaveGroup(String group, long ackId) {
-        return Mono.fromCallable(() -> {
-            session.getBasicRemote().sendObject(new LeaveGroupMessage().setGroup(group).setAckId(ackId));
-            return new WebPubSubResult();
-        }).subscribeOn(Schedulers.boundedElastic()).then(waitForAckMessage(ackId));
+        return sendMessage(new LeaveGroupMessage().setGroup(group).setAckId(ackId))
+            .then(waitForAckMessage(ackId));
     }
 
     public Mono<WebPubSubResult> sendMessageToGroup(String group, BinaryData content, WebPubSubDataType dataType) {
@@ -103,31 +105,27 @@ public class WebPubSubAsyncClient {
     public Mono<WebPubSubResult> sendMessageToGroup(String group, BinaryData content, WebPubSubDataType dataType,
                                                     long ackId, boolean noEcho, boolean fireAndForget) {
 
-        Mono<WebPubSubResult> sendMono = Mono.fromCallable(() -> {
-            BinaryData data = content;
-            if (dataType == WebPubSubDataType.BINARY) {
-                data = BinaryData.fromBytes(Base64.getEncoder().encode(content.toBytes()));
-            }
-
-            session.getBasicRemote().sendObject(new SendToGroupMessage()
-                .setGroup(group)
-                .setData(data)
-                .setDataType(dataType.name().toLowerCase(Locale.ROOT))
-                .setAckId(ackId)
-                .setNoEcho(noEcho));
-            return (WebPubSubResult) null;
-        }).subscribeOn(Schedulers.boundedElastic());
-
-        if (!fireAndForget) {
-            sendMono = sendMono.then(waitForAckMessage(ackId));
-        } else {
-            sendMono = sendMono.then(Mono.just(new WebPubSubResult()));
+        BinaryData data = content;
+        if (dataType == WebPubSubDataType.BINARY) {
+            data = BinaryData.fromBytes(Base64.getEncoder().encode(content.toBytes()));
         }
-        return sendMono;
+
+        SendToGroupMessage message = new SendToGroupMessage()
+            .setGroup(group)
+            .setData(data)
+            .setDataType(dataType.name().toLowerCase(Locale.ROOT))
+            .setAckId(ackId)
+            .setNoEcho(noEcho);
+
+        Mono<Void> sendMessageMono = sendMessage(message);
+        Mono<WebPubSubResult> responseMono = fireAndForget
+            ? sendMessageMono.then(Mono.just(new WebPubSubResult()))
+            : sendMessageMono.then(waitForAckMessage(ackId));
+        return responseMono;
     }
 
     public Flux<GroupDataMessage> receiveGroupMessages() {
-        return messageSink.asFlux().filter(m -> m instanceof GroupDataMessage).cast(GroupDataMessage.class);
+        return groupDataMessageSink.asFlux();
     }
 
     private static final AtomicLong ACK_ID = new AtomicLong(0);
@@ -136,7 +134,19 @@ public class WebPubSubAsyncClient {
     }
 
     private Flux<AckMessage> receiveAckMessages() {
-        return messageSink.asFlux().filter(m -> m instanceof AckMessage).cast(AckMessage.class);
+        return ackMessageSink.asFlux();
+    }
+
+    private Mono<Void> sendMessage(WebPubSubMessage message) {
+        return Mono.create(sink -> {
+            session.getAsyncRemote().sendObject(message, sendResult -> {
+                if (sendResult.isOK()) {
+                    sink.success();
+                } else {
+                    sink.error(sendResult.getException());
+                }
+            });
+        });
     }
 
     private Mono<WebPubSubResult> waitForAckMessage(long ackId) {
@@ -158,7 +168,13 @@ public class WebPubSubAsyncClient {
 
                 @Override
                 public void onMessage(WebPubSubMessage webPubSubMessage) {
-                    messageSink.tryEmitNext(webPubSubMessage);
+                    if (webPubSubMessage instanceof GroupDataMessage) {
+                        groupDataMessageSink.tryEmitNext((GroupDataMessage) webPubSubMessage);
+                    } else if (webPubSubMessage instanceof AckMessage) {
+                        ackMessageSink.tryEmitNext((AckMessage) webPubSubMessage);
+                    } else {
+                        // TODO
+                    }
                 }
             });
         }

@@ -23,7 +23,7 @@ public class MessageDecoder extends CoderAdapter implements Decoder.Text<WebPubS
 
     @Override
     public WebPubSubMessage decode(String s) throws DecodeException {
-        System.out.println("decode webPubSubMessage: " + s);
+//        System.out.println("decode webPubSubMessage: " + s);
 
         WebPubSubMessage msg = new WebPubSubMessage();
         try (JsonParser parser = OBJECT_MAPPER.createParser(s)) {

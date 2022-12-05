@@ -21,7 +21,7 @@ public class MessageEncoder extends CoderAdapter implements Encoder.Text<WebPubS
     public String encode(WebPubSubMessage object) throws EncodeException {
         try {
             String msg = SERIALIZER_ADAPTER.serialize(object, SerializerEncoding.JSON);
-            System.out.println("encode msg: " + msg);
+//            System.out.println("encode msg: " + msg);
             return msg;
         } catch (IOException e) {
             throw new RuntimeException(e);

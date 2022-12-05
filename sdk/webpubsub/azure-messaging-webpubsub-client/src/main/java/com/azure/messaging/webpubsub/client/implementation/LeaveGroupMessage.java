@@ -7,7 +7,7 @@ import com.azure.messaging.webpubsub.client.WebPubSubMessage;
 
 public class LeaveGroupMessage extends WebPubSubMessage {
 
-    private String type = "joinGroup";
+    private String type = "leaveGroup";
     private String group;
     private Long ackId;
 
