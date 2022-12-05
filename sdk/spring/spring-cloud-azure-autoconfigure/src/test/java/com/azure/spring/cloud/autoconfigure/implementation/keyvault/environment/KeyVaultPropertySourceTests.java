@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.keyvault.environment;
+package com.azure.spring.cloud.autoconfigure.implementation.keyvault.environment;
 
 
 import org.junit.jupiter.api.AfterEach;
