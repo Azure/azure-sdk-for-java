@@ -16,18 +16,22 @@ stages:
       CloudConfig:
         Public:
           SubscriptionConfigurations:
-            - $(sub-config-azure-cloud-test-resources)
-            - $(sub-config-communication-services-cloud-test-resources-common)
-            - $(sub-config-communication-services-cloud-test-resources-java)
+              ${{ if if parameters.CloudConfig.Public.SubscriptionConfigurations }}:
+                ${{ parameters.CloudConfig.Public.SubscriptionConfigurations }}
+                - $(sub-config-azure-cloud-test-resources)
+                - $(sub-config-communication-services-cloud-test-resources-common)
+                - $(sub-config-communication-services-cloud-test-resources-java)
         Int:
           SubscriptionConfigurations:
-            - $(sub-config-communication-int-test-resources-common)
-            - $(sub-config-communication-int-test-resources-java)
+              ${{ if if parameters.CloudConfig.Int.SubscriptionConfigurations }}:
+                ${{ parameters.CloudConfig.Public.SubscriptionConfigurations }}
+                - $(sub-config-communication-int-test-resources-common)
+                - $(sub-config-communication-int-test-resources-java)
 
           # This only affects the phone-numbers package
-          MatrixReplace: 
+          MatrixReplace:
             - SKIP_UPDATE_CAPABILITIES_LIVE_TESTS=false/true
-            
+
       Clouds: ${{ parameters.Clouds }}
       TestMode: ${{ parameters.TestMode }}
       Artifacts:
@@ -50,6 +54,6 @@ stages:
         SKIP_LIVE_TEST: TRUE
         ${{ each var in parameters.EnVars }}:
           ${{ var.key }}: ${{ var.value }}
-      MatrixConfigs: 
+      MatrixConfigs:
         - ${{ each config in parameters.MatrixConfigs }}:
           -  ${{ config }}
