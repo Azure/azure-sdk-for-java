@@ -16,13 +16,13 @@ class PasswordlessHints implements RuntimeHintsRegistrar {
         BindableRuntimeHintsRegistrar.forTypes(AzurePasswordlessProperties.class)
                 .registerHints(hints);
         hints.reflection().registerTypeIfPresent(classLoader,
-                "com.azure.identity.providers.postgresql.AzureIdentityPostgresqlAuthenticationPlugin",
+                "com.azure.identity.extensions.jdbc.postgresql.AzurePostgresqlAuthenticationPlugin",
                 MemberCategory.DECLARED_CLASSES,
                 MemberCategory.DECLARED_FIELDS,
                 MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
                 MemberCategory.INVOKE_DECLARED_METHODS);
         hints.reflection().registerTypeIfPresent(classLoader,
-                "com.azure.identity.providers.mysql.AzureIdentityMysqlAuthenticationPlugin",
+                "com.azure.identity.extensions.jdbc.mysql.AzureMysqlAuthenticationPlugin",
                 MemberCategory.DECLARED_CLASSES,
                 MemberCategory.DECLARED_FIELDS,
                 MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
