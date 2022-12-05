@@ -1,4 +1,4 @@
-- [Azure identity authentication providers plugin library for Java](#azure-identity-authentication-providers-plugin-library-for-java)
+- [Azure identity authentication extensions plugin library for Java](#azure-identity-authentication-extensions-plugin-library-for-java)
   - [Getting started](#getting-started)
     - [Prerequisites](#prerequisites)
   - [Key concepts](#key-concepts)
@@ -7,9 +7,9 @@
   - [Next steps](#next-steps)
   - [Contributing](#contributing)
     
-# Azure identity authentication providers plugin library for Java
+# Azure identity authentication extensions plugin library for Java
 
-This package contains authentication providers to get a token from Azure Active Directory (Azure AD) for Azure services, like Azure Database for MySQL.
+This package contains authentication extensions to get a token from Azure Active Directory (Azure AD) for Azure services, like Azure Database for MySQL.
 
 ## Getting started
 
@@ -21,7 +21,7 @@ This package contains authentication providers to get a token from Azure Active 
 
 ## Key concepts
 
-Azure Identity Providers contains a common template framework for users to get a token from Azure AD and
+Azure Identity Extensions contains a common template framework for users to get a token from Azure AD and
 use the token as a password. For example, to connect Azure hosted MySQL, get a token from Azure AD and use the
 token as a password to connect with MySQL.
 
@@ -44,5 +44,5 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 <!-- LINKS -->
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
-[azure-identity-extensions-jdbc-mysql]: https://github.com/Azure/azure-sdk-for-java/blob/1c01c245289ba57d5807ad2f10bf628cf31fa010/sdk/jdbc/azure-identity-extensions/Azure-Database-for-MySQL-README.md
-[azure-identity-extensions-jdbc-postgresql]: https://github.com/Azure/azure-sdk-for-java/blob/1c01c245289ba57d5807ad2f10bf628cf31fa010/sdk/jdbc/azure-identity-extensions/Azure-Database-for-PostgreSQL-README.md
+[azure-identity-extensions-jdbc-mysql]: https://github.com/Azure/azure-sdk-for-java/tree/release/jdbc/1.0.0/sdk/jdbc/azure-identity-extensions/Azure-Database-for-MySQL-README.md
+[azure-identity-extensions-jdbc-postgresql]: https://github.com/Azure/azure-sdk-for-java/tree/release/jdbc/1.0.0/sdk/jdbc/azure-identity-extensions/Azure-Database-for-PostgreSQL-README.md

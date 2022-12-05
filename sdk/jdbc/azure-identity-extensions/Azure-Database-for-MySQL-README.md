@@ -294,7 +294,7 @@ the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/C
 
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
-[mysql_source]: https://github.com/Azure/azure-sdk-for-java/blob/1c01c245289ba57d5807ad2f10bf628cf31fa010/sdk/jdbc/azure-identity-extensions
+[mysql_source]: https://github.com/Azure/azure-sdk-for-java/tree/release/jdbc/1.0.0/sdk/jdbc/azure-identity-extensions
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [mysql_product_docs]: https://docs.microsoft.com/azure/mysql/single-server/overview
 [quick_start_mysql]: https://aka.ms/passwordless/quickstart/mysql
