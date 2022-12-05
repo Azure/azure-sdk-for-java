@@ -295,7 +295,7 @@ the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/C
 
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
-[postgresql_source]: https://github.com/Azure/azure-sdk-for-java/tree/release/jdbc/1.0.0/sdk/jdbc/azure-identity-extensions
+[postgresql_source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/jdbc/azure-identity-extensions
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [postgresql_product_docs]: https://docs.microsoft.com/azure/postgresql/single-server/overview
 [quick_start_postgresql]: https://aka.ms/passwordless/quickstart/postgresql
