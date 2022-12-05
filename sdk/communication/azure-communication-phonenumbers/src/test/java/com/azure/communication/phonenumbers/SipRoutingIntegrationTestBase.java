@@ -14,6 +14,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -110,9 +111,7 @@ public class SipRoutingIntegrationTestBase extends TestBase {
             .credential(new AzureKeyCredential(communicationAccessKey));
 
         if (shouldRecord()) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+            addRedactors(builder);
         }
 
         return builder;
@@ -125,9 +124,7 @@ public class SipRoutingIntegrationTestBase extends TestBase {
             .connectionString(CONNECTION_STRING);
 
         if (shouldRecord()) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+            addRedactors(builder);
         }
 
         return builder;
@@ -146,12 +143,18 @@ public class SipRoutingIntegrationTestBase extends TestBase {
         }
 
         if (shouldRecord()) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+            addRedactors(builder);
         }
 
         return builder;
+    }
+
+    private void addRedactors(SipRoutingClientBuilder builder) {
+        List<Function<String, String>> redactors = new ArrayList<>();
+        redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
+        Pattern pattern = Pattern.compile("(\\.[0-9a-f]{32})\\.", Pattern.CASE_INSENSITIVE);
+        redactors.add(data -> redact(data, pattern.matcher(data), ""));
+        builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
     }
 
     private boolean shouldRecord() {
@@ -200,6 +203,9 @@ public class SipRoutingIntegrationTestBase extends TestBase {
     }
 
     private static String getUniqueFqdn(String order) {
+        if (TestingHelpers.getTestMode() == TestMode.PLAYBACK) {
+            return order + ".com";
+        }
         String uniqueDomain = UUID.randomUUID().toString().replace("-", "");
         return order + "." + uniqueDomain + ".com";
     }
