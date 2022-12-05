@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.integration.tests;
 
-import com.azure.spring.cloud.autoconfigure.keyvault.environment.KeyVaultEnvironmentPostProcessor;
+import com.azure.spring.cloud.autoconfigure.implementation.keyvault.environment.KeyVaultEnvironmentPostProcessor;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import org.apache.commons.logging.Log;
 import org.springframework.boot.SpringApplication;
