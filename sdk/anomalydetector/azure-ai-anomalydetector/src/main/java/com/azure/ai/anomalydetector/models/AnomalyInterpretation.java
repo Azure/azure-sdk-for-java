@@ -7,7 +7,7 @@ package com.azure.ai.anomalydetector.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AnomalyInterpretation model. */
+/** Interpretation of the anomalous timestamp. */
 @Immutable
 public final class AnomalyInterpretation {
     /*
@@ -24,7 +24,7 @@ public final class AnomalyInterpretation {
     private Double contributionScore;
 
     /*
-     * The correlationChanges property.
+     * Correlation changes among the anomalous variables
      */
     @JsonProperty(value = "correlationChanges")
     private CorrelationChanges correlationChanges;
@@ -52,7 +52,7 @@ public final class AnomalyInterpretation {
     }
 
     /**
-     * Get the correlationChanges property: The correlationChanges property.
+     * Get the correlationChanges property: Correlation changes among the anomalous variables.
      *
      * @return the correlationChanges value.
      */

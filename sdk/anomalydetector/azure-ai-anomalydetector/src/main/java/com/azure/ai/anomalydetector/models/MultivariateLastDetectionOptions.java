@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The MultivariateLastDetectionOptions model. */
+/** Request of last detection. */
 @Immutable
 public final class MultivariateLastDetectionOptions {
     /*

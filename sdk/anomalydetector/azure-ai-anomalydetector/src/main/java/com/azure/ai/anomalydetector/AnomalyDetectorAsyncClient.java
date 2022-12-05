@@ -106,7 +106,7 @@ public final class AnomalyDetectorAsyncClient {
      * }
      * }</pre>
      *
-     * @param options The request of entire or last anomaly detection.
+     * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -164,7 +164,7 @@ public final class AnomalyDetectorAsyncClient {
      * }
      * }</pre>
      *
-     * @param options The request of entire or last anomaly detection.
+     * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -217,7 +217,7 @@ public final class AnomalyDetectorAsyncClient {
      * }
      * }</pre>
      *
-     * @param options The request of change point detection.
+     * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -295,7 +295,7 @@ public final class AnomalyDetectorAsyncClient {
      * }
      * }</pre>
      *
-     * @param resultId The resultId parameter.
+     * @param resultId ID of a batch detection result.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -425,7 +425,7 @@ public final class AnomalyDetectorAsyncClient {
      * }
      * }</pre>
      *
-     * @param modelInfo Training result of a model including its status, errors and diagnostics information.
+     * @param modelInfo Model information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -695,8 +695,7 @@ public final class AnomalyDetectorAsyncClient {
      * }</pre>
      *
      * @param modelId Model identifier.
-     * @param options Detection request for batch inference. This is an asynchronous inference which will need another
-     *     API to get detection results.
+     * @param options Request of multivariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -782,13 +781,13 @@ public final class AnomalyDetectorAsyncClient {
      * }</pre>
      *
      * @param modelId Model identifier.
-     * @param options The options parameter.
+     * @param options Request of last detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return results of last detection along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -804,7 +803,7 @@ public final class AnomalyDetectorAsyncClient {
      * method, points before and after a certain point are used to determine whether it is an anomaly. The entire
      * detection can give user an overall status of the time series.
      *
-     * @param options The request of entire or last anomaly detection.
+     * @param options Method of univariate anomaly detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -829,7 +828,7 @@ public final class AnomalyDetectorAsyncClient {
      * <p>This operation generates a model using the points that you sent into the API, and based on all data to
      * determine whether the last point is anomalous.
      *
-     * @param options The request of entire or last anomaly detection.
+     * @param options Method of univariate anomaly detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -853,7 +852,7 @@ public final class AnomalyDetectorAsyncClient {
      *
      * <p>Evaluate change point score of every series point.
      *
-     * @param options The request of change point detection.
+     * @param options Method of univariate anomaly detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -879,7 +878,7 @@ public final class AnomalyDetectorAsyncClient {
      * <p>For asynchronous inference, get multivariate anomaly detection result based on resultId returned by the
      * BatchDetectAnomaly api.
      *
-     * @param resultId The resultId parameter.
+     * @param resultId ID of a batch detection result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -907,7 +906,7 @@ public final class AnomalyDetectorAsyncClient {
      * and variable. Another type of input is an URI pointed to a CSV file in Azure blob storage, which contains all the
      * variables and a timestamp column.
      *
-     * @param modelInfo Training result of a model including its status, errors and diagnostics information.
+     * @param modelInfo Model information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1076,8 +1075,7 @@ public final class AnomalyDetectorAsyncClient {
      * storage.
      *
      * @param modelId Model identifier.
-     * @param options Detection request for batch inference. This is an asynchronous inference which will need another
-     *     API to get detection results.
+     * @param options Request of multivariate anomaly detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1105,14 +1103,14 @@ public final class AnomalyDetectorAsyncClient {
      * return the detection immediately in the response body.
      *
      * @param modelId Model identifier.
-     * @param options The options parameter.
+     * @param options Request of last detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return results of last detection on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)

@@ -25,7 +25,7 @@ public final class MultivariateBatchDetectionResultSummary {
     private List<ErrorResponse> errors;
 
     /*
-     * The variableStates property.
+     * Variable Status.
      */
     @JsonProperty(value = "variableStates")
     private List<VariableState> variableStates;
@@ -70,7 +70,7 @@ public final class MultivariateBatchDetectionResultSummary {
     }
 
     /**
-     * Get the variableStates property: The variableStates property.
+     * Get the variableStates property: Variable Status.
      *
      * @return the variableStates value.
      */

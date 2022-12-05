@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CorrelationChanges model. */
+/** Correlation changes among the anomalous variables. */
 @Immutable
 public final class CorrelationChanges {
     /*
