@@ -71,7 +71,7 @@ public final class ModelInfo {
     /*
      * Error messages when failed to create a model.
      */
-    @JsonProperty(value = "errors")
+    @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
     private List<ErrorResponse> errors;
 
     /*
@@ -241,17 +241,6 @@ public final class ModelInfo {
      */
     public List<ErrorResponse> getErrors() {
         return this.errors;
-    }
-
-    /**
-     * Set the errors property: Error messages when failed to create a model.
-     *
-     * @param errors the errors value to set.
-     * @return the ModelInfo object itself.
-     */
-    public ModelInfo setErrors(List<ErrorResponse> errors) {
-        this.errors = errors;
-        return this;
     }
 
     /**

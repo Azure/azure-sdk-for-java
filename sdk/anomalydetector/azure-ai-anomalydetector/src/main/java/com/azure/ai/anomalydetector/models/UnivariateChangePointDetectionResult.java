@@ -10,7 +10,7 @@ import java.util.List;
 
 /** The response of change point detection. */
 @Immutable
-public final class ChangePointDetectResponse {
+public final class UnivariateChangePointDetectionResult {
     /*
      * Frequency extracted from the series, zero means no recurrent pattern has been
      * found.
@@ -32,8 +32,8 @@ public final class ChangePointDetectResponse {
     @JsonProperty(value = "confidenceScores")
     private List<Double> confidenceScores;
 
-    /** Creates an instance of ChangePointDetectResponse class. */
-    private ChangePointDetectResponse() {}
+    /** Creates an instance of UnivariateChangePointDetectionResult class. */
+    private UnivariateChangePointDetectionResult() {}
 
     /**
      * Get the period property: Frequency extracted from the series, zero means no recurrent pattern has been found.

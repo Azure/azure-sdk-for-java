@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The response of last anomaly detection. */
 @Immutable
-public final class LastDetectResponse {
+public final class UnivariateLastDetectionResult {
     /*
      * Frequency extracted from the series, zero means no recurrent pattern has been
      * found.
@@ -77,7 +77,7 @@ public final class LastDetectResponse {
     private Double severity;
 
     /**
-     * Creates an instance of LastDetectResponse class.
+     * Creates an instance of UnivariateLastDetectionResult class.
      *
      * @param period the period value to set.
      * @param suggestedWindow the suggestedWindow value to set.
@@ -89,7 +89,7 @@ public final class LastDetectResponse {
      * @param isPositiveAnomaly the isPositiveAnomaly value to set.
      */
     @JsonCreator
-    private LastDetectResponse(
+    private UnivariateLastDetectionResult(
             @JsonProperty(value = "period", required = true) int period,
             @JsonProperty(value = "suggestedWindow", required = true) int suggestedWindow,
             @JsonProperty(value = "expectedValue", required = true) double expectedValue,

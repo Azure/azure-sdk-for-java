@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
 
 /** Response of getting a model. */
 @Immutable
-public final class Model {
+public final class AnomalyDetectionModel {
     /*
      * Model identifier.
      */
@@ -38,13 +38,13 @@ public final class Model {
     private ModelInfo modelInfo;
 
     /**
-     * Creates an instance of Model class.
+     * Creates an instance of AnomalyDetectionModel class.
      *
      * @param createdTime the createdTime value to set.
      * @param lastUpdatedTime the lastUpdatedTime value to set.
      */
     @JsonCreator
-    private Model(
+    private AnomalyDetectionModel(
             @JsonProperty(value = "createdTime", required = true) OffsetDateTime createdTime,
             @JsonProperty(value = "lastUpdatedTime", required = true) OffsetDateTime lastUpdatedTime) {
         this.createdTime = createdTime;

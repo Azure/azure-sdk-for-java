@@ -11,7 +11,7 @@ import java.util.List;
 
 /** The response of entire anomaly detection. */
 @Immutable
-public final class EntireDetectResponse {
+public final class UnivariateEntireDetectionResult {
     /*
      * Frequency extracted from the series, zero means no recurrent pattern has been
      * found.
@@ -81,7 +81,7 @@ public final class EntireDetectResponse {
     private List<Double> severity;
 
     /**
-     * Creates an instance of EntireDetectResponse class.
+     * Creates an instance of UnivariateEntireDetectionResult class.
      *
      * @param period the period value to set.
      * @param expectedValues the expectedValues value to set.
@@ -92,7 +92,7 @@ public final class EntireDetectResponse {
      * @param isPositiveAnomaly the isPositiveAnomaly value to set.
      */
     @JsonCreator
-    private EntireDetectResponse(
+    private UnivariateEntireDetectionResult(
             @JsonProperty(value = "period", required = true) int period,
             @JsonProperty(value = "expectedValues", required = true) List<Double> expectedValues,
             @JsonProperty(value = "upperMargins", required = true) List<Double> upperMargins,

@@ -11,7 +11,7 @@ import java.util.List;
 
 /** Detection results for the given resultId. */
 @Immutable
-public final class DetectionResult {
+public final class MultivariateDetectionResult {
     /*
      * Result identifier, which is used to fetch the results of an inference call.
      */
@@ -22,7 +22,7 @@ public final class DetectionResult {
      * Multivariate anomaly detection status.
      */
     @JsonProperty(value = "summary", required = true)
-    private DetectionResultSummary summary;
+    private MultivariateBatchDetectionResultSummary summary;
 
     /*
      * Detection result for each timestamp.
@@ -31,14 +31,14 @@ public final class DetectionResult {
     private List<AnomalyState> results;
 
     /**
-     * Creates an instance of DetectionResult class.
+     * Creates an instance of MultivariateDetectionResult class.
      *
      * @param summary the summary value to set.
      * @param results the results value to set.
      */
     @JsonCreator
-    private DetectionResult(
-            @JsonProperty(value = "summary", required = true) DetectionResultSummary summary,
+    private MultivariateDetectionResult(
+            @JsonProperty(value = "summary", required = true) MultivariateBatchDetectionResultSummary summary,
             @JsonProperty(value = "results", required = true) List<AnomalyState> results) {
         this.summary = summary;
         this.results = results;
@@ -58,7 +58,7 @@ public final class DetectionResult {
      *
      * @return the summary value.
      */
-    public DetectionResultSummary getSummary() {
+    public MultivariateBatchDetectionResultSummary getSummary() {
         return this.summary;
     }
 

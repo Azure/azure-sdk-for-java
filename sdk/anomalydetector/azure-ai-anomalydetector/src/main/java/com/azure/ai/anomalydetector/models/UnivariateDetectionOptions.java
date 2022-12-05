@@ -11,7 +11,7 @@ import java.util.List;
 
 /** The request of entire or last anomaly detection. */
 @Fluent
-public final class DetectRequest {
+public final class UnivariateDetectionOptions {
     /*
      * Time series data points. Points should be sorted by timestamp in ascending
      * order to match the anomaly detection result. If the data is not sorted
@@ -74,12 +74,12 @@ public final class DetectRequest {
     private Double imputeFixedValue;
 
     /**
-     * Creates an instance of DetectRequest class.
+     * Creates an instance of UnivariateDetectionOptions class.
      *
      * @param series the series value to set.
      */
     @JsonCreator
-    public DetectRequest(@JsonProperty(value = "series", required = true) List<TimeSeriesPoint> series) {
+    public UnivariateDetectionOptions(@JsonProperty(value = "series", required = true) List<TimeSeriesPoint> series) {
         this.series = series;
     }
 
@@ -111,9 +111,9 @@ public final class DetectRequest {
      * the timestamp property in time series point can be absent.
      *
      * @param granularity the granularity value to set.
-     * @return the DetectRequest object itself.
+     * @return the UnivariateDetectionOptions object itself.
      */
-    public DetectRequest setGranularity(TimeGranularity granularity) {
+    public UnivariateDetectionOptions setGranularity(TimeGranularity granularity) {
         this.granularity = granularity;
         return this;
     }
@@ -133,9 +133,9 @@ public final class DetectRequest {
      * series is 5 minutes, request can be set as {"granularity":"minutely", "customInterval":5}.
      *
      * @param customInterval the customInterval value to set.
-     * @return the DetectRequest object itself.
+     * @return the UnivariateDetectionOptions object itself.
      */
-    public DetectRequest setCustomInterval(Integer customInterval) {
+    public UnivariateDetectionOptions setCustomInterval(Integer customInterval) {
         this.customInterval = customInterval;
         return this;
     }
@@ -155,9 +155,9 @@ public final class DetectRequest {
      * present, the API will determine the period automatically.
      *
      * @param period the period value to set.
-     * @return the DetectRequest object itself.
+     * @return the UnivariateDetectionOptions object itself.
      */
-    public DetectRequest setPeriod(Integer period) {
+    public UnivariateDetectionOptions setPeriod(Integer period) {
         this.period = period;
         return this;
     }
@@ -177,9 +177,9 @@ public final class DetectRequest {
      * series.
      *
      * @param maxAnomalyRatio the maxAnomalyRatio value to set.
-     * @return the DetectRequest object itself.
+     * @return the UnivariateDetectionOptions object itself.
      */
-    public DetectRequest setMaxAnomalyRatio(Double maxAnomalyRatio) {
+    public UnivariateDetectionOptions setMaxAnomalyRatio(Double maxAnomalyRatio) {
         this.maxAnomalyRatio = maxAnomalyRatio;
         return this;
     }
@@ -199,9 +199,9 @@ public final class DetectRequest {
      * the larger the margin value will be which means less anomalies will be accepted.
      *
      * @param sensitivity the sensitivity value to set.
-     * @return the DetectRequest object itself.
+     * @return the UnivariateDetectionOptions object itself.
      */
-    public DetectRequest setSensitivity(Integer sensitivity) {
+    public UnivariateDetectionOptions setSensitivity(Integer sensitivity) {
         this.sensitivity = sensitivity;
         return this;
     }
@@ -221,9 +221,9 @@ public final class DetectRequest {
      * granularity is not "none".
      *
      * @param imputeMode the imputeMode value to set.
-     * @return the DetectRequest object itself.
+     * @return the UnivariateDetectionOptions object itself.
      */
-    public DetectRequest setImputeMode(ImputeMode imputeMode) {
+    public UnivariateDetectionOptions setImputeMode(ImputeMode imputeMode) {
         this.imputeMode = imputeMode;
         return this;
     }
@@ -243,9 +243,9 @@ public final class DetectRequest {
      * and imputeMode is "fixed".
      *
      * @param imputeFixedValue the imputeFixedValue value to set.
-     * @return the DetectRequest object itself.
+     * @return the UnivariateDetectionOptions object itself.
      */
-    public DetectRequest setImputeFixedValue(Double imputeFixedValue) {
+    public UnivariateDetectionOptions setImputeFixedValue(Double imputeFixedValue) {
         this.imputeFixedValue = imputeFixedValue;
         return this;
     }

@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
  * results.
  */
 @Immutable
-public final class DetectionRequest {
+public final class MultivariateBatchDetectionOptions {
     /*
      * Source link to the input data to indicate an accessible Azure storage Uri,
      * either pointed to an Azure blob storage folder, or pointed to a CSV file in
@@ -47,7 +47,7 @@ public final class DetectionRequest {
     private OffsetDateTime endTime;
 
     /**
-     * Creates an instance of DetectionRequest class.
+     * Creates an instance of MultivariateBatchDetectionOptions class.
      *
      * @param dataSource the dataSource value to set.
      * @param topContributorCount the topContributorCount value to set.
@@ -55,7 +55,7 @@ public final class DetectionRequest {
      * @param endTime the endTime value to set.
      */
     @JsonCreator
-    public DetectionRequest(
+    public MultivariateBatchDetectionOptions(
             @JsonProperty(value = "dataSource", required = true) String dataSource,
             @JsonProperty(value = "topContributorCount", required = true) int topContributorCount,
             @JsonProperty(value = "startTime", required = true) OffsetDateTime startTime,

@@ -16,7 +16,7 @@ public final class ModelList {
      * List of models.
      */
     @JsonProperty(value = "models", required = true)
-    private List<Model> models;
+    private List<AnomalyDetectionModel> models;
 
     /*
      * Number of trained multivariate models.
@@ -45,7 +45,7 @@ public final class ModelList {
      */
     @JsonCreator
     private ModelList(
-            @JsonProperty(value = "models", required = true) List<Model> models,
+            @JsonProperty(value = "models", required = true) List<AnomalyDetectionModel> models,
             @JsonProperty(value = "currentCount", required = true) int currentCount,
             @JsonProperty(value = "maxCount", required = true) int maxCount) {
         this.models = models;
@@ -58,7 +58,7 @@ public final class ModelList {
      *
      * @return the models value.
      */
-    public List<Model> getModels() {
+    public List<AnomalyDetectionModel> getModels() {
         return this.models;
     }
 

@@ -9,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The LastDetectionRequest model. */
+/** The MultivariateLastDetectionOptions model. */
 @Immutable
-public final class LastDetectionRequest {
+public final class MultivariateLastDetectionOptions {
     /*
      * This contains the inference data, including the name, timestamps(ISO 8601) and
      * values of variables.
@@ -28,13 +28,13 @@ public final class LastDetectionRequest {
     private int topContributorCount;
 
     /**
-     * Creates an instance of LastDetectionRequest class.
+     * Creates an instance of MultivariateLastDetectionOptions class.
      *
      * @param variables the variables value to set.
      * @param topContributorCount the topContributorCount value to set.
      */
     @JsonCreator
-    public LastDetectionRequest(
+    public MultivariateLastDetectionOptions(
             @JsonProperty(value = "variables", required = true) List<VariableValues> variables,
             @JsonProperty(value = "topContributorCount", required = true) int topContributorCount) {
         this.variables = variables;

@@ -11,12 +11,12 @@ import java.util.List;
 
 /** Multivariate anomaly detection status. */
 @Immutable
-public final class DetectionResultSummary {
+public final class MultivariateBatchDetectionResultSummary {
     /*
      * Status of detection results. One of CREATED, RUNNING, READY, and FAILED.
      */
     @JsonProperty(value = "status", required = true)
-    private DetectionStatus status;
+    private MultivariateBatchDetectionStatus status;
 
     /*
      * Error message when detection is failed.
@@ -35,18 +35,18 @@ public final class DetectionResultSummary {
      * will need another API to get detection results.
      */
     @JsonProperty(value = "setupInfo", required = true)
-    private DetectionRequest setupInfo;
+    private MultivariateBatchDetectionOptions setupInfo;
 
     /**
-     * Creates an instance of DetectionResultSummary class.
+     * Creates an instance of MultivariateBatchDetectionResultSummary class.
      *
      * @param status the status value to set.
      * @param setupInfo the setupInfo value to set.
      */
     @JsonCreator
-    private DetectionResultSummary(
-            @JsonProperty(value = "status", required = true) DetectionStatus status,
-            @JsonProperty(value = "setupInfo", required = true) DetectionRequest setupInfo) {
+    private MultivariateBatchDetectionResultSummary(
+            @JsonProperty(value = "status", required = true) MultivariateBatchDetectionStatus status,
+            @JsonProperty(value = "setupInfo", required = true) MultivariateBatchDetectionOptions setupInfo) {
         this.status = status;
         this.setupInfo = setupInfo;
     }
@@ -56,7 +56,7 @@ public final class DetectionResultSummary {
      *
      * @return the status value.
      */
-    public DetectionStatus getStatus() {
+    public MultivariateBatchDetectionStatus getStatus() {
         return this.status;
     }
 
@@ -84,7 +84,7 @@ public final class DetectionResultSummary {
      *
      * @return the setupInfo value.
      */
-    public DetectionRequest getSetupInfo() {
+    public MultivariateBatchDetectionOptions getSetupInfo() {
         return this.setupInfo;
     }
 }

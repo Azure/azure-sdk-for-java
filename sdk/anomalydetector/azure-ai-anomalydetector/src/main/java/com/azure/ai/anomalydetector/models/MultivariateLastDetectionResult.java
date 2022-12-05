@@ -8,9 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The LastDetectionResult model. */
+/** The MultivariateLastDetectionResult model. */
 @Immutable
-public final class LastDetectionResult {
+public final class MultivariateLastDetectionResult {
     /*
      * The variableStates property.
      */
@@ -23,8 +23,8 @@ public final class LastDetectionResult {
     @JsonProperty(value = "results")
     private List<AnomalyState> results;
 
-    /** Creates an instance of LastDetectionResult class. */
-    private LastDetectionResult() {}
+    /** Creates an instance of MultivariateLastDetectionResult class. */
+    private MultivariateLastDetectionResult() {}
 
     /**
      * Get the variableStates property: The variableStates property.

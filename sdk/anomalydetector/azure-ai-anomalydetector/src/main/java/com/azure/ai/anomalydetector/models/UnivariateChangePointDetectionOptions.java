@@ -11,7 +11,7 @@ import java.util.List;
 
 /** The request of change point detection. */
 @Fluent
-public final class ChangePointDetectRequest {
+public final class UnivariateChangePointDetectionOptions {
     /*
      * Time series data points. Points should be sorted by timestamp in ascending
      * order to match the change point detection result.
@@ -57,13 +57,13 @@ public final class ChangePointDetectRequest {
     private Double threshold;
 
     /**
-     * Creates an instance of ChangePointDetectRequest class.
+     * Creates an instance of UnivariateChangePointDetectionOptions class.
      *
      * @param series the series value to set.
      * @param granularity the granularity value to set.
      */
     @JsonCreator
-    public ChangePointDetectRequest(
+    public UnivariateChangePointDetectionOptions(
             @JsonProperty(value = "series", required = true) List<TimeSeriesPoint> series,
             @JsonProperty(value = "granularity", required = true) TimeGranularity granularity) {
         this.series = series;
@@ -105,9 +105,9 @@ public final class ChangePointDetectRequest {
      * series is 5 minutes, request can be set as {"granularity":"minutely", "customInterval":5}.
      *
      * @param customInterval the customInterval value to set.
-     * @return the ChangePointDetectRequest object itself.
+     * @return the UnivariateChangePointDetectionOptions object itself.
      */
-    public ChangePointDetectRequest setCustomInterval(Integer customInterval) {
+    public UnivariateChangePointDetectionOptions setCustomInterval(Integer customInterval) {
         this.customInterval = customInterval;
         return this;
     }
@@ -127,9 +127,9 @@ public final class ChangePointDetectRequest {
      * present, the API will determine the period automatically.
      *
      * @param period the period value to set.
-     * @return the ChangePointDetectRequest object itself.
+     * @return the UnivariateChangePointDetectionOptions object itself.
      */
-    public ChangePointDetectRequest setPeriod(Integer period) {
+    public UnivariateChangePointDetectionOptions setPeriod(Integer period) {
         this.period = period;
         return this;
     }
@@ -149,9 +149,9 @@ public final class ChangePointDetectRequest {
      * be used in detection.
      *
      * @param stableTrendWindow the stableTrendWindow value to set.
-     * @return the ChangePointDetectRequest object itself.
+     * @return the UnivariateChangePointDetectionOptions object itself.
      */
-    public ChangePointDetectRequest setStableTrendWindow(Integer stableTrendWindow) {
+    public UnivariateChangePointDetectionOptions setStableTrendWindow(Integer stableTrendWindow) {
         this.stableTrendWindow = stableTrendWindow;
         return this;
     }
@@ -171,9 +171,9 @@ public final class ChangePointDetectRequest {
      * the larger the trend error will be which means less change point will be accepted.
      *
      * @param threshold the threshold value to set.
-     * @return the ChangePointDetectRequest object itself.
+     * @return the UnivariateChangePointDetectionOptions object itself.
      */
-    public ChangePointDetectRequest setThreshold(Double threshold) {
+    public UnivariateChangePointDetectionOptions setThreshold(Double threshold) {
         this.threshold = threshold;
         return this;
     }

@@ -4,48 +4,35 @@
 
 package com.azure.ai.anomalydetector.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
-/** Data schema of input data source: OneTable or MultiTable. The default DataSchema is OneTable. */
-public enum DataSchema {
-    /** Enum value OneTable. */
-    ONE_TABLE("OneTable"),
+/** Defines values for DataSchema. */
+public final class DataSchema extends ExpandableStringEnum<DataSchema> {
+    /** Static value OneTable for DataSchema. */
+    public static final DataSchema ONE_TABLE = fromString("OneTable");
 
-    /** Enum value MultiTable. */
-    MULTI_TABLE("MultiTable");
+    /** Static value MultiTable for DataSchema. */
+    public static final DataSchema MULTI_TABLE = fromString("MultiTable");
 
-    /** The actual serialized value for a DataSchema instance. */
-    private final String value;
-
-    DataSchema(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a DataSchema from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding DataSchema.
+     */
+    @JsonCreator
+    public static DataSchema fromString(String name) {
+        return fromString(name, DataSchema.class);
     }
 
     /**
-     * Parses a serialized value to a DataSchema instance.
+     * Gets known DataSchema values.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed DataSchema object, or null if unable to parse.
+     * @return known DataSchema values.
      */
-    @JsonCreator
-    public static DataSchema fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        DataSchema[] items = DataSchema.values();
-        for (DataSchema item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    /** {@inheritDoc} */
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<DataSchema> values() {
+        return values(DataSchema.class);
     }
 }
