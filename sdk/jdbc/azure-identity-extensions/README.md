@@ -1,4 +1,4 @@
-- [Azure identity authentication extensions library for Java](#azure-identity-authentication-extensions-library-for-java)
+- [Azure identity authentication extensions plugin library for Java](#azure-identity-authentication-extensions-plugin-library-for-java)
   - [Getting started](#getting-started)
     - [Prerequisites](#prerequisites)
   - [Key concepts](#key-concepts)
@@ -7,7 +7,7 @@
   - [Next steps](#next-steps)
   - [Contributing](#contributing)
     
-# Azure identity authentication extensions library for Java
+# Azure identity authentication extensions plugin library for Java
 
 This package contains authentication extensions to get a token from Azure Active Directory (Azure AD) for Azure services, like Azure Database for MySQL.
 
