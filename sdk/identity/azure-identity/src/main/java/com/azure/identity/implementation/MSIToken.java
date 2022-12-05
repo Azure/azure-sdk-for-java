@@ -55,8 +55,7 @@ public final class MSIToken extends AccessToken {
         @JsonProperty(value = "access_token") String token,
         @JsonProperty(value = "expires_on") String expiresOn,
         @JsonProperty(value = "expires_in") String expiresIn) {
-        super(token, EPOCH.plusSeconds(CoreUtils.isNullOrEmpty(expiresOn) ? parseSecondsToEpochSeconds(expiresIn)
-            : parseDateToEpochSeconds(expiresOn)));
+        super(token, EPOCH.plusSeconds(parseToEpochSeconds(expiresOn, expiresIn)));
         this.accessToken = token;
         this.expiresOn = expiresOn;
         this.expiresIn = expiresIn;
@@ -67,49 +66,32 @@ public final class MSIToken extends AccessToken {
         return accessToken;
     }
 
-    private static Long parseSecondsToEpochSeconds(String dateTime) {
-        try {
-            Long expiresInSeconds = Long.parseLong(dateTime);
-            return OffsetDateTime.now().plusSeconds(expiresInSeconds).toEpochSecond();
-        } catch (NumberFormatException e) {
-            LOGGER.error(e.getMessage());
-        }
+    private static Long parseToEpochSeconds(String expiresOn, String expiresIn) {
+        String dateToParse = CoreUtils.isNullOrEmpty(expiresOn) ? expiresIn : expiresOn;
 
         try {
-            return Instant.from(DTF.parse(dateTime)).getEpochSecond();
-        } catch (DateTimeParseException e) {
-            LOGGER.verbose(e.getMessage());
-        }
-
-        try {
-            return Instant.from(DTF_WINDOWS.parse(dateTime)).getEpochSecond();
-        } catch (DateTimeParseException e) {
-            LOGGER.verbose(e.getMessage());
-        }
-
-        throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unable to parse date time " + dateTime));
-    }
-
-    private static Long parseDateToEpochSeconds(String dateTime) {
-        try {
-            return Long.parseLong(dateTime);
+            Long seconds = Long.parseLong(dateToParse);
+            if (!CoreUtils.isNullOrEmpty(expiresOn)) {
+                return seconds;
+            } else {
+                return OffsetDateTime.now(ZoneOffset.UTC).plusSeconds(seconds).toEpochSecond();
+            }
         } catch (NumberFormatException e) {
             LOGGER.verbose(e.getMessage());
         }
 
         try {
-            return Instant.from(DTF.parse(dateTime)).getEpochSecond();
+            return Instant.from(DTF.parse(dateToParse)).getEpochSecond();
         } catch (DateTimeParseException e) {
             LOGGER.verbose(e.getMessage());
         }
 
         try {
-            return Instant.from(DTF_WINDOWS.parse(dateTime)).getEpochSecond();
+            return Instant.from(DTF_WINDOWS.parse(dateToParse)).getEpochSecond();
         } catch (DateTimeParseException e) {
             LOGGER.verbose(e.getMessage());
         }
-
-        throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unable to parse date time " + dateTime));
+        throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unable to parse date time " + dateToParse));
     }
 
 }
