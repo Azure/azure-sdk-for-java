@@ -39,8 +39,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MultiTenantDBCosmosTemplateUnitTest {
 
     private final String testDB1 = "Database1";
-
     private final String testDB2 = "Database2";
+
+    private final Person TEST_PERSON_1 = new Person(ID_1, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+    private final Person TEST_PERSON_2 = new Person(ID_2, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+
+    @ClassRule
+    public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -61,15 +66,17 @@ public class MultiTenantDBCosmosTemplateUnitTest {
 
             CosmosEntityInformation<Person, String> personInfo = new CosmosEntityInformation<>(Person.class);
 
-            cosmosTemplate.setDatabaseName(testDB1, personInfo);
-            Person TEST_PERSON = new Person(ID_1, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+            cosmosTemplate.setDatabaseName(testDB1);
+            cosmosTemplate.createContainerIfNotExists(personInfo);
+            cosmosTemplate.deleteAll(personInfo.getContainerName(), Person.class);
             assertThat(cosmosTemplate.getDatabaseName()).isEqualTo(testDB1);
-            cosmosTemplate.insert(TEST_PERSON, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
+            cosmosTemplate.insert(TEST_PERSON_1, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_1)));
 
-            cosmosTemplate.setDatabaseName(testDB2, personInfo);
-            Person TEST_PERSON2 = new Person(ID_2, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+            cosmosTemplate.setDatabaseName(testDB2);
+            cosmosTemplate.createContainerIfNotExists(personInfo);
+            cosmosTemplate.deleteAll(personInfo.getContainerName(), Person.class);
             assertThat(cosmosTemplate.getDatabaseName()).isEqualTo(testDB2);
-            cosmosTemplate.insert(TEST_PERSON2, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON2)));
+            cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
         } catch (ClassNotFoundException e) {
             assertThat("a").isEqualTo("b");
         }
