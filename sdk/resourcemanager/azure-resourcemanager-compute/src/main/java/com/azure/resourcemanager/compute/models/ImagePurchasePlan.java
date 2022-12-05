@@ -28,6 +28,10 @@ public final class ImagePurchasePlan {
     @JsonProperty(value = "product")
     private String product;
 
+    /** Creates an instance of ImagePurchasePlan class. */
+    public ImagePurchasePlan() {
+    }
+
     /**
      * Get the name property: The plan ID.
      *

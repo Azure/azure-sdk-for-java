@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphResponseType. */
+/** responseType. */
 public final class MicrosoftGraphResponseType extends ExpandableStringEnum<MicrosoftGraphResponseType> {
     /** Static value none for MicrosoftGraphResponseType. */
     public static final MicrosoftGraphResponseType NONE = fromString("none");
@@ -39,7 +39,11 @@ public final class MicrosoftGraphResponseType extends ExpandableStringEnum<Micro
         return fromString(name, MicrosoftGraphResponseType.class);
     }
 
-    /** @return known MicrosoftGraphResponseType values. */
+    /**
+     * Gets known MicrosoftGraphResponseType values.
+     *
+     * @return known MicrosoftGraphResponseType values.
+     */
     public static Collection<MicrosoftGraphResponseType> values() {
         return values(MicrosoftGraphResponseType.class);
     }

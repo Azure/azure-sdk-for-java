@@ -5,8 +5,6 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
-import java.util.Collection;
-
 /** Defines values for ResolutionKind. */
 public final class ResolutionKind extends ExpandableStringEnum<ResolutionKind> {
     /** Static value BooleanResolution for ResolutionKind. */
@@ -62,14 +60,5 @@ public final class ResolutionKind extends ExpandableStringEnum<ResolutionKind> {
      */
     public static ResolutionKind fromString(String name) {
         return fromString(name, ResolutionKind.class);
-    }
-
-    /**
-     * Gets known ResolutionKind values.
-     *
-     * @return known ResolutionKind values.
-     */
-    public static Collection<ResolutionKind> values() {
-        return values(ResolutionKind.class);
     }
 }

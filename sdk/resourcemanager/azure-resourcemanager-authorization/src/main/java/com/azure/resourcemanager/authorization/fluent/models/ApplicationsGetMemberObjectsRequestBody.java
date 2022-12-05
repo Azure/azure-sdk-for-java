@@ -26,6 +26,10 @@ public final class ApplicationsGetMemberObjectsRequestBody {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of ApplicationsGetMemberObjectsRequestBody class. */
+    public ApplicationsGetMemberObjectsRequestBody() {
+    }
+
     /**
      * Get the securityEnabledOnly property: The securityEnabledOnly property.
      *

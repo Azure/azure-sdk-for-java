@@ -13,40 +13,46 @@ public final class DateTimeResolution extends BaseResolution {
      * An extended ISO 8601 date/time representation as described in
      * (https://github.com/Microsoft/Recognizers-Text/blob/master/Patterns/English/English-DateTime.yaml)
      */
-    private final String timex;
+    private String timex;
 
     /*
      * The DateTime SubKind
      */
-    private final DateTimeSubKind dateTimeSubKind;
+    private DateTimeSubKind dateTimeSubKind;
 
     /*
      * The actual time that the extracted text denote.
      */
-    private final String value;
+    private String value;
 
     /*
      * An optional modifier of a date/time instance.
      */
     private TemporalModifier modifier;
 
-    /**
-     * Create a resolution for datetime entity instances.
-     *
-     * @param timex An extended ISO 8601 date/time representation as described in
-     *   (https://github.com/Microsoft/Recognizers-Text/blob/master/Patterns/English/English-DateTime.yaml).
-     * @param dateTimeSubKind The DateTime SubKind.
-     * @param value The actual time that the extracted text denote.
-     */
-    public DateTimeResolution(String timex, DateTimeSubKind dateTimeSubKind, String value) {
-        this.timex = timex;
-        this.dateTimeSubKind = dateTimeSubKind;
-        this.value = value;
-    }
-
     static {
         DateTimeResolutionPropertiesHelper.setAccessor(
-                (dateTimeResolution, temporalModifier) -> dateTimeResolution.setModifier(temporalModifier));
+            new DateTimeResolutionPropertiesHelper.DateTimeResolutionAccessor() {
+                @Override
+                public void setTimex(DateTimeResolution dateTimeResolution, String timex) {
+                    dateTimeResolution.setTimex(timex);
+                }
+
+                @Override
+                public void setDateTimeSubKind(DateTimeResolution dateTimeResolution, DateTimeSubKind dateTimeSubKind) {
+                    dateTimeResolution.setDateTimeSubKind(dateTimeSubKind);
+                }
+
+                @Override
+                public void setValue(DateTimeResolution dateTimeResolution, String value) {
+                    dateTimeResolution.setValue(value);
+                }
+
+                @Override
+                public void setModifier(DateTimeResolution dateTimeResolution, TemporalModifier temporalModifier) {
+                    dateTimeResolution.setModifier(temporalModifier);
+                }
+            });
     }
 
     /**
@@ -86,12 +92,18 @@ public final class DateTimeResolution extends BaseResolution {
         return this.modifier;
     }
 
-    /**
-     * Set the modifier property: An optional modifier of a date/time instance.
-     *
-     * @param modifier the modifier value to set.
-     * @return the DateTimeResolution object itself.
-     */
+    private void setTimex(String timex) {
+        this.timex = timex;
+    }
+
+    private void setDateTimeSubKind(DateTimeSubKind dateTimeSubKind) {
+        this.dateTimeSubKind = dateTimeSubKind;
+    }
+
+    private void setValue(String value) {
+        this.value = value;
+    }
+
     private void setModifier(TemporalModifier modifier) {
         this.modifier = modifier;
     }

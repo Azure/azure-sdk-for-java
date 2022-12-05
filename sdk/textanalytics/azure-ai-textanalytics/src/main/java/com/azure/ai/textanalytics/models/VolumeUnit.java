@@ -5,8 +5,6 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
-import java.util.Collection;
-
 /** Defines values for VolumeUnit. */
 public final class VolumeUnit extends ExpandableStringEnum<VolumeUnit> {
     /** Static value Unspecified for VolumeUnit. */
@@ -101,14 +99,5 @@ public final class VolumeUnit extends ExpandableStringEnum<VolumeUnit> {
      */
     public static VolumeUnit fromString(String name) {
         return fromString(name, VolumeUnit.class);
-    }
-
-    /**
-     * Gets known VolumeUnit values.
-     *
-     * @return known VolumeUnit values.
-     */
-    public static Collection<VolumeUnit> values() {
-        return values(VolumeUnit.class);
     }
 }

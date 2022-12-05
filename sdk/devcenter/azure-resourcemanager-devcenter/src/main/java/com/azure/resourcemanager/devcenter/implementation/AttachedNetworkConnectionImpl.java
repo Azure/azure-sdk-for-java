@@ -10,6 +10,7 @@ import com.azure.resourcemanager.devcenter.fluent.models.AttachedNetworkConnecti
 import com.azure.resourcemanager.devcenter.models.AttachedNetworkConnection;
 import com.azure.resourcemanager.devcenter.models.DomainJoinType;
 import com.azure.resourcemanager.devcenter.models.HealthCheckStatus;
+import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 
 public final class AttachedNetworkConnectionImpl
     implements AttachedNetworkConnection, AttachedNetworkConnection.Definition, AttachedNetworkConnection.Update {
@@ -33,7 +34,7 @@ public final class AttachedNetworkConnectionImpl
         return this.innerModel().systemData();
     }
 
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 

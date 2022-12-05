@@ -44,20 +44,6 @@ public interface SignalRCustomCertificates {
      *     from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a custom certificate.
-     */
-    CustomCertificate get(String resourceGroupName, String resourceName, String certificateName);
-
-    /**
-     * Get a custom certificate.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param resourceName The name of the resource.
-     * @param certificateName Custom certificate name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -68,7 +54,7 @@ public interface SignalRCustomCertificates {
         String resourceGroupName, String resourceName, String certificateName, Context context);
 
     /**
-     * Delete a custom certificate.
+     * Get a custom certificate.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
@@ -77,8 +63,9 @@ public interface SignalRCustomCertificates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a custom certificate.
      */
-    void delete(String resourceGroupName, String resourceName, String certificateName);
+    CustomCertificate get(String resourceGroupName, String resourceName, String certificateName);
 
     /**
      * Delete a custom certificate.
@@ -95,6 +82,19 @@ public interface SignalRCustomCertificates {
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String resourceName, String certificateName, Context context);
+
+    /**
+     * Delete a custom certificate.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the resource.
+     * @param certificateName Custom certificate name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String resourceName, String certificateName);
 
     /**
      * Get a custom certificate.

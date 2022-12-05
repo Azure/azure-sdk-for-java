@@ -17,7 +17,7 @@ public final class ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignmentTe
         ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment model =
             BinaryData
                 .fromString(
-                    "{\"roles\":{\"ybsrfbjfdtwss\":{\"roleName\":\"rruvwbhsq\",\"description\":\"ubcgjbirxb\"},\"qtaruoujmkcjhwq\":{\"roleName\":\"ftpvjzbexil\",\"description\":\"nfqqnvwp\"}}}")
+                    "{\"roles\":{\"notyfjfcnjbkcn\":{\"roleName\":\"vlxotogtwrupqsx\",\"description\":\"micykvceoveilo\"},\"phoxus\":{\"roleName\":\"hbttkphyw\",\"description\":\"vjtoqnermclfp\"},\"wfqkquj\":{\"roleName\":\"pabgyeps\",\"description\":\"tazqugxywpmueefj\"},\"yudxytlmoy\":{\"roleName\":\"suyonobglaocq\",\"description\":\"ccm\"}}}")
                 .toObject(ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment.class);
     }
 
@@ -25,7 +25,16 @@ public final class ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignmentTe
     public void testSerialize() {
         ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment model =
             new ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment()
-                .withRoles(mapOf("ybsrfbjfdtwss", new EnvironmentRole(), "qtaruoujmkcjhwq", new EnvironmentRole()));
+                .withRoles(
+                    mapOf(
+                        "notyfjfcnjbkcn",
+                        new EnvironmentRole(),
+                        "phoxus",
+                        new EnvironmentRole(),
+                        "wfqkquj",
+                        new EnvironmentRole(),
+                        "yudxytlmoy",
+                        new EnvironmentRole()));
         model =
             BinaryData.fromObject(model).toObject(ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment.class);
     }

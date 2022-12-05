@@ -75,16 +75,6 @@ public final class JitNetworkAccessPoliciesImpl implements JitNetworkAccessPolic
         return Utils.mapPage(inner, inner1 -> new JitNetworkAccessPolicyImpl(inner1, this.manager()));
     }
 
-    public JitNetworkAccessPolicy get(String resourceGroupName, String ascLocation, String jitNetworkAccessPolicyName) {
-        JitNetworkAccessPolicyInner inner =
-            this.serviceClient().get(resourceGroupName, ascLocation, jitNetworkAccessPolicyName);
-        if (inner != null) {
-            return new JitNetworkAccessPolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<JitNetworkAccessPolicy> getWithResponse(
         String resourceGroupName, String ascLocation, String jitNetworkAccessPolicyName, Context context) {
         Response<JitNetworkAccessPolicyInner> inner =
@@ -100,8 +90,14 @@ public final class JitNetworkAccessPoliciesImpl implements JitNetworkAccessPolic
         }
     }
 
-    public void delete(String resourceGroupName, String ascLocation, String jitNetworkAccessPolicyName) {
-        this.serviceClient().delete(resourceGroupName, ascLocation, jitNetworkAccessPolicyName);
+    public JitNetworkAccessPolicy get(String resourceGroupName, String ascLocation, String jitNetworkAccessPolicyName) {
+        JitNetworkAccessPolicyInner inner =
+            this.serviceClient().get(resourceGroupName, ascLocation, jitNetworkAccessPolicyName);
+        if (inner != null) {
+            return new JitNetworkAccessPolicyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -111,18 +107,8 @@ public final class JitNetworkAccessPoliciesImpl implements JitNetworkAccessPolic
             .deleteWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, context);
     }
 
-    public JitNetworkAccessRequest initiate(
-        String resourceGroupName,
-        String ascLocation,
-        String jitNetworkAccessPolicyName,
-        JitNetworkAccessPolicyInitiateRequest body) {
-        JitNetworkAccessRequestInner inner =
-            this.serviceClient().initiate(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, body);
-        if (inner != null) {
-            return new JitNetworkAccessRequestImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String ascLocation, String jitNetworkAccessPolicyName) {
+        this.serviceClient().delete(resourceGroupName, ascLocation, jitNetworkAccessPolicyName);
     }
 
     public Response<JitNetworkAccessRequest> initiateWithResponse(
@@ -141,6 +127,20 @@ public final class JitNetworkAccessPoliciesImpl implements JitNetworkAccessPolic
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new JitNetworkAccessRequestImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public JitNetworkAccessRequest initiate(
+        String resourceGroupName,
+        String ascLocation,
+        String jitNetworkAccessPolicyName,
+        JitNetworkAccessPolicyInitiateRequest body) {
+        JitNetworkAccessRequestInner inner =
+            this.serviceClient().initiate(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, body);
+        if (inner != null) {
+            return new JitNetworkAccessRequestImpl(inner, this.manager());
         } else {
             return null;
         }

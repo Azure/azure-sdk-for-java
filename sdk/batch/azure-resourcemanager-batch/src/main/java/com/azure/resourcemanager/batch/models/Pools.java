@@ -80,19 +80,6 @@ public interface Pools {
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified pool.
-     */
-    Pool get(String resourceGroupName, String accountName, String poolName);
-
-    /**
-     * Gets information about the specified pool.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param poolName The pool name. This must be unique within the account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -102,7 +89,7 @@ public interface Pools {
     Response<Pool> getWithResponse(String resourceGroupName, String accountName, String poolName, Context context);
 
     /**
-     * Disables automatic scaling for a pool.
+     * Gets information about the specified pool.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
@@ -110,9 +97,9 @@ public interface Pools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a pool.
+     * @return information about the specified pool.
      */
-    Pool disableAutoScale(String resourceGroupName, String accountName, String poolName);
+    Pool get(String resourceGroupName, String accountName, String poolName);
 
     /**
      * Disables automatic scaling for a pool.
@@ -130,11 +117,7 @@ public interface Pools {
         String resourceGroupName, String accountName, String poolName, Context context);
 
     /**
-     * This does not restore the pool to its previous state before the resize operation: it only stops any further
-     * changes being made, and the pool maintains its current state. After stopping, the pool stabilizes at the number
-     * of nodes it was at when the stop operation was done. During the stop operation, the pool allocation state changes
-     * first to stopping and then to steady. A resize operation need not be an explicit resize pool request; this API
-     * can also be used to halt the initial sizing of the pool when it is created.
+     * Disables automatic scaling for a pool.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
@@ -144,10 +127,12 @@ public interface Pools {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return contains information about a pool.
      */
-    Pool stopResize(String resourceGroupName, String accountName, String poolName);
+    Pool disableAutoScale(String resourceGroupName, String accountName, String poolName);
 
     /**
-     * This does not restore the pool to its previous state before the resize operation: it only stops any further
+     * Stops an ongoing resize operation on the pool.
+     *
+     * <p>This does not restore the pool to its previous state before the resize operation: it only stops any further
      * changes being made, and the pool maintains its current state. After stopping, the pool stabilizes at the number
      * of nodes it was at when the stop operation was done. During the stop operation, the pool allocation state changes
      * first to stopping and then to steady. A resize operation need not be an explicit resize pool request; this API
@@ -164,6 +149,25 @@ public interface Pools {
      */
     Response<Pool> stopResizeWithResponse(
         String resourceGroupName, String accountName, String poolName, Context context);
+
+    /**
+     * Stops an ongoing resize operation on the pool.
+     *
+     * <p>This does not restore the pool to its previous state before the resize operation: it only stops any further
+     * changes being made, and the pool maintains its current state. After stopping, the pool stabilizes at the number
+     * of nodes it was at when the stop operation was done. During the stop operation, the pool allocation state changes
+     * first to stopping and then to steady. A resize operation need not be an explicit resize pool request; this API
+     * can also be used to halt the initial sizing of the pool when it is created.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param poolName The pool name. This must be unique within the account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains information about a pool.
+     */
+    Pool stopResize(String resourceGroupName, String accountName, String poolName);
 
     /**
      * Gets information about the specified pool.

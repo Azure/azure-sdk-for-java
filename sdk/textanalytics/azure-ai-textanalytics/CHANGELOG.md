@@ -1,6 +1,16 @@
 # Release History
 
-## 5.3.0-beta.1 (Unreleased)
+## 5.3.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 5.3.0-beta.1 (2022-11-18)
 
 ### Features Added
 - This version of the client library marks a beta release and defaults to the service API version `2022-10-01-preview`.
@@ -16,8 +26,8 @@
   `InformationUnit`, `LengthUnit`, `NumberKind`, `RangeKind`, `RelativeTo`, `SpeedUnit`, `TemperatureUnit`,
   `VolumeUnit`, and `WeightUnit`.
 - Added the Extractive Summarization feature and related models: `ExtractSummaryAction`, `ExtractSummaryActionResult`,
-  `ExtractSummaryResultCollection`, `ExtractSummaryResult`, `SummarySentenceCollection`, `SummarySentence` 
-  and `SummarySentenceOrder`. Access the feature through the `beginAnalyzeActions` API.
+  `ExtractSummaryResultCollection`, `ExtractSummaryResult`, `SummarySentence` and `SummarySentencesOrder`. 
+  Access the feature through the `beginAnalyzeActions` API.
 - Added the Abstractive Summarization feature and related models: `AbstractSummaryAction`, `AbstractSummaryActionResult`,
  `AbstractSummaryResultCollection`, `AbstractSummaryResult`, `AbstractiveSummary`, and `SummaryContext`. 
   Access the feature through the `beginAnalyzeActions` API.
@@ -30,12 +40,6 @@
   `ExtractKeyPhrasesResult`, `RecognizeLinkedEntitiesResult`, `AnalyzeSentimentResult`, `RecognizeCustomEntitiesResult`,
   `ClassifyDocumentResult`, `ExtractSummaryResult`, and `AbstractSummaryResult` to indicate the language detected by automatic language detection.
 - Added property `script` to `DetectedLanguage` to indicate the script of the input document, and new enum model `ScriptKind`.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 5.2.2 (2022-11-09)
 

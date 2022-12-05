@@ -167,7 +167,7 @@ public class ReactorNettyClient implements HttpClient {
             .port(request.port())
             .responseTimeout(responseTimeout)
             .request(HttpMethod.valueOf(request.httpMethod().toString()))
-            .uri(request.uri().toString())
+            .uri(request.uri().toASCIIString())
             .send(bodySendDelegate(request))
             .responseConnection((reactorNettyResponse, reactorNettyConnection) -> {
                 HttpResponse httpResponse = new ReactorNettyHttpResponse(reactorNettyResponse,

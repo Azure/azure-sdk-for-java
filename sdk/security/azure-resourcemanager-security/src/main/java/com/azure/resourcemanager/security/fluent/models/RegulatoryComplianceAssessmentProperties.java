@@ -59,6 +59,10 @@ public final class RegulatoryComplianceAssessmentProperties {
     @JsonProperty(value = "unsupportedResources", access = JsonProperty.Access.WRITE_ONLY)
     private Integer unsupportedResources;
 
+    /** Creates an instance of RegulatoryComplianceAssessmentProperties class. */
+    public RegulatoryComplianceAssessmentProperties() {
+    }
+
     /**
      * Get the description property: The description of the regulatory compliance assessment.
      *

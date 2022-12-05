@@ -33,6 +33,10 @@ public final class MicrosoftGraphMeetingParticipants {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphMeetingParticipants class. */
+    public MicrosoftGraphMeetingParticipants() {
+    }
+
     /**
      * Get the attendees property: The attendees property.
      *

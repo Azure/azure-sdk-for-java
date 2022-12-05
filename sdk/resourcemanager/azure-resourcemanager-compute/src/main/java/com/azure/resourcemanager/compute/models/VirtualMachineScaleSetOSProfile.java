@@ -84,6 +84,10 @@ public final class VirtualMachineScaleSetOSProfile {
     @JsonProperty(value = "allowExtensionOperations")
     private Boolean allowExtensionOperations;
 
+    /** Creates an instance of VirtualMachineScaleSetOSProfile class. */
+    public VirtualMachineScaleSetOSProfile() {
+    }
+
     /**
      * Get the computerNamePrefix property: Specifies the computer name prefix for all of the virtual machines in the
      * scale set. Computer name prefixes must be 1 to 15 characters long.

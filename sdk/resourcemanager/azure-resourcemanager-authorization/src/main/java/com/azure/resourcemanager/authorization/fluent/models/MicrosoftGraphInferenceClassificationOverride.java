@@ -32,6 +32,10 @@ public final class MicrosoftGraphInferenceClassificationOverride extends Microso
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphInferenceClassificationOverride class. */
+    public MicrosoftGraphInferenceClassificationOverride() {
+    }
+
     /**
      * Get the classifyAs property: inferenceClassificationType.
      *

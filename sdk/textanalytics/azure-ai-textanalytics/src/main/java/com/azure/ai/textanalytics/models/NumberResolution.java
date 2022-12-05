@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.ai.textanalytics.implementation.NumberResolutionPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 
 /** A resolution for numeric entity instances. */
@@ -11,22 +12,26 @@ public final class NumberResolution extends BaseResolution {
     /*
      * The type of the extracted number entity.
      */
-    private final NumberKind numberKind;
+    private NumberKind numberKind;
 
     /*
      * A numeric representation of what the extracted text denotes.
      */
-    private final String value;
+    private double value;
 
-    /**
-     * Create a resolution for numeric entity instances.
-     *
-     * @param numberKind The type of the extracted number entity.
-     * @param value A numeric representation of what the extracted text denotes.
-     */
-    public NumberResolution(NumberKind numberKind, String value) {
-        this.numberKind = numberKind;
-        this.value = value;
+    static {
+        NumberResolutionPropertiesHelper.setAccessor(
+            new NumberResolutionPropertiesHelper.NumberResolutionAccessor() {
+                @Override
+                public void setNumberKind(NumberResolution numberResolution, NumberKind numberKind) {
+                    numberResolution.setNumberKind(numberKind);
+                }
+
+                @Override
+                public void setValue(NumberResolution numberResolution, double value) {
+                    numberResolution.setValue(value);
+                }
+            });
     }
 
     /**
@@ -43,7 +48,15 @@ public final class NumberResolution extends BaseResolution {
      *
      * @return the value value.
      */
-    public String getValue() {
+    public double getValue() {
         return this.value;
+    }
+
+    private void setNumberKind(NumberKind numberKind) {
+        this.numberKind = numberKind;
+    }
+
+    private void setValue(double value) {
+        this.value = value;
     }
 }

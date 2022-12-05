@@ -53,6 +53,10 @@ public final class SecureScoreControlScoreDetailsInner {
     @JsonProperty(value = "definition")
     private SecureScoreControlDefinitionItemInner definition;
 
+    /** Creates an instance of SecureScoreControlScoreDetailsInner class. */
+    public SecureScoreControlScoreDetailsInner() {
+    }
+
     /**
      * Get the displayName property: User friendly display name of the control.
      *

@@ -29,6 +29,10 @@ public final class CheckDomainAvailabilityParameter {
     @JsonProperty(value = "kind")
     private String kind;
 
+    /** Creates an instance of CheckDomainAvailabilityParameter class. */
+    public CheckDomainAvailabilityParameter() {
+    }
+
     /**
      * Get the subdomainName property: The subdomain name to use.
      *

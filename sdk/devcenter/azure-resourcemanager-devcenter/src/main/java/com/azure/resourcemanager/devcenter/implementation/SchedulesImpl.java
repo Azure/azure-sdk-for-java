@@ -12,7 +12,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devcenter.fluent.SchedulesClient;
 import com.azure.resourcemanager.devcenter.fluent.models.ScheduleInner;
 import com.azure.resourcemanager.devcenter.models.Schedule;
-import com.azure.resourcemanager.devcenter.models.ScheduleUpdate;
 import com.azure.resourcemanager.devcenter.models.Schedules;
 
 public final class SchedulesImpl implements Schedules {
@@ -67,22 +66,6 @@ public final class SchedulesImpl implements Schedules {
         } else {
             return null;
         }
-    }
-
-    public void update(
-        String resourceGroupName, String projectName, String poolName, String scheduleName, ScheduleUpdate body) {
-        this.serviceClient().update(resourceGroupName, projectName, poolName, scheduleName, body);
-    }
-
-    public void update(
-        String resourceGroupName,
-        String projectName,
-        String poolName,
-        String scheduleName,
-        ScheduleUpdate body,
-        Integer top,
-        Context context) {
-        this.serviceClient().update(resourceGroupName, projectName, poolName, scheduleName, body, top, context);
     }
 
     public void delete(String resourceGroupName, String projectName, String poolName, String scheduleName) {

@@ -3,11 +3,11 @@
 
 package com.azure.communication.email.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Status of an email message that was sent previously. */
-@Fluent
+@Immutable
 public final class SendEmailResult {
     /*
      * System generated id of an email message sent.
@@ -16,22 +16,19 @@ public final class SendEmailResult {
     private String messageId;
 
     /**
+     * Constructor for SendEmailResult
+     * @param messageId the system generated id of an email message sent
+     */
+    public SendEmailResult(String messageId) {
+        this.messageId = messageId;
+    }
+
+    /**
      * Get the messageId property: System generated id of an email message sent.
      *
      * @return the messageId value.
      */
     public String getMessageId() {
         return this.messageId;
-    }
-
-    /**
-     * Set the messageId property: System generated id of an email message sent.
-     *
-     * @param messageId the messageId value to set.
-     * @return the SendStatusResult object itself.
-     */
-    public SendEmailResult setMessageId(String messageId) {
-        this.messageId = messageId;
-        return this;
     }
 }

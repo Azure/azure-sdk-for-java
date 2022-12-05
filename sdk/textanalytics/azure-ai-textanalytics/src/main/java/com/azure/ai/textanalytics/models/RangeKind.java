@@ -5,8 +5,6 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 
-import java.util.Collection;
-
 /** Defines values for RangeKind. */
 public final class RangeKind extends ExpandableStringEnum<RangeKind> {
     /** Static value Number for RangeKind. */
@@ -47,14 +45,5 @@ public final class RangeKind extends ExpandableStringEnum<RangeKind> {
      */
     public static RangeKind fromString(String name) {
         return fromString(name, RangeKind.class);
-    }
-
-    /**
-     * Gets known RangeKind values.
-     *
-     * @return known RangeKind values.
-     */
-    public static Collection<RangeKind> values() {
-        return values(RangeKind.class);
     }
 }

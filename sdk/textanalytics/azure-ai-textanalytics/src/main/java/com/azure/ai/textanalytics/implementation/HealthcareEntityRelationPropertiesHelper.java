@@ -24,7 +24,7 @@ public final class HealthcareEntityRelationPropertiesHelper {
             HealthcareEntityRelationType relationType);
         void setRoles(HealthcareEntityRelation healthcareEntityRelation,
             IterableStream<HealthcareEntityRelationRole> roles);
-        void setConfidenceScore(HealthcareEntityRelation healthcareEntityRelation, Double confidenceScore);
+        void setConfidenceScore(HealthcareEntityRelation healthcareEntityRelation, double confidenceScore);
     }
 
     /**
@@ -46,7 +46,7 @@ public final class HealthcareEntityRelationPropertiesHelper {
         accessor.setRoles(healthcareEntityRelation, roles);
     }
 
-    public static void setConfidenceScore(HealthcareEntityRelation healthcareEntityRelation, Double confidenceScore) {
+    public static void setConfidenceScore(HealthcareEntityRelation healthcareEntityRelation, double confidenceScore) {
         accessor.setConfidenceScore(healthcareEntityRelation, confidenceScore);
     }
 }

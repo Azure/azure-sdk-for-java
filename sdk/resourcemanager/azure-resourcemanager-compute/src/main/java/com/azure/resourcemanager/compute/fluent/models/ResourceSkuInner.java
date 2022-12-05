@@ -95,6 +95,10 @@ public final class ResourceSkuInner {
     @JsonProperty(value = "restrictions", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceSkuRestrictions> restrictions;
 
+    /** Creates an instance of ResourceSkuInner class. */
+    public ResourceSkuInner() {
+    }
+
     /**
      * Get the resourceType property: The type of resource the SKU applies to.
      *

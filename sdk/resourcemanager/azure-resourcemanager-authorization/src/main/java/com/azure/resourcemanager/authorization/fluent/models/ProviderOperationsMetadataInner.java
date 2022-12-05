@@ -49,6 +49,10 @@ public final class ProviderOperationsMetadataInner {
     @JsonProperty(value = "operations")
     private List<ProviderOperation> operations;
 
+    /** Creates an instance of ProviderOperationsMetadataInner class. */
+    public ProviderOperationsMetadataInner() {
+    }
+
     /**
      * Get the id property: The provider id.
      *

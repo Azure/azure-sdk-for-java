@@ -47,8 +47,7 @@ public final class MicrosoftGraphPerson extends MicrosoftGraphEntity {
     private String givenName;
 
     /*
-     * The instant message voice over IP (VOIP) session initiation protocol
-     * (SIP) address for the user. Read-only.
+     * The instant message voice over IP (VOIP) session initiation protocol (SIP) address for the user. Read-only.
      */
     @JsonProperty(value = "imAddress")
     private String imAddress;
@@ -114,10 +113,9 @@ public final class MicrosoftGraphPerson extends MicrosoftGraphEntity {
     private String surname;
 
     /*
-     * The user principal name (UPN) of the person. The UPN is an
-     * Internet-style login name for the person based on the Internet standard
-     * RFC 822. By convention, this should map to the person's email name. The
-     * general format is alias@domain.
+     * The user principal name (UPN) of the person. The UPN is an Internet-style login name for the person based on the
+     * Internet standard RFC 822. By convention, this should map to the person's email name. The general format is
+     * alias@domain.
      */
     @JsonProperty(value = "userPrincipalName")
     private String userPrincipalName;
@@ -138,6 +136,10 @@ public final class MicrosoftGraphPerson extends MicrosoftGraphEntity {
      * person
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPerson class. */
+    public MicrosoftGraphPerson() {
+    }
 
     /**
      * Get the birthday property: The person's birthday.

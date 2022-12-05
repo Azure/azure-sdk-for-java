@@ -22,6 +22,10 @@ public final class UpstreamAuthSettings {
     @JsonProperty(value = "managedIdentity")
     private ManagedIdentitySettings managedIdentity;
 
+    /** Creates an instance of UpstreamAuthSettings class. */
+    public UpstreamAuthSettings() {
+    }
+
     /**
      * Get the type property: Upstream auth type enum.
      *

@@ -25,6 +25,10 @@ public final class IoTSecurityAggregatedRecommendationList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of IoTSecurityAggregatedRecommendationList class. */
+    public IoTSecurityAggregatedRecommendationList() {
+    }
+
     /**
      * Get the value property: List of aggregated recommendations data.
      *

@@ -16,6 +16,10 @@ public final class SignalRTlsSettings {
     @JsonProperty(value = "clientCertEnabled")
     private Boolean clientCertEnabled;
 
+    /** Creates an instance of SignalRTlsSettings class. */
+    public SignalRTlsSettings() {
+    }
+
     /**
      * Get the clientCertEnabled property: Request client certificate during TLS handshake if enabled.
      *

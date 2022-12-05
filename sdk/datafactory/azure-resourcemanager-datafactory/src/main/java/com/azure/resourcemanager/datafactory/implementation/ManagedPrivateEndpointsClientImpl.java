@@ -59,7 +59,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
-    private interface ManagedPrivateEndpointsService {
+    public interface ManagedPrivateEndpointsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"

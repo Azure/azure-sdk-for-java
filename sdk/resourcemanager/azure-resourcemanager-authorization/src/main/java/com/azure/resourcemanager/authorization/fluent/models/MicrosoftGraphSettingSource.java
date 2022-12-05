@@ -32,6 +32,10 @@ public final class MicrosoftGraphSettingSource {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphSettingSource class. */
+    public MicrosoftGraphSettingSource() {
+    }
+
     /**
      * Get the displayName property: Not yet documented.
      *

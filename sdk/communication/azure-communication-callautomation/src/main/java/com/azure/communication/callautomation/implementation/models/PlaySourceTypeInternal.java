@@ -13,6 +13,9 @@ public final class PlaySourceTypeInternal extends ExpandableStringEnum<PlaySourc
     /** Static value file for PlaySourceTypeInternal. */
     public static final PlaySourceTypeInternal FILE = fromString("file");
 
+    /** Static value text for PlaySourceTypeInternal. */
+    public static final PlaySourceTypeInternal TEXT = fromString("text");
+
     /**
      * Creates or finds a PlaySourceTypeInternal from its string representation.
      *
