@@ -53,7 +53,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg41355/providers/Microsoft.Storage/storageAccounts/st35049010?api-version=2022-05-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg41355/providers/Microsoft.Storage/storageAccounts/st35049010?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "6c919622-ee0f-4c4d-a835-dfe34e935642",
@@ -77,7 +77,7 @@
       "Body" : "",
       "x-ms-client-request-id" : "6c919622-ee0f-4c4d-a835-dfe34e935642",
       "Content-Type" : "text/plain; charset=utf-8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/a9cf8b69-6cf0-4e85-a2a3-3dc2f8b2f03e?monitor=true&api-version=2022-05-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/a9cf8b69-6cf0-4e85-a2a3-3dc2f8b2f03e?monitor=true&api-version=2022-09-01"
     },
     "Exception" : null
   }, {
@@ -198,7 +198,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/a9cf8b69-6cf0-4e85-a2a3-3dc2f8b2f03e?monitor=true&api-version=2022-05-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/a9cf8b69-6cf0-4e85-a2a3-3dc2f8b2f03e?monitor=true&api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "ca66fa13-941c-4673-a021-cc6bf39fb895"
@@ -221,7 +221,7 @@
       "Body" : "",
       "x-ms-client-request-id" : "ca66fa13-941c-4673-a021-cc6bf39fb895",
       "Content-Type" : "text/plain; charset=utf-8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/a9cf8b69-6cf0-4e85-a2a3-3dc2f8b2f03e?monitor=true&api-version=2022-05-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/a9cf8b69-6cf0-4e85-a2a3-3dc2f8b2f03e?monitor=true&api-version=2022-09-01"
     },
     "Exception" : null
   }, {
@@ -257,7 +257,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/a9cf8b69-6cf0-4e85-a2a3-3dc2f8b2f03e?monitor=true&api-version=2022-05-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Storage/locations/eastus/asyncoperations/a9cf8b69-6cf0-4e85-a2a3-3dc2f8b2f03e?monitor=true&api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "a6770cb9-dfb5-49d9-b838-d49fbd1516a8"
@@ -284,7 +284,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg41355/providers/Microsoft.Storage/storageAccounts/st35049010?api-version=2022-05-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg41355/providers/Microsoft.Storage/storageAccounts/st35049010?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.storage/2.19.0-beta.1 (17.0.3; Mac OS X; 12.6)",
       "x-ms-client-request-id" : "40ee5790-7319-42a5-b028-7db757b6a0e4",

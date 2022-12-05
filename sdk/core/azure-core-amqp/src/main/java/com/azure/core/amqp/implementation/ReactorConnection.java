@@ -41,6 +41,7 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.azure.core.amqp.exception.AmqpErrorCondition.TIMEOUT_ERROR;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addShutdownSignal;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeAndResult;
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
@@ -114,7 +115,7 @@ public class ReactorConnection implements AmqpConnection {
         this.connectionOptions = connectionOptions;
         this.reactorProvider = reactorProvider;
         this.connectionId = connectionId;
-        this.logger = new ClientLogger(ReactorConnection.class,  createContextWithConnectionId(connectionId));
+        this.logger = new ClientLogger(ReactorConnection.class, createContextWithConnectionId(connectionId));
         this.handlerProvider = handlerProvider;
         this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider,
             "'tokenManagerProvider' cannot be null.");
@@ -276,7 +277,7 @@ public class ReactorConnection implements AmqpConnection {
     @Override
     public Mono<AmqpSession> createSession(String sessionName) {
         return connectionMono.map(connection -> {
-            final SessionSubscription sessionSubscription = sessionMap.computeIfAbsent(sessionName, key -> {
+            return sessionMap.computeIfAbsent(sessionName, key -> {
                 final SessionHandler sessionHandler = handlerProvider.createSessionHandler(connectionId,
                     getFullyQualifiedNamespace(), key, connectionOptions.getRetry().getTryTimeout());
                 final Session session = connection.session();
@@ -309,15 +310,27 @@ public class ReactorConnection implements AmqpConnection {
 
                 return new SessionSubscription(amqpSession, subscription);
             });
-
-            return sessionSubscription;
         }).flatMap(sessionSubscription -> {
             final Mono<AmqpEndpointState> activeSession = sessionSubscription.getSession().getEndpointStates()
                 .filter(state -> state == AmqpEndpointState.ACTIVE)
                 .next()
                 .timeout(retryPolicy.getRetryOptions().getTryTimeout(), Mono.error(() -> new AmqpException(true,
-                    String.format("connectionId[%s] sessionName[%s] Timeout waiting for session to be active.",
-                        connectionId, sessionName), handler.getErrorContext())));
+                    TIMEOUT_ERROR, String.format(
+                        "connectionId[%s] sessionName[%s] Timeout waiting for session to be active.", connectionId,
+                    sessionName), handler.getErrorContext())))
+                .doOnError(error -> {
+                    // Clean up the subscription if there was an error waiting for the session to become active.
+
+                    if (!(error instanceof AmqpException)) {
+                        return;
+                    }
+
+                    final AmqpException amqpException = (AmqpException) error;
+                    if (amqpException.getErrorCondition() == TIMEOUT_ERROR) {
+                        final SessionSubscription removed = sessionMap.remove(sessionName);
+                        removed.dispose();
+                    }
+                });
 
             return activeSession.thenReturn(sessionSubscription.getSession());
         });
