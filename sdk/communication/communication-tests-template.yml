@@ -16,14 +16,14 @@ stages:
       CloudConfig:
         Public:
           SubscriptionConfigurations:
-              ${{ if if parameters.CloudConfig.Public.SubscriptionConfigurations }}:
+              ${{ if parameters.CloudConfig.Public.SubscriptionConfigurations }}:
                 ${{ parameters.CloudConfig.Public.SubscriptionConfigurations }}
                 - $(sub-config-azure-cloud-test-resources)
                 - $(sub-config-communication-services-cloud-test-resources-common)
                 - $(sub-config-communication-services-cloud-test-resources-java)
         Int:
           SubscriptionConfigurations:
-              ${{ if if parameters.CloudConfig.Int.SubscriptionConfigurations }}:
+              ${{ if parameters.CloudConfig.Int.SubscriptionConfigurations }}:
                 ${{ parameters.CloudConfig.Public.SubscriptionConfigurations }}
                 - $(sub-config-communication-int-test-resources-common)
                 - $(sub-config-communication-int-test-resources-java)
