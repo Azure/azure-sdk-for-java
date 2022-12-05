@@ -12,10 +12,11 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTag
 import com.azure.monitor.opentelemetry.exporter.implementation.models.SeverityLevel;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.FormattedTime;
+import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
+import io.opentelemetry.api.logs.Severity;
 import io.opentelemetry.api.trace.SpanContext;
-import io.opentelemetry.sdk.logs.data.LogData;
-import io.opentelemetry.sdk.logs.data.Severity;
+import io.opentelemetry.sdk.logs.data.LogRecordData;
 import io.opentelemetry.sdk.resources.Resource;
 import reactor.util.annotation.Nullable;
 
@@ -28,6 +29,12 @@ public class LogDataMapper {
     private final boolean captureLoggingLevelAsCustomDimension;
     private final BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer;
 
+    private static final AttributeKey<String> OTEL_LOG4J_MARKER =
+        AttributeKey.stringKey("log4j.marker");
+
+    private static final AttributeKey<String> OTEL_LOGBACK_MARKER =
+        AttributeKey.stringKey("logback.marker");
+
     public LogDataMapper(
         boolean captureLoggingLevelAsCustomDimension,
         BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer) {
@@ -35,7 +42,7 @@ public class LogDataMapper {
         this.telemetryInitializer = telemetryInitializer;
     }
 
-    public TelemetryItem map(LogData log, @Nullable String stack, @Nullable Long itemCount) {
+    public TelemetryItem map(LogRecordData log, @Nullable String stack, @Nullable Long itemCount) {
         if (stack == null) {
             return createMessageTelemetryItem(log, itemCount);
         } else {
@@ -43,7 +50,7 @@ public class LogDataMapper {
         }
     }
 
-    private TelemetryItem createMessageTelemetryItem(LogData log, @Nullable Long itemCount) {
+    private TelemetryItem createMessageTelemetryItem(LogRecordData log, @Nullable Long itemCount) {
         MessageTelemetryBuilder telemetryBuilder = MessageTelemetryBuilder.create();
         telemetryInitializer.accept(telemetryBuilder, log.getResource());
 
@@ -70,7 +77,7 @@ public class LogDataMapper {
     }
 
     private TelemetryItem createExceptionTelemetryItem(
-        LogData log, @Nullable Long itemCount, String stack) {
+        LogRecordData log, @Nullable Long itemCount, String stack) {
         ExceptionTelemetryBuilder telemetryBuilder = ExceptionTelemetryBuilder.create();
         telemetryInitializer.accept(telemetryBuilder, log.getResource());
 
@@ -100,7 +107,8 @@ public class LogDataMapper {
         return telemetryBuilder.build();
     }
 
-    private static void setOperationTags(AbstractTelemetryBuilder telemetryBuilder, LogData log) {
+    private static void setOperationTags(
+        AbstractTelemetryBuilder telemetryBuilder, LogRecordData log) {
         SpanContext spanContext = log.getSpanContext();
         if (spanContext.isValid()) {
             telemetryBuilder.addTag(ContextTagKeys.AI_OPERATION_ID.toString(), spanContext.getTraceId());
@@ -123,7 +131,7 @@ public class LogDataMapper {
     }
 
     private static void setItemCount(
-        AbstractTelemetryBuilder telemetryBuilder, LogData log, @Nullable Long itemCount) {
+        AbstractTelemetryBuilder telemetryBuilder, LogRecordData log, @Nullable Long itemCount) {
         if (itemCount == null) {
             itemCount = log.getAttributes().get(AiSemanticAttributes.ITEM_COUNT);
         }
@@ -137,13 +145,14 @@ public class LogDataMapper {
     private static final String LOGBACK_MDC_PREFIX = "logback.mdc.";
     private static final String JBOSS_LOGGING_MDC_PREFIX = "jboss-logmanager.mdc.";
 
-    static void setExtraAttributes(AbstractTelemetryBuilder telemetryBuilder, Attributes attributes) {
+    private static void setExtraAttributes(
+        AbstractTelemetryBuilder telemetryBuilder, Attributes attributes) {
+        if ("java".equals(System.getenv("FUNCTIONS_WORKER_RUNTIME"))) {
+            setFunctionExtraAttributes(telemetryBuilder, attributes);
+        }
         attributes.forEach(
             (attributeKey, value) -> {
                 String key = attributeKey.getKey();
-                if (key.startsWith("applicationinsights.internal.")) {
-                    return;
-                }
                 if (key.startsWith(LOG4J2_CONTEXT_DATA_PREFIX)) {
                     telemetryBuilder.addProperty(
                         key.substring(LOG4J2_CONTEXT_DATA_PREFIX.length()), String.valueOf(value));
@@ -152,6 +161,26 @@ public class LogDataMapper {
                 if (key.startsWith(LOGBACK_MDC_PREFIX)) {
                     telemetryBuilder.addProperty(
                         key.substring(LOGBACK_MDC_PREFIX.length()), String.valueOf(value));
+                    return;
+                }
+                if (SemanticAttributes.CODE_FILEPATH.getKey().equals(key)) {
+                    telemetryBuilder.addProperty("FileName", String.valueOf(value));
+                    return;
+                }
+                if (SemanticAttributes.CODE_NAMESPACE.getKey().equals(key)) {
+                    telemetryBuilder.addProperty("ClassName", String.valueOf(value));
+                    return;
+                }
+                if (SemanticAttributes.CODE_FUNCTION.getKey().equals(key)) {
+                    telemetryBuilder.addProperty("MethodName", String.valueOf(value));
+                    return;
+                }
+                if (SemanticAttributes.CODE_LINENO.getKey().equals(key)) {
+                    telemetryBuilder.addProperty("LineNumber", String.valueOf(value));
+                    return;
+                }
+                if (OTEL_LOG4J_MARKER.getKey().equals(key) || OTEL_LOGBACK_MARKER.getKey().equals(key)) {
+                    telemetryBuilder.addProperty("Marker", String.valueOf(value));
                     return;
                 }
                 if (key.startsWith(JBOSS_LOGGING_MDC_PREFIX)) {
@@ -167,6 +196,9 @@ public class LogDataMapper {
                 if (SpanDataMapper.applyCommonTags(telemetryBuilder, key, value)) {
                     return;
                 }
+                if (key.startsWith("applicationinsights.internal.")) {
+                    return;
+                }
                 if (key.startsWith("thread.")) {
                     return;
                 }
@@ -178,6 +210,35 @@ public class LogDataMapper {
                     telemetryBuilder.addProperty(attributeKey.getKey(), val);
                 }
             });
+    }
+
+    private static void setFunctionExtraAttributes(
+        AbstractTelemetryBuilder telemetryBuilder, Attributes attributes) {
+        String invocationId = attributes.get(AiSemanticAttributes.AZ_FN_INVOCATION_ID);
+        if (invocationId != null) {
+            telemetryBuilder.addProperty(
+                "InvocationId", attributes.get(AiSemanticAttributes.AZ_FN_INVOCATION_ID));
+        }
+        String processId = attributes.get(AiSemanticAttributes.AZ_FN_PROCESS_ID);
+        if (processId != null) {
+            telemetryBuilder.addProperty("ProcessId", processId);
+        }
+        String logLevel = attributes.get(AiSemanticAttributes.AZ_FN_LOG_LEVEL);
+        if (logLevel != null) {
+            telemetryBuilder.addProperty("LogLevel", logLevel);
+        }
+        String category = attributes.get(AiSemanticAttributes.AZ_FN_CATEGORY);
+        if (category != null) {
+            telemetryBuilder.addProperty("Category", category);
+        }
+        String hostInstanceId = attributes.get(AiSemanticAttributes.AZ_FN_HOST_INSTANCE_ID);
+        if (hostInstanceId != null) {
+            telemetryBuilder.addProperty("HostInstanceId", hostInstanceId);
+        }
+        String liveLogsSessionId = attributes.get(AiSemanticAttributes.AZ_FN_LIVE_LOGS_SESSION_ID);
+        if (liveLogsSessionId != null) {
+            telemetryBuilder.addProperty("#AzFuncLiveLogsSessionId", liveLogsSessionId);
+        }
     }
 
     private void setLoggerProperties(

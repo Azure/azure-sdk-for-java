@@ -27,6 +27,7 @@ public enum AzureMonitorExporterServiceVersion implements ServiceVersion {
 
     /**
      * Gets the latest service version supported by this client library.
+     *
      * @return the latest service version.
      */
     public static AzureMonitorExporterServiceVersion getLatest() {

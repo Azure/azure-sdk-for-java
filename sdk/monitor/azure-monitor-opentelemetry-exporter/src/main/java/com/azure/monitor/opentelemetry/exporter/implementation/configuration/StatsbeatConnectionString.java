@@ -27,7 +27,8 @@ public final class StatsbeatConnectionString {
 
     private static final Pattern pattern = Pattern.compile("^https?://(?:www\\.)?([^/.-]+)");
 
-    private static final Set<String> EU_REGION_GEO_SET = new HashSet<>(10);
+    private static final Set<String> EU_REGION_GEO_SET = new HashSet<>(12);
+    private static final Set<String> NON_EU_REGION_GEO_SET = new HashSet<>(33);
 
     static {
         EU_REGION_GEO_SET.add("westeurope");
@@ -40,23 +41,64 @@ public final class StatsbeatConnectionString {
         EU_REGION_GEO_SET.add("swedencentral");
         EU_REGION_GEO_SET.add("switzerlandnorth");
         EU_REGION_GEO_SET.add("switzerlandwest");
+        EU_REGION_GEO_SET.add("uksouth");
+        EU_REGION_GEO_SET.add("ukwest");
+
+        NON_EU_REGION_GEO_SET.add("eastasia");
+        NON_EU_REGION_GEO_SET.add("southeastasia");
+        NON_EU_REGION_GEO_SET.add("chinaeast2");
+        NON_EU_REGION_GEO_SET.add("chinaeast3");
+        NON_EU_REGION_GEO_SET.add("chinanorth3");
+        NON_EU_REGION_GEO_SET.add("centralindia");
+        NON_EU_REGION_GEO_SET.add("southindia");
+        NON_EU_REGION_GEO_SET.add("jioindiacentral");
+        NON_EU_REGION_GEO_SET.add("jioindiawest");
+        NON_EU_REGION_GEO_SET.add("japaneast");
+        NON_EU_REGION_GEO_SET.add("japanwest");
+        NON_EU_REGION_GEO_SET.add("koreacentral");
+        NON_EU_REGION_GEO_SET.add("koreasouth");
+        NON_EU_REGION_GEO_SET.add("australiacentral");
+        NON_EU_REGION_GEO_SET.add("australiacentral2");
+        NON_EU_REGION_GEO_SET.add("australiaeast");
+        NON_EU_REGION_GEO_SET.add("australiasoutheast");
+        NON_EU_REGION_GEO_SET.add("canadacentral");
+        NON_EU_REGION_GEO_SET.add("canadaeast");
+        NON_EU_REGION_GEO_SET.add("qatarcentral");
+        NON_EU_REGION_GEO_SET.add("uaecentral");
+        NON_EU_REGION_GEO_SET.add("uaenorth");
+        NON_EU_REGION_GEO_SET.add("southafricanorth");
+        NON_EU_REGION_GEO_SET.add("brazilsouth");
+        NON_EU_REGION_GEO_SET.add("brazilsoutheast");
+        NON_EU_REGION_GEO_SET.add("centralus");
+        NON_EU_REGION_GEO_SET.add("eastus");
+        NON_EU_REGION_GEO_SET.add("eastus2");
+        NON_EU_REGION_GEO_SET.add("northcentralus");
+        NON_EU_REGION_GEO_SET.add("southcentralus");
+        NON_EU_REGION_GEO_SET.add("westus");
+        NON_EU_REGION_GEO_SET.add("westus2");
+        NON_EU_REGION_GEO_SET.add("westus3");
     }
 
     private final String ingestionEndpoint;
     private final String instrumentationKey;
 
+    @Nullable
     public static StatsbeatConnectionString create(
         ConnectionString connectionString,
         @Nullable String instrumentationKey,
         @Nullable String ingestionEndpoint) {
 
-        // if customer is in EU region and their statsbeat config is not in EU region, customer is
-        // responsible for breaking the EU data boundary violation.
-        // Statsbeat config setting has the highest precedence.
         if (instrumentationKey == null || instrumentationKey.isEmpty()) {
             InstrumentationKeyEndpointPair pair =
                 StatsbeatConnectionString.getInstrumentationKeyAndEndpointPair(
                     connectionString.getIngestionEndpoint());
+
+            // Statsbeat will not get collected when customer's stamp specific region is not found in our
+            // known non-EU and EU lists
+            if (pair == null) {
+                return null;
+            }
+
             instrumentationKey = pair.instrumentationKey;
             ingestionEndpoint = pair.endpoint;
         }
@@ -88,16 +130,19 @@ public final class StatsbeatConnectionString {
     }
 
     // visible for testing
+    @Nullable
     static InstrumentationKeyEndpointPair getInstrumentationKeyAndEndpointPair(
         String customerEndpoint) {
         String geo = getGeoWithoutStampSpecific(customerEndpoint);
         if (geo != null && EU_REGION_GEO_SET.contains(geo.toLowerCase(Locale.ROOT))) {
             return new InstrumentationKeyEndpointPair(
                 EU_REGION_STATSBEAT_IKEY, EU_REGION_STATSBEAT_ENDPOINT);
+        } else if (geo != null && NON_EU_REGION_GEO_SET.contains(geo.toLowerCase(Locale.ROOT))) {
+            return new InstrumentationKeyEndpointPair(
+                NON_EU_REGION_STATSBEAT_IKEY, NON_EU_REGION_STATSBEAT_ENDPOINT);
         }
 
-        return new InstrumentationKeyEndpointPair(
-            NON_EU_REGION_STATSBEAT_IKEY, NON_EU_REGION_STATSBEAT_ENDPOINT);
+        return null;
     }
 
     // visible for testing

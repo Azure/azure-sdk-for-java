@@ -22,7 +22,7 @@ import static com.azure.monitor.opentelemetry.exporter.implementation.utils.Azur
  * This class is an implementation of OpenTelemetry {@link SpanExporter} that allows different
  * tracing services to export recorded data for sampled spans in their own format.
  */
-public final class AzureMonitorTraceExporter implements SpanExporter {
+final class AzureMonitorTraceExporter implements SpanExporter {
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorTraceExporter.class);
     private static final OperationLogger OPERATION_LOGGER =

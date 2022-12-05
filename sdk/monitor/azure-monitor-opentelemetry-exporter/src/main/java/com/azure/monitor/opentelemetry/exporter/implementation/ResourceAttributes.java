@@ -1,3 +1,7 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+// Includes work from:
 /*
  * Copyright The OpenTelemetry Authors
  * SPDX-License-Identifier: Apache-2.0
@@ -14,15 +18,22 @@ import static io.opentelemetry.api.common.AttributeKey.stringArrayKey;
 import static io.opentelemetry.api.common.AttributeKey.stringKey;
 
 // this is a copy of io.opentelemetry.semconv.resource.attributes.ResourceAttributes
-// because the module that contains that class is not stable, so don't want to take a dependency on it
+// because the module that contains that class is not stable, so don't want to take a dependency on
+// it
 public final class ResourceAttributes {
-    /** The URL of the OpenTelemetry schema for these keys and values. */
+    /**
+     * The URL of the OpenTelemetry schema for these keys and values.
+     */
     public static final String SCHEMA_URL = "https://opentelemetry.io/schemas/1.9.0";
 
-    /** Name of the cloud provider. */
+    /**
+     * Name of the cloud provider.
+     */
     public static final AttributeKey<String> CLOUD_PROVIDER = stringKey("cloud.provider");
 
-    /** The cloud account ID the resource is assigned to. */
+    /**
+     * The cloud account ID the resource is assigned to.
+     */
     public static final AttributeKey<String> CLOUD_ACCOUNT_ID = stringKey("cloud.account.id");
 
     /**
@@ -96,14 +107,20 @@ public final class ResourceAttributes {
      */
     public static final AttributeKey<String> AWS_ECS_TASK_ARN = stringKey("aws.ecs.task.arn");
 
-    /** The task definition family this task definition is a member of. */
+    /**
+     * The task definition family this task definition is a member of.
+     */
     public static final AttributeKey<String> AWS_ECS_TASK_FAMILY = stringKey("aws.ecs.task.family");
 
-    /** The revision for this task definition. */
+    /**
+     * The revision for this task definition.
+     */
     public static final AttributeKey<String> AWS_ECS_TASK_REVISION =
         stringKey("aws.ecs.task.revision");
 
-    /** The ARN of an EKS cluster. */
+    /**
+     * The ARN of an EKS cluster.
+     */
     public static final AttributeKey<String> AWS_EKS_CLUSTER_ARN = stringKey("aws.eks.cluster.arn");
 
     /**
@@ -133,7 +150,9 @@ public final class ResourceAttributes {
     public static final AttributeKey<List<String>> AWS_LOG_GROUP_ARNS =
         stringArrayKey("aws.log.group.arns");
 
-    /** The name(s) of the AWS log stream(s) an application is writing to. */
+    /**
+     * The name(s) of the AWS log stream(s) an application is writing to.
+     */
     public static final AttributeKey<List<String>> AWS_LOG_STREAM_NAMES =
         stringArrayKey("aws.log.stream.names");
 
@@ -152,7 +171,9 @@ public final class ResourceAttributes {
     public static final AttributeKey<List<String>> AWS_LOG_STREAM_ARNS =
         stringArrayKey("aws.log.stream.arns");
 
-    /** Container name used by container runtime. */
+    /**
+     * Container name used by container runtime.
+     */
     public static final AttributeKey<String> CONTAINER_NAME = stringKey("container.name");
 
     /**
@@ -162,13 +183,19 @@ public final class ResourceAttributes {
      */
     public static final AttributeKey<String> CONTAINER_ID = stringKey("container.id");
 
-    /** The container runtime managing this container. */
+    /**
+     * The container runtime managing this container.
+     */
     public static final AttributeKey<String> CONTAINER_RUNTIME = stringKey("container.runtime");
 
-    /** Name of the image the container was built on. */
+    /**
+     * Name of the image the container was built on.
+     */
     public static final AttributeKey<String> CONTAINER_IMAGE_NAME = stringKey("container.image.name");
 
-    /** Container image tag. */
+    /**
+     * Container image tag.
+     */
     public static final AttributeKey<String> CONTAINER_IMAGE_TAG = stringKey("container.image.tag");
 
     /**
@@ -324,7 +351,9 @@ public final class ResourceAttributes {
      */
     public static final AttributeKey<Long> FAAS_MAX_MEMORY = longKey("faas.max_memory");
 
-    /** Unique host ID. For Cloud, this must be the instance_id assigned by the cloud provider. */
+    /**
+     * Unique host ID. For Cloud, this must be the instance_id assigned by the cloud provider.
+     */
     public static final AttributeKey<String> HOST_ID = stringKey("host.id");
 
     /**
@@ -333,16 +362,24 @@ public final class ResourceAttributes {
      */
     public static final AttributeKey<String> HOST_NAME = stringKey("host.name");
 
-    /** Type of host. For Cloud, this must be the machine type. */
+    /**
+     * Type of host. For Cloud, this must be the machine type.
+     */
     public static final AttributeKey<String> HOST_TYPE = stringKey("host.type");
 
-    /** The CPU architecture the host system is running on. */
+    /**
+     * The CPU architecture the host system is running on.
+     */
     public static final AttributeKey<String> HOST_ARCH = stringKey("host.arch");
 
-    /** Name of the VM image or OS install the host was instantiated from. */
+    /**
+     * Name of the VM image or OS install the host was instantiated from.
+     */
     public static final AttributeKey<String> HOST_IMAGE_NAME = stringKey("host.image.name");
 
-    /** VM image ID. For Cloud, this value is from the provider. */
+    /**
+     * VM image ID. For Cloud, this value is from the provider.
+     */
     public static final AttributeKey<String> HOST_IMAGE_ID = stringKey("host.image.id");
 
     /**
@@ -351,22 +388,34 @@ public final class ResourceAttributes {
      */
     public static final AttributeKey<String> HOST_IMAGE_VERSION = stringKey("host.image.version");
 
-    /** The name of the cluster. */
+    /**
+     * The name of the cluster.
+     */
     public static final AttributeKey<String> K8S_CLUSTER_NAME = stringKey("k8s.cluster.name");
 
-    /** The name of the Node. */
+    /**
+     * The name of the Node.
+     */
     public static final AttributeKey<String> K8S_NODE_NAME = stringKey("k8s.node.name");
 
-    /** The UID of the Node. */
+    /**
+     * The UID of the Node.
+     */
     public static final AttributeKey<String> K8S_NODE_UID = stringKey("k8s.node.uid");
 
-    /** The name of the namespace that the pod is running in. */
+    /**
+     * The name of the namespace that the pod is running in.
+     */
     public static final AttributeKey<String> K8S_NAMESPACE_NAME = stringKey("k8s.namespace.name");
 
-    /** The UID of the Pod. */
+    /**
+     * The UID of the Pod.
+     */
     public static final AttributeKey<String> K8S_POD_UID = stringKey("k8s.pod.uid");
 
-    /** The name of the Pod. */
+    /**
+     * The name of the Pod.
+     */
     public static final AttributeKey<String> K8S_POD_NAME = stringKey("k8s.pod.name");
 
     /**
@@ -382,43 +431,69 @@ public final class ResourceAttributes {
     public static final AttributeKey<Long> K8S_CONTAINER_RESTART_COUNT =
         longKey("k8s.container.restart_count");
 
-    /** The UID of the ReplicaSet. */
+    /**
+     * The UID of the ReplicaSet.
+     */
     public static final AttributeKey<String> K8S_REPLICASET_UID = stringKey("k8s.replicaset.uid");
 
-    /** The name of the ReplicaSet. */
+    /**
+     * The name of the ReplicaSet.
+     */
     public static final AttributeKey<String> K8S_REPLICASET_NAME = stringKey("k8s.replicaset.name");
 
-    /** The UID of the Deployment. */
+    /**
+     * The UID of the Deployment.
+     */
     public static final AttributeKey<String> K8S_DEPLOYMENT_UID = stringKey("k8s.deployment.uid");
 
-    /** The name of the Deployment. */
+    /**
+     * The name of the Deployment.
+     */
     public static final AttributeKey<String> K8S_DEPLOYMENT_NAME = stringKey("k8s.deployment.name");
 
-    /** The UID of the StatefulSet. */
+    /**
+     * The UID of the StatefulSet.
+     */
     public static final AttributeKey<String> K8S_STATEFULSET_UID = stringKey("k8s.statefulset.uid");
 
-    /** The name of the StatefulSet. */
+    /**
+     * The name of the StatefulSet.
+     */
     public static final AttributeKey<String> K8S_STATEFULSET_NAME = stringKey("k8s.statefulset.name");
 
-    /** The UID of the DaemonSet. */
+    /**
+     * The UID of the DaemonSet.
+     */
     public static final AttributeKey<String> K8S_DAEMONSET_UID = stringKey("k8s.daemonset.uid");
 
-    /** The name of the DaemonSet. */
+    /**
+     * The name of the DaemonSet.
+     */
     public static final AttributeKey<String> K8S_DAEMONSET_NAME = stringKey("k8s.daemonset.name");
 
-    /** The UID of the Job. */
+    /**
+     * The UID of the Job.
+     */
     public static final AttributeKey<String> K8S_JOB_UID = stringKey("k8s.job.uid");
 
-    /** The name of the Job. */
+    /**
+     * The name of the Job.
+     */
     public static final AttributeKey<String> K8S_JOB_NAME = stringKey("k8s.job.name");
 
-    /** The UID of the CronJob. */
+    /**
+     * The UID of the CronJob.
+     */
     public static final AttributeKey<String> K8S_CRONJOB_UID = stringKey("k8s.cronjob.uid");
 
-    /** The name of the CronJob. */
+    /**
+     * The name of the CronJob.
+     */
     public static final AttributeKey<String> K8S_CRONJOB_NAME = stringKey("k8s.cronjob.name");
 
-    /** The operating system type. */
+    /**
+     * The operating system type.
+     */
     public static final AttributeKey<String> OS_TYPE = stringKey("os.type");
 
     /**
@@ -427,7 +502,9 @@ public final class ResourceAttributes {
      */
     public static final AttributeKey<String> OS_DESCRIPTION = stringKey("os.description");
 
-    /** Human readable operating system name. */
+    /**
+     * Human readable operating system name.
+     */
     public static final AttributeKey<String> OS_NAME = stringKey("os.name");
 
     /**
@@ -436,7 +513,9 @@ public final class ResourceAttributes {
      */
     public static final AttributeKey<String> OS_VERSION = stringKey("os.version");
 
-    /** Process identifier (PID). */
+    /**
+     * Process identifier (PID).
+     */
     public static final AttributeKey<Long> PROCESS_PID = longKey("process.pid");
 
     /**
@@ -478,7 +557,9 @@ public final class ResourceAttributes {
     public static final AttributeKey<List<String>> PROCESS_COMMAND_ARGS =
         stringArrayKey("process.command_args");
 
-    /** The username of the user that owns the process. */
+    /**
+     * The username of the user that owns the process.
+     */
     public static final AttributeKey<String> PROCESS_OWNER = stringKey("process.owner");
 
     /**
@@ -551,180 +632,319 @@ public final class ResourceAttributes {
      */
     public static final AttributeKey<String> SERVICE_INSTANCE_ID = stringKey("service.instance.id");
 
-    /** The version string of the service API or implementation. */
+    /**
+     * The version string of the service API or implementation.
+     */
     public static final AttributeKey<String> SERVICE_VERSION = stringKey("service.version");
 
-    /** The name of the telemetry SDK as defined above. */
+    /**
+     * The name of the telemetry SDK as defined above.
+     */
     public static final AttributeKey<String> TELEMETRY_SDK_NAME = stringKey("telemetry.sdk.name");
 
-    /** The language of the telemetry SDK. */
+    /**
+     * The language of the telemetry SDK.
+     */
     public static final AttributeKey<String> TELEMETRY_SDK_LANGUAGE =
         stringKey("telemetry.sdk.language");
 
-    /** The version string of the telemetry SDK. */
+    /**
+     * The version string of the telemetry SDK.
+     */
     public static final AttributeKey<String> TELEMETRY_SDK_VERSION =
         stringKey("telemetry.sdk.version");
 
-    /** The version string of the auto instrumentation agent, if used. */
+    /**
+     * The version string of the auto instrumentation agent, if used.
+     */
     public static final AttributeKey<String> TELEMETRY_AUTO_VERSION =
         stringKey("telemetry.auto.version");
 
-    /** The name of the web engine. */
+    /**
+     * The name of the web engine.
+     */
     public static final AttributeKey<String> WEBENGINE_NAME = stringKey("webengine.name");
 
-    /** The version of the web engine. */
+    /**
+     * The version of the web engine.
+     */
     public static final AttributeKey<String> WEBENGINE_VERSION = stringKey("webengine.version");
 
-    /** Additional description of the web engine (e.g. detailed version and edition information). */
+    /**
+     * Additional description of the web engine (e.g. detailed version and edition information).
+     */
     public static final AttributeKey<String> WEBENGINE_DESCRIPTION =
         stringKey("webengine.description");
 
     // Enum definitions
     public static final class CloudProviderValues {
-        /** Alibaba Cloud. */
+        /**
+         * Alibaba Cloud.
+         */
         public static final String ALIBABA_CLOUD = "alibaba_cloud";
-        /** Amazon Web Services. */
+        /**
+         * Amazon Web Services.
+         */
         public static final String AWS = "aws";
-        /** Microsoft Azure. */
+        /**
+         * Microsoft Azure.
+         */
         public static final String AZURE = "azure";
-        /** Google Cloud Platform. */
+        /**
+         * Google Cloud Platform.
+         */
         public static final String GCP = "gcp";
-        /** Tencent Cloud. */
+        /**
+         * Tencent Cloud.
+         */
         public static final String TENCENT_CLOUD = "tencent_cloud";
 
-        private CloudProviderValues() {}
+        private CloudProviderValues() {
+        }
     }
 
     public static final class CloudPlatformValues {
-        /** Alibaba Cloud Elastic Compute Service. */
+        /**
+         * Alibaba Cloud Elastic Compute Service.
+         */
         public static final String ALIBABA_CLOUD_ECS = "alibaba_cloud_ecs";
-        /** Alibaba Cloud Function Compute. */
+        /**
+         * Alibaba Cloud Function Compute.
+         */
         public static final String ALIBABA_CLOUD_FC = "alibaba_cloud_fc";
-        /** AWS Elastic Compute Cloud. */
+        /**
+         * AWS Elastic Compute Cloud.
+         */
         public static final String AWS_EC2 = "aws_ec2";
-        /** AWS Elastic Container Service. */
+        /**
+         * AWS Elastic Container Service.
+         */
         public static final String AWS_ECS = "aws_ecs";
-        /** AWS Elastic Kubernetes Service. */
+        /**
+         * AWS Elastic Kubernetes Service.
+         */
         public static final String AWS_EKS = "aws_eks";
-        /** AWS Lambda. */
+        /**
+         * AWS Lambda.
+         */
         public static final String AWS_LAMBDA = "aws_lambda";
-        /** AWS Elastic Beanstalk. */
+        /**
+         * AWS Elastic Beanstalk.
+         */
         public static final String AWS_ELASTIC_BEANSTALK = "aws_elastic_beanstalk";
-        /** AWS App Runner. */
+        /**
+         * AWS App Runner.
+         */
         public static final String AWS_APP_RUNNER = "aws_app_runner";
-        /** Azure Virtual Machines. */
+        /**
+         * Azure Virtual Machines.
+         */
         public static final String AZURE_VM = "azure_vm";
-        /** Azure Container Instances. */
+        /**
+         * Azure Container Instances.
+         */
         public static final String AZURE_CONTAINER_INSTANCES = "azure_container_instances";
-        /** Azure Kubernetes Service. */
+        /**
+         * Azure Kubernetes Service.
+         */
         public static final String AZURE_AKS = "azure_aks";
-        /** Azure Functions. */
+        /**
+         * Azure Functions.
+         */
         public static final String AZURE_FUNCTIONS = "azure_functions";
-        /** Azure App Service. */
+        /**
+         * Azure App Service.
+         */
         public static final String AZURE_APP_SERVICE = "azure_app_service";
-        /** Google Cloud Compute Engine (GCE). */
+        /**
+         * Google Cloud Compute Engine (GCE).
+         */
         public static final String GCP_COMPUTE_ENGINE = "gcp_compute_engine";
-        /** Google Cloud Run. */
+        /**
+         * Google Cloud Run.
+         */
         public static final String GCP_CLOUD_RUN = "gcp_cloud_run";
-        /** Google Cloud Kubernetes Engine (GKE). */
+        /**
+         * Google Cloud Kubernetes Engine (GKE).
+         */
         public static final String GCP_KUBERNETES_ENGINE = "gcp_kubernetes_engine";
-        /** Google Cloud Functions (GCF). */
+        /**
+         * Google Cloud Functions (GCF).
+         */
         public static final String GCP_CLOUD_FUNCTIONS = "gcp_cloud_functions";
-        /** Google Cloud App Engine (GAE). */
+        /**
+         * Google Cloud App Engine (GAE).
+         */
         public static final String GCP_APP_ENGINE = "gcp_app_engine";
-        /** Tencent Cloud Cloud Virtual Machine (CVM). */
+        /**
+         * Tencent Cloud Cloud Virtual Machine (CVM).
+         */
         public static final String TENCENT_CLOUD_CVM = "tencent_cloud_cvm";
-        /** Tencent Cloud Elastic Kubernetes Service (EKS). */
+        /**
+         * Tencent Cloud Elastic Kubernetes Service (EKS).
+         */
         public static final String TENCENT_CLOUD_EKS = "tencent_cloud_eks";
-        /** Tencent Cloud Serverless Cloud Function (SCF). */
+        /**
+         * Tencent Cloud Serverless Cloud Function (SCF).
+         */
         public static final String TENCENT_CLOUD_SCF = "tencent_cloud_scf";
 
-        private CloudPlatformValues() {}
+        private CloudPlatformValues() {
+        }
     }
 
     public static final class AwsEcsLaunchtypeValues {
-        /** ec2. */
+        /**
+         * ec2.
+         */
         public static final String EC2 = "ec2";
-        /** fargate. */
+        /**
+         * fargate.
+         */
         public static final String FARGATE = "fargate";
 
-        private AwsEcsLaunchtypeValues() {}
+        private AwsEcsLaunchtypeValues() {
+        }
     }
 
     public static final class HostArchValues {
-        /** AMD64. */
+        /**
+         * AMD64.
+         */
         public static final String AMD64 = "amd64";
-        /** ARM32. */
+        /**
+         * ARM32.
+         */
         public static final String ARM32 = "arm32";
-        /** ARM64. */
+        /**
+         * ARM64.
+         */
         public static final String ARM64 = "arm64";
-        /** Itanium. */
+        /**
+         * Itanium.
+         */
         public static final String IA64 = "ia64";
-        /** 32-bit PowerPC. */
+        /**
+         * 32-bit PowerPC.
+         */
         public static final String PPC32 = "ppc32";
-        /** 64-bit PowerPC. */
+        /**
+         * 64-bit PowerPC.
+         */
         public static final String PPC64 = "ppc64";
-        /** IBM z/Architecture. */
+        /**
+         * IBM z/Architecture.
+         */
         public static final String S390X = "s390x";
-        /** 32-bit x86. */
+        /**
+         * 32-bit x86.
+         */
         public static final String X86 = "x86";
 
-        private HostArchValues() {}
+        private HostArchValues() {
+        }
     }
 
     public static final class OsTypeValues {
-        /** Microsoft Windows. */
+        /**
+         * Microsoft Windows.
+         */
         public static final String WINDOWS = "windows";
-        /** Linux. */
+        /**
+         * Linux.
+         */
         public static final String LINUX = "linux";
-        /** Apple Darwin. */
+        /**
+         * Apple Darwin.
+         */
         public static final String DARWIN = "darwin";
-        /** FreeBSD. */
+        /**
+         * FreeBSD.
+         */
         public static final String FREEBSD = "freebsd";
-        /** NetBSD. */
+        /**
+         * NetBSD.
+         */
         public static final String NETBSD = "netbsd";
-        /** OpenBSD. */
+        /**
+         * OpenBSD.
+         */
         public static final String OPENBSD = "openbsd";
-        /** DragonFly BSD. */
+        /**
+         * DragonFly BSD.
+         */
         public static final String DRAGONFLYBSD = "dragonflybsd";
-        /** HP-UX (Hewlett Packard Unix). */
+        /**
+         * HP-UX (Hewlett Packard Unix).
+         */
         public static final String HPUX = "hpux";
-        /** AIX (Advanced Interactive eXecutive). */
+        /**
+         * AIX (Advanced Interactive eXecutive).
+         */
         public static final String AIX = "aix";
-        /** Oracle Solaris. */
+        /**
+         * Oracle Solaris.
+         */
         public static final String SOLARIS = "solaris";
-        /** IBM z/OS. */
+        /**
+         * IBM z/OS.
+         */
         public static final String Z_OS = "z_os";
 
-        private OsTypeValues() {}
+        private OsTypeValues() {
+        }
     }
 
     public static final class TelemetrySdkLanguageValues {
-        /** cpp. */
+        /**
+         * cpp.
+         */
         public static final String CPP = "cpp";
-        /** dotnet. */
+        /**
+         * dotnet.
+         */
         public static final String DOTNET = "dotnet";
-        /** erlang. */
+        /**
+         * erlang.
+         */
         public static final String ERLANG = "erlang";
-        /** go. */
+        /**
+         * go.
+         */
         public static final String GO = "go";
-        /** java. */
+        /**
+         * java.
+         */
         public static final String JAVA = "java";
-        /** nodejs. */
+        /**
+         * nodejs.
+         */
         public static final String NODEJS = "nodejs";
-        /** php. */
+        /**
+         * php.
+         */
         public static final String PHP = "php";
-        /** python. */
+        /**
+         * python.
+         */
         public static final String PYTHON = "python";
-        /** ruby. */
+        /**
+         * ruby.
+         */
         public static final String RUBY = "ruby";
-        /** webjs. */
+        /**
+         * webjs.
+         */
         public static final String WEBJS = "webjs";
-        /** swift. */
+        /**
+         * swift.
+         */
         public static final String SWIFT = "swift";
 
-        private TelemetrySdkLanguageValues() {}
+        private TelemetrySdkLanguageValues() {
+        }
     }
 
-    private ResourceAttributes() {}
+    private ResourceAttributes() {
+    }
 }

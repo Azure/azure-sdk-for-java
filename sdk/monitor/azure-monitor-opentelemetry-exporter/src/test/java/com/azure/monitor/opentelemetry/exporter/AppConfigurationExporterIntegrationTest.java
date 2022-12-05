@@ -16,6 +16,7 @@ import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils;
 import io.opentelemetry.api.GlobalOpenTelemetry;
+import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
@@ -54,9 +55,12 @@ public class AppConfigurationExporterIntegrationTest extends TestBase {
         CountDownLatch appConfigCountDown = new CountDownLatch(1);
         CountDownLatch exporterCountDown = new CountDownLatch(1);
 
-        Tracer tracer =
-            TestUtils.configureAzureMonitorTraceExporter(
+        OpenTelemetry openTelemetry =
+            TestUtils.createOpenTelemetrySdk(
                 new ValidationPolicy(exporterCountDown, "AppConfig.setKey"));
+
+        Tracer tracer = openTelemetry.getTracer("Sample");
+
         ConfigurationClient client = getConfigurationClient(appConfigCountDown);
 
         Span span = tracer.spanBuilder("set-config-exporter-testing").startSpan();
@@ -80,9 +84,12 @@ public class AppConfigurationExporterIntegrationTest extends TestBase {
         CountDownLatch appConfigCountDown = new CountDownLatch(1);
         CountDownLatch exporterCountDown = new CountDownLatch(1);
 
-        Tracer tracer =
-            TestUtils.configureAzureMonitorTraceExporter(
+        OpenTelemetry openTelemetry =
+            TestUtils.createOpenTelemetrySdk(
                 new ValidationPolicy(exporterCountDown, "disable-config-exporter-testing"));
+
+        Tracer tracer = openTelemetry.getTracer("Sample");
+
         ConfigurationClient client = getConfigurationClient(appConfigCountDown);
 
         Span span = tracer.spanBuilder("disable-config-exporter-testing").startSpan();
