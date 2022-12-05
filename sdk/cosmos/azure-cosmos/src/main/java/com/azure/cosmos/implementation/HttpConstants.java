@@ -286,17 +286,16 @@ public class HttpConstants {
         public static final String FULL_FIDELITY_FEED = "Full-Fidelity Feed";
     }
 
-    public enum SDKSupportedCapabilities {
-        NONE(1 << 0),
-        PARTITION_MERGE(1 << 1);
+    public static class SDKSupportedCapabilities {
+        private static final long NONE = 0; // 0
+        private static final long PARTITION_MERGE = 1; // 1 << 0
 
-        private final int value;
-        SDKSupportedCapabilities(int value) {
-            this.value = value;
+        public static final String SUPPORTED_CAPABILITIES;
+        public static final String SUPPORTED_CAPABILITIES_NONE;
+        static {
+            SUPPORTED_CAPABILITIES = String.valueOf(PARTITION_MERGE);
+            SUPPORTED_CAPABILITIES_NONE = String.valueOf(NONE);
         }
-
-        public static final String SUPPORTED_CAPABILITIES = EnumSet.of(PARTITION_MERGE).toString();
-        public static final String SUPPORTED_CAPABILITIES_NONE = EnumSet.of(NONE).toString();
     }
 
     public static class Versions {
