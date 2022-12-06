@@ -4,6 +4,7 @@
 package com.azure.storage.blob.options;
 
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -47,7 +48,7 @@ public class PageBlobUploadPagesOptions {
      * @return The MD5 of this instance's data.
      */
     public byte[] getContentMd5() {
-        return contentMd5;
+        return CoreUtils.clone(contentMd5);
     }
 
     /**
@@ -55,7 +56,7 @@ public class PageBlobUploadPagesOptions {
      * @return The updated options.
      */
     public PageBlobUploadPagesOptions setContentMd5(byte[] contentMd5) {
-        this.contentMd5 = contentMd5;
+        this.contentMd5 = CoreUtils.clone(contentMd5);
         return this;
     }
 
