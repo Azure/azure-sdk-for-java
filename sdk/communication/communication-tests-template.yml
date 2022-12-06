@@ -16,21 +16,12 @@ stages:
       CloudConfig:
         Public:
           SubscriptionConfigurations:
-            ${{ if parameters.CloudConfig.Public }}:
-              ${{ each item in parameters.CloudConfig.Public.SubscriptionConfigurations }}:
-              - ${{ item }}
+            ${{ if $[lt(True, False)] }}:
+              -   script: echo $(firstEval)
             ${{ else }}:
               - $(sub-config-azure-cloud-test-resources)
               - $(sub-config-communication-services-cloud-test-resources-common)
               - $(sub-config-communication-services-cloud-test-resources-java)
-        Int:
-          SubscriptionConfigurations:
-            ${{ if parameters.CloudConfig.Int }}:
-              ${{ each item in parameters.CloudConfig.Int.SubscriptionConfigurations }}:
-                  - ${{ item }}
-            ${{ else }}:
-                - $(sub-config-communication-int-test-resources-common)
-                - $(sub-config-communication-int-test-resources-java)
 
           # This only affects the phone-numbers package
           MatrixReplace:
