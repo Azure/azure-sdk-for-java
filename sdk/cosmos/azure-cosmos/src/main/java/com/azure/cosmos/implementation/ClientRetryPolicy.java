@@ -159,7 +159,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         return this.throttlingRetry.shouldRetry(e);
     }
-  
+
       private boolean gatewayRequestCanFailoverOnTimeout(RxDocumentServiceRequest request) {
         //Query Plan requests
         if(request.getResourceType() == ResourceType.Document
@@ -172,13 +172,13 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             && request.getResourceType() == ResourceType.StoredProcedure)
             || request.getResourceType() != ResourceType.Document;
 
-        //Data Plane Read & Write
-        if(!isMetaDataRequest) {
-            return true;
-        }
-
         //Meta Data Read
         if(isMetaDataRequest && request.isReadOnly()) {
+              return true;
+        }
+
+        //Data Plane Read & Write
+        if(!isMetaDataRequest && !request.isAddressRefresh()) {
             return true;
         }
 
