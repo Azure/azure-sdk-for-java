@@ -20,10 +20,7 @@ import java.util.Map;
  * Extended options that may be passed when uploading a Block Blob in a single request.
  */
 public class BlockBlobSimpleUploadOptions {
-    private final Flux<ByteBuffer> dataFlux;
-    private final InputStream dataStream;
     private final BinaryData data;
-    private final long length;
     private BlobHttpHeaders headers;
     private Map<String, String> metadata;
     private Map<String, String> tags;
@@ -41,9 +38,6 @@ public class BlockBlobSimpleUploadOptions {
         StorageImplUtils.assertNotNull("data must not be null", data);
         StorageImplUtils.assertNotNull("data must have defined length", data.getLength());
         this.data = data;
-        this.length = data.getLength();
-        this.dataFlux = null;
-        this.dataStream = null;
     }
 
     /**
@@ -55,10 +49,7 @@ public class BlockBlobSimpleUploadOptions {
     public BlockBlobSimpleUploadOptions(Flux<ByteBuffer> data, long length) {
         StorageImplUtils.assertNotNull("dataFlux", data);
         StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
-        this.dataFlux = data;
-        this.length = length;
-        this.dataStream = null;
-        this.data = null;
+        this.data = BinaryData.wrapFlux(data, length, false);
     }
 
     /**
@@ -69,10 +60,7 @@ public class BlockBlobSimpleUploadOptions {
     public BlockBlobSimpleUploadOptions(InputStream data, long length) {
         StorageImplUtils.assertNotNull("dataStream", data);
         StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
-        this.dataStream = data;
-        this.length = length;
-        this.dataFlux = null;
-        this.data = null;
+        this.data = BinaryData.fromStream(data, length);
     }
 
     /**
@@ -80,14 +68,14 @@ public class BlockBlobSimpleUploadOptions {
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
      */
     public Flux<ByteBuffer> getDataFlux() {
-        return this.dataFlux;
+        return this.data.toFluxByteBuffer();
     }
 
     /**
      * @return The data to write to the blob.
      */
     public InputStream getDataStream() {
-        return this.dataStream;
+        return this.data.toStream();
     }
 
     /**
@@ -102,7 +90,7 @@ public class BlockBlobSimpleUploadOptions {
      * data emitted by the data source.
      */
     public long getLength() {
-        return this.length;
+        return this.getData().getLength();
     }
 
     /**
