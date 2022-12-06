@@ -159,7 +159,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         return this.throttlingRetry.shouldRetry(e);
     }
-    private boolean gatewayRequestCanFailoverOnTimeout(RxDocumentServiceRequest request) {
+  
+      private boolean gatewayRequestCanFailoverOnTimeout(RxDocumentServiceRequest request) {
         //Query Plan requests
         if(request.getResourceType() == ResourceType.Document
             && request.getOperationType() == OperationType.QueryPlan) {
