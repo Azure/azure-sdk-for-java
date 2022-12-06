@@ -17,6 +17,7 @@ public class App {
      */
     public static void main(String[] args) {
         final Class<?>[] testClasses = new Class<?>[]{
+            SendEventBatchTest.class,
             ReceiveEventsTest.class,
             SendEventDataTest.class,
             SendEventDataBatchTest.class,

@@ -37,10 +37,6 @@ abstract class ServiceTest<T extends EventHubsOptions> extends BatchPerfTest<T> 
     ServiceTest(T options) {
         super(options);
 
-        Flux.fromIterable(new ArrayList<>(1))
-            .parallel()
-
-
         final InputStream randomInputStream = TestDataCreationHelper.createRandomInputStream(options.getSize());
         final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         byte[] eventBytes;
