@@ -53,7 +53,6 @@ public class ReceiveMessagesTest extends ServiceBatchTest<ServiceBusStressOption
 
     @Override
     public Mono<Void> setupAsync() {
-        // Since test does warm up and test many times, we are sending many messages, so we will have them available.
         return super.setupAsync()
             .then(sendMessage());
     }
@@ -65,7 +64,11 @@ public class ReceiveMessagesTest extends ServiceBatchTest<ServiceBusStressOption
     }
 
     private Mono<Void> sendMessage() {
-        List<IMessage> messages = ServiceBusTestUtil.getMessagesToSend(options.getMessagesSizeBytesToSend(), options.getMessagesToSend());
-        return Mono.fromFuture(sender.sendBatchAsync(messages));
+        // Since test does warm up and test many times, we are sending many messages, so we will have them available.
+        for (int i = 0; i < TOTAL_MESSAGE_MULTIPLIER; i++) {
+            List<IMessage> messages = ServiceBusTestUtil.getMessagesToSend(options.getMessagesSizeBytesToSend(), options.getMessagesToSend());
+            sender.sendBatchAsync(messages);
+        }
+        return Mono.empty();
     }
 }
