@@ -461,9 +461,16 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         context = context == null ? Context.NONE : context;
         BlobImmutabilityPolicy immutabilityPolicy = options.getImmutabilityPolicy() == null
             ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
-
+        BinaryData data = options.getData();
+        if (data == null) {
+            if (options.getDataStream() != null) {
+                data = BinaryData.fromStream(options.getDataStream());
+            } else {
+                data = BinaryData.fromFlux(options.getDataFlux()).block();
+            }
+        }
         ResponseBase<BlockBlobsUploadHeaders, Void> response = this.azureBlobStorage.getBlockBlobs().uploadWithResponse(containerName, blobName,
-            options.getLength(), BinaryData.fromStream(options.getDataStream()), null, options.getContentMd5(), options.getMetadata(),
+            options.getLength(), data, null, options.getContentMd5(), options.getMetadata(),
             requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,

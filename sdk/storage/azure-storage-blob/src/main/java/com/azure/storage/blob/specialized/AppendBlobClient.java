@@ -238,8 +238,8 @@ public final class AppendBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppendBlobItem> createWithResponse(AppendBlobCreateOptions options, Duration timeout,
         Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(appendBlobAsyncClient.
-            createWithResponse(options, context), timeout);
+        // TODO: Execute in a thread with timeout.
+        return appendBlobAsyncClient.createWithResponseSync(options, context);
     }
 
     /**
@@ -296,8 +296,8 @@ public final class AppendBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppendBlobItem> createIfNotExistsWithResponse(AppendBlobCreateOptions options, Duration timeout,
         Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(appendBlobAsyncClient.
-            createIfNotExistsWithResponse(options, context), timeout);
+        // TODO: Execute in a thread with timeout.
+        return appendBlobAsyncClient.createIfNotExistsWithResponseSync(options, context);
     }
 
     /**
@@ -369,10 +369,8 @@ public final class AppendBlobClient extends BlobClientBase {
     public Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions, Duration timeout, Context context) {
         Objects.requireNonNull(data, "'data' cannot be null.");
-        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, MAX_APPEND_BLOCK_BYTES, true);
-        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(
-            fbb.subscribeOn(Schedulers.boundedElastic()), length, contentMd5, appendBlobRequestConditions, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        // TODO: Execute in a thread with timeout.
+        return appendBlobAsyncClient.appendBlockWithResponseSync(data, length, contentMd5, appendBlobRequestConditions, context);
     }
 
     /**
@@ -439,11 +437,11 @@ public final class AppendBlobClient extends BlobClientBase {
     public Response<AppendBlobItem> appendBlockFromUrlWithResponse(String sourceUrl, BlobRange sourceRange,
         byte[] sourceContentMd5, AppendBlobRequestConditions destRequestConditions,
         BlobRequestConditions sourceRequestConditions, Duration timeout, Context context) {
-        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockFromUrlWithResponse(
+        // TODO: Execute in a thread with timeout.
+        return appendBlobAsyncClient.appendBlockFromUrlWithResponseSync(
             new AppendBlobAppendBlockFromUrlOptions(sourceUrl).setSourceRange(sourceRange)
                 .setSourceContentMd5(sourceContentMd5).setDestinationRequestConditions(destRequestConditions)
                 .setSourceRequestConditions(sourceRequestConditions), context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -479,9 +477,9 @@ public final class AppendBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppendBlobItem> appendBlockFromUrlWithResponse(AppendBlobAppendBlockFromUrlOptions options, Duration timeout,
         Context context) {
-        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockFromUrlWithResponse(
+        // TODO: Execute in a thread with timeout.
+        return appendBlobAsyncClient.appendBlockFromUrlWithResponseSync(
             options, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -524,8 +522,7 @@ public final class AppendBlobClient extends BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sealWithResponse(AppendBlobSealOptions options, Duration timeout, Context context) {
-        Mono<Response<Void>> response = appendBlobAsyncClient.sealWithResponse(options, context);
-
-        return blockWithOptionalTimeout(response, timeout);
+        // TODO: Execute in a thread with timeout.
+        return appendBlobAsyncClient.sealWithResponseSync(options, context);
     }
 }
