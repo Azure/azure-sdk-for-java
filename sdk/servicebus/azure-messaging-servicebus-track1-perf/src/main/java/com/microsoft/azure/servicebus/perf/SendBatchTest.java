@@ -1,16 +1,15 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.perf;
 
-import com.azure.perf.test.core.TestDataCreationHelper;
 import com.microsoft.azure.servicebus.IMessage;
-import com.microsoft.azure.servicebus.Message;
 import com.microsoft.azure.servicebus.perf.core.ServiceBatchTest;
 import com.microsoft.azure.servicebus.perf.core.ServiceBusStressOptions;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class SendBatchTest extends ServiceBatchTest<ServiceBusStressOptions> {
     private final List<IMessage> messages;
@@ -23,14 +22,7 @@ public class SendBatchTest extends ServiceBatchTest<ServiceBusStressOptions> {
      */
     public SendBatchTest(ServiceBusStressOptions options) {
         super(options);
-        String messageContent = TestDataCreationHelper.generateRandomString(options.getMessagesSizeBytesToSend());
-
-        messages = new ArrayList<>();
-        for (int i = 0; i < options.getMessagesToSend(); ++i) {
-            Message message = new Message(messageContent);
-            message.setMessageId(UUID.randomUUID().toString());
-            messages.add(message);
-        }
+        messages = ServiceBusTestUtil.getMessagesToSend(options.getMessagesSizeBytesToSend(), options.getMessagesToSend());
     }
 
     @Override

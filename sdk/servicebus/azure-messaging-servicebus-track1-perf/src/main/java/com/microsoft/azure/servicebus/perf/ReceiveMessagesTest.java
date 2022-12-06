@@ -1,17 +1,16 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.servicebus.perf;
 
-import com.azure.perf.test.core.TestDataCreationHelper;
 import com.microsoft.azure.servicebus.IMessage;
-import com.microsoft.azure.servicebus.Message;
 import com.microsoft.azure.servicebus.perf.core.ServiceBatchTest;
 import com.microsoft.azure.servicebus.perf.core.ServiceBusStressOptions;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class ReceiveMessagesTest extends ServiceBatchTest<ServiceBusStressOptions> {
@@ -66,15 +65,7 @@ public class ReceiveMessagesTest extends ServiceBatchTest<ServiceBusStressOption
     }
 
     private Mono<Void> sendMessage() {
-        int total =  options.getMessagesToSend();
-        String messageContent = TestDataCreationHelper.generateRandomString(options.getMessagesSizeBytesToSend());
-        List<Message> messages = new ArrayList<>();
-        for (int i = 0; i < total; ++i) {
-            Message message = new Message(messageContent);
-            message.setMessageId(UUID.randomUUID().toString());
-            messages.add(message);
-        }
-
+        List<IMessage> messages = ServiceBusTestUtil.getMessagesToSend(options.getMessagesSizeBytesToSend(), options.getMessagesToSend());
         return Mono.fromFuture(sender.sendBatchAsync(messages));
     }
 }
