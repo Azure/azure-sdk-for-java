@@ -4,7 +4,6 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
-import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
@@ -382,9 +381,6 @@ public final class CosmosChangeFeedRequestOptions {
         }
 
         this.mode = ChangeFeedMode.FULL_FIDELITY;
-        this.setHeader(
-            HttpConstants.HttpHeaders.CHANGE_FEED_WIRE_FORMAT_VERSION,
-            HttpConstants.ChangeFeedWireFormatVersions.SEPARATE_METADATA_WITH_CRTS);
         return this;
     }
 
@@ -424,9 +420,6 @@ public final class CosmosChangeFeedRequestOptions {
         }
 
         this.mode = ChangeFeedMode.FULL_FIDELITY;
-        this.setHeader(
-            HttpConstants.HttpHeaders.CHANGE_FEED_WIRE_FORMAT_VERSION,
-            HttpConstants.ChangeFeedWireFormatVersions.SEPARATE_METADATA_WITH_CRTS);
         return this;
     }
 

@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation;
 
 import com.azure.core.util.CoreUtils;
 
-import java.util.EnumSet;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
