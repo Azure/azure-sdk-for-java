@@ -25,32 +25,6 @@ public class SendEventDataBatchTest extends ServiceTest<EventHubsOptions> {
      * {@inheritDoc}
      */
     @Override
-    public int runBatch() {
-        final EventDataBatch batch = createEventDataBatch(client, options.getCount());
-        try {
-            client.sendSync(batch);
-        } catch (EventHubException e) {
-            throw new RuntimeException("Unable to send EventDataBatch.", e);
-        }
-        return options.getCount();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Mono<Integer> runBatchAsync() {
-        return Mono.fromCompletionStage(clientFuture
-            .thenComposeAsync(client -> {
-                final EventDataBatch batch = createEventDataBatch(client, options.getCount());
-                return client.send(batch);
-            })).then(Mono.just(options.getCount()));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Mono<Void> setupAsync() {
         if (options.isSync() && client == null) {
             client = createEventHubClient();
@@ -59,5 +33,30 @@ public class SendEventDataBatchTest extends ServiceTest<EventHubsOptions> {
         }
 
         return super.setupAsync();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void run() {
+        final EventDataBatch batch = createEventDataBatch(client, options.getCount());
+        try {
+            client.sendSync(batch);
+        } catch (EventHubException e) {
+            throw new RuntimeException("Unable to send EventDataBatch.", e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<Void> runAsync() {
+        return Mono.fromCompletionStage(clientFuture
+            .thenComposeAsync(client -> {
+                final EventDataBatch batch = createEventDataBatch(client, options.getCount());
+                return client.send(batch);
+            }));
     }
 }

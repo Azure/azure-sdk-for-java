@@ -23,17 +23,6 @@ public class GetPartitionInformationTest extends ServiceTest<EventHubsPartitionO
     }
 
     @Override
-    public int runBatch() {
-        run();
-        return 1;
-    }
-
-    @Override
-    public Mono<Integer> runBatchAsync() {
-        return runAsync().then(Mono.just(1));
-    }
-
-    @Override
     public Mono<Void> setupAsync() {
         if (options.isSync() && client == null) {
             client = createEventHubClient();
@@ -44,6 +33,7 @@ public class GetPartitionInformationTest extends ServiceTest<EventHubsPartitionO
         return super.setupAsync();
     }
 
+    @Override
     public void run() {
         PartitionRuntimeInformation information;
         try {
@@ -55,6 +45,7 @@ public class GetPartitionInformationTest extends ServiceTest<EventHubsPartitionO
         printRuntimeInformation(information);
     }
 
+    @Override
     public Mono<Void> runAsync() {
         return Mono.fromCompletionStage(clientFuture
             .thenComposeAsync(client -> client.getPartitionRuntimeInformation(options.getPartitionId()))

@@ -1,3 +1,5 @@
+
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -67,17 +69,6 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
     }
 
     @Override
-    public int runBatch() {
-        run();
-        return 1;
-    }
-
-    @Override
-    public Mono<Integer> runBatchAsync() {
-        return runAsync().then(Mono.just(1));
-    }
-
-    @Override
     public Mono<Void> globalSetupAsync() {
         // It is the default duration or less than 2 minutes.
         if (options.getDuration() < MINIMUM_DURATION) {
@@ -124,16 +115,18 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
             client -> Mono.fromCompletionStage(client.close()));
     }
 
+    @Override
     public void run() {
         runAsync().block();
     }
 
+    @Override
     public Mono<Void> runAsync() {
         final Mono<EventProcessorHost> createProcessor = Mono.fromCallable(() -> {
             final ConnectionStringBuilder connectionStringBuilder = getConnectionStringBuilder();
             final EventProcessorHost.EventProcessorHostBuilder.OptionalStep builder =
                 EventProcessorHost.EventProcessorHostBuilder.newBuilder(
-                    connectionStringBuilder.getEndpoint().toString(), options.getConsumerGroup())
+                        connectionStringBuilder.getEndpoint().toString(), options.getConsumerGroup())
                     .useAzureStorageCheckpointLeaseManager(storageCredentials, containerName, STORAGE_PREFIX)
                     .useEventHubConnectionString(connectionStringBuilder.toString())
                     .setExecutor(getScheduler());
@@ -143,20 +136,20 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
 
         final Mono<Long> timeout = Mono.delay(testDuration);
         return Mono.usingWhen(
-            createProcessor,
-            processor -> {
-                startTime = System.nanoTime();
+                createProcessor,
+                processor -> {
+                    startTime = System.nanoTime();
 
-                return Mono.fromCompletionStage(
-                    processor.registerEventProcessorFactory(processorFactory))
-                    .then(Mono.when(timeout));
-            },
-            processor -> {
-                endTime = System.nanoTime();
+                    return Mono.fromCompletionStage(
+                            processor.registerEventProcessorFactory(processorFactory))
+                        .then(Mono.when(timeout));
+                },
+                processor -> {
+                    endTime = System.nanoTime();
 
-                System.out.println("Completed run.");
-                return Mono.fromCompletionStage(processor.unregisterEventProcessor());
-            })
+                    System.out.println("Completed run.");
+                    return Mono.fromCompletionStage(processor.unregisterEventProcessor());
+                })
             .doFinally(signal -> System.out.println("Finished cleaning up processor resources."));
     }
 

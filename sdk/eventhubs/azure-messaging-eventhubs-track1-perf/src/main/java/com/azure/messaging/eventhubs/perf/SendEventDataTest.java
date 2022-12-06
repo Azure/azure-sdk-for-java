@@ -1,3 +1,5 @@
+
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -27,7 +29,21 @@ public class SendEventDataTest extends ServiceTest<EventHubsOptions> {
      * {@inheritDoc}
      */
     @Override
-    public int runBatch() {
+    public Mono<Void> setupAsync() {
+        if (options.isSync() && client == null) {
+            client = createEventHubClient();
+        } else if (!options.isSync() && clientFuture == null) {
+            clientFuture = createEventHubClientAsync();
+        }
+
+        return super.setupAsync();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void run() {
         for (int i = 0; i < events.size(); i++) {
             final EventData event = events.get(i);
 
@@ -37,33 +53,18 @@ public class SendEventDataTest extends ServiceTest<EventHubsOptions> {
                 throw new RuntimeException("Unable to send event at index: " + i, e);
             }
         }
-        return events.size();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Mono<Integer> runBatchAsync() {
+    public Mono<Void> runAsync() {
         return Mono.fromCompletionStage(clientFuture.thenComposeAsync(client -> {
             final CompletableFuture<?>[] completableFutures = events.stream()
                 .map(client::send)
                 .toArray(CompletableFuture<?>[]::new);
             return CompletableFuture.allOf(completableFutures);
-        })).then(Mono.just(events.size()));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Mono<Void> setupAsync() {
-        if (options.isSync() && client == null) {
-            client = createEventHubClient();
-        } else if (!options.isSync() && clientFuture == null) {
-            clientFuture = createEventHubClientAsync();
-        }
-
-        return super.setupAsync();
+        }));
     }
 }
