@@ -1648,6 +1648,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request.getHeaders().put(HttpConstants.HttpHeaders.API_TYPE, this.apiType.toString());
         }
 
+        this.populateCapabilitiesHeader(request);
+
         if ((RequestVerb.POST.equals(httpMethod) || RequestVerb.PUT.equals(httpMethod))
                 && !request.getHeaders().containsKey(HttpConstants.HttpHeaders.CONTENT_TYPE)) {
             request.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, RuntimeConstants.MediaTypes.JSON);
@@ -1675,6 +1677,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         return this.populateAuthorizationHeader(request);
+    }
+
+    private void populateCapabilitiesHeader(RxDocumentServiceRequest request) {
+        String capabilitiesHeaderValue = HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES;
+        if (request.getHeaders().containsKey(HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES)) {
+            capabilitiesHeaderValue = request.getHeaders().get(HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES);
+        }
+
+        // this header will be suppressed in pkversion change feed processor
+        // remove it if non capabilities is being set
+        if (capabilitiesHeaderValue.equalsIgnoreCase(HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES_NONE)) {
+            request.getHeaders().remove(HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES);
+        } else {
+            request.getHeaders().put(HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES, capabilitiesHeaderValue);
+        }
     }
 
     private boolean requiresFeedRangeFiltering(RxDocumentServiceRequest request) {

@@ -1,15 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.models.ChangeFeedProcessorItem;
 
-/**
- * Code snippets for AllVersionsAndDeletesChangeFeedProcessor
- */
-public class ChangeFeedProcessorAllVersionsAndDeletesModeCodeSnippet {
-
+public class ChangeFeedProcessorLatestVersionChangesCodeSnippet {
     public void changeFeedProcessorBuilderCodeSnippet() {
         String hostName = "test-host-name";
         CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
@@ -21,21 +18,21 @@ public class ChangeFeedProcessorAllVersionsAndDeletesModeCodeSnippet {
         CosmosAsyncDatabase cosmosAsyncDatabase = cosmosAsyncClient.getDatabase("testDb");
         CosmosAsyncContainer feedContainer = cosmosAsyncDatabase.getContainer("feedContainer");
         CosmosAsyncContainer leaseContainer = cosmosAsyncDatabase.getContainer("leaseContainer");
-        // BEGIN: com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessor.builder
+        // BEGIN: com.azure.cosmos.latestVersionChanges.builder
         ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
             .hostName(hostName)
             .feedContainer(feedContainer)
             .leaseContainer(leaseContainer)
-            .handleAllVersionsAndDeletesChanges(docs -> {
-                for (ChangeFeedProcessorItem item : docs) {
-                    // Implementation for handling and processing of each ChangeFeedProcessorItem item goes here
+            .handleLatestVersionChanges(changeFeedProcessorItems -> {
+                for (ChangeFeedProcessorItem item : changeFeedProcessorItems) {
+                    // Implementation for handling and processing of each change feed item goes here
                 }
             })
             .buildChangeFeedProcessor();
-        // END: com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessor.builder
+        // END: com.azure.cosmos.latestVersionChanges.builder
     }
 
-    public void handleAllVersionsAndDeletesChangesCodeSnippet() {
+    public void handleLatestVersionChangesCodeSnippet() {
         String hostName = "test-host-name";
         CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -50,14 +47,13 @@ public class ChangeFeedProcessorAllVersionsAndDeletesModeCodeSnippet {
             .hostName(hostName)
             .feedContainer(feedContainer)
             .leaseContainer(leaseContainer)
-            // BEGIN: com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessor.handleChanges
-            .handleAllVersionsAndDeletesChanges(docs -> {
-                for (ChangeFeedProcessorItem item : docs) {
-                    // Implementation for handling and processing of each ChangeFeedProcessorItem item goes here
+            // BEGIN: com.azure.cosmos.latestVersionChanges.handleChanges
+            .handleLatestVersionChanges(changeFeedProcessorItems -> {
+                for (ChangeFeedProcessorItem item : changeFeedProcessorItems) {
+                    // Implementation for handling and processing of each change feed item goes here
                 }
             })
-            // END: com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessor.handleChanges
+            // END: com.azure.cosmos.latestVersionChanges.handleChanges
             .buildChangeFeedProcessor();
     }
 }
-
