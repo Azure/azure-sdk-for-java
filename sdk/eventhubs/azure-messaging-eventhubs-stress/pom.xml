@@ -64,7 +64,7 @@
     <dependency>
       <groupId>org.codehaus.janino</groupId>
       <artifactId>janino</artifactId>
-      <version>3.1.8</version> <!-- {x-version-update;org.codehaus.janino:janino;external_dependency} -->
+      <version>3.1.9</version> <!-- {x-version-update;org.codehaus.janino:janino;external_dependency} -->
     </dependency>
   </dependencies>
 
@@ -92,7 +92,7 @@
               <includes>
                 <include>com.microsoft.azure:applicationinsights-core:[3.4.1]</include> <!-- {x-include-update;com.microsoft.azure:applicationinsights-core;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter:[2.7.6]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
-                <include>org.codehaus.janino:janino:[3.1.8]</include> <!-- {x-include-update;org.codehaus.janino:janino;external_dependency} -->
+                <include>org.codehaus.janino:janino:[3.1.9]</include> <!-- {x-include-update;org.codehaus.janino:janino;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
