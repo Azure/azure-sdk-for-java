@@ -22,6 +22,7 @@ abstract class ServiceBusBatchTest<TOptions extends ServiceBusStressOptions> ext
 
     private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
     private static final String AZURE_SERVICEBUS_QUEUE_NAME = "AZURE_SERVICEBUS_QUEUE_NAME";
+    protected static final int TOTAL_MESSAGE_MULTIPLIER = 300;
 
     final ServiceBusReceiverClient receiver;
     final ServiceBusReceiverAsyncClient receiverAsync;

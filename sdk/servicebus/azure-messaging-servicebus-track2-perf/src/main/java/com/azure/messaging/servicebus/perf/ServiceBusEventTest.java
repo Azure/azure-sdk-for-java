@@ -4,27 +4,26 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusMessage;
-import com.azure.messaging.servicebus.ServiceBusMessageBatch;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.perf.test.core.EventPerfTest;
-import com.azure.perf.test.core.TestDataCreationHelper;
 import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 
-import java.util.UUID;
+import java.util.List;
 
 public class ServiceBusEventTest<TOptions extends ServiceBusStressOptions> extends EventPerfTest<TOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusBatchTest.class);
 
     private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
     private static final String AZURE_SERVICEBUS_QUEUE_NAME = "AZURE_SERVICEBUS_QUEUE_NAME";
+    protected static final int TOTAL_MESSAGE_MULTIPLIER = 300;
+
     final ServiceBusProcessorClient processor;
     final ServiceBusSenderClient sender;
     final ServiceBusReceiverAsyncClient receiverAsync;
-    Disposable receiveMessages;
 
 
     /**
@@ -78,15 +77,10 @@ public class ServiceBusEventTest<TOptions extends ServiceBusStressOptions> exten
 
     @Override
     public Mono<Void> globalSetupAsync() {
-        String messageContent = TestDataCreationHelper.generateRandomString(options.getMessagesSizeBytesToSend());
-        for (int i = 0; i < options.getMessageBatchSendTimes(); i++) {
-            ServiceBusMessageBatch batch = sender.createMessageBatch();
-            for (int j = 0; j < options.getMessagesToSend(); j++) {
-                ServiceBusMessage message = new ServiceBusMessage(messageContent);
-                message.setMessageId(UUID.randomUUID().toString());
-                batch.tryAddMessage(message);
-            }
-            sender.sendMessages(batch);
+        // Since test does warm up and test many times, we are sending many messages, so we will have them available.
+        for (int i = 0; i < TOTAL_MESSAGE_MULTIPLIER; i++) {
+            List<ServiceBusMessage> messages = ServiceBusTestUtil.geMessagesToSend(options.getMessagesSizeBytesToSend(), options.getMessagesToSend());
+            sender.sendMessages(messages);
         }
         return Mono.empty();
     }

@@ -30,26 +30,15 @@ public class SendBatchTest extends ServiceBusBatchTest<ServiceBusStressOptions> 
 
     @Override
     public int runBatch() {
-        List<ServiceBusMessage> messages = geMessagesToSend();
+        List<ServiceBusMessage> messages = ServiceBusTestUtil.geMessagesToSend(options.getMessagesSizeBytesToSend(), options.getMessagesToSend());
         sender.sendMessages(messages);
         return messages.size();
     }
 
     @Override
     public Mono<Integer> runBatchAsync() {
-        List<ServiceBusMessage> messages = geMessagesToSend();
+        List<ServiceBusMessage> messages = ServiceBusTestUtil.geMessagesToSend(options.getMessagesSizeBytesToSend(), options.getMessagesToSend());
         return senderAsync.sendMessages(messages).thenReturn(messages.size());
-    }
-
-    private List<ServiceBusMessage> geMessagesToSend() {
-        List<ServiceBusMessage> messages = new ArrayList<>();
-        String messageContent = TestDataCreationHelper.generateRandomString(options.getMessagesSizeBytesToSend());
-        for (int i = 0; i < options.getMessagesToSend(); i++) {
-            ServiceBusMessage message = new ServiceBusMessage(messageContent);
-            message.setMessageId(UUID.randomUUID().toString());
-            messages.add(message);
-        }
-        return messages;
     }
 
 }

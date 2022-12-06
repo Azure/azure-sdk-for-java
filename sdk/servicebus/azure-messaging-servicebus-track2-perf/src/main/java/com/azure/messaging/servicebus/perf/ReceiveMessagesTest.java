@@ -11,6 +11,7 @@ import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.perf.test.core.TestDataCreationHelper;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -68,15 +69,10 @@ public class ReceiveMessagesTest extends ServiceBusBatchTest<ServiceBusStressOpt
 
     @Override
     public Mono<Void> setupAsync() {
-        String messageContent = TestDataCreationHelper.generateRandomString(options.getMessagesSizeBytesToSend());
-        for (int i = 0; i < options.getMessageBatchSendTimes(); i++) {
-            ServiceBusMessageBatch batch = sender.createMessageBatch();
-            for (int j = 0; j < options.getMessageBatchSize(); j++) {
-                ServiceBusMessage message = new ServiceBusMessage(messageContent);
-                message.setMessageId(UUID.randomUUID().toString());
-                batch.tryAddMessage(message);
-            }
-            sender.sendMessages(batch);
+        // Since test does warm up and test many times, we are sending many messages, so we will have them available.
+        for (int i = 0; i < TOTAL_MESSAGE_MULTIPLIER; i++) {
+            List<ServiceBusMessage> messages = ServiceBusTestUtil.geMessagesToSend(options.getMessagesSizeBytesToSend(), options.getMessagesToSend());
+            sender.sendMessages(messages);
         }
         return Mono.empty();
     }

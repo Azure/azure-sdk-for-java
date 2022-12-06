@@ -32,7 +32,6 @@ public class App {
             SendMessagesTest.class,
             SendBatchTest.class,
             ReceiveMessagesTest.class,
-            ReceiveMessagesAsyncTest.class,
             ServiceBusProcessorTest.class
         };
 
