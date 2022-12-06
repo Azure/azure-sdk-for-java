@@ -6,6 +6,7 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.DevBoxDefinitionUpdateProperties;
+import com.azure.resourcemanager.devcenter.models.HibernateSupport;
 import com.azure.resourcemanager.devcenter.models.ImageReference;
 import com.azure.resourcemanager.devcenter.models.Sku;
 import com.azure.resourcemanager.devcenter.models.SkuTier;
@@ -18,18 +19,19 @@ public final class DevBoxDefinitionUpdatePropertiesTests {
         DevBoxDefinitionUpdateProperties model =
             BinaryData
                 .fromString(
-                    "{\"imageReference\":{\"id\":\"shhszhedplvwiw\",\"exactVersion\":\"mwmbes\",\"publisher\":\"nkww\",\"offer\":\"pjflcxogao\",\"sku\":\"nzmnsikvm\"},\"sku\":{\"name\":\"ze\",\"tier\":\"Premium\",\"size\":\"l\",\"family\":\"zxmhhvhgu\",\"capacity\":1748485864},\"osStorageType\":\"kwobdagxtibq\"}")
+                    "{\"imageReference\":{\"id\":\"e\",\"exactVersion\":\"sgzvahapjyzhpv\",\"publisher\":\"zcjrvxdjzlmwlx\",\"offer\":\"ug\",\"sku\":\"zovawjvz\"},\"sku\":{\"name\":\"luthn\",\"tier\":\"Basic\",\"size\":\"xipeilpjzuaejx\",\"family\":\"ltskzbbtd\",\"capacity\":369228588},\"osStorageType\":\"e\",\"hibernateSupport\":\"Disabled\"}")
                 .toObject(DevBoxDefinitionUpdateProperties.class);
-        Assertions.assertEquals("shhszhedplvwiw", model.imageReference().id());
-        Assertions.assertEquals("nkww", model.imageReference().publisher());
-        Assertions.assertEquals("pjflcxogao", model.imageReference().offer());
-        Assertions.assertEquals("nzmnsikvm", model.imageReference().sku());
-        Assertions.assertEquals("ze", model.sku().name());
-        Assertions.assertEquals(SkuTier.PREMIUM, model.sku().tier());
-        Assertions.assertEquals("l", model.sku().size());
-        Assertions.assertEquals("zxmhhvhgu", model.sku().family());
-        Assertions.assertEquals(1748485864, model.sku().capacity());
-        Assertions.assertEquals("kwobdagxtibq", model.osStorageType());
+        Assertions.assertEquals("e", model.imageReference().id());
+        Assertions.assertEquals("zcjrvxdjzlmwlx", model.imageReference().publisher());
+        Assertions.assertEquals("ug", model.imageReference().offer());
+        Assertions.assertEquals("zovawjvz", model.imageReference().sku());
+        Assertions.assertEquals("luthn", model.sku().name());
+        Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
+        Assertions.assertEquals("xipeilpjzuaejx", model.sku().size());
+        Assertions.assertEquals("ltskzbbtd", model.sku().family());
+        Assertions.assertEquals(369228588, model.sku().capacity());
+        Assertions.assertEquals("e", model.osStorageType());
+        Assertions.assertEquals(HibernateSupport.DISABLED, model.hibernateSupport());
     }
 
     @Test
@@ -38,28 +40,30 @@ public final class DevBoxDefinitionUpdatePropertiesTests {
             new DevBoxDefinitionUpdateProperties()
                 .withImageReference(
                     new ImageReference()
-                        .withId("shhszhedplvwiw")
-                        .withPublisher("nkww")
-                        .withOffer("pjflcxogao")
-                        .withSku("nzmnsikvm"))
+                        .withId("e")
+                        .withPublisher("zcjrvxdjzlmwlx")
+                        .withOffer("ug")
+                        .withSku("zovawjvz"))
                 .withSku(
                     new Sku()
-                        .withName("ze")
-                        .withTier(SkuTier.PREMIUM)
-                        .withSize("l")
-                        .withFamily("zxmhhvhgu")
-                        .withCapacity(1748485864))
-                .withOsStorageType("kwobdagxtibq");
+                        .withName("luthn")
+                        .withTier(SkuTier.BASIC)
+                        .withSize("xipeilpjzuaejx")
+                        .withFamily("ltskzbbtd")
+                        .withCapacity(369228588))
+                .withOsStorageType("e")
+                .withHibernateSupport(HibernateSupport.DISABLED);
         model = BinaryData.fromObject(model).toObject(DevBoxDefinitionUpdateProperties.class);
-        Assertions.assertEquals("shhszhedplvwiw", model.imageReference().id());
-        Assertions.assertEquals("nkww", model.imageReference().publisher());
-        Assertions.assertEquals("pjflcxogao", model.imageReference().offer());
-        Assertions.assertEquals("nzmnsikvm", model.imageReference().sku());
-        Assertions.assertEquals("ze", model.sku().name());
-        Assertions.assertEquals(SkuTier.PREMIUM, model.sku().tier());
-        Assertions.assertEquals("l", model.sku().size());
-        Assertions.assertEquals("zxmhhvhgu", model.sku().family());
-        Assertions.assertEquals(1748485864, model.sku().capacity());
-        Assertions.assertEquals("kwobdagxtibq", model.osStorageType());
+        Assertions.assertEquals("e", model.imageReference().id());
+        Assertions.assertEquals("zcjrvxdjzlmwlx", model.imageReference().publisher());
+        Assertions.assertEquals("ug", model.imageReference().offer());
+        Assertions.assertEquals("zovawjvz", model.imageReference().sku());
+        Assertions.assertEquals("luthn", model.sku().name());
+        Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
+        Assertions.assertEquals("xipeilpjzuaejx", model.sku().size());
+        Assertions.assertEquals("ltskzbbtd", model.sku().family());
+        Assertions.assertEquals(369228588, model.sku().capacity());
+        Assertions.assertEquals("e", model.osStorageType());
+        Assertions.assertEquals(HibernateSupport.DISABLED, model.hibernateSupport());
     }
 }

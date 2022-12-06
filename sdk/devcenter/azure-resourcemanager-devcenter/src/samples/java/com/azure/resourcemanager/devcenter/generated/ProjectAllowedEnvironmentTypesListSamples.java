@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ProjectAllowedEnvironmentTypes List. */
 public final class ProjectAllowedEnvironmentTypesListSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-10-12-preview/examples/ProjectAllowedEnvironmentTypes_List.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/ProjectAllowedEnvironmentTypes_List.json
      */
     /**
      * Sample code: ProjectAllowedEnvironmentTypes_List.

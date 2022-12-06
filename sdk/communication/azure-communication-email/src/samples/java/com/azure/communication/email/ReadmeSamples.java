@@ -13,6 +13,7 @@ import com.azure.communication.email.models.EmailAttachmentType;
 
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.ArrayList;
 import java.io.File;
@@ -47,6 +48,20 @@ public class ReadmeSamples {
         return emailClient;
     }
 
+    public EmailClient createEmailClientWithAAD() {
+        // BEGIN: readme-sample-createEmailClientWithAAD
+        // You can find your endpoint and access key from your resource in the Azure Portal
+        String endpoint = "https://<resource-name>.communication.azure.com/";
+
+        EmailClient emailClient = new EmailClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+        // END: readme-sample-createEmailClientWithAAD
+
+        return emailClient;
+    }
+
     public void sendEmailToSingleRecipient() {
         EmailClient emailClient = createEmailClientWithConnectionString();
 
@@ -56,13 +71,13 @@ public class ReadmeSamples {
         ArrayList<EmailAddress> addressList = new ArrayList<>();
         addressList.add(emailAddress);
 
-        EmailRecipients emailRecipients = new EmailRecipients(addressList);
+        EmailRecipients emailRecipients = new EmailRecipients()
+            .setTo(addressList);
 
         EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
 
-        EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content)
-            .setRecipients(emailRecipients);
+        EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content, emailRecipients);
 
         SendEmailResult response = emailClient.send(emailMessage);
         System.out.println("Message Id: " + response.getMessageId());
@@ -86,15 +101,15 @@ public class ReadmeSamples {
         ArrayList<EmailAddress> bccAddressList = new ArrayList<>();
         bccAddressList.add(emailAddress);
 
-        EmailRecipients emailRecipients = new EmailRecipients(toAddressList)
+        EmailRecipients emailRecipients = new EmailRecipients()
+            .setTo(toAddressList)
             .setCc(ccAddressList)
             .setBcc(bccAddressList);
 
         EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
 
-        EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content)
-            .setRecipients(emailRecipients);
+        EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content, emailRecipients);
 
         SendEmailResult response = emailClient.send(emailMessage);
         System.out.println("Message Id: " + response.getMessageId());
@@ -122,7 +137,8 @@ public class ReadmeSamples {
         ArrayList<EmailAddress> addressList = new ArrayList<>();
         addressList.add(emailAddress);
 
-        EmailRecipients emailRecipients = new EmailRecipients(addressList);
+        EmailRecipients emailRecipients = new EmailRecipients()
+            .setTo(addressList);
 
         EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
@@ -132,8 +148,7 @@ public class ReadmeSamples {
         ArrayList<EmailAttachment> attachmentList = new ArrayList<>();
         attachmentList.add(attachment);
 
-        EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content)
-            .setRecipients(emailRecipients)
+        EmailMessage emailMessage = new EmailMessage("<sender-email-address>", content, emailRecipients)
             .setAttachments(attachmentList);
 
         SendEmailResult response = emailClient.send(emailMessage);

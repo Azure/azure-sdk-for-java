@@ -93,14 +93,14 @@
 
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-identity-providers-jdbc-postgresql</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;unreleased_com.azure:azure-identity-providers-jdbc-postgresql;dependency} -->
+      <artifactId>azure-identity-extensions</artifactId>
+      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-identity-extensions;dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.3.7</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
+      <version>42.3.8</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
     </dependency>
   </dependencies>
 

@@ -43,7 +43,7 @@ public interface Gallery {
      *
      * @return the provisioningState value.
      */
-    String provisioningState();
+    ProvisioningState provisioningState();
 
     /**
      * Gets the galleryResourceId property: The resource ID of the backing Azure Compute Gallery.

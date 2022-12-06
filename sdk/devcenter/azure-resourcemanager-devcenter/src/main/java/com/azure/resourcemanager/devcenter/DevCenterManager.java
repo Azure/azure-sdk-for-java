@@ -26,6 +26,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devcenter.fluent.DevCenterManagementClient;
 import com.azure.resourcemanager.devcenter.implementation.AttachedNetworksImpl;
 import com.azure.resourcemanager.devcenter.implementation.CatalogsImpl;
+import com.azure.resourcemanager.devcenter.implementation.CheckNameAvailabilitiesImpl;
 import com.azure.resourcemanager.devcenter.implementation.DevBoxDefinitionsImpl;
 import com.azure.resourcemanager.devcenter.implementation.DevCenterManagementClientBuilder;
 import com.azure.resourcemanager.devcenter.implementation.DevCentersImpl;
@@ -45,6 +46,7 @@ import com.azure.resourcemanager.devcenter.implementation.SkusImpl;
 import com.azure.resourcemanager.devcenter.implementation.UsagesImpl;
 import com.azure.resourcemanager.devcenter.models.AttachedNetworks;
 import com.azure.resourcemanager.devcenter.models.Catalogs;
+import com.azure.resourcemanager.devcenter.models.CheckNameAvailabilities;
 import com.azure.resourcemanager.devcenter.models.DevBoxDefinitions;
 import com.azure.resourcemanager.devcenter.models.DevCenters;
 import com.azure.resourcemanager.devcenter.models.EnvironmentTypes;
@@ -97,6 +99,8 @@ public final class DevCenterManager {
     private OperationStatuses operationStatuses;
 
     private Usages usages;
+
+    private CheckNameAvailabilities checkNameAvailabilities;
 
     private Skus skus;
 
@@ -271,7 +275,7 @@ public final class DevCenterManager {
                 .append("-")
                 .append("com.azure.resourcemanager.devcenter")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0-beta.4");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -496,6 +500,19 @@ public final class DevCenterManager {
             this.usages = new UsagesImpl(clientObject.getUsages(), this);
         }
         return usages;
+    }
+
+    /**
+     * Gets the resource collection API of CheckNameAvailabilities.
+     *
+     * @return Resource collection API of CheckNameAvailabilities.
+     */
+    public CheckNameAvailabilities checkNameAvailabilities() {
+        if (this.checkNameAvailabilities == null) {
+            this.checkNameAvailabilities =
+                new CheckNameAvailabilitiesImpl(clientObject.getCheckNameAvailabilities(), this);
+        }
+        return checkNameAvailabilities;
     }
 
     /**

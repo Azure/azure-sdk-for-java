@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BatchAccount Delete. */
 public final class BatchAccountDeleteSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/BatchAccountDelete.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/BatchAccountDelete.json
      */
     /**
      * Sample code: BatchAccountDelete.
