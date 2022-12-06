@@ -1,10 +1,15 @@
 # Release History
 
 ## 4.5.0-beta.2 (Unreleased)
+Upgrade Spring Boot dependencies version to 2.7.6 and Spring Cloud dependencies version to 2021.0.5
 Upgrade Spring Boot dependencies version to 2.7.4 and Spring Cloud dependencies version to 2021.0.4
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
+- Remove warning logs of Kafka passwordless autoconfiguration. [#31182](https://github.com/Azure/azure-sdk-for-java/issues/31182)
+- Enhance the token authentication converter and Azure AD Resource Server configurer adapter to accept the custom jwt granted authorities converter. [#28665](https://github.com/Azure/azure-sdk-for-java/issues/28665)
 
 #### Dependency Updates
 - Upgrade spring-security to 5.7.5 to address [CVE-2022-31690](https://tanzu.vmware.com/security/cve-2022-31690) [#32145](https://github.com/Azure/azure-sdk-for-java/pull/32145).

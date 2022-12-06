@@ -16,6 +16,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ApplicationPackageReference {
     /**
      * The ID of the application to deploy.
+     * When creating a pool, the package's application ID must be fully
+     * qualified
+     * (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}).
      */
     @JsonProperty(value = "applicationId", required = true)
     private String applicationId;
@@ -33,7 +36,7 @@ public class ApplicationPackageReference {
     private String version;
 
     /**
-     * Get the applicationId value.
+     * Get when creating a pool, the package's application ID must be fully qualified (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}).
      *
      * @return the applicationId value
      */
@@ -42,7 +45,7 @@ public class ApplicationPackageReference {
     }
 
     /**
-     * Set the applicationId value.
+     * Set when creating a pool, the package's application ID must be fully qualified (/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}).
      *
      * @param applicationId the applicationId value to set
      * @return the ApplicationPackageReference object itself.

@@ -57,6 +57,6 @@ public final class DevCentersDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.devCenters().delete("ql", "yxgtczh", Context.NONE);
+        manager.devCenters().delete("slthaq", "x", Context.NONE);
     }
 }

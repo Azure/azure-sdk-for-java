@@ -41,6 +41,10 @@ public final class RoleAssignmentScheduleRequestInner {
     @JsonProperty(value = "properties")
     private RoleAssignmentScheduleRequestProperties innerProperties;
 
+    /** Creates an instance of RoleAssignmentScheduleRequestInner class. */
+    public RoleAssignmentScheduleRequestInner() {
+    }
+
     /**
      * Get the id property: The role assignment schedule request ID.
      *

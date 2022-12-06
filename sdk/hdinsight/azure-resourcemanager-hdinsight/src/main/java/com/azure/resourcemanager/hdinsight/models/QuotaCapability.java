@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The regional quota capability. */
 @Fluent
 public final class QuotaCapability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotaCapability.class);
-
     /*
      * The number of cores used in the subscription.
      */
@@ -32,6 +28,10 @@ public final class QuotaCapability {
      */
     @JsonProperty(value = "regionalQuotas")
     private List<RegionalQuotaCapability> regionalQuotas;
+
+    /** Creates an instance of QuotaCapability class. */
+    public QuotaCapability() {
+    }
 
     /**
      * Get the coresUsed property: The number of cores used in the subscription.

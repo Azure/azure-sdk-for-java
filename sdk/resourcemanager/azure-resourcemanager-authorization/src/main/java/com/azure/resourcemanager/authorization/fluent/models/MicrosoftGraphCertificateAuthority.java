@@ -30,29 +30,27 @@ public final class MicrosoftGraphCertificateAuthority {
     private String certificateRevocationListUrl;
 
     /*
-     * The URL contains the list of all revoked certificates since the last
-     * time a full certificate revocaton list was created.
+     * The URL contains the list of all revoked certificates since the last time a full certificate revocaton list was
+     * created.
      */
     @JsonProperty(value = "deltaCertificateRevocationListUrl")
     private String deltaCertificateRevocationListUrl;
 
     /*
-     * Required. true if the trusted certificate is a root authority, false if
-     * the trusted certificate is an intermediate authority.
+     * Required. true if the trusted certificate is a root authority, false if the trusted certificate is an
+     * intermediate authority.
      */
     @JsonProperty(value = "isRootAuthority")
     private Boolean isRootAuthority;
 
     /*
-     * The issuer of the certificate, calculated from the certificate value.
-     * Read-only.
+     * The issuer of the certificate, calculated from the certificate value. Read-only.
      */
     @JsonProperty(value = "issuer")
     private String issuer;
 
     /*
-     * The subject key identifier of the certificate, calculated from the
-     * certificate value. Read-only.
+     * The subject key identifier of the certificate, calculated from the certificate value. Read-only.
      */
     @JsonProperty(value = "issuerSki")
     private String issuerSki;
@@ -61,6 +59,10 @@ public final class MicrosoftGraphCertificateAuthority {
      * certificateAuthority
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphCertificateAuthority class. */
+    public MicrosoftGraphCertificateAuthority() {
+    }
 
     /**
      * Get the certificate property: Required. The base64 encoded string representing the public certificate.

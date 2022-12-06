@@ -39,6 +39,10 @@ public final class MicrosoftGraphItemAnalytics extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphItemAnalytics class. */
+    public MicrosoftGraphItemAnalytics() {
+    }
+
     /**
      * Get the allTime property: itemActivityStat.
      *

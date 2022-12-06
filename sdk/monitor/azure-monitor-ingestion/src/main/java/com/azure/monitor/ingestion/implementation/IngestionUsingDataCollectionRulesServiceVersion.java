@@ -17,6 +17,7 @@ public enum IngestionUsingDataCollectionRulesServiceVersion implements ServiceVe
         this.version = version;
     }
 
+    /** {@inheritDoc} */
     @Override
     public String getVersion() {
         return this.version;

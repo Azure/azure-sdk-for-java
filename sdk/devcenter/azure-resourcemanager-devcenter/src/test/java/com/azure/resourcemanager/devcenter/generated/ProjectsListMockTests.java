@@ -33,7 +33,7 @@ public final class ProjectsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"agohbuff\",\"devCenterId\":\"rqemvvhmxt\",\"description\":\"jfutacoebj\"},\"location\":\"wzcjznmwcpmgua\",\"tags\":{\"uxxpshne\":\"aufactkahzovajjz\",\"lqubkwdlen\":\"kulfg\",\"utujba\":\"d\",\"orwmduvwpklv\":\"pjuohminyfl\"},\"id\":\"w\",\"name\":\"ygdxpgpqchis\",\"type\":\"epn\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"devCenterUri\":\"z\",\"devCenterId\":\"gamv\",\"description\":\"ho\"},\"location\":\"qzudphq\",\"tags\":{\"nwcvtbvkayhmtnv\":\"dkfw\",\"zcjaesgvvsccy\":\"qiatkzwpcnp\",\"hwyg\":\"jguq\",\"semdwzrmu\":\"lvdnkfx\"},\"id\":\"apfcqdpsq\",\"name\":\"qvpsvuoymg\",\"type\":\"celve\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,11 +61,11 @@ public final class ProjectsListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Project> response = manager.projects().list(1678889630, Context.NONE);
+        PagedIterable<Project> response = manager.projects().list(1001527531, Context.NONE);
 
-        Assertions.assertEquals("wzcjznmwcpmgua", response.iterator().next().location());
-        Assertions.assertEquals("aufactkahzovajjz", response.iterator().next().tags().get("uxxpshne"));
-        Assertions.assertEquals("rqemvvhmxt", response.iterator().next().devCenterId());
-        Assertions.assertEquals("jfutacoebj", response.iterator().next().description());
+        Assertions.assertEquals("qzudphq", response.iterator().next().location());
+        Assertions.assertEquals("dkfw", response.iterator().next().tags().get("nwcvtbvkayhmtnv"));
+        Assertions.assertEquals("gamv", response.iterator().next().devCenterId());
+        Assertions.assertEquals("ho", response.iterator().next().description());
     }
 }

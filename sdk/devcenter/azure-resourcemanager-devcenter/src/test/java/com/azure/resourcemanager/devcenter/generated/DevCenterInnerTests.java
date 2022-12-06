@@ -20,37 +20,28 @@ public final class DevCenterInnerTests {
         DevCenterInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"hxqh\"},\"identity\":{\"type\":\"SystemAssigned,"
-                        + " UserAssigned\",\"userAssignedIdentities\":{\"czbysc\":{},\"x\":{},\"vyq\":{},\"b\":{}}},\"location\":\"rkxvdum\",\"tags\":{\"snhsjcnyejhkryh\":\"tfwvukxgaudc\"},\"id\":\"napczwlokjy\",\"name\":\"mkkvnip\",\"type\":\"oxzjnchgejspod\"}")
+                    "{\"properties\":{\"provisioningState\":\"MovingResources\",\"devCenterUri\":\"pzvgnwzsymglzufc\"},\"identity\":{\"principalId\":\"3198e8cd-958c-4a35-824c-10bb7c932ddd\",\"tenantId\":\"614ac35e-6862-4675-a406-842c8163db35\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"anufhfcbjysag\":{\"principalId\":\"ecaf0ce5-f5d4-465c-a52f-e56df92b6e65\",\"clientId\":\"5441a2e3-e3d4-4652-9f0b-7dbd0cd692c1\"},\"xqhabi\":{\"principalId\":\"1d861053-93f8-4042-9089-513f85ea841a\",\"clientId\":\"c1e5cc6e-d197-4ab0-97da-392ac5c345d5\"}}},\"location\":\"ikxwc\",\"tags\":{\"n\":\"scnpqxuhivy\",\"rkxvdum\":\"wby\"},\"id\":\"grtfwvu\",\"name\":\"xgaudccs\",\"type\":\"h\"}")
                 .toObject(DevCenterInner.class);
-        Assertions.assertEquals("rkxvdum", model.location());
-        Assertions.assertEquals("tfwvukxgaudc", model.tags().get("snhsjcnyejhkryh"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("ikxwc", model.location());
+        Assertions.assertEquals("scnpqxuhivy", model.tags().get("n"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }
 
     @Test
     public void testSerialize() {
         DevCenterInner model =
             new DevCenterInner()
-                .withLocation("rkxvdum")
-                .withTags(mapOf("snhsjcnyejhkryh", "tfwvukxgaudc"))
+                .withLocation("ikxwc")
+                .withTags(mapOf("n", "scnpqxuhivy", "rkxvdum", "wby"))
                 .withIdentity(
                     new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
                         .withUserAssignedIdentities(
-                            mapOf(
-                                "czbysc",
-                                new UserAssignedIdentity(),
-                                "x",
-                                new UserAssignedIdentity(),
-                                "vyq",
-                                new UserAssignedIdentity(),
-                                "b",
-                                new UserAssignedIdentity())));
+                            mapOf("anufhfcbjysag", new UserAssignedIdentity(), "xqhabi", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(DevCenterInner.class);
-        Assertions.assertEquals("rkxvdum", model.location());
-        Assertions.assertEquals("tfwvukxgaudc", model.tags().get("snhsjcnyejhkryh"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("ikxwc", model.location());
+        Assertions.assertEquals("scnpqxuhivy", model.tags().get("n"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }
 
     @SuppressWarnings("unchecked")

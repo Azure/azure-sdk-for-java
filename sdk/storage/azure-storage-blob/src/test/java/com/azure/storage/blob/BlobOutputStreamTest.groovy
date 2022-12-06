@@ -3,6 +3,8 @@ package com.azure.storage.blob
 import com.azure.core.http.HttpClient
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
+import com.azure.core.http.policy.FixedDelayOptions
+import com.azure.core.http.policy.RetryOptions
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PageRange
@@ -13,6 +15,8 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import reactor.core.publisher.Mono
 import spock.lang.Unroll
+
+import java.time.Duration
 
 class BlobOutputStreamTest extends APISpec {
     private static int FOUR_MB = 4 * Constants.MB
@@ -133,6 +137,7 @@ class BlobOutputStreamTest extends APISpec {
             .endpoint(endpoint)
             .containerName("container")
             .blobName("blob")
+            .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
             .credential(credentials)
             .httpClient(httpClient)
             .buildBlockBlobClient()

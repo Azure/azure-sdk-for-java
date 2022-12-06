@@ -42,8 +42,7 @@ public final class MicrosoftGraphSubscribedSku extends MicrosoftGraphEntity {
     private MicrosoftGraphLicenseUnitsDetail prepaidUnits;
 
     /*
-     * Information about the service plans that are available with the SKU. Not
-     * nullable
+     * Information about the service plans that are available with the SKU. Not nullable
      */
     @JsonProperty(value = "servicePlans")
     private List<MicrosoftGraphServicePlanInfo> servicePlans;
@@ -64,6 +63,10 @@ public final class MicrosoftGraphSubscribedSku extends MicrosoftGraphEntity {
      * subscribedSku
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphSubscribedSku class. */
+    public MicrosoftGraphSubscribedSku() {
+    }
 
     /**
      * Get the appliesTo property: For example, 'User' or 'Company'.

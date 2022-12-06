@@ -142,20 +142,6 @@ public interface GroupsClient {
      *
      * @param groupId key: id of group.
      * @param body New navigation property.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return directoryObject.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MicrosoftGraphDirectoryObjectInner createAcceptedSenders(String groupId, MicrosoftGraphDirectoryObjectInner body);
-
-    /**
-     * Create new navigation property to acceptedSenders for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
@@ -166,6 +152,20 @@ public interface GroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MicrosoftGraphDirectoryObjectInner> createAcceptedSendersWithResponse(
         String groupId, MicrosoftGraphDirectoryObjectInner body, Context context);
+
+    /**
+     * Create new navigation property to acceptedSenders for groups.
+     *
+     * @param groupId key: id of group.
+     * @param body New navigation property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return directoryObject.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MicrosoftGraphDirectoryObjectInner createAcceptedSenders(String groupId, MicrosoftGraphDirectoryObjectInner body);
 
     /**
      * Get members from groups.
@@ -368,19 +368,6 @@ public interface GroupsClient {
      *
      * @param groupId key: id of group.
      * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void createRefMembers(String groupId, Map<String, Object> body);
-
-    /**
-     * Create new navigation property ref to members for groups.
-     *
-     * @param groupId key: id of group.
-     * @param body New navigation property ref value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
@@ -390,6 +377,19 @@ public interface GroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> createRefMembersWithResponse(String groupId, Map<String, Object> body, Context context);
+
+    /**
+     * Create new navigation property ref to members for groups.
+     *
+     * @param groupId key: id of group.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void createRefMembers(String groupId, Map<String, Object> body);
 
     /**
      * Delete ref of member from groups.
@@ -411,21 +411,6 @@ public interface GroupsClient {
      *
      * @param groupId key: id of group.
      * @param directoryObjectId key: directoryObject-id.
-     * @param ifMatch ETag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteRefMemberAsync(String groupId, String directoryObjectId, String ifMatch);
-
-    /**
-     * Delete ref of member from groups.
-     *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: directoryObject-id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
@@ -434,19 +419,6 @@ public interface GroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteRefMemberAsync(String groupId, String directoryObjectId);
-
-    /**
-     * Delete ref of member from groups.
-     *
-     * @param groupId key: id of group.
-     * @param directoryObjectId key: directoryObject-id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteRefMember(String groupId, String directoryObjectId);
 
     /**
      * Delete ref of member from groups.
@@ -464,4 +436,17 @@ public interface GroupsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteRefMemberWithResponse(
         String groupId, String directoryObjectId, String ifMatch, Context context);
+
+    /**
+     * Delete ref of member from groups.
+     *
+     * @param groupId key: id of group.
+     * @param directoryObjectId key: directoryObject-id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteRefMember(String groupId, String directoryObjectId);
 }

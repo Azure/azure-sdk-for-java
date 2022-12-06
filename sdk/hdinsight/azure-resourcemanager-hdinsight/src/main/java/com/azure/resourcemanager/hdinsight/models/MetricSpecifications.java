@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The details of metric specifications. */
 @Fluent
 public final class MetricSpecifications {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricSpecifications.class);
-
     /*
      * The name of the metric specification.
      */
@@ -116,6 +112,10 @@ public final class MetricSpecifications {
      */
     @JsonProperty(value = "dimensions")
     private List<Dimension> dimensions;
+
+    /** Creates an instance of MetricSpecifications class. */
+    public MetricSpecifications() {
+    }
 
     /**
      * Get the name property: The name of the metric specification.

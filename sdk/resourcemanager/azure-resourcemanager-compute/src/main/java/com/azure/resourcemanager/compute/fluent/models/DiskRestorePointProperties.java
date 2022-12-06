@@ -122,6 +122,10 @@ public final class DiskRestorePointProperties {
     @JsonProperty(value = "securityProfile")
     private DiskSecurityProfile securityProfile;
 
+    /** Creates an instance of DiskRestorePointProperties class. */
+    public DiskRestorePointProperties() {
+    }
+
     /**
      * Get the timeCreated property: The timestamp of restorePoint creation.
      *

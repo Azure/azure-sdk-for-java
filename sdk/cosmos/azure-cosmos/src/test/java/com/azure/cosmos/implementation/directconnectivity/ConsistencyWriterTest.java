@@ -41,7 +41,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.azure.cosmos.implementation.HttpConstants.StatusCodes.GONE;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.COMPLETING_PARTITION_MIGRATION;
-import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.COMPLETING_SPLIT;
+import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.COMPLETING_SPLIT_OR_MERGE;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE;
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static com.azure.cosmos.implementation.TestUtils.mockDocumentServiceRequest;
@@ -61,7 +61,7 @@ public class ConsistencyWriterTest {
         return new Object[][]{
                 // exception to be thrown from transportClient, expected (exception type, status, subStatus)
                 { new PartitionKeyRangeGoneException(), PartitionKeyRangeGoneException.class, GONE, PARTITION_KEY_RANGE_GONE, },
-                { new PartitionKeyRangeIsSplittingException() , PartitionKeyRangeIsSplittingException.class, GONE, COMPLETING_SPLIT, },
+                { new PartitionKeyRangeIsSplittingException() , PartitionKeyRangeIsSplittingException.class, GONE, COMPLETING_SPLIT_OR_MERGE, },
                 { new PartitionIsMigratingException(), PartitionIsMigratingException.class, GONE, COMPLETING_PARTITION_MIGRATION, },
         };
     }

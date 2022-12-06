@@ -17,17 +17,15 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphTimeOffRequest extends MicrosoftGraphScheduleChangeRequest {
     /*
-     * The Timestamp type represents date and time information using ISO 8601
-     * format and is always in UTC time. For example, midnight UTC on Jan 1,
-     * 2014 would look like this: '2014-01-01T00:00:00Z'
+     * The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For
+     * example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
      */
     @JsonProperty(value = "endDateTime")
     private OffsetDateTime endDateTime;
 
     /*
-     * The Timestamp type represents date and time information using ISO 8601
-     * format and is always in UTC time. For example, midnight UTC on Jan 1,
-     * 2014 would look like this: '2014-01-01T00:00:00Z'
+     * The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For
+     * example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
      */
     @JsonProperty(value = "startDateTime")
     private OffsetDateTime startDateTime;
@@ -42,6 +40,10 @@ public final class MicrosoftGraphTimeOffRequest extends MicrosoftGraphScheduleCh
      * timeOffRequest
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphTimeOffRequest class. */
+    public MicrosoftGraphTimeOffRequest() {
+    }
 
     /**
      * Get the endDateTime property: The Timestamp type represents date and time information using ISO 8601 format and

@@ -29,17 +29,15 @@ public final class MicrosoftGraphWebApplication {
     private MicrosoftGraphImplicitGrantSettings implicitGrantSettings;
 
     /*
-     * Specifies the URL that will be used by Microsoft's authorization service
-     * to logout an user using front-channel, back-channel or SAML logout
-     * protocols.
+     * Specifies the URL that will be used by Microsoft's authorization service to logout an user using front-channel,
+     * back-channel or SAML logout protocols.
      */
     @JsonProperty(value = "logoutUrl")
     private String logoutUrl;
 
     /*
-     * Specifies the URLs where user tokens are sent for sign-in, or the
-     * redirect URIs where OAuth 2.0 authorization codes and access tokens are
-     * sent.
+     * Specifies the URLs where user tokens are sent for sign-in, or the redirect URIs where OAuth 2.0 authorization
+     * codes and access tokens are sent.
      */
     @JsonProperty(value = "redirectUris")
     private List<String> redirectUris;
@@ -48,6 +46,10 @@ public final class MicrosoftGraphWebApplication {
      * webApplication
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWebApplication class. */
+    public MicrosoftGraphWebApplication() {
+    }
 
     /**
      * Get the homePageUrl property: Home page or landing page of the application.

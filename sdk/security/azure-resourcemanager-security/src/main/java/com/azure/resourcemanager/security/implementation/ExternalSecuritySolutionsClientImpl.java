@@ -57,7 +57,7 @@ public final class ExternalSecuritySolutionsClientImpl implements ExternalSecuri
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterExtern")
-    private interface ExternalSecuritySolutionsService {
+    public interface ExternalSecuritySolutionsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/externalSecuritySolutions")
         @ExpectedResponses({200})
@@ -572,25 +572,6 @@ public final class ExternalSecuritySolutionsClientImpl implements ExternalSecuri
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param externalSecuritySolutionsName Name of an external security solution.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific external Security Solution.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExternalSecuritySolutionInner get(
-        String resourceGroupName, String ascLocation, String externalSecuritySolutionsName) {
-        return getAsync(resourceGroupName, ascLocation, externalSecuritySolutionsName).block();
-    }
-
-    /**
-     * Gets a specific external Security Solution.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param externalSecuritySolutionsName Name of an external security solution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -601,6 +582,25 @@ public final class ExternalSecuritySolutionsClientImpl implements ExternalSecuri
     public Response<ExternalSecuritySolutionInner> getWithResponse(
         String resourceGroupName, String ascLocation, String externalSecuritySolutionsName, Context context) {
         return getWithResponseAsync(resourceGroupName, ascLocation, externalSecuritySolutionsName, context).block();
+    }
+
+    /**
+     * Gets a specific external Security Solution.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param externalSecuritySolutionsName Name of an external security solution.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific external Security Solution.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ExternalSecuritySolutionInner get(
+        String resourceGroupName, String ascLocation, String externalSecuritySolutionsName) {
+        return getWithResponse(resourceGroupName, ascLocation, externalSecuritySolutionsName, Context.NONE).getValue();
     }
 
     /**

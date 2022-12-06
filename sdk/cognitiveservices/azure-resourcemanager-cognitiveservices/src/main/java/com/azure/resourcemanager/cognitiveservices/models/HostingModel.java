@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HostingModel. */
+/** Account hosting model. */
 public final class HostingModel extends ExpandableStringEnum<HostingModel> {
     /** Static value Web for HostingModel. */
     public static final HostingModel WEB = fromString("Web");

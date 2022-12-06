@@ -52,6 +52,10 @@ public final class RestorePointSourceVmosDisk {
     @JsonProperty(value = "diskRestorePoint")
     private ApiEntityReference diskRestorePoint;
 
+    /** Creates an instance of RestorePointSourceVmosDisk class. */
+    public RestorePointSourceVmosDisk() {
+    }
+
     /**
      * Get the osType property: Gets the Operating System type.
      *

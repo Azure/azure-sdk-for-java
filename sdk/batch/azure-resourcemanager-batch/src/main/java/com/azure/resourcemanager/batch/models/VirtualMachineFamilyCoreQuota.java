@@ -22,6 +22,10 @@ public final class VirtualMachineFamilyCoreQuota {
     @JsonProperty(value = "coreQuota", access = JsonProperty.Access.WRITE_ONLY)
     private Integer coreQuota;
 
+    /** Creates an instance of VirtualMachineFamilyCoreQuota class. */
+    public VirtualMachineFamilyCoreQuota() {
+    }
+
     /**
      * Get the name property: The Virtual Machine family name.
      *

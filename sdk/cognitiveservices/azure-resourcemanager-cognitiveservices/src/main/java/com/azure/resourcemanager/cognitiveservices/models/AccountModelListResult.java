@@ -24,6 +24,10 @@ public final class AccountModelListResult {
     @JsonProperty(value = "value")
     private List<AccountModelInner> value;
 
+    /** Creates an instance of AccountModelListResult class. */
+    public AccountModelListResult() {
+    }
+
     /**
      * Get the nextLink property: The link used to get the next page of Model.
      *

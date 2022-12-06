@@ -32,6 +32,10 @@ public final class DedicatedHostInner extends Resource {
     @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
+    /** Creates an instance of DedicatedHostInner class. */
+    public DedicatedHostInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the dedicated host.
      *

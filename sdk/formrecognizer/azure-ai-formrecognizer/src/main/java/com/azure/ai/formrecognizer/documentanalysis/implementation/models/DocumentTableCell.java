@@ -59,6 +59,9 @@ public final class DocumentTableCell {
     @JsonProperty(value = "spans", required = true)
     private List<DocumentSpan> spans;
 
+    /** Creates an instance of DocumentTableCell class. */
+    public DocumentTableCell() {}
+
     /**
      * Get the kind property: Table cell kind.
      *
