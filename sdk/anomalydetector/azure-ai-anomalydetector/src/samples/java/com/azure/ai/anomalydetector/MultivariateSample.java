@@ -34,7 +34,8 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import javax.json.*;
+import javax.json.Json;
+import javax.json.JsonReader;
 
 
 public class MultivariateSample {
