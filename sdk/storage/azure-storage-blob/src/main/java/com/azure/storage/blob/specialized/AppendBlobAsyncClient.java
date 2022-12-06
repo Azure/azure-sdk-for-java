@@ -11,6 +11,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -31,6 +32,7 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.options.AppendBlobAppendBlockOptions;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
@@ -423,20 +425,41 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         AppendBlobRequestConditions appendBlobRequestConditions) {
         try {
             return withContext(context ->
-                appendBlockWithResponse(data, length, contentMd5, appendBlobRequestConditions, context));
+                appendBlockWithResponse(BinaryData.wrapFlux(data, length), contentMd5, appendBlobRequestConditions,
+                    context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length, byte[] contentMd5,
+    /**
+     * Commits a new block of data to the end of the existing append blob.
+     * <p>
+     * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
+     * {@code Flux} must produce the same data each time it is subscribed to.
+     *
+     * @param options Options for this append operation.
+     * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the append
+     * blob operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AppendBlobItem>> appendBlockWithResponse(AppendBlobAppendBlockOptions options) {
+        try {
+            return withContext(context ->
+                appendBlockWithResponse(options.getData(), options.getContentMd5(), options.getConditions(), context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<AppendBlobItem>> appendBlockWithResponse(BinaryData data, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions, Context context) {
         appendBlobRequestConditions = appendBlobRequestConditions == null ? new AppendBlobRequestConditions()
             : appendBlobRequestConditions;
         context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.getAppendBlobs().appendBlockWithResponseAsync(
-            containerName, blobName, length, data, null, contentMd5, null, appendBlobRequestConditions.getLeaseId(),
+            containerName, blobName, data.getLength(), data, null, contentMd5, null, appendBlobRequestConditions.getLeaseId(),
             appendBlobRequestConditions.getMaxSize(), appendBlobRequestConditions.getAppendPosition(),
             appendBlobRequestConditions.getIfModifiedSince(), appendBlobRequestConditions.getIfUnmodifiedSince(),
             appendBlobRequestConditions.getIfMatch(), appendBlobRequestConditions.getIfNoneMatch(),
