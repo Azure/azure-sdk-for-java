@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.implementation.util;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
@@ -60,6 +61,8 @@ public final class ModelHelper {
      * Indicates the default size above which the upload will be broken into blocks and parallelized.
      */
     public static final long BLOB_DEFAULT_MAX_SINGLE_UPLOAD_SIZE = 256L * Constants.MB;
+
+    private static final HttpHeaderName X_MS_ERROR_CODE = HttpHeaderName.fromString("x-ms-error-code");
 
     /**
      * Determines whether the passed authority is IP style, that is, it is of the format {@code <host>:<port>}.
@@ -144,15 +147,11 @@ public final class ModelHelper {
      */
     public static com.azure.storage.common.ParallelTransferOptions wrapBlobOptions(
         ParallelTransferOptions blobOptions) {
-        Long blockSize = blobOptions.getBlockSizeLong();
-        Integer maxConcurrency = blobOptions.getMaxConcurrency();
-        Long maxSingleUploadSize = blobOptions.getMaxSingleUploadSizeLong();
-
         return new com.azure.storage.common.ParallelTransferOptions()
-            .setBlockSizeLong(blockSize)
-            .setMaxConcurrency(maxConcurrency)
+            .setBlockSizeLong(blobOptions.getBlockSizeLong())
+            .setMaxConcurrency(blobOptions.getMaxConcurrency())
             .setProgressListener(blobOptions.getProgressListener())
-            .setMaxSingleUploadSizeLong(maxSingleUploadSize);
+            .setMaxSingleUploadSizeLong(blobOptions.getMaxSingleUploadSizeLong());
     }
 
     /**
@@ -292,7 +291,8 @@ public final class ModelHelper {
      * @param requestConditions {@link RequestConditions}
      * @return {@link BlobBeginCopySourceRequestConditions}
      */
-    public static BlobBeginCopySourceRequestConditions populateBlobSourceRequestConditions(RequestConditions requestConditions) {
+    public static BlobBeginCopySourceRequestConditions populateBlobSourceRequestConditions(
+        RequestConditions requestConditions) {
         if (requestConditions == null) {
             return null;
         }
@@ -362,14 +362,14 @@ public final class ModelHelper {
     }
 
     public static String getErrorCode(HttpHeaders headers) {
-        return getHeaderValue(headers, "x-ms-error-code");
+        return getHeaderValue(headers, X_MS_ERROR_CODE);
     }
 
     public static String getETag(HttpHeaders headers) {
-        return getHeaderValue(headers, "ETag");
+        return getHeaderValue(headers, HttpHeaderName.ETAG);
     }
 
-    private static String getHeaderValue(HttpHeaders headers, String headerName) {
+    private static String getHeaderValue(HttpHeaders headers, HttpHeaderName headerName) {
         if (headers == null) {
             return null;
         }
@@ -450,7 +450,8 @@ public final class ModelHelper {
 
     public static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            BlobPropertiesConstructorProxy.create(new BlobPropertiesInternalDownload(response.getDeserializedHeaders())));
+            BlobPropertiesConstructorProxy.create(
+                new BlobPropertiesInternalDownload(response.getDeserializedHeaders())));
     }
 
     public static long getBlobLength(BlobDownloadHeaders headers) {
