@@ -34,6 +34,10 @@ public final class GcpOrganizationalDataOrganization extends GcpOrganizationalDa
     @JsonProperty(value = "workloadIdentityProviderId")
     private String workloadIdentityProviderId;
 
+    /** Creates an instance of GcpOrganizationalDataOrganization class. */
+    public GcpOrganizationalDataOrganization() {
+    }
+
     /**
      * Get the excludedProjectNumbers property: If the multi cloud account is of membership type organization, list of
      * accounts excluded from offering.

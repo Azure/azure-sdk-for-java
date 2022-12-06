@@ -23,6 +23,10 @@ public final class FqdnEndpoint {
     @JsonProperty(value = "endpointDetails")
     private List<FqdnEndpointDetail> endpointDetails;
 
+    /** Creates an instance of FqdnEndpoint class. */
+    public FqdnEndpoint() {
+    }
+
     /**
      * Get the domainName property: The domainName property.
      *

@@ -29,17 +29,6 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsImpl
         this.serviceManager = serviceManager;
     }
 
-    public IoTSecurityAggregatedRecommendation get(
-        String resourceGroupName, String solutionName, String aggregatedRecommendationName) {
-        IoTSecurityAggregatedRecommendationInner inner =
-            this.serviceClient().get(resourceGroupName, solutionName, aggregatedRecommendationName);
-        if (inner != null) {
-            return new IoTSecurityAggregatedRecommendationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<IoTSecurityAggregatedRecommendation> getWithResponse(
         String resourceGroupName, String solutionName, String aggregatedRecommendationName, Context context) {
         Response<IoTSecurityAggregatedRecommendationInner> inner =
@@ -52,6 +41,17 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsImpl
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new IoTSecurityAggregatedRecommendationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public IoTSecurityAggregatedRecommendation get(
+        String resourceGroupName, String solutionName, String aggregatedRecommendationName) {
+        IoTSecurityAggregatedRecommendationInner inner =
+            this.serviceClient().get(resourceGroupName, solutionName, aggregatedRecommendationName);
+        if (inner != null) {
+            return new IoTSecurityAggregatedRecommendationImpl(inner, this.manager());
         } else {
             return null;
         }

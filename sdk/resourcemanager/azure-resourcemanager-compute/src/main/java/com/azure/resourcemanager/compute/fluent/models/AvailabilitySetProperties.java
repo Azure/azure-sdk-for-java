@@ -44,6 +44,10 @@ public final class AvailabilitySetProperties {
     @JsonProperty(value = "statuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<InstanceViewStatus> statuses;
 
+    /** Creates an instance of AvailabilitySetProperties class. */
+    public AvailabilitySetProperties() {
+    }
+
     /**
      * Get the platformUpdateDomainCount property: Update Domain count.
      *

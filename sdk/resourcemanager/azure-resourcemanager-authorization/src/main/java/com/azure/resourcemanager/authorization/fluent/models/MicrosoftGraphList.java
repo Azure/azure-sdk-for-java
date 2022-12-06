@@ -78,6 +78,10 @@ public final class MicrosoftGraphList extends MicrosoftGraphBaseItemInner {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphList class. */
+    public MicrosoftGraphList() {
+    }
+
     /**
      * Get the displayName property: The displayable title of the list.
      *

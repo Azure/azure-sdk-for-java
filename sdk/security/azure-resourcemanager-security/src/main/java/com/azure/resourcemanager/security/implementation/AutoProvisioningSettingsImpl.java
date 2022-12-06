@@ -37,15 +37,6 @@ public final class AutoProvisioningSettingsImpl implements AutoProvisioningSetti
         return Utils.mapPage(inner, inner1 -> new AutoProvisioningSettingImpl(inner1, this.manager()));
     }
 
-    public AutoProvisioningSetting get(String settingName) {
-        AutoProvisioningSettingInner inner = this.serviceClient().get(settingName);
-        if (inner != null) {
-            return new AutoProvisioningSettingImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AutoProvisioningSetting> getWithResponse(String settingName, Context context) {
         Response<AutoProvisioningSettingInner> inner = this.serviceClient().getWithResponse(settingName, context);
         if (inner != null) {
@@ -54,6 +45,15 @@ public final class AutoProvisioningSettingsImpl implements AutoProvisioningSetti
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AutoProvisioningSettingImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AutoProvisioningSetting get(String settingName) {
+        AutoProvisioningSettingInner inner = this.serviceClient().get(settingName);
+        if (inner != null) {
+            return new AutoProvisioningSettingImpl(inner, this.manager());
         } else {
             return null;
         }

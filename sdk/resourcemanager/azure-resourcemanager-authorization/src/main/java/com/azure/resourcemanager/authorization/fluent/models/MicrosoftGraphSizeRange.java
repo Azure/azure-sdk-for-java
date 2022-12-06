@@ -16,15 +16,15 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphSizeRange {
     /*
-     * The maximum size (in kilobytes) that an incoming message must have in
-     * order for a condition or exception to apply.
+     * The maximum size (in kilobytes) that an incoming message must have in order for a condition or exception to
+     * apply.
      */
     @JsonProperty(value = "maximumSize")
     private Integer maximumSize;
 
     /*
-     * The minimum size (in kilobytes) that an incoming message must have in
-     * order for a condition or exception to apply.
+     * The minimum size (in kilobytes) that an incoming message must have in order for a condition or exception to
+     * apply.
      */
     @JsonProperty(value = "minimumSize")
     private Integer minimumSize;
@@ -33,6 +33,10 @@ public final class MicrosoftGraphSizeRange {
      * sizeRange
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphSizeRange class. */
+    public MicrosoftGraphSizeRange() {
+    }
 
     /**
      * Get the maximumSize property: The maximum size (in kilobytes) that an incoming message must have in order for a

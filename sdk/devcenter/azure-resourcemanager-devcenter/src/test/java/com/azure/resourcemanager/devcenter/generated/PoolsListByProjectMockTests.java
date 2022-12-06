@@ -35,7 +35,7 @@ public final class PoolsListByProjectMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"k\",\"devBoxDefinitionName\":\"gg\",\"networkConnectionName\":\"pijrajcivmmghf\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Disabled\"},\"location\":\"gkn\",\"tags\":{\"oxgsgbpfgzdjtx\":\"yinzqodfvpgs\"},\"id\":\"zflbqvg\",\"name\":\"qvlgafcqusrdvetn\",\"type\":\"sdtutnwlduyc\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"devBoxDefinitionName\":\"iwrxgkn\",\"networkConnectionName\":\"vyi\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Disabled\"},\"location\":\"vpgshoxgsgbp\",\"tags\":{\"gaqvlgafcqusrd\":\"djtxvzflbq\",\"duy\":\"etnwsdtutnw\",\"ewipm\":\"vuzhyr\"},\"id\":\"ekdxuku\",\"name\":\"gsjj\",\"type\":\"undxgketw\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,12 +64,12 @@ public final class PoolsListByProjectMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Pool> response =
-            manager.pools().listByProject("xcjzhqizxfpxt", "qscjavftjuh", 562191246, Context.NONE);
+            manager.pools().listByProject("azkmtgguwp", "jrajcivm", 1977689221, Context.NONE);
 
-        Assertions.assertEquals("gkn", response.iterator().next().location());
-        Assertions.assertEquals("yinzqodfvpgs", response.iterator().next().tags().get("oxgsgbpfgzdjtx"));
-        Assertions.assertEquals("gg", response.iterator().next().devBoxDefinitionName());
-        Assertions.assertEquals("pijrajcivmmghf", response.iterator().next().networkConnectionName());
+        Assertions.assertEquals("vpgshoxgsgbp", response.iterator().next().location());
+        Assertions.assertEquals("djtxvzflbq", response.iterator().next().tags().get("gaqvlgafcqusrd"));
+        Assertions.assertEquals("iwrxgkn", response.iterator().next().devBoxDefinitionName());
+        Assertions.assertEquals("vyi", response.iterator().next().networkConnectionName());
         Assertions.assertEquals(LicenseType.WINDOWS_CLIENT, response.iterator().next().licenseType());
         Assertions.assertEquals(LocalAdminStatus.DISABLED, response.iterator().next().localAdministrator());
     }

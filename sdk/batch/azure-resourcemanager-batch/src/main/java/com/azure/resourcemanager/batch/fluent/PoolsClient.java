@@ -67,21 +67,6 @@ public interface PoolsClient {
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
      * @param parameters Additional parameters for pool creation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a pool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PoolInner create(String resourceGroupName, String accountName, String poolName, PoolInner parameters);
-
-    /**
-     * Creates a new pool inside the specified account.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param poolName The pool name. This must be unique within the account.
-     * @param parameters Additional parameters for pool creation.
      * @param ifMatch The entity state (ETag) version of the pool to update. A value of "*" can be used to apply the
      *     operation only if the pool already exists. If omitted, this operation will always be applied.
      * @param ifNoneMatch Set to '*' to allow a new pool to be created, but to prevent updating an existing pool. Other
@@ -103,20 +88,19 @@ public interface PoolsClient {
         Context context);
 
     /**
-     * Updates the properties of an existing pool.
+     * Creates a new pool inside the specified account.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
-     * @param parameters Pool properties that should be updated. Properties that are supplied will be updated, any
-     *     property not supplied will be unchanged.
+     * @param parameters Additional parameters for pool creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return contains information about a pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PoolInner update(String resourceGroupName, String accountName, String poolName, PoolInner parameters);
+    PoolInner create(String resourceGroupName, String accountName, String poolName, PoolInner parameters);
 
     /**
      * Updates the properties of an existing pool.
@@ -142,6 +126,22 @@ public interface PoolsClient {
         PoolInner parameters,
         String ifMatch,
         Context context);
+
+    /**
+     * Updates the properties of an existing pool.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param poolName The pool name. This must be unique within the account.
+     * @param parameters Pool properties that should be updated. Properties that are supplied will be updated, any
+     *     property not supplied will be unchanged.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains information about a pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PoolInner update(String resourceGroupName, String accountName, String poolName, PoolInner parameters);
 
     /**
      * Deletes the specified pool.
@@ -206,20 +206,6 @@ public interface PoolsClient {
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param poolName The pool name. This must be unique within the account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified pool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PoolInner get(String resourceGroupName, String accountName, String poolName);
-
-    /**
-     * Gets information about the specified pool.
-     *
-     * @param resourceGroupName The name of the resource group that contains the Batch account.
-     * @param accountName The name of the Batch account.
-     * @param poolName The pool name. This must be unique within the account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -230,7 +216,7 @@ public interface PoolsClient {
     PoolsGetResponse getWithResponse(String resourceGroupName, String accountName, String poolName, Context context);
 
     /**
-     * Disables automatic scaling for a pool.
+     * Gets information about the specified pool.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
@@ -238,10 +224,10 @@ public interface PoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contains information about a pool.
+     * @return information about the specified pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PoolInner disableAutoScale(String resourceGroupName, String accountName, String poolName);
+    PoolInner get(String resourceGroupName, String accountName, String poolName);
 
     /**
      * Disables automatic scaling for a pool.
@@ -260,11 +246,7 @@ public interface PoolsClient {
         String resourceGroupName, String accountName, String poolName, Context context);
 
     /**
-     * This does not restore the pool to its previous state before the resize operation: it only stops any further
-     * changes being made, and the pool maintains its current state. After stopping, the pool stabilizes at the number
-     * of nodes it was at when the stop operation was done. During the stop operation, the pool allocation state changes
-     * first to stopping and then to steady. A resize operation need not be an explicit resize pool request; this API
-     * can also be used to halt the initial sizing of the pool when it is created.
+     * Disables automatic scaling for a pool.
      *
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
@@ -275,10 +257,12 @@ public interface PoolsClient {
      * @return contains information about a pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PoolInner stopResize(String resourceGroupName, String accountName, String poolName);
+    PoolInner disableAutoScale(String resourceGroupName, String accountName, String poolName);
 
     /**
-     * This does not restore the pool to its previous state before the resize operation: it only stops any further
+     * Stops an ongoing resize operation on the pool.
+     *
+     * <p>This does not restore the pool to its previous state before the resize operation: it only stops any further
      * changes being made, and the pool maintains its current state. After stopping, the pool stabilizes at the number
      * of nodes it was at when the stop operation was done. During the stop operation, the pool allocation state changes
      * first to stopping and then to steady. A resize operation need not be an explicit resize pool request; this API
@@ -296,4 +280,24 @@ public interface PoolsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     PoolsStopResizeResponse stopResizeWithResponse(
         String resourceGroupName, String accountName, String poolName, Context context);
+
+    /**
+     * Stops an ongoing resize operation on the pool.
+     *
+     * <p>This does not restore the pool to its previous state before the resize operation: it only stops any further
+     * changes being made, and the pool maintains its current state. After stopping, the pool stabilizes at the number
+     * of nodes it was at when the stop operation was done. During the stop operation, the pool allocation state changes
+     * first to stopping and then to steady. A resize operation need not be an explicit resize pool request; this API
+     * can also be used to halt the initial sizing of the pool when it is created.
+     *
+     * @param resourceGroupName The name of the resource group that contains the Batch account.
+     * @param accountName The name of the Batch account.
+     * @param poolName The pool name. This must be unique within the account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return contains information about a pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PoolInner stopResize(String resourceGroupName, String accountName, String poolName);
 }

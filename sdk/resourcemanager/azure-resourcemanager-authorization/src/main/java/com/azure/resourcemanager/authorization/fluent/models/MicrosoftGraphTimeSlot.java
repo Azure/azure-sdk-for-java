@@ -32,6 +32,10 @@ public final class MicrosoftGraphTimeSlot {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphTimeSlot class. */
+    public MicrosoftGraphTimeSlot() {
+    }
+
     /**
      * Get the end property: dateTimeTimeZone.
      *

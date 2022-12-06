@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SignalRPrivateEndpointConnections Get. */
 public final class SignalRPrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalRPrivateEndpointConnections_Get.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/SignalRPrivateEndpointConnections_Get.json
      */
     /**
      * Sample code: SignalRPrivateEndpointConnections_Get.

@@ -353,6 +353,11 @@
           "justification": "Fixes a bug."
         },
         {
+          "code": "java.method.added",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cOidcLoginConfigurer::<init>(org.springframework.security.web.authentication.logout.LogoutSuccessHandler, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver, org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient<org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest>, org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "New method added to fix a bug."
+        },
+        {
           "code": "java.missing.newSuperType",
           "old": "class com.azure.messaging.eventhubs.EventData",
           "new": "class com.azure.messaging.eventhubs.EventData",
@@ -534,6 +539,63 @@
           "code": "java.method.numberOfParametersChanged",
           "new": "method void com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration::<init>(org.springframework.boot.web.client.RestTemplateBuilder)",
           "justification": "Bean configuration will not be used by customer in java code."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.resourcemanager.compute.models.GalleryArtifactVersionSource::uri()",
+          "justification": "Non-functional property removed by backend."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.compute.models.GalleryArtifactVersionSource com.azure.resourcemanager.compute.models.GalleryArtifactVersionSource::withUri(java.lang.String)",
+          "justification": "Non-functional property removed by backend."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChangedCovariantly",
+          "old": "method com.azure.resourcemanager.compute.models.GalleryArtifactVersionSource com.azure.resourcemanager.compute.models.GalleryDiskImage::source() @ com.azure.resourcemanager.compute.models.GalleryDataDiskImage",
+          "new": "method com.azure.resourcemanager.compute.models.GalleryDiskImageSource com.azure.resourcemanager.compute.models.GalleryDiskImage::source() @ com.azure.resourcemanager.compute.models.GalleryDataDiskImage",
+          "justification": "Type of property changed to its subclass by backend. Getter returns a subclass of previous type."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter com.azure.resourcemanager.compute.models.GalleryDataDiskImage com.azure.resourcemanager.compute.models.GalleryDataDiskImage::withSource(===com.azure.resourcemanager.compute.models.GalleryArtifactVersionSource===)",
+          "new": "parameter com.azure.resourcemanager.compute.models.GalleryDataDiskImage com.azure.resourcemanager.compute.models.GalleryDataDiskImage::withSource(===com.azure.resourcemanager.compute.models.GalleryDiskImageSource===)",
+          "parameterIndex": "0",
+          "justification": "Type of property changed to its subclass by backend. User will not access the setter in convenience API."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChangedCovariantly",
+          "old": "method com.azure.resourcemanager.compute.models.GalleryArtifactVersionSource com.azure.resourcemanager.compute.models.GalleryImageVersionStorageProfile::source()",
+          "new": "method com.azure.resourcemanager.compute.models.GalleryArtifactVersionFullSource com.azure.resourcemanager.compute.models.GalleryImageVersionStorageProfile::source()",
+          "justification": "Type of property changed to its subclass by backend. Getter returns a subclass of previous type."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter com.azure.resourcemanager.compute.models.GalleryImageVersionStorageProfile com.azure.resourcemanager.compute.models.GalleryImageVersionStorageProfile::withSource(===com.azure.resourcemanager.compute.models.GalleryArtifactVersionSource===)",
+          "new": "parameter com.azure.resourcemanager.compute.models.GalleryImageVersionStorageProfile com.azure.resourcemanager.compute.models.GalleryImageVersionStorageProfile::withSource(===com.azure.resourcemanager.compute.models.GalleryArtifactVersionFullSource===)",
+          "parameterIndex": "0",
+          "justification": "Type of property changed to its subclass by backend. User will not access the setter in convenience API."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChangedCovariantly",
+          "old": "method com.azure.resourcemanager.compute.models.GalleryArtifactVersionSource com.azure.resourcemanager.compute.models.GalleryDiskImage::source() @ com.azure.resourcemanager.compute.models.GalleryOSDiskImage",
+          "new": "method com.azure.resourcemanager.compute.models.GalleryDiskImageSource com.azure.resourcemanager.compute.models.GalleryDiskImage::source() @ com.azure.resourcemanager.compute.models.GalleryOSDiskImage",
+          "justification": "Type of property changed to its subclass by backend. Getter returns a subclass of previous type."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter com.azure.resourcemanager.compute.models.GalleryOSDiskImage com.azure.resourcemanager.compute.models.GalleryOSDiskImage::withSource(===com.azure.resourcemanager.compute.models.GalleryArtifactVersionSource===)",
+          "new": "parameter com.azure.resourcemanager.compute.models.GalleryOSDiskImage com.azure.resourcemanager.compute.models.GalleryOSDiskImage::withSource(===com.azure.resourcemanager.compute.models.GalleryDiskImageSource===)",
+          "parameterIndex": "0",
+          "justification": "Type of property changed to its subclass by backend. User will not access the setter in convenience API."
         }
       ]
     }

@@ -25,6 +25,10 @@ public final class RestorePointCollectionListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of RestorePointCollectionListResult class. */
+    public RestorePointCollectionListResult() {
+    }
+
     /**
      * Get the value property: Gets the list of restore point collections.
      *

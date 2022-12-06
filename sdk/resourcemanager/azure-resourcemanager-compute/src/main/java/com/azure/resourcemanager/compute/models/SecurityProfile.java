@@ -33,6 +33,10 @@ public final class SecurityProfile {
     @JsonProperty(value = "securityType")
     private SecurityTypes securityType;
 
+    /** Creates an instance of SecurityProfile class. */
+    public SecurityProfile() {
+    }
+
     /**
      * Get the uefiSettings property: Specifies the security settings like secure boot and vTPM used while creating the
      * virtual machine. &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-12-01.

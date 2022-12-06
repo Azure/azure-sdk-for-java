@@ -8,7 +8,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
 import com.azure.messaging.servicebus.administration.models.CorrelationRuleFilter;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
-import com.azure.messaging.servicebus.administration.models.RuleFilter;
 import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.administration.models.SqlRuleAction;
 import com.azure.messaging.servicebus.administration.models.SqlRuleFilter;
@@ -61,7 +60,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * <p><strong>Fetch all rules.</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.getRules -->
  * <pre>
- * ruleManager.getRules&#40;&#41;.subscribe&#40;ruleProperties -&gt; System.out.println&#40;ruleProperties.getName&#40;&#41;&#41;&#41;;
+ * ruleManager.listRules&#40;&#41;.subscribe&#40;ruleProperties -&gt; System.out.println&#40;ruleProperties.getName&#40;&#41;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.getRules -->
  *
@@ -144,24 +143,6 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Creates a rule to the current subscription to filter the messages reaching from topic to the subscription.
-     *
-     * @param ruleName Name of rule.
-     * @param filter The filter expression against which messages will be matched.
-     * @return A Mono that completes when the rule is created.
-     *
-     * @throws NullPointerException if {@code filter}, {@code ruleName} is null.
-     * @throws IllegalStateException if client is disposed.
-     * @throws IllegalArgumentException if ruleName is empty string, {@code filter} is not instanceof {@link SqlRuleFilter} or
-     * {@link CorrelationRuleFilter}.
-     * @throws ServiceBusException if filter matches {@code ruleName} is already created in subscription.
-     */
-    public Mono<Void> createRule(String ruleName, RuleFilter filter) {
-        CreateRuleOptions options = new CreateRuleOptions(filter);
-        return createRuleInternal(ruleName, options);
-    }
-
-    /**
      * Fetches all rules associated with the topic and subscription.
      *
      * @return A list of rules associated with the topic and subscription.
@@ -169,7 +150,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
      * @throws IllegalStateException if client is disposed.
      * @throws UnsupportedOperationException if client cannot support filter with descriptor in message body.
      */
-    public Flux<RuleProperties> getRules() {
+    public Flux<RuleProperties> listRules() {
         if (isDisposed.get()) {
             return fluxError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RULE_MANAGER, "getRules")
@@ -178,7 +159,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMapMany(ServiceBusManagementNode::getRules);
+            .flatMapMany(ServiceBusManagementNode::listRules);
     }
 
     /**

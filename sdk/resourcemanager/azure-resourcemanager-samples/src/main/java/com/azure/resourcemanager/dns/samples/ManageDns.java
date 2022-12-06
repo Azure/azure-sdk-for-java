@@ -142,7 +142,7 @@ public class ManageDns {
                         .withNewPrimaryPublicIPAddress(Utils.randomResourceName(azureResourceManager, "empip-", 20))
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                         .withAdminUsername("testuser")
-                        .withAdminPassword("12NewPA$$w0rd!")
+                        .withAdminPassword("fakePasswordPlaceholder")
                         .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                         .create();
             System.out.println("Virtual machine created");
@@ -224,7 +224,7 @@ public class ManageDns {
                         .withNewPrimaryPublicIPAddress(Utils.randomResourceName(azureResourceManager, "ptnerpip-", 20))
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                         .withAdminUsername("testuser")
-                        .withAdminPassword("12NewPA$$w0rd!")
+                        .withAdminPassword("fakePasswordPlaceholder")
                         .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                         .create();
             System.out.println("Virtual machine created");

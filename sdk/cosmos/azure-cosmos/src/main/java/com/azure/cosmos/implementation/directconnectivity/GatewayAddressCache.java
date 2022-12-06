@@ -150,6 +150,9 @@ public class GatewayAddressCache implements IAddressCache {
 
         // Set requested API version header for version enforcement.
         defaultRequestHeaders.put(HttpConstants.HttpHeaders.VERSION, HttpConstants.Versions.CURRENT_VERSION);
+        this.defaultRequestHeaders.put(
+            HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
+            HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES);
 
         this.lastForcedRefreshMap = new ConcurrentHashMap<>();
         this.globalEndpointManager = globalEndpointManager;

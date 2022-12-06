@@ -40,18 +40,6 @@ public interface SettingsClient {
      * Settings of different configurations in Microsoft Defender for Cloud.
      *
      * @param settingName The name of the setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the kind of the security setting.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SettingInner get(SettingName settingName);
-
-    /**
-     * Settings of different configurations in Microsoft Defender for Cloud.
-     *
-     * @param settingName The name of the setting.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -62,17 +50,16 @@ public interface SettingsClient {
     Response<SettingInner> getWithResponse(SettingName settingName, Context context);
 
     /**
-     * updating settings about different configurations in Microsoft Defender for Cloud.
+     * Settings of different configurations in Microsoft Defender for Cloud.
      *
      * @param settingName The name of the setting.
-     * @param setting Setting object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the kind of the security setting.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SettingInner update(SettingName settingName, SettingInner setting);
+    SettingInner get(SettingName settingName);
 
     /**
      * updating settings about different configurations in Microsoft Defender for Cloud.
@@ -87,4 +74,17 @@ public interface SettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SettingInner> updateWithResponse(SettingName settingName, SettingInner setting, Context context);
+
+    /**
+     * updating settings about different configurations in Microsoft Defender for Cloud.
+     *
+     * @param settingName The name of the setting.
+     * @param setting Setting object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the kind of the security setting.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SettingInner update(SettingName settingName, SettingInner setting);
 }

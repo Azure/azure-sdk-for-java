@@ -24,25 +24,22 @@ public class MicrosoftGraphOutlookItem extends MicrosoftGraphEntity {
     private List<String> categories;
 
     /*
-     * Identifies the version of the item. Every time the item is changed,
-     * changeKey changes as well. This allows Exchange to apply changes to the
-     * correct version of the object. Read-only.
+     * Identifies the version of the item. Every time the item is changed, changeKey changes as well. This allows
+     * Exchange to apply changes to the correct version of the object. Read-only.
      */
     @JsonProperty(value = "changeKey")
     private String changeKey;
 
     /*
-     * The Timestamp type represents date and time information using ISO 8601
-     * format and is always in UTC time. For example, midnight UTC on Jan 1,
-     * 2014 would look like this: '2014-01-01T00:00:00Z'
+     * The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For
+     * example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
      */
     @JsonProperty(value = "createdDateTime")
     private OffsetDateTime createdDateTime;
 
     /*
-     * The Timestamp type represents date and time information using ISO 8601
-     * format and is always in UTC time. For example, midnight UTC on Jan 1,
-     * 2014 would look like this: '2014-01-01T00:00:00Z'
+     * The Timestamp type represents date and time information using ISO 8601 format and is always in UTC time. For
+     * example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'
      */
     @JsonProperty(value = "lastModifiedDateTime")
     private OffsetDateTime lastModifiedDateTime;
@@ -51,6 +48,10 @@ public class MicrosoftGraphOutlookItem extends MicrosoftGraphEntity {
      * outlookItem
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphOutlookItem class. */
+    public MicrosoftGraphOutlookItem() {
+    }
 
     /**
      * Get the categories property: The categories associated with the item.

@@ -36,19 +36,6 @@ public interface SecureScores {
      *
      * @param secureScoreName The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample
      *     request below.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return secure score for a specific Microsoft Defender for Cloud initiative within your current scope.
-     */
-    SecureScoreItem get(String secureScoreName);
-
-    /**
-     * Get secure score for a specific Microsoft Defender for Cloud initiative within your current scope. For the ASC
-     * Default initiative, use 'ascScore'.
-     *
-     * @param secureScoreName The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample
-     *     request below.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -57,4 +44,17 @@ public interface SecureScores {
      *     {@link Response}.
      */
     Response<SecureScoreItem> getWithResponse(String secureScoreName, Context context);
+
+    /**
+     * Get secure score for a specific Microsoft Defender for Cloud initiative within your current scope. For the ASC
+     * Default initiative, use 'ascScore'.
+     *
+     * @param secureScoreName The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample
+     *     request below.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return secure score for a specific Microsoft Defender for Cloud initiative within your current scope.
+     */
+    SecureScoreItem get(String secureScoreName);
 }

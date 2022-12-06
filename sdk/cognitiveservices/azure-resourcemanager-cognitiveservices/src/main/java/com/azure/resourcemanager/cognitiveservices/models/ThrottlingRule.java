@@ -47,6 +47,10 @@ public final class ThrottlingRule {
     @JsonProperty(value = "matchPatterns")
     private List<RequestMatchPattern> matchPatterns;
 
+    /** Creates an instance of ThrottlingRule class. */
+    public ThrottlingRule() {
+    }
+
     /**
      * Get the key property: The key property.
      *

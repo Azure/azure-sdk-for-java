@@ -22,23 +22,6 @@ public interface CustomEntityStoreAssignmentsClient {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single custom entity store assignment by name for the provided subscription and resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomEntityStoreAssignmentInner getByResourceGroup(
-        String resourceGroupName, String customEntityStoreAssignmentName);
-
-    /**
-     * Gets a custom entity store assignment
-     *
-     * <p>Gets a single custom entity store assignment by name for the provided subscription and resource group.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -51,24 +34,21 @@ public interface CustomEntityStoreAssignmentsClient {
         String resourceGroupName, String customEntityStoreAssignmentName, Context context);
 
     /**
-     * Creates a custom entity store assignment
+     * Gets a custom entity store assignment
      *
-     * <p>Creates a custom entity store assignment for the provided subscription, if not already exists.
+     * <p>Gets a single custom entity store assignment by name for the provided subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
-     * @param customEntityStoreAssignmentRequestBody Custom entity store assignment body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom entity store assignment.
+     * @return a single custom entity store assignment by name for the provided subscription and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomEntityStoreAssignmentInner create(
-        String resourceGroupName,
-        String customEntityStoreAssignmentName,
-        CustomEntityStoreAssignmentRequest customEntityStoreAssignmentRequestBody);
+    CustomEntityStoreAssignmentInner getByResourceGroup(
+        String resourceGroupName, String customEntityStoreAssignmentName);
 
     /**
      * Creates a custom entity store assignment
@@ -93,19 +73,24 @@ public interface CustomEntityStoreAssignmentsClient {
         Context context);
 
     /**
-     * Deleted a custom entity store assignment
+     * Creates a custom entity store assignment
      *
-     * <p>Delete a custom entity store assignment by name for a provided subscription.
+     * <p>Creates a custom entity store assignment for the provided subscription, if not already exists.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
+     * @param customEntityStoreAssignmentRequestBody Custom entity store assignment body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom entity store assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String customEntityStoreAssignmentName);
+    CustomEntityStoreAssignmentInner create(
+        String resourceGroupName,
+        String customEntityStoreAssignmentName,
+        CustomEntityStoreAssignmentRequest customEntityStoreAssignmentRequestBody);
 
     /**
      * Deleted a custom entity store assignment
@@ -124,6 +109,21 @@ public interface CustomEntityStoreAssignmentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
         String resourceGroupName, String customEntityStoreAssignmentName, Context context);
+
+    /**
+     * Deleted a custom entity store assignment
+     *
+     * <p>Delete a custom entity store assignment by name for a provided subscription.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param customEntityStoreAssignmentName Name of the custom entity store assignment. Generated name is GUID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String customEntityStoreAssignmentName);
 
     /**
      * List custom entity store assignments in a subscription and a resource group

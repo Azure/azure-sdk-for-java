@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An object that describes a specification. */
 @Fluent
 public final class ServiceSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceSpecification.class);
-
     /*
      * Specifications of the Metrics for Azure Monitoring.
      */
@@ -26,6 +22,10 @@ public final class ServiceSpecification {
      */
     @JsonProperty(value = "logSpecifications")
     private List<LogSpecification> logSpecifications;
+
+    /** Creates an instance of ServiceSpecification class. */
+    public ServiceSpecification() {
+    }
 
     /**
      * Get the metricSpecifications property: Specifications of the Metrics for Azure Monitoring.

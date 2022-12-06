@@ -48,6 +48,9 @@ public final class DocumentModelDetails {
     @JsonProperty(value = "docTypes")
     private Map<String, DocumentTypeDetails> docTypes;
 
+    /** Creates an instance of DocumentModelDetails class. */
+    public DocumentModelDetails() {}
+
     /**
      * Get the modelId property: Unique document model name.
      *

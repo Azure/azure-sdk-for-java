@@ -45,20 +45,6 @@ public interface RegulatoryComplianceControlsClient {
      *
      * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
      * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return regulatory compliance control details and state.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RegulatoryComplianceControlInner get(
-        String regulatoryComplianceStandardName, String regulatoryComplianceControlName);
-
-    /**
-     * Selected regulatory compliance control details and state.
-     *
-     * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
-     * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -68,4 +54,18 @@ public interface RegulatoryComplianceControlsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RegulatoryComplianceControlInner> getWithResponse(
         String regulatoryComplianceStandardName, String regulatoryComplianceControlName, Context context);
+
+    /**
+     * Selected regulatory compliance control details and state.
+     *
+     * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
+     * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return regulatory compliance control details and state.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RegulatoryComplianceControlInner get(
+        String regulatoryComplianceStandardName, String regulatoryComplianceControlName);
 }

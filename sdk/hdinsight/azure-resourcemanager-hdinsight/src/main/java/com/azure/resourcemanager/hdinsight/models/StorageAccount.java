@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The storage Account. */
 @Fluent
 public final class StorageAccount {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccount.class);
-
     /*
      * The name of the storage account.
      */
@@ -27,8 +23,7 @@ public final class StorageAccount {
     private Boolean isDefault;
 
     /*
-     * The container in the storage account, only to be specified for WASB
-     * storage accounts.
+     * The container in the storage account, only to be specified for WASB storage accounts.
      */
     @JsonProperty(value = "container")
     private String container;
@@ -46,15 +41,14 @@ public final class StorageAccount {
     private String key;
 
     /*
-     * The resource ID of storage account, only to be specified for Azure Data
-     * Lake Storage Gen 2.
+     * The resource ID of storage account, only to be specified for Azure Data Lake Storage Gen 2.
      */
     @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
-     * The managed identity (MSI) that is allowed to access the storage
-     * account, only to be specified for Azure Data Lake Storage Gen 2.
+     * The managed identity (MSI) that is allowed to access the storage account, only to be specified for Azure Data
+     * Lake Storage Gen 2.
      */
     @JsonProperty(value = "msiResourceId")
     private String msiResourceId;
@@ -70,6 +64,10 @@ public final class StorageAccount {
      */
     @JsonProperty(value = "fileshare")
     private String fileshare;
+
+    /** Creates an instance of StorageAccount class. */
+    public StorageAccount() {
+    }
 
     /**
      * Get the name property: The name of the storage account.

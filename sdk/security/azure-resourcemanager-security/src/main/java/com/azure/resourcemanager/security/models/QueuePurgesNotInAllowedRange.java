@@ -14,6 +14,10 @@ import java.time.Duration;
 @JsonTypeName("QueuePurgesNotInAllowedRange")
 @Fluent
 public final class QueuePurgesNotInAllowedRange extends TimeWindowCustomAlertRule {
+    /** Creates an instance of QueuePurgesNotInAllowedRange class. */
+    public QueuePurgesNotInAllowedRange() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public QueuePurgesNotInAllowedRange withTimeWindowSize(Duration timeWindowSize) {

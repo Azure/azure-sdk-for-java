@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
-import com.azure.identity.providers.jdbc.implementation.template.AzureAuthenticationTemplate;
+import com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.SpringTokenCredentialProviderContextProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -20,7 +20,7 @@ import org.springframework.context.annotation.DependsOn;
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Identify JDBC support.
  * Provide Azure AD based authentication with Azure managed MySql and Postgresql services.
  *
- * @since 4.4.0
+ * @since 4.5.0
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnBean(DataSourceProperties.class)

@@ -28,15 +28,6 @@ public final class SecurityConnectorGovernanceRulesOperationsImpl
         this.serviceManager = serviceManager;
     }
 
-    public GovernanceRule get(String resourceGroupName, String securityConnectorName, String ruleId) {
-        GovernanceRuleInner inner = this.serviceClient().get(resourceGroupName, securityConnectorName, ruleId);
-        if (inner != null) {
-            return new GovernanceRuleImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<GovernanceRule> getWithResponse(
         String resourceGroupName, String securityConnectorName, String ruleId, Context context) {
         Response<GovernanceRuleInner> inner =
@@ -52,10 +43,8 @@ public final class SecurityConnectorGovernanceRulesOperationsImpl
         }
     }
 
-    public GovernanceRule createOrUpdate(
-        String resourceGroupName, String securityConnectorName, String ruleId, GovernanceRuleInner governanceRule) {
-        GovernanceRuleInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, securityConnectorName, ruleId, governanceRule);
+    public GovernanceRule get(String resourceGroupName, String securityConnectorName, String ruleId) {
+        GovernanceRuleInner inner = this.serviceClient().get(resourceGroupName, securityConnectorName, ruleId);
         if (inner != null) {
             return new GovernanceRuleImpl(inner, this.manager());
         } else {
@@ -84,13 +73,24 @@ public final class SecurityConnectorGovernanceRulesOperationsImpl
         }
     }
 
-    public void delete(String resourceGroupName, String securityConnectorName, String ruleId) {
-        this.serviceClient().delete(resourceGroupName, securityConnectorName, ruleId);
+    public GovernanceRule createOrUpdate(
+        String resourceGroupName, String securityConnectorName, String ruleId, GovernanceRuleInner governanceRule) {
+        GovernanceRuleInner inner =
+            this.serviceClient().createOrUpdate(resourceGroupName, securityConnectorName, ruleId, governanceRule);
+        if (inner != null) {
+            return new GovernanceRuleImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String securityConnectorName, String ruleId, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, securityConnectorName, ruleId, context);
+    }
+
+    public void delete(String resourceGroupName, String securityConnectorName, String ruleId) {
+        this.serviceClient().delete(resourceGroupName, securityConnectorName, ruleId);
     }
 
     private SecurityConnectorGovernanceRulesOperationsClient serviceClient() {

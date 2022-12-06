@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SignalRSkuTier. */
+/**
+ * Optional tier of this particular SKU. 'Standard' or 'Free'.
+ *
+ * <p>`Basic` is deprecated, use `Standard` instead.
+ */
 public final class SignalRSkuTier extends ExpandableStringEnum<SignalRSkuTier> {
     /** Static value Free for SignalRSkuTier. */
     public static final SignalRSkuTier FREE = fromString("Free");
@@ -33,7 +37,11 @@ public final class SignalRSkuTier extends ExpandableStringEnum<SignalRSkuTier> {
         return fromString(name, SignalRSkuTier.class);
     }
 
-    /** @return known SignalRSkuTier values. */
+    /**
+     * Gets known SignalRSkuTier values.
+     *
+     * @return known SignalRSkuTier values.
+     */
     public static Collection<SignalRSkuTier> values() {
         return values(SignalRSkuTier.class);
     }

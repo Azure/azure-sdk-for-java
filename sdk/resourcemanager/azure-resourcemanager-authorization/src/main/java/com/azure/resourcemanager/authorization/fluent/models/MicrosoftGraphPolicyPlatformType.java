@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphPolicyPlatformType. */
+/** policyPlatformType. */
 public final class MicrosoftGraphPolicyPlatformType extends ExpandableStringEnum<MicrosoftGraphPolicyPlatformType> {
     /** Static value android for MicrosoftGraphPolicyPlatformType. */
     public static final MicrosoftGraphPolicyPlatformType ANDROID = fromString("android");
@@ -45,7 +45,11 @@ public final class MicrosoftGraphPolicyPlatformType extends ExpandableStringEnum
         return fromString(name, MicrosoftGraphPolicyPlatformType.class);
     }
 
-    /** @return known MicrosoftGraphPolicyPlatformType values. */
+    /**
+     * Gets known MicrosoftGraphPolicyPlatformType values.
+     *
+     * @return known MicrosoftGraphPolicyPlatformType values.
+     */
     public static Collection<MicrosoftGraphPolicyPlatformType> values() {
         return values(MicrosoftGraphPolicyPlatformType.class);
     }

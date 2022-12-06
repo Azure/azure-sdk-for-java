@@ -22,6 +22,10 @@ public final class GovernanceRuleEmailNotification {
     @JsonProperty(value = "disableOwnerEmailNotification")
     private Boolean disableOwnerEmailNotification;
 
+    /** Creates an instance of GovernanceRuleEmailNotification class. */
+    public GovernanceRuleEmailNotification() {
+    }
+
     /**
      * Get the disableManagerEmailNotification property: Defines whether manager email notifications are disabled.
      *

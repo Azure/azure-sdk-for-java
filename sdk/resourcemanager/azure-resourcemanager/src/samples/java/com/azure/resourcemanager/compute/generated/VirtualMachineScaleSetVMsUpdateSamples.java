@@ -135,7 +135,7 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
                             .withName("aaaaaaaaaa")
                             .withPublisher("aaaaaaaaaaaaaaaaaaaaaa")
                             .withProduct("aaaaaaaaaaaaaaaaaaaa")
-                            .withPromotionCode("aaaaaaaaaaaaaaaaaaaa"))
+                            .withPromotionCode("fakeTokenPlaceholder"))
                     .withHardwareProfile(
                         new HardwareProfile()
                             .withVmSize(VirtualMachineSizeTypes.BASIC_A0)
@@ -157,14 +157,14 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
                                         new DiskEncryptionSettings()
                                             .withDiskEncryptionKey(
                                                 new KeyVaultSecretReference()
-                                                    .withSecretUrl("aaaaaaaa")
+                                                    .withSecretUrl("fakeTokenPlaceholder")
                                                     .withSourceVault(
                                                         new SubResource()
                                                             .withId(
                                                                 "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/availabilitySets/{availabilitySetName}")))
                                             .withKeyEncryptionKey(
                                                 new KeyVaultKeyReference()
-                                                    .withKeyUrl("aaaaaaaaaaaaaa")
+                                                    .withKeyUrl("fakeTokenPlaceholder")
                                                     .withSourceVault(
                                                         new SubResource()
                                                             .withId(
@@ -229,7 +229,7 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
                         new OSProfile()
                             .withComputerName("test000000")
                             .withAdminUsername("Foo12")
-                            .withAdminPassword("aaaaaaaaaaaaaaaa")
+                            .withAdminPassword("fakeTokenPlaceholder")
                             .withCustomData("aaaa")
                             .withWindowsConfiguration(
                                 new WindowsConfiguration()
@@ -264,7 +264,10 @@ public final class VirtualMachineScaleSetVMsUpdateSamples {
                                         new SshConfiguration()
                                             .withPublicKeys(
                                                 Arrays
-                                                    .asList(new SshPublicKey().withPath("aaa").withKeyData("aaaaaa"))))
+                                                    .asList(
+                                                        new SshPublicKey()
+                                                            .withPath("aaa")
+                                                            .withKeyData("fakeTokenPlaceholder"))))
                                     .withProvisionVMAgent(true)
                                     .withPatchSettings(
                                         new LinuxPatchSettings()

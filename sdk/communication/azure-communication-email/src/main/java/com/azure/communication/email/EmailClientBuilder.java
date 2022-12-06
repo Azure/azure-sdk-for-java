@@ -14,7 +14,9 @@ import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -23,6 +25,7 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -36,6 +39,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,10 +54,13 @@ public final class EmailClientBuilder
                 ConfigurationTrait<EmailClientBuilder>,
                 AzureKeyCredentialTrait<EmailClientBuilder>,
                 EndpointTrait<EmailClientBuilder>,
-                ConnectionStringTrait<EmailClientBuilder> {
+                ConnectionStringTrait<EmailClientBuilder>,
+                TokenCredentialTrait<EmailClientBuilder> {
     @Generated private static final String SDK_NAME = "name";
 
     @Generated private static final String SDK_VERSION = "version";
+
+    private final ClientLogger logger = new ClientLogger(EmailClientBuilder.class);
 
     @Generated
     private final Map<String, String> properties = CoreUtils.getProperties("azure-communication-email.properties");
@@ -159,6 +166,25 @@ public final class EmailClientBuilder
     }
 
     /*
+     * The TokenCredential used for authentication.
+     */
+    private TokenCredential tokenCredential;
+
+    /**
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
+     *
+     * @param tokenCredential {@link TokenCredential} used to authorize requests sent to the service.
+     * @return The updated {@link EmailClientBuilder} object.
+     */
+    @Override
+    public EmailClientBuilder credential(TokenCredential tokenCredential) {
+        this.tokenCredential = tokenCredential;
+        return this;
+    }
+
+    /*
      * The service endpoint
      */
     @Generated private String endpoint;
@@ -240,6 +266,18 @@ public final class EmailClientBuilder
         return client;
     }
 
+    private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
+        if (this.tokenCredential != null) {
+            return new BearerTokenAuthenticationPolicy(
+                this.tokenCredential, "https://communication.azure.com//.default");
+        } else if (this.azureKeyCredential != null) {
+            return new HmacAuthenticationPolicy(this.azureKeyCredential);
+        } else {
+            throw logger.logExceptionAsError(
+                new IllegalStateException("Missing credential information while building a client. Use one of the credential methods to set the credential."));
+        }
+    }
+
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration =
                 (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -267,7 +305,7 @@ public final class EmailClientBuilder
                         .collect(Collectors.toList()));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
-        policies.add(new HmacAuthenticationPolicy(this.azureKeyCredential));
+        policies.add(createHttpPipelineAuthPolicy());
         policies.add(new AddDatePolicy());
         policies.add(new CookiePolicy());
         policies.addAll(
