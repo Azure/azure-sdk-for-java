@@ -16,6 +16,7 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
@@ -54,6 +55,7 @@ import com.azure.storage.blob.options.ListPageRangesOptions;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
 import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
+import com.azure.storage.blob.options.PageBlobUploadPagesOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
@@ -66,6 +68,7 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -511,14 +514,35 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body,
         byte[] contentMd5, PageBlobRequestConditions pageBlobRequestConditions) {
         try {
-            return withContext(context -> uploadPagesWithResponse(pageRange, body, contentMd5,
-                pageBlobRequestConditions, context));
+            return withContext(context -> uploadPagesWithResponse(pageRange, BinaryData.wrapFlux(body, null),
+                contentMd5, pageBlobRequestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, Flux<ByteBuffer> body, byte[] contentMd5,
+    /**
+     * Writes one or more pages to the page blob. Write size must be a multiple of 512. For more information, see
+     * the <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
+     * <p>
+     * Note that the data passed must be replayable if retries are enabled (the default).
+
+     * @param options Options for the upload operation.
+     * @return A reactive response containing the information of the uploaded pages.
+     *
+     * @throws IllegalArgumentException If {@code pageRange} is {@code null}
+     */
+    public Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageBlobUploadPagesOptions options) {
+        Objects.requireNonNull(options, "options must not be null");
+        try {
+            return withContext(context -> uploadPagesWithResponse(options.getPageRange(), options.getData(),
+                options.getContentMd5(), options.getConditions(), context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<PageBlobItem>> uploadPagesWithResponse(PageRange pageRange, BinaryData body, byte[] contentMd5,
         PageBlobRequestConditions pageBlobRequestConditions, Context context) {
         pageBlobRequestConditions = pageBlobRequestConditions == null
             ? new PageBlobRequestConditions()
