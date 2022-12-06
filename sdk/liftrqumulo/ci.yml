@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/liftrqumulo/ci.yml
+      - sdk/liftrqumulo/azure-resourcemanager-liftrqumulo/
+    exclude:
+      - sdk/liftrqumulo/pom.xml
+      - sdk/liftrqumulo/azure-resourcemanager-liftrqumulo/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/liftrqumulo/ci.yml
+      - sdk/liftrqumulo/azure-resourcemanager-liftrqumulo/
+    exclude:
+      - sdk/liftrqumulo/pom.xml
+      - sdk/liftrqumulo/azure-resourcemanager-liftrqumulo/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerliftrqumulo
+    displayName: azure-resourcemanager-liftrqumulo
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: liftrqumulo
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-liftrqumulo
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerliftrqumulo
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerliftrqumulo }}
