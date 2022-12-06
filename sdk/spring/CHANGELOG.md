@@ -12,6 +12,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Breaking Changes
 - Move Key Vault environment classes for internal usage to the implementation package [#32428] (https://github.com/Azure/azure-sdk-for-java/pull/32428).
+- Delete properties: `spring.jms.serviebus.username`, `spring.jms.serviebus.password` and `spring.jms.serviebus.remote-uri` [#32465](https://github.com/Azure/azure-sdk-for-java/pull/32465).
 
 ## 6.0.0-beta.3 (2022-11-04)
 Upgrade Spring Boot dependencies version to 3.0.0-RC1 and Spring Cloud dependencies version to 2022.0.0-RC1.
