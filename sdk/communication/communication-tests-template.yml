@@ -17,7 +17,8 @@ stages:
         Public:
           SubscriptionConfigurations:
             ${{ if parameters.CloudConfig.Public.SubscriptionConfigurations }}:
-              ${{ parameters.CloudConfig.Public.SubscriptionConfigurations }}
+              ${{ each item in parameters.CloudConfig.Public.SubscriptionConfigurations }}:
+              - ${{ item }}
             ${{ else }}:
               - $(sub-config-azure-cloud-test-resources)
               - $(sub-config-communication-services-cloud-test-resources-common)
