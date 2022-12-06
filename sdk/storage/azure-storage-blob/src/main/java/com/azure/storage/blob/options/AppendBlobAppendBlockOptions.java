@@ -4,6 +4,7 @@
 package com.azure.storage.blob.options;
 
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
@@ -36,7 +37,7 @@ public class AppendBlobAppendBlockOptions {
      * @return The precalculated MD5 for this instance's BinaryData.
      */
     public byte[] getContentMd5() {
-        return contentMd5;
+        return CoreUtils.clone(contentMd5);
     }
 
     /**
@@ -44,7 +45,7 @@ public class AppendBlobAppendBlockOptions {
      * @return The updated options.
      */
     public AppendBlobAppendBlockOptions setContentMd5(byte[] contentMd5) {
-        this.contentMd5 = contentMd5;
+        this.contentMd5 = CoreUtils.clone(contentMd5);
         return this;
     }
 
