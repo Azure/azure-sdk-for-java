@@ -26,6 +26,10 @@ public final class RoleManagementPolicyAuthenticationContextRule extends RoleMan
     @JsonProperty(value = "claimValue")
     private String claimValue;
 
+    /** Creates an instance of RoleManagementPolicyAuthenticationContextRule class. */
+    public RoleManagementPolicyAuthenticationContextRule() {
+    }
+
     /**
      * Get the isEnabled property: The value indicating if rule is enabled.
      *

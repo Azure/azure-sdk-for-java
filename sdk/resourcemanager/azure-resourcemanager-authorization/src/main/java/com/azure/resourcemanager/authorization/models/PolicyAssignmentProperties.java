@@ -28,6 +28,10 @@ public final class PolicyAssignmentProperties {
     @JsonProperty(value = "policy")
     private PolicyAssignmentPropertiesPolicy policy;
 
+    /** Creates an instance of PolicyAssignmentProperties class. */
+    public PolicyAssignmentProperties() {
+    }
+
     /**
      * Get the scope property: Details of the resource scope.
      *

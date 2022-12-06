@@ -7,7 +7,6 @@ import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.blob.perf.core.ContainerTest;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.UUID;
@@ -25,12 +24,15 @@ public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
         // drastically less CPU usage and throughput, there is ongoing discussions with Reactor Netty on what causes
         // this edge case, whether we had a design flaw in the performance tests, or if there is a configuration change
         // needed in Reactor Netty.
+        int parallel = options.getParallel();
         return super.globalSetupAsync().then(
             Flux.range(0, options.getCount())
-                .parallel(options.getParallel())
-                .runOn(Schedulers.boundedElastic())
+                .parallel(parallel)
+                .runOn(Schedulers.parallel())
                 .flatMap(iteration -> blobContainerAsyncClient.getBlobAsyncClient("getblobstest-" + UUID.randomUUID())
-                    .upload(Flux.empty(), null), false, Math.min(options.getParallel(), 1000 / options.getParallel()), 1)
+                    .getBlockBlobAsyncClient()
+                    .upload(Flux.empty(), 0L), false, parallel, 1)
+                .sequential()
                 .then());
     }
 

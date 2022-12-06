@@ -15,16 +15,16 @@ public final class AttachedNetworkConnectionPropertiesTests {
         AttachedNetworkConnectionProperties model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"xtbzsgfyccsne\",\"networkConnectionId\":\"mdwzjeiachboo\",\"networkConnectionLocation\":\"lnrosfqp\",\"healthCheckStatus\":\"Passed\",\"domainJoinType\":\"AzureADJoin\"}")
+                    "{\"provisioningState\":\"Running\",\"networkConnectionId\":\"jbznorc\",\"networkConnectionLocation\":\"vsnb\",\"healthCheckStatus\":\"Failed\",\"domainJoinType\":\"HybridAzureADJoin\"}")
                 .toObject(AttachedNetworkConnectionProperties.class);
-        Assertions.assertEquals("mdwzjeiachboo", model.networkConnectionId());
+        Assertions.assertEquals("jbznorc", model.networkConnectionId());
     }
 
     @Test
     public void testSerialize() {
         AttachedNetworkConnectionProperties model =
-            new AttachedNetworkConnectionProperties().withNetworkConnectionId("mdwzjeiachboo");
+            new AttachedNetworkConnectionProperties().withNetworkConnectionId("jbznorc");
         model = BinaryData.fromObject(model).toObject(AttachedNetworkConnectionProperties.class);
-        Assertions.assertEquals("mdwzjeiachboo", model.networkConnectionId());
+        Assertions.assertEquals("jbznorc", model.networkConnectionId());
     }
 }

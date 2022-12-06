@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.ai.textanalytics.implementation.AgeResolutionPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 
 /** Represents the Age entity resolution model. */
@@ -11,22 +12,25 @@ public final class AgeResolution extends BaseResolution {
     /*
      * The Age Unit of measurement
      */
-    private final AgeUnit unit;
+    private AgeUnit unit;
 
     /*
      * The numeric value that the extracted text denotes.
      */
-    private final double value;
+    private double value;
 
-    /**
-     * Create an Age entity resolution model.
-     *
-     * @param unit The Age Unit of measurement.
-     * @param value The numeric value that the extracted text denotes.
-     */
-    public AgeResolution(AgeUnit unit, double value) {
-        this.unit = unit;
-        this.value = value;
+    static {
+        AgeResolutionPropertiesHelper.setAccessor(new AgeResolutionPropertiesHelper.AgeResolutionAccessor() {
+            @Override
+            public void setUnit(AgeResolution ageResolution, AgeUnit unit) {
+                ageResolution.setUnit(unit);
+            }
+
+            @Override
+            public void setValue(AgeResolution ageResolution, double value) {
+                ageResolution.setValue(value);
+            }
+        });
     }
 
     /**
@@ -45,5 +49,13 @@ public final class AgeResolution extends BaseResolution {
      */
     public double getValue() {
         return this.value;
+    }
+
+    private void setUnit(AgeUnit unit) {
+        this.unit = unit;
+    }
+
+    private void setValue(double value) {
+        this.value = value;
     }
 }

@@ -58,7 +58,7 @@ public final class ManagedVirtualNetworksClientImpl implements ManagedVirtualNet
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
-    private interface ManagedVirtualNetworksService {
+    public interface ManagedVirtualNetworksService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory"

@@ -535,7 +535,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
     }
 
 
-    @ParameterizedTest(name = "when {3} is null")
+    @ParameterizedTest(name = "when {1} is null")
     @MethodSource("com.azure.communication.identity.CteTestHelper#getNullParams")
     public void getTokenForTeamsUserWithNullParams(GetTokenForTeamsUserOptions options, String exceptionMessage) {
         if (skipExchangeAadTeamsTokenTest()) {

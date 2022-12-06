@@ -27,6 +27,10 @@ public final class BillingProfile {
     @JsonProperty(value = "maxPrice")
     private Double maxPrice;
 
+    /** Creates an instance of BillingProfile class. */
+    public BillingProfile() {
+    }
+
     /**
      * Get the maxPrice property: Specifies the maximum price you are willing to pay for a Azure Spot VM/VMSS. This
      * price is in US Dollars. &lt;br&gt;&lt;br&gt; This price will be compared with the current Azure Spot price for

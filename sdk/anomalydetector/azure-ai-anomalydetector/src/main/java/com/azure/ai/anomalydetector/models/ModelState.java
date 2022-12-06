@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ModelState model. */
+/** Model status. */
 @Fluent
 public final class ModelState {
     /*

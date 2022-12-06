@@ -32,13 +32,13 @@ public class EmailAsyncClientTests extends EmailTestBase {
         ArrayList<EmailAddress> addressList = new ArrayList<>();
         addressList.add(emailAddress);
 
-        EmailRecipients emailRecipients = new EmailRecipients(addressList);
+        EmailRecipients emailRecipients = new EmailRecipients()
+            .setTo(addressList);
 
         EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
 
-        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content)
-            .setRecipients(emailRecipients);
+        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients);
 
         StepVerifier.create(emailAsyncClient.send(emailMessage))
             .assertNext(response -> {
@@ -65,15 +65,15 @@ public class EmailAsyncClientTests extends EmailTestBase {
         ArrayList<EmailAddress> bccAddressList = new ArrayList<>();
         bccAddressList.add(emailAddress);
 
-        EmailRecipients emailRecipients = new EmailRecipients(toAddressList)
+        EmailRecipients emailRecipients = new EmailRecipients()
+            .setTo(toAddressList)
             .setCc(ccAddressList)
             .setBcc(bccAddressList);
 
         EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
 
-        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content)
-            .setRecipients(emailRecipients);
+        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients);
 
         StepVerifier.create(emailAsyncClient.send(emailMessage))
             .assertNext(response -> {
@@ -92,7 +92,8 @@ public class EmailAsyncClientTests extends EmailTestBase {
         ArrayList<EmailAddress> addressList = new ArrayList<>();
         addressList.add(emailAddress);
 
-        EmailRecipients emailRecipients = new EmailRecipients(addressList);
+        EmailRecipients emailRecipients = new EmailRecipients()
+            .setTo(addressList);
 
         EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
@@ -106,8 +107,7 @@ public class EmailAsyncClientTests extends EmailTestBase {
         ArrayList<EmailAttachment> attachmentList = new ArrayList<>();
         attachmentList.add(attachment);
 
-        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content)
-            .setRecipients(emailRecipients)
+        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients)
             .setAttachments(attachmentList);
 
         StepVerifier.create(emailAsyncClient.send(emailMessage))
@@ -147,4 +147,29 @@ public class EmailAsyncClientTests extends EmailTestBase {
 //            })
 //            .verifyComplete();
 //    }
+
+    @ParameterizedTest
+    @MethodSource("getTestParameters")
+    public void sendEmailWithoutToRecipient(HttpClient httpClient) {
+        emailAsyncClient = getEmailAsyncClient(httpClient);
+
+        EmailAddress emailAddress = new EmailAddress(RECIPIENT_ADDRESS);
+
+        ArrayList<EmailAddress> addressList = new ArrayList<>();
+        addressList.add(emailAddress);
+
+        EmailRecipients emailRecipients = new EmailRecipients()
+            .setCc(addressList);
+
+        EmailContent content = new EmailContent("test subject")
+            .setPlainText("test message");
+
+        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients);
+
+        StepVerifier.create(emailAsyncClient.send(emailMessage))
+            .assertNext(response -> {
+                assertNotNull(response.getMessageId());
+            })
+            .verifyComplete();
+    }
 }

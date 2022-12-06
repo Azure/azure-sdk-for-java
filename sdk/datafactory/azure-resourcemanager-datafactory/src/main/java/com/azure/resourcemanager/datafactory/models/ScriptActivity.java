@@ -79,6 +79,31 @@ public final class ScriptActivity extends ExecutionActivity {
     }
 
     /**
+     * Get the scriptBlockExecutionTimeout property: ScriptBlock execution timeout. Type: string (or Expression with
+     * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     *
+     * @return the scriptBlockExecutionTimeout value.
+     */
+    public Object scriptBlockExecutionTimeout() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().scriptBlockExecutionTimeout();
+    }
+
+    /**
+     * Set the scriptBlockExecutionTimeout property: ScriptBlock execution timeout. Type: string (or Expression with
+     * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     *
+     * @param scriptBlockExecutionTimeout the scriptBlockExecutionTimeout value to set.
+     * @return the ScriptActivity object itself.
+     */
+    public ScriptActivity withScriptBlockExecutionTimeout(Object scriptBlockExecutionTimeout) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ScriptActivityTypeProperties();
+        }
+        this.innerTypeProperties().withScriptBlockExecutionTimeout(scriptBlockExecutionTimeout);
+        return this;
+    }
+
+    /**
      * Get the scripts property: Array of script blocks. Type: array.
      *
      * @return the scripts value.

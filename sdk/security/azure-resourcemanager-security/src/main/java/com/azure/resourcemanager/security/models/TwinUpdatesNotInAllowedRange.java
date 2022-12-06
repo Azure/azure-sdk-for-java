@@ -14,6 +14,10 @@ import java.time.Duration;
 @JsonTypeName("TwinUpdatesNotInAllowedRange")
 @Fluent
 public final class TwinUpdatesNotInAllowedRange extends TimeWindowCustomAlertRule {
+    /** Creates an instance of TwinUpdatesNotInAllowedRange class. */
+    public TwinUpdatesNotInAllowedRange() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public TwinUpdatesNotInAllowedRange withTimeWindowSize(Duration timeWindowSize) {

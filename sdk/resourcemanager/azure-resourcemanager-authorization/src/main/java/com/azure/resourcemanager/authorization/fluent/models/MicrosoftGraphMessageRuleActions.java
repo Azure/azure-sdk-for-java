@@ -35,15 +35,13 @@ public final class MicrosoftGraphMessageRuleActions {
     private Boolean delete;
 
     /*
-     * The email addresses of the recipients to which a message should be
-     * forwarded as an attachment.
+     * The email addresses of the recipients to which a message should be forwarded as an attachment.
      */
     @JsonProperty(value = "forwardAsAttachmentTo")
     private List<MicrosoftGraphRecipient> forwardAsAttachmentTo;
 
     /*
-     * The email addresses of the recipients to which a message should be
-     * forwarded.
+     * The email addresses of the recipients to which a message should be forwarded.
      */
     @JsonProperty(value = "forwardTo")
     private List<MicrosoftGraphRecipient> forwardTo;
@@ -67,8 +65,7 @@ public final class MicrosoftGraphMessageRuleActions {
     private String moveToFolder;
 
     /*
-     * Indicates whether a message should be permanently deleted and not saved
-     * to the Deleted Items folder.
+     * Indicates whether a message should be permanently deleted and not saved to the Deleted Items folder.
      */
     @JsonProperty(value = "permanentDelete")
     private Boolean permanentDelete;
@@ -89,6 +86,10 @@ public final class MicrosoftGraphMessageRuleActions {
      * messageRuleActions
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphMessageRuleActions class. */
+    public MicrosoftGraphMessageRuleActions() {
+    }
 
     /**
      * Get the assignCategories property: A list of categories to be assigned to a message.

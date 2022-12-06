@@ -3,8 +3,8 @@
 
 package com.azure.ai.anomalydetector;
 
-import com.azure.ai.anomalydetector.models.DetectRequest;
-import com.azure.ai.anomalydetector.models.LastDetectResponse;
+import com.azure.ai.anomalydetector.models.UnivariateDetectionOptions;
+import com.azure.ai.anomalydetector.models.UnivariateLastDetectionResult;
 import com.azure.ai.anomalydetector.models.TimeGranularity;
 import com.azure.ai.anomalydetector.models.TimeSeriesPoint;
 import com.azure.ai.anomalydetector.models.ImputeMode;
@@ -64,12 +64,12 @@ public class DetectAnomaliesLastPoint {
             .collect(Collectors.toList());
 
         System.out.println("Determining if latest data point is an anomaly...");
-        DetectRequest request = new DetectRequest(series);
+        UnivariateDetectionOptions request = new UnivariateDetectionOptions(series);
         // Set the granularity to be DAILY since the minimal interval in time of the sample data is one day.
         request.setGranularity(TimeGranularity.DAILY);
         request.setImputeMode(ImputeMode.AUTO);
 
-        LastDetectResponse response = anomalyDetectorClient.detectUnivariateLastPoint(request);
+        UnivariateLastDetectionResult response = anomalyDetectorClient.detectUnivariateLastPoint(request);
         System.out.println("ExpectedValue: " + response.getExpectedValue()
             + ", Severity: " + response.getSeverity());
         if (response.isAnomaly()) {

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AnomalyValue model. */
+/** Detailed information of the anomalous timestamp. */
 @Immutable
 public final class AnomalyValue {
     /*
@@ -33,7 +33,7 @@ public final class AnomalyValue {
     private double score;
 
     /*
-     * The interpretation property.
+     * Interpretation of this anomalous timestamp.
      */
     @JsonProperty(value = "interpretation")
     private List<AnomalyInterpretation> interpretation;
@@ -84,7 +84,7 @@ public final class AnomalyValue {
     }
 
     /**
-     * Get the interpretation property: The interpretation property.
+     * Get the interpretation property: Interpretation of this anomalous timestamp.
      *
      * @return the interpretation value.
      */

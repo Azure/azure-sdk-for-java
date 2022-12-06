@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The AnomalyState model. */
+/** Anomaly status and information. */
 @Immutable
 public final class AnomalyState {
     /*
@@ -20,7 +20,7 @@ public final class AnomalyState {
     private OffsetDateTime timestamp;
 
     /*
-     * The value property.
+     * The detailed value of this anomalous timestamp.
      */
     @JsonProperty(value = "value")
     private AnomalyValue value;
@@ -51,7 +51,7 @@ public final class AnomalyState {
     }
 
     /**
-     * Get the value property: The value property.
+     * Get the value property: The detailed value of this anomalous timestamp.
      *
      * @return the value value.
      */

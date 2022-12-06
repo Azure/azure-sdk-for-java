@@ -36,6 +36,10 @@ public final class PrivateLinkResourceProperties {
     @JsonProperty(value = "shareablePrivateLinkResourceTypes")
     private List<ShareablePrivateLinkResourceType> shareablePrivateLinkResourceTypes;
 
+    /** Creates an instance of PrivateLinkResourceProperties class. */
+    public PrivateLinkResourceProperties() {
+    }
+
     /**
      * Get the groupId property: Group Id of the private link resource.
      *

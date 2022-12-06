@@ -3,8 +3,8 @@
 
 package com.azure.ai.anomalydetector;
 
-import com.azure.ai.anomalydetector.models.ChangePointDetectRequest;
-import com.azure.ai.anomalydetector.models.ChangePointDetectResponse;
+import com.azure.ai.anomalydetector.models.UnivariateChangePointDetectionOptions;
+import com.azure.ai.anomalydetector.models.UnivariateChangePointDetectionResult;
 import com.azure.ai.anomalydetector.models.TimeSeriesPoint;
 import com.azure.ai.anomalydetector.models.TimeGranularity;
 
@@ -65,8 +65,8 @@ public class DetectChangePoints {
 
         System.out.println("Detecting change points...");
         // Set the granularity to be DAILY since the minimal interval in time of the sample data is one day.
-        ChangePointDetectRequest request = new ChangePointDetectRequest(series, TimeGranularity.DAILY);
-        ChangePointDetectResponse response = anomalyDetectorClient.detectUnivariateChangePoint(request);
+        UnivariateChangePointDetectionOptions request = new UnivariateChangePointDetectionOptions(series, TimeGranularity.DAILY);
+        UnivariateChangePointDetectionResult response = anomalyDetectorClient.detectUnivariateChangePoint(request);
         if (response.getIsChangePoint().contains(true)) {
             System.out.println("Change points found in the following data positions:");
             for (int i = 0; i < request.getSeries().size(); ++i) {

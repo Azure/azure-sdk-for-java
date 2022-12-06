@@ -176,7 +176,7 @@ public final class AnomalyDetectorClientImpl {
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData body,
+                @BodyParam("application/json") BinaryData options,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -196,7 +196,7 @@ public final class AnomalyDetectorClientImpl {
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData body,
+                @BodyParam("application/json") BinaryData options,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -216,7 +216,7 @@ public final class AnomalyDetectorClientImpl {
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData body,
+                @BodyParam("application/json") BinaryData options,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -252,11 +252,11 @@ public final class AnomalyDetectorClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createAndTrainMultivariateModel(
+        Mono<Response<BinaryData>> trainMultivariateModel(
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData body,
+                @BodyParam("application/json") BinaryData modelInfo,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -336,7 +336,7 @@ public final class AnomalyDetectorClientImpl {
                 @HostParam("ApiVersion") String apiVersion,
                 @PathParam("modelId") String modelId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData body,
+                @BodyParam("application/json") BinaryData options,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -357,7 +357,7 @@ public final class AnomalyDetectorClientImpl {
                 @HostParam("ApiVersion") String apiVersion,
                 @PathParam("modelId") String modelId,
                 @HeaderParam("accept") String accept,
-                @BodyParam("application/json") BinaryData body,
+                @BodyParam("application/json") BinaryData options,
                 RequestOptions requestOptions,
                 Context context);
 
@@ -438,7 +438,7 @@ public final class AnomalyDetectorClientImpl {
      * }
      * }</pre>
      *
-     * @param body The request of entire or last anomaly detection.
+     * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -449,7 +449,7 @@ public final class AnomalyDetectorClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> detectUnivariateEntireSeriesWithResponseAsync(
-            BinaryData body, RequestOptions requestOptions) {
+            BinaryData options, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -457,7 +457,7 @@ public final class AnomalyDetectorClientImpl {
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 accept,
-                                body,
+                                options,
                                 requestOptions,
                                 context));
     }
@@ -518,7 +518,7 @@ public final class AnomalyDetectorClientImpl {
      * }
      * }</pre>
      *
-     * @param body The request of entire or last anomaly detection.
+     * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -528,8 +528,8 @@ public final class AnomalyDetectorClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> detectUnivariateEntireSeriesWithResponse(
-            BinaryData body, RequestOptions requestOptions) {
-        return detectUnivariateEntireSeriesWithResponseAsync(body, requestOptions).block();
+            BinaryData options, RequestOptions requestOptions) {
+        return detectUnivariateEntireSeriesWithResponseAsync(options, requestOptions).block();
     }
 
     /**
@@ -574,7 +574,7 @@ public final class AnomalyDetectorClientImpl {
      * }
      * }</pre>
      *
-     * @param body The request of entire or last anomaly detection.
+     * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -585,7 +585,7 @@ public final class AnomalyDetectorClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> detectUnivariateLastPointWithResponseAsync(
-            BinaryData body, RequestOptions requestOptions) {
+            BinaryData options, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -593,7 +593,7 @@ public final class AnomalyDetectorClientImpl {
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 accept,
-                                body,
+                                options,
                                 requestOptions,
                                 context));
     }
@@ -640,7 +640,7 @@ public final class AnomalyDetectorClientImpl {
      * }
      * }</pre>
      *
-     * @param body The request of entire or last anomaly detection.
+     * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -649,8 +649,9 @@ public final class AnomalyDetectorClientImpl {
      * @return the response of last anomaly detection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> detectUnivariateLastPointWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return detectUnivariateLastPointWithResponseAsync(body, requestOptions).block();
+    public Response<BinaryData> detectUnivariateLastPointWithResponse(
+            BinaryData options, RequestOptions requestOptions) {
+        return detectUnivariateLastPointWithResponseAsync(options, requestOptions).block();
     }
 
     /**
@@ -690,7 +691,7 @@ public final class AnomalyDetectorClientImpl {
      * }
      * }</pre>
      *
-     * @param body The request of change point detection.
+     * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -701,7 +702,7 @@ public final class AnomalyDetectorClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> detectUnivariateChangePointWithResponseAsync(
-            BinaryData body, RequestOptions requestOptions) {
+            BinaryData options, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -709,7 +710,7 @@ public final class AnomalyDetectorClientImpl {
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 accept,
-                                body,
+                                options,
                                 requestOptions,
                                 context));
     }
@@ -751,7 +752,7 @@ public final class AnomalyDetectorClientImpl {
      * }
      * }</pre>
      *
-     * @param body The request of change point detection.
+     * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -761,8 +762,8 @@ public final class AnomalyDetectorClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> detectUnivariateChangePointWithResponse(
-            BinaryData body, RequestOptions requestOptions) {
-        return detectUnivariateChangePointWithResponseAsync(body, requestOptions).block();
+            BinaryData options, RequestOptions requestOptions) {
+        return detectUnivariateChangePointWithResponseAsync(options, requestOptions).block();
     }
 
     /**
@@ -827,7 +828,7 @@ public final class AnomalyDetectorClientImpl {
      * }
      * }</pre>
      *
-     * @param resultId The resultId parameter.
+     * @param resultId ID of a batch detection result.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -913,7 +914,7 @@ public final class AnomalyDetectorClientImpl {
      * }
      * }</pre>
      *
-     * @param resultId The resultId parameter.
+     * @param resultId ID of a batch detection result.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1041,7 +1042,7 @@ public final class AnomalyDetectorClientImpl {
      * }
      * }</pre>
      *
-     * @param body Training result of a model including its status, errors and diagnostics information.
+     * @param modelInfo Model information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1050,16 +1051,16 @@ public final class AnomalyDetectorClientImpl {
      * @return response of getting a model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createAndTrainMultivariateModelWithResponseAsync(
-            BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> trainMultivariateModelWithResponseAsync(
+            BinaryData modelInfo, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.createAndTrainMultivariateModel(
+                        service.trainMultivariateModel(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 accept,
-                                body,
+                                modelInfo,
                                 requestOptions,
                                 context));
     }
@@ -1178,7 +1179,7 @@ public final class AnomalyDetectorClientImpl {
      * }
      * }</pre>
      *
-     * @param body Training result of a model including its status, errors and diagnostics information.
+     * @param modelInfo Model information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1187,9 +1188,9 @@ public final class AnomalyDetectorClientImpl {
      * @return response of getting a model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createAndTrainMultivariateModelWithResponse(
-            BinaryData body, RequestOptions requestOptions) {
-        return createAndTrainMultivariateModelWithResponseAsync(body, requestOptions).block();
+    public Response<BinaryData> trainMultivariateModelWithResponse(
+            BinaryData modelInfo, RequestOptions requestOptions) {
+        return trainMultivariateModelWithResponseAsync(modelInfo, requestOptions).block();
     }
 
     /**
@@ -1746,8 +1747,7 @@ public final class AnomalyDetectorClientImpl {
      * }</pre>
      *
      * @param modelId Model identifier.
-     * @param body Detection request for batch inference. This is an asynchronous inference which will need another API
-     *     to get detection results.
+     * @param options Request of multivariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1758,7 +1758,7 @@ public final class AnomalyDetectorClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> detectMultivariateBatchAnomalyWithResponseAsync(
-            String modelId, BinaryData body, RequestOptions requestOptions) {
+            String modelId, BinaryData options, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1767,7 +1767,7 @@ public final class AnomalyDetectorClientImpl {
                                 this.getServiceVersion().getVersion(),
                                 modelId,
                                 accept,
-                                body,
+                                options,
                                 requestOptions,
                                 context));
     }
@@ -1849,8 +1849,7 @@ public final class AnomalyDetectorClientImpl {
      * }</pre>
      *
      * @param modelId Model identifier.
-     * @param body Detection request for batch inference. This is an asynchronous inference which will need another API
-     *     to get detection results.
+     * @param options Request of multivariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1860,8 +1859,8 @@ public final class AnomalyDetectorClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> detectMultivariateBatchAnomalyWithResponse(
-            String modelId, BinaryData body, RequestOptions requestOptions) {
-        return detectMultivariateBatchAnomalyWithResponseAsync(modelId, body, requestOptions).block();
+            String modelId, BinaryData options, RequestOptions requestOptions) {
+        return detectMultivariateBatchAnomalyWithResponseAsync(modelId, options, requestOptions).block();
     }
 
     /**
@@ -1934,17 +1933,17 @@ public final class AnomalyDetectorClientImpl {
      * }</pre>
      *
      * @param modelId Model identifier.
-     * @param body The body parameter.
+     * @param options Request of last detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return results of last detection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> detectMultivariateLastAnomalyWithResponseAsync(
-            String modelId, BinaryData body, RequestOptions requestOptions) {
+            String modelId, BinaryData options, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1953,7 +1952,7 @@ public final class AnomalyDetectorClientImpl {
                                 this.getServiceVersion().getVersion(),
                                 modelId,
                                 accept,
-                                body,
+                                options,
                                 requestOptions,
                                 context));
     }
@@ -2028,18 +2027,18 @@ public final class AnomalyDetectorClientImpl {
      * }</pre>
      *
      * @param modelId Model identifier.
-     * @param body The body parameter.
+     * @param options Request of last detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
+     * @return results of last detection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> detectMultivariateLastAnomalyWithResponse(
-            String modelId, BinaryData body, RequestOptions requestOptions) {
-        return detectMultivariateLastAnomalyWithResponseAsync(modelId, body, requestOptions).block();
+            String modelId, BinaryData options, RequestOptions requestOptions) {
+        return detectMultivariateLastAnomalyWithResponseAsync(modelId, options, requestOptions).block();
     }
 
     /**

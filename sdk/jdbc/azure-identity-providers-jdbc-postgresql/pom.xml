@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-identity-providers-jdbc-postgresql</artifactId>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-identity-providers-jdbc-postgresql;current} -->
+  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-identity-providers-jdbc-postgresql;current} -->
   <packaging>jar</packaging>
 
   <name>Azure Identity Providers JDBC PostgreSQL</name>
@@ -22,13 +22,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity-providers-core</artifactId>
-      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-identity-providers-core;current} -->
+      <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-identity-providers-core;current} -->
     </dependency>
 
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.3.7</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
+      <version>42.3.8</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
       <scope>provided</scope>
     </dependency>
 
@@ -43,7 +43,7 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.8.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
+      <version>5.9.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -65,7 +65,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.postgresql:postgresql:[42.3.7]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
+                <include>org.postgresql:postgresql:[42.3.8]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

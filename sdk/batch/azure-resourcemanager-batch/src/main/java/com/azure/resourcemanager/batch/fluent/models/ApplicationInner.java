@@ -23,6 +23,10 @@ public final class ApplicationInner extends ProxyResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of ApplicationInner class. */
+    public ApplicationInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties associated with the Application.
      *

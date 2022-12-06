@@ -3,8 +3,8 @@
 
 package com.azure.ai.anomalydetector;
 
-import com.azure.ai.anomalydetector.models.DetectRequest;
-import com.azure.ai.anomalydetector.models.EntireDetectResponse;
+import com.azure.ai.anomalydetector.models.UnivariateDetectionOptions;
+import com.azure.ai.anomalydetector.models.UnivariateEntireDetectionResult;
 import com.azure.ai.anomalydetector.models.TimeGranularity;
 import com.azure.ai.anomalydetector.models.ImputeMode;
 import com.azure.ai.anomalydetector.models.TimeSeriesPoint;
@@ -65,12 +65,12 @@ public class DetectAnomaliesEntireSeries {
             .collect(Collectors.toList());
 
         System.out.println("Detecting anomalies as a batch...");
-        DetectRequest request = new DetectRequest(series);
+        UnivariateDetectionOptions request = new UnivariateDetectionOptions(series);
         // Set the granularity to be DAILY since the minimal interval in time of the sample data is one day.
         request.setGranularity(TimeGranularity.DAILY);
         request.setImputeMode(ImputeMode.AUTO);
 
-        EntireDetectResponse response = anomalyDetectorClient.detectUnivariateEntireSeries(request);
+        UnivariateEntireDetectionResult response = anomalyDetectorClient.detectUnivariateEntireSeries(request);
         if (response.getIsAnomaly().contains(true)) {
             System.out.println("Anomalies found in the following data positions:");
             for (int i = 0; i < request.getSeries().size(); ++i) {

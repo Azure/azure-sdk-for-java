@@ -27,6 +27,10 @@ public final class MicrosoftGraphUserTeamwork extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphUserTeamwork class. */
+    public MicrosoftGraphUserTeamwork() {
+    }
+
     /**
      * Get the installedApps property: The apps installed in the personal scope of this user.
      *

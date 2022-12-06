@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ErrorResponse model. */
+/** ErrorResponse contains code and message that shows the error information. */
 @Immutable
 public final class ErrorResponse {
     /*

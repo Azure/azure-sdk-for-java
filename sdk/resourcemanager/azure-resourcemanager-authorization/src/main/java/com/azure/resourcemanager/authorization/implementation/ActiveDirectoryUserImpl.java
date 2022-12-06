@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.authorization.implementation;
 
+import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.fluent.models.Get2ItemsItem;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphPasswordProfile;
@@ -74,7 +75,7 @@ class ActiveDirectoryUserImpl
 
     @Override
     protected Mono<MicrosoftGraphUserInner> getInnerAsync() {
-        return manager.serviceClient().getUsersUsers().getUserAsync(
+        return manager.serviceClient().getUsersUsers().getUserWithResponseAsync(
             id(),
             null,
             Arrays.asList(
@@ -86,7 +87,8 @@ class ActiveDirectoryUserImpl
                 Get2ItemsItem.USAGE_LOCATION,
                 Get2ItemsItem.ACCOUNT_ENABLED
             ),
-            null);
+            null)
+            .flatMap(FluxUtil::toMono);
     }
 
     @Override

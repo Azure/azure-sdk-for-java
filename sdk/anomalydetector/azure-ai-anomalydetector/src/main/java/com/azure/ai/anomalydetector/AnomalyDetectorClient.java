@@ -4,17 +4,17 @@
 
 package com.azure.ai.anomalydetector;
 
-import com.azure.ai.anomalydetector.models.ChangePointDetectRequest;
-import com.azure.ai.anomalydetector.models.ChangePointDetectResponse;
-import com.azure.ai.anomalydetector.models.DetectRequest;
-import com.azure.ai.anomalydetector.models.DetectionRequest;
-import com.azure.ai.anomalydetector.models.DetectionResult;
-import com.azure.ai.anomalydetector.models.EntireDetectResponse;
-import com.azure.ai.anomalydetector.models.LastDetectResponse;
-import com.azure.ai.anomalydetector.models.LastDetectionRequest;
-import com.azure.ai.anomalydetector.models.LastDetectionResult;
-import com.azure.ai.anomalydetector.models.Model;
+import com.azure.ai.anomalydetector.models.AnomalyDetectionModel;
 import com.azure.ai.anomalydetector.models.ModelInfo;
+import com.azure.ai.anomalydetector.models.MultivariateBatchDetectionOptions;
+import com.azure.ai.anomalydetector.models.MultivariateDetectionResult;
+import com.azure.ai.anomalydetector.models.MultivariateLastDetectionOptions;
+import com.azure.ai.anomalydetector.models.MultivariateLastDetectionResult;
+import com.azure.ai.anomalydetector.models.UnivariateChangePointDetectionOptions;
+import com.azure.ai.anomalydetector.models.UnivariateChangePointDetectionResult;
+import com.azure.ai.anomalydetector.models.UnivariateDetectionOptions;
+import com.azure.ai.anomalydetector.models.UnivariateEntireDetectionResult;
+import com.azure.ai.anomalydetector.models.UnivariateLastDetectionResult;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -99,7 +99,7 @@ public final class AnomalyDetectorClient {
      * }
      * }</pre>
      *
-     * @param body The request of entire or last anomaly detection.
+     * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -110,8 +110,8 @@ public final class AnomalyDetectorClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> detectUnivariateEntireSeriesWithResponse(
-            BinaryData body, RequestOptions requestOptions) {
-        return this.client.detectUnivariateEntireSeriesWithResponse(body, requestOptions).block();
+            BinaryData options, RequestOptions requestOptions) {
+        return this.client.detectUnivariateEntireSeriesWithResponse(options, requestOptions).block();
     }
 
     /**
@@ -156,7 +156,7 @@ public final class AnomalyDetectorClient {
      * }
      * }</pre>
      *
-     * @param body The request of entire or last anomaly detection.
+     * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -166,8 +166,9 @@ public final class AnomalyDetectorClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> detectUnivariateLastPointWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return this.client.detectUnivariateLastPointWithResponse(body, requestOptions).block();
+    public Response<BinaryData> detectUnivariateLastPointWithResponse(
+            BinaryData options, RequestOptions requestOptions) {
+        return this.client.detectUnivariateLastPointWithResponse(options, requestOptions).block();
     }
 
     /**
@@ -207,7 +208,7 @@ public final class AnomalyDetectorClient {
      * }
      * }</pre>
      *
-     * @param body The request of change point detection.
+     * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -218,8 +219,8 @@ public final class AnomalyDetectorClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> detectUnivariateChangePointWithResponse(
-            BinaryData body, RequestOptions requestOptions) {
-        return this.client.detectUnivariateChangePointWithResponse(body, requestOptions).block();
+            BinaryData options, RequestOptions requestOptions) {
+        return this.client.detectUnivariateChangePointWithResponse(options, requestOptions).block();
     }
 
     /**
@@ -284,7 +285,7 @@ public final class AnomalyDetectorClient {
      * }
      * }</pre>
      *
-     * @param resultId The resultId parameter.
+     * @param resultId ID of a batch detection result.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -413,7 +414,7 @@ public final class AnomalyDetectorClient {
      * }
      * }</pre>
      *
-     * @param body Training result of a model including its status, errors and diagnostics information.
+     * @param modelInfo Model information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -423,9 +424,9 @@ public final class AnomalyDetectorClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createAndTrainMultivariateModelWithResponse(
-            BinaryData body, RequestOptions requestOptions) {
-        return this.client.createAndTrainMultivariateModelWithResponse(body, requestOptions).block();
+    public Response<BinaryData> trainMultivariateModelWithResponse(
+            BinaryData modelInfo, RequestOptions requestOptions) {
+        return this.client.trainMultivariateModelWithResponse(modelInfo, requestOptions).block();
     }
 
     /**
@@ -683,8 +684,7 @@ public final class AnomalyDetectorClient {
      * }</pre>
      *
      * @param modelId Model identifier.
-     * @param body Detection request for batch inference. This is an asynchronous inference which will need another API
-     *     to get detection results.
+     * @param options Request of multivariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -695,8 +695,8 @@ public final class AnomalyDetectorClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> detectMultivariateBatchAnomalyWithResponse(
-            String modelId, BinaryData body, RequestOptions requestOptions) {
-        return this.client.detectMultivariateBatchAnomalyWithResponse(modelId, body, requestOptions).block();
+            String modelId, BinaryData options, RequestOptions requestOptions) {
+        return this.client.detectMultivariateBatchAnomalyWithResponse(modelId, options, requestOptions).block();
     }
 
     /**
@@ -769,19 +769,19 @@ public final class AnomalyDetectorClient {
      * }</pre>
      *
      * @param modelId Model identifier.
-     * @param body The body parameter.
+     * @param options Request of last detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
+     * @return results of last detection along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> detectMultivariateLastAnomalyWithResponse(
-            String modelId, BinaryData body, RequestOptions requestOptions) {
-        return this.client.detectMultivariateLastAnomalyWithResponse(modelId, body, requestOptions).block();
+            String modelId, BinaryData options, RequestOptions requestOptions) {
+        return this.client.detectMultivariateLastAnomalyWithResponse(modelId, options, requestOptions).block();
     }
 
     /**
@@ -791,7 +791,7 @@ public final class AnomalyDetectorClient {
      * method, points before and after a certain point are used to determine whether it is an anomaly. The entire
      * detection can give user an overall status of the time series.
      *
-     * @param body The request of entire or last anomaly detection.
+     * @param options Method of univariate anomaly detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -802,12 +802,12 @@ public final class AnomalyDetectorClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EntireDetectResponse detectUnivariateEntireSeries(DetectRequest body) {
+    public UnivariateEntireDetectionResult detectUnivariateEntireSeries(UnivariateDetectionOptions options) {
         // Generated convenience method for detectUnivariateEntireSeriesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return detectUnivariateEntireSeriesWithResponse(BinaryData.fromObject(body), requestOptions)
+        return detectUnivariateEntireSeriesWithResponse(BinaryData.fromObject(options), requestOptions)
                 .getValue()
-                .toObject(EntireDetectResponse.class);
+                .toObject(UnivariateEntireDetectionResult.class);
     }
 
     /**
@@ -816,7 +816,7 @@ public final class AnomalyDetectorClient {
      * <p>This operation generates a model using the points that you sent into the API, and based on all data to
      * determine whether the last point is anomalous.
      *
-     * @param body The request of entire or last anomaly detection.
+     * @param options Method of univariate anomaly detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -827,12 +827,12 @@ public final class AnomalyDetectorClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LastDetectResponse detectUnivariateLastPoint(DetectRequest body) {
+    public UnivariateLastDetectionResult detectUnivariateLastPoint(UnivariateDetectionOptions options) {
         // Generated convenience method for detectUnivariateLastPointWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return detectUnivariateLastPointWithResponse(BinaryData.fromObject(body), requestOptions)
+        return detectUnivariateLastPointWithResponse(BinaryData.fromObject(options), requestOptions)
                 .getValue()
-                .toObject(LastDetectResponse.class);
+                .toObject(UnivariateLastDetectionResult.class);
     }
 
     /**
@@ -840,7 +840,7 @@ public final class AnomalyDetectorClient {
      *
      * <p>Evaluate change point score of every series point.
      *
-     * @param body The request of change point detection.
+     * @param options Method of univariate anomaly detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -851,12 +851,13 @@ public final class AnomalyDetectorClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ChangePointDetectResponse detectUnivariateChangePoint(ChangePointDetectRequest body) {
+    public UnivariateChangePointDetectionResult detectUnivariateChangePoint(
+            UnivariateChangePointDetectionOptions options) {
         // Generated convenience method for detectUnivariateChangePointWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return detectUnivariateChangePointWithResponse(BinaryData.fromObject(body), requestOptions)
+        return detectUnivariateChangePointWithResponse(BinaryData.fromObject(options), requestOptions)
                 .getValue()
-                .toObject(ChangePointDetectResponse.class);
+                .toObject(UnivariateChangePointDetectionResult.class);
     }
 
     /**
@@ -865,7 +866,7 @@ public final class AnomalyDetectorClient {
      * <p>For asynchronous inference, get multivariate anomaly detection result based on resultId returned by the
      * BatchDetectAnomaly api.
      *
-     * @param resultId The resultId parameter.
+     * @param resultId ID of a batch detection result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -876,12 +877,12 @@ public final class AnomalyDetectorClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DetectionResult getMultivariateBatchDetectionResult(String resultId) {
+    public MultivariateDetectionResult getMultivariateBatchDetectionResult(String resultId) {
         // Generated convenience method for getMultivariateBatchDetectionResultWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getMultivariateBatchDetectionResultWithResponse(resultId, requestOptions)
                 .getValue()
-                .toObject(DetectionResult.class);
+                .toObject(MultivariateDetectionResult.class);
     }
 
     /**
@@ -893,7 +894,7 @@ public final class AnomalyDetectorClient {
      * and variable. Another type of input is an URI pointed to a CSV file in Azure blob storage, which contains all the
      * variables and a timestamp column.
      *
-     * @param body Training result of a model including its status, errors and diagnostics information.
+     * @param modelInfo Model information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -904,12 +905,12 @@ public final class AnomalyDetectorClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Model createAndTrainMultivariateModel(ModelInfo body) {
-        // Generated convenience method for createAndTrainMultivariateModelWithResponse
+    public AnomalyDetectionModel trainMultivariateModel(ModelInfo modelInfo) {
+        // Generated convenience method for trainMultivariateModelWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createAndTrainMultivariateModelWithResponse(BinaryData.fromObject(body), requestOptions)
+        return trainMultivariateModelWithResponse(BinaryData.fromObject(modelInfo), requestOptions)
                 .getValue()
-                .toObject(Model.class);
+                .toObject(AnomalyDetectionModel.class);
     }
 
     /**
@@ -929,7 +930,7 @@ public final class AnomalyDetectorClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Model> listMultivariateModels(Integer skip, Integer top) {
+    public PagedIterable<AnomalyDetectionModel> listMultivariateModels(Integer skip, Integer top) {
         // Generated convenience method for listMultivariateModels
         return new PagedIterable<>(client.listMultivariateModels(skip, top));
     }
@@ -948,7 +949,7 @@ public final class AnomalyDetectorClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Model> listMultivariateModels() {
+    public PagedIterable<AnomalyDetectionModel> listMultivariateModels() {
         // Generated convenience method for listMultivariateModels
         return new PagedIterable<>(client.listMultivariateModels());
     }
@@ -991,10 +992,12 @@ public final class AnomalyDetectorClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Model getMultivariateModel(String modelId) {
+    public AnomalyDetectionModel getMultivariateModel(String modelId) {
         // Generated convenience method for getMultivariateModelWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getMultivariateModelWithResponse(modelId, requestOptions).getValue().toObject(Model.class);
+        return getMultivariateModelWithResponse(modelId, requestOptions)
+                .getValue()
+                .toObject(AnomalyDetectionModel.class);
     }
 
     /**
@@ -1007,8 +1010,7 @@ public final class AnomalyDetectorClient {
      * storage.
      *
      * @param modelId Model identifier.
-     * @param body Detection request for batch inference. This is an asynchronous inference which will need another API
-     *     to get detection results.
+     * @param options Request of multivariate anomaly detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1019,12 +1021,13 @@ public final class AnomalyDetectorClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DetectionResult detectMultivariateBatchAnomaly(String modelId, DetectionRequest body) {
+    public MultivariateDetectionResult detectMultivariateBatchAnomaly(
+            String modelId, MultivariateBatchDetectionOptions options) {
         // Generated convenience method for detectMultivariateBatchAnomalyWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return detectMultivariateBatchAnomalyWithResponse(modelId, BinaryData.fromObject(body), requestOptions)
+        return detectMultivariateBatchAnomalyWithResponse(modelId, BinaryData.fromObject(options), requestOptions)
                 .getValue()
-                .toObject(DetectionResult.class);
+                .toObject(MultivariateDetectionResult.class);
     }
 
     /**
@@ -1035,22 +1038,23 @@ public final class AnomalyDetectorClient {
      * return the detection immediately in the response body.
      *
      * @param modelId Model identifier.
-     * @param body The body parameter.
+     * @param options Request of last detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.exception.HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return results of last detection.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LastDetectionResult detectMultivariateLastAnomaly(String modelId, LastDetectionRequest body) {
+    public MultivariateLastDetectionResult detectMultivariateLastAnomaly(
+            String modelId, MultivariateLastDetectionOptions options) {
         // Generated convenience method for detectMultivariateLastAnomalyWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return detectMultivariateLastAnomalyWithResponse(modelId, BinaryData.fromObject(body), requestOptions)
+        return detectMultivariateLastAnomalyWithResponse(modelId, BinaryData.fromObject(options), requestOptions)
                 .getValue()
-                .toObject(LastDetectionResult.class);
+                .toObject(MultivariateLastDetectionResult.class);
     }
 }

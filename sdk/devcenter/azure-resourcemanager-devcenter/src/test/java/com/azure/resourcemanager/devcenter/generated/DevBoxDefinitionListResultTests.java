@@ -14,7 +14,7 @@ public final class DevBoxDefinitionListResultTests {
         DevBoxDefinitionListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"xmhhvhgureo\",\"imageValidationStatus\":\"Failed\",\"osStorageType\":\"xtibqdxbxwakbog\"},\"location\":\"ndlkzgxhurip\",\"tags\":{\"bebxmubyyntwl\":\"odxun\",\"ltmuwlauwzizx\":\"bqtkoievseotgqr\"},\"id\":\"mpgcjefuzmuvpbt\",\"name\":\"d\",\"type\":\"morppxebmnzbtbh\"}],\"nextLink\":\"glkfg\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"RolloutInProgress\",\"imageValidationStatus\":\"Succeeded\",\"osStorageType\":\"gklwn\",\"hibernateSupport\":\"Enabled\"},\"location\":\"dauwhvylwzbtd\",\"tags\":{\"pow\":\"jznb\",\"qlveualupjmkh\":\"wpr\"},\"id\":\"xobbcswsrt\",\"name\":\"riplrbpbewtg\",\"type\":\"fgb\"}],\"nextLink\":\"gw\"}")
                 .toObject(DevBoxDefinitionListResult.class);
     }
 

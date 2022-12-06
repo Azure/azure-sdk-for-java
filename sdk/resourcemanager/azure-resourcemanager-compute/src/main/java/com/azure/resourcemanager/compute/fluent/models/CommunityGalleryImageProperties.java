@@ -98,6 +98,10 @@ public final class CommunityGalleryImageProperties {
     @JsonProperty(value = "eula")
     private String eula;
 
+    /** Creates an instance of CommunityGalleryImageProperties class. */
+    public CommunityGalleryImageProperties() {
+    }
+
     /**
      * Get the osType property: This property allows you to specify the type of the OS that is included in the disk when
      * creating a VM from a managed image. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Windows**

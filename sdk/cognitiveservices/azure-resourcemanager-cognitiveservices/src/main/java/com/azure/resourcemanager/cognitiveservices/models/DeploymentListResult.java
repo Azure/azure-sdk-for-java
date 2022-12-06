@@ -19,11 +19,14 @@ public final class DeploymentListResult {
     private String nextLink;
 
     /*
-     * Gets the list of Cognitive Services accounts Deployment and their
-     * properties.
+     * Gets the list of Cognitive Services accounts Deployment and their properties.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<DeploymentInner> value;
+
+    /** Creates an instance of DeploymentListResult class. */
+    public DeploymentListResult() {
+    }
 
     /**
      * Get the nextLink property: The link used to get the next page of Deployment.

@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.Exceptions;
 
@@ -88,6 +89,7 @@ public class AggregateQueryTests extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT, dataProvider = "queryMetricsArgProvider")
+    @Ignore("TODO 32129 - reenable after fixing flakiness.")
     public void queryDocumentsWithAggregates(Boolean qmEnabled) throws Exception {
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();

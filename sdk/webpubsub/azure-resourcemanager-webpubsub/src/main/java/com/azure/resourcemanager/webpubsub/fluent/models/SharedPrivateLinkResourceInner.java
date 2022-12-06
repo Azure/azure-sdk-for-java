@@ -7,17 +7,13 @@ package com.azure.resourcemanager.webpubsub.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.webpubsub.models.ProvisioningState;
 import com.azure.resourcemanager.webpubsub.models.SharedPrivateLinkResourceStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a Shared Private Link Resource. */
 @Fluent
 public final class SharedPrivateLinkResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedPrivateLinkResourceInner.class);
-
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
@@ -25,10 +21,14 @@ public final class SharedPrivateLinkResourceInner extends ProxyResource {
     private SystemData systemData;
 
     /*
-     * Describes the properties of a Shared Private Link Resource
+     * Describes the properties of an existing Shared Private Link Resource
      */
     @JsonProperty(value = "properties")
     private SharedPrivateLinkResourceProperties innerProperties;
+
+    /** Creates an instance of SharedPrivateLinkResourceInner class. */
+    public SharedPrivateLinkResourceInner() {
+    }
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
@@ -40,7 +40,7 @@ public final class SharedPrivateLinkResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the innerProperties property: Describes the properties of a Shared Private Link Resource.
+     * Get the innerProperties property: Describes the properties of an existing Shared Private Link Resource.
      *
      * @return the innerProperties value.
      */
@@ -95,7 +95,7 @@ public final class SharedPrivateLinkResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the shared private link resource.
+     * Get the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */
