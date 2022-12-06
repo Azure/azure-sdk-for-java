@@ -24,14 +24,6 @@ public class EventHubsOptions extends PerfStressOptions {
     @Parameter(names = {"-n", "--name"}, description = "Name of the Event Hub.", required = true)
     private String eventHubName;
 
-    @Parameter(names = {"-bos", "--bodySize"}, description = "Size of message body (in bytes).", required = true)
-    public int bodySize;
-
-    @Parameter(names = {"-bas", "--batchSize"}, description = "Messages per batch", required = true)
-    public int batchSize;
-
-
-
     /**
      * Creates an instance with the default options.
      */

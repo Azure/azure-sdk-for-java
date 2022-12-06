@@ -3,15 +3,11 @@
 
 package com.azure.messaging.eventhubs.perf;
 
-import com.azure.core.util.FluxUtil;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerClient;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,13 +26,10 @@ public class SendEventDataTest extends ServiceTest<EventHubsOptions> {
      */
     public SendEventDataTest(EventHubsOptions options) {
         super(options);
-        producer = createEventHubClientBuilder()
-            .buildProducerClient();
-        producerAsync = createEventHubClientBuilder().buildAsyncProducerClient();
     }
 
     @Override
-    public int runBatch() {
+    public void run() {
         if (producer == null) {
             producer = createEventHubClientBuilder()
                 .buildProducerClient();
@@ -45,11 +38,10 @@ public class SendEventDataTest extends ServiceTest<EventHubsOptions> {
         for (final EventData event : events) {
             producer.send(Collections.singleton(event));
         }
-        return events.size();
     }
 
     @Override
-    public Mono<Integer> runBatchAsync() {
+    public Mono<Void> runAsync() {
         if (producerAsync == null) {
             producerAsync = createEventHubClientBuilder().buildAsyncProducerClient();
         }
@@ -58,9 +50,8 @@ public class SendEventDataTest extends ServiceTest<EventHubsOptions> {
             .map(eventData -> producerAsync.send(Collections.singleton(eventData)))
             .collect(Collectors.toList());
 
-        return Mono.whenDelayError(sendEvents).then(Mono.just(events.size()));
+        return Mono.whenDelayError(sendEvents);
     }
-
 
     @Override
     public Mono<Void> cleanupAsync() {

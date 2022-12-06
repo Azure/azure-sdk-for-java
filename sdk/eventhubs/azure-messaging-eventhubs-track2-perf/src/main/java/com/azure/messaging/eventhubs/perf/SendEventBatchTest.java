@@ -6,7 +6,7 @@ package com.azure.messaging.eventhubs.perf;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
-import com.azure.messaging.eventhubs.perf.core.EventHubsPerfStressOptions;
+import com.azure.messaging.eventhubs.perf.core.EventHubsPerfOptions;
 import com.azure.messaging.eventhubs.perf.core.ServiceBatchTest;
 import reactor.core.publisher.Mono;
 
@@ -15,7 +15,7 @@ import java.util.Random;
 /**
  * Runs the Send Events Batch Performance Test for EventHubs.
  */
-public class SendEventBatchTest extends ServiceBatchTest<EventHubsPerfStressOptions> {
+public class SendEventBatchTest extends ServiceBatchTest<EventHubsPerfOptions> {
     private final CreateBatchOptions createBatchOptions;
     private EventDataBatch eventDataBatch;
     private EventDataBatch eventDataBatchAsync;
@@ -26,7 +26,7 @@ public class SendEventBatchTest extends ServiceBatchTest<EventHubsPerfStressOpti
      * @param options The options bag to use for testing.
      * @throws IllegalStateException when the specified number of messages cannot fit in the specified batch size.
      */
-    public SendEventBatchTest(EventHubsPerfStressOptions options) throws IllegalStateException {
+    public SendEventBatchTest(EventHubsPerfOptions options) throws IllegalStateException {
         super(options);
         createBatchOptions = getBatchOptions(options);
     }
@@ -75,7 +75,7 @@ public class SendEventBatchTest extends ServiceBatchTest<EventHubsPerfStressOpti
         }
     }
 
-    private CreateBatchOptions getBatchOptions(EventHubsPerfStressOptions options) {
+    private CreateBatchOptions getBatchOptions(EventHubsPerfOptions options) {
         CreateBatchOptions createBatchOptions = new CreateBatchOptions();
         boolean returnBatchOptions = false;
         if (options.getBatchSize() != null) {

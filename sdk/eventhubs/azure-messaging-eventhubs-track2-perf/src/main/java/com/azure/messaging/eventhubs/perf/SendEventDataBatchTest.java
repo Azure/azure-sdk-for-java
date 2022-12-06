@@ -25,7 +25,7 @@ public class SendEventDataBatchTest extends ServiceTest<EventHubsOptions> {
     }
 
     @Override
-    public int runBatch() {
+    public void run() {
         if (producer == null) {
             producer = createEventHubClientBuilder()
                 .buildProducerClient();
@@ -35,19 +35,18 @@ public class SendEventDataBatchTest extends ServiceTest<EventHubsOptions> {
         addEvents(batch, options.getCount());
 
         producer.send(batch);
-        return batch.getCount();
     }
 
     @Override
-    public Mono<Integer> runBatchAsync() {
+    public Mono<Void> runAsync() {
         if (producerAsync == null) {
             producerAsync = createEventHubClientBuilder().buildAsyncProducerClient();
         }
 
         return producerAsync.createBatch().flatMap(batch -> {
             addEvents(batch, options.getCount());
-            return producerAsync.send(batch).then(Mono.just(batch.getCount()));
-        });
+            return producerAsync.send(batch);
+        }).then();
     }
 
     @Override
@@ -58,6 +57,7 @@ public class SendEventDataBatchTest extends ServiceTest<EventHubsOptions> {
         if (producerAsync != null) {
             producerAsync.close();
         }
+
         return super.cleanupAsync();
     }
 }

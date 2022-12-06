@@ -75,17 +75,6 @@ public class ReactorReceiveEventsTest extends ServiceTest<EventHubsReceiveOption
     }
 
     @Override
-    public int runBatch() {
-        run();
-        return options.getCount();
-    }
-
-    @Override
-    public Mono<Integer> runBatchAsync() {
-        return runAsync().then(Mono.just(options.getCount()));
-    }
-
-    @Override
     public Mono<Void> globalSetupAsync() {
         return Mono.using(
             () -> createEventHubClientBuilder().buildAsyncProducerClient(),
@@ -109,42 +98,44 @@ public class ReactorReceiveEventsTest extends ServiceTest<EventHubsReceiveOption
         return Mono.empty();
     }
 
+    @Override
     public void run() {
         runAsync().block();
     }
 
+    @Override
     public Mono<Void> runAsync() {
         Objects.requireNonNull(options.getConsumerGroup(), "'getConsumerGroup' requires a value.");
         Objects.requireNonNull(options.getPartitionId(), "'getPartitionId' requires a value.");
 
         return Flux.usingWhen(
-            Mono.defer(() -> {
-                final String sessionName = StringUtil.getRandomString(options.getPartitionId());
-                return connection.createSession(sessionName);
-            }),
-            (AmqpSession session) -> {
-                final String linkName = options.getPartitionId() + "-" + Instant.now().getEpochSecond();
-                final String entityPath = String.format(Locale.ROOT, "%s/ConsumerGroups/%s/Partitions/%s",
-                    options.getEventHubName(), options.getConsumerGroup(), options.getPartitionId());
-                final Duration timeout = retryPolicy.getRetryOptions().getTryTimeout();
+                Mono.defer(() -> {
+                    final String sessionName = StringUtil.getRandomString(options.getPartitionId());
+                    return connection.createSession(sessionName);
+                }),
+                (AmqpSession session) -> {
+                    final String linkName = options.getPartitionId() + "-" + Instant.now().getEpochSecond();
+                    final String entityPath = String.format(Locale.ROOT, "%s/ConsumerGroups/%s/Partitions/%s",
+                        options.getEventHubName(), options.getConsumerGroup(), options.getPartitionId());
+                    final Duration timeout = retryPolicy.getRetryOptions().getTryTimeout();
 
-                final Mono<AmqpReceiveLink> createConsumer = session.createConsumer(linkName, entityPath, timeout,
-                    retryPolicy).cast(AmqpReceiveLink.class);
+                    final Mono<AmqpReceiveLink> createConsumer = session.createConsumer(linkName, entityPath, timeout,
+                        retryPolicy).cast(AmqpReceiveLink.class);
 
-                return Flux.usingWhen(createConsumer,
-                    (AmqpReceiveLink consumer) -> {
-                        consumer.setEmptyCreditListener(() -> {
-                            // After prefetch has gotten to 0, it will call this.
-                            return options.getCreditsAfterPrefetch();
-                        });
+                    return Flux.usingWhen(createConsumer,
+                        (AmqpReceiveLink consumer) -> {
+                            consumer.setEmptyCreditListener(() -> {
+                                // After prefetch has gotten to 0, it will call this.
+                                return options.getCreditsAfterPrefetch();
+                            });
 
-                        // The link starts off with 0 credits, so we have to add some.
-                        return consumer.addCredits(options.getPrefetch())
-                            .thenMany(consumer.receive());
-                    },
-                    (AmqpReceiveLink consumer) -> consumer.closeAsync());
-            },
-            (AmqpSession session) -> session.closeAsync())
+                            // The link starts off with 0 credits, so we have to add some.
+                            return consumer.addCredits(options.getPrefetch())
+                                .thenMany(consumer.receive());
+                        },
+                        (AmqpReceiveLink consumer) -> consumer.closeAsync());
+                },
+                (AmqpSession session) -> session.closeAsync())
             .take(options.getCount())
             .then();
     }

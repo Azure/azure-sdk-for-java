@@ -10,7 +10,7 @@ import com.beust.jcommander.Parameter;
 /**
  * Represents options for EventHubs Tests.
  */
-public class EventHubsPerfStressOptions extends PerfStressOptions {
+public class EventHubsPerfOptions extends PerfStressOptions {
 
     @Parameter(names = { "-bs", "--batchsize" }, description = "Size of the batch (in bytes)")
     private Integer batchSize = null;
