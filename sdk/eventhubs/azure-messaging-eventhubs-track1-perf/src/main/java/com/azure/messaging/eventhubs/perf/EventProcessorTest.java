@@ -1,5 +1,3 @@
-
-
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
@@ -126,7 +124,7 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
             final ConnectionStringBuilder connectionStringBuilder = getConnectionStringBuilder();
             final EventProcessorHost.EventProcessorHostBuilder.OptionalStep builder =
                 EventProcessorHost.EventProcessorHostBuilder.newBuilder(
-                        connectionStringBuilder.getEndpoint().toString(), options.getConsumerGroup())
+                    connectionStringBuilder.getEndpoint().toString(), options.getConsumerGroup())
                     .useAzureStorageCheckpointLeaseManager(storageCredentials, containerName, STORAGE_PREFIX)
                     .useEventHubConnectionString(connectionStringBuilder.toString())
                     .setExecutor(getScheduler());
@@ -136,20 +134,20 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
 
         final Mono<Long> timeout = Mono.delay(testDuration);
         return Mono.usingWhen(
-                createProcessor,
-                processor -> {
-                    startTime = System.nanoTime();
+            createProcessor,
+            processor -> {
+                startTime = System.nanoTime();
 
-                    return Mono.fromCompletionStage(
-                            processor.registerEventProcessorFactory(processorFactory))
-                        .then(Mono.when(timeout));
-                },
-                processor -> {
-                    endTime = System.nanoTime();
+                return Mono.fromCompletionStage(
+                        processor.registerEventProcessorFactory(processorFactory))
+                    .then(Mono.when(timeout));
+            },
+            processor -> {
+                endTime = System.nanoTime();
 
-                    System.out.println("Completed run.");
-                    return Mono.fromCompletionStage(processor.unregisterEventProcessor());
-                })
+                System.out.println("Completed run.");
+                return Mono.fromCompletionStage(processor.unregisterEventProcessor());
+            })
             .doFinally(signal -> System.out.println("Finished cleaning up processor resources."));
     }
 

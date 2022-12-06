@@ -110,19 +110,19 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
 
         final AtomicInteger number = new AtomicInteger(totalMessagesToSend);
         return Mono.defer(() -> client.createBatch(options)
-                .flatMap(batch -> {
-                    EventData event = events.get(0);
-                    while (batch.tryAdd(event)) {
-                        final int index = number.getAndDecrement() % events.size();
-                        if (index < 0) {
-                            break;
-                        }
-
-                        event = events.get(index);
+            .flatMap(batch -> {
+                EventData event = events.get(0);
+                while (batch.tryAdd(event)) {
+                    final int index = number.getAndDecrement() % events.size();
+                    if (index < 0) {
+                        break;
                     }
 
-                    return client.send(batch);
-                }))
+                    event = events.get(index);
+                }
+
+                return client.send(batch);
+            }))
             .repeat(() -> number.get() > 0)
             .then()
             .doFinally(signal ->
