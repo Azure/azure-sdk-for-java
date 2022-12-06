@@ -54,7 +54,7 @@ public final class ExposureControlsClientImpl implements ExposureControlsClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataFactoryManagemen")
-    private interface ExposureControlsService {
+    public interface ExposureControlsService {
         @Headers({"Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DataFactory/locations/{locationId}/getFeatureValue")
         @ExpectedResponses({200})

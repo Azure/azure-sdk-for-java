@@ -14,7 +14,7 @@ public final class ListUsagesResultTests {
         ListUsagesResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"currentValue\":3103507589533354334,\"limit\":4122830623851114030,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"ovljxywsu\",\"value\":\"yrs\"}},{\"currentValue\":4579993960866529408,\"limit\":164789879294916168,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"aeaeneqnzarrw\",\"value\":\"uu\"}},{\"currentValue\":4399358999277003826,\"limit\":7831439414407354845,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"pfpubjibww\",\"value\":\"tohqkvpuvksgp\"}},{\"currentValue\":8295901406246697833,\"limit\":4000304635126091856,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"ljphuopxodl\",\"value\":\"ynt\"}}],\"nextLink\":\"zihleosjswsr\"}")
+                    "{\"value\":[{\"currentValue\":8612812378237184133,\"limit\":8060447161666090820,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"otgqrlltmu\",\"value\":\"auwzizxbmpgc\"}},{\"currentValue\":2032891691540283618,\"limit\":3898811101398882532,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"tdum\",\"value\":\"p\"}}],\"nextLink\":\"ebmnzbtbhjpglk\"}")
                 .toObject(ListUsagesResult.class);
     }
 

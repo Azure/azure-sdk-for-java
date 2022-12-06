@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CollectorPolicies Get. */
 public final class CollectorPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-05-01/examples/CollectorPolicyGet.json
+     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/CollectorPolicyGet.json
      */
     /**
      * Sample code: Get Collection Policy.

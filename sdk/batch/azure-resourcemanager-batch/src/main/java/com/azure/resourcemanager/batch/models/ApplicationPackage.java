@@ -143,18 +143,6 @@ public interface ApplicationPackage {
      * uploaded. This needs to be done before an `ApplicationPackage` can be used on Pools or Tasks.
      *
      * @param parameters The parameters for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application package which represents a particular version of an application.
-     */
-    ApplicationPackage activate(ActivateApplicationPackageParameters parameters);
-
-    /**
-     * Activates the specified application package. This should be done after the `ApplicationPackage` was created and
-     * uploaded. This needs to be done before an `ApplicationPackage` can be used on Pools or Tasks.
-     *
-     * @param parameters The parameters for the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -163,4 +151,16 @@ public interface ApplicationPackage {
      *     Response}.
      */
     Response<ApplicationPackage> activateWithResponse(ActivateApplicationPackageParameters parameters, Context context);
+
+    /**
+     * Activates the specified application package. This should be done after the `ApplicationPackage` was created and
+     * uploaded. This needs to be done before an `ApplicationPackage` can be used on Pools or Tasks.
+     *
+     * @param parameters The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an application package which represents a particular version of an application.
+     */
+    ApplicationPackage activate(ActivateApplicationPackageParameters parameters);
 }

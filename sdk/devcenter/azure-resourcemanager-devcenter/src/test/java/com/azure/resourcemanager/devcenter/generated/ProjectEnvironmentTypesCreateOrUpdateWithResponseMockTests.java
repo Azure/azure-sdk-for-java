@@ -37,8 +37,7 @@ public final class ProjectEnvironmentTypesCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"lgafcqusrdve\",\"deploymentTargetId\":\"wsdtutnwl\",\"status\":\"Disabled\",\"creatorRoleAssignment\":{\"roles\":{}},\"userRoleAssignments\":{}},\"tags\":{\"dxukuqgsjjxundxg\":\"rmewipmve\",\"hhzjhfj\":\"etw\",\"qsxvmhf\":\"hvvmuvgpmun\",\"yue\":\"uzjyihsasbhudypo\"},\"identity\":{\"principalId\":\"6e6095b3-b6ab-4bfe-85b4-e5190b4bee11\",\"tenantId\":\"6ef19cfc-cd66-470b-a942-3f17d3d41883\",\"type\":\"SystemAssigned,"
-                + " UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"rpfoobr\",\"id\":\"tyms\",\"name\":\"nygq\",\"type\":\"nfwqzdzgtilaxhn\"}";
+            "{\"properties\":{\"provisioningState\":\"Deleting\",\"deploymentTargetId\":\"mldgxobfirc\",\"status\":\"Enabled\",\"creatorRoleAssignment\":{\"roles\":{}},\"userRoleAssignments\":{}},\"tags\":{\"vkjlmxhom\":\"riykhyawfvjlbox\",\"nraauzz\":\"ynhdwdigum\"},\"identity\":{\"principalId\":\"12bbcb71-96ee-45df-bad7-7572f65a2e5d\",\"tenantId\":\"73eb696d-db2f-406a-b322-b7086208aa95\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"location\":\"zhezwwvaiq\",\"id\":\"vv\",\"name\":\"onkp\",\"type\":\"hqyikvy\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -69,35 +68,26 @@ public final class ProjectEnvironmentTypesCreateOrUpdateWithResponseMockTests {
         ProjectEnvironmentType response =
             manager
                 .projectEnvironmentTypes()
-                .define("talhsnvkcdmxzr")
-                .withExistingProject("wpfaj", "jwltlwtjjgu")
-                .withRegion("mghfcfiwrxgkne")
-                .withTags(
-                    mapOf(
-                        "ousnfepgfewe",
-                        "npjhlfzswpchwahf",
-                        "hdjhlimmbcx",
-                        "wlyxgncxyk",
-                        "cporxvxcjz",
-                        "h",
-                        "juhdqazkmtgguwpi",
-                        "qizxfpxtgqscjavf"))
+                .define("rqzz")
+                .withExistingProject("levufuztcktyhj", "qedcgzulwm")
+                .withRegion("dmovzvfva")
+                .withTags(mapOf("oepry", "ev"))
                 .withIdentity(
                     new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                        .withType(ManagedServiceIdentityType.NONE)
                         .withUserAssignedIdentities(mapOf()))
-                .withDeploymentTargetId("z")
+                .withDeploymentTargetId("gl")
                 .withStatus(EnableStatus.ENABLED)
                 .withCreatorRoleAssignment(
                     new ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment().withRoles(mapOf()))
                 .withUserRoleAssignments(mapOf())
                 .create();
 
-        Assertions.assertEquals("rmewipmve", response.tags().get("dxukuqgsjjxundxg"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("rpfoobr", response.location());
-        Assertions.assertEquals("wsdtutnwl", response.deploymentTargetId());
-        Assertions.assertEquals(EnableStatus.DISABLED, response.status());
+        Assertions.assertEquals("riykhyawfvjlbox", response.tags().get("vkjlmxhom"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("zhezwwvaiq", response.location());
+        Assertions.assertEquals("mldgxobfirc", response.deploymentTargetId());
+        Assertions.assertEquals(EnableStatus.ENABLED, response.status());
     }
 
     @SuppressWarnings("unchecked")

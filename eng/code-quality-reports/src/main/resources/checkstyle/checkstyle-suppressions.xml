@@ -375,9 +375,9 @@ the main ServiceBusClientBuilder. -->
 
   <!-- jdbc sdk suppression -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
-            files="com.azure.identity.providers.(mysql|postgresql).(AzureIdentityMysqlAuthenticationPlugin|AzureIdentityPostgresqlAuthenticationPlugin).java"/>
+            files="com.azure.identity.extensions.jdbc.(mysql|postgresql).(AzureMysqlAuthenticationPlugin|AzurePostgresqlAuthenticationPlugin).java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
-            files="com.azure.identity.providers.postgresql.AzureIdentityPostgresqlAuthenticationPlugin"/>
+            files="com.azure.identity.extensions.jdbc.postgresql.AzurePostgresqlAuthenticationPlugin"/>
 
   <!-- ### begin: Spring related suppression -->
 
