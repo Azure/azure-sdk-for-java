@@ -657,6 +657,14 @@
       ]
     },
     {
+      "filename": "**/**-stress/**",
+      "words": [
+        "Djarmode",
+        "Dreactor",
+        "nindent"
+      ]
+    },
+    {
       "filename": "**/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/guava*/**/*.java",
       "words": [
         "Bourrillion",
