@@ -16,7 +16,7 @@ stages:
       CloudConfig:
         Public:
           SubscriptionConfigurations:
-            ${{ if [lt(True, False)] }}:
+            ${{ if lt(True, False) }}:
               -  script: echo '$(firstEval)'
             ${{ else }}:
               - $(sub-config-azure-cloud-test-resources)
