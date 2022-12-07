@@ -1,14 +1,27 @@
 # Release History
 
-## 3.0.0-beta.5 (Unreleased)
+## 3.0.0-beta.5 (2022-12-01)
 
 ### Features Added
 
+- Added `OneTable` and `MultiTable` two data schemas.
+- Added `topContributorCoun` in the request body for `getMultivariateBatchDetectionResult`, `detectMultivariateBatchAnomaly` and `detectMultivariateLastAnomaly`.
+
 ### Breaking Changes
 
-### Bugs Fixed
+- Renamed `trainMultivariateModelWithResponse` to `createAndTrainMultivariateModel`
+- Renamed `detectAnomalyWithResponse` to `detectMultivariateBatchAnomaly`
+- Renamed `getDetectionResult` to `getMultivariateBatchDetectionResult`
+- Renamed `listMultivariateModel` to `listMultivariateModels`
+- Renamed `lastDetectAnomalyWithResponse` to `detectMultivariateLastAnomaly`
+- Renamed `detectEntireSeries` to `detectUnivariateEntireSeries`
+- Renamed `detectLastPoint` to `detectUnivariateLastPoint`
+- Renamed `detectChangePoint` to `detectUnivariateChangePoint`
+- Removed `exportModelWithResponse`
+- Removed `changedvalue` in the inference response body.
+- Removed `detectingPoints` in the sync inference request body.
 
-### Other Changes
+
 
 ## 3.0.0-beta.4 (2022-01-23)
 

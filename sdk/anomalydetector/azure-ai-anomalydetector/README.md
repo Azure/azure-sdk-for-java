@@ -8,7 +8,7 @@ Microsoft Azure Cognitive Services Anomaly Detector API enables you to monitor a
 
 ### Prerequisites
 
-- A [Java Development Kit (JDK)][jdk_link], version 8 or later.
+- A [Java Development Kit (JDK)][jdk_link], version 11 or later.
 - [Azure Subscription][azure_subscription]
 - An existing Cognitive Services or Anomaly Detector resource.
 
@@ -21,7 +21,7 @@ For more information about creating the resource or how to get the location and 
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-anomalydetector</artifactId>
-  <version>3.0.0-beta.1</version>
+  <version>3.0.0-beta.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -59,42 +59,16 @@ You will also need to [register a new AAD application][register_aad_app] and [gr
 
 Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
-##### Async client
-```java readme-sample-createAnomalyDetectorAsyncClient
-String endpoint = "<anomaly-detector-resource-endpoint>";
-HttpHeaders headers = new HttpHeaders()
-    .put("Accept", ContentType.APPLICATION_JSON);
-
-String defaultScope = "https://cognitiveservices.azure.com/.default";
-HttpPipelinePolicy authPolicy = new BearerTokenAuthenticationPolicy(new DefaultAzureCredentialBuilder().build(),
-    defaultScope);
-AddHeadersPolicy addHeadersPolicy = new AddHeadersPolicy(headers);
-
-HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(HttpClient.createDefault())
-    .policies(authPolicy, addHeadersPolicy).build();
-AnomalyDetectorAsyncClient anomalyDetectorAsyncClient = new AnomalyDetectorClientBuilder()
-    .pipeline(httpPipeline)
-    .endpoint(endpoint)
-    .buildAsyncClient();
-```
-
 ##### Sync client
 ```java readme-sample-createAnomalyDetectorClient
-String endpoint = "<anomaly-detector-resource-endpoint>";
-HttpHeaders headers = new HttpHeaders()
-    .put("Accept", ContentType.APPLICATION_JSON);
+String endpoint = Configuration.getGlobalConfiguration().get("AZURE_ANOMALY_DETECTOR_ENDPOINT");
+String key = Configuration.getGlobalConfiguration().get("AZURE_ANOMALY_DETECTOR_API_KEY");
 
-String defaultScope = "https://cognitiveservices.azure.com/.default";
-HttpPipelinePolicy authPolicy = new BearerTokenAuthenticationPolicy(new DefaultAzureCredentialBuilder().build(),
-    defaultScope);
-AddHeadersPolicy addHeadersPolicy = new AddHeadersPolicy(headers);
-
-HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(HttpClient.createDefault())
-    .policies(authPolicy, addHeadersPolicy).build();
-AnomalyDetectorClient anomalyDetectorClient = new AnomalyDetectorClientBuilder()
-    .pipeline(httpPipeline)
-    .endpoint(endpoint)
-    .buildClient();
+AnomalyDetectorClient anomalyDetectorClient =
+    new AnomalyDetectorClientBuilder()
+        .credential(new AzureKeyCredential(key))
+        .endpoint(endpoint)
+        .buildClient();
 ```
 
 ## Key concepts
