@@ -41,7 +41,9 @@ parameters:
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
-      CloudConfig: ${{ parameters.CloudConfig }}
+      CloudConfig:
+        - ${{ each config in parameters.CloudConfig }}:
+          - ${{ config }}
       Clouds: ${{ parameters.Clouds }}
       TestMode: ${{ parameters.TestMode }}
       Artifacts:
