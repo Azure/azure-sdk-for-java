@@ -92,7 +92,7 @@ public class MultivariateSample {
 
         System.out.println("ModelList: ");
         response.streamByPage().forEach(models -> {
-            for (AnomalyDetectionModel item : models.getValue()){
+            for (AnomalyDetectionModel item : models.getValue()) {
                 System.out.println("\t" + item.getModelId());
             }
         });

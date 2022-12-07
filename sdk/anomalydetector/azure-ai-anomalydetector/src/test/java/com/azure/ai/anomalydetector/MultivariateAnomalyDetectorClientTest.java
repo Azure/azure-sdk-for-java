@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.anomalydetector;
 
 import com.azure.ai.anomalydetector.models.AnomalyDetectionModel;
@@ -5,7 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import org.junit.jupiter.api.Test;
 
 
-public class MultivariateAnomalyDetectorClientTest  extends AnomalyDetectorClientTestBase{
+public class MultivariateAnomalyDetectorClientTest extends AnomalyDetectorClientTestBase {
     private AnomalyDetectorClient getClient() {
         return getClientBuilder().buildClient();
     }
@@ -15,7 +18,7 @@ public class MultivariateAnomalyDetectorClientTest  extends AnomalyDetectorClien
 
         System.out.println("ModelList: ");
         response.streamByPage().forEach(models -> {
-            for (AnomalyDetectionModel item : models.getValue()){
+            for (AnomalyDetectionModel item : models.getValue()) {
                 System.out.println("\t" + item.getModelId());
             }
         });
