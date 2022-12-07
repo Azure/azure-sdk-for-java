@@ -8,6 +8,9 @@ module com.azure.ai.anomalydetector {
     exports com.azure.ai.anomalydetector;
     exports com.azure.ai.anomalydetector.models;
 
+    opens com.azure.ai.anomalydetector.implementation.models to
+            com.azure.core,
+            com.fasterxml.jackson.databind;
     opens com.azure.ai.anomalydetector.models to
             com.azure.core,
             com.fasterxml.jackson.databind;
