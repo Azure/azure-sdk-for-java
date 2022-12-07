@@ -5,8 +5,3 @@ stages:
     parameters:
       PackageName: azure-communication-identity
       SafeName: azurecommunicationidentity
-      CloudConfig:
-          Int:
-            SubscriptionConfigurations:
-                - $(sub-config-communication-ppe-test-resources-common)
-                - $(sub-config-communication-ppe-test-resources-java)
