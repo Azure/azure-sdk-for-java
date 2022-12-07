@@ -6,6 +6,7 @@ import com.azure.cosmos.SparkBridgeInternal
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import com.azure.cosmos.models.PartitionKey
+import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.udf.{CreateChangeFeedOffsetFromSpark2, CreateSpark2ContinuationsFromChangeFeedOffset, GetFeedRangeForPartitionKeyValue}
 import org.apache.hadoop.fs.{FileSystem, Path}
@@ -427,6 +428,7 @@ class SparkE2EChangeFeedITest
     hdfs.exists(new Path(latestOffsetFileLocation)) shouldEqual true
 
     hdfs.copyToLocalFile(true, new Path(latestOffsetFileLocation), new Path(startOffsetFileLocation))
+    assert(!hdfs.exists(new Path(latestOffsetFileLocation)))
 
     val cfgWithoutItemCountPerTriggerHint = cfg.filter(keyValuePair => !keyValuePair._1.equals("spark.cosmos.changeFeed.itemCountPerTriggerHint"))
     val df2 = spark.read.format("cosmos.oltp.changeFeed").options(cfgWithoutItemCountPerTriggerHint).load()
@@ -473,6 +475,7 @@ class SparkE2EChangeFeedITest
     //  TODO - check for the offset structure to make sure it looks like the new lease format.
 
     hdfs.copyToLocalFile(true, new Path(latestOffsetFileLocation), new Path(startOffsetFileLocation))
+    assert(!hdfs.exists(new Path(latestOffsetFileLocation)))
 
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
 
@@ -622,12 +625,13 @@ class SparkE2EChangeFeedITest
     }
 
     hdfs.copyToLocalFile(true, new Path(latestOffsetFileLocation), new Path(latestOffsetFileLocation + ".bak"))
+    assert(!hdfs.exists(new Path(latestOffsetFileLocation)))
 
     val outputStream = hdfs.create(new Path(startOffsetFileLocation), true)
     outputStream.writeBytes(migratedOffset)
     outputStream.flush()
     outputStream.close()
-    hdfs.delete(new Path(latestOffsetFileLocation), false)
+    hdfs.delete(new Path(latestOffsetFolderLocation), true)
 
     val cfgWithoutItemCountPerTriggerHint = cfg.filter(keyValuePair => !keyValuePair._1.equals("spark.cosmos.changeFeed.itemCountPerTriggerHint"))
     val df2 = spark.read.format("cosmos.oltp.changeFeed").options(cfgWithoutItemCountPerTriggerHint).load()
@@ -660,6 +664,8 @@ class SparkE2EChangeFeedITest
       fileContent.append(line)
       line = reader.readLine()
     }
+
+    reader.close()
 
     fileContent.toString
   }

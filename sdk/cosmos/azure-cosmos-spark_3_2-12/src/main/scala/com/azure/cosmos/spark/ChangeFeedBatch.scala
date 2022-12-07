@@ -103,12 +103,14 @@ private class ChangeFeedBatch
           assertNotNullOrEmpty(latestOffsetLocation, "latestOffset checkpointLocation"))
 
         val latestOffsetJson = latestOffset.json()
+
         if (!metadataLog.add(0, latestOffsetJson)) {
           val existingLatestOffset = metadataLog.get(0).get
 
           if (existingLatestOffset != latestOffsetJson) {
-            val msg = s"Cannot update latest offset at location '$latestOffsetLocation' for batchId: $batchId -> " +
-              s"existing latestOffset: '$existingLatestOffset' failed to persist new latestOffset: '$latestOffsetJson'."
+            val msg = s"Cannot update latest offset at location '$latestOffsetLocation' for batchId: $batchId " +
+              s"-> existing latestOffset: '$existingLatestOffset' failed to persist " +
+              s"new latestOffset: '$latestOffsetJson'."
 
             log.logError(msg)
 
