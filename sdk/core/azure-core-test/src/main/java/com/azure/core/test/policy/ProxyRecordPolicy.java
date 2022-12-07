@@ -3,16 +3,15 @@ package com.azure.core.test.policy;
 import com.azure.core.http.*;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
 import reactor.core.publisher.Mono;
 
-import java.io.*;
-import java.net.*;
-import java.nio.charset.StandardCharsets;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.function.Function;
 
 public class ProxyRecordPolicy implements HttpPipelinePolicy {
@@ -24,37 +23,36 @@ public class ProxyRecordPolicy implements HttpPipelinePolicy {
     private final HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
     private String xRecordingId;
     private String recordFile;
-    public ProxyRecordPolicy(List<Function<String, String>> redactors) {
+
+    public void startRecording(String recordFile, List<Function<String, String>> redactors) {
         // TODO: redactors
-    }
-
-    public void startRecording(String recordFile) {
-        sendStart(recordFile, "record");
-    }
-
-    public void stopRecording(Map<String, String> variables) {
-        sendStop("record");
-    }
-
-    public void startPlayback(String recordFile) {
-        sendStart(recordFile, "playback");
-    }
-
-    public void stopPlayback() {
-        sendStop("playback");
-    }
-
-    private void sendStart(String recordFile, String endpoint) {
-
-        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/%s/start", proxyUrl, endpoint))
+        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/record/start", proxyUrl))
             .setBody(String.format("{\"x-recording-file\": \"%s\"}", recordFile));
         HttpResponse response = client.sendSync(request, Context.NONE);
 
         xRecordingId = response.getHeaderValue("x-recording-id");
     }
 
-    private void sendStop(String endpoint) {
-        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/%s/stop", proxyUrl, endpoint))
+    public void stopRecording(Map<String, String> variables) {
+        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/record/stop", proxyUrl))
+            .setHeader("content-type", "application/json")
+            .setHeader("x-recording-id", xRecordingId)
+            .setBody("{}");
+        client.sendSync(request, Context.NONE);
+    }
+
+    public void startPlayback(String recordFile, Map<String, String> textReplacementRules) {
+        // TODO: replacement rules
+        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/start", proxyUrl))
+            .setBody(String.format("{\"x-recording-file\": \"%s\"}", recordFile));
+        HttpResponse response = client.sendSync(request, Context.NONE);
+
+        xRecordingId = response.getHeaderValue("x-recording-id");
+    }
+
+
+    public void stopPlayback() {
+        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/stop", proxyUrl))
             .setHeader("x-recording-id", xRecordingId);
         client.sendSync(request, Context.NONE);
     }
@@ -80,6 +78,10 @@ public class ProxyRecordPolicy implements HttpPipelinePolicy {
             throw new RuntimeException(e);
         }
         return next.process();
+    }
+
+    public Queue<String> getVariables() {
+        return null;
     }
 }
 
