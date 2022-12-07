@@ -102,7 +102,17 @@ private class ChangeFeedBatch
           assertNotNull(session, "session"),
           assertNotNullOrEmpty(latestOffsetLocation, "latestOffset checkpointLocation"))
 
-        metadataLog.add(0, latestOffset.json())
+        val latestOffsetJson = latestOffset.json()
+        if (!metadataLog.add(0, latestOffsetJson)) {
+          val existingLatestOffset = metadataLog.get(0).get
+          val msg = s"Cannot update latest offset at location '$latestOffsetLocation' for batchId: $batchId -> " +
+            s"existing latestOffset: '$existingLatestOffset' failed to persist new latestOffset: '$latestOffsetJson'."
+
+          log.logError(msg)
+          
+          assert(false, msg)
+          throw new IllegalStateException(msg)
+        }
       }
 
       // Latest offset above has the EndLsn specified based on the point-in-time latest offset
