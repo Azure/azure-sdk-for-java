@@ -9,7 +9,7 @@ module com.azure.core.test {
     requires org.junit.jupiter.params;
     requires reactor.test;
     requires java.management;
-    requires testcontainers;
+    requires java.net.http;
 
     exports com.azure.core.test;
     exports com.azure.core.test.annotation;
