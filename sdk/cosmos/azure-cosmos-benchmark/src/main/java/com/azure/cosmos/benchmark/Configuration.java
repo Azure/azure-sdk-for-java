@@ -133,8 +133,8 @@ public class Configuration {
         + "\tReadAllItemsOfLogicalPartition - run a workload that uses readAllItems for a logical partition and prints throughput\n"
         + "\n\t* writes 10k documents initially, which are used in the reads"
         + "\tLinkedInCtlWorkload - ctl for LinkedIn workload.*\n"
-        + "\tReadManyLatency - run a workload for readMany for a finite no of cosmos identity tuples that prints both throughput and latency*\n"
-        + "\tReadManyThroughput - run a workload for readMany for a finite no of cosmos identity tuples that prints both throughput*\n",
+        + "\tReadManyLatency - run a workload for readMany for a finite number of cosmos identity tuples that prints both throughput and latency*\n"
+        + "\tReadManyThroughput - run a workload for readMany for a finite no of cosmos identity tuples that prints throughput*\n",
         converter = Operation.OperationTypeConverter.class)
     private Operation operation = Operation.WriteThroughput;
 
