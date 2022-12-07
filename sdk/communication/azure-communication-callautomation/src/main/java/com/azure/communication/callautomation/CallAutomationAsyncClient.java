@@ -82,10 +82,10 @@ public final class CallAutomationAsyncClient {
         this.contentsInternal = callServiceClient.getContents();
         this.logger = new ClientLogger(CallAutomationAsyncClient.class);
         this.contentDownloader = new ContentDownloader(
-            callServiceClient.getEndpoint().toString(),
+            callServiceClient.getEndpoint(),
             callServiceClient.getHttpPipeline());
         this.httpPipelineInternal = callServiceClient.getHttpPipeline();
-        this.resourceEndpoint = callServiceClient.getEndpoint().toString();
+        this.resourceEndpoint = callServiceClient.getEndpoint();
     }
 
     //region Pre-call Actions
@@ -170,6 +170,11 @@ public final class CallAutomationAsyncClient {
                 getMediaStreamingConfigurationInternal(createCallOptions.getMediaStreamingConfiguration());
             request.setMediaStreamingConfiguration(streamingConfigurationInternal);
         }
+
+        if (createCallOptions.getAzureCognitiveServicesEndpointUrl() != null && !createCallOptions.getAzureCognitiveServicesEndpointUrl().isEmpty()) {
+            request.setAzureCognitiveServicesEndpointUrl(createCallOptions.getAzureCognitiveServicesEndpointUrl());
+        }
+
         return request;
     }
 
@@ -234,6 +239,9 @@ public final class CallAutomationAsyncClient {
                 request.setMediaStreamingConfiguration(mediaStreamingConfigurationInternal);
             }
 
+            if (answerCallOptions.getAzureCognitiveServicesEndpointUrl() != null && !answerCallOptions.getAzureCognitiveServicesEndpointUrl().isEmpty()) {
+                request.setAzureCognitiveServicesEndpointUrl(answerCallOptions.getAzureCognitiveServicesEndpointUrl());
+            }
 
             return serverCallingInternal.answerCallWithResponseAsync(request,
                     answerCallOptions.getRepeatabilityHeaders() != null ? answerCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
