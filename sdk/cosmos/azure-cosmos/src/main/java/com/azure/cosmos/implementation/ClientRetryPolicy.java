@@ -133,8 +133,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                     return shouldRetryOnEndpointFailureAsync(this.isReadRequest, true, true);
                 }
 
-                // if operationType is QueryPlan / AddressRefresh then just retry
-                if (this.request.getOperationType() == OperationType.QueryPlan || this.request.isAddressRefresh()) {
+                // if operationType AddressRefresh then just retry
+                if (this.request.isAddressRefresh()) {
                     return shouldRetryQueryPlanAndAddress();
                 }
             } else {

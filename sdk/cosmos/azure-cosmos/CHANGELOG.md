@@ -11,7 +11,7 @@
 #### Other Changes
 * Fixed issue on noisy `CancellationException` log - See [PR 31882](https://github.com/Azure/azure-sdk-for-java/pull/31882)
 * Added `retyrAfterInMs` to `StoreResult` in `CosmosDiagnostics` - See [31219](https://github.com/Azure/azure-sdk-for-java/pull/31219)
-* HTTP timeouts now preform cross regional retries on Gateway mode - See [32450](https://github.com/Azure/azure-sdk-for-java/pull/32450)
+* Added cross region retries for data plane, query plan and metadata requests failed with http timeouts - See [32450](https://github.com/Azure/azure-sdk-for-java/pull/32450)
 ### 4.39.0 (2022-11-16)
 
 #### Bugs Fixed

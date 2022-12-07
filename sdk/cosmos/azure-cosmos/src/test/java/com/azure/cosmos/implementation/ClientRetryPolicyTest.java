@@ -442,8 +442,7 @@ public class ClientRetryPolicyTest {
                 .shouldRetry(true)
                 .backOfTime(Duration.ofMillis(1000))
                 .build());
-            
-            System.out.print(i);
+
             Mockito.verify(endpointManager, Mockito.times(i+1)).markEndpointUnavailableForRead(Mockito.any());
             Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForWrite(Mockito.any());
         }
