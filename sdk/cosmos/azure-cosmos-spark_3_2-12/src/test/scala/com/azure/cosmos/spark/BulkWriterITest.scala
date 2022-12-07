@@ -737,6 +737,59 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     updatedParent2Object.get("lastName") shouldEqual newParentNode.get("lastName")
   }
 
+  "Bulk Writer" can "replace entire node" in {
+    val container = getContainer
+    val containerProperties = container.read().block().getProperties
+    val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
+    val writeConfig = CosmosWriteConfig(
+      ItemWriteStrategy.ItemOverwrite,
+      5,
+      bulkEnabled = true,
+      bulkMaxPendingOperations = Some(900)
+    )
+
+    val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
+
+    // First create one item with nestedObject, as patch can only operate on existing items
+    val itemWithNestedObject: ObjectNode = objectMapper.createObjectNode()
+    itemWithNestedObject.put("id", UUID.randomUUID().toString)
+    val familyObject = itemWithNestedObject.putObject("family")
+    familyObject.put("state", "NY")
+    val parentObject = familyObject.putObject("parent1")
+    parentObject.put("firstName", "Julie")
+    parentObject.put("lastName", "Anderson")
+
+    val id = itemWithNestedObject.get("id").textValue()
+    val partitionKey = new PartitionKey(id)
+
+    bulkWriter.scheduleWrite(partitionKey, itemWithNestedObject)
+    bulkWriter.flushAndClose()
+    // make sure the item exists
+    container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem()
+
+    // patch item by adding parent2
+    val parent1PropertyName = "parent1"
+    val partialUpdateNode = objectMapper.createObjectNode()
+    partialUpdateNode.put("id", id)
+    val newParentNode = partialUpdateNode.putObject(parent1PropertyName)
+    newParentNode.put("firstName", "John")
+    newParentNode.put("lastName", "Anderson")
+    val columnConfigsMap = new TrieMap[String, CosmosPatchColumnConfig]
+    columnConfigsMap += parent1PropertyName -> CosmosPatchColumnConfig(parent1PropertyName, CosmosPatchOperationTypes.Replace, s"/family/parent1")
+
+    val bulkWriterForPatch = CosmosPatchTestHelper.getBulkWriterForPatch(columnConfigsMap, container, partitionKeyDefinition)
+    bulkWriterForPatch.scheduleWrite(partitionKey, partialUpdateNode)
+    bulkWriterForPatch.flushAndClose()
+
+    // Validate parent2 has been inserted
+    val updatedItem = container.readItem(id, partitionKey, classOf[ObjectNode]).block().getItem()
+
+    val updatedParent1Object = updatedItem.get("family").get(parent1PropertyName)
+    updatedParent1Object should not be null
+    updatedParent1Object.get("firstName") shouldEqual newParentNode.get("firstName")
+    updatedParent1Object.get("lastName") shouldEqual newParentNode.get("lastName")
+  }
+
   "Bulk Writer" should "skip partial update for cosmos system properties" in {
     val container = getContainer
     val containerProperties = container.read().block().getProperties
