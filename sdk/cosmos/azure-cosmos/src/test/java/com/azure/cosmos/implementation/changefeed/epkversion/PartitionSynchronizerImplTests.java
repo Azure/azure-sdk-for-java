@@ -170,15 +170,15 @@ public class PartitionSynchronizerImplTests {
         overlappingRanges.add(new PartitionKeyRange("2", "BB", "DD"));
         overlappingRanges.add(new PartitionKeyRange("3", "DD", "EE"));
 
-        List<Lease> pkVersionLeases = new ArrayList<>();
+        List<Lease> pkRangeIdVersionLeases = new ArrayList<>();
 
         for (PartitionKeyRange partitionKeyRange : overlappingRanges) {
-            ServiceItemLease pkVersionLease =
+            ServiceItemLease pkRangeIdVersionLease =
                 new ServiceItemLease()
                     .withLeaseToken(partitionKeyRange.getId())
                     .withETag(String.valueOf(partitionKeyRange.getId()));
-            pkVersionLease.setId("TestLease-" + UUID.randomUUID());
-            pkVersionLeases.add(pkVersionLease);
+            pkRangeIdVersionLease.setId("TestLease-" + UUID.randomUUID());
+            pkRangeIdVersionLeases.add(pkRangeIdVersionLease);
         }
 
         when(feedContextClientMock.getOverlappingRanges(PartitionKeyInternalHelper.FullRange))
@@ -187,7 +187,7 @@ public class PartitionSynchronizerImplTests {
         when(leaseManagerMock.createLeaseIfNotExist((FeedRangeEpkImpl) any(), any()))
             .thenReturn(Mono.empty());
 
-        StepVerifier.create(partitionSynchronizer.createMissingLeases(pkVersionLeases))
+        StepVerifier.create(partitionSynchronizer.createMissingLeases(pkRangeIdVersionLeases))
             .verifyComplete();
 
         // Verify the new lease will start from the lsn from pk version lease
@@ -198,12 +198,12 @@ public class PartitionSynchronizerImplTests {
         assertThat(feedRangeEpkArgumentCaptor.getAllValues().size()).isEqualTo(3);
         assertThat(continuationTokenArgumentCaptor.getAllValues().size()).isEqualTo(3);
 
-        for (int i = 0; i < pkVersionLeases.size(); i++) {
+        for (int i = 0; i < pkRangeIdVersionLeases.size(); i++) {
             assertThat(feedRangeEpkArgumentCaptor.getAllValues().get(i).getRange()).isEqualTo(overlappingRanges.get(i).toRange());
             ChangeFeedState changeFeedState = ChangeFeedState.fromString(continuationTokenArgumentCaptor.getAllValues().get(i));
             assertThat(changeFeedState.getFeedRange()).isInstanceOf(FeedRangeEpkImpl.class);
             assertThat(((FeedRangeEpkImpl)changeFeedState.getFeedRange()).getRange()).isEqualTo(overlappingRanges.get(i).toRange());
-            assertThat(changeFeedState.getContinuation().getCurrentContinuationToken().getToken()).isEqualTo(pkVersionLeases.get(i).getContinuationToken());
+            assertThat(changeFeedState.getContinuation().getCurrentContinuationToken().getToken()).isEqualTo(pkRangeIdVersionLeases.get(i).getContinuationToken());
         }
     }
 }

@@ -294,10 +294,10 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                                     .build();
 
                         if (this.canBootstrapFromPkRangeIdVersionLeaseStore()) {
-                            String pkVersionLeasePrefix = this.getPkRangeIdVersionLeasePrefix();
+                            String pkRangeIdVersionLeasePrefix = this.getPkRangeIdVersionLeasePrefix();
                             this.pkRangeIdVersionLeaseStoreManager =
                                 com.azure.cosmos.implementation.changefeed.pkversion.LeaseStoreManagerImpl.builder()
-                                    .leasePrefix(pkVersionLeasePrefix)
+                                    .leasePrefix(pkRangeIdVersionLeasePrefix)
                                     .leaseCollectionLink(this.leaseContextClient.getContainerClient())
                                     .leaseContextClient(this.leaseContextClient)
                                     .requestOptionsFactory(requestOptionsFactory)

@@ -7,7 +7,6 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Exceptions;
-import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
@@ -18,12 +17,12 @@ import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
 import com.azure.cosmos.implementation.changefeed.LeaseStoreManagerSettings;
 import com.azure.cosmos.implementation.changefeed.RequestOptionsFactory;
 import com.azure.cosmos.implementation.changefeed.ServiceItemLeaseUpdater;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedHelper;
 import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
-import com.azure.cosmos.models.CosmosBulkOperations;
-import com.azure.cosmos.models.CosmosItemOperation;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -213,24 +212,20 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
     @Override
     public Mono<Void> deleteAll(List<Lease> leases) {
         checkNotNull(leases, "Argument 'leases' can not be null");
-        logger.info("Deleting all old leases");
-//
-//        return Flux.fromIterable(leases)
-//            .flatMap(lease -> this.delete(lease))
-//            .then();
 
-        List<CosmosItemOperation> operations = new ArrayList<>();
+        logger.info("Deleting all leases");
+        List<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
         for (Lease lease : leases) {
-            operations.add(CosmosBulkOperations.getDeleteItemOperation(lease.getId(), new PartitionKey(lease.getId())));
+            cosmosItemIdentities.add(new CosmosItemIdentity(new PartitionKey(lease.getId()), lease.getId()));
         }
 
-        return this.leaseDocumentClient.getContainerClient()
-            .executeBulkOperations(Flux.defer(() -> Flux.fromIterable(operations)))
+        return Mono.defer(() -> Mono.just(cosmosItemIdentities))
+            .flatMapMany(itemIdentities -> this.leaseDocumentClient.deleteAllItems(itemIdentities))
             .flatMap(itemResponse -> {
                 if (itemResponse.getResponse() != null && itemResponse.getResponse().isSuccessStatusCode()) {
-                    operations.remove(itemResponse.getOperation());
+                    cosmosItemIdentities.remove(itemResponse.getOperation().getId());
                 } else {
-                    // non successful scenario, but ignore 404 for delete
+                    // should ignore 404/0 for delete, will retry on other cases
                     int effectiveStatusCode = 0;
                     int effectiveSubStatusCode = 0;
                     if (itemResponse.getResponse() != null) {
@@ -242,15 +237,15 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
                         effectiveSubStatusCode = cosmosException.getSubStatusCode();
                     }
 
-                    if (effectiveStatusCode == HttpConstants.StatusCodes.NOTFOUND &&
-                            effectiveSubStatusCode == 0) {
-                        operations.remove(itemResponse.getOperation());
+                    if (effectiveStatusCode == ChangeFeedHelper.HTTP_STATUS_CODE_NOT_FOUND &&
+                        effectiveSubStatusCode == 0) {
+                        cosmosItemIdentities.remove(itemResponse.getOperation().getId());
                     }
                 }
 
                 return Mono.empty();
             })
-            .repeat(() -> operations.size() != 0)
+            .repeat(() -> cosmosItemIdentities.size() != 0)
             .then();
     }
 
