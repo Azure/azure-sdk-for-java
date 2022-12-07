@@ -19,6 +19,7 @@ import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.AppendBlobAppendBlockOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
+import com.azure.storage.blob.options.PageBlobUploadPagesOptions;
 import com.azure.storage.common.StorageOutputStream;
 import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
@@ -326,9 +327,10 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             }
         }
 
-        private Mono<Void> writePages(Flux<ByteBuffer> pageData, int length, long offset) {
-            return client.uploadPagesWithResponse(new PageRange().setStart(offset).setEnd(offset + length - 1),
-                pageData, null, pageBlobRequestConditions)
+        private Mono<Void> writePages(BinaryData pageData, int length, long offset) {
+            return client.uploadPagesWithResponse(
+                new PageBlobUploadPagesOptions(new PageRange().setStart(offset).setEnd(offset + length - 1), pageData)
+                    .setConditions(pageBlobRequestConditions))
                 .then()
                 .onErrorResume(BlobStorageException.class, e -> {
                     this.lastError = new IOException(e);
@@ -347,8 +349,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                     writeLength)));
             }
 
-            Flux<ByteBuffer> fbb = Flux.range(0, 1)
-                .concatMap(pos -> Mono.fromCallable(() -> ByteBuffer.wrap(data, (int) offset, writeLength)));
+            BinaryData bData = BinaryData.fromByteBuffer(ByteBuffer.wrap(data, (int) offset, writeLength));
 
             long pageOffset = pageRange.getStart();
             if (pageOffset + writeLength - 1 > pageRange.getEnd()) {
@@ -356,7 +357,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                     new RuntimeException("The input data length is larger than the page range."));
             }
             pageRange.setStart(pageRange.getStart() + writeLength);
-            return this.writePages(fbb.subscribeOn(Schedulers.boundedElastic()), writeLength, pageOffset);
+            return this.writePages(bData, writeLength, pageOffset);
         }
 
         @Override
