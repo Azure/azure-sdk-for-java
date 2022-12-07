@@ -22,6 +22,9 @@ parameters:
 - name: Profile
   type: boolean
   default: false
+- name: ToolsRepoCommitish
+  type: string
+  default: 'main'
 
 extends:
   template: /eng/pipelines/templates/jobs/perf.yml
@@ -34,3 +37,4 @@ extends:
     Iterations: ${{ parameters.Iterations }}
     AdditionalArguments: ${{ parameters.AdditionalArguments }}
     Profile: ${{ parameters.Profile }}
+    ToolsRepoCommitish: ${{ parameters.ToolsRepoCommitish }}
