@@ -351,6 +351,10 @@ jobs:
           publishJUnitResults: false
           goals: 'verify'
 
+      - script: |
+          npm install -g autorest
+        displayName: 'Prepare Environment for Generation'
+
       - task: PowerShell@2
         displayName: Verify Code Generation
         inputs:
