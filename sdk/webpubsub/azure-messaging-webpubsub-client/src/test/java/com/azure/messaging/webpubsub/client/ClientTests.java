@@ -17,6 +17,12 @@ import java.util.Map;
 public class ClientTests {
 
     public static void main(String[] args) throws Exception {
+        runForAsyncClient();
+
+        Thread.sleep(5 * 1000);
+    }
+
+    private static void runForAsyncClient() {
         WebPubSubServiceClient client = new WebPubSubServiceClientBuilder()
             .connectionString(Configuration.getGlobalConfiguration().get("CONNECTION_STRING"))
             .hub("test_hub")
@@ -36,6 +42,16 @@ public class ClientTests {
         // group data messages
         asyncClient.receiveGroupMessages().subscribe(message -> {
             System.out.println("group: " + message.getGroup() + ", data: " + message.getData());
+        });
+
+        // connected events
+        asyncClient.receiveConnectedEvents().subscribe(event -> {
+            System.out.println("connected: " + event.getConnectionId());
+        });
+
+        // disconnected events
+        asyncClient.receiveDisconnectedEvents().subscribe(event -> {
+            System.out.println("disconnected: " + event.getReason());
         });
 
         // start
@@ -70,23 +86,18 @@ public class ClientTests {
 
 
         // start for more data
-//        asyncClient.receiveGroupMessages().doOnNext(m -> {
-//            System.out.println("new data: " + m.getData());
-//        }).subscribe();
-//
-//        asyncClient.start().block();
-//
-//        asyncClient.joinGroup("group1").block();
-//
-//        result = asyncClient.sendMessageToGroup("group1",
-//            BinaryData.fromString("dfg"), WebPubSubDataType.TEXT).block();
-//        if (result != null) {
-//            System.out.println("result: " + result.getAckId());
-//        }
-//
-//        asyncClient.stop().block();
+        asyncClient.receiveGroupMessages().doOnNext(m -> {
+            System.out.println("new data: " + m.getData());
+        }).subscribe();
 
-        Thread.sleep(5 * 1000);
+        asyncClient.start().block();
+
+        printResult(asyncClient.joinGroup("group1"));
+
+        printResult(asyncClient.sendMessageToGroup("group1",
+            BinaryData.fromString("dfg"), WebPubSubDataType.TEXT));
+
+        asyncClient.stop().block();
     }
 
     private static void printResult(Mono<WebPubSubResult> result) {

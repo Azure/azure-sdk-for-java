@@ -69,6 +69,28 @@ public class MessageDecoder extends CoderAdapter implements Decoder.Text<WebPubS
                         .setSuccess(jsonNode.get("success").asBoolean());
                     break;
                 }
+
+                case "system": {
+                    switch (jsonNode.get("event").asText()) {
+                        case "connected": {
+                            ConnectedMessage connectedMessage = new ConnectedMessage()
+                                .setUserId(jsonNode.get("userId").asText())
+                                .setConnectionId(jsonNode.get("connectionId").asText());
+
+                            if (jsonNode.has("reconnectionToken")) {
+                                connectedMessage.setReconnectionToken(jsonNode.get("reconnectionToken").asText());
+                            }
+                            msg = connectedMessage;
+                            break;
+                        }
+
+                        case "disconnected": {
+                            msg = new DisconnectedMessage()
+                                .setReason(jsonNode.get("reason").asText());
+                            break;
+                        }
+                    }
+                }
             }
             return msg;
         } catch (IOException e) {

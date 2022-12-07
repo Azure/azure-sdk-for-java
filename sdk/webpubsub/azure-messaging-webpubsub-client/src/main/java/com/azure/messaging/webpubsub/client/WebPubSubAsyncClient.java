@@ -6,6 +6,9 @@ package com.azure.messaging.webpubsub.client;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.webpubsub.client.implementation.AckMessage;
+import com.azure.messaging.webpubsub.client.implementation.ConnectedMessage;
+import com.azure.messaging.webpubsub.client.implementation.DisconnectedEvent;
+import com.azure.messaging.webpubsub.client.implementation.DisconnectedMessage;
 import com.azure.messaging.webpubsub.client.implementation.MessageDecoder;
 import com.azure.messaging.webpubsub.client.implementation.MessageEncoder;
 import com.azure.messaging.webpubsub.client.implementation.JoinGroupMessage;
@@ -42,9 +45,17 @@ public class WebPubSubAsyncClient {
 
     private Session session;
 
-    private Sinks.Many<GroupDataMessage> groupDataMessageSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
+    private Sinks.Many<GroupDataMessage> groupDataMessageSink =
+        Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
-    private Sinks.Many<AckMessage> ackMessageSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
+    private Sinks.Many<AckMessage> ackMessageSink =
+        Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
+
+    private Sinks.Many<ConnectedEvent> connectedEventSink =
+        Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
+
+    private Sinks.Many<DisconnectedEvent> disconnectedEventSink =
+        Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
     WebPubSubAsyncClient(Mono<String> clientAccessUriProvider) {
         this.clientAccessUriProvider = clientAccessUriProvider;
@@ -128,6 +139,14 @@ public class WebPubSubAsyncClient {
         return groupDataMessageSink.asFlux();
     }
 
+    public Flux<ConnectedEvent> receiveConnectedEvents() {
+        return connectedEventSink.asFlux();
+    }
+
+    public Flux<DisconnectedEvent> receiveDisconnectedEvents() {
+        return disconnectedEventSink.asFlux();
+    }
+
     private static final AtomicLong ACK_ID = new AtomicLong(0);
     private long nextAckId() {
         return ACK_ID.getAndIncrement();
@@ -172,6 +191,13 @@ public class WebPubSubAsyncClient {
                         groupDataMessageSink.tryEmitNext((GroupDataMessage) webPubSubMessage);
                     } else if (webPubSubMessage instanceof AckMessage) {
                         ackMessageSink.tryEmitNext((AckMessage) webPubSubMessage);
+                    } else if (webPubSubMessage instanceof ConnectedMessage) {
+                        connectedEventSink.tryEmitNext(new ConnectedEvent(
+                            ((ConnectedMessage) webPubSubMessage).getConnectionId(),
+                            ((ConnectedMessage) webPubSubMessage).getUserId()));
+                    } else if (webPubSubMessage instanceof DisconnectedMessage) {
+                        disconnectedEventSink.tryEmitNext(new DisconnectedEvent(
+                            ((DisconnectedMessage) webPubSubMessage).getReason()));
                     } else {
                         // TODO
                     }
