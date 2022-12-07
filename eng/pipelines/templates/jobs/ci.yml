@@ -343,13 +343,13 @@ jobs:
         displayName: 'Run SpotBugs, Checkstyle, and RevApi'
         inputs:
           mavenPomFile: pom.xml
-          options: '$(DefaultOptions) --no-transfer-progress -T 2C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false -pl $(ProjectList)'
+          options: '$(DefaultOptions) --no-transfer-progress -T 1C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false -Dcodesnippet.skip -Dmaven.javadoc.skip -DskipTests -Dgpg.skip -DskipCompile=true -DskipTestCompile=true -pl $(ProjectList)'
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: ${{ parameters.JavaBuildVersion }}
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-          goals: 'checkstyle:check spotbugs:check revapi:check'
+          goals: 'verify'
 
       - task: PowerShell@2
         inputs:
