@@ -11,6 +11,7 @@
 #### Other Changes
 * Fixed issue on noisy `CancellationException` log - See [PR 31882](https://github.com/Azure/azure-sdk-for-java/pull/31882)
 * Added `retyrAfterInMs` to `StoreResult` in `CosmosDiagnostics` - See [31219](https://github.com/Azure/azure-sdk-for-java/pull/31219)
+* Added merge handling - See [PR 31428](https://github.com/Azure/azure-sdk-for-java/pull/31428). See [PR 32097](https://github.com/Azure/azure-sdk-for-java/pull/32097). See [PR 32078](https://github.com/Azure/azure-sdk-for-java/pull/32078). See [PR 32165](https://github.com/Azure/azure-sdk-for-java/pull/32165). See [32259](https://github.com/Azure/azure-sdk-for-java/pull/32259). See [32496](https://github.com/Azure/azure-sdk-for-java/pull/32496)
 
 ### 4.39.0 (2022-11-16)
 
