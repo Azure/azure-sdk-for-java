@@ -126,7 +126,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 WebExceptionUtility.isReadTimeoutException(clientException) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT)) {
 
-                boolean canFailoverOnTimeout = gatewayRequestCanFailoverOnTimeout(request);
+                boolean canFailoverOnTimeout = gatewayRequestCanFailoverOnTimeout(request, clientException);
 
                 //if operation is data plane, metadata read, or query plan it can be retried on a different endpoint.
                 if(canFailoverOnTimeout) {
@@ -160,7 +160,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         return this.throttlingRetry.shouldRetry(e);
     }
 
-      private boolean gatewayRequestCanFailoverOnTimeout(RxDocumentServiceRequest request) {
+      private boolean gatewayRequestCanFailoverOnTimeout(RxDocumentServiceRequest request, CosmosException clientException) {
         //Query Plan requests
         if(request.getResourceType() == ResourceType.Document
             && request.getOperationType() == OperationType.QueryPlan) {
@@ -178,7 +178,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         }
 
         //Data Plane Read & Write
-        if(!isMetaDataRequest && !request.isAddressRefresh()) {
+        if(!isMetaDataRequest && !request.isAddressRefresh()
+            && (request.isReadOnly() || !BridgeInternal.hasSendingRequestStarted(clientException))) {
             return true;
         }
 
