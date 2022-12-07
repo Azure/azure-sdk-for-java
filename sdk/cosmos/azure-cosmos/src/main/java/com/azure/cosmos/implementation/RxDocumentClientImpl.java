@@ -57,6 +57,7 @@ import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
@@ -2326,11 +2327,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         for(Map.Entry<PartitionKeyRange, List<CosmosItemIdentity>> entry: partitionRangeItemKeyMap.entrySet()) {
 
             SqlQuerySpec sqlQuerySpec;
-            if (entry.getValue().size() > 1) {
+            List<CosmosItemIdentity> cosmosItemIdentityList = entry.getValue();
+            if (cosmosItemIdentityList.size() > 1) {
                 if (partitionKeySelector.equals("[\"id\"]")) {
-                    sqlQuerySpec = createReadManyQuerySpecPartitionKeyIdSame(entry.getValue(), partitionKeySelector);
+                    sqlQuerySpec = createReadManyQuerySpecPartitionKeyIdSame(cosmosItemIdentityList, partitionKeySelector);
                 } else {
-                    sqlQuerySpec = createReadManyQuerySpec(entry.getValue(), partitionKeySelector);
+                    sqlQuerySpec = createReadManyQuerySpec(cosmosItemIdentityList, partitionKeySelector);
                 }
                 // Add query for this partition to rangeQueryMap
                 rangeQueryMap.put(entry.getKey(), sqlQuerySpec);
@@ -2429,7 +2431,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentCollection collection,
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap) {
 
-        if (rangeQueryMap.keySet().size() == 0) {
+        if (rangeQueryMap.isEmpty()) {
             return Flux.empty();
         }
 
@@ -2455,16 +2457,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Class<T> klass
     ) {
         return Flux.fromIterable(singleItemPartitionRequestMap.values())
-            .flatMap(item -> {
-                if (item.size() == 1) {
-                    CosmosQueryRequestOptions clonedQueryRequestOptions = ModelBridgeInternal.createQueryRequestOptions(queryRequestOptions);
-                    clonedQueryRequestOptions.setPartitionKey(item.get(0).getPartitionKey());
-                    return this.readDocument((resourceLink + item.get(0).getId()), ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().toRequestOptions(clonedQueryRequestOptions));
+            .flatMap(cosmosItemIdentityList -> {
+                if (cosmosItemIdentityList.size() == 1) {
+                    CosmosItemIdentity firstIdentity = cosmosItemIdentityList.get(0);
+                    RequestOptions requestOptions = ImplementationBridgeHelpers
+                        .CosmosQueryRequestOptionsHelper
+                        .getCosmosQueryRequestOptionsAccessor()
+                        .toRequestOptions(queryRequestOptions);
+                    requestOptions.setPartitionKey(firstIdentity.getPartitionKey());
+                    return this.readDocument((resourceLink + firstIdentity.getId()), requestOptions);
                 }
                 return Mono.empty();
             })
-            .flatMap(itemResponse -> Mono.just(ModelBridgeInternal.createCosmosAsyncItemResponse(itemResponse, klass, getItemDeserializer())))
-            .flatMap(cosmosItemResponse -> {
+            .flatMap(resourceResponse -> {
+                CosmosItemResponse<T> cosmosItemResponse =
+                    ModelBridgeInternal.createCosmosAsyncItemResponse(resourceResponse, klass, getItemDeserializer());
                 FeedResponse<Document> feedResponse = ModelBridgeInternal.createFeedResponse(Arrays.asList(InternalObjectNode.fromObject(cosmosItemResponse.getItem())), cosmosItemResponse.getResponseHeaders());
                 BridgeInternal.addClientSideDiagnosticsToFeed(feedResponse.getCosmosDiagnostics(), Arrays.asList(BridgeInternal.getClientSideRequestStatics(cosmosItemResponse.getDiagnostics())));
                 return Mono.just(feedResponse);
