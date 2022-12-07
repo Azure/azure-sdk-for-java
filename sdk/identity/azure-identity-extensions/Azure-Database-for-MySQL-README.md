@@ -286,9 +286,9 @@ If you encounter any bugs, please file issues via [Issues](https://github.com/Az
 ### Known issues
 - java.sql.SQLException: Access denied for user 'user@company.com@'170.170.170.170' (using password: NO)
   If you are using `MysqlConnectionPoolDataSource` class as the datasource in your application, please remove the `defaultAuthenticationPlugin` in your code.
-  ```
+
   ~~properties.put("defaultAuthenticationPlugin","com.azure.identity.extensions.jdbc.mysql.AzureMysqlAuthenticationPlugin");~~
-  ```
+
 
 ## Next steps
 
