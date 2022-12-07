@@ -1,15 +1,29 @@
 parameters:
-  PackageName: not-specified
-  SafeName: not-specified
-  Clouds: 'Public,Int'
-  TestMode: 'LIVE'
-  EnvVars: {}
-  MatrixConfigs:
-    - Name: Java_live_test_base
-      Path: eng/pipelines/templates/stages/platform-matrix.json
-      Selection: sparse
-      GenerateVMJobs: true
-  CloudConfig:
+- name: PackageName
+  type: string
+  default: 'not-specified'
+- name: SafeName
+  type: string
+  default: 'not-specified'
+- name: Clouds
+  type: string
+  default: 'Public,Int'
+- name: TestMode
+  type: string
+  default: 'LIVE'
+- name: EnVars
+  type: object
+  default: {}
+- name: MatrixConfigs
+  type: object
+  default:
+    Name: Java_live_test_base
+    Path: eng/pipelines/templates/stages/platform-matrix.json
+    Selection: sparse
+    GenerateVMJobs: true
+- name: CloudConfig
+  type: object
+  default:
     Public:
       SubscriptionConfigurations:
         - $(sub-config-azure-cloud-test-resources)
@@ -27,7 +41,9 @@ parameters:
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
-      CloudConfig: {{ parameters.CloudConfig }}
+      CloudConfig:
+        - ${{ each config in parameters.CloudConfig }}:
+          - ${{ config }}
       Clouds: ${{ parameters.Clouds }}
       TestMode: ${{ parameters.TestMode }}
       Artifacts:
