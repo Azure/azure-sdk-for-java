@@ -83,9 +83,9 @@ public class GlobalOpenTelemetryMetricsTests {
                                                 .hasCount(1)
                                                 .hasSum(1)
                                                 .hasBucketBoundaries(
-                                                    5, 10, 25, 50, 75, 100, 250, 500, 750, 1_000, 2_500,
+                                                    0, 5, 10, 25, 50, 75, 100, 250, 500, 750, 1_000, 2_500,
                                                     5_000, 7_500, 10_000)
                                                 .hasBucketCounts(
-                                                    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))));
+                                                    0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))));
     }
 }
