@@ -6,7 +6,7 @@
 
 - Added `OneTable` and `MultiTable` two data schemas.
 - Added Azure Managed Identity data reader access for Azure Blob Storage.
-- Added `topContributorCoun` in the request body for `getMultivariateBatchDetectionResult`, `detectMultivariateBatchAnomaly` and `detectMultivariateLastAnomaly`.
+- Added `topContributorCount` in the request body for `getMultivariateBatchDetectionResult`, `detectMultivariateBatchAnomaly` and `detectMultivariateLastAnomaly`.
 
 ### Breaking Changes
 
