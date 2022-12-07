@@ -1,27 +1,35 @@
 package com.azure.core.test;
 
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.core.test.policy.ProxyRecordPolicy;
+import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
+import com.azure.core.util.UrlBuilder;
 import org.junit.jupiter.api.AfterAll;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.net.MalformedURLException;
+import java.net.URL;
 
-public class TestRecorderTests {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+
+@SuppressWarnings("deprecation")
+public class TestRecorderTests extends TestBase {
 
     @BeforeAll
     public static void setupClass() {
         Configuration.getGlobalConfiguration().put(TestingHelpers.AZURE_TEST_MODE, "RECORD");
-        try {
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+        Configuration.getGlobalConfiguration().put(TestingHelpers.AZURE_TEST_USE_PROXY, "TRUE");
         TestBase.setupClass();
     }
 
@@ -29,16 +37,27 @@ public class TestRecorderTests {
     public static void teardownClass() {
         TestBase.teardownClass();
         Configuration.getGlobalConfiguration().remove(TestingHelpers.AZURE_TEST_MODE);
+        Configuration.getGlobalConfiguration().remove(TestingHelpers.AZURE_TEST_USE_PROXY);
+
     }
 
-    @Test
-    public void testContainerStarted() {
-        assertTrue(TestBase.isTestContainerRunning());
-    }
 
     @Test
-    public void startProxyRecording() {
-        ProxyRecordPolicy policy = new ProxyRecordPolicy(null);
-        policy.startRecording("record-file");
+    public void testSend() {
+        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .policies(interceptorManager.getRecordPolicy()).build();
+        URL url = null;
+        try {
+            url = new UrlBuilder().setHost("example.com").setScheme("https").toUrl();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+        HttpResponse response = pipeline.sendSync(request, Context.NONE);
+
+        assertEquals(response.getStatusCode(), 200);
     }
 }
+
