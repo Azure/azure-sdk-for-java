@@ -22,12 +22,17 @@ public class TestProxyManager {
 
     public TestProxyManager(File recordingPath) {
         this.recordingPath = recordingPath;
+
+        // This is necessary to stop the proxy when the debugger is stopped.
+        Runtime.getRuntime().addShutdownHook(new Thread(this::stopProxy));
     }
 
     public void startProxy() {
 
         try {
             ProcessBuilder builder = new ProcessBuilder(Paths.get(PROXYPATH.toString(), getProxyProcessName()).toString(), "--storage-location", recordingPath.getPath())
+                .inheritIO()
+                .redirectErrorStream(true)
                 .directory(PROXYPATH.toFile());
             proxy = builder.start();
 
