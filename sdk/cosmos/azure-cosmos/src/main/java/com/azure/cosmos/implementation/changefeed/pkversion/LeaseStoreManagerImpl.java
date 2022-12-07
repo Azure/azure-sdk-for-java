@@ -32,9 +32,11 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -210,16 +212,17 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         checkNotNull(leases, "Argument 'leases' can not be null");
 
         logger.info("Deleting all leases");
-        List<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
+        Map<String, CosmosItemIdentity> cosmosIdentityMap = new HashMap<>();
         for (Lease lease : leases) {
-            cosmosItemIdentities.add(new CosmosItemIdentity(new PartitionKey(lease.getId()), lease.getId()));
+            cosmosIdentityMap.put(lease.getId(), new CosmosItemIdentity(new PartitionKey(lease.getId()), lease.getId()));
         }
 
-        return Mono.defer(() -> Mono.just(cosmosItemIdentities))
-            .flatMapMany(itemIdentities -> this.leaseDocumentClient.deleteAllItems(itemIdentities))
+        return Mono.defer(() -> Mono.just(cosmosIdentityMap))
+            .flatMapMany(itemIdentities ->
+                this.leaseDocumentClient.deleteAllItems(cosmosIdentityMap.values().stream().collect(Collectors.toList())))
             .flatMap(itemResponse -> {
                 if (itemResponse.getResponse() != null && itemResponse.getResponse().isSuccessStatusCode()) {
-                    cosmosItemIdentities.remove(itemResponse.getOperation().getId());
+                    cosmosIdentityMap.remove(itemResponse.getOperation().getId());
                 } else {
                     // should ignore 404/0 for delete, will retry on other cases
                     int effectiveStatusCode = 0;
@@ -235,13 +238,13 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
                     if (effectiveStatusCode == ChangeFeedHelper.HTTP_STATUS_CODE_NOT_FOUND &&
                         effectiveSubStatusCode == 0) {
-                        cosmosItemIdentities.remove(itemResponse.getOperation().getId());
+                        cosmosIdentityMap.remove(itemResponse.getOperation().getId());
                     }
                 }
 
                 return Mono.empty();
             })
-            .repeat(() -> cosmosItemIdentities.size() != 0)
+            .repeat(() -> cosmosIdentityMap.size() != 0)
             .then();
     }
 
