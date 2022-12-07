@@ -35,4 +35,9 @@ public class IncrementalChangeFeedProcessorImpl extends ChangeFeedProcessorImplB
     Class<ChangeFeedProcessorItem> getPartitionProcessorItemType() {
         return ChangeFeedProcessorItem.class;
     }
+
+    @Override
+    boolean canBootstrapFromPkRangeIdVersionLeaseStore() {
+        return true;
+    }
 }

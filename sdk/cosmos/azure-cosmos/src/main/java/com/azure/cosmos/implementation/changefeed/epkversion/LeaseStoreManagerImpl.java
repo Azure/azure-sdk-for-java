@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Exceptions;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
@@ -21,6 +22,8 @@ import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
+import com.azure.cosmos.models.CosmosBulkOperations;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -32,7 +35,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -202,6 +207,50 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
             })
             // return some add-hoc value since we don't actually care about the result.
             .map( documentResourceResponse -> true)
+            .then();
+    }
+
+    @Override
+    public Mono<Void> deleteAll(List<Lease> leases) {
+        checkNotNull(leases, "Argument 'leases' can not be null");
+        logger.info("Deleting all old leases");
+//
+//        return Flux.fromIterable(leases)
+//            .flatMap(lease -> this.delete(lease))
+//            .then();
+
+        List<CosmosItemOperation> operations = new ArrayList<>();
+        for (Lease lease : leases) {
+            operations.add(CosmosBulkOperations.getDeleteItemOperation(lease.getId(), new PartitionKey(lease.getId())));
+        }
+
+        return this.leaseDocumentClient.getContainerClient()
+            .executeBulkOperations(Flux.defer(() -> Flux.fromIterable(operations)))
+            .flatMap(itemResponse -> {
+                if (itemResponse.getResponse() != null && itemResponse.getResponse().isSuccessStatusCode()) {
+                    operations.remove(itemResponse.getOperation());
+                } else {
+                    // non successful scenario, but ignore 404 for delete
+                    int effectiveStatusCode = 0;
+                    int effectiveSubStatusCode = 0;
+                    if (itemResponse.getResponse() != null) {
+                        effectiveStatusCode = itemResponse.getResponse().getStatusCode();
+                        effectiveSubStatusCode = itemResponse.getResponse().getStatusCode();
+                    } else if (itemResponse.getException() != null && itemResponse.getException() instanceof CosmosException) {
+                        CosmosException cosmosException = (CosmosException) itemResponse.getException();
+                        effectiveStatusCode = cosmosException.getStatusCode();
+                        effectiveSubStatusCode = cosmosException.getSubStatusCode();
+                    }
+
+                    if (effectiveStatusCode == HttpConstants.StatusCodes.NOTFOUND &&
+                            effectiveSubStatusCode == 0) {
+                        operations.remove(itemResponse.getOperation());
+                    }
+                }
+
+                return Mono.empty();
+            })
+            .repeat(() -> operations.size() != 0)
             .then();
     }
 
