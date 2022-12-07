@@ -3,12 +3,13 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers
-import com.azure.cosmos.models.{CosmosQueryRequestOptions, FeedRange}
+import com.azure.cosmos.models.{CosmosQueryRequestOptions, DedicatedGatewayRequestOptions, FeedRange}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.CosmosPagedIterable
 import com.fasterxml.jackson.databind.JsonNode
 import org.apache.spark.sql.catalyst.analysis.TypeCoercion
 
+import java.time.Duration
 import java.util.stream.Collectors
 
 // scalastyle:off underscore.import
@@ -117,6 +118,12 @@ private object CosmosTableSchemaInferrer
       SparkUtils.safeOpenConnectionInitCaches(sourceContainer, (msg, e) => logWarning(msg, e))
       val queryOptions = new CosmosQueryRequestOptions()
       queryOptions.setMaxBufferedItemCount(cosmosInferenceConfig.inferSchemaSamplingSize)
+
+      val dedicatedGatewayRequestOptions = new DedicatedGatewayRequestOptions
+      dedicatedGatewayRequestOptions.setMaxIntegratedCacheStaleness(Duration.ofMillis(cosmosReadConfig.maxIntegratedCacheStaleness))
+
+      queryOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions)
+
       val queryText = cosmosInferenceConfig.inferSchemaQuery match {
         case None =>
           ImplementationBridgeHelpers
