@@ -5,15 +5,16 @@
 package com.azure.ai.anomalydetector.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The request of change point detection. */
 @Fluent
-public final class ChangePointDetectRequest {
+public final class UnivariateChangePointDetectionOptions {
     /*
-     * Time series data points. Points should be sorted by timestamp in
-     * ascending order to match the change point detection result.
+     * Time series data points. Points should be sorted by timestamp in ascending
+     * order to match the change point detection result.
      */
     @JsonProperty(value = "series", required = true)
     private List<TimeSeriesPoint> series;
@@ -26,34 +27,48 @@ public final class ChangePointDetectRequest {
     private TimeGranularity granularity;
 
     /*
-     * Custom Interval is used to set non-standard time interval, for example,
-     * if the series is 5 minutes, request can be set as
-     * {"granularity":"minutely", "customInterval":5}.
+     * Custom Interval is used to set non-standard time interval, for example, if the
+     * series is 5 minutes, request can be set as {"granularity":"minutely",
+     * "customInterval":5}.
      */
     @JsonProperty(value = "customInterval")
     private Integer customInterval;
 
     /*
-     * Optional argument, periodic value of a time series. If the value is null
-     * or does not present, the API will determine the period automatically.
+     * Optional argument, periodic value of a time series. If the value is null or
+     * does not present, the API will determine the period automatically.
      */
     @JsonProperty(value = "period")
     private Integer period;
 
     /*
-     * Optional argument, advanced model parameter, a default stableTrendWindow
-     * will be used in detection.
+     * Optional argument, advanced model parameter, a default stableTrendWindow will
+     * be used in detection.
      */
     @JsonProperty(value = "stableTrendWindow")
     private Integer stableTrendWindow;
 
     /*
-     * Optional argument, advanced model parameter, between 0.0-1.0, the lower
-     * the value is, the larger the trend error will be which means less change
-     * point will be accepted.
+     * Optional argument, advanced model parameter, between 0.0-1.0, the lower the
+     * value is, the larger the trend error will be which means less change point will
+     * be accepted.
      */
     @JsonProperty(value = "threshold")
-    private Float threshold;
+    private Double threshold;
+
+    /**
+     * Creates an instance of UnivariateChangePointDetectionOptions class.
+     *
+     * @param series the series value to set.
+     * @param granularity the granularity value to set.
+     */
+    @JsonCreator
+    public UnivariateChangePointDetectionOptions(
+            @JsonProperty(value = "series", required = true) List<TimeSeriesPoint> series,
+            @JsonProperty(value = "granularity", required = true) TimeGranularity granularity) {
+        this.series = series;
+        this.granularity = granularity;
+    }
 
     /**
      * Get the series property: Time series data points. Points should be sorted by timestamp in ascending order to
@@ -66,18 +81,6 @@ public final class ChangePointDetectRequest {
     }
 
     /**
-     * Set the series property: Time series data points. Points should be sorted by timestamp in ascending order to
-     * match the change point detection result.
-     *
-     * @param series the series value to set.
-     * @return the ChangePointDetectRequest object itself.
-     */
-    public ChangePointDetectRequest setSeries(List<TimeSeriesPoint> series) {
-        this.series = series;
-        return this;
-    }
-
-    /**
      * Get the granularity property: Can only be one of yearly, monthly, weekly, daily, hourly, minutely or secondly.
      * Granularity is used for verify whether input series is valid.
      *
@@ -85,18 +88,6 @@ public final class ChangePointDetectRequest {
      */
     public TimeGranularity getGranularity() {
         return this.granularity;
-    }
-
-    /**
-     * Set the granularity property: Can only be one of yearly, monthly, weekly, daily, hourly, minutely or secondly.
-     * Granularity is used for verify whether input series is valid.
-     *
-     * @param granularity the granularity value to set.
-     * @return the ChangePointDetectRequest object itself.
-     */
-    public ChangePointDetectRequest setGranularity(TimeGranularity granularity) {
-        this.granularity = granularity;
-        return this;
     }
 
     /**
@@ -114,9 +105,9 @@ public final class ChangePointDetectRequest {
      * series is 5 minutes, request can be set as {"granularity":"minutely", "customInterval":5}.
      *
      * @param customInterval the customInterval value to set.
-     * @return the ChangePointDetectRequest object itself.
+     * @return the UnivariateChangePointDetectionOptions object itself.
      */
-    public ChangePointDetectRequest setCustomInterval(Integer customInterval) {
+    public UnivariateChangePointDetectionOptions setCustomInterval(Integer customInterval) {
         this.customInterval = customInterval;
         return this;
     }
@@ -136,9 +127,9 @@ public final class ChangePointDetectRequest {
      * present, the API will determine the period automatically.
      *
      * @param period the period value to set.
-     * @return the ChangePointDetectRequest object itself.
+     * @return the UnivariateChangePointDetectionOptions object itself.
      */
-    public ChangePointDetectRequest setPeriod(Integer period) {
+    public UnivariateChangePointDetectionOptions setPeriod(Integer period) {
         this.period = period;
         return this;
     }
@@ -158,9 +149,9 @@ public final class ChangePointDetectRequest {
      * be used in detection.
      *
      * @param stableTrendWindow the stableTrendWindow value to set.
-     * @return the ChangePointDetectRequest object itself.
+     * @return the UnivariateChangePointDetectionOptions object itself.
      */
-    public ChangePointDetectRequest setStableTrendWindow(Integer stableTrendWindow) {
+    public UnivariateChangePointDetectionOptions setStableTrendWindow(Integer stableTrendWindow) {
         this.stableTrendWindow = stableTrendWindow;
         return this;
     }
@@ -171,7 +162,7 @@ public final class ChangePointDetectRequest {
      *
      * @return the threshold value.
      */
-    public Float getThreshold() {
+    public Double getThreshold() {
         return this.threshold;
     }
 
@@ -180,9 +171,9 @@ public final class ChangePointDetectRequest {
      * the larger the trend error will be which means less change point will be accepted.
      *
      * @param threshold the threshold value to set.
-     * @return the ChangePointDetectRequest object itself.
+     * @return the UnivariateChangePointDetectionOptions object itself.
      */
-    public ChangePointDetectRequest setThreshold(Float threshold) {
+    public UnivariateChangePointDetectionOptions setThreshold(Double threshold) {
         this.threshold = threshold;
         return this;
     }
