@@ -3,9 +3,21 @@
 
 package com.azure.ai.anomalydetector;
 
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.Configuration;
+
 public final class ReadmeSamples {
-    public void readmeSamples() {
-        // BEGIN: com.azure.ai.anomalydetector.readme
-        // END: com.azure.ai.anomalydetector.readme
+
+    private static void createClient() {
+        // BEGIN: readme-sample-createAnomalyDetectorClient
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_ANOMALY_DETECTOR_ENDPOINT");
+        String key = Configuration.getGlobalConfiguration().get("AZURE_ANOMALY_DETECTOR_API_KEY");
+
+        AnomalyDetectorClient anomalyDetectorClient =
+            new AnomalyDetectorClientBuilder()
+                .credential(new AzureKeyCredential(key))
+                .endpoint(endpoint)
+                .buildClient();
+        // END: readme-sample-createAnomalyDetectorClient
     }
 }

@@ -4,12 +4,9 @@
 package com.azure.ai.anomalydetector;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
@@ -32,24 +29,18 @@ public class AnomalyDetectorClientTestBase extends TestBase {
 
     AnomalyDetectorClientBuilder getClientBuilder() {
         String endpoint = getEndpoint();
-        HttpHeaders headers = new HttpHeaders()
-            .put("Accept", ContentType.APPLICATION_JSON);
 
         HttpPipelinePolicy authPolicy = new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY,
             new AzureKeyCredential(getKey()));
-
-        AddHeadersPolicy addHeadersPolicy = new AddHeadersPolicy(headers);
-
         HttpClient httpClient;
         if (getTestMode() == TestMode.RECORD || getTestMode() == TestMode.LIVE) {
             httpClient = HttpClient.createDefault();
         } else {
             httpClient = interceptorManager.getPlaybackClient();
         }
-
         HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
-            .policies(authPolicy, addHeadersPolicy, interceptorManager.getRecordPolicy()).build();
+            .policies(authPolicy, interceptorManager.getRecordPolicy()).build();
 
         return new AnomalyDetectorClientBuilder()
             .pipeline(httpPipeline)

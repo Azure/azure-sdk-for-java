@@ -3,24 +3,22 @@
 
 package com.azure.ai.anomalydetector;
 
-import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.ContentType;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.AzureKeyCredentialPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
-import com.azure.core.util.BinaryData;
+import com.azure.ai.anomalydetector.models.UnivariateDetectionOptions;
+import com.azure.ai.anomalydetector.models.UnivariateLastDetectionResult;
+import com.azure.ai.anomalydetector.models.TimeGranularity;
+import com.azure.ai.anomalydetector.models.TimeSeriesPoint;
+import com.azure.ai.anomalydetector.models.ImputeMode;
 
-import javax.json.Json;
-import javax.json.JsonReader;
-import java.io.FileInputStream;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.Configuration;
+
 import java.io.IOException;
-import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -35,30 +33,49 @@ public class DetectAnomaliesLastPoint {
      * @throws IOException Exception thrown when there is an error in reading all the lines from the csv file.
      */
     public static void main(final String[] args) throws IOException {
-        String endpoint = "<anomaly-detector-resource-endpoint>";
-        String key = "<anomaly-detector-resource-key>";
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_ANOMALY_DETECTOR_ENDPOINT");
+        String key = Configuration.getGlobalConfiguration().get("AZURE_ANOMALY_DETECTOR_API_KEY");
 
-        HttpHeaders headers = new HttpHeaders()
-            .put("Accept", ContentType.APPLICATION_JSON);
+        AnomalyDetectorClient anomalyDetectorClient =
+            new AnomalyDetectorClientBuilder()
+                .credential(new AzureKeyCredential(key))
+                .endpoint(endpoint)
+                .buildClient();
 
-        HttpPipelinePolicy authPolicy = new AzureKeyCredentialPolicy("Ocp-Apim-Subscription-Key",
-            new AzureKeyCredential(key));
-        AddHeadersPolicy addHeadersPolicy = new AddHeadersPolicy(headers);
+        // Read the time series from csv file and organize the time series into list of TimeSeriesPoint.
+        // The sample csv file has no header, and it contains 2 columns, namely timestamp and value.
+        // The following is a snippet of the sample csv file:
+        //      2018-03-01T00:00:00Z,32858923
+        //      2018-03-02T00:00:00Z,29615278
+        //      2018-03-03T00:00:00Z,22839355
+        //      2018-03-04T00:00:00Z,25948736
+        Path path = Paths.get("azure-ai-anomalydetector/src/samples/java/sample_data/request-data.csv");
+        List<String> requestData = Files.readAllLines(path);
+        List<TimeSeriesPoint> series = requestData.stream()
+            .map(line -> line.trim())
+            .filter(line -> line.length() > 0)
+            .map(line -> line.split(",", 2))
+            .filter(splits -> splits.length == 2)
+            .map(splits -> {
+                TimeSeriesPoint timeSeriesPoint = new TimeSeriesPoint(Float.parseFloat(splits[1]));
+                timeSeriesPoint.setTimestamp(OffsetDateTime.parse(splits[0]));
+                return timeSeriesPoint;
+            })
+            .collect(Collectors.toList());
 
-        HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(HttpClient.createDefault())
-            .policies(authPolicy, addHeadersPolicy).build();
-        // Instantiate a client that will be used to call the service.
-        AnomalyDetectorClient anomalyDetectorClient = new AnomalyDetectorClientBuilder()
-            .pipeline(httpPipeline)
-            .endpoint(endpoint)
-            .buildClient();
+        System.out.println("Determining if latest data point is an anomaly...");
+        UnivariateDetectionOptions request = new UnivariateDetectionOptions(series);
+        // Set the granularity to be DAILY since the minimal interval in time of the sample data is one day.
+        request.setGranularity(TimeGranularity.DAILY);
+        request.setImputeMode(ImputeMode.AUTO);
 
-        InputStream fileInputStream = new FileInputStream("azure-ai-anomalydetector\\src\\samples\\java\\sample_data\\request-data.json");
-        JsonReader reader = Json.createReader(fileInputStream);
-        BinaryData detectBody = BinaryData.fromString(reader.readObject().toString());
-        RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = anomalyDetectorClient.detectUnivariateLastPointWithResponse(detectBody, requestOptions);
-        System.out.println(response.getValue().toString());
-
+        UnivariateLastDetectionResult response = anomalyDetectorClient.detectUnivariateLastPoint(request);
+        System.out.println("ExpectedValue: " + response.getExpectedValue()
+            + ", Severity: " + response.getSeverity());
+        if (response.isAnomaly()) {
+            System.out.println("The latest point was detected as an anomaly.");
+        } else {
+            System.out.println("The latest point was not detected as an anomaly.");
+        }
     }
 }
