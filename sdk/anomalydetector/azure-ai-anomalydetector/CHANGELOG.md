@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0-beta.5 (2022-12-01)
+## 3.0.0-beta.5 (2022-12-06)
 
 ### Features Added
 
@@ -9,7 +9,7 @@
 
 ### Breaking Changes
 
-- Renamed `trainMultivariateModelWithResponse` to `createAndTrainMultivariateModel`
+- Renamed `trainMultivariateModelWithResponse` to `trainMultivariateModel`
 - Renamed `detectAnomalyWithResponse` to `detectMultivariateBatchAnomaly`
 - Renamed `getDetectionResult` to `getMultivariateBatchDetectionResult`
 - Renamed `listMultivariateModel` to `listMultivariateModels`
