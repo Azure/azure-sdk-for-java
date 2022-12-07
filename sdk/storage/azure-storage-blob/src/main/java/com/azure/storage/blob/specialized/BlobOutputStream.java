@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -15,6 +16,7 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.PageBlobRequestConditions;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.options.AppendBlobAppendBlockOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.common.StorageOutputStream;
@@ -167,9 +169,10 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             }
         }
 
-        private Mono<Void> appendBlock(Flux<ByteBuffer> blockData, long writeLength) {
-            long newAppendOffset = appendBlobRequestConditions.getAppendPosition() + writeLength;
-            return client.appendBlockWithResponse(blockData, writeLength, null, appendBlobRequestConditions)
+        private Mono<Void> appendBlock(BinaryData data) {
+            long newAppendOffset = appendBlobRequestConditions.getAppendPosition() + data.getLength();
+            return client.appendBlockWithResponse(new AppendBlobAppendBlockOptions(data)
+                    .setConditions(appendBlobRequestConditions))
                 .doOnNext(ignored -> appendBlobRequestConditions.setAppendPosition(newAppendOffset))
                 .then()
                 .onErrorResume(t -> t instanceof IOException || t instanceof BlobStorageException, e -> {
@@ -193,10 +196,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                 return Mono.error(this.lastError);
             }
 
-            Flux<ByteBuffer> fbb = Flux.range(0, 1).concatMap(pos -> Mono.fromCallable(() ->
-                ByteBuffer.wrap(data, (int) offset, writeLength)));
-
-            return this.appendBlock(fbb.subscribeOn(Schedulers.boundedElastic()), writeLength);
+            return this.appendBlock(BinaryData.fromByteBuffer(ByteBuffer.wrap(data, (int) offset, writeLength)));
         }
 
         @Override
