@@ -5,7 +5,6 @@ package com.azure.ai.anomalydetector;
 
 import com.azure.ai.anomalydetector.models.AnomalyDetectionModel;
 import com.azure.core.http.rest.PagedIterable;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 
@@ -25,7 +24,6 @@ public class MultivariateAnomalyDetectorClientTest extends AnomalyDetectorClient
         });
     }
 
-    @Disabled
     @Test
     public void testDetect() {
         testDetectEntireSeriesWithResponse(request -> {

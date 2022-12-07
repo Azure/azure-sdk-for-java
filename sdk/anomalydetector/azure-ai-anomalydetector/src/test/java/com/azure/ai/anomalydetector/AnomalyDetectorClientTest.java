@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-// Disable due to the endpoint is not available in repository test environment.
-
 package com.azure.ai.anomalydetector;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
