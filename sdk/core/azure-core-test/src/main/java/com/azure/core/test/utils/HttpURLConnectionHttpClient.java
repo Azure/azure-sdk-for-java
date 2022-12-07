@@ -30,19 +30,21 @@ public class HttpURLConnectionHttpClient implements HttpClient {
 
             connection = (HttpURLConnection) request.getUrl().openConnection();
             connection.setRequestMethod(request.getHttpMethod().toString());
+
+            HttpHeaders headers = request.getHeaders();
+            if (headers != null) {
+                for (HttpHeader header : headers) {
+                    String name = header.getName();
+
+                    connection.setRequestProperty(name, headers.getValue(name));
+                }
+            }
             BinaryData body = request.getBodyAsBinaryData();
             if(body != null) {
                 connection.setDoOutput(true);
                 BufferedOutputStream stream = new BufferedOutputStream(connection.getOutputStream());
                 stream.write(body.toBytes());
                 stream.flush();
-            }
-            HttpHeaders headers = request.getHeaders();
-            if (headers != null) {
-                for (HttpHeader header : headers) {
-                    String name = header.getName();
-                    connection.setRequestProperty(name, headers.getValue(name));
-                }
             }
             connection.connect();
             return Mono.just(createHttpResponse(connection));
