@@ -11,7 +11,7 @@ parameters:
 - name: TestMode
   type: string
   default: 'LIVE'
-- name: EnvVars
+- name: EnVars
   type: object
   default: {}
 - name: MatrixConfigs
