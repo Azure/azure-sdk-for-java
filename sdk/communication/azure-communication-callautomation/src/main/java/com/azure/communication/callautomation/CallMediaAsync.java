@@ -17,6 +17,7 @@ import com.azure.communication.callautomation.implementation.models.PlaySourceTy
 import com.azure.communication.callautomation.implementation.models.RecognizeInputTypeInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
+import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.FileSource;
@@ -173,6 +174,34 @@ public class CallMediaAsync {
 
                 return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context);
 
+            } else if (recognizeOptions instanceof CallMediaRecognizeChoiceOptions) {
+                CallMediaRecognizeChoiceOptions choiceRecognizeOptions = (CallMediaRecognizeChoiceOptions) recognizeOptions;
+
+                RecognizeOptionsInternal recognizeOptionsInternal = new RecognizeOptionsInternal()
+                    .setChoices(choiceRecognizeOptions.getRecognizeChoices())
+                    .setInterruptPrompt(recognizeOptions.isInterruptPrompt())
+                    .setTargetParticipant(CommunicationIdentifierConverter.convert(recognizeOptions.getTargetParticipant()));
+
+                recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds((int) recognizeOptions.getInitialSilenceTimeout().getSeconds());
+
+                PlaySourceInternal playSourceInternal = null;
+                if (recognizeOptions.getPlayPrompt() != null) {
+                    PlaySource playSource = recognizeOptions.getPlayPrompt();
+                    if (playSource instanceof FileSource) {
+                        playSourceInternal = getPlaySourceInternalFromFileSource((FileSource) playSource);
+                    } else if (playSource instanceof TextSource) {
+                        playSourceInternal = getPlaySourceInternalFromTextSource((TextSource) playSource);
+                    }
+                }
+
+                RecognizeRequest recognizeRequest = new RecognizeRequest()
+                    .setRecognizeInputType(RecognizeInputTypeInternal.fromString(recognizeOptions.getRecognizeInputType().toString()))
+                    .setInterruptCallMediaOperation(recognizeOptions.isInterruptCallMediaOperation())
+                    .setPlayPrompt(playSourceInternal)
+                    .setRecognizeOptions(recognizeOptionsInternal)
+                    .setOperationContext(recognizeOptions.getOperationContext());
+
+                return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context);
             } else {
                 return monoError(logger, new UnsupportedOperationException(recognizeOptions.getClass().getName()));
             }
@@ -272,9 +301,6 @@ public class CallMediaAsync {
         }
         if (playSource.getSourceLocale() != null) {
             textSourceInternal.setSourceLocale(playSource.getSourceLocale());
-        }
-        if (playSource.getTargetLocale() != null) {
-            textSourceInternal.setTargetLocale(playSource.getTargetLocale());
         }
         if (playSource.getVoiceName() != null) {
             textSourceInternal.setVoiceName(playSource.getVoiceName());

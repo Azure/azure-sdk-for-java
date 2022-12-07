@@ -3,6 +3,8 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.implementation.models.RecognizeChoice;
+import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
@@ -18,6 +20,7 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -48,7 +51,6 @@ public class CallMediaAsyncUnitTests {
         playTextSource.setPlaySourceId("playTextSourceId");
         playTextSource.setVoiceGender(GenderType.M);
         playTextSource.setSourceLocale("en-US");
-        playTextSource.setTargetLocale("en-CA");
         playTextSource.setVoiceName("LULU");
 
         playOptions = new PlayOptions()
@@ -117,6 +119,31 @@ public class CallMediaAsyncUnitTests {
         stopDtmfTones.add(DtmfTone.ONE);
         stopDtmfTones.add(DtmfTone.TWO);
         recognizeOptions.setRecognizeInputType(RecognizeInputType.DTMF);
+        recognizeOptions.setPlayPrompt(new FileSource().setUri("abc"));
+        recognizeOptions.setInterruptCallMediaOperation(true);
+        recognizeOptions.setStopCurrentOperations(true);
+        recognizeOptions.setOperationContext("operationContext");
+        recognizeOptions.setInterruptPrompt(true);
+        recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
+
+        StepVerifier.create(
+                callMedia.startRecognizingWithResponse(recognizeOptions))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+
+    @Test
+    public void recognizeWithResponseFilledChoiceOptions() {
+
+        RecognizeChoice recognizeChoice1 = new RecognizeChoice();
+        RecognizeChoice recognizeChoice2 = new RecognizeChoice();
+        List<RecognizeChoice> recognizeChoices = new ArrayList<RecognizeChoice>(
+            Arrays.asList(recognizeChoice1, recognizeChoice2)
+        );
+        CallMediaRecognizeChoiceOptions recognizeOptions = new CallMediaRecognizeChoiceOptions(new CommunicationUserIdentifier("id"), recognizeChoices);
+
+        recognizeOptions.setRecognizeInputType(RecognizeInputType.CHOICES);
         recognizeOptions.setPlayPrompt(new FileSource().setUri("abc"));
         recognizeOptions.setInterruptCallMediaOperation(true);
         recognizeOptions.setStopCurrentOperations(true);
