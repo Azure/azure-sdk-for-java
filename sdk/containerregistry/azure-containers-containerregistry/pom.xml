@@ -28,6 +28,8 @@
   </scm>
 
   <properties>
+    <!-- Temporarily skipping code coverage until tests are enabled/added -->
+    <jacoco.skip>true</jacoco.skip>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
