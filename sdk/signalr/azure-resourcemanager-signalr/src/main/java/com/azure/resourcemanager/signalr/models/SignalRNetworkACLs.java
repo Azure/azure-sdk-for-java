@@ -29,6 +29,10 @@ public final class SignalRNetworkACLs {
     @JsonProperty(value = "privateEndpoints")
     private List<PrivateEndpointAcl> privateEndpoints;
 
+    /** Creates an instance of SignalRNetworkACLs class. */
+    public SignalRNetworkACLs() {
+    }
+
     /**
      * Get the defaultAction property: Azure Networking ACL Action.
      *

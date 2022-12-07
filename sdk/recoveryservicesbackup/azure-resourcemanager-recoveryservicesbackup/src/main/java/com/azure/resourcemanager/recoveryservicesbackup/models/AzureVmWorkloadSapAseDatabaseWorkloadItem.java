@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SAPAseDatabase")
 @Fluent
 public final class AzureVmWorkloadSapAseDatabaseWorkloadItem extends AzureVmWorkloadItem {
+    /** Creates an instance of AzureVmWorkloadSapAseDatabaseWorkloadItem class. */
+    public AzureVmWorkloadSapAseDatabaseWorkloadItem() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public AzureVmWorkloadSapAseDatabaseWorkloadItem withParentName(String parentName) {

@@ -23,8 +23,7 @@ public final class MicrosoftGraphPlannerBucket extends MicrosoftGraphEntity {
     private String name;
 
     /*
-     * Hint used to order items of this type in a list view. The format is
-     * defined as outlined here.
+     * Hint used to order items of this type in a list view. The format is defined as outlined here.
      */
     @JsonProperty(value = "orderHint")
     private String orderHint;
@@ -45,6 +44,10 @@ public final class MicrosoftGraphPlannerBucket extends MicrosoftGraphEntity {
      * plannerBucket
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPlannerBucket class. */
+    public MicrosoftGraphPlannerBucket() {
+    }
 
     /**
      * Get the name property: Name of the bucket.

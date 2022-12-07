@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The security profile which contains Ssh public key for the HDInsight cluster. */
 @Fluent
 public final class SecurityProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityProfile.class);
-
     /*
      * The directory type.
      */
@@ -28,8 +24,7 @@ public final class SecurityProfile {
     private String domain;
 
     /*
-     * The organizational unit within the Active Directory to place the cluster
-     * and service accounts.
+     * The organizational unit within the Active Directory to place the cluster and service accounts.
      */
     @JsonProperty(value = "organizationalUnitDN")
     private String organizationalUnitDN;
@@ -65,11 +60,14 @@ public final class SecurityProfile {
     private String aaddsResourceId;
 
     /*
-     * User assigned identity that has permissions to read and create
-     * cluster-related artifacts in the user's AADDS.
+     * User assigned identity that has permissions to read and create cluster-related artifacts in the user's AADDS.
      */
     @JsonProperty(value = "msiResourceId")
     private String msiResourceId;
+
+    /** Creates an instance of SecurityProfile class. */
+    public SecurityProfile() {
+    }
 
     /**
      * Get the directoryType property: The directory type.

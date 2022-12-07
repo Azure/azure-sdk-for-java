@@ -14,6 +14,10 @@ import java.time.Duration;
 @JsonTypeName("ActiveConnectionsNotInAllowedRange")
 @Fluent
 public final class ActiveConnectionsNotInAllowedRange extends TimeWindowCustomAlertRule {
+    /** Creates an instance of ActiveConnectionsNotInAllowedRange class. */
+    public ActiveConnectionsNotInAllowedRange() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public ActiveConnectionsNotInAllowedRange withTimeWindowSize(Duration timeWindowSize) {

@@ -32,6 +32,10 @@ public final class MabJobExtendedInfo {
     @JsonProperty(value = "dynamicErrorMessage")
     private String dynamicErrorMessage;
 
+    /** Creates an instance of MabJobExtendedInfo class. */
+    public MabJobExtendedInfo() {
+    }
+
     /**
      * Get the tasksList property: List of tasks for this job.
      *

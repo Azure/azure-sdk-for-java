@@ -16,7 +16,6 @@ import com.nimbusds.jose.proc.BadJOSEException;
 import com.nimbusds.jose.proc.JWSKeySelector;
 import com.nimbusds.jose.proc.JWSVerificationKeySelector;
 import com.nimbusds.jose.proc.SecurityContext;
-import com.nimbusds.jose.shaded.json.JSONArray;
 import com.nimbusds.jose.util.ResourceRetriever;
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
@@ -31,12 +30,13 @@ import org.slf4j.LoggerFactory;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * A user principal manager to load user info from JWT.
@@ -149,15 +149,26 @@ public class UserPrincipalManager {
         final JWTClaimsSet jwtClaimsSet = validator.process(aadIssuedBearerToken, null);
         validator.getJWTClaimsSetVerifier().verify(jwtClaimsSet, null);
         UserPrincipal userPrincipal = new UserPrincipal(aadIssuedBearerToken, jwsObject, jwtClaimsSet);
-        Set<String> roles = Optional.of(userPrincipal)
-                                    .map(p -> p.getClaim(AadJwtClaimNames.ROLES))
-                                    .map(JSONArray.class::cast)
-                                    .map(Collection<Object>::stream)
-                                    .orElseGet(Stream::empty)
-                                    .map(Object::toString)
-                                    .collect(Collectors.toSet());
-        userPrincipal.setRoles(roles);
+        userPrincipal.setRoles(getRoles(jwtClaimsSet));
         return userPrincipal;
+    }
+
+    Set<String> getRoles(JWTClaimsSet set) {
+        if (set == null) {
+            return Collections.emptySet();
+        }
+        Object rolesClaim = set.getClaim(AadJwtClaimNames.ROLES);
+        if (rolesClaim == null) {
+            return Collections.emptySet();
+        }
+        if (rolesClaim instanceof Iterable<?>) {
+            return StreamSupport.stream(((Iterable<?>) rolesClaim).spliterator(), false)
+                    .map(Object::toString)
+                    .collect(Collectors.toSet());
+        }
+        return Stream.of(rolesClaim)
+                .map(Object::toString)
+                .collect(Collectors.toSet());
     }
 
     /**

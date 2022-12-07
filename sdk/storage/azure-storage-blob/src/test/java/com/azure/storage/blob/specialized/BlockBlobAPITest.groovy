@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized
 
 import com.azure.core.exception.UnexpectedLengthException
+import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
@@ -22,6 +23,7 @@ import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.BlobServiceVersion
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.ProgressReceiver
+import com.azure.storage.blob.implementation.models.BlockBlobsPutBlobFromUrlHeaders
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobCopySourceTagsMode
 import com.azure.storage.blob.models.BlobErrorCode
@@ -29,6 +31,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.blob.models.BlockBlobItem
 import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.ParallelTransferOptions
@@ -2658,5 +2661,29 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         properties.getAccessTier() == AccessTier.COLD
+    }
+
+    def "BlockBlobItem null headers"() {
+        setup:
+        def headers = new HttpHeaders()
+        def hd = new BlockBlobsPutBlobFromUrlHeaders(headers)
+
+        when:
+        def blockBlobItem = new BlockBlobItem(hd.getETag(),
+            hd.getLastModified(),
+            hd.getContentMD5(),
+            hd.isXMsRequestServerEncrypted(),
+            hd.getXMsEncryptionKeySha256(),
+            hd.getXMsEncryptionScope(),
+            hd.getXMsVersionId())
+
+        then:
+        blockBlobItem.getETag() == null
+        blockBlobItem.getLastModified() == null
+        blockBlobItem.getContentMd5() == null
+        blockBlobItem.isServerEncrypted() == null
+        blockBlobItem.getEncryptionKeySha256() == null
+        blockBlobItem.getEncryptionScope() == null
+        blockBlobItem.getVersionId() == null
     }
 }

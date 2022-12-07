@@ -27,24 +27,6 @@ public final class ProtectedItemOperationResultsImpl implements ProtectedItemOpe
         this.serviceManager = serviceManager;
     }
 
-    public ProtectedItemResource get(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String operationId) {
-        ProtectedItemResourceInner inner =
-            this
-                .serviceClient()
-                .get(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, operationId);
-        if (inner != null) {
-            return new ProtectedItemResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ProtectedItemResource> getWithResponse(
         String vaultName,
         String resourceGroupName,
@@ -64,6 +46,24 @@ public final class ProtectedItemOperationResultsImpl implements ProtectedItemOpe
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ProtectedItemResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ProtectedItemResource get(
+        String vaultName,
+        String resourceGroupName,
+        String fabricName,
+        String containerName,
+        String protectedItemName,
+        String operationId) {
+        ProtectedItemResourceInner inner =
+            this
+                .serviceClient()
+                .get(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, operationId);
+        if (inner != null) {
+            return new ProtectedItemResourceImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -38,6 +38,10 @@ public final class LogAnalyticsIdentifier extends ResourceIdentifier {
     @JsonProperty(value = "agentId", access = JsonProperty.Access.WRITE_ONLY)
     private String agentId;
 
+    /** Creates an instance of LogAnalyticsIdentifier class. */
+    public LogAnalyticsIdentifier() {
+    }
+
     /**
      * Get the workspaceId property: The LogAnalytics workspace id that stores this alert.
      *

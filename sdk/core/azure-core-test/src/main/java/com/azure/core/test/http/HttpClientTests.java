@@ -354,6 +354,26 @@ public abstract class HttpClientTests {
     }
 
     /**
+     * Tests that eagerly converting implementation HTTP headers to azure-core HttpHeaders is done.
+     */
+    @SyncAsyncTest
+    public void eagerlyConvertedHeadersAreHttpHeaders() {
+        BinaryData requestBody = BinaryData.fromString("test body");
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
+            requestBody);
+
+        Context context = Context.NONE.addData("azure-eagerly-convert-headers", true);
+
+        HttpResponse response = SyncAsyncExtension.execute(
+            () -> createHttpClient().sendSync(request, context),
+            () -> createHttpClient().send(request, context)
+        );
+
+        // Validate getHttpHeaders type is HttpHeaders (not instanceof)
+        assertEquals(HttpHeaders.class, response.getHeaders().getClass());
+    }
+
+    /**
      * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
      * @param requestBody The BinaryData that contains random bytes.
      * @param expectedResponseBody The expected bytes in the echo response.

@@ -3,7 +3,8 @@
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
+import com.azure.identity.extensions.implementation.enums.AuthProperty;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionString;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringEnhancer;
@@ -32,6 +33,9 @@ import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPrope
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_KV_DELIMITER;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_NAME_CONNECTION_ATTRIBUTES;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_ASSUME_MIN_SERVER_VERSION;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_VALUE_ASSUME_MIN_SERVER_VERSION;
+import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyPropertiesIgnoreTargetNonNull;
 import static com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider.PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME;
 
 
@@ -51,9 +55,8 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         if (bean instanceof DataSourceProperties) {
             DataSourceProperties dataSourceProperties = (DataSourceProperties) bean;
+            AzurePasswordlessProperties properties = buildAzureProperties();
 
-            AzurePasswordlessProperties properties = Binder.get(environment)
-                .bindOrCreate(SPRING_CLOUD_AZURE_DATASOURCE_PREFIX, AzurePasswordlessProperties.class);
             if (!properties.isPasswordlessEnabled()) {
                 LOGGER.debug("Feature passwordless authentication is not enabled, skip enhancing jdbc url.");
                 return bean;
@@ -113,6 +116,14 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
             Map<String, String> enhancedProperties = new HashMap<>();
             enhancedProperties.put(POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME,
                 AzureSpringIdentifier.AZURE_SPRING_POSTGRESQL_OAUTH);
+            // Set property assumeMinServerVersion with value "9.0.0" here for the following reasons:
+            // 1. We need to set application_name in paramList to build connections with postgresql server, in order to do that, the number of assumeVersion must >= 9.0.0.
+            //    https://github.com/pgjdbc/pgjdbc/blob/98c04a0c903e90f2d5d10a09baf1f753747b2556/pgjdbc/src/main/java/org/postgresql/core/v3/ConnectionFactoryImpl.java#L360
+            // 2. The minimum supported version of Azure postgresql, both single server and flexible server, is greater than 9.0.0.
+            //    https://learn.microsoft.com/azure/postgresql/single-server/concepts-supported-versions
+            //    https://learn.microsoft.com/azure/postgresql/flexible-server/concepts-supported-versions
+            enhancedProperties.put(POSTGRESQL_PROPERTY_NAME_ASSUME_MIN_SERVER_VERSION,
+                POSTGRESQL_PROPERTY_VALUE_ASSUME_MIN_SERVER_VERSION);
             enhancer.enhanceProperties(enhancedProperties, true);
         }
     }
@@ -129,6 +140,7 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
         }
 
         AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.setProperty(result, SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME);
+        AuthProperty.AUTHORITY_HOST.setProperty(result, properties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
 
         databaseType.setDefaultEnhancedProperties(result);
 
@@ -143,5 +155,14 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = (GenericApplicationContext) applicationContext;
+    }
+
+    private AzurePasswordlessProperties buildAzureProperties() {
+        AzureGlobalProperties azureGlobalProperties = applicationContext.getBean(AzureGlobalProperties.class);
+        AzurePasswordlessProperties azurePasswordlessProperties = Binder.get(environment)
+                .bindOrCreate(SPRING_CLOUD_AZURE_DATASOURCE_PREFIX, AzurePasswordlessProperties.class);
+        copyPropertiesIgnoreTargetNonNull(azureGlobalProperties.getProfile(), azurePasswordlessProperties.getProfile());
+        copyPropertiesIgnoreTargetNonNull(azureGlobalProperties.getCredential(), azurePasswordlessProperties.getCredential());
+        return azurePasswordlessProperties;
     }
 }

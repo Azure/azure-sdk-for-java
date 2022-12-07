@@ -41,6 +41,10 @@ public final class ApprovalSettings {
     @JsonProperty(value = "approvalStages")
     private List<ApprovalStage> approvalStages;
 
+    /** Creates an instance of ApprovalSettings class. */
+    public ApprovalSettings() {
+    }
+
     /**
      * Get the isApprovalRequired property: Determines whether approval is required or not.
      *

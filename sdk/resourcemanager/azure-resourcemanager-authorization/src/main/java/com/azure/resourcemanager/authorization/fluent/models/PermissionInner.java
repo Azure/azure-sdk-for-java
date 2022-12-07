@@ -23,6 +23,22 @@ public final class PermissionInner {
     @JsonProperty(value = "notActions")
     private List<String> notActions;
 
+    /*
+     * Allowed Data actions.
+     */
+    @JsonProperty(value = "dataActions")
+    private List<String> dataActions;
+
+    /*
+     * Denied Data actions.
+     */
+    @JsonProperty(value = "notDataActions")
+    private List<String> notDataActions;
+
+    /** Creates an instance of PermissionInner class. */
+    public PermissionInner() {
+    }
+
     /**
      * Get the actions property: Allowed actions.
      *
@@ -60,6 +76,46 @@ public final class PermissionInner {
      */
     public PermissionInner withNotActions(List<String> notActions) {
         this.notActions = notActions;
+        return this;
+    }
+
+    /**
+     * Get the dataActions property: Allowed Data actions.
+     *
+     * @return the dataActions value.
+     */
+    public List<String> dataActions() {
+        return this.dataActions;
+    }
+
+    /**
+     * Set the dataActions property: Allowed Data actions.
+     *
+     * @param dataActions the dataActions value to set.
+     * @return the PermissionInner object itself.
+     */
+    public PermissionInner withDataActions(List<String> dataActions) {
+        this.dataActions = dataActions;
+        return this;
+    }
+
+    /**
+     * Get the notDataActions property: Denied Data actions.
+     *
+     * @return the notDataActions value.
+     */
+    public List<String> notDataActions() {
+        return this.notDataActions;
+    }
+
+    /**
+     * Set the notDataActions property: Denied Data actions.
+     *
+     * @param notDataActions the notDataActions value to set.
+     * @return the PermissionInner object itself.
+     */
+    public PermissionInner withNotDataActions(List<String> notDataActions) {
+        this.notDataActions = notDataActions;
         return this;
     }
 

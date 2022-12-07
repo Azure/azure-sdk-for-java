@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WorkloadType. */
+/** Type of workload for the backup management. */
 public final class WorkloadType extends ExpandableStringEnum<WorkloadType> {
     /** Static value Invalid for WorkloadType. */
     public static final WorkloadType INVALID = fromString("Invalid");
@@ -54,6 +54,9 @@ public final class WorkloadType extends ExpandableStringEnum<WorkloadType> {
 
     /** Static value SAPAseDatabase for WorkloadType. */
     public static final WorkloadType SAPASE_DATABASE = fromString("SAPAseDatabase");
+
+    /** Static value SAPHanaDBInstance for WorkloadType. */
+    public static final WorkloadType SAPHANA_DBINSTANCE = fromString("SAPHanaDBInstance");
 
     /**
      * Creates or finds a WorkloadType from its string representation.

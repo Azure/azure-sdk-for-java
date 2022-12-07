@@ -16,6 +16,10 @@ public final class CreationData {
     @JsonProperty(value = "sourceResourceId")
     private String sourceResourceId;
 
+    /** Creates an instance of CreationData class. */
+    public CreationData() {
+    }
+
     /**
      * Get the sourceResourceId property: This is the ARM ID of the source object to be used to create the target
      * object.

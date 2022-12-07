@@ -67,7 +67,7 @@ public class AadResourceServerConfiguration {
         AadAuthorizationServerEndpoints identityEndpoints = new AadAuthorizationServerEndpoints(
             aadAuthenticationProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), aadAuthenticationProperties.getProfile().getTenantId());
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
-            .withJwkSetUri(identityEndpoints.getJwkSetEndpoint())
+                .withJwkSetUri(identityEndpoints.getJwkSetEndpoint())
                 .restOperations(createRestTemplate(restTemplateBuilder))
                 .build();
         List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator(aadAuthenticationProperties);
@@ -109,7 +109,7 @@ public class AadResourceServerConfiguration {
         AadResourceServerWebSecurityConfigurerAdapter {
 
         /**
-         * configure
+         * Configure the default Resource Server for Azure AD.
          *
          * @param http the {@link HttpSecurity} to use
          * @throws Exception Configuration failed

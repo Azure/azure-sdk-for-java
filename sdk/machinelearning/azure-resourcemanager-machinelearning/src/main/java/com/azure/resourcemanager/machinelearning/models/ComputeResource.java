@@ -286,15 +286,6 @@ public interface ComputeResource {
     /**
      * Gets secrets related to Machine Learning compute (storage keys, service credentials, etc).
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return secrets related to Machine Learning compute (storage keys, service credentials, etc).
-     */
-    ComputeSecrets listKeys();
-
-    /**
-     * Gets secrets related to Machine Learning compute (storage keys, service credentials, etc).
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -303,6 +294,15 @@ public interface ComputeResource {
      *     Response}.
      */
     Response<ComputeSecrets> listKeysWithResponse(Context context);
+
+    /**
+     * Gets secrets related to Machine Learning compute (storage keys, service credentials, etc).
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return secrets related to Machine Learning compute (storage keys, service credentials, etc).
+     */
+    ComputeSecrets listKeys();
 
     /**
      * Posts a start action to a compute instance.

@@ -65,15 +65,13 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
     private List<MicrosoftGraphMessage> messages;
 
     /*
-     * The collection of multi-value extended properties defined for the
-     * mailFolder. Read-only. Nullable.
+     * The collection of multi-value extended properties defined for the mailFolder. Read-only. Nullable.
      */
     @JsonProperty(value = "multiValueExtendedProperties")
     private List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties;
 
     /*
-     * The collection of single-value extended properties defined for the
-     * mailFolder. Read-only. Nullable.
+     * The collection of single-value extended properties defined for the mailFolder. Read-only. Nullable.
      */
     @JsonProperty(value = "singleValueExtendedProperties")
     private List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties;
@@ -82,6 +80,10 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
      * mailFolder
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphMailFolder class. */
+    public MicrosoftGraphMailFolder() {
+    }
 
     /**
      * Get the childFolderCount property: The number of immediate child mailFolders in the current mailFolder.

@@ -32,6 +32,10 @@ public final class MicrosoftGraphItemBody {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphItemBody class. */
+    public MicrosoftGraphItemBody() {
+    }
+
     /**
      * Get the content property: The content of the item.
      *

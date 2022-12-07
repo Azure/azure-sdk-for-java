@@ -9,15 +9,15 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearning.models.EndpointAuthMode;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.net.URL;
 import java.util.Map;
 
 /** Inference Endpoint base definition. */
 @Fluent
 public class EndpointPropertiesBaseInner {
     /*
-     * [Required] Use 'Key' for key based authentication and 'AMLToken' for
-     * Azure Machine Learning token-based authentication. 'Key' doesn't expire
-     * but 'AMLToken' does.
+     * [Required] Use 'Key' for key based authentication and 'AMLToken' for Azure Machine Learning token-based
+     * authentication. 'Key' doesn't expire but 'AMLToken' does.
      */
     @JsonProperty(value = "authMode", required = true)
     private EndpointAuthMode authMode;
@@ -30,15 +30,13 @@ public class EndpointPropertiesBaseInner {
 
     /*
      * EndpointAuthKeys to set initially on an Endpoint.
-     * This property will always be returned as null. AuthKey values must be
-     * retrieved using the ListKeys API.
+     * This property will always be returned as null. AuthKey values must be retrieved using the ListKeys API.
      */
     @JsonProperty(value = "keys")
     private EndpointAuthKeysInner keys;
 
     /*
-     * Property dictionary. Properties can be added, but not removed or
-     * altered.
+     * Property dictionary. Properties can be added, but not removed or altered.
      */
     @JsonProperty(value = "properties")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -48,13 +46,17 @@ public class EndpointPropertiesBaseInner {
      * Endpoint URI.
      */
     @JsonProperty(value = "scoringUri", access = JsonProperty.Access.WRITE_ONLY)
-    private String scoringUri;
+    private URL scoringUri;
 
     /*
      * Endpoint Swagger URI.
      */
     @JsonProperty(value = "swaggerUri", access = JsonProperty.Access.WRITE_ONLY)
-    private String swaggerUri;
+    private URL swaggerUri;
+
+    /** Creates an instance of EndpointPropertiesBaseInner class. */
+    public EndpointPropertiesBaseInner() {
+    }
 
     /**
      * Get the authMode property: [Required] Use 'Key' for key based authentication and 'AMLToken' for Azure Machine
@@ -145,7 +147,7 @@ public class EndpointPropertiesBaseInner {
      *
      * @return the scoringUri value.
      */
-    public String scoringUri() {
+    public URL scoringUri() {
         return this.scoringUri;
     }
 
@@ -154,7 +156,7 @@ public class EndpointPropertiesBaseInner {
      *
      * @return the swaggerUri value.
      */
-    public String swaggerUri() {
+    public URL swaggerUri() {
         return this.swaggerUri;
     }
 

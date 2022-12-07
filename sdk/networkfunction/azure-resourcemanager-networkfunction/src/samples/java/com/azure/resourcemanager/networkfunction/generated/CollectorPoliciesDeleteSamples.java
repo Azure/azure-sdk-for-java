@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CollectorPolicies Delete. */
 public final class CollectorPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-05-01/examples/CollectorPolicyDelete.json
+     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/CollectorPolicyDelete.json
      */
     /**
      * Sample code: Delete Collection Policy.

@@ -30,6 +30,9 @@ import com.azure.resourcemanager.security.implementation.AdvancedThreatProtectio
 import com.azure.resourcemanager.security.implementation.AlertsImpl;
 import com.azure.resourcemanager.security.implementation.AlertsSuppressionRulesImpl;
 import com.azure.resourcemanager.security.implementation.AllowedConnectionsImpl;
+import com.azure.resourcemanager.security.implementation.ApiCollectionOffboardingsImpl;
+import com.azure.resourcemanager.security.implementation.ApiCollectionOnboardingsImpl;
+import com.azure.resourcemanager.security.implementation.ApiCollectionsImpl;
 import com.azure.resourcemanager.security.implementation.ApplicationOperationsImpl;
 import com.azure.resourcemanager.security.implementation.ApplicationsImpl;
 import com.azure.resourcemanager.security.implementation.AssessmentsImpl;
@@ -91,6 +94,9 @@ import com.azure.resourcemanager.security.models.AdvancedThreatProtections;
 import com.azure.resourcemanager.security.models.Alerts;
 import com.azure.resourcemanager.security.models.AlertsSuppressionRules;
 import com.azure.resourcemanager.security.models.AllowedConnections;
+import com.azure.resourcemanager.security.models.ApiCollectionOffboardings;
+import com.azure.resourcemanager.security.models.ApiCollectionOnboardings;
+import com.azure.resourcemanager.security.models.ApiCollections;
 import com.azure.resourcemanager.security.models.ApplicationOperations;
 import com.azure.resourcemanager.security.models.Applications;
 import com.azure.resourcemanager.security.models.Assessments;
@@ -274,6 +280,12 @@ public final class SecurityManager {
 
     private SecurityConnectorApplicationOperations securityConnectorApplicationOperations;
 
+    private ApiCollections apiCollections;
+
+    private ApiCollectionOnboardings apiCollectionOnboardings;
+
+    private ApiCollectionOffboardings apiCollectionOffboardings;
+
     private final SecurityCenter clientObject;
 
     private SecurityManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
@@ -439,7 +451,7 @@ public final class SecurityManager {
                 .append("-")
                 .append("com.azure.resourcemanager.security")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -1252,6 +1264,44 @@ public final class SecurityManager {
                     clientObject.getSecurityConnectorApplicationOperations(), this);
         }
         return securityConnectorApplicationOperations;
+    }
+
+    /**
+     * Gets the resource collection API of ApiCollections.
+     *
+     * @return Resource collection API of ApiCollections.
+     */
+    public ApiCollections apiCollections() {
+        if (this.apiCollections == null) {
+            this.apiCollections = new ApiCollectionsImpl(clientObject.getApiCollections(), this);
+        }
+        return apiCollections;
+    }
+
+    /**
+     * Gets the resource collection API of ApiCollectionOnboardings.
+     *
+     * @return Resource collection API of ApiCollectionOnboardings.
+     */
+    public ApiCollectionOnboardings apiCollectionOnboardings() {
+        if (this.apiCollectionOnboardings == null) {
+            this.apiCollectionOnboardings =
+                new ApiCollectionOnboardingsImpl(clientObject.getApiCollectionOnboardings(), this);
+        }
+        return apiCollectionOnboardings;
+    }
+
+    /**
+     * Gets the resource collection API of ApiCollectionOffboardings.
+     *
+     * @return Resource collection API of ApiCollectionOffboardings.
+     */
+    public ApiCollectionOffboardings apiCollectionOffboardings() {
+        if (this.apiCollectionOffboardings == null) {
+            this.apiCollectionOffboardings =
+                new ApiCollectionOffboardingsImpl(clientObject.getApiCollectionOffboardings(), this);
+        }
+        return apiCollectionOffboardings;
     }
 
     /**

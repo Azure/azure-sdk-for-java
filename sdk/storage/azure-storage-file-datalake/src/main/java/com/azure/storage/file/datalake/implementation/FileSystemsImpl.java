@@ -19,10 +19,12 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.FluxUtil;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsCreateHeaders;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsDeleteHeaders;
 import com.azure.storage.file.datalake.implementation.models.FileSystemsGetPropertiesHeaders;
@@ -81,10 +83,40 @@ public final class FileSystemsImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Put("/{filesystem}")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        Mono<Response<Void>> createNoCustomHeaders(
+                @HostParam("url") String url,
+                @PathParam("filesystem") String fileSystem,
+                @QueryParam("resource") String resource,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-properties") String properties,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Patch("/{filesystem}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<ResponseBase<FileSystemsSetPropertiesHeaders, Void>> setProperties(
+                @HostParam("url") String url,
+                @PathParam("filesystem") String fileSystem,
+                @QueryParam("resource") String resource,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-properties") String properties,
+                @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+                @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Patch("/{filesystem}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        Mono<Response<Void>> setPropertiesNoCustomHeaders(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
                 @QueryParam("resource") String resource,
@@ -110,6 +142,19 @@ public final class FileSystemsImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Head("/{filesystem}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        Mono<Response<Void>> getPropertiesNoCustomHeaders(
+                @HostParam("url") String url,
+                @PathParam("filesystem") String fileSystem,
+                @QueryParam("resource") String resource,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Delete("/{filesystem}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
@@ -125,10 +170,43 @@ public final class FileSystemsImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Delete("/{filesystem}")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        Mono<Response<Void>> deleteNoCustomHeaders(
+                @HostParam("url") String url,
+                @PathParam("filesystem") String fileSystem,
+                @QueryParam("resource") String resource,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+                @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Get("/{filesystem}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<ResponseBase<FileSystemsListPathsHeaders, PathList>> listPaths(
+                @HostParam("url") String url,
+                @PathParam("filesystem") String fileSystem,
+                @QueryParam("resource") String resource,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @QueryParam("continuation") String continuation,
+                @QueryParam("directory") String path,
+                @QueryParam("recursive") boolean recursive,
+                @QueryParam("maxResults") Integer maxResults,
+                @QueryParam("upn") Boolean upn,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/{filesystem}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        Mono<Response<PathList>> listPathsNoCustomHeaders(
                 @HostParam("url") String url,
                 @PathParam("filesystem") String fileSystem,
                 @QueryParam("resource") String resource,
@@ -163,11 +241,73 @@ public final class FileSystemsImpl {
                         @HeaderParam("x-ms-client-request-id") String requestId,
                         @HeaderParam("Accept") String accept,
                         Context context);
+
+        @Get("/{filesystem}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        Mono<Response<ListBlobsHierarchySegmentResponse>> listBlobHierarchySegmentNoCustomHeaders(
+                @HostParam("url") String url,
+                @PathParam("filesystem") String fileSystem,
+                @QueryParam("restype") String restype,
+                @QueryParam("comp") String comp,
+                @QueryParam("prefix") String prefix,
+                @QueryParam("delimiter") String delimiter,
+                @QueryParam("marker") String marker,
+                @QueryParam("maxResults") Integer maxResults,
+                @QueryParam("include") String include,
+                @QueryParam("showonly") ListBlobsShowOnly showonly,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @HeaderParam("Accept") String accept,
+                Context context);
     }
 
     /**
-     * Create a FileSystem rooted at the specified location. If the FileSystem already exists, the operation fails. This
-     * operation does not support conditional HTTP requests.
+     * Create FileSystem
+     *
+     * <p>Create a FileSystem rooted at the specified location. If the FileSystem already exists, the operation fails.
+     * This operation does not support conditional HTTP requests.
+     *
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
+     *     comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded
+     *     string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set. If the
+     *     filesystem exists, any properties not included in the list will be removed. All properties are removed if the
+     *     header is omitted. To merge new and existing properties, first get all existing properties and the current
+     *     E-Tag, then make a conditional request with the E-Tag and include values for all properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<FileSystemsCreateHeaders, Void>> createWithResponseAsync(
+            String requestId, Integer timeout, String properties) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.create(
+                                this.client.getUrl(),
+                                this.client.getFileSystem(),
+                                this.client.getResource(),
+                                requestId,
+                                timeout,
+                                this.client.getVersion(),
+                                properties,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Create FileSystem
+     *
+     * <p>Create a FileSystem rooted at the specified location. If the FileSystem already exists, the operation fails.
+     * This operation does not support conditional HTTP requests.
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
@@ -203,8 +343,202 @@ public final class FileSystemsImpl {
     }
 
     /**
-     * Set properties for the FileSystem. This operation supports conditional HTTP requests. For more information, see
-     * [Specifying Conditional Headers for Blob Service
+     * Create FileSystem
+     *
+     * <p>Create a FileSystem rooted at the specified location. If the FileSystem already exists, the operation fails.
+     * This operation does not support conditional HTTP requests.
+     *
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
+     *     comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded
+     *     string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set. If the
+     *     filesystem exists, any properties not included in the list will be removed. All properties are removed if the
+     *     header is omitted. To merge new and existing properties, first get all existing properties and the current
+     *     E-Tag, then make a conditional request with the E-Tag and include values for all properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createAsync(String requestId, Integer timeout, String properties) {
+        return createWithResponseAsync(requestId, timeout, properties).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Create FileSystem
+     *
+     * <p>Create a FileSystem rooted at the specified location. If the FileSystem already exists, the operation fails.
+     * This operation does not support conditional HTTP requests.
+     *
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
+     *     comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded
+     *     string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set. If the
+     *     filesystem exists, any properties not included in the list will be removed. All properties are removed if the
+     *     header is omitted. To merge new and existing properties, first get all existing properties and the current
+     *     E-Tag, then make a conditional request with the E-Tag and include values for all properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createAsync(String requestId, Integer timeout, String properties, Context context) {
+        return createWithResponseAsync(requestId, timeout, properties, context).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Create FileSystem
+     *
+     * <p>Create a FileSystem rooted at the specified location. If the FileSystem already exists, the operation fails.
+     * This operation does not support conditional HTTP requests.
+     *
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
+     *     comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded
+     *     string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set. If the
+     *     filesystem exists, any properties not included in the list will be removed. All properties are removed if the
+     *     header is omitted. To merge new and existing properties, first get all existing properties and the current
+     *     E-Tag, then make a conditional request with the E-Tag and include values for all properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(
+            String requestId, Integer timeout, String properties) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.createNoCustomHeaders(
+                                this.client.getUrl(),
+                                this.client.getFileSystem(),
+                                this.client.getResource(),
+                                requestId,
+                                timeout,
+                                this.client.getVersion(),
+                                properties,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Create FileSystem
+     *
+     * <p>Create a FileSystem rooted at the specified location. If the FileSystem already exists, the operation fails.
+     * This operation does not support conditional HTTP requests.
+     *
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
+     *     comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded
+     *     string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set. If the
+     *     filesystem exists, any properties not included in the list will be removed. All properties are removed if the
+     *     header is omitted. To merge new and existing properties, first get all existing properties and the current
+     *     E-Tag, then make a conditional request with the E-Tag and include values for all properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(
+            String requestId, Integer timeout, String properties, Context context) {
+        final String accept = "application/json";
+        return service.createNoCustomHeaders(
+                this.client.getUrl(),
+                this.client.getFileSystem(),
+                this.client.getResource(),
+                requestId,
+                timeout,
+                this.client.getVersion(),
+                properties,
+                accept,
+                context);
+    }
+
+    /**
+     * Set FileSystem Properties
+     *
+     * <p>Set properties for the FileSystem. This operation supports conditional HTTP requests. For more information,
+     * see [Specifying Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     *
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
+     *     comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded
+     *     string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set. If the
+     *     filesystem exists, any properties not included in the list will be removed. All properties are removed if the
+     *     header is omitted. To merge new and existing properties, first get all existing properties and the current
+     *     E-Tag, then make a conditional request with the E-Tag and include values for all properties.
+     * @param modifiedAccessConditions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<FileSystemsSetPropertiesHeaders, Void>> setPropertiesWithResponseAsync(
+            String requestId, Integer timeout, String properties, ModifiedAccessConditions modifiedAccessConditions) {
+        final String accept = "application/json";
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted =
+                ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted =
+                ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return FluxUtil.withContext(
+                context ->
+                        service.setProperties(
+                                this.client.getUrl(),
+                                this.client.getFileSystem(),
+                                this.client.getResource(),
+                                requestId,
+                                timeout,
+                                this.client.getVersion(),
+                                properties,
+                                ifModifiedSinceConverted,
+                                ifUnmodifiedSinceConverted,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Set FileSystem Properties
+     *
+     * <p>Set properties for the FileSystem. This operation supports conditional HTTP requests. For more information,
+     * see [Specifying Conditional Headers for Blob Service
      * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
@@ -262,7 +596,227 @@ public final class FileSystemsImpl {
     }
 
     /**
-     * All system and user-defined filesystem properties are specified in the response headers.
+     * Set FileSystem Properties
+     *
+     * <p>Set properties for the FileSystem. This operation supports conditional HTTP requests. For more information,
+     * see [Specifying Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     *
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
+     *     comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded
+     *     string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set. If the
+     *     filesystem exists, any properties not included in the list will be removed. All properties are removed if the
+     *     header is omitted. To merge new and existing properties, first get all existing properties and the current
+     *     E-Tag, then make a conditional request with the E-Tag and include values for all properties.
+     * @param modifiedAccessConditions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> setPropertiesAsync(
+            String requestId, Integer timeout, String properties, ModifiedAccessConditions modifiedAccessConditions) {
+        return setPropertiesWithResponseAsync(requestId, timeout, properties, modifiedAccessConditions)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Set FileSystem Properties
+     *
+     * <p>Set properties for the FileSystem. This operation supports conditional HTTP requests. For more information,
+     * see [Specifying Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     *
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
+     *     comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded
+     *     string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set. If the
+     *     filesystem exists, any properties not included in the list will be removed. All properties are removed if the
+     *     header is omitted. To merge new and existing properties, first get all existing properties and the current
+     *     E-Tag, then make a conditional request with the E-Tag and include values for all properties.
+     * @param modifiedAccessConditions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> setPropertiesAsync(
+            String requestId,
+            Integer timeout,
+            String properties,
+            ModifiedAccessConditions modifiedAccessConditions,
+            Context context) {
+        return setPropertiesWithResponseAsync(requestId, timeout, properties, modifiedAccessConditions, context)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Set FileSystem Properties
+     *
+     * <p>Set properties for the FileSystem. This operation supports conditional HTTP requests. For more information,
+     * see [Specifying Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     *
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
+     *     comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded
+     *     string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set. If the
+     *     filesystem exists, any properties not included in the list will be removed. All properties are removed if the
+     *     header is omitted. To merge new and existing properties, first get all existing properties and the current
+     *     E-Tag, then make a conditional request with the E-Tag and include values for all properties.
+     * @param modifiedAccessConditions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> setPropertiesNoCustomHeadersWithResponseAsync(
+            String requestId, Integer timeout, String properties, ModifiedAccessConditions modifiedAccessConditions) {
+        final String accept = "application/json";
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted =
+                ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted =
+                ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return FluxUtil.withContext(
+                context ->
+                        service.setPropertiesNoCustomHeaders(
+                                this.client.getUrl(),
+                                this.client.getFileSystem(),
+                                this.client.getResource(),
+                                requestId,
+                                timeout,
+                                this.client.getVersion(),
+                                properties,
+                                ifModifiedSinceConverted,
+                                ifUnmodifiedSinceConverted,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Set FileSystem Properties
+     *
+     * <p>Set properties for the FileSystem. This operation supports conditional HTTP requests. For more information,
+     * see [Specifying Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     *
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
+     *     comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded
+     *     string. Note that the string may only contain ASCII characters in the ISO-8859-1 character set. If the
+     *     filesystem exists, any properties not included in the list will be removed. All properties are removed if the
+     *     header is omitted. To merge new and existing properties, first get all existing properties and the current
+     *     E-Tag, then make a conditional request with the E-Tag and include values for all properties.
+     * @param modifiedAccessConditions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> setPropertiesNoCustomHeadersWithResponseAsync(
+            String requestId,
+            Integer timeout,
+            String properties,
+            ModifiedAccessConditions modifiedAccessConditions,
+            Context context) {
+        final String accept = "application/json";
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted =
+                ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted =
+                ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.setPropertiesNoCustomHeaders(
+                this.client.getUrl(),
+                this.client.getFileSystem(),
+                this.client.getResource(),
+                requestId,
+                timeout,
+                this.client.getVersion(),
+                properties,
+                ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted,
+                accept,
+                context);
+    }
+
+    /**
+     * Get FileSystem Properties.
+     *
+     * <p>All system and user-defined filesystem properties are specified in the response headers.
+     *
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<FileSystemsGetPropertiesHeaders, Void>> getPropertiesWithResponseAsync(
+            String requestId, Integer timeout) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.getProperties(
+                                this.client.getUrl(),
+                                this.client.getFileSystem(),
+                                this.client.getResource(),
+                                requestId,
+                                timeout,
+                                this.client.getVersion(),
+                                accept,
+                                context));
+    }
+
+    /**
+     * Get FileSystem Properties.
+     *
+     * <p>All system and user-defined filesystem properties are specified in the response headers.
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
@@ -291,9 +845,170 @@ public final class FileSystemsImpl {
     }
 
     /**
-     * Marks the FileSystem for deletion. When a FileSystem is deleted, a FileSystem with the same identifier cannot be
-     * created for at least 30 seconds. While the filesystem is being deleted, attempts to create a filesystem with the
-     * same identifier will fail with status code 409 (Conflict), with the service returning additional error
+     * Get FileSystem Properties.
+     *
+     * <p>All system and user-defined filesystem properties are specified in the response headers.
+     *
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> getPropertiesAsync(String requestId, Integer timeout) {
+        return getPropertiesWithResponseAsync(requestId, timeout).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Get FileSystem Properties.
+     *
+     * <p>All system and user-defined filesystem properties are specified in the response headers.
+     *
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> getPropertiesAsync(String requestId, Integer timeout, Context context) {
+        return getPropertiesWithResponseAsync(requestId, timeout, context).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Get FileSystem Properties.
+     *
+     * <p>All system and user-defined filesystem properties are specified in the response headers.
+     *
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> getPropertiesNoCustomHeadersWithResponseAsync(String requestId, Integer timeout) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.getPropertiesNoCustomHeaders(
+                                this.client.getUrl(),
+                                this.client.getFileSystem(),
+                                this.client.getResource(),
+                                requestId,
+                                timeout,
+                                this.client.getVersion(),
+                                accept,
+                                context));
+    }
+
+    /**
+     * Get FileSystem Properties.
+     *
+     * <p>All system and user-defined filesystem properties are specified in the response headers.
+     *
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> getPropertiesNoCustomHeadersWithResponseAsync(
+            String requestId, Integer timeout, Context context) {
+        final String accept = "application/json";
+        return service.getPropertiesNoCustomHeaders(
+                this.client.getUrl(),
+                this.client.getFileSystem(),
+                this.client.getResource(),
+                requestId,
+                timeout,
+                this.client.getVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Delete FileSystem
+     *
+     * <p>Marks the FileSystem for deletion. When a FileSystem is deleted, a FileSystem with the same identifier cannot
+     * be created for at least 30 seconds. While the filesystem is being deleted, attempts to create a filesystem with
+     * the same identifier will fail with status code 409 (Conflict), with the service returning additional error
+     * information indicating that the filesystem is being deleted. All other operations, including operations on any
+     * files or directories within the filesystem, will fail with status code 404 (Not Found) while the filesystem is
+     * being deleted. This operation supports conditional HTTP requests. For more information, see [Specifying
+     * Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     *
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param modifiedAccessConditions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<FileSystemsDeleteHeaders, Void>> deleteWithResponseAsync(
+            String requestId, Integer timeout, ModifiedAccessConditions modifiedAccessConditions) {
+        final String accept = "application/json";
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted =
+                ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted =
+                ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return FluxUtil.withContext(
+                context ->
+                        service.delete(
+                                this.client.getUrl(),
+                                this.client.getFileSystem(),
+                                this.client.getResource(),
+                                requestId,
+                                timeout,
+                                this.client.getVersion(),
+                                ifModifiedSinceConverted,
+                                ifUnmodifiedSinceConverted,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Delete FileSystem
+     *
+     * <p>Marks the FileSystem for deletion. When a FileSystem is deleted, a FileSystem with the same identifier cannot
+     * be created for at least 30 seconds. While the filesystem is being deleted, attempts to create a filesystem with
+     * the same identifier will fail with status code 409 (Conflict), with the service returning additional error
      * information indicating that the filesystem is being deleted. All other operations, including operations on any
      * files or directories within the filesystem, will fail with status code 404 (Not Found) while the filesystem is
      * being deleted. This operation supports conditional HTTP requests. For more information, see [Specifying
@@ -344,7 +1059,237 @@ public final class FileSystemsImpl {
     }
 
     /**
-     * List FileSystem paths and their properties.
+     * Delete FileSystem
+     *
+     * <p>Marks the FileSystem for deletion. When a FileSystem is deleted, a FileSystem with the same identifier cannot
+     * be created for at least 30 seconds. While the filesystem is being deleted, attempts to create a filesystem with
+     * the same identifier will fail with status code 409 (Conflict), with the service returning additional error
+     * information indicating that the filesystem is being deleted. All other operations, including operations on any
+     * files or directories within the filesystem, will fail with status code 404 (Not Found) while the filesystem is
+     * being deleted. This operation supports conditional HTTP requests. For more information, see [Specifying
+     * Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     *
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param modifiedAccessConditions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(
+            String requestId, Integer timeout, ModifiedAccessConditions modifiedAccessConditions) {
+        return deleteWithResponseAsync(requestId, timeout, modifiedAccessConditions).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Delete FileSystem
+     *
+     * <p>Marks the FileSystem for deletion. When a FileSystem is deleted, a FileSystem with the same identifier cannot
+     * be created for at least 30 seconds. While the filesystem is being deleted, attempts to create a filesystem with
+     * the same identifier will fail with status code 409 (Conflict), with the service returning additional error
+     * information indicating that the filesystem is being deleted. All other operations, including operations on any
+     * files or directories within the filesystem, will fail with status code 404 (Not Found) while the filesystem is
+     * being deleted. This operation supports conditional HTTP requests. For more information, see [Specifying
+     * Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     *
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param modifiedAccessConditions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(
+            String requestId, Integer timeout, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        return deleteWithResponseAsync(requestId, timeout, modifiedAccessConditions, context)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Delete FileSystem
+     *
+     * <p>Marks the FileSystem for deletion. When a FileSystem is deleted, a FileSystem with the same identifier cannot
+     * be created for at least 30 seconds. While the filesystem is being deleted, attempts to create a filesystem with
+     * the same identifier will fail with status code 409 (Conflict), with the service returning additional error
+     * information indicating that the filesystem is being deleted. All other operations, including operations on any
+     * files or directories within the filesystem, will fail with status code 404 (Not Found) while the filesystem is
+     * being deleted. This operation supports conditional HTTP requests. For more information, see [Specifying
+     * Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     *
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param modifiedAccessConditions Parameter group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteNoCustomHeadersWithResponseAsync(
+            String requestId, Integer timeout, ModifiedAccessConditions modifiedAccessConditions) {
+        final String accept = "application/json";
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted =
+                ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted =
+                ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return FluxUtil.withContext(
+                context ->
+                        service.deleteNoCustomHeaders(
+                                this.client.getUrl(),
+                                this.client.getFileSystem(),
+                                this.client.getResource(),
+                                requestId,
+                                timeout,
+                                this.client.getVersion(),
+                                ifModifiedSinceConverted,
+                                ifUnmodifiedSinceConverted,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Delete FileSystem
+     *
+     * <p>Marks the FileSystem for deletion. When a FileSystem is deleted, a FileSystem with the same identifier cannot
+     * be created for at least 30 seconds. While the filesystem is being deleted, attempts to create a filesystem with
+     * the same identifier will fail with status code 409 (Conflict), with the service returning additional error
+     * information indicating that the filesystem is being deleted. All other operations, including operations on any
+     * files or directories within the filesystem, will fail with status code 404 (Not Found) while the filesystem is
+     * being deleted. This operation supports conditional HTTP requests. For more information, see [Specifying
+     * Conditional Headers for Blob Service
+     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     *
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param modifiedAccessConditions Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteNoCustomHeadersWithResponseAsync(
+            String requestId, Integer timeout, ModifiedAccessConditions modifiedAccessConditions, Context context) {
+        final String accept = "application/json";
+        OffsetDateTime ifModifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifModifiedSinceInternal = modifiedAccessConditions.getIfModifiedSince();
+        }
+        OffsetDateTime ifModifiedSince = ifModifiedSinceInternal;
+        OffsetDateTime ifUnmodifiedSinceInternal = null;
+        if (modifiedAccessConditions != null) {
+            ifUnmodifiedSinceInternal = modifiedAccessConditions.getIfUnmodifiedSince();
+        }
+        OffsetDateTime ifUnmodifiedSince = ifUnmodifiedSinceInternal;
+        DateTimeRfc1123 ifModifiedSinceConverted =
+                ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted =
+                ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.deleteNoCustomHeaders(
+                this.client.getUrl(),
+                this.client.getFileSystem(),
+                this.client.getResource(),
+                requestId,
+                timeout,
+                this.client.getVersion(),
+                ifModifiedSinceConverted,
+                ifUnmodifiedSinceConverted,
+                accept,
+                context);
+    }
+
+    /**
+     * List Paths
+     *
+     * <p>List FileSystem paths and their properties.
+     *
+     * @param recursive Required.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
+     *     invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is
+     *     returned in this response header. When a continuation token is returned in the response, it must be specified
+     *     in a subsequent invocation of the delete operation to continue deleting the directory.
+     * @param path Optional. Filters results to paths within the specified directory. An error occurs if the directory
+     *     does not exist.
+     * @param maxResults An optional value that specifies the maximum number of items to return. If omitted or greater
+     *     than 5,000, the response will include up to 5,000 items.
+     * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user
+     *     identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed
+     *     from Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as
+     *     Azure Active Directory Object IDs. The default value is false. Note that group and application Object IDs are
+     *     not translated because they do not have unique friendly names.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<FileSystemsListPathsHeaders, PathList>> listPathsWithResponseAsync(
+            boolean recursive,
+            String requestId,
+            Integer timeout,
+            String continuation,
+            String path,
+            Integer maxResults,
+            Boolean upn) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.listPaths(
+                                this.client.getUrl(),
+                                this.client.getFileSystem(),
+                                this.client.getResource(),
+                                requestId,
+                                timeout,
+                                this.client.getVersion(),
+                                continuation,
+                                path,
+                                recursive,
+                                maxResults,
+                                upn,
+                                accept,
+                                context));
+    }
+
+    /**
+     * List Paths
+     *
+     * <p>List FileSystem paths and their properties.
      *
      * @param recursive Required.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
@@ -399,6 +1344,270 @@ public final class FileSystemsImpl {
     }
 
     /**
+     * List Paths
+     *
+     * <p>List FileSystem paths and their properties.
+     *
+     * @param recursive Required.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
+     *     invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is
+     *     returned in this response header. When a continuation token is returned in the response, it must be specified
+     *     in a subsequent invocation of the delete operation to continue deleting the directory.
+     * @param path Optional. Filters results to paths within the specified directory. An error occurs if the directory
+     *     does not exist.
+     * @param maxResults An optional value that specifies the maximum number of items to return. If omitted or greater
+     *     than 5,000, the response will include up to 5,000 items.
+     * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user
+     *     identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed
+     *     from Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as
+     *     Azure Active Directory Object IDs. The default value is false. Note that group and application Object IDs are
+     *     not translated because they do not have unique friendly names.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PathList> listPathsAsync(
+            boolean recursive,
+            String requestId,
+            Integer timeout,
+            String continuation,
+            String path,
+            Integer maxResults,
+            Boolean upn) {
+        return listPathsWithResponseAsync(recursive, requestId, timeout, continuation, path, maxResults, upn)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List Paths
+     *
+     * <p>List FileSystem paths and their properties.
+     *
+     * @param recursive Required.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
+     *     invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is
+     *     returned in this response header. When a continuation token is returned in the response, it must be specified
+     *     in a subsequent invocation of the delete operation to continue deleting the directory.
+     * @param path Optional. Filters results to paths within the specified directory. An error occurs if the directory
+     *     does not exist.
+     * @param maxResults An optional value that specifies the maximum number of items to return. If omitted or greater
+     *     than 5,000, the response will include up to 5,000 items.
+     * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user
+     *     identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed
+     *     from Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as
+     *     Azure Active Directory Object IDs. The default value is false. Note that group and application Object IDs are
+     *     not translated because they do not have unique friendly names.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PathList> listPathsAsync(
+            boolean recursive,
+            String requestId,
+            Integer timeout,
+            String continuation,
+            String path,
+            Integer maxResults,
+            Boolean upn,
+            Context context) {
+        return listPathsWithResponseAsync(recursive, requestId, timeout, continuation, path, maxResults, upn, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List Paths
+     *
+     * <p>List FileSystem paths and their properties.
+     *
+     * @param recursive Required.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
+     *     invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is
+     *     returned in this response header. When a continuation token is returned in the response, it must be specified
+     *     in a subsequent invocation of the delete operation to continue deleting the directory.
+     * @param path Optional. Filters results to paths within the specified directory. An error occurs if the directory
+     *     does not exist.
+     * @param maxResults An optional value that specifies the maximum number of items to return. If omitted or greater
+     *     than 5,000, the response will include up to 5,000 items.
+     * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user
+     *     identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed
+     *     from Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as
+     *     Azure Active Directory Object IDs. The default value is false. Note that group and application Object IDs are
+     *     not translated because they do not have unique friendly names.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PathList>> listPathsNoCustomHeadersWithResponseAsync(
+            boolean recursive,
+            String requestId,
+            Integer timeout,
+            String continuation,
+            String path,
+            Integer maxResults,
+            Boolean upn) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.listPathsNoCustomHeaders(
+                                this.client.getUrl(),
+                                this.client.getFileSystem(),
+                                this.client.getResource(),
+                                requestId,
+                                timeout,
+                                this.client.getVersion(),
+                                continuation,
+                                path,
+                                recursive,
+                                maxResults,
+                                upn,
+                                accept,
+                                context));
+    }
+
+    /**
+     * List Paths
+     *
+     * <p>List FileSystem paths and their properties.
+     *
+     * @param recursive Required.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
+     *     invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is
+     *     returned in this response header. When a continuation token is returned in the response, it must be specified
+     *     in a subsequent invocation of the delete operation to continue deleting the directory.
+     * @param path Optional. Filters results to paths within the specified directory. An error occurs if the directory
+     *     does not exist.
+     * @param maxResults An optional value that specifies the maximum number of items to return. If omitted or greater
+     *     than 5,000, the response will include up to 5,000 items.
+     * @param upn Optional. Valid only when Hierarchical Namespace is enabled for the account. If "true", the user
+     *     identity values returned in the x-ms-owner, x-ms-group, and x-ms-acl response headers will be transformed
+     *     from Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as
+     *     Azure Active Directory Object IDs. The default value is false. Note that group and application Object IDs are
+     *     not translated because they do not have unique friendly names.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PathList>> listPathsNoCustomHeadersWithResponseAsync(
+            boolean recursive,
+            String requestId,
+            Integer timeout,
+            String continuation,
+            String path,
+            Integer maxResults,
+            Boolean upn,
+            Context context) {
+        final String accept = "application/json";
+        return service.listPathsNoCustomHeaders(
+                this.client.getUrl(),
+                this.client.getFileSystem(),
+                this.client.getResource(),
+                requestId,
+                timeout,
+                this.client.getVersion(),
+                continuation,
+                path,
+                recursive,
+                maxResults,
+                upn,
+                accept,
+                context);
+    }
+
+    /**
+     * The List Blobs operation returns a list of the blobs under the specified container.
+     *
+     * @param prefix Filters results to filesystems within the specified prefix.
+     * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the
+     *     response body that acts as a placeholder for all blobs whose names begin with the same substring up to the
+     *     appearance of the delimiter character. The delimiter may be a single character or a string.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     *     listing operation. The operation returns the NextMarker value within the response body if the listing
+     *     operation did not return all containers remaining to be listed with the current page. The NextMarker value
+     *     can be used as the value for the marker parameter in a subsequent call to request the next page of list
+     *     items. The marker value is opaque to the client.
+     * @param maxResults An optional value that specifies the maximum number of items to return. If omitted or greater
+     *     than 5,000, the response will include up to 5,000 items.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param showonly Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of blobs along with {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<FileSystemsListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>>
+            listBlobHierarchySegmentWithResponseAsync(
+                    String prefix,
+                    String delimiter,
+                    String marker,
+                    Integer maxResults,
+                    List<ListBlobsIncludeItem> include,
+                    ListBlobsShowOnly showonly,
+                    Integer timeout,
+                    String requestId) {
+        final String restype = "container";
+        final String comp = "list";
+        final String accept = "application/xml";
+        String includeConverted =
+                (include == null)
+                        ? null
+                        : include.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return FluxUtil.withContext(
+                context ->
+                        service.listBlobHierarchySegment(
+                                this.client.getUrl(),
+                                this.client.getFileSystem(),
+                                restype,
+                                comp,
+                                prefix,
+                                delimiter,
+                                marker,
+                                maxResults,
+                                includeConverted,
+                                showonly,
+                                timeout,
+                                this.client.getVersion(),
+                                requestId,
+                                accept,
+                                context));
+    }
+
+    /**
      * The List Blobs operation returns a list of the blobs under the specified container.
      *
      * @param prefix Filters results to filesystems within the specified prefix.
@@ -445,6 +1654,216 @@ public final class FileSystemsImpl {
                         ? null
                         : include.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return service.listBlobHierarchySegment(
+                this.client.getUrl(),
+                this.client.getFileSystem(),
+                restype,
+                comp,
+                prefix,
+                delimiter,
+                marker,
+                maxResults,
+                includeConverted,
+                showonly,
+                timeout,
+                this.client.getVersion(),
+                requestId,
+                accept,
+                context);
+    }
+
+    /**
+     * The List Blobs operation returns a list of the blobs under the specified container.
+     *
+     * @param prefix Filters results to filesystems within the specified prefix.
+     * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the
+     *     response body that acts as a placeholder for all blobs whose names begin with the same substring up to the
+     *     appearance of the delimiter character. The delimiter may be a single character or a string.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     *     listing operation. The operation returns the NextMarker value within the response body if the listing
+     *     operation did not return all containers remaining to be listed with the current page. The NextMarker value
+     *     can be used as the value for the marker parameter in a subsequent call to request the next page of list
+     *     items. The marker value is opaque to the client.
+     * @param maxResults An optional value that specifies the maximum number of items to return. If omitted or greater
+     *     than 5,000, the response will include up to 5,000 items.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param showonly Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of blobs on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ListBlobsHierarchySegmentResponse> listBlobHierarchySegmentAsync(
+            String prefix,
+            String delimiter,
+            String marker,
+            Integer maxResults,
+            List<ListBlobsIncludeItem> include,
+            ListBlobsShowOnly showonly,
+            Integer timeout,
+            String requestId) {
+        return listBlobHierarchySegmentWithResponseAsync(
+                        prefix, delimiter, marker, maxResults, include, showonly, timeout, requestId)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * The List Blobs operation returns a list of the blobs under the specified container.
+     *
+     * @param prefix Filters results to filesystems within the specified prefix.
+     * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the
+     *     response body that acts as a placeholder for all blobs whose names begin with the same substring up to the
+     *     appearance of the delimiter character. The delimiter may be a single character or a string.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     *     listing operation. The operation returns the NextMarker value within the response body if the listing
+     *     operation did not return all containers remaining to be listed with the current page. The NextMarker value
+     *     can be used as the value for the marker parameter in a subsequent call to request the next page of list
+     *     items. The marker value is opaque to the client.
+     * @param maxResults An optional value that specifies the maximum number of items to return. If omitted or greater
+     *     than 5,000, the response will include up to 5,000 items.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param showonly Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of blobs on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ListBlobsHierarchySegmentResponse> listBlobHierarchySegmentAsync(
+            String prefix,
+            String delimiter,
+            String marker,
+            Integer maxResults,
+            List<ListBlobsIncludeItem> include,
+            ListBlobsShowOnly showonly,
+            Integer timeout,
+            String requestId,
+            Context context) {
+        return listBlobHierarchySegmentWithResponseAsync(
+                        prefix, delimiter, marker, maxResults, include, showonly, timeout, requestId, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * The List Blobs operation returns a list of the blobs under the specified container.
+     *
+     * @param prefix Filters results to filesystems within the specified prefix.
+     * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the
+     *     response body that acts as a placeholder for all blobs whose names begin with the same substring up to the
+     *     appearance of the delimiter character. The delimiter may be a single character or a string.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     *     listing operation. The operation returns the NextMarker value within the response body if the listing
+     *     operation did not return all containers remaining to be listed with the current page. The NextMarker value
+     *     can be used as the value for the marker parameter in a subsequent call to request the next page of list
+     *     items. The marker value is opaque to the client.
+     * @param maxResults An optional value that specifies the maximum number of items to return. If omitted or greater
+     *     than 5,000, the response will include up to 5,000 items.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param showonly Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of blobs along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ListBlobsHierarchySegmentResponse>> listBlobHierarchySegmentNoCustomHeadersWithResponseAsync(
+            String prefix,
+            String delimiter,
+            String marker,
+            Integer maxResults,
+            List<ListBlobsIncludeItem> include,
+            ListBlobsShowOnly showonly,
+            Integer timeout,
+            String requestId) {
+        final String restype = "container";
+        final String comp = "list";
+        final String accept = "application/xml";
+        String includeConverted =
+                (include == null)
+                        ? null
+                        : include.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return FluxUtil.withContext(
+                context ->
+                        service.listBlobHierarchySegmentNoCustomHeaders(
+                                this.client.getUrl(),
+                                this.client.getFileSystem(),
+                                restype,
+                                comp,
+                                prefix,
+                                delimiter,
+                                marker,
+                                maxResults,
+                                includeConverted,
+                                showonly,
+                                timeout,
+                                this.client.getVersion(),
+                                requestId,
+                                accept,
+                                context));
+    }
+
+    /**
+     * The List Blobs operation returns a list of the blobs under the specified container.
+     *
+     * @param prefix Filters results to filesystems within the specified prefix.
+     * @param delimiter When the request includes this parameter, the operation returns a BlobPrefix element in the
+     *     response body that acts as a placeholder for all blobs whose names begin with the same substring up to the
+     *     appearance of the delimiter character. The delimiter may be a single character or a string.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next
+     *     listing operation. The operation returns the NextMarker value within the response body if the listing
+     *     operation did not return all containers remaining to be listed with the current page. The NextMarker value
+     *     can be used as the value for the marker parameter in a subsequent call to request the next page of list
+     *     items. The marker value is opaque to the client.
+     * @param maxResults An optional value that specifies the maximum number of items to return. If omitted or greater
+     *     than 5,000, the response will include up to 5,000 items.
+     * @param include Include this parameter to specify one or more datasets to include in the response.
+     * @param showonly Include this parameter to specify one or more datasets to include in the response.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an enumeration of blobs along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ListBlobsHierarchySegmentResponse>> listBlobHierarchySegmentNoCustomHeadersWithResponseAsync(
+            String prefix,
+            String delimiter,
+            String marker,
+            Integer maxResults,
+            List<ListBlobsIncludeItem> include,
+            ListBlobsShowOnly showonly,
+            Integer timeout,
+            String requestId,
+            Context context) {
+        final String restype = "container";
+        final String comp = "list";
+        final String accept = "application/xml";
+        String includeConverted =
+                (include == null)
+                        ? null
+                        : include.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.listBlobHierarchySegmentNoCustomHeaders(
                 this.client.getUrl(),
                 this.client.getFileSystem(),
                 restype,

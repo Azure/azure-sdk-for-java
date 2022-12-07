@@ -1367,6 +1367,7 @@ class ServiceBusReceiverAsyncClientTest {
             connectionProcessor, CLEANUP_INTERVAL, instrumentation, messageSerializer, onClientClose, CLIENT_IDENTIFIER);
         when(receivedMessage.getLockToken()).thenReturn("mylockToken");
         when(receivedMessage.getSequenceNumber()).thenReturn(42L);
+        when(receivedMessage.getContext()).thenReturn(Context.NONE);
         when(managementNode.updateDisposition(any(), any(), isNull(), isNull(), isNull(),
             isNull(), isNull(), isNull())).thenReturn(Mono.empty());
 
@@ -1459,9 +1460,11 @@ class ServiceBusReceiverAsyncClientTest {
 
         when(receivedMessage.getLockToken()).thenReturn("mylockToken");
         when(receivedMessage.getSequenceNumber()).thenReturn(42L);
+        when(receivedMessage.getContext()).thenReturn(Context.NONE);
 
         when(receivedMessage2.getLockToken()).thenReturn("mylockToken");
         when(receivedMessage2.getSequenceNumber()).thenReturn(43L);
+        when(receivedMessage2.getContext()).thenReturn(Context.NONE);
 
         when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
             .thenReturn(receivedMessage, receivedMessage2);

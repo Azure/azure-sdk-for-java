@@ -38,6 +38,10 @@ public final class MicrosoftGraphProvisionedPlan {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphProvisionedPlan class. */
+    public MicrosoftGraphProvisionedPlan() {
+    }
+
     /**
      * Get the capabilityStatus property: For example, 'Enabled'.
      *

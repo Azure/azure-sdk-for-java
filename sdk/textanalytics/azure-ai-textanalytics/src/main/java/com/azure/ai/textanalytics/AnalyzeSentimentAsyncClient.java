@@ -136,7 +136,7 @@ class AnalyzeSentimentAsyncClient {
                        .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}",
                            response))
                        .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
-                       .map(Utility::toAnalyzeSentimentResultCollectionResponse2)
+                       .map(Utility::toAnalyzeSentimentResultCollectionResponseLanguageApi)
                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         }
 
@@ -152,7 +152,7 @@ class AnalyzeSentimentAsyncClient {
                 getDocumentCount(documents)))
             .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))
             .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
-            .map(Utility::toAnalyzeSentimentResultCollectionResponse)
+            .map(Utility::toAnalyzeSentimentResultCollectionResponseLegacyApi)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }
 

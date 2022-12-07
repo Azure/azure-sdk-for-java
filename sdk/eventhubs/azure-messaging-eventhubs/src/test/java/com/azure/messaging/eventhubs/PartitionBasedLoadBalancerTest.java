@@ -3,9 +3,9 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
+import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
@@ -50,6 +50,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
@@ -78,6 +79,8 @@ public class PartitionBasedLoadBalancerTest {
     private static final boolean BATCH_RECEIVE_MODE = false;
     private static final PartitionContext PARTITION_CONTEXT = new PartitionContext(FQ_NAMESPACE, EVENT_HUB_NAME,
         CONSUMER_GROUP_NAME, "bazz");
+    private static final EventHubsTracer DEFAULT_TRACER =
+        new EventHubsTracer(null, FQ_NAMESPACE, EVENT_HUB_NAME);
 
     private static final String OWNER_ID_1 = "owner1";
     private static final String OWNER_ID_2 = "owner2";
@@ -97,7 +100,6 @@ public class PartitionBasedLoadBalancerTest {
     @Mock
     private PartitionProcessor partitionProcessor;
 
-    private TracerProvider tracerProvider;
     private AutoCloseable mockCloseable;
 
     @BeforeEach
@@ -118,7 +120,6 @@ public class PartitionBasedLoadBalancerTest {
         when(eventHubClientBuilder.getPrefetchCount()).thenReturn(EventHubClientBuilder.DEFAULT_PREFETCH_COUNT);
         when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
         this.checkpointStore = new SampleCheckpointStore();
-        this.tracerProvider = new TracerProvider(Collections.emptyList());
     }
 
     @AfterEach
@@ -137,7 +138,7 @@ public class PartitionBasedLoadBalancerTest {
     @Test
     public void testSingleEventProcessor() {
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(PARTITION_IDS_3));
-        when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
+        when(eventHubAsyncClient.createConsumer(anyString(), anyInt(), eq(true))).thenReturn(eventHubConsumer);
 
         when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
@@ -176,7 +177,7 @@ public class PartitionBasedLoadBalancerTest {
     @Test
     public void testTwoEventProcessors() {
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(PARTITION_IDS_3));
-        when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
+        when(eventHubAsyncClient.createConsumer(anyString(), anyInt(), eq(true))).thenReturn(eventHubConsumer);
         when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
                 int i = index.intValue() % eventDataList.size();
@@ -217,7 +218,7 @@ public class PartitionBasedLoadBalancerTest {
     @Test
     public void testPartitionStealing() {
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(PARTITION_IDS_3));
-        when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
+        when(eventHubAsyncClient.createConsumer(anyString(), anyInt(), eq(true))).thenReturn(eventHubConsumer);
 
         when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
@@ -268,7 +269,7 @@ public class PartitionBasedLoadBalancerTest {
     public void testMoreEventProcessorsThanPartitions() {
 
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(PARTITION_IDS_3));
-        when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
+        when(eventHubAsyncClient.createConsumer(anyString(), anyInt(), eq(true))).thenReturn(eventHubConsumer);
 
         when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
@@ -308,7 +309,7 @@ public class PartitionBasedLoadBalancerTest {
         final String ownerId4 = "owner4";
 
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(PARTITION_IDS_3));
-        when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
+        when(eventHubAsyncClient.createConsumer(anyString(), anyInt(), eq(true))).thenReturn(eventHubConsumer);
         when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
                 final int i = index.intValue() % eventDataList.size();
@@ -370,17 +371,15 @@ public class PartitionBasedLoadBalancerTest {
 
     @Test
     public void testReceiveFailure() {
-        TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
-
         doThrow(new IllegalStateException()).when(partitionProcessor).processEvent(any(EventContext.class));
         List<String> partitionIds = Arrays.asList("1", "2", "3");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
-        when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
+        when(eventHubAsyncClient.createConsumer(anyString(), anyInt(), eq(true))).thenReturn(eventHubConsumer);
         when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.error(new IllegalStateException()));
 
         PartitionPumpManager partitionPumpManager = new PartitionPumpManager(checkpointStore,
-            () -> partitionProcessor, eventHubClientBuilder, false, tracerProvider, new HashMap<>(), 1, null,
+            () -> partitionProcessor, eventHubClientBuilder, false, DEFAULT_TRACER, new HashMap<>(), 1, null,
             BATCH_RECEIVE_MODE);
         PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(checkpointStore,
             eventHubAsyncClient, FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME, "owner", TimeUnit.SECONDS.toSeconds(5),
@@ -395,14 +394,13 @@ public class PartitionBasedLoadBalancerTest {
 
     @Test
     public void testCheckpointStoreListOwnershipFailure() {
-        TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
         CheckpointStore checkpointStore = mock(CheckpointStore.class);
         when(checkpointStore.listOwnership(any(), any(), any())).thenReturn(Flux.error(new Exception("Listing "
             + "failed")));
         doThrow(new IllegalStateException()).when(partitionProcessor).processEvent(any(EventContext.class));
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(PARTITION_IDS_2));
         PartitionPumpManager partitionPumpManager = new PartitionPumpManager(checkpointStore,
-            () -> partitionProcessor, eventHubClientBuilder, false, tracerProvider, new HashMap<>(), 1, null,
+            () -> partitionProcessor, eventHubClientBuilder, false, DEFAULT_TRACER, new HashMap<>(), 1, null,
             BATCH_RECEIVE_MODE);
         PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(checkpointStore,
             eventHubAsyncClient, FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME, "owner", TimeUnit.SECONDS.toSeconds(5),
@@ -411,7 +409,7 @@ public class PartitionBasedLoadBalancerTest {
         loadBalancer.loadBalance();
         sleep(5);
         verify(eventHubAsyncClient, atLeast(1)).getPartitionIds();
-        verify(eventHubAsyncClient, never()).createConsumer(anyString(), anyInt());
+        verify(eventHubAsyncClient, never()).createConsumer(anyString(), anyInt(), eq(true));
         verify(eventHubConsumer, never())
             .receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class));
         verify(partitionProcessor, never()).processEvent(any(EventContext.class));
@@ -425,8 +423,6 @@ public class PartitionBasedLoadBalancerTest {
     @SuppressWarnings("unchecked")
     @Test
     public void testCheckpointStoreClaimOwnershipFailure() {
-        final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
-
         final PartitionOwnership claim1 = getPartitionOwnership(PARTITION_1, OWNER_ID_1);
         final PartitionOwnership claim2 = getPartitionOwnership(PARTITION_2, OWNER_ID_1);
 
@@ -450,7 +446,7 @@ public class PartitionBasedLoadBalancerTest {
         }).when(partitionProcessor).processError(any(ErrorContext.class));
 
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(PARTITION_IDS_2));
-        when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
+        when(eventHubAsyncClient.createConsumer(anyString(), anyInt(), eq(true))).thenReturn(eventHubConsumer);
 
         when(eventHubConsumer.receiveFromPartition(any(), any(), any(ReceiveOptions.class)))
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
@@ -459,7 +455,7 @@ public class PartitionBasedLoadBalancerTest {
             }));
 
         final PartitionPumpManager partitionPumpManager = new PartitionPumpManager(mockCheckpointStore,
-            () -> partitionProcessor, eventHubClientBuilder, false, tracerProvider,
+            () -> partitionProcessor, eventHubClientBuilder, false, DEFAULT_TRACER,
             Collections.emptyMap(), 1, null, BATCH_RECEIVE_MODE);
         final PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(mockCheckpointStore,
             eventHubAsyncClient, FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME, "owner",
@@ -475,7 +471,7 @@ public class PartitionBasedLoadBalancerTest {
 
         // Assert
         verify(eventHubAsyncClient, atLeast(1)).getPartitionIds();
-        verify(eventHubAsyncClient).createConsumer(anyString(), anyInt());
+        verify(eventHubAsyncClient).createConsumer(anyString(), anyInt(), eq(true));
 
         verify(partitionProcessor, atLeastOnce()).processEvent(any(EventContext.class));
         verify(partitionProcessor, never()).processError(any(ErrorContext.class));
@@ -485,12 +481,11 @@ public class PartitionBasedLoadBalancerTest {
 
     @Test
     public void testEventHubClientFailure() {
-        TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
         doThrow(new IllegalStateException()).when(partitionProcessor).processEvent(any(EventContext.class));
         List<String> partitionIds = new ArrayList<>();
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
         PartitionPumpManager partitionPumpManager = new PartitionPumpManager(checkpointStore,
-            () -> partitionProcessor, eventHubClientBuilder, false, tracerProvider, new HashMap<>(), 1, null,
+            () -> partitionProcessor, eventHubClientBuilder, false, DEFAULT_TRACER, new HashMap<>(), 1, null,
             BATCH_RECEIVE_MODE);
         PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(checkpointStore,
             eventHubAsyncClient, FQ_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP_NAME, "owner", TimeUnit.SECONDS.toSeconds(5),
@@ -499,7 +494,7 @@ public class PartitionBasedLoadBalancerTest {
         loadBalancer.loadBalance();
         sleep(2);
         verify(eventHubAsyncClient, atLeast(1)).getPartitionIds();
-        verify(eventHubAsyncClient, never()).createConsumer(anyString(), anyInt());
+        verify(eventHubAsyncClient, never()).createConsumer(anyString(), anyInt(), eq(true));
         verify(eventHubConsumer, never())
             .receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class));
         verify(partitionProcessor, never()).processEvent(any(EventContext.class));
@@ -527,7 +522,7 @@ public class PartitionBasedLoadBalancerTest {
         checkpointStore.claimOwnership(Arrays.asList(claim1, claim2)).subscribe();
 
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(PARTITION_IDS_3));
-        when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
+        when(eventHubAsyncClient.createConsumer(anyString(), anyInt(), eq(true))).thenReturn(eventHubConsumer);
         when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
                 final int i = index.intValue() % eventDataList.size();
@@ -581,7 +576,7 @@ public class PartitionBasedLoadBalancerTest {
 
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(PARTITION_IDS_2));
 
-        PartitionPumpManager partitionPumpManager = getPartitionPumpManager(tracerProvider);
+        PartitionPumpManager partitionPumpManager = getPartitionPumpManager();
         final Scheduler scheduler = Schedulers.newSingle("test");
         final Scheduler scheduler2 = Schedulers.newSingle("test2");
         final PartitionPump pump1 = new PartitionPump("1", eventHubConsumer, scheduler);
@@ -654,7 +649,7 @@ public class PartitionBasedLoadBalancerTest {
     @Test
     public void testSingleEventProcessorWithGreedyStrategy() {
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(PARTITION_IDS_3));
-        when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
+        when(eventHubAsyncClient.createConsumer(anyString(), anyInt(), eq(true))).thenReturn(eventHubConsumer);
 
         when(eventHubConsumer.receiveFromPartition(any(), any(), any(ReceiveOptions.class)))
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
@@ -680,7 +675,7 @@ public class PartitionBasedLoadBalancerTest {
     public void testMultipleEventProcessorsWithGreedyStrategy() {
         List<String> partitionIds = Arrays.asList("1", "2", "3", "4", "5");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
-        when(eventHubAsyncClient.createConsumer(anyString(), anyInt())).thenReturn(eventHubConsumer);
+        when(eventHubAsyncClient.createConsumer(anyString(), anyInt(), eq(true))).thenReturn(eventHubConsumer);
         when(eventHubConsumer.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
             .thenReturn(Flux.interval(Duration.ofSeconds(1)).map(index -> {
                 final int i = index.intValue() % eventDataList.size();
@@ -703,7 +698,7 @@ public class PartitionBasedLoadBalancerTest {
         assertTrue(partitionOwnership.stream().filter(po -> po.getOwnerId().equals("owner2")).count() >= 2);
     }
 
-    private PartitionPumpManager getPartitionPumpManager(TracerProvider tracerProvider) {
+    private PartitionPumpManager getPartitionPumpManager() {
         return new PartitionPumpManager(checkpointStore,
             () -> new PartitionProcessor() {
                 @Override
@@ -723,11 +718,11 @@ public class PartitionBasedLoadBalancerTest {
                         eventProcessingErrorContext.getPartitionContext().getPartitionId(),
                         eventProcessingErrorContext.getThrowable());
                 }
-            }, eventHubClientBuilder, false, tracerProvider, new HashMap<>(), 1, null, BATCH_RECEIVE_MODE);
+            }, eventHubClientBuilder, false, DEFAULT_TRACER, new HashMap<>(), 1, null, BATCH_RECEIVE_MODE);
     }
 
     private PartitionBasedLoadBalancer createPartitionLoadBalancer(String owner, LoadBalancingStrategy loadBalancingStrategy) {
-        PartitionPumpManager partitionPumpManager = getPartitionPumpManager(tracerProvider);
+        PartitionPumpManager partitionPumpManager = getPartitionPumpManager();
         return new PartitionBasedLoadBalancer(checkpointStore, eventHubAsyncClient, FQ_NAMESPACE,
             EVENT_HUB_NAME, CONSUMER_GROUP_NAME, owner, TimeUnit.SECONDS.toSeconds(5), partitionPumpManager,
             ec -> {

@@ -42,6 +42,10 @@ public final class RegulatoryComplianceStandardProperties {
     @JsonProperty(value = "unsupportedControls", access = JsonProperty.Access.WRITE_ONLY)
     private Integer unsupportedControls;
 
+    /** Creates an instance of RegulatoryComplianceStandardProperties class. */
+    public RegulatoryComplianceStandardProperties() {
+    }
+
     /**
      * Get the state property: Aggregative state based on the standard's supported controls states.
      *

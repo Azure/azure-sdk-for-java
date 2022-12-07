@@ -18,6 +18,10 @@ public final class ExternalFqdnResponseInner {
     @JsonProperty(value = "value")
     private List<FqdnEndpoints> value;
 
+    /** Creates an instance of ExternalFqdnResponseInner class. */
+    public ExternalFqdnResponseInner() {
+    }
+
     /**
      * Get the value property: The value property.
      *

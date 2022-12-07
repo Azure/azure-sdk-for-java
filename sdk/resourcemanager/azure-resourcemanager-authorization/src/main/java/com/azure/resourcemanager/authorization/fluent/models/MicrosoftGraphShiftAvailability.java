@@ -39,6 +39,10 @@ public final class MicrosoftGraphShiftAvailability {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphShiftAvailability class. */
+    public MicrosoftGraphShiftAvailability() {
+    }
+
     /**
      * Get the recurrence property: patternedRecurrence.
      *

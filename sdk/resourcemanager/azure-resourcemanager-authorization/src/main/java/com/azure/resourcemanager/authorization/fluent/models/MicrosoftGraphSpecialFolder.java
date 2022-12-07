@@ -26,6 +26,10 @@ public final class MicrosoftGraphSpecialFolder {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphSpecialFolder class. */
+    public MicrosoftGraphSpecialFolder() {
+    }
+
     /**
      * Get the name property: The unique identifier for this item in the /drive/special collection.
      *

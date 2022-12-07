@@ -28,6 +28,10 @@ public final class PolicyAssignmentPropertiesScope {
     @JsonProperty(value = "type")
     private String type;
 
+    /** Creates an instance of PolicyAssignmentPropertiesScope class. */
+    public PolicyAssignmentPropertiesScope() {
+    }
+
     /**
      * Get the id property: Scope id of the resource.
      *

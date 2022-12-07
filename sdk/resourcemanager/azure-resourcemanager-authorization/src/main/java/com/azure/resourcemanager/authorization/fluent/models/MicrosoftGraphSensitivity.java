@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphSensitivity. */
+/** sensitivity. */
 public final class MicrosoftGraphSensitivity extends ExpandableStringEnum<MicrosoftGraphSensitivity> {
     /** Static value normal for MicrosoftGraphSensitivity. */
     public static final MicrosoftGraphSensitivity NORMAL = fromString("normal");
@@ -33,7 +33,11 @@ public final class MicrosoftGraphSensitivity extends ExpandableStringEnum<Micros
         return fromString(name, MicrosoftGraphSensitivity.class);
     }
 
-    /** @return known MicrosoftGraphSensitivity values. */
+    /**
+     * Gets known MicrosoftGraphSensitivity values.
+     *
+     * @return known MicrosoftGraphSensitivity values.
+     */
     public static Collection<MicrosoftGraphSensitivity> values() {
         return values(MicrosoftGraphSensitivity.class);
     }

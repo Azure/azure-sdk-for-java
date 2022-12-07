@@ -30,7 +30,11 @@ public final class StampKind extends ExpandableStringEnum<StampKind> {
         return fromString(name, StampKind.class);
     }
 
-    /** @return known StampKind values. */
+    /**
+     * Gets known StampKind values.
+     *
+     * @return known StampKind values.
+     */
     public static Collection<StampKind> values() {
         return values(StampKind.class);
     }

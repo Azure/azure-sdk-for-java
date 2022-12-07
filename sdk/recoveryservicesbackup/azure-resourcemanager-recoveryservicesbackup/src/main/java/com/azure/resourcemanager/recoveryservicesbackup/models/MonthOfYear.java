@@ -63,6 +63,9 @@ public enum MonthOfYear {
      */
     @JsonCreator
     public static MonthOfYear fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         MonthOfYear[] items = MonthOfYear.values();
         for (MonthOfYear item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -72,6 +75,7 @@ public enum MonthOfYear {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

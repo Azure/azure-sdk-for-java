@@ -16,15 +16,14 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphNumberColumn {
     /*
-     * How many decimal places to display. See below for information about the
-     * possible values.
+     * How many decimal places to display. See below for information about the possible values.
      */
     @JsonProperty(value = "decimalPlaces")
     private String decimalPlaces;
 
     /*
-     * How the value should be presented in the UX. Must be one of number or
-     * percentage. If unspecified, treated as number.
+     * How the value should be presented in the UX. Must be one of number or percentage. If unspecified, treated as
+     * number.
      */
     @JsonProperty(value = "displayAs")
     private String displayAs;
@@ -45,6 +44,10 @@ public final class MicrosoftGraphNumberColumn {
      * numberColumn
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphNumberColumn class. */
+    public MicrosoftGraphNumberColumn() {
+    }
 
     /**
      * Get the decimalPlaces property: How many decimal places to display. See below for information about the possible

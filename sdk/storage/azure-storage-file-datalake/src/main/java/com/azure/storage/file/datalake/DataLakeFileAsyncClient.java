@@ -1173,7 +1173,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         context = context == null ? Context.NONE : context;
         Long leaseDuration = appendOptions.getLeaseDuration() != null ? Long.valueOf(appendOptions.getLeaseDuration()) : null;
 
-        return this.dataLakeStorage.getPaths().appendDataWithResponseAsync(
+        return this.dataLakeStorage.getPaths().appendDataNoCustomHeadersWithResponseAsync(
             data, fileOffset, null, length, null, appendOptions.getLeaseAction(), leaseDuration,
                 appendOptions.getProposedLeaseId(), null, appendOptions.isFlush(), headers, leaseAccessConditions,
                 getCpkInfo(), context)

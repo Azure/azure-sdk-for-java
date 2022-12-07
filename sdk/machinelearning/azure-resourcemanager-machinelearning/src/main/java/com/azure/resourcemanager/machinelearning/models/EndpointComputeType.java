@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EndpointComputeType. */
+/** Enum to determine endpoint compute type. */
 public final class EndpointComputeType extends ExpandableStringEnum<EndpointComputeType> {
     /** Static value Managed for EndpointComputeType. */
     public static final EndpointComputeType MANAGED = fromString("Managed");

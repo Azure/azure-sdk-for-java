@@ -37,6 +37,10 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     @JsonProperty(value = "identity")
     private VirtualMachineScaleSetIdentity identity;
 
+    /** Creates an instance of VirtualMachineScaleSetUpdate class. */
+    public VirtualMachineScaleSetUpdate() {
+    }
+
     /**
      * Get the sku property: The virtual machine scale set sku.
      *

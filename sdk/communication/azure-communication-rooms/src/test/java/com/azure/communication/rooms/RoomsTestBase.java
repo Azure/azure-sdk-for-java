@@ -7,7 +7,6 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.communication.identity.CommunicationIdentityClientBuilder;
-import com.azure.communication.identity.CommunicationIdentityServiceVersion;
 import com.azure.communication.rooms.models.*;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
@@ -40,7 +39,7 @@ public class RoomsTestBase extends TestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration().get(
-                    "COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING",
+                    "COMMUNICATION_CONNECTION_STRING_ROOMS",
                 "endpoint=https://REDACTED.communication.azure.com/;accesskey=P2tP5RwZVFcJa3sfJvHEmGaKbemSAw2e");
 
     protected static final OffsetDateTime VALID_FROM = OffsetDateTime.now();
@@ -136,7 +135,6 @@ public class RoomsTestBase extends TestBase {
         String accessKey = connectionStringObject.getAccessKey();
         builder.endpoint(endpoint)
             .credential(new AzureKeyCredential(accessKey))
-            .serviceVersion(CommunicationIdentityServiceVersion.V2021_03_07)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {

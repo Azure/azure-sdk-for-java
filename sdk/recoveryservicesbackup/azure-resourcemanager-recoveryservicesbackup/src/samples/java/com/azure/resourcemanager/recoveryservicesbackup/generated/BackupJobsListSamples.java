@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BackupJobs List. */
 public final class BackupJobsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/Common/ListJobs.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/ListJobs.json
      */
     /**
      * Sample code: List All Jobs.
@@ -22,7 +22,7 @@ public final class BackupJobsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/Common/ListJobsWithAllSupportedFilters.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/ListJobsWithAllSupportedFilters.json
      */
     /**
      * Sample code: List Jobs With Filters.
@@ -43,7 +43,7 @@ public final class BackupJobsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/Common/ListJobsWithStartTimeAndEndTimeFilters.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/ListJobsWithStartTimeAndEndTimeFilters.json
      */
     /**
      * Sample code: List Jobs With Time Filter.
