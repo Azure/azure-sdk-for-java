@@ -284,7 +284,7 @@ Connection connection=DriverManager.getConnection(url,properties);
 If you encounter any bugs, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues).
 
 ### Known issues
-- java.sql.SQLException: Access denied for user 'user@company.com@'170.170.170.170' (using password: NO). 
+- java.sql.SQLException: Access denied for user 'user@company.com@'170.170.170.170' (using password: NO) [#31599](https://github.com/Azure/azure-sdk-for-java/issues/31599).
 
   If you are using `MysqlConnectionPoolDataSource` class as the datasource in your application, please remove the `defaultAuthenticationPlugin` in your code.
 
