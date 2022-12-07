@@ -7,7 +7,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.webpubsub.client.implementation.AckMessage;
 import com.azure.messaging.webpubsub.client.implementation.ConnectedMessage;
-import com.azure.messaging.webpubsub.client.implementation.DisconnectedEvent;
 import com.azure.messaging.webpubsub.client.implementation.DisconnectedMessage;
 import com.azure.messaging.webpubsub.client.implementation.MessageDecoder;
 import com.azure.messaging.webpubsub.client.implementation.MessageEncoder;
@@ -44,6 +43,8 @@ public class WebPubSubAsyncClient {
     private Endpoint endpoint;
 
     private Session session;
+
+    private String connectionId;
 
     private Sinks.Many<GroupDataMessage> groupDataMessageSink =
         Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
@@ -86,6 +87,8 @@ public class WebPubSubAsyncClient {
                 groupDataMessageSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
                 ackMessageSink.tryEmitComplete();
                 ackMessageSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
+
+//                disconnectedEventSink.tryEmitNext(new DisconnectedEvent(connectionId, ""));
             }
             return (Void) null;
         }).subscribeOn(Schedulers.boundedElastic());
@@ -181,7 +184,7 @@ public class WebPubSubAsyncClient {
 
         @Override
         public void onOpen(Session session, EndpointConfig endpointConfig) {
-            System.out.println("session open");
+//            System.out.println("session open");
 
             session.addMessageHandler(new MessageHandler.Whole<WebPubSubMessage>() {
 
@@ -192,11 +195,13 @@ public class WebPubSubAsyncClient {
                     } else if (webPubSubMessage instanceof AckMessage) {
                         ackMessageSink.tryEmitNext((AckMessage) webPubSubMessage);
                     } else if (webPubSubMessage instanceof ConnectedMessage) {
+                        connectionId = ((ConnectedMessage) webPubSubMessage).getConnectionId();
                         connectedEventSink.tryEmitNext(new ConnectedEvent(
-                            ((ConnectedMessage) webPubSubMessage).getConnectionId(),
+                            connectionId,
                             ((ConnectedMessage) webPubSubMessage).getUserId()));
                     } else if (webPubSubMessage instanceof DisconnectedMessage) {
                         disconnectedEventSink.tryEmitNext(new DisconnectedEvent(
+                            connectionId,
                             ((DisconnectedMessage) webPubSubMessage).getReason()));
                     } else {
                         // TODO
@@ -207,12 +212,12 @@ public class WebPubSubAsyncClient {
 
         @Override
         public void onClose(Session session, CloseReason closeReason) {
-            System.out.println("session close: " + closeReason);
+//            System.out.println("session close: " + closeReason);
         }
 
         @Override
         public void onError(Session session, Throwable thr) {
-            System.out.println("session error: " + thr);
+//            System.out.println("session error: " + thr);
         }
     }
 }
