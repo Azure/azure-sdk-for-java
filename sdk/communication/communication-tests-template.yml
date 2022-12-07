@@ -1,10 +1,10 @@
 parameters:
 - name: PackageName
   type: string
-  default: 'not-specified'
+  default: not-specified
 - name: SafeName
   type: string
-  default: 'not-specified'
+  default: not-specified
 - name: Clouds
   type: string
   default: 'Public,Int'
@@ -17,10 +17,10 @@ parameters:
 - name: MatrixConfigs
   type: object
   default:
-    Name: Java_live_test_base
-    Path: eng/pipelines/templates/stages/platform-matrix.json
-    Selection: sparse
-    GenerateVMJobs: true
+    - Name: Java_live_test_base
+      Path: eng/pipelines/templates/stages/platform-matrix.json
+      Selection: sparse
+      GenerateVMJobs: true
 - name: CloudConfig
   type: object
   default:
