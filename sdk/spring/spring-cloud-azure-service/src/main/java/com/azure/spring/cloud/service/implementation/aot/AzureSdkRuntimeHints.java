@@ -108,6 +108,7 @@ class AzureSdkRuntimeHints implements RuntimeHintsRegistrar {
 
     private void registerReflectionByPackage(RuntimeHints hints, ClassLoader classLoader, List<String> basePackages,
                                              MemberCategory... memberCategories) {
+        @SuppressWarnings("rawtypes")
         List<Class> classes = new ArrayList<>();
         for (String p : basePackages) {
             try {
