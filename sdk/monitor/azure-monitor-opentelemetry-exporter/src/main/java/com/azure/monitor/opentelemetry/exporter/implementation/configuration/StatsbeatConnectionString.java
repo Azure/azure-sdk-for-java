@@ -7,10 +7,13 @@ import reactor.util.annotation.Nullable;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static java.util.Arrays.asList;
 
 public final class StatsbeatConnectionString {
 
@@ -26,7 +29,7 @@ public final class StatsbeatConnectionString {
 
     private static final Pattern pattern = Pattern.compile("^https?://(?:www\\.)?([^/.-]+)");
 
-    private static final Set<String> EU_REGION_GEO_SET = Set.of(
+    private static final Set<String> EU_REGION_GEO_SET = new HashSet<>(asList(
         "westeurope",
         "northeurope",
         "francecentral",
@@ -39,9 +42,9 @@ public final class StatsbeatConnectionString {
         "switzerlandwest",
         "uksouth",
         "ukwest"
-    );
+    ));
 
-    private static final Set<String> NON_EU_REGION_GEO_SET = Set.of(
+    private static final Set<String> NON_EU_REGION_GEO_SET = new HashSet<>(asList(
         "eastasia",
         "southeastasia",
         "chinaeast2",
@@ -75,7 +78,7 @@ public final class StatsbeatConnectionString {
         "westus",
         "westus2",
         "westus3"
-    );
+    ));
 
     private final String ingestionEndpoint;
     private final String instrumentationKey;
