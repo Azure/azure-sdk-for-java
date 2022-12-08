@@ -835,7 +835,7 @@ public final class SpanDataMapper {
         new WarningLogger(
             SpanDataMapper.class,
             AiSemanticAttributes.DEPRECATED_CONNECTION_STRING.getKey()
-                + " is no longer supported starting from Application Insights Java 3.4.0, because it"
+                + " is no longer supported because it"
                 + " is incompatible with pre-aggregated standard metrics. Please use"
                 + " \"connectionStringOverrides\" configuration, or reach out to"
                 + " https://github.com/microsoft/ApplicationInsights-Java/issues if you have a"
@@ -844,7 +844,7 @@ public final class SpanDataMapper {
         new WarningLogger(
             SpanDataMapper.class,
             AiSemanticAttributes.DEPRECATED_ROLE_NAME.getKey()
-                + " is no longer supported starting from Application Insights Java 3.4.0, because it"
+                + " is no longer supported because it"
                 + " is incompatible with pre-aggregated standard metrics. Please use"
                 + " \"roleNameOverrides\" configuration, or reach out to"
                 + " https://github.com/microsoft/ApplicationInsights-Java/issues if you have a"
@@ -853,7 +853,7 @@ public final class SpanDataMapper {
         new WarningLogger(
             SpanDataMapper.class,
             AiSemanticAttributes.DEPRECATED_ROLE_INSTANCE.getKey()
-                + " is no longer supported starting from Application Insights Java 3.4.0, because it"
+                + " is no longer supported because it"
                 + " is incompatible with pre-aggregated standard metrics. Please reach out to"
                 + " https://github.com/microsoft/ApplicationInsights-Java/issues if you have a use"
                 + " case for this.");
@@ -861,7 +861,7 @@ public final class SpanDataMapper {
         new WarningLogger(
             SpanDataMapper.class,
             AiSemanticAttributes.DEPRECATED_INSTRUMENTATION_KEY.getKey()
-                + " is no longer supported starting from Application Insights Java 3.4.0, because it"
+                + " is no longer supported because it"
                 + " is incompatible with pre-aggregated standard metrics. Please use"
                 + " \"connectionStringOverrides\" configuration, or reach out to"
                 + " https://github.com/microsoft/ApplicationInsights-Java/issues if you have a"
