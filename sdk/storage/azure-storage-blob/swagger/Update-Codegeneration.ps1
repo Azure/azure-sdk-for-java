@@ -1,8 +1,3 @@
-npm install -s -g autorest
+$invokeScript = (Resolve-Path (Join-Path $PSScriptRoot ".." ".." ".." ".." eng scripts Invoke-Codegeneration.ps1)).Path
 
-$originalLocation = (Get-Location).Path
-Set-Location -Path $PSScriptRoot
-
-autorest
-
-Set-Location -Path $originalLocation
+Invoke-Expression "$invokeScript -Directory $PSScriptRoot"

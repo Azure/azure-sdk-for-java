@@ -1,11 +1,14 @@
 <#
 .SYNOPSIS
-Invokes all 'Update-Codegeneration.ps1' scripts found within the specified directory.
+Invokes all 'Update-Codegeneration.ps1' scripts found within the specified directory and compares it against current
+code.
 
 .DESCRIPTION
-Invokes all 'Update-Codegeneration.ps1' scripts found within the specified directory.
+Invokes all 'Update-Codegeneration.ps1' scripts found within the specified directory and compares it against current
+code.
 
-The regenerated code is then compared for differences to ensure that the code generation files are up-to-date.
+If the regenerated code is different than the current code this will tell the differences, the files the differences
+are in, and exit with a failure status.
 
 .PARAMETER Directory
 The directory that will be searched for 'Update-Codegeneration.ps1' scripts. The default is the root directory of the
