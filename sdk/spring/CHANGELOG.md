@@ -13,6 +13,11 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Dependency Updates
 - Upgrade spring-security to 5.7.5 to address [CVE-2022-31690](https://tanzu.vmware.com/security/cve-2022-31690) [#32145](https://github.com/Azure/azure-sdk-for-java/pull/32145).
+- Upgrade Azure SDK BOM to 1.2.8.
+- Upgrade Azure Identity to 1.7.1.
+- Upgrade Azure Identity Extensions to 1.0.0.
+- Upgrade Azure Spring Data Cosmos to 3.30.0.
+- Upgrade Azure Resource Manager to 2.21.0.
 
 ## 4.4.1 (2022-10-31)
 
