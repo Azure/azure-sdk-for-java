@@ -8,8 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Error response Common error response for all Azure Resource Manager APIs to return error details for failed
- * operations. (This also follows the OData error response format.).
+ * Error response
+ *
+ * <p>Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This
+ * also follows the OData error response format.).
  */
 @Fluent
 public class ErrorResponse {
@@ -18,6 +20,9 @@ public class ErrorResponse {
      */
     @JsonProperty(value = "error")
     private ErrorDetail error;
+
+    /** Creates an instance of ErrorResponse class. */
+    public ErrorResponse() {}
 
     /**
      * Get the error property: The error object.

@@ -16,6 +16,8 @@ import com.azure.core.models.GeoPosition;
 import com.azure.maps.search.MapsSearchAsyncClient;
 import com.azure.maps.search.MapsSearchClient;
 import com.azure.maps.search.MapsSearchClientBuilder;
+import com.azure.maps.search.models.OperatingHoursRange;
+import com.azure.maps.search.models.SearchAddressResult;
 import com.azure.maps.search.models.SearchAlongRouteOptions;
 
 public class SearchAlongRouteSample {
@@ -30,7 +32,7 @@ public class SearchAlongRouteSample {
         // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
         // DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
         // builder.credential(tokenCredential);
-        
+
         builder.mapsClientId(System.getenv("MAPS_CLIENT_ID"));
         builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         MapsSearchClient client = builder.buildClient();
@@ -81,33 +83,34 @@ public class SearchAlongRouteSample {
         MapsSearchAsyncClient asyncClient = asyncClientbuilder.buildAsyncClient();
 
          // Post search along route -
-        // https://docs.microsoft.com/en-us/rest/api/maps/search/post-search-along-route
+         // https://docs.microsoft.com/en-us/rest/api/maps/search/post-search-along-route
         // BEGIN: com.azure.maps.search.async.search_along_route
         System.out.println("Search Along Route");
 
         // create route points
         List<GeoPosition> getPolygonPoints = new ArrayList<>();
-        points.add(new GeoPosition(-122.143035, 47.653536));
-        points.add(new GeoPosition(-122.187164, 47.617556));
-        points.add(new GeoPosition(-122.114981, 47.570599));
-        points.add(new GeoPosition(-122.132756, 47.654009));
+        getPolygonPoints.add(new GeoPosition(-122.143035, 47.653536));
+        getPolygonPoints.add(new GeoPosition(-122.187164, 47.617556));
+        getPolygonPoints.add(new GeoPosition(-122.114981, 47.570599));
+        getPolygonPoints.add(new GeoPosition(-122.132756, 47.654009));
         GeoLineString getPolygonRoute = new GeoLineString(getPolygonPoints);
 
         // simple
-        asyncClient.searchAlongRoute(new SearchAlongRouteOptions("burger", 1000, getPolygonRoute));
+        SearchAddressResult result = asyncClient.searchAlongRoute(
+            new SearchAlongRouteOptions("burger", 1000, getPolygonRoute)).block();
 
         // options
         asyncClient.searchAlongRoute(
             new SearchAlongRouteOptions("burger", 1000, getPolygonRoute)
                 .setCategoryFilter(Arrays.asList(7315))
-                .setTop(5));
+                .setTop(5)).block();
 
         // complete
         asyncClient.searchAlongRouteWithResponse(
             new SearchAlongRouteOptions("burger", 1000, getPolygonRoute)
-                .setCategoryFilter(Arrays.asList(7315))
-                .setTop(5)).block().getStatusCode();
+            .setCategoryFilter(Arrays.asList(7315)).setOperatingHours(OperatingHoursRange.NEXT_SEVEN_DAYS)
+            .setTop(5)).block().getStatusCode();
         // END: com.azure.maps.search.async.search_along_route
     }
-    
+
 }

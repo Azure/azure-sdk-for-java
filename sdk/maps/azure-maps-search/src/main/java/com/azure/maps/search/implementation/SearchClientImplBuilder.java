@@ -95,8 +95,7 @@ public final class SearchClientImplBuilder
     }
 
     /*
-     * The client options such as application ID and custom headers to set on a
-     * request.
+     * The client options such as application ID and custom headers to set on a request.
      */
     @Generated private ClientOptions clientOptions;
 
@@ -130,8 +129,7 @@ public final class SearchClientImplBuilder
     }
 
     /*
-     * The configuration store that is used during construction of the service
-     * client.
+     * The configuration store that is used during construction of the service client.
      */
     @Generated private Configuration configuration;
 
@@ -144,11 +142,9 @@ public final class SearchClientImplBuilder
     }
 
     /*
-     * Specifies which account is intended for usage in conjunction with the
-     * Azure AD security model.  It represents a unique ID for the Azure Maps
-     * account and can be retrieved from the Azure Maps management  plane
-     * Account API. To use Azure AD security in Azure Maps see the following
-     * [articles](https://aka.ms/amauthdetails) for guidance.
+     * Specifies which account is intended for usage in conjunction with the Azure AD security model.  It represents a
+     * unique ID for the Azure Maps account and can be retrieved from the Azure Maps management  plane Account API. To
+     * use Azure AD security in Azure Maps see the following [articles](https://aka.ms/amauthdetails) for guidance.
      */
     @Generated private String clientId;
 
@@ -218,8 +214,7 @@ public final class SearchClientImplBuilder
     }
 
     /*
-     * The retry policy that will attempt to retry failed requests, if
-     * applicable.
+     * The retry policy that will attempt to retry failed requests, if applicable.
      */
     @Generated private RetryPolicy retryPolicy;
 
@@ -242,19 +237,13 @@ public final class SearchClientImplBuilder
      */
     @Generated
     public SearchClientImpl buildClient() {
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
-        }
-        if (host == null) {
-            this.host = "https://atlas.microsoft.com";
-        }
-        if (apiVersion == null) {
-            this.apiVersion = "1.0";
-        }
-        if (serializerAdapter == null) {
-            this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        }
-        SearchClientImpl client = new SearchClientImpl(pipeline, serializerAdapter, clientId, host, apiVersion);
+        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
+        String localHost = (host != null) ? host : "https://atlas.microsoft.com";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "1.0";
+        SerializerAdapter localSerializerAdapter =
+                (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
+        SearchClientImpl client =
+                new SearchClientImpl(localPipeline, localSerializerAdapter, clientId, localHost, localApiVersion);
         return client;
     }
 

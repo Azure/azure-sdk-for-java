@@ -29,7 +29,7 @@ public class FuzzySearchSample {
         // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
         // DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
         // builder.credential(tokenCredential);
-        
+
         builder.mapsClientId(System.getenv("MAPS_CLIENT_ID"));
         builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         MapsSearchClient client = builder.buildClient();
@@ -87,5 +87,5 @@ public class FuzzySearchSample {
                 .setTop(5)).block();
         // END: com.azure.maps.search.async.fuzzy_search
     }
-    
+
 }

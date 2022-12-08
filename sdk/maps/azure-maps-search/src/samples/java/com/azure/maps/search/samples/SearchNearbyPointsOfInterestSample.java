@@ -27,7 +27,7 @@ public class SearchNearbyPointsOfInterestSample {
         // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
         // DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
         // builder.credential(tokenCredential);
-        
+
         builder.mapsClientId(System.getenv("MAPS_CLIENT_ID"));
         builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         MapsSearchClient client = builder.buildClient();
@@ -35,7 +35,7 @@ public class SearchNearbyPointsOfInterestSample {
         // Search nearby -
         // https://docs.microsoft.com/en-us/rest/api/maps/search/get-search-nearby
         // BEGIN: com.azure.maps.search.sync.search_nearby
-        System.out.println("Search Nearby:");
+        System.out.println("Search Nearby Points of Interest:");
 
         // options
         client.searchNearbyPointsOfInterest(
@@ -69,7 +69,7 @@ public class SearchNearbyPointsOfInterestSample {
         // Search nearby -
         // https://docs.microsoft.com/en-us/rest/api/maps/search/get-search-nearby
         // BEGIN: com.azure.maps.search.async.search_nearby
-        System.out.println("Search Nearby:");
+        System.out.println("Search Nearby Points of Interest:");
 
         // options
         asyncClient.searchNearbyPointsOfInterest(

@@ -27,7 +27,7 @@ public class SearchPointOfInterestSample {
         // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
         // DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
         // builder.credential(tokenCredential);
-        
+
         builder.mapsClientId(System.getenv("MAPS_CLIENT_ID"));
         builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         MapsSearchClient client = builder.buildClient();
@@ -91,5 +91,5 @@ public class SearchPointOfInterestSample {
                 .setTop(10)
                 .setOperatingHours(OperatingHoursRange.NEXT_SEVEN_DAYS)).block().getStatusCode();
         // END: com.azure.maps.search.async.get_search_poi
-    } 
+    }
 }
