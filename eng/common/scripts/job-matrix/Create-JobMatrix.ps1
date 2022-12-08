@@ -17,6 +17,8 @@ param (
     [Parameter(Mandatory=$False)][array] $NonSparseParameters,
     [Parameter()][switch] $CI = ($null -ne $env:SYSTEM_TEAMPROJECTID)
 )
+Write-Output "****"
+Write-Output $Filters
 
 . $PSScriptRoot/job-matrix-functions.ps1
 
