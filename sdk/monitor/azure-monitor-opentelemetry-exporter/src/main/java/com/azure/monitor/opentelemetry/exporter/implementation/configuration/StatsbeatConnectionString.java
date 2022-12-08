@@ -7,7 +7,6 @@ import reactor.util.annotation.Nullable;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -27,57 +26,56 @@ public final class StatsbeatConnectionString {
 
     private static final Pattern pattern = Pattern.compile("^https?://(?:www\\.)?([^/.-]+)");
 
-    private static final Set<String> EU_REGION_GEO_SET = new HashSet<>(12);
-    private static final Set<String> NON_EU_REGION_GEO_SET = new HashSet<>(33);
+    private static final Set<String> EU_REGION_GEO_SET = Set.of(
+        "westeurope",
+        "northeurope",
+        "francecentral",
+        "francesouth",
+        "germanywestcentral",
+        "norwayeast",
+        "norwaywest",
+        "swedencentral",
+        "switzerlandnorth",
+        "switzerlandwest",
+        "uksouth",
+        "ukwest"
+    );
 
-    static {
-        EU_REGION_GEO_SET.add("westeurope");
-        EU_REGION_GEO_SET.add("northeurope");
-        EU_REGION_GEO_SET.add("francecentral");
-        EU_REGION_GEO_SET.add("francesouth");
-        EU_REGION_GEO_SET.add("germanywestcentral");
-        EU_REGION_GEO_SET.add("norwayeast");
-        EU_REGION_GEO_SET.add("norwaywest");
-        EU_REGION_GEO_SET.add("swedencentral");
-        EU_REGION_GEO_SET.add("switzerlandnorth");
-        EU_REGION_GEO_SET.add("switzerlandwest");
-        EU_REGION_GEO_SET.add("uksouth");
-        EU_REGION_GEO_SET.add("ukwest");
-
-        NON_EU_REGION_GEO_SET.add("eastasia");
-        NON_EU_REGION_GEO_SET.add("southeastasia");
-        NON_EU_REGION_GEO_SET.add("chinaeast2");
-        NON_EU_REGION_GEO_SET.add("chinaeast3");
-        NON_EU_REGION_GEO_SET.add("chinanorth3");
-        NON_EU_REGION_GEO_SET.add("centralindia");
-        NON_EU_REGION_GEO_SET.add("southindia");
-        NON_EU_REGION_GEO_SET.add("jioindiacentral");
-        NON_EU_REGION_GEO_SET.add("jioindiawest");
-        NON_EU_REGION_GEO_SET.add("japaneast");
-        NON_EU_REGION_GEO_SET.add("japanwest");
-        NON_EU_REGION_GEO_SET.add("koreacentral");
-        NON_EU_REGION_GEO_SET.add("koreasouth");
-        NON_EU_REGION_GEO_SET.add("australiacentral");
-        NON_EU_REGION_GEO_SET.add("australiacentral2");
-        NON_EU_REGION_GEO_SET.add("australiaeast");
-        NON_EU_REGION_GEO_SET.add("australiasoutheast");
-        NON_EU_REGION_GEO_SET.add("canadacentral");
-        NON_EU_REGION_GEO_SET.add("canadaeast");
-        NON_EU_REGION_GEO_SET.add("qatarcentral");
-        NON_EU_REGION_GEO_SET.add("uaecentral");
-        NON_EU_REGION_GEO_SET.add("uaenorth");
-        NON_EU_REGION_GEO_SET.add("southafricanorth");
-        NON_EU_REGION_GEO_SET.add("brazilsouth");
-        NON_EU_REGION_GEO_SET.add("brazilsoutheast");
-        NON_EU_REGION_GEO_SET.add("centralus");
-        NON_EU_REGION_GEO_SET.add("eastus");
-        NON_EU_REGION_GEO_SET.add("eastus2");
-        NON_EU_REGION_GEO_SET.add("northcentralus");
-        NON_EU_REGION_GEO_SET.add("southcentralus");
-        NON_EU_REGION_GEO_SET.add("westus");
-        NON_EU_REGION_GEO_SET.add("westus2");
-        NON_EU_REGION_GEO_SET.add("westus3");
-    }
+    private static final Set<String> NON_EU_REGION_GEO_SET = Set.of(
+        "eastasia",
+        "southeastasia",
+        "chinaeast2",
+        "chinaeast3",
+        "chinanorth3",
+        "centralindia",
+        "southindia",
+        "jioindiacentral",
+        "jioindiawest",
+        "japaneast",
+        "japanwest",
+        "koreacentral",
+        "koreasouth",
+        "australiacentral",
+        "australiacentral2",
+        "australiaeast",
+        "australiasoutheast",
+        "canadacentral",
+        "canadaeast",
+        "qatarcentral",
+        "uaecentral",
+        "uaenorth",
+        "southafricanorth",
+        "brazilsouth",
+        "brazilsoutheast",
+        "centralus",
+        "eastus",
+        "eastus2",
+        "northcentralus",
+        "southcentralus",
+        "westus",
+        "westus2",
+        "westus3"
+    );
 
     private final String ingestionEndpoint;
     private final String instrumentationKey;
