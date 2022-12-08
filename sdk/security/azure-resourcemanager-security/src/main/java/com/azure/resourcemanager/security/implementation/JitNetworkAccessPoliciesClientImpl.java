@@ -62,7 +62,7 @@ public final class JitNetworkAccessPoliciesClientImpl implements JitNetworkAcces
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterJitNet")
-    private interface JitNetworkAccessPoliciesService {
+    public interface JitNetworkAccessPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/jitNetworkAccessPolicies")
         @ExpectedResponses({200})
@@ -1033,25 +1033,6 @@ public final class JitNetworkAccessPoliciesClientImpl implements JitNetworkAcces
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JitNetworkAccessPolicyInner get(
-        String resourceGroupName, String ascLocation, String jitNetworkAccessPolicyName) {
-        return getAsync(resourceGroupName, ascLocation, jitNetworkAccessPolicyName).block();
-    }
-
-    /**
-     * Policies for protecting resources using Just-in-Time access control for the subscription, location.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1062,6 +1043,25 @@ public final class JitNetworkAccessPoliciesClientImpl implements JitNetworkAcces
     public Response<JitNetworkAccessPolicyInner> getWithResponse(
         String resourceGroupName, String ascLocation, String jitNetworkAccessPolicyName, Context context) {
         return getWithResponseAsync(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, context).block();
+    }
+
+    /**
+     * Policies for protecting resources using Just-in-Time access control for the subscription, location.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JitNetworkAccessPolicyInner get(
+        String resourceGroupName, String ascLocation, String jitNetworkAccessPolicyName) {
+        return getWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, Context.NONE).getValue();
     }
 
     /**
@@ -1234,29 +1234,6 @@ public final class JitNetworkAccessPoliciesClientImpl implements JitNetworkAcces
      *     locations.
      * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
      * @param body The body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JitNetworkAccessPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String ascLocation,
-        String jitNetworkAccessPolicyName,
-        JitNetworkAccessPolicyInner body) {
-        return createOrUpdateAsync(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, body).block();
-    }
-
-    /**
-     * Create a policy for protecting resources using Just-in-Time access control.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
-     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1273,6 +1250,31 @@ public final class JitNetworkAccessPoliciesClientImpl implements JitNetworkAcces
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, ascLocation, jitNetworkAccessPolicyName, body, context)
             .block();
+    }
+
+    /**
+     * Create a policy for protecting resources using Just-in-Time access control.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
+     * @param body The body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JitNetworkAccessPolicyInner createOrUpdate(
+        String resourceGroupName,
+        String ascLocation,
+        String jitNetworkAccessPolicyName,
+        JitNetworkAccessPolicyInner body) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, ascLocation, jitNetworkAccessPolicyName, body, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1418,23 +1420,6 @@ public final class JitNetworkAccessPoliciesClientImpl implements JitNetworkAcces
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String ascLocation, String jitNetworkAccessPolicyName) {
-        deleteAsync(resourceGroupName, ascLocation, jitNetworkAccessPolicyName).block();
-    }
-
-    /**
-     * Delete a Just-in-Time access control policy.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1445,6 +1430,23 @@ public final class JitNetworkAccessPoliciesClientImpl implements JitNetworkAcces
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String ascLocation, String jitNetworkAccessPolicyName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, context).block();
+    }
+
+    /**
+     * Delete a Just-in-Time access control policy.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String ascLocation, String jitNetworkAccessPolicyName) {
+        deleteWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, Context.NONE);
     }
 
     /**
@@ -1621,29 +1623,6 @@ public final class JitNetworkAccessPoliciesClientImpl implements JitNetworkAcces
      *     locations.
      * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
      * @param body The body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JitNetworkAccessRequestInner initiate(
-        String resourceGroupName,
-        String ascLocation,
-        String jitNetworkAccessPolicyName,
-        JitNetworkAccessPolicyInitiateRequest body) {
-        return initiateAsync(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, body).block();
-    }
-
-    /**
-     * Initiate a JIT access from a specific Just-in-Time policy configuration.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
-     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1659,6 +1638,30 @@ public final class JitNetworkAccessPoliciesClientImpl implements JitNetworkAcces
         Context context) {
         return initiateWithResponseAsync(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, body, context)
             .block();
+    }
+
+    /**
+     * Initiate a JIT access from a specific Just-in-Time policy configuration.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param jitNetworkAccessPolicyName Name of a Just-in-Time access configuration policy.
+     * @param body The body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JitNetworkAccessRequestInner initiate(
+        String resourceGroupName,
+        String ascLocation,
+        String jitNetworkAccessPolicyName,
+        JitNetworkAccessPolicyInitiateRequest body) {
+        return initiateWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, body, Context.NONE)
+            .getValue();
     }
 
     /**

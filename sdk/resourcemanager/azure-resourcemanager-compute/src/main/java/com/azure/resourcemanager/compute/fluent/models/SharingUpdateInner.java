@@ -27,6 +27,10 @@ public final class SharingUpdateInner {
     @JsonProperty(value = "groups")
     private List<SharingProfileGroup> groups;
 
+    /** Creates an instance of SharingUpdateInner class. */
+    public SharingUpdateInner() {
+    }
+
     /**
      * Get the operationType property: This property allows you to specify the operation type of gallery sharing update.
      * &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Add** &lt;br&gt;&lt;br&gt; **Remove**

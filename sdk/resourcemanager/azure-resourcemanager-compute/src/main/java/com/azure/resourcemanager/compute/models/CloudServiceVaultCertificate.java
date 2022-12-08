@@ -19,6 +19,10 @@ public final class CloudServiceVaultCertificate {
     @JsonProperty(value = "certificateUrl")
     private String certificateUrl;
 
+    /** Creates an instance of CloudServiceVaultCertificate class. */
+    public CloudServiceVaultCertificate() {
+    }
+
     /**
      * Get the certificateUrl property: This is the URL of a certificate that has been uploaded to Key Vault as a
      * secret.

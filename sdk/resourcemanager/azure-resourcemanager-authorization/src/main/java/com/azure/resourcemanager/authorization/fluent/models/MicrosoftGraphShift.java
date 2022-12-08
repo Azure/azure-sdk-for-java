@@ -45,6 +45,10 @@ public final class MicrosoftGraphShift extends MicrosoftGraphChangeTrackedEntity
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphShift class. */
+    public MicrosoftGraphShift() {
+    }
+
     /**
      * Get the draftShift property: shiftItem.
      *

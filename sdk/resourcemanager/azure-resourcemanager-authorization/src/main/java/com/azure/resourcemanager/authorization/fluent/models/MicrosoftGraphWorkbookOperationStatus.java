@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphWorkbookOperationStatus. */
+/** workbookOperationStatus. */
 public final class MicrosoftGraphWorkbookOperationStatus
     extends ExpandableStringEnum<MicrosoftGraphWorkbookOperationStatus> {
     /** Static value notStarted for MicrosoftGraphWorkbookOperationStatus. */
@@ -34,7 +34,11 @@ public final class MicrosoftGraphWorkbookOperationStatus
         return fromString(name, MicrosoftGraphWorkbookOperationStatus.class);
     }
 
-    /** @return known MicrosoftGraphWorkbookOperationStatus values. */
+    /**
+     * Gets known MicrosoftGraphWorkbookOperationStatus values.
+     *
+     * @return known MicrosoftGraphWorkbookOperationStatus values.
+     */
     public static Collection<MicrosoftGraphWorkbookOperationStatus> values() {
         return values(MicrosoftGraphWorkbookOperationStatus.class);
     }

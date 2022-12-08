@@ -54,6 +54,10 @@ public final class CustomAssessmentAutomationProperties {
     @JsonProperty(value = "assessmentKey")
     private String assessmentKey;
 
+    /** Creates an instance of CustomAssessmentAutomationProperties class. */
+    public CustomAssessmentAutomationProperties() {
+    }
+
     /**
      * Get the compressedQuery property: GZip encoded KQL query representing the assessment automation results required.
      *

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphDelegateMeetingMessageDeliveryOptions. */
+/** delegateMeetingMessageDeliveryOptions. */
 public final class MicrosoftGraphDelegateMeetingMessageDeliveryOptions
     extends ExpandableStringEnum<MicrosoftGraphDelegateMeetingMessageDeliveryOptions> {
     /** Static value sendToDelegateAndInformationToPrincipal for MicrosoftGraphDelegateMeetingMessageDeliveryOptions. */
@@ -34,7 +34,11 @@ public final class MicrosoftGraphDelegateMeetingMessageDeliveryOptions
         return fromString(name, MicrosoftGraphDelegateMeetingMessageDeliveryOptions.class);
     }
 
-    /** @return known MicrosoftGraphDelegateMeetingMessageDeliveryOptions values. */
+    /**
+     * Gets known MicrosoftGraphDelegateMeetingMessageDeliveryOptions values.
+     *
+     * @return known MicrosoftGraphDelegateMeetingMessageDeliveryOptions values.
+     */
     public static Collection<MicrosoftGraphDelegateMeetingMessageDeliveryOptions> values() {
         return values(MicrosoftGraphDelegateMeetingMessageDeliveryOptions.class);
     }

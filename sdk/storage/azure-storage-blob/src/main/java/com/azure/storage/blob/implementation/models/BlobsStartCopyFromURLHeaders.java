@@ -5,6 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.models.CopyStatusType;
@@ -70,6 +71,16 @@ public final class BlobsStartCopyFromURLHeaders {
     @JsonProperty(value = "Date")
     private DateTimeRfc1123 date;
 
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_COPY_ID = HttpHeaderName.fromString("x-ms-copy-id");
+
+    private static final HttpHeaderName X_MS_VERSION_ID = HttpHeaderName.fromString("x-ms-version-id");
+
+    private static final HttpHeaderName X_MS_COPY_STATUS = HttpHeaderName.fromString("x-ms-copy-status");
+
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of BlobsStartCopyFromURLHeaders class.
@@ -77,21 +88,21 @@ public final class BlobsStartCopyFromURLHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public BlobsStartCopyFromURLHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        this.xMsCopyId = rawHeaders.getValue("x-ms-copy-id");
-        this.eTag = rawHeaders.getValue("ETag");
-        String lastModified = rawHeaders.getValue("Last-Modified");
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.xMsCopyId = rawHeaders.getValue(X_MS_COPY_ID);
+        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        this.xMsVersionId = rawHeaders.getValue("x-ms-version-id");
-        String xMsCopyStatus = rawHeaders.getValue("x-ms-copy-status");
+        this.xMsVersionId = rawHeaders.getValue(X_MS_VERSION_ID);
+        String xMsCopyStatus = rawHeaders.getValue(X_MS_COPY_STATUS);
         if (xMsCopyStatus != null) {
             this.xMsCopyStatus = CopyStatusType.fromString(xMsCopyStatus);
         }
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
-        String date = rawHeaders.getValue("Date");
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }

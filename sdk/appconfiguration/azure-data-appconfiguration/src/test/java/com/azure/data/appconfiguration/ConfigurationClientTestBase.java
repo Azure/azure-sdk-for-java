@@ -50,6 +50,8 @@ public abstract class ConfigurationClientTestBase extends TestBase {
     private static final int PREFIX_LENGTH = 8;
     private static final int RESOURCE_LENGTH = 16;
 
+    public static final String FAKE_CONNECTION_STRING =
+        "Endpoint=http://localhost:8080;Id=0000000000000;Secret=fakeSecrePlaceholder";
     static String connectionString;
 
     private final ClientLogger logger = new ClientLogger(ConfigurationClientTestBase.class);
@@ -64,9 +66,8 @@ public abstract class ConfigurationClientTestBase extends TestBase {
 
     <T> T clientSetup(Function<ConfigurationClientCredentials, T> clientBuilder) {
         if (CoreUtils.isNullOrEmpty(connectionString)) {
-            connectionString = interceptorManager.isPlaybackMode()
-                ? "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw"
-                : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
+            connectionString = interceptorManager.isPlaybackMode() ? FAKE_CONNECTION_STRING
+                                   : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
         }
 
         Objects.requireNonNull(connectionString, "AZURE_APPCONFIG_CONNECTION_STRING expected to be set.");

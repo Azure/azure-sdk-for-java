@@ -71,6 +71,10 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
     @JsonProperty(value = "identity")
     private VirtualMachineIdentity identity;
 
+    /** Creates an instance of VirtualMachineScaleSetVMInner class. */
+    public VirtualMachineScaleSetVMInner() {
+    }
+
     /**
      * Get the instanceId property: The virtual machine instance ID.
      *

@@ -32,6 +32,10 @@ public final class CollectorPolicyPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of CollectorPolicyPropertiesFormat class. */
+    public CollectorPolicyPropertiesFormat() {
+    }
+
     /**
      * Get the ingestionPolicy property: Ingestion policies.
      *

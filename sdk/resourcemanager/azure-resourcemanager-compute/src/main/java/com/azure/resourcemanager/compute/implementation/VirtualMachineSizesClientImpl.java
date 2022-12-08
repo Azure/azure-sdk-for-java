@@ -55,7 +55,7 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface VirtualMachineSizesService {
+    public interface VirtualMachineSizesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/vmSizes")
         @ExpectedResponses({200})

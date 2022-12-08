@@ -23,8 +23,7 @@ public final class MicrosoftGraphPreAuthorizedApplication {
     private String appId;
 
     /*
-     * The unique identifier for the oauth2PermissionScopes the application
-     * requires.
+     * The unique identifier for the oauth2PermissionScopes the application requires.
      */
     @JsonProperty(value = "delegatedPermissionIds")
     private List<String> delegatedPermissionIds;
@@ -33,6 +32,10 @@ public final class MicrosoftGraphPreAuthorizedApplication {
      * preAuthorizedApplication
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphPreAuthorizedApplication class. */
+    public MicrosoftGraphPreAuthorizedApplication() {
+    }
 
     /**
      * Get the appId property: The unique identifier for the application.

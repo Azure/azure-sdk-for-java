@@ -17,22 +17,19 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphGroupSetting extends MicrosoftGraphEntity {
     /*
-     * Display name of this group of settings, which comes from the associated
-     * template.
+     * Display name of this group of settings, which comes from the associated template.
      */
     @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
-     * Unique identifier for the template used to create this group of
-     * settings. Read-only.
+     * Unique identifier for the template used to create this group of settings. Read-only.
      */
     @JsonProperty(value = "templateId")
     private String templateId;
 
     /*
-     * Collection of name value pairs. Must contain and set all the settings
-     * defined in the template.
+     * Collection of name value pairs. Must contain and set all the settings defined in the template.
      */
     @JsonProperty(value = "values")
     private List<MicrosoftGraphSettingValue> values;
@@ -41,6 +38,10 @@ public final class MicrosoftGraphGroupSetting extends MicrosoftGraphEntity {
      * groupSetting
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphGroupSetting class. */
+    public MicrosoftGraphGroupSetting() {
+    }
 
     /**
      * Get the displayName property: Display name of this group of settings, which comes from the associated template.

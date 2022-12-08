@@ -47,6 +47,10 @@ public final class ComputeInstanceContainer {
     @JsonProperty(value = "services", access = JsonProperty.Access.WRITE_ONLY)
     private List<Object> services;
 
+    /** Creates an instance of ComputeInstanceContainer class. */
+    public ComputeInstanceContainer() {
+    }
+
     /**
      * Get the name property: Name of the ComputeInstance container.
      *

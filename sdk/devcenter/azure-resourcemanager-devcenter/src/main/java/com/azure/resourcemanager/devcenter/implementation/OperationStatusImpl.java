@@ -4,10 +4,13 @@
 
 package com.azure.resourcemanager.devcenter.implementation;
 
+import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.devcenter.fluent.models.OperationStatusInner;
 import com.azure.resourcemanager.devcenter.models.OperationStatus;
-import com.azure.resourcemanager.devcenter.models.OperationStatusError;
+import com.azure.resourcemanager.devcenter.models.OperationStatusResult;
 import java.time.OffsetDateTime;
+import java.util.Collections;
+import java.util.List;
 
 public final class OperationStatusImpl implements OperationStatus {
     private OperationStatusInner innerObject;
@@ -32,8 +35,8 @@ public final class OperationStatusImpl implements OperationStatus {
         return this.innerModel().status();
     }
 
-    public String resourceId() {
-        return this.innerModel().resourceId();
+    public Float percentComplete() {
+        return this.innerModel().percentComplete();
     }
 
     public OffsetDateTime startTime() {
@@ -44,16 +47,25 @@ public final class OperationStatusImpl implements OperationStatus {
         return this.innerModel().endTime();
     }
 
-    public Float percentComplete() {
-        return this.innerModel().percentComplete();
+    public List<OperationStatusResult> operations() {
+        List<OperationStatusResult> inner = this.innerModel().operations();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public ManagementError error() {
+        return this.innerModel().error();
+    }
+
+    public String resourceId() {
+        return this.innerModel().resourceId();
     }
 
     public Object properties() {
         return this.innerModel().properties();
-    }
-
-    public OperationStatusError error() {
-        return this.innerModel().error();
     }
 
     public OperationStatusInner innerModel() {

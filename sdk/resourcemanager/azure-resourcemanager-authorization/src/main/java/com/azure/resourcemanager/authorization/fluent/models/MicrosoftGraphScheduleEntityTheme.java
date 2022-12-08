@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphScheduleEntityTheme. */
+/** scheduleEntityTheme. */
 public final class MicrosoftGraphScheduleEntityTheme extends ExpandableStringEnum<MicrosoftGraphScheduleEntityTheme> {
     /** Static value white for MicrosoftGraphScheduleEntityTheme. */
     public static final MicrosoftGraphScheduleEntityTheme WHITE = fromString("white");
@@ -60,7 +60,11 @@ public final class MicrosoftGraphScheduleEntityTheme extends ExpandableStringEnu
         return fromString(name, MicrosoftGraphScheduleEntityTheme.class);
     }
 
-    /** @return known MicrosoftGraphScheduleEntityTheme values. */
+    /**
+     * Gets known MicrosoftGraphScheduleEntityTheme values.
+     *
+     * @return known MicrosoftGraphScheduleEntityTheme values.
+     */
     public static Collection<MicrosoftGraphScheduleEntityTheme> values() {
         return values(MicrosoftGraphScheduleEntityTheme.class);
     }

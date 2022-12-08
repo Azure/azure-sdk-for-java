@@ -23,6 +23,10 @@ public class AssetJobInput {
     @JsonProperty(value = "uri", required = true)
     private String uri;
 
+    /** Creates an instance of AssetJobInput class. */
+    public AssetJobInput() {
+    }
+
     /**
      * Get the mode property: Input Asset Delivery Mode.
      *

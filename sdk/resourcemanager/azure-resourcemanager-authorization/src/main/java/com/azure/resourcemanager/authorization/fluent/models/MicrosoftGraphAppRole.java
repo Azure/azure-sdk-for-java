@@ -18,61 +18,53 @@ import java.util.UUID;
 @Fluent
 public final class MicrosoftGraphAppRole {
     /*
-     * Specifies whether this app role can be assigned to users and groups (by
-     * setting to ['User']), to other application's (by setting to
-     * ['Application'], or both (by setting to ['User', 'Application']). App
-     * roles supporting assignment to other applications' service principals
-     * are also known as application permissions. The 'Application' value is
-     * only supported for app roles defined on application entities.
+     * Specifies whether this app role can be assigned to users and groups (by setting to ['User']), to other
+     * application's (by setting to ['Application'], or both (by setting to ['User', 'Application']). App roles
+     * supporting assignment to other applications' service principals are also known as application permissions. The
+     * 'Application' value is only supported for app roles defined on application entities.
      */
     @JsonProperty(value = "allowedMemberTypes")
     private List<String> allowedMemberTypes;
 
     /*
-     * The description for the app role. This is displayed when the app role is
-     * being assigned and, if the app role functions as an application
-     * permission, during  consent experiences.
+     * The description for the app role. This is displayed when the app role is being assigned and, if the app role
+     * functions as an application permission, during  consent experiences.
      */
     @JsonProperty(value = "description")
     private String description;
 
     /*
-     * Display name for the permission that appears in the app role assignment
-     * and consent experiences.
+     * Display name for the permission that appears in the app role assignment and consent experiences.
      */
     @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
-     * Unique role identifier inside the appRoles collection. When creating a
-     * new app role, a new Guid identifier must be provided.
+     * Unique role identifier inside the appRoles collection. When creating a new app role, a new Guid identifier must
+     * be provided.
      */
     @JsonProperty(value = "id")
     private UUID id;
 
     /*
-     * When creating or updating an app role, this must be set to true (which
-     * is the default). To delete a role, this must first be set to false.  At
-     * that point, in a subsequent call, this role may be removed.
+     * When creating or updating an app role, this must be set to true (which is the default). To delete a role, this
+     * must first be set to false.  At that point, in a subsequent call, this role may be removed.
      */
     @JsonProperty(value = "isEnabled")
     private Boolean isEnabled;
 
     /*
-     * Specifies if the app role is defined on the application object or on the
-     * servicePrincipal entity. Must not be included in any POST or PATCH
-     * requests. Read-only.
+     * Specifies if the app role is defined on the application object or on the servicePrincipal entity. Must not be
+     * included in any POST or PATCH requests. Read-only.
      */
     @JsonProperty(value = "origin")
     private String origin;
 
     /*
-     * Specifies the value to include in the roles claim in ID tokens and
-     * access tokens authenticating an assigned user or service principal. Must
-     * not exceed 120 characters in length. Allowed characters are : ! # $ % &
-     * ' ( ) * + , - . / : ;  =  ? @ [ ] ^ + _  {  } ~, as well as characters
-     * in the ranges 0-9, A-Z and a-z. Any other character, including the space
-     * character, are not allowed.
+     * Specifies the value to include in the roles claim in ID tokens and access tokens authenticating an assigned user
+     * or service principal. Must not exceed 120 characters in length. Allowed characters are : ! # $ % & ' ( ) * + , -
+     * . / : ;  =  ? @ [ ] ^ + _  {  } ~, as well as characters in the ranges 0-9, A-Z and a-z. Any other character,
+     * including the space character, are not allowed.
      */
     @JsonProperty(value = "value")
     private String value;
@@ -81,6 +73,10 @@ public final class MicrosoftGraphAppRole {
      * appRole
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphAppRole class. */
+    public MicrosoftGraphAppRole() {
+    }
 
     /**
      * Get the allowedMemberTypes property: Specifies whether this app role can be assigned to users and groups (by

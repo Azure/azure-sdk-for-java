@@ -12,7 +12,7 @@ public final class EnvironmentTypePropertiesTests {
     @Test
     public void testDeserialize() {
         EnvironmentTypeProperties model =
-            BinaryData.fromString("{\"provisioningState\":\"nermcl\"}").toObject(EnvironmentTypeProperties.class);
+            BinaryData.fromString("{\"provisioningState\":\"Running\"}").toObject(EnvironmentTypeProperties.class);
     }
 
     @Test

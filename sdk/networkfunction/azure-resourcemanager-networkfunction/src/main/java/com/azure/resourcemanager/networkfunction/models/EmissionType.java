@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EmissionType. */
+/** Emission format type. */
 public final class EmissionType extends ExpandableStringEnum<EmissionType> {
     /** Static value IPFIX for EmissionType. */
     public static final EmissionType IPFIX = fromString("IPFIX");

@@ -42,19 +42,6 @@ public interface WorkspaceSettingsClient {
      * custom-workspace configuration was set.
      *
      * @param workspaceSettingName Name of the security setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures where to store the OMS agent data for workspaces under a scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkspaceSettingInner get(String workspaceSettingName);
-
-    /**
-     * Settings about where we should store your security data and logs. If the result is empty, it means that no
-     * custom-workspace configuration was set.
-     *
-     * @param workspaceSettingName Name of the security setting.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -65,17 +52,17 @@ public interface WorkspaceSettingsClient {
     Response<WorkspaceSettingInner> getWithResponse(String workspaceSettingName, Context context);
 
     /**
-     * creating settings about where we should store your security data and logs.
+     * Settings about where we should store your security data and logs. If the result is empty, it means that no
+     * custom-workspace configuration was set.
      *
      * @param workspaceSettingName Name of the security setting.
-     * @param workspaceSetting Security data setting object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configures where to store the OMS agent data for workspaces under a scope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkspaceSettingInner create(String workspaceSettingName, WorkspaceSettingInner workspaceSetting);
+    WorkspaceSettingInner get(String workspaceSettingName);
 
     /**
      * creating settings about where we should store your security data and logs.
@@ -93,7 +80,7 @@ public interface WorkspaceSettingsClient {
         String workspaceSettingName, WorkspaceSettingInner workspaceSetting, Context context);
 
     /**
-     * Settings about where we should store your security data and logs.
+     * creating settings about where we should store your security data and logs.
      *
      * @param workspaceSettingName Name of the security setting.
      * @param workspaceSetting Security data setting object.
@@ -103,7 +90,7 @@ public interface WorkspaceSettingsClient {
      * @return configures where to store the OMS agent data for workspaces under a scope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkspaceSettingInner update(String workspaceSettingName, WorkspaceSettingInner workspaceSetting);
+    WorkspaceSettingInner create(String workspaceSettingName, WorkspaceSettingInner workspaceSetting);
 
     /**
      * Settings about where we should store your security data and logs.
@@ -121,15 +108,17 @@ public interface WorkspaceSettingsClient {
         String workspaceSettingName, WorkspaceSettingInner workspaceSetting, Context context);
 
     /**
-     * Deletes the custom workspace settings for this subscription. new VMs will report to the default workspace.
+     * Settings about where we should store your security data and logs.
      *
      * @param workspaceSettingName Name of the security setting.
+     * @param workspaceSetting Security data setting object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configures where to store the OMS agent data for workspaces under a scope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String workspaceSettingName);
+    WorkspaceSettingInner update(String workspaceSettingName, WorkspaceSettingInner workspaceSetting);
 
     /**
      * Deletes the custom workspace settings for this subscription. new VMs will report to the default workspace.
@@ -143,4 +132,15 @@ public interface WorkspaceSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String workspaceSettingName, Context context);
+
+    /**
+     * Deletes the custom workspace settings for this subscription. new VMs will report to the default workspace.
+     *
+     * @param workspaceSettingName Name of the security setting.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String workspaceSettingName);
 }

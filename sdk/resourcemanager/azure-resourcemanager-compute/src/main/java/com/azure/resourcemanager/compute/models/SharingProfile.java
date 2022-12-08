@@ -30,6 +30,10 @@ public final class SharingProfile {
     @JsonProperty(value = "communityGalleryInfo")
     private CommunityGalleryInfo communityGalleryInfo;
 
+    /** Creates an instance of SharingProfile class. */
+    public SharingProfile() {
+    }
+
     /**
      * Get the permissions property: This property allows you to specify the permission of sharing gallery.
      * &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Private** &lt;br&gt;&lt;br&gt; **Groups**

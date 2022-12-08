@@ -15,7 +15,7 @@ import java.util.Map;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobType")
 @JsonTypeName("Pipeline")
 @Fluent
-public final class PipelineJob extends JobBaseDetails {
+public final class PipelineJob extends JobBaseProperties {
     /*
      * Inputs for the pipeline job.
      */
@@ -42,6 +42,16 @@ public final class PipelineJob extends JobBaseDetails {
      */
     @JsonProperty(value = "settings")
     private Object settings;
+
+    /*
+     * ARM resource ID of source job.
+     */
+    @JsonProperty(value = "sourceJobId")
+    private String sourceJobId;
+
+    /** Creates an instance of PipelineJob class. */
+    public PipelineJob() {
+    }
 
     /**
      * Get the inputs property: Inputs for the pipeline job.
@@ -123,6 +133,33 @@ public final class PipelineJob extends JobBaseDetails {
         return this;
     }
 
+    /**
+     * Get the sourceJobId property: ARM resource ID of source job.
+     *
+     * @return the sourceJobId value.
+     */
+    public String sourceJobId() {
+        return this.sourceJobId;
+    }
+
+    /**
+     * Set the sourceJobId property: ARM resource ID of source job.
+     *
+     * @param sourceJobId the sourceJobId value to set.
+     * @return the PipelineJob object itself.
+     */
+    public PipelineJob withSourceJobId(String sourceJobId) {
+        this.sourceJobId = sourceJobId;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PipelineJob withComponentId(String componentId) {
+        super.withComponentId(componentId);
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public PipelineJob withComputeId(String computeId) {
@@ -155,13 +192,6 @@ public final class PipelineJob extends JobBaseDetails {
     @Override
     public PipelineJob withIsArchived(Boolean isArchived) {
         super.withIsArchived(isArchived);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public PipelineJob withSchedule(ScheduleBase schedule) {
-        super.withSchedule(schedule);
         return this;
     }
 

@@ -24,6 +24,10 @@ public final class CloudServiceVaultSecretGroup {
     @JsonProperty(value = "vaultCertificates")
     private List<CloudServiceVaultCertificate> vaultCertificates;
 
+    /** Creates an instance of CloudServiceVaultSecretGroup class. */
+    public CloudServiceVaultSecretGroup() {
+    }
+
     /**
      * Get the sourceVault property: The relative URL of the Key Vault containing all of the certificates in
      * VaultCertificates.

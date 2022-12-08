@@ -18,6 +18,10 @@ public final class PricingListInner {
     @JsonProperty(value = "value", required = true)
     private List<PricingInner> value;
 
+    /** Creates an instance of PricingListInner class. */
+    public PricingListInner() {
+    }
+
     /**
      * Get the value property: List of pricing configurations.
      *

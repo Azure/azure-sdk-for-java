@@ -12,6 +12,7 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
@@ -34,6 +35,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkfunction.fluent.CollectorPoliciesClient;
 import com.azure.resourcemanager.networkfunction.fluent.models.CollectorPolicyInner;
 import com.azure.resourcemanager.networkfunction.models.CollectorPolicyListResult;
+import com.azure.resourcemanager.networkfunction.models.TagsObject;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -63,7 +65,7 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureTrafficCollecto")
-    private interface CollectorPoliciesService {
+    public interface CollectorPoliciesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction"
@@ -125,6 +127,23 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
             @QueryParam("api-version") String apiVersion,
             @PathParam("azureTrafficCollectorName") String azureTrafficCollectorName,
             @PathParam("collectorPolicyName") String collectorPolicyName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkFunction"
+                + "/azureTrafficCollectors/{azureTrafficCollectorName}/collectorPolicies/{collectorPolicyName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<CollectorPolicyInner>> updateTags(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("azureTrafficCollectorName") String azureTrafficCollectorName,
+            @PathParam("collectorPolicyName") String collectorPolicyName,
+            @BodyParam("application/json") TagsObject parameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -465,23 +484,6 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
      * @param resourceGroupName The name of the resource group.
      * @param azureTrafficCollectorName Azure Traffic Collector name.
      * @param collectorPolicyName Collector Policy Name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collector policy in a specified Traffic Collector.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CollectorPolicyInner get(
-        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName) {
-        return getAsync(resourceGroupName, azureTrafficCollectorName, collectorPolicyName).block();
-    }
-
-    /**
-     * Gets the collector policy in a specified Traffic Collector.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureTrafficCollectorName Azure Traffic Collector name.
-     * @param collectorPolicyName Collector Policy Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -492,6 +494,24 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
     public Response<CollectorPolicyInner> getWithResponse(
         String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, Context context) {
         return getWithResponseAsync(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, context).block();
+    }
+
+    /**
+     * Gets the collector policy in a specified Traffic Collector.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureTrafficCollectorName Azure Traffic Collector name.
+     * @param collectorPolicyName Collector Policy Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the collector policy in a specified Traffic Collector.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CollectorPolicyInner get(
+        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName) {
+        return getWithResponse(resourceGroupName, azureTrafficCollectorName, collectorPolicyName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1096,9 +1116,205 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
     }
 
     /**
+     * Updates the specified Collector Policy tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureTrafficCollectorName Azure Traffic Collector name.
+     * @param collectorPolicyName Collector Policy Name.
+     * @param parameters Parameters supplied to update Collector Policy tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collector policy resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<CollectorPolicyInner>> updateTagsWithResponseAsync(
+        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, TagsObject parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (azureTrafficCollectorName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter azureTrafficCollectorName is required and cannot be null."));
+        }
+        if (collectorPolicyName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter collectorPolicyName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .updateTags(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            azureTrafficCollectorName,
+                            collectorPolicyName,
+                            parameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Updates the specified Collector Policy tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureTrafficCollectorName Azure Traffic Collector name.
+     * @param collectorPolicyName Collector Policy Name.
+     * @param parameters Parameters supplied to update Collector Policy tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collector policy resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<CollectorPolicyInner>> updateTagsWithResponseAsync(
+        String resourceGroupName,
+        String azureTrafficCollectorName,
+        String collectorPolicyName,
+        TagsObject parameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (azureTrafficCollectorName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter azureTrafficCollectorName is required and cannot be null."));
+        }
+        if (collectorPolicyName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter collectorPolicyName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .updateTags(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                azureTrafficCollectorName,
+                collectorPolicyName,
+                parameters,
+                accept,
+                context);
+    }
+
+    /**
+     * Updates the specified Collector Policy tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureTrafficCollectorName Azure Traffic Collector name.
+     * @param collectorPolicyName Collector Policy Name.
+     * @param parameters Parameters supplied to update Collector Policy tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collector policy resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CollectorPolicyInner> updateTagsAsync(
+        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, TagsObject parameters) {
+        return updateTagsWithResponseAsync(
+                resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Updates the specified Collector Policy tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureTrafficCollectorName Azure Traffic Collector name.
+     * @param collectorPolicyName Collector Policy Name.
+     * @param parameters Parameters supplied to update Collector Policy tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collector policy resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CollectorPolicyInner> updateTagsWithResponse(
+        String resourceGroupName,
+        String azureTrafficCollectorName,
+        String collectorPolicyName,
+        TagsObject parameters,
+        Context context) {
+        return updateTagsWithResponseAsync(
+                resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters, context)
+            .block();
+    }
+
+    /**
+     * Updates the specified Collector Policy tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureTrafficCollectorName Azure Traffic Collector name.
+     * @param collectorPolicyName Collector Policy Name.
+     * @param parameters Parameters supplied to update Collector Policy tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collector policy resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CollectorPolicyInner updateTags(
+        String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, TagsObject parameters) {
+        return updateTagsWithResponse(
+                resourceGroupName, azureTrafficCollectorName, collectorPolicyName, parameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1134,7 +1350,8 @@ public final class CollectorPoliciesClientImpl implements CollectorPoliciesClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

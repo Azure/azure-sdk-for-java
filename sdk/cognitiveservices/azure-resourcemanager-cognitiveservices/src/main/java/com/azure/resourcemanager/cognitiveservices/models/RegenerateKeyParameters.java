@@ -17,6 +17,10 @@ public final class RegenerateKeyParameters {
     @JsonProperty(value = "keyName", required = true)
     private KeyName keyName;
 
+    /** Creates an instance of RegenerateKeyParameters class. */
+    public RegenerateKeyParameters() {
+    }
+
     /**
      * Get the keyName property: key name to generate (Key1|Key2).
      *

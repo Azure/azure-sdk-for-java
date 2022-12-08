@@ -25,6 +25,10 @@ public final class ProxyServerProperties {
     @JsonProperty(value = "port")
     private String port;
 
+    /** Creates an instance of ProxyServerProperties class. */
+    public ProxyServerProperties() {
+    }
+
     /**
      * Get the ip property: Proxy server IP.
      *

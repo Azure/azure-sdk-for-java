@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Accounts Delete. */
 public final class AccountsDeleteSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/DeleteAccount.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/DeleteAccount.json
      */
     /**
      * Sample code: Delete Account.

@@ -29,8 +29,7 @@ public final class MicrosoftGraphChoiceColumn {
     private List<String> choices;
 
     /*
-     * How the choices are to be presented in the UX. Must be one of
-     * checkBoxes, dropDownMenu, or radioButtons
+     * How the choices are to be presented in the UX. Must be one of checkBoxes, dropDownMenu, or radioButtons
      */
     @JsonProperty(value = "displayAs")
     private String displayAs;
@@ -39,6 +38,10 @@ public final class MicrosoftGraphChoiceColumn {
      * choiceColumn
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphChoiceColumn class. */
+    public MicrosoftGraphChoiceColumn() {
+    }
 
     /**
      * Get the allowTextEntry property: If true, allows custom values that aren't in the configured choices.

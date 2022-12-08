@@ -23,6 +23,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.datafactory.fluent.ActivityRunsClient;
+import com.azure.resourcemanager.datafactory.fluent.CredentialOperationsClient;
 import com.azure.resourcemanager.datafactory.fluent.DataFactoryManagementClient;
 import com.azure.resourcemanager.datafactory.fluent.DataFlowDebugSessionsClient;
 import com.azure.resourcemanager.datafactory.fluent.DataFlowsClient;
@@ -332,6 +333,18 @@ public final class DataFactoryManagementClientImpl implements DataFactoryManagem
         return this.managedPrivateEndpoints;
     }
 
+    /** The CredentialOperationsClient object to access its operations. */
+    private final CredentialOperationsClient credentialOperations;
+
+    /**
+     * Gets the CredentialOperationsClient object to access its operations.
+     *
+     * @return the CredentialOperationsClient object.
+     */
+    public CredentialOperationsClient getCredentialOperations() {
+        return this.credentialOperations;
+    }
+
     /** The PrivateEndPointConnectionsClient object to access its operations. */
     private final PrivateEndPointConnectionsClient privateEndPointConnections;
 
@@ -420,6 +433,7 @@ public final class DataFactoryManagementClientImpl implements DataFactoryManagem
         this.dataFlowDebugSessions = new DataFlowDebugSessionsClientImpl(this);
         this.managedVirtualNetworks = new ManagedVirtualNetworksClientImpl(this);
         this.managedPrivateEndpoints = new ManagedPrivateEndpointsClientImpl(this);
+        this.credentialOperations = new CredentialOperationsClientImpl(this);
         this.privateEndPointConnections = new PrivateEndPointConnectionsClientImpl(this);
         this.privateEndpointConnectionOperations = new PrivateEndpointConnectionOperationsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);

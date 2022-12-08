@@ -16,6 +16,10 @@ public final class VirtualHardDisk {
     @JsonProperty(value = "uri")
     private String uri;
 
+    /** Creates an instance of VirtualHardDisk class. */
+    public VirtualHardDisk() {
+    }
+
     /**
      * Get the uri property: Specifies the virtual hard disk's uri.
      *

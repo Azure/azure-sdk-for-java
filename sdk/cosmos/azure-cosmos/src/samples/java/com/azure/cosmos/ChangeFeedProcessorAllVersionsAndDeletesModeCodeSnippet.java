@@ -35,7 +35,7 @@ public class ChangeFeedProcessorAllVersionsAndDeletesModeCodeSnippet {
         // END: com.azure.cosmos.allVersionsAndDeletesChangeFeedProcessor.builder
     }
 
-    public void handleChangesCodeSnippet() {
+    public void handleAllVersionsAndDeletesChangesCodeSnippet() {
         String hostName = "test-host-name";
         CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)

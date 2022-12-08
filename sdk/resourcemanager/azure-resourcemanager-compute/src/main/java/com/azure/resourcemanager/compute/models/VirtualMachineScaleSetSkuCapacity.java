@@ -34,6 +34,10 @@ public final class VirtualMachineScaleSetSkuCapacity {
     @JsonProperty(value = "scaleType", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineScaleSetSkuScaleType scaleType;
 
+    /** Creates an instance of VirtualMachineScaleSetSkuCapacity class. */
+    public VirtualMachineScaleSetSkuCapacity() {
+    }
+
     /**
      * Get the minimum property: The minimum capacity.
      *

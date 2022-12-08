@@ -24,6 +24,10 @@ public final class JitNetworkAccessPolicyInitiateRequest {
     @JsonProperty(value = "justification")
     private String justification;
 
+    /** Creates an instance of JitNetworkAccessPolicyInitiateRequest class. */
+    public JitNetworkAccessPolicyInitiateRequest() {
+    }
+
     /**
      * Get the virtualMachines property: A list of virtual machines &amp; ports to open access for.
      *

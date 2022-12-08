@@ -1,0 +1,31 @@
+{
+    "results": [
+        {
+            "dateTime": "2022-03-23T07:00:00Z",
+            "index": 23.5,
+            "globalIndex": 24.9,
+            "dominantPollutant": "Ozone",
+            "category": "Fair",
+            "categoryColor": "#FFC300",
+            "description": "The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure."
+        },
+        {
+            "dateTime": "2022-03-24T07:00:00Z",
+            "index": 30.4,
+            "globalIndex": 35.3,
+            "dominantPollutant": "Ozone",
+            "category": "Fair",
+            "categoryColor": "#FFC300",
+            "description": "The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure."
+        },
+        {
+            "dateTime": "2022-03-25T07:00:00Z",
+            "index": 41.3,
+            "globalIndex": 34.5,
+            "dominantPollutant": "Ozone",
+            "category": "Fair",
+            "categoryColor": "#FFC300",
+            "description": "The air quality is generally acceptable for most individuals. However, sensitive groups may experience minor to moderate symptoms from long-term exposure."
+        }
+    ]
+}

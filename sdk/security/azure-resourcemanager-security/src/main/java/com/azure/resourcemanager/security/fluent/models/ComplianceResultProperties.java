@@ -17,6 +17,10 @@ public final class ComplianceResultProperties {
     @JsonProperty(value = "resourceStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceStatus resourceStatus;
 
+    /** Creates an instance of ComplianceResultProperties class. */
+    public ComplianceResultProperties() {
+    }
+
     /**
      * Get the resourceStatus property: The status of the resource regarding a single assessment.
      *

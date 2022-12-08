@@ -44,6 +44,10 @@ public final class MicrosoftGraphThumbnailSet extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphThumbnailSet class. */
+    public MicrosoftGraphThumbnailSet() {
+    }
+
     /**
      * Get the large property: thumbnail.
      *

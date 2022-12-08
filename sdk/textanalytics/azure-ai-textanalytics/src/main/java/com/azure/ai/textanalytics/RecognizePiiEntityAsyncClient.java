@@ -167,33 +167,30 @@ class RecognizePiiEntityAsyncClient {
         final boolean finalIncludeStatistics = options.isIncludeStatistics();
 
         final String finalDomainFilter = options.getDomainFilter() != null
-                                             ? options.getDomainFilter().toString() : null;
+            ? options.getDomainFilter().toString() : null;
         if (service != null) {
-            return service
-                       .analyzeTextWithResponseAsync(
-                           new AnalyzeTextPiiEntitiesRecognitionInput()
-                               .setParameters(
-                                   new PiiTaskParameters()
-                                                           .setDomain(PiiDomain.fromString(finalDomainFilter))
-                                                           .setPiiCategories(
-                                                               toCategoriesFilter(options.getCategoriesFilter()))
-                                                           .setStringIndexType(finalStringIndexType)
-                                                           .setModelVersion(finalModelVersion)
-                                                           .setLoggingOptOut(finalLoggingOptOut))
-                               .setAnalysisInput(new MultiLanguageAnalysisInput()
-                                                     .setDocuments(toMultiLanguageInput(documents))),
-                           finalIncludeStatistics,
-                           finalContext)
-                       .doOnSubscribe(ignoredValue -> logger.info(
-                           "Start recognizing Personally Identifiable Information entities for a batch of documents."))
-                       .doOnSuccess(response -> logger.info(
-                           "Successfully recognized Personally Identifiable Information entities for a batch"
-                               + " of documents."
-                       ))
-                       .doOnError(error -> logger.warning(
-                           "Failed to recognize Personally Identifiable Information entities - {}", error))
-                       .map(Utility::toRecognizePiiEntitiesResultCollectionResponse2)
-                       .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+            return service.analyzeTextWithResponseAsync(
+                new AnalyzeTextPiiEntitiesRecognitionInput()
+                    .setParameters(
+                        new PiiTaskParameters()
+                            .setDomain(PiiDomain.fromString(finalDomainFilter))
+                            .setPiiCategories(
+                                toCategoriesFilter(options.getCategoriesFilter()))
+                            .setStringIndexType(finalStringIndexType)
+                            .setModelVersion(finalModelVersion)
+                            .setLoggingOptOut(finalLoggingOptOut))
+                    .setAnalysisInput(new MultiLanguageAnalysisInput()
+                        .setDocuments(toMultiLanguageInput(documents))),
+                finalIncludeStatistics,
+                finalContext)
+                .doOnSubscribe(ignoredValue -> logger.info(
+                    "Start recognizing Personally Identifiable Information entities for a batch of documents."))
+                .doOnSuccess(response -> logger.info("Successfully recognized Personally Identifiable Information "
+                    + "entities for a batch of documents."))
+                .doOnError(error -> logger.warning(
+                    "Failed to recognize Personally Identifiable Information entities - {}", error))
+                .map(Utility::toRecognizePiiEntitiesResultCollectionResponseLanguageApi)
+                .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         }
 
         return legacyService.entitiesRecognitionPiiWithResponseAsync(
@@ -205,14 +202,13 @@ class RecognizePiiEntityAsyncClient {
             finalStringIndexType,
             toCategoriesFilter(options.getCategoriesFilter()),
             finalContext)
-                   .doOnSubscribe(ignoredValue -> logger.info(
-                       "Start recognizing Personally Identifiable Information entities for a batch of documents."))
-                   .doOnSuccess(response -> logger.info(
-                       "Successfully recognized Personally Identifiable Information entities for a batch of documents."
-                   ))
-                   .doOnError(error -> logger.warning(
-                       "Failed to recognize Personally Identifiable Information entities - {}", error))
-                   .map(Utility::toRecognizePiiEntitiesResultCollectionResponse)
-                   .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+            .doOnSubscribe(ignoredValue -> logger.info(
+                "Start recognizing Personally Identifiable Information entities for a batch of documents."))
+            .doOnSuccess(response -> logger.info(
+                "Successfully recognized Personally Identifiable Information entities for a batch of documents."))
+            .doOnError(error ->
+                logger.warning("Failed to recognize Personally Identifiable Information entities - {}", error))
+            .map(Utility::toRecognizePiiEntitiesResultCollectionResponseLegacyApi)
+            .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }
 }

@@ -121,6 +121,9 @@ public final class DocumentField {
     @JsonProperty(value = "confidence")
     private Float confidence;
 
+    /** Creates an instance of DocumentField class. */
+    public DocumentField() {}
+
     /**
      * Get the type property: Data type of the field value.
      *
