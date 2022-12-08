@@ -4,11 +4,10 @@
 # MavenCacheFolder - The root of the maven cache folder. Most likely would be the
 #                    $(MAVEN_CACHE_FOLDER) environment variable.
 #
-# param(
-#   [Parameter(Mandatory=$true)][string]$MavenCacheFolder
-# )
+param(
+  [Parameter(Mandatory=$true)][string]$MavenCacheFolder
+)
 
-$MavenCacheFolder = "C:\Users\Work\.m2\repository"
 $StartTime = $(get-date)
 
 # Any new subdirectories to clean would be added here.
