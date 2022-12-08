@@ -85,16 +85,10 @@ public class ClientRetryPolicyTest {
             .shouldRetry(true)
             .backOfTime(Duration.ofMillis(1000))
             .build());
-
-        validateSuccess(shouldRetry, ShouldRetryValidator.builder()
-            .nullException()
-            .shouldRetry(true)
-            .backOfTime(Duration.ofMillis(1000))
-            .build());
-
+        
         //Metadata Read
         dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
-            OperationType.Read, "/dbs/db/colls/col/docs/doc", ResourceType.Database);
+            OperationType.Read, "/dbs/db/clls/col/docs/doc", ResourceType.Database);
 
         clientRetryPolicy.onBeforeSendRequest(dsr);
 
