@@ -196,7 +196,9 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                             // The epk version lease does not exist, create one from pkRangeId version lease
                             List<String> possibleMatchingPkRangeId = new ArrayList<>();
                             possibleMatchingPkRangeId.add(partitionKeyRange.getId());
-                            possibleMatchingPkRangeId.addAll(partitionKeyRange.getParents());
+                            if (partitionKeyRange.getParents() != null) {
+                                possibleMatchingPkRangeId.addAll(partitionKeyRange.getParents());
+                            }
 
                             List<Lease> matchedPkRangeIdVersionLeases = new ArrayList<>();
                             for (String pkRangeId : possibleMatchingPkRangeId) {

@@ -184,6 +184,7 @@ public class PartitionSynchronizerImplTests {
         when(feedContextClientMock.getOverlappingRanges(PartitionKeyInternalHelper.FullRange))
             .thenReturn(Mono.just(overlappingRanges));
 
+        when(leaseContainerMock.getAllLeases()).thenReturn(Flux.empty());
         when(leaseManagerMock.createLeaseIfNotExist((FeedRangeEpkImpl) any(), any()))
             .thenReturn(Mono.empty());
 
