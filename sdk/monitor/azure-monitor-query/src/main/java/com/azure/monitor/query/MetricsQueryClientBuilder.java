@@ -55,9 +55,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
     private final MetricsNamespacesClientImplBuilder innerMetricsNamespaceBuilder =
             new MetricsNamespacesClientImplBuilder();
     private final ClientLogger logger = new ClientLogger(MetricsQueryClientBuilder.class);
-    private ClientOptions clientOptions;
     private MetricsQueryServiceVersion serviceVersion;
-    private RetryOptions retryOptions;
 
     /**
      * Sets the metrics query endpoint.
@@ -138,7 +136,9 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      */
     @Override
     public MetricsQueryClientBuilder retryOptions(RetryOptions retryOptions) {
-        this.retryOptions = retryOptions;
+        innerMetricsBuilder.retryOptions(retryOptions);
+        innerMetricsDefinitionsBuilder.retryOptions(retryOptions);
+        innerMetricsNamespaceBuilder.retryOptions(retryOptions);
         return this;
     }
 
@@ -172,7 +172,9 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      * @return the {@link MetricsQueryClientBuilder}
      */
     public MetricsQueryClientBuilder clientOptions(ClientOptions clientOptions) {
-        this.clientOptions = clientOptions;
+        innerMetricsBuilder.clientOptions(clientOptions);
+        innerMetricsDefinitionsBuilder.clientOptions(clientOptions);
+        innerMetricsNamespaceBuilder.clientOptions(clientOptions);
         return this;
     }
 
