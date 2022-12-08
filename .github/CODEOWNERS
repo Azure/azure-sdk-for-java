@@ -141,7 +141,7 @@
 /sdk/loganalytics/microsoft-azure-loganalytics/     @divyajay @alongafni
 
 # PRLabel:  %Monitor - Exporter
-/sdk/monitor/azure-monitor-opentelemetry-exporter   @trask @ramthi @heyams
+/sdk/monitor/azure-monitor-opentelemetry-exporter   @trask @ramthi @heyams @jeanbisutti
 
 # PRLabel:  %Monitor
 /sdk/monitor/azure-monitor-query                    @srnagar @lmolkova @ki1729
