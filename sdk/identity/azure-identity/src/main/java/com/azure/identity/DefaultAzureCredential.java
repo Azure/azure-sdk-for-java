@@ -13,6 +13,7 @@ import java.util.List;
  * the following order:
  *
  * <ol>
+ * <li>{@link AzureDeveloperCliCredential}</li>
  * <li>{@link EnvironmentCredential}</li>
  * <li>{@link ManagedIdentityCredential}</li>
  * <li>{@link SharedTokenCacheCredential}</li>

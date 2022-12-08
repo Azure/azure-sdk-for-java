@@ -28,12 +28,10 @@ public class AzureDeveloperCliCredential implements TokenCredential {
 
     /**
      * Creates an AzureDeveloperCliSecretCredential with default identity client options.
-     * @param tenantId the tenant id of the application
      * @param identityClientOptions the options to configure the identity client
      */
-    AzureDeveloperCliCredential(String tenantId, IdentityClientOptions identityClientOptions) {
+    AzureDeveloperCliCredential(IdentityClientOptions identityClientOptions) {
         IdentityClientBuilder builder = new IdentityClientBuilder()
-            .tenantId(tenantId)
             .identityClientOptions(identityClientOptions);
 
         identityClient = builder.build();
