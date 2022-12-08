@@ -11,7 +11,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Enhance the Azure AD Resource Server configurer to accept the custom jwt granted authorities converter. [#28665](https://github.com/Azure/azure-sdk-for-java/issues/28665).
 
 #### Breaking Changes
-- Move Key Vault environment classes for internal usage to the implementation package [#32428] (https://github.com/Azure/azure-sdk-for-java/pull/32428).
+- Move Key Vault environment classes for internal usage to the implementation package [#32428](https://github.com/Azure/azure-sdk-for-java/pull/32428).
 - Delete properties: `spring.jms.serviebus.username`, `spring.jms.serviebus.password` and `spring.jms.serviebus.remote-uri` [#32465](https://github.com/Azure/azure-sdk-for-java/pull/32465).
 
 ## 6.0.0-beta.3 (2022-11-04)
