@@ -4,11 +4,16 @@
 package com.azure.monitor.query;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.EndpointTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
@@ -41,7 +46,8 @@ import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespace
  * <!-- end com.azure.monitor.query.MetricsQueryClient.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = {MetricsQueryClient.class, MetricsQueryAsyncClient.class})
-public final class MetricsQueryClientBuilder {
+public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQueryClientBuilder>,
+        HttpTrait<MetricsQueryClientBuilder>, ConfigurationTrait<MetricsQueryClientBuilder>, TokenCredentialTrait<MetricsQueryClientBuilder> {
 
     private final MonitorManagementClientImplBuilder innerMetricsBuilder = new MonitorManagementClientImplBuilder();
     private final MetricsDefinitionsClientImplBuilder innerMetricsDefinitionsBuilder =
@@ -51,7 +57,7 @@ public final class MetricsQueryClientBuilder {
     private final ClientLogger logger = new ClientLogger(MetricsQueryClientBuilder.class);
     private ClientOptions clientOptions;
     private MetricsQueryServiceVersion serviceVersion;
-
+    private RetryOptions retryOptions;
 
     /**
      * Sets the metrics query endpoint.
@@ -122,6 +128,17 @@ public final class MetricsQueryClientBuilder {
         innerMetricsBuilder.retryPolicy(retryPolicy);
         innerMetricsDefinitionsBuilder.retryPolicy(retryPolicy);
         innerMetricsNamespaceBuilder.retryPolicy(retryPolicy);
+        return this;
+    }
+
+    /**
+     * Sets the {@link RetryOptions} used for creating the client.
+     * @param retryOptions The {@link RetryOptions}.
+     * @return the updated {@link MetricsQueryClientBuilder}.
+     */
+    @Override
+    public MetricsQueryClientBuilder retryOptions(RetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
         return this;
     }
 
