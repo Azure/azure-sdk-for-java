@@ -11,7 +11,6 @@ import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
-import com.azure.spring.data.cosmos.domain.Customer;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
