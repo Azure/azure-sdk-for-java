@@ -121,7 +121,6 @@ private object CosmosTableSchemaInferrer
 
       val dedicatedGatewayRequestOptions = new DedicatedGatewayRequestOptions
       dedicatedGatewayRequestOptions.setMaxIntegratedCacheStaleness(Duration.ofMillis(cosmosReadConfig.maxIntegratedCacheStaleness))
-
       queryOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions)
 
       val queryText = cosmosInferenceConfig.inferSchemaQuery match {

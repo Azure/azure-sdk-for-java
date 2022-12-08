@@ -16,7 +16,7 @@ class FilterAnalyzerSpec extends UnitSpec {
 
   private[this] val readConfigWithoutCustomQuery =
     new CosmosReadConfig(
-      true, SchemaConversionModes.Relaxed, 100, Queues.XS_BUFFER_SIZE, None)
+      true, SchemaConversionModes.Relaxed, 100, Queues.XS_BUFFER_SIZE, 10000, None)
   private[this] val queryText = "SELECT * FROM c WHERE c.abc='Hello World'"
   private[this] val query = Some(CosmosParameterizedQuery(
     queryText,
@@ -26,6 +26,7 @@ class FilterAnalyzerSpec extends UnitSpec {
     true,
     SchemaConversionModes.Relaxed,
     100,
+    10000,
     Queues.XS_BUFFER_SIZE,
     query)
 
