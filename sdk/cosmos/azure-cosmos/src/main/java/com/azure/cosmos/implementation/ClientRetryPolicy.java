@@ -128,7 +128,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
                 boolean canFailoverOnTimeout = gatewayRequestCanFailoverOnTimeout(request, clientException);
 
-                //if operation is data plane, metadata read, or query plan it can be retried on a different endpoint.
+                //if operation is data plane read, metadata read, or query plan it can be retried on a different endpoint.
                 if(canFailoverOnTimeout) {
                     return shouldRetryOnEndpointFailureAsync(this.isReadRequest, true, true);
                 }
@@ -177,9 +177,10 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
               return true;
         }
 
-        //Data Plane Read & Write
-        if(!isMetaDataRequest && !request.isAddressRefresh()
-            && (request.isReadOnly() || !BridgeInternal.hasSendingRequestStarted(clientException))) {
+        //Data Plane Read
+        if(!isMetaDataRequest
+            && !request.isAddressRefresh()
+            && request.isReadOnly()) {
             return true;
         }
 

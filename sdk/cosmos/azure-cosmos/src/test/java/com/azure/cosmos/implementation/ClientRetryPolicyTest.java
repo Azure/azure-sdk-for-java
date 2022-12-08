@@ -86,14 +86,6 @@ public class ClientRetryPolicyTest {
             .backOfTime(Duration.ofMillis(1000))
             .build());
 
-        //Data Plane Write
-        dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
-            OperationType.Create, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
-
-        clientRetryPolicy.onBeforeSendRequest(dsr);
-
-        shouldRetry = clientRetryPolicy.shouldRetry(cosmosException);
-
         validateSuccess(shouldRetry, ShouldRetryValidator.builder()
             .nullException()
             .shouldRetry(true)
