@@ -4,10 +4,11 @@
 # MavenCacheFolder - The root of the maven cache folder. Most likely would be the
 #                    $(MAVEN_CACHE_FOLDER) environment variable.
 #
-param(
-  [Parameter(Mandatory=$true)][string]$MavenCacheFolder
-)
+# param(
+#   [Parameter(Mandatory=$true)][string]$MavenCacheFolder
+# )
 
+$MavenCacheFolder = "C:\Users\Work\.m2\repository"
 $StartTime = $(get-date)
 
 # Any new subdirectories to clean would be added here.
@@ -16,6 +17,11 @@ $rootFolders = ("/com/azure", "/com/microsoft/azure")
 foreach ($rootFolder in $rootFolders) {
   # Determine the starting search path by joining the Maven cache folder with the specific Azure SDKs subpath.
   $searchPath = Join-Path -Path $MavenCacheFolder -ChildPath $rootFolder
+
+  if (!(Test-Path -Path $searchPath)) {
+    Write-Host "Skipping '$searchPath' as it doesn't exist."
+    continue
+  }
 
   # Find all directories that contain a "maven-metadata*" file. Maven metadata files are the source of truth for
   # what was built locally vs downloaded from Maven central. There are three types of Maven metadata files in
@@ -51,9 +57,8 @@ foreach ($rootFolder in $rootFolders) {
     } else {
       # Folder doesn't contain a 'maven-metadata-central.xml' file, delete the entire folder as it cannot be determined
       # what was built from source vs resolved from Maven central.
-      $parentPath = $artifactRootFolder.Parent
-      Write-Host "Deleting folder '$parentPath' as it doesn't have a 'maven-metadata-central.xml' file."
-      Remove-Item $parentPath -Recurse -ErrorAction Ignore
+      Write-Host "Deleting folder '$artifactRootFolder' as it doesn't have a 'maven-metadata-central.xml' file."
+      Remove-Item $artifactRootFolder -Recurse -ErrorAction Ignore
     }
   }
 }
