@@ -75,7 +75,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     private final IsNewAwareAuditingHandler cosmosAuditingHandler;
 
     protected String databaseName;
-    protected final ResponseDiagnosticsProcessor responseDiagnosticsProcessor;
+    private final ResponseDiagnosticsProcessor responseDiagnosticsProcessor;
     private final boolean queryMetricsEnabled;
     private final int maxDegreeOfParallelism;
     private final int maxBufferedItemCount;
@@ -542,7 +542,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         return response.getProperties();
     }
 
-    protected Mono<CosmosDatabaseResponse> createDatabaseIfNotExists() {
+    private Mono<CosmosDatabaseResponse> createDatabaseIfNotExists() {
         if (databaseThroughputConfig == null) {
             return cosmosAsyncClient
                 .createDatabaseIfNotExists(this.getDatabaseName());
