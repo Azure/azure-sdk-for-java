@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  * A configuration base class for all Azure SDK resource managers.
  */
 @Configuration(proxyBeanMethods = false)
-public abstract class AzureServiceResourceManagerConfigurationBase {
+abstract class AzureServiceResourceManagerConfigurationBase {
 
     protected AzureResourceManager azureResourceManager;
 
