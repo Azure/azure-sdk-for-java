@@ -29,35 +29,21 @@ public class AzureResourceManagerAutoConfiguration {
 
     private final AzureGlobalProperties globalProperties;
 
-    /**
-     * Create {@link AzureResourceManagerAutoConfiguration} instance
-     * @param globalProperties the azure global properties
-     */
     AzureResourceManagerAutoConfiguration(AzureGlobalProperties globalProperties) {
         this.globalProperties = globalProperties;
     }
 
-    /**
-     * Autoconfigure the {@link AzureResourceManager} instance.
-     * @param tokenCredential the {@link TokenCredential} used to authenticate with the {@link AzureResourceManager}.
-     * @param azureProfile the {@link AzureProfile} used by the {@link AzureResourceManager}.
-     * @return the Azure resource manager.
-     */
     @Bean
     @ConditionalOnMissingBean
-    public AzureResourceManager azureResourceManager(TokenCredential tokenCredential, AzureProfile azureProfile) {
+    AzureResourceManager azureResourceManager(TokenCredential tokenCredential, AzureProfile azureProfile) {
         // TODO (xiada) Do we need to pass our User-Agent to with the management sdk?
         // TODO (xiada) configure the http client of arm client
         return AzureResourceManager.configure().authenticate(tokenCredential, azureProfile).withDefaultSubscription();
     }
 
-    /**
-     * Autoconfigure the {@link AzureProfile} instance.
-     * @return the azure profile.
-     */
     @Bean
     @ConditionalOnMissingBean
-    public AzureProfile azureProfile() {
+    AzureProfile azureProfile() {
         return new AzureProfile(this.globalProperties.getProfile().getTenantId(),
                                 this.globalProperties.getProfile().getSubscriptionId(),
                                 this.globalProperties.getProfile().getEnvironment().toAzureManagementEnvironment());

@@ -63,18 +63,13 @@ public class AzureStorageFileShareAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    public ShareServiceClient shareServiceClient(ShareServiceClientBuilder builder) {
+    ShareServiceClient shareServiceClient(ShareServiceClientBuilder builder) {
         return builder.buildClient();
     }
 
-    /**
-     * Autoconfigure the {@link ShareServiceAsyncClient} instance.
-     * @param builder the {@link ShareServiceClientBuilder} to build the instance.
-     * @return the share service async client.
-     */
     @Bean
     @ConditionalOnMissingBean
-    public ShareServiceAsyncClient shareServiceAsyncClient(ShareServiceClientBuilder builder) {
+    ShareServiceAsyncClient shareServiceAsyncClient(ShareServiceClientBuilder builder) {
         return builder.buildAsyncClient();
     }
 

@@ -52,7 +52,7 @@ class AzureServiceBusClientBuilderConfiguration {
 
     @Bean
     @ConditionalOnProperty("spring.cloud.azure.servicebus.connection-string")
-    public StaticConnectionStringProvider<AzureServiceType.ServiceBus> staticServiceBusConnectionStringProvider() {
+    StaticConnectionStringProvider<AzureServiceType.ServiceBus> staticServiceBusConnectionStringProvider() {
 
         return new StaticConnectionStringProvider<>(AzureServiceType.SERVICE_BUS,
                                                     this.serviceBusProperties.getConnectionString());

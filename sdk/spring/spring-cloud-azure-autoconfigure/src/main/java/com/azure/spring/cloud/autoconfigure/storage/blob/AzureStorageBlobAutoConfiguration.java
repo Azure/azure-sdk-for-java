@@ -73,14 +73,9 @@ public class AzureStorageBlobAutoConfiguration {
         return blobServiceAsyncClient.getBlobContainerAsyncClient(properties.getContainerName());
     }
 
-    /**
-     * Autoconfigure the {@link BlobServiceAsyncClient} instance.
-     * @param builder the {@link BlobServiceClientBuilder} to build the instance.
-     * @return the blob service async client.
-     */
     @Bean
     @ConditionalOnMissingBean
-    public BlobServiceAsyncClient blobServiceAsyncClient(
+    BlobServiceAsyncClient blobServiceAsyncClient(
         @Qualifier(STORAGE_BLOB_CLIENT_BUILDER_BEAN_NAME) BlobServiceClientBuilder builder) {
         return builder.buildAsyncClient();
     }
@@ -101,14 +96,9 @@ public class AzureStorageBlobAutoConfiguration {
         return blobServiceClient.getBlobContainerClient(properties.getContainerName());
     }
 
-    /**
-     * Autoconfigure the {@link BlobServiceClient} instance.
-     * @param builder the {@link BlobServiceClientBuilder} to build the instance.
-     * @return the blob service client.
-     */
     @Bean
     @ConditionalOnMissingBean
-    public BlobServiceClient blobServiceClient(
+    BlobServiceClient blobServiceClient(
         @Qualifier(STORAGE_BLOB_CLIENT_BUILDER_BEAN_NAME) BlobServiceClientBuilder builder) {
         return builder.buildClient();
     }

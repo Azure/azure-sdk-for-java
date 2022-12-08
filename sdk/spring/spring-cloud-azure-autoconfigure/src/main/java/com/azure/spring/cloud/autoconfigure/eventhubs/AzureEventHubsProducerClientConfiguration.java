@@ -40,13 +40,13 @@ class AzureEventHubsProducerClientConfiguration {
     static class SharedProducerConnectionConfiguration {
         @Bean
         @ConditionalOnMissingBean
-        public EventHubProducerAsyncClient eventHubProducerAsyncClient(EventHubClientBuilder builder) {
+        EventHubProducerAsyncClient eventHubProducerAsyncClient(EventHubClientBuilder builder) {
             return builder.buildAsyncProducerClient();
         }
 
         @Bean
         @ConditionalOnMissingBean
-        public EventHubProducerClient eventHubProducerClient(EventHubClientBuilder builder) {
+        EventHubProducerClient eventHubProducerClient(EventHubClientBuilder builder) {
             return builder.buildProducerClient();
         }
     }
@@ -86,15 +86,15 @@ class AzureEventHubsProducerClientConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        public EventHubProducerAsyncClient eventHubProducerAsyncClient(@Qualifier(EVENT_HUB_PRODUCER_CLIENT_BUILDER_BEAN_NAME)
-                                                                           EventHubClientBuilder builder) {
+        EventHubProducerAsyncClient eventHubProducerAsyncClient(@Qualifier(EVENT_HUB_PRODUCER_CLIENT_BUILDER_BEAN_NAME)
+                                                                EventHubClientBuilder builder) {
             return builder.buildAsyncProducerClient();
         }
 
         @Bean
         @ConditionalOnMissingBean
-        public EventHubProducerClient eventHubProducerClient(@Qualifier(EVENT_HUB_PRODUCER_CLIENT_BUILDER_BEAN_NAME)
-                                                                 EventHubClientBuilder builder) {
+        EventHubProducerClient eventHubProducerClient(@Qualifier(EVENT_HUB_PRODUCER_CLIENT_BUILDER_BEAN_NAME)
+                                                      EventHubClientBuilder builder) {
             return builder.buildProducerClient();
         }
 

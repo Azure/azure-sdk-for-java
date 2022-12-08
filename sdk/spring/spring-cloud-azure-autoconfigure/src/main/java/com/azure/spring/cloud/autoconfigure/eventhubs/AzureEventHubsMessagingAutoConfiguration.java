@@ -57,7 +57,7 @@ public class AzureEventHubsMessagingAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     NamespaceProperties eventHubsNamespaceProperties(AzureEventHubsProperties properties,
-                                                      ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders) {
+                                                     ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders) {
         NamespaceProperties namespaceProperties = new NamespaceProperties();
         BeanUtils.copyProperties(properties, namespaceProperties);
         copyAzureCommonProperties(properties, namespaceProperties);
@@ -72,25 +72,13 @@ public class AzureEventHubsMessagingAutoConfiguration {
         return namespaceProperties;
     }
 
-    /**
-     * Configure the {@link EventHubsProcessorFactory}
-     */
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnBean(CheckpointStore.class)
-    public static class ProcessorContainerConfiguration {
+    static class ProcessorContainerConfiguration {
 
-        /**
-         * Creates the default Event Hubs namespace processor factory.
-         *
-         * @param properties Event Hubs namespace related properties.
-         * @param checkpointStore Checkpoint store for storing and retrieving partition ownership information and
-         * checkpoint details for each partition.
-         * @param suppliers Object provider suppliers.
-         * @return A default Event Hubs namespace processor factory.
-         */
         @Bean
         @ConditionalOnMissingBean
-        public EventHubsProcessorFactory defaultEventHubsNamespaceProcessorFactory(
+        EventHubsProcessorFactory defaultEventHubsNamespaceProcessorFactory(
             NamespaceProperties properties, CheckpointStore checkpointStore,
             ObjectProvider<PropertiesSupplier<ConsumerIdentifier, ProcessorProperties>> suppliers) {
             return new DefaultEventHubsNamespaceProcessorFactory(checkpointStore, properties,
@@ -99,49 +87,27 @@ public class AzureEventHubsMessagingAutoConfiguration {
 
     }
 
-    /**
-     * Configure the {@link EventHubsTemplate}
-     */
     @Configuration(proxyBeanMethods = false)
-    public static class EventHubsTemplateConfiguration {
+    static class EventHubsTemplateConfiguration {
 
-        /**
-         * Creates a default Event Hubs namespace producer factory.
-         *
-         * @param properties Event Hubs namespace related properties.
-         * @param suppliers Object provider suppliers.
-         * @return A default Event Hubs namespace producer factory.
-         */
         @Bean
         @ConditionalOnMissingBean
-        public EventHubsProducerFactory defaultEventHubsNamespaceProducerFactory(
+        EventHubsProducerFactory defaultEventHubsNamespaceProducerFactory(
             NamespaceProperties properties,
             ObjectProvider<PropertiesSupplier<String, ProducerProperties>> suppliers) {
             return new DefaultEventHubsNamespaceProducerFactory(properties, suppliers.getIfAvailable());
         }
 
-        /**
-         * Creates an Event Hubs message converter.
-         *
-         * @return An Event Hubs message converter.
-         */
         @Bean
         @ConditionalOnMissingBean
-        public EventHubsMessageConverter eventHubsMessageConverter() {
+        EventHubsMessageConverter eventHubsMessageConverter() {
             return new EventHubsMessageConverter();
         }
 
-        /**
-         * Creates an Event Hubs template.
-         *
-         * @param producerFactory An Event Hubs producer factory.
-         * @param messageConverter An Event Hubs message converter.
-         * @return An Event Hubs template.
-         */
         @Bean
         @ConditionalOnMissingBean
-        public EventHubsTemplate eventHubsTemplate(EventHubsProducerFactory producerFactory,
-                                                   EventHubsMessageConverter messageConverter) {
+        EventHubsTemplate eventHubsTemplate(EventHubsProducerFactory producerFactory,
+                                            EventHubsMessageConverter messageConverter) {
             EventHubsTemplate eventHubsTemplate = new EventHubsTemplate(producerFactory);
             eventHubsTemplate.setMessageConverter(messageConverter);
             return eventHubsTemplate;

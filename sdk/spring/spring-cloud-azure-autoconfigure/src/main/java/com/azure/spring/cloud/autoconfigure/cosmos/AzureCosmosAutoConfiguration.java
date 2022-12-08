@@ -41,26 +41,16 @@ public class AzureCosmosAutoConfiguration extends AzureServiceConfigurationBase 
         return loadProperties(getAzureGlobalProperties(), new AzureCosmosProperties());
     }
 
-    /**
-     * Autoconfigure the {@link CosmosClient} instance.
-     * @param builder the {@link CosmosClientBuilder} to build the instance.
-     * @return the cosmos client instance.
-     */
     @Bean
     @ConditionalOnMissingBean
-    public CosmosClient azureCosmosClient(CosmosClientBuilder builder) {
+    CosmosClient azureCosmosClient(CosmosClientBuilder builder) {
         return builder.buildClient();
     }
 
-    /**
-     * Autoconfigure the {@link CosmosAsyncClient} instance.
-     * @param builder the {@link CosmosClientBuilder} to build the instance.
-     * @return the cosmos async client instance.
-     */
     @Bean
     @ConditionalOnMissingBean
     // TODO (xiada): spring data cosmos also defines a CosmosAsyncClient
-    public CosmosAsyncClient azureCosmosAsyncClient(CosmosClientBuilder builder) {
+    CosmosAsyncClient azureCosmosAsyncClient(CosmosClientBuilder builder) {
         return builder.buildAsyncClient();
     }
 

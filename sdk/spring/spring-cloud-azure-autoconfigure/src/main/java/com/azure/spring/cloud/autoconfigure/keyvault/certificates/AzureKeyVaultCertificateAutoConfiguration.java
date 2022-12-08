@@ -44,25 +44,15 @@ public class AzureKeyVaultCertificateAutoConfiguration {
         return AzureServicePropertiesUtils.loadServiceCommonProperties(azureKeyVaultProperties, new AzureKeyVaultCertificateProperties());
     }
 
-    /**
-     * Autoconfigure the {@link CertificateClient} instance.
-     * @param builder the {@link CertificateClientBuilder} to build the instance.
-     * @return the certificate client instance.
-     */
     @Bean
     @ConditionalOnMissingBean
-    public CertificateClient azureKeyVaultCertificateClient(CertificateClientBuilder builder) {
+    CertificateClient azureKeyVaultCertificateClient(CertificateClientBuilder builder) {
         return builder.buildClient();
     }
 
-    /**
-     * Autoconfigure the {@link CertificateAsyncClient} instance.
-     * @param builder the {@link CertificateClientBuilder} to build the instance.
-     * @return the certificate async client instance.
-     */
     @Bean
     @ConditionalOnMissingBean
-    public CertificateAsyncClient azureKeyVaultCertificateAsyncClient(CertificateClientBuilder builder) {
+    CertificateAsyncClient azureKeyVaultCertificateAsyncClient(CertificateClientBuilder builder) {
         return builder.buildAsyncClient();
     }
 

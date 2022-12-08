@@ -23,13 +23,9 @@ import org.springframework.context.annotation.Bean;
     name = { "account-name", "endpoint", "connection-string" })
 public class AzureStorageFileShareResourceAutoConfiguration  {
 
-    /**
-     * Autoconfigure the {@link AzureStorageFileProtocolResolver} instance.
-     * @return the storage file protocol resolver.
-     */
     @Bean
     @ConditionalOnMissingBean
-    public AzureStorageFileProtocolResolver azureStorageFileProtocolResolver() {
+    AzureStorageFileProtocolResolver azureStorageFileProtocolResolver() {
         return new AzureStorageFileProtocolResolver();
     }
 

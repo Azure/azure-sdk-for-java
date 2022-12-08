@@ -12,16 +12,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration(proxyBeanMethods = false)
 public abstract class AzureServiceResourceManagerConfigurationBase {
 
-    /**
-     * The entry point for accessing resource management APIs in Azure.
-     */
     protected AzureResourceManager azureResourceManager;
 
-    /**
-     * Create {@link AzureServiceResourceManagerConfigurationBase} instance
-     * @param azureResourceManager the azure resource manager
-     */
-    public AzureServiceResourceManagerConfigurationBase(AzureResourceManager azureResourceManager) {
+    AzureServiceResourceManagerConfigurationBase(AzureResourceManager azureResourceManager) {
         this.azureResourceManager = azureResourceManager;
     }
 
