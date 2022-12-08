@@ -8,7 +8,7 @@ import com.azure.core.test.http.PlaybackClient;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.models.RecordingRedactor;
-import com.azure.core.test.policy.ProxyRecordPolicy;
+import com.azure.core.test.policy.TestProxyRecordPolicy;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -64,7 +64,7 @@ public class InterceptorManager implements AutoCloseable {
     // A state machine ensuring a test is always reset before another one is setup
     private final RecordedData recordedData;
     private final boolean enableTestProxy;
-    private ProxyRecordPolicy proxyRecordPolicy;
+    private TestProxyRecordPolicy proxyRecordPolicy;
 
     /**
      * Creates a new InterceptorManager that either replays test-session records or saves them.

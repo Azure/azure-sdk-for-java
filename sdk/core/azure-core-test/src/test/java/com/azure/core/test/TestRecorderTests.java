@@ -6,7 +6,6 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.implementation.TestingHelpers;
-import com.azure.core.test.policy.ProxyRecordPolicy;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
