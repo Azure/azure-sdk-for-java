@@ -5,6 +5,7 @@ import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.http.rest.Response
 import com.azure.core.test.TestMode
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
@@ -61,7 +62,6 @@ import reactor.test.StepVerifier
 import spock.lang.IgnoreIf
 import spock.lang.Retry
 import spock.lang.Unroll
-import spock.util.environment.Jvm
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
@@ -3499,14 +3499,20 @@ class FileAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
-    // TODO https://github.com/cglib/cglib/issues/191 CGLib used to generate Spy doesn't work in Java 17
-    @IgnoreIf( { Jvm.current.isJava12Compatible() } )
     @Unroll
     @LiveOnly
     def "Buffered upload options"() {
         setup:
-        DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
-        def spyClient = Spy(fac)
+        def fac = fscAsync.getFileAsyncClient(generatePathName())
+        def appendCallCount = new AtomicInteger()
+        def spyClient = new DataLakeFileAsyncClient(fac) {
+            @Override
+            Mono<Response<Void>> appendWithResponse(Flux<ByteBuffer> data, long fileOffset, long length,
+                DataLakeFileAppendOptions appendOptions, Context context) {
+                appendCallCount.incrementAndGet()
+                return fac.appendWithResponse(data, fileOffset, length, appendOptions, context);
+            }
+        }
         def data = getRandomData(dataSize)
 
         when:
@@ -3515,7 +3521,7 @@ class FileAPITest extends APISpec {
 
         then:
         fac.getProperties().block().getFileSize() == dataSize
-        numAppends * spyClient.appendWithResponse(_, _, _, (DataLakeFileAppendOptions)_, _)
+        numAppends == appendCallCount.get()
 
         where:
         dataSize                 | singleUploadSize | blockSize || numAppends
@@ -3989,7 +3995,7 @@ class FileAPITest extends APISpec {
                 assert queryData[j - 16] == downloadedData[j]
             }
             for (int k = downloadedData.length - 16; k < downloadedData.length; k++) {
-                assert queryData[k] == 0
+                assert queryData[k] == (byte) 0
             }
         } else {
             queryData == downloadedData
@@ -4790,15 +4796,20 @@ class FileAPITest extends APISpec {
         data.defaultDataSize - 1 | 1
     }
 
-    /* Due to the inability to spy on a private method, we are just calling the async client with the input stream constructor */
-    // TODO https://github.com/cglib/cglib/issues/191 CGLib used to generate Spy doesn't work in Java 17
-    @IgnoreIf( { Jvm.current.isJava12Compatible() } )
     @Unroll
     @LiveOnly /* Flaky in playback. */
     def "Upload numAppends"() {
         setup:
-        DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
-        def spyClient = Spy(fac)
+        def fac = fscAsync.getFileAsyncClient(generatePathName())
+        def appendCallCount = new AtomicInteger()
+        def spyClient = new DataLakeFileAsyncClient(fac) {
+            @Override
+            Mono<Response<Void>> appendWithResponse(Flux<ByteBuffer> data, long fileOffset, long length,
+                DataLakeFileAppendOptions appendOptions, Context context) {
+                appendCallCount.incrementAndGet()
+                return fac.appendWithResponse(data, fileOffset, length, appendOptions, context)
+            }
+        }
         def randomData = getRandomByteArray(dataSize)
         def input = new ByteArrayInputStream(randomData)
 
@@ -4809,7 +4820,7 @@ class FileAPITest extends APISpec {
 
         then:
         fac.getProperties().block().getFileSize() == dataSize
-        numAppends * spyClient.appendWithResponse(_, _, _, (DataLakeFileAppendOptions)_, _)
+        numAppends == appendCallCount.get()
 
         where:
         dataSize                 | singleUploadSize | blockSize || numAppends

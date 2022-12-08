@@ -25,10 +25,12 @@ class AzureDirectoryStreamTest extends APISpec {
         }
         def rootName = absolute ? getNonDefaultRootDir(fs) : ""
         def dirName = generateBlobName()
-        List<AzureResource> resources = []
+        def resources = new HashMap<Path, AzureResource>()
         for (int i = 0; i < numFiles; i++) {
-            resources.push(new AzureResource(fs.getPath(rootName, dirName, generateBlobName())))
-            resources[0].getBlobClient().getBlockBlobClient().commitBlockList(Collections.emptyList())
+            def path = fs.getPath(rootName, dirName, generateBlobName())
+            def resource = new AzureResource(path)
+            resource.getBlobClient().getBlockBlobClient().commitBlockList(Collections.emptyList())
+            resources.put(path, resource)
         }
 
         when:
@@ -42,15 +44,7 @@ class AzureDirectoryStreamTest extends APISpec {
         for (int i = 0; i < numFiles; i++) {
             assert it.hasNext()
             def path = it.next()
-            def found = false
-            for (AzureResource resource : resources) {
-                if (resource.getPath() == path) {
-                    found = true
-                    resources.remove(resource)
-                    break
-                }
-            }
-            assert found
+            assert resources.remove(path) != null
         }
         !it.hasNext()
 
