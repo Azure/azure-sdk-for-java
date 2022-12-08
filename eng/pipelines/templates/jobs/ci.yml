@@ -351,10 +351,6 @@ jobs:
           publishJUnitResults: false
           goals: 'verify'
 
-      - script: |
-          npm install -g autorest
-        displayName: 'Prepare Environment for Generation'
-
       - task: PowerShell@2
         displayName: Verify Code Generation
         inputs:
@@ -362,15 +358,6 @@ jobs:
           filePath: $(Build.SourcesDirectory)/eng/pipelines/scripts/Invoke-Codegeneration.ps1
           arguments: >
             -Directory sdk/${{ parameters.ServiceDirectory }}
-
-      - script: |
-          git status
-          git diff
-        displayName: 'Git Diff'
-
-      - script: |
-          [ -z "`git status --porcelain`" ]
-        displayName: 'Check no Diff'
 
       - template: ../steps/upload-repository-on-failure.yml
 

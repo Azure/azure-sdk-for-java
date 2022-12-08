@@ -22,6 +22,34 @@ if ($Directory) {
   $path = $Directory
 }
 
+Write-Host "
+
+===================================
+Invoking Autorest code regeneration
+===================================
+
+"
+
 foreach ($script in (Get-ChildItem -Path $path -Filter "Update-Codegeneration.ps1" -Recurse)) {
   Invoke-Expression $script.FullName
+}
+
+Write-Host "
+
+==============
+Verify no diff
+==============
+
+"
+
+# prevent warning related to EOL differences which triggers an exception for some reason
+& git -c core.safecrlf=false diff --ignore-space-at-eol --exit-code
+
+if ($LastExitCode -ne 0) {
+  $status = git status -s | Out-String
+  Write-Host "
+The following files are out of date:
+$status
+"
+  exit 1
 }
