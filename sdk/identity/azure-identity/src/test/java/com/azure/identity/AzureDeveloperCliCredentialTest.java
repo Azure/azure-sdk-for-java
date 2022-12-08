@@ -4,10 +4,8 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientOptions;
-import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.util.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -46,7 +44,7 @@ public class AzureDeveloperCliCredentialTest {
     }
 
     @Test
-    public void azureCliCredentialWinAzureCLINotInstalledException() throws Exception {
+    public void azureDeveloperCliCredentialWinAzureCLINotInstalledException() throws Exception {
         // setup
         TokenRequestContext request = new TokenRequestContext().addScopes("AzureNotInstalled");
 
@@ -66,7 +64,7 @@ public class AzureDeveloperCliCredentialTest {
     }
 
     @Test
-    public void azureCliCredentialAzNotLogInException() throws Exception {
+    public void azureDeveloperCliCredentialAzNotLogInException() throws Exception {
         // setup
         TokenRequestContext request = new TokenRequestContext().addScopes("AzureNotLogin");
 
@@ -86,9 +84,9 @@ public class AzureDeveloperCliCredentialTest {
     }
 
     @Test
-    public void azureCliCredentialAuthenticationFailedException() throws Exception {
+    public void azureDeveloperCliCredentialAuthenticationFailedException() throws Exception {
         // setup
-        TokenRequestContext request = new TokenRequestContext().addScopes("AzureCliCredentialAuthenticationFailed");
+        TokenRequestContext request = new TokenRequestContext().addScopes("AzureDeveloperCliCredentialAuthenticationFailed");
 
         // mock
         try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
