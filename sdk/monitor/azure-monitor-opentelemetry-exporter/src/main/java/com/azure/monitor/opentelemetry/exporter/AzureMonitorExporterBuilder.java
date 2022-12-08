@@ -256,7 +256,7 @@ public final class AzureMonitorExporterBuilder {
      */
     public LogRecordExporter buildLogRecordExporter() {
         return new AzureMonitorLogRecordExporter(
-            new LogDataMapper(true, this::populateDefaults), initExporterBuilder());
+            new LogDataMapper(true, false, this::populateDefaults), initExporterBuilder());
     }
 
     private TelemetryItemExporter initExporterBuilder() {

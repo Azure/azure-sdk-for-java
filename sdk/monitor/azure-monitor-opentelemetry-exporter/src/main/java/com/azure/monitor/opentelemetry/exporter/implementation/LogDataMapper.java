@@ -27,6 +27,7 @@ public class LogDataMapper {
     private static final ClientLogger logger = new ClientLogger(LogDataMapper.class);
 
     private final boolean captureLoggingLevelAsCustomDimension;
+    private final boolean captureAzureFunctionsAttributes;
     private final BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer;
 
     private static final AttributeKey<String> OTEL_LOG4J_MARKER =
@@ -37,8 +38,11 @@ public class LogDataMapper {
 
     public LogDataMapper(
         boolean captureLoggingLevelAsCustomDimension,
+        boolean captureAzureFunctionsAttributes,
         BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer) {
+
         this.captureLoggingLevelAsCustomDimension = captureLoggingLevelAsCustomDimension;
+        this.captureAzureFunctionsAttributes = captureAzureFunctionsAttributes;
         this.telemetryInitializer = telemetryInitializer;
     }
 
@@ -145,9 +149,9 @@ public class LogDataMapper {
     private static final String LOGBACK_MDC_PREFIX = "logback.mdc.";
     private static final String JBOSS_LOGGING_MDC_PREFIX = "jboss-logmanager.mdc.";
 
-    private static void setExtraAttributes(
+    private void setExtraAttributes(
         AbstractTelemetryBuilder telemetryBuilder, Attributes attributes) {
-        if ("java".equals(System.getenv("FUNCTIONS_WORKER_RUNTIME"))) {
+        if (captureAzureFunctionsAttributes) {
             setFunctionExtraAttributes(telemetryBuilder, attributes);
         }
         attributes.forEach(
