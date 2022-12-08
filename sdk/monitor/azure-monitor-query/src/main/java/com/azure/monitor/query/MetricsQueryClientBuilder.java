@@ -62,6 +62,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      * @param endpoint the host value.
      * @return the MetricsClientBuilder.
      */
+    @Override
     public MetricsQueryClientBuilder endpoint(String endpoint) {
         innerMetricsBuilder.host(endpoint);
         innerMetricsDefinitionsBuilder.host(endpoint);
@@ -74,6 +75,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      * @param pipeline the pipeline value.
      * @return the MetricsClientBuilder.
      */
+    @Override
     public MetricsQueryClientBuilder pipeline(HttpPipeline pipeline) {
         innerMetricsBuilder.pipeline(pipeline);
         innerMetricsDefinitionsBuilder.pipeline(pipeline);
@@ -86,6 +88,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      * @param httpClient the httpClient value.
      * @return the MetricsClientBuilder.
      */
+    @Override
     public MetricsQueryClientBuilder httpClient(HttpClient httpClient) {
         innerMetricsBuilder.httpClient(httpClient);
         innerMetricsDefinitionsBuilder.httpClient(httpClient);
@@ -98,6 +101,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      * @param configuration the configuration value.
      * @return the MetricsClientBuilder.
      */
+    @Override
     public MetricsQueryClientBuilder configuration(Configuration configuration) {
         innerMetricsBuilder.configuration(configuration);
         innerMetricsDefinitionsBuilder.configuration(configuration);
@@ -110,6 +114,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      * @param httpLogOptions the httpLogOptions value.
      * @return the MetricsClientBuilder.
      */
+    @Override
     public MetricsQueryClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         innerMetricsBuilder.httpLogOptions(httpLogOptions);
         innerMetricsDefinitionsBuilder.httpLogOptions(httpLogOptions);
@@ -147,6 +152,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      * @param customPolicy The custom Http pipeline policy to add.
      * @return the MetricsClientBuilder.
      */
+    @Override
     public MetricsQueryClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         innerMetricsBuilder.addPolicy(customPolicy);
         innerMetricsDefinitionsBuilder.addPolicy(customPolicy);
@@ -159,6 +165,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      * @param tokenCredential the tokenCredential value.
      * @return the MetricsClientBuilder.
      */
+    @Override
     public MetricsQueryClientBuilder credential(TokenCredential tokenCredential) {
         innerMetricsBuilder.credential(tokenCredential);
         innerMetricsDefinitionsBuilder.credential(tokenCredential);
@@ -171,6 +178,7 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
      * @param clientOptions The {@link ClientOptions}.
      * @return the {@link MetricsQueryClientBuilder}
      */
+    @Override
     public MetricsQueryClientBuilder clientOptions(ClientOptions clientOptions) {
         innerMetricsBuilder.clientOptions(clientOptions);
         innerMetricsDefinitionsBuilder.clientOptions(clientOptions);
