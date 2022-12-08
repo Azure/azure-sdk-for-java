@@ -3,6 +3,7 @@
 ### 3.31.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added support for multi-tenancy at the Database level via `CosmosTemplate` - See [PR 32516](https://github.com/Azure/azure-sdk-for-java/pull/32516)
 
 #### Breaking Changes
 
