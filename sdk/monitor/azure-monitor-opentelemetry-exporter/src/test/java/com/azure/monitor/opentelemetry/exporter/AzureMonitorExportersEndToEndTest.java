@@ -167,6 +167,7 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
             .build();
     }
 
+    @SuppressWarnings("try")
     private static void generateSpan(OpenTelemetry openTelemetry) {
         Tracer tracer = openTelemetry.getTracer("Sample");
         Span span = tracer.spanBuilder("test").startSpan();
