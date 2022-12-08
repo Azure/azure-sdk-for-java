@@ -6,12 +6,12 @@ package com.azure.spring.cloud.autoconfigure.resourcemanager;
 import com.azure.resourcemanager.AzureResourceManager;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * A configuration base class for all Azure SDK resource managers.
- */
 @Configuration(proxyBeanMethods = false)
 abstract class AzureServiceResourceManagerConfigurationBase {
 
+    /**
+     * The resource manager.
+     */
     protected AzureResourceManager azureResourceManager;
 
     AzureServiceResourceManagerConfigurationBase(AzureResourceManager azureResourceManager) {
