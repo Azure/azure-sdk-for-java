@@ -4,24 +4,24 @@
 
 package com.azure.ai.anomalydetector.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response of change point detection. */
-@Fluent
-public final class ChangePointDetectResponse {
+@Immutable
+public final class UnivariateChangePointDetectionResult {
     /*
-     * Frequency extracted from the series, zero means no recurrent pattern has
-     * been found.
+     * Frequency extracted from the series, zero means no recurrent pattern has been
+     * found.
      */
     @JsonProperty(value = "period", access = JsonProperty.Access.WRITE_ONLY)
     private Integer period;
 
     /*
-     * isChangePoint contains change point properties for each input point.
-     * True means an anomaly either negative or positive has been detected. The
-     * index of the array is consistent with the input series.
+     * isChangePoint contains change point properties for each input point. True means
+     * an anomaly either negative or positive has been detected. The index of the
+     * array is consistent with the input series.
      */
     @JsonProperty(value = "isChangePoint")
     private List<Boolean> isChangePoint;
@@ -30,7 +30,10 @@ public final class ChangePointDetectResponse {
      * the change point confidence of each point
      */
     @JsonProperty(value = "confidenceScores")
-    private List<Float> confidenceScores;
+    private List<Double> confidenceScores;
+
+    /** Creates an instance of UnivariateChangePointDetectionResult class. */
+    private UnivariateChangePointDetectionResult() {}
 
     /**
      * Get the period property: Frequency extracted from the series, zero means no recurrent pattern has been found.
@@ -53,35 +56,11 @@ public final class ChangePointDetectResponse {
     }
 
     /**
-     * Set the isChangePoint property: isChangePoint contains change point properties for each input point. True means
-     * an anomaly either negative or positive has been detected. The index of the array is consistent with the input
-     * series.
-     *
-     * @param isChangePoint the isChangePoint value to set.
-     * @return the ChangePointDetectResponse object itself.
-     */
-    public ChangePointDetectResponse setIsChangePoint(List<Boolean> isChangePoint) {
-        this.isChangePoint = isChangePoint;
-        return this;
-    }
-
-    /**
      * Get the confidenceScores property: the change point confidence of each point.
      *
      * @return the confidenceScores value.
      */
-    public List<Float> getConfidenceScores() {
+    public List<Double> getConfidenceScores() {
         return this.confidenceScores;
-    }
-
-    /**
-     * Set the confidenceScores property: the change point confidence of each point.
-     *
-     * @param confidenceScores the confidenceScores value to set.
-     * @return the ChangePointDetectResponse object itself.
-     */
-    public ChangePointDetectResponse setConfidenceScores(List<Float> confidenceScores) {
-        this.confidenceScores = confidenceScores;
-        return this;
     }
 }

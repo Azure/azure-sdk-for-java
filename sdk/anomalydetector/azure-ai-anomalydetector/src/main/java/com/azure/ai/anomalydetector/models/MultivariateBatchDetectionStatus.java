@@ -7,8 +7,8 @@ package com.azure.ai.anomalydetector.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for DetectionStatus. */
-public enum DetectionStatus {
+/** Defines values for MultivariateBatchDetectionStatus. */
+public enum MultivariateBatchDetectionStatus {
     /** Enum value CREATED. */
     CREATED("CREATED"),
 
@@ -21,23 +21,26 @@ public enum DetectionStatus {
     /** Enum value FAILED. */
     FAILED("FAILED");
 
-    /** The actual serialized value for a DetectionStatus instance. */
+    /** The actual serialized value for a MultivariateBatchDetectionStatus instance. */
     private final String value;
 
-    DetectionStatus(String value) {
+    MultivariateBatchDetectionStatus(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a DetectionStatus instance.
+     * Parses a serialized value to a MultivariateBatchDetectionStatus instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed DetectionStatus object, or null if unable to parse.
+     * @return the parsed MultivariateBatchDetectionStatus object, or null if unable to parse.
      */
     @JsonCreator
-    public static DetectionStatus fromString(String value) {
-        DetectionStatus[] items = DetectionStatus.values();
-        for (DetectionStatus item : items) {
+    public static MultivariateBatchDetectionStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        MultivariateBatchDetectionStatus[] items = MultivariateBatchDetectionStatus.values();
+        for (MultivariateBatchDetectionStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
@@ -45,6 +48,7 @@ public enum DetectionStatus {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

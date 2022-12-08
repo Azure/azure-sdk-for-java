@@ -5,73 +5,83 @@
 package com.azure.ai.anomalydetector.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The request of entire or last anomaly detection. */
 @Fluent
-public final class DetectRequest {
+public final class UnivariateDetectionOptions {
     /*
-     * Time series data points. Points should be sorted by timestamp in
-     * ascending order to match the anomaly detection result. If the data is
-     * not sorted correctly or there is duplicated timestamp, the API will not
-     * work. In such case, an error message will be returned.
+     * Time series data points. Points should be sorted by timestamp in ascending
+     * order to match the anomaly detection result. If the data is not sorted
+     * correctly or there is duplicated timestamp, the API will not work. In such
+     * case, an error message will be returned.
      */
     @JsonProperty(value = "series", required = true)
     private List<TimeSeriesPoint> series;
 
     /*
      * Optional argument, can be one of yearly, monthly, weekly, daily, hourly,
-     * minutely, secondly, microsecond or none. If granularity is not present,
-     * it will be none by default. If granularity is none, the timestamp
-     * property in time series point can be absent.
+     * minutely, secondly, microsecond or none. If granularity is not present, it will
+     * be none by default. If granularity is none, the timestamp property in time
+     * series point can be absent.
      */
     @JsonProperty(value = "granularity")
     private TimeGranularity granularity;
 
     /*
-     * Custom Interval is used to set non-standard time interval, for example,
-     * if the series is 5 minutes, request can be set as
-     * {"granularity":"minutely", "customInterval":5}.
+     * Custom Interval is used to set non-standard time interval, for example, if the
+     * series is 5 minutes, request can be set as {"granularity":"minutely",
+     * "customInterval":5}.
      */
     @JsonProperty(value = "customInterval")
     private Integer customInterval;
 
     /*
-     * Optional argument, periodic value of a time series. If the value is null
-     * or does not present, the API will determine the period automatically.
+     * Optional argument, periodic value of a time series. If the value is null or
+     * does not present, the API will determine the period automatically.
      */
     @JsonProperty(value = "period")
     private Integer period;
 
     /*
-     * Optional argument, advanced model parameter, max anomaly ratio in a time
-     * series.
+     * Optional argument, advanced model parameter, max anomaly ratio in a time series.
      */
     @JsonProperty(value = "maxAnomalyRatio")
-    private Float maxAnomalyRatio;
+    private Double maxAnomalyRatio;
 
     /*
-     * Optional argument, advanced model parameter, between 0-99, the lower the
-     * value is, the larger the margin value will be which means less anomalies
-     * will be accepted.
+     * Optional argument, advanced model parameter, between 0-99, the lower the value
+     * is, the larger the margin value will be which means less anomalies will be
+     * accepted.
      */
     @JsonProperty(value = "sensitivity")
     private Integer sensitivity;
 
     /*
-     * Used to specify how to deal with missing values in the input series,
-     * it's used when granularity is not "none".
+     * Used to specify how to deal with missing values in the input series, it's used
+     * when granularity is not "none".
      */
     @JsonProperty(value = "imputeMode")
     private ImputeMode imputeMode;
 
     /*
-     * Used to specify the value to fill, it's used when granularity is not
-     * "none" and imputeMode is "fixed".
+     * Used to specify the value to fill, it's used when granularity is not "none"
+     * and imputeMode is "fixed".
      */
     @JsonProperty(value = "imputeFixedValue")
-    private Float imputeFixedValue;
+    private Double imputeFixedValue;
+
+    /**
+     * Creates an instance of UnivariateDetectionOptions class.
+     *
+     * @param series the series value to set.
+     */
+    @JsonCreator
+    public UnivariateDetectionOptions(@JsonProperty(value = "series", required = true) List<TimeSeriesPoint> series) {
+        this.series = series;
+    }
 
     /**
      * Get the series property: Time series data points. Points should be sorted by timestamp in ascending order to
@@ -82,19 +92,6 @@ public final class DetectRequest {
      */
     public List<TimeSeriesPoint> getSeries() {
         return this.series;
-    }
-
-    /**
-     * Set the series property: Time series data points. Points should be sorted by timestamp in ascending order to
-     * match the anomaly detection result. If the data is not sorted correctly or there is duplicated timestamp, the API
-     * will not work. In such case, an error message will be returned.
-     *
-     * @param series the series value to set.
-     * @return the DetectRequest object itself.
-     */
-    public DetectRequest setSeries(List<TimeSeriesPoint> series) {
-        this.series = series;
-        return this;
     }
 
     /**
@@ -114,9 +111,9 @@ public final class DetectRequest {
      * the timestamp property in time series point can be absent.
      *
      * @param granularity the granularity value to set.
-     * @return the DetectRequest object itself.
+     * @return the UnivariateDetectionOptions object itself.
      */
-    public DetectRequest setGranularity(TimeGranularity granularity) {
+    public UnivariateDetectionOptions setGranularity(TimeGranularity granularity) {
         this.granularity = granularity;
         return this;
     }
@@ -136,9 +133,9 @@ public final class DetectRequest {
      * series is 5 minutes, request can be set as {"granularity":"minutely", "customInterval":5}.
      *
      * @param customInterval the customInterval value to set.
-     * @return the DetectRequest object itself.
+     * @return the UnivariateDetectionOptions object itself.
      */
-    public DetectRequest setCustomInterval(Integer customInterval) {
+    public UnivariateDetectionOptions setCustomInterval(Integer customInterval) {
         this.customInterval = customInterval;
         return this;
     }
@@ -158,9 +155,9 @@ public final class DetectRequest {
      * present, the API will determine the period automatically.
      *
      * @param period the period value to set.
-     * @return the DetectRequest object itself.
+     * @return the UnivariateDetectionOptions object itself.
      */
-    public DetectRequest setPeriod(Integer period) {
+    public UnivariateDetectionOptions setPeriod(Integer period) {
         this.period = period;
         return this;
     }
@@ -171,7 +168,7 @@ public final class DetectRequest {
      *
      * @return the maxAnomalyRatio value.
      */
-    public Float getMaxAnomalyRatio() {
+    public Double getMaxAnomalyRatio() {
         return this.maxAnomalyRatio;
     }
 
@@ -180,9 +177,9 @@ public final class DetectRequest {
      * series.
      *
      * @param maxAnomalyRatio the maxAnomalyRatio value to set.
-     * @return the DetectRequest object itself.
+     * @return the UnivariateDetectionOptions object itself.
      */
-    public DetectRequest setMaxAnomalyRatio(Float maxAnomalyRatio) {
+    public UnivariateDetectionOptions setMaxAnomalyRatio(Double maxAnomalyRatio) {
         this.maxAnomalyRatio = maxAnomalyRatio;
         return this;
     }
@@ -202,9 +199,9 @@ public final class DetectRequest {
      * the larger the margin value will be which means less anomalies will be accepted.
      *
      * @param sensitivity the sensitivity value to set.
-     * @return the DetectRequest object itself.
+     * @return the UnivariateDetectionOptions object itself.
      */
-    public DetectRequest setSensitivity(Integer sensitivity) {
+    public UnivariateDetectionOptions setSensitivity(Integer sensitivity) {
         this.sensitivity = sensitivity;
         return this;
     }
@@ -224,9 +221,9 @@ public final class DetectRequest {
      * granularity is not "none".
      *
      * @param imputeMode the imputeMode value to set.
-     * @return the DetectRequest object itself.
+     * @return the UnivariateDetectionOptions object itself.
      */
-    public DetectRequest setImputeMode(ImputeMode imputeMode) {
+    public UnivariateDetectionOptions setImputeMode(ImputeMode imputeMode) {
         this.imputeMode = imputeMode;
         return this;
     }
@@ -237,7 +234,7 @@ public final class DetectRequest {
      *
      * @return the imputeFixedValue value.
      */
-    public Float getImputeFixedValue() {
+    public Double getImputeFixedValue() {
         return this.imputeFixedValue;
     }
 
@@ -246,9 +243,9 @@ public final class DetectRequest {
      * and imputeMode is "fixed".
      *
      * @param imputeFixedValue the imputeFixedValue value to set.
-     * @return the DetectRequest object itself.
+     * @return the UnivariateDetectionOptions object itself.
      */
-    public DetectRequest setImputeFixedValue(Float imputeFixedValue) {
+    public UnivariateDetectionOptions setImputeFixedValue(Double imputeFixedValue) {
         this.imputeFixedValue = imputeFixedValue;
         return this;
     }
