@@ -595,6 +595,7 @@
               <arg>-Xlint:try</arg>
               <arg>-Xlint:unchecked</arg>
               <arg>-Xlint:varargs</arg>
+              <arg>-parameters</arg>
             </compilerArgs>
 
             <!-- Default is annotation processing being off. -->

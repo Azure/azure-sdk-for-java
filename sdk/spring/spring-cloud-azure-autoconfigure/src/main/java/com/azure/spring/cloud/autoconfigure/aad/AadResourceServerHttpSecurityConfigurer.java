@@ -12,9 +12,13 @@ import org.springframework.security.config.annotation.SecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import java.util.Collection;
 
 /**
  * HTTP security configurer class for Azure Active Directory resource server scenario, used to
@@ -24,6 +28,8 @@ import org.springframework.util.StringUtils;
 public class AadResourceServerHttpSecurityConfigurer extends AbstractHttpConfigurer<AadResourceServerHttpSecurityConfigurer, HttpSecurity> {
 
     private AadResourceServerProperties properties;
+
+    private Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter;
 
     @Override
     public void init(HttpSecurity builder) throws Exception {
@@ -38,8 +44,8 @@ public class AadResourceServerHttpSecurityConfigurer extends AbstractHttpConfigu
     }
 
     /**
-     * Default configuer for Resource Server with Azure AD.
-     * @return the configuer instance to customize the {@link SecurityConfigurer}
+     * Default configurer for Resource Server with Azure AD.
+     * @return the configurer instance to customize the {@link SecurityConfigurer}
      */
     public static AadResourceServerHttpSecurityConfigurer aadResourceServer() {
         return new AadResourceServerHttpSecurityConfigurer();
@@ -50,8 +56,24 @@ public class AadResourceServerHttpSecurityConfigurer extends AbstractHttpConfigu
         if (StringUtils.hasText(properties.getPrincipalClaimName())) {
             converter.setPrincipalClaimName(properties.getPrincipalClaimName());
         }
-        converter.setJwtGrantedAuthoritiesConverter(
-            new AadJwtGrantedAuthoritiesConverter(properties.getClaimToAuthorityPrefixMap()));
+        if (this.jwtGrantedAuthoritiesConverter != null) {
+            converter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
+        } else {
+            converter.setJwtGrantedAuthoritiesConverter(
+                new AadJwtGrantedAuthoritiesConverter(properties.getClaimToAuthorityPrefixMap()));
+        }
         return converter;
+    }
+
+    /**
+     * Custom a JWT granted authority converter.
+     * @param jwtGrantedAuthoritiesConverter the custom converter
+     * @return the AadResourceServerHttpSecurityConfigurer for further customizations
+     */
+    public AadResourceServerHttpSecurityConfigurer jwtGrantedAuthoritiesConverter(
+        Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter) {
+        Assert.notNull(jwtGrantedAuthoritiesConverter, "jwtGrantedAuthoritiesConverter cannot be null");
+        this.jwtGrantedAuthoritiesConverter = jwtGrantedAuthoritiesConverter;
+        return this;
     }
 }
