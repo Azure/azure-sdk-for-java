@@ -35,7 +35,6 @@ import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -692,11 +691,9 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<Void> stageBlockWithResponse(String base64BlockId, InputStream data, long length, byte[] contentMd5,
         String leaseId, Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("data", data);
-        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
-            BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
 
         Mono<Response<Void>> response = client.stageBlockWithResponse(base64BlockId,
-            fbb.subscribeOn(Schedulers.boundedElastic()), length, contentMd5, leaseId, context);
+            BinaryData.fromStream(data, length), contentMd5, leaseId, context);
         return blockWithOptionalTimeout(response, timeout);
     }
 
