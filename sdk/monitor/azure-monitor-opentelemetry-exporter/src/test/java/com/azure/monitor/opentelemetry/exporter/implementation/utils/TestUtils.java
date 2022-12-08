@@ -3,7 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
-import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Configuration;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricDataPoint;
@@ -72,22 +72,22 @@ public final class TestUtils {
         return telemetry;
     }
 
-    public static Tracer configureAzureMonitorTraceExporter(HttpPipelinePolicy policy) {
-        return createOpenTelemetrySdk(policy).getTracer("Sample");
+    public static Tracer configureAzureMonitorTraceExporter(HttpPipeline httpPipeline) {
+        return createOpenTelemetrySdk(httpPipeline).getTracer("Sample");
     }
 
-    public static OpenTelemetry createOpenTelemetrySdk(HttpPipelinePolicy policy) {
-        return createOpenTelemetrySdk(policy, Configuration.NONE);
+    public static OpenTelemetry createOpenTelemetrySdk(HttpPipeline httpPipeline) {
+        return createOpenTelemetrySdk(httpPipeline, Configuration.NONE);
     }
 
     public static OpenTelemetry createOpenTelemetrySdk(
-        HttpPipelinePolicy policy, Configuration configuration) {
-        return createOpenTelemetrySdkDeprecated(policy, configuration);
+        HttpPipeline httpPipeline, Configuration configuration) {
+        return createOpenTelemetrySdkDeprecated(httpPipeline, configuration);
     }
 
     // remove this after Log API is public and can be retrieved from the OpenTelemetry object
     public static OpenTelemetrySdk createOpenTelemetrySdkDeprecated(
-        HttpPipelinePolicy policy, Configuration configuration) {
+        HttpPipeline httpPipeline, Configuration configuration) {
 
         OpenTelemetrySdkBuilder builder = OpenTelemetrySdk.builder();
 
@@ -95,7 +95,7 @@ public final class TestUtils {
             new AzureMonitorExporterBuilder()
                 .configuration(configuration)
                 .connectionString(TRACE_CONNECTION_STRING)
-                .addHttpPipelinePolicy(policy)
+                .httpPipeline(httpPipeline)
                 .buildTraceExporter();
 
         SdkTracerProvider tracerProvider =
@@ -109,7 +109,7 @@ public final class TestUtils {
             new AzureMonitorExporterBuilder()
                 .configuration(configuration)
                 .connectionString(TRACE_CONNECTION_STRING)
-                .addHttpPipelinePolicy(policy)
+                .httpPipeline(httpPipeline)
                 .buildMetricExporter();
 
         PeriodicMetricReader metricReader =
@@ -123,7 +123,7 @@ public final class TestUtils {
             new AzureMonitorExporterBuilder()
                 .configuration(configuration)
                 .connectionString(TRACE_CONNECTION_STRING)
-                .addHttpPipelinePolicy(policy)
+                .httpPipeline(httpPipeline)
                 .buildLogRecordExporter();
 
         SdkLoggerProvider loggerProvider =

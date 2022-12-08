@@ -6,6 +6,7 @@ package com.azure.monitor.opentelemetry.exporter;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestContextManager;
@@ -20,6 +21,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryI
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.FormattedDuration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
+import reactor.util.annotation.Nullable;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -52,6 +54,10 @@ public class MonitorExporterClientTestBase extends TestBase {
     }
 
     AzureMonitorExporterBuilder getClientBuilder() {
+        return new AzureMonitorExporterBuilder().httpPipeline(getHttpPipeline(null));
+    }
+
+    HttpPipeline getHttpPipeline(@Nullable HttpPipelinePolicy policy) {
         HttpClient httpClient;
         if (getTestMode() == TestMode.RECORD || getTestMode() == TestMode.LIVE) {
             httpClient = HttpClient.createDefault();
@@ -59,13 +65,16 @@ public class MonitorExporterClientTestBase extends TestBase {
             httpClient = interceptorManager.getPlaybackClient();
         }
 
-        HttpPipeline httpPipeline =
-            new HttpPipelineBuilder()
-                .httpClient(httpClient)
-                .policies(interceptorManager.getRecordPolicy())
-                .build();
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        if (policy != null) {
+            policies.add(policy);
+        }
+        policies.add(interceptorManager.getRecordPolicy());
 
-        return new AzureMonitorExporterBuilder().httpPipeline(httpPipeline);
+        return new HttpPipelineBuilder()
+            .httpClient(httpClient)
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .build();
     }
 
     List<TelemetryItem> getAllInvalidTelemetryItems() {
