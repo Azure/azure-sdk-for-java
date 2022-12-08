@@ -6,6 +6,7 @@ package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Role definition. */
@@ -34,6 +35,10 @@ public final class RoleDefinitionInner {
      */
     @JsonProperty(value = "properties")
     private RoleDefinitionProperties innerProperties;
+
+    /** Creates an instance of RoleDefinitionInner class. */
+    public RoleDefinitionInner() {
+    }
 
     /**
      * Get the id property: The role definition ID.
@@ -184,6 +189,42 @@ public final class RoleDefinitionInner {
         }
         this.innerProperties().withAssignableScopes(assignableScopes);
         return this;
+    }
+
+    /**
+     * Get the createdOn property: Time it was created.
+     *
+     * @return the createdOn value.
+     */
+    public OffsetDateTime createdOn() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdOn();
+    }
+
+    /**
+     * Get the updatedOn property: Time it was updated.
+     *
+     * @return the updatedOn value.
+     */
+    public OffsetDateTime updatedOn() {
+        return this.innerProperties() == null ? null : this.innerProperties().updatedOn();
+    }
+
+    /**
+     * Get the createdBy property: Id of the user who created the assignment.
+     *
+     * @return the createdBy value.
+     */
+    public String createdBy() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdBy();
+    }
+
+    /**
+     * Get the updatedBy property: Id of the user who updated the assignment.
+     *
+     * @return the updatedBy value.
+     */
+    public String updatedBy() {
+        return this.innerProperties() == null ? null : this.innerProperties().updatedBy();
     }
 
     /**

@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.compute.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.DiskInstanceView;
 import com.azure.resourcemanager.compute.models.DiskVolumeEncryptionMonitor;
@@ -153,7 +154,8 @@ class WindowsVolumeNoAADEncryptionMonitorImpl implements DiskVolumeEncryptionMon
      */
     private Mono<VirtualMachineInner> retrieveVirtualMachineAsync() {
         return this.computeManager.serviceClient().getVirtualMachines()
-            .getByResourceGroupAsync(rgName, vmName, InstanceViewTypes.INSTANCE_VIEW);
+            .getByResourceGroupWithResponseAsync(rgName, vmName, InstanceViewTypes.INSTANCE_VIEW)
+            .map(Response::getValue);
         // Exception if vm not found
     }
 

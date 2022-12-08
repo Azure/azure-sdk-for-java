@@ -16,8 +16,7 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class AzureFileShareRecoveryPoint extends RecoveryPoint {
     /*
-     * Type of the backup copy. Specifies whether it is a crash consistent
-     * backup or app consistent.
+     * Type of the backup copy. Specifies whether it is a crash consistent backup or app consistent.
      */
     @JsonProperty(value = "recoveryPointType")
     private String recoveryPointType;
@@ -39,6 +38,10 @@ public final class AzureFileShareRecoveryPoint extends RecoveryPoint {
      */
     @JsonProperty(value = "recoveryPointSizeInGB")
     private Integer recoveryPointSizeInGB;
+
+    /** Creates an instance of AzureFileShareRecoveryPoint class. */
+    public AzureFileShareRecoveryPoint() {
+    }
 
     /**
      * Get the recoveryPointType property: Type of the backup copy. Specifies whether it is a crash consistent backup or

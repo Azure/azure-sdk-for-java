@@ -27,22 +27,13 @@ public final class ApplicationsImpl implements Applications {
         this.serviceManager = serviceManager;
     }
 
-    public void delete(String resourceGroupName, String accountName, String applicationName) {
-        this.serviceClient().delete(resourceGroupName, accountName, applicationName);
-    }
-
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String accountName, String applicationName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, applicationName, context);
     }
 
-    public Application get(String resourceGroupName, String accountName, String applicationName) {
-        ApplicationInner inner = this.serviceClient().get(resourceGroupName, accountName, applicationName);
-        if (inner != null) {
-            return new ApplicationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String accountName, String applicationName) {
+        this.serviceClient().delete(resourceGroupName, accountName, applicationName);
     }
 
     public Response<Application> getWithResponse(
@@ -55,6 +46,15 @@ public final class ApplicationsImpl implements Applications {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ApplicationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Application get(String resourceGroupName, String accountName, String applicationName) {
+        ApplicationInner inner = this.serviceClient().get(resourceGroupName, accountName, applicationName);
+        if (inner != null) {
+            return new ApplicationImpl(inner, this.manager());
         } else {
             return null;
         }

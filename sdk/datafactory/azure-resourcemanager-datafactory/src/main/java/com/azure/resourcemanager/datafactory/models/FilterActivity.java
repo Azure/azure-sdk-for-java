@@ -23,6 +23,10 @@ public final class FilterActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private FilterActivityTypeProperties innerTypeProperties = new FilterActivityTypeProperties();
 
+    /** Creates an instance of FilterActivity class. */
+    public FilterActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Filter activity properties.
      *

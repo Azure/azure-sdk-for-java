@@ -56,22 +56,6 @@ public interface JoinRequestsClient {
      * @param billingProfileName Billing profile name.
      * @param invoiceSectionName Invoice section name.
      * @param joinRequestName Join name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return student join requests.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    JoinRequestDetailsInner get(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName);
-
-    /**
-     * get student join requests.
-     *
-     * @param billingAccountName Billing account name.
-     * @param billingProfileName Billing profile name.
-     * @param invoiceSectionName Invoice section name.
-     * @param joinRequestName Join name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -87,7 +71,7 @@ public interface JoinRequestsClient {
         Context context);
 
     /**
-     * Approve student joining the redeemable lab.
+     * get student join requests.
      *
      * @param billingAccountName Billing account name.
      * @param billingProfileName Billing profile name.
@@ -96,9 +80,10 @@ public interface JoinRequestsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return student join requests.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void approve(
+    JoinRequestDetailsInner get(
         String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName);
 
     /**
@@ -123,7 +108,7 @@ public interface JoinRequestsClient {
         Context context);
 
     /**
-     * Deny student joining the redeemable lab.
+     * Approve student joining the redeemable lab.
      *
      * @param billingAccountName Billing account name.
      * @param billingProfileName Billing profile name.
@@ -134,7 +119,8 @@ public interface JoinRequestsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deny(String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName);
+    void approve(
+        String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName);
 
     /**
      * Deny student joining the redeemable lab.
@@ -156,4 +142,18 @@ public interface JoinRequestsClient {
         String invoiceSectionName,
         String joinRequestName,
         Context context);
+
+    /**
+     * Deny student joining the redeemable lab.
+     *
+     * @param billingAccountName Billing account name.
+     * @param billingProfileName Billing profile name.
+     * @param invoiceSectionName Invoice section name.
+     * @param joinRequestName Join name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deny(String billingAccountName, String billingProfileName, String invoiceSectionName, String joinRequestName);
 }

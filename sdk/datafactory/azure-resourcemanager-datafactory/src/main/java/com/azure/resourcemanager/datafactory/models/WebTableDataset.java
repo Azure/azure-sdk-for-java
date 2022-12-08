@@ -24,6 +24,10 @@ public final class WebTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties", required = true)
     private WebTableDatasetTypeProperties innerTypeProperties = new WebTableDatasetTypeProperties();
 
+    /** Creates an instance of WebTableDataset class. */
+    public WebTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Web table dataset properties.
      *

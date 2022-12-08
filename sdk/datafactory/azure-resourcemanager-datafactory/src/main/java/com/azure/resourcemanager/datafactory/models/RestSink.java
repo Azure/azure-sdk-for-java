@@ -49,6 +49,10 @@ public final class RestSink extends CopySink {
     @JsonProperty(value = "httpCompressionType")
     private Object httpCompressionType;
 
+    /** Creates an instance of RestSink class. */
+    public RestSink() {
+    }
+
     /**
      * Get the requestMethod property: The HTTP method used to call the RESTful API. The default is POST. Type: string
      * (or Expression with resultType string).

@@ -17,6 +17,10 @@ public final class ScanResultsInner {
     @JsonProperty(value = "value")
     private List<ScanResultInner> value;
 
+    /** Creates an instance of ScanResultsInner class. */
+    public ScanResultsInner() {
+    }
+
     /**
      * Get the value property: List of vulnerability assessment scan results.
      *

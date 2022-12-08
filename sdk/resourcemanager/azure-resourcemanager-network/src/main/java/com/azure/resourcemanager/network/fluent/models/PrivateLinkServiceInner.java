@@ -41,6 +41,10 @@ public final class PrivateLinkServiceInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of PrivateLinkServiceInner class. */
+    public PrivateLinkServiceInner() {
+    }
+
     /**
      * Get the extendedLocation property: The extended location of the load balancer.
      *

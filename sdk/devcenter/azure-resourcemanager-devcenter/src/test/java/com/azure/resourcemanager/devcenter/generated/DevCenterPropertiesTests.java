@@ -12,7 +12,9 @@ public final class DevCenterPropertiesTests {
     @Test
     public void testDeserialize() {
         DevCenterProperties model =
-            BinaryData.fromString("{\"provisioningState\":\"ilzyd\"}").toObject(DevCenterProperties.class);
+            BinaryData
+                .fromString("{\"provisioningState\":\"StorageProvisioningFailed\",\"devCenterUri\":\"yejhk\"}")
+                .toObject(DevCenterProperties.class);
     }
 
     @Test

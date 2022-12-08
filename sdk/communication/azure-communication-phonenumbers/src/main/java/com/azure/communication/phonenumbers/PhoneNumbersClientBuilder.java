@@ -41,7 +41,27 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Builder for creating clients of Communication Service phone number configuration
+ * Builder for creating clients of Communication Service phone number configuration.
+ *
+ * <p><strong>Instantiating a Phone Numbers Client Builder</strong></p>
+ *
+ * <!-- src_embed com.azure.communication.phonenumbers.builder.instantiation -->
+ * <pre>
+ * PhoneNumbersClientBuilder builder = new PhoneNumbersClientBuilder&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.communication.phonenumbers.builder.instantiation -->
+ *
+ * <p><strong>Using a Phone Numbers Client Builder to build a Phone Numbers Client</strong></p>
+ *
+ * <!-- src_embed com.azure.communication.phonenumbers.client.instantiation -->
+ * <pre>
+ * PhoneNumbersClient phoneNumberClient = new PhoneNumbersClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;keyCredential&#41;
+ *     .httpClient&#40;httpClient&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.communication.phonenumbers.client.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = {PhoneNumbersClient.class, PhoneNumbersAsyncClient.class})
 public final class PhoneNumbersClientBuilder implements

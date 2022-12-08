@@ -43,6 +43,10 @@ public final class ExpressRouteAuthorizationImpl
         return this.innerModel().expressRouteId();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ExpressRouteAuthorizationInner innerModel() {
         return this.innerObject;
     }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MonitoringStatus. */
+/** Flag specifying if the resource monitoring is enabled or disabled. */
 public final class MonitoringStatus extends ExpandableStringEnum<MonitoringStatus> {
     /** Static value Enabled for MonitoringStatus. */
     public static final MonitoringStatus ENABLED = fromString("Enabled");
@@ -27,7 +27,11 @@ public final class MonitoringStatus extends ExpandableStringEnum<MonitoringStatu
         return fromString(name, MonitoringStatus.class);
     }
 
-    /** @return known MonitoringStatus values. */
+    /**
+     * Gets known MonitoringStatus values.
+     *
+     * @return known MonitoringStatus values.
+     */
     public static Collection<MonitoringStatus> values() {
         return values(MonitoringStatus.class);
     }

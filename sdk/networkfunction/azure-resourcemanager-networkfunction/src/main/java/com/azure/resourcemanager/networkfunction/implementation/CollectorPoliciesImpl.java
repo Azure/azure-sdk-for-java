@@ -41,16 +41,6 @@ public final class CollectorPoliciesImpl implements CollectorPolicies {
         return Utils.mapPage(inner, inner1 -> new CollectorPolicyImpl(inner1, this.manager()));
     }
 
-    public CollectorPolicy get(String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName) {
-        CollectorPolicyInner inner =
-            this.serviceClient().get(resourceGroupName, azureTrafficCollectorName, collectorPolicyName);
-        if (inner != null) {
-            return new CollectorPolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CollectorPolicy> getWithResponse(
         String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName, Context context) {
         Response<CollectorPolicyInner> inner =
@@ -63,6 +53,16 @@ public final class CollectorPoliciesImpl implements CollectorPolicies {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CollectorPolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CollectorPolicy get(String resourceGroupName, String azureTrafficCollectorName, String collectorPolicyName) {
+        CollectorPolicyInner inner =
+            this.serviceClient().get(resourceGroupName, azureTrafficCollectorName, collectorPolicyName);
+        if (inner != null) {
+            return new CollectorPolicyImpl(inner, this.manager());
         } else {
             return null;
         }

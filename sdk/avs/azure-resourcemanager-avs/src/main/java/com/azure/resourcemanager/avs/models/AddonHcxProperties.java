@@ -6,7 +6,6 @@ package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,13 +15,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("HCX")
 @Fluent
 public final class AddonHcxProperties extends AddonProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AddonHcxProperties.class);
-
     /*
      * The HCX offer, example VMware MaaS Cloud Provider (Enterprise)
      */
     @JsonProperty(value = "offer", required = true)
     private String offer;
+
+    /** Creates an instance of AddonHcxProperties class. */
+    public AddonHcxProperties() {
+    }
 
     /**
      * Get the offer property: The HCX offer, example VMware MaaS Cloud Provider (Enterprise).
@@ -53,9 +54,11 @@ public final class AddonHcxProperties extends AddonProperties {
     public void validate() {
         super.validate();
         if (offer() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property offer in model AddonHcxProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AddonHcxProperties.class);
 }

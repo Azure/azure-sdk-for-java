@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Auto")
 @Immutable
 public final class AutoSeasonality extends Seasonality {
+    /** Creates an instance of AutoSeasonality class. */
+    public AutoSeasonality() {
+    }
+
     /**
      * Validates the instance.
      *

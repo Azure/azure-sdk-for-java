@@ -22,8 +22,7 @@ public final class MicrosoftGraphContentTypeOrder {
     private Boolean defaultProperty;
 
     /*
-     * Specifies the position in which the Content Type appears in the
-     * selection UI.
+     * Specifies the position in which the Content Type appears in the selection UI.
      */
     @JsonProperty(value = "position")
     private Integer position;
@@ -32,6 +31,10 @@ public final class MicrosoftGraphContentTypeOrder {
      * contentTypeOrder
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphContentTypeOrder class. */
+    public MicrosoftGraphContentTypeOrder() {
+    }
 
     /**
      * Get the defaultProperty property: Whether this is the default Content Type.

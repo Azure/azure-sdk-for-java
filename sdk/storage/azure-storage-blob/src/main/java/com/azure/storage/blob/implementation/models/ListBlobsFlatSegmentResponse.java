@@ -55,6 +55,9 @@ public final class ListBlobsFlatSegmentResponse {
     @JsonProperty(value = "NextMarker", required = true)
     private String nextMarker;
 
+    /** Creates an instance of ListBlobsFlatSegmentResponse class. */
+    public ListBlobsFlatSegmentResponse() {}
+
     /**
      * Get the serviceEndpoint property: The ServiceEndpoint property.
      *

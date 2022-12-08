@@ -13,7 +13,6 @@ import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoCon
 import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.implementation.factory.AbstractAzureServiceClientBuilderFactory;
-import com.azure.spring.cloud.core.implementation.util.ReflectionUtils;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -21,6 +20,11 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
+import static com.azure.spring.cloud.autoconfigure.FakeCredentialInTest.CLIENT_ID_PLACEHOLDER;
+import static com.azure.spring.cloud.autoconfigure.FakeCredentialInTest.PASSWORD_PLACEHOLDER;
+import static com.azure.spring.cloud.autoconfigure.FakeCredentialInTest.SECRET;
+import static com.azure.spring.cloud.autoconfigure.FakeCredentialInTest.USERNAME_PLACEHOLDER;
+import static com.azure.spring.cloud.core.implementation.util.ReflectionUtils.getField;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractAzureServiceClientBuilderFactory<?>,
@@ -40,8 +44,8 @@ public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractA
             .withPropertyValues(
                 getPropertyPrefix() + ".profile.cloud-type=AZURE_US_GOVERNMENT",
                 getPropertyPrefix() + ".profile.tenant-id=fake-tenant-id",
-                getPropertyPrefix() + ".credential.client-id=fake-client-id",
-                getPropertyPrefix() + ".credential.client-secret=fake-client-secret"
+                getPropertyPrefix() + ".credential." + CLIENT_ID_PLACEHOLDER + "=fakeClientIdPlaceholder",
+                getPropertyPrefix() + ".credential.client-" + SECRET + "=fake-client-secret"
             )
             .withConfiguration(AutoConfigurations.of(
                 AzureTokenCredentialAutoConfiguration.class,
@@ -58,7 +62,7 @@ public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractA
             .withPropertyValues(
                 getPropertyPrefix() + ".profile.cloud-type=AZURE_US_GOVERNMENT",
                 getPropertyPrefix() + ".profile.tenant-id=fake-tenant-id",
-                getPropertyPrefix() + ".credential.client-id=fake-client-id",
+                getPropertyPrefix() + ".credential." + CLIENT_ID_PLACEHOLDER + "=fakeClientIdPlaceholder",
                 getPropertyPrefix() + ".credential.client-certificate-path=fake-client-cert-path"
             )
             .withConfiguration(AutoConfigurations.of(
@@ -75,9 +79,9 @@ public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractA
         getMinimalContextRunner()
             .withPropertyValues(
                 getPropertyPrefix() + ".profile.cloud-type=AZURE_US_GOVERNMENT",
-                getPropertyPrefix() + ".credential.client-id=fake-client-id",
-                getPropertyPrefix() + ".credential.username=123",
-                getPropertyPrefix() + ".credential.password=123"
+                getPropertyPrefix() + ".credential." + CLIENT_ID_PLACEHOLDER + "=fakeClientIdPlaceholder",
+                getPropertyPrefix() + ".credential." + USERNAME_PLACEHOLDER + "=fakeNamePlaceholder",
+                getPropertyPrefix() + ".credential." + PASSWORD_PLACEHOLDER + "=fakePasswordPlaceholder"
             )
             .withConfiguration(AutoConfigurations.of(
                 AzureTokenCredentialAutoConfiguration.class,
@@ -105,12 +109,12 @@ public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractA
     }
 
     private AzureTokenCredentialResolver getAzureTokenCredentialResolver(T builderFactory) {
-        return (AzureTokenCredentialResolver) ReflectionUtils.getField(getBuilderFactoryType(),
+        return (AzureTokenCredentialResolver) getField(getBuilderFactoryType(),
             "tokenCredentialResolver", builderFactory);
     }
 
     private IdentityClient getIdentityClient(TokenCredential credential) {
-        return (IdentityClient) ReflectionUtils.getField(credential.getClass(), "identityClient", credential);
+        return (IdentityClient) getField(credential.getClass(), "identityClient", credential);
     }
 
 }

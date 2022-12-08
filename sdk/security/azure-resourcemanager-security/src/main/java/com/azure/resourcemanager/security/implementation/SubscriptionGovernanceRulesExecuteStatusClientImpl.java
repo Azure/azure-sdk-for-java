@@ -63,7 +63,7 @@ public final class SubscriptionGovernanceRulesExecuteStatusClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterSubscr")
-    private interface SubscriptionGovernanceRulesExecuteStatusService {
+    public interface SubscriptionGovernanceRulesExecuteStatusService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Security/governanceRules/{ruleId}/operationResults"

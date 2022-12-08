@@ -27,8 +27,8 @@ import java.util.Map;
     defaultImpl = Credential.class)
 @JsonTypeName("Credential")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "ServicePrincipal", value = ServicePrincipalCredential.class),
-    @JsonSubTypes.Type(name = "ManagedIdentity", value = ManagedIdentityCredential.class)
+    @JsonSubTypes.Type(name = "ManagedIdentity", value = ManagedIdentityCredential.class),
+    @JsonSubTypes.Type(name = "ServicePrincipal", value = ServicePrincipalCredential.class)
 })
 @Fluent
 public class Credential {
@@ -49,6 +49,10 @@ public class Credential {
      * with related store or compute resource.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of Credential class. */
+    public Credential() {
+    }
 
     /**
      * Get the description property: Credential description.

@@ -5,11 +5,19 @@ package com.azure.spring.cloud.service.implementation.kafka;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
+import com.azure.spring.cloud.service.implementation.jaas.Jaas;
+import com.azure.spring.cloud.service.implementation.jaas.JaasResolver;
 import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
+import org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Store the constants for customized Azure properties with Kafka.
@@ -25,21 +33,16 @@ public final class AzureKafkaPropertiesUtils {
     static final String PROFILE_PREFIX = "azure.profile.";
     static final String ENVIRONMENT_PREFIX = PROFILE_PREFIX + "environment.";
 
-    public static void convertConfigMapToAzureProperties(Map<String, ?> source,
-                                                         AzurePasswordlessProperties target) {
-        for (Mapping m : Mapping.values()) {
-            PROPERTY_MAPPER.from(source.get(m.propertyKey)).to(p -> m.setter.accept(target, (String) p));
+    public static void copyJaasPropertyToAzureProperties(String source, AzurePasswordlessProperties target) {
+        JaasResolver resolver = new JaasResolver();
+        Jaas jaas = resolver.resolve(source).orElse(new Jaas(OAuthBearerLoginModule.class.getName()));
+        Map<String, String> map = jaas.getOptions();
+        for (AzureKafkaPasswordlessPropertiesMapping m : AzureKafkaPasswordlessPropertiesMapping.values()) {
+            PROPERTY_MAPPER.from(map.get(m.propertyKey)).to(v -> m.setter.accept(target, v));
         }
     }
 
-    public static void convertAzurePropertiesToConfigMap(AzurePasswordlessProperties source,
-                                                         Map<String, String> target) {
-        for (Mapping m : Mapping.values()) {
-            PROPERTY_MAPPER.from(m.getter.apply(source)).to(p -> target.putIfAbsent(m.propertyKey, p));
-        }
-    }
-
-    enum Mapping {
+    public enum AzureKafkaPasswordlessPropertiesMapping {
 
         clientCertificatePassword(CREDENTIAL_PREFIX + "client-certificate-password",
             p -> p.getCredential().getClientCertificatePassword(),
@@ -69,7 +72,8 @@ public final class AzureKafkaPropertiesUtils {
             p -> p.getCredential().getUsername(),
             (p, s) -> p.getCredential().setUsername(s)),
 
-        cloudType(PROFILE_PREFIX + "cloud-type", p -> p.getProfile().getCloudType().name(),
+        cloudType(PROFILE_PREFIX + "cloud-type",
+            p -> Optional.ofNullable(p.getProfile().getCloudType()).map(v -> v.name()).orElse(null),
             (p, s) -> p.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.fromString(s))),
 
         activeDirectoryEndpoint(ENVIRONMENT_PREFIX + "active-directory-endpoint",
@@ -156,26 +160,36 @@ public final class AzureKafkaPropertiesUtils {
             p -> p.getProfile().getTenantId(),
             (p, s) -> p.getProfile().setTenantId(s));
 
+        private static final List<String> PROPERTY_KEYS = buildPropertyKeys();
+
+        public static List<String> getPropertyKeys() {
+            return PROPERTY_KEYS;
+        }
+
+        private static List<String> buildPropertyKeys() {
+            return Collections.unmodifiableList(Stream.of(AzureKafkaPasswordlessPropertiesMapping.values()).map(m -> m.propertyKey).collect(Collectors.toList()));
+        }
+
         private String propertyKey;
         private Function<AzureProperties, String> getter;
         private BiConsumer<AzurePasswordlessProperties, String> setter;
 
-        Mapping(String propertyKey, Function<AzureProperties, String> getter, BiConsumer<AzurePasswordlessProperties,
+        AzureKafkaPasswordlessPropertiesMapping(String propertyKey, Function<AzureProperties, String> getter, BiConsumer<AzurePasswordlessProperties,
             String> setter) {
             this.propertyKey = propertyKey;
             this.getter = getter;
             this.setter = setter;
         }
 
-        String propertyKey() {
+        public String propertyKey() {
             return propertyKey;
         }
 
-        Function<AzureProperties, String> getter() {
+        public Function<AzureProperties, String> getter() {
             return getter;
         }
 
-        BiConsumer<AzurePasswordlessProperties, String> setter() {
+        public BiConsumer<AzurePasswordlessProperties, String> setter() {
             return setter;
         }
 

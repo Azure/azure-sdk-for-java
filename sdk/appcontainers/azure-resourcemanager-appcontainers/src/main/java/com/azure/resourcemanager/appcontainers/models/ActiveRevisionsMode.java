@@ -8,7 +8,12 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ActiveRevisionsMode. */
+/**
+ * ActiveRevisionsMode controls how active revisions are handled for the Container app:
+ * &lt;list&gt;&lt;item&gt;Multiple: multiple revisions can be active.&lt;/item&gt;&lt;item&gt;Single: Only one revision
+ * can be active at a time. Revision weights can not be used in this mode. If no value if provided, this is the
+ * default.&lt;/item&gt;&lt;/list&gt;.
+ */
 public final class ActiveRevisionsMode extends ExpandableStringEnum<ActiveRevisionsMode> {
     /** Static value Multiple for ActiveRevisionsMode. */
     public static final ActiveRevisionsMode MULTIPLE = fromString("Multiple");

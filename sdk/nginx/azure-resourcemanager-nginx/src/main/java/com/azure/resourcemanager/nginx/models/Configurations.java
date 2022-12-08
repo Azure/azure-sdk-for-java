@@ -42,20 +42,6 @@ public interface Configurations {
      * @param deploymentName The name of targeted Nginx deployment.
      * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
      *     Nginx conf.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Nginx configuration of given Nginx deployment.
-     */
-    NginxConfiguration get(String resourceGroupName, String deploymentName, String configurationName);
-
-    /**
-     * Get the Nginx configuration of given Nginx deployment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
-     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
-     *     Nginx conf.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -64,6 +50,20 @@ public interface Configurations {
      */
     Response<NginxConfiguration> getWithResponse(
         String resourceGroupName, String deploymentName, String configurationName, Context context);
+
+    /**
+     * Get the Nginx configuration of given Nginx deployment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of targeted Nginx deployment.
+     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
+     *     Nginx conf.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Nginx configuration of given Nginx deployment.
+     */
+    NginxConfiguration get(String resourceGroupName, String deploymentName, String configurationName);
 
     /**
      * Reset the Nginx configuration of given Nginx deployment to default.

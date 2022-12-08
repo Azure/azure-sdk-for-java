@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -18,11 +16,8 @@ import java.util.List;
  */
 @Fluent
 public final class VmSizeCompatibilityFilterV2 {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VmSizeCompatibilityFilterV2.class);
-
     /*
-     * The filtering mode. Effectively this can enabling or disabling the VM
-     * sizes in a particular set.
+     * The filtering mode. Effectively this can enabling or disabling the VM sizes in a particular set.
      */
     @JsonProperty(value = "filterMode")
     private FilterMode filterMode;
@@ -64,18 +59,22 @@ public final class VmSizeCompatibilityFilterV2 {
     private List<String> vmSizes;
 
     /*
-     * Whether apply for ESP cluster. 'true' means only for ESP, 'false' means
-     * only for non-ESP, null or empty string or others mean for both.
+     * Whether apply for ESP cluster. 'true' means only for ESP, 'false' means only for non-ESP, null or empty string
+     * or others mean for both.
      */
     @JsonProperty(value = "espApplied")
     private String espApplied;
 
     /*
-     * Whether support compute isolation. 'true' means only for
-     * ComputeIsolationEnabled, 'false' means only for regular cluster.
+     * Whether support compute isolation. 'true' means only for ComputeIsolationEnabled, 'false' means only for regular
+     * cluster.
      */
     @JsonProperty(value = "computeIsolationSupported")
     private String computeIsolationSupported;
+
+    /** Creates an instance of VmSizeCompatibilityFilterV2 class. */
+    public VmSizeCompatibilityFilterV2() {
+    }
 
     /**
      * Get the filterMode property: The filtering mode. Effectively this can enabling or disabling the VM sizes in a

@@ -33,7 +33,7 @@ public final class ProjectsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"devCenterId\":\"zukxitmmqtgqq\",\"description\":\"hrnxrxc\"},\"location\":\"uisavokq\",\"tags\":{\"ttbaj\":\"vazivjlfr\",\"pidkqqfkuvscxkdm\":\"katnwxyi\",\"rxkpmloazuruoc\":\"igovi\",\"bfhjxakvvjgsl\":\"goorbteo\"},\"id\":\"r\",\"name\":\"il\",\"type\":\"yw\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"devCenterUri\":\"w\",\"devCenterId\":\"kpnb\",\"description\":\"zejjoqk\"},\"location\":\"fhsxttaugz\",\"tags\":{\"pxdtnkdmkq\":\"aa\",\"ou\":\"jlwuenvrkp\",\"aays\":\"ibreb\",\"zlwfffiakp\":\"kixqtnqtt\"},\"id\":\"pqqmted\",\"name\":\"tmmjihyeozph\",\"type\":\"wau\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,18 +64,18 @@ public final class ProjectsCreateOrUpdateMockTests {
         Project response =
             manager
                 .projects()
-                .define("hjoxo")
-                .withRegion("fgcviz")
-                .withExistingResourceGroup("byowbblgyavutp")
-                .withTags(mapOf("fbkjubdyhgkfmi", "wlvwlyoupf"))
-                .withDevCenterId("iml")
-                .withDescription("ljxkcgxxlx")
+                .define("exdrrvqahqkg")
+                .withRegion("gjqppy")
+                .withExistingResourceGroup("dreaxh")
+                .withTags(mapOf("sxkm", "ronzmyhgfip", "hjglikk", "waekrrjreafxtsgu", "uzlm", "wslolbqp"))
+                .withDevCenterId("xzb")
+                .withDescription("oowvrv")
                 .create();
 
-        Assertions.assertEquals("uisavokq", response.location());
-        Assertions.assertEquals("vazivjlfr", response.tags().get("ttbaj"));
-        Assertions.assertEquals("zukxitmmqtgqq", response.devCenterId());
-        Assertions.assertEquals("hrnxrxc", response.description());
+        Assertions.assertEquals("fhsxttaugz", response.location());
+        Assertions.assertEquals("aa", response.tags().get("pxdtnkdmkq"));
+        Assertions.assertEquals("kpnb", response.devCenterId());
+        Assertions.assertEquals("zejjoqk", response.description());
     }
 
     @SuppressWarnings("unchecked")

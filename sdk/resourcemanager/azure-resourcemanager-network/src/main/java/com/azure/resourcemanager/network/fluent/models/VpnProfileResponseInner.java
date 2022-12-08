@@ -16,6 +16,10 @@ public final class VpnProfileResponseInner {
     @JsonProperty(value = "profileUrl")
     private String profileUrl;
 
+    /** Creates an instance of VpnProfileResponseInner class. */
+    public VpnProfileResponseInner() {
+    }
+
     /**
      * Get the profileUrl property: URL to the VPN profile.
      *

@@ -42,9 +42,7 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.net.URISyntaxException;
-import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -142,14 +140,11 @@ public class CallConnectionAsync {
         try {
             context = context == null ? Context.NONE : context;
 
-            if (hangUpOptions.getRepeatabilityHeaders() == null) {
-                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), Instant.now());
-                hangUpOptions.setRepeatabilityHeaders(autoRepeatabilityHeaders);
-            }
+            hangUpOptions.setRepeatabilityHeaders(handleApiIdempotency(hangUpOptions.getRepeatabilityHeaders()));
 
             return (hangUpOptions.getIsForEveryone() ? callConnectionInternal.terminateCallWithResponseAsync(callConnectionId,
-                hangUpOptions.getRepeatabilityHeaders().getRepeatabilityRequestId(),
-                hangUpOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat(),
+                hangUpOptions.getRepeatabilityHeaders() != null ? hangUpOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
+                hangUpOptions.getRepeatabilityHeaders() != null ? hangUpOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
                 context)
                 : callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, context))
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
@@ -269,17 +264,13 @@ public class CallConnectionAsync {
             TransferToParticipantRequestInternal request = new TransferToParticipantRequestInternal()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(transferToParticipantCallOptions.getTargetParticipant()))
                 .setTransfereeCallerId(PhoneNumberIdentifierConverter.convert(transferToParticipantCallOptions.getTransfereeCallerId()))
-                .setUserToUserInformation(transferToParticipantCallOptions.getUserToUserInformation())
                 .setOperationContext(transferToParticipantCallOptions.getOperationContext());
 
-            if (transferToParticipantCallOptions.getRepeatabilityHeaders() == null) {
-                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), Instant.now());
-                transferToParticipantCallOptions.setRepeatabilityHeaders(autoRepeatabilityHeaders);
-            }
+            transferToParticipantCallOptions.setRepeatabilityHeaders(handleApiIdempotency(transferToParticipantCallOptions.getRepeatabilityHeaders()));
 
             return callConnectionInternal.transferToParticipantWithResponseAsync(callConnectionId, request,
-                    transferToParticipantCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId(),
-                    transferToParticipantCallOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat(),
+                    transferToParticipantCallOptions.getRepeatabilityHeaders() != null ? transferToParticipantCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
+                    transferToParticipantCallOptions.getRepeatabilityHeaders() != null ? transferToParticipantCallOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
                     context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response ->
@@ -332,14 +323,11 @@ public class CallConnectionAsync {
                 request.setInvitationTimeoutInSeconds((int) addParticipantsOptions.getInvitationTimeout().getSeconds());
             }
 
-            if (addParticipantsOptions.getRepeatabilityHeaders() == null) {
-                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), Instant.now());
-                addParticipantsOptions.setRepeatabilityHeaders(autoRepeatabilityHeaders);
-            }
+            addParticipantsOptions.setRepeatabilityHeaders(handleApiIdempotency(addParticipantsOptions.getRepeatabilityHeaders()));
 
             return callConnectionInternal.addParticipantWithResponseAsync(callConnectionId, request,
-                    addParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityRequestId(),
-                    addParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat(),
+                    addParticipantsOptions.getRepeatabilityHeaders() != null ? addParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
+                    addParticipantsOptions.getRepeatabilityHeaders() != null ? addParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
                     context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> new SimpleResponse<>(response, AddParticipantsResponseConstructorProxy.create(response.getValue())));
@@ -380,18 +368,15 @@ public class CallConnectionAsync {
             List<CommunicationIdentifierModel> participantModels = removeParticipantsOptions.getParticipants()
                 .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
 
-            if (removeParticipantsOptions.getRepeatabilityHeaders() == null) {
-                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), Instant.now());
-                removeParticipantsOptions.setRepeatabilityHeaders(autoRepeatabilityHeaders);
-            }
+            removeParticipantsOptions.setRepeatabilityHeaders(handleApiIdempotency(removeParticipantsOptions.getRepeatabilityHeaders()));
 
             RemoveParticipantsRequestInternal request = new RemoveParticipantsRequestInternal()
                 .setParticipantsToRemove(participantModels)
                 .setOperationContext(removeParticipantsOptions.getOperationContext());
 
             return callConnectionInternal.removeParticipantsWithResponseAsync(callConnectionId, request,
-                    removeParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityRequestId(),
-                    removeParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat(),
+                    removeParticipantsOptions.getRepeatabilityHeaders() != null ? removeParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
+                    removeParticipantsOptions.getRepeatabilityHeaders() != null ? removeParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
                     context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> new SimpleResponse<>(response, RemoveParticipantsResponseConstructorProxy.create(response.getValue())));
@@ -409,6 +394,17 @@ public class CallConnectionAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallMediaAsync getCallMediaAsync() {
         return new CallMediaAsync(callConnectionId, contentsInternal);
+    }
+    //endregion
+
+    //region helper functions
+    /***
+     * Make sure repeatability headers of the request are correctly set.
+     *
+     * @return a verified RepeatabilityHeaders object.
+     */
+    private RepeatabilityHeaders handleApiIdempotency(RepeatabilityHeaders repeatabilityHeaders) {
+        return CallAutomationAsyncClient.handleApiIdempotency(repeatabilityHeaders);
     }
     //endregion
 }

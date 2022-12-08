@@ -74,6 +74,10 @@ public final class WebActivityTypeProperties {
     @JsonProperty(value = "connectVia")
     private IntegrationRuntimeReference connectVia;
 
+    /** Creates an instance of WebActivityTypeProperties class. */
+    public WebActivityTypeProperties() {
+    }
+
     /**
      * Get the method property: Rest API method for target endpoint.
      *

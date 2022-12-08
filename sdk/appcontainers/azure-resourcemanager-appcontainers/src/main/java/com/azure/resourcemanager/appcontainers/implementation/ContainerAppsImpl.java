@@ -10,10 +10,12 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appcontainers.fluent.ContainerAppsClient;
+import com.azure.resourcemanager.appcontainers.fluent.models.ContainerAppAuthTokenInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.ContainerAppInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.CustomHostnameAnalysisResultInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.SecretsCollectionInner;
 import com.azure.resourcemanager.appcontainers.models.ContainerApp;
+import com.azure.resourcemanager.appcontainers.models.ContainerAppAuthToken;
 import com.azure.resourcemanager.appcontainers.models.ContainerApps;
 import com.azure.resourcemanager.appcontainers.models.CustomHostnameAnalysisResult;
 import com.azure.resourcemanager.appcontainers.models.SecretsCollection;
@@ -52,15 +54,6 @@ public final class ContainerAppsImpl implements ContainerApps {
         return Utils.mapPage(inner, inner1 -> new ContainerAppImpl(inner1, this.manager()));
     }
 
-    public ContainerApp getByResourceGroup(String resourceGroupName, String containerAppName) {
-        ContainerAppInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, containerAppName);
-        if (inner != null) {
-            return new ContainerAppImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ContainerApp> getByResourceGroupWithResponse(
         String resourceGroupName, String containerAppName, Context context) {
         Response<ContainerAppInner> inner =
@@ -71,6 +64,15 @@ public final class ContainerAppsImpl implements ContainerApps {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ContainerAppImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ContainerApp getByResourceGroup(String resourceGroupName, String containerAppName) {
+        ContainerAppInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, containerAppName);
+        if (inner != null) {
+            return new ContainerAppImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -93,16 +95,6 @@ public final class ContainerAppsImpl implements ContainerApps {
         this.serviceClient().update(resourceGroupName, containerAppName, containerAppEnvelope, context);
     }
 
-    public CustomHostnameAnalysisResult listCustomHostnameAnalysis(String resourceGroupName, String containerAppName) {
-        CustomHostnameAnalysisResultInner inner =
-            this.serviceClient().listCustomHostnameAnalysis(resourceGroupName, containerAppName);
-        if (inner != null) {
-            return new CustomHostnameAnalysisResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CustomHostnameAnalysisResult> listCustomHostnameAnalysisWithResponse(
         String resourceGroupName, String containerAppName, String customHostname, Context context) {
         Response<CustomHostnameAnalysisResultInner> inner =
@@ -120,10 +112,11 @@ public final class ContainerAppsImpl implements ContainerApps {
         }
     }
 
-    public SecretsCollection listSecrets(String resourceGroupName, String containerAppName) {
-        SecretsCollectionInner inner = this.serviceClient().listSecrets(resourceGroupName, containerAppName);
+    public CustomHostnameAnalysisResult listCustomHostnameAnalysis(String resourceGroupName, String containerAppName) {
+        CustomHostnameAnalysisResultInner inner =
+            this.serviceClient().listCustomHostnameAnalysis(resourceGroupName, containerAppName);
         if (inner != null) {
-            return new SecretsCollectionImpl(inner, this.manager());
+            return new CustomHostnameAnalysisResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -139,6 +132,39 @@ public final class ContainerAppsImpl implements ContainerApps {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SecretsCollectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SecretsCollection listSecrets(String resourceGroupName, String containerAppName) {
+        SecretsCollectionInner inner = this.serviceClient().listSecrets(resourceGroupName, containerAppName);
+        if (inner != null) {
+            return new SecretsCollectionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<ContainerAppAuthToken> getAuthTokenWithResponse(
+        String resourceGroupName, String containerAppName, Context context) {
+        Response<ContainerAppAuthTokenInner> inner =
+            this.serviceClient().getAuthTokenWithResponse(resourceGroupName, containerAppName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new ContainerAppAuthTokenImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ContainerAppAuthToken getAuthToken(String resourceGroupName, String containerAppName) {
+        ContainerAppAuthTokenInner inner = this.serviceClient().getAuthToken(resourceGroupName, containerAppName);
+        if (inner != null) {
+            return new ContainerAppAuthTokenImpl(inner, this.manager());
         } else {
             return null;
         }

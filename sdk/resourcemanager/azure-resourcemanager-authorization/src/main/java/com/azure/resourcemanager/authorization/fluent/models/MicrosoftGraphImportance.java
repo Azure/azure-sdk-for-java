@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphImportance. */
+/** importance. */
 public final class MicrosoftGraphImportance extends ExpandableStringEnum<MicrosoftGraphImportance> {
     /** Static value low for MicrosoftGraphImportance. */
     public static final MicrosoftGraphImportance LOW = fromString("low");
@@ -30,7 +30,11 @@ public final class MicrosoftGraphImportance extends ExpandableStringEnum<Microso
         return fromString(name, MicrosoftGraphImportance.class);
     }
 
-    /** @return known MicrosoftGraphImportance values. */
+    /**
+     * Gets known MicrosoftGraphImportance values.
+     *
+     * @return known MicrosoftGraphImportance values.
+     */
     public static Collection<MicrosoftGraphImportance> values() {
         return values(MicrosoftGraphImportance.class);
     }

@@ -30,6 +30,10 @@ public final class RoutingPolicy {
     @JsonProperty(value = "nextHop", required = true)
     private String nextHop;
 
+    /** Creates an instance of RoutingPolicy class. */
+    public RoutingPolicy() {
+    }
+
     /**
      * Get the name property: The unique name for the routing policy.
      *

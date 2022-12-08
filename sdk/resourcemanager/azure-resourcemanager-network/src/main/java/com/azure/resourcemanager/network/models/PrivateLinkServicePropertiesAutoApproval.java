@@ -10,6 +10,10 @@ import java.util.List;
 /** The auto-approval list of the private link service. */
 @Fluent
 public final class PrivateLinkServicePropertiesAutoApproval extends ResourceSet {
+    /** Creates an instance of PrivateLinkServicePropertiesAutoApproval class. */
+    public PrivateLinkServicePropertiesAutoApproval() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public PrivateLinkServicePropertiesAutoApproval withSubscriptions(List<String> subscriptions) {

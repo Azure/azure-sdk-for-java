@@ -29,6 +29,10 @@ public final class VaultJobErrorInfo {
     @JsonProperty(value = "recommendations")
     private List<String> recommendations;
 
+    /** Creates an instance of VaultJobErrorInfo class. */
+    public VaultJobErrorInfo() {
+    }
+
     /**
      * Get the errorCode property: Error code.
      *

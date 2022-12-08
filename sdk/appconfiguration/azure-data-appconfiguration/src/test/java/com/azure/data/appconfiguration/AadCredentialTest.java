@@ -16,6 +16,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
+import static com.azure.data.appconfiguration.ConfigurationClientTestBase.FAKE_CONNECTION_STRING;
 import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 
 /**
@@ -30,8 +31,7 @@ public class AadCredentialTest extends TestBase {
     private void setup(HttpClient httpClient, ConfigurationServiceVersion serviceVersion)
         throws InvalidKeyException, NoSuchAlgorithmException {
         if (interceptorManager.isPlaybackMode()) {
-            connectionString = "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw";
-
+            connectionString = FAKE_CONNECTION_STRING;
             String endpoint = new ConfigurationClientCredentials(connectionString).getBaseUri();
             // In playback mode use connection string because CI environment doesn't set up to support AAD
             client = new ConfigurationClientBuilder()

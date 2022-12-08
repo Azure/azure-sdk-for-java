@@ -7,6 +7,9 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Fluent;
 
+import java.time.Instant;
+import java.util.UUID;
+
 /**
  * The options for adding participants.
  */
@@ -28,11 +31,6 @@ public class TransferToParticipantCallOptions {
     private PhoneNumberIdentifier transfereeCallerId;
 
     /**
-     * The user to user information.
-     */
-    private String userToUserInformation;
-
-    /**
      * Repeatability Headers Configuration
      */
     private RepeatabilityHeaders repeatabilityHeaders;
@@ -44,6 +42,7 @@ public class TransferToParticipantCallOptions {
      */
     public TransferToParticipantCallOptions(CommunicationIdentifier targetParticipant) {
         this.targetParticipant = targetParticipant;
+        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
     /**
@@ -71,15 +70,6 @@ public class TransferToParticipantCallOptions {
      */
     public PhoneNumberIdentifier getTransfereeCallerId() {
         return transfereeCallerId;
-    }
-
-    /**
-     * Get the userToUserInformation.
-     *
-     * @return the userToUserInformation
-     */
-    public String  getUserToUserInformation() {
-        return userToUserInformation;
     }
 
     /**
@@ -111,17 +101,6 @@ public class TransferToParticipantCallOptions {
      */
     public TransferToParticipantCallOptions setSourceCallerId(PhoneNumberIdentifier transfereeCallerId) {
         this.transfereeCallerId = transfereeCallerId;
-        return this;
-    }
-
-    /**
-     * Set the invitationTimeoutInSeconds.
-     *
-     * @param userToUserInformation The user to user information.
-     * @return the TransferToParticipantCallOptions object itself.
-     */
-    public TransferToParticipantCallOptions setUserToUserInformation(String userToUserInformation) {
-        this.userToUserInformation = userToUserInformation;
         return this;
     }
 

@@ -52,7 +52,7 @@ public final class PricingsClientImpl implements PricingsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterPricin")
-    private interface PricingsService {
+    public interface PricingsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/pricings")
         @ExpectedResponses({200})
@@ -167,18 +167,6 @@ public final class PricingsClientImpl implements PricingsClient {
     /**
      * Lists Microsoft Defender for Cloud pricing configurations in the subscription.
      *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of pricing configurations response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PricingListInner list() {
-        return listAsync().block();
-    }
-
-    /**
-     * Lists Microsoft Defender for Cloud pricing configurations in the subscription.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -188,6 +176,18 @@ public final class PricingsClientImpl implements PricingsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PricingListInner> listWithResponse(Context context) {
         return listWithResponseAsync(context).block();
+    }
+
+    /**
+     * Lists Microsoft Defender for Cloud pricing configurations in the subscription.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of pricing configurations response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PricingListInner list() {
+        return listWithResponse(Context.NONE).getValue();
     }
 
     /**
@@ -287,20 +287,6 @@ public final class PricingsClientImpl implements PricingsClient {
      * Gets a provided Microsoft Defender for Cloud pricing configuration in the subscription.
      *
      * @param pricingName name of the pricing configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a provided Microsoft Defender for Cloud pricing configuration in the subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PricingInner get(String pricingName) {
-        return getAsync(pricingName).block();
-    }
-
-    /**
-     * Gets a provided Microsoft Defender for Cloud pricing configuration in the subscription.
-     *
-     * @param pricingName name of the pricing configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -311,6 +297,20 @@ public final class PricingsClientImpl implements PricingsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PricingInner> getWithResponse(String pricingName, Context context) {
         return getWithResponseAsync(pricingName, context).block();
+    }
+
+    /**
+     * Gets a provided Microsoft Defender for Cloud pricing configuration in the subscription.
+     *
+     * @param pricingName name of the pricing configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a provided Microsoft Defender for Cloud pricing configuration in the subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PricingInner get(String pricingName) {
+        return getWithResponse(pricingName, Context.NONE).getValue();
     }
 
     /**
@@ -433,22 +433,6 @@ public final class PricingsClientImpl implements PricingsClient {
      *
      * @param pricingName name of the pricing configuration.
      * @param pricing Pricing object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return microsoft Defender for Cloud is provided in two pricing tiers: free and standard, with the standard tier
-     *     available with a trial period.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PricingInner update(String pricingName, PricingInner pricing) {
-        return updateAsync(pricingName, pricing).block();
-    }
-
-    /**
-     * Updates a provided Microsoft Defender for Cloud pricing configuration in the subscription.
-     *
-     * @param pricingName name of the pricing configuration.
-     * @param pricing Pricing object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -459,5 +443,21 @@ public final class PricingsClientImpl implements PricingsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PricingInner> updateWithResponse(String pricingName, PricingInner pricing, Context context) {
         return updateWithResponseAsync(pricingName, pricing, context).block();
+    }
+
+    /**
+     * Updates a provided Microsoft Defender for Cloud pricing configuration in the subscription.
+     *
+     * @param pricingName name of the pricing configuration.
+     * @param pricing Pricing object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return microsoft Defender for Cloud is provided in two pricing tiers: free and standard, with the standard tier
+     *     available with a trial period.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PricingInner update(String pricingName, PricingInner pricing) {
+        return updateWithResponse(pricingName, pricing, Context.NONE).getValue();
     }
 }

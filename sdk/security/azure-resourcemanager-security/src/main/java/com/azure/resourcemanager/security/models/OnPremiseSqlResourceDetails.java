@@ -27,6 +27,10 @@ public final class OnPremiseSqlResourceDetails extends OnPremiseResourceDetails 
     @JsonProperty(value = "databaseName", required = true)
     private String databaseName;
 
+    /** Creates an instance of OnPremiseSqlResourceDetails class. */
+    public OnPremiseSqlResourceDetails() {
+    }
+
     /**
      * Get the serverName property: The Sql server name installed on the machine.
      *

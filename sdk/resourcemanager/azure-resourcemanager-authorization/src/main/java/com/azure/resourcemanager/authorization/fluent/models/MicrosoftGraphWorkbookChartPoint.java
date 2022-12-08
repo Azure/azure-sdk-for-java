@@ -34,6 +34,10 @@ public final class MicrosoftGraphWorkbookChartPoint extends MicrosoftGraphEntity
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWorkbookChartPoint class. */
+    public MicrosoftGraphWorkbookChartPoint() {
+    }
+
     /**
      * Get the value property: Json.
      *

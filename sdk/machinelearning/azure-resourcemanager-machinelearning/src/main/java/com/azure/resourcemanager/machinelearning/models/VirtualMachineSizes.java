@@ -13,17 +13,6 @@ public interface VirtualMachineSizes {
      * Returns supported VM Sizes in a location.
      *
      * @param location The location upon which virtual-machine-sizes is queried.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Virtual Machine size operation response.
-     */
-    VirtualMachineSizeListResult list(String location);
-
-    /**
-     * Returns supported VM Sizes in a location.
-     *
-     * @param location The location upon which virtual-machine-sizes is queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -31,4 +20,15 @@ public interface VirtualMachineSizes {
      * @return the List Virtual Machine size operation response along with {@link Response}.
      */
     Response<VirtualMachineSizeListResult> listWithResponse(String location, Context context);
+
+    /**
+     * Returns supported VM Sizes in a location.
+     *
+     * @param location The location upon which virtual-machine-sizes is queried.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Virtual Machine size operation response.
+     */
+    VirtualMachineSizeListResult list(String location);
 }

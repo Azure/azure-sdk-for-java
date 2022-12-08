@@ -34,6 +34,9 @@ public final class RoleAssignment {
     @JsonProperty(value = "properties")
     private RoleAssignmentPropertiesWithScope properties;
 
+    /** Creates an instance of RoleAssignment class. */
+    public RoleAssignment() {}
+
     /**
      * Get the id property: The role assignment ID.
      *

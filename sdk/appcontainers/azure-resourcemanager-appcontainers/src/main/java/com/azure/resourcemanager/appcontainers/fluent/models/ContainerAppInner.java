@@ -6,8 +6,10 @@ package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appcontainers.models.Configuration;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppProvisioningState;
+import com.azure.resourcemanager.appcontainers.models.ExtendedLocation;
 import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appcontainers.models.Template;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -18,8 +20,14 @@ import java.util.Map;
 @Fluent
 public final class ContainerAppInner extends Resource {
     /*
-     * managed identities for the Container App to interact with other Azure
-     * services without maintaining any secrets or credentials in code.
+     * The complex type of the extended location.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
+
+    /*
+     * managed identities for the Container App to interact with other Azure services without maintaining any secrets
+     * or credentials in code.
      */
     @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
@@ -29,6 +37,36 @@ public final class ContainerAppInner extends Resource {
      */
     @JsonProperty(value = "properties")
     private ContainerAppProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /** Creates an instance of ContainerAppInner class. */
+    public ContainerAppInner() {
+    }
+
+    /**
+     * Get the extendedLocation property: The complex type of the extended location.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The complex type of the extended location.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the ContainerAppInner object itself.
+     */
+    public ContainerAppInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
+    }
 
     /**
      * Get the identity property: managed identities for the Container App to interact with other Azure services without
@@ -61,6 +99,15 @@ public final class ContainerAppInner extends Resource {
         return this.innerProperties;
     }
 
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
     /** {@inheritDoc} */
     @Override
     public ContainerAppInner withLocation(String location) {
@@ -85,7 +132,7 @@ public final class ContainerAppInner extends Resource {
     }
 
     /**
-     * Get the managedEnvironmentId property: Resource ID of the Container App's environment.
+     * Get the managedEnvironmentId property: Deprecated. Resource ID of the Container App's environment.
      *
      * @return the managedEnvironmentId value.
      */
@@ -94,7 +141,7 @@ public final class ContainerAppInner extends Resource {
     }
 
     /**
-     * Set the managedEnvironmentId property: Resource ID of the Container App's environment.
+     * Set the managedEnvironmentId property: Deprecated. Resource ID of the Container App's environment.
      *
      * @param managedEnvironmentId the managedEnvironmentId value to set.
      * @return the ContainerAppInner object itself.
@@ -104,6 +151,52 @@ public final class ContainerAppInner extends Resource {
             this.innerProperties = new ContainerAppProperties();
         }
         this.innerProperties().withManagedEnvironmentId(managedEnvironmentId);
+        return this;
+    }
+
+    /**
+     * Get the environmentId property: Resource ID of environment.
+     *
+     * @return the environmentId value.
+     */
+    public String environmentId() {
+        return this.innerProperties() == null ? null : this.innerProperties().environmentId();
+    }
+
+    /**
+     * Set the environmentId property: Resource ID of environment.
+     *
+     * @param environmentId the environmentId value to set.
+     * @return the ContainerAppInner object itself.
+     */
+    public ContainerAppInner withEnvironmentId(String environmentId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContainerAppProperties();
+        }
+        this.innerProperties().withEnvironmentId(environmentId);
+        return this;
+    }
+
+    /**
+     * Get the workloadProfileType property: Workload profile type to pin for container app execution.
+     *
+     * @return the workloadProfileType value.
+     */
+    public String workloadProfileType() {
+        return this.innerProperties() == null ? null : this.innerProperties().workloadProfileType();
+    }
+
+    /**
+     * Set the workloadProfileType property: Workload profile type to pin for container app execution.
+     *
+     * @param workloadProfileType the workloadProfileType value to set.
+     * @return the ContainerAppInner object itself.
+     */
+    public ContainerAppInner withWorkloadProfileType(String workloadProfileType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContainerAppProperties();
+        }
+        this.innerProperties().withWorkloadProfileType(workloadProfileType);
         return this;
     }
 
@@ -190,11 +283,23 @@ public final class ContainerAppInner extends Resource {
     }
 
     /**
+     * Get the eventStreamEndpoint property: The endpoint of the eventstream of the container app.
+     *
+     * @return the eventStreamEndpoint value.
+     */
+    public String eventStreamEndpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().eventStreamEndpoint();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
+        }
         if (identity() != null) {
             identity().validate();
         }

@@ -39,6 +39,9 @@ public final class ListHandlesResponse {
     @JsonProperty(value = "NextMarker", required = true)
     private String nextMarker;
 
+    /** Creates an instance of ListHandlesResponse class. */
+    public ListHandlesResponse() {}
+
     /**
      * Get the handleList property: The HandleList property.
      *

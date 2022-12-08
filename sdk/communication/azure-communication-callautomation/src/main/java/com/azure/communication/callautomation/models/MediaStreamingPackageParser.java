@@ -3,8 +3,8 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.callautomation.implementation.models.MediaStreamingAudioInternal;
-import com.azure.communication.callautomation.implementation.models.MediaStreamingMetadataInternal;
+import com.azure.communication.callautomation.implementation.converters.MediaStreamingAudioDataConverter;
+import com.azure.communication.callautomation.implementation.converters.MediaStreamingMetadataConverter;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,8 +22,8 @@ public class MediaStreamingPackageParser {
     /***
      * Parses a Media Streaming package from BinaryData.
      *
-     * @param json The MediaStreaming package as a BinaryData obejct.
-     * @throws RuntimeException Any exceptions occurs at runtime.
+     * @param json The MediaStreaming package as a BinaryData object.
+     * @throws RuntimeException Any exceptions occur at runtime.
      * @return a MediaStreamingPackageBase object.
      */
     public static MediaStreamingPackageBase parse(BinaryData json) {
@@ -34,7 +34,7 @@ public class MediaStreamingPackageParser {
      * Parses a Media Streaming package from byte array.
      *
      * @param receivedBytes The MediaStreaming package as a byte[].
-     * @throws RuntimeException Any exceptions occurs at runtime.
+     * @throws RuntimeException Any exceptions occur at runtime.
      * @return a MediaStreamingPackageBase object.
      */
     public static MediaStreamingPackageBase parse(byte[] receivedBytes) {
@@ -45,7 +45,7 @@ public class MediaStreamingPackageParser {
      * Parses a Media Streaming package from String.
      *
      * @param stringJson The MediaStreaming package as a String.
-     * @throws RuntimeException Any exceptions occurs at runtime.
+     * @throws RuntimeException Any exceptions occur at runtime.
      * @return a MediaStreamingPackageBase object.
      */
     public static MediaStreamingPackageBase parse(String stringJson) {
@@ -54,11 +54,11 @@ public class MediaStreamingPackageParser {
             mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
             JsonNode jsonData = mapper.readTree(stringJson);
             if (stringJson.contains("AudioData")) {
-                MediaStreamingAudioInternal audioInternal = mapper.convertValue(jsonData, MediaStreamingAudioInternal.class);
-                return new MediaStreamingAudio(audioInternal.getAudioData(), audioInternal.getTimestamp(), audioInternal.getParticipantRawID(), audioInternal.isSilent());
+                MediaStreamingAudioDataConverter audioInternal = mapper.convertValue(jsonData.get("audioData"), MediaStreamingAudioDataConverter.class);
+                return new MediaStreamingAudioData(audioInternal.getData(), audioInternal.getTimestamp(), audioInternal.getParticipantRawID(), audioInternal.isSilent());
             }
             if (stringJson.contains("AudioMetadata")) {
-                MediaStreamingMetadataInternal metadataInternal = mapper.convertValue(jsonData, MediaStreamingMetadataInternal.class);
+                MediaStreamingMetadataConverter metadataInternal = mapper.convertValue(jsonData.get("audioMetadata"), MediaStreamingMetadataConverter.class);
                 return new MediaStreamingMetadata(metadataInternal.getMediaSubscriptionId(), metadataInternal.getEncoding(), metadataInternal.getSampleRate(), metadataInternal.getChannels(), metadataInternal.getLength());
             }
             return null;

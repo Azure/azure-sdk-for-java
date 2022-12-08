@@ -19,11 +19,14 @@ public final class CommitmentTierListResult {
     private String nextLink;
 
     /*
-     * Gets the list of Cognitive Services accounts CommitmentTier and their
-     * properties.
+     * Gets the list of Cognitive Services accounts CommitmentTier and their properties.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<CommitmentTierInner> value;
+
+    /** Creates an instance of CommitmentTierListResult class. */
+    public CommitmentTierListResult() {
+    }
 
     /**
      * Get the nextLink property: The link used to get the next page of CommitmentTier.

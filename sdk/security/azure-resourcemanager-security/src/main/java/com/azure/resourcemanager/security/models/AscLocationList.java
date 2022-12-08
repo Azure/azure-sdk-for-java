@@ -24,6 +24,10 @@ public final class AscLocationList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of AscLocationList class. */
+    public AscLocationList() {
+    }
+
     /**
      * Get the value property: The value property.
      *

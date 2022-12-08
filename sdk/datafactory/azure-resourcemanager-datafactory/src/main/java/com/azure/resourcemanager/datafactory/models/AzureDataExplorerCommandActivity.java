@@ -24,6 +24,10 @@ public final class AzureDataExplorerCommandActivity extends ExecutionActivity {
     private AzureDataExplorerCommandActivityTypeProperties innerTypeProperties =
         new AzureDataExplorerCommandActivityTypeProperties();
 
+    /** Creates an instance of AzureDataExplorerCommandActivity class. */
+    public AzureDataExplorerCommandActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure Data Explorer command activity properties.
      *

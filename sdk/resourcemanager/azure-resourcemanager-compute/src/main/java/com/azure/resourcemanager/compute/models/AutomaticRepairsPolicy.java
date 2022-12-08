@@ -33,6 +33,10 @@ public final class AutomaticRepairsPolicy {
     @JsonProperty(value = "repairAction")
     private RepairAction repairAction;
 
+    /** Creates an instance of AutomaticRepairsPolicy class. */
+    public AutomaticRepairsPolicy() {
+    }
+
     /**
      * Get the enabled property: Specifies whether automatic repairs should be enabled on the virtual machine scale set.
      * The default value is false.

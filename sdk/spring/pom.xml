@@ -67,9 +67,6 @@
       <modules>
         <module>../../eng/code-quality-reports</module>
         <module>../boms/spring-cloud-azure-dependencies</module>
-        <module>../jdbc/azure-identity-providers-core</module>
-        <module>../jdbc/azure-identity-providers-jdbc-mysql</module>
-        <module>../jdbc/azure-identity-providers-jdbc-postgresql</module>
         <module>spring-messaging-azure</module>
         <module>spring-messaging-azure-eventhubs</module>
         <module>spring-messaging-azure-servicebus</module>

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.resourcegraph.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ResultFormat. */
+/** Defines in which format query result returned. */
 public enum ResultFormat {
     /** Enum value table. */
     TABLE("table"),
@@ -30,6 +30,9 @@ public enum ResultFormat {
      */
     @JsonCreator
     public static ResultFormat fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ResultFormat[] items = ResultFormat.values();
         for (ResultFormat item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum ResultFormat {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

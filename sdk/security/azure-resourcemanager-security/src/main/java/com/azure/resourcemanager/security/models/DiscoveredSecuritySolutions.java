@@ -67,12 +67,14 @@ public interface DiscoveredSecuritySolutions {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param discoveredSecuritySolutionName Name of a discovered security solution.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific discovered Security Solution.
+     * @return a specific discovered Security Solution along with {@link Response}.
      */
-    DiscoveredSecuritySolution get(String resourceGroupName, String ascLocation, String discoveredSecuritySolutionName);
+    Response<DiscoveredSecuritySolution> getWithResponse(
+        String resourceGroupName, String ascLocation, String discoveredSecuritySolutionName, Context context);
 
     /**
      * Gets a specific discovered Security Solution.
@@ -82,12 +84,10 @@ public interface DiscoveredSecuritySolutions {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param discoveredSecuritySolutionName Name of a discovered security solution.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific discovered Security Solution along with {@link Response}.
+     * @return a specific discovered Security Solution.
      */
-    Response<DiscoveredSecuritySolution> getWithResponse(
-        String resourceGroupName, String ascLocation, String discoveredSecuritySolutionName, Context context);
+    DiscoveredSecuritySolution get(String resourceGroupName, String ascLocation, String discoveredSecuritySolutionName);
 }

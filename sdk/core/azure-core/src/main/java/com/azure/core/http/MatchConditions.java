@@ -14,6 +14,12 @@ public class MatchConditions {
     private String ifNoneMatch;
 
     /**
+     * Creates a new instance of {@link MatchConditions}.
+     */
+    public MatchConditions() {
+    }
+
+    /**
      * Gets the ETag that resources must match.
      *
      * @return The ETag that resources must match.

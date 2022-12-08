@@ -10,7 +10,7 @@ import com.azure.resourcemanager.appcontainers.models.Secret;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Dapr component Secrets Collection ARM resource. */
+/** Dapr component Secrets Collection for ListSecrets Action. */
 @Fluent
 public final class DaprSecretsCollectionInner {
     /*
@@ -18,6 +18,10 @@ public final class DaprSecretsCollectionInner {
      */
     @JsonProperty(value = "value", required = true)
     private List<Secret> value;
+
+    /** Creates an instance of DaprSecretsCollectionInner class. */
+    public DaprSecretsCollectionInner() {
+    }
 
     /**
      * Get the value property: Collection of secrets used by a Dapr component.

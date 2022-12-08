@@ -43,6 +43,10 @@ public final class RevisionImpl implements Revision {
         return this.innerModel().createdTime();
     }
 
+    public OffsetDateTime lastActiveTime() {
+        return this.innerModel().lastActiveTime();
+    }
+
     public String fqdn() {
         return this.innerModel().fqdn();
     }

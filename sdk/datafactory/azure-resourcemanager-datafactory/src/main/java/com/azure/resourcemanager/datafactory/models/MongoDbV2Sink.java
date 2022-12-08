@@ -22,6 +22,10 @@ public final class MongoDbV2Sink extends CopySink {
     @JsonProperty(value = "writeBehavior")
     private Object writeBehavior;
 
+    /** Creates an instance of MongoDbV2Sink class. */
+    public MongoDbV2Sink() {
+    }
+
     /**
      * Get the writeBehavior property: Specifies whether the document with same key to be overwritten (upsert) rather
      * than throw exception (insert). The default value is "insert". Type: string (or Expression with resultType

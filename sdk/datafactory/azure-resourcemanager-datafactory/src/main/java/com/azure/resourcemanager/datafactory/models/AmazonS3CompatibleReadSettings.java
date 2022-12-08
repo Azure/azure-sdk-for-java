@@ -78,6 +78,10 @@ public final class AmazonS3CompatibleReadSettings extends StoreReadSettings {
     @JsonProperty(value = "modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;
 
+    /** Creates an instance of AmazonS3CompatibleReadSettings class. */
+    public AmazonS3CompatibleReadSettings() {
+    }
+
     /**
      * Get the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:
      * boolean (or Expression with resultType boolean).
