@@ -64,26 +64,6 @@ public final class LoadTestRunsImpl {
     @Host("https://{Endpoint}")
     @ServiceInterface(name = "LoadTestingClientLoa")
     private interface LoadTestRunsService {
-        @Delete("/test-runs/{testRunId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteTestRun(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("testRunId") String testRunId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
-
         @Patch("/test-runs/{testRunId}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(
@@ -96,7 +76,7 @@ public final class LoadTestRunsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrUpdateTestRun(
+        Mono<Response<BinaryData>> createOrUpdate(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
                 @QueryParam("api-version") String apiVersion,
@@ -117,7 +97,27 @@ public final class LoadTestRunsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getTestRun(
+        Mono<Response<BinaryData>> get(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("testRunId") String testRunId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Delete("/test-runs/{testRunId}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> delete(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
                 @QueryParam("api-version") String apiVersion,
@@ -137,7 +137,7 @@ public final class LoadTestRunsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getTestRunFile(
+        Mono<Response<BinaryData>> getFile(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
                 @PathParam("fileName") String fileName,
@@ -158,7 +158,7 @@ public final class LoadTestRunsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listTestRuns(
+        Mono<Response<BinaryData>> list(
                 @HostParam("Endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -177,7 +177,7 @@ public final class LoadTestRunsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> stopTestRun(
+        Mono<Response<BinaryData>> stop(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
                 @QueryParam("api-version") String apiVersion,
@@ -306,7 +306,7 @@ public final class LoadTestRunsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listAppComponents(
+        Mono<Response<BinaryData>> getAppComponents(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
                 @QueryParam("api-version") String apiVersion,
@@ -347,7 +347,7 @@ public final class LoadTestRunsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listServerMetricsConfig(
+        Mono<Response<BinaryData>> getServerMetricsConfig(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testRunId") String testRunId,
                 @QueryParam("api-version") String apiVersion,
@@ -367,55 +367,50 @@ public final class LoadTestRunsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listTestRunsNext(
+        Mono<Response<BinaryData>> listNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("Endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
-    }
 
-    /**
-     * Delete a test run by its name.
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteTestRunWithResponseAsync(String testRunId, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.deleteTestRun(
-                                this.client.getEndpoint(),
-                                testRunId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
-    }
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listMetricsNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("Endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
 
-    /**
-     * Delete a test run by its name.
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteTestRunWithResponse(String testRunId, RequestOptions requestOptions) {
-        return deleteTestRunWithResponseAsync(testRunId, requestOptions).block();
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listMetricDimensionValuesNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("Endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
     }
 
     /**
@@ -443,7 +438,7 @@ public final class LoadTestRunsImpl {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -551,7 +546,7 @@ public final class LoadTestRunsImpl {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -658,12 +653,12 @@ public final class LoadTestRunsImpl {
      * @return load test run model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateTestRunWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             String testRunId, BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.createOrUpdateTestRun(
+                        service.createOrUpdate(
                                 this.client.getEndpoint(),
                                 testRunId,
                                 this.client.getServiceVersion().getVersion(),
@@ -698,7 +693,7 @@ public final class LoadTestRunsImpl {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -806,7 +801,7 @@ public final class LoadTestRunsImpl {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -913,9 +908,9 @@ public final class LoadTestRunsImpl {
      * @return load test run model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateTestRunWithResponse(
+    public Response<BinaryData> createOrUpdateWithResponse(
             String testRunId, BinaryData body, RequestOptions requestOptions) {
-        return createOrUpdateTestRunWithResponseAsync(testRunId, body, requestOptions).block();
+        return createOrUpdateWithResponseAsync(testRunId, body, requestOptions).block();
     }
 
     /**
@@ -933,7 +928,7 @@ public final class LoadTestRunsImpl {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -1039,11 +1034,11 @@ public final class LoadTestRunsImpl {
      * @return test run details by name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTestRunWithResponseAsync(String testRunId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getWithResponseAsync(String testRunId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getTestRun(
+                        service.get(
                                 this.client.getEndpoint(),
                                 testRunId,
                                 this.client.getServiceVersion().getVersion(),
@@ -1067,7 +1062,7 @@ public final class LoadTestRunsImpl {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -1173,8 +1168,51 @@ public final class LoadTestRunsImpl {
      * @return test run details by name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTestRunWithResponse(String testRunId, RequestOptions requestOptions) {
-        return getTestRunWithResponseAsync(testRunId, requestOptions).block();
+    public Response<BinaryData> getWithResponse(String testRunId, RequestOptions requestOptions) {
+        return getWithResponseAsync(testRunId, requestOptions).block();
+    }
+
+    /**
+     * Delete a test run by its name.
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteWithResponseAsync(String testRunId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.delete(
+                                this.client.getEndpoint(),
+                                testRunId,
+                                this.client.getServiceVersion().getVersion(),
+                                accept,
+                                requestOptions,
+                                context));
+    }
+
+    /**
+     * Delete a test run by its name.
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String testRunId, RequestOptions requestOptions) {
+        return deleteWithResponseAsync(testRunId, requestOptions).block();
     }
 
     /**
@@ -1204,12 +1242,12 @@ public final class LoadTestRunsImpl {
      * @return test run file by file name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTestRunFileWithResponseAsync(
+    public Mono<Response<BinaryData>> getFileWithResponseAsync(
             String testRunId, String fileName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getTestRunFile(
+                        service.getFile(
                                 this.client.getEndpoint(),
                                 testRunId,
                                 fileName,
@@ -1246,9 +1284,8 @@ public final class LoadTestRunsImpl {
      * @return test run file by file name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTestRunFileWithResponse(
-            String testRunId, String fileName, RequestOptions requestOptions) {
-        return getTestRunFileWithResponseAsync(testRunId, fileName, requestOptions).block();
+    public Response<BinaryData> getFileWithResponse(String testRunId, String fileName, RequestOptions requestOptions) {
+        return getFileWithResponseAsync(testRunId, fileName, requestOptions).block();
     }
 
     /**
@@ -1285,7 +1322,7 @@ public final class LoadTestRunsImpl {
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
      *                         value: Double (Optional)
-     *                         action: String(stop/continue) (Optional)
+     *                         action: String(continue/stop) (Optional)
      *                         actualValue: Double (Optional)
      *                         result: String(passed/undetermined/failed) (Optional)
      *                     }
@@ -1393,11 +1430,11 @@ public final class LoadTestRunsImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listTestRunsSinglePageAsync(RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listTestRuns(
+                                service.list(
                                         this.client.getEndpoint(),
                                         this.client.getServiceVersion().getVersion(),
                                         accept,
@@ -1448,7 +1485,7 @@ public final class LoadTestRunsImpl {
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
      *                         value: Double (Optional)
-     *                         action: String(stop/continue) (Optional)
+     *                         action: String(continue/stop) (Optional)
      *                         actualValue: Double (Optional)
      *                         result: String(passed/undetermined/failed) (Optional)
      *                     }
@@ -1555,15 +1592,15 @@ public final class LoadTestRunsImpl {
      * @return all test runs with given filters as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listTestRunsAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
                 requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedFlux<>(
-                () -> listTestRunsSinglePageAsync(requestOptions),
-                nextLink -> listTestRunsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+                () -> listSinglePageAsync(requestOptions),
+                nextLink -> listNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1600,7 +1637,7 @@ public final class LoadTestRunsImpl {
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
      *                         value: Double (Optional)
-     *                         action: String(stop/continue) (Optional)
+     *                         action: String(continue/stop) (Optional)
      *                         actualValue: Double (Optional)
      *                         result: String(passed/undetermined/failed) (Optional)
      *                     }
@@ -1707,8 +1744,8 @@ public final class LoadTestRunsImpl {
      * @return all test runs with given filters as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listTestRuns(RequestOptions requestOptions) {
-        return new PagedIterable<>(listTestRunsAsync(requestOptions));
+    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
+        return new PagedIterable<>(listAsync(requestOptions));
     }
 
     /**
@@ -1726,7 +1763,7 @@ public final class LoadTestRunsImpl {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -1832,11 +1869,11 @@ public final class LoadTestRunsImpl {
      * @return load test run model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> stopTestRunWithResponseAsync(String testRunId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> stopWithResponseAsync(String testRunId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.stopTestRun(
+                        service.stop(
                                 this.client.getEndpoint(),
                                 testRunId,
                                 this.client.getServiceVersion().getVersion(),
@@ -1860,7 +1897,7 @@ public final class LoadTestRunsImpl {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -1966,8 +2003,8 @@ public final class LoadTestRunsImpl {
      * @return load test run model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> stopTestRunWithResponse(String testRunId, RequestOptions requestOptions) {
-        return stopTestRunWithResponseAsync(testRunId, requestOptions).block();
+    public Response<BinaryData> stopWithResponse(String testRunId, RequestOptions requestOptions) {
+        return stopWithResponseAsync(testRunId, requestOptions).block();
     }
 
     /**
@@ -2193,7 +2230,7 @@ public final class LoadTestRunsImpl {
      *
      * <pre>{@code
      * {
-     *     timeseries (Optional): [
+     *     value (Optional): [
      *          (Optional){
      *             data (Optional): [
      *                  (Optional){
@@ -2224,10 +2261,11 @@ public final class LoadTestRunsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response to a metrics query along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response to a metrics query along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listMetricsWithResponseAsync(
+    public Mono<PagedResponse<BinaryData>> listMetricsSinglePageAsync(
             String testRunId,
             String metricname,
             String metricNamespace,
@@ -2235,17 +2273,26 @@ public final class LoadTestRunsImpl {
             RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.listMetrics(
-                                this.client.getEndpoint(),
-                                testRunId,
-                                metricname,
-                                metricNamespace,
-                                timespan,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+                        context ->
+                                service.listMetrics(
+                                        this.client.getEndpoint(),
+                                        testRunId,
+                                        metricname,
+                                        metricNamespace,
+                                        timespan,
+                                        this.client.getServiceVersion().getVersion(),
+                                        accept,
+                                        requestOptions,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
     }
 
     /**
@@ -2291,7 +2338,7 @@ public final class LoadTestRunsImpl {
      *
      * <pre>{@code
      * {
-     *     timeseries (Optional): [
+     *     value (Optional): [
      *          (Optional){
      *             data (Optional): [
      *                  (Optional){
@@ -2322,16 +2369,109 @@ public final class LoadTestRunsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response to a metrics query along with {@link Response}.
+     * @return the response to a metrics query as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listMetricsWithResponse(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listMetricsAsync(
             String testRunId,
             String metricname,
             String metricNamespace,
             String timespan,
             RequestOptions requestOptions) {
-        return listMetricsWithResponseAsync(testRunId, metricname, metricNamespace, timespan, requestOptions).block();
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedFlux<>(
+                () -> listMetricsSinglePageAsync(testRunId, metricname, metricNamespace, timespan, requestOptions),
+                nextLink -> listMetricsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * List the metric values for a load test run.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>aggregation</td><td>String</td><td>No</td><td>The aggregation</td></tr>
+     *     <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json".</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     filters (Optional): [
+     *          (Optional){
+     *             name: String (Optional)
+     *             values (Optional): [
+     *                 String (Optional)
+     *             ]
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value (Optional): [
+     *          (Optional){
+     *             data (Optional): [
+     *                  (Optional){
+     *                     timestamp: String (Optional)
+     *                     value: Double (Optional)
+     *                 }
+     *             ]
+     *             dimensionValues (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     value: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param metricname Metric name.
+     * @param metricNamespace Metric namespace to query metric definitions for.
+     * @param timespan The timespan of the query. It is a string with the following format
+     *     'startDateTime_ISO/endDateTime_ISO'.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response to a metrics query as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listMetrics(
+            String testRunId,
+            String metricname,
+            String metricNamespace,
+            String timespan,
+            RequestOptions requestOptions) {
+        return new PagedIterable<>(listMetricsAsync(testRunId, metricname, metricNamespace, timespan, requestOptions));
     }
 
     /**
@@ -2370,10 +2510,10 @@ public final class LoadTestRunsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return metrics dimension values along with {@link Response} on successful completion of {@link Mono}.
+     * @return metrics dimension values along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listMetricDimensionValuesWithResponseAsync(
+    public Mono<PagedResponse<BinaryData>> listMetricDimensionValuesSinglePageAsync(
             String testRunId,
             String name,
             String metricname,
@@ -2382,18 +2522,27 @@ public final class LoadTestRunsImpl {
             RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.listMetricDimensionValues(
-                                this.client.getEndpoint(),
-                                testRunId,
-                                name,
-                                metricname,
-                                metricNamespace,
-                                timespan,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+                        context ->
+                                service.listMetricDimensionValues(
+                                        this.client.getEndpoint(),
+                                        testRunId,
+                                        name,
+                                        metricname,
+                                        metricNamespace,
+                                        timespan,
+                                        this.client.getServiceVersion().getVersion(),
+                                        accept,
+                                        requestOptions,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
     }
 
     /**
@@ -2432,19 +2581,76 @@ public final class LoadTestRunsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return metrics dimension values along with {@link Response}.
+     * @return metrics dimension values as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listMetricDimensionValuesWithResponse(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listMetricDimensionValuesAsync(
             String testRunId,
             String name,
             String metricname,
             String metricNamespace,
             String timespan,
             RequestOptions requestOptions) {
-        return listMetricDimensionValuesWithResponseAsync(
-                        testRunId, name, metricname, metricNamespace, timespan, requestOptions)
-                .block();
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+                requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE);
+        return new PagedFlux<>(
+                () ->
+                        listMetricDimensionValuesSinglePageAsync(
+                                testRunId, name, metricname, metricNamespace, timespan, requestOptions),
+                nextLink -> listMetricDimensionValuesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * List the dimension values for the given metric dimension name.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>interval</td><td>String</td><td>No</td><td>The interval (i.e. timegrain) of the query. Allowed values: "PT5S", "PT10S", "PT1M", "PT5M", "PT1H".</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value (Optional): [
+     *         String (Optional)
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param name Dimension name.
+     * @param metricname Metric name.
+     * @param metricNamespace Metric namespace to query metric definitions for.
+     * @param timespan The timespan of the query. It is a string with the following format
+     *     'startDateTime_ISO/endDateTime_ISO'.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return metrics dimension values as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listMetricDimensionValues(
+            String testRunId,
+            String name,
+            String metricname,
+            String metricNamespace,
+            String timespan,
+            RequestOptions requestOptions) {
+        return new PagedIterable<>(
+                listMetricDimensionValuesAsync(testRunId, name, metricname, metricNamespace, timespan, requestOptions));
     }
 
     /**
@@ -2624,12 +2830,12 @@ public final class LoadTestRunsImpl {
      *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listAppComponentsWithResponseAsync(
+    public Mono<Response<BinaryData>> getAppComponentsWithResponseAsync(
             String testRunId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.listAppComponents(
+                        service.getAppComponents(
                                 this.client.getEndpoint(),
                                 testRunId,
                                 this.client.getServiceVersion().getVersion(),
@@ -2675,8 +2881,8 @@ public final class LoadTestRunsImpl {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listAppComponentsWithResponse(String testRunId, RequestOptions requestOptions) {
-        return listAppComponentsWithResponseAsync(testRunId, requestOptions).block();
+    public Response<BinaryData> getAppComponentsWithResponse(String testRunId, RequestOptions requestOptions) {
+        return getAppComponentsWithResponseAsync(testRunId, requestOptions).block();
     }
 
     /**
@@ -2862,12 +3068,12 @@ public final class LoadTestRunsImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listServerMetricsConfigWithResponseAsync(
+    public Mono<Response<BinaryData>> getServerMetricsConfigWithResponseAsync(
             String testRunId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.listServerMetricsConfig(
+                        service.getServerMetricsConfig(
                                 this.client.getEndpoint(),
                                 testRunId,
                                 this.client.getServiceVersion().getVersion(),
@@ -2913,8 +3119,8 @@ public final class LoadTestRunsImpl {
      * @return test run server metrics configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listServerMetricsConfigWithResponse(String testRunId, RequestOptions requestOptions) {
-        return listServerMetricsConfigWithResponseAsync(testRunId, requestOptions).block();
+    public Response<BinaryData> getServerMetricsConfigWithResponse(String testRunId, RequestOptions requestOptions) {
+        return getServerMetricsConfigWithResponseAsync(testRunId, requestOptions).block();
     }
 
     /**
@@ -2934,7 +3140,7 @@ public final class LoadTestRunsImpl {
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
      *                         value: Double (Optional)
-     *                         action: String(stop/continue) (Optional)
+     *                         action: String(continue/stop) (Optional)
      *                         actualValue: Double (Optional)
      *                         result: String(passed/undetermined/failed) (Optional)
      *                     }
@@ -3043,12 +3249,108 @@ public final class LoadTestRunsImpl {
      * @return collection of test runs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listTestRunsNextSinglePageAsync(
+    public Mono<PagedResponse<BinaryData>> listNextSinglePageAsync(String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                        context ->
+                                service.listNext(nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value (Optional): [
+     *          (Optional){
+     *             data (Optional): [
+     *                  (Optional){
+     *                     timestamp: String (Optional)
+     *                     value: Double (Optional)
+     *                 }
+     *             ]
+     *             dimensionValues (Optional): [
+     *                  (Optional){
+     *                     name: String (Optional)
+     *                     value: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response to a metrics query along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BinaryData>> listMetricsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listTestRunsNext(
+                                service.listMetricsNext(
+                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        getValues(res.getValue(), "value"),
+                                        getNextLink(res.getValue(), "nextLink"),
+                                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     value (Optional): [
+     *         String (Optional)
+     *     ]
+     *     nextLink: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return metrics dimension values along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BinaryData>> listMetricDimensionValuesNextSinglePageAsync(
+            String nextLink, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                        context ->
+                                service.listMetricDimensionValuesNext(
                                         nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->

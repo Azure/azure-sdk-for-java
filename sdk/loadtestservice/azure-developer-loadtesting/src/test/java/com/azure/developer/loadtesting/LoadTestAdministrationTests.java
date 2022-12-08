@@ -7,6 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -65,23 +66,23 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
 
     @Test
     @Order(2)
-    public void uploadTestFile() {
+    public void beginUploadTestFileAdditionalFiles() {
         BinaryData file = getFileBodyFromResource(uploadCsvFileName);
         RequestOptions requestOptions = new RequestOptions().addQueryParam("fileType", "ADDITIONAL_ARTIFACTS");
-        Response<BinaryData> response = builder.buildLoadTestAdministrationClient().uploadTestFileWithResponse(
+        PollResponse<BinaryData> response = builder.buildLoadTestAdministrationClient().beginUploadTestFile(
                                                 newTestId,
                                                 uploadCsvFileName,
                                                 file,
-                                                requestOptions);
-        Assertions.assertEquals(201, response.getStatusCode());
+                                                requestOptions).poll();
+        Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.getStatus());
     }
 
     @Test
     @Order(3)
-    public void beginUploadAndValidate() {
+    public void beginUploadTestFileTestScript() {
         BinaryData file = getFileBodyFromResource(uploadJmxFileName);
         RequestOptions fileUploadRequestOptions = new RequestOptions().addQueryParam("fileType", "JMX_FILE");
-        SyncPoller<BinaryData, BinaryData> poller = builder.buildLoadTestAdministrationClient().beginUploadAndValidate(newTestId, uploadJmxFileName, file, fileUploadRequestOptions);
+        SyncPoller<BinaryData, BinaryData> poller = builder.buildLoadTestAdministrationClient().beginUploadTestFile(newTestId, uploadJmxFileName, file, fileUploadRequestOptions);
         poller = setPlaybackSyncPollerPollInterval(poller);
         PollResponse<BinaryData> response = poller.waitForCompletion();
         BinaryData fileBinary = poller.getFinalResult();
@@ -147,8 +148,8 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
 
     @Test
     @Order(8)
-    public void listAppComponents() {
-        Response<BinaryData> response = builder.buildLoadTestAdministrationClient().listAppComponentsWithResponse(newTestId, null);
+    public void getAppComponents() {
+        Response<BinaryData> response = builder.buildLoadTestAdministrationClient().getAppComponentsWithResponse(newTestId, null);
         try {
             JsonNode test = OBJECT_MAPPER.readTree(response.getValue().toString());
             Assertions.assertTrue(test.get("components").has(defaultAppComponentResourceId) && test.get("components").get(defaultAppComponentResourceId).get("resourceId").asText().equalsIgnoreCase(defaultAppComponentResourceId));
@@ -160,8 +161,8 @@ public final class LoadTestAdministrationTests extends LoadTestingClientTestBase
 
     @Test
     @Order(9)
-    public void listServerMetricsConfig() {
-        Response<BinaryData> response = builder.buildLoadTestAdministrationClient().listServerMetricsConfigWithResponse(newTestId, null);
+    public void getServerMetricsConfig() {
+        Response<BinaryData> response = builder.buildLoadTestAdministrationClient().getServerMetricsConfigWithResponse(newTestId, null);
         try {
             JsonNode test = OBJECT_MAPPER.readTree(response.getValue().toString());
             Assertions.assertTrue(test.get("metrics").has(defaultServerMetricId) && test.get("metrics").get(defaultServerMetricId).get("id").asText().equalsIgnoreCase(defaultServerMetricId));

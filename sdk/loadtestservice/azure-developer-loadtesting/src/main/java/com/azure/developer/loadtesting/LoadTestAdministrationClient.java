@@ -114,10 +114,10 @@ public final class LoadTestAdministrationClient {
      * @return A {@link SyncPoller} to poll on and retrieve the file info with validation status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginUploadAndValidate(
+    public SyncPoller<BinaryData, BinaryData> beginUploadTestFile(
             String testId, String fileName, BinaryData body, RequestOptions fileUploadRequestOptions) {
         PollerFlux<BinaryData, BinaryData> asyncPoller =
-                this.client.beginUploadAndValidate(testId, fileName, body, fileUploadRequestOptions);
+                this.client.beginUploadTestFile(testId, fileName, body, fileUploadRequestOptions);
         return asyncPoller.getSyncPoller();
     }
 
@@ -182,7 +182,7 @@ public final class LoadTestAdministrationClient {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -254,7 +254,7 @@ public final class LoadTestAdministrationClient {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -364,7 +364,7 @@ public final class LoadTestAdministrationClient {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -472,7 +472,7 @@ public final class LoadTestAdministrationClient {
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
      *                         value: Double (Optional)
-     *                         action: String(stop/continue) (Optional)
+     *                         action: String(continue/stop) (Optional)
      *                         actualValue: Double (Optional)
      *                         result: String(passed/undetermined/failed) (Optional)
      *                     }
@@ -594,9 +594,8 @@ public final class LoadTestAdministrationClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return file info along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> uploadTestFileWithResponse(
+    Response<BinaryData> uploadTestFileWithResponse(
             String testId, String fileName, BinaryData body, RequestOptions requestOptions) {
         return this.client.uploadTestFileWithResponse(testId, fileName, body, requestOptions).block();
     }
@@ -755,8 +754,8 @@ public final class LoadTestAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listAppComponentsWithResponse(String testId, RequestOptions requestOptions) {
-        return this.client.listAppComponentsWithResponse(testId, requestOptions).block();
+    public Response<BinaryData> getAppComponentsWithResponse(String testId, RequestOptions requestOptions) {
+        return this.client.getAppComponentsWithResponse(testId, requestOptions).block();
     }
 
     /**
@@ -797,7 +796,7 @@ public final class LoadTestAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listServerMetricsConfigWithResponse(String testId, RequestOptions requestOptions) {
-        return this.client.listServerMetricsConfigWithResponse(testId, requestOptions).block();
+    public Response<BinaryData> getServerMetricsConfigWithResponse(String testId, RequestOptions requestOptions) {
+        return this.client.getServerMetricsConfigWithResponse(testId, requestOptions).block();
     }
 }

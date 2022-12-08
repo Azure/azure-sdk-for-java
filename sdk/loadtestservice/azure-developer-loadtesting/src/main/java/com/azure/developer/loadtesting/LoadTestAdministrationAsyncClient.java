@@ -152,7 +152,7 @@ public final class LoadTestAdministrationAsyncClient {
      * @return A {@link PollerFlux} to poll on and retrieve the file info with validation status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginUploadAndValidate(
+    public PollerFlux<BinaryData, BinaryData> beginUploadTestFile(
             String testId, String fileName, BinaryData body, RequestOptions fileUploadRequestOptions) {
         RequestOptions defaultRequestOptions = new RequestOptions();
         if (fileUploadRequestOptions != null) {
@@ -240,7 +240,7 @@ public final class LoadTestAdministrationAsyncClient {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -312,7 +312,7 @@ public final class LoadTestAdministrationAsyncClient {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -422,7 +422,7 @@ public final class LoadTestAdministrationAsyncClient {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -530,7 +530,7 @@ public final class LoadTestAdministrationAsyncClient {
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
      *                         value: Double (Optional)
-     *                         action: String(stop/continue) (Optional)
+     *                         action: String(continue/stop) (Optional)
      *                         actualValue: Double (Optional)
      *                         result: String(passed/undetermined/failed) (Optional)
      *                     }
@@ -652,9 +652,8 @@ public final class LoadTestAdministrationAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return file info along with {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> uploadTestFileWithResponse(
+    Mono<Response<BinaryData>> uploadTestFileWithResponse(
             String testId, String fileName, BinaryData body, RequestOptions requestOptions) {
         return this.serviceClient.uploadTestFileWithResponseAsync(testId, fileName, body, requestOptions);
     }
@@ -816,8 +815,8 @@ public final class LoadTestAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listAppComponentsWithResponse(String testId, RequestOptions requestOptions) {
-        return this.serviceClient.listAppComponentsWithResponseAsync(testId, requestOptions);
+    public Mono<Response<BinaryData>> getAppComponentsWithResponse(String testId, RequestOptions requestOptions) {
+        return this.serviceClient.getAppComponentsWithResponseAsync(testId, requestOptions);
     }
 
     /**
@@ -858,8 +857,7 @@ public final class LoadTestAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listServerMetricsConfigWithResponse(
-            String testId, RequestOptions requestOptions) {
-        return this.serviceClient.listServerMetricsConfigWithResponseAsync(testId, requestOptions);
+    public Mono<Response<BinaryData>> getServerMetricsConfigWithResponse(String testId, RequestOptions requestOptions) {
+        return this.serviceClient.getServerMetricsConfigWithResponseAsync(testId, requestOptions);
     }
 }

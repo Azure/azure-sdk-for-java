@@ -5,11 +5,15 @@
 package com.azure.developer.loadtesting;
 
 import java.io.File;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -100,7 +104,7 @@ public final class HelloWorld {
 
         // receive response with BinaryData content
         // NOTE: file name should be passed as input argument `testFileName`. File name in local path is ignored
-        Response<BinaryData> fileUrlOut = adminClient.uploadTestFileWithResponse(testId, testFileName, fileData, null);
+        PollResponse<BinaryData> fileUrlOut = adminClient.beginUploadTestFile(testId, testFileName, fileData, null).waitForCompletion(Duration.ofMinutes(2));
         System.out.println(fileUrlOut.getValue().toString());
         /*
          * END: Upload test file
@@ -118,8 +122,8 @@ public final class HelloWorld {
         BinaryData testRun = BinaryData.fromObject(testRunMap);
 
         // receive response with BinaryData content
-        Response<BinaryData> testRunOut = testRunClient.createOrUpdateTestRunWithResponse(testRunId, testRun, null);
-        System.out.println(testRunOut.getValue().toString());
+        SyncPoller<BinaryData, BinaryData> testRunPoller = testRunClient.beginTestRun(testRunId, testRun, null);
+        System.out.println(testRunPoller.poll().getValue().toString());
         /*
          * END: Start test run
          */
@@ -133,7 +137,7 @@ public final class HelloWorld {
             // handle interruption
         }
 
-         Response<BinaryData> stoppedTestRunOut = testRunClient.stopTestRunWithResponse(testRunId, null);
+        Response<BinaryData> stoppedTestRunOut = testRunClient.stopWithResponse(testRunId, null);
         System.out.println(stoppedTestRunOut.getValue().toString());
         /*
          * END: Stop test run
@@ -143,14 +147,16 @@ public final class HelloWorld {
          * BEGIN: List metrics
          */
         // wait for test to reach terminal state
+        PollResponse<BinaryData> testRunOut = testRunPoller.poll();
         JsonNode testRunJson = null;
         String testStatus = null, startDateTime = null, endDateTime = null;
-        while (testStatus == null || (testStatus != "DONE" && testStatus != "CANCELLED" && testStatus != "FAILED")) {
-            testRunOut = testRunClient.getTestRunWithResponse(testRunId, null);
+        while (!testRunOut.getStatus().isComplete()) {
+            testRunOut = testRunPoller.poll();
             // parse JSON and read status value
             try {
                 testRunJson = new ObjectMapper().readTree(testRunOut.getValue().toString());
                 testStatus = testRunJson.get("status").asText();
+                System.out.println("Status of test run: " +  testStatus);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
                 // handle error condition
@@ -164,8 +170,14 @@ public final class HelloWorld {
             }
         }
 
-        startDateTime = testRunJson.get("startDateTime").asText();
-        endDateTime = testRunJson.get("endDateTime").asText();
+        try {
+            testRunJson = new ObjectMapper().readTree(testRunPoller.getFinalResult().toString());
+            startDateTime = testRunJson.get("startDateTime").asText();
+            endDateTime = testRunJson.get("endDateTime").asText();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            // handle error condition
+        }
 
         // get list of all metric namespaces and pick the first one
         Response<BinaryData> metricNamespacesOut = testRunClient.listMetricNamespacesWithResponse(testRunId, null);
@@ -192,8 +204,10 @@ public final class HelloWorld {
         }
 
         // fetch client metrics using metric namespace and metric name
-        Response<BinaryData> clientMetricsOut = testRunClient.listMetricsWithResponse(testRunId, metricName, metricNamespace, startDateTime + '/' + endDateTime, null);
-        System.out.println(clientMetricsOut.getValue().toString());
+        PagedIterable<BinaryData> clientMetricsOut = testRunClient.listMetrics(testRunId, metricName, metricNamespace, startDateTime + '/' + endDateTime, null);
+        clientMetricsOut.forEach((clientMetric) -> {
+            System.out.println(clientMetric.toString());
+        });
         /*
          * END: List metrics
          */

@@ -262,7 +262,7 @@ public final class LoadTestAdministrationsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listAppComponents(
+        Mono<Response<BinaryData>> getAppComponents(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testId") String testId,
                 @QueryParam("api-version") String apiVersion,
@@ -303,7 +303,7 @@ public final class LoadTestAdministrationsImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listServerMetricsConfig(
+        Mono<Response<BinaryData>> getServerMetricsConfig(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("testId") String testId,
                 @QueryParam("api-version") String apiVersion,
@@ -365,7 +365,7 @@ public final class LoadTestAdministrationsImpl {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -437,7 +437,7 @@ public final class LoadTestAdministrationsImpl {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -538,7 +538,7 @@ public final class LoadTestAdministrationsImpl {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -610,7 +610,7 @@ public final class LoadTestAdministrationsImpl {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -744,7 +744,7 @@ public final class LoadTestAdministrationsImpl {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -842,7 +842,7 @@ public final class LoadTestAdministrationsImpl {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -949,7 +949,7 @@ public final class LoadTestAdministrationsImpl {
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
      *                         value: Double (Optional)
-     *                         action: String(stop/continue) (Optional)
+     *                         action: String(continue/stop) (Optional)
      *                         actualValue: Double (Optional)
      *                         result: String(passed/undetermined/failed) (Optional)
      *                     }
@@ -1076,7 +1076,7 @@ public final class LoadTestAdministrationsImpl {
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
      *                         value: Double (Optional)
-     *                         action: String(stop/continue) (Optional)
+     *                         action: String(continue/stop) (Optional)
      *                         actualValue: Double (Optional)
      *                         result: String(passed/undetermined/failed) (Optional)
      *                     }
@@ -1193,7 +1193,7 @@ public final class LoadTestAdministrationsImpl {
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
      *                         value: Double (Optional)
-     *                         action: String(stop/continue) (Optional)
+     *                         action: String(continue/stop) (Optional)
      *                         actualValue: Double (Optional)
      *                         result: String(passed/undetermined/failed) (Optional)
      *                     }
@@ -1838,11 +1838,11 @@ public final class LoadTestAdministrationsImpl {
      *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listAppComponentsWithResponseAsync(String testId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getAppComponentsWithResponseAsync(String testId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.listAppComponents(
+                        service.getAppComponents(
                                 this.client.getEndpoint(),
                                 testId,
                                 this.client.getServiceVersion().getVersion(),
@@ -1887,8 +1887,8 @@ public final class LoadTestAdministrationsImpl {
      * @return associated app component (collection of azure resources) for the given test along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listAppComponentsWithResponse(String testId, RequestOptions requestOptions) {
-        return listAppComponentsWithResponseAsync(testId, requestOptions).block();
+    public Response<BinaryData> getAppComponentsWithResponse(String testId, RequestOptions requestOptions) {
+        return getAppComponentsWithResponseAsync(testId, requestOptions).block();
     }
 
     /**
@@ -2072,12 +2072,12 @@ public final class LoadTestAdministrationsImpl {
      * @return test server metrics configuration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listServerMetricsConfigWithResponseAsync(
+    public Mono<Response<BinaryData>> getServerMetricsConfigWithResponseAsync(
             String testId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.listServerMetricsConfig(
+                        service.getServerMetricsConfig(
                                 this.client.getEndpoint(),
                                 testId,
                                 this.client.getServiceVersion().getVersion(),
@@ -2123,8 +2123,8 @@ public final class LoadTestAdministrationsImpl {
      * @return test server metrics configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listServerMetricsConfigWithResponse(String testId, RequestOptions requestOptions) {
-        return listServerMetricsConfigWithResponseAsync(testId, requestOptions).block();
+    public Response<BinaryData> getServerMetricsConfigWithResponse(String testId, RequestOptions requestOptions) {
+        return getServerMetricsConfigWithResponseAsync(testId, requestOptions).block();
     }
 
     /**
@@ -2144,7 +2144,7 @@ public final class LoadTestAdministrationsImpl {
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
      *                         value: Double (Optional)
-     *                         action: String(stop/continue) (Optional)
+     *                         action: String(continue/stop) (Optional)
      *                         actualValue: Double (Optional)
      *                         result: String(passed/undetermined/failed) (Optional)
      *                     }

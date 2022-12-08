@@ -184,21 +184,88 @@ public final class LoadTestRunClient {
     }
 
     /**
-     * Delete a test run by its name.
+     * Starts a test run and polls the status of the test run.
      *
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      *     or hyphen characters.
+     * @param body Load test run model.
+     * @param testRunRequestOptions The options to configure the file upload HTTP request before HTTP client sends it.
+     * @throws ResourceNotFoundException when a test with {@code testRunId} doesn't exist.
+     * @return A {@link SyncPoller} to poll on and retrieve the test run
+     *     status(ACCEPTED/NOTSTARTED/PROVISIONING/PROVISIONED/CONFIGURING/CONFIGURED/EXECUTING/EXECUTED/DEPROVISIONING/DEPROVISIONED/DONE/CANCELLING/CANCELLED/FAILED/VALIDATION_SUCCESS/VALIDATION_FAILURE).
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<BinaryData, BinaryData> beginTestRun(
+            String testRunId, BinaryData body, RequestOptions testRunRequestOptions) {
+        PollerFlux<BinaryData, BinaryData> asyncPoller =
+                this.client.beginTestRun(testRunId, body, testRunRequestOptions);
+        return asyncPoller.getSyncPoller();
+    }
+
+    /**
+     * Associate an app component (collection of azure resources) to a test run.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     components (Required): {
+     *         String (Required): {
+     *             resourceId: String (Optional)
+     *             resourceName: String (Optional)
+     *             resourceType: String (Optional)
+     *             displayName: String (Optional)
+     *             resourceGroup: String (Optional)
+     *             subscriptionId: String (Optional)
+     *             kind: String (Optional)
+     *         }
+     *     }
+     *     testRunId: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     components (Required): {
+     *         String (Required): {
+     *             resourceId: String (Optional)
+     *             resourceName: String (Optional)
+     *             resourceType: String (Optional)
+     *             displayName: String (Optional)
+     *             resourceGroup: String (Optional)
+     *             subscriptionId: String (Optional)
+     *             kind: String (Optional)
+     *         }
+     *     }
+     *     testRunId: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param body App Component model.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
+     * @return test run app component along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteTestRunWithResponse(String testRunId, RequestOptions requestOptions) {
-        return this.client.deleteTestRunWithResponse(testRunId, requestOptions).block();
+    public Response<BinaryData> createOrUpdateAppComponentsWithResponse(
+            String testRunId, BinaryData body, RequestOptions requestOptions) {
+        return this.client.createOrUpdateAppComponentsWithResponse(testRunId, body, requestOptions).block();
     }
 
     /**
@@ -226,7 +293,7 @@ public final class LoadTestRunClient {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -334,7 +401,7 @@ public final class LoadTestRunClient {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -440,11 +507,10 @@ public final class LoadTestRunClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return load test run model along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateTestRunWithResponse(
+    Response<BinaryData> createOrUpdateWithResponse(
             String testRunId, BinaryData body, RequestOptions requestOptions) {
-        return this.client.createOrUpdateTestRunWithResponse(testRunId, body, requestOptions).block();
+        return this.client.createOrUpdateWithResponse(testRunId, body, requestOptions).block();
     }
 
     /**
@@ -462,7 +528,7 @@ public final class LoadTestRunClient {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -569,8 +635,58 @@ public final class LoadTestRunClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTestRunWithResponse(String testRunId, RequestOptions requestOptions) {
-        return this.client.getTestRunWithResponse(testRunId, requestOptions).block();
+    public Response<BinaryData> getWithResponse(String testRunId, RequestOptions requestOptions) {
+        return this.client.getWithResponse(testRunId, requestOptions).block();
+    }
+
+    /**
+     * Delete a test run by its name.
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String testRunId, RequestOptions requestOptions) {
+        return this.client.deleteWithResponse(testRunId, requestOptions).block();
+    }
+
+    /**
+     * Get test run file by file name.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     url: String (Optional)
+     *     fileName: String (Optional)
+     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
+     *     expireDateTime: OffsetDateTime (Optional)
+     *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *     validationFailureDetails: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param fileName Test run file name with file extension.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return test run file by file name along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getFileWithResponse(String testRunId, String fileName, RequestOptions requestOptions) {
+        return this.client.getFileWithResponse(testRunId, fileName, requestOptions).block();
     }
 
     /**
@@ -607,7 +723,7 @@ public final class LoadTestRunClient {
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
      *                         value: Double (Optional)
-     *                         action: String(stop/continue) (Optional)
+     *                         action: String(continue/stop) (Optional)
      *                         actualValue: Double (Optional)
      *                         result: String(passed/undetermined/failed) (Optional)
      *                     }
@@ -715,8 +831,8 @@ public final class LoadTestRunClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listTestRuns(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listTestRuns(requestOptions));
+    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.list(requestOptions));
     }
 
     /**
@@ -734,7 +850,7 @@ public final class LoadTestRunClient {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -841,60 +957,8 @@ public final class LoadTestRunClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> stopTestRunWithResponse(String testRunId, RequestOptions requestOptions) {
-        return this.client.stopTestRunWithResponse(testRunId, requestOptions).block();
-    }
-
-    /**
-     * Get test run file by file name.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     url: String (Optional)
-     *     fileName: String (Optional)
-     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
-     *     expireDateTime: OffsetDateTime (Optional)
-     *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
-     *     validationFailureDetails: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @param fileName Test run file name with file extension.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return test run file by file name along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getTestRunFileWithResponse(
-            String testRunId, String fileName, RequestOptions requestOptions) {
-        return this.client.getTestRunFileWithResponse(testRunId, fileName, requestOptions).block();
-    }
-
-    /**
-     * Starts a test run and polls the status of the test run.
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @param body Load test run model.
-     * @param testRunRequestOptions The options to configure the file upload HTTP request before HTTP client sends it.
-     * @throws ResourceNotFoundException when a test with {@code testRunId} doesn't exist.
-     * @return A {@link SyncPoller} to poll on and retrieve the test run
-     *     status(ACCEPTED/NOTSTARTED/PROVISIONING/PROVISIONED/CONFIGURING/CONFIGURED/EXECUTING/EXECUTED/DEPROVISIONING/DEPROVISIONED/DONE/CANCELLING/CANCELLED/FAILED/VALIDATION_SUCCESS/VALIDATION_FAILURE).
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginTestRun(
-            String testRunId, BinaryData body, RequestOptions testRunRequestOptions) {
-        PollerFlux<BinaryData, BinaryData> asyncPoller =
-                this.client.beginTestRun(testRunId, body, testRunRequestOptions);
-        return asyncPoller.getSyncPoller();
+    public Response<BinaryData> stopWithResponse(String testRunId, RequestOptions requestOptions) {
+        return this.client.stopWithResponse(testRunId, requestOptions).block();
     }
 
     /**
@@ -940,7 +1004,7 @@ public final class LoadTestRunClient {
      *
      * <pre>{@code
      * {
-     *     timeseries (Optional): [
+     *     value (Optional): [
      *          (Optional){
      *             data (Optional): [
      *                  (Optional){
@@ -971,19 +1035,18 @@ public final class LoadTestRunClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response to a metrics query along with {@link Response}.
+     * @return the response to a metrics query as paginated response with {@link PagedIterable}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listMetricsWithResponse(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listMetrics(
             String testRunId,
             String metricname,
             String metricNamespace,
             String timespan,
             RequestOptions requestOptions) {
-        return this.client
-                .listMetricsWithResponse(testRunId, metricname, metricNamespace, timespan, requestOptions)
-                .block();
+        return new PagedIterable<>(
+                this.client.listMetrics(testRunId, metricname, metricNamespace, timespan, requestOptions));
     }
 
     /**
@@ -1022,87 +1085,20 @@ public final class LoadTestRunClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return metrics dimension values along with {@link Response}.
+     * @return metrics dimension values as paginated response with {@link PagedIterable}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listMetricDimensionValuesWithResponse(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listMetricDimensionValues(
             String testRunId,
             String name,
             String metricname,
             String metricNamespace,
             String timespan,
             RequestOptions requestOptions) {
-        return this.client
-                .listMetricDimensionValuesWithResponse(
-                        testRunId, name, metricname, metricNamespace, timespan, requestOptions)
-                .block();
-    }
-
-    /**
-     * Associate an app component (collection of azure resources) to a test run.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     components (Required): {
-     *         String (Required): {
-     *             resourceId: String (Optional)
-     *             resourceName: String (Optional)
-     *             resourceType: String (Optional)
-     *             displayName: String (Optional)
-     *             resourceGroup: String (Optional)
-     *             subscriptionId: String (Optional)
-     *             kind: String (Optional)
-     *         }
-     *     }
-     *     testRunId: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     createdBy: String (Optional)
-     *     lastModifiedDateTime: OffsetDateTime (Optional)
-     *     lastModifiedBy: String (Optional)
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     components (Required): {
-     *         String (Required): {
-     *             resourceId: String (Optional)
-     *             resourceName: String (Optional)
-     *             resourceType: String (Optional)
-     *             displayName: String (Optional)
-     *             resourceGroup: String (Optional)
-     *             subscriptionId: String (Optional)
-     *             kind: String (Optional)
-     *         }
-     *     }
-     *     testRunId: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     createdBy: String (Optional)
-     *     lastModifiedDateTime: OffsetDateTime (Optional)
-     *     lastModifiedBy: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @param body App Component model.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return test run app component along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateAppComponentsWithResponse(
-            String testRunId, BinaryData body, RequestOptions requestOptions) {
-        return this.client.createOrUpdateAppComponentsWithResponse(testRunId, body, requestOptions).block();
+        return new PagedIterable<>(
+                this.client.listMetricDimensionValues(
+                        testRunId, name, metricname, metricNamespace, timespan, requestOptions));
     }
 
     /**
@@ -1143,8 +1139,8 @@ public final class LoadTestRunClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listAppComponentsWithResponse(String testRunId, RequestOptions requestOptions) {
-        return this.client.listAppComponentsWithResponse(testRunId, requestOptions).block();
+    public Response<BinaryData> getAppComponentsWithResponse(String testRunId, RequestOptions requestOptions) {
+        return this.client.getAppComponentsWithResponse(testRunId, requestOptions).block();
     }
 
     /**
@@ -1185,7 +1181,7 @@ public final class LoadTestRunClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listServerMetricsConfigWithResponse(String testRunId, RequestOptions requestOptions) {
-        return this.client.listServerMetricsConfigWithResponse(testRunId, requestOptions).block();
+    public Response<BinaryData> getServerMetricsConfigWithResponse(String testRunId, RequestOptions requestOptions) {
+        return this.client.getServerMetricsConfigWithResponse(testRunId, requestOptions).block();
     }
 }

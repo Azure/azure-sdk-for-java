@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -40,7 +41,7 @@ public final class ReadmeSamples {
             .addQueryParam("orderBy", "lastModifiedDateTime")
             .addQueryParam("status", "EXECUTING,DONE")
             .addQueryParam("maxPageSize", "10");
-        testRunClient.listTestRuns(reqOpts);
+        testRunClient.list(reqOpts);
         // END: java-readme-sample-auth
     }
 
@@ -129,14 +130,14 @@ public final class ReadmeSamples {
         BinaryData testRun = BinaryData.fromObject(testRunMap);
 
         // receive response with BinaryData content
-        Response<BinaryData> testRunOut = testRunClient.createOrUpdateTestRunWithResponse("testrun12345", testRun, null);
+        Response<BinaryData> testRunOut = testRunClient.createOrUpdateWithResponse("testrun12345", testRun, null);
         System.out.println(testRunOut.getValue().toString());
 
         // wait for test to reach terminal state
         JsonNode testRunJson = null;
         String testStatus = null, startDateTime = null, endDateTime = null;
         while (testStatus == null || (testStatus != "DONE" && testStatus != "CANCELLED" && testStatus != "FAILED")) {
-            testRunOut = testRunClient.getTestRunWithResponse("testrun12345", null);
+            testRunOut = testRunClient.getWithResponse("testrun12345", null);
             // parse JSON and read status value
             try {
                 testRunJson = new ObjectMapper().readTree(testRunOut.getValue().toString());
@@ -182,8 +183,10 @@ public final class ReadmeSamples {
         }
 
         // fetch client metrics using metric namespace and metric name
-        Response<BinaryData> clientMetricsOut = testRunClient.listMetricsWithResponse("testrun12345", metricName, metricNamespace, startDateTime + '/' + endDateTime, null);
-        System.out.println(clientMetricsOut.getValue().toString());
+        PagedIterable<BinaryData> clientMetricsOut = testRunClient.listMetrics("testrun12345", metricName, metricNamespace, startDateTime + '/' + endDateTime, null);
+        clientMetricsOut.forEach((clientMetric) -> {
+            System.out.println(clientMetric.toString());
+        });
         // END: java-readme-sample-runTest
     }
 }

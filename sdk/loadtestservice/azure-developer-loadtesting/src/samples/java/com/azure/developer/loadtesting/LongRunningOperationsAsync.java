@@ -39,11 +39,13 @@ public final class LongRunningOperationsAsync {
         BinaryData fileData = BinaryData.fromFile(new File("C:/fakepath/input-file.jmx").toPath());
         /* Note: file name passed as input argument is used, over the name in local file path */
 
+        Duration pollInterval = Duration.ofSeconds(1);
+
         RequestOptions reqOpts = new RequestOptions()
                 .addQueryParam("fileType", "JMX_FILE");
 
-        PollerFlux<BinaryData, BinaryData> poller = client.beginUploadAndValidate(inputTestId, inputFileName, fileData, reqOpts);
-        poller = poller.setPollInterval(Duration.ofSeconds(1));
+        PollerFlux<BinaryData, BinaryData> poller = client.beginUploadTestFile(inputTestId, inputFileName, fileData, reqOpts);
+        poller = poller.setPollInterval(pollInterval);
 
         poller.subscribe(pollResponse -> {
             try {
@@ -86,10 +88,12 @@ public final class LongRunningOperationsAsync {
         testRunMap.put("displayName", "Sample Test Run");
         testRunMap.put("description", "Java SDK Sample Test Run");
 
+        Duration pollInterval = Duration.ofSeconds(5);
+
         BinaryData inputTestRunBinary = BinaryData.fromObject(testRunMap);
 
         PollerFlux<BinaryData, BinaryData> poller = client.beginTestRun(inputTestRunId, inputTestRunBinary, null);
-        poller = poller.setPollInterval(Duration.ofSeconds(5));
+        poller = poller.setPollInterval(pollInterval);
 
         poller.subscribe(pollResponse -> {
             BinaryData testRunBinary = pollResponse.getValue();

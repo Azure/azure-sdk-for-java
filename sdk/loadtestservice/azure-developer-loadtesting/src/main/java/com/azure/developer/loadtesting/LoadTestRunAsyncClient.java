@@ -198,21 +198,136 @@ public final class LoadTestRunAsyncClient {
     }
 
     /**
-     * Delete a test run by its name.
+     * Starts a test run and polls the status of the test run.
      *
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      *     or hyphen characters.
+     * @param body Load test run model.
+     * @param testRunRequestOptions The options to configure the file upload HTTP request before HTTP client sends it.
+     * @throws ResourceNotFoundException when a test with {@code testRunId} doesn't exist.
+     * @return A {@link PollerFlux} to poll on and retrieve the test run
+     *     status(ACCEPTED/NOTSTARTED/PROVISIONING/PROVISIONED/CONFIGURING/CONFIGURED/EXECUTING/EXECUTED/DEPROVISIONING/DEPROVISIONED/DONE/CANCELLING/CANCELLED/FAILED/VALIDATION_SUCCESS/VALIDATION_FAILURE).
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<BinaryData, BinaryData> beginTestRun(
+            String testRunId, BinaryData body, RequestOptions testRunRequestOptions) {
+        RequestOptions defaultRequestOptions = new RequestOptions();
+        if (testRunRequestOptions != null) {
+            defaultRequestOptions.setContext(testRunRequestOptions.getContext());
+        }
+        return new PollerFlux<>(
+                Duration.ofSeconds(5),
+                (context) -> {
+                    Mono<BinaryData> testRunMono =
+                            createOrUpdateWithResponse(testRunId, body, testRunRequestOptions)
+                                    .flatMap(FluxUtil::toMono);
+                    return testRunMono;
+                },
+                (context) -> {
+                    Mono<BinaryData> testRunMono =
+                            getWithResponse(testRunId, defaultRequestOptions).flatMap(FluxUtil::toMono);
+                    return testRunMono.flatMap(
+                            testRunBinary -> {
+                                String status;
+                                JsonNode testRun;
+                                try {
+                                    testRun = OBJECT_MAPPER.readTree(testRunBinary.toString());
+                                    status = testRun.get("status").asText();
+                                } catch (JsonProcessingException e) {
+                                    return Mono.error(
+                                            new RuntimeException(
+                                                    "Encountered exception while retriving test run status"));
+                                }
+                                LongRunningOperationStatus lroStatus;
+                                switch (status) {
+                                    case "NOTSTARTED":
+                                        lroStatus = LongRunningOperationStatus.NOT_STARTED;
+                                        break;
+                                    case "DONE":
+                                        lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                                        break;
+                                    case "FAILED":
+                                        lroStatus = LongRunningOperationStatus.FAILED;
+                                        break;
+                                    case "CANCELLED":
+                                        lroStatus = LongRunningOperationStatus.USER_CANCELLED;
+                                        break;
+                                    default:
+                                        lroStatus = LongRunningOperationStatus.IN_PROGRESS;
+                                        break;
+                                }
+                                return Mono.just(new PollResponse<>(lroStatus, testRunBinary));
+                            });
+                },
+                (activationResponse, context) ->
+                        stopWithResponse(testRunId, defaultRequestOptions).flatMap(FluxUtil::toMono),
+                (context) -> getWithResponse(testRunId, defaultRequestOptions).flatMap(FluxUtil::toMono));
+    }
+
+    /**
+     * Associate an app component (collection of azure resources) to a test run.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     components (Required): {
+     *         String (Required): {
+     *             resourceId: String (Optional)
+     *             resourceName: String (Optional)
+     *             resourceType: String (Optional)
+     *             displayName: String (Optional)
+     *             resourceGroup: String (Optional)
+     *             subscriptionId: String (Optional)
+     *             kind: String (Optional)
+     *         }
+     *     }
+     *     testRunId: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     components (Required): {
+     *         String (Required): {
+     *             resourceId: String (Optional)
+     *             resourceName: String (Optional)
+     *             resourceType: String (Optional)
+     *             displayName: String (Optional)
+     *             resourceGroup: String (Optional)
+     *             subscriptionId: String (Optional)
+     *             kind: String (Optional)
+     *         }
+     *     }
+     *     testRunId: String (Optional)
+     *     createdDateTime: OffsetDateTime (Optional)
+     *     createdBy: String (Optional)
+     *     lastModifiedDateTime: OffsetDateTime (Optional)
+     *     lastModifiedBy: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param body App Component model.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return test run app component along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteTestRunWithResponse(String testRunId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteTestRunWithResponseAsync(testRunId, requestOptions);
+    public Mono<Response<BinaryData>> createOrUpdateAppComponentsWithResponse(
+            String testRunId, BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateAppComponentsWithResponseAsync(testRunId, body, requestOptions);
     }
 
     /**
@@ -240,7 +355,7 @@ public final class LoadTestRunAsyncClient {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -348,7 +463,7 @@ public final class LoadTestRunAsyncClient {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -454,11 +569,10 @@ public final class LoadTestRunAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return load test run model along with {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateTestRunWithResponse(
+    Mono<Response<BinaryData>> createOrUpdateWithResponse(
             String testRunId, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateTestRunWithResponseAsync(testRunId, body, requestOptions);
+        return this.serviceClient.createOrUpdateWithResponseAsync(testRunId, body, requestOptions);
     }
 
     /**
@@ -476,7 +590,7 @@ public final class LoadTestRunAsyncClient {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -583,8 +697,59 @@ public final class LoadTestRunAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTestRunWithResponse(String testRunId, RequestOptions requestOptions) {
-        return this.serviceClient.getTestRunWithResponseAsync(testRunId, requestOptions);
+    public Mono<Response<BinaryData>> getWithResponse(String testRunId, RequestOptions requestOptions) {
+        return this.serviceClient.getWithResponseAsync(testRunId, requestOptions);
+    }
+
+    /**
+     * Delete a test run by its name.
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteWithResponse(String testRunId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteWithResponseAsync(testRunId, requestOptions);
+    }
+
+    /**
+     * Get test run file by file name.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     url: String (Optional)
+     *     fileName: String (Optional)
+     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
+     *     expireDateTime: OffsetDateTime (Optional)
+     *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
+     *     validationFailureDetails: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     *     or hyphen characters.
+     * @param fileName Test run file name with file extension.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return test run file by file name along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getFileWithResponse(
+            String testRunId, String fileName, RequestOptions requestOptions) {
+        return this.serviceClient.getFileWithResponseAsync(testRunId, fileName, requestOptions);
     }
 
     /**
@@ -621,7 +786,7 @@ public final class LoadTestRunAsyncClient {
      *                         condition: String (Optional)
      *                         requestName: String (Optional)
      *                         value: Double (Optional)
-     *                         action: String(stop/continue) (Optional)
+     *                         action: String(continue/stop) (Optional)
      *                         actualValue: Double (Optional)
      *                         result: String(passed/undetermined/failed) (Optional)
      *                     }
@@ -729,8 +894,8 @@ public final class LoadTestRunAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listTestRuns(RequestOptions requestOptions) {
-        return this.serviceClient.listTestRunsAsync(requestOptions);
+    public PagedFlux<BinaryData> list(RequestOptions requestOptions) {
+        return this.serviceClient.listAsync(requestOptions);
     }
 
     /**
@@ -748,7 +913,7 @@ public final class LoadTestRunAsyncClient {
      *                 condition: String (Optional)
      *                 requestName: String (Optional)
      *                 value: Double (Optional)
-     *                 action: String(stop/continue) (Optional)
+     *                 action: String(continue/stop) (Optional)
      *                 actualValue: Double (Optional)
      *                 result: String(passed/undetermined/failed) (Optional)
      *             }
@@ -855,108 +1020,8 @@ public final class LoadTestRunAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> stopTestRunWithResponse(String testRunId, RequestOptions requestOptions) {
-        return this.serviceClient.stopTestRunWithResponseAsync(testRunId, requestOptions);
-    }
-
-    /**
-     * Get test run file by file name.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     url: String (Optional)
-     *     fileName: String (Optional)
-     *     fileType: String(JMX_FILE/USER_PROPERTIES/ADDITIONAL_ARTIFACTS) (Optional)
-     *     expireDateTime: OffsetDateTime (Optional)
-     *     validationStatus: String(NOT_VALIDATED/VALIDATION_SUCCESS/VALIDATION_FAILURE/VALIDATION_INITIATED/VALIDATION_NOT_REQUIRED) (Optional)
-     *     validationFailureDetails: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @param fileName Test run file name with file extension.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return test run file by file name along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTestRunFileWithResponse(
-            String testRunId, String fileName, RequestOptions requestOptions) {
-        return this.serviceClient.getTestRunFileWithResponseAsync(testRunId, fileName, requestOptions);
-    }
-
-    /**
-     * Starts a test run and polls the status of the test run.
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @param body Load test run model.
-     * @param testRunRequestOptions The options to configure the file upload HTTP request before HTTP client sends it.
-     * @throws ResourceNotFoundException when a test with {@code testRunId} doesn't exist.
-     * @return A {@link PollerFlux} to poll on and retrieve the test run
-     *     status(ACCEPTED/NOTSTARTED/PROVISIONING/PROVISIONED/CONFIGURING/CONFIGURED/EXECUTING/EXECUTED/DEPROVISIONING/DEPROVISIONED/DONE/CANCELLING/CANCELLED/FAILED/VALIDATION_SUCCESS/VALIDATION_FAILURE).
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginTestRun(
-            String testRunId, BinaryData body, RequestOptions testRunRequestOptions) {
-        RequestOptions defaultRequestOptions = new RequestOptions();
-        if (testRunRequestOptions != null) {
-            defaultRequestOptions.setContext(testRunRequestOptions.getContext());
-        }
-        return new PollerFlux<>(
-                Duration.ofSeconds(5),
-                (context) -> {
-                    Mono<BinaryData> testRunMono =
-                            createOrUpdateTestRunWithResponse(testRunId, body, testRunRequestOptions)
-                                    .flatMap(FluxUtil::toMono);
-                    return testRunMono;
-                },
-                (context) -> {
-                    Mono<BinaryData> testRunMono =
-                            getTestRunWithResponse(testRunId, defaultRequestOptions).flatMap(FluxUtil::toMono);
-                    return testRunMono.flatMap(
-                            testRunBinary -> {
-                                String status;
-                                JsonNode testRun;
-                                try {
-                                    testRun = OBJECT_MAPPER.readTree(testRunBinary.toString());
-                                    status = testRun.get("status").asText();
-                                } catch (JsonProcessingException e) {
-                                    return Mono.error(
-                                            new RuntimeException(
-                                                    "Encountered exception while retriving test run status"));
-                                }
-                                LongRunningOperationStatus lroStatus;
-                                switch (status) {
-                                    case "NOTSTARTED":
-                                        lroStatus = LongRunningOperationStatus.NOT_STARTED;
-                                        break;
-                                    case "DONE":
-                                        lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                                        break;
-                                    case "FAILED":
-                                        lroStatus = LongRunningOperationStatus.FAILED;
-                                        break;
-                                    case "CANCELLED":
-                                        lroStatus = LongRunningOperationStatus.USER_CANCELLED;
-                                        break;
-                                    default:
-                                        lroStatus = LongRunningOperationStatus.IN_PROGRESS;
-                                        break;
-                                }
-                                return Mono.just(new PollResponse<>(lroStatus, testRunBinary));
-                            });
-                },
-                (activationResponse, context) ->
-                        stopTestRunWithResponse(testRunId, defaultRequestOptions).flatMap(FluxUtil::toMono),
-                (context) -> getTestRunWithResponse(testRunId, defaultRequestOptions).flatMap(FluxUtil::toMono));
+    public Mono<Response<BinaryData>> stopWithResponse(String testRunId, RequestOptions requestOptions) {
+        return this.serviceClient.stopWithResponseAsync(testRunId, requestOptions);
     }
 
     /**
@@ -1002,7 +1067,7 @@ public final class LoadTestRunAsyncClient {
      *
      * <pre>{@code
      * {
-     *     timeseries (Optional): [
+     *     value (Optional): [
      *          (Optional){
      *             data (Optional): [
      *                  (Optional){
@@ -1033,10 +1098,11 @@ public final class LoadTestRunAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response to a metrics query along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response to a metrics query as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listMetricsWithResponse(
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listMetrics(
             String testRunId,
             String metricname,
             String metricNamespace,
@@ -1047,8 +1113,7 @@ public final class LoadTestRunAsyncClient {
         }
         // Content-Type header required even though body can be null
         requestOptions.setHeader("Content-Type", "application/json");
-        return this.serviceClient.listMetricsWithResponseAsync(
-                testRunId, metricname, metricNamespace, timespan, requestOptions);
+        return this.serviceClient.listMetricsAsync(testRunId, metricname, metricNamespace, timespan, requestOptions);
     }
 
     /**
@@ -1087,85 +1152,19 @@ public final class LoadTestRunAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return metrics dimension values along with {@link Response} on successful completion of {@link Mono}.
+     * @return metrics dimension values as paginated response with {@link PagedFlux}.
      */
     @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listMetricDimensionValuesWithResponse(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> listMetricDimensionValues(
             String testRunId,
             String name,
             String metricname,
             String metricNamespace,
             String timespan,
             RequestOptions requestOptions) {
-        return this.serviceClient.listMetricDimensionValuesWithResponseAsync(
+        return this.serviceClient.listMetricDimensionValuesAsync(
                 testRunId, name, metricname, metricNamespace, timespan, requestOptions);
-    }
-
-    /**
-     * Associate an app component (collection of azure resources) to a test run.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     components (Required): {
-     *         String (Required): {
-     *             resourceId: String (Optional)
-     *             resourceName: String (Optional)
-     *             resourceType: String (Optional)
-     *             displayName: String (Optional)
-     *             resourceGroup: String (Optional)
-     *             subscriptionId: String (Optional)
-     *             kind: String (Optional)
-     *         }
-     *     }
-     *     testRunId: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     createdBy: String (Optional)
-     *     lastModifiedDateTime: OffsetDateTime (Optional)
-     *     lastModifiedBy: String (Optional)
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     components (Required): {
-     *         String (Required): {
-     *             resourceId: String (Optional)
-     *             resourceName: String (Optional)
-     *             resourceType: String (Optional)
-     *             displayName: String (Optional)
-     *             resourceGroup: String (Optional)
-     *             subscriptionId: String (Optional)
-     *             kind: String (Optional)
-     *         }
-     *     }
-     *     testRunId: String (Optional)
-     *     createdDateTime: OffsetDateTime (Optional)
-     *     createdBy: String (Optional)
-     *     lastModifiedDateTime: OffsetDateTime (Optional)
-     *     lastModifiedBy: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
-     *     or hyphen characters.
-     * @param body App Component model.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return test run app component along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateAppComponentsWithResponse(
-            String testRunId, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateAppComponentsWithResponseAsync(testRunId, body, requestOptions);
     }
 
     /**
@@ -1206,8 +1205,8 @@ public final class LoadTestRunAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listAppComponentsWithResponse(String testRunId, RequestOptions requestOptions) {
-        return this.serviceClient.listAppComponentsWithResponseAsync(testRunId, requestOptions);
+    public Mono<Response<BinaryData>> getAppComponentsWithResponse(String testRunId, RequestOptions requestOptions) {
+        return this.serviceClient.getAppComponentsWithResponseAsync(testRunId, requestOptions);
     }
 
     /**
@@ -1249,8 +1248,8 @@ public final class LoadTestRunAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listServerMetricsConfigWithResponse(
+    public Mono<Response<BinaryData>> getServerMetricsConfigWithResponse(
             String testRunId, RequestOptions requestOptions) {
-        return this.serviceClient.listServerMetricsConfigWithResponseAsync(testRunId, requestOptions);
+        return this.serviceClient.getServerMetricsConfigWithResponseAsync(testRunId, requestOptions);
     }
 }

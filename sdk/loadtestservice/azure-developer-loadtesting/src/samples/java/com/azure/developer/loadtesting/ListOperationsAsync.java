@@ -69,7 +69,7 @@ public final class ListOperationsAsync {
                 .addQueryParam("status", "EXECUTING,DONE")
                 .addQueryParam("maxPageSize", "10");
 
-        PagedFlux<BinaryData> testRuns = client.listTestRuns(reqOpts);
+        PagedFlux<BinaryData> testRuns = client.list(reqOpts);
 
         testRuns.subscribe((testRunBinary) -> {
             try {
@@ -99,10 +99,10 @@ public final class ListOperationsAsync {
         files.subscribe((fileBinary) -> {
             try {
                 JsonNode file = new ObjectMapper().readTree(fileBinary.toString());
-                String url = file.get("url").asText();
+                String blobUrl = file.get("url").asText();
                 String fileName = file.get("fileName").asText();
                 String fileType = file.get("fileType").asText();
-                System.out.println(String.format("%s\t%s\t%s", fileName, fileType, url));
+                System.out.println(String.format("%s\t%s\t%s", fileName, fileType, blobUrl));
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }

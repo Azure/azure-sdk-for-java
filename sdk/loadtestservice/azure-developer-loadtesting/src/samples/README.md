@@ -4,7 +4,7 @@ languages:
   - java
 products:
   - azure
-  - azure-developer-loadtesting
+  - azure-load-testing
 urlFragment: developer-loadtesting-samples
 ---
 

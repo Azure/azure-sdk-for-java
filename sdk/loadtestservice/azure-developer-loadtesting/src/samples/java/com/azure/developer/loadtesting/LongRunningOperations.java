@@ -40,11 +40,13 @@ public final class LongRunningOperations {
         BinaryData fileData = BinaryData.fromFile(new File("C:/fakepath/input-file.jmx").toPath());
         /* Note: file name passed as input argument is used, over the name in local file path */
 
+        Duration pollInterval = Duration.ofSeconds(1);
+
         RequestOptions reqOpts = new RequestOptions()
                 .addQueryParam("fileType", "JMX_FILE");
 
-        SyncPoller<BinaryData, BinaryData> poller = client.beginUploadAndValidate(inputTestId, inputFileName, fileData, reqOpts);
-        poller = poller.setPollInterval(Duration.ofSeconds(1));
+        SyncPoller<BinaryData, BinaryData> poller = client.beginUploadTestFile(inputTestId, inputFileName, fileData, reqOpts);
+        poller = poller.setPollInterval(pollInterval);
 
         PollResponse<BinaryData> pollResponse = poller.poll();
         while (pollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS || pollResponse.getStatus() == LongRunningOperationStatus.NOT_STARTED) {
@@ -55,6 +57,13 @@ public final class LongRunningOperations {
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
+
+            try {
+                Thread.sleep(pollInterval.toMillis());
+            } catch (InterruptedException e) {
+                // handle interruption
+            }
+
             pollResponse = poller.poll();
         }
 
@@ -89,15 +98,24 @@ public final class LongRunningOperations {
         testRunMap.put("displayName", "Sample Test Run");
         testRunMap.put("description", "Java SDK Sample Test Run");
 
+        Duration pollInterval = Duration.ofSeconds(5);
+
         BinaryData inputTestRunBinary = BinaryData.fromObject(testRunMap);
 
         SyncPoller<BinaryData, BinaryData> poller = client.beginTestRun(inputTestRunId, inputTestRunBinary, null);
-        poller = poller.setPollInterval(Duration.ofSeconds(5));
+        poller = poller.setPollInterval(pollInterval);
 
         PollResponse<BinaryData> pollResponse = poller.poll();
         while (pollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS || pollResponse.getStatus() == LongRunningOperationStatus.NOT_STARTED) {
             BinaryData testRunBinary = pollResponse.getValue();
             System.out.println("Test Run all info: " + testRunBinary.toString());
+
+            try {
+                Thread.sleep(pollInterval.toMillis());
+            } catch (InterruptedException e) {
+                // handle interruption
+            }
+
             pollResponse = poller.poll();
         }
 
