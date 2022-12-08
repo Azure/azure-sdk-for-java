@@ -2,7 +2,7 @@
   "networkCallRecords": [
     {
       "Method": "POST",
-      "Uri": "https://REDACTED.services.visualstudio.com/QuickPulseService.svc/ping?ikey=ikey123",
+      "Uri": "https://rt.services.visualstudio.com/QuickPulseService.svc/ping?ikey=ikey123",
       "Headers": {},
       "Response": {
         "content-length": "0",

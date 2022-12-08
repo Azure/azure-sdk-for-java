@@ -11,7 +11,6 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsDat
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorBase;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import io.opentelemetry.api.OpenTelemetry;
-import io.opentelemetry.api.metrics.Meter;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.OpenTelemetrySdkBuilder;
@@ -75,10 +74,6 @@ public final class TestUtils {
 
     public static Tracer configureAzureMonitorTraceExporter(HttpPipelinePolicy policy) {
         return createOpenTelemetrySdk(policy).getTracer("Sample");
-    }
-
-    public static Meter configureAzureMonitorMetricExporter(HttpPipelinePolicy policy) {
-        return createOpenTelemetrySdk(policy).getMeter("Sample");
     }
 
     public static OpenTelemetry createOpenTelemetrySdk(HttpPipelinePolicy policy) {

@@ -277,6 +277,9 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
 
         // decode gzipped request raw bytes back to original request body
         private static String ungzip(byte[] rawBytes) {
+            if (rawBytes.length == 0) {
+                return "";
+            }
             try (GZIPInputStream in = new GZIPInputStream(new ByteArrayInputStream(rawBytes))) {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 byte[] data = new byte[1024];
@@ -284,7 +287,7 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
                 while ((read = in.read(data, 0, data.length)) != -1) {
                     baos.write(data, 0, read);
                 }
-                return new String(baos.toByteArray(), StandardCharsets.UTF_8);
+                return baos.toString(StandardCharsets.UTF_8);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
