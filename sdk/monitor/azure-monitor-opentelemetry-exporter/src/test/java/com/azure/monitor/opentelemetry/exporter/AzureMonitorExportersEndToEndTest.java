@@ -48,11 +48,11 @@ import static org.assertj.core.api.Assertions.entry;
 
 public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTestBase {
 
-    private static final String TRACE_CONNECTION_STRING_OVERRIDE =
+    private static final String CONNECTION_STRING_ENV =
         "InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF;"
             + "IngestionEndpoint=https://test.in.applicationinsights.azure.com/;"
             + "LiveEndpoint=https://test.livediagnostics.monitor.azure.com/";
-    private static final String INSTRUMENTATION_KEY = "00000000-0000-0000-0000-0FEEDDADBEEF";
+    private static final String INSTRUMENTATION_KEY = "00000000-0000-0000-0000-000000000000";
 
     @Test
     public void testBuildTraceExporter() throws Exception {
@@ -165,7 +165,7 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
             new TestConfigurationSource(),
             new TestConfigurationSource(),
             new TestConfigurationSource()
-                .put("APPLICATIONINSIGHTS_CONNECTION_STRING", TRACE_CONNECTION_STRING_OVERRIDE))
+                .put("APPLICATIONINSIGHTS_CONNECTION_STRING", CONNECTION_STRING_ENV))
             .build();
     }
 

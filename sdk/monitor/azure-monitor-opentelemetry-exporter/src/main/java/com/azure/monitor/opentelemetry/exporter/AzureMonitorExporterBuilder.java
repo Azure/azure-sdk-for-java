@@ -260,12 +260,13 @@ public final class AzureMonitorExporterBuilder {
     }
 
     private TelemetryItemExporter initExporterBuilder() {
-        String connectionStringOverride = configuration.get(APPLICATIONINSIGHTS_CONNECTION_STRING);
-        if (connectionStringOverride != null) {
-            // APPLICATIONINSIGHTS_CONNECTION_STRING environment variable should take precedence over
-            // programmatically calling connectionString()
-            connectionString = ConnectionString.parse(connectionStringOverride);
+        if (connectionString == null) {
+            // if connection string is not set, try loading from configuration
+            Configuration configuration = Configuration.getGlobalConfiguration();
+            connectionString(configuration.get(APPLICATIONINSIGHTS_CONNECTION_STRING));
         }
+
+        Objects.requireNonNull(connectionString, "'connectionString' cannot be null");
 
         if (this.credential != null) {
             // Add authentication policy to HttpPipeline
