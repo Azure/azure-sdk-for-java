@@ -326,6 +326,14 @@ jobs:
         parameters:
           JdkVersion: ${{ parameters.JavaBuildVersion }}
 
+      - task: PowerShell@2
+        displayName: Verify Code Generation
+        inputs:
+          pwsh: true
+          filePath: $(Build.SourcesDirectory)/eng/pipelines/scripts/Compare-CurrentToCodegeneration.ps1
+          arguments: >
+            -Directory sdk/${{ parameters.ServiceDirectory }}
+
       # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
       - task: Maven@3
         displayName: 'Build and Install'
@@ -350,14 +358,6 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'verify'
-
-      - task: PowerShell@2
-        displayName: Verify Code Generation
-        inputs:
-          pwsh: true
-          filePath: $(Build.SourcesDirectory)/eng/pipelines/scripts/Compare-CurrentToCodegeneration.ps1
-          arguments: >
-            -Directory sdk/${{ parameters.ServiceDirectory }}
 
       - template: ../steps/upload-repository-on-failure.yml
 
