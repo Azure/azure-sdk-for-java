@@ -13,6 +13,7 @@ import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsRecordMessageListener;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,7 @@ import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+@Disabled
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.NONE,
     properties = {

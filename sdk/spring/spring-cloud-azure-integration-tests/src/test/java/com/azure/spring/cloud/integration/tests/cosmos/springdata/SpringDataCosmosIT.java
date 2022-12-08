@@ -4,6 +4,7 @@ package com.azure.spring.cloud.integration.tests.cosmos.springdata;
 
 import com.azure.spring.cloud.integration.tests.cosmos.User;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
 
+@Disabled
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("cosmos-springdata")
 public class SpringDataCosmosIT {
