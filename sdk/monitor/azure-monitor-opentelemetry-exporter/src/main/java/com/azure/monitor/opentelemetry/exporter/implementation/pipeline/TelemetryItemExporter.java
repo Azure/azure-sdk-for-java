@@ -36,8 +36,6 @@ public class TelemetryItemExporter {
 
     private static final ClientLogger logger = new ClientLogger(TelemetryItemExporter.class);
 
-    private static final String NEWLINE = System.getProperty("line.separator");
-
     private static final OperationLogger operationLogger =
         new OperationLogger(
             TelemetryItemExporter.class,
@@ -136,7 +134,7 @@ public class TelemetryItemExporter {
             try (JsonGenerator jg = mapper.createGenerator(debug)) {
                 writeTelemetryItems(jg, telemetryItems);
             }
-            logger.verbose("sending telemetry to ingestion service:{}{}", NEWLINE, debug);
+            logger.verbose("sending telemetry to ingestion service:{}{}", System.lineSeparator(), debug);
         }
 
         ByteBufferOutputStream out = new ByteBufferOutputStream(byteBufferPool);

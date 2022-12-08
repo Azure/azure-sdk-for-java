@@ -11,8 +11,6 @@ class MessageAggregatorTest {
 
     private static OperationLogger networkExceptionStats;
 
-    private static final String NEWLINE = System.getProperty("line.separator");
-
     @BeforeAll
     static void setUp() {
         // one-time initialization code
@@ -39,9 +37,9 @@ class MessageAggregatorTest {
 //        assertThat(logCaptor.getWarnLogs().get(1))
 //            .contains(
 //                "In the last 0 minutes, the following operation has failed 3 times (out of 4): intro:"
-//                    + NEWLINE
+//                    + System.lineSeparator()
 //                    + " * Test Message2 (2 times)"
-//                    + NEWLINE
+//                    + System.lineSeparator()
 //                    + " * Test Message3 (1 times)");
     }
 }

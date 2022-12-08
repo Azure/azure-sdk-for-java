@@ -108,8 +108,7 @@ class LocalFileLoader {
             // otherwise, probably old format where ikey chars were written first
             // note: ikey character int values would be minimum 48 (ascii value for '0')
 
-            // need to close FileInputStream before delete, so wait until after try-with-resources closes
-            // it
+            // need to close FileInputStream before delete, so wait until after try-with-resources closes it
 
         } catch (IOException e) {
             operationLogger.recordFailure(
