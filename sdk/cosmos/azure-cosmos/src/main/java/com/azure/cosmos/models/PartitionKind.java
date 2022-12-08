@@ -23,7 +23,6 @@ public enum PartitionKind {
     /**
      * The Partition of an item is calculated based on the hash value of multiple PartitionKeys.
      */
-    @Beta(value = SinceVersion.V4_16_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     MULTI_HASH("MultiHash");
 
     PartitionKind(String overWireValue) {

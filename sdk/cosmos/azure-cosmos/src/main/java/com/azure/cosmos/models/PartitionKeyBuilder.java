@@ -9,6 +9,7 @@ import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.Beta.SinceVersion;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -116,6 +117,17 @@ public final class PartitionKeyBuilder {
         }
 
         partitionKeyInternal = PartitionKeyInternal.fromObjectArray(valueArray, true);
-        return new PartitionKey(partitionKeyInternal);
+        StringBuilder backendValues = new StringBuilder();
+        if (valueArray.length == 1) {
+            backendValues.append((String) valueArray[0]);
+        } else {
+            for (int i = 0; i < valueArray.length; i++) {
+                backendValues.append((String) valueArray[i]);
+                if (i < valueArray.length-1) {
+                    backendValues.append("=");
+                }
+            }
+        }
+        return new PartitionKey(backendValues.toString(), partitionKeyInternal);
     }
 }

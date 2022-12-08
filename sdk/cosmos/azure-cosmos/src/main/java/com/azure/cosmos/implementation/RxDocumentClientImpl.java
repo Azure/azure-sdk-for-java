@@ -64,6 +64,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -81,6 +82,7 @@ import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -2201,9 +2203,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     if (collection == null) {
                         throw new IllegalStateException("Collection cannot be null");
                     }
-
                     final PartitionKeyDefinition pkDefinition = collection.getPartitionKey();
-
                     Mono<Utils.ValueHolder<CollectionRoutingMap>> valueHolderMono = partitionKeyRangeCache
                         .tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                             collection.getResourceId(),
@@ -2304,6 +2304,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             SqlQuerySpec sqlQuerySpec;
             if (partitionKeySelector.equals("[\"id\"]")) {
                 sqlQuerySpec = createReadManyQuerySpecPartitionKeyIdSame(entry.getValue(), partitionKeySelector);
+            } else if (partitionKeyDefinition.getKind().equals(PartitionKind.MULTI_HASH)){
+                sqlQuerySpec = createReadManyQuerySpecMultiHash(entry.getValue(), partitionKeyDefinition);
             } else {
                 sqlQuerySpec = createReadManyQuerySpec(entry.getValue(), partitionKeySelector);
             }
@@ -2375,6 +2377,59 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             queryStringBuilder.append(partitionKeySelector);
             queryStringBuilder.append((" = "));
             queryStringBuilder.append(pkParamName);
+            queryStringBuilder.append(" )");
+
+            if (i < itemIdentities.size() - 1) {
+                queryStringBuilder.append(" OR ");
+            }
+        }
+        queryStringBuilder.append(" )");
+
+        return new SqlQuerySpec(queryStringBuilder.toString(), parameters);
+    }
+
+    private SqlQuerySpec createReadManyQuerySpecMultiHash(
+        List<CosmosItemIdentity> itemIdentities,
+        PartitionKeyDefinition partitionKeyDefinition) {
+        StringBuilder queryStringBuilder = new StringBuilder();
+        List<SqlParameter> parameters = new ArrayList<>();
+
+        queryStringBuilder.append("SELECT * FROM c WHERE ( ");
+        int paramCount = 0;
+        for (int i = 0; i < itemIdentities.size(); i++) {
+            CosmosItemIdentity itemIdentity = itemIdentities.get(i);
+
+            PartitionKey pkValueAsPartitionKey = itemIdentity.getPartitionKey();
+            Object pkValue = ModelBridgeInternal.getPartitionKeyObject(pkValueAsPartitionKey);
+            String pkValueString = (String) pkValue;
+            List<List<String>> partitionKeyParams = new ArrayList<>();
+            List<String> paths = partitionKeyDefinition.getPaths();
+            int pathCount = 0;
+            for (String subPartitionKey: pkValueString.split("=")) {
+                String pkParamName = "@param" + paramCount;
+                partitionKeyParams.add(Arrays.asList(paths.get(pathCount), pkParamName));
+                parameters.add(new SqlParameter(pkParamName, subPartitionKey));
+                paramCount++;
+                pathCount++;
+            }
+
+            String idValue = itemIdentity.getId();
+            String idParamName = "@param" + paramCount;
+            paramCount++;
+            parameters.add(new SqlParameter(idParamName, idValue));
+
+            queryStringBuilder.append("(");
+            queryStringBuilder.append("c.id = ");
+            queryStringBuilder.append(idParamName);
+
+            // partition key def
+            for (List<String> pkParam: partitionKeyParams) {
+                queryStringBuilder.append(" AND ");
+                queryStringBuilder.append(" c.");
+                queryStringBuilder.append(pkParam.get(0).substring(1));
+                queryStringBuilder.append((" = "));
+                queryStringBuilder.append(pkParam.get(1));
+            }
             queryStringBuilder.append(" )");
 
             if (i < itemIdentities.size() - 1) {

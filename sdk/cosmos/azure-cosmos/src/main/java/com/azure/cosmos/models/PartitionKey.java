@@ -20,6 +20,11 @@ public class PartitionKey {
         this.internalPartitionKey = partitionKeyInternal;
     }
 
+    PartitionKey(final Object key, PartitionKeyInternal partitionKeyInternal) {
+        this.keyObject = key;
+        this.internalPartitionKey = partitionKeyInternal;
+    }
+
     /**
      * Constructor. CREATE a new instance of the PartitionKey object.
      *
