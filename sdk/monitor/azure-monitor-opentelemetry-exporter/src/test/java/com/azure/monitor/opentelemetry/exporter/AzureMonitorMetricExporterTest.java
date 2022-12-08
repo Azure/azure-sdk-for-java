@@ -75,10 +75,7 @@ public class AzureMonitorMetricExporterTest {
         DoubleCounter counter = meter.counterBuilder("testDoubleCounter").ofDoubles().build();
         counter.add(3.1415);
 
-        Thread.sleep(1000);
-
-        List<MetricData> metricDatas = inMemoryMetricExporter.getFinishedMetricItems();
-        assertThat(metricDatas.size()).isGreaterThanOrEqualTo(1);
+        List<MetricData> metricDatas = getFinishedMetricItems(1);
 
         MetricData metricData = metricDatas.get(0);
         for (PointData pointData : metricData.getData().getPoints()) {
@@ -105,10 +102,7 @@ public class AzureMonitorMetricExporterTest {
                     m.record(20.0, Attributes.of(AttributeKey.stringKey("thing"), "engine"));
                 });
 
-        Thread.sleep(1000);
-
-        List<MetricData> metricDataList = inMemoryMetricExporter.getFinishedMetricItems();
-        assertThat(metricDataList.size()).isGreaterThanOrEqualTo(1);
+        List<MetricData> metricDataList = getFinishedMetricItems(1);
 
         MetricData metricData = metricDataList.get(0);
         for (PointData pointData : metricData.getData().getPoints()) {
@@ -153,10 +147,8 @@ public class AzureMonitorMetricExporterTest {
             Attributes.of(
                 AttributeKey.stringKey("name"), "lemon", AttributeKey.stringKey("color"), "yellow"));
 
-        Thread.sleep(1000);
+        List<MetricData> metricDataList = getFinishedMetricItems(1);
 
-        List<MetricData> metricDataList = inMemoryMetricExporter.getFinishedMetricItems();
-        assertThat(metricDataList.size()).isGreaterThanOrEqualTo(1);
         MetricData metricData = metricDataList.get(0);
         @SuppressWarnings("unchecked")
         Collection<LongPointData> points = (Collection<LongPointData>) metricData.getData().getPoints();
@@ -241,10 +233,7 @@ public class AzureMonitorMetricExporterTest {
                     m.record(20, Attributes.of(AttributeKey.stringKey("thing"), "engine"));
                 });
 
-        Thread.sleep(1000);
-
-        List<MetricData> metricDataList = inMemoryMetricExporter.getFinishedMetricItems();
-        assertThat(metricDataList.size()).isGreaterThanOrEqualTo(1);
+        List<MetricData> metricDataList = getFinishedMetricItems(1);
 
         MetricData metricData = metricDataList.get(0);
         for (PointData pointData : metricData.getData().getPoints()) {
@@ -271,10 +260,8 @@ public class AzureMonitorMetricExporterTest {
                 .build();
 
         doubleHistogram.record(25.45);
-        Thread.sleep(1000);
 
-        List<MetricData> metricDataList = inMemoryMetricExporter.getFinishedMetricItems();
-        assertThat(metricDataList.size()).isGreaterThanOrEqualTo(1);
+        List<MetricData> metricDataList = getFinishedMetricItems(1);
 
         MetricData metricData = metricDataList.get(0);
         assertThat(metricData.getData().getPoints().size()).isEqualTo(1);
@@ -291,5 +278,19 @@ public class AzureMonitorMetricExporterTest {
 
         assertThat(metricData.getType()).isEqualTo(HISTOGRAM);
         assertThat(metricData.getName()).isEqualTo("testDoubleHistogram");
+    }
+
+    private List<MetricData> getFinishedMetricItems(int expected) throws InterruptedException {
+        long startMillis = System.currentTimeMillis();
+        while (System.currentTimeMillis() - startMillis < 5000) {
+            List<MetricData> finishedMetricItems = inMemoryMetricExporter.getFinishedMetricItems();
+            if (finishedMetricItems.size() >= expected) {
+                return finishedMetricItems;
+            }
+            Thread.sleep(10);
+        }
+        List<MetricData> finishedMetricItems = inMemoryMetricExporter.getFinishedMetricItems();
+        assertThat(finishedMetricItems).hasSizeGreaterThanOrEqualTo(expected);
+        return finishedMetricItems;
     }
 }
