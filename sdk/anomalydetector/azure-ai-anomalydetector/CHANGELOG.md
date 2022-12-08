@@ -31,6 +31,7 @@
 - Renamed `ChangePointDetectResponse` to `UnivariateChangePointDetectionResult`.
 - Renamed `detectEntireSeries` to `detectUnivariateEntireSeries`.
 - Renamed `detectLastPoint` to `detectUnivariateLastPoint`.
+- Added `DataSchema` to `ModelInfo`
 - Renamed `detectChangePoint` to `detectUnivariateChangePoint`.
 - Removed `AnomalyDetectorError`.
 - Removed `AnomalyDetectorErrorCodes`.
