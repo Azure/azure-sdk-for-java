@@ -71,7 +71,7 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-stream-test-binder</artifactId>
-      <version>4.0.0-RC2</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-stream-test-binder;external_dependency} -->
+      <version>4.0.0-RC3</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-stream-test-binder;external_dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>
