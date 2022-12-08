@@ -946,11 +946,11 @@ public class LROPollerTests {
 
             PollerFlux<PollResult<BinaryData>, BinaryData> lroFlux
                 = PollerFactory.create(SERIALIZER,
-                new HttpPipelineBuilder().build(),
-                BinaryData.class,
-                BinaryData.class,
-                POLLING_DURATION,
-                newLroInitFunction(client));
+                    new HttpPipelineBuilder().build(),
+                    BinaryData.class,
+                    BinaryData.class,
+                    POLLING_DURATION,
+                    newLroInitFunction(client));
 
             int[] onNextCallCount = new int[1];
             AsyncPollResponse<PollResult<BinaryData>, BinaryData> pollResponse = lroFlux.doOnNext(response -> {
