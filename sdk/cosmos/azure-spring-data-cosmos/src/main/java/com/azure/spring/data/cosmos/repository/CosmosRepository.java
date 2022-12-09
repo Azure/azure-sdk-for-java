@@ -3,6 +3,7 @@
 
 package com.azure.spring.data.cosmos.repository;
 
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -35,6 +36,16 @@ public interface CosmosRepository<T, ID extends Serializable> extends PagingAndS
      * @throws IllegalArgumentException in case the given {@code id} is {@literal null}.
      */
     void deleteById(ID id, PartitionKey partitionKey);
+
+    /**
+     * patches an entity by its id and partition key.
+     *
+     * @param ID must not be {@literal null}.
+     * @param partitionKey partitionKey, must not be null.
+     * @param patchOperations patch operations, must not be null.
+     * @throws IllegalArgumentException in case the given {@code id} is {@literal null}.
+     */
+    public <T> void patch(String ID, PartitionKey partitionKey, CosmosPatchOperations patchOperations);
 
     /**
      * Returns list of items in a specific partition

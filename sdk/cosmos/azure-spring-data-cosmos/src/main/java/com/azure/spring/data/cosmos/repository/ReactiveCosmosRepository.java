@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository;
 
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.reactive.ReactiveSortingRepository;
@@ -30,6 +31,16 @@ public interface ReactiveCosmosRepository<T, K> extends ReactiveSortingRepositor
      * @throws IllegalArgumentException in case the given {@code id} is {@literal null}.
      */
     Mono<Void> deleteById(K id, PartitionKey partitionKey);
+
+    /**
+     * patches an entity by its id and partition key.
+     *
+     * @param ID must not be {@literal null}.
+     * @param partitionKey partitionKey, must not be null.
+     * @param patchOperations patch operations, must not be null.
+     * @throws IllegalArgumentException in case the given {@code id} is {@literal null}.
+     */
+    public <T> void patch(String ID, PartitionKey partitionKey, CosmosPatchOperations patchOperations);
 
     /**
      * Returns Flux of items in a specific partition

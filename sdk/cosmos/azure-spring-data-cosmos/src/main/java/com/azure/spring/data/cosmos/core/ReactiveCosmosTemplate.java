@@ -5,17 +5,7 @@ package com.azure.spring.data.cosmos.core;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosContainerResponse;
-import com.azure.cosmos.models.CosmosDatabaseResponse;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.SqlParameter;
-import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.models.ThroughputProperties;
-import com.azure.cosmos.models.UniqueKeyPolicy;
+import com.azure.cosmos.models.*;
 import com.azure.spring.data.cosmos.Constants;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.CosmosUtils;
@@ -431,6 +421,43 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                     cosmosItemResponse.getDiagnostics(), null);
                 return Mono.just(toDomainObject(domainType, cosmosItemResponse.getItem()));
             });
+    }
+
+    /**
+     * applies partial update (patch) to an item
+     *
+     * @param containerName must not be {@literal null}
+     * @param id must not be {@literal null}
+     * @param partitionKey must not be {@literal null}
+     * @param patchOperations must not be {@literal null}
+     * @param <T> type class of domain type
+     * @return the inserted item
+     */
+    public <T> void patch(String containerName, String id, PartitionKey partitionKey, CosmosPatchOperations patchOperations) {
+        Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
+        Assert.notNull(id, "objectToSave should not be null");
+
+        @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) JsonNode.class;
+
+        LOGGER.debug("execute createItem in database {} container {}", this.databaseName,
+            containerName);
+
+        final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+
+        //  if the partition key is null, SDK will get the partitionKey from the object
+        final CosmosItemResponse<JsonNode> response = cosmosAsyncClient
+            .getDatabase(this.databaseName)
+            .getContainer(containerName)
+            .patchItem(id, partitionKey, patchOperations, JsonNode.class )
+            .publishOn(Schedulers.parallel())
+            .doOnNext(cosmosItemResponse ->
+                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                    cosmosItemResponse.getDiagnostics(), null))
+            .onErrorResume(throwable ->
+                CosmosExceptionUtils.exceptionHandler("Failed to patch item", throwable,
+                    this.responseDiagnosticsProcessor))
+            .block();
+        assert response != null;
     }
 
     /**

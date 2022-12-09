@@ -4,6 +4,7 @@
 package com.azure.spring.data.cosmos.core;
 
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
@@ -122,6 +123,17 @@ public interface CosmosOperations {
      * @return the inserted item
      */
     <T> T insert(T objectToSave, PartitionKey partitionKey);
+
+    /**
+     * patches item
+     *
+     * @param id must not be {@literal null}
+     * @param patchOperations must not be {@literal null}
+     * @param partitionKey must not be {@literal null}
+     * @param <T> type class of domain type
+     * @return the inserted item
+     */
+    <T> void patch(String containerName, String id, PartitionKey partitionKey, CosmosPatchOperations patchOperations);
 
     /**
      * Inserts item
