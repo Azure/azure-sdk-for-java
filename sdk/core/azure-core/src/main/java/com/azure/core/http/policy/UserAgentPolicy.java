@@ -3,11 +3,11 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -22,9 +22,6 @@ import reactor.core.publisher.Mono;
  * <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>.
  */
 public class UserAgentPolicy implements HttpPipelinePolicy {
-    private static final String USER_AGENT = "User-Agent";
-    private static final String USER_AGENT_LOWER_CASE = "user-agent";
-
     /**
      * Key for {@link Context} to add a value which will override the User-Agent supplied in this policy in an ad-hoc
      * manner.
@@ -62,8 +59,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
                 userAgentValue = userAgent;
             }
 
-            HttpHeadersHelper.setNoKeyFormatting(context.getHttpRequest().getHeaders(), USER_AGENT_LOWER_CASE, USER_AGENT,
-                userAgentValue);
+            context.getHttpRequest().setHeader(HttpHeaderName.USER_AGENT, userAgentValue);
         }
     };
 

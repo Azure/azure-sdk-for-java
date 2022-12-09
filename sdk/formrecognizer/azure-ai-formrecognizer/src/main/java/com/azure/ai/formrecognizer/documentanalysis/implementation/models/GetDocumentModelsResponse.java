@@ -23,6 +23,9 @@ public final class GetDocumentModelsResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of GetDocumentModelsResponse class. */
+    public GetDocumentModelsResponse() {}
+
     /**
      * Get the value property: List of document models.
      *

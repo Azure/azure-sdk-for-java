@@ -102,38 +102,6 @@
       <scope>test</scope>
       <version>1.14.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
     </dependency>
-
-    <!-- sample file dependencies -->
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.3.9</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.opentelemetry</groupId>
-      <artifactId>opentelemetry-exporter-logging</artifactId>
-      <version>1.14.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.opentelemetry</groupId>
-      <artifactId>opentelemetry-exporter-jaeger</artifactId>
-      <version>1.14.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-exporter-jaeger;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.5.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-identity</artifactId>
-      <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>
@@ -148,12 +116,19 @@
               <includes>
                 <include>io.opentelemetry:opentelemetry-api:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-exporter-logging:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
-                <include>io.opentelemetry:opentelemetry-exporter-jaeger:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-exporter-jaeger;external_dependency} -->
                 <include>io.opentelemetry:opentelemetry-sdk-testing:[1.14.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-sdk-testing;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>com.azure.tools</groupId>
+        <artifactId>codesnippet-maven-plugin</artifactId>
+        <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <configuration>
+          <codesnippetRootDirectory>../azure-core-tracing-opentelemetry-samples/src/samples/java</codesnippetRootDirectory>
         </configuration>
       </plugin>
     </plugins>

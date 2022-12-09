@@ -28,6 +28,10 @@ public final class Sku {
     @JsonProperty(value = "capacity", access = JsonProperty.Access.WRITE_ONLY)
     private SkuCapacity capacity;
 
+    /** Creates an instance of Sku class. */
+    public Sku() {
+    }
+
     /**
      * Get the resourceType property: The resource type that this object applies to.
      *

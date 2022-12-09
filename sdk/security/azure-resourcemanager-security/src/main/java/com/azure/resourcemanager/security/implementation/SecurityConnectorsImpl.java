@@ -48,16 +48,6 @@ public final class SecurityConnectorsImpl implements SecurityConnectors {
         return Utils.mapPage(inner, inner1 -> new SecurityConnectorImpl(inner1, this.manager()));
     }
 
-    public SecurityConnector getByResourceGroup(String resourceGroupName, String securityConnectorName) {
-        SecurityConnectorInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, securityConnectorName);
-        if (inner != null) {
-            return new SecurityConnectorImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SecurityConnector> getByResourceGroupWithResponse(
         String resourceGroupName, String securityConnectorName, Context context) {
         Response<SecurityConnectorInner> inner =
@@ -73,12 +63,23 @@ public final class SecurityConnectorsImpl implements SecurityConnectors {
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String securityConnectorName) {
-        this.serviceClient().delete(resourceGroupName, securityConnectorName);
+    public SecurityConnector getByResourceGroup(String resourceGroupName, String securityConnectorName) {
+        SecurityConnectorInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, securityConnectorName);
+        if (inner != null) {
+            return new SecurityConnectorImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String securityConnectorName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(
+        String resourceGroupName, String securityConnectorName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, securityConnectorName, context);
+    }
+
+    public void deleteByResourceGroup(String resourceGroupName, String securityConnectorName) {
+        this.serviceClient().delete(resourceGroupName, securityConnectorName);
     }
 
     public SecurityConnector getById(String id) {
@@ -141,7 +142,7 @@ public final class SecurityConnectorsImpl implements SecurityConnectors {
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'securityConnectors'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, securityConnectorName, Context.NONE);
+        this.deleteByResourceGroupWithResponse(resourceGroupName, securityConnectorName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
@@ -162,7 +163,7 @@ public final class SecurityConnectorsImpl implements SecurityConnectors {
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'securityConnectors'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, securityConnectorName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, securityConnectorName, context);
     }
 
     private SecurityConnectorsClient serviceClient() {

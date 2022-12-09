@@ -17,8 +17,7 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphWorkbookTableColumn extends MicrosoftGraphEntity {
     /*
-     * Returns the index number of the column within the columns collection of
-     * the table. Zero-indexed. Read-only.
+     * Returns the index number of the column within the columns collection of the table. Zero-indexed. Read-only.
      */
     @JsonProperty(value = "index")
     private Integer index;
@@ -46,6 +45,10 @@ public final class MicrosoftGraphWorkbookTableColumn extends MicrosoftGraphEntit
      * workbookTableColumn
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWorkbookTableColumn class. */
+    public MicrosoftGraphWorkbookTableColumn() {
+    }
 
     /**
      * Get the index property: Returns the index number of the column within the columns collection of the table.

@@ -24,6 +24,10 @@ public final class AdaptiveNetworkHardeningsList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of AdaptiveNetworkHardeningsList class. */
+    public AdaptiveNetworkHardeningsList() {
+    }
+
     /**
      * Get the value property: A list of Adaptive Network Hardenings resources.
      *

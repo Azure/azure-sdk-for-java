@@ -54,6 +54,12 @@ public final class StartCallRecordingRequestInternal {
     @JsonProperty(value = "audioChannelParticipantOrdering")
     private List<CommunicationIdentifierModel> audioChannelParticipantOrdering;
 
+    /*
+     * Recording storage mode. `External` enables bring your own storage.
+     */
+    @JsonProperty(value = "recordingStorageType")
+    private RecordingStorageType recordingStorageType;
+
     /**
      * Get the callLocator property: The call locator.
      *
@@ -180,6 +186,26 @@ public final class StartCallRecordingRequestInternal {
     public StartCallRecordingRequestInternal setAudioChannelParticipantOrdering(
             List<CommunicationIdentifierModel> audioChannelParticipantOrdering) {
         this.audioChannelParticipantOrdering = audioChannelParticipantOrdering;
+        return this;
+    }
+
+    /**
+     * Get the recordingStorageType property: Recording storage mode. `External` enables bring your own storage.
+     *
+     * @return the recordingStorageType value.
+     */
+    public RecordingStorageType getRecordingStorageType() {
+        return this.recordingStorageType;
+    }
+
+    /**
+     * Set the recordingStorageType property: Recording storage mode. `External` enables bring your own storage.
+     *
+     * @param recordingStorageType the recordingStorageType value to set.
+     * @return the StartCallRecordingRequestInternal object itself.
+     */
+    public StartCallRecordingRequestInternal setRecordingStorageType(RecordingStorageType recordingStorageType) {
+        this.recordingStorageType = recordingStorageType;
         return this;
     }
 }

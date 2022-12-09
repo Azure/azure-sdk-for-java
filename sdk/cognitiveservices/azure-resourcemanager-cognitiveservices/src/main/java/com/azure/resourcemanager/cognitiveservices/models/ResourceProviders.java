@@ -14,18 +14,6 @@ public interface ResourceProviders {
      *
      * @param location Resource location.
      * @param parameters Check SKU Availability POST body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return check SKU availability result list.
-     */
-    SkuAvailabilityListResult checkSkuAvailability(String location, CheckSkuAvailabilityParameter parameters);
-
-    /**
-     * Check available SKUs.
-     *
-     * @param location Resource location.
-     * @param parameters Check SKU Availability POST body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,15 +24,16 @@ public interface ResourceProviders {
         String location, CheckSkuAvailabilityParameter parameters, Context context);
 
     /**
-     * Check whether a domain is available.
+     * Check available SKUs.
      *
-     * @param parameters Check Domain Availability parameter.
+     * @param location Resource location.
+     * @param parameters Check SKU Availability POST body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return domain availability.
+     * @return check SKU availability result list.
      */
-    DomainAvailability checkDomainAvailability(CheckDomainAvailabilityParameter parameters);
+    SkuAvailabilityListResult checkSkuAvailability(String location, CheckSkuAvailabilityParameter parameters);
 
     /**
      * Check whether a domain is available.
@@ -58,4 +47,15 @@ public interface ResourceProviders {
      */
     Response<DomainAvailability> checkDomainAvailabilityWithResponse(
         CheckDomainAvailabilityParameter parameters, Context context);
+
+    /**
+     * Check whether a domain is available.
+     *
+     * @param parameters Check Domain Availability parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domain availability.
+     */
+    DomainAvailability checkDomainAvailability(CheckDomainAvailabilityParameter parameters);
 }

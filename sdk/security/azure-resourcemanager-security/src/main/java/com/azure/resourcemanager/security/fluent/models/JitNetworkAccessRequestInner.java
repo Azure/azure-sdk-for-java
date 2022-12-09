@@ -38,6 +38,10 @@ public final class JitNetworkAccessRequestInner {
     @JsonProperty(value = "justification")
     private String justification;
 
+    /** Creates an instance of JitNetworkAccessRequestInner class. */
+    public JitNetworkAccessRequestInner() {
+    }
+
     /**
      * Get the virtualMachines property: The virtualMachines property.
      *

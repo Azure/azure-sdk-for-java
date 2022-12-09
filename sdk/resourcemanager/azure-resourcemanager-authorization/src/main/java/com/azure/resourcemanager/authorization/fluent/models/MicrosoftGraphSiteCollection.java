@@ -17,8 +17,7 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphSiteCollection {
     /*
-     * The geographic region code for where this site collection resides.
-     * Read-only.
+     * The geographic region code for where this site collection resides. Read-only.
      */
     @JsonProperty(value = "dataLocationCode")
     private String dataLocationCode;
@@ -40,6 +39,10 @@ public final class MicrosoftGraphSiteCollection {
      * siteCollection
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphSiteCollection class. */
+    public MicrosoftGraphSiteCollection() {
+    }
 
     /**
      * Get the dataLocationCode property: The geographic region code for where this site collection resides. Read-only.

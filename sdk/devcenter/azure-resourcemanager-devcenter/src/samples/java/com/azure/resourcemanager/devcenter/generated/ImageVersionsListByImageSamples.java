@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ImageVersions ListByImage. */
 public final class ImageVersionsListByImageSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/ImageVersions_List.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/ImageVersions_List.json
      */
     /**
      * Sample code: ImageVersions_ListByImage.

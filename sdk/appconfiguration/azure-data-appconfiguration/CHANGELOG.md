@@ -3,6 +3,7 @@
 ## 1.4.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added `getEnpoint()` method to both App Configuration synchronous and asynchronous clients.
 
 ### Breaking Changes
 

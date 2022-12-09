@@ -32,6 +32,10 @@ public final class MicrosoftGraphOnenoteOperationError {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphOnenoteOperationError class. */
+    public MicrosoftGraphOnenoteOperationError() {
+    }
+
     /**
      * Get the code property: The error code.
      *

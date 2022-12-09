@@ -44,6 +44,10 @@ public final class MicrosoftGraphTeamsTab extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphTeamsTab class. */
+    public MicrosoftGraphTeamsTab() {
+    }
+
     /**
      * Get the configuration property: teamsTabConfiguration.
      *

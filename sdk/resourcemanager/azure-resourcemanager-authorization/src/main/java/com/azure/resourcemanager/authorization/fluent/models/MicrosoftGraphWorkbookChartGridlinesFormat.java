@@ -26,6 +26,10 @@ public final class MicrosoftGraphWorkbookChartGridlinesFormat extends MicrosoftG
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWorkbookChartGridlinesFormat class. */
+    public MicrosoftGraphWorkbookChartGridlinesFormat() {
+    }
+
     /**
      * Get the line property: workbookChartLineFormat.
      *

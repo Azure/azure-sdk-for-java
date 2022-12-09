@@ -44,6 +44,10 @@ public final class CustomDomainImpl implements CustomDomain, CustomDomain.Defini
         return this.innerModel().customCertificate();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public CustomDomainInner innerModel() {
         return this.innerObject;
     }

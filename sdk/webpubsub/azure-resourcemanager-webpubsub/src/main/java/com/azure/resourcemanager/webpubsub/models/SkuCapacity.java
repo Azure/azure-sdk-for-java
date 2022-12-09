@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes scaling information of a sku. */
 @Immutable
 public final class SkuCapacity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuCapacity.class);
-
     /*
      * The lowest permitted capacity for this resource
      */
@@ -44,6 +40,10 @@ public final class SkuCapacity {
      */
     @JsonProperty(value = "scaleType", access = JsonProperty.Access.WRITE_ONLY)
     private ScaleType scaleType;
+
+    /** Creates an instance of SkuCapacity class. */
+    public SkuCapacity() {
+    }
 
     /**
      * Get the minimum property: The lowest permitted capacity for this resource.

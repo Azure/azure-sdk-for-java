@@ -26,15 +26,6 @@ public final class ApplicationOperationsImpl implements ApplicationOperations {
         this.serviceManager = serviceManager;
     }
 
-    public Application get(String applicationId) {
-        ApplicationInner inner = this.serviceClient().get(applicationId);
-        if (inner != null) {
-            return new ApplicationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Application> getWithResponse(String applicationId, Context context) {
         Response<ApplicationInner> inner = this.serviceClient().getWithResponse(applicationId, context);
         if (inner != null) {
@@ -48,12 +39,21 @@ public final class ApplicationOperationsImpl implements ApplicationOperations {
         }
     }
 
-    public void delete(String applicationId) {
-        this.serviceClient().delete(applicationId);
+    public Application get(String applicationId) {
+        ApplicationInner inner = this.serviceClient().get(applicationId);
+        if (inner != null) {
+            return new ApplicationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(String applicationId, Context context) {
         return this.serviceClient().deleteWithResponse(applicationId, context);
+    }
+
+    public void delete(String applicationId) {
+        this.serviceClient().delete(applicationId);
     }
 
     public Application getById(String id) {

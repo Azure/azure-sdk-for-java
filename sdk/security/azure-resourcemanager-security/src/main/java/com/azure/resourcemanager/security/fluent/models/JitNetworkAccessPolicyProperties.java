@@ -31,6 +31,10 @@ public final class JitNetworkAccessPolicyProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
+    /** Creates an instance of JitNetworkAccessPolicyProperties class. */
+    public JitNetworkAccessPolicyProperties() {
+    }
+
     /**
      * Get the virtualMachines property: Configurations for Microsoft.Compute/virtualMachines resource type.
      *
