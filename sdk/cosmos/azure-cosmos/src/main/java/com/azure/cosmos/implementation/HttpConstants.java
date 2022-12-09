@@ -277,7 +277,7 @@ public class HttpConstants {
         public static final String INTENDED_COLLECTION_RID_HEADER = "x-ms-cosmos-intended-collection-rid";
 
         // SDK supported capacities headers
-        public static final String SDK_SUPPORTED_CAPABILITIES = "x-ms-cosmos-sdk-supported-capabilities";
+        public static final String SDK_SUPPORTED_CAPABILITIES = "x-ms-cosmos-sdk-supportedcapabilities";
     }
 
     public static class A_IMHeaderValues {
