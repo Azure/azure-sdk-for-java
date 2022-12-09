@@ -39,9 +39,9 @@ public final class ContainerRegistryBlobsCompleteUploadHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ContainerRegistryBlobsCompleteUploadHeaders(HttpHeaders rawHeaders) {
-        this.range = rawHeaders.getValue(HttpHeaderName.RANGE);
-        this.location = rawHeaders.getValue(HttpHeaderName.LOCATION);
-        this.dockerContentDigest = rawHeaders.getValue(DOCKER_CONTENT_DIGEST);
+        this.dockerContentDigest = rawHeaders.getValue("Docker-Content-Digest");
+        this.range = rawHeaders.getValue("Range");
+        this.location = rawHeaders.getValue("Location");
     }
 
     /**

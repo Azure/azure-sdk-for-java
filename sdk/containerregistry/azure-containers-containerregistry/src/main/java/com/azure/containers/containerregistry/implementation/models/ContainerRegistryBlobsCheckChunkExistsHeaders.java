@@ -5,7 +5,6 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -31,8 +30,8 @@ public final class ContainerRegistryBlobsCheckChunkExistsHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ContainerRegistryBlobsCheckChunkExistsHeaders(HttpHeaders rawHeaders) {
-        this.contentRange = rawHeaders.getValue(HttpHeaderName.CONTENT_RANGE);
-        String contentLength = rawHeaders.getValue(HttpHeaderName.CONTENT_LENGTH);
+        this.contentRange = rawHeaders.getValue("Content-Range");
+        String contentLength = rawHeaders.getValue("Content-Length");
         if (contentLength != null) {
             this.contentLength = Long.parseLong(contentLength);
         }

@@ -39,12 +39,12 @@ public final class ContainerRegistryBlobsCheckBlobExistsHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ContainerRegistryBlobsCheckBlobExistsHeaders(HttpHeaders rawHeaders) {
-        String contentLength = rawHeaders.getValue(HttpHeaderName.CONTENT_LENGTH);
+        String contentLength = rawHeaders.getValue("Content-Length");
         if (contentLength != null) {
             this.contentLength = Long.parseLong(contentLength);
         }
-        this.dockerContentDigest = rawHeaders.getValue(DOCKER_CONTENT_DIGEST);
-        this.location = rawHeaders.getValue(HttpHeaderName.LOCATION);
+        this.dockerContentDigest = rawHeaders.getValue("Docker-Content-Digest");
+        this.location = rawHeaders.getValue("Location");
     }
 
     /**

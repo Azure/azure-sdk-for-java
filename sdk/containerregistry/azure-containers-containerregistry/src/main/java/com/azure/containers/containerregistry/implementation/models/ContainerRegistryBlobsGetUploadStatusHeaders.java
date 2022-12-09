@@ -33,8 +33,8 @@ public final class ContainerRegistryBlobsGetUploadStatusHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ContainerRegistryBlobsGetUploadStatusHeaders(HttpHeaders rawHeaders) {
-        this.dockerUploadUUID = rawHeaders.getValue(DOCKER_UPLOAD_UUID);
-        this.range = rawHeaders.getValue(HttpHeaderName.RANGE);
+        this.dockerUploadUUID = rawHeaders.getValue("Docker-Upload-UUID");
+        this.range = rawHeaders.getValue("Range");
     }
 
     /**
