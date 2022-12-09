@@ -68,11 +68,9 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
             try {
                 String fileName = "./src/test/resources/session-records/" + testContextManager.getTestName() + ".txt";
                 ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(fileName));
-                synchronized (objectInputStream) {
-                    ArrayList<String> persistedEvents = (ArrayList<String>) objectInputStream.readObject();
-                    persistedEvents.forEach(this::messageBodyHandler);
-                    objectInputStream.close();
-                }
+                ArrayList<String> persistedEvents = (ArrayList<String>) objectInputStream.readObject();
+                persistedEvents.forEach(this::messageBodyHandler);
+                objectInputStream.close();
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
@@ -89,6 +87,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         if (getTestMode() == TestMode.RECORD) {
             try {
                 String fileName = "./src/test/resources/session-records/" + testContextManager.getTestName() + ".txt";
+                new FileOutputStream(fileName).close();
                 FileOutputStream fileOutputStream = new FileOutputStream(fileName, false);
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
                 objectOutputStream.writeObject(eventsToPersist);
