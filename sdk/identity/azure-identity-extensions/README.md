@@ -25,6 +25,10 @@ Azure Identity Extensions contains a common template framework for users to get 
 use the token as a password. For example, to connect Azure hosted MySQL, get a token from Azure AD and use the
 token as a password to connect with MySQL.
 
+## Architecture
+This picture shows how the Azure Identity Extensions (JDBC authentication plugin) authenticates with MSI.
+![Architecture](img/passwordless-connections-from-java-apps-to-data-services.jpg)
+
 ## Examples
 For documentation on how to use this package, please refer to [Quickstart:Use Java and JDBC with Azure Database for MySQL](https://aka.ms/passwordless/quickstart/mysql) and [Quickstart:Use Java and JDBC with Azure Database for PostgreSQL](https://aka.ms/passwordless/quickstart/postgresql).
 
