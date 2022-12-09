@@ -85,7 +85,7 @@ public class ClientRetryPolicyTest {
             .shouldRetry(true)
             .backOfTime(Duration.ofMillis(1000))
             .build());
-        
+
         //Metadata Read
         dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
             OperationType.Read, "/dbs/db/clls/col/docs/doc", ResourceType.Database);
@@ -112,6 +112,18 @@ public class ClientRetryPolicyTest {
             .nullException()
             .shouldRetry(true)
             .backOfTime(Duration.ofMillis(1000))
+            .build());
+
+        //Data Plane Write - Should not retry
+        dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
+            OperationType.Create, "/dbs/db/colls/col/docs/doc", ResourceType.Document);
+
+        clientRetryPolicy.onBeforeSendRequest(dsr);
+        shouldRetry = clientRetryPolicy.shouldRetry(cosmosException);
+
+        validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+            .nullException()
+            .shouldRetry(false)
             .build());
 
         //Metadata Write - Should not Retry

@@ -162,8 +162,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
       private boolean gatewayRequestCanFailoverOnTimeout(RxDocumentServiceRequest request, CosmosException clientException) {
         //Query Plan requests
-        if(request.getResourceType() == ResourceType.Document
-            && request.getOperationType() == OperationType.QueryPlan) {
+        if(request.getOperationType() == OperationType.QueryPlan) {
             return true;
         }
 
