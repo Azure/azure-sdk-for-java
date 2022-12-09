@@ -25,6 +25,9 @@ public enum Messages {
      */
     public static final String ENCODING_TYPE_NOT_SUPPORTED = getMessage("ENCODING_TYPE_NOT_SUPPORTED");
 
+    /**
+     * Encoder is not supported message.
+     */
     public static final String ENCODING_TYPE_NOT_SUPPORTED_ENCODER = getMessage("ENCODING_TYPE_NOT_SUPPORTED_ENCODER");
 
     /**
