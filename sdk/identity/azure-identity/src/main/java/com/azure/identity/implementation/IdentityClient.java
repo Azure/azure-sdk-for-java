@@ -334,7 +334,7 @@ public class IdentityClient extends IdentityClientBase {
     public Mono<AccessToken> authenticateWithAzureDeveloperCli(TokenRequestContext request) {
 
         StringBuilder azdCommand = new StringBuilder("azd auth token --output json --scope ");
-        var scopes = request.getScopes();
+        List<String> scopes = request.getScopes();
 
         // It's really unlikely that the request comes with no scope, but we want to
         // validate it as we are adding `--scope` arg to the azd command.
