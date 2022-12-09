@@ -1,14 +1,9 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.7.2 (2022-12-09)
 
 ### Bugs Fixed
-
-### Other Changes
+- Fixed MSI token `expires_in` parsing issue.
 
 ## 1.7.1 (2022-11-17)
 
