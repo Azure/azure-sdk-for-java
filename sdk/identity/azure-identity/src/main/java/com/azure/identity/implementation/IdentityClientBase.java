@@ -521,17 +521,16 @@ public abstract class IdentityClientBase {
                 builder.directory(new File(workingDirectory));
             } else {
                 throw LOGGER.logExceptionAsError(
-                    new IllegalStateException(
-                        "A Safe Working directory could not be" + " found to execute Azure Developer CLI command from."
-                    )
-                );
+                        new IllegalStateException(
+                                "A Safe Working directory could not be"
+                                        + " found to execute Azure Developer CLI command from."));
             }
             builder.redirectErrorStream(true);
             Process process = builder.start();
 
             StringBuilder output = new StringBuilder();
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(),
-                StandardCharsets.UTF_8.name()))) {
+                    StandardCharsets.UTF_8.name()))) {
                 String line;
                 while (true) {
                     line = reader.readLine();
@@ -539,19 +538,17 @@ public abstract class IdentityClientBase {
                         break;
                     }
 
-                    if (
-                        line.startsWith(WINDOWS_PROCESS_ERROR_MESSAGE) ||
-                        LINUX_MAC_PROCESS_ERROR_MESSAGE.matcher(line).matches()
-                    ) {
+                    if (line.startsWith(WINDOWS_PROCESS_ERROR_MESSAGE)
+                            || LINUX_MAC_PROCESS_ERROR_MESSAGE.matcher(line).matches()) {
                         throw LoggingUtil.logCredentialUnavailableException(
-                            LOGGER,
-                            options,
-                            new CredentialUnavailableException(
-                                "AzureDeveloperCliCredential authentication unavailable. Azure Developer CLI not installed." +
-                                "To mitigate this issue, please refer to the troubleshooting guidelines here at " +
-                                "https://aka.ms/azsdk/java/identity/azclicredential/troubleshoot"
-                            )
-                        );
+                                LOGGER,
+                                options,
+                                new CredentialUnavailableException(
+                                        "AzureDeveloperCliCredential authentication unavailable. Azure Developer CLI not installed."
+                                                +
+                                                "To mitigate this issue, please refer to the troubleshooting guidelines here at "
+                                                +
+                                                "https://aka.ms/azsdk/java/identity/azclicredential/troubleshoot"));
                     }
                     output.append(line);
                 }
@@ -563,41 +560,37 @@ public abstract class IdentityClientBase {
                     String redactedOutput = redactInfo(processOutput);
                     if (redactedOutput.contains("azd login") || redactedOutput.contains("not logged in")) {
                         throw LoggingUtil.logCredentialUnavailableException(
-                            LOGGER,
-                            options,
-                            new CredentialUnavailableException(
-                                "AzureDeveloperCliCredential authentication unavailable." +
-                                " Please run 'azd login' to set up account."
-                            )
-                        );
+                                LOGGER,
+                                options,
+                                new CredentialUnavailableException(
+                                        "AzureDeveloperCliCredential authentication unavailable."
+                                        + " Please run 'azd login' to set up account."));
                     }
                     throw LOGGER.logExceptionAsError(new ClientAuthenticationException(redactedOutput, null));
                 } else {
                     throw LOGGER.logExceptionAsError(
-                        new ClientAuthenticationException("Failed to invoke Azure Developer CLI ", null)
-                    );
+                            new ClientAuthenticationException("Failed to invoke Azure Developer CLI ", null));
                 }
             }
 
             LOGGER.verbose(
-                "Azure Developer CLI Authentication => A token response was received from Azure Developer CLI, deserializing the" +
-                " response into an Access Token."
-            );
+                    "Azure Developer CLI Authentication => A token response was received from Azure Developer CLI, deserializing the"
+                            +
+                            " response into an Access Token.");
             Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(
-                processOutput,
-                Map.class,
-                SerializerEncoding.JSON
-            );
+                    processOutput,
+                    Map.class,
+                    SerializerEncoding.JSON);
             String accessToken = objectMap.get("token");
             String time = objectMap.get("expiresOn");
             // az expiresOn format = "2022-11-30 02:38:42.000000" vs
             // azd expiresOn format = "2022-11-30T02:05:08Z"
             String standardTime = time.substring(0, time.indexOf("Z"));
             OffsetDateTime expiresOn = LocalDateTime
-                .parse(standardTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-                .atZone(ZoneId.systemDefault())
-                .toOffsetDateTime()
-                .withOffsetSameInstant(ZoneOffset.UTC);
+                    .parse(standardTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+                    .atZone(ZoneId.systemDefault())
+                    .toOffsetDateTime()
+                    .withOffsetSameInstant(ZoneOffset.UTC);
             token = new AccessToken(accessToken, expiresOn);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(e));
@@ -605,7 +598,6 @@ public abstract class IdentityClientBase {
 
         return token;
     }
-
 
     String getSafeWorkingDirectory() {
         if (isWindowsPlatform()) {
