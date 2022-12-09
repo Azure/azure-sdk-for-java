@@ -12,7 +12,6 @@ import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
 import com.azure.spring.data.cosmos.domain.AuditableEntity;
 import com.azure.spring.data.cosmos.domain.AuditableIdGeneratedEntity;
-import com.azure.spring.data.cosmos.repository.AuditableConfig;
 import com.azure.spring.data.cosmos.repository.StubAuditorProvider;
 import com.azure.spring.data.cosmos.repository.StubDateTimeProvider;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
@@ -38,10 +37,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {
-    TestRepositoryConfig.class,
-    AuditableConfig.class
-})
+@ContextConfiguration(classes = TestRepositoryConfig.class)
 public class AuditableIT {
 
     @ClassRule
