@@ -130,6 +130,8 @@
 
 # PRLabel: %Azure.Identity
 /sdk/identity/                                      @g2vinay @schaabs @joshfree @billwert
+# PRLabel: %azure-spring
+/sdk/identity/azure-identity-extensions/           @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 
 # PRLabel: %KeyVault
 /sdk/keyvault/                                      @vcolin7 @g2vinay @samvaity
