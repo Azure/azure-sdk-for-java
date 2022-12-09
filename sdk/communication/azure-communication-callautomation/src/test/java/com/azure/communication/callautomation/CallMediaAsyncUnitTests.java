@@ -110,7 +110,7 @@ public class CallMediaAsyncUnitTests {
     }
 
     @Test
-    public void recognizeWithResponseFilledDtmfOptions() {
+    public void recognizeWithResponseWithFileSourceDtmfOptions() {
         CallMediaRecognizeDtmfOptions recognizeOptions = new CallMediaRecognizeDtmfOptions(new CommunicationUserIdentifier("id"), 5);
 
         recognizeOptions.setInterToneTimeout(Duration.ofSeconds(3));
@@ -134,7 +134,32 @@ public class CallMediaAsyncUnitTests {
 
 
     @Test
-    public void recognizeWithResponseFilledChoiceOptions() {
+    public void recognizeWithResponseWithTextSourceDtmfOptions() {
+        CallMediaRecognizeDtmfOptions recognizeOptions = new CallMediaRecognizeDtmfOptions(new CommunicationUserIdentifier("id"), 5);
+
+        recognizeOptions.setInterToneTimeout(Duration.ofSeconds(3));
+        List<DtmfTone> stopDtmfTones = new ArrayList<DtmfTone>();
+        stopDtmfTones.add(DtmfTone.ZERO);
+        stopDtmfTones.add(DtmfTone.ONE);
+        stopDtmfTones.add(DtmfTone.TWO);
+        recognizeOptions.setRecognizeInputType(RecognizeInputType.DTMF);
+        recognizeOptions.setPlayPrompt(new TextSource().setText("Test dmtf option with text source."));
+        recognizeOptions.setInterruptCallMediaOperation(true);
+        recognizeOptions.setStopCurrentOperations(true);
+        recognizeOptions.setOperationContext("operationContext");
+        recognizeOptions.setInterruptPrompt(true);
+        recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
+
+        StepVerifier.create(
+                callMedia.startRecognizingWithResponse(recognizeOptions))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+
+
+    @Test
+    public void recognizeWithResponseWithFileSourceChoiceOptions() {
 
         RecognizeChoice recognizeChoice1 = new RecognizeChoice();
         RecognizeChoice recognizeChoice2 = new RecognizeChoice();
@@ -145,6 +170,30 @@ public class CallMediaAsyncUnitTests {
 
         recognizeOptions.setRecognizeInputType(RecognizeInputType.CHOICES);
         recognizeOptions.setPlayPrompt(new FileSource().setUri("abc"));
+        recognizeOptions.setInterruptCallMediaOperation(true);
+        recognizeOptions.setStopCurrentOperations(true);
+        recognizeOptions.setOperationContext("operationContext");
+        recognizeOptions.setInterruptPrompt(true);
+        recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
+
+        StepVerifier.create(
+                callMedia.startRecognizingWithResponse(recognizeOptions))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void recognizeWithResponseTextChoiceOptions() {
+
+        RecognizeChoice recognizeChoice1 = new RecognizeChoice();
+        RecognizeChoice recognizeChoice2 = new RecognizeChoice();
+        List<RecognizeChoice> recognizeChoices = new ArrayList<RecognizeChoice>(
+            Arrays.asList(recognizeChoice1, recognizeChoice2)
+        );
+        CallMediaRecognizeChoiceOptions recognizeOptions = new CallMediaRecognizeChoiceOptions(new CommunicationUserIdentifier("id"), recognizeChoices);
+
+        recognizeOptions.setRecognizeInputType(RecognizeInputType.CHOICES);
+        recognizeOptions.setPlayPrompt(new TextSource().setText("Test recognize choice with text source."));
         recognizeOptions.setInterruptCallMediaOperation(true);
         recognizeOptions.setStopCurrentOperations(true);
         recognizeOptions.setOperationContext("operationContext");

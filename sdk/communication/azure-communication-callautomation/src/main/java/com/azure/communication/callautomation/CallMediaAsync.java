@@ -158,11 +158,7 @@ public class CallMediaAsync {
                 PlaySourceInternal playSourceInternal = null;
                 if (recognizeOptions.getPlayPrompt() != null) {
                     PlaySource playSource = recognizeOptions.getPlayPrompt();
-                    if (playSource instanceof FileSource) {
-                        playSourceInternal = getPlaySourceInternalFromFileSource((FileSource) playSource);
-                    } else if (playSource instanceof TextSource) {
-                        playSourceInternal = getPlaySourceInternalFromTextSource((TextSource) playSource);
-                    }
+                    playSourceInternal = translatePlaySourceToPlaySourceInternal(playSource);
                 }
 
                 RecognizeRequest recognizeRequest = new RecognizeRequest()
@@ -187,11 +183,7 @@ public class CallMediaAsync {
                 PlaySourceInternal playSourceInternal = null;
                 if (recognizeOptions.getPlayPrompt() != null) {
                     PlaySource playSource = recognizeOptions.getPlayPrompt();
-                    if (playSource instanceof FileSource) {
-                        playSourceInternal = getPlaySourceInternalFromFileSource((FileSource) playSource);
-                    } else if (playSource instanceof TextSource) {
-                        playSourceInternal = getPlaySourceInternalFromTextSource((TextSource) playSource);
-                    }
+                    playSourceInternal = translatePlaySourceToPlaySourceInternal(playSource);
                 }
 
                 RecognizeRequest recognizeRequest = new RecognizeRequest()
@@ -310,6 +302,16 @@ public class CallMediaAsync {
             .setSourceType(PlaySourceTypeInternal.TEXT)
             .setTextSource(textSourceInternal)
             .setPlaySourceId(playSource.getPlaySourceId());
+        return playSourceInternal;
+    }
+
+    private PlaySourceInternal translatePlaySourceToPlaySourceInternal(PlaySource playSource) {
+        PlaySourceInternal playSourceInternal = new PlaySourceInternal();
+        if (playSource instanceof FileSource) {
+            playSourceInternal = getPlaySourceInternalFromFileSource((FileSource) playSource);
+        } else if (playSource instanceof TextSource) {
+            playSourceInternal = getPlaySourceInternalFromTextSource((TextSource) playSource);
+        }
         return playSourceInternal;
     }
 }
