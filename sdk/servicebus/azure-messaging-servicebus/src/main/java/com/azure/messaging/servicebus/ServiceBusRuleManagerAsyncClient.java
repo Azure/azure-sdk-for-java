@@ -60,7 +60,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * <p><strong>Fetch all rules.</strong></p>
  * <!-- src_embed com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.getRules -->
  * <pre>
- * ruleManager.getRules&#40;&#41;.subscribe&#40;ruleProperties -&gt; System.out.println&#40;ruleProperties.getName&#40;&#41;&#41;&#41;;
+ * ruleManager.listRules&#40;&#41;.subscribe&#40;ruleProperties -&gt; System.out.println&#40;ruleProperties.getName&#40;&#41;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.servicebus.servicebusrulemanagerasyncclient.getRules -->
  *

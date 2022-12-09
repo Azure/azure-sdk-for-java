@@ -62,7 +62,7 @@ public class CallAutomationLiveTestBase extends TestBase {
         .add("value")
         .add("rawId")
         .add("id");
-    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
+    protected static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
         Pattern.CASE_INSENSITIVE);
 
@@ -150,7 +150,7 @@ public class CallAutomationLiveTestBase extends TestBase {
         }
     }
 
-    private String redact(String content, Matcher matcher) {
+    protected String redact(String content, Matcher matcher) {
         while (matcher.find()) {
             String captureGroup = matcher.group(1);
             if (!CoreUtils.isNullOrEmpty(captureGroup)) {

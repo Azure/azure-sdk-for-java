@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.implementation.changefeed.epkversion;
 
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
@@ -80,13 +82,33 @@ public class PartitionProcessorHelper {
         public static CosmosChangeFeedRequestOptions createChangeFeedRequestOptionsForChangeFeedState(
                 ChangeFeedState state,
                 int maxItemCount) {
-            return ModelBridgeInternal
-                    .createChangeFeedRequestOptionsForChangeFeedState(state)
-                    .setMaxItemCount(maxItemCount);
+
+            CosmosChangeFeedRequestOptions changeFeedRequestOptions =
+                ModelBridgeInternal
+                .createChangeFeedRequestOptionsForChangeFeedState(state)
+                .setMaxItemCount(maxItemCount);
+
+            // in epk version change feed processor, we are going to use new wire format to be consistent with full fidelity
+            ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor()
+                .setHeader(
+                    changeFeedRequestOptions,
+                    HttpConstants.HttpHeaders.CHANGE_FEED_WIRE_FORMAT_VERSION,
+                    HttpConstants.ChangeFeedWireFormatVersions.SEPARATE_METADATA_WITH_CRTS);
+
+            return changeFeedRequestOptions;
         }
 
         private static CosmosChangeFeedRequestOptions createForProcessingFromContinuation(String continuationToken) {
-            return CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(continuationToken);
+            CosmosChangeFeedRequestOptions changeFeedRequestOptions =
+                CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(continuationToken);
+            // in epk version change feed processor, we are going to use new wire format to be consistent with full fidelity
+            ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor()
+                .setHeader(
+                    changeFeedRequestOptions,
+                    HttpConstants.HttpHeaders.CHANGE_FEED_WIRE_FORMAT_VERSION,
+                    HttpConstants.ChangeFeedWireFormatVersions.SEPARATE_METADATA_WITH_CRTS);
+
+            return changeFeedRequestOptions;
         }
     }
 

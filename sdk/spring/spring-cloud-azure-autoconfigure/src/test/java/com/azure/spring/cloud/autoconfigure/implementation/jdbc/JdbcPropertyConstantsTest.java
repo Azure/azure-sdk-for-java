@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.jdbc;
 
-import com.azure.identity.providers.mysql.AzureIdentityMysqlAuthenticationPlugin;
-import com.azure.identity.providers.postgresql.AzureIdentityPostgresqlAuthenticationPlugin;
+import com.azure.identity.extensions.jdbc.mysql.AzureMysqlAuthenticationPlugin;
+import com.azure.identity.extensions.jdbc.postgresql.AzurePostgresqlAuthenticationPlugin;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -17,11 +17,11 @@ class JdbcPropertyConstantsTest {
     private static final String MYSQL_AUTH_PLUGIN_INTERFACE_CLASS_NAME = "com.mysql.cj.protocol.AuthenticationPlugin";
     @Test
     void testPropertiesInJdbcPropertyConstants() {
-        assertEquals(JdbcPropertyConstants.POSTGRES_AUTH_PLUGIN_CLASS_NAME, AzureIdentityPostgresqlAuthenticationPlugin.class.getName());
+        assertEquals(JdbcPropertyConstants.POSTGRES_AUTH_PLUGIN_CLASS_NAME, AzurePostgresqlAuthenticationPlugin.class.getName());
         assertEquals(JdbcPropertyConstants.POSTGRES_DRIVER_CLASS_NAME, POSTGRES_DRIVER_CLASS_NAME);
         assertEquals(JdbcPropertyConstants.POSTGRES_AUTH_PLUGIN_INTERFACE_CLASS_NAME, POSTGRES_AUTH_PLUGIN_INTERFACE_CLASS_NAME);
 
-        assertEquals(JdbcPropertyConstants.MYSQL_AUTH_PLUGIN_CLASS_NAME, AzureIdentityMysqlAuthenticationPlugin.class.getName());
+        assertEquals(JdbcPropertyConstants.MYSQL_AUTH_PLUGIN_CLASS_NAME, AzureMysqlAuthenticationPlugin.class.getName());
         assertEquals(JdbcPropertyConstants.MYSQL_DRIVER_CLASS_NAME, MYSQL_DRIVER_CLASS_NAME);
         assertEquals(JdbcPropertyConstants.MYSQL_AUTH_PLUGIN_INTERFACE_CLASS_NAME, MYSQL_AUTH_PLUGIN_INTERFACE_CLASS_NAME);
     }

@@ -1648,6 +1648,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request.getHeaders().put(HttpConstants.HttpHeaders.API_TYPE, this.apiType.toString());
         }
 
+        this.populateCapabilitiesHeader(request);
+
         if ((RequestVerb.POST.equals(httpMethod) || RequestVerb.PUT.equals(httpMethod))
                 && !request.getHeaders().containsKey(HttpConstants.HttpHeaders.CONTENT_TYPE)) {
             request.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, RuntimeConstants.MediaTypes.JSON);
@@ -1675,6 +1677,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         return this.populateAuthorizationHeader(request);
+    }
+
+    private void populateCapabilitiesHeader(RxDocumentServiceRequest request) {
+        String capabilitiesHeaderValue = HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES;
+        if (request.getHeaders().containsKey(HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES)) {
+            capabilitiesHeaderValue = request.getHeaders().get(HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES);
+        }
+
+        // this header will be suppressed in pkversion change feed processor
+        // remove it if non capabilities is being set
+        if (capabilitiesHeaderValue.equalsIgnoreCase(HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES_NONE)) {
+            request.getHeaders().remove(HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES);
+        } else {
+            request.getHeaders().put(HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES, capabilitiesHeaderValue);
+        }
     }
 
     private boolean requiresFeedRangeFiltering(RxDocumentServiceRequest request) {
@@ -2269,6 +2286,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 List<T> finalList = new ArrayList<>();
                                 HashMap<String, String> headers = new HashMap<>();
                                 ConcurrentMap<String, QueryMetrics> aggregatedQueryMetrics = new ConcurrentHashMap<>();
+                                List<ClientSideRequestStatistics> aggregateRequestStatistics = new ArrayList<>();
                                 double requestCharge = 0;
                                 for (FeedResponse<Document> page : feedList) {
                                     ConcurrentMap<String, QueryMetrics> pageQueryMetrics =
@@ -2282,11 +2300,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     // TODO: this does double serialization: FIXME
                                     finalList.addAll(page.getResults().stream().map(document ->
                                         ModelBridgeInternal.toObjectFromJsonSerializable(document, klass)).collect(Collectors.toList()));
+                                    aggregateRequestStatistics.addAll(BridgeInternal.getClientSideRequestStatisticsList(page.getCosmosDiagnostics()));
                                 }
+                                CosmosDiagnostics aggregatedDiagnostics = BridgeInternal.createCosmosDiagnostics(aggregatedQueryMetrics);
+                                BridgeInternal.addClientSideDiagnosticsToFeed(aggregatedDiagnostics, aggregateRequestStatistics);
                                 headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
                                     .toString(requestCharge));
                                 FeedResponse<T> frp = BridgeInternal
-                                    .createFeedResponse(finalList, headers);
+                                    .createFeedResponseWithQueryMetrics(
+                                        finalList,
+                                        headers,
+                                        aggregatedQueryMetrics,
+                                        null,
+                                        false,
+                                        false,
+                                        aggregatedDiagnostics);
                                 return frp;
                             });
                     });
