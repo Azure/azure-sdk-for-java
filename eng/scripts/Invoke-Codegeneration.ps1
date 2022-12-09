@@ -23,11 +23,21 @@ param(
 )
 
 # Ensure Autorest is installed.
-npm install -s -g autorest
+npm install --error -g autorest
+if ($LASTEXITCODE -ne 0) {
+  Write-Error "Failed to install Autorest."
+  exit 1
+}
 
-$location = (Get-Location).Path
-Set-Location $Directory
-
-Invoke-Expression "autorest $AutorestOptions"
-
-Set-Location $location
+try {
+  Push-Location $Directory
+  if ($AutorestOptions) {
+    Write-Host "Running 'autorest $AutorestOptions' in directory '$Directory'."
+    & "autorest $AutorestOptions"
+  } else {
+    Write-Host "Running 'autorest' in directory '$Directory'."
+    & autorest
+  }
+} finally {
+  Pop-Location
+}
