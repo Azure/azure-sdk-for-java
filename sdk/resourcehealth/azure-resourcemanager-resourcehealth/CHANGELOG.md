@@ -1,14 +1,95 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0 (2022-12-09)
 
-### Features Added
+- Azure Resource Manager ResourceHealth client library for Java. This package contains Microsoft Azure SDK for ResourceHealth Management SDK. The Resource Health Client. Package tag package-2022-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.AvailabilityStatusProperties` was modified
 
-### Other Changes
+* `occurredTime()` was removed
+* `withOccurredTime(java.time.OffsetDateTime)` was removed
+
+#### `models.AvailabilityStatusPropertiesRecentlyResolved` was modified
+
+* `unavailableOccurredTime()` was removed
+* `unavailabilitySummary()` was removed
+* `withUnavailabilitySummary(java.lang.String)` was removed
+* `withUnavailableOccurredTime(java.time.OffsetDateTime)` was removed
+
+### Features Added
+
+* `models.EventsOperations` was added
+
+* `models.EventLevelValues` was added
+
+* `models.KeyValueItem` was added
+
+* `models.Impact` was added
+
+* `models.ImpactedResources` was added
+
+* `models.EventTypeValues` was added
+
+* `models.EventPropertiesRecommendedActions` was added
+
+* `models.EventImpactedResourceListResult` was added
+
+* `models.LinkTypeValues` was added
+
+* `models.EventPropertiesRecommendedActionsItem` was added
+
+* `models.Events` was added
+
+* `models.EventImpactedResource` was added
+
+* `models.ImpactedServiceRegion` was added
+
+* `models.LevelValues` was added
+
+* `models.Faq` was added
+
+* `models.EventStatusValues` was added
+
+* `models.EventSourceValues` was added
+
+* `models.Link` was added
+
+* `models.LinkDisplayText` was added
+
+* `models.Update` was added
+
+* `models.EventOperations` was added
+
+* `models.EventPropertiesArticle` was added
+
+* `models.Event` was added
+
+* `models.EventPropertiesAdditionalInformation` was added
+
+#### `ResourceHealthManager` was modified
+
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+* `eventOperations()` was added
+* `eventsOperations()` was added
+* `impactedResources()` was added
+
+#### `models.AvailabilityStatusProperties` was modified
+
+* `withOccuredTime(java.time.OffsetDateTime)` was added
+* `occuredTime()` was added
+
+#### `ResourceHealthManager$Configurable` was modified
+
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
+
+#### `models.AvailabilityStatusPropertiesRecentlyResolved` was modified
+
+* `unavailableOccuredTime()` was added
+* `unavailableSummary()` was added
+* `withUnavailableOccuredTime(java.time.OffsetDateTime)` was added
+* `withUnavailableSummary(java.lang.String)` was added
 
 ## 1.0.0-beta.2 (2022-03-29)
 

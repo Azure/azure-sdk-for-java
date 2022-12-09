@@ -13,8 +13,8 @@ import java.util.List;
 @Fluent
 public final class AvailabilityStatusProperties {
     /*
-     * Availability status of the resource. When it is null, this
-     * availabilityStatus object represents an availability impacting event
+     * Availability status of the resource. When it is null, this availabilityStatus object represents an availability
+     * impacting event
      */
     @JsonProperty(value = "availabilityState")
     private AvailabilityStateValues availabilityState;
@@ -38,40 +38,36 @@ public final class AvailabilityStatusProperties {
     private String detailedStatus;
 
     /*
-     * When the resource's availabilityState is Unavailable, it describes where
-     * the health impacting event was originated. Examples are planned,
-     * unplanned, user initiated or an outage etc.
+     * When the resource's availabilityState is Unavailable, it describes where the health impacting event was
+     * originated. Examples are planned, unplanned, user initiated or an outage etc.
      */
     @JsonProperty(value = "reasonType")
     private String reasonType;
 
     /*
-     * When the resource's availabilityState is Unavailable, it provides the
-     * Timestamp for when the health impacting event was received.
+     * When the resource's availabilityState is Unavailable, it provides the Timestamp for when the health impacting
+     * event was received.
      */
     @JsonProperty(value = "rootCauseAttributionTime")
     private OffsetDateTime rootCauseAttributionTime;
 
     /*
-     * In case of an availability impacting event, it describes when the health
-     * impacting event was originated. Examples are Lifecycle, Downtime, Fault
-     * Analysis etc.
+     * In case of an availability impacting event, it describes when the health impacting event was originated.
+     * Examples are Lifecycle, Downtime, Fault Analysis etc.
      */
     @JsonProperty(value = "healthEventType")
     private String healthEventType;
 
     /*
-     * In case of an availability impacting event, it describes where the
-     * health impacting event was originated. Examples are PlatformInitiated,
-     * UserInitiated etc.
+     * In case of an availability impacting event, it describes where the health impacting event was originated.
+     * Examples are PlatformInitiated, UserInitiated etc.
      */
     @JsonProperty(value = "healthEventCause")
     private String healthEventCause;
 
     /*
-     * In case of an availability impacting event, it describes the category of
-     * a PlatformInitiated health impacting event. Examples are Planned,
-     * Unplanned etc.
+     * In case of an availability impacting event, it describes the category of a PlatformInitiated health impacting
+     * event. Examples are Planned, Unplanned etc.
      */
     @JsonProperty(value = "healthEventCategory")
     private String healthEventCategory;
@@ -83,9 +79,8 @@ public final class AvailabilityStatusProperties {
     private String healthEventId;
 
     /*
-     * When the resource's availabilityState is Unavailable and the reasonType
-     * is not User Initiated, it provides the date and time for when the issue
-     * is expected to be resolved.
+     * When the resource's availabilityState is Unavailable and the reasonType is not User Initiated, it provides the
+     * date and time for when the issue is expected to be resolved.
      */
     @JsonProperty(value = "resolutionETA")
     private OffsetDateTime resolutionEta;
@@ -93,8 +88,8 @@ public final class AvailabilityStatusProperties {
     /*
      * Timestamp for when last change in health status occurred.
      */
-    @JsonProperty(value = "occurredTime")
-    private OffsetDateTime occurredTime;
+    @JsonProperty(value = "occuredTime")
+    private OffsetDateTime occuredTime;
 
     /*
      * Chronicity of the availability transition.
@@ -109,25 +104,27 @@ public final class AvailabilityStatusProperties {
     private OffsetDateTime reportedTime;
 
     /*
-     * An annotation describing a change in the availabilityState to Available
-     * from Unavailable with a reasonType of type Unplanned
+     * An annotation describing a change in the availabilityState to Available from Unavailable with a reasonType of
+     * type Unplanned
      */
     @JsonProperty(value = "recentlyResolved")
     private AvailabilityStatusPropertiesRecentlyResolved recentlyResolved;
 
     /*
-     * Lists actions the user can take based on the current availabilityState
-     * of the resource.
+     * Lists actions the user can take based on the current availabilityState of the resource.
      */
     @JsonProperty(value = "recommendedActions")
     private List<RecommendedAction> recommendedActions;
 
     /*
-     * Lists the service impacting events that may be affecting the health of
-     * the resource.
+     * Lists the service impacting events that may be affecting the health of the resource.
      */
     @JsonProperty(value = "serviceImpactingEvents")
     private List<ServiceImpactingEvent> serviceImpactingEvents;
+
+    /** Creates an instance of AvailabilityStatusProperties class. */
+    public AvailabilityStatusProperties() {
+    }
 
     /**
      * Get the availabilityState property: Availability status of the resource. When it is null, this availabilityStatus
@@ -364,22 +361,22 @@ public final class AvailabilityStatusProperties {
     }
 
     /**
-     * Get the occurredTime property: Timestamp for when last change in health status occurred.
+     * Get the occuredTime property: Timestamp for when last change in health status occurred.
      *
-     * @return the occurredTime value.
+     * @return the occuredTime value.
      */
-    public OffsetDateTime occurredTime() {
-        return this.occurredTime;
+    public OffsetDateTime occuredTime() {
+        return this.occuredTime;
     }
 
     /**
-     * Set the occurredTime property: Timestamp for when last change in health status occurred.
+     * Set the occuredTime property: Timestamp for when last change in health status occurred.
      *
-     * @param occurredTime the occurredTime value to set.
+     * @param occuredTime the occuredTime value to set.
      * @return the AvailabilityStatusProperties object itself.
      */
-    public AvailabilityStatusProperties withOccurredTime(OffsetDateTime occurredTime) {
-        this.occurredTime = occurredTime;
+    public AvailabilityStatusProperties withOccuredTime(OffsetDateTime occuredTime) {
+        this.occuredTime = occuredTime;
         return this;
     }
 

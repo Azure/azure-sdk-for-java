@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AvailabilityStatuses ListByResourceGroup. */
 public final class AvailabilityStatusesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2020-05-01/examples/AvailabilityStatuses_ListByResourceGroup.json
+     * x-ms-original-file: specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-05-01/examples/AvailabilityStatuses_ListByResourceGroup.json
      */
     /**
      * Sample code: ListByResourceGroup.

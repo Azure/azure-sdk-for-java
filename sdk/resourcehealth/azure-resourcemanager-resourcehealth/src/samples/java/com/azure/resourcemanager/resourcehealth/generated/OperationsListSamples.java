@@ -9,15 +9,14 @@ import com.azure.core.util.Context;
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2020-05-01/examples/Operations_List.json
+     * x-ms-original-file: specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-05-01/examples/Operations_List.json
      */
     /**
-     * Sample code: GetHealthHistoryByResource.
+     * Sample code: GetOperationsList.
      *
      * @param manager Entry point to ResourceHealthManager.
      */
-    public static void getHealthHistoryByResource(
-        com.azure.resourcemanager.resourcehealth.ResourceHealthManager manager) {
+    public static void getOperationsList(com.azure.resourcemanager.resourcehealth.ResourceHealthManager manager) {
         manager.operations().listWithResponse(Context.NONE);
     }
 }

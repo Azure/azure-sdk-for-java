@@ -15,6 +15,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -22,6 +23,9 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.resourcehealth.fluent.AvailabilityStatusesClient;
+import com.azure.resourcemanager.resourcehealth.fluent.EventOperationsClient;
+import com.azure.resourcemanager.resourcehealth.fluent.EventsOperationsClient;
+import com.azure.resourcemanager.resourcehealth.fluent.ImpactedResourcesClient;
 import com.azure.resourcemanager.resourcehealth.fluent.MicrosoftResourceHealth;
 import com.azure.resourcemanager.resourcehealth.fluent.OperationsClient;
 import java.io.IOException;
@@ -30,22 +34,17 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the MicrosoftResourceHealthImpl type. */
 @ServiceClient(builder = MicrosoftResourceHealthBuilder.class)
 public final class MicrosoftResourceHealthImpl implements MicrosoftResourceHealth {
-    /**
-     * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
-     * the URI for every service call.
-     */
+    /** The ID of the target subscription. */
     private final String subscriptionId;
 
     /**
-     * Gets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-     * part of the URI for every service call.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -137,6 +136,42 @@ public final class MicrosoftResourceHealthImpl implements MicrosoftResourceHealt
         return this.operations;
     }
 
+    /** The ImpactedResourcesClient object to access its operations. */
+    private final ImpactedResourcesClient impactedResources;
+
+    /**
+     * Gets the ImpactedResourcesClient object to access its operations.
+     *
+     * @return the ImpactedResourcesClient object.
+     */
+    public ImpactedResourcesClient getImpactedResources() {
+        return this.impactedResources;
+    }
+
+    /** The EventsOperationsClient object to access its operations. */
+    private final EventsOperationsClient eventsOperations;
+
+    /**
+     * Gets the EventsOperationsClient object to access its operations.
+     *
+     * @return the EventsOperationsClient object.
+     */
+    public EventsOperationsClient getEventsOperations() {
+        return this.eventsOperations;
+    }
+
+    /** The EventOperationsClient object to access its operations. */
+    private final EventOperationsClient eventOperations;
+
+    /**
+     * Gets the EventOperationsClient object to access its operations.
+     *
+     * @return the EventOperationsClient object.
+     */
+    public EventOperationsClient getEventOperations() {
+        return this.eventOperations;
+    }
+
     /**
      * Initializes an instance of MicrosoftResourceHealth client.
      *
@@ -144,8 +179,7 @@ public final class MicrosoftResourceHealthImpl implements MicrosoftResourceHealt
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId Subscription credentials which uniquely identify Microsoft Azure subscription. The
-     *     subscription ID forms part of the URI for every service call.
+     * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
     MicrosoftResourceHealthImpl(
@@ -160,9 +194,12 @@ public final class MicrosoftResourceHealthImpl implements MicrosoftResourceHealt
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-05-01";
+        this.apiVersion = "2022-05-01";
         this.availabilityStatuses = new AvailabilityStatusesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
+        this.impactedResources = new ImpactedResourcesClientImpl(this);
+        this.eventsOperations = new EventsOperationsClientImpl(this);
+        this.eventOperations = new EventOperationsClientImpl(this);
     }
 
     /**
@@ -181,10 +218,7 @@ public final class MicrosoftResourceHealthImpl implements MicrosoftResourceHealt
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
