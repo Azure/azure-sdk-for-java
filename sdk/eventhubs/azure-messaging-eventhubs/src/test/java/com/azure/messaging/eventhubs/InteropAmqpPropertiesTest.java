@@ -439,7 +439,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
         }
     }
 
-    private static class Pair {
+    private static final class Pair {
         private final String key;
         private final Object value;
         private BiConsumer<Object, Object> assertConsumer;
