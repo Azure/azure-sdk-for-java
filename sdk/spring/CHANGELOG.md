@@ -4,7 +4,7 @@
 Upgrade Spring Boot dependencies version to 3.0.0 and Spring Cloud dependencies version to 2022.0.0-RC3.
 
 #### Breaking Changes
- - Remove `public` from bean methods [#32514](https://github.com/Azure/azure-sdk-for-java/pull/32514). 
+ - Remove the `public` access modifier from bean methods [#32514](https://github.com/Azure/azure-sdk-for-java/pull/32514). 
  - Move Cloud Foundry classes to the implementation package [#32549](https://github.com/Azure/azure-sdk-for-java/pull/32549).
 
 ## 6.0.0-beta.4 (2022-12-07)
