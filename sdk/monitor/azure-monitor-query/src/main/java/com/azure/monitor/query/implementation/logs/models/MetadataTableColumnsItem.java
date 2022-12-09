@@ -36,8 +36,8 @@ public final class MetadataTableColumnsItem {
     private Boolean isPreferredFacet;
 
     /*
-     * an indication of the source of the column, used only when multiple
-     * workspaces have conflicting definition for the column
+     * an indication of the source of the column, used only when multiple workspaces have conflicting definition for
+     * the column
      */
     @JsonProperty(value = "source")
     private Object source;

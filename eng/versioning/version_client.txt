@@ -36,7 +36,7 @@
 com.azure:azure-sdk-all;1.0.0;1.0.0
 com.azure:azure-sdk-parent;1.6.0;1.6.0
 com.azure:azure-client-sdk-parent;1.7.0;1.7.0
-com.azure:azure-ai-anomalydetector;3.0.0-beta.4;3.0.0-beta.5
+com.azure:azure-ai-anomalydetector;3.0.0-beta.5;3.0.0-beta.6
 com.azure:azure-ai-formrecognizer;4.0.2;4.1.0-beta.1
 com.azure:azure-ai-formrecognizer-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-personalizer;1.0.0-beta.1;1.0.0-beta.2
@@ -281,7 +281,7 @@ com.azure.resourcemanager:azure-resourcemanager-resourcegraph;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-changeanalysis;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-delegatednetwork;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-synapse;1.0.0-beta.6;1.0.0-beta.7
-com.azure.resourcemanager:azure-resourcemanager-resourcehealth;1.0.0-beta.2;1.0.0-beta.3
+com.azure.resourcemanager:azure-resourcemanager-resourcehealth;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-databricks;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-databoxedge;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-frontdoor;1.0.0-beta.1;1.0.0-beta.2
