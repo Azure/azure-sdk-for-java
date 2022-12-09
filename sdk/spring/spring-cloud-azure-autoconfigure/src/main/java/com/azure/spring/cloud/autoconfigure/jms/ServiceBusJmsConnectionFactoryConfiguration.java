@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.jms;
 
-import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.jms.AzureServiceBusJmsProperties;
 import jakarta.jms.ConnectionFactory;
 import org.apache.commons.pool2.PooledObject;
 import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
@@ -19,12 +19,9 @@ import org.springframework.jms.connection.CachingConnectionFactory;
 
 import java.util.stream.Collectors;
 
-/**
- * An auto-configuration for Service Bus JMS connection factory.
- */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnMissingBean(ConnectionFactory.class)
-public class ServiceBusJmsConnectionFactoryConfiguration {
+class ServiceBusJmsConnectionFactoryConfiguration {
 
     private static ServiceBusJmsConnectionFactory createJmsConnectionFactory(AzureServiceBusJmsProperties properties,
                                                                              ObjectProvider<ServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {

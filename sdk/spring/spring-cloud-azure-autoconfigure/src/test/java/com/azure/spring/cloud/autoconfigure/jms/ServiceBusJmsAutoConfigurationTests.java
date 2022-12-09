@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.jms;
 
-import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.jms.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import jakarta.jms.ConnectionFactory;
