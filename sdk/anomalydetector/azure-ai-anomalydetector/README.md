@@ -123,68 +123,34 @@ The following section provides several code snippets covering some of the most c
 - [Univariate Anomaly Detection - Detect change points](#detect-change-points)
 - [Multivariate Anomaly Detection](#multivariate-anomaly-detection-sample)
 
+### Create client
+
+```java readme-sample-createAnomalyDetectorClient
+String endpoint = Configuration.getGlobalConfiguration().get("AZURE_ANOMALY_DETECTOR_ENDPOINT");
+String key = Configuration.getGlobalConfiguration().get("AZURE_ANOMALY_DETECTOR_API_KEY");
+
+AnomalyDetectorClient anomalyDetectorClient =
+    new AnomalyDetectorClientBuilder()
+        .credential(new AzureKeyCredential(key))
+        .endpoint(endpoint)
+        .buildClient();
+```
+
 ### Batch detection
 
-```java
-UnivariateDetectionOptions request = new UnivariateDetectionOptions(series);
-
-request.setGranularity(TimeGranularity.DAILY);
-request.setImputeMode(ImputeMode.AUTO);
-
-UnivariateEntireDetectionResult response = anomalyDetectorClient.detectUnivariateEntireSeries(request);
-if (response.getIsAnomaly().contains(true)) {
-    System.out.println("Anomalies found in the following data positions:");
-    for (int i = 0; i < request.getSeries().size(); ++i) {
-        if (response.getIsAnomaly().get(i)) {
-            System.out.print(i + " ");
-        }
-    }
-    System.out.println();
-} else {
-    System.out.println("No anomalies were found in the series.");
-}
-```
+For batch detection in univariate anomaly detection, please go to this sample for better understanding the workflow: [DetectAnomaliesEntireSeries.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/java/com/azure/ai/anomalydetector/DetectAnomaliesEntireSeries.java)
 
 ### Streaming detection
 
-```java
- UnivariateDetectionOptions request = new UnivariateDetectionOptions(series);
-
-request.setGranularity(TimeGranularity.DAILY);
-request.setImputeMode(ImputeMode.AUTO);
-
-UnivariateLastDetectionResult response = anomalyDetectorClient.detectUnivariateLastPoint(request);
-System.out.println("ExpectedValue: " + response.getExpectedValue()
-    + ", Severity: " + response.getSeverity());
-if (response.isAnomaly()) {
-    System.out.println("The latest point was detected as an anomaly.");
-} else {
-    System.out.println("The latest point was not detected as an anomaly.");
-}
-```
+For streaming/last detection in univariate anomaly detection, please go to this sample for better understanding the workflow: [DetectAnomaliesLastPoint.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/java/com/azure/ai/anomalydetector/DetectAnomaliesLastPoint.java)
 
 ### Detect change points
 
-```java
-UnivariateChangePointDetectionOptions request = new UnivariateChangePointDetectionOptions(series, TimeGranularity.DAILY);
-
-UnivariateChangePointDetectionResult response = anomalyDetectorClient.detectUnivariateChangePoint(request);
-if (response.getIsChangePoint().contains(true)) {
-    System.out.println("Change points found in the following data positions:");
-    for (int i = 0; i < request.getSeries().size(); ++i) {
-        if (response.getIsChangePoint().get(i)) {
-            System.out.print(i + " ");
-        }
-    }
-    System.out.println();
-} else {
-    System.out.println("No change points were found in the series.");
-}
-```
+For change points detection in univariate anomaly detection, please go to this sample for better understanding the workflow: [DetectChangePoints.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/java/com/azure/ai/anomalydetector/DetectChangePoints.java)
 
 ### Multivariate Anomaly Detection Sample
 
-To see how to use Anomaly Detector library to conduct Multivariate Anomaly Detection, see this [sample](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/java/com/azure/ai/anomalydetector/MultivariateSample.java).
+To see how to use Anomaly Detector library to conduct Multivariate Anomaly Detection, see this [MultivariateSample.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/java/com/azure/ai/anomalydetector/MultivariateSample.java).
 
 ## Troubleshooting
 
@@ -197,16 +163,6 @@ locate the root issue. View the [logging][logging] wiki for guidance about enabl
 ## Next steps
 
 These code samples show common scenario operations with the Azure Anomaly Detector library. More samples can be found under the [samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/java/com/azure/ai/anomalydetector) directory.
-
-- Univariate Anomaly Detection - Batch Detection: [DetectAnomaliesEntireSeries.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/java/com/azure/ai/anomalydetector/DetectAnomaliesEntireSeries.java)
-
-- Univariate Anomaly Detection - Streaming Detection: [DetectAnomaliesLastPoint.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/java/com/azure/ai/anomalydetector/DetectAnomaliesLastPoint.java)
-
-- Univariate Anomaly Detection - Change Point Detection: [DetectChangePoints.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/java/com/azure/ai/anomalydetector/DetectChangePoints.java)
-
-- Multivariate Anomaly Detection: [MultivariateSample.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/java/com/azure/ai/anomalydetector/MultivariateSample.java)
-
-### Additional documentation
 
 For more extensive documentation on Azure Anomaly Detector, see the [Anomaly Detector documentation](https://learn.microsoft.com/azure/cognitive-services/anomaly-detector/overview) on docs.microsoft.com.
 
