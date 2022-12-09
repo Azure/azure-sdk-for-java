@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @SuppressWarnings("deprecation")
-public class TestRecorderTests extends TestBase {
+public class TestProxyRecordTests extends TestBase {
 
     @BeforeAll
     public static void setupClass() {
@@ -42,7 +42,8 @@ public class TestRecorderTests extends TestBase {
 
 
     @Test
-    public void testSend() {
+    public void testRecord() {
+
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)

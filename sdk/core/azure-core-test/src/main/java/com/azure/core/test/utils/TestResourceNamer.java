@@ -10,6 +10,7 @@ import com.azure.core.test.models.RecordedData;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -22,6 +23,8 @@ public class TestResourceNamer extends ResourceNamer {
     private final RecordedData recordedData;
     private final boolean allowedToReadRecordedValues;
     private final boolean allowedToRecordValues;
+    private final Queue<String> proxyVariables;
+    private final boolean useProxy;
 
     /**
      * Constructor of TestResourceNamer
@@ -33,7 +36,7 @@ public class TestResourceNamer extends ResourceNamer {
      */
     @Deprecated
     public TestResourceNamer(String name, TestMode testMode, RecordedData recordedData) {
-        this(name, testMode, false, recordedData);
+        this(name, testMode, false, false, recordedData, null);
     }
 
     /**
@@ -46,19 +49,38 @@ public class TestResourceNamer extends ResourceNamer {
      * {@code false}, and {@code recordedData} is {@code null}.
      */
     public TestResourceNamer(TestContextManager testContextManager, RecordedData recordedData) {
-        this(testContextManager.getTestName(), testContextManager.getTestMode(), testContextManager.doNotRecordTest(),
-            recordedData);
+        this(testContextManager.getTestName(),
+            testContextManager.getTestMode(),
+            testContextManager.doNotRecordTest(),
+            testContextManager.getEnableTestProxy(),
+            recordedData,
+            null);
     }
 
-    private TestResourceNamer(String name, TestMode testMode, boolean doNotRecord, RecordedData recordedData) {
+    public TestResourceNamer(TestContextManager testContextManager, Queue<String> proxyVariables) {
+        this(testContextManager.getTestName(),
+            testContextManager.getTestMode(),
+            testContextManager.doNotRecordTest(),
+            testContextManager.getEnableTestProxy(),
+            null,
+            proxyVariables);
+    }
+
+    private TestResourceNamer(String name, TestMode testMode, boolean doNotRecord, boolean useProxy, RecordedData recordedData, Queue<String> proxyVariables) {
         super(name);
 
         // Only need recordedData if the test is running in playback or record.
-        if (testMode != TestMode.LIVE && !doNotRecord) {
-            Objects.requireNonNull(recordedData, "'recordedData' cannot be null.");
+        if (testMode != TestMode.LIVE && !doNotRecord && !useProxy) {
+            if (useProxy) {
+                Objects.requireNonNull(proxyVariables, "`proxyVariables` cannot be null.`");
+            } else {
+                Objects.requireNonNull(recordedData, "'recordedData' cannot be null.");
+            }
         }
 
+        this.useProxy = useProxy;
         this.recordedData = recordedData;
+        this.proxyVariables = proxyVariables;
         this.allowedToReadRecordedValues = (testMode == TestMode.PLAYBACK && !doNotRecord);
         this.allowedToRecordValues = (testMode == TestMode.RECORD && !doNotRecord);
     }
@@ -106,12 +128,16 @@ public class TestResourceNamer extends ResourceNamer {
 
     private <T> T getValue(Function<String, T> readHandler, Supplier<T> valueSupplier) {
         if (allowedToReadRecordedValues) {
-            return readHandler.apply(recordedData.removeVariable());
+            return readHandler.apply(useProxy ? proxyVariables.remove() : recordedData.removeVariable());
         } else {
             T value = valueSupplier.get();
 
             if (allowedToRecordValues) {
-                recordedData.addVariable(value.toString());
+                if (useProxy) {
+                    proxyVariables.add(value.toString());
+                } else {
+                    recordedData.addVariable(value.toString());
+                }
             }
 
             return value;

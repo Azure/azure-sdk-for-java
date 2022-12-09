@@ -36,7 +36,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         HttpRequest request = context.getHttpRequest();
-        TestProxyUtils.changeHeaders(request, xRecordingId);
+        TestProxyUtils.changeHeaders(request, xRecordingId, "record");
         return next.process();
     }
 }

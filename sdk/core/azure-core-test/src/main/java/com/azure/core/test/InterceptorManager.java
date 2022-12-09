@@ -5,6 +5,7 @@ package com.azure.core.test;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.http.PlaybackClient;
+import com.azure.core.test.http.TestProxyPlaybackClient;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.models.RecordingRedactor;
@@ -29,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.function.Function;
 
 /**
@@ -62,9 +64,10 @@ public class InterceptorManager implements AutoCloseable {
 
     // Stores a map of all the HTTP properties in a session
     // A state machine ensuring a test is always reset before another one is setup
-    private final RecordedData recordedData;
+    private RecordedData recordedData;
     private final boolean enableTestProxy;
-    private TestProxyRecordPolicy proxyRecordPolicy;
+    private TestProxyRecordPolicy testProxyRecordPolicy;
+    private TestProxyPlaybackClient testProxyPlaybackClient;
 
     /**
      * Creates a new InterceptorManager that either replays test-session records or saves them.
@@ -126,13 +129,16 @@ public class InterceptorManager implements AutoCloseable {
 
         this.allowedToReadRecordedValues = (testMode == TestMode.PLAYBACK && !doNotRecord);
         this.allowedToRecordValues = (testMode == TestMode.RECORD && !doNotRecord);
-
-        if (allowedToReadRecordedValues) {
-            this.recordedData = readDataFromFile();
-        } else if (allowedToRecordValues) {
-            this.recordedData = new RecordedData();
+        if(enableTestProxy) {
+            this.testProxyRecordPolicy = new TestProxyRecordPolicy();
         } else {
-            this.recordedData = null;
+            if (allowedToReadRecordedValues) {
+                this.recordedData = readDataFromFile();
+            } else if (allowedToRecordValues) {
+                this.recordedData = new RecordedData();
+            } else {
+                this.recordedData = null;
+            }
         }
     }
 
@@ -245,7 +251,7 @@ public class InterceptorManager implements AutoCloseable {
      */
     public HttpPipelinePolicy getRecordPolicy() {
         if (enableTestProxy) {
-            return initProxyRecordPolicy(Collections.emptyList());
+            return startProxyRecording(Collections.emptyList());
         }
         return getRecordPolicy(Collections.emptyList());
     }
@@ -260,7 +266,7 @@ public class InterceptorManager implements AutoCloseable {
      */
     public HttpPipelinePolicy getRecordPolicy(List<Function<String, String>> recordingRedactors) {
         if (enableTestProxy) {
-            return initProxyRecordPolicy(recordingRedactors);
+            return startProxyRecording(recordingRedactors);
         }
         return new RecordNetworkCallPolicy(recordedData, recordingRedactors);
     }
@@ -271,7 +277,13 @@ public class InterceptorManager implements AutoCloseable {
      * @return An HTTP client that plays back network calls from its recorded data.
      */
     public HttpClient getPlaybackClient() {
-        return new PlaybackClient(recordedData, textReplacementRules);
+        if (enableTestProxy) {
+            testProxyPlaybackClient = new TestProxyPlaybackClient();
+            testProxyPlaybackClient.startPlayback(playbackRecordName, null);
+            return testProxyPlaybackClient;
+        } else {
+            return new PlaybackClient(recordedData, textReplacementRules);
+        }
     }
 
     /**
@@ -284,7 +296,7 @@ public class InterceptorManager implements AutoCloseable {
     public void close() {
         if (allowedToRecordValues) {
             if (enableTestProxy) {
-                this.proxyRecordPolicy.stopRecording(null); // TODO: where do variables come from
+                testProxyRecordPolicy.stopRecording(null); // TODO: where do variables come from
             } else {
                 try (BufferedWriter writer = Files.newBufferedWriter(createRecordFile(playbackRecordName).toPath())) {
                     RECORD_MAPPER.writeValue(writer, recordedData);
@@ -293,6 +305,8 @@ public class InterceptorManager implements AutoCloseable {
                         new UncheckedIOException("Unable to write data to playback file.", ex));
                 }
             }
+        } else if (isPlaybackMode() && enableTestProxy) {
+            testProxyPlaybackClient.stopPlayback();
         }
     }
 
@@ -331,10 +345,9 @@ public class InterceptorManager implements AutoCloseable {
         }
     }
 
-    private HttpPipelinePolicy initProxyRecordPolicy(List<Function<String, String>> recordingRedactors) {
-        this.proxyRecordPolicy = new ProxyRecordPolicy(recordingRedactors);
-        this.proxyRecordPolicy.startRecording(playbackRecordName);
-        return this.proxyRecordPolicy;
+    private HttpPipelinePolicy startProxyRecording(List<Function<String, String>> recordingRedactors) {
+        testProxyRecordPolicy.startRecording(playbackRecordName, recordingRedactors);
+        return testProxyRecordPolicy;
     }
 
     /*
@@ -389,5 +402,10 @@ public class InterceptorManager implements AutoCloseable {
      */
     public void addTextReplacementRule(String regex, String replacement) {
         textReplacementRules.put(regex, replacement);
+    }
+
+    public Queue<String> getProxyVariables() {
+        //todo: fix
+        return null;
     }
 }

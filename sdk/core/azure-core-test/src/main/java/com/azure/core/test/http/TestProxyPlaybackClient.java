@@ -43,7 +43,7 @@ public class TestProxyPlaybackClient implements HttpClient {
         if (xRecordingId == null) {
             throw new RuntimeException("Playback was not started before a request was sent.");
         }
-        TestProxyUtils.changeHeaders(request, xRecordingId);
+        TestProxyUtils.changeHeaders(request, xRecordingId, "playback");
         return client.send(request);
     }
 }

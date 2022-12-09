@@ -105,7 +105,6 @@ public abstract class TestBase implements BeforeEachCallback {
     @BeforeAll
     public static void setupClass() {
         testMode = initializeTestMode();
-        // todo: remove false &&
         if (enableTestProxy() && (testMode == TestMode.PLAYBACK || testMode == TestMode.RECORD)) {
             testProxyManager = new TestProxyManager(InterceptorManager.getRecordFolder());
             testProxyManager.startProxy();
@@ -135,7 +134,12 @@ public abstract class TestBase implements BeforeEachCallback {
             logger.error("Could not create interceptor for {}", testContextManager.getTestName(), e);
             Assertions.fail(e);
         }
-        testResourceNamer = new TestResourceNamer(testContextManager, interceptorManager.getRecordedData());
+
+        if (enableTestProxy()) {
+            testResourceNamer = new TestResourceNamer(testContextManager, interceptorManager.getProxyVariables());
+        } else {
+            testResourceNamer = new TestResourceNamer(testContextManager, interceptorManager.getRecordedData());
+        }
 
         beforeTest();
     }
