@@ -26,7 +26,7 @@ use the token as a password. For example, to connect Azure hosted MySQL, get a t
 token as a password to connect with MySQL.
 
 ## Architecture
-This picture shows how the Azure Identity Extensions (JDBC authentication plugin) authenticates with MSI.
+This picture shows how the Azure Identity Extensions (JDBC authentication plugin) authenticates with Azure AD.
 ![Architecture](img/passwordless-connections-from-java-apps-to-data-services.jpg)
 
 ## Examples
