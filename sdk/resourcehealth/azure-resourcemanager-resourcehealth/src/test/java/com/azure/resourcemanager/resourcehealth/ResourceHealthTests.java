@@ -84,7 +84,7 @@ public class ResourceHealthTests extends TestBase {
                 vmAvailabilityStatus = resourceHealthManager.availabilityStatuses().getByResource(virtualMachine.id());
             }
             Assertions.assertEquals(AvailabilityStateValues.AVAILABLE, vmAvailabilityStatus.properties().availabilityState());
-            PagedIterable<AvailabilityStatus> historyEvents = resourceHealthManager.availabilityStatuses().list(virtualMachine.id());
+            PagedIterable<AvailabilityStatus> historyEvents = resourceHealthManager.availabilityStatuses().list(virtualMachine.id(), null, "recommendedactions", Context.NONE);
             Assertions.assertEquals(AvailabilityStateValues.AVAILABLE, historyEvents.iterator().next().properties().availabilityState());
 
             // deallocate vm
@@ -103,14 +103,6 @@ public class ResourceHealthTests extends TestBase {
                 sleepIfRunningAgainstService(1000 * 10);
                 vmAvailabilityStatus = resourceHealthManager.availabilityStatuses().getByResource(virtualMachine.id());
             }
-
-            historyEvents = resourceHealthManager.availabilityStatuses().list(virtualMachine.id(), null, "recommendedactions", Context.NONE);
-            Assertions.assertTrue(
-                historyEvents
-                    .stream()
-                    .anyMatch(
-                        status -> "current".equals(status.name())
-                            && AvailabilityStateValues.AVAILABLE.equals(status.properties().availabilityState())));
         } finally {
             if (!testEnv) {
                 computeManager.resourceManager().resourceGroups().beginDeleteByName(resourceGroup);
