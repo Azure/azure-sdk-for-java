@@ -2290,7 +2290,7 @@ public final class LoadTestRunsImpl {
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        getValues(res.getValue(), "timeseries"),
+                                        getValues(res.getValue(), "value"),
                                         getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
@@ -3316,7 +3316,7 @@ public final class LoadTestRunsImpl {
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        getValues(res.getValue(), "timeseries"),
+                                        getValues(res.getValue(), "value"),
                                         getNextLink(res.getValue(), "nextLink"),
                                         null));
     }

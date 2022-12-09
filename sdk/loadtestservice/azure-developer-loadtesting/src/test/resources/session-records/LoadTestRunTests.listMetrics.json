@@ -38,7 +38,7 @@
       "mise-correlation-id" : "106f0fe1-bdee-4f99-9b27-664a5ea53c40",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"timeseries\":[{\"data\":[{\"timestamp\":\"2022-12-09T07:11:00.000Z\",\"value\":1.0}]}]}",
+      "Body" : "{\"value\":[{\"data\":[{\"timestamp\":\"2022-12-09T07:11:00.000Z\",\"value\":1.0}]}]}",
       "Date" : "Fri, 09 Dec 2022 07:11:59 GMT",
       "x-ms-correlation-request-id" : "b113ff2a-5793-4861-879a-084a109205ec",
       "Content-Type" : "application/json; charset=utf-8"
