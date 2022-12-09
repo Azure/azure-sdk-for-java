@@ -72,7 +72,6 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
     private volatile String collectionId;
     private PartitionLoadBalancingStrategy loadBalancingStrategy;
     private LeaseStoreManager leaseStoreManager;
-    private LeaseStoreManager pkRangeIdVersionLeaseStoreManager;
     private HealthMonitor healthMonitor;
     private volatile PartitionManager partitionManager;
 
@@ -293,17 +292,6 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                                     .hostName(this.hostName)
                                     .build();
 
-                        if (this.canBootstrapFromPkRangeIdVersionLeaseStore()) {
-                            String pkRangeIdVersionLeasePrefix = this.getPkRangeIdVersionLeasePrefix();
-                            this.pkRangeIdVersionLeaseStoreManager =
-                                com.azure.cosmos.implementation.changefeed.pkversion.LeaseStoreManagerImpl.builder()
-                                    .leasePrefix(pkRangeIdVersionLeasePrefix)
-                                    .leaseCollectionLink(this.leaseContextClient.getContainerClient())
-                                    .leaseContextClient(this.leaseContextClient)
-                                    .requestOptionsFactory(requestOptionsFactory)
-                                    .hostName(this.hostName)
-                                    .build();
-                        }
                         return Mono.just(this.leaseStoreManager);
                     });
         }
@@ -370,13 +358,25 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                 this.changeFeedMode);
 
         Bootstrapper bootstrapper;
-        if (this.pkRangeIdVersionLeaseStoreManager != null) {
+        if (this.canBootstrapFromPkRangeIdVersionLeaseStore()) {
+
+            String pkRangeIdVersionLeasePrefix = this.getPkRangeIdVersionLeasePrefix();
+            RequestOptionsFactory requestOptionsFactory = new PartitionedByIdCollectionRequestOptionsFactory();
+            LeaseStoreManager pkRangeIdVersionLeaseStoreManager =
+                com.azure.cosmos.implementation.changefeed.pkversion.LeaseStoreManagerImpl.builder()
+                    .leasePrefix(pkRangeIdVersionLeasePrefix)
+                    .leaseCollectionLink(this.leaseContextClient.getContainerClient())
+                    .leaseContextClient(this.leaseContextClient)
+                    .requestOptionsFactory(requestOptionsFactory)
+                    .hostName(this.hostName)
+                    .build();
+
             bootstrapper = new PkRangeIdVersionLeaseStoreBootstrapperImpl(
                 synchronizer,
                 leaseStoreManager,
                 this.lockTime,
                 this.sleepTime,
-                this.pkRangeIdVersionLeaseStoreManager);
+                pkRangeIdVersionLeaseStoreManager);
         } else {
             bootstrapper = new BootstrapperImpl(
                 synchronizer,
