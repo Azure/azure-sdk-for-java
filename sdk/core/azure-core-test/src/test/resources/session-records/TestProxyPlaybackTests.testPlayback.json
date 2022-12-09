@@ -1,0 +1,78 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://example.com/",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+        "Connection": "keep-alive",
+        "User-Agent": "Java/11.0.13"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Age": "494750",
+        "Cache-Control": "max-age=604800",
+        "Content-Length": "1256",
+        "Content-Type": "text/html; charset=utf-8",
+        "Date": "Thu, 08 Dec 2022 23:08:39 GMT",
+        "ETag": "\u00223147526947\u002Bident\u0022",
+        "Expires": "Thu, 15 Dec 2022 23:08:39 GMT",
+        "Last-Modified": "Thu, 17 Oct 2019 07:18:26 GMT",
+        "Server": [
+          "ECS",
+          "(sab/56A9)"
+        ],
+        "Vary": "Accept-Encoding",
+        "X-Cache": "HIT"
+      },
+      "ResponseBody": [
+        "\u003C!doctype html\u003E\n",
+        "\u003Chtml\u003E\n",
+        "\u003Chead\u003E\n",
+        "    \u003Ctitle\u003EExample Domain\u003C/title\u003E\n\n",
+        "    \u003Cmeta charset=\u0022utf-8\u0022 /\u003E\n",
+        "    \u003Cmeta http-equiv=\u0022Content-type\u0022 content=\u0022text/html; charset=utf-8\u0022 /\u003E\n",
+        "    \u003Cmeta name=\u0022viewport\u0022 content=\u0022width=device-width, initial-scale=1\u0022 /\u003E\n",
+        "    \u003Cstyle type=\u0022text/css\u0022\u003E\n",
+        "    body {\n",
+        "        background-color: #f0f0f2;\n",
+        "        margin: 0;\n",
+        "        padding: 0;\n",
+        "        font-family: -apple-system, system-ui, BlinkMacSystemFont, \u0022Segoe UI\u0022, \u0022Open Sans\u0022, \u0022Helvetica Neue\u0022, Helvetica, Arial, sans-serif;\n",
+        "        \n",
+        "    }\n",
+        "    div {\n",
+        "        width: 600px;\n",
+        "        margin: 5em auto;\n",
+        "        padding: 2em;\n",
+        "        background-color: #fdfdff;\n",
+        "        border-radius: 0.5em;\n",
+        "        box-shadow: 2px 3px 7px 2px rgba(0,0,0,0.02);\n",
+        "    }\n",
+        "    a:link, a:visited {\n",
+        "        color: #38488f;\n",
+        "        text-decoration: none;\n",
+        "    }\n",
+        "    @media (max-width: 700px) {\n",
+        "        div {\n",
+        "            margin: 0 auto;\n",
+        "            width: auto;\n",
+        "        }\n",
+        "    }\n",
+        "    \u003C/style\u003E    \n",
+        "\u003C/head\u003E\n\n",
+        "\u003Cbody\u003E\n",
+        "\u003Cdiv\u003E\n",
+        "    \u003Ch1\u003EExample Domain\u003C/h1\u003E\n",
+        "    \u003Cp\u003EThis domain is for use in illustrative examples in documents. You may use this\n",
+        "    domain in literature without prior coordination or asking for permission.\u003C/p\u003E\n",
+        "    \u003Cp\u003E\u003Ca href=\u0022https://www.iana.org/domains/example\u0022\u003EMore information...\u003C/a\u003E\u003C/p\u003E\n",
+        "\u003C/div\u003E\n",
+        "\u003C/body\u003E\n",
+        "\u003C/html\u003E\n"
+      ]
+    }
+  ],
+  "Variables": {}
+}
