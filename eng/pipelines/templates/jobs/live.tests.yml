@@ -42,6 +42,8 @@ jobs:
       name: $(Pool)
       vmImage: $(OSVmImage)
 
+    container: mcr.microsoft.com/windows/servercore:ltsc2019
+
     ${{ if eq(parameters.UsePlatformContainer, 'true') }}:
       # Add a default so the job doesn't fail when the matrix is empty
       container: $[ variables['Container'] ]

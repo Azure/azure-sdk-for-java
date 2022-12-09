@@ -54,7 +54,6 @@ public class TestContainersMysqlUT {
 
     @Test
     void testMysqlPassword() {
-        LOGGER.info("TestContainersMysqlUT begin.");
         ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withPropertyValues("spring.datasource.azure.passwordless-enabled=true")
             .withConfiguration(
@@ -62,6 +61,7 @@ public class TestContainersMysqlUT {
                     AzureJdbcAutoConfiguration.class, AzureGlobalPropertiesAutoConfiguration.class,
                     AzureTokenCredentialAutoConfiguration.class));
         contextRunner.run((context -> {
+            LOGGER.info("TestContainersMysqlUT begin.");
             String query1 = "CREATE TABLE Test ( PersonID int, Number int);";
             String query2 = "INSERT INTO Test VALUES (1,25);";
             String query3 = "SELECT * FROM Test;";
@@ -72,8 +72,8 @@ public class TestContainersMysqlUT {
             while (sqlRowSet.next()) {
                 Assertions.assertEquals(sqlRowSet.getString("Number"),"25");
             }
+            LOGGER.info("TestContainersMysqlUT end.");
         }));
-        LOGGER.info("TestContainersMysqlUT end.");
 
     }
 
