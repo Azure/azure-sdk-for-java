@@ -14,6 +14,12 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Move Key Vault environment classes for internal usage to the implementation package [#32428](https://github.com/Azure/azure-sdk-for-java/pull/32428).
 - Delete properties: `spring.jms.serviebus.username`, `spring.jms.serviebus.password` and `spring.jms.serviebus.remote-uri` [#32465](https://github.com/Azure/azure-sdk-for-java/pull/32465).
 
+#### Dependency Updates
+- Upgrade Azure SDK BOM to 1.2.8.
+- Upgrade Azure Identity to 1.7.1.
+- Upgrade Azure Identity Extensions to 1.0.0.
+- Upgrade Azure Resource Manager to 2.21.0.
+
 ## 4.5.0 (2022-12-06)
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.14, 2.7.0-2.7.6. (Note: 2.5.x (x>14), 2.6.y (y>14) and 2.7.z (z>6) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2020.0.3-2020.0.6, 2021.0.0-2021.0.5. (Note: 2020.0.x (x>6) and 2021.0.y (y>5) should be supported, but they aren't tested with this release.)
