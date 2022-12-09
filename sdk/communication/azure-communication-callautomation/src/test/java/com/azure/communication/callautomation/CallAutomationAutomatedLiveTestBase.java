@@ -70,6 +70,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
                 ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(fileName));
                 ArrayList<String> persistedEvents = (ArrayList<String>) objectInputStream.readObject();
                 persistedEvents.forEach(this::messageBodyHandler);
+                objectInputStream.close();
             } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
