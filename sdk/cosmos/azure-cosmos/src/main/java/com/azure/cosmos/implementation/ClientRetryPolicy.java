@@ -160,7 +160,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         return this.throttlingRetry.shouldRetry(e);
     }
 
-      private boolean gatewayRequestCanFailoverOnTimeout(RxDocumentServiceRequest request, CosmosException clientException) {
+      private boolean canGatewayRequestFailoverOnTimeout(RxDocumentServiceRequest request, CosmosException clientException) {
         //Query Plan requests
         if(request.getOperationType() == OperationType.QueryPlan) {
             return true;
