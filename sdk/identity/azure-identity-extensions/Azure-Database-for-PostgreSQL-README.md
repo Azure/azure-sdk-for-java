@@ -145,7 +145,7 @@ PostgreSQL)[Use Azure Active Directory for authenticating with PostgreSQL]
 
 ### Architecture
 
-This picture shows how the jdbc authentication plugin for PostgreSQl authenticating with Azure AD.
+This picture shows how the jdbc authentication plugin for PostgreSQl authenticating with managed identity.
 
 ![postgresql_design.png](img/postgresql_design.png)
 
