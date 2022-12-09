@@ -69,6 +69,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -986,10 +987,13 @@ public class SqlServerOperationsTests extends SqlServerTest {
         String accountKey = storageAccount.getKeys().get(0).value();
         String blobEntrypoint = storageAccount.endPoints().primary().blob();
 
-        sqlDatabase.defineThreatDetectionPolicy(SecurityAlertPolicyName.DEFAULT)
+        List<String> disabledAlerts = Collections.singletonList("Sql_Injection");
+
+        sqlDatabase.defineThreatDetectionPolicy(SecurityAlertPolicyName.fromString("myPolicy"))
             .withPolicyEnabled()
             .withStorageEndpoint(blobEntrypoint)
             .withStorageAccountAccessKey(accountKey)
+            .withAlertsFilter(disabledAlerts)
             .create();
 
         sqlDatabase.refresh();
@@ -997,6 +1001,8 @@ public class SqlServerOperationsTests extends SqlServerTest {
         SqlDatabaseThreatDetectionPolicy alertPolicy = sqlDatabase.getThreatDetectionPolicy();
         Assertions.assertNotNull(alertPolicy);
         Assertions.assertEquals(SecurityAlertPolicyState.ENABLED, alertPolicy.currentState());
+        Assertions.assertEquals(alertPolicy.disabledAlertList(), disabledAlerts);
+        Assertions.assertTrue(alertPolicy.isDefaultSecurityAlertPolicy());
 
         // Done testing security alert policy
 

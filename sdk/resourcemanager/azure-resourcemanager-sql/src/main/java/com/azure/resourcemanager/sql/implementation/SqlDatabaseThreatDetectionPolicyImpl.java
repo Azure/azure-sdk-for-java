@@ -31,6 +31,7 @@ public class SqlDatabaseThreatDetectionPolicyImpl
     private SqlServerManager sqlServerManager;
     private String resourceGroupName;
     private String sqlServerName;
+    private String policyName;
 
     protected SqlDatabaseThreatDetectionPolicyImpl(
         String name,
@@ -44,6 +45,7 @@ public class SqlDatabaseThreatDetectionPolicyImpl
         this.sqlServerManager = sqlServerManager;
         this.resourceGroupName = parent.resourceGroupName();
         this.sqlServerName = parent.sqlServerName();
+        this.policyName = name;
     }
 
     @Override
@@ -130,7 +132,7 @@ public class SqlDatabaseThreatDetectionPolicyImpl
 
     @Override
     public boolean isDefaultSecurityAlertPolicy() {
-        return true;
+        return SecurityAlertPolicyName.DEFAULT.toString().equalsIgnoreCase(this.name());
     }
 
     @Override
@@ -140,7 +142,7 @@ public class SqlDatabaseThreatDetectionPolicyImpl
             .serviceClient()
             .getDatabaseSecurityAlertPolicies()
             .getAsync(
-                this.resourceGroupName, this.sqlServerName, this.parent().name(), SecurityAlertPolicyName.DEFAULT);
+                this.resourceGroupName, this.sqlServerName, this.parent().name(), SecurityAlertPolicyName.fromString(this.name()));
     }
 
     @Override
@@ -154,11 +156,12 @@ public class SqlDatabaseThreatDetectionPolicyImpl
                 this.resourceGroupName,
                 this.sqlServerName,
                 this.parent().name(),
-                SecurityAlertPolicyName.DEFAULT,
+                SecurityAlertPolicyName.fromString(this.policyName),
                 this.innerModel())
             .map(
                 databaseSecurityAlertPolicyInner -> {
                     self.setInner(databaseSecurityAlertPolicyInner);
+                    this.policyName = databaseSecurityAlertPolicyInner.name();
                     return self;
                 });
     }
