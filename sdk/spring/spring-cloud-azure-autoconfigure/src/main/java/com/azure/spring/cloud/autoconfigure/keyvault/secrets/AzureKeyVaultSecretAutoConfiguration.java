@@ -44,25 +44,15 @@ public class AzureKeyVaultSecretAutoConfiguration {
         return AzureServicePropertiesUtils.loadServiceCommonProperties(azureKeyVaultProperties, new AzureKeyVaultSecretProperties());
     }
 
-    /**
-     * Autoconfigure the {@link SecretClient} instance.
-     * @param builder the {@link SecretClientBuilder} to build the instance.
-     * @return the secret client instance.
-     */
     @Bean
     @ConditionalOnMissingBean
-    public SecretClient azureKeyVaultSecretClient(SecretClientBuilder builder) {
+    SecretClient azureKeyVaultSecretClient(SecretClientBuilder builder) {
         return builder.buildClient();
     }
 
-    /**
-     * Autoconfigure the {@link SecretAsyncClient} instance.
-     * @param builder the {@link SecretClientBuilder} to build the instance.
-     * @return the secret async client instance.
-     */
     @Bean
     @ConditionalOnMissingBean
-    public SecretAsyncClient azureKeyVaultSecretAsyncClient(SecretClientBuilder builder) {
+    SecretAsyncClient azureKeyVaultSecretAsyncClient(SecretClientBuilder builder) {
         return builder.buildAsyncClient();
     }
 

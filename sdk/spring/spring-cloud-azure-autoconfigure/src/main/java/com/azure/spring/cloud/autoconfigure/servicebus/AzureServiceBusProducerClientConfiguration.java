@@ -60,7 +60,7 @@ class AzureServiceBusProducerClientConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(ServiceBusClientBuilder.ServiceBusSenderClientBuilder.class)
-    public ServiceBusSenderAsyncClient serviceBusSenderAsyncClient(
+    ServiceBusSenderAsyncClient serviceBusSenderAsyncClient(
         ServiceBusClientBuilder.ServiceBusSenderClientBuilder senderClientBuilder) {
         return senderClientBuilder.buildAsyncClient();
     }
@@ -68,7 +68,7 @@ class AzureServiceBusProducerClientConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(ServiceBusClientBuilder.ServiceBusSenderClientBuilder.class)
-    public ServiceBusSenderClient serviceBusSenderClient(
+    ServiceBusSenderClient serviceBusSenderClient(
         ServiceBusClientBuilder.ServiceBusSenderClientBuilder senderClientBuilder) {
         return senderClientBuilder.buildClient();
     }

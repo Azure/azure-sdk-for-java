@@ -46,7 +46,7 @@ class AzureEventHubsProcessorClientConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public EventProcessorClient eventProcessorClient(EventProcessorClientBuilder builder) {
+    EventProcessorClient eventProcessorClient(EventProcessorClientBuilder builder) {
         return builder.buildEventProcessorClient();
     }
 

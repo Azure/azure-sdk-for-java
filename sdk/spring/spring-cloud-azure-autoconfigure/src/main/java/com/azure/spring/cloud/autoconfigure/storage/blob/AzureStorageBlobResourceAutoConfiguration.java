@@ -23,13 +23,9 @@ import org.springframework.context.annotation.Bean;
     name = { "account-name", "endpoint", "connection-string" })
 public class AzureStorageBlobResourceAutoConfiguration {
 
-    /**
-     * Autoconfigure the {@link AzureStorageBlobProtocolResolver} instance.
-     * @return the storage blob protocol resolver.
-     */
     @Bean
     @ConditionalOnMissingBean
-    public AzureStorageBlobProtocolResolver azureStorageBlobProtocolResolver() {
+    AzureStorageBlobProtocolResolver azureStorageBlobProtocolResolver() {
         return new AzureStorageBlobProtocolResolver();
     }
 

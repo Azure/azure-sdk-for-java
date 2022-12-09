@@ -71,71 +71,39 @@ public class AzureServiceBusMessagingAutoConfiguration {
         return namespaceProperties;
     }
 
-    /**
-     * Configure the {@link ServiceBusProcessorFactory}
-     */
     @Configuration(proxyBeanMethods = false)
-    public static class ProcessorContainerConfiguration {
+    static class ProcessorContainerConfiguration {
 
-        /**
-         * Creates a default Service Bus namespace processor factory.
-         *
-         * @param properties Service Bus namespace properties.
-         * @param suppliers ObjectProvider suppliers.
-         * @return A default Service Bus namespace processor factory.
-         */
         @Bean
         @ConditionalOnMissingBean
-        public ServiceBusProcessorFactory defaultServiceBusNamespaceProcessorFactory(
+        ServiceBusProcessorFactory defaultServiceBusNamespaceProcessorFactory(
             NamespaceProperties properties,
             ObjectProvider<PropertiesSupplier<ConsumerIdentifier, ProcessorProperties>> suppliers) {
             return new DefaultServiceBusNamespaceProcessorFactory(properties, suppliers.getIfAvailable());
         }
     }
 
-    /**
-     * Configure the {@link ServiceBusTemplate}
-     */
     @Configuration(proxyBeanMethods = false)
-    public static class ServiceBusTemplateConfiguration {
+    static class ServiceBusTemplateConfiguration {
 
-        /**
-         * Creates a default Service Bus namespace producer factory.
-         *
-         * @param properties Service Bus namespace properties.
-         * @param suppliers ObjectProvider suppliers.
-         * @return A default Service Bus namespace producer factory.
-         */
         @Bean
         @ConditionalOnMissingBean
-        public ServiceBusProducerFactory defaultServiceBusNamespaceProducerFactory(
+        ServiceBusProducerFactory defaultServiceBusNamespaceProducerFactory(
             NamespaceProperties properties,
             ObjectProvider<PropertiesSupplier<String, ProducerProperties>> suppliers) {
             return new DefaultServiceBusNamespaceProducerFactory(properties, suppliers.getIfAvailable());
         }
 
-        /**
-         * Creates a Service Bus message converter.
-         *
-         * @return A Service Bus message converter.
-         */
         @Bean
         @ConditionalOnMissingBean
-        public ServiceBusMessageConverter serviceBusMessageConverter() {
+        ServiceBusMessageConverter serviceBusMessageConverter() {
             return new ServiceBusMessageConverter();
         }
 
-        /**
-         * Creates a Service Bus template.
-         *
-         * @param senderClientfactory A Service Bus producer factory.
-         * @param messageConverter A Service Bus message converter.
-         * @return A Service Bus template.
-         */
         @Bean
         @ConditionalOnMissingBean
         @ConditionalOnBean(ServiceBusProducerFactory.class)
-        public ServiceBusTemplate serviceBusTemplate(ServiceBusProducerFactory senderClientfactory,
+        ServiceBusTemplate serviceBusTemplate(ServiceBusProducerFactory senderClientfactory,
                                                      ServiceBusMessageConverter messageConverter) {
             ServiceBusTemplate serviceBusTemplate = new ServiceBusTemplate(senderClientfactory);
             serviceBusTemplate.setMessageConverter(messageConverter);

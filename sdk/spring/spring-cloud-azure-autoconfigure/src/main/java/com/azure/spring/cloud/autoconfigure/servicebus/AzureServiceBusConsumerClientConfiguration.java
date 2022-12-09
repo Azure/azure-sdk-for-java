@@ -72,14 +72,14 @@ class AzureServiceBusConsumerClientConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        public ServiceBusReceiverAsyncClient serviceBusReceiverAsyncClient(
+        ServiceBusReceiverAsyncClient serviceBusReceiverAsyncClient(
             ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverClientBuilder) {
             return receiverClientBuilder.buildAsyncClient();
         }
 
         @Bean
         @ConditionalOnMissingBean
-        public ServiceBusReceiverClient serviceBusReceiverClient(
+        ServiceBusReceiverClient serviceBusReceiverClient(
             ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverClientBuilder) {
             return receiverClientBuilder.buildClient();
         }
@@ -121,14 +121,14 @@ class AzureServiceBusConsumerClientConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        public ServiceBusSessionReceiverAsyncClient serviceBusSessionReceiverAsyncClient(
+        ServiceBusSessionReceiverAsyncClient serviceBusSessionReceiverAsyncClient(
             ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder receiverClientBuilder) {
             return receiverClientBuilder.buildAsyncClient();
         }
 
         @Bean
         @ConditionalOnMissingBean
-        public ServiceBusSessionReceiverClient serviceBusSessionReceiverClient(
+        ServiceBusSessionReceiverClient serviceBusSessionReceiverClient(
             ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder receiverClientBuilder) {
             return receiverClientBuilder.buildClient();
         }

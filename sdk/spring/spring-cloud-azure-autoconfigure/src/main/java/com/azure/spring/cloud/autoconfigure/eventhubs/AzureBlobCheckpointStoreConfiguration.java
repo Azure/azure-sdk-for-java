@@ -51,13 +51,9 @@ public class AzureBlobCheckpointStoreConfiguration {
         return new BlobCheckpointStore(blobContainerAsyncClient);
     }
 
-    /**
-     * The default {@link BlobCheckpointStoreContainerInitializer} to create the storage blob if not exists.
-     * @return the default {@link BlobCheckpointStoreContainerInitializer}.
-     */
     @Bean
     @ConditionalOnProperty(value = "spring.cloud.azure.eventhubs.processor.checkpoint-store.create-container-if-not-exists", havingValue = "true")
-    public BlobCheckpointStoreContainerInitializer blobCheckpointStoreContainerCreationInitializer() {
+    BlobCheckpointStoreContainerInitializer blobCheckpointStoreContainerCreationInitializer() {
         return containerAsyncClient -> {
             if (Boolean.FALSE.equals(containerAsyncClient.exists().block(Duration.ofSeconds(3)))) {
                 LOGGER.debug("The checkpoint store container [{}] doesn't exist, will create the blob container now.",

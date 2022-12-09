@@ -58,13 +58,13 @@ class AzureEventHubsConsumerClientConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        public EventHubConsumerAsyncClient eventHubConsumerAsyncClient() {
+        EventHubConsumerAsyncClient eventHubConsumerAsyncClient() {
             return this.builder.buildAsyncConsumerClient();
         }
 
         @Bean
         @ConditionalOnMissingBean
-        public EventHubConsumerClient eventHubConsumerClient(EventHubClientBuilder builder) {
+        EventHubConsumerClient eventHubConsumerClient(EventHubClientBuilder builder) {
             return this.builder.buildConsumerClient();
         }
     }
@@ -97,22 +97,22 @@ class AzureEventHubsConsumerClientConfiguration {
         @ConditionalOnBean(name = EVENT_HUB_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
         @ConditionalOnMissingBean(name = EVENT_HUB_CONSUMER_CLIENT_BUILDER_BEAN_NAME)
         EventHubClientBuilder eventHubClientBuilderForConsumer(
-            @Qualifier(EVENT_HUB_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME) EventHubClientBuilderFactory clientBuilderFactory) {
-
+            @Qualifier(EVENT_HUB_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
+            EventHubClientBuilderFactory clientBuilderFactory) {
             return clientBuilderFactory.build();
         }
 
         @Bean
         @ConditionalOnMissingBean
-        public EventHubConsumerAsyncClient eventHubConsumerAsyncClient(@Qualifier(EVENT_HUB_CONSUMER_CLIENT_BUILDER_BEAN_NAME)
-                                                                                   EventHubClientBuilder builder) {
+        EventHubConsumerAsyncClient eventHubConsumerAsyncClient(@Qualifier(EVENT_HUB_CONSUMER_CLIENT_BUILDER_BEAN_NAME)
+                                                                EventHubClientBuilder builder) {
             return builder.buildAsyncConsumerClient();
         }
 
         @Bean
         @ConditionalOnMissingBean
-        public EventHubConsumerClient eventHubConsumerClient(@Qualifier(EVENT_HUB_CONSUMER_CLIENT_BUILDER_BEAN_NAME)
-                                                                         EventHubClientBuilder builder) {
+        EventHubConsumerClient eventHubConsumerClient(@Qualifier(EVENT_HUB_CONSUMER_CLIENT_BUILDER_BEAN_NAME)
+                                                      EventHubClientBuilder builder) {
             return builder.buildConsumerClient();
         }
 

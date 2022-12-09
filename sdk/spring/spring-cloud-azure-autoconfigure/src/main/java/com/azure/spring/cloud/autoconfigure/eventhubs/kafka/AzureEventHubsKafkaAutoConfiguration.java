@@ -18,7 +18,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -40,15 +39,10 @@ public class AzureEventHubsKafkaAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureEventHubsKafkaAutoConfiguration.class);
 
-    /**
-     * The static connection string provider to provide the connection string for an Event Hubs instance.
-     * @param environment the Spring environment.
-     * @return the connection string provider.
-     */
     @Bean
     @ConditionalOnProperty("spring.cloud.azure.eventhubs.connection-string")
     @ConditionalOnMissingBean(value = AzureServiceType.EventHubs.class, parameterizedContainer = ServiceConnectionStringProvider.class)
-    public StaticConnectionStringProvider<AzureServiceType.EventHubs> eventHubsKafkaConnectionString(Environment environment) {
+    StaticConnectionStringProvider<AzureServiceType.EventHubs> eventHubsKafkaConnectionString(Environment environment) {
         String connectionString = environment.getProperty("spring.cloud.azure.eventhubs.connection-string");
 
         try {
@@ -61,13 +55,6 @@ public class AzureEventHubsKafkaAutoConfiguration {
         return new StaticConnectionStringProvider<>(AzureServiceType.EVENT_HUBS, connectionString);
     }
 
-    /**
-     * The {@link KafkaPropertiesBeanPostProcessor} will be created if an Azure Event Hubs connection string is provided
-     * and the Kafka dependency is detected from the classpath.
-     * @param connectionStringProvider the Azure Event Hubs connection string provider.
-     * @return the {@link KafkaPropertiesBeanPostProcessor} to configure Azure Event Hubs connection information
-     * to {@link KafkaProperties}.
-     */
     @Bean
     @ConditionalOnBean(value = AzureServiceType.EventHubs.class, parameterizedContainer = ServiceConnectionStringProvider.class)
     static KafkaPropertiesBeanPostProcessor kafkaPropertiesBeanPostProcessor(

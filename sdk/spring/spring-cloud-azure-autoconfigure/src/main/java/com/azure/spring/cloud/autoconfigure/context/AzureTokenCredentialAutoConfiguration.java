@@ -218,9 +218,6 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
             .build();
     }
 
-    /**
-     * Apply the default token credential to service client builder factory.
-     */
     static class AzureServiceClientBuilderFactoryPostProcessor implements BeanPostProcessor, BeanFactoryAware {
 
         private BeanFactory beanFactory;

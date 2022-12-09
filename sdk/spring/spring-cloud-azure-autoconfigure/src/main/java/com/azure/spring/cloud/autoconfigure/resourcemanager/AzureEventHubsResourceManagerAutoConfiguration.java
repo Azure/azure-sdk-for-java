@@ -34,11 +34,6 @@ public class AzureEventHubsResourceManagerAutoConfiguration extends AzureService
 
     private final EventHubsResourceMetadata resourceMetadata;
 
-    /**
-     * Create {@link AzureEventHubsResourceManagerAutoConfiguration} instance
-     * @param azureResourceManager the azure resource manager
-     * @param resourceMetadata the Event Hubs resource metadata
-     */
     AzureEventHubsResourceManagerAutoConfiguration(AzureResourceManager azureResourceManager,
                                                    EventHubsResourceMetadata resourceMetadata) {
         super(azureResourceManager);
@@ -56,13 +51,9 @@ public class AzureEventHubsResourceManagerAutoConfiguration extends AzureService
             resourceMetadata.getName());
     }
 
-    /**
-     * Autoconfigure the {@link EventHubsProvisioner} instance.
-     * @return the Event Hubs provisioner.
-     */
     @Bean
     @ConditionalOnMissingBean
-    public EventHubsProvisioner eventHubsProvisioner() {
+    EventHubsProvisioner eventHubsProvisioner() {
         return new DefaultEventHubsProvisioner(this.azureResourceManager, this.resourceMetadata);
     }
 

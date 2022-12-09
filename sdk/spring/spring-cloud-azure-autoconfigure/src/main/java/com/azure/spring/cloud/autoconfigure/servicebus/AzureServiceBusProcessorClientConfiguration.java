@@ -91,9 +91,9 @@ class AzureServiceBusProcessorClientConfiguration {
             return builderFactory.build();
         }
 
-        @Bean()
+        @Bean
         @ConditionalOnMissingBean
-        public ServiceBusProcessorClient serviceBusProcessorClient(
+        ServiceBusProcessorClient serviceBusProcessorClient(
             ServiceBusClientBuilder.ServiceBusProcessorClientBuilder processorClientBuilder) {
             return processorClientBuilder.buildProcessorClient();
         }
@@ -141,9 +141,9 @@ class AzureServiceBusProcessorClientConfiguration {
             return builderFactory.build();
         }
 
-        @Bean()
+        @Bean
         @ConditionalOnMissingBean
-        public ServiceBusProcessorClient serviceBusProcessorClient(
+        ServiceBusProcessorClient serviceBusProcessorClient(
             ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder processorClientBuilder) {
             return processorClientBuilder.buildProcessorClient();
         }
