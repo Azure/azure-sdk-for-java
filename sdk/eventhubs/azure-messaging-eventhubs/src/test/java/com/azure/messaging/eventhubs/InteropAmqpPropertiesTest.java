@@ -159,6 +159,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
     /**
      * Test all the supported types.
      */
+    @SuppressWarnings("unchecked")
     @Test
     public void interoperableAmqpTypes() {
         // Arrange
@@ -178,12 +179,12 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
         applicationPairTypes.add(new Pair("boolean", true));
         applicationPairTypes.add(new Pair("byte", (byte) 65));
         applicationPairTypes.add(new Pair("short", (short) 15));
-        applicationPairTypes.add(new Pair("int", (int) 10));
+        applicationPairTypes.add(new Pair("int", 10));
         applicationPairTypes.add(new Pair("float", 14.10f));
         applicationPairTypes.add(new Pair("long", bigInteger.longValue()));
-        applicationPairTypes.add(new Pair("double", (double) 15.6));
+        applicationPairTypes.add(new Pair("double", 15.6));
         applicationPairTypes.add(new Pair("string", "String value"));
-        applicationPairTypes.add(new Pair("char", (char) 'c'));
+        applicationPairTypes.add(new Pair("char", 'c'));
         applicationPairTypes.add(new Pair("timestamp", new Date(1670289289)));
         applicationPairTypes.add(new Pair("uuid", UUID.fromString("a0739e7a-9926-4dd0-b4db-ee3c6ae255b3")));
 
@@ -396,6 +397,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
 
     }
 
+    @SuppressWarnings("unchecked")
     private static <T> void assertEqualsList(List<T> expected, Object actual) {
         assertTrue(actual instanceof List<?>);
 
@@ -411,6 +413,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private static <T> void assertEqualsArray(T[] expected, Object actual, Function<Object, T[]> conversion) {
         final Class<?> clazz = actual.getClass();
 

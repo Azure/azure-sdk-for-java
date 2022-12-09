@@ -354,6 +354,7 @@ class EventHubMessageSerializer implements MessageSerializer {
         return 0;
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private static int sizeof(Object obj) {
         if (obj == null) {
             return 0;
