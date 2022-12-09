@@ -1067,7 +1067,7 @@ public final class LoadTestRunAsyncClient {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
+     *     timeseries (Optional): [
      *          (Optional){
      *             data (Optional): [
      *                  (Optional){
@@ -1100,7 +1100,6 @@ public final class LoadTestRunAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response to a metrics query as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listMetrics(
             String testRunId,

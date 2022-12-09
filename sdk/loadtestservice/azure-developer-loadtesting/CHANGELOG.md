@@ -8,13 +8,13 @@
 
 - Added sync and async versions of `LoadTestRunClient.listMetricNamespacesWithResponse`
 - Added sync and async versions of `LoadTestRunClient.listMetricDefinitionsWithResponse`
-- Added sync and async versions of `LoadTestRunClient.getMetricsWithResponse`
-- Added sync and async versions of `LoadTestRunClient.getMetricDimensionValues`
+- Added sync and async versions of `LoadTestRunClient.listMetrics`
+- Added sync and async versions of `LoadTestRunClient.listMetricDimensionValues`
 - Added sync and async versions of `LoadTestRunClient.createOrUpdateAppComponentWithResponse`
 - Added sync and async versions of `LoadTestRunClient.getAppComponentsWithResponse`
 - Added sync and async versions of `LoadTestRunClient.createOrUpdateServerMetricsConfigWithResponse`
 - Added sync and async versions of `LoadTestRunClient.getServerMetricsConfigWithResponse`
-- Added sync and async versions of `LoadTestAdministrationClient.beginUploadAndValidate` Long-Running operation
+- Added sync and async versions of `LoadTestAdministrationClient.beginUploadTestFile` and `LoadTestRunClient.beginTestRun` Long-Running operation
 
 ### Breaking Changes
 

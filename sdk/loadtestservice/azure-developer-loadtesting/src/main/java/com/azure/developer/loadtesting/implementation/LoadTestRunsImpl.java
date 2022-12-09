@@ -2230,7 +2230,7 @@ public final class LoadTestRunsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
+     *     timeseries (Optional): [
      *          (Optional){
      *             data (Optional): [
      *                  (Optional){
@@ -2290,7 +2290,7 @@ public final class LoadTestRunsImpl {
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
+                                        getValues(res.getValue(), "timeseries"),
                                         getNextLink(res.getValue(), "nextLink"),
                                         null));
     }
@@ -2338,7 +2338,7 @@ public final class LoadTestRunsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
+     *     timeseries (Optional): [
      *          (Optional){
      *             data (Optional): [
      *                  (Optional){
@@ -2431,7 +2431,7 @@ public final class LoadTestRunsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
+     *     timeseries (Optional): [
      *          (Optional){
      *             data (Optional): [
      *                  (Optional){
@@ -3272,7 +3272,7 @@ public final class LoadTestRunsImpl {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
+     *     timeseries (Optional): [
      *          (Optional){
      *             data (Optional): [
      *                  (Optional){
@@ -3316,7 +3316,7 @@ public final class LoadTestRunsImpl {
                                         res.getRequest(),
                                         res.getStatusCode(),
                                         res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
+                                        getValues(res.getValue(), "timeseries"),
                                         getNextLink(res.getValue(), "nextLink"),
                                         null));
     }

@@ -508,8 +508,7 @@ public final class LoadTestRunClient {
      * @return load test run model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> createOrUpdateWithResponse(
-            String testRunId, BinaryData body, RequestOptions requestOptions) {
+    Response<BinaryData> createOrUpdateWithResponse(String testRunId, BinaryData body, RequestOptions requestOptions) {
         return this.client.createOrUpdateWithResponse(testRunId, body, requestOptions).block();
     }
 
@@ -1004,7 +1003,7 @@ public final class LoadTestRunClient {
      *
      * <pre>{@code
      * {
-     *     value (Optional): [
+     *     timeseries (Optional): [
      *          (Optional){
      *             data (Optional): [
      *                  (Optional){

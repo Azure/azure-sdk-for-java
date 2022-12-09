@@ -4,18 +4,18 @@
     "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/tests/22222222-1234-1234-1234-123456789012/files/additional-data.csv?api-version=2022-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "f138c350-2c14-4ba0-9939-84830056c37f"
+      "x-ms-client-request-id" : "c8793b9c-48b9-43fb-a34d-6f3185ac3ba6"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
-      "mise-correlation-id" : "8a01b8cb-d0e9-42ae-8868-f2138bf0f578",
+      "mise-correlation-id" : "6bf1c99d-d0ba-4252-a08b-d73011594bf5",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Tue, 22 Nov 2022 18:53:53 GMT",
-      "x-ms-correlation-request-id" : "a88a6646-5a72-4f84-959e-4b3432b19511"
+      "Date" : "Fri, 09 Dec 2022 07:10:57 GMT",
+      "x-ms-correlation-request-id" : "9ca56072-3fbe-44d0-a68d-45e25e996323"
     },
     "Exception" : null
   }, {
@@ -23,18 +23,18 @@
     "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/tests/22222222-1234-1234-1234-123456789012/files/sample-JMX-file.jmx?api-version=2022-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "7bdcb8f3-43aa-4bf4-b743-4f1d21452f10"
+      "x-ms-client-request-id" : "2422fb73-05ef-448c-aaf4-4cc3a255ce84"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
-      "mise-correlation-id" : "f767873a-10ec-4217-b0bc-bbf88d870524",
+      "mise-correlation-id" : "51fff8c9-cabc-4176-a1a6-1c855e4fabdb",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Tue, 22 Nov 2022 18:53:54 GMT",
-      "x-ms-correlation-request-id" : "31d9df29-04fe-4b3a-8207-984ef215781a"
+      "Date" : "Fri, 09 Dec 2022 07:10:58 GMT",
+      "x-ms-correlation-request-id" : "4d6f1486-fcfd-4064-b9d2-2681a2fb3d79"
     },
     "Exception" : null
   } ],

@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/test-runs/33333333-1234-1234-1234-123456789012/app-components?api-version=2022-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "fbe48264-78fc-4cf9-8e30-d976c0a6e126"
+      "x-ms-client-request-id" : "42713071-faf5-4f23-a2c2-754c31ed0673"
     },
     "Response" : {
       "content-length" : "682",
@@ -12,12 +12,12 @@
       "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
-      "mise-correlation-id" : "2f6946b9-249f-4bfa-8b75-fddd8c7cca0d",
+      "mise-correlation-id" : "60d4e515-3725-4b94-9328-02cab97f0f30",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"components\":{\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource\":{\"resourceId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource\",\"resourceName\":\"appcomponentresource\",\"resourceType\":\"microsoft.insights/components\",\"displayName\":\"Performance_LoadTest_Insights\",\"resourceGroup\":\"samplerg\",\"subscriptionId\":\"00000000-0000-0000-0000-000000000000\",\"kind\":\"web\"}},\"testRunId\":\"33333333-1234-1234-1234-123456789012\",\"createdDateTime\":\"2022-11-22T18:53:57.246Z\",\"lastModifiedDateTime\":\"2022-11-22T18:53:57.246Z\"}",
-      "Date" : "Tue, 22 Nov 2022 18:55:17 GMT",
-      "x-ms-correlation-request-id" : "c7bd3405-2213-4ee7-aa46-a10c8d8ce313",
+      "Body" : "{\"components\":{\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource\":{\"resourceId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource\",\"resourceName\":\"appcomponentresource\",\"resourceType\":\"microsoft.insights/components\",\"displayName\":\"Performance_LoadTest_Insights\",\"resourceGroup\":\"samplerg\",\"subscriptionId\":\"00000000-0000-0000-0000-000000000000\",\"kind\":\"web\"}},\"testRunId\":\"33333333-1234-1234-1234-123456789012\",\"createdDateTime\":\"2022-12-09T07:11:54.402Z\",\"lastModifiedDateTime\":\"2022-12-09T07:11:54.402Z\"}",
+      "Date" : "Fri, 09 Dec 2022 07:11:56 GMT",
+      "x-ms-correlation-request-id" : "1bfb9536-8bc3-47ef-a3df-1a46d21ee0c4",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

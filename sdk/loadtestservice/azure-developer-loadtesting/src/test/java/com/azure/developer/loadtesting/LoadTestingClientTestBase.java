@@ -29,8 +29,8 @@ class LoadTestingClientTestBase extends TestBase {
 
     protected final String existingTestId = Configuration.getGlobalConfiguration().get("EXISTING_TEST_ID", "11111111-1234-1234-1234-123456789012");
     protected final String newTestId = Configuration.getGlobalConfiguration().get("NEW_TEST_ID", "22222222-1234-1234-1234-123456789012");
-    protected final String newTestRunId = Configuration.getGlobalConfiguration().get("EXISING_TEST_RUN_ID", "33333333-1234-1234-1234-123456789012");
-    protected final String newTestRunId2 = Configuration.getGlobalConfiguration().get("NEW_TEST_RUN_ID", "44444444-1234-1234-1234-123456789012");
+    protected final String newTestRunId = Configuration.getGlobalConfiguration().get("NEW_TEST_RUN_ID", "33333333-1234-1234-1234-123456789012");
+    protected final String newTestRunId2 = Configuration.getGlobalConfiguration().get("NEW_TEST_RUN_ID_2", "44444444-1234-1234-1234-123456789012");
     protected final String uploadJmxFileName = Configuration.getGlobalConfiguration().get("UPLOAD_JMX_FILE_NAME", "sample-JMX-file.jmx");
     protected final String uploadCsvFileName = Configuration.getGlobalConfiguration().get("UPLOAD_CSV_FILE_NAME", "additional-data.csv");
     protected final String defaultAppComponentResourceId = Configuration.getGlobalConfiguration().get("APP_COMPONENT_RESOURCE_ID", "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource");

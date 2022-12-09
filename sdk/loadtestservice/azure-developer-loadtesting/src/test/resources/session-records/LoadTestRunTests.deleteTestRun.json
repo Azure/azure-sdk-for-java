@@ -4,37 +4,18 @@
     "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/test-runs/33333333-1234-1234-1234-123456789012?api-version=2022-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "f1dcfaf4-5b4c-4381-ba8b-4a8faa25c5b3"
+      "x-ms-client-request-id" : "7cfe227f-061c-4e2e-ba60-d33007537eb9"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
-      "mise-correlation-id" : "b680be37-9605-45ce-af13-05430ae9d454",
+      "mise-correlation-id" : "3d4bb780-bbda-4159-904c-d07f144ab052",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Tue, 22 Nov 2022 18:55:25 GMT",
-      "x-ms-correlation-request-id" : "799871b6-013e-423d-8a7c-d88f257a97d7"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/test-runs/44444444-1234-1234-1234-123456789012?api-version=2022-11-01",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "c3217fe8-d404-4986-9d0e-a90cf589b68e"
-    },
-    "Response" : {
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
-      "X-Content-Type-Options" : "nosniff",
-      "Connection" : "keep-alive",
-      "mise-correlation-id" : "c93c6928-7d9f-4116-982b-1933d209d485",
-      "retry-after" : "0",
-      "StatusCode" : "204",
-      "Date" : "Tue, 22 Nov 2022 18:55:25 GMT",
-      "x-ms-correlation-request-id" : "22d6f711-2fb2-4621-8751-fa94b5c216bb"
+      "Date" : "Fri, 09 Dec 2022 07:12:00 GMT",
+      "x-ms-correlation-request-id" : "99401bcc-bba3-41b6-84bf-78fb5a0c8e22"
     },
     "Exception" : null
   } ],

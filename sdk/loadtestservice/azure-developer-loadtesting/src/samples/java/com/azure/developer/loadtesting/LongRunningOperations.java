@@ -28,8 +28,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @throws ResourceNotFoundException - when test with `testId` does not exist when uploading file.
  */
 public final class LongRunningOperations {
-    public void beginUploadAndValidate() {
-        // BEGIN: java-longRunningOperations-sample-beginUploadAndValidate
+    public void beginUploadTestFile() {
+        // BEGIN: java-longRunningOperations-sample-beginUploadTestFile
         LoadTestAdministrationClient client = new LoadTestingClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("<endpoint>")
@@ -80,7 +80,7 @@ public final class LongRunningOperations {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        // END: java-longRunningOperations-sample-beginUploadAndValidate
+        // END: java-longRunningOperations-sample-beginUploadTestFile
     }
 
     public void beginTestRun() {

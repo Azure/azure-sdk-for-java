@@ -4,18 +4,18 @@
     "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/tests/22222222-1234-1234-1234-123456789012?api-version=2022-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "4de9b7b7-92c5-4bb7-b385-1ee6faa1c876"
+      "x-ms-client-request-id" : "9c75c2ca-ea6a-4816-808f-9157796528fe"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
-      "mise-correlation-id" : "9059423d-f634-42ca-93a3-7837425851b4",
+      "mise-correlation-id" : "97a4b6d3-33f1-4db7-86da-ce964064bfff",
       "retry-after" : "0",
       "StatusCode" : "204",
-      "Date" : "Tue, 22 Nov 2022 18:53:55 GMT",
-      "x-ms-correlation-request-id" : "9f5d7caa-a85f-4da6-a8c5-54627077cf6a"
+      "Date" : "Fri, 09 Dec 2022 07:10:58 GMT",
+      "x-ms-correlation-request-id" : "34562412-aeeb-458e-9c7a-66574a236431"
     },
     "Exception" : null
   } ],

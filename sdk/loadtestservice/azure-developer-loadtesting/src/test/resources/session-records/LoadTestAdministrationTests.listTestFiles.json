@@ -4,20 +4,20 @@
     "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/tests/22222222-1234-1234-1234-123456789012/files?api-version=2022-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "712508ce-bead-4133-941a-fbad320c117f"
+      "x-ms-client-request-id" : "d36d3a47-34d8-463e-9158-c4c964edb21d"
     },
     "Response" : {
-      "content-length" : "788",
+      "content-length" : "777",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
-      "mise-correlation-id" : "6c2dd702-d23c-4f92-b4fc-212a914d3d00",
+      "mise-correlation-id" : "169d04e5-dfc2-4d75-9bc0-c8035b227548",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"url\":\"REDACTED\",\"fileName\":\"sample-JMX-file.jmx\",\"fileType\":\"JMX_FILE\",\"expireDateTime\":\"2022-11-22T19:03:50.5923296\",\"validationStatus\":\"VALIDATION_SUCCESS\"},{\"url\":\"REDACTED\",\"fileName\":\"additional-data.csv\",\"fileType\":\"ADDITIONAL_ARTIFACTS\",\"expireDateTime\":\"2022-11-22T19:03:50.5927342\",\"validationStatus\":\"NOT_VALIDATED\"}]}",
-      "Date" : "Tue, 22 Nov 2022 18:53:50 GMT",
-      "x-ms-correlation-request-id" : "10a1bb96-3bf8-4c5e-b7af-035fbffddc50",
+      "Body" : "{\"value\":[{\"url\":\"REDACTED\",\"fileName\":\"sample-JMX-file.jmx\",\"fileType\":\"JMX_FILE\",\"expireDateTime\":\"2022-12-09T07:20:56.693228\",\"validationStatus\":\"VALIDATION_SUCCESS\"},{\"url\":\"REDACTED\",\"fileName\":\"additional-data.csv\",\"fileType\":\"ADDITIONAL_ARTIFACTS\",\"expireDateTime\":\"2022-12-09T07:20:56.6935592\",\"validationStatus\":\"NOT_VALIDATED\"}]}",
+      "Date" : "Fri, 09 Dec 2022 07:10:56 GMT",
+      "x-ms-correlation-request-id" : "bca23c34-fd8e-44b3-a18a-1514c1cc2871",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

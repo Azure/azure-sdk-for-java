@@ -113,11 +113,12 @@ public final class LoadTestAdministrationAsyncClient {
     }
 
     private Mono<PollResponse<BinaryData>> getValidationStatus(BinaryData fileBinary) {
-        String validationStatus;
+        String validationStatus, fileType;
         JsonNode file;
         try {
             file = OBJECT_MAPPER.readTree(fileBinary.toString());
             validationStatus = file.get("validationStatus").asText();
+            fileType = file.get("fileType").asText();
         } catch (JsonProcessingException e) {
             return Mono.error(new RuntimeException("Encountered exception while retrieving validation status", e));
         }
@@ -132,6 +133,13 @@ public final class LoadTestAdministrationAsyncClient {
                 break;
             case "VALIDATION_INITIATED":
                 lroStatus = LongRunningOperationStatus.IN_PROGRESS;
+                break;
+            case "NOT_VALIDATED":
+                if ("JMX_FILE".equalsIgnoreCase(fileType)) {
+                    lroStatus = LongRunningOperationStatus.NOT_STARTED;
+                } else {
+                    lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                }
                 break;
             default:
                 lroStatus = LongRunningOperationStatus.NOT_STARTED;

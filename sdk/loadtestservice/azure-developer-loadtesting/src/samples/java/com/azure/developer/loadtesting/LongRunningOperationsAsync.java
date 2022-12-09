@@ -27,8 +27,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @throws ResourceNotFoundException - when test with `testId` does not exist when uploading file.
  */
 public final class LongRunningOperationsAsync {
-    public void beginUploadAndValidate() {
-        // BEGIN: java-longRunningOperationsAsync-sample-beginUploadAndValidate
+    public void beginUploadTestFile() {
+        // BEGIN: java-longRunningOperationsAsync-sample-beginUploadTestFile
         LoadTestAdministrationAsyncClient client = new LoadTestingClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("<endpoint>")
@@ -70,7 +70,7 @@ public final class LongRunningOperationsAsync {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        // END: java-longRunningOperationsAsync-sample-beginUploadAndValidate
+        // END: java-longRunningOperationsAsync-sample-beginUploadTestFile
     }
 
     public void beginTestRun() {

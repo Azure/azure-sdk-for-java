@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/tests/22222222-1234-1234-1234-123456789012?api-version=2022-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "60999366-0abf-4932-9409-67ef804c8a73",
+      "x-ms-client-request-id" : "128a257c-2b49-42f5-b6fc-3ab07e8b83d6",
       "Content-Type" : "application/merge-patch+json"
     },
     "Response" : {
@@ -12,13 +12,13 @@
       "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
-      "mise-correlation-id" : "e1f0a5c5-54e0-4c02-990c-3c88ab3de462",
+      "mise-correlation-id" : "90915424-1989-4ee2-a6ef-1542cc972c51",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Tue, 22 Nov 2022 18:53:24 GMT",
-      "x-ms-correlation-request-id" : "c4a373e3-30da-454a-88e6-243fe90fb37b",
+      "Date" : "Fri, 09 Dec 2022 07:10:35 GMT",
+      "x-ms-correlation-request-id" : "ffb98050-342c-46bb-969d-497f2bfe11cc",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Body" : "{\"environmentVariables\":{\"duration_in_sec\":\"10\",\"protocol\":\"https\",\"ramp_up_time\":\"0\",\"domain\":\"azure.microsoft.com\",\"threads_per_engine\":\"1\"},\"loadTestConfiguration\":{\"engineInstances\":1,\"splitAllCSVs\":false,\"quickStartTest\":false},\"inputArtifacts\":{\"additionalFileInfo\":[]},\"testId\":\"22222222-1234-1234-1234-123456789012\",\"description\":\"Sample Test\",\"displayName\":\"Java SDK Sample Test\",\"createdDateTime\":\"2022-11-22T18:53:24.047Z\",\"lastModifiedDateTime\":\"2022-11-22T18:53:24.047Z\"}",
+      "Body" : "{\"environmentVariables\":{\"duration_in_sec\":\"10\",\"protocol\":\"https\",\"ramp_up_time\":\"0\",\"domain\":\"azure.microsoft.com\",\"threads_per_engine\":\"1\"},\"loadTestConfiguration\":{\"engineInstances\":1,\"splitAllCSVs\":false,\"quickStartTest\":false},\"inputArtifacts\":{\"additionalFileInfo\":[]},\"testId\":\"22222222-1234-1234-1234-123456789012\",\"description\":\"Sample Test\",\"displayName\":\"Java SDK Sample Test\",\"createdDateTime\":\"2022-12-09T07:10:35.388Z\",\"lastModifiedDateTime\":\"2022-12-09T07:10:35.388Z\"}",
       "Location" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/tests/22222222-1234-1234-1234-123456789012?api-version=2022-11-01",
       "Content-Type" : "application/json; charset=utf-8"
     },

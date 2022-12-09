@@ -187,12 +187,9 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
         PagedIterable<BinaryData> metricsResponse = builder.buildLoadTestRunClient().listMetrics(newTestRunId, "VirtualUsers", "LoadTestRunMetrics", startDateTime + "/" + endDateTime, null);
         boolean valid = metricsResponse.stream().anyMatch((metricsBinary) -> {
             try {
-                Iterator<JsonNode> metricsIterator = OBJECT_MAPPER.readTree(metricsBinary.toString()).get("value").iterator();
-                while (metricsIterator.hasNext()) {
-                    JsonNode metric = metricsIterator.next();
-                    if (metric.has("data")) {
-                        return true;
-                    }
+                JsonNode metric = OBJECT_MAPPER.readTree(metricsBinary.toString());
+                if (metric.has("data") && metric.get("data").get(0).has("value")) {
+                    return true;
                 }
             } catch (Exception e) {
                 // no-op
