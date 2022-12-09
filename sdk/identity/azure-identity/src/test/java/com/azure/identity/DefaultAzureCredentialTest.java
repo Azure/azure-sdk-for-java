@@ -223,6 +223,8 @@ public class DefaultAzureCredentialTest {
             when(powerShellCredential.getTokenSync(request)).thenThrow(new CredentialUnavailableException("Cannot get token from Powershell credential"));
         }); MockedConstruction<AzureCliCredential> azureCliCredentialMock = mockConstruction(AzureCliCredential.class, (azureCliCredential, context) -> {
             when(azureCliCredential.getTokenSync(request)).thenThrow(new CredentialUnavailableException("Cannot get token from Cli credential"));
+        }); MockedConstruction<AzureDeveloperCliCredential> azureDeveloperCliCredentialMock = mockConstruction(AzureDeveloperCliCredential.class, (azureDeveloperCliCredential, context) -> {
+            when(azureDeveloperCliCredential.getTokenSync(request)).thenThrow(new CredentialUnavailableException("Cannot get token from Azure Developer Cli credential"));            
         })) {
             // test
             DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().configuration(configuration).build();
@@ -235,6 +237,7 @@ public class DefaultAzureCredentialTest {
             Assert.assertNotNull(intelliJCredentialMock);
             Assert.assertNotNull(powerShellCredentialMock);
             Assert.assertNotNull(azureCliCredentialMock);
+            Assert.assertNotNull(azureDeveloperCliCredentialMock);
         }
 
     }
