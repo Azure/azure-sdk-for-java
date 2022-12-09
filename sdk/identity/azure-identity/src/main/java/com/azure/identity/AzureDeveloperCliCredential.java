@@ -49,7 +49,7 @@ public class AzureDeveloperCliCredential implements TokenCredential {
     @Override
     public AccessToken getTokenSync(TokenRequestContext request) {
         try {
-            AccessToken accessToken = identitySyncClient.authenticateWithAzureCli(request);
+            AccessToken accessToken = identitySyncClient.authenticateWithAzureDeveloperCli(request);
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return accessToken;
         } catch (Exception e) {
