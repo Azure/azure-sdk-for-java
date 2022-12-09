@@ -107,6 +107,7 @@ class AadResourceServerConfigurationTests {
     }
 
     @Test
+    @SuppressWarnings({"unchecked", "rawtypes"})
     void useCustomJwtGrantedAuthoritiesConverter() {
         new WebApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(

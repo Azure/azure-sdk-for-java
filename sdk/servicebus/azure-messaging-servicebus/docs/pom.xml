@@ -50,12 +50,12 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.4.4</version> <!-- {x-version-update;ch.qos.logback:logback-classic;external_dependency} -->
+            <version>1.4.5</version> <!-- {x-version-update;ch.qos.logback:logback-classic;external_dependency} -->
         </dependency>
         <dependency>
             <groupId>org.codehaus.janino</groupId>
             <artifactId>janino</artifactId>
-            <version>3.1.8</version> <!-- {x-version-update;org.codehaus.janino:janino;external_dependency} -->
+            <version>3.1.9</version> <!-- {x-version-update;org.codehaus.janino:janino;external_dependency} -->
         </dependency>
     </dependencies>
 </project>

@@ -114,7 +114,7 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.5.0</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
+      <version>42.5.1</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
     </dependency>
   </dependencies>
 
