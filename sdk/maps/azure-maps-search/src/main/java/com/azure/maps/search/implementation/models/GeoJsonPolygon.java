@@ -24,6 +24,9 @@ public final class GeoJsonPolygon extends GeoJsonGeometry {
     @JsonProperty(value = "coordinates", required = true)
     private List<List<List<Double>>> coordinates;
 
+    /** Creates an instance of GeoJsonPolygon class. */
+    public GeoJsonPolygon() {}
+
     /**
      * Get the coordinates property: Coordinates for the `GeoJson Polygon` geometry type.
      *

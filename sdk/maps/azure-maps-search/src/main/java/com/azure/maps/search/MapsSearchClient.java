@@ -348,7 +348,7 @@ public final class MapsSearchClient {
      * Search Nearby Points of Interest
      * <!-- src_embed com.azure.maps.search.sync.search_nearby -->
      * <pre>
-     * System.out.println&#40;&quot;Search Nearby:&quot;&#41;;
+     * System.out.println&#40;&quot;Search Nearby Points of Interest:&quot;&#41;;
      *
      * &#47;&#47; options
      * client.searchNearbyPointsOfInterest&#40;
@@ -380,7 +380,7 @@ public final class MapsSearchClient {
      * Search Nearby Points of Interest
      * <!-- src_embed com.azure.maps.search.sync.search_nearby -->
      * <pre>
-     * System.out.println&#40;&quot;Search Nearby:&quot;&#41;;
+     * System.out.println&#40;&quot;Search Nearby Points of Interest:&quot;&#41;;
      *
      * &#47;&#47; options
      * client.searchNearbyPointsOfInterest&#40;
@@ -412,7 +412,7 @@ public final class MapsSearchClient {
      * Search Nearby Points of Interest
      * <!-- src_embed com.azure.maps.search.sync.search_nearby -->
      * <pre>
-     * System.out.println&#40;&quot;Search Nearby:&quot;&#41;;
+     * System.out.println&#40;&quot;Search Nearby Points of Interest:&quot;&#41;;
      *
      * &#47;&#47; options
      * client.searchNearbyPointsOfInterest&#40;
