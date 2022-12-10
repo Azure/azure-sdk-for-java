@@ -9,8 +9,6 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.models.GeoBoundingBox;
-import com.azure.identity.DefaultAzureCredential;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.maps.render.MapsRenderAsyncClient;
 import com.azure.maps.render.MapsRenderClient;
 import com.azure.maps.render.MapsRenderClientBuilder;
