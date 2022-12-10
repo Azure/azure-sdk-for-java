@@ -11,4 +11,4 @@
 #### Dependency Updates
 
 - Add `azure-messaging-eventhubs` dependency to `5.16.0-beta.1`.
-- Add `jedis` dependency `4.2.3`.
+- Add `jedis` dependency `4.3.1`.
