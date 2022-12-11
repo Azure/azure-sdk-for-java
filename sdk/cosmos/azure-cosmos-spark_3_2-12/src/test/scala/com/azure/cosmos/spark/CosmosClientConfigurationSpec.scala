@@ -53,7 +53,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     val configuration2 = CosmosClientConfiguration(userConfig2, forceEventual)
 
     configuration2.endpoint shouldEqual userConfig2("spark.cosmos.accountEndpoint")
-    configuration2.key shouldEqual userConfig2("spark.cosmos.accountKey")
+    configuration2.key shouldEqual Some(userConfig2("spark.cosmos.accountKey"))
     configuration2.useGatewayMode shouldBe false
     configuration2.useEventualConsistency shouldEqual forceEventual
     configuration.disableTcpConnectionEndpointRediscovery shouldEqual false
@@ -71,7 +71,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     val configuration3 = CosmosClientConfiguration(userConfig3, forceEventual)
 
     configuration3.endpoint shouldEqual userConfig3("spark.cosmos.accountEndpoint")
-    configuration3.key shouldEqual userConfig3("spark.cosmos.accountKey")
+    configuration3.key shouldEqual Some(userConfig3("spark.cosmos.accountKey"))
     configuration3.useGatewayMode shouldBe false
     configuration3.useEventualConsistency shouldEqual forceEventual
     configuration.disableTcpConnectionEndpointRediscovery shouldEqual false
