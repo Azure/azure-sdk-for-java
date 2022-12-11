@@ -15,7 +15,10 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      Some(UUID.randomUUID().toString),
+      None,
+      None,
+      None,
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
@@ -78,7 +81,10 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      Some(UUID.randomUUID().toString),
+      None,
+      None,
+      None,
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
@@ -141,7 +147,10 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      Some(UUID.randomUUID().toString),
+      None,
+      None,
+      None,
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
@@ -204,7 +213,10 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      Some(UUID.randomUUID().toString),
+      None,
+      None,
+      None,
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
@@ -265,7 +277,10 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      Some(UUID.randomUUID().toString),
+      None,
+      None,
+      None,
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
@@ -342,7 +357,10 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      Some(UUID.randomUUID().toString),
+      None,
+      None,
+      None,
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,

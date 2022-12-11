@@ -6,7 +6,10 @@ import java.lang.management.ManagementFactory
 
 private[spark] case class CosmosClientConfiguration (
                                                       endpoint: String,
-                                                      key: String,
+                                                      key: Option[String],
+                                                      tenantId: Option[String],
+                                                      clientId: Option[String],
+                                                      secret: Option[String],
                                                       customApplicationNameSuffix: Option[String],
                                                       applicationName: String,
                                                       useGatewayMode: Boolean,
@@ -46,6 +49,9 @@ private[spark] object CosmosClientConfiguration {
     CosmosClientConfiguration(
       cosmosAccountConfig.endpoint,
       cosmosAccountConfig.key,
+      cosmosAccountConfig.tenantId,
+      cosmosAccountConfig.clientId,
+      cosmosAccountConfig.secret,
       customApplicationNameSuffix,
       applicationName,
       cosmosAccountConfig.useGatewayMode,

@@ -13,7 +13,10 @@ class PartitionMetadataSpec extends UnitSpec {
   //scalastyle:off multiple.string.literals
   private[this] val clientCfg = CosmosClientConfiguration(
     UUID.randomUUID().toString,
-    UUID.randomUUID().toString,
+    Some(UUID.randomUUID().toString),
+    None,
+    None,
+    None,
     None,
     UUID.randomUUID().toString,
     useGatewayMode = false,
@@ -46,7 +49,10 @@ class PartitionMetadataSpec extends UnitSpec {
 
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      Some(UUID.randomUUID().toString),
+      None,
+      None,
+      None,
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
@@ -118,7 +124,10 @@ class PartitionMetadataSpec extends UnitSpec {
 
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      Some(UUID.randomUUID().toString),
+      None,
+      None,
+      None,
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
@@ -190,7 +199,10 @@ class PartitionMetadataSpec extends UnitSpec {
 
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      Some(UUID.randomUUID().toString),
+      None,
+      None,
+      None,
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
@@ -244,7 +256,10 @@ class PartitionMetadataSpec extends UnitSpec {
   it should "clone the meta data for a new sub range" in {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      Some(UUID.randomUUID().toString),
+      None,
+      None,
+      None,
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
@@ -293,7 +308,10 @@ class PartitionMetadataSpec extends UnitSpec {
   it should "calculate weighted gap when document count per LSN is > 1" in {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      Some(UUID.randomUUID().toString),
+      None,
+      None,
+      None,
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
@@ -336,7 +354,10 @@ class PartitionMetadataSpec extends UnitSpec {
   it should "weighted gap should be at least 1" in {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      Some(UUID.randomUUID().toString),
+      None,
+      None,
+      None,
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
@@ -379,7 +400,10 @@ class PartitionMetadataSpec extends UnitSpec {
   it should "calculate weighted gap when document count per LSN is < 1" in {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      Some(UUID.randomUUID().toString),
+      None,
+      None,
+      None,
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
@@ -422,7 +446,10 @@ class PartitionMetadataSpec extends UnitSpec {
   it should "calculate weighted gap when latestLsn==startLsn" in {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      Some(UUID.randomUUID().toString),
+      None,
+      None,
+      None,
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
@@ -465,7 +492,10 @@ class PartitionMetadataSpec extends UnitSpec {
   it should "calculate avg. document count per LSN correctly when there are no documents" in {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      Some(UUID.randomUUID().toString),
+      None,
+      None,
+      None,
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
@@ -508,7 +538,10 @@ class PartitionMetadataSpec extends UnitSpec {
   it should "calculate avg. document count per LSN correctly" in {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      Some(UUID.randomUUID().toString),
+      None,
+      None,
+      None,
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
@@ -568,7 +601,10 @@ class PartitionMetadataSpec extends UnitSpec {
   it should "calculate avg. document count per LSN correctly when firstLsn was empty" in {
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
-      UUID.randomUUID().toString,
+      Some(UUID.randomUUID().toString),
+      None,
+      None,
+      None,
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,

@@ -41,6 +41,9 @@ import scala.collection.JavaConverters._
 private[spark] object CosmosConfigNames {
   val AccountEndpoint = "spark.cosmos.accountEndpoint"
   val AccountKey = "spark.cosmos.accountKey"
+  val ClientId = "spark.cosmos.clientId"
+  val TenantId = "spark.cosmos.tenantId"
+  val Secret = "spark.cosmos.secret"
   val Database = "spark.cosmos.database"
   val Container = "spark.cosmos.container"
   val PreferredRegionsList = "spark.cosmos.preferredRegionsList"
@@ -108,6 +111,9 @@ private[spark] object CosmosConfigNames {
   private val validConfigNames: Set[String] = HashSet[String](
     AccountEndpoint,
     AccountKey,
+    ClientId,
+    TenantId,
+    Secret,
     Database,
     Container,
     PreferredRegionsList,
@@ -260,7 +266,10 @@ private object CosmosConfig {
 }
 
 private case class CosmosAccountConfig(endpoint: String,
-                                       key: String,
+                                       key: Option[String],
+                                       tenantId: Option[String],
+                                       clientId: Option[String],
+                                       secret: Option[String],
                                        accountName: String,
                                        applicationName: Option[String],
                                        useGatewayMode: Boolean,
@@ -277,9 +286,24 @@ private object CosmosAccountConfig {
     helpMessage = "Cosmos DB Account Endpoint Uri")
 
   private val CosmosKey = CosmosConfigEntry[String](key = CosmosConfigNames.AccountKey,
-    mandatory = true,
+    mandatory = false,
     parseFromStringFunction = accountKey => accountKey,
     helpMessage = "Cosmos DB Account Key")
+
+  private val ClientId = CosmosConfigEntry[String](key = CosmosConfigNames.ClientId,
+    mandatory = false,
+    parseFromStringFunction = accountKey => accountKey,
+    helpMessage = "Client Id")
+
+  private val TenantId = CosmosConfigEntry[String](key = CosmosConfigNames.TenantId,
+     mandatory = false,
+     parseFromStringFunction = accountKey => accountKey,
+     helpMessage = "Tenant Id")
+
+  private val Secret = CosmosConfigEntry[String](key = CosmosConfigNames.Secret,
+     mandatory = false,
+     parseFromStringFunction = accountKey => accountKey,
+     helpMessage = "Secret Key")
 
   private val CosmosAccountName = CosmosConfigEntry[String](key = CosmosConfigNames.AccountEndpoint,
     mandatory = true,
@@ -353,6 +377,9 @@ private object CosmosAccountConfig {
   def parseCosmosAccountConfig(cfg: Map[String, String]): CosmosAccountConfig = {
     val endpointOpt = CosmosConfigEntry.parse(cfg, CosmosAccountEndpointUri)
     val key = CosmosConfigEntry.parse(cfg, CosmosKey)
+    val tenantId = CosmosConfigEntry.parse(cfg, TenantId)
+    val clientId = CosmosConfigEntry.parse(cfg, ClientId)
+    val secret = CosmosConfigEntry.parse(cfg, Secret)
     val accountName = CosmosConfigEntry.parse(cfg, CosmosAccountName)
     val applicationName = CosmosConfigEntry.parse(cfg, ApplicationName)
     val useGatewayMode = CosmosConfigEntry.parse(cfg, UseGatewayMode)
@@ -366,7 +393,8 @@ private object CosmosAccountConfig {
 
     // parsing above already validated these assertions
     assert(endpointOpt.isDefined)
-    assert(key.isDefined)
+    assert(key.isDefined ^ (clientId.isDefined && tenantId.isDefined && secret.isDefined), "Either key needs to be specified or TenantId, ClientId and Secret")
+    assert((clientId.isDefined == tenantId.isDefined) && (tenantId.isDefined == secret.isDefined))
     assert(accountName.isDefined)
 
     if (preferredRegionsListOpt.isDefined) {
@@ -392,7 +420,10 @@ private object CosmosAccountConfig {
 
     CosmosAccountConfig(
       endpointOpt.get,
-      key.get,
+      key,
+      tenantId,
+      clientId,
+      secret,
       accountName.get,
       applicationName,
       useGatewayMode.get,

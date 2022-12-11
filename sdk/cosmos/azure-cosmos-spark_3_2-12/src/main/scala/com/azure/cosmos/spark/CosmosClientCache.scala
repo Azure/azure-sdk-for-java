@@ -12,6 +12,7 @@ import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilde
 import org.apache.spark.scheduler.{SparkListener, SparkListenerApplicationEnd}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.{SparkContext, TaskContext}
+import com.azure.identity.ClientSecretCredentialBuilder
 
 import java.time.{Duration, Instant}
 import java.util.ConcurrentModificationException
@@ -129,8 +130,8 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     cache.get(clientConfigWrapper) match {
       case Some(clientCacheMetadata) => clientCacheMetadata.createCacheItemForReuse(ownerInfo)
       case None =>
+
         var builder = new CosmosClientBuilder()
-          .key(cosmosClientConfiguration.key)
           .endpoint(cosmosClientConfiguration.endpoint)
           .userAgentSuffix(cosmosClientConfiguration.applicationName)
           .throttlingRetryOptions(
@@ -138,6 +139,17 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
               .setMaxRetryAttemptsOnThrottledRequests(Int.MaxValue)
               .setMaxRetryWaitTime(Duration.ofSeconds((Integer.MAX_VALUE/1000) - 1)))
 
+        if(cosmosClientConfiguration.key.isDefined){
+          builder.key(cosmosClientConfiguration.key.get)
+        }else{
+          builder.credential(new ClientSecretCredentialBuilder()
+            .authorityHost("https://login.microsoftonline.com")
+            .tenantId( cosmosClientConfiguration.tenantId.get)
+            .clientId(cosmosClientConfiguration.clientId.get)
+            .clientSecret(cosmosClientConfiguration.secret.get)
+            .build()
+          )
+        }
         if (CosmosClientMetrics.meterRegistry.isDefined) {
           val customApplicationNameSuffix = cosmosClientConfiguration.customApplicationNameSuffix
             .getOrElse("")
@@ -367,6 +379,9 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   private[spark] case class ClientConfigurationWrapper (
                                                         endpoint: String,
                                                         key: String,
+                                                        tenantId: String,
+                                                        clientId: String,
+                                                        secret: String,
                                                         applicationName: String,
                                                         useGatewayMode: Boolean,
                                                         useEventualConsistency: Boolean,
@@ -376,7 +391,22 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     def apply(clientConfig: CosmosClientConfiguration): ClientConfigurationWrapper = {
       ClientConfigurationWrapper(
         clientConfig.endpoint,
-        clientConfig.key,
+        clientConfig.key match{
+            case Some(s) => s
+            case None => ""
+        },
+        clientConfig.tenantId match{
+            case Some(s) => s
+            case None => ""
+        },
+        clientConfig.clientId match{
+            case Some(s) => s
+            case None => ""
+        },
+        clientConfig.secret match{
+            case Some(s) => s
+            case None => ""
+        },
         clientConfig.applicationName,
         clientConfig.useGatewayMode,
         clientConfig.useEventualConsistency,

@@ -17,7 +17,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     val configuration = CosmosClientConfiguration(userConfig, forceEventual)
 
     configuration.endpoint shouldEqual userConfig("spark.cosmos.accountEndpoint")
-    configuration.key shouldEqual userConfig("spark.cosmos.accountKey")
+    configuration.key shouldEqual Some(userConfig("spark.cosmos.accountKey"))
     configuration.useGatewayMode shouldBe false
     configuration.useEventualConsistency shouldEqual forceEventual
     configuration.disableTcpConnectionEndpointRediscovery shouldEqual false
@@ -35,7 +35,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     val configuration = CosmosClientConfiguration(userConfig, forceEventual)
 
     configuration.endpoint shouldEqual userConfig("spark.cosmos.accountEndpoint")
-    configuration.key shouldEqual userConfig("spark.cosmos.accountKey")
+    configuration.key shouldEqual Some(userConfig("spark.cosmos.accountKey"))
     configuration.useGatewayMode shouldBe false
     configuration.useEventualConsistency shouldEqual forceEventual
     configuration.applicationName shouldEqual s"${CosmosConstants.userAgentSuffix} ${ManagementFactory.getRuntimeMXBean.getName}"
@@ -97,7 +97,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     val configuration = CosmosClientConfiguration(userConfig, forceEventual)
 
     configuration.endpoint shouldEqual userConfig("spark.cosmos.accountEndpoint")
-    configuration.key shouldEqual userConfig("spark.cosmos.accountKey")
+    configuration.key shouldEqual Some(userConfig("spark.cosmos.accountKey"))
     configuration.useGatewayMode shouldBe true
     configuration.useEventualConsistency shouldEqual forceEventual
     configuration.disableTcpConnectionEndpointRediscovery shouldEqual false
@@ -116,7 +116,7 @@ class CosmosClientConfigurationSpec extends UnitSpec {
     val configuration = CosmosClientConfiguration(userConfig, forceEventual)
 
     configuration.endpoint shouldEqual userConfig("spark.cosmos.accountEndpoint")
-    configuration.key shouldEqual userConfig("spark.cosmos.accountKey")
+    configuration.key shouldEqual Some(userConfig("spark.cosmos.accountKey"))
     configuration.useGatewayMode shouldBe false
     configuration.useEventualConsistency shouldEqual forceEventual
     configuration.disableTcpConnectionEndpointRediscovery shouldEqual true
