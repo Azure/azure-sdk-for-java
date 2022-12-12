@@ -2,6 +2,8 @@
   - [Getting started](#getting-started)
     - [Prerequisites](#prerequisites)
   - [Key concepts](#key-concepts)
+  - [Architecture](#architecture)
+    - [Authenticating with JDBC](#authenticating-with-jdbc)
   - [Examples](#examples)
   - [Troubleshooting](#troubleshooting)
   - [Next steps](#next-steps)
