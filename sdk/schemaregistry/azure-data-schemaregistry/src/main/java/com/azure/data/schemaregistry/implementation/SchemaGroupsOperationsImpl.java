@@ -17,6 +17,7 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.data.schemaregistry.implementation.models.ErrorException;
 import com.azure.data.schemaregistry.implementation.models.SchemaGroups;
 import reactor.core.publisher.Mono;
@@ -55,6 +56,32 @@ public final class SchemaGroupsOperationsImpl {
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 Context context);
+
+        @Get("/$schemaGroups")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorException.class)
+        Response<SchemaGroups> listSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
+    }
+
+    /**
+     * Get list of schema groups.
+     *
+     * <p>Gets the list of schema groups user is authorized to access.
+     *
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of schema groups user is authorized to access along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SchemaGroups>> listWithResponseAsync() {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context));
     }
 
     /**
@@ -73,5 +100,66 @@ public final class SchemaGroupsOperationsImpl {
     public Mono<Response<SchemaGroups>> listWithResponseAsync(Context context) {
         final String accept = "application/json";
         return service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Get list of schema groups.
+     *
+     * <p>Gets the list of schema groups user is authorized to access.
+     *
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of schema groups user is authorized to access on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SchemaGroups> listAsync() {
+        return listWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get list of schema groups.
+     *
+     * <p>Gets the list of schema groups user is authorized to access.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of schema groups user is authorized to access on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SchemaGroups> listAsync(Context context) {
+        return listWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get list of schema groups.
+     *
+     * <p>Gets the list of schema groups user is authorized to access.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of schema groups user is authorized to access along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SchemaGroups> listWithResponse(Context context) {
+        final String accept = "application/json";
+        return service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Get list of schema groups.
+     *
+     * <p>Gets the list of schema groups user is authorized to access.
+     *
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of schema groups user is authorized to access.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SchemaGroups list() {
+        return listWithResponse(Context.NONE).getValue();
     }
 }

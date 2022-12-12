@@ -22,10 +22,11 @@ output-folder: ../
 namespace: com.azure.data.schemaregistry
 generate-client-as-impl: true
 service-interface-as-public: true
-sync-methods: none
+enable-sync-stack: true
 license-header: MICROSOFT_MIT_SMALL
 context-client-method-parameter: true
 models-subpackage: implementation.models
+generic-response-type: true
 ```
 
 

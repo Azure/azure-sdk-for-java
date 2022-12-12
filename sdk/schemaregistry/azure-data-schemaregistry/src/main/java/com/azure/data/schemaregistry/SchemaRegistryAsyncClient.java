@@ -170,7 +170,7 @@ public final class SchemaRegistryAsyncClient {
         return restService.getSchemas().registerWithResponseAsync(groupName, name, binaryData, binaryData.getLength(),
                 context)
             .map(response -> {
-                final SchemaProperties registered = SchemaRegistryHelper.getSchemaProperties(response);
+                final SchemaProperties registered = SchemaRegistryHelper.getSchemaPropertiesFromSchemaRegisterHeaders(response);
 
                 return new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
@@ -262,11 +262,11 @@ public final class SchemaRegistryAsyncClient {
         return this.restService.getSchemas().getByIdWithResponseAsync(schemaId, context)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .handle((response, sink) -> {
-                final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response);
+                final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaPropertiesFromSchemasGetByIdHeaders(response);
                 final String schema;
 
                 try {
-                    schema = convertToString(response.getValue());
+                    schema = convertToString(response.getValue().toStream());
                 } catch (UncheckedIOException e) {
                     sink.error(e);
                     return;
@@ -290,8 +290,8 @@ public final class SchemaRegistryAsyncClient {
                 context)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .handle((response, sink) -> {
-                final InputStream schemaInputStream = response.getValue();
-                final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response);
+                final InputStream schemaInputStream = response.getValue().toStream();
+                final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaPropertiesFromSchemasGetSchemaVersionHeaders(response);
                 final String schema;
 
                 if (schemaInputStream == null) {
@@ -402,7 +402,7 @@ public final class SchemaRegistryAsyncClient {
             .queryIdByContentWithResponseAsync(groupName, name, binaryData, binaryData.getLength(), context)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .map(response -> {
-                final SchemaProperties properties = SchemaRegistryHelper.getSchemaProperties(response);
+                final SchemaProperties properties = SchemaRegistryHelper.getSchemaPropertiesFromSchemasQueryIdByContentHeaders(response);
 
                 return new SimpleResponse<>(
                     response.getRequest(), response.getStatusCode(),
@@ -417,7 +417,7 @@ public final class SchemaRegistryAsyncClient {
      *
      * @return The remapped error.
      */
-    private static Throwable remapError(ErrorException error) {
+    static HttpResponseException remapError(ErrorException error) {
         if (error.getResponse().getStatusCode() == 404) {
             final String message;
             if (error.getValue() != null && error.getValue().getError() != null) {
@@ -425,7 +425,6 @@ public final class SchemaRegistryAsyncClient {
             } else {
                 message = error.getMessage();
             }
-
             return new ResourceNotFoundException(message, error.getResponse(), error);
         }
 
@@ -441,7 +440,7 @@ public final class SchemaRegistryAsyncClient {
      *
      * @throws UncheckedIOException if an {@link IOException} is thrown when creating the readers.
      */
-    private static String convertToString(InputStream inputStream) {
+    static String convertToString(InputStream inputStream) {
         final StringBuilder builder = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(
             new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {

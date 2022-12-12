@@ -17,6 +17,9 @@ public final class SchemaVersions {
     @JsonProperty(value = "schemaVersions")
     private List<Integer> schemaVersions;
 
+    /** Creates an instance of SchemaVersions class. */
+    public SchemaVersions() {}
+
     /**
      * Get the schemaVersions property: Array of schema groups.
      *

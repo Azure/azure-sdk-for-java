@@ -17,6 +17,9 @@ public final class SchemaGroups {
     @JsonProperty(value = "schemaGroups")
     private List<String> schemaGroups;
 
+    /** Creates an instance of SchemaGroups class. */
+    public SchemaGroups() {}
+
     /**
      * Get the schemaGroups property: Array of schema groups.
      *

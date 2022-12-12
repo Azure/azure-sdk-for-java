@@ -29,6 +29,9 @@ public final class ErrorDetail {
     @JsonProperty(value = "details")
     private List<ErrorDetail> details;
 
+    /** Creates an instance of ErrorDetail class. */
+    public ErrorDetail() {}
+
     /**
      * Get the code property: Type of error.
      *
