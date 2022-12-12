@@ -17,6 +17,7 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
@@ -56,6 +57,21 @@ public final class ServicesImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<ResponseBase<ServicesListFileSystemsHeaders, FileSystemList>> listFileSystems(
+                @HostParam("url") String url,
+                @QueryParam("resource") String resource,
+                @QueryParam("prefix") String prefix,
+                @QueryParam("continuation") String continuation,
+                @QueryParam("maxResults") Integer maxResults,
+                @HeaderParam("x-ms-client-request-id") String requestId,
+                @QueryParam("timeout") Integer timeout,
+                @HeaderParam("x-ms-version") String version,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Get("/")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        Mono<Response<FileSystemList>> listFileSystemsNoCustomHeaders(
                 @HostParam("url") String url,
                 @QueryParam("resource") String resource,
                 @QueryParam("prefix") String prefix,
@@ -236,5 +252,179 @@ public final class ServicesImpl {
             Context context) {
         return new PagedFlux<>(
                 () -> listFileSystemsSinglePageAsync(prefix, continuation, maxResults, requestId, timeout, context));
+    }
+
+    /**
+     * List FileSystems
+     *
+     * <p>List filesystems and their properties in given account.
+     *
+     * @param prefix Filters results to filesystems within the specified prefix.
+     * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
+     *     invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is
+     *     returned in this response header. When a continuation token is returned in the response, it must be specified
+     *     in a subsequent invocation of the delete operation to continue deleting the directory.
+     * @param maxResults An optional value that specifies the maximum number of items to return. If omitted or greater
+     *     than 5,000, the response will include up to 5,000 items.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<FileSystem>> listFileSystemsNoCustomHeadersSinglePageAsync(
+            String prefix, String continuation, Integer maxResults, String requestId, Integer timeout) {
+        final String resource = "account";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                        context ->
+                                service.listFileSystemsNoCustomHeaders(
+                                        this.client.getUrl(),
+                                        resource,
+                                        prefix,
+                                        continuation,
+                                        maxResults,
+                                        requestId,
+                                        timeout,
+                                        this.client.getVersion(),
+                                        accept,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getFilesystems(),
+                                        null,
+                                        null));
+    }
+
+    /**
+     * List FileSystems
+     *
+     * <p>List filesystems and their properties in given account.
+     *
+     * @param prefix Filters results to filesystems within the specified prefix.
+     * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
+     *     invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is
+     *     returned in this response header. When a continuation token is returned in the response, it must be specified
+     *     in a subsequent invocation of the delete operation to continue deleting the directory.
+     * @param maxResults An optional value that specifies the maximum number of items to return. If omitted or greater
+     *     than 5,000, the response will include up to 5,000 items.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<FileSystem>> listFileSystemsNoCustomHeadersSinglePageAsync(
+            String prefix,
+            String continuation,
+            Integer maxResults,
+            String requestId,
+            Integer timeout,
+            Context context) {
+        final String resource = "account";
+        final String accept = "application/json";
+        return service.listFileSystemsNoCustomHeaders(
+                        this.client.getUrl(),
+                        resource,
+                        prefix,
+                        continuation,
+                        maxResults,
+                        requestId,
+                        timeout,
+                        this.client.getVersion(),
+                        accept,
+                        context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getFilesystems(),
+                                        null,
+                                        null));
+    }
+
+    /**
+     * List FileSystems
+     *
+     * <p>List filesystems and their properties in given account.
+     *
+     * @param prefix Filters results to filesystems within the specified prefix.
+     * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
+     *     invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is
+     *     returned in this response header. When a continuation token is returned in the response, it must be specified
+     *     in a subsequent invocation of the delete operation to continue deleting the directory.
+     * @param maxResults An optional value that specifies the maximum number of items to return. If omitted or greater
+     *     than 5,000, the response will include up to 5,000 items.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<FileSystem> listFileSystemsNoCustomHeadersAsync(
+            String prefix, String continuation, Integer maxResults, String requestId, Integer timeout) {
+        return new PagedFlux<>(
+                () ->
+                        listFileSystemsNoCustomHeadersSinglePageAsync(
+                                prefix, continuation, maxResults, requestId, timeout));
+    }
+
+    /**
+     * List FileSystems
+     *
+     * <p>List filesystems and their properties in given account.
+     *
+     * @param prefix Filters results to filesystems within the specified prefix.
+     * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
+     *     invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is
+     *     returned in this response header. When a continuation token is returned in the response, it must be specified
+     *     in a subsequent invocation of the delete operation to continue deleting the directory.
+     * @param maxResults An optional value that specifies the maximum number of items to return. If omitted or greater
+     *     than 5,000, the response will include up to 5,000 items.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     *     Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DataLakeStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<FileSystem> listFileSystemsNoCustomHeadersAsync(
+            String prefix,
+            String continuation,
+            Integer maxResults,
+            String requestId,
+            Integer timeout,
+            Context context) {
+        return new PagedFlux<>(
+                () ->
+                        listFileSystemsNoCustomHeadersSinglePageAsync(
+                                prefix, continuation, maxResults, requestId, timeout, context));
     }
 }

@@ -19,11 +19,14 @@ import java.util.List;
 @Fluent
 public final class GeoJsonMultiPolygon extends GeoJsonGeometry {
     /*
-     * Contains a list of valid `GeoJSON Polygon` objects. **Note** that
-     * coordinates in GeoJSON are in x, y order (longitude, latitude).
+     * Contains a list of valid `GeoJSON Polygon` objects. **Note** that coordinates in GeoJSON are in x, y order
+     * (longitude, latitude).
      */
     @JsonProperty(value = "coordinates", required = true)
     private List<List<List<List<Double>>>> coordinates;
+
+    /** Creates an instance of GeoJsonMultiPolygon class. */
+    public GeoJsonMultiPolygon() {}
 
     /**
      * Get the coordinates property: Contains a list of valid `GeoJSON Polygon` objects. **Note** that coordinates in
