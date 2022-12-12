@@ -86,7 +86,7 @@ private[spark] object CosmosConfigNames {
   val ThroughputControlPreferredRegionsList = "spark.cosmos.throughputControl.preferredRegionsList"
   val ThroughputControlDisableTcpConnectionEndpointRediscovery = "spark.cosmos.throughputControl.disableTcpConnectionEndpointRediscovery"
   val ThroughputControlUseGatewayMode = "spark.cosmos.throughputControl.useGatewayMode"
-  val MaxIntegratedCacheStalenessUseGatewayMode = "spark.cosmos.maxIntegratedCacheStaleness.UseGatewayMode"
+  val MaxIntegratedCacheStalenessUseGatewayMode = "spark.cosmos.maxIntegratedCacheStaleness.useGatewayMode"
   val ThroughputControlName = "spark.cosmos.throughputControl.name"
   val ThroughputControlTargetThroughput = "spark.cosmos.throughputControl.targetThroughput"
   val ThroughputControlTargetThroughputThreshold = "spark.cosmos.throughputControl.targetThroughputThreshold"
