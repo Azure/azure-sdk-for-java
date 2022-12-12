@@ -41,9 +41,6 @@ public class TracingTest extends RestProxyTestBase<CorePerfStressOptions> {
             return context;
         }
 
-        @Override
-        public void end(int responseCode, Throwable error, Context context) {
-        }
 
         @Override
         public void end(String statusMessage, Throwable error, Context context) {

@@ -17,10 +17,6 @@ class NoopTracer implements Tracer {
     }
 
     @Override
-    public void end(int responseCode, Throwable error, Context context) {
-    }
-
-    @Override
     public void end(String statusMessage, Throwable error, Context context) {
     }
 

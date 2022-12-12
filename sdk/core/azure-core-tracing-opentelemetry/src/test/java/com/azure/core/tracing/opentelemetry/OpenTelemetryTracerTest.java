@@ -28,6 +28,7 @@ import io.opentelemetry.sdk.trace.data.EventData;
 import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
+import io.opentelemetry.sdk.trace.internal.data.ExceptionEventData;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,10 +36,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +55,7 @@ import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+import static io.opentelemetry.api.trace.StatusCode.ERROR;
 import static io.opentelemetry.api.trace.StatusCode.UNSET;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -563,6 +565,7 @@ public class OpenTelemetryTracerTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void endSpanTestThrowableResponseCode() {
         // Arrange
         final ReadableSpan recordEventsSpan = (ReadableSpan) parentSpan;
@@ -722,7 +725,7 @@ public class OpenTelemetryTracerTest {
         assertEquals(1, eventData.size());
         assertEquals(eventName, eventData.get(0).getName());
         Attributes attributes = eventData.get(0).getAttributes();
-        assertEquals(input.size() - 1, attributes.size());
+        assertEquals(8, attributes.size());
         Attributes expectedEventAttrs = Attributes.builder()
             .put(AttributeKey.stringKey("attr1"), "value1")
             .put(AttributeKey.booleanKey("attr2"), true)
@@ -732,9 +735,6 @@ public class OpenTelemetryTracerTest {
             .put(AttributeKey.longKey("attr6"), 4)
             .put(AttributeKey.doubleKey("attr7"), 1.0)
             .put(AttributeKey.doubleKey("attr8"), 2.0)
-            .put(AttributeKey.doubleArrayKey("attr9"), Arrays.asList(1.0, 2.0, 3.0))
-            .put(AttributeKey.longArrayKey("attr10"), Arrays.asList(1L, 2L, 3L))
-            .put(AttributeKey.booleanArrayKey("attr11"), Arrays.asList(true))
             .build();
 
         expectedEventAttrs.forEach((attributeKey, attrValue) -> assertEquals(attrValue, attributes.get(attributeKey)));
@@ -883,10 +883,6 @@ public class OpenTelemetryTracerTest {
             .put("I", 1)
             .put("D", 0.1d)
             .put("B", true)
-            .put("S[]",  new String[]{"foo"})
-            .put("L[]", new long[] {10L})
-            .put("D[]", new double[] {0.1d})
-            .put("B[]", new boolean[] {true})
             .put("az.namespace", AZ_NAMESPACE_VALUE)
             .build();
 
@@ -1151,6 +1147,99 @@ public class OpenTelemetryTracerTest {
         assertEquals(innerSpan.getSpanContext().getTraceId(), outerSpan.getSpanContext().getTraceId());
         assertEquals(innerSpan.getParentSpanId(), outerSpan.getSpanContext().getSpanId());
     }
+
+    @Test
+    public void setStatusSuccess() {
+        final Context span = openTelemetryTracer.start(METHOD_NAME, tracingContext);
+        openTelemetryTracer.end(null, null, span);
+
+        SpanData spanData = getSpan(span).toSpanData();
+        assertEquals(UNSET, spanData.getStatus().getStatusCode());
+    }
+
+    @Test
+    public void setStatusErrorMessage() {
+        final Context span = openTelemetryTracer.start(METHOD_NAME, tracingContext);
+        openTelemetryTracer.end("foo", null, span);
+
+        SpanData spanData = getSpan(span).toSpanData();
+        assertEquals(ERROR, spanData.getStatus().getStatusCode());
+        assertEquals("foo", spanData.getStatus().getDescription());
+    }
+
+    @Test
+    public void setStatusErrorMessageNoDescription() {
+        final Context span = openTelemetryTracer.start(METHOD_NAME, tracingContext);
+        openTelemetryTracer.end("error", null, span);
+
+        SpanData spanData = getSpan(span).toSpanData();
+        assertEquals(ERROR, spanData.getStatus().getStatusCode());
+        assertEquals("", spanData.getStatus().getDescription());
+    }
+
+
+    @Test
+    public void setStatusThrowable() {
+        final Context span = openTelemetryTracer.start(METHOD_NAME, tracingContext);
+        Throwable error = new IOException("bar");
+        openTelemetryTracer.end(null, error, span);
+
+        SpanData spanData = getSpan(span).toSpanData();
+        assertEquals(ERROR, spanData.getStatus().getStatusCode());
+        assertEquals("", spanData.getStatus().getDescription());
+        assertEquals(1, spanData.getEvents().size());
+
+        EventData exceptionEvent = spanData.getEvents().get(0);
+        assertTrue(exceptionEvent instanceof ExceptionEventData);
+        assertSame(error, ((ExceptionEventData) exceptionEvent).getException());
+    }
+
+    @Test
+    public void setStatusThrowableAndStatus() {
+        final Context span = openTelemetryTracer.start(METHOD_NAME, tracingContext);
+        Throwable error = new IOException("bar");
+        openTelemetryTracer.end("foo", error, span);
+
+        SpanData spanData = getSpan(span).toSpanData();
+        assertEquals(ERROR, spanData.getStatus().getStatusCode());
+        assertEquals("foo", spanData.getStatus().getDescription());
+        assertEquals(1, spanData.getEvents().size());
+    }
+
+    @Test
+    public void getInvalidSpanContext() {
+        // Act
+        Context context = openTelemetryTracer.extractContext(name -> "");
+
+        // Assert
+        assertNotNull(context);
+        assertTrue(context.getData(SPAN_CONTEXT_KEY).isPresent());
+        assertFalse(((SpanContext) context.getData(SPAN_CONTEXT_KEY).get()).isValid(),
+            "Invalid diagnostic Id, returns invalid SpanContext ");
+    }
+
+    @Test
+    public void getValidSpanContext() {
+        // Act
+        Context context = openTelemetryTracer.extractContext(name -> "traceparent".equals(name) ? "00-0af7651916cd43dd8448eb211c80319c-b9c7c989f97918e1-01" : null);
+
+        // Assert
+        assertNotNull(context);
+        assertTrue(((SpanContext) context.getData(SPAN_CONTEXT_KEY).get()).isValid(),
+            "Valid diagnostic Id, returns valid SpanContext ");
+    }
+
+    @Test
+    public void getValidDiagnosticId() {
+        // Act
+        Context context = openTelemetryTracer.extractContext(name -> "Diagnostic-Id".equals(name) ? "00-0af7651916cd43dd8448eb211c80319c-b9c7c989f97918e1-01" : null);
+
+        // Assert
+        assertNotNull(context);
+        assertTrue(((SpanContext) context.getData(SPAN_CONTEXT_KEY).get()).isValid(),
+            "Valid diagnostic Id, returns valid SpanContext ");
+    }
+
 
     private static ReadableSpan getSpan(Context context) {
         Optional<Object> otelCtx =  context.getData(PARENT_TRACE_CONTEXT_KEY);

@@ -97,31 +97,27 @@ public class TracerJavaDocCodeSnippets {
     public void endSpan() {
         Context methodSpan = Context.NONE;
         Throwable throwable = null;
-        int httpResponseCode = 0;
-        HttpRequest request = null;
 
-        // BEGIN: com.azure.core.util.tracing.end#int
-        Context httpSpan = tracer.start("HTTP GET", new StartSpanOptions(SpanKind.CLIENT), methodSpan);
-        try (AutoCloseable scope = tracer.makeSpanCurrent(httpSpan)) {
-            HttpResponse response = getResponse(request);
-            httpResponseCode = response.getStatusCode();
-        } catch (Throwable ex) {
-            throwable = ex;
-        } finally {
-            tracer.end(httpResponseCode, throwable, httpSpan);
-        }
-        // END: com.azure.core.util.tracing.end#int
+        // BEGIN: com.azure.core.util.tracing.end#success
+        Context messageSpan = tracer.start("ServiceBus.message", new StartSpanOptions(SpanKind.PRODUCER), Context.NONE);
+        tracer.end(null, null, messageSpan);
+        // END: com.azure.core.util.tracing.end#success
 
-        // BEGIN: com.azure.core.util.tracing.end#string
-        Context sendMessageSpan = tracer.start("ServiceBus.send", new StartSpanOptions(SpanKind.CLIENT), Context.NONE);
-        try (AutoCloseable scope = tracer.makeSpanCurrent(sendMessageSpan)) {
+        // BEGIN: com.azure.core.util.tracing.end#errorStatus
+        Context span = tracer.start("ServiceBus.send", new StartSpanOptions(SpanKind.CLIENT), Context.NONE);
+        tracer.end("amqp:not-found", null, span);
+        // END: com.azure.core.util.tracing.end#errorStatus
+
+        // BEGIN: com.azure.core.util.tracing.end#exception
+        Context sendSpan = tracer.start("ServiceBus.send", new StartSpanOptions(SpanKind.CLIENT), Context.NONE);
+        try (AutoCloseable scope = tracer.makeSpanCurrent(sendSpan)) {
             doWork();
         } catch (Throwable ex) {
             throwable = ex;
         } finally {
-            tracer.end(null, throwable, sendMessageSpan);
+            tracer.end(null, throwable, sendSpan);
         }
-        // END: com.azure.core.util.tracing.end#string
+        // END: com.azure.core.util.tracing.end#exception
     }
 
     /**

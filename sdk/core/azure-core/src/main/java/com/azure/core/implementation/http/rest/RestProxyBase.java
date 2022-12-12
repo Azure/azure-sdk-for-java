@@ -200,21 +200,7 @@ public abstract class RestProxyBase {
             return;
         }
 
-        int statusCode = 0;
-
-        // On next contains the response information.
-        if (httpDecodedResponse != null) {
-            //noinspection ConstantConditions
-            statusCode = httpDecodedResponse.getSourceResponse().getStatusCode();
-        } else if (throwable != null) {
-            // The last status available is on error, this contains the error thrown by the REST response.
-            // Only HttpResponseException contain a status code, this is the base REST response.
-            if (throwable instanceof HttpResponseException) {
-                HttpResponseException exception = (HttpResponseException) throwable;
-                statusCode = exception.getResponse().getStatusCode();
-            }
-        }
-        tracer.end(statusCode, throwable, span);
+        tracer.end(null, throwable, span);
     }
 
 

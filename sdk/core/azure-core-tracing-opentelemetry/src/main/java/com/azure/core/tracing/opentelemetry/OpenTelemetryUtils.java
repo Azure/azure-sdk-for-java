@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.tracing.opentelemetry.implementation;
+package com.azure.core.tracing.opentelemetry;
 
-import com.azure.core.tracing.opentelemetry.OpenTelemetrySchemaVersion;
 import com.azure.core.util.logging.ClientLogger;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
@@ -11,17 +10,15 @@ import io.opentelemetry.api.common.AttributesBuilder;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.StatusCode;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 
-public class OpenTelemetryUtils {
+class OpenTelemetryUtils {
     private static final ClientLogger LOGGER = new ClientLogger(OpenTelemetryUtils.class);
 
     private static final Map<String, String> ATTRIBUTE_MAPPING_V1_12_0 = getMappingsV1200();
@@ -66,7 +63,7 @@ public class OpenTelemetryUtils {
         return builder.build();
     }
 
-    public static void setAttribute(Span span, String key, Object value, OpenTelemetrySchemaVersion schemaVersion) {
+    static void setAttribute(Span span, String key, Object value, OpenTelemetrySchemaVersion schemaVersion) {
         OpenTelemetryUtils.addAttribute(span, map(key, getMappingsForVersion(schemaVersion)), value);
     }
 
@@ -89,13 +86,14 @@ public class OpenTelemetryUtils {
     }
 
     /**
-     * Adds attribute key-value pair to OpenTelemetry {@link io.opentelemetry.api.common.AttributesBuilder}, if value type is not supported by
+     * Adds attribute key-value pair to OpenTelemetry {@link AttributesBuilder}, if value type is not supported by
      * OpenTelemetry, drops the attribute.
-     * @param attributesBuilder initialized {@link io.opentelemetry.api.common.AttributesBuilder} instance
+     *
+     * @param attributesBuilder initialized {@link AttributesBuilder} instance
      * @param key key of the attribute to be added
      * @param value value of the attribute to be added
      */
-    static void addAttribute(io.opentelemetry.api.common.AttributesBuilder attributesBuilder, String key, Object value) {
+    static void addAttribute(AttributesBuilder attributesBuilder, String key, Object value) {
         if (value instanceof String) {
             attributesBuilder.put(AttributeKey.stringKey(key), (String) value);
         } else if (value instanceof Long) {
@@ -112,31 +110,6 @@ public class OpenTelemetryUtils {
             attributesBuilder.put(AttributeKey.longKey(key), (Short) value);
         } else if (value instanceof Byte) {
             attributesBuilder.put(AttributeKey.longKey(key), (Byte) value);
-        } else if (value instanceof String[]) {
-            attributesBuilder.put(AttributeKey.stringArrayKey(key), (String[]) value);
-        } else if (value instanceof Long[]) {
-            attributesBuilder.put(AttributeKey.longArrayKey(key), (Long[]) value);
-        } else if (value instanceof long[]) {
-            long[] array = (long[]) value;
-            List<Long> boxed = new ArrayList<>(array.length);
-            for (int i = 0; i < array.length; i++) {
-                boxed.add(array[i]);
-            }
-            attributesBuilder.put(AttributeKey.longArrayKey(key), boxed);
-        } else if (value instanceof double[]) {
-            double[] array = (double[]) value;
-            List<Double> boxed = new ArrayList<>(array.length);
-            for (int i = 0; i < array.length; i++) {
-                boxed.add(array[i]);
-            }
-            attributesBuilder.put(AttributeKey.doubleArrayKey(key), boxed);
-        } else if (value instanceof boolean[]) {
-            boolean[] array = (boolean[]) value;
-            List<Boolean> boxed = new ArrayList<>(array.length);
-            for (int i = 0; i < array.length; i++) {
-                boxed.add(array[i]);
-            }
-            attributesBuilder.put(AttributeKey.booleanArrayKey(key), boxed);
         } else {
             LOGGER.warning("Could not populate attribute with key '{}', type {} is not supported.", key, value.getClass().getName());
         }
@@ -163,6 +136,7 @@ public class OpenTelemetryUtils {
             LOGGER.warning("Could not populate attribute with key '{}', type {} is not supported.", key, value.getClass().getName());
         }
     }
+
     /**
      * Parses an OpenTelemetry Status from AMQP Error Condition.
      *
@@ -171,29 +145,19 @@ public class OpenTelemetryUtils {
      * @param throwable the error occurred during response transmission (optional).
      * @return the corresponding OpenTelemetry {@link Span}.
      */
-    public static Span setStatus(Span span, String statusMessage, Throwable throwable) {
+    public static Span setError(Span span, String statusMessage, Throwable throwable) {
         if (throwable != null) {
             span.recordException(throwable);
-            return span.setStatus(StatusCode.ERROR);
+            return span.setStatus(StatusCode.ERROR, statusMessage);
         }
+
         if (statusMessage != null) {
-            if ("success".equalsIgnoreCase(statusMessage)) {
-                return span.setStatus(StatusCode.OK);
-            } else if ("error".equalsIgnoreCase(statusMessage)) {
+            if ("error".equals(statusMessage)) {
                 return span.setStatus(StatusCode.ERROR);
             }
-            return span.setStatus(StatusCode.UNSET, statusMessage);
+            return span.setStatus(StatusCode.ERROR, statusMessage);
         }
 
-        return span.setStatus(StatusCode.UNSET);
-    }
-
-    public static Span setStatus(Span span, int httpStatusCode, Throwable throwable) {
-        if (throwable != null) {
-            span.recordException(throwable);
-            return span.setStatus(StatusCode.ERROR);
-        }
-
-        return span.setStatus(httpStatusCode >= 400 ? StatusCode.ERROR : StatusCode.UNSET);
+        return span;
     }
 }

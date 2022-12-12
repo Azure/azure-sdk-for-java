@@ -78,4 +78,5 @@ public class OpenTelemetryTracingOptions extends TracingOptions {
         this.schemaVersion = schemaVersion;
         return this;
     }
+
 }

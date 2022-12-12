@@ -145,7 +145,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
                 tracer.setAttribute(SERVICE_REQUEST_ID_ATTRIBUTE, requestId, span);
             }
 
-            tracer.end(statusCode, null, span);
+            tracer.end((statusCode >= 300) ? "error" : null, null, span);
         }
 
         tracer.end(null, error, span);

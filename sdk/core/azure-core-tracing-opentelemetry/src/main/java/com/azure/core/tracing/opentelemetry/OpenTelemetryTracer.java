@@ -3,7 +3,6 @@
 
 package com.azure.core.tracing.opentelemetry;
 
-import com.azure.core.tracing.opentelemetry.implementation.OpenTelemetryUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.TracingOptions;
@@ -240,29 +239,6 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * {@inheritDoc}
      */
     @Override
-    public void end(int responseCode, Throwable throwable, Context context) {
-        Objects.requireNonNull(context, "'context' cannot be null.");
-
-        if (!isEnabled) {
-            return;
-        }
-
-        final Span span = getSpanOrNull(context);
-        if (span == null) {
-            return;
-        }
-
-        if (span.isRecording()) {
-            OpenTelemetryUtils.setStatus(span, responseCode, throwable);
-        }
-
-        span.end();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void setAttribute(String key, String value, Context context) {
         Objects.requireNonNull(context, "'context' cannot be null");
 
@@ -289,7 +265,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * {@inheritDoc}
      */
     @Override
-    public void end(String statusMessage, Throwable throwable, Context context) {
+    public void end(String errorMessage, Throwable throwable, Context context) {
         if (!isEnabled) {
             return;
         }
@@ -297,7 +273,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         Span span = getSpanOrNull(context);
         if (span != null) {
             if (span.isRecording()) {
-                span = OpenTelemetryUtils.setStatus(span, statusMessage, throwable);
+                span = OpenTelemetryUtils.setError(span, errorMessage, throwable);
             }
 
             span.end();

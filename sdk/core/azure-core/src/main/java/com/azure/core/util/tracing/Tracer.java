@@ -283,53 +283,64 @@ public interface Tracer {
      *
      * <p>Completes the tracing span present in the context, with the corresponding OpenTelemetry status for the given
      * response status code</p>
-     * <!-- src_embed com.azure.core.util.tracing.end#int -->
-     * <pre>
-     * Context httpSpan = tracer.start&#40;&quot;HTTP GET&quot;, new StartSpanOptions&#40;SpanKind.CLIENT&#41;, methodSpan&#41;;
-     * try &#40;AutoCloseable scope = tracer.makeSpanCurrent&#40;httpSpan&#41;&#41; &#123;
-     *     HttpResponse response = getResponse&#40;request&#41;;
-     *     httpResponseCode = response.getStatusCode&#40;&#41;;
-     * &#125; catch &#40;Throwable ex&#41; &#123;
-     *     throwable = ex;
-     * &#125; finally &#123;
-     *     tracer.end&#40;httpResponseCode, throwable, httpSpan&#41;;
-     * &#125;
-     * </pre>
-     * <!-- end com.azure.core.util.tracing.end#int -->
      *
      * @param responseCode Response status code if the span is in an HTTP call context.
      * @param error {@link Throwable} that happened during the span or {@code null} if no exception occurred.
      * @param context Additional metadata that is passed through the call stack.
      * @throws NullPointerException if {@code context} is {@code null}.
+     *
+     * @deprecated set specific attribute e.g. http_status_code explicitly and use {@link Tracer#end(String, Throwable, Context)}.
      */
-    void end(int responseCode, Throwable error, Context context);
+    @Deprecated
+    default void end(int responseCode, Throwable error, Context context) {
+        end(null, error, context);
+    }
 
     /**
      * Completes the current tracing span for AMQP calls.
      *
      * <p><strong>Code samples</strong></p>
      *
-     * <p>Completes the tracing span with the corresponding OpenTelemetry status for the given status message</p>
-     * <!-- src_embed com.azure.core.util.tracing.end#string -->
+     * <p>Completes the tracing span with unset status</p>
+     *
+     * <!-- src_embed com.azure.core.util.tracing.end#success -->
      * <pre>
-     * Context sendMessageSpan = tracer.start&#40;&quot;ServiceBus.send&quot;, new StartSpanOptions&#40;SpanKind.CLIENT&#41;, Context.NONE&#41;;
-     * try &#40;AutoCloseable scope = tracer.makeSpanCurrent&#40;sendMessageSpan&#41;&#41; &#123;
+     * Context messageSpan = tracer.start&#40;&quot;ServiceBus.message&quot;, new StartSpanOptions&#40;SpanKind.PRODUCER&#41;, Context.NONE&#41;;
+     * tracer.end&#40;null, null, messageSpan&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.tracing.end#success -->
+     *
+     * <p>Completes the tracing span with provided error message</p>
+     *
+     * <!-- src_embed com.azure.core.util.tracing.end#errorStatus -->
+     * <pre>
+     * Context span = tracer.start&#40;&quot;ServiceBus.send&quot;, new StartSpanOptions&#40;SpanKind.CLIENT&#41;, Context.NONE&#41;;
+     * tracer.end&#40;&quot;amqp:not-found&quot;, null, span&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.tracing.end#errorStatus -->
+     *
+     * <p>Completes the tracing span with provided exception</p>
+     *
+     * <!-- src_embed com.azure.core.util.tracing.end#exception -->
+     * <pre>
+     * Context sendSpan = tracer.start&#40;&quot;ServiceBus.send&quot;, new StartSpanOptions&#40;SpanKind.CLIENT&#41;, Context.NONE&#41;;
+     * try &#40;AutoCloseable scope = tracer.makeSpanCurrent&#40;sendSpan&#41;&#41; &#123;
      *     doWork&#40;&#41;;
      * &#125; catch &#40;Throwable ex&#41; &#123;
      *     throwable = ex;
      * &#125; finally &#123;
-     *     tracer.end&#40;null, throwable, sendMessageSpan&#41;;
+     *     tracer.end&#40;null, throwable, sendSpan&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.core.util.tracing.end#string -->
+     * <!-- end com.azure.core.util.tracing.end#exception -->
      *
-     * @param statusMessage The error or success message that occurred during the call, or {@code null} if no error
+     * @param errorMessage The error message that occurred during the call, or {@code null} if no error
      * occurred.
-     * @param error {@link Throwable} that happened during the span or {@code null} if no exception occurred.
+     * @param throwable {@link Throwable} that happened during the span or {@code null} if no exception occurred.
      * @param context Additional metadata that is passed through the call stack.
      * @throws NullPointerException if {@code context} is {@code null}.
      */
-    void end(String statusMessage, Throwable error, Context context);
+    void end(String errorMessage, Throwable throwable, Context context);
 
     /**
      * Adds metadata to the current span. If no span information is found in the context, then no metadata is added.
