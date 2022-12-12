@@ -278,6 +278,12 @@ Connection connection=DriverManager.getConnection(url,properties);
 
 If you encounter any bugs, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues).
 
+### Known issues
+
+- org.postgresql.util.PSQLException: The server requested password-based authentication, but no password was provided.
+  1. Please make sure the version of postgresql driver in the dependency is greater than [42.3.2](https://mvnrepository.com/artifact/org.postgresql/postgresql/42.3.2). 
+  2. Please make sure the jdbc url configuration follow the pattern in this [section](https://learn.microsoft.com/azure/postgresql/single-server/connect-java?tabs=passwordless#prepare-a-configuration-file-to-connect-to-azure-database-for-postgresql).  
+
 ## Next steps
 
 ## Contributing

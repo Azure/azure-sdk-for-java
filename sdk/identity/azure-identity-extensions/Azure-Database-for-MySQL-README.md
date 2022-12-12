@@ -290,6 +290,11 @@ If you encounter any bugs, please file issues via [Issues](https://github.com/Az
 
   ~~properties.put("defaultAuthenticationPlugin","com.azure.identity.extensions.jdbc.mysql.AzureMysqlAuthenticationPlugin");~~
 
+- java.lang.NoSuchMethodError: com.mysql.cj.protocol.ServerSession.getCharsetSettings()Lcom/mysql/cj/CharsetSettings.
+  Please make sure the version of mysql driver in the dependency is greater than [8.0.26](https://mvnrepository.com/artifact/mysql/mysql-connector-java/8.0.26).
+
+- java.sql.SQLException: No suitable driver found for '${your_jdbc_url}'
+  Please make sure the version of mysql driver in the dependency is greater than [8.0.26](https://mvnrepository.com/artifact/mysql/mysql-connector-java/8.0.26).
 
 ## Next steps
 
