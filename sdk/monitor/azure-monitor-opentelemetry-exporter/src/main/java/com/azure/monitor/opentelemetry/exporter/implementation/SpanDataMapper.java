@@ -668,10 +668,15 @@ public final class SpanDataMapper {
         if (isAzureSdkMessaging(attributes.get(AiSemanticAttributes.AZURE_SDK_NAMESPACE))) {
             // special case needed until Azure SDK moves to OTel semantic conventions
             String peerAddress = attributes.get(AiSemanticAttributes.AZURE_SDK_PEER_ADDRESS);
-            String destination = attributes.get(AiSemanticAttributes.AZURE_SDK_MESSAGE_BUS_DESTINATION);
-            return peerAddress + "/" + destination;
+            // TODO (limolkova) need to populate messaging.system in SB ans EH.
+            // this make exporter backward-compatible with current EventHubs and ServiceBus instrumentation and new otel plugin
+            if (peerAddress != null) {
+                String destination = attributes.get(AiSemanticAttributes.AZURE_SDK_MESSAGE_BUS_DESTINATION);
+                return peerAddress + "/" + destination;
+            }
         }
-        String messagingSystem = attributes.get(SemanticAttributes.MESSAGING_SYSTEM);
+
+        String messagingSystem = getMessagingSystem(attributes);
         if (messagingSystem == null) {
             return null;
         }
@@ -689,8 +694,7 @@ public final class SpanDataMapper {
     }
 
     private static boolean isAzureSdkMessaging(String messagingSystem) {
-        return "Microsoft.EventHub".equals(messagingSystem)
-            || "Microsoft.ServiceBus".equals(messagingSystem);
+        return "Microsoft.EventHub".equals(messagingSystem) || "Microsoft.ServiceBus".equals(messagingSystem);
     }
 
     private static String getOperationName(SpanData span) {
