@@ -29,7 +29,7 @@ token as a password to connect with MySQL.
 
 ### Authenticating with JDBC
 
-This picture shows how the JDBC authentication plugins provided by Azure Identity Extensions authenticate with managed identity?
+This picture shows how the JDBC authentication plugins provided by Azure Identity Extensions authenticate with managed identity.
 ![Architecture](img/passwordless-connections-from-java-apps-to-data-services.jpg)
 
 ## Examples
