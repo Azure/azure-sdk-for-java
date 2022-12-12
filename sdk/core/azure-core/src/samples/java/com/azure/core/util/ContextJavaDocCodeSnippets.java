@@ -10,7 +10,6 @@ import java.util.Optional;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
-import static com.azure.core.util.tracing.Tracer.USER_SPAN_NAME_KEY;
 
 /**
  * Code snippets for {@link Context}
@@ -24,10 +23,6 @@ public class ContextJavaDocCodeSnippets {
         // BEGIN: com.azure.core.util.context#object-object
         // Create an empty context having no data
         Context emptyContext = Context.NONE;
-
-        // Tracing spans or other properties defined by users can be passed
-        // to calling methods in sdk clients using Context object.
-        Context keyValueContext = new Context(USER_SPAN_NAME_KEY, "span-name");
 
         // OpenTelemetry context can be optionally passed using PARENT_TRACE_CONTEXT_KEY
         // when OpenTelemetry context is not provided explicitly, ambient

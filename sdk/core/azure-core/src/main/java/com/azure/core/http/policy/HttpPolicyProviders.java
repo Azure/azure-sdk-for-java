@@ -3,6 +3,8 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.implementation.http.policy.InstrumentationPolicy;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ServiceLoader;
@@ -47,6 +49,7 @@ public final class HttpPolicyProviders {
      * @param policies Policy list to append the policies.
      */
     public static void addAfterRetryPolicies(List<HttpPipelinePolicy> policies) {
+        policies.add(new InstrumentationPolicy());
         addPolices(policies, AFTER_PROVIDER);
     }
 

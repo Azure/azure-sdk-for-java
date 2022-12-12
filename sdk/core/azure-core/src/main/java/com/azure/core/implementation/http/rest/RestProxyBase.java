@@ -32,7 +32,6 @@ import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.core.util.tracing.TracerProxy;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -61,6 +60,7 @@ public abstract class RestProxyBase {
     final SerializerAdapter serializer;
     final SwaggerInterfaceParser interfaceParser;
     final HttpResponseDecoder decoder;
+    protected final Tracer tracer;
 
     /**
      * Create a RestProxy.
@@ -71,11 +71,12 @@ public abstract class RestProxyBase {
      * this RestProxy "implements".
      */
     public RestProxyBase(HttpPipeline httpPipeline, SerializerAdapter serializer,
-        SwaggerInterfaceParser interfaceParser) {
+                         SwaggerInterfaceParser interfaceParser) {
         this.httpPipeline = httpPipeline;
         this.serializer = serializer;
         this.interfaceParser = interfaceParser;
         this.decoder = new HttpResponseDecoder(this.serializer);
+        this.tracer = httpPipeline.getTracer();
     }
 
     public final Object invoke(Object proxy, final Method method, RequestOptions options,
@@ -173,9 +174,9 @@ public abstract class RestProxyBase {
      * @param context Context information about the current service call.
      * @return The updated context containing the span context.
      */
-    static Context startTracingSpan(SwaggerMethodParser method, Context context) {
+    Context startTracingSpan(SwaggerMethodParser method, Context context) {
         // First check if tracing is enabled. This is an optimized operation, so it is done first.
-        if (!TracerProxy.isTracingEnabled()) {
+        if (!tracer.isEnabled()) {
             return context;
         }
 
@@ -184,25 +185,18 @@ public abstract class RestProxyBase {
             return context;
         }
 
-        String spanName = method.getSpanName();
-        context = TracerProxy.setSpanName(spanName, context);
-        return TracerProxy.start(spanName, context);
+        Object tracingContextObj = context.getData("TRACING_CONTEXT").orElse(null);
+        Context tracingContext = tracingContextObj instanceof Context ? (Context) tracingContextObj : context;
+        return tracer.start(method.getSpanName(), tracingContext);
     }
 
     // This handles each onX for the response mono.
     // The signal indicates the status and contains the metadata we need to end the tracing span.
     void endTracingSpan(HttpResponseDecoder.HttpDecodedResponse httpDecodedResponse, Throwable throwable,
-        Context tracingContext) {
-        if (tracingContext == null) {
-            return;
-        }
-
+        Context span) {
         // Get the context that was added to the mono, this will contain the information needed to end the span.
-        Object disableTracingValue = (tracingContext.getData(Tracer.DISABLE_TRACING_KEY).isPresent()
-            ? tracingContext.getData(Tracer.DISABLE_TRACING_KEY).get() : null);
-        boolean disableTracing = Boolean.TRUE.equals(disableTracingValue != null ? disableTracingValue : false);
-
-        if (disableTracing) {
+        if (span == null
+            || (boolean) span.getData(Tracer.DISABLE_TRACING_KEY).orElse(false)) {
             return;
         }
 
@@ -220,7 +214,7 @@ public abstract class RestProxyBase {
                 statusCode = exception.getResponse().getStatusCode();
             }
         }
-        TracerProxy.end(statusCode, throwable, tracingContext);
+        tracer.end(statusCode, throwable, span);
     }
 
 

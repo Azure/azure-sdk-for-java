@@ -60,7 +60,34 @@ You don't need this package if you use ApplicationInsights Java agent or OpenTel
 
 ### Examples
 
-The following sections provides examples of using the `azure-core-tracing-opentelemetry` plugin with a few Azure Java SDK libraries:
+The following sections provides examples of using the `azure-core-tracing-opentelemetry` plugin with a few Azure Java SDK libraries. 
+
+### Configuration
+
+Pass OpenTelemetry TracerProvider to Azure client:
+
+```java com.azure.core.tracing.TracingOptions#custom
+
+// configure OpenTelemetry SDK explicitly per https://opentelemetry.io/docs/instrumentation/java/manual/
+SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
+    .addSpanProcessor(SimpleSpanProcessor.create(LoggingSpanExporter.create()))
+    .build();
+
+// Pass OTel tracerProvider to TracingOptions.
+TracingOptions customTracingOptions = new OpenTelemetryTracingOptions()
+    .setProvider(tracerProvider);
+
+// configure Azure Client to use customTracingOptions - it will use tracerProvider
+// to create tracers
+AzureClient sampleClient = new AzureClientBuilder()
+    .endpoint("https://my-client.azure.com")
+    .clientOptions(new ClientOptions().setTracingOptions(customTracingOptions))
+    .build();
+
+// use client as usual, if it emits metric, they will be exported
+sampleClient.methodCall("get items");
+
+```
 
 ### Using the plugin package with HTTP client libraries
 
@@ -93,6 +120,39 @@ try (Scope s = span.makeCurrent()) {
 
 When using async clients without Application Insights Java agent or OpenTelemetry agent, please do context propagation manually:
 
+#### Synchronous clients 
+
+Pass OpenTelemetry `Context` under `PARENT_TRACE_CONTEXT_KEY` in c`om.azure.core.util.Context`: 
+
+```java com.azure.core.util.tracing#explicit-parent
+
+SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
+    .addSpanProcessor(SimpleSpanProcessor.create(LoggingSpanExporter.create()))
+    .build();
+
+AzureClient sampleClient = new AzureClientBuilder()
+    .endpoint("Https://my-client.azure.com")
+    .build();
+
+Tracer tracer = tracerProvider.get("test");
+Span parent = tracer.spanBuilder("parent").startSpan();
+io.opentelemetry.context.Context otelContext = io.opentelemetry.context.Context.current().with(parent);
+
+// do some  work
+
+// You can pass parent explicitly using PARENT_TRACE_CONTEXT_KEY in the com.azure.core.util.Context.
+// Or, when using async clients, pass it in reactor.util.context.Context under the same key.
+String response = sampleClient.methodCall("get items",
+    new Context(PARENT_TRACE_CONTEXT_KEY, otelContext));
+
+// do more work
+parent.end();
+
+```
+
+#### Asynchronous clients
+
+Pass OpenTelemetry `Context` under `PARENT_TRACE_CONTEXT_KEY` in `reactor.util.context.Context`:
 ```java readme-sample-context-manual-propagation
 SecretAsyncClient secretAsyncClient = new SecretClientBuilder()
     .vaultUrl(VAULT_URL)

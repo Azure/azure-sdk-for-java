@@ -5,7 +5,9 @@ package com.azure.core.util.tracing;
 /**
  * Contains constants common AMQP protocol process calls.
  *
+ * @deprecated use {@link StartSpanOptions}
  */
+@Deprecated
 public enum ProcessKind {
     /**
      * Amqp Send Message process call to send data.

@@ -6,6 +6,7 @@ package com.azure.core.http;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.http.HttpPipelineCallState;
 import com.azure.core.util.Context;
+import com.azure.core.util.tracing.Tracer;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public final class HttpPipeline {
     private final HttpClient httpClient;
     private final HttpPipelinePolicy[] pipelinePolicies;
 
-
+    private final Tracer tracer;
     /**
      * Creates a HttpPipeline holding array of policies that gets applied to all request initiated through {@link
      * HttpPipeline#send(HttpPipelineCallContext)} and it's response.
@@ -32,11 +33,12 @@ public final class HttpPipeline {
      * @param pipelinePolicies pipeline policies in the order they need to be applied, a copy of this array will be made
      * hence changing the original array after the creation of pipeline will not  mutate the pipeline
      */
-    HttpPipeline(HttpClient httpClient, List<HttpPipelinePolicy> pipelinePolicies) {
+    HttpPipeline(HttpClient httpClient, List<HttpPipelinePolicy> pipelinePolicies, Tracer tracer) {
         Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
         Objects.requireNonNull(pipelinePolicies, "'pipelinePolicies' cannot be null.");
         this.httpClient = httpClient;
         this.pipelinePolicies = pipelinePolicies.toArray(new HttpPipelinePolicy[0]);
+        this.tracer = tracer;
     }
 
     /**
@@ -67,6 +69,14 @@ public final class HttpPipeline {
         return this.httpClient;
     }
 
+    /**
+     * Get the {@link Tracer} associated with the pipeline.
+     *
+     * @return the {@link Tracer} associated with the pipeline
+     */
+    public Tracer getTracer() {
+        return tracer;
+    }
     /**
      * Wraps the {@code request} in a context and sends it through pipeline.
      *

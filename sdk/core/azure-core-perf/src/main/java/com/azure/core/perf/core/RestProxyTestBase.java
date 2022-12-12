@@ -22,10 +22,12 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.implementation.http.policy.InstrumentationPolicy;
 import com.azure.core.perf.models.MockHttpResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.tracing.Tracer;
 import com.azure.perf.test.core.PerfStressTest;
 import com.azure.perf.test.core.RepeatingInputStream;
 import com.azure.perf.test.core.TestDataCreationHelper;
@@ -62,10 +64,14 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
     private final WireMockServer wireMockServer;
 
     public RestProxyTestBase(TOptions options) {
-        this(options, null);
+        this(options, null, null);
     }
 
     public RestProxyTestBase(TOptions options, Function<HttpRequest, HttpResponse> mockResponseSupplier) {
+        this(options, mockResponseSupplier, null);
+    }
+
+    public RestProxyTestBase(TOptions options, Function<HttpRequest, HttpResponse> mockResponseSupplier, Tracer tracer) {
         super(options);
         if (options.getBackendType() == CorePerfStressOptions.BackendType.WIREMOCK) {
             wireMockServer = createWireMockServer(mockResponseSupplier);
@@ -85,6 +91,7 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
         httpPipeline = new HttpPipelineBuilder()
             .policies(createPipelinePolicies(options))
             .httpClient(httpClient)
+            .tracer(tracer)
             .build();
 
         service = RestProxy.create(MyRestProxyService.class, httpPipeline);
@@ -116,6 +123,7 @@ public abstract class RestProxyTestBase<TOptions extends CorePerfStressOptions> 
             policies.add(new UserAgentPolicy());
             policies.add(new RetryPolicy());
             policies.add(new RequestIdPolicy());
+            policies.add(new InstrumentationPolicy());
             policies.add(new HttpLoggingPolicy(new HttpLogOptions()));
         }
 

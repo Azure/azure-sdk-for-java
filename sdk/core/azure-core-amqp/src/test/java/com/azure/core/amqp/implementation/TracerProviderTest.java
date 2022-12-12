@@ -6,7 +6,6 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.Context;
-import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -63,12 +62,12 @@ public class TracerProviderTest {
     @Test
     public void startSpan() {
         // Act
-        tracerProvider.startSpan(SERVICE_BASE_NAME, Context.NONE, ProcessKind.SEND);
+        tracerProvider.startSpan(SERVICE_BASE_NAME, Context.NONE, com.azure.core.util.tracing.ProcessKind.SEND);
 
         // Assert
         for (Tracer t : tracers) {
             verify(t, times(1))
-                .start(eq(METHOD_NAME), any(), eq(ProcessKind.SEND));
+                .start(eq(METHOD_NAME), any(), eq(com.azure.core.util.tracing.ProcessKind.SEND));
         }
     }
 
@@ -87,7 +86,7 @@ public class TracerProviderTest {
         final String parentKey = "parent-key";
         final String parentValue = "parent-value";
         final Context startingContext = Context.NONE;
-        when(tracer.start(METHOD_NAME, startingContext, ProcessKind.SEND)).thenAnswer(
+        when(tracer.start(METHOD_NAME, startingContext, com.azure.core.util.tracing.ProcessKind.SEND)).thenAnswer(
             invocation -> {
                 Context passed = invocation.getArgument(1, Context.class);
                 return passed.addData(parentKey, parentValue);
@@ -95,7 +94,7 @@ public class TracerProviderTest {
         );
 
         // Act
-        final Context updatedContext = tracerProvider.startSpan(SERVICE_BASE_NAME, startingContext, ProcessKind.SEND);
+        final Context updatedContext = tracerProvider.startSpan(SERVICE_BASE_NAME, startingContext, com.azure.core.util.tracing.ProcessKind.SEND);
 
         // Assert
         // Want to ensure that the data added to the parent are available.

@@ -73,7 +73,8 @@ public class CorePerfIntegrationTest {
                 () -> new JsonSendTest(options),
                 () -> new PipelineSendTest(options),
                 () -> new XmlReceiveTest(options),
-                () -> new XmlSendTest(options)
+                () -> new XmlSendTest(options),
+                () -> new TracingTest(options)
             ))
             .map(Supplier::get)
             .map(Arguments::of);

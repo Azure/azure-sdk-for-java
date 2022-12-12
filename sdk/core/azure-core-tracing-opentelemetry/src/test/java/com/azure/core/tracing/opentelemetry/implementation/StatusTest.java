@@ -4,7 +4,6 @@ package com.azure.core.tracing.opentelemetry.implementation;
 
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.StatusCode;
-import io.opentelemetry.sdk.trace.ReadableSpan;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,10 +13,8 @@ import org.mockito.MockitoAnnotations;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-/**
- * Class to test methods of HttpTraceUtil.
- */
-public class HttpTraceUtilTest {
+
+public class StatusTest {
 
     @Mock
     private Span parentSpan;
@@ -35,20 +32,32 @@ public class HttpTraceUtilTest {
     }
 
     @Test
-    public void parseUnknownStatusCode() {
+    public void parseUnknownStatusMessage() {
         // Act
-        OpenTelemetryUtils.setStatus(parentSpan, 1, null);
+        OpenTelemetryUtils.setStatus(parentSpan, "", null);
 
         // Assert
         verify(parentSpan, times(1))
-            .setStatus(StatusCode.UNSET);
+            .setStatus(StatusCode.UNSET, "");
+
     }
 
     @Test
-    public void parseUnauthenticatedStatusCode() {
-
+    public void parseSuccessStatusMessage() {
         // Act
-        OpenTelemetryUtils.setStatus(parentSpan, 401, null);
+
+        OpenTelemetryUtils.setStatus(parentSpan, "success", null);
+
+        // Assert
+        verify(parentSpan, times(1))
+            .setStatus(StatusCode.OK);
+    }
+
+    @Test
+    public void parseErrorStatusMessage() {
+        // Act
+
+        OpenTelemetryUtils.setStatus(parentSpan, "error", null);
 
         // Assert
         verify(parentSpan, times(1))
@@ -56,12 +65,14 @@ public class HttpTraceUtilTest {
     }
 
     @Test
-    public void parseNullError() {
+    public void parseStatusMessageOnError() {
+        Error error = new Error("testError");
+
         // Act
-        ReadableSpan span2 = (ReadableSpan) OpenTelemetryUtils.setStatus(parentSpan, 504, null);
+        OpenTelemetryUtils.setStatus(parentSpan, "", error);
 
         // Assert
         verify(parentSpan, times(1))
-            .setStatus(StatusCode.ERROR);
+            .recordException(error);
     }
 }

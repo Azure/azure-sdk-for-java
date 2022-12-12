@@ -69,10 +69,6 @@ public class Context {
      * &#47;&#47; Create an empty context having no data
      * Context emptyContext = Context.NONE;
      *
-     * &#47;&#47; Tracing spans or other properties defined by users can be passed
-     * &#47;&#47; to calling methods in sdk clients using Context object.
-     * Context keyValueContext = new Context&#40;USER_SPAN_NAME_KEY, &quot;span-name&quot;&#41;;
-     *
      * &#47;&#47; OpenTelemetry context can be optionally passed using PARENT_TRACE_CONTEXT_KEY
      * &#47;&#47; when OpenTelemetry context is not provided explicitly, ambient
      * &#47;&#47; io.opentelemetry.context.Context.current&#40;&#41; is used

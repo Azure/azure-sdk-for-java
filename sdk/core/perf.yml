@@ -6,7 +6,7 @@ parameters:
 - name: Tests
   displayName: Tests (regex of tests to run)
   type: string
-  default: '^(jsonsend)|(jsonreceive)|(xmlsend)|(xmlreceive)|(binarydatasend)|(binarydatareceive)$'
+  default: '^(jsonsend)|(jsonreceive)|(xmlsend)|(xmlreceive)|(binarydatasend)|(binarydatareceive)|(tracing)$'
 - name: Arguments
   displayName: Arguments (regex of arguments to run)
   type: string
@@ -19,9 +19,6 @@ parameters:
   displayName: AdditionalArguments (passed to PerfAutomation)
   type: string
   default: ' '
-- name: Profile
-  type: boolean
-  default: false
 
 extends:
   template: /eng/pipelines/templates/jobs/perf.yml
@@ -33,4 +30,3 @@ extends:
     Arguments: ${{ parameters.Arguments }}
     Iterations: ${{ parameters.Iterations }}
     AdditionalArguments: ${{ parameters.AdditionalArguments }}
-    Profile: ${{ parameters.Profile }}

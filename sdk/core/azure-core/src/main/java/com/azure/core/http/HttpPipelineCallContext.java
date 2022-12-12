@@ -4,6 +4,7 @@
 package com.azure.core.http;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.tracing.Tracer;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -14,6 +15,7 @@ import java.util.Optional;
 public final class HttpPipelineCallContext {
     private HttpRequest httpRequest;
     private Context data;
+    private Tracer tracer;
 
     /**
      * Package private ctr.
@@ -97,5 +99,14 @@ public final class HttpPipelineCallContext {
     public HttpPipelineCallContext setHttpRequest(HttpRequest request) {
         this.httpRequest = request;
         return this;
+    }
+
+    HttpPipelineCallContext setTracer(Tracer tracer) {
+        this.tracer = tracer;
+        return this;
+    }
+
+    Tracer getTracer() {
+        return tracer;
     }
 }

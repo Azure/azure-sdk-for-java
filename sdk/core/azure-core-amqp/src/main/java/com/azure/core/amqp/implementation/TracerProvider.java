@@ -5,7 +5,6 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
 import reactor.core.publisher.Signal;
 
@@ -15,6 +14,7 @@ import java.util.Objects;
 /**
  * @deprecated use EventHubs*Tracer and ServiceBus*Tracer instead.
  */
+@SuppressWarnings("deprecation")
 public class TracerProvider {
     private static final ClientLogger LOGGER = new ClientLogger(TracerProvider.class);
     private Tracer tracer;
@@ -42,7 +42,7 @@ public class TracerProvider {
      * @param processKind the invoking process type.
      * @return An updated context object.
      */
-    public Context startSpan(String serviceBaseName, Context context, ProcessKind processKind) {
+    public Context startSpan(String serviceBaseName, Context context, com.azure.core.util.tracing.ProcessKind processKind) {
         if (tracer == null) {
             return context;
         }
@@ -130,7 +130,7 @@ public class TracerProvider {
             return context;
         }
         Objects.requireNonNull(context, "'context' cannot be null.");
-        String spanName = getSpanName(serviceBaseName, ProcessKind.SEND);
+        String spanName = getSpanName(serviceBaseName, com.azure.core.util.tracing.ProcessKind.SEND);
         return tracer.getSharedSpanBuilder(spanName, context);
     }
 
@@ -138,7 +138,7 @@ public class TracerProvider {
         tracer.end(statusMessage, throwable, context);
     }
 
-    private String getSpanName(String serviceBaseName, ProcessKind processKind) {
+    private String getSpanName(String serviceBaseName, com.azure.core.util.tracing.ProcessKind processKind) {
         switch (processKind) {
             case SEND:
                 serviceBaseName += "send";
