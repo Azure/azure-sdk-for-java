@@ -82,17 +82,17 @@ public final class CallAutomationAsyncClient {
         this.contentsInternal = callServiceClient.getContents();
         this.logger = new ClientLogger(CallAutomationAsyncClient.class);
         this.contentDownloader = new ContentDownloader(
-            callServiceClient.getEndpoint().toString(),
+            callServiceClient.getEndpoint(),
             callServiceClient.getHttpPipeline());
         this.httpPipelineInternal = callServiceClient.getHttpPipeline();
-        this.resourceEndpoint = callServiceClient.getEndpoint().toString();
+        this.resourceEndpoint = callServiceClient.getEndpoint();
     }
 
     //region Pre-call Actions
     /**
      * Create a call connection request from a source identity to a target identity.
      *
-     * @param source The caller.
+     * @param source The caller of the call.
      * @param targets The list of targets.
      * @param callbackUrl The call back url for receiving events.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -170,6 +170,11 @@ public final class CallAutomationAsyncClient {
                 getMediaStreamingConfigurationInternal(createCallOptions.getMediaStreamingConfiguration());
             request.setMediaStreamingConfiguration(streamingConfigurationInternal);
         }
+
+        if (createCallOptions.getAzureCognitiveServicesEndpointUrl() != null && !createCallOptions.getAzureCognitiveServicesEndpointUrl().isEmpty()) {
+            request.setAzureCognitiveServicesEndpointUrl(createCallOptions.getAzureCognitiveServicesEndpointUrl());
+        }
+
         return request;
     }
 
@@ -234,6 +239,9 @@ public final class CallAutomationAsyncClient {
                 request.setMediaStreamingConfiguration(mediaStreamingConfigurationInternal);
             }
 
+            if (answerCallOptions.getAzureCognitiveServicesEndpointUrl() != null && !answerCallOptions.getAzureCognitiveServicesEndpointUrl().isEmpty()) {
+                request.setAzureCognitiveServicesEndpointUrl(answerCallOptions.getAzureCognitiveServicesEndpointUrl());
+            }
 
             return serverCallingInternal.answerCallWithResponseAsync(request,
                     answerCallOptions.getRepeatabilityHeaders() != null ? answerCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,

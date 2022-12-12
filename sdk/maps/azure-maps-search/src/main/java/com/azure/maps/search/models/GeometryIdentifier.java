@@ -12,11 +12,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class GeometryIdentifier {
     /*
      * Pass this as geometryId to the [Get Search
-     * Polygon](https://docs.microsoft.com/rest/api/maps/search/getsearchpolygon)
-     * API to fetch geometry information for this result.
+     * Polygon](https://docs.microsoft.com/rest/api/maps/search/getsearchpolygon) API to fetch geometry information for
+     * this result.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
+
+    /** Creates an instance of GeometryIdentifier class. */
+    public GeometryIdentifier() {}
 
     /**
      * Get the id property: Pass this as geometryId to the [Get Search

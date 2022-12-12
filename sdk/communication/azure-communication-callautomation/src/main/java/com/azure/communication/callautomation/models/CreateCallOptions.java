@@ -30,6 +30,11 @@ public class CreateCallOptions {
      */
     private final String callbackUrl;
 
+    /*
+     * The endpoint URL of the Azure Cognitive Services resource attached
+     */
+    private String azureCognitiveServicesEndpointUrl;
+
     /**
      * The source caller Id that's shown to the PSTN participant being invited.
      * Required only when inviting a PSTN participant.
@@ -90,6 +95,16 @@ public class CreateCallOptions {
      */
     public String getCallbackUrl() {
         return callbackUrl;
+    }
+
+    /**
+     * Get the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
+     * attached.
+     *
+     * @return the azureCognitiveServicesEndpointUrl value.
+     */
+    public String getAzureCognitiveServicesEndpointUrl() {
+        return this.azureCognitiveServicesEndpointUrl;
     }
 
     /**
@@ -170,6 +185,18 @@ public class CreateCallOptions {
      */
     public CreateCallOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
         this.repeatabilityHeaders = repeatabilityHeaders;
+        return this;
+    }
+
+    /**
+     * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
+     * attached.
+     *
+     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    public CreateCallOptions setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
+        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
         return this;
     }
 }

@@ -23,6 +23,9 @@ public class ReverseSearchAddressResult {
     @JsonProperty(value = "addresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReverseSearchAddressResultItem> addresses;
 
+    /** Creates an instance of ReverseSearchAddressResult class. */
+    public ReverseSearchAddressResult() {}
+
     /**
      * Get the summary property: Summary object for a Search Address Reverse response.
      *
