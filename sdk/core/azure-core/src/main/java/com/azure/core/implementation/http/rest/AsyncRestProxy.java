@@ -73,10 +73,10 @@ public class AsyncRestProxy extends RestProxyBase {
         final Context finalContext = context;
         final Mono<HttpResponse> asyncResponse = RestProxyUtils.validateLengthAsync(request)
             .flatMap(r -> {
+                // correlates logs
                 try (AutoCloseable scope = tracer.makeSpanCurrent(finalContext)) {
                     return send(r, finalContext);
                 } catch (Throwable ex) {
-                    // do nothing
                     return Mono.error(ex);
                 }
             });

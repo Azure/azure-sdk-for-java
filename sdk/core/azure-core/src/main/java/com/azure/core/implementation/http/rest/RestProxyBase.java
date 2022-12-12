@@ -71,7 +71,7 @@ public abstract class RestProxyBase {
      * this RestProxy "implements".
      */
     public RestProxyBase(HttpPipeline httpPipeline, SerializerAdapter serializer,
-                         SwaggerInterfaceParser interfaceParser) {
+        SwaggerInterfaceParser interfaceParser) {
         this.httpPipeline = httpPipeline;
         this.serializer = serializer;
         this.interfaceParser = interfaceParser;
@@ -200,9 +200,16 @@ public abstract class RestProxyBase {
             return;
         }
 
-        tracer.end(null, throwable, span);
-    }
+        if (throwable != null) {
+            tracer.end(null, throwable, span);
+        }
 
+        if (httpDecodedResponse != null) {
+            //noinspection ConstantConditions
+            int statusCode = httpDecodedResponse.getSourceResponse().getStatusCode();
+            tracer.end(statusCode >= 300 ? "error" : null, null, span);
+        }
+    }
 
     /**
      * Create a HttpRequest for the provided Swagger method using the provided arguments.

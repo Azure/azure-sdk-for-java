@@ -694,7 +694,8 @@ public final class SpanDataMapper {
     }
 
     private static boolean isAzureSdkMessaging(String messagingSystem) {
-        return "Microsoft.EventHub".equals(messagingSystem) || "Microsoft.ServiceBus".equals(messagingSystem);
+        return "Microsoft.EventHub".equals(messagingSystem)
+            || "Microsoft.ServiceBus".equals(messagingSystem);
     }
 
     private static String getOperationName(SpanData span) {

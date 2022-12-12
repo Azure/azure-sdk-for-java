@@ -24,7 +24,7 @@ public final class StartSpanOptions {
     private Context parentContext;
 
     /**
-     * Crate start options with given kind
+     * Create start options with given kind
      *
      * @param kind The kind of the span to be created.
      */
