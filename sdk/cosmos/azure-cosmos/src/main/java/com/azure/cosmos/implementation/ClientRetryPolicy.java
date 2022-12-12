@@ -126,7 +126,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 WebExceptionUtility.isReadTimeoutException(clientException) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT)) {
 
-                boolean canFailoverOnTimeout = gatewayRequestCanFailoverOnTimeout(request, clientException);
+                boolean canFailoverOnTimeout = canGatewayRequestFailoverOnTimeout(request, clientException);
 
                 //if operation is data plane read, metadata read, or query plan it can be retried on a different endpoint.
                 if(canFailoverOnTimeout) {
