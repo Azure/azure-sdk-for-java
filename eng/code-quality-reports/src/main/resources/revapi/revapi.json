@@ -78,7 +78,7 @@
           },
           {
             "matcher": "java-package",
-            "match": "/javax\\.(jms|servlet)(\\..*)?/"
+            "match": "/jakarta\\.(jms|servlet)(\\..*)?/"
           },
           {
             "matcher": "java-package",
