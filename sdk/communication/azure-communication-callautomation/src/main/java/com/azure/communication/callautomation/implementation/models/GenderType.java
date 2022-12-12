@@ -10,11 +10,11 @@ import java.util.Collection;
 
 /** Defines values for GenderType. */
 public final class GenderType extends ExpandableStringEnum<GenderType> {
-    /** Static value m for GenderType. */
-    public static final GenderType M = fromString("m");
+    /** Static value male for GenderType. */
+    public static final GenderType MALE = fromString("male");
 
-    /** Static value f for GenderType. */
-    public static final GenderType F = fromString("f");
+    /** Static value female for GenderType. */
+    public static final GenderType FEMALE = fromString("female");
 
     /**
      * Creates or finds a GenderType from its string representation.

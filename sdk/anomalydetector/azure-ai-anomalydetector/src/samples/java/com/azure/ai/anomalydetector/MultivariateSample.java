@@ -87,8 +87,8 @@ public class MultivariateSample {
         return detectionResult.getSummary().getStatus();
     }
 
-    private static void getModelList(AnomalyDetectorClient client, Integer skip, Integer top) {
-        PagedIterable<AnomalyDetectionModel> response = client.listMultivariateModels(skip, top);
+    private static void getModelList(AnomalyDetectorClient client) {
+        PagedIterable<AnomalyDetectionModel> response = client.listMultivariateModels();
 
         System.out.println("ModelList: ");
         response.streamByPage().forEach(models -> {
@@ -180,9 +180,7 @@ public class MultivariateSample {
         client.deleteMultivariateModel(modelId.toString());
 
         //Get model list
-        Integer skip = 0;
-        Integer top = 5;
-        getModelList(client, skip, top);
+        getModelList(client);
     }
 
     public static void main(final String[] args) throws Exception {
