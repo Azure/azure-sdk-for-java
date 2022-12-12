@@ -50,11 +50,6 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
     public InstrumentationPolicy() {
     }
 
-    /*public InstrumentationPolicy(Tracer tracer) {
-        this.tracer = tracer;
-        this.propagatingMono = new ScalarPropagatingMono(tracer);
-    }*/
-
     public void initialize(Tracer tracer) {
         this.tracer = tracer;
         this.propagatingMono = new ScalarPropagatingMono(tracer);
