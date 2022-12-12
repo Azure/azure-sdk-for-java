@@ -18,8 +18,7 @@ public class ObjectMapperFactory {
     static {
         OBJECT_MAPPER.registerModule(new ParameterNamesModule())
                         .registerModule(new Jdk8Module())
-                        .registerModule(new JavaTimeModule())
-                        .enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);;
+                        .registerModule(new JavaTimeModule());
         OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
