@@ -1,4 +1,8 @@
 // Databricks notebook source
+dbutils.widgets.removeAll()
+
+// COMMAND ----------
+
 // global config
 dbutils.widgets.text("cosmosEndpoint", "") // enter the Cosmos DB Account URI of the source account
 dbutils.widgets.text("cosmosMasterKey", "") // enter the Cosmos DB Account PRIMARY KEY of the source account
@@ -45,7 +49,7 @@ def returnCosmosDBProperties(cosmosContainerProvisionedThroughput: String): Stri
 }
 
 def returnCosmosContainerProperties(cosmosContainerProvisionedThroughput: String): String = {
-  if(!(cosmosTargetContainerProvisionedThroughput contains "shared")) { return "%,".format(cosmosTargetContainerProvisionedThroughput) } else return ""
+  if(!(cosmosTargetContainerProvisionedThroughput contains "shared")) { return "%s,".format(cosmosTargetContainerProvisionedThroughput) } else return ""
 }
 
 def createCosmosDB(cosmosDatabaseName: String, cosmosContainerProvisionedThroughput: String){
@@ -110,8 +114,9 @@ def cosmosInitReadStream(cosmosEndpoint: String, cosmosMasterKey: String, cosmos
                              "spark.cosmos.applicationName" -> s"${cosmosDatabaseName}_${cosmosContainerName}_LiveMigrationRead_",   
                              "spark.cosmos.database" -> cosmosDatabaseName,
                              "spark.cosmos.container" -> cosmosContainerName,
-                             "spark.cosmos.read.partitioning.strategy" -> "Default",
-                             "spark.cosmos.read.inferSchema.enabled" -> "false",   
+                             "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
+                             "spark.cosmos.read.inferSchema.enabled" -> "false",
+                             "spark.cosmos.read.maxItemCount" -> "5",
                              "spark.cosmos.changeFeed.startFrom" -> "Beginning",
                              "spark.cosmos.changeFeed.mode" -> "Incremental",
                              "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "50000", 
@@ -134,7 +139,7 @@ def cosmosInitReadStream(cosmosEndpoint: String, cosmosMasterKey: String, cosmos
 def cosmosInitWriteConfig(cosmosEndpoint: String, cosmosMasterKey: String, cosmosSourceDatabaseName: String, cosmosSourceContainerName: String, cosmosTargetDatabaseName: String, cosmosTargetContainerName: String): Map[String, String] = {   
     // when running this notebook is stopped (or if a problem causes a crash) change feed processing will be picked up from last processed document
     // if you want to start from beginning, delete this folder or change checkpointLocation value
-    val checkpointLocation = s"/tmp/${cosmosSourceDatabaseName}/${cosmosSourceContainerName}/live_migration_checkpoint"
+    val checkpointLocation = s"/tmp/live_migration_checkpoint/${cosmosSourceDatabaseName}/${cosmosSourceContainerName}"
     val applicationName = s"${cosmosSourceDatabaseName}_${cosmosSourceContainerName}_"
 
     return Map(
