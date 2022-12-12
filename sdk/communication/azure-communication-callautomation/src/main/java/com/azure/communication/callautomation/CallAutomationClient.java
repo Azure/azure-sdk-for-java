@@ -6,6 +6,7 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
+import com.azure.communication.callautomation.models.CallSource;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
@@ -49,7 +50,7 @@ public final class CallAutomationClient {
      * @return A CallConnectionDelete object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateCallResult createCall(CommunicationIdentifier source,
+    public CreateCallResult createCall(CallSource source,
                                        List<CommunicationIdentifier> targets,
                                        String callbackUrl) {
         return callAutomationAsyncClient.createCall(source, targets, callbackUrl).block();
