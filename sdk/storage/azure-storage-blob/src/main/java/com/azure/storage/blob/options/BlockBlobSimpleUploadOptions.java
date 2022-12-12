@@ -60,7 +60,7 @@ public class BlockBlobSimpleUploadOptions {
     public BlockBlobSimpleUploadOptions(InputStream data, long length) {
         StorageImplUtils.assertNotNull("dataStream", data);
         StorageImplUtils.assertInBounds("length", length, 0, Long.MAX_VALUE);
-        this.data = BinaryData.fromStream(data, length);
+        this.data = BinaryData.fromStream(data, length).toReplayableBinaryData();
     }
 
     /**

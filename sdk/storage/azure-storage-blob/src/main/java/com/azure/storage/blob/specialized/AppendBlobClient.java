@@ -367,7 +367,7 @@ public final class AppendBlobClient extends BlobClientBase {
     public Response<AppendBlobItem> appendBlockWithResponse(InputStream data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions, Duration timeout, Context context) {
         Objects.requireNonNull(data, "'data' cannot be null.");
-        BinaryData bData = BinaryData.fromStream(data, length);
+        BinaryData bData = BinaryData.fromStream(data, length).toReplayableBinaryData();
         Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(
             bData, contentMd5, appendBlobRequestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -377,7 +377,7 @@ public final class AppendBlobClient extends BlobClientBase {
      * Commits a new block of data to the end of the existing append blob.
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
-     * {@code Flux} must produce the same data each time it is subscribed to.
+     * {@code BinaryData} must produce the same data each time it is read.
      *
      * @param options The options for this append request.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.

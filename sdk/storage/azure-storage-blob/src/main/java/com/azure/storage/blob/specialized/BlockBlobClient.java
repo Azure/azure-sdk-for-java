@@ -690,7 +690,7 @@ public final class BlockBlobClient extends BlobClientBase {
         StorageImplUtils.assertNotNull("data", data);
 
         Mono<Response<Void>> response = client.stageBlockWithResponse(base64BlockId,
-            BinaryData.fromStream(data, length), contentMd5, leaseId, context);
+            BinaryData.fromStream(data, length).toReplayableBinaryData(), contentMd5, leaseId, context);
         return blockWithOptionalTimeout(response, timeout);
     }
 
