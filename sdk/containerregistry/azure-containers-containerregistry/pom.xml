@@ -40,9 +40,6 @@
       --add-opens com.azure.containers.containerregistry/com.azure.containers.containerregistry.implementation.models=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-reads com.azure.core=ALL-UNNAMED
-      --add-reads com.azure.core.test=ALL-UNNAMED
-      --add-reads com.azure.core.http.netty=ALL-UNNAMED
-      --add-reads com.azure.containers.containerregistry=com.azure.http.netty
     </javaModulesSurefireArgLine>
   </properties>
 
