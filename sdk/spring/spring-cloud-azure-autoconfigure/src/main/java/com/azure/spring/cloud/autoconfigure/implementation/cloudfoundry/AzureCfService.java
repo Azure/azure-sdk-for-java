@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.cloudfoundry;
+package com.azure.spring.cloud.autoconfigure.implementation.cloudfoundry;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -62,15 +62,15 @@ enum AzureCfService {
         this.cfToAzureProperties = buildCfToAzureProperties(cfToAzureProperties);
     }
 
-    public String getCfServiceName() {
+    String getCfServiceName() {
         return this.cfServiceName;
     }
 
-    public Map<String, String> getCfToAzureProperties() {
+    Map<String, String> getCfToAzureProperties() {
         return this.cfToAzureProperties;
     }
 
-    public String getAzureServiceName() {
+    String getAzureServiceName() {
         return this.azureServiceName;
     }
 
