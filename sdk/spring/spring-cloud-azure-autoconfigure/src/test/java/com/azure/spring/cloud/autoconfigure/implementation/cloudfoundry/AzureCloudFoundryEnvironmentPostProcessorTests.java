@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.cloudfoundry;
+package com.azure.spring.cloud.autoconfigure.implementation.cloudfoundry;
 
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
@@ -34,7 +34,7 @@ class AzureCloudFoundryEnvironmentPostProcessorTests {
         .withUserConfiguration(AzureCfEnvPPTestConfiguration.class);
 
     @Test
-    public void testConfigurationProperties() throws IOException {
+    void testConfigurationProperties() throws IOException {
         String vcapFileContents = new String(Files.readAllBytes(new ClassPathResource("VCAP_SERVICES").getFile()
                                                                                                       .toPath()));
         this.contextRunner
@@ -94,20 +94,20 @@ class AzureCloudFoundryEnvironmentPostProcessorTests {
         static class Storage {
             private final AzureStorageBlobProperties blob = new AzureStorageBlobProperties();
 
-            public AzureStorageBlobProperties getBlob() {
+            AzureStorageBlobProperties getBlob() {
                 return blob;
             }
         }
 
-        public AzureServiceBusProperties getServicebus() {
+        AzureServiceBusProperties getServicebus() {
             return servicebus;
         }
 
-        public AzureEventHubsProperties getEventhubs() {
+        AzureEventHubsProperties getEventhubs() {
             return eventhubs;
         }
 
-        public Storage getStorage() {
+        Storage getStorage() {
             return storage;
         }
     }

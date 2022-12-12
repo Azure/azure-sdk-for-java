@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.cloudfoundry.environment;
+package com.azure.spring.cloud.autoconfigure.implementation.cloudfoundry.environment;
 
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest
 @ContextConfiguration(classes = {VcapProcessor.class})
-public class AzureCloudFoundryServiceApplicationTests {
+class AzureCloudFoundryServiceApplicationTests {
 
     private static final Logger LOG = LoggerFactory.getLogger(AzureCloudFoundryServiceApplicationTests.class);
 
@@ -30,7 +30,7 @@ public class AzureCloudFoundryServiceApplicationTests {
     private VcapProcessor parser;
 
     @Test
-    public void testVcapSingleService() throws IOException {
+    void testVcapSingleService() throws IOException {
         final Resource resource = new ClassPathResource("cloudfoundry/vcap1.json");
         final String content;
         try {
@@ -64,7 +64,7 @@ public class AzureCloudFoundryServiceApplicationTests {
     }
 
     @Test
-    public void testVcapSingleServiceWithNulls() throws IOException {
+    void testVcapSingleServiceWithNulls() throws IOException {
         final Resource resource = new ClassPathResource("cloudfoundry/vcap2.json");
         final String content;
         try {
@@ -100,7 +100,7 @@ public class AzureCloudFoundryServiceApplicationTests {
     }
 
     @Test
-    public void testVcapUserProvidedService() throws IOException {
+    void testVcapUserProvidedService() throws IOException {
         final Resource resource = new ClassPathResource("cloudfoundry/vcap3.json");
         final String content;
         try {
