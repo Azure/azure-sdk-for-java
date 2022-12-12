@@ -119,9 +119,11 @@ private object CosmosTableSchemaInferrer
       val queryOptions = new CosmosQueryRequestOptions()
       queryOptions.setMaxBufferedItemCount(cosmosInferenceConfig.inferSchemaSamplingSize)
 
-      val dedicatedGatewayRequestOptions = new DedicatedGatewayRequestOptions
-      dedicatedGatewayRequestOptions.setMaxIntegratedCacheStaleness(Duration.ofMillis(cosmosReadConfig.maxIntegratedCacheStaleness))
-      queryOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions)
+      if (cosmosReadConfig.maxIntegratedCacheStaleness > -1) {
+        val dedicatedGatewayRequestOptions = new DedicatedGatewayRequestOptions
+        dedicatedGatewayRequestOptions.setMaxIntegratedCacheStaleness(Duration.ofMillis(cosmosReadConfig.maxIntegratedCacheStaleness))
+        queryOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions)
+      }
 
       val queryText = cosmosInferenceConfig.inferSchemaQuery match {
         case None =>

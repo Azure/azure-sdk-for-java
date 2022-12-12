@@ -52,9 +52,6 @@ private case class ItemsPartitionReader
 
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
 
-  private val dedicatedGatewayRequestOptions = new DedicatedGatewayRequestOptions()
-  dedicatedGatewayRequestOptions.setMaxIntegratedCacheStaleness(Duration.ofMillis(readConfig.maxIntegratedCacheStaleness))
-  queryOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions)
 
   private val clientCacheItem = CosmosClientCache(
     CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
@@ -144,6 +141,12 @@ private case class ItemsPartitionReader
           java.lang.Integer.MAX_VALUE
         ).toInt
       )
+
+      if (readConfig.maxIntegratedCacheStaleness > -1) {
+        val dedicatedGatewayRequestOptions = new DedicatedGatewayRequestOptions
+        dedicatedGatewayRequestOptions.setMaxIntegratedCacheStaleness(Duration.ofMillis(readConfig.maxIntegratedCacheStaleness))
+        queryOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions)
+      }
 
       ImplementationBridgeHelpers
         .CosmosQueryRequestOptionsHelper

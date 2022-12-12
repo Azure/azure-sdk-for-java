@@ -502,7 +502,12 @@ private object CosmosReadConfig {
           case None => 8
         }
       ),
-      maxIntegratedCacheStaleness.get,
+      maxIntegratedCacheStaleness.getOrElse(
+        maxIntegratedCacheStaleness match {
+          case Some(maxIntegratedCacheStalenessProvidedByUser) =>  maxIntegratedCacheStalenessProvidedByUser
+          case None => -1
+        }
+      ),
       customQuery)
   }
 }
