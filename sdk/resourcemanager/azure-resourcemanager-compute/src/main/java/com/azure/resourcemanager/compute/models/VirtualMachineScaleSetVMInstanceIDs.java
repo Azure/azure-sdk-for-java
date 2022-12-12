@@ -18,6 +18,10 @@ public final class VirtualMachineScaleSetVMInstanceIDs {
     @JsonProperty(value = "instanceIds")
     private List<String> instanceIds;
 
+    /** Creates an instance of VirtualMachineScaleSetVMInstanceIDs class. */
+    public VirtualMachineScaleSetVMInstanceIDs() {
+    }
+
     /**
      * Get the instanceIds property: The virtual machine scale set instance ids. Omitting the virtual machine scale set
      * instance ids will result in the operation being performed on all virtual machines in the virtual machine scale

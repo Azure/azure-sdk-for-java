@@ -6,6 +6,7 @@ package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Role definition properties. */
@@ -40,6 +41,34 @@ public final class RoleDefinitionProperties {
      */
     @JsonProperty(value = "assignableScopes")
     private List<String> assignableScopes;
+
+    /*
+     * Time it was created
+     */
+    @JsonProperty(value = "createdOn", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime createdOn;
+
+    /*
+     * Time it was updated
+     */
+    @JsonProperty(value = "updatedOn", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime updatedOn;
+
+    /*
+     * Id of the user who created the assignment
+     */
+    @JsonProperty(value = "createdBy", access = JsonProperty.Access.WRITE_ONLY)
+    private String createdBy;
+
+    /*
+     * Id of the user who updated the assignment
+     */
+    @JsonProperty(value = "updatedBy", access = JsonProperty.Access.WRITE_ONLY)
+    private String updatedBy;
+
+    /** Creates an instance of RoleDefinitionProperties class. */
+    public RoleDefinitionProperties() {
+    }
 
     /**
      * Get the roleName property: The role name.
@@ -139,6 +168,42 @@ public final class RoleDefinitionProperties {
     public RoleDefinitionProperties withAssignableScopes(List<String> assignableScopes) {
         this.assignableScopes = assignableScopes;
         return this;
+    }
+
+    /**
+     * Get the createdOn property: Time it was created.
+     *
+     * @return the createdOn value.
+     */
+    public OffsetDateTime createdOn() {
+        return this.createdOn;
+    }
+
+    /**
+     * Get the updatedOn property: Time it was updated.
+     *
+     * @return the updatedOn value.
+     */
+    public OffsetDateTime updatedOn() {
+        return this.updatedOn;
+    }
+
+    /**
+     * Get the createdBy property: Id of the user who created the assignment.
+     *
+     * @return the createdBy value.
+     */
+    public String createdBy() {
+        return this.createdBy;
+    }
+
+    /**
+     * Get the updatedBy property: Id of the user who updated the assignment.
+     *
+     * @return the updatedBy value.
+     */
+    public String updatedBy() {
+        return this.updatedBy;
     }
 
     /**

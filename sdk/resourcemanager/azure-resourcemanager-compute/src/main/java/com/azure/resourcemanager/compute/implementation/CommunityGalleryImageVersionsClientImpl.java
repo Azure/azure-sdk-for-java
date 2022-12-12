@@ -59,7 +59,7 @@ public final class CommunityGalleryImageVersionsClientImpl implements CommunityG
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface CommunityGalleryImageVersionsService {
+    public interface CommunityGalleryImageVersionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/communityGalleries"
@@ -149,7 +149,7 @@ public final class CommunityGalleryImageVersionsClientImpl implements CommunityG
                 .error(
                     new IllegalArgumentException("Parameter galleryImageVersionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-03";
+        final String apiVersion = "2022-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -218,7 +218,7 @@ public final class CommunityGalleryImageVersionsClientImpl implements CommunityG
                 .error(
                     new IllegalArgumentException("Parameter galleryImageVersionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-03";
+        final String apiVersion = "2022-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -264,26 +264,6 @@ public final class CommunityGalleryImageVersionsClientImpl implements CommunityG
      * @param galleryImageVersionName The name of the community gallery image version. Needs to follow semantic version
      *     name pattern: The allowed characters are digit and period. Digits must be within the range of a 32-bit
      *     integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a community gallery image version.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunityGalleryImageVersionInner get(
-        String location, String publicGalleryName, String galleryImageName, String galleryImageVersionName) {
-        return getAsync(location, publicGalleryName, galleryImageName, galleryImageVersionName).block();
-    }
-
-    /**
-     * Get a community gallery image version.
-     *
-     * @param location Resource location.
-     * @param publicGalleryName The public name of the community gallery.
-     * @param galleryImageName The name of the community gallery image definition.
-     * @param galleryImageVersionName The name of the community gallery image version. Needs to follow semantic version
-     *     name pattern: The allowed characters are digit and period. Digits must be within the range of a 32-bit
-     *     integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -299,6 +279,27 @@ public final class CommunityGalleryImageVersionsClientImpl implements CommunityG
         Context context) {
         return getWithResponseAsync(location, publicGalleryName, galleryImageName, galleryImageVersionName, context)
             .block();
+    }
+
+    /**
+     * Get a community gallery image version.
+     *
+     * @param location Resource location.
+     * @param publicGalleryName The public name of the community gallery.
+     * @param galleryImageName The name of the community gallery image definition.
+     * @param galleryImageVersionName The name of the community gallery image version. Needs to follow semantic version
+     *     name pattern: The allowed characters are digit and period. Digits must be within the range of a 32-bit
+     *     integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a community gallery image version.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommunityGalleryImageVersionInner get(
+        String location, String publicGalleryName, String galleryImageName, String galleryImageVersionName) {
+        return getWithResponse(location, publicGalleryName, galleryImageName, galleryImageVersionName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -339,7 +340,7 @@ public final class CommunityGalleryImageVersionsClientImpl implements CommunityG
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-03";
+        final String apiVersion = "2022-03-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -405,7 +406,7 @@ public final class CommunityGalleryImageVersionsClientImpl implements CommunityG
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
-        final String apiVersion = "2022-01-03";
+        final String apiVersion = "2022-03-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

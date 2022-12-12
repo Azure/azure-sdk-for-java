@@ -22,15 +22,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.elastic.fluent.VMCollectionsClient;
 import com.azure.resourcemanager.elastic.models.VMCollectionUpdate;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VMCollectionsClient. */
 public final class VMCollectionsClientImpl implements VMCollectionsClient {
-    private final ClientLogger logger = new ClientLogger(VMCollectionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final VMCollectionsService service;
 
@@ -54,7 +51,7 @@ public final class VMCollectionsClientImpl implements VMCollectionsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftElasticVMCo")
-    private interface VMCollectionsService {
+    public interface VMCollectionsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors"
@@ -81,7 +78,7 @@ public final class VMCollectionsClientImpl implements VMCollectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> updateWithResponseAsync(
@@ -135,7 +132,7 @@ public final class VMCollectionsClientImpl implements VMCollectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> updateWithResponseAsync(
@@ -181,16 +178,15 @@ public final class VMCollectionsClientImpl implements VMCollectionsClient {
      *
      * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
      * @param monitorName Monitor resource name.
-     * @param body VM resource Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateAsync(String resourceGroupName, String monitorName, VMCollectionUpdate body) {
-        return updateWithResponseAsync(resourceGroupName, monitorName, body)
-            .flatMap((Response<Void> res) -> Mono.empty());
+    private Mono<Void> updateAsync(String resourceGroupName, String monitorName) {
+        final VMCollectionUpdate body = null;
+        return updateWithResponseAsync(resourceGroupName, monitorName, body).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -198,16 +194,17 @@ public final class VMCollectionsClientImpl implements VMCollectionsClient {
      *
      * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
      * @param monitorName Monitor resource name.
+     * @param body VM resource Id.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateAsync(String resourceGroupName, String monitorName) {
-        final VMCollectionUpdate body = null;
-        return updateWithResponseAsync(resourceGroupName, monitorName, body)
-            .flatMap((Response<Void> res) -> Mono.empty());
+    public Response<Void> updateWithResponse(
+        String resourceGroupName, String monitorName, VMCollectionUpdate body, Context context) {
+        return updateWithResponseAsync(resourceGroupName, monitorName, body, context).block();
     }
 
     /**
@@ -222,24 +219,6 @@ public final class VMCollectionsClientImpl implements VMCollectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void update(String resourceGroupName, String monitorName) {
         final VMCollectionUpdate body = null;
-        updateAsync(resourceGroupName, monitorName, body).block();
-    }
-
-    /**
-     * Update the vm details that will be monitored by the Elastic monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
-     * @param monitorName Monitor resource name.
-     * @param body VM resource Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateWithResponse(
-        String resourceGroupName, String monitorName, VMCollectionUpdate body, Context context) {
-        return updateWithResponseAsync(resourceGroupName, monitorName, body, context).block();
+        updateWithResponse(resourceGroupName, monitorName, body, Context.NONE);
     }
 }

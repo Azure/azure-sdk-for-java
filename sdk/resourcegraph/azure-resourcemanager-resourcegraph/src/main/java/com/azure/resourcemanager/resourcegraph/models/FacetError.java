@@ -22,6 +22,10 @@ public final class FacetError extends Facet {
     @JsonProperty(value = "errors", required = true)
     private List<ErrorDetails> errors;
 
+    /** Creates an instance of FacetError class. */
+    public FacetError() {
+    }
+
     /**
      * Get the errors property: An array containing detected facet errors with details.
      *

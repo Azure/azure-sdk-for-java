@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OperationTrigger. */
+/** Trigger of operation. */
 public final class OperationTrigger extends ExpandableStringEnum<OperationTrigger> {
     /** Static value User for OperationTrigger. */
     public static final OperationTrigger USER = fromString("User");

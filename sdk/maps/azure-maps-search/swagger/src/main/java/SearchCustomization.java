@@ -1,13 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import java.util.Arrays;
-
+import com.azure.autorest.customization.ClassCustomization;
+import com.azure.autorest.customization.ConstructorCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
-import com.azure.autorest.customization.PackageCustomization;
-import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.MethodCustomization;
+import com.azure.autorest.customization.PackageCustomization;
 import org.slf4j.Logger;
 
 /**
@@ -76,7 +75,7 @@ public class SearchCustomization extends Customization {
         // getCountryCodeISO3
         MethodCustomization getCountryCodeIso3NameCustomization = classCustomization.getMethod("getCountryCodeISO3");
         MethodCustomization getCountryCodeIso3Customization = getCountryCodeIso3NameCustomization.rename("getCountryCodeIso3");
-        
+
         // customize Address class name
         ClassCustomization classCustomization2 = models.getClass("Address");
         classCustomization2.rename("MapsSearchAddress");
@@ -228,6 +227,9 @@ public class SearchCustomization extends Customization {
             .setParam("date", "The date in the format of yyyy-mm-dd represented by a string")
             .setParam("hour", "int representing the hour")
             .setParam("minute", "int representing the minute");
+
+        ConstructorCustomization constructorCustomization = classCustomization.getConstructor("public OperatingHoursTime()");
+        constructorCustomization.setModifier(2).addAnnotation("JsonCreator");
     }
 
     // Customizes the OperatingHoursTimeRange class
@@ -236,14 +238,17 @@ public class SearchCustomization extends Customization {
 
         // add constructor
         classCustomization.addConstructor(
-            "public OperatingHoursTimeRange(LocalDateTime startTime, LocalDateTime endTime) {\n" + 
-            "   this.startTime =  new OperatingHoursTime(startTime.toLocalDate().toString(), startTime.getHour(), startTime.getMinute());\n" + 
+            "public OperatingHoursTimeRange(LocalDateTime startTime, LocalDateTime endTime) {\n" +
+            "   this.startTime =  new OperatingHoursTime(startTime.toLocalDate().toString(), startTime.getHour(), startTime.getMinute());\n" +
             "   this.endTime =  new OperatingHoursTime(endTime.toLocalDate().toString(), endTime.getHour(), endTime.getMinute());\n" +
             "}")
             .getJavadoc()
             .setDescription("OperatingHoursTimeRange constructor")
             .setParam("startTime", "The point in the next 7 days range when a given POI is being opened, or the beginning of the range if it was opened before the range.")
             .setParam("endTime", "The point in the next 7 days range when a given POI is being closed, or the beginning of the range if it was closed before the range.");
+
+        ConstructorCustomization constructorCustomization = classCustomization.getConstructor("public OperatingHoursTimeRange()");
+        constructorCustomization.setModifier(2).addAnnotation("JsonCreator");
 
         classCustomization.removeMethod("getStartTime");
         classCustomization.removeMethod("getEndTime");
@@ -262,7 +267,7 @@ public class SearchCustomization extends Customization {
             .getJavadoc()
             .setDescription("Get the startTime property: The point in the next 7 days range when a given POI is being opened, or the beginning of the range if it was opened before the range.")
             .setReturn("the startTime value");
-        
+
         // get end time
         classCustomization.addMethod(
             "public LocalDateTime getEndTime() {\n" +
@@ -278,7 +283,7 @@ public class SearchCustomization extends Customization {
 
         // set start time
         classCustomization.addMethod(
-            "public OperatingHoursTimeRange setStartTime(LocalDateTime startTime) {\n" + 
+            "public OperatingHoursTimeRange setStartTime(LocalDateTime startTime) {\n" +
             "    this.startTime = new OperatingHoursTime(startTime.toLocalDate().toString(), startTime.getHour(), startTime.getMinute());\n" +
             "    return this;\n" +
             "}")
@@ -303,7 +308,9 @@ public class SearchCustomization extends Customization {
 
     // Customizes the GeometryIdentifier class
     private void customizeGeometryIdentifier(PackageCustomization models) {
-        ClassCustomization classCustomization = models.getClass("GeometryIdentifier");
+        ClassCustomization classCustomization = models.getClass("GeometryIdentifier")
+            .removeAnnotation("@Immutable")
+            .addAnnotation("@Fluent");
 
         // set id
         classCustomization.addMethod(
@@ -311,10 +318,10 @@ public class SearchCustomization extends Customization {
             "  this.id = id;\n" +
             "  return this;\n" +
             "}")
-        .getJavadoc()
-        .setDescription("Set the id property: Pass this as geometryId to the [Get Search Polygon] (https://docs.microsoft.com/rest/api/maps/search/getsearchpolygon) API to fetch geometry information for this result.")
-        .setParam("id", "The geometryId")
-        .setReturn("the updated GeometryIdentifier object");
+            .getJavadoc()
+            .setDescription("Set the id property: Pass this as geometryId to the [Get Search Polygon] (https://docs.microsoft.com/rest/api/maps/search/getsearchpolygon) API to fetch geometry information for this result.")
+            .setParam("id", "The geometryId")
+            .setReturn("the updated GeometryIdentifier object");
     }
 
     // Customizes the DataSource class
@@ -328,12 +335,12 @@ public class SearchCustomization extends Customization {
         .getJavadoc()
         .setDescription("@param geometry this is geometry id");
 
-        classCustomization.addConstructor(
-            "public DataSource() {\n" +
-            "   // Empty Constructor\n" +
-            "}")
-        .getJavadoc()
-        .setDescription("Constructor");
+        // classCustomization.addConstructor(
+        //     "public DataSource() {\n" +
+        //     "   // Empty Constructor\n" +
+        //     "}")
+        // .getJavadoc()
+        // .setDescription("Constructor");
 
         // get geometry
         classCustomization.removeMethod("getGeometry");
@@ -385,8 +392,8 @@ public class SearchCustomization extends Customization {
         .getJavadoc()
         .setDescription("Set the error property: The error object.")
         .setParam("error", "the error value to set.")
-        .setReturn("the ReverseSearchAddressBatchItemPrivateResponse object itself."); 
-        
+        .setReturn("the ReverseSearchAddressBatchItemPrivateResponse object itself.");
+
         classCustomization.addImports("com.azure.core.models.ResponseError");
     }
 
@@ -417,8 +424,8 @@ public class SearchCustomization extends Customization {
         .getJavadoc()
         .setDescription("Set the error property: The error object.")
         .setParam("error", "the error value to set.")
-        .setReturn("the ReverseSearchAddressBatchItemPrivateResponse object itself.");  
-        
+        .setReturn("the ReverseSearchAddressBatchItemPrivateResponse object itself.");
+
         classCustomization.addImports("com.azure.core.models.ResponseError");
     }
 
@@ -435,7 +442,7 @@ public class SearchCustomization extends Customization {
         .getJavadoc()
         .setDescription("Set the code property: The code object.")
         .setParam("code", "the code value to set.")
-        .setReturn("the ErrorDetail object itself."); 
+        .setReturn("the ErrorDetail object itself.");
 
 
         // set message
@@ -447,6 +454,6 @@ public class SearchCustomization extends Customization {
         .getJavadoc()
         .setDescription("Set the message property: The message object.")
         .setParam("message", "the message value to set.")
-        .setReturn("the ErrorDetail object itself."); 
+        .setReturn("the ErrorDetail object itself.");
     }
 }

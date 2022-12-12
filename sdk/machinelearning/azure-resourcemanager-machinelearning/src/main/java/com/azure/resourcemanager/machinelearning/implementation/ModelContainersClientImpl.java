@@ -29,7 +29,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.machinelearning.fluent.ModelContainersClient;
-import com.azure.resourcemanager.machinelearning.fluent.models.ModelContainerDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.ModelContainerInner;
 import com.azure.resourcemanager.machinelearning.models.ListViewType;
 import com.azure.resourcemanager.machinelearning.models.ModelContainerResourceArmPaginatedResult;
 import reactor.core.publisher.Mono;
@@ -100,7 +100,7 @@ public final class ModelContainersClientImpl implements ModelContainersClient {
                 + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/models/{name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ModelContainerDataInner>> get(
+        Mono<Response<ModelContainerInner>> get(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -116,14 +116,14 @@ public final class ModelContainersClientImpl implements ModelContainersClient {
                 + "/Microsoft.MachineLearningServices/workspaces/{workspaceName}/models/{name}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ModelContainerDataInner>> createOrUpdate(
+        Mono<Response<ModelContainerInner>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("workspaceName") String workspaceName,
             @PathParam("name") String name,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ModelContainerDataInner body,
+            @BodyParam("application/json") ModelContainerInner body,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -153,7 +153,7 @@ public final class ModelContainersClientImpl implements ModelContainersClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ModelContainerDataInner>> listSinglePageAsync(
+    private Mono<PagedResponse<ModelContainerInner>> listSinglePageAsync(
         String resourceGroupName, String workspaceName, String skip, Integer count, ListViewType listViewType) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -190,7 +190,7 @@ public final class ModelContainersClientImpl implements ModelContainersClient {
                             listViewType,
                             accept,
                             context))
-            .<PagedResponse<ModelContainerDataInner>>map(
+            .<PagedResponse<ModelContainerInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -218,7 +218,7 @@ public final class ModelContainersClientImpl implements ModelContainersClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ModelContainerDataInner>> listSinglePageAsync(
+    private Mono<PagedResponse<ModelContainerInner>> listSinglePageAsync(
         String resourceGroupName,
         String workspaceName,
         String skip,
@@ -283,7 +283,7 @@ public final class ModelContainersClientImpl implements ModelContainersClient {
      * @return a paginated list of ModelContainer entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ModelContainerDataInner> listAsync(
+    private PagedFlux<ModelContainerInner> listAsync(
         String resourceGroupName, String workspaceName, String skip, Integer count, ListViewType listViewType) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, workspaceName, skip, count, listViewType),
@@ -301,7 +301,7 @@ public final class ModelContainersClientImpl implements ModelContainersClient {
      * @return a paginated list of ModelContainer entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ModelContainerDataInner> listAsync(String resourceGroupName, String workspaceName) {
+    private PagedFlux<ModelContainerInner> listAsync(String resourceGroupName, String workspaceName) {
         final String skip = null;
         final Integer count = null;
         final ListViewType listViewType = null;
@@ -325,7 +325,7 @@ public final class ModelContainersClientImpl implements ModelContainersClient {
      * @return a paginated list of ModelContainer entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ModelContainerDataInner> listAsync(
+    private PagedFlux<ModelContainerInner> listAsync(
         String resourceGroupName,
         String workspaceName,
         String skip,
@@ -348,7 +348,7 @@ public final class ModelContainersClientImpl implements ModelContainersClient {
      * @return a paginated list of ModelContainer entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ModelContainerDataInner> list(String resourceGroupName, String workspaceName) {
+    public PagedIterable<ModelContainerInner> list(String resourceGroupName, String workspaceName) {
         final String skip = null;
         final Integer count = null;
         final ListViewType listViewType = null;
@@ -370,7 +370,7 @@ public final class ModelContainersClientImpl implements ModelContainersClient {
      * @return a paginated list of ModelContainer entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ModelContainerDataInner> list(
+    public PagedIterable<ModelContainerInner> list(
         String resourceGroupName,
         String workspaceName,
         String skip,
@@ -505,21 +505,6 @@ public final class ModelContainersClientImpl implements ModelContainersClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String workspaceName, String name) {
-        deleteAsync(resourceGroupName, workspaceName, name).block();
-    }
-
-    /**
-     * Delete container.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -530,6 +515,21 @@ public final class ModelContainersClientImpl implements ModelContainersClient {
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String workspaceName, String name, Context context) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, name, context).block();
+    }
+
+    /**
+     * Delete container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name. This is case-sensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String workspaceName, String name) {
+        deleteWithResponse(resourceGroupName, workspaceName, name, Context.NONE);
     }
 
     /**
@@ -544,7 +544,7 @@ public final class ModelContainersClientImpl implements ModelContainersClient {
      * @return container along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ModelContainerDataInner>> getWithResponseAsync(
+    private Mono<Response<ModelContainerInner>> getWithResponseAsync(
         String resourceGroupName, String workspaceName, String name) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -598,7 +598,7 @@ public final class ModelContainersClientImpl implements ModelContainersClient {
      * @return container along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ModelContainerDataInner>> getWithResponseAsync(
+    private Mono<Response<ModelContainerInner>> getWithResponseAsync(
         String resourceGroupName, String workspaceName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -648,25 +648,9 @@ public final class ModelContainersClientImpl implements ModelContainersClient {
      * @return container on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ModelContainerDataInner> getAsync(String resourceGroupName, String workspaceName, String name) {
+    private Mono<ModelContainerInner> getAsync(String resourceGroupName, String workspaceName, String name) {
         return getWithResponseAsync(resourceGroupName, workspaceName, name)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Get container.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ModelContainerDataInner get(String resourceGroupName, String workspaceName, String name) {
-        return getAsync(resourceGroupName, workspaceName, name).block();
     }
 
     /**
@@ -682,9 +666,25 @@ public final class ModelContainersClientImpl implements ModelContainersClient {
      * @return container along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ModelContainerDataInner> getWithResponse(
+    public Response<ModelContainerInner> getWithResponse(
         String resourceGroupName, String workspaceName, String name, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, name, context).block();
+    }
+
+    /**
+     * Get container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name. This is case-sensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return container.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ModelContainerInner get(String resourceGroupName, String workspaceName, String name) {
+        return getWithResponse(resourceGroupName, workspaceName, name, Context.NONE).getValue();
     }
 
     /**
@@ -701,8 +701,8 @@ public final class ModelContainersClientImpl implements ModelContainersClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ModelContainerDataInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String name, ModelContainerDataInner body) {
+    private Mono<Response<ModelContainerInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String workspaceName, String name, ModelContainerInner body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -763,8 +763,8 @@ public final class ModelContainersClientImpl implements ModelContainersClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ModelContainerDataInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String name, ModelContainerDataInner body, Context context) {
+    private Mono<Response<ModelContainerInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String workspaceName, String name, ModelContainerInner body, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -820,28 +820,10 @@ public final class ModelContainersClientImpl implements ModelContainersClient {
      * @return azure Resource Manager resource envelope on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ModelContainerDataInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String name, ModelContainerDataInner body) {
+    private Mono<ModelContainerInner> createOrUpdateAsync(
+        String resourceGroupName, String workspaceName, String name, ModelContainerInner body) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, name, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Create or update container.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @param body Container entity to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ModelContainerDataInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String name, ModelContainerDataInner body) {
-        return createOrUpdateAsync(resourceGroupName, workspaceName, name, body).block();
     }
 
     /**
@@ -858,15 +840,34 @@ public final class ModelContainersClientImpl implements ModelContainersClient {
      * @return azure Resource Manager resource envelope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ModelContainerDataInner> createOrUpdateWithResponse(
-        String resourceGroupName, String workspaceName, String name, ModelContainerDataInner body, Context context) {
+    public Response<ModelContainerInner> createOrUpdateWithResponse(
+        String resourceGroupName, String workspaceName, String name, ModelContainerInner body, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, name, body, context).block();
+    }
+
+    /**
+     * Create or update container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name. This is case-sensitive.
+     * @param body Container entity to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Resource Manager resource envelope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ModelContainerInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String name, ModelContainerInner body) {
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, name, body, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -874,7 +875,7 @@ public final class ModelContainersClientImpl implements ModelContainersClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ModelContainerDataInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<ModelContainerInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -887,7 +888,7 @@ public final class ModelContainersClientImpl implements ModelContainersClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ModelContainerDataInner>>map(
+            .<PagedResponse<ModelContainerInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -902,7 +903,8 @@ public final class ModelContainersClientImpl implements ModelContainersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -911,7 +913,7 @@ public final class ModelContainersClientImpl implements ModelContainersClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ModelContainerDataInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<ModelContainerInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

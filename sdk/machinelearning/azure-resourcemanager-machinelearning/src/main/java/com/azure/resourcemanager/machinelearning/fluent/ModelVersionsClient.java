@@ -9,7 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.machinelearning.fluent.models.ModelVersionDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.ModelVersionInner;
 import com.azure.resourcemanager.machinelearning.models.ListViewType;
 
 /** An instance of this class provides access to all the operations defined in ModelVersionsClient. */
@@ -26,7 +26,7 @@ public interface ModelVersionsClient {
      * @return a paginated list of ModelVersion entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ModelVersionDataInner> list(String resourceGroupName, String workspaceName, String name);
+    PagedIterable<ModelVersionInner> list(String resourceGroupName, String workspaceName, String name);
 
     /**
      * List model versions.
@@ -51,7 +51,7 @@ public interface ModelVersionsClient {
      * @return a paginated list of ModelVersion entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ModelVersionDataInner> list(
+    PagedIterable<ModelVersionInner> list(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -74,20 +74,6 @@ public interface ModelVersionsClient {
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
      * @param version Version identifier. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String workspaceName, String name, String version);
-
-    /**
-     * Delete version.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @param version Version identifier. This is case-sensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -99,7 +85,7 @@ public interface ModelVersionsClient {
         String resourceGroupName, String workspaceName, String name, String version, Context context);
 
     /**
-     * Get version.
+     * Delete version.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
@@ -108,10 +94,9 @@ public interface ModelVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ModelVersionDataInner get(String resourceGroupName, String workspaceName, String name, String version);
+    void delete(String resourceGroupName, String workspaceName, String name, String version);
 
     /**
      * Get version.
@@ -127,25 +112,23 @@ public interface ModelVersionsClient {
      * @return version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ModelVersionDataInner> getWithResponse(
+    Response<ModelVersionInner> getWithResponse(
         String resourceGroupName, String workspaceName, String name, String version, Context context);
 
     /**
-     * Create or update version.
+     * Get version.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
      * @param version Version identifier. This is case-sensitive.
-     * @param body Version entity to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope.
+     * @return version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ModelVersionDataInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String name, String version, ModelVersionDataInner body);
+    ModelVersionInner get(String resourceGroupName, String workspaceName, String name, String version);
 
     /**
      * Create or update version.
@@ -162,11 +145,28 @@ public interface ModelVersionsClient {
      * @return azure Resource Manager resource envelope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ModelVersionDataInner> createOrUpdateWithResponse(
+    Response<ModelVersionInner> createOrUpdateWithResponse(
         String resourceGroupName,
         String workspaceName,
         String name,
         String version,
-        ModelVersionDataInner body,
+        ModelVersionInner body,
         Context context);
+
+    /**
+     * Create or update version.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name. This is case-sensitive.
+     * @param version Version identifier. This is case-sensitive.
+     * @param body Version entity to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Resource Manager resource envelope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ModelVersionInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String name, String version, ModelVersionInner body);
 }

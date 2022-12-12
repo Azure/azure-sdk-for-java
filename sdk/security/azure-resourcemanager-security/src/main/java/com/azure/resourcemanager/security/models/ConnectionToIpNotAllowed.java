@@ -14,6 +14,10 @@ import java.util.List;
 @JsonTypeName("ConnectionToIpNotAllowed")
 @Fluent
 public final class ConnectionToIpNotAllowed extends AllowlistCustomAlertRule {
+    /** Creates an instance of ConnectionToIpNotAllowed class. */
+    public ConnectionToIpNotAllowed() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public ConnectionToIpNotAllowed withAllowlistValues(List<String> allowlistValues) {

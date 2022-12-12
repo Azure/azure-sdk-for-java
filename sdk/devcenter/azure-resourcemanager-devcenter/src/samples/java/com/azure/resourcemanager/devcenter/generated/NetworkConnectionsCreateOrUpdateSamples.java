@@ -9,7 +9,7 @@ import com.azure.resourcemanager.devcenter.models.DomainJoinType;
 /** Samples for NetworkConnections CreateOrUpdate. */
 public final class NetworkConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/NetworkConnections_Put.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/NetworkConnections_Put.json
      */
     /**
      * Sample code: NetworkConnections_CreateOrUpdate.

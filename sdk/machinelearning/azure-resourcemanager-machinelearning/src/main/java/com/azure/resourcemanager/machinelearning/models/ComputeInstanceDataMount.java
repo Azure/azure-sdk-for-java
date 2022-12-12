@@ -54,7 +54,9 @@ public final class ComputeInstanceDataMount {
     private MountState mountState;
 
     /*
-     * Mounted time. The time when the disk mounted.
+     * Mounted time.
+     *
+     * The time when the disk mounted.
      */
     @JsonProperty(value = "mountedOn")
     private OffsetDateTime mountedOn;
@@ -64,6 +66,10 @@ public final class ComputeInstanceDataMount {
      */
     @JsonProperty(value = "error")
     private String error;
+
+    /** Creates an instance of ComputeInstanceDataMount class. */
+    public ComputeInstanceDataMount() {
+    }
 
     /**
      * Get the source property: Source of the ComputeInstance data mount.
@@ -206,7 +212,9 @@ public final class ComputeInstanceDataMount {
     }
 
     /**
-     * Get the mountedOn property: Mounted time. The time when the disk mounted.
+     * Get the mountedOn property: Mounted time.
+     *
+     * <p>The time when the disk mounted.
      *
      * @return the mountedOn value.
      */
@@ -215,7 +223,9 @@ public final class ComputeInstanceDataMount {
     }
 
     /**
-     * Set the mountedOn property: Mounted time. The time when the disk mounted.
+     * Set the mountedOn property: Mounted time.
+     *
+     * <p>The time when the disk mounted.
      *
      * @param mountedOn the mountedOn value to set.
      * @return the ComputeInstanceDataMount object itself.

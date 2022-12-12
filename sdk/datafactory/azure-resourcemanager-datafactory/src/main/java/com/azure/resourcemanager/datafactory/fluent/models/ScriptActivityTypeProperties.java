@@ -14,6 +14,13 @@ import java.util.List;
 @Fluent
 public final class ScriptActivityTypeProperties {
     /*
+     * ScriptBlock execution timeout. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     */
+    @JsonProperty(value = "scriptBlockExecutionTimeout")
+    private Object scriptBlockExecutionTimeout;
+
+    /*
      * Array of script blocks. Type: array.
      */
     @JsonProperty(value = "scripts")
@@ -27,6 +34,28 @@ public final class ScriptActivityTypeProperties {
 
     /** Creates an instance of ScriptActivityTypeProperties class. */
     public ScriptActivityTypeProperties() {
+    }
+
+    /**
+     * Get the scriptBlockExecutionTimeout property: ScriptBlock execution timeout. Type: string (or Expression with
+     * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     *
+     * @return the scriptBlockExecutionTimeout value.
+     */
+    public Object scriptBlockExecutionTimeout() {
+        return this.scriptBlockExecutionTimeout;
+    }
+
+    /**
+     * Set the scriptBlockExecutionTimeout property: ScriptBlock execution timeout. Type: string (or Expression with
+     * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     *
+     * @param scriptBlockExecutionTimeout the scriptBlockExecutionTimeout value to set.
+     * @return the ScriptActivityTypeProperties object itself.
+     */
+    public ScriptActivityTypeProperties withScriptBlockExecutionTimeout(Object scriptBlockExecutionTimeout) {
+        this.scriptBlockExecutionTimeout = scriptBlockExecutionTimeout;
+        return this;
     }
 
     /**

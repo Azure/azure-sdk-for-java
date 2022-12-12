@@ -28,7 +28,7 @@ public final class SshPublicKeysUpdateSamples {
             .updateWithResponse(
                 "rgcompute",
                 "aaaaaaaaaaaa",
-                new SshPublicKeyUpdateResource().withTags(mapOf("key2854", "a")).withPublicKey("{ssh-rsa public key}"),
+                new SshPublicKeyUpdateResource().withTags(mapOf("key2854", "a")).withPublicKey("fakeTokenPlaceholder"),
                 Context.NONE);
     }
 

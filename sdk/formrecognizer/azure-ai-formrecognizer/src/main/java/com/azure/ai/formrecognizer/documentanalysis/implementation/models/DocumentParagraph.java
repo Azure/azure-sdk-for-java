@@ -35,6 +35,9 @@ public final class DocumentParagraph {
     @JsonProperty(value = "spans", required = true)
     private List<DocumentSpan> spans;
 
+    /** Creates an instance of DocumentParagraph class. */
+    public DocumentParagraph() {}
+
     /**
      * Get the role property: Semantic role of the paragraph.
      *

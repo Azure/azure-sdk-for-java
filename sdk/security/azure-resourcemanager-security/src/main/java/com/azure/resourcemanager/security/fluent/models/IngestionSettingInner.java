@@ -17,6 +17,10 @@ public final class IngestionSettingInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private Object properties;
 
+    /** Creates an instance of IngestionSettingInner class. */
+    public IngestionSettingInner() {
+    }
+
     /**
      * Get the properties property: Ingestion setting data.
      *

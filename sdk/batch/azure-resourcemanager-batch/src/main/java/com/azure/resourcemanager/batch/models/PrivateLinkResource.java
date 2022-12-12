@@ -38,8 +38,9 @@ public interface PrivateLinkResource {
     String etag();
 
     /**
-     * Gets the groupId property: The group id of the private link resource. The group id is used to establish the
-     * private link connection.
+     * Gets the groupId property: The group id of the private link resource.
+     *
+     * <p>The group id is used to establish the private link connection.
      *
      * @return the groupId value.
      */

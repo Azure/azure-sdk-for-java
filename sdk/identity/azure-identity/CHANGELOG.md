@@ -1,16 +1,22 @@
 # Release History
 
-## 1.7.0-beta.3 (Unreleased)
+## 1.7.2 (2022-12-09)
+
+### Bugs Fixed
+- Fixed MSI token `expires_in` parsing issue.
+
+## 1.7.1 (2022-11-17)
 
 ### Features Added
 
-### Breaking Changes
+- Added user-agent header to Identity requests
 
-### Bugs Fixed
+## 1.7.0 (2022-11-04)
 
 ### Other Changes
 
 #### Dependency Updates
+- Upgraded `azure-core` from `1.33.0` to version `1.34.0`.
 - Upgraded `msal4j` from `1.13.2` to `1.13.3`
 
 ## 1.7.0-beta.2 (2022-10-13)

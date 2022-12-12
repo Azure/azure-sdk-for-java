@@ -19,6 +19,10 @@ public final class FlavorData {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> data;
 
+    /** Creates an instance of FlavorData class. */
+    public FlavorData() {
+    }
+
     /**
      * Get the data property: Model flavor-specific data.
      *

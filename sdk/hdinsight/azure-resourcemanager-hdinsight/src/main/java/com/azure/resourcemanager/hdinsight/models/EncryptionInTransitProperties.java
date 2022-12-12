@@ -5,21 +5,20 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The encryption-in-transit properties. */
 @Fluent
 public final class EncryptionInTransitProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionInTransitProperties.class);
-
     /*
-     * Indicates whether or not inter cluster node communication is encrypted
-     * in transit.
+     * Indicates whether or not inter cluster node communication is encrypted in transit.
      */
     @JsonProperty(value = "isEncryptionInTransitEnabled")
     private Boolean isEncryptionInTransitEnabled;
+
+    /** Creates an instance of EncryptionInTransitProperties class. */
+    public EncryptionInTransitProperties() {
+    }
 
     /**
      * Get the isEncryptionInTransitEnabled property: Indicates whether or not inter cluster node communication is

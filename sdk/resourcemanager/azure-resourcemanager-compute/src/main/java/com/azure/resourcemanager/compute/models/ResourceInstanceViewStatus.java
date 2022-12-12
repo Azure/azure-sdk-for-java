@@ -41,6 +41,10 @@ public final class ResourceInstanceViewStatus {
     @JsonProperty(value = "level")
     private StatusLevelTypes level;
 
+    /** Creates an instance of ResourceInstanceViewStatus class. */
+    public ResourceInstanceViewStatus() {
+    }
+
     /**
      * Get the code property: The status code.
      *

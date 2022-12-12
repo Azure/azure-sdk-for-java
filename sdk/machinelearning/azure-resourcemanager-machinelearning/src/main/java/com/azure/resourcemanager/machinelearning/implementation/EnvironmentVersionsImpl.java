@@ -10,8 +10,8 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearning.fluent.EnvironmentVersionsClient;
-import com.azure.resourcemanager.machinelearning.fluent.models.EnvironmentVersionDataInner;
-import com.azure.resourcemanager.machinelearning.models.EnvironmentVersionData;
+import com.azure.resourcemanager.machinelearning.fluent.models.EnvironmentVersionInner;
+import com.azure.resourcemanager.machinelearning.models.EnvironmentVersion;
 import com.azure.resourcemanager.machinelearning.models.EnvironmentVersions;
 import com.azure.resourcemanager.machinelearning.models.ListViewType;
 
@@ -29,13 +29,13 @@ public final class EnvironmentVersionsImpl implements EnvironmentVersions {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<EnvironmentVersionData> list(String resourceGroupName, String workspaceName, String name) {
-        PagedIterable<EnvironmentVersionDataInner> inner =
+    public PagedIterable<EnvironmentVersion> list(String resourceGroupName, String workspaceName, String name) {
+        PagedIterable<EnvironmentVersionInner> inner =
             this.serviceClient().list(resourceGroupName, workspaceName, name);
-        return Utils.mapPage(inner, inner1 -> new EnvironmentVersionDataImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new EnvironmentVersionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<EnvironmentVersionData> list(
+    public PagedIterable<EnvironmentVersion> list(
         String resourceGroupName,
         String workspaceName,
         String name,
@@ -44,15 +44,11 @@ public final class EnvironmentVersionsImpl implements EnvironmentVersions {
         String skip,
         ListViewType listViewType,
         Context context) {
-        PagedIterable<EnvironmentVersionDataInner> inner =
+        PagedIterable<EnvironmentVersionInner> inner =
             this
                 .serviceClient()
                 .list(resourceGroupName, workspaceName, name, orderBy, top, skip, listViewType, context);
-        return Utils.mapPage(inner, inner1 -> new EnvironmentVersionDataImpl(inner1, this.manager()));
-    }
-
-    public void delete(String resourceGroupName, String workspaceName, String name, String version) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, name, version);
+        return Utils.mapPage(inner, inner1 -> new EnvironmentVersionImpl(inner1, this.manager()));
     }
 
     public Response<Void> deleteWithResponse(
@@ -60,31 +56,35 @@ public final class EnvironmentVersionsImpl implements EnvironmentVersions {
         return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, name, version, context);
     }
 
-    public EnvironmentVersionData get(String resourceGroupName, String workspaceName, String name, String version) {
-        EnvironmentVersionDataInner inner = this.serviceClient().get(resourceGroupName, workspaceName, name, version);
-        if (inner != null) {
-            return new EnvironmentVersionDataImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String workspaceName, String name, String version) {
+        this.serviceClient().delete(resourceGroupName, workspaceName, name, version);
     }
 
-    public Response<EnvironmentVersionData> getWithResponse(
+    public Response<EnvironmentVersion> getWithResponse(
         String resourceGroupName, String workspaceName, String name, String version, Context context) {
-        Response<EnvironmentVersionDataInner> inner =
+        Response<EnvironmentVersionInner> inner =
             this.serviceClient().getWithResponse(resourceGroupName, workspaceName, name, version, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
-                new EnvironmentVersionDataImpl(inner.getValue(), this.manager()));
+                new EnvironmentVersionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public EnvironmentVersionData getById(String id) {
+    public EnvironmentVersion get(String resourceGroupName, String workspaceName, String name, String version) {
+        EnvironmentVersionInner inner = this.serviceClient().get(resourceGroupName, workspaceName, name, version);
+        if (inner != null) {
+            return new EnvironmentVersionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public EnvironmentVersion getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -117,7 +117,7 @@ public final class EnvironmentVersionsImpl implements EnvironmentVersions {
         return this.getWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE).getValue();
     }
 
-    public Response<EnvironmentVersionData> getByIdWithResponse(String id, Context context) {
+    public Response<EnvironmentVersion> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -224,7 +224,7 @@ public final class EnvironmentVersionsImpl implements EnvironmentVersions {
         return this.serviceManager;
     }
 
-    public EnvironmentVersionDataImpl define(String name) {
-        return new EnvironmentVersionDataImpl(name, this.manager());
+    public EnvironmentVersionImpl define(String name) {
+        return new EnvironmentVersionImpl(name, this.manager());
     }
 }

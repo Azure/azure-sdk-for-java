@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AMLToken")
 @Immutable
 public final class AmlToken extends IdentityConfiguration {
+    /** Creates an instance of AmlToken class. */
+    public AmlToken() {
+    }
+
     /**
      * Validates the instance.
      *

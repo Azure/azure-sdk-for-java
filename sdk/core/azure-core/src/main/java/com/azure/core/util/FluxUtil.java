@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
@@ -11,7 +12,6 @@ import com.azure.core.implementation.ByteBufferCollector;
 import com.azure.core.implementation.OutputStreamWriteSubscriber;
 import com.azure.core.implementation.RetriableDownloadFlux;
 import com.azure.core.implementation.TypeUtil;
-import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
@@ -156,7 +156,7 @@ public final class FluxUtil {
     public static Mono<byte[]> collectBytesFromNetworkResponse(Flux<ByteBuffer> stream, HttpHeaders headers) {
         Objects.requireNonNull(headers, "'headers' cannot be null.");
 
-        String contentLengthHeader = HttpHeadersHelper.getValueNoKeyFormatting(headers, "content-length");
+        String contentLengthHeader = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
 
         if (contentLengthHeader == null) {
             return FluxUtil.collectBytesInByteBufferStream(stream);

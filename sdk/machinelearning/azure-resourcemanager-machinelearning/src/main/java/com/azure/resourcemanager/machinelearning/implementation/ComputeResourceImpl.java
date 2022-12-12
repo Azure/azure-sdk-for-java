@@ -186,12 +186,12 @@ public final class ComputeResourceImpl implements ComputeResource, ComputeResour
         return serviceManager.computes().listNodes(resourceGroupName, workspaceName, computeName, context);
     }
 
-    public ComputeSecrets listKeys() {
-        return serviceManager.computes().listKeys(resourceGroupName, workspaceName, computeName);
-    }
-
     public Response<ComputeSecrets> listKeysWithResponse(Context context) {
         return serviceManager.computes().listKeysWithResponse(resourceGroupName, workspaceName, computeName, context);
+    }
+
+    public ComputeSecrets listKeys() {
+        return serviceManager.computes().listKeys(resourceGroupName, workspaceName, computeName);
     }
 
     public void start() {

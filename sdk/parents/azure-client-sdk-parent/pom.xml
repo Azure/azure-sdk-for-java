@@ -95,6 +95,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
+    <projectTestSourceDirectory>${project.build.testSourceDirectory}</projectTestSourceDirectory>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <testMode>playback</testMode>
     <playbackServerPort>11080</playbackServerPort>
@@ -601,7 +602,7 @@
             <dependency>
               <groupId>com.puppycrawl.tools</groupId>
               <artifactId>checkstyle</artifactId>
-              <version>9.2</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
+              <version>9.3</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
             </dependency>
           </dependencies>
           <configuration>
@@ -1544,33 +1545,36 @@
       </build>
     </profile>
 
-    <profile>
-      <id>external-dependency-version-overrides</id>
-      <activation>
-        <property>
-          <name>env.AZURE_VERSION_OVERRIDE_TESTS</name>
-        </property>
-      </activation>
-      <repositories>
-        <repository>
-          <id>repository.spring.milestone</id>
-          <name>Spring Milestone Repository</name>
-          <url>https://repo.spring.io/milestone</url>
-          <releases>
-            <enabled>true</enabled>
-          </releases>
-          <snapshots>
-            <enabled>true</enabled>
-          </snapshots>
-        </repository>
-      </repositories>
-    </profile>
+    <!-- Used when Reactor had milestone releases to the Spring Milestone repository. -->
+    <!-- If Reactor milestones are needed again in the future, and they're being released -->
+    <!-- to the Spring Milestone repository uncomment the XML below. -->
+<!--    <profile>-->
+<!--      <id>external-dependency-version-overrides</id>-->
+<!--      <activation>-->
+<!--        <property>-->
+<!--          <name>env.AZURE_VERSION_OVERRIDE_TESTS</name>-->
+<!--        </property>-->
+<!--      </activation>-->
+<!--      <repositories>-->
+<!--        <repository>-->
+<!--          <id>repository.spring.milestone</id>-->
+<!--          <name>Spring Milestone Repository</name>-->
+<!--          <url>https://repo.spring.io/milestone</url>-->
+<!--          <releases>-->
+<!--            <enabled>true</enabled>-->
+<!--          </releases>-->
+<!--          <snapshots>-->
+<!--            <enabled>true</enabled>-->
+<!--          </snapshots>-->
+<!--        </repository>-->
+<!--      </repositories>-->
+<!--    </profile>-->
 
     <profile>
       <id>test-module-base-compile</id>
       <activation>
         <file>
-          <exists>${build.testSourceDirectory}/module-info.java</exists>
+          <exists>${projectTestSourceDirectory}/module-info.java</exists>
         </file>
       </activation>
 

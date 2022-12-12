@@ -20,6 +20,10 @@ public final class VirtualMachineExtensionInner extends ResourceWithOptionalLoca
     @JsonProperty(value = "properties")
     private VirtualMachineExtensionProperties innerProperties;
 
+    /** Creates an instance of VirtualMachineExtensionInner class. */
+    public VirtualMachineExtensionInner() {
+    }
+
     /**
      * Get the innerProperties property: Describes the properties of a Virtual Machine Extension.
      *

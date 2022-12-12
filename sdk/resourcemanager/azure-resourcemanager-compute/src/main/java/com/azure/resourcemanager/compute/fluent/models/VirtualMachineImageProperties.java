@@ -67,6 +67,10 @@ public final class VirtualMachineImageProperties {
     @JsonProperty(value = "architecture")
     private ArchitectureTypes architecture;
 
+    /** Creates an instance of VirtualMachineImageProperties class. */
+    public VirtualMachineImageProperties() {
+    }
+
     /**
      * Get the plan property: Used for establishing the purchase context of any 3rd Party artifact through MarketPlace.
      *

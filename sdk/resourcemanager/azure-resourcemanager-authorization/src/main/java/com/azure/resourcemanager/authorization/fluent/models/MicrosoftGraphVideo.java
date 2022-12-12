@@ -80,6 +80,10 @@ public final class MicrosoftGraphVideo {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphVideo class. */
+    public MicrosoftGraphVideo() {
+    }
+
     /**
      * Get the audioBitsPerSample property: Number of audio bits per sample.
      *

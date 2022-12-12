@@ -28,7 +28,7 @@ import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.maps.elevation.models.ElevationResult;
 
 public class ElevationClientTestBase extends TestBase {
-    static final String FAKE_API_KEY = "1234567890";
+    static final String FAKE_API_KEY = "fakeKeyPlaceholder";
 
     private final String endpoint = Configuration.getGlobalConfiguration().get("API-LEARN_ENDPOINT");
     Duration durationTestMode;

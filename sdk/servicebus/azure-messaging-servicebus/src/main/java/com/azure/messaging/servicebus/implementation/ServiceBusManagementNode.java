@@ -146,7 +146,7 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      *
      * @return A collection of {@link RuleProperties rules}.
      */
-    Flux<RuleProperties> getRules();
+    Flux<RuleProperties> listRules();
 
     @Override
     void close();

@@ -18,6 +18,7 @@ import com.azure.resourcemanager.signalr.models.ProvisioningState;
 import com.azure.resourcemanager.signalr.models.RegenerateKeyParameters;
 import com.azure.resourcemanager.signalr.models.ResourceLogConfiguration;
 import com.azure.resourcemanager.signalr.models.ResourceSku;
+import com.azure.resourcemanager.signalr.models.ServerlessSettings;
 import com.azure.resourcemanager.signalr.models.ServerlessUpstreamSettings;
 import com.azure.resourcemanager.signalr.models.ServiceKind;
 import com.azure.resourcemanager.signalr.models.SharedPrivateLinkResource;
@@ -159,6 +160,10 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
         return this.innerModel().cors();
     }
 
+    public ServerlessSettings serverless() {
+        return this.innerModel().serverless();
+    }
+
     public ServerlessUpstreamSettings upstream() {
         return this.innerModel().upstream();
     }
@@ -185,6 +190,10 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public SignalRResourceInner innerModel() {
@@ -278,12 +287,12 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
         return this;
     }
 
-    public SignalRKeys listKeys() {
-        return serviceManager.signalRs().listKeys(resourceGroupName, resourceName);
-    }
-
     public Response<SignalRKeys> listKeysWithResponse(Context context) {
         return serviceManager.signalRs().listKeysWithResponse(resourceGroupName, resourceName, context);
+    }
+
+    public SignalRKeys listKeys() {
+        return serviceManager.signalRs().listKeys(resourceGroupName, resourceName);
     }
 
     public SignalRKeys regenerateKey(RegenerateKeyParameters parameters) {
@@ -354,6 +363,11 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
 
     public SignalRResourceImpl withCors(SignalRCorsSettings cors) {
         this.innerModel().withCors(cors);
+        return this;
+    }
+
+    public SignalRResourceImpl withServerless(ServerlessSettings serverless) {
+        this.innerModel().withServerless(serverless);
         return this;
     }
 

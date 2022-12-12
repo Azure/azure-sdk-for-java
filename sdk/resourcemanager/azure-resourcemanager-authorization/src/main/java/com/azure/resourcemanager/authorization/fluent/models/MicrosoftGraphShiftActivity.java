@@ -29,26 +29,23 @@ public final class MicrosoftGraphShiftActivity {
     private String displayName;
 
     /*
-     * The end date and time for the shiftActivity. The Timestamp type
-     * represents date and time information using ISO 8601 format and is always
-     * in UTC time. For example, midnight UTC on Jan 1, 2014 would look like
-     * this: '2014-01-01T00:00:00Z'. Required.
+     * The end date and time for the shiftActivity. The Timestamp type represents date and time information using ISO
+     * 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
+     * '2014-01-01T00:00:00Z'. Required.
      */
     @JsonProperty(value = "endDateTime")
     private OffsetDateTime endDateTime;
 
     /*
-     * Indicates whether the microsoft.graph.user should be paid for the
-     * activity during their shift. Required.
+     * Indicates whether the microsoft.graph.user should be paid for the activity during their shift. Required.
      */
     @JsonProperty(value = "isPaid")
     private Boolean isPaid;
 
     /*
-     * The start date and time for the shiftActivity. The Timestamp type
-     * represents date and time information using ISO 8601 format and is always
-     * in UTC time. For example, midnight UTC on Jan 1, 2014 would look like
-     * this: '2014-01-01T00:00:00Z'. Required.
+     * The start date and time for the shiftActivity. The Timestamp type represents date and time information using ISO
+     * 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this:
+     * '2014-01-01T00:00:00Z'. Required.
      */
     @JsonProperty(value = "startDateTime")
     private OffsetDateTime startDateTime;
@@ -63,6 +60,10 @@ public final class MicrosoftGraphShiftActivity {
      * shiftActivity
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphShiftActivity class. */
+    public MicrosoftGraphShiftActivity() {
+    }
 
     /**
      * Get the code property: Customer defined code for the shiftActivity. Required.

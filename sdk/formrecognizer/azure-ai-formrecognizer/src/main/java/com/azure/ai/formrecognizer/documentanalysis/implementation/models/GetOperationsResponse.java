@@ -23,6 +23,9 @@ public final class GetOperationsResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of GetOperationsResponse class. */
+    public GetOperationsResponse() {}
+
     /**
      * Get the value property: List of operations.
      *

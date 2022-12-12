@@ -22,6 +22,10 @@ public final class RetrieveBootDiagnosticsDataResultInner {
     @JsonProperty(value = "serialConsoleLogBlobUri", access = JsonProperty.Access.WRITE_ONLY)
     private String serialConsoleLogBlobUri;
 
+    /** Creates an instance of RetrieveBootDiagnosticsDataResultInner class. */
+    public RetrieveBootDiagnosticsDataResultInner() {
+    }
+
     /**
      * Get the consoleScreenshotBlobUri property: The console screenshot blob URI.
      *

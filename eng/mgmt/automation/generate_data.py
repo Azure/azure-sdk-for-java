@@ -23,6 +23,103 @@ DPG_ARGUMENTS = '--sdk-integration --generate-samples --generate-tests'
 YAML_BLOCK_REGEX = r'```\s?(?:yaml|YAML).*?\n(.*?)```'
 
 
+def sdk_automation_cadl(config: dict) -> List[dict]:
+    base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
+    sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
+    spec_root = os.path.abspath(config['specFolder'])
+
+    packages = []
+    if 'relatedCadlProjectFolder' not in config:
+        return packages
+
+    cadl_projects = config['relatedCadlProjectFolder']
+    if isinstance(cadl_projects, str):
+        cadl_projects = [cadl_projects]
+
+    for cadl_project in cadl_projects:
+        cadl_dir = os.path.join(spec_root, cadl_project)
+
+        sdk_folder = get_cadl_sdk_folder(os.path.join(cadl_dir, 'cadl-project.yaml'))
+        if not sdk_folder:
+            logging.warning('[Skip] "sdk-folder" option not found in cadl-project.yaml')
+        else:
+            sdk_folder_abspath = os.path.join(sdk_root, sdk_folder)
+            require_sdk_integration = not os.path.exists(os.path.join(sdk_folder_abspath, 'src'))
+
+            service = None
+            module = None
+            match = re.match(r'sdk/(.*)/(.*)', sdk_folder)
+            if match:
+                service = match.group(1)
+                module = match.group(2)
+
+            if not module:
+                logging.warning('[Skip] sdk-folder option {} not match format sdk/<service>/<module>'
+                                .format(sdk_folder))
+            else:
+                # cadl
+                succeeded = False
+                pwd = os.getcwd()
+                os.chdir(cadl_dir)
+                try:
+                    subprocess.run('npm install', shell=True, check=True)
+
+                    # generate Java project
+                    subprocess.run('npx cadl compile . --emit @azure-tools/cadl-java --output-path={}'
+                                   .format(sdk_folder_abspath),
+                                   shell=True, check=True)
+
+                    succeeded = True
+                except subprocess.CalledProcessError:
+                    logging.warning('[Skip] Failed to generate code')
+                finally:
+                    os.chdir(pwd)
+
+                if require_sdk_integration:
+                    set_or_default_version(sdk_root, GROUP_ID, module)
+                    update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
+                    update_root_pom(sdk_root, service)
+
+                compile_package(sdk_root, GROUP_ID, module)
+
+                artifacts = [
+                    '{0}/pom.xml'.format(sdk_folder)
+                ]
+                artifacts += [
+                    jar for jar in glob.glob('{0}/target/*.jar'.format(sdk_folder))
+                ]
+                result = 'succeeded' if succeeded else 'failed'
+
+                packages.append({
+                    'packageName': module,
+                    'path': [
+                        sdk_folder,
+                        CI_FILE_FORMAT.format(service),
+                        POM_FILE_FORMAT.format(service),
+                        'eng/versioning',
+                        'pom.xml'
+                    ],
+                    'cadlProject': [cadl_project],
+                    'packageFolder': sdk_folder,
+                    'artifacts': artifacts,
+                    'apiViewArtifact': next(iter(glob.glob('{0}/target/*-sources.jar'.format(sdk_folder))), None),
+                    'language': 'Java',
+                    'result': result,
+                })
+
+    return packages
+
+
+def get_cadl_sdk_folder(project_filename: str) -> Optional[str]:
+    sdk_folder = None
+    if os.path.exists(project_filename):
+        with open(project_filename, 'r', encoding='utf-8') as f_in:
+            project_yaml = yaml.safe_load(f_in)
+            sdk_folder = project_yaml['emitters']['@azure-tools/cadl-java']['sdk-folder']
+
+    return sdk_folder
+
+
 def get_or_update_sdk_readme(config: dict, readme_file_path: str) -> Optional[str]:
     base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
     sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
@@ -196,7 +293,7 @@ def generate(
     # shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors=True)
     shutil.rmtree(os.path.join(output_dir, 'src/samples/java', namespace.replace('.', '/'), 'generated'),
                   ignore_errors=True)
-    shutil.rmtree(os.path.join(output_dir, 'src/tests/java', namespace.replace('.', '/'), 'generated'),
+    shutil.rmtree(os.path.join(output_dir, 'src/test/java', namespace.replace('.', '/'), 'generated'),
                   ignore_errors=True)
 
     if readme:

@@ -46,6 +46,10 @@ public final class RestorePointSourceVMDataDisk {
     @JsonProperty(value = "diskRestorePoint")
     private ApiEntityReference diskRestorePoint;
 
+    /** Creates an instance of RestorePointSourceVMDataDisk class. */
+    public RestorePointSourceVMDataDisk() {
+    }
+
     /**
      * Get the lun property: Gets the logical unit number.
      *

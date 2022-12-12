@@ -39,6 +39,10 @@ public final class MicrosoftGraphOptionalClaims {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphOptionalClaims class. */
+    public MicrosoftGraphOptionalClaims() {
+    }
+
     /**
      * Get the accessToken property: The optional claims returned in the JWT access token.
      *

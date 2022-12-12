@@ -32,6 +32,10 @@ public final class MicrosoftGraphWorkbookCommentReply extends MicrosoftGraphEnti
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWorkbookCommentReply class. */
+    public MicrosoftGraphWorkbookCommentReply() {
+    }
+
     /**
      * Get the content property: The content of a comment reply.
      *

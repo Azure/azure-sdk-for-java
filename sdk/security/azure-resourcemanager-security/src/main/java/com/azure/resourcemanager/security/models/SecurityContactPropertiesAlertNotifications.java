@@ -22,6 +22,10 @@ public final class SecurityContactPropertiesAlertNotifications {
     @JsonProperty(value = "minimalSeverity")
     private MinimalSeverity minimalSeverity;
 
+    /** Creates an instance of SecurityContactPropertiesAlertNotifications class. */
+    public SecurityContactPropertiesAlertNotifications() {
+    }
+
     /**
      * Get the state property: Defines if email notifications will be sent about new security alerts.
      *

@@ -6,6 +6,7 @@ package com.azure.maps.search.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.maps.search.implementation.models.OperatingHoursTime;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 
@@ -13,18 +14,22 @@ import java.time.LocalDateTime;
 @Fluent
 public final class OperatingHoursTimeRange {
     /*
-     * The point in the next 7 days range when a given POI is being opened, or
-     * the beginning of the range if it was opened before the range.
+     * The point in the next 7 days range when a given POI is being opened, or the beginning of the range if it was
+     * opened before the range.
      */
     @JsonProperty(value = "startTime")
     private OperatingHoursTime startTime;
 
     /*
-     * The point in the next 7 days range when a given POI is being closed, or
-     * the beginning of the range if it was closed before the range.
+     * The point in the next 7 days range when a given POI is being closed, or the beginning of the range if it was
+     * closed before the range.
      */
     @JsonProperty(value = "endTime")
     private OperatingHoursTime endTime;
+
+    /** Creates an instance of OperatingHoursTimeRange class. */
+    @JsonCreator
+    private OperatingHoursTimeRange() {}
 
     /**
      * OperatingHoursTimeRange constructor
