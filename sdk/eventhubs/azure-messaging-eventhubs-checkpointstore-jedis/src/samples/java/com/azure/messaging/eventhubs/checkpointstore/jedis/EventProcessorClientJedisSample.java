@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Sample for using {@link JedisRedisCheckpointStore} with {@link EventProcessorClient}.
  */
-public class EventProcessorJedisRedisCheckpointStoreSample {
+public class EventProcessorClientJedisSample {
     /**
      * The main method to run the sample.
      *
