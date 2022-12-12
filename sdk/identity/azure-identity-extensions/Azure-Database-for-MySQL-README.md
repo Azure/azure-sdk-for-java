@@ -22,6 +22,7 @@
       - [Configure CredentialProvider](#configure-credentialprovider)
   - [JDBC Parameters](#jdbc-parameters)
   - [Troubleshooting](#troubleshooting)
+    - [Known issues](#known-issues)
   - [Next steps](#next-steps)
   - [Contributing](#contributing)
 
