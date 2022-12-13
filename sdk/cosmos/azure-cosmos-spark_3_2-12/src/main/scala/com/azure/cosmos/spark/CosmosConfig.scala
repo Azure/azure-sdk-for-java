@@ -87,8 +87,6 @@ private[spark] object CosmosConfigNames {
   val ThroughputControlDisableTcpConnectionEndpointRediscovery = "spark.cosmos.throughputControl.disableTcpConnectionEndpointRediscovery"
   val ThroughputControlUseGatewayMode = "spark.cosmos.throughputControl.useGatewayMode"
   val MaxIntegratedCacheStalenessInMilliseconds = "spark.cosmos.maxIntegratedCacheStaleness.inMilliseconds"
-  val MaxIntegratedCacheStalenessInSeconds = "spark.cosmos.maxIntegratedCacheStaleness.inSeconds"
-  val MaxIntegratedCacheStalenessInMinutes = "spark.cosmos.maxIntegratedCacheStaleness.inMinutes"
   val MaxIntegratedCacheStalenessInHours = "spark.cosmos.maxIntegratedCacheStaleness.inHours"
   val ThroughputControlName = "spark.cosmos.throughputControl.name"
   val ThroughputControlTargetThroughput = "spark.cosmos.throughputControl.targetThroughput"
@@ -158,8 +156,6 @@ private[spark] object CosmosConfigNames {
     ThroughputControlDisableTcpConnectionEndpointRediscovery,
     ThroughputControlUseGatewayMode,
     MaxIntegratedCacheStalenessInMilliseconds,
-    MaxIntegratedCacheStalenessInSeconds,
-    MaxIntegratedCacheStalenessInMinutes,
     MaxIntegratedCacheStalenessInHours,
     ThroughputControlName,
     ThroughputControlTargetThroughput,
@@ -426,7 +422,7 @@ private object SchemaConversionModes extends Enumeration {
 private object CosmosReadConfig {
   private val DefaultSchemaConversionMode: SchemaConversionMode = SchemaConversionModes.Relaxed
   private val DefaultMaxItemCount : Int = 1000
-  private val integratedCacheHelpMessageInterpolator = (x: String) => s"The max integrated cache staleness is the time window in $x within which subsequent reads and queries are served from " +
+  private val cacheStalenessHelpMessageInterpolator = (x: String) => s"The max integrated cache staleness is the time window in $x within which subsequent reads and queries are served from " +
     "the integrated cache configured with the dedicated gateway. The request is served from the integrated cache itself provided the data " +
     "has not been evicted from the cache or a new read is run with a lower MaxIntegratedCacheStaleness than the age of the current cached " +
     "entry.";
@@ -483,23 +479,7 @@ private object CosmosReadConfig {
     mandatory = false,
     defaultValue = None,
     parseFromStringFunction = queryText => Duration.ofMillis(queryText.toInt),
-    helpMessage = integratedCacheHelpMessageInterpolator.apply("milliseconds")
-  )
-
-  private val MaxIntegratedCacheStalenessInSeconds = CosmosConfigEntry[Duration](
-    key = CosmosConfigNames.MaxIntegratedCacheStalenessInSeconds,
-    mandatory = false,
-    defaultValue = None,
-    parseFromStringFunction = queryText => Duration.ofSeconds(queryText.toInt),
-    helpMessage = integratedCacheHelpMessageInterpolator.apply("seconds")
-  )
-
-  private val MaxIntegratedCacheStalenessInMinutes = CosmosConfigEntry[Duration](
-    key = CosmosConfigNames.MaxIntegratedCacheStalenessInMinutes,
-    mandatory = false,
-    defaultValue = None,
-    parseFromStringFunction = queryText => Duration.ofMinutes(queryText.toInt),
-    helpMessage = integratedCacheHelpMessageInterpolator.apply("minutes")
+    helpMessage = cacheStalenessHelpMessageInterpolator.apply("milliseconds")
   )
 
   private val MaxIntegratedCacheStalenessInHours = CosmosConfigEntry[Duration](
@@ -507,7 +487,7 @@ private object CosmosReadConfig {
     mandatory = false,
     defaultValue = None,
     parseFromStringFunction = queryText => Duration.ofHours(queryText.toInt),
-    helpMessage = integratedCacheHelpMessageInterpolator.apply("hours")
+    helpMessage = cacheStalenessHelpMessageInterpolator.apply("hours")
   )
 
   def parseCosmosReadConfig(cfg: Map[String, String]): CosmosReadConfig = {
@@ -519,12 +499,6 @@ private object CosmosReadConfig {
 
     val maxIntegratedCacheStaleness = {
       var duration = CosmosConfigEntry.parse(cfg, MaxIntegratedCacheStalenessInMilliseconds)
-      if (duration.getOrElse(Duration.ofMillis(-1)) == CosmosConstants.invalidDuration) {
-        duration = CosmosConfigEntry.parse(cfg, MaxIntegratedCacheStalenessInSeconds)
-      }
-      if (duration.getOrElse(Duration.ofMillis(-1)) == CosmosConstants.invalidDuration) {
-        duration = CosmosConfigEntry.parse(cfg, MaxIntegratedCacheStalenessInMinutes)
-      }
       if (duration.getOrElse(Duration.ofMillis(-1)) == CosmosConstants.invalidDuration) {
         duration = CosmosConfigEntry.parse(cfg, MaxIntegratedCacheStalenessInHours)
       }
