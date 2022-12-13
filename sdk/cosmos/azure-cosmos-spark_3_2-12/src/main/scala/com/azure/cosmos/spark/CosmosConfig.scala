@@ -473,7 +473,7 @@ private object CosmosReadConfig {
     mandatory = false,
     defaultValue = None,
     parseFromStringFunction = queryText => queryText.toInt,
-    helpMessage = "The max integrated cache staleness is the time window in ms within which subsequent reads and queries are served from " +
+    helpMessage = "The max integrated cache staleness is the time window in milliseconds within which subsequent reads and queries are served from " +
       "the integrated cache configured with the dedicated gateway. The request is served from the integrated cache itself provided the data " +
       "has not been evicted from the cache or a new read is run with a lower MaxIntegratedCacheStaleness than the age of the current cached " +
       "entry."
@@ -505,7 +505,8 @@ private object CosmosReadConfig {
       maxIntegratedCacheStaleness.getOrElse(
         maxIntegratedCacheStaleness match {
           case Some(maxIntegratedCacheStalenessProvidedByUser) =>  maxIntegratedCacheStalenessProvidedByUser
-          case None => -1
+          // Return an invalid value for staleness if not configured by the user
+          case None => CosmosConstants.maxIntegratedCacheStalenessInvalidVal
         }
       ),
       customQuery)

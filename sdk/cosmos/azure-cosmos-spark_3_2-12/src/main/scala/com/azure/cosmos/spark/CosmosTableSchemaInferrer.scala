@@ -119,7 +119,7 @@ private object CosmosTableSchemaInferrer
       val queryOptions = new CosmosQueryRequestOptions()
       queryOptions.setMaxBufferedItemCount(cosmosInferenceConfig.inferSchemaSamplingSize)
 
-      if (cosmosReadConfig.maxIntegratedCacheStaleness > -1) {
+      if (cosmosReadConfig.maxIntegratedCacheStaleness != CosmosConstants.maxIntegratedCacheStalenessInvalidVal) {
         val dedicatedGatewayRequestOptions = new DedicatedGatewayRequestOptions
         dedicatedGatewayRequestOptions.setMaxIntegratedCacheStaleness(Duration.ofMillis(cosmosReadConfig.maxIntegratedCacheStaleness))
         queryOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions)

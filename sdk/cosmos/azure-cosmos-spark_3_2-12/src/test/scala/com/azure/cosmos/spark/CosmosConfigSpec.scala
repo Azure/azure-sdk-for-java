@@ -245,11 +245,13 @@ class CosmosConfigSpec extends UnitSpec {
     config.customQuery shouldBe empty
     config.maxItemCount shouldBe 1000
     config.prefetchBufferSize shouldBe 8
+    config.maxIntegratedCacheStaleness shouldBe CosmosConstants.maxIntegratedCacheStalenessInvalidVal
 
     userConfig = Map(
       "spark.cosmos.read.forceEventualConsistency" -> "false",
       "spark.cosmos.read.schemaConversionMode" -> "Strict",
-      "spark.cosmos.read.maxItemCount" -> "1000"
+      "spark.cosmos.read.maxItemCount" -> "1000",
+      "spark.cosmos.maxIntegratedCacheStaleness.useGatewayMode" -> "1000"
     )
 
     config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
@@ -259,6 +261,7 @@ class CosmosConfigSpec extends UnitSpec {
     config.customQuery shouldBe empty
     config.maxItemCount shouldBe 1000
     config.prefetchBufferSize shouldBe 8
+    config.maxIntegratedCacheStaleness shouldBe 1000
 
     userConfig = Map(
       "spark.cosmos.read.forceEventualConsistency" -> "false",
