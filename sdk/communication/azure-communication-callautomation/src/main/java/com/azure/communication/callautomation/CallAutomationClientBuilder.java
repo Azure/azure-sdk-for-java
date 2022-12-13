@@ -377,8 +377,8 @@ public final class CallAutomationClientBuilder implements
 
         AzureCommunicationCallAutomationServiceImplBuilder clientBuilder = new AzureCommunicationCallAutomationServiceImplBuilder();
         try {
-            clientBuilder.endpoint(endpoint).pipeline(builderPipeline);
-        } catch (RuntimeException e) {
+            clientBuilder.endpoint(new URL(endpoint)).pipeline(builderPipeline);
+        } catch (MalformedURLException e) {
             throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
 
