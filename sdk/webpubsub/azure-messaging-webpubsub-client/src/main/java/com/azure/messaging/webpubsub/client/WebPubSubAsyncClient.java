@@ -46,16 +46,16 @@ public class WebPubSubAsyncClient {
 
     private String connectionId;
 
-    private Sinks.Many<GroupDataMessage> groupDataMessageSink =
+    Sinks.Many<GroupDataMessage> groupDataMessageSink =
         Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
     private Sinks.Many<AckMessage> ackMessageSink =
         Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
-    private Sinks.Many<ConnectedEvent> connectedEventSink =
+    Sinks.Many<ConnectedEvent> connectedEventSink =
         Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
-    private Sinks.Many<DisconnectedEvent> disconnectedEventSink =
+    Sinks.Many<DisconnectedEvent> disconnectedEventSink =
         Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
     WebPubSubAsyncClient(Mono<String> clientAccessUriProvider) {
@@ -82,6 +82,8 @@ public class WebPubSubAsyncClient {
         return Mono.fromCallable(() -> {
             if (session != null && session.isOpen()) {
                 session.close(CloseReasons.NORMAL_CLOSURE.getCloseReason());
+
+                session = null;
 
                 groupDataMessageSink.tryEmitComplete();
                 groupDataMessageSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);

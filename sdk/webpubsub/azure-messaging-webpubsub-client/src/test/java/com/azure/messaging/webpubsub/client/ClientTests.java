@@ -17,27 +17,56 @@ import java.util.Map;
 public class ClientTests {
 
     public static void main(String[] args) throws Exception {
-        runForAsyncClient();
+//        runForAsyncClient();
+
+        runForSyncClient();
 
         Thread.sleep(5 * 1000);
     }
 
-    private static void runForAsyncClient() {
-        WebPubSubServiceClient client = new WebPubSubServiceClientBuilder()
-            .connectionString(Configuration.getGlobalConfiguration().get("CONNECTION_STRING"))
-            .hub("test_hub")
-            .buildClient();
-
-        Mono<WebPubSubClientAccessToken> accessToken = Mono.just(client.getClientAccessToken(new GetClientAccessTokenOptions()
-            .setUserId("weidxu")
-            .addRole("webpubsub.joinLeaveGroup")
-            .addRole("webpubsub.sendToGroup"))).subscribeOn(Schedulers.boundedElastic());
-
+    private static void runForSyncClient() throws InterruptedException {
         // client
-        WebPubSubAsyncClient asyncClient = new WebPubSubClientBuilder()
-            .credential(new WebPubSubClientCredential(accessToken
-                .map(WebPubSubClientAccessToken::getUrl)))
-            .buildAsyncClient();
+        WebPubSubClient client = clientBuilder().buildClient();
+
+        client.start();
+
+        Thread receiveThread = new Thread(() -> {
+            client.receiveGroupMessages().stream().forEach(message -> {
+                System.out.println("group: " + message.getGroup() + ", data: " + message.getData());
+            });
+        });
+        receiveThread.start();
+
+        Thread connectThread = new Thread(() -> {
+            client.receiveConnectedEvents().stream().forEach(event -> {
+                System.out.println("connected: " + event.getConnectionId());
+            });
+        });
+        connectThread.start();
+
+        client.joinGroup("group1");
+
+        // send message to group1
+        printResult(client.sendMessageToGroup("group1",
+            BinaryData.fromString("abc"), WebPubSubDataType.TEXT));
+
+        // send message to group1
+        printResult(client.sendMessageToGroup("group1",
+            BinaryData.fromObject(Map.of("hello", "world")), WebPubSubDataType.JSON));
+
+        client.leaveGroup("group1");
+
+        client.stop();
+
+        client.close();
+
+        receiveThread.join();
+        connectThread.join();
+    }
+
+    private static void runForAsyncClient() {
+        // client
+        WebPubSubAsyncClient asyncClient = clientBuilder().buildAsyncClient();
 
         // group data messages
         asyncClient.receiveGroupMessages().subscribe(message -> {
@@ -64,7 +93,7 @@ public class ClientTests {
         printResult(asyncClient.sendMessageToGroup("group1",
             BinaryData.fromString("abc"), WebPubSubDataType.TEXT));
 
-        // join group1
+        // join group2
         printResult(asyncClient.joinGroup("group2"));
 
         // send message to group1
@@ -100,7 +129,28 @@ public class ClientTests {
         asyncClient.stop().block();
     }
 
+    private static WebPubSubClientBuilder clientBuilder() {
+        WebPubSubServiceClient client = new WebPubSubServiceClientBuilder()
+            .connectionString(Configuration.getGlobalConfiguration().get("CONNECTION_STRING"))
+            .hub("test_hub")
+            .buildClient();
+
+        Mono<WebPubSubClientAccessToken> accessToken = Mono.just(client.getClientAccessToken(new GetClientAccessTokenOptions()
+            .setUserId("weidxu")
+            .addRole("webpubsub.joinLeaveGroup")
+            .addRole("webpubsub.sendToGroup"))).subscribeOn(Schedulers.boundedElastic());
+
+        // client builder
+        return new WebPubSubClientBuilder()
+            .credential(new WebPubSubClientCredential(accessToken
+                .map(WebPubSubClientAccessToken::getUrl)));
+    }
+
     private static void printResult(Mono<WebPubSubResult> result) {
-        System.out.println("ack: " + result.block().getAckId());
+        printResult(result.block());
+    }
+
+    private static void printResult(WebPubSubResult result) {
+        System.out.println("ack: " + result.getAckId());
     }
 }

@@ -18,6 +18,10 @@ public class WebPubSubClientBuilder {
         return this;
     }
 
+    public WebPubSubClient buildClient() {
+        return new WebPubSubClient(this.buildAsyncClient());
+    }
+
     public WebPubSubAsyncClient buildAsyncClient() {
         return new WebPubSubAsyncClient(credential.getClientAccessUriAsync());
     }
