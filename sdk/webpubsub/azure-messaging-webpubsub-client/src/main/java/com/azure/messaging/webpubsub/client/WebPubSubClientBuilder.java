@@ -5,7 +5,7 @@ package com.azure.messaging.webpubsub.client;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 
-@ServiceClientBuilder(serviceClients = {WebPubSubAsyncClient.class})
+@ServiceClientBuilder(serviceClients = {WebPubSubAsyncClient.class, WebPubSubClient.class})
 public class WebPubSubClientBuilder {
 
     private WebPubSubClientCredential credential;

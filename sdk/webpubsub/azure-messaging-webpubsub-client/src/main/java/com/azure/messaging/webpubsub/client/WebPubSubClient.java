@@ -3,9 +3,11 @@
 
 package com.azure.messaging.webpubsub.client;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 
+@ServiceClient(builder = WebPubSubClientBuilder.class)
 public class WebPubSubClient implements AutoCloseable {
 
     private final WebPubSubAsyncClient client;
