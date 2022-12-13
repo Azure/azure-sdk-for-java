@@ -86,8 +86,8 @@ private[spark] object CosmosConfigNames {
   val ThroughputControlPreferredRegionsList = "spark.cosmos.throughputControl.preferredRegionsList"
   val ThroughputControlDisableTcpConnectionEndpointRediscovery = "spark.cosmos.throughputControl.disableTcpConnectionEndpointRediscovery"
   val ThroughputControlUseGatewayMode = "spark.cosmos.throughputControl.useGatewayMode"
-  val MaxIntegratedCacheStalenessInMilliseconds = "spark.cosmos.maxIntegratedCacheStaleness.inMilliseconds"
-  val MaxIntegratedCacheStalenessInHours = "spark.cosmos.maxIntegratedCacheStaleness.inHours"
+  val ReadMaxIntegratedCacheStalenessInMilliseconds = "spark.cosmos.read.maxIntegratedCacheStaleness.inMilliseconds"
+  val ReadMaxIntegratedCacheStalenessInHours = "spark.cosmos.read.maxIntegratedCacheStaleness.inHours"
   val ThroughputControlName = "spark.cosmos.throughputControl.name"
   val ThroughputControlTargetThroughput = "spark.cosmos.throughputControl.targetThroughput"
   val ThroughputControlTargetThroughputThreshold = "spark.cosmos.throughputControl.targetThroughputThreshold"
@@ -155,8 +155,8 @@ private[spark] object CosmosConfigNames {
     ThroughputControlPreferredRegionsList,
     ThroughputControlDisableTcpConnectionEndpointRediscovery,
     ThroughputControlUseGatewayMode,
-    MaxIntegratedCacheStalenessInMilliseconds,
-    MaxIntegratedCacheStalenessInHours,
+    ReadMaxIntegratedCacheStalenessInMilliseconds,
+    ReadMaxIntegratedCacheStalenessInHours,
     ThroughputControlName,
     ThroughputControlTargetThroughput,
     ThroughputControlTargetThroughputThreshold,
@@ -475,7 +475,7 @@ private object CosmosReadConfig {
       "buffering is 5 MB multiplied by the effective prefetch buffer size for each Executor/CPU-Core.")
 
   private val MaxIntegratedCacheStalenessInMilliseconds = CosmosConfigEntry[Duration](
-    key = CosmosConfigNames.MaxIntegratedCacheStalenessInMilliseconds,
+    key = CosmosConfigNames.ReadMaxIntegratedCacheStalenessInMilliseconds,
     mandatory = false,
     defaultValue = None,
     parseFromStringFunction = queryText => Duration.ofMillis(queryText.toInt),
@@ -483,7 +483,7 @@ private object CosmosReadConfig {
   )
 
   private val MaxIntegratedCacheStalenessInHours = CosmosConfigEntry[Duration](
-    key = CosmosConfigNames.MaxIntegratedCacheStalenessInHours,
+    key = CosmosConfigNames.ReadMaxIntegratedCacheStalenessInHours,
     mandatory = false,
     defaultValue = None,
     parseFromStringFunction = queryText => Duration.ofHours(queryText.toInt),

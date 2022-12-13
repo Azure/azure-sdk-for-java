@@ -251,7 +251,7 @@ class CosmosConfigSpec extends UnitSpec {
       "spark.cosmos.read.forceEventualConsistency" -> "false",
       "spark.cosmos.read.schemaConversionMode" -> "Strict",
       "spark.cosmos.read.maxItemCount" -> "1000",
-      "spark.cosmos.maxIntegratedCacheStaleness.inMilliseconds" -> "1000"
+      "spark.cosmos.read.maxIntegratedCacheStaleness.inMilliseconds" -> "1000"
     )
 
     config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
@@ -268,7 +268,7 @@ class CosmosConfigSpec extends UnitSpec {
       "spark.cosmos.read.schemaConversionMode" -> "Strict",
       "spark.cosmos.read.maxItemCount" -> "1001",
       "spark.cosmos.read.prefetchBufferSize" -> "16",
-      "spark.cosmos.maxIntegratedCacheStaleness.inHours" -> "1000"
+      "spark.cosmos.read.maxIntegratedCacheStaleness.inHours" -> "1000"
     )
 
     config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
