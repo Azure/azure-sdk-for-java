@@ -31,6 +31,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public class PasswordlessMySQLTest {
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withPropertyValues("spring.datasource.azure.passwordless-enabled=true")
+        .withPropertyValues("spring.datasource.url=" + mySQLContainer.getJdbcUrl(),
+            "spring.datasource.username=" + mySQLContainer.getUsername())
         .withConfiguration(AutoConfigurations.of(
             DataSourceAutoConfiguration.class,
             JdbcTemplateAutoConfiguration.class,
@@ -56,17 +58,43 @@ public class PasswordlessMySQLTest {
 
     @DynamicPropertySource
     static void properties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", mySQLContainer::getJdbcUrl);
-        registry.add("spring.datasource.username", mySQLContainer::getUsername);
+//        registry.add("spring.datasource.url", mySQLContainer::getJdbcUrl);
+//        registry.add("spring.datasource.username", mySQLContainer::getUsername);
     }
 
+//    @Configuration
+//    static class MysqlDataSourceConfiguration {
+//        @Bean
+//        DriverManagerDataSource dataSource() {
+//            DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//            dataSource.setUrl(mySQLContainer.getJdbcUrl());
+//            dataSource.setUsername(mySQLContainer.getUsername());
+//            dataSource.setPassword(mySQLContainer.getPassword());
+//            return dataSource;
+//        }
+//    }
     @Test
     void testMysqlPasswordless() {
         this.contextRunner
+//            .withPropertyValues("spring.datasource.url=" + mySQLContainer.getJdbcUrl(),
+//                "spring.datasource.username=" + mySQLContainer.getUsername())
+//                , "spring.datasource.password=" + password)
+//            .withUserConfiguration(MysqlDataSourceConfiguration.class, JdbcTemplateAutoConfiguration.class)
+//            .withUserConfiguration(MysqlDataSourceConfiguration.class)
             .run(context -> {
+//                DriverManagerDataSource dataSource = context.getBean(DriverManagerDataSource.class);
+//                Connection connection = dataSource.getConnection();
+//                Statement statement = connection.createStatement();
+//                System.out.println("Myconnection"+connection);
                 String query1 = "CREATE TABLE Test ( PersonID int, Number int);";
                 String query2 = "INSERT INTO Test VALUES (1,25);";
                 String query3 = "SELECT * FROM Test;";
+//                statement.execute(query1);
+//                statement.execute(query2);
+//                ResultSet execute = statement.executeQuery(query3);
+//                execute.next();
+//                Integer number = execute.getInt("Number");
+//                System.out.println("Myexecute:"+number);
                 JdbcTemplate jdbcTemplate = context.getBean(JdbcTemplate.class);
                 jdbcTemplate.execute(query1);
                 jdbcTemplate.execute(query2);

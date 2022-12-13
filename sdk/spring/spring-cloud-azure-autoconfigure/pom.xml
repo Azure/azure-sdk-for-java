@@ -341,13 +341,28 @@
       <version>5.3.24</version> <!-- {x-version-update;org.springframework:spring-jdbc;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <!-- The h2 is used by DataSourceAutoConfiguration.  -->
+<!--    <dependency>-->
+<!--      <groupId>com.zaxxer</groupId>-->
+
+<!--      <artifactId>HikariCP</artifactId>-->
+
+<!--      <version>5.0.1</version>-->
+
+<!--      <scope>compile</scope>-->
+
+<!--    </dependency>-->
     <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
-      <version>2.1.214</version> <!-- {x-version-update;com.h2database:h2;external_dependency} -->
-      <scope>test</scope>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-jdbc</artifactId>
+      <version>2.7.6</version>
     </dependency>
+    <!-- The h2 is used by DataSourceAutoConfiguration.  -->
+<!--    <dependency>-->
+<!--      <groupId>com.h2database</groupId>-->
+<!--      <artifactId>h2</artifactId>-->
+<!--      <version>2.1.214</version> &lt;!&ndash; {x-version-update;com.h2database:h2;external_dependency} &ndash;&gt;-->
+<!--      <scope>test</scope>-->
+<!--    </dependency>-->
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>mysql</artifactId>
