@@ -62,7 +62,7 @@ public class TracingJavaDocCodeSnippets {
             .addSpanProcessor(SimpleSpanProcessor.create(LoggingSpanExporter.create()))
             .build();
 
-        // Pass OTel tracerProvider to TracingOptions.
+        // Pass OpenTelemetry tracerProvider to TracingOptions.
         TracingOptions customTracingOptions = new OpenTelemetryTracingOptions()
             .setProvider(tracerProvider);
 
@@ -92,14 +92,14 @@ public class TracingJavaDocCodeSnippets {
 
         Tracer tracer = tracerProvider.get("test");
         Span parent = tracer.spanBuilder("parent").startSpan();
-        io.opentelemetry.context.Context otelContext = io.opentelemetry.context.Context.current().with(parent);
+        io.opentelemetry.context.Context traceContext = io.opentelemetry.context.Context.current().with(parent);
 
         // do some  work
 
         // You can pass parent explicitly using PARENT_TRACE_CONTEXT_KEY in the com.azure.core.util.Context.
         // Or, when using async clients, pass it in reactor.util.context.Context under the same key.
         String response = sampleClient.methodCall("get items",
-            new Context(PARENT_TRACE_CONTEXT_KEY, otelContext));
+            new Context(PARENT_TRACE_CONTEXT_KEY, traceContext));
 
         // do more work
         parent.end();
