@@ -17,9 +17,9 @@ import java.util.Map;
 public class ClientTests {
 
     public static void main(String[] args) throws Exception {
-//        runForAsyncClient();
-
         runForSyncClient();
+
+        runForAsyncClient();
 
         Thread.sleep(5 * 1000);
     }
@@ -55,8 +55,6 @@ public class ClientTests {
             BinaryData.fromObject(Map.of("hello", "world")), WebPubSubDataType.JSON));
 
         client.leaveGroup("group1");
-
-        client.stop();
 
         client.close();
 
@@ -115,10 +113,6 @@ public class ClientTests {
 
 
         // start for more data
-        asyncClient.receiveGroupMessages().doOnNext(m -> {
-            System.out.println("new data: " + m.getData());
-        }).subscribe();
-
         asyncClient.start().block();
 
         printResult(asyncClient.joinGroup("group1"));
@@ -126,7 +120,9 @@ public class ClientTests {
         printResult(asyncClient.sendMessageToGroup("group1",
             BinaryData.fromString("dfg"), WebPubSubDataType.TEXT));
 
-        asyncClient.stop().block();
+
+        // close
+        asyncClient.close().block();
     }
 
     private static WebPubSubClientBuilder clientBuilder() {

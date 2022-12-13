@@ -85,8 +85,8 @@ public class WebPubSubAsyncClient {
 
                 session = null;
 
-                groupDataMessageSink.tryEmitComplete();
-                groupDataMessageSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
+//                groupDataMessageSink.tryEmitComplete();
+//                groupDataMessageSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
                 ackMessageSink.tryEmitComplete();
                 ackMessageSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
@@ -94,6 +94,15 @@ public class WebPubSubAsyncClient {
             }
             return (Void) null;
         }).subscribeOn(Schedulers.boundedElastic());
+    }
+
+    public Mono<Void> close() {
+        return stop().then(Mono.defer(() -> {
+            groupDataMessageSink.tryEmitComplete();
+            connectedEventSink.tryEmitComplete();
+            disconnectedEventSink.tryEmitComplete();
+            return Mono.empty();
+        }));
     }
 
     public Mono<WebPubSubResult> joinGroup(String group) {

@@ -22,6 +22,11 @@ public class WebPubSubClient implements AutoCloseable {
         client.stop().block();
     }
 
+    @Override
+    public void close() {
+        client.close().block();
+    }
+
     public WebPubSubResult joinGroup(String group) {
         return client.joinGroup(group).block();
     }
@@ -57,13 +62,5 @@ public class WebPubSubClient implements AutoCloseable {
 
     public IterableStream<DisconnectedEvent> receiveDisconnectedEvents() {
         return new IterableStream<>(client.receiveDisconnectedEvents());
-    }
-
-    @Override
-    public void close() {
-        this.stop();
-
-        client.connectedEventSink.tryEmitComplete();
-        client.disconnectedEventSink.tryEmitComplete();
     }
 }
