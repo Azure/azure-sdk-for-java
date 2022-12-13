@@ -33,13 +33,11 @@ class Mappings {
 
     void map(Attributes attributes, AbstractTelemetryBuilder telemetryBuilder) {
         attributes.forEach(
-            (attributeKey, value) -> {
-                map(telemetryBuilder, attributeKey, value);
-            });
+            (attributeKey, value) -> map(telemetryBuilder, attributeKey, value));
     }
 
     private void map(
-        AbstractTelemetryBuilder telemetryBuilder, AttributeKey attributeKey, Object value) {
+        AbstractTelemetryBuilder telemetryBuilder, AttributeKey<?> attributeKey, Object value) {
         String key = attributeKey.getKey();
         MappingsBuilder.ExactMapping exactMapping = exactMappings.get(key);
         if (exactMapping != null) {
