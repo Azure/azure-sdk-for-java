@@ -354,14 +354,9 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-starter-jdbc-mysql</artifactId>
-      <version>4.6.0-beta.1</version>
-    </dependency>
-    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-jdbc</artifactId>
-      <version>2.7.6</version>
+      <version>2.7.6</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-jdbc;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- `spring-boot-starter-jdbc` is imported, DataSourceAutoConfiguration will be enabled by default. -->
@@ -369,25 +364,25 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>2.1.214</version>
+      <version>2.1.214</version> <!-- {x-version-update;com.h2database:h2;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>mysql</artifactId>
-      <version>1.17.5</version>
+      <version>1.17.5</version> <!-- {x-version-update;org.testcontainers:mysql;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>1.17.5</version>
+      <version>1.17.5</version> <!-- {x-version-update;org.testcontainers:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>testcontainers</artifactId>
-      <version>1.17.5</version>
+      <version>1.17.5</version> <!-- {x-version-update;org.testcontainers:testcontainers;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
