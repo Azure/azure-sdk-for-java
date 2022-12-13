@@ -47,6 +47,9 @@ public final class MetadataResourceTypeRelated {
     @JsonProperty(value = "resources")
     private List<String> resources;
 
+    /** Creates an instance of MetadataResourceTypeRelated class. */
+    public MetadataResourceTypeRelated() {}
+
     /**
      * Get the tables property: The tables related to the resource-type.
      *
