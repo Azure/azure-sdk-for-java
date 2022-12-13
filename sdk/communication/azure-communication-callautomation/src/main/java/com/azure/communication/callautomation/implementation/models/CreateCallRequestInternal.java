@@ -41,6 +41,12 @@ public final class CreateCallRequestInternal {
     @JsonProperty(value = "mediaStreamingConfiguration")
     private MediaStreamingConfigurationInternal mediaStreamingConfiguration;
 
+    /*
+     * The identifier of the Cognitive Service resource assigned to this call.
+     */
+    @JsonProperty(value = "azureCognitiveServicesEndpointUrl")
+    private String azureCognitiveServicesEndpointUrl;
+
     /**
      * Get the targets property: The targets of the call.
      *
@@ -139,6 +145,28 @@ public final class CreateCallRequestInternal {
     public CreateCallRequestInternal setMediaStreamingConfiguration(
             MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
         this.mediaStreamingConfiguration = mediaStreamingConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the azureCognitiveServicesEndpointUrl property: The identifier of the Cognitive Service resource assigned to
+     * this call.
+     *
+     * @return the azureCognitiveServicesEndpointUrl value.
+     */
+    public String getAzureCognitiveServicesEndpointUrl() {
+        return this.azureCognitiveServicesEndpointUrl;
+    }
+
+    /**
+     * Set the azureCognitiveServicesEndpointUrl property: The identifier of the Cognitive Service resource assigned to
+     * this call.
+     *
+     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
+     * @return the CreateCallRequestInternal object itself.
+     */
+    public CreateCallRequestInternal setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
+        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
         return this;
     }
 }

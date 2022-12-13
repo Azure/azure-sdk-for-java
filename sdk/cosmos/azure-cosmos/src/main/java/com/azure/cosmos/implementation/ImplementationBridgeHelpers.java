@@ -237,6 +237,7 @@ public class ImplementationBridgeHelpers {
             <T> Function<JsonNode, T> getItemFactoryMethod(CosmosQueryRequestOptions queryRequestOptions, Class<T> classOfT);
             CosmosQueryRequestOptions setItemFactoryMethod(CosmosQueryRequestOptions queryRequestOptions, Function<JsonNode, ?> factoryMethod);
             String getQueryNameOrDefault(CosmosQueryRequestOptions queryRequestOptions, String defaultQueryName);
+            RequestOptions toRequestOptions(CosmosQueryRequestOptions queryRequestOptions);
         }
     }
 
