@@ -14,7 +14,8 @@ import java.util.function.Function;
 public final class ConfigurationPropertyBuilder<T> {
     private static final String[] EMPTY_ARRAY = new String[0];
     private static final Function<String, String> PERMIT_VALUE_SANITIZER = (value) -> value;
-    private static final Function<String, Boolean> CONFIGURATION_PROPERTY_BOOLEAN_CONVERTER = (value) -> Boolean.valueOf(value);
+    private static final Function<String, Boolean> CONFIGURATION_PROPERTY_BOOLEAN_CONVERTER =
+        (value) -> Boolean.valueOf(value);
     private static final Function<String, Duration> CONFIGURATION_PROPERTY_DURATION_CONVERTER = (value) -> {
         long timeoutMillis = Long.parseLong(value);
         if (timeoutMillis < 0) {
@@ -24,8 +25,9 @@ public final class ConfigurationPropertyBuilder<T> {
         return Duration.ofMillis(timeoutMillis);
     };
 
-    private static final Function<String, Integer> CONFIGURATION_PROPERTY_INTEGER_CONVERTER = (value) -> Integer.valueOf(value);
-    private static final Function<String, String> CONFIGURATION_PROPERTY_STRING_CONVERTER =  Function.identity();
+    private static final Function<String, Integer> CONFIGURATION_PROPERTY_INTEGER_CONVERTER =
+        (value) -> Integer.valueOf(value);
+    private static final Function<String, String> CONFIGURATION_PROPERTY_STRING_CONVERTER = Function.identity();
 
     private final String name;
     private final Function<String, T> converter;
@@ -253,6 +255,16 @@ public final class ConfigurationPropertyBuilder<T> {
      * @return {@link ConfigurationProperty} instance.
      */
     public ConfigurationProperty<T> build() {
-        return new ConfigurationProperty<>(name, defaultValue, required, converter, shared, environmentVariableName, systemPropertyName, aliases, valueSanitizer);
+        return new ConfigurationProperty<>(
+            name,
+            defaultValue,
+            required,
+            converter,
+            shared,
+            environmentVariableName,
+            systemPropertyName,
+            aliases,
+            valueSanitizer
+        );
     }
 }

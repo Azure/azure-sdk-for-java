@@ -267,8 +267,11 @@ public final class RequestOptions {
         Objects.requireNonNull(errorOptions, "'errorOptions' cannot be null.");
 
         if (errorOptions.contains(ErrorOptions.THROW) && errorOptions.contains(ErrorOptions.NO_THROW)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "'errorOptions' cannot contain both 'ErrorOptions.THROW' and 'ErrorOptions.NO_THROW'."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException(
+                    "'errorOptions' cannot contain both 'ErrorOptions.THROW' and 'ErrorOptions.NO_THROW'."
+                )
+            );
         }
 
         this.errorOptions = errorOptions;

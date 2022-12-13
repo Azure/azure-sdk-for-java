@@ -37,14 +37,30 @@ public final class HttpClientOptions extends ClientOptions {
     static {
         Configuration configuration = Configuration.getGlobalConfiguration();
 
-        DEFAULT_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), LOGGER);
-        DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
-            Duration.ofSeconds(60), LOGGER);
-        DEFAULT_RESPONSE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), LOGGER);
-        DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
-            Duration.ofSeconds(60), LOGGER);
+        DEFAULT_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(
+            configuration,
+            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT,
+            Duration.ofSeconds(10),
+            LOGGER
+        );
+        DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(
+            configuration,
+            PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
+            Duration.ofSeconds(60),
+            LOGGER
+        );
+        DEFAULT_RESPONSE_TIMEOUT = getDefaultTimeoutFromEnvironment(
+            configuration,
+            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT,
+            Duration.ofSeconds(60),
+            LOGGER
+        );
+        DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(
+            configuration,
+            PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
+            Duration.ofSeconds(60),
+            LOGGER
+        );
     }
 
     private ProxyOptions proxyOptions;
@@ -312,7 +328,8 @@ public final class HttpClientOptions extends ClientOptions {
     public HttpClientOptions setMaximumConnectionPoolSize(Integer maximumConnectionPoolSize) {
         if (maximumConnectionPoolSize != null && maximumConnectionPoolSize <= 0) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'maximumConnectionPoolSize' cannot be less than 1."));
+                new IllegalArgumentException("'maximumConnectionPoolSize' cannot be less than 1.")
+            );
         }
 
         this.maximumConnectionPoolSize = maximumConnectionPoolSize;

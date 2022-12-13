@@ -10,7 +10,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonFlatten
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY,
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
     property = "@odata\\.type",
     defaultImpl = NonEmptyAnimalWithTypeIdContainingDot.class)
 @JsonTypeName("NonEmptyAnimalWithTypeIdContainingDot")

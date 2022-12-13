@@ -29,7 +29,7 @@ public class NewFoo {
     @JsonProperty(value = "properties.bar")
     private String bar;
     @JsonProperty(value = "properties.props.baz")
-    private List<String>  baz;
+    private List<String> baz;
     @JsonProperty(value = "properties.props.q.qux")
     private Map<String, String> qux;
     @JsonProperty(value = "properties.more\\.props")

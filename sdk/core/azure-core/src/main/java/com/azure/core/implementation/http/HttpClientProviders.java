@@ -34,7 +34,6 @@ public final class HttpClientProviders {
         + "it supplies is being included in the 'META-INF/services' file 'com'azure.core.http.HttpClientProvider'. "
         + "The requested HttpClientProvider was: ";
 
-
     private static final ClientLogger LOGGER = new ClientLogger(HttpClientProviders.class);
 
     private static final HttpClientProvider DEFAULT_PROVIDER;
@@ -49,8 +48,8 @@ public final class HttpClientProviders {
         // But this choice here provides additional flexibility in managed environments that control
         // classloading differently (OSGi, Spring and others) and don't/ depend on the
         // System classloader to load HttpClientProvider classes.
-        ServiceLoader<HttpClientProvider> serviceLoader = ServiceLoader.load(HttpClientProvider.class,
-            HttpClientProviders.class.getClassLoader());
+        ServiceLoader<HttpClientProvider> serviceLoader =
+            ServiceLoader.load(HttpClientProvider.class, HttpClientProviders.class.getClassLoader());
 
         AVAILABLE_PROVIDERS = new HashMap<>();
         // Use the first provider found in the service loader iterator.
@@ -71,8 +70,8 @@ public final class HttpClientProviders {
             LOGGER.verbose("Additional provider found on the classpath: {}", additionalProviderName);
         }
 
-        DEFAULT_HTTP_CLIENT_IMPLEMENTATION = Configuration.getGlobalConfiguration()
-            .get(PROPERTY_AZURE_HTTP_CLIENT_IMPLEMENTATION);
+        DEFAULT_HTTP_CLIENT_IMPLEMENTATION =
+            Configuration.getGlobalConfiguration().get(PROPERTY_AZURE_HTTP_CLIENT_IMPLEMENTATION);
         NO_DEFAULT_HTTP_CLIENT_IMPLEMENTATION = CoreUtils.isNullOrEmpty(DEFAULT_HTTP_CLIENT_IMPLEMENTATION);
     }
 
@@ -101,7 +100,8 @@ public final class HttpClientProviders {
                 HttpClientProvider provider = AVAILABLE_PROVIDERS.get(implementationName);
                 if (provider == null) {
                     throw LOGGER.logExceptionAsError(
-                        new IllegalStateException(CANNOT_FIND_SPECIFIC_PROVIDER + implementationName));
+                        new IllegalStateException(CANNOT_FIND_SPECIFIC_PROVIDER + implementationName)
+                    );
                 } else {
                     return provider.createInstance(httpClientOptions);
                 }

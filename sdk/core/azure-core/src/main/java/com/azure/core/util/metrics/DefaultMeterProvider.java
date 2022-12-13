@@ -31,7 +31,8 @@ final class DefaultMeterProvider implements MeterProvider {
         // But this choice here provides additional flexibility in managed environments that control
         // classloading differently (OSGi, Spring and others) and don't/ depend on the
         // System classloader to load Meter classes.
-        ServiceLoader<MeterProvider> serviceLoader = ServiceLoader.load(MeterProvider.class, MeterProvider.class.getClassLoader());
+        ServiceLoader<MeterProvider> serviceLoader =
+            ServiceLoader.load(MeterProvider.class, MeterProvider.class.getClassLoader());
         Iterator<MeterProvider> iterator = serviceLoader.iterator();
         if (iterator.hasNext()) {
             meterProvider = iterator.next();
@@ -42,14 +43,20 @@ final class DefaultMeterProvider implements MeterProvider {
                     .collect(Collectors.joining(", "));
 
                 // TODO (lmolkova) add configuration to allow picking specific provider
-                String message = String.format("Expected only one MeterProvider on the classpath, but found multiple providers: %s. "
-                         + "Please pick one MeterProvider implementation and remove or exclude packages that bring other implementations", allProviders);
+                String message = String.format(
+                    "Expected only one MeterProvider on the classpath, but found multiple providers: %s. "
+                        + "Please pick one MeterProvider implementation and remove or exclude packages that bring other implementations",
+                    allProviders
+                );
 
                 ERROR = new IllegalStateException(message);
                 LOGGER.error(message);
             } else {
                 ERROR = null;
-                LOGGER.info("Found MeterProvider implementation on the classpath: {}", meterProvider.getClass().getName());
+                LOGGER.info(
+                    "Found MeterProvider implementation on the classpath: {}",
+                    meterProvider.getClass().getName()
+                );
             }
         } else {
             ERROR = null;

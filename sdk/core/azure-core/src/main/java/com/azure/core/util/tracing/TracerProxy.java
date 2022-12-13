@@ -17,7 +17,8 @@ public final class TracerProxy {
     /*
      * AutoCloseable implementation which performs a no-op when close() is called.
      */
-    static final AutoCloseable NOOP_AUTOCLOSEABLE = () -> { };
+    static final AutoCloseable NOOP_AUTOCLOSEABLE = () -> {
+    };
 
     private static Tracer tracer;
 

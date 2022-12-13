@@ -30,8 +30,7 @@ import java.util.concurrent.TimeUnit;
 public class StronglyTypedHeadersBenchmark {
     private static final JacksonAdapter MAPPER = new JacksonAdapter();
 
-    private static final HttpHeaders HEADERS = new HttpHeaders()
-        .set("Date", "Tue, 04 May 2021 23:22:58 GMT")
+    private static final HttpHeaders HEADERS = new HttpHeaders().set("Date", "Tue, 04 May 2021 23:22:58 GMT")
         .set("Content-Length", "12345")
         .set("Content-Type", "application/json")
         .set("Last-Modified", "Tue, 04 May 2021 23:22:58 GMT")

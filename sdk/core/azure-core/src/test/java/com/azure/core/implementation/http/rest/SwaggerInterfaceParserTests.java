@@ -32,14 +32,18 @@ public class SwaggerInterfaceParserTests {
 
     @Test
     public void hostWithNoHostAnnotation() {
-        assertThrows(MissingRequiredAnnotationException.class,
-            () -> SwaggerInterfaceParser.getInstance(TestInterface1.class));
+        assertThrows(
+            MissingRequiredAnnotationException.class,
+            () -> SwaggerInterfaceParser.getInstance(TestInterface1.class)
+        );
     }
 
     @Test
     public void hostWithNoServiceNameAnnotation() {
-        assertThrows(MissingRequiredAnnotationException.class,
-            () -> SwaggerInterfaceParser.getInstance(TestInterface2.class));
+        assertThrows(
+            MissingRequiredAnnotationException.class,
+            () -> SwaggerInterfaceParser.getInstance(TestInterface2.class)
+        );
     }
 
     @Test
@@ -53,7 +57,9 @@ public class SwaggerInterfaceParserTests {
     @ServiceInterface(name = "myService")
     interface TestInterface4 {
         @Get("my/url/path")
-        @ExpectedResponses({200})
+        @ExpectedResponses({
+            200
+        })
         void testMethod4();
     }
 
@@ -65,8 +71,10 @@ public class SwaggerInterfaceParserTests {
 
         final SwaggerMethodParser methodParser = interfaceParser.getMethodParser(testMethod4);
         assertNotNull(methodParser);
-        assertEquals("com.azure.core.implementation.http.rest.SwaggerInterfaceParserTests$TestInterface4.testMethod4",
-            methodParser.getFullyQualifiedMethodName());
+        assertEquals(
+            "com.azure.core.implementation.http.rest.SwaggerInterfaceParserTests$TestInterface4.testMethod4",
+            methodParser.getFullyQualifiedMethodName()
+        );
 
         final SwaggerMethodParser methodDetails2 = interfaceParser.getMethodParser(testMethod4);
         assertSame(methodParser, methodDetails2);

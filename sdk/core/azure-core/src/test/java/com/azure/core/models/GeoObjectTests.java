@@ -41,7 +41,10 @@ public class GeoObjectTests {
         properties.put("key2", "value2");
         assertNotEquals(properties, geoObject.getCustomProperties());
 
-        Assertions.assertThrows(UnsupportedOperationException.class, () -> geoObject.getCustomProperties().put("key2", "value2"));
+        Assertions.assertThrows(
+            UnsupportedOperationException.class,
+            () -> geoObject.getCustomProperties().put("key2", "value2")
+        );
     }
 
     @ParameterizedTest

@@ -93,7 +93,7 @@ public abstract class GeoObject {
 
         GeoObject other = (GeoObject) obj;
 
-        return Objects.equals(boundingBox, other.boundingBox) && Objects.equals(
-            customProperties, other.customProperties);
+        return Objects.equals(boundingBox, other.boundingBox)
+            && Objects.equals(customProperties, other.customProperties);
     }
 }

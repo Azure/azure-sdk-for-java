@@ -94,7 +94,6 @@ public class SerializationBenchmark {
         private Map<String, String> any;
     }
 
-
     class MiddleModel {
         MiddleModel(String foo, String bar, String baz, Test test) {
             if (test == Test.PLAIN) {

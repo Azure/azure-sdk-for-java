@@ -75,8 +75,7 @@ public final class ProgressReporter {
      * @param progressListener The {@link ProgressListener} to be notified about progress.
      */
     private ProgressReporter(ProgressListener progressListener) {
-        this.progressListener = Objects.requireNonNull(progressListener,
-            "'progressListener' must not be null");
+        this.progressListener = Objects.requireNonNull(progressListener, "'progressListener' must not be null");
         this.listenerLock = new ReentrantLock();
         this.parent = null;
     }
@@ -86,8 +85,7 @@ public final class ProgressReporter {
      * @param parent The parent {@link ProgressReporter}. Must not be null.
      */
     private ProgressReporter(ProgressReporter parent) {
-        this.parent = Objects.requireNonNull(parent,
-            "'parent' must not be null");
+        this.parent = Objects.requireNonNull(parent, "'parent' must not be null");
         this.progressListener = null;
         this.listenerLock = null;
     }

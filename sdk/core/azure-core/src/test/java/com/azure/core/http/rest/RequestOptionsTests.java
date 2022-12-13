@@ -22,9 +22,7 @@ public class RequestOptionsTests {
     public void addQueryParam() throws MalformedURLException {
         final HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("http://request.url"));
 
-        RequestOptions options = new RequestOptions()
-            .addQueryParam("foo", "bar")
-            .addQueryParam("$skipToken", "1");
+        RequestOptions options = new RequestOptions().addQueryParam("foo", "bar").addQueryParam("$skipToken", "1");
         options.getRequestCallback().accept(request);
 
         assertTrue(request.getUrl().toString().contains("?foo=bar&%24skipToken=1"));
@@ -34,9 +32,8 @@ public class RequestOptionsTests {
     public void addHeader() throws MalformedURLException {
         final HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("http://request.url"));
 
-        RequestOptions options = new RequestOptions()
-            .addHeader("x-ms-foo", "bar")
-            .addHeader("Content-Type", "application/json");
+        RequestOptions options =
+            new RequestOptions().addHeader("x-ms-foo", "bar").addHeader("Content-Type", "application/json");
         options.getRequestCallback().accept(request);
 
         HttpHeaders headers = request.getHeaders();
@@ -51,8 +48,7 @@ public class RequestOptionsTests {
         String expected = "{\"id\":\"123\"}";
 
         BinaryData requestBody = BinaryData.fromString(expected);
-        RequestOptions options = new RequestOptions()
-            .setBody(requestBody);
+        RequestOptions options = new RequestOptions().setBody(requestBody);
         options.getRequestCallback().accept(request);
 
         assertSame(requestBody, request.getBodyAsBinaryData());
@@ -65,8 +61,7 @@ public class RequestOptionsTests {
     public void addRequestCallback() throws MalformedURLException {
         final HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("http://request.url"));
 
-        RequestOptions options = new RequestOptions()
-            .addHeader("x-ms-foo", "bar")
+        RequestOptions options = new RequestOptions().addHeader("x-ms-foo", "bar")
             .addRequestCallback(r -> r.setHttpMethod(HttpMethod.GET))
             .addRequestCallback(r -> r.setUrl("https://request.url"))
             .addQueryParam("$skipToken", "1")

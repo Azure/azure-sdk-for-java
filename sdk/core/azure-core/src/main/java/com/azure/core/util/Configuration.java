@@ -163,7 +163,6 @@ public class Configuration implements Cloneable {
      */
     public static final String PROPERTY_AZURE_METRICS_DISABLED = "AZURE_METRICS_DISABLED";
 
-
     /**
      * Sets the default number of times a request will be retried, if it passes the conditions for retrying, before it
      * fails.
@@ -251,7 +250,12 @@ public class Configuration implements Cloneable {
      * @param path Absolute path of current configuration section for logging and diagnostics purposes.
      * @param sharedConfiguration Instance of shared {@link Configuration} section to retrieve shared properties.
      */
-    Configuration(ConfigurationSource configurationSource, EnvironmentConfiguration environmentConfiguration, String path, Configuration sharedConfiguration) {
+    Configuration(
+        ConfigurationSource configurationSource,
+        EnvironmentConfiguration environmentConfiguration,
+        String path,
+        Configuration sharedConfiguration
+    ) {
         this(readConfigurations(configurationSource, path), environmentConfiguration, path, sharedConfiguration);
     }
 
@@ -263,10 +267,16 @@ public class Configuration implements Cloneable {
      * @param path Absolute path of current configuration section for logging and diagnostics purposes.
      * @param sharedConfiguration Instance of shared {@link Configuration} section to retrieve shared properties.
      */
-    private Configuration(Map<String, String> configurations, EnvironmentConfiguration environmentConfiguration, String path, Configuration sharedConfiguration) {
+    private Configuration(
+        Map<String, String> configurations,
+        EnvironmentConfiguration environmentConfiguration,
+        String path,
+        Configuration sharedConfiguration
+    ) {
         this.configurations = configurations;
         this.isEmpty = configurations.isEmpty();
-        this.environmentConfiguration = Objects.requireNonNull(environmentConfiguration, "'environmentConfiguration' cannot be null");
+        this.environmentConfiguration =
+            Objects.requireNonNull(environmentConfiguration, "'environmentConfiguration' cannot be null");
         this.path = path;
         this.sharedConfiguration = sharedConfiguration;
     }
@@ -406,7 +416,12 @@ public class Configuration implements Cloneable {
     @SuppressWarnings("CloneDoesntCallSuperClone")
     @Deprecated
     public Configuration clone() {
-        return new Configuration(configurations, new EnvironmentConfiguration(environmentConfiguration), path, sharedConfiguration);
+        return new Configuration(
+            configurations,
+            new EnvironmentConfiguration(environmentConfiguration),
+            path,
+            sharedConfiguration
+        );
     }
 
     /**
@@ -578,16 +593,12 @@ public class Configuration implements Cloneable {
             String key = CoreUtils.isNullOrEmpty(path) ? prop.getKey() : prop.getKey().substring(path.length() + 1);
             String value = prop.getValue();
 
-            LOGGER.atVerbose()
-                .addKeyValue("name", prop.getKey())
-                .log("Got property from configuration source.");
+            LOGGER.atVerbose().addKeyValue("name", prop.getKey()).log("Got property from configuration source.");
 
             if (key != null && value != null) {
                 props.put(key, value);
             } else {
-                LOGGER.atWarning()
-                    .addKeyValue("name", prop.getKey())
-                    .log("Key or value is null, property is ignored.");
+                LOGGER.atWarning().addKeyValue("name", prop.getKey()).log("Key or value is null, property is ignored.");
             }
         }
 

@@ -545,6 +545,12 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>2.28.0</version> <!-- {x-version-update;com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
+      </plugin>
     </plugins>
 
     <pluginManagement>
@@ -889,6 +895,38 @@
               <version>0.4.5</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
             </dependency>
           </dependencies>
+        </plugin>
+
+        <!-- This plugin formats source code. -->
+        <plugin>
+          <groupId>com.diffplug.spotless</groupId>
+          <artifactId>spotless-maven-plugin</artifactId>
+          <version>2.28.0</version>
+          <configuration>
+            <java>
+              <eclipse>
+                <version>4.21.0</version>
+                <file>${relative.path.to.eng.folder}/.vscode/eclipse-format-azure-sdk-for-java.xml</file>
+              </eclipse>
+              <removeUnusedImports/>
+            </java>
+          </configuration>
+          <executions>
+            <execution>
+              <id>spotless-apply</id>
+              <goals>
+                <goal>apply</goal>
+              </goals>
+              <phase>validate</phase>
+            </execution>
+            <execution>
+              <id>spotless-check</id>
+              <goals>
+                <goal>check</goal>
+              </goals>
+              <phase>verify</phase>
+            </execution>
+          </executions>
         </plugin>
       </plugins>
     </pluginManagement>

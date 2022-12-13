@@ -32,12 +32,12 @@ public final class ResponseExceptionConstructorCache {
         return CACHE.computeIfAbsent(exceptionClass, key -> locateExceptionConstructor(key, exceptionBodyType));
     }
 
-    private static MethodHandle locateExceptionConstructor(Class<? extends HttpResponseException> exceptionClass,
-        Class<?> exceptionBodyType) {
+    private static MethodHandle
+        locateExceptionConstructor(Class<? extends HttpResponseException> exceptionClass, Class<?> exceptionBodyType) {
         try {
             MethodHandles.Lookup lookupToUse = ReflectionUtils.getLookupToUse(exceptionClass);
-            Constructor<?> constructor = exceptionClass.getConstructor(String.class, HttpResponse.class,
-                exceptionBodyType);
+            Constructor<?> constructor =
+                exceptionClass.getConstructor(String.class, HttpResponse.class, exceptionBodyType);
 
             return lookupToUse.unreflectConstructor(constructor);
         } catch (Exception ex) {
@@ -50,8 +50,8 @@ public final class ResponseExceptionConstructorCache {
     }
 
     @SuppressWarnings("unchecked")
-    static <T extends HttpResponseException> T invoke(MethodHandle handle, String exceptionMessage,
-        HttpResponse httpResponse, Object exceptionBody) {
+    static <T extends HttpResponseException> T
+        invoke(MethodHandle handle, String exceptionMessage, HttpResponse httpResponse, Object exceptionBody) {
         try {
             return (T) handle.invokeWithArguments(exceptionMessage, httpResponse, exceptionBody);
         } catch (Throwable throwable) {

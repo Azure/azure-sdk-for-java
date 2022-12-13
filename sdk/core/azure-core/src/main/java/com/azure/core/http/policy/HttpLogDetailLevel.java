@@ -56,8 +56,9 @@ public enum HttpLogDetailLevel {
             logDetailLevel = HEADERS;
         } else if (BODY_VALUE.equalsIgnoreCase(detailLevel)) {
             logDetailLevel = BODY;
-        } else if (BODY_AND_HEADERS_VALUE.equalsIgnoreCase(detailLevel)
-            || BODYANDHEADERS_VALUE.equalsIgnoreCase(detailLevel)) {
+        } else if (
+            BODY_AND_HEADERS_VALUE.equalsIgnoreCase(detailLevel) || BODYANDHEADERS_VALUE.equalsIgnoreCase(detailLevel)
+        ) {
             logDetailLevel = BODY_AND_HEADERS;
         } else {
             logDetailLevel = NONE;

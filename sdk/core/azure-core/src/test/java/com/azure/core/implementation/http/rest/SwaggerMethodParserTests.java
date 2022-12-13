@@ -117,8 +117,12 @@ public class SwaggerMethodParserTests {
 
     @ParameterizedTest
     @MethodSource("httpMethodSupplier")
-    public void httpMethod(Method method, HttpMethod expectedMethod, String expectedRelativePath,
-        String expectedFullyQualifiedName) {
+    public void httpMethod(
+        Method method,
+        HttpMethod expectedMethod,
+        String expectedRelativePath,
+        String expectedFullyQualifiedName
+    ) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
         assertEquals(expectedMethod, swaggerMethodParser.getHttpMethod());
         assertEquals(expectedRelativePath, swaggerMethodParser.setPath(null, DEFAULT_SERIALIZER));
@@ -130,20 +134,15 @@ public class SwaggerMethodParserTests {
         String clazzName = clazz.getName();
 
         return Stream.of(
-            Arguments.of(clazz.getDeclaredMethod("getMethod"), HttpMethod.GET, "test",
-                clazzName + ".getMethod"),
-            Arguments.of(clazz.getDeclaredMethod("putMethod"), HttpMethod.PUT, "test",
-                clazzName + ".putMethod"),
-            Arguments.of(clazz.getDeclaredMethod("headMethod"), HttpMethod.HEAD, "test",
-                clazzName + ".headMethod"),
-            Arguments.of(clazz.getDeclaredMethod("deleteMethod"), HttpMethod.DELETE, "test",
-                clazzName + ".deleteMethod"),
-            Arguments.of(clazz.getDeclaredMethod("postMethod"), HttpMethod.POST, "test",
-                clazzName + ".postMethod"),
-            Arguments.of(clazz.getDeclaredMethod("patchMethod"), HttpMethod.PATCH, "test",
-                clazzName + ".patchMethod"),
-            Arguments.of(clazz.getDeclaredMethod("optionsMethod"), HttpMethod.OPTIONS, "test",
-                clazzName + ".optionsMethod")
+            Arguments.of(clazz.getDeclaredMethod("getMethod"), HttpMethod.GET, "test", clazzName + ".getMethod"),
+            Arguments.of(clazz.getDeclaredMethod("putMethod"), HttpMethod.PUT, "test", clazzName + ".putMethod"),
+            Arguments.of(clazz.getDeclaredMethod("headMethod"), HttpMethod.HEAD, "test", clazzName + ".headMethod"),
+            Arguments
+                .of(clazz.getDeclaredMethod("deleteMethod"), HttpMethod.DELETE, "test", clazzName + ".deleteMethod"),
+            Arguments.of(clazz.getDeclaredMethod("postMethod"), HttpMethod.POST, "test", clazzName + ".postMethod"),
+            Arguments.of(clazz.getDeclaredMethod("patchMethod"), HttpMethod.PATCH, "test", clazzName + ".patchMethod"),
+            Arguments
+                .of(clazz.getDeclaredMethod("optionsMethod"), HttpMethod.OPTIONS, "test", clazzName + ".optionsMethod")
         );
     }
 
@@ -196,15 +195,21 @@ public class SwaggerMethodParserTests {
         void noHeaders();
 
         @Get("test")
-        @Headers({"", ":", "nameOnly:", ":valueOnly"})
+        @Headers({
+            "", ":", "nameOnly:", ":valueOnly"
+        })
         void malformedHeaders();
 
         @Get("test")
-        @Headers({"name1:value1", " name2: value2", "name3 :value3 "})
+        @Headers({
+            "name1:value1", " name2: value2", "name3 :value3 "
+        })
         void headers();
 
         @Get("test")
-        @Headers({"name:value1", "name:value2"})
+        @Headers({
+            "name:value1", "name:value2"
+        })
         void sameKeyTwiceLastWins();
     }
 
@@ -226,8 +231,10 @@ public class SwaggerMethodParserTests {
         return Stream.of(
             Arguments.of(clazz.getDeclaredMethod("noHeaders"), new HttpHeaders()),
             Arguments.of(clazz.getDeclaredMethod("malformedHeaders"), new HttpHeaders()),
-            Arguments.of(clazz.getDeclaredMethod("headers"), new HttpHeaders()
-                .set("name1", "value1").set("name2", "value2").set("name3", "value3")),
+            Arguments.of(
+                clazz.getDeclaredMethod("headers"),
+                new HttpHeaders().set("name1", "value1").set("name2", "value2").set("name3", "value3")
+            ),
             Arguments.of(clazz.getDeclaredMethod("sameKeyTwiceLastWins"), new HttpHeaders().set("name", "value2"))
         );
     }
@@ -256,8 +263,13 @@ public class SwaggerMethodParserTests {
     public void hostSubstitution(Method method, Object[] arguments, String expectedUrl) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
         UrlBuilder urlBuilder = new UrlBuilder();
-        SwaggerMethodParser.setSchemeAndHost("https://{sub1}.host.com", swaggerMethodParser.hostSubstitutions,
-            arguments, urlBuilder, DEFAULT_SERIALIZER);
+        SwaggerMethodParser.setSchemeAndHost(
+            "https://{sub1}.host.com",
+            swaggerMethodParser.hostSubstitutions,
+            arguments,
+            urlBuilder,
+            DEFAULT_SERIALIZER
+        );
 
         assertEquals(expectedUrl, urlBuilder.toString());
     }
@@ -309,8 +321,13 @@ public class SwaggerMethodParserTests {
     public void schemeSubstitution(Method method, Object[] arguments, String expectedUrl) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
         UrlBuilder urlBuilder = new UrlBuilder();
-        SwaggerMethodParser.setSchemeAndHost("{sub1}://raw.host.com", swaggerMethodParser.hostSubstitutions, arguments,
-            urlBuilder, DEFAULT_SERIALIZER);
+        SwaggerMethodParser.setSchemeAndHost(
+            "{sub1}://raw.host.com",
+            swaggerMethodParser.hostSubstitutions,
+            arguments,
+            urlBuilder,
+            DEFAULT_SERIALIZER
+        );
 
         assertEquals(expectedUrl, urlBuilder.toString());
     }
@@ -382,8 +399,10 @@ public class SwaggerMethodParserTests {
         void substitutions(@QueryParam("sub1") String sub1, @QueryParam("sub2") boolean sub2);
 
         @Get("test")
-        void encodedSubstitutions(@QueryParam(value = "sub1", encoded = true) String sub1,
-            @QueryParam(value = "sub2", encoded = true) boolean sub2);
+        void encodedSubstitutions(
+            @QueryParam(value = "sub1", encoded = true) String sub1,
+            @QueryParam(value = "sub2", encoded = true) boolean sub2
+        );
 
     }
 
@@ -407,13 +426,13 @@ public class SwaggerMethodParserTests {
             Arguments.of(substitution, null, "https://raw.host.com"),
             Arguments.of(substitution, toObjectArray("raw", true), "https://raw.host.com?sub1=raw&sub2=true"),
             Arguments.of(substitution, toObjectArray(null, true), "https://raw.host.com?sub2=true"),
-            Arguments.of(substitution, toObjectArray("{sub1}", false),
-                "https://raw.host.com?sub1=%7Bsub1%7D&sub2=false"),
+            Arguments
+                .of(substitution, toObjectArray("{sub1}", false), "https://raw.host.com?sub1=%7Bsub1%7D&sub2=false"),
             Arguments.of(encodedSubstitution, null, "https://raw.host.com"),
             Arguments.of(encodedSubstitution, toObjectArray("raw", true), "https://raw.host.com?sub1=raw&sub2=true"),
             Arguments.of(encodedSubstitution, toObjectArray(null, true), "https://raw.host.com?sub2=true"),
-            Arguments.of(encodedSubstitution, toObjectArray("{sub1}", false),
-                "https://raw.host.com?sub1={sub1}&sub2=false")
+            Arguments
+                .of(encodedSubstitution, toObjectArray("{sub1}", false), "https://raw.host.com?sub1={sub1}&sub2=false")
         );
     }
 
@@ -424,7 +443,9 @@ public class SwaggerMethodParserTests {
         void addHeaders(@HeaderParam("sub1") String sub1, @HeaderParam("sub2") boolean sub2);
 
         @Get("test")
-        @Headers({"sub1:sub1", "sub2:false"})
+        @Headers({
+            "sub1:sub1", "sub2:false"
+        })
         void overrideHeaders(@HeaderParam("sub1") String sub1, @HeaderParam("sub2") boolean sub2);
 
         @Get("test")
@@ -453,7 +474,8 @@ public class SwaggerMethodParserTests {
         Map<String, String> simpleHeaderMap = Collections.singletonMap("key", "value");
         Map<String, String> expectedSimpleHeadersMap = Collections.singletonMap("x-ms-meta-key", "value");
 
-        Map<String, String> complexHeaderMap = new HttpHeaders().set("key1", (String) null).set("key2", "value2").toMap();
+        Map<String, String> complexHeaderMap =
+            new HttpHeaders().set("key1", (String) null).set("key2", "value2").toMap();
         Map<String, String> expectedComplexHeaderMap = Collections.singletonMap("x-ms-meta-key2", "value2");
 
         return Stream.of(
@@ -478,12 +500,20 @@ public class SwaggerMethodParserTests {
         void applicationJsonBody(@BodyParam(ContentType.APPLICATION_JSON) String jsonBody);
 
         @Get("test")
-        void formBody(@FormParam("name") String name, @FormParam("age") Integer age,
-            @FormParam("dob") OffsetDateTime dob, @FormParam("favoriteColors") List<String> favoriteColors);
+        void formBody(
+            @FormParam("name") String name,
+            @FormParam("age") Integer age,
+            @FormParam("dob") OffsetDateTime dob,
+            @FormParam("favoriteColors") List<String> favoriteColors
+        );
 
         @Get("test")
-        void encodedFormBody(@FormParam(value = "name", encoded = true) String name, @FormParam("age") Integer age,
-            @FormParam("dob") OffsetDateTime dob, @FormParam("favoriteColors") List<String> favoriteColors);
+        void encodedFormBody(
+            @FormParam(value = "name", encoded = true) String name,
+            @FormParam("age") Integer age,
+            @FormParam("dob") OffsetDateTime dob,
+            @FormParam("favoriteColors") List<String> favoriteColors
+        );
 
         @Get("test")
         void encodedFormKey(@FormParam(value = "x:ms:value") String value);
@@ -494,8 +524,8 @@ public class SwaggerMethodParserTests {
 
     @ParameterizedTest
     @MethodSource("bodySubstitutionSupplier")
-    public void bodySubstitution(Method method, Object[] arguments, String expectedBodyContentType,
-        Object expectedBody) {
+    public void
+        bodySubstitution(Method method, Object[] arguments, String expectedBodyContentType, Object expectedBody) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
         assertEquals(void.class, swaggerMethodParser.getReturnType());
@@ -507,10 +537,10 @@ public class SwaggerMethodParserTests {
     private static Stream<Arguments> bodySubstitutionSupplier() throws NoSuchMethodException {
         Class<BodySubstitutionMethods> clazz = BodySubstitutionMethods.class;
         Method jsonBody = clazz.getDeclaredMethod("applicationJsonBody", String.class);
-        Method formBody = clazz.getDeclaredMethod("formBody", String.class, Integer.class, OffsetDateTime.class,
-            List.class);
-        Method encodedFormBody = clazz.getDeclaredMethod("encodedFormBody", String.class, Integer.class,
-            OffsetDateTime.class, List.class);
+        Method formBody =
+            clazz.getDeclaredMethod("formBody", String.class, Integer.class, OffsetDateTime.class, List.class);
+        Method encodedFormBody =
+            clazz.getDeclaredMethod("encodedFormBody", String.class, Integer.class, OffsetDateTime.class, List.class);
         Method encodedFormKey = clazz.getDeclaredMethod("encodedFormKey", String.class);
         Method encodedFormKey2 = clazz.getDeclaredMethod("encodedFormKey2", String.class);
 
@@ -520,26 +550,54 @@ public class SwaggerMethodParserTests {
 
         return Stream.of(
             Arguments.of(jsonBody, null, ContentType.APPLICATION_JSON, null),
-            Arguments.of(jsonBody, toObjectArray("{name:John Doe,age:40,dob:01-01-1980}"), ContentType.APPLICATION_JSON,
-                "{name:John Doe,age:40,dob:01-01-1980}"),
+            Arguments.of(
+                jsonBody,
+                toObjectArray("{name:John Doe,age:40,dob:01-01-1980}"),
+                ContentType.APPLICATION_JSON,
+                "{name:John Doe,age:40,dob:01-01-1980}"
+            ),
             Arguments.of(formBody, null, APPLICATION_X_WWW_FORM_URLENCODED, null),
-            Arguments.of(formBody, toObjectArray("John Doe", null, dob, null), APPLICATION_X_WWW_FORM_URLENCODED,
-                "name=John+Doe&dob=1980-01-01T00%3A00%3A00Z"),
-            Arguments.of(formBody, toObjectArray("John Doe", 40, null, favoriteColors),
-                APPLICATION_X_WWW_FORM_URLENCODED, "name=John+Doe&age=40&favoriteColors=blue&favoriteColors=green"),
-            Arguments.of(formBody, toObjectArray("John Doe", 40, null, badFavoriteColors),
-                APPLICATION_X_WWW_FORM_URLENCODED, "name=John+Doe&age=40&favoriteColors=green"),
+            Arguments.of(
+                formBody,
+                toObjectArray("John Doe", null, dob, null),
+                APPLICATION_X_WWW_FORM_URLENCODED,
+                "name=John+Doe&dob=1980-01-01T00%3A00%3A00Z"
+            ),
+            Arguments.of(
+                formBody,
+                toObjectArray("John Doe", 40, null, favoriteColors),
+                APPLICATION_X_WWW_FORM_URLENCODED,
+                "name=John+Doe&age=40&favoriteColors=blue&favoriteColors=green"
+            ),
+            Arguments.of(
+                formBody,
+                toObjectArray("John Doe", 40, null, badFavoriteColors),
+                APPLICATION_X_WWW_FORM_URLENCODED,
+                "name=John+Doe&age=40&favoriteColors=green"
+            ),
             Arguments.of(encodedFormBody, null, APPLICATION_X_WWW_FORM_URLENCODED, null),
-            Arguments.of(encodedFormBody, toObjectArray("John Doe", null, dob, null), APPLICATION_X_WWW_FORM_URLENCODED,
-                "name=John Doe&dob=1980-01-01T00%3A00%3A00Z"),
-            Arguments.of(encodedFormBody, toObjectArray("John Doe", 40, null, favoriteColors),
-                APPLICATION_X_WWW_FORM_URLENCODED, "name=John Doe&age=40&favoriteColors=blue&favoriteColors=green"),
-            Arguments.of(encodedFormBody, toObjectArray("John Doe", 40, null, badFavoriteColors),
-                APPLICATION_X_WWW_FORM_URLENCODED, "name=John Doe&age=40&favoriteColors=green"),
-            Arguments.of(encodedFormKey, toObjectArray("value"), APPLICATION_X_WWW_FORM_URLENCODED,
-                "x%3Ams%3Avalue=value"),
-            Arguments.of(encodedFormKey2, toObjectArray("value"), APPLICATION_X_WWW_FORM_URLENCODED,
-                "x%3Ams%3Avalue=value")
+            Arguments.of(
+                encodedFormBody,
+                toObjectArray("John Doe", null, dob, null),
+                APPLICATION_X_WWW_FORM_URLENCODED,
+                "name=John Doe&dob=1980-01-01T00%3A00%3A00Z"
+            ),
+            Arguments.of(
+                encodedFormBody,
+                toObjectArray("John Doe", 40, null, favoriteColors),
+                APPLICATION_X_WWW_FORM_URLENCODED,
+                "name=John Doe&age=40&favoriteColors=blue&favoriteColors=green"
+            ),
+            Arguments.of(
+                encodedFormBody,
+                toObjectArray("John Doe", 40, null, badFavoriteColors),
+                APPLICATION_X_WWW_FORM_URLENCODED,
+                "name=John Doe&age=40&favoriteColors=green"
+            ),
+            Arguments
+                .of(encodedFormKey, toObjectArray("value"), APPLICATION_X_WWW_FORM_URLENCODED, "x%3Ams%3Avalue=value"),
+            Arguments
+                .of(encodedFormKey2, toObjectArray("value"), APPLICATION_X_WWW_FORM_URLENCODED, "x%3Ams%3Avalue=value")
         );
     }
 
@@ -564,8 +622,11 @@ public class SwaggerMethodParserTests {
 
     @ParameterizedTest
     @MethodSource("setRequestOptionsSupplier")
-    public void setRequestOptions(SwaggerMethodParser swaggerMethodParser, Object[] arguments,
-        RequestOptions expectedRequestOptions) {
+    public void setRequestOptions(
+        SwaggerMethodParser swaggerMethodParser,
+        Object[] arguments,
+        RequestOptions expectedRequestOptions
+    ) {
         assertEquals(expectedRequestOptions, swaggerMethodParser.setRequestOptions(arguments));
     }
 
@@ -573,15 +634,13 @@ public class SwaggerMethodParserTests {
         Method method = OperationMethods.class.getDeclaredMethod("getMethodWithRequestOptions", RequestOptions.class);
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
-        RequestOptions bodyOptions = new RequestOptions()
-            .setBody(BinaryData.fromString("{\"id\":\"123\"}"));
+        RequestOptions bodyOptions = new RequestOptions().setBody(BinaryData.fromString("{\"id\":\"123\"}"));
 
-        RequestOptions headerQueryOptions = new RequestOptions()
-            .addHeader("x-ms-foo", "bar")
-            .addQueryParam("foo", "bar");
+        RequestOptions headerQueryOptions =
+            new RequestOptions().addHeader("x-ms-foo", "bar").addQueryParam("foo", "bar");
 
-        RequestOptions urlOptions = new RequestOptions()
-            .addRequestCallback(httpRequest -> httpRequest.setUrl("https://foo.host.com"));
+        RequestOptions urlOptions =
+            new RequestOptions().addRequestCallback(httpRequest -> httpRequest.setUrl("https://foo.host.com"));
 
         // Add this test back if error options is ever made public.
         // RequestOptions statusOptionOptions = new RequestOptions().setErrorOptions(EnumSet.of(ErrorOptions.NO_THROW));
@@ -602,18 +661,22 @@ public class SwaggerMethodParserTests {
         void noExpectedStatusCodes();
 
         @Get("test")
-        @ExpectedResponses({200})
+        @ExpectedResponses({
+            200
+        })
         void only200IsExpected();
 
         @Get("test")
-        @ExpectedResponses({429, 503})
+        @ExpectedResponses({
+            429, 503
+        })
         void retryAfterExpected();
     }
 
     @ParameterizedTest
     @MethodSource("expectedStatusCodeSupplier")
-    public void expectedStatusCodeSupplier(Method method, int statusCode, int[] expectedStatusCodes,
-        boolean matchesExpected) {
+    public void
+        expectedStatusCodeSupplier(Method method, int statusCode, int[] expectedStatusCodes, boolean matchesExpected) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
         if (expectedStatusCodes != null) {
@@ -631,14 +694,30 @@ public class SwaggerMethodParserTests {
             Arguments.of(clazz.getDeclaredMethod("noExpectedStatusCodes"), 200, null, true),
             Arguments.of(clazz.getDeclaredMethod("noExpectedStatusCodes"), 201, null, true),
             Arguments.of(clazz.getDeclaredMethod("noExpectedStatusCodes"), 400, null, false),
-            Arguments.of(clazz.getDeclaredMethod("only200IsExpected"), 200, new int[]{200}, true),
-            Arguments.of(clazz.getDeclaredMethod("only200IsExpected"), 201, new int[]{200}, false),
-            Arguments.of(clazz.getDeclaredMethod("only200IsExpected"), 400, new int[]{200}, false),
-            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 200, new int[]{429, 503}, false),
-            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 201, new int[]{429, 503}, false),
-            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 400, new int[]{429, 503}, false),
-            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 429, new int[]{429, 503}, true),
-            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 503, new int[]{429, 503}, true)
+            Arguments.of(clazz.getDeclaredMethod("only200IsExpected"), 200, new int[] {
+                200
+            }, true),
+            Arguments.of(clazz.getDeclaredMethod("only200IsExpected"), 201, new int[] {
+                200
+            }, false),
+            Arguments.of(clazz.getDeclaredMethod("only200IsExpected"), 400, new int[] {
+                200
+            }, false),
+            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 200, new int[] {
+                429, 503
+            }, false),
+            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 201, new int[] {
+                429, 503
+            }, false),
+            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 400, new int[] {
+                429, 503
+            }, false),
+            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 429, new int[] {
+                429, 503
+            }, true),
+            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 503, new int[] {
+                429, 503
+            }, true)
         );
     }
 
@@ -649,11 +728,15 @@ public class SwaggerMethodParserTests {
         void noUnexpectedStatusCodes();
 
         @Get("test")
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = {400, 404})
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = {
+            400, 404
+        })
         void notFoundStatusCode();
 
         @Get("test")
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = {400, 404})
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = {
+            400, 404
+        })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class)
         void customDefault();
     }
@@ -718,8 +801,11 @@ public class SwaggerMethodParserTests {
         return returnTypeSupplierForDecodeableAndEagerReading(false, false, true);
     }
 
-    private static Stream<Arguments> returnTypeSupplierForDecodeableAndEagerReading(boolean nonBinaryTypeStatus,
-        boolean binaryTypeStatus, boolean voidTypeStatus) {
+    private static Stream<Arguments> returnTypeSupplierForDecodeableAndEagerReading(
+        boolean nonBinaryTypeStatus,
+        boolean binaryTypeStatus,
+        boolean voidTypeStatus
+    ) {
         return Stream.of(
             // Unknown response type can't be determined to be decode-able.
             Arguments.of(null, false),
@@ -771,7 +857,6 @@ public class SwaggerMethodParserTests {
             Arguments.of(createParameterizedFlux(Void.TYPE), voidTypeStatus),
             Arguments.of(createParameterizedFlux(JsonPatchDocument.class), nonBinaryTypeStatus),
 
-
             // Response generics.
             // If the raw type is Response it should check the first, and only, generic type.
             Arguments.of(createParameterizedResponse(BinaryData.class), binaryTypeStatus),
@@ -803,49 +888,63 @@ public class SwaggerMethodParserTests {
             Arguments.of(createParameterizedMono(createParameterizedResponse(BinaryData.class)), binaryTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponse(byte[].class)), binaryTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponse(ByteBuffer.class)), binaryTypeStatus),
-            Arguments.of(createParameterizedMono(createParameterizedResponse(MappedByteBuffer.class)), binaryTypeStatus),
+            Arguments
+                .of(createParameterizedMono(createParameterizedResponse(MappedByteBuffer.class)), binaryTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponse(InputStream.class)), binaryTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponse(FileInputStream.class)), binaryTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponse(void.class)), voidTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponse(Void.class)), voidTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponse(Void.TYPE)), voidTypeStatus),
-            Arguments.of(createParameterizedMono(createParameterizedResponse(JsonPatchDocument.class)), nonBinaryTypeStatus),
+            Arguments
+                .of(createParameterizedMono(createParameterizedResponse(JsonPatchDocument.class)), nonBinaryTypeStatus),
 
             // Mono of ResponseBase
             Arguments.of(createParameterizedMono(createParameterizedResponseBase(BinaryData.class)), binaryTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponseBase(byte[].class)), binaryTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponseBase(ByteBuffer.class)), binaryTypeStatus),
-            Arguments.of(createParameterizedMono(createParameterizedResponseBase(MappedByteBuffer.class)), binaryTypeStatus),
+            Arguments
+                .of(createParameterizedMono(createParameterizedResponseBase(MappedByteBuffer.class)), binaryTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponseBase(InputStream.class)), binaryTypeStatus),
-            Arguments.of(createParameterizedMono(createParameterizedResponseBase(FileInputStream.class)), binaryTypeStatus),
+            Arguments
+                .of(createParameterizedMono(createParameterizedResponseBase(FileInputStream.class)), binaryTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponseBase(void.class)), voidTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponseBase(Void.class)), voidTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponseBase(Void.TYPE)), voidTypeStatus),
-            Arguments.of(createParameterizedMono(createParameterizedResponseBase(JsonPatchDocument.class)), nonBinaryTypeStatus),
+            Arguments.of(
+                createParameterizedMono(createParameterizedResponseBase(JsonPatchDocument.class)),
+                nonBinaryTypeStatus
+            ),
 
             // Flux of Response
             Arguments.of(createParameterizedFlux(createParameterizedResponse(BinaryData.class)), binaryTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponse(byte[].class)), binaryTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponse(ByteBuffer.class)), binaryTypeStatus),
-            Arguments.of(createParameterizedFlux(createParameterizedResponse(MappedByteBuffer.class)), binaryTypeStatus),
+            Arguments
+                .of(createParameterizedFlux(createParameterizedResponse(MappedByteBuffer.class)), binaryTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponse(InputStream.class)), binaryTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponse(FileInputStream.class)), binaryTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponse(void.class)), voidTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponse(Void.class)), voidTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponse(Void.TYPE)), voidTypeStatus),
-            Arguments.of(createParameterizedFlux(createParameterizedResponse(JsonPatchDocument.class)), nonBinaryTypeStatus),
+            Arguments
+                .of(createParameterizedFlux(createParameterizedResponse(JsonPatchDocument.class)), nonBinaryTypeStatus),
 
             // Flux of ResponseBase
             Arguments.of(createParameterizedFlux(createParameterizedResponseBase(BinaryData.class)), binaryTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponseBase(byte[].class)), binaryTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponseBase(ByteBuffer.class)), binaryTypeStatus),
-            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(MappedByteBuffer.class)), binaryTypeStatus),
+            Arguments
+                .of(createParameterizedFlux(createParameterizedResponseBase(MappedByteBuffer.class)), binaryTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponseBase(InputStream.class)), binaryTypeStatus),
-            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(FileInputStream.class)), binaryTypeStatus),
+            Arguments
+                .of(createParameterizedFlux(createParameterizedResponseBase(FileInputStream.class)), binaryTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponseBase(void.class)), voidTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponseBase(Void.class)), voidTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponseBase(Void.TYPE)), voidTypeStatus),
-            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(JsonPatchDocument.class)), nonBinaryTypeStatus),
+            Arguments.of(
+                createParameterizedFlux(createParameterizedResponseBase(JsonPatchDocument.class)),
+                nonBinaryTypeStatus
+            ),
 
             // Custom implementations of Response and ResponseBase.
             Arguments.of(VoidResponse.class, voidTypeStatus),
@@ -886,15 +985,25 @@ public class SwaggerMethodParserTests {
     }
 
     private static final class VoidResponseWithDeserializedHeaders extends ResponseBase<HttpHeaders, Void> {
-        VoidResponseWithDeserializedHeaders(HttpRequest request, int statusCode, HttpHeaders headers, Void value,
-            HttpHeaders deserializedHeaders) {
+        VoidResponseWithDeserializedHeaders(
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders headers,
+            Void value,
+            HttpHeaders deserializedHeaders
+        ) {
             super(request, statusCode, headers, value, deserializedHeaders);
         }
     }
 
     private static final class StringResponseWithDeserializedHeaders extends ResponseBase<HttpHeaders, String> {
-        StringResponseWithDeserializedHeaders(HttpRequest request, int statusCode, HttpHeaders headers,
-            String value, HttpHeaders deserializedHeaders) {
+        StringResponseWithDeserializedHeaders(
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders headers,
+            String value,
+            HttpHeaders deserializedHeaders
+        ) {
             super(request, statusCode, headers, value, deserializedHeaders);
         }
     }

@@ -102,9 +102,7 @@ public class IterableStream<T> implements Iterable<T> {
      * @return {@link Stream} of value {@code T}.
      */
     public Stream<T> stream() {
-        return (flux != null)
-            ? flux.toStream(DEFAULT_BATCH_SIZE)
-            : StreamSupport.stream(iterable.spliterator(), false);
+        return (flux != null) ? flux.toStream(DEFAULT_BATCH_SIZE) : StreamSupport.stream(iterable.spliterator(), false);
     }
 
     /**
@@ -114,9 +112,7 @@ public class IterableStream<T> implements Iterable<T> {
      */
     @Override
     public Iterator<T> iterator() {
-        return (flux != null)
-            ? flux.toIterable(DEFAULT_BATCH_SIZE).iterator()
-            : iterable.iterator();
+        return (flux != null) ? flux.toIterable(DEFAULT_BATCH_SIZE).iterator() : iterable.iterator();
     }
 
     /**

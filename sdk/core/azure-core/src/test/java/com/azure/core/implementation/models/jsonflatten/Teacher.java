@@ -11,7 +11,9 @@ import java.util.Map;
 /**
  * Model used for testing {@link JsonFlatten}.
  */
-@SuppressWarnings({"FieldCanBeLocal", "unused"})
+@SuppressWarnings({
+    "FieldCanBeLocal", "unused"
+})
 public class Teacher {
     @JsonProperty(value = "students")
     private Map<String, Student> students;

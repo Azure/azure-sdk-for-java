@@ -57,7 +57,8 @@ public final class LoggingEventBuilder {
      * Creates {@code LoggingEventBuilder} for provided level and  {@link ClientLogger}.
      * If level is disabled, returns no-op instance.
      */
-    static LoggingEventBuilder create(Logger logger, LogLevel level, String globalContextSerialized, boolean canLogAtLevel) {
+    static LoggingEventBuilder
+        create(Logger logger, LogLevel level, String globalContextSerialized, boolean canLogAtLevel) {
         if (canLogAtLevel) {
             return new LoggingEventBuilder(logger, level, globalContextSerialized, true);
         }
@@ -278,7 +279,8 @@ public final class LoggingEventBuilder {
             message = "";
         }
 
-        StringBuilder sb = new StringBuilder(20 + context.size() * 20 + message.length() + globalContextCached.length());
+        StringBuilder sb =
+            new StringBuilder(20 + context.size() * 20 + message.length() + globalContextCached.length());
         sb.append("{\"")
             // message must be first for log parsing tooling to work, key also works as a
             // marker for Azure SDK logs so we'll write it even if there is no message
@@ -305,8 +307,7 @@ public final class LoggingEventBuilder {
         }
 
         for (int i = 0; i < context.size(); i++) {
-            context.get(i)
-                .write(sb.append(","));
+            context.get(i).write(sb.append(","));
         }
 
         sb.append("}");
@@ -390,8 +391,7 @@ public final class LoggingEventBuilder {
         }
 
         // remove trailing comma just in case
-        return formatter.deleteCharAt(formatter.length() - 1)
-            .toString();
+        return formatter.deleteCharAt(formatter.length() - 1).toString();
     }
 
     private static StringBuilder writeKeyAndValue(String key, Object value, StringBuilder formatter) {
@@ -422,12 +422,14 @@ public final class LoggingEventBuilder {
             return false;
         }
 
-        if (value instanceof Boolean
-            || value instanceof Integer
-            || value instanceof Long
-            || value instanceof Byte
-            || value instanceof Double
-            || value instanceof Float) {
+        if (
+            value instanceof Boolean
+                || value instanceof Integer
+                || value instanceof Long
+                || value instanceof Byte
+                || value instanceof Double
+                || value instanceof Float
+        ) {
             return true;
         }
 

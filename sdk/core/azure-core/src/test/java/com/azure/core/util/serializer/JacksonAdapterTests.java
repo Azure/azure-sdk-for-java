@@ -102,16 +102,15 @@ public class JacksonAdapterTests {
     @ParameterizedTest
     @MethodSource("serializeCollectionSupplier")
     public void testSerializeList(List<?> values, CollectionFormat format, String expectedSerializedString) {
-        String actualSerializedString = JacksonAdapter.createDefaultSerializerAdapter()
-            .serializeList(values, format);
+        String actualSerializedString = JacksonAdapter.createDefaultSerializerAdapter().serializeList(values, format);
         assertEquals(expectedSerializedString, actualSerializedString);
     }
 
     @ParameterizedTest
     @MethodSource("serializeCollectionSupplier")
     public void testSerializeIterable(Iterable<?> values, CollectionFormat format, String expectedSerializedString) {
-        String actualSerializedString = JacksonAdapter.createDefaultSerializerAdapter()
-            .serializeIterable(values, format);
+        String actualSerializedString =
+            JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(values, format);
         assertEquals(expectedSerializedString, actualSerializedString);
     }
 
@@ -192,8 +191,8 @@ public class JacksonAdapterTests {
 
         HttpHeaders rawHeaders = new HttpHeaders().set("Date", expectedDate);
 
-        StronglyTypedHeaders stronglyTypedHeaders = JacksonAdapter.createDefaultSerializerAdapter()
-            .deserialize(rawHeaders, StronglyTypedHeaders.class);
+        StronglyTypedHeaders stronglyTypedHeaders =
+            JacksonAdapter.createDefaultSerializerAdapter().deserialize(rawHeaders, StronglyTypedHeaders.class);
 
         assertEquals(expectedDate, DateTimeRfc1123.toRfc1123String(stronglyTypedHeaders.getDate()));
     }
@@ -202,20 +201,26 @@ public class JacksonAdapterTests {
     public void stronglyTypedHeadersClassThrowsEagerly() {
         HttpHeaders rawHeaders = new HttpHeaders().set("Date", "invalid-rfc1123-date");
 
-        assertThrows(DateTimeParseException.class, () -> JacksonAdapter.createDefaultSerializerAdapter()
-            .deserialize(rawHeaders, StronglyTypedHeaders.class));
+        assertThrows(
+            DateTimeParseException.class,
+            () -> JacksonAdapter.createDefaultSerializerAdapter().deserialize(rawHeaders, StronglyTypedHeaders.class)
+        );
     }
 
     @Test
     public void invalidStronglyTypedHeadersClassThrowsCorrectException() throws IOException {
         try {
-            JacksonAdapter.createDefaultSerializerAdapter().deserialize(new HttpHeaders(),
-                InvalidStronglyTypedHeaders.class);
+            JacksonAdapter.createDefaultSerializerAdapter()
+                .deserialize(new HttpHeaders(), InvalidStronglyTypedHeaders.class);
 
             fail("An exception should have been thrown.");
         } catch (RuntimeException ex) {
-            assertTrue(ex.getCause() instanceof JsonProcessingException, "Exception cause type was "
-                + ex.getCause().getClass().getName() + " instead of the expected JsonProcessingException type.");
+            assertTrue(
+                ex.getCause() instanceof JsonProcessingException,
+                "Exception cause type was "
+                    + ex.getCause().getClass().getName()
+                    + " instead of the expected JsonProcessingException type."
+            );
         }
     }
 

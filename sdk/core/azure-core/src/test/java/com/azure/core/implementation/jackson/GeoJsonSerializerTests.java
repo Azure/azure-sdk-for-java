@@ -40,8 +40,10 @@ public class GeoJsonSerializerTests {
 
     @Test
     public void unknownGeoTypeThrows() {
-        Assertions.assertThrows(IOException.class,
-            () -> ADAPTER.serialize(new CustomGeoObject(null, null), SerializerEncoding.JSON));
+        Assertions.assertThrows(
+            IOException.class,
+            () -> ADAPTER.serialize(new CustomGeoObject(null, null), SerializerEncoding.JSON)
+        );
     }
 
     private static final class CustomGeoObject extends GeoObject {
@@ -75,33 +77,50 @@ public class GeoJsonSerializerTests {
         BiFunction<GeoBoundingBox, Map<String, Object>, GeoPoint> pointSupplier =
             (box, properties) -> new GeoPoint(new GeoPosition(0, 0, 0D), box, properties);
 
-        List<GeoPosition> positions = Arrays.asList(new GeoPosition(0, 0, 1D),
-            new GeoPosition(1, 1, 1D));
+        List<GeoPosition> positions = Arrays.asList(new GeoPosition(0, 0, 1D), new GeoPosition(1, 1, 1D));
         BiFunction<GeoBoundingBox, Map<String, Object>, GeoLineString> lineSupplier =
             (box, properties) -> new GeoLineString(positions, box, properties);
 
-        List<GeoLinearRing> rings = Collections.singletonList(new GeoLinearRing(Arrays.asList(
-            new GeoPosition(0, 0, 1D), new GeoPosition(0, 1, 1D),
-            new GeoPosition(1, 1, 1D), new GeoPosition(0, 0, 1D)
-        )));
+        List<GeoLinearRing> rings = Collections.singletonList(
+            new GeoLinearRing(
+                Arrays.asList(
+                    new GeoPosition(0, 0, 1D),
+                    new GeoPosition(0, 1, 1D),
+                    new GeoPosition(1, 1, 1D),
+                    new GeoPosition(0, 0, 1D)
+                )
+            )
+        );
         BiFunction<GeoBoundingBox, Map<String, Object>, GeoPolygon> polygonSupplier =
             (box, properties) -> new GeoPolygon(rings, box, properties);
 
         BiFunction<GeoBoundingBox, Map<String, Object>, GeoPointCollection> multiPointSupplier =
-            (box, properties) -> new GeoPointCollection(Arrays.asList(pointSupplier.apply(null, null),
-                pointSupplier.apply(box, properties)), box, properties);
+            (box, properties) -> new GeoPointCollection(
+                Arrays.asList(pointSupplier.apply(null, null), pointSupplier.apply(box, properties)),
+                box,
+                properties
+            );
 
         BiFunction<GeoBoundingBox, Map<String, Object>, GeoLineStringCollection> multiLineSupplier =
-            (box, properties) -> new GeoLineStringCollection(Arrays.asList(lineSupplier.apply(null, null),
-                lineSupplier.apply(box, properties)), box, properties);
+            (box, properties) -> new GeoLineStringCollection(
+                Arrays.asList(lineSupplier.apply(null, null), lineSupplier.apply(box, properties)),
+                box,
+                properties
+            );
 
         BiFunction<GeoBoundingBox, Map<String, Object>, GeoPolygonCollection> multiPolygonSuppluer =
-            (box, properties) -> new GeoPolygonCollection(Arrays.asList(polygonSupplier.apply(null, null),
-                polygonSupplier.apply(box, properties)), box, properties);
+            (box, properties) -> new GeoPolygonCollection(
+                Arrays.asList(polygonSupplier.apply(null, null), polygonSupplier.apply(box, properties)),
+                box,
+                properties
+            );
 
         BiFunction<GeoBoundingBox, Map<String, Object>, GeoCollection> collectionSupplier =
-            (box, properties) -> new GeoCollection(Arrays.asList(pointSupplier.apply(null, null),
-                multiPointSupplier.apply(box, properties)), box, properties);
+            (box, properties) -> new GeoCollection(
+                Arrays.asList(pointSupplier.apply(null, null), multiPointSupplier.apply(box, properties)),
+                box,
+                properties
+            );
 
         return Stream.of(
             // GeoPoint
@@ -148,9 +167,14 @@ public class GeoJsonSerializerTests {
         );
     }
 
-    private static Object[] serializerArgumentSupplier(GeoBoundingBox boundingBox, Map<String, Object> properties,
-        BiFunction<GeoBoundingBox, Map<String, Object>, ? extends GeoObject> geoSupplier) {
+    private static Object[] serializerArgumentSupplier(
+        GeoBoundingBox boundingBox,
+        Map<String, Object> properties,
+        BiFunction<GeoBoundingBox, Map<String, Object>, ? extends GeoObject> geoSupplier
+    ) {
         GeoObject geoObject = geoSupplier.apply(boundingBox, properties);
-        return new Object[]{geoObject, GeoSerializationTestHelpers.geoToJson(geoObject)};
+        return new Object[] {
+            geoObject, GeoSerializationTestHelpers.geoToJson(geoObject)
+        };
     }
 }

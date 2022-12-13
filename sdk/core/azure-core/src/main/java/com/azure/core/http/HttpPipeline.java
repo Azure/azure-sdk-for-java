@@ -23,7 +23,6 @@ public final class HttpPipeline {
     private final HttpClient httpClient;
     private final HttpPipelinePolicy[] pipelinePolicies;
 
-
     /**
      * Creates a HttpPipeline holding array of policies that gets applied to all request initiated through {@link
      * HttpPipeline#send(HttpPipelineCallContext)} and it's response.
@@ -90,7 +89,6 @@ public final class HttpPipeline {
         return this.send(new HttpPipelineCallContext(request, data));
     }
 
-
     /**
      * Sends the context (containing an HTTP request) through pipeline.
      *
@@ -101,8 +99,7 @@ public final class HttpPipeline {
     public Mono<HttpResponse> send(HttpPipelineCallContext context) {
         // Return deferred to mono for complete lazy behaviour.
         return Mono.defer(() -> {
-            HttpPipelineNextPolicy next =
-                new HttpPipelineNextPolicy(new HttpPipelineCallState(this, context));
+            HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(new HttpPipelineCallState(this, context));
             return next.process();
         });
     }
@@ -116,8 +113,8 @@ public final class HttpPipeline {
      * upon completion.
      */
     public HttpResponse sendSync(HttpRequest request, Context data) {
-        HttpPipelineNextSyncPolicy next = new HttpPipelineNextSyncPolicy(
-            new HttpPipelineCallState(this, new HttpPipelineCallContext(request, data)));
+        HttpPipelineNextSyncPolicy next =
+            new HttpPipelineNextSyncPolicy(new HttpPipelineCallState(this, new HttpPipelineCallContext(request, data)));
         return next.processSync();
     }
 }

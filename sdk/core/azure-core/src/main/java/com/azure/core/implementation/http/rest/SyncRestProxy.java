@@ -35,8 +35,11 @@ public class SyncRestProxy extends RestProxyBase {
      * @param serializer the serializer that will be used to convert response bodies to POJOs.
      * @param interfaceParser the parser that contains information about the interface describing REST API methods that
      */
-    public SyncRestProxy(HttpPipeline httpPipeline, SerializerAdapter serializer,
-        SwaggerInterfaceParser interfaceParser) {
+    public SyncRestProxy(
+        HttpPipeline httpPipeline,
+        SerializerAdapter serializer,
+        SwaggerInterfaceParser interfaceParser
+    ) {
         super(httpPipeline, serializer, interfaceParser);
     }
 
@@ -55,10 +58,17 @@ public class SyncRestProxy extends RestProxyBase {
         return createHttpRequest(methodParser, serializer, false, args);
     }
 
-
     @Override
-    public Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
-        Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, HttpRequest request, Context context) {
+    public Object invoke(
+        Object proxy,
+        Method method,
+        RequestOptions options,
+        EnumSet<ErrorOptions> errorOptions,
+        Consumer<HttpRequest> requestCallback,
+        SwaggerMethodParser methodParser,
+        HttpRequest request,
+        Context context
+    ) {
         HttpResponseDecoder.HttpDecodedResponse decodedResponse = null;
         Throwable throwable = null;
         try {
@@ -76,8 +86,14 @@ public class SyncRestProxy extends RestProxyBase {
 
             final HttpResponse response = send(request, context);
             decodedResponse = this.decoder.decodeSync(response, methodParser);
-            return handleRestReturnType(decodedResponse, methodParser, methodParser.getReturnType(), context, options,
-                errorOptions);
+            return handleRestReturnType(
+                decodedResponse,
+                methodParser,
+                methodParser.getReturnType(),
+                context,
+                options,
+                errorOptions
+            );
         } catch (RuntimeException e) {
             throwable = e;
             throw LOGGER.logExceptionAsError(e);
@@ -101,14 +117,19 @@ public class SyncRestProxy extends RestProxyBase {
      * @return An async-version of the provided decodedResponse.
      */
     private HttpResponseDecoder.HttpDecodedResponse ensureExpectedStatus(
-        HttpResponseDecoder.HttpDecodedResponse decodedResponse, SwaggerMethodParser methodParser,
-        RequestOptions options, EnumSet<ErrorOptions> errorOptions) {
+        HttpResponseDecoder.HttpDecodedResponse decodedResponse,
+        SwaggerMethodParser methodParser,
+        RequestOptions options,
+        EnumSet<ErrorOptions> errorOptions
+    ) {
         int responseStatusCode = decodedResponse.getSourceResponse().getStatusCode();
 
         // If the response was success or configured to not return an error status when the request fails, return the
         // decoded response.
-        if (methodParser.isExpectedResponseStatusCode(responseStatusCode)
-            || (options != null && errorOptions.contains(ErrorOptions.NO_THROW))) {
+        if (
+            methodParser.isExpectedResponseStatusCode(responseStatusCode)
+                || (options != null && errorOptions.contains(ErrorOptions.NO_THROW))
+        ) {
             return decodedResponse;
         }
 
@@ -118,13 +139,21 @@ public class SyncRestProxy extends RestProxyBase {
         byte[] responseBytes = responseData == null ? null : responseData.toBytes();
         if (responseBytes == null || responseBytes.length == 0) {
             //  No body, create exception empty content string no exception body object.
-            e = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
-                decodedResponse.getSourceResponse(), null, null);
+            e = instantiateUnexpectedException(
+                methodParser.getUnexpectedException(responseStatusCode),
+                decodedResponse.getSourceResponse(),
+                null,
+                null
+            );
         } else {
             Object decodedBody = decodedResponse.getDecodedBody(responseBytes);
             // create exception with un-decodable content string and without exception body object.
-            e = instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
-                decodedResponse.getSourceResponse(), responseBytes, decodedBody);
+            e = instantiateUnexpectedException(
+                methodParser.getUnexpectedException(responseStatusCode),
+                decodedResponse.getSourceResponse(),
+                responseBytes,
+                decodedBody
+            );
         }
 
         if (e instanceof RuntimeException) {
@@ -134,8 +163,11 @@ public class SyncRestProxy extends RestProxyBase {
         }
     }
 
-    private Object handleRestResponseReturnType(HttpResponseDecoder.HttpDecodedResponse response,
-        SwaggerMethodParser methodParser, Type entityType) {
+    private Object handleRestResponseReturnType(
+        HttpResponseDecoder.HttpDecodedResponse response,
+        SwaggerMethodParser methodParser,
+        Type entityType
+    ) {
         if (methodParser.isStreamResponse()) {
             return new StreamResponse(response.getSourceResponse());
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
@@ -157,16 +189,21 @@ public class SyncRestProxy extends RestProxyBase {
         }
     }
 
-    private Object handleBodyReturnType(HttpResponseDecoder.HttpDecodedResponse response,
-        SwaggerMethodParser methodParser, Type entityType) {
+    private Object handleBodyReturnType(
+        HttpResponseDecoder.HttpDecodedResponse response,
+        SwaggerMethodParser methodParser,
+        Type entityType
+    ) {
         final int responseStatusCode = response.getSourceResponse().getStatusCode();
         final HttpMethod httpMethod = methodParser.getHttpMethod();
         final Type returnValueWireType = methodParser.getReturnValueWireType();
 
         final Object result;
-        if (httpMethod == HttpMethod.HEAD
-            && (TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.TYPE)
-            || TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.class))) {
+        if (
+            httpMethod == HttpMethod.HEAD
+                && (TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.TYPE)
+                    || TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.class))
+        ) {
             result = (responseStatusCode / 100) == 2;
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)) {
             // byte[]
@@ -202,15 +239,19 @@ public class SyncRestProxy extends RestProxyBase {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return the deserialized result
      */
-    private Object handleRestReturnType(HttpResponseDecoder.HttpDecodedResponse httpDecodedResponse,
-        SwaggerMethodParser methodParser, Type returnType, Context context, RequestOptions options,
-        EnumSet<ErrorOptions> errorOptions) {
+    private Object handleRestReturnType(
+        HttpResponseDecoder.HttpDecodedResponse httpDecodedResponse,
+        SwaggerMethodParser methodParser,
+        Type returnType,
+        Context context,
+        RequestOptions options,
+        EnumSet<ErrorOptions> errorOptions
+    ) {
         final HttpResponseDecoder.HttpDecodedResponse expectedResponse =
             ensureExpectedStatus(httpDecodedResponse, methodParser, options, errorOptions);
         final Object result;
 
-        if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class) || TypeUtil.isTypeOrSubTypeOf(returnType,
-            Void.class)) {
+        if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class) || TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)) {
             // ProxyMethod ReturnType: Void
             expectedResponse.close();
             result = null;
@@ -222,8 +263,8 @@ public class SyncRestProxy extends RestProxyBase {
         return result;
     }
 
-    public void updateRequest(RequestDataConfiguration requestDataConfiguration,
-        SerializerAdapter serializerAdapter) throws IOException {
+    public void updateRequest(RequestDataConfiguration requestDataConfiguration, SerializerAdapter serializerAdapter)
+        throws IOException {
         boolean isJson = requestDataConfiguration.isJson();
         HttpRequest request = requestDataConfiguration.getHttpRequest();
         Object bodyContentObject = requestDataConfiguration.getBodyContent();

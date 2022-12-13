@@ -52,8 +52,7 @@ public final class ImplUtils {
      */
     public static Duration getRetryAfterFromHeaders(HttpHeaders headers, Supplier<OffsetDateTime> nowSupplier) {
         // Found 'x-ms-retry-after-ms' header, use a Duration of milliseconds based on the value.
-        Duration retryDelay = tryGetRetryDelay(headers, X_MS_RETRY_AFTER_MS_HEADER,
-            ImplUtils::tryGetDelayMillis);
+        Duration retryDelay = tryGetRetryDelay(headers, X_MS_RETRY_AFTER_MS_HEADER, ImplUtils::tryGetDelayMillis);
         if (retryDelay != null) {
             return retryDelay;
         }
@@ -66,8 +65,11 @@ public final class ImplUtils {
 
         // Found 'Retry-After' header. First, attempt to resolve it as a Duration of seconds. If that fails, then
         // attempt to resolve it as an HTTP date (RFC1123).
-        retryDelay = tryGetRetryDelay(headers, HttpHeaderName.RETRY_AFTER,
-            headerValue -> tryParseLongOrDateTime(headerValue, nowSupplier));
+        retryDelay = tryGetRetryDelay(
+            headers,
+            HttpHeaderName.RETRY_AFTER,
+            headerValue -> tryParseLongOrDateTime(headerValue, nowSupplier)
+        );
         if (retryDelay != null) {
             return retryDelay;
         }
@@ -76,8 +78,8 @@ public final class ImplUtils {
         return null;
     }
 
-    private static Duration tryGetRetryDelay(HttpHeaders headers, HttpHeaderName headerName,
-        Function<String, Duration> delayParser) {
+    private static Duration
+        tryGetRetryDelay(HttpHeaders headers, HttpHeaderName headerName, Function<String, Duration> delayParser) {
         String headerValue = headers.getValue(headerName);
 
         return CoreUtils.isNullOrEmpty(headerValue) ? null : delayParser.apply(headerValue);

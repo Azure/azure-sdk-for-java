@@ -64,8 +64,7 @@ public final class PollResponse<T> {
      *     own when the next poll operation is to occur.
      * @throws NullPointerException If {@code status} is {@code null}.
      */
-    public PollResponse(LongRunningOperationStatus status, T value,
-                        Duration retryAfter) {
+    public PollResponse(LongRunningOperationStatus status, T value, Duration retryAfter) {
         Objects.requireNonNull(status, "The status input parameter cannot be null.");
         this.status = status;
         this.value = value;

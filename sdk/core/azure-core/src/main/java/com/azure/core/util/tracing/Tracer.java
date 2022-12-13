@@ -396,8 +396,7 @@ public interface Tracer {
      * @param context the call metadata containing information of the span to which the event should be associated with.
      * @throws NullPointerException if {@code eventName} is {@code null}.
      */
-    default void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp,
-                          Context context) {
+    default void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp, Context context) {
 
     }
 

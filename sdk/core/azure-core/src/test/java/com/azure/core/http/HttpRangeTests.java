@@ -54,9 +54,6 @@ public class HttpRangeTests {
     }
 
     private static Stream<Arguments> invalidRangeSupplier() {
-        return Stream.of(
-            Arguments.of(-1, null),
-            Arguments.of(0, -1L)
-        );
+        return Stream.of(Arguments.of(-1, null), Arguments.of(0, -1L));
     }
 }

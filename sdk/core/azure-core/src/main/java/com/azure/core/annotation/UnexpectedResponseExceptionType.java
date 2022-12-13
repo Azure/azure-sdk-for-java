@@ -65,5 +65,5 @@ public @interface UnexpectedResponseExceptionType {
      * exception is always thrown or returned.
      * @return The HTTP status codes that trigger the exception to be thrown or returned.
      */
-    int[] code() default {};
+    int[] code() default { };
 }

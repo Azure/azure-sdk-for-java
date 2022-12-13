@@ -75,8 +75,10 @@ public class AsynchronousFileChannelAdapterTest {
         Path tempFile = prepareForReading(data);
 
         ByteBuffer readData = ByteBuffer.allocate(data.length);
-        try (AsynchronousByteChannel channel = new AsynchronousFileChannelAdapter(
-            AsynchronousFileChannel.open(tempFile, StandardOpenOption.READ), 0)) {
+        try (
+            AsynchronousByteChannel channel =
+                new AsynchronousFileChannelAdapter(AsynchronousFileChannel.open(tempFile, StandardOpenOption.READ), 0)
+        ) {
             CountDownLatch latch = new CountDownLatch(1);
             readWithCallback(channel, readData, latch);
             latch.await(60, TimeUnit.SECONDS);
@@ -93,8 +95,12 @@ public class AsynchronousFileChannelAdapterTest {
         int offset = 117;
 
         ByteBuffer readData = ByteBuffer.allocate(data.length - offset);
-        try (AsynchronousByteChannel channel = new AsynchronousFileChannelAdapter(
-            AsynchronousFileChannel.open(tempFile, StandardOpenOption.READ), offset)) {
+        try (
+            AsynchronousByteChannel channel = new AsynchronousFileChannelAdapter(
+                AsynchronousFileChannel.open(tempFile, StandardOpenOption.READ),
+                offset
+            )
+        ) {
             CountDownLatch latch = new CountDownLatch(1);
             readWithCallback(channel, readData, latch);
             latch.await(60, TimeUnit.SECONDS);
@@ -133,8 +139,10 @@ public class AsynchronousFileChannelAdapterTest {
         Path tempFile = prepareForReading(data);
 
         ByteBuffer readData = ByteBuffer.allocate(data.length);
-        try (AsynchronousByteChannel channel = new AsynchronousFileChannelAdapter(
-            AsynchronousFileChannel.open(tempFile, StandardOpenOption.READ), 0)) {
+        try (
+            AsynchronousByteChannel channel =
+                new AsynchronousFileChannelAdapter(AsynchronousFileChannel.open(tempFile, StandardOpenOption.READ), 0)
+        ) {
             int read;
             do {
                 ByteBuffer buffer = ByteBuffer.allocate(1 + RANDOM.nextInt(127));
@@ -155,8 +163,12 @@ public class AsynchronousFileChannelAdapterTest {
         int offset = 117;
 
         ByteBuffer readData = ByteBuffer.allocate(data.length - offset);
-        try (AsynchronousByteChannel channel = new AsynchronousFileChannelAdapter(
-            AsynchronousFileChannel.open(tempFile, StandardOpenOption.READ), offset)) {
+        try (
+            AsynchronousByteChannel channel = new AsynchronousFileChannelAdapter(
+                AsynchronousFileChannel.open(tempFile, StandardOpenOption.READ),
+                offset
+            )
+        ) {
             int read;
             do {
                 ByteBuffer buffer = ByteBuffer.allocate(1 + RANDOM.nextInt(127));
@@ -176,8 +188,10 @@ public class AsynchronousFileChannelAdapterTest {
         Path tempFile = prepareForWriting();
 
         ByteBuffer writeData = ByteBuffer.wrap(data);
-        try (AsynchronousByteChannel channel = new AsynchronousFileChannelAdapter(
-            AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)) {
+        try (
+            AsynchronousByteChannel channel =
+                new AsynchronousFileChannelAdapter(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)
+        ) {
             CountDownLatch latch = new CountDownLatch(1);
             writeWithCallback(channel, writeData, latch);
             latch.await(60, TimeUnit.SECONDS);
@@ -198,13 +212,16 @@ public class AsynchronousFileChannelAdapterTest {
         expectedData.flip();
 
         ByteBuffer writeData = ByteBuffer.wrap(data);
-        try (AsynchronousByteChannel channel = new AsynchronousFileChannelAdapter(
-            AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), offset)) {
+        try (
+            AsynchronousByteChannel channel = new AsynchronousFileChannelAdapter(
+                AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE),
+                offset
+            )
+        ) {
             CountDownLatch latch = new CountDownLatch(1);
             writeWithCallback(channel, writeData, latch);
             latch.await(60, TimeUnit.SECONDS);
         }
-
 
         assertArrayEquals(expectedData.array(), Files.readAllBytes(tempFile));
     }
@@ -238,8 +255,10 @@ public class AsynchronousFileChannelAdapterTest {
         Path tempFile = prepareForWriting();
 
         ByteBuffer writeData = ByteBuffer.wrap(data);
-        try (AsynchronousByteChannel channel = new AsynchronousFileChannelAdapter(
-            AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)) {
+        try (
+            AsynchronousByteChannel channel =
+                new AsynchronousFileChannelAdapter(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)
+        ) {
             while (writeData.hasRemaining()) {
                 byte[] buffer = new byte[Math.min(1 + RANDOM.nextInt(127), writeData.remaining())];
                 writeData.get(buffer);
@@ -262,15 +281,18 @@ public class AsynchronousFileChannelAdapterTest {
         expectedData.flip();
 
         ByteBuffer writeData = ByteBuffer.wrap(data);
-        try (AsynchronousByteChannel channel = new AsynchronousFileChannelAdapter(
-            AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), offset)) {
+        try (
+            AsynchronousByteChannel channel = new AsynchronousFileChannelAdapter(
+                AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE),
+                offset
+            )
+        ) {
             while (writeData.hasRemaining()) {
                 byte[] buffer = new byte[Math.min(1 + RANDOM.nextInt(127), writeData.remaining())];
                 writeData.get(buffer);
                 channel.write(ByteBuffer.wrap(buffer)).get();
             }
         }
-
 
         assertArrayEquals(expectedData.array(), Files.readAllBytes(tempFile));
     }

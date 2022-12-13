@@ -37,24 +37,20 @@ public class ProtocolPolicyTests {
     }
 
     private static HttpPipeline createPipeline(String protocol, String expectedUrl) {
-        return new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient())
-            .policies(new ProtocolPolicy(protocol, true),
-                (context, next) -> {
-                    assertEquals(expectedUrl, context.getHttpRequest().getUrl().toString());
-                    return next.process();
-                })
+        return new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
+            .policies(new ProtocolPolicy(protocol, true), (context, next) -> {
+                assertEquals(expectedUrl, context.getHttpRequest().getUrl().toString());
+                return next.process();
+            })
             .build();
     }
 
     private static HttpPipeline createPipeline(String protocol, boolean overwrite, String expectedUrl) {
-        return new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient())
-            .policies(new ProtocolPolicy(protocol, overwrite),
-                (context, next) -> {
-                    assertEquals(expectedUrl, context.getHttpRequest().getUrl().toString());
-                    return next.process();
-                })
+        return new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
+            .policies(new ProtocolPolicy(protocol, overwrite), (context, next) -> {
+                assertEquals(expectedUrl, context.getHttpRequest().getUrl().toString());
+                return next.process();
+            })
             .build();
     }
 

@@ -68,19 +68,19 @@ public class HttpLogDetailLevelTests {
             Arguments.of(makeConfiguration("bOdY"), HttpLogDetailLevel.BODY),
 
             // body_and_headers turns into BODY_AND_HEADERS
-            Arguments.of(makeConfiguration(HttpLogDetailLevel.BODY_AND_HEADERS_VALUE),
-                HttpLogDetailLevel.BODY_AND_HEADERS),
+            Arguments
+                .of(makeConfiguration(HttpLogDetailLevel.BODY_AND_HEADERS_VALUE), HttpLogDetailLevel.BODY_AND_HEADERS),
 
             // BODY_AND_HEADERS turns into BODY_AND_HEADERS
-            Arguments.of(makeConfiguration(HttpLogDetailLevel.BODY_AND_HEADERS.name()),
-                HttpLogDetailLevel.BODY_AND_HEADERS),
+            Arguments
+                .of(makeConfiguration(HttpLogDetailLevel.BODY_AND_HEADERS.name()), HttpLogDetailLevel.BODY_AND_HEADERS),
 
             // bOdY_aNd_HeAdErS turns into BODY_AND_HEADERS
             Arguments.of(makeConfiguration("bOdY_aNd_HeAdErS"), HttpLogDetailLevel.BODY_AND_HEADERS),
 
             // bodyandheaders turns into BODY_AND_HEADERS
-            Arguments.of(makeConfiguration(HttpLogDetailLevel.BODYANDHEADERS_VALUE),
-                HttpLogDetailLevel.BODY_AND_HEADERS),
+            Arguments
+                .of(makeConfiguration(HttpLogDetailLevel.BODYANDHEADERS_VALUE), HttpLogDetailLevel.BODY_AND_HEADERS),
 
             // BODYANDHEADERS turns into BODY_AND_HEADERS
             Arguments.of(makeConfiguration("BODYANDHEADERS"), HttpLogDetailLevel.BODY_AND_HEADERS),
@@ -91,7 +91,10 @@ public class HttpLogDetailLevelTests {
     }
 
     private static Configuration makeConfiguration(String detailLevelValue) {
-        return new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL, detailLevelValue))
-            .build();
+        return new ConfigurationBuilder(
+            EMPTY_SOURCE,
+            EMPTY_SOURCE,
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL, detailLevelValue)
+        ).build();
     }
 }

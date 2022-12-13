@@ -197,8 +197,11 @@ public final class FluxUtil {
      * @param maxRetries The maximum number of times a download can be resumed when an error occurs.
      * @return A {@link Flux} that downloads reliably.
      */
-    public static Flux<ByteBuffer> createRetriableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
-        BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume, int maxRetries) {
+    public static Flux<ByteBuffer> createRetriableDownloadFlux(
+        Supplier<Flux<ByteBuffer>> downloadSupplier,
+        BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume,
+        int maxRetries
+    ) {
         return createRetriableDownloadFlux(downloadSupplier, onDownloadErrorResume, maxRetries, 0L);
     }
 
@@ -212,8 +215,12 @@ public final class FluxUtil {
      * @param position The initial offset for the download.
      * @return A {@link Flux} that downloads reliably.
      */
-    public static Flux<ByteBuffer> createRetriableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
-        BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume, int maxRetries, long position) {
+    public static Flux<ByteBuffer> createRetriableDownloadFlux(
+        Supplier<Flux<ByteBuffer>> downloadSupplier,
+        BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume,
+        int maxRetries,
+        long position
+    ) {
         return new RetriableDownloadFlux(downloadSupplier, onDownloadErrorResume, maxRetries, position);
     }
 
@@ -358,18 +365,20 @@ public final class FluxUtil {
      * @param <T> The type of response returned from the service call
      * @return The response from service call
      */
-    public static <T> Mono<T> withContext(Function<Context, Mono<T>> serviceCall,
-        Map<String, String> contextAttributes) {
+    public static <T> Mono<T>
+        withContext(Function<Context, Mono<T>> serviceCall, Map<String, String> contextAttributes) {
         return Mono.deferContextual(context -> {
-            final Context[] azureContext = new Context[]{Context.NONE};
+            final Context[] azureContext = new Context[] {
+                Context.NONE
+            };
 
             if (!CoreUtils.isNullOrEmpty(contextAttributes)) {
                 contextAttributes.forEach((key, value) -> azureContext[0] = azureContext[0].addData(key, value));
             }
 
             if (!context.isEmpty()) {
-                context.stream().forEach(entry ->
-                    azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue()));
+                context.stream()
+                    .forEach(entry -> azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue()));
             }
 
             return serviceCall.apply(azureContext[0]);
@@ -468,11 +477,13 @@ public final class FluxUtil {
      * @return The azure context
      */
     private static Context toAzureContext(ContextView context) {
-        final Context[] azureContext = new Context[]{Context.NONE};
+        final Context[] azureContext = new Context[] {
+            Context.NONE
+        };
 
         if (!context.isEmpty()) {
-            context.stream().forEach(entry ->
-                azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue()));
+            context.stream()
+                .forEach(entry -> azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue()));
         }
 
         return azureContext[0];
@@ -609,8 +620,7 @@ public final class FluxUtil {
             return monoError(LOGGER, new NullPointerException("'channel' cannot be null."));
         }
 
-        return Mono.create(emitter -> content.subscribe(
-            new AsynchronousByteChannelWriteSubscriber(channel, emitter)));
+        return Mono.create(emitter -> content.subscribe(new AsynchronousByteChannelWriteSubscriber(channel, emitter)));
     }
 
     /**
@@ -637,17 +647,16 @@ public final class FluxUtil {
             return monoError(LOGGER, new NullPointerException("'channel' cannot be null."));
         }
 
-        return content.publishOn(Schedulers.boundedElastic())
-            .map(buffer -> {
-                while (buffer.hasRemaining()) {
-                    try {
-                        channel.write(buffer);
-                    } catch (IOException e) {
-                        throw Exceptions.propagate(e);
-                    }
+        return content.publishOn(Schedulers.boundedElastic()).map(buffer -> {
+            while (buffer.hasRemaining()) {
+                try {
+                    channel.write(buffer);
+                } catch (IOException e) {
+                    throw Exceptions.propagate(e);
                 }
-                return buffer;
-            }).then();
+            }
+            return buffer;
+        }).then();
     }
 
     /**
@@ -660,8 +669,8 @@ public final class FluxUtil {
      * @param length The number of bytes to read from the file.
      * @return the Flux.
      */
-    public static Flux<ByteBuffer> readFile(AsynchronousFileChannel fileChannel, int chunkSize, long offset,
-        long length) {
+    public static Flux<ByteBuffer>
+        readFile(AsynchronousFileChannel fileChannel, int chunkSize, long offset, long length) {
         return new FileReadFlux(fileChannel, chunkSize, offset, length);
     }
 
@@ -740,8 +749,13 @@ public final class FluxUtil {
                 AtomicLongFieldUpdater.newUpdater(FileReadSubscription.class, "requested");
             //
 
-            FileReadSubscription(Subscriber<? super ByteBuffer> subscriber, AsynchronousFileChannel fileChannel,
-                int chunkSize, long offset, long length) {
+            FileReadSubscription(
+                Subscriber<? super ByteBuffer> subscriber,
+                AsynchronousFileChannel fileChannel,
+                int chunkSize,
+                long offset,
+                long length
+            ) {
                 this.subscriber = subscriber;
                 //
                 this.fileChannel = fileChannel;
@@ -879,7 +893,6 @@ public final class FluxUtil {
             }
         }
     }
-
 
     // Private Ctr
     private FluxUtil() {

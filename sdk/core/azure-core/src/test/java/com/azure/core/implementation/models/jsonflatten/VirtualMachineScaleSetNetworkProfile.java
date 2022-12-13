@@ -18,7 +18,8 @@ public final class VirtualMachineScaleSetNetworkProfile {
     private List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations;
 
     public VirtualMachineScaleSetNetworkProfile setNetworkInterfaceConfigurations(
-        List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations) {
+        List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations
+    ) {
         this.networkInterfaceConfigurations = networkInterfaceConfigurations;
         return this;
     }

@@ -36,19 +36,19 @@ final class OptionSerializerProvider extends Serializers.Base implements java.io
     private static final long serialVersionUID = 1L;
 
     @Override
-    public JsonSerializer<?> findReferenceSerializer(SerializationConfig config,
+    public JsonSerializer<?> findReferenceSerializer(
+        SerializationConfig config,
         ReferenceType refType,
         BeanDescription beanDesc,
         TypeSerializer contentTypeSerializer,
-        JsonSerializer<Object> contentValueSerializer) {
+        JsonSerializer<Object> contentValueSerializer
+    ) {
         if (Option.class.isAssignableFrom(refType.getRawClass())) {
             // The standard Serializers.Base implementations for reference types honor
             // USE_STATIC_TYPING flag (e.g. Optional in Jdk8Module), do the same for
             // custom Option reference type.
-            boolean staticTyping = (contentTypeSerializer == null)
-                && config.isEnabled(MapperFeature.USE_STATIC_TYPING);
-            return new OptionSerializer(refType, staticTyping,
-                contentTypeSerializer, contentValueSerializer);
+            boolean staticTyping = (contentTypeSerializer == null) && config.isEnabled(MapperFeature.USE_STATIC_TYPING);
+            return new OptionSerializer(refType, staticTyping, contentTypeSerializer, contentValueSerializer);
         }
         return null;
     }

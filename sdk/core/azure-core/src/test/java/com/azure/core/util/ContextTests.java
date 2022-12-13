@@ -58,14 +58,14 @@ public class ContextTests {
 
     @Test
     public void addDataKeyCannotBeNull() {
-        Context context = new Context("key",  "value");
+        Context context = new Context("key", "value");
 
         assertThrows(IllegalArgumentException.class, () -> context.addData(null, null));
     }
 
     @Test
     public void addDataValueCanBeNull() {
-        Context context = new Context("key",  null);
+        Context context = new Context("key", null);
 
         assertFalse(context.getData("key").isPresent());
     }
@@ -117,14 +117,12 @@ public class ContextTests {
     }
 
     private static Stream<Arguments> getValuesSupplier() {
-        Context contextWithMultipleKeys = new Context("key", "value")
-            .addData("key2", "value2");
+        Context contextWithMultipleKeys = new Context("key", "value").addData("key2", "value2");
         Map<Object, Object> expectedMultipleKeys = new HashMap<>();
         expectedMultipleKeys.put("key", "value");
         expectedMultipleKeys.put("key2", "value2");
 
-        Context contextWithMultipleSameKeys = new Context("key", "value")
-            .addData("key", "value2");
+        Context contextWithMultipleSameKeys = new Context("key", "value").addData("key", "value2");
 
         return Stream.of(
             Arguments.of(Context.NONE, Collections.emptyMap()),

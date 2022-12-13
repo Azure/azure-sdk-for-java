@@ -117,9 +117,12 @@ public class PagedFluxBase<T, P extends PagedResponse<T>> extends ContinuablePag
      * @param nextPageRetriever Function that retrieves the next page given a continuation token
      */
     public PagedFluxBase(Supplier<Mono<P>> firstPageRetriever, Function<String, Mono<P>> nextPageRetriever) {
-        this(() -> (continuationToken, pageSize) -> continuationToken == null
-            ? firstPageRetriever.get().flux()
-            : nextPageRetriever.apply(continuationToken).flux(), true);
+        this(
+            () -> (continuationToken, pageSize) -> continuationToken == null
+                ? firstPageRetriever.get().flux()
+                : nextPageRetriever.apply(continuationToken).flux(),
+            true
+        );
     }
 
     /**

@@ -31,8 +31,8 @@ public class HttpLogOptions {
     private static final ClientLogger LOGGER = new ClientLogger(HttpLogOptions.class);
 
     private static final int MAX_APPLICATION_ID_LENGTH = 24;
-    private static final String INVALID_APPLICATION_ID_LENGTH = "'applicationId' length cannot be greater than "
-        + MAX_APPLICATION_ID_LENGTH;
+    private static final String INVALID_APPLICATION_ID_LENGTH =
+        "'applicationId' length cannot be greater than " + MAX_APPLICATION_ID_LENGTH;
     private static final String INVALID_APPLICATION_ID_SPACE = "'applicationId' cannot contain spaces.";
     private static final List<String> DEFAULT_HEADERS_ALLOWLIST = Arrays.asList(
         "x-ms-request-id",
@@ -63,9 +63,7 @@ public class HttpLogOptions {
         "WWW-Authenticate"
     );
 
-    private static final List<String> DEFAULT_QUERY_PARAMS_ALLOWLIST = Collections.singletonList(
-        "api-version"
-    );
+    private static final List<String> DEFAULT_QUERY_PARAMS_ALLOWLIST = Collections.singletonList("api-version");
 
     /**
      * Creates a new instance that does not log any information about HTTP requests or responses.

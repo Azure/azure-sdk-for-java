@@ -19,8 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class HttpAuthorizationTests {
     @ParameterizedTest
     @MethodSource("invalidConstructorParametersSupplier")
-    public void invalidConstructorParameters(String scheme, String parameter,
-        Class<? extends Throwable> expectedException) {
+    public void
+        invalidConstructorParameters(String scheme, String parameter, Class<? extends Throwable> expectedException) {
         assertThrows(expectedException, () -> new HttpAuthorization(scheme, parameter));
     }
 

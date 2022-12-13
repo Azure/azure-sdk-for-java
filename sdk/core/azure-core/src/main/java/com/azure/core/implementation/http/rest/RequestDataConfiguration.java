@@ -11,8 +11,12 @@ public class RequestDataConfiguration {
     private boolean isJson;
     private Object bodyContent;
 
-    public RequestDataConfiguration(HttpRequest httpRequest, SwaggerMethodParser swaggerMethodParser,
-                                    boolean isJson, Object requestBodyContent) {
+    public RequestDataConfiguration(
+        HttpRequest httpRequest,
+        SwaggerMethodParser swaggerMethodParser,
+        boolean isJson,
+        Object requestBodyContent
+    ) {
 
         this.httpRequest = httpRequest;
         this.methodParser = swaggerMethodParser;

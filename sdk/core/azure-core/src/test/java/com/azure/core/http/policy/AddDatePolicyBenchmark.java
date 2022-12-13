@@ -41,42 +41,43 @@ import java.util.function.Function;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @State(Scope.Thread)
 public class AddDatePolicyBenchmark {
-    private static final Function<HttpRequest, HttpResponse> MOCK_RESPONSE_GENERATOR = request -> new HttpResponse(request) {
-        @Override
-        public int getStatusCode() {
-            return 0;
-        }
+    private static final Function<HttpRequest, HttpResponse> MOCK_RESPONSE_GENERATOR =
+        request -> new HttpResponse(request) {
+            @Override
+            public int getStatusCode() {
+                return 0;
+            }
 
-        @Override
-        public String getHeaderValue(String name) {
-            return null;
-        }
+            @Override
+            public String getHeaderValue(String name) {
+                return null;
+            }
 
-        @Override
-        public HttpHeaders getHeaders() {
-            return null;
-        }
+            @Override
+            public HttpHeaders getHeaders() {
+                return null;
+            }
 
-        @Override
-        public Flux<ByteBuffer> getBody() {
-            return null;
-        }
+            @Override
+            public Flux<ByteBuffer> getBody() {
+                return null;
+            }
 
-        @Override
-        public Mono<byte[]> getBodyAsByteArray() {
-            return null;
-        }
+            @Override
+            public Mono<byte[]> getBodyAsByteArray() {
+                return null;
+            }
 
-        @Override
-        public Mono<String> getBodyAsString() {
-            return null;
-        }
+            @Override
+            public Mono<String> getBodyAsString() {
+                return null;
+            }
 
-        @Override
-        public Mono<String> getBodyAsString(Charset charset) {
-            return null;
-        }
-    };
+            @Override
+            public Mono<String> getBodyAsString(Charset charset) {
+                return null;
+            }
+        };
 
     private static final HttpPipelinePolicy DATE_TIME_RFC_1123 = (context, next) -> Mono.defer(() -> {
         OffsetDateTime now = OffsetDateTime.now();
@@ -84,10 +85,8 @@ public class AddDatePolicyBenchmark {
         return next.process();
     });
 
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter
-        .ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'")
-        .withZone(ZoneOffset.UTC)
-        .withLocale(Locale.US);
+    private static final DateTimeFormatter FORMATTER =
+        DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'").withZone(ZoneOffset.UTC).withLocale(Locale.US);
 
     private static final HttpPipelinePolicy DATE_TIME_FORMATTER = (context, next) -> Mono.defer(() -> {
         OffsetDateTime now = OffsetDateTime.now();
@@ -100,13 +99,11 @@ public class AddDatePolicyBenchmark {
 
     @Setup
     public void setup() {
-        dateTimeRfc1123Pipeline = new HttpPipelineBuilder()
-            .policies(DATE_TIME_RFC_1123)
+        dateTimeRfc1123Pipeline = new HttpPipelineBuilder().policies(DATE_TIME_RFC_1123)
             .httpClient(request -> Mono.just(MOCK_RESPONSE_GENERATOR.apply(request)))
             .build();
 
-        dateTimeFormatterPipeline = new HttpPipelineBuilder()
-            .policies(DATE_TIME_FORMATTER)
+        dateTimeFormatterPipeline = new HttpPipelineBuilder().policies(DATE_TIME_FORMATTER)
             .httpClient(request -> Mono.just(MOCK_RESPONSE_GENERATOR.apply(request)))
             .build();
     }
@@ -119,8 +116,7 @@ public class AddDatePolicyBenchmark {
      */
     @Benchmark
     public void dateTimeRfc1123(Blackhole blackhole) {
-        blackhole.consume(dateTimeRfc1123Pipeline.send(new HttpRequest(HttpMethod.GET, "https://example.com"))
-            .block());
+        blackhole.consume(dateTimeRfc1123Pipeline.send(new HttpRequest(HttpMethod.GET, "https://example.com")).block());
     }
 
     /**
@@ -129,7 +125,7 @@ public class AddDatePolicyBenchmark {
      */
     @Benchmark
     public void dateTimeFormatter(Blackhole blackhole) {
-        blackhole.consume(dateTimeFormatterPipeline.send(new HttpRequest(HttpMethod.GET, "https://example.com"))
-            .block());
+        blackhole
+            .consume(dateTimeFormatterPipeline.send(new HttpRequest(HttpMethod.GET, "https://example.com")).block());
     }
 }

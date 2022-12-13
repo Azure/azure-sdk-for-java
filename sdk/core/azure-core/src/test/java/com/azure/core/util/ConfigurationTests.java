@@ -25,7 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ConfigurationTests {
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
     private static final ConfigurationSource FOO_SOURCE = new TestConfigurationSource().put("foo", "bar");
-    private static final ConfigurationProperty<String> FOO_PROPERTY = ConfigurationPropertyBuilder.ofString("foo").build();
+    private static final ConfigurationProperty<String> FOO_PROPERTY =
+        ConfigurationPropertyBuilder.ofString("foo").build();
 
     @Test
     public void environmentConfigurationDefaultSources() {
@@ -74,7 +75,8 @@ public class ConfigurationTests {
 
     @Test
     public void environmentConfigurationEnvVarDefaultValue() {
-        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(new TestConfigurationSource().put("foo", "42"), null);
+        EnvironmentConfiguration envConfiguration =
+            new EnvironmentConfiguration(new TestConfigurationSource().put("foo", "42"), null);
         Configuration configuration = new Configuration(EMPTY_SOURCE, envConfiguration, null, null);
         assertEquals(42, configuration.get("foo", 0));
         assertEquals(0, configuration.get("foo-not-found", 0));
@@ -82,8 +84,8 @@ public class ConfigurationTests {
 
     @Test
     public void environmentConfigurationSysPropDefaultValue() {
-        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(null,
-            new TestConfigurationSource().put("foo", "42"));
+        EnvironmentConfiguration envConfiguration =
+            new EnvironmentConfiguration(null, new TestConfigurationSource().put("foo", "42"));
         Configuration configuration = new Configuration(EMPTY_SOURCE, envConfiguration, null, null);
         assertEquals(42, configuration.get("foo", 0));
         assertEquals(0, configuration.get("foo-not-found", 0));
@@ -95,15 +97,15 @@ public class ConfigurationTests {
         props.put("foo", "42");
         props.put("bar", "forty two");
 
-        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(EMPTY_SOURCE, new TestConfigurationSource()
-                .put("foo", "42")
-                .put("bar", "forty two"));
+        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(
+            EMPTY_SOURCE,
+            new TestConfigurationSource().put("foo", "42").put("bar", "forty two")
+        );
         Configuration configuration = new Configuration(EMPTY_SOURCE, envConfiguration, null, null);
         Function<String, Integer> converter = Integer::parseInt;
         assertEquals(42, configuration.get("foo", converter));
         assertThrows(NumberFormatException.class, () -> configuration.get("bar", Integer::parseInt));
     }
-
 
     @Test
     public void environmentConfigurationSysPropConverter() {
@@ -111,10 +113,10 @@ public class ConfigurationTests {
         props.put("foo", "42");
         props.put("bar", "forty two");
 
-        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(new TestConfigurationSource()
-                .put("foo", "42")
-                .put("bar", "forty two"),
-            EMPTY_SOURCE);
+        EnvironmentConfiguration envConfiguration = new EnvironmentConfiguration(
+            new TestConfigurationSource().put("foo", "42").put("bar", "forty two"),
+            EMPTY_SOURCE
+        );
         Configuration configuration = new Configuration(EMPTY_SOURCE, envConfiguration, null, null);
         Function<String, Integer> converter = Integer::parseInt;
         assertEquals(42, configuration.get("foo", converter));
@@ -170,10 +172,11 @@ public class ConfigurationTests {
 
     @Test
     public void environmentGetByNameBasicBuilder() {
-        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE,
-                new TestConfigurationSource().put("fooSys", "barSys"),
-                new TestConfigurationSource().put("fooEnv", "barEnv"))
-            .build();
+        Configuration configuration = new ConfigurationBuilder(
+            EMPTY_SOURCE,
+            new TestConfigurationSource().put("fooSys", "barSys"),
+            new TestConfigurationSource().put("fooEnv", "barEnv")
+        ).build();
         assertEquals("barEnv", configuration.get("fooEnv"));
         assertTrue(configuration.contains("fooEnv"));
 
@@ -191,9 +194,11 @@ public class ConfigurationTests {
     @ParameterizedTest
     @MethodSource("getOrDefaultSupplier")
     public void getByNameImplicitConverter(String configurationValue, Object defaultValue, Object expectedValue) {
-        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-                new TestConfigurationSource().put("foo", configurationValue))
-            .build();
+        Configuration configuration = new ConfigurationBuilder(
+            EMPTY_SOURCE,
+            EMPTY_SOURCE,
+            new TestConfigurationSource().put("foo", configurationValue)
+        ).build();
 
         assertEquals(expectedValue, configuration.get("foo", defaultValue));
     }
@@ -207,22 +212,22 @@ public class ConfigurationTests {
 
     @Test
     public void environmentGetByNameImplicitConverterThrows() {
-        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE,
-                new TestConfigurationSource().put("fooSys", "forty two"),
-                new TestConfigurationSource().put("fooEnv", "forty two"))
-            .build();
+        Configuration configuration = new ConfigurationBuilder(
+            EMPTY_SOURCE,
+            new TestConfigurationSource().put("fooSys", "forty two"),
+            new TestConfigurationSource().put("fooEnv", "forty two")
+        ).build();
         assertThrows(NumberFormatException.class, () -> configuration.get("fooEnv", 0));
         assertThrows(NumberFormatException.class, () -> configuration.get("fooSys", 0));
     }
 
     @Test
     public void getByNameConverter() {
-        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE,
-                EMPTY_SOURCE,
-                new TestConfigurationSource()
-                    .put("foo", "42")
-                    .put("bar", "forty two"))
-            .build();
+        Configuration configuration = new ConfigurationBuilder(
+            EMPTY_SOURCE,
+            EMPTY_SOURCE,
+            new TestConfigurationSource().put("foo", "42").put("bar", "forty two")
+        ).build();
         Function<String, Integer> converter = Integer::parseInt;
         assertEquals(42, configuration.get("foo", converter));
         assertThrows(NumberFormatException.class, () -> configuration.get("bar", Integer::parseInt));
@@ -259,7 +264,7 @@ public class ConfigurationTests {
             .build();
 
         assertEquals("bar", new ConfigurationBuilder().build().get(property));
-        assertEquals("explicit",  new ConfigurationBuilder().putProperty("foo", "explicit").build().get(property));
+        assertEquals("explicit", new ConfigurationBuilder().putProperty("foo", "explicit").build().get(property));
     }
 
     @Test
@@ -270,11 +275,14 @@ public class ConfigurationTests {
             .defaultValue("bar")
             .build();
 
-        Configuration envOnlyConfig = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource().put("env.foo", "env")).build();
-        Configuration envAndSysConfig = new ConfigurationBuilder(EMPTY_SOURCE,
-                new TestConfigurationSource().put("sys.foo", "sys"),
-                new TestConfigurationSource().put("env.foo", "env"))
-            .build();
+        Configuration envOnlyConfig =
+            new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource().put("env.foo", "env"))
+                .build();
+        Configuration envAndSysConfig = new ConfigurationBuilder(
+            EMPTY_SOURCE,
+            new TestConfigurationSource().put("sys.foo", "sys"),
+            new TestConfigurationSource().put("env.foo", "env")
+        ).build();
 
         assertEquals("env", envOnlyConfig.get(property));
         assertEquals("sys", envAndSysConfig.get(property));
@@ -307,9 +315,7 @@ public class ConfigurationTests {
         ConfigurationSource testSource = new TestConfigurationSource().put("foo", "bar");
         Configuration configuration = new Configuration(testSource, envConfiguration, null, null);
 
-        configuration
-            .put("foo", "newBar")
-            .put("baz", "42");
+        configuration.put("foo", "newBar").put("baz", "42");
 
         assertTrue(configuration.contains("foo"));
         assertTrue(configuration.contains("baz"));
@@ -320,14 +326,14 @@ public class ConfigurationTests {
 
     @Test
     public void getLocalPropertyFromSection() {
-        Configuration config = new ConfigurationBuilder()
-            .putProperty("appconfiguration.prop", "foo")
+        Configuration config = new ConfigurationBuilder().putProperty("appconfiguration.prop", "foo")
             .putProperty("prop", "bar")
             .putProperty("prop2", "baz")
             .buildSection("appconfiguration");
 
         ConfigurationProperty<String> localProp = ConfigurationPropertyBuilder.ofString("prop").build();
-        ConfigurationProperty<String> localPropFullName = ConfigurationPropertyBuilder.ofString("appconfiguration.prop").build();
+        ConfigurationProperty<String> localPropFullName =
+            ConfigurationPropertyBuilder.ofString("appconfiguration.prop").build();
         ConfigurationProperty<String> globalProp = ConfigurationPropertyBuilder.ofString("prop").shared(true).build();
         ConfigurationProperty<String> globalProp2 = ConfigurationPropertyBuilder.ofString("prop2").shared(true).build();
 
@@ -339,13 +345,13 @@ public class ConfigurationTests {
 
     @Test
     public void getGlobalPropertyFromDefaultsSection() {
-        Configuration config = new ConfigurationBuilder()
-            .putProperty("appconfiguration.prop", "local")
+        Configuration config = new ConfigurationBuilder().putProperty("appconfiguration.prop", "local")
             .putProperty("global.prop", "default")
             .buildSection("global");
 
         ConfigurationProperty<String> localProp = ConfigurationPropertyBuilder.ofString("prop").build();
-        ConfigurationProperty<String> localPropFullName = ConfigurationPropertyBuilder.ofString("appconfiguration.prop").build();
+        ConfigurationProperty<String> localPropFullName =
+            ConfigurationPropertyBuilder.ofString("appconfiguration.prop").build();
         ConfigurationProperty<String> globalProp = ConfigurationPropertyBuilder.ofString("prop").shared(true).build();
 
         assertEquals("default", config.get(localProp));
@@ -355,13 +361,13 @@ public class ConfigurationTests {
 
     @Test
     public void getGlobalPropertyFromDefaultsAndRootSection() {
-        Configuration config = new ConfigurationBuilder()
-            .putProperty("appconfiguration.prop", "local")
+        Configuration config = new ConfigurationBuilder().putProperty("appconfiguration.prop", "local")
             .putProperty("prop", "root")
             .build();
 
         ConfigurationProperty<String> localProp = ConfigurationPropertyBuilder.ofString("prop").build();
-        ConfigurationProperty<String> localPropFullName = ConfigurationPropertyBuilder.ofString("appconfiguration.prop").build();
+        ConfigurationProperty<String> localPropFullName =
+            ConfigurationPropertyBuilder.ofString("appconfiguration.prop").build();
         ConfigurationProperty<String> globalProp = ConfigurationPropertyBuilder.ofString("prop").shared(true).build();
 
         assertEquals("root", config.get(localProp));
@@ -371,35 +377,29 @@ public class ConfigurationTests {
 
     @Test
     public void getPropertyWithAlias() {
-        ConfigurationProperty<String> prop = ConfigurationPropertyBuilder.ofString("prop").aliases("alias1", "alias2").build();
+        ConfigurationProperty<String> prop =
+            ConfigurationPropertyBuilder.ofString("prop").aliases("alias1", "alias2").build();
 
-        Configuration config1 = new ConfigurationBuilder()
-            .putProperty("alias2", "a2")
-            .build();
+        Configuration config1 = new ConfigurationBuilder().putProperty("alias2", "a2").build();
         assertTrue(config1.contains(prop));
         assertEquals("a2", config1.get(prop));
 
-        Configuration config2 = new ConfigurationBuilder()
-            .putProperty("alias1", "a1")
-            .putProperty("alias2", "a2")
-            .build();
+        Configuration config2 =
+            new ConfigurationBuilder().putProperty("alias1", "a1").putProperty("alias2", "a2").build();
         assertEquals("a1", config2.get(prop));
 
-        Configuration config3 = new ConfigurationBuilder()
-            .putProperty("prop", "p")
-            .putProperty("alias1", "a1")
-            .build();
+        Configuration config3 = new ConfigurationBuilder().putProperty("prop", "p").putProperty("alias1", "a1").build();
 
         assertEquals("p", config3.get(prop));
     }
 
     @Test
     public void getPropertyWithEnvVar() {
-        ConfigurationProperty<String> prop = ConfigurationPropertyBuilder.ofString("prop")
-            .environmentVariableName("prop")
-            .build();
+        ConfigurationProperty<String> prop =
+            ConfigurationPropertyBuilder.ofString("prop").environmentVariableName("prop").build();
 
-        EnvironmentConfiguration envConfig = new EnvironmentConfiguration(EMPTY_SOURCE, new TestConfigurationSource().put("prop", "env"));
+        EnvironmentConfiguration envConfig =
+            new EnvironmentConfiguration(EMPTY_SOURCE, new TestConfigurationSource().put("prop", "env"));
         Configuration config = new Configuration(EMPTY_SOURCE, envConfig, null, null);
         assertTrue(config.contains(prop));
         assertEquals("env", config.get(prop));
@@ -412,8 +412,10 @@ public class ConfigurationTests {
             .systemPropertyName("prop")
             .build();
 
-        EnvironmentConfiguration envConfig = new EnvironmentConfiguration(new TestConfigurationSource().put("prop", "sys"),
-            new TestConfigurationSource().put("prop", "env"));
+        EnvironmentConfiguration envConfig = new EnvironmentConfiguration(
+            new TestConfigurationSource().put("prop", "sys"),
+            new TestConfigurationSource().put("prop", "env")
+        );
         Configuration config = new Configuration(EMPTY_SOURCE, envConfig, null, null);
         assertTrue(config.contains(prop));
         assertEquals("sys", config.get(prop));
@@ -422,19 +424,16 @@ public class ConfigurationTests {
     @ParameterizedTest
     @MethodSource("properties")
     public void getProperty(ConfigurationProperty<?> prop, String actual, Object expected, Object defaultValue) {
-        Configuration config = new ConfigurationBuilder()
-            .putProperty("foo",  actual)
-            .build();
+        Configuration config = new ConfigurationBuilder().putProperty("foo", actual).build();
         assertTrue(config.contains(prop));
         assertEquals(expected, config.get(prop));
     }
 
     @ParameterizedTest
     @MethodSource("properties")
-    public void getMissingProperty(ConfigurationProperty<?> missingProp, String actual, Object expected, Object defaultValue) {
-        Configuration config = new ConfigurationBuilder()
-            .putProperty("foo",  actual)
-            .buildSection("az");
+    public void
+        getMissingProperty(ConfigurationProperty<?> missingProp, String actual, Object expected, Object defaultValue) {
+        Configuration config = new ConfigurationBuilder().putProperty("foo", actual).buildSection("az");
         assertFalse(config.contains(missingProp));
         assertEquals(defaultValue, config.get(missingProp));
     }
@@ -442,47 +441,51 @@ public class ConfigurationTests {
     @Test
     public void getRequiredMissingProperty() {
         Configuration config = new ConfigurationBuilder().build();
-        assertThrows(IllegalArgumentException.class, () -> config.get(ConfigurationPropertyBuilder.ofString("foo").required(true).build()));
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> config.get(ConfigurationPropertyBuilder.ofString("foo").required(true).build())
+        );
     }
 
     @ParameterizedTest
     @MethodSource("validIntStrings")
     public void getValidIntProperty(String value, Integer expected) {
-        Configuration config = new ConfigurationBuilder()
-            .putProperty("az.foo", value)
-            .buildSection("az");
+        Configuration config = new ConfigurationBuilder().putProperty("az.foo", value).buildSection("az");
         assertEquals(expected, config.get(ConfigurationPropertyBuilder.ofInteger("foo").build()));
     }
 
     @ParameterizedTest
     @MethodSource("invalidIntStrings")
     public void getInvalidIntProperty(String value) {
-        Configuration config = new ConfigurationBuilder()
-            .putProperty("az.foo", value)
-            .buildSection("az");
-        assertThrows(NumberFormatException.class, () -> config.get(ConfigurationPropertyBuilder.ofInteger("foo").build()));
+        Configuration config = new ConfigurationBuilder().putProperty("az.foo", value).buildSection("az");
+        assertThrows(
+            NumberFormatException.class,
+            () -> config.get(ConfigurationPropertyBuilder.ofInteger("foo").build())
+        );
     }
 
     @ParameterizedTest
     @MethodSource("validDurationStrings")
     public void getValidDurationProperty(String value, Duration expected) {
-        Configuration config = new ConfigurationBuilder()
-            .putProperty("az.foo", value)
-            .buildSection("az");
+        Configuration config = new ConfigurationBuilder().putProperty("az.foo", value).buildSection("az");
         assertEquals(expected, config.get(ConfigurationPropertyBuilder.ofDuration("foo").build()));
     }
 
     @ParameterizedTest
     @MethodSource("invalidDurationStrings")
     public void getInvalidDurationProperty(String value) {
-        Configuration config = new ConfigurationBuilder()
-            .putProperty("az.foo", value)
-            .buildSection("az");
+        Configuration config = new ConfigurationBuilder().putProperty("az.foo", value).buildSection("az");
 
         if (value.startsWith("-")) {
-            assertThrows(IllegalArgumentException.class, () -> config.get(ConfigurationPropertyBuilder.ofDuration("foo").build()));
+            assertThrows(
+                IllegalArgumentException.class,
+                () -> config.get(ConfigurationPropertyBuilder.ofDuration("foo").build())
+            );
         } else {
-            assertThrows(NumberFormatException.class, () -> config.get(ConfigurationPropertyBuilder.ofDuration("foo").build()));
+            assertThrows(
+                NumberFormatException.class,
+                () -> config.get(ConfigurationPropertyBuilder.ofDuration("foo").build())
+            );
         }
     }
 
@@ -492,8 +495,7 @@ public class ConfigurationTests {
         Map<String, String> configurations = new HashMap<>();
         configurations.put("prop", "p");
 
-        Configuration config = new ConfigurationBuilder()
-            .putProperty("az.true", "true")
+        Configuration config = new ConfigurationBuilder().putProperty("az.true", "true")
             .putProperty("az.false", "false")
             .putProperty("az.anything-else", "anything-else")
             .buildSection("az");
@@ -507,14 +509,12 @@ public class ConfigurationTests {
     @Test
     @SuppressWarnings("deprecation")
     public void cloneConfiguration() {
-        EnvironmentConfiguration envConfig = new EnvironmentConfiguration(new TestConfigurationSource()
-                .put("envVar1", "envVar1")
-                .put("envVar2", "envVar2"),
-            EMPTY_SOURCE);
+        EnvironmentConfiguration envConfig = new EnvironmentConfiguration(
+            new TestConfigurationSource().put("envVar1", "envVar1").put("envVar2", "envVar2"),
+            EMPTY_SOURCE
+        );
 
-        ConfigurationSource sysPropSource = new TestConfigurationSource()
-            .put("prop1", "prop1")
-            .put("prop2", "prop2");
+        ConfigurationSource sysPropSource = new TestConfigurationSource().put("prop1", "prop1").put("prop2", "prop2");
 
         Configuration configuration = new Configuration(sysPropSource, envConfig, null, null);
 
@@ -533,13 +533,34 @@ public class ConfigurationTests {
         return Stream.of(
             Arguments.of(ConfigurationPropertyBuilder.ofString("foo").build(), "bar", "bar", null),
             Arguments.of(ConfigurationPropertyBuilder.ofInteger("foo").build(), "42", 42, null),
-            Arguments.of(ConfigurationPropertyBuilder.ofDuration("foo").build(),  "2", Duration.ofMillis(2), null),
+            Arguments.of(ConfigurationPropertyBuilder.ofDuration("foo").build(), "2", Duration.ofMillis(2), null),
             Arguments.of(ConfigurationPropertyBuilder.ofBoolean("foo").build(), "true", true, null),
             Arguments.of(ConfigurationPropertyBuilder.ofString("foo").defaultValue("foo").build(), "bar", "bar", "foo"),
             Arguments.of(ConfigurationPropertyBuilder.ofInteger("foo").defaultValue(37).build(), "42", 42, 37),
-            Arguments.of(ConfigurationPropertyBuilder.ofDuration("foo").defaultValue(Duration.ofMillis(1)).build(), "2", Duration.ofMillis(2), Duration.ofMillis(1)),
-            Arguments.of(ConfigurationPropertyBuilder.ofBoolean("foo").defaultValue(false).build(), "true", true, false),
-            Arguments.of(new ConfigurationProperty<Double>("foo", 0.1, false, v -> Double.parseDouble(v), false, null, null, null, null), "0.2", 0.2, 0.1)
+            Arguments.of(
+                ConfigurationPropertyBuilder.ofDuration("foo").defaultValue(Duration.ofMillis(1)).build(),
+                "2",
+                Duration.ofMillis(2),
+                Duration.ofMillis(1)
+            ),
+            Arguments
+                .of(ConfigurationPropertyBuilder.ofBoolean("foo").defaultValue(false).build(), "true", true, false),
+            Arguments.of(
+                new ConfigurationProperty<Double>(
+                    "foo",
+                    0.1,
+                    false,
+                    v -> Double.parseDouble(v),
+                    false,
+                    null,
+                    null,
+                    null,
+                    null
+                ),
+                "0.2",
+                0.2,
+                0.1
+            )
         );
     }
 
@@ -553,11 +574,7 @@ public class ConfigurationTests {
     }
 
     private static Stream<Arguments> invalidIntStrings() {
-        return Stream.of(
-            Arguments.of("0x5"),
-            Arguments.of("not-a-string"),
-            Arguments.of("2147483648")
-        );
+        return Stream.of(Arguments.of("0x5"), Arguments.of("not-a-string"), Arguments.of("2147483648"));
     }
 
     private static Stream<Arguments> validDurationStrings() {
@@ -575,7 +592,6 @@ public class ConfigurationTests {
             Arguments.of("9223372036854775808", Duration.ofMillis(2147483648L))
         );
     }
-
 
     private static Stream<Arguments> getOrDefaultSupplier() {
         return Stream.of(

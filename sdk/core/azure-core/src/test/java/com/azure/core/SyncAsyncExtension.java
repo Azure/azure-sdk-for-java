@@ -39,8 +39,10 @@ public class SyncAsyncExtension implements TestTemplateInvocationContextProvider
         Boolean isSync = IS_SYNC_THREAD_LOCAL.get();
         WAS_EXTENSION_USED_THREAD_LOCAL.set(true);
         if (isSync == null) {
-            throw new IllegalStateException("The IS_SYNC_THREAD_LOCAL is undefined. Make sure you're using"
-                + "@SyncAsyncTest with SyncAsyncExtension.execute()");
+            throw new IllegalStateException(
+                "The IS_SYNC_THREAD_LOCAL is undefined. Make sure you're using"
+                    + "@SyncAsyncTest with SyncAsyncExtension.execute()"
+            );
         } else if (isSync) {
             return sync.call();
         } else {
@@ -58,8 +60,10 @@ public class SyncAsyncExtension implements TestTemplateInvocationContextProvider
         Boolean isSync = IS_SYNC_THREAD_LOCAL.get();
         WAS_EXTENSION_USED_THREAD_LOCAL.set(true);
         if (isSync == null) {
-            throw new IllegalStateException("The IS_SYNC_THREAD_LOCAL is undefined. Make sure you're using"
-                + "@SyncAsyncTest with SyncAsyncExtension.execute()");
+            throw new IllegalStateException(
+                "The IS_SYNC_THREAD_LOCAL is undefined. Make sure you're using"
+                    + "@SyncAsyncTest with SyncAsyncExtension.execute()"
+            );
         } else if (isSync) {
             sync.run();
         } else {
@@ -75,12 +79,10 @@ public class SyncAsyncExtension implements TestTemplateInvocationContextProvider
     }
 
     @Override
-    public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(
-        ExtensionContext extensionContext) {
-        return Stream.of(
-            new SyncAsyncTestTemplateInvocationContext(true),
-            new SyncAsyncTestTemplateInvocationContext(false)
-        );
+    public Stream<TestTemplateInvocationContext>
+        provideTestTemplateInvocationContexts(ExtensionContext extensionContext) {
+        return Stream
+            .of(new SyncAsyncTestTemplateInvocationContext(true), new SyncAsyncTestTemplateInvocationContext(false));
     }
 
     private static final class SyncAsyncTestTemplateInvocationContext implements TestTemplateInvocationContext {
@@ -101,8 +103,7 @@ public class SyncAsyncExtension implements TestTemplateInvocationContextProvider
         }
     }
 
-    static final class SyncAsyncTestInterceptor
-        implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
+    static final class SyncAsyncTestInterceptor implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
         private final boolean isSync;
 
         private SyncAsyncTestInterceptor(boolean isSync) {
@@ -126,7 +127,8 @@ public class SyncAsyncExtension implements TestTemplateInvocationContextProvider
             IS_SYNC_THREAD_LOCAL.remove();
             if (!WAS_EXTENSION_USED_THREAD_LOCAL.get()) {
                 throw new IllegalStateException(
-                    "You should use SyncAsyncExtension.execute() in test annotated with @SyncAsyncTest");
+                    "You should use SyncAsyncExtension.execute() in test annotated with @SyncAsyncTest"
+                );
             }
             WAS_EXTENSION_USED_THREAD_LOCAL.remove();
         }

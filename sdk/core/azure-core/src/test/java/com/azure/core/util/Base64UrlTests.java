@@ -28,9 +28,15 @@ public class Base64UrlTests {
 
     @Test
     public void constructorWithNonEmptyBytes() {
-        final Base64Url base64Url = new Base64Url(new byte[] { 65, 65, 69, 67, 65, 119, 81, 70, 66, 103, 99, 73, 67, 81 });
-        assertArrayEquals(new byte[] { 65, 65, 69, 67, 65, 119, 81, 70, 66, 103, 99, 73, 67, 81 }, base64Url.encodedBytes());
-        assertArrayEquals(new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }, base64Url.decodedBytes());
+        final Base64Url base64Url = new Base64Url(new byte[] {
+            65, 65, 69, 67, 65, 119, 81, 70, 66, 103, 99, 73, 67, 81
+        });
+        assertArrayEquals(new byte[] {
+            65, 65, 69, 67, 65, 119, 81, 70, 66, 103, 99, 73, 67, 81
+        }, base64Url.encodedBytes());
+        assertArrayEquals(new byte[] {
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+        }, base64Url.decodedBytes());
         assertEquals("AAECAwQFBgcICQ", base64Url.toString());
     }
 
@@ -69,24 +75,36 @@ public class Base64UrlTests {
     @Test
     public void constructorWithNonEmptyString() {
         final Base64Url base64Url = new Base64Url("AAECAwQFBgcICQ");
-        assertArrayEquals(new byte[] { 65, 65, 69, 67, 65, 119, 81, 70, 66, 103, 99, 73, 67, 81 }, base64Url.encodedBytes());
-        assertArrayEquals(new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }, base64Url.decodedBytes());
+        assertArrayEquals(new byte[] {
+            65, 65, 69, 67, 65, 119, 81, 70, 66, 103, 99, 73, 67, 81
+        }, base64Url.encodedBytes());
+        assertArrayEquals(new byte[] {
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+        }, base64Url.decodedBytes());
         assertEquals("AAECAwQFBgcICQ", base64Url.toString());
     }
 
     @Test
     public void constructorWithNonEmptyDoubleQuotedString() {
         final Base64Url base64Url = new Base64Url("\"AAECAwQFBgcICQ\"");
-        assertArrayEquals(new byte[] { 65, 65, 69, 67, 65, 119, 81, 70, 66, 103, 99, 73, 67, 81 }, base64Url.encodedBytes());
-        assertArrayEquals(new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }, base64Url.decodedBytes());
+        assertArrayEquals(new byte[] {
+            65, 65, 69, 67, 65, 119, 81, 70, 66, 103, 99, 73, 67, 81
+        }, base64Url.encodedBytes());
+        assertArrayEquals(new byte[] {
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+        }, base64Url.decodedBytes());
         assertEquals("AAECAwQFBgcICQ", base64Url.toString());
     }
 
     @Test
     public void constructorWithNonEmptySingleQuotedString() {
         final Base64Url base64Url = new Base64Url("\'AAECAwQFBgcICQ\'");
-        assertArrayEquals(new byte[] { 65, 65, 69, 67, 65, 119, 81, 70, 66, 103, 99, 73, 67, 81 }, base64Url.encodedBytes());
-        assertArrayEquals(new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }, base64Url.decodedBytes());
+        assertArrayEquals(new byte[] {
+            65, 65, 69, 67, 65, 119, 81, 70, 66, 103, 99, 73, 67, 81
+        }, base64Url.encodedBytes());
+        assertArrayEquals(new byte[] {
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+        }, base64Url.decodedBytes());
         assertEquals("AAECAwQFBgcICQ", base64Url.toString());
     }
 
@@ -108,9 +126,15 @@ public class Base64UrlTests {
 
     @Test
     public void encodeWithNonEmptyBytes() {
-        final Base64Url base64Url = Base64Url.encode(new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
-        assertArrayEquals(new byte[] { 65, 65, 69, 67, 65, 119, 81, 70, 66, 103, 99, 73, 67, 81 }, base64Url.encodedBytes());
-        assertArrayEquals(new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }, base64Url.decodedBytes());
+        final Base64Url base64Url = Base64Url.encode(new byte[] {
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+        });
+        assertArrayEquals(new byte[] {
+            65, 65, 69, 67, 65, 119, 81, 70, 66, 103, 99, 73, 67, 81
+        }, base64Url.encodedBytes());
+        assertArrayEquals(new byte[] {
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+        }, base64Url.decodedBytes());
         assertEquals("AAECAwQFBgcICQ", base64Url.toString());
     }
 

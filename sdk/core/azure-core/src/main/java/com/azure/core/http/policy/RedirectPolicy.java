@@ -56,55 +56,56 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
      * Function to process through the HTTP Response received in the pipeline
      * and redirect sending the request with new redirect url.
      */
-    private Mono<HttpResponse> attemptRedirect(final HttpPipelineCallContext context,
-                                               final HttpPipelineNextPolicy next,
-                                               final HttpRequest originalHttpRequest,
-                                               final int redirectAttempt,
-                                               Set<String> attemptedRedirectUrls) {
+    private Mono<HttpResponse> attemptRedirect(
+        final HttpPipelineCallContext context,
+        final HttpPipelineNextPolicy next,
+        final HttpRequest originalHttpRequest,
+        final int redirectAttempt,
+        Set<String> attemptedRedirectUrls
+    ) {
         // make sure the context is not modified during retry, except for the URL
         context.setHttpRequest(originalHttpRequest.copy());
 
-        return next.clone().process()
-            .flatMap(httpResponse -> {
-                if (redirectStrategy.shouldAttemptRedirect(context, httpResponse, redirectAttempt,
-                    attemptedRedirectUrls)) {
-                    HttpRequest redirectRequestCopy = redirectStrategy.createRedirectRequest(httpResponse);
+        return next.clone().process().flatMap(httpResponse -> {
+            if (redirectStrategy.shouldAttemptRedirect(context, httpResponse, redirectAttempt, attemptedRedirectUrls)) {
+                HttpRequest redirectRequestCopy = redirectStrategy.createRedirectRequest(httpResponse);
 
-                    // Clear the authorization header to avoid the client to be redirected to an untrusted third party server
-                    // causing it to leak your authorization token to.
-                    httpResponse.getHeaders().remove("Authorization");
+                // Clear the authorization header to avoid the client to be redirected to an untrusted third party server
+                // causing it to leak your authorization token to.
+                httpResponse.getHeaders().remove("Authorization");
 
-                    return httpResponse
-                        .getBody()
-                        .ignoreElements()
-                        .then(attemptRedirect(context, next, redirectRequestCopy, redirectAttempt + 1, attemptedRedirectUrls));
-                } else {
-                    return Mono.just(httpResponse);
-                }
-            });
+                return httpResponse.getBody()
+                    .ignoreElements()
+                    .then(
+                        attemptRedirect(context, next, redirectRequestCopy, redirectAttempt + 1, attemptedRedirectUrls)
+                    );
+            } else {
+                return Mono.just(httpResponse);
+            }
+        });
     }
 
     /**
      * Function to process through the HTTP Response received in the pipeline
      * and redirect sending the request with new redirect url.
      */
-    private HttpResponse attemptRedirectSync(final HttpPipelineCallContext context,
-                                             final HttpPipelineNextSyncPolicy next,
-                                             final HttpRequest originalHttpRequest,
-                                             final int redirectAttempt,
-                                             Set<String> attemptedRedirectUrls) {
+    private HttpResponse attemptRedirectSync(
+        final HttpPipelineCallContext context,
+        final HttpPipelineNextSyncPolicy next,
+        final HttpRequest originalHttpRequest,
+        final int redirectAttempt,
+        Set<String> attemptedRedirectUrls
+    ) {
         // make sure the context is not modified during retry, except for the URL
         context.setHttpRequest(originalHttpRequest.copy());
 
         HttpResponse httpResponse = next.clone().processSync();
 
-        if (redirectStrategy.shouldAttemptRedirect(context, httpResponse, redirectAttempt,
-            attemptedRedirectUrls)) {
+        if (redirectStrategy.shouldAttemptRedirect(context, httpResponse, redirectAttempt, attemptedRedirectUrls)) {
             HttpRequest redirectRequestCopy = redirectStrategy.createRedirectRequest(httpResponse);
             // make sure we need this
             httpResponse.getBody().blockLast();
-            return attemptRedirectSync(context, next, redirectRequestCopy, redirectAttempt + 1,
-                attemptedRedirectUrls);
+            return attemptRedirectSync(context, next, redirectRequestCopy, redirectAttempt + 1, attemptedRedirectUrls);
         } else {
             return httpResponse;
         }

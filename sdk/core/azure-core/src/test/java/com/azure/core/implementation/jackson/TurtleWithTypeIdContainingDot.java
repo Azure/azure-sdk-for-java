@@ -25,4 +25,3 @@ public class TurtleWithTypeIdContainingDot extends NonEmptyAnimalWithTypeIdConta
         return this;
     }
 }
-

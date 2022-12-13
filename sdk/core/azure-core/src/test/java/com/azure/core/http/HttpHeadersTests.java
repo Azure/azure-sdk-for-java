@@ -28,16 +28,24 @@ public class HttpHeadersTests {
     private static Stream<Arguments> testAddSupplier() {
         return Stream.of(
             // Empty HttpHeaders will add the value.
-            Arguments.of(new HttpHeaders(), "a", "b", new String[] { "b" }),
+            Arguments.of(new HttpHeaders(), "a", "b", new String[] {
+                "b"
+            }),
 
             // Non-empty HttpHeaders will add to the previous value.
-            Arguments.of(new HttpHeaders().set("a", "b"), "a", "c", new String[] { "b", "c" }),
+            Arguments.of(new HttpHeaders().set("a", "b"), "a", "c", new String[] {
+                "b", "c"
+            }),
 
             // Non-empty HttpHeaders will do nothing when previously set and the value is null.
-            Arguments.of(new HttpHeaders().set("a", "b"), "a", null, new String[] { "b" }),
+            Arguments.of(new HttpHeaders().set("a", "b"), "a", null, new String[] {
+                "b"
+            }),
 
             // HttpHeaders is case-insensitive.
-            Arguments.of(new HttpHeaders().set("a", "b"), "A", "c", new String[] { "b", "c" })
+            Arguments.of(new HttpHeaders().set("a", "b"), "A", "c", new String[] {
+                "b", "c"
+            })
         );
     }
 
@@ -108,11 +116,14 @@ public class HttpHeadersTests {
             Arguments.of(new HttpHeaders(), Collections.emptyMap()),
 
             // Non-empty HttpHeaders will return a map containing header values as key-value pairs.
-            Arguments.of(new HttpHeaders().set("a", "b"), Collections.singletonMap("a", new String[] { "b" })),
+            Arguments.of(new HttpHeaders().set("a", "b"), Collections.singletonMap("a", new String[] {
+                "b"
+            })),
 
             // Non-empty HttpHeaders will return comma-delimited header values if multiple are set.
-            Arguments.of(new HttpHeaders().set("a", "b").add("a", "c"),
-                Collections.singletonMap("a", new String[] { "b", "c" }))
+            Arguments.of(new HttpHeaders().set("a", "b").add("a", "c"), Collections.singletonMap("a", new String[] {
+                "b", "c"
+            }))
         );
     }
 

@@ -36,8 +36,7 @@ public final class GeoCollection extends GeoObject {
      * @param customProperties Additional properties of the {@link GeoCollection}.
      * @throws NullPointerException If {@code geometries} is {@code null}.
      */
-    public GeoCollection(List<GeoObject> geometries, GeoBoundingBox boundingBox,
-        Map<String, Object> customProperties) {
+    public GeoCollection(List<GeoObject> geometries, GeoBoundingBox boundingBox, Map<String, Object> customProperties) {
         super(boundingBox, customProperties);
 
         Objects.requireNonNull(geometries, "'geometries' cannot be null.");

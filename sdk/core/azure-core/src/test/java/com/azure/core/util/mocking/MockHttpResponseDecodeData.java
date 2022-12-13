@@ -26,8 +26,10 @@ public class MockHttpResponseDecodeData implements HttpResponseDecodeData {
         this(expectedResponseStatusCode, null, null, false, null);
     }
 
-    public MockHttpResponseDecodeData(int expectedResponseStatusCode,
-        UnexpectedExceptionInformation unexpectedExceptionInformation) {
+    public MockHttpResponseDecodeData(
+        int expectedResponseStatusCode,
+        UnexpectedExceptionInformation unexpectedExceptionInformation
+    ) {
         this(expectedResponseStatusCode, null, null, false, unexpectedExceptionInformation);
     }
 
@@ -35,13 +37,22 @@ public class MockHttpResponseDecodeData implements HttpResponseDecodeData {
         this(expectedResponseStatusCode, returnType, null, isReturnTypeDecodeable, null);
     }
 
-    public MockHttpResponseDecodeData(int expectedResponseStatusCode, Type returnType, Type returnValueWireType,
-        boolean isReturnTypeDecodeable) {
+    public MockHttpResponseDecodeData(
+        int expectedResponseStatusCode,
+        Type returnType,
+        Type returnValueWireType,
+        boolean isReturnTypeDecodeable
+    ) {
         this(expectedResponseStatusCode, returnType, returnValueWireType, isReturnTypeDecodeable, null);
     }
 
-    private MockHttpResponseDecodeData(Integer expectedResponseStatusCode, Type returnType, Type returnValueWireType,
-        boolean isReturnTypeDecodeable, UnexpectedExceptionInformation unexpectedExceptionInformation) {
+    private MockHttpResponseDecodeData(
+        Integer expectedResponseStatusCode,
+        Type returnType,
+        Type returnValueWireType,
+        boolean isReturnTypeDecodeable,
+        UnexpectedExceptionInformation unexpectedExceptionInformation
+    ) {
         this.expectedResponseStatusCode = expectedResponseStatusCode;
         this.returnType = returnType;
         this.returnValueWireType = returnValueWireType;

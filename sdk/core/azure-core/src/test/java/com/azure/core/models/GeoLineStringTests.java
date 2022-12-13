@@ -30,8 +30,8 @@ public class GeoLineStringTests {
 
     @Test
     public void simpleConstructor() {
-        GeoArray<GeoPosition> expectedPositions = new GeoArray<>(Arrays.asList(new GeoPosition(0, 0),
-            new GeoPosition(0, 1)));
+        GeoArray<GeoPosition> expectedPositions =
+            new GeoArray<>(Arrays.asList(new GeoPosition(0, 0), new GeoPosition(0, 1)));
 
         GeoLineString line = new GeoLineString(expectedPositions);
 
@@ -43,8 +43,8 @@ public class GeoLineStringTests {
 
     @Test
     public void complexConstructor() {
-        GeoArray<GeoPosition> expectedPositions = new GeoArray<>(Arrays.asList(new GeoPosition(0, 0),
-            new GeoPosition(0, 1)));
+        GeoArray<GeoPosition> expectedPositions =
+            new GeoArray<>(Arrays.asList(new GeoPosition(0, 0), new GeoPosition(0, 1)));
         GeoBoundingBox expectedBoundingBox = new GeoBoundingBox(0, 0, 1, 1);
         Map<String, Object> expectedProperties = Collections.singletonMap("key", "value");
 

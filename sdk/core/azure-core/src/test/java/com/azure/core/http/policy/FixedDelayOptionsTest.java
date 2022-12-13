@@ -13,13 +13,11 @@ public class FixedDelayOptionsTest {
 
     @Test
     public void testNullDelay() {
-        assertThrows(NullPointerException.class,
-            () -> new FixedDelayOptions(3, null));
+        assertThrows(NullPointerException.class, () -> new FixedDelayOptions(3, null));
     }
 
     @Test
     public void testNegativeMaxRetries() {
-        assertThrows(IllegalArgumentException.class,
-            () -> new FixedDelayOptions(-1, Duration.ofSeconds(1)));
+        assertThrows(IllegalArgumentException.class, () -> new FixedDelayOptions(-1, Duration.ofSeconds(1)));
     }
 }

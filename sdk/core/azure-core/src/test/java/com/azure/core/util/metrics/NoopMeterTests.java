@@ -46,8 +46,14 @@ public class NoopMeterTests {
         Meter noopMeter = MeterProvider.getDefaultProvider().createMeter("foo", null, null);
 
         assertThrows(NullPointerException.class, () -> noopMeter.createAttributes(null));
-        assertThrows(NullPointerException.class, () -> noopMeter.createAttributes(Collections.singletonMap(null, "foo")));
-        assertThrows(NullPointerException.class, () -> noopMeter.createAttributes(Collections.singletonMap("foo", null)));
+        assertThrows(
+            NullPointerException.class,
+            () -> noopMeter.createAttributes(Collections.singletonMap(null, "foo"))
+        );
+        assertThrows(
+            NullPointerException.class,
+            () -> noopMeter.createAttributes(Collections.singletonMap("foo", null))
+        );
     }
 
     @Test
@@ -70,7 +76,10 @@ public class NoopMeterTests {
 
     @Test
     public void createMeterNullNameThrows() {
-        assertThrows(NullPointerException.class, () -> MeterProvider.getDefaultProvider().createMeter(null, null, null));
+        assertThrows(
+            NullPointerException.class,
+            () -> MeterProvider.getDefaultProvider().createMeter(null, null, null)
+        );
     }
 
     @Test

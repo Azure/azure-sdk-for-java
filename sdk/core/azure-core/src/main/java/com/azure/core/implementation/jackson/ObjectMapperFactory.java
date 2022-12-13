@@ -22,13 +22,13 @@ final class ObjectMapperFactory {
     // ObjectMapperFactory is a commonly used factory, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(ObjectMapperFactory.class);
 
-    public  static final ObjectMapperFactory INSTANCE = new ObjectMapperFactory();
+    public static final ObjectMapperFactory INSTANCE = new ObjectMapperFactory();
 
     public ObjectMapper createJsonMapper(ObjectMapper innerMapper) {
-        ObjectMapper flatteningMapper = initializeMapperBuilder(JsonMapper.builder())
-            .addModule(FlatteningSerializer.getModule(innerMapper))
-            .addModule(FlatteningDeserializer.getModule(innerMapper))
-            .build();
+        ObjectMapper flatteningMapper =
+            initializeMapperBuilder(JsonMapper.builder()).addModule(FlatteningSerializer.getModule(innerMapper))
+                .addModule(FlatteningDeserializer.getModule(innerMapper))
+                .build();
 
         return initializeMapperBuilder(JsonMapper.builder())
             // Order matters: must register in reverse order of hierarchy
@@ -56,8 +56,7 @@ final class ObjectMapperFactory {
     }
 
     public ObjectMapper createHeaderMapper() {
-        return initializeMapperBuilder(JsonMapper.builder())
-            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
+        return initializeMapperBuilder(JsonMapper.builder()).enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
             .build();
     }
 

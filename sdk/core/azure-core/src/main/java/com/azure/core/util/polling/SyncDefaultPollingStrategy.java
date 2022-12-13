@@ -75,12 +75,19 @@ public final class SyncDefaultPollingStrategy<T, U> implements SyncPollingStrate
      * @param context an instance of {@link Context}.
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
-    public SyncDefaultPollingStrategy(HttpPipeline httpPipeline, String endpoint, JsonSerializer serializer,
-        Context context) {
-        this.chainedPollingStrategy = new SyncChainedPollingStrategy<>(Arrays.asList(
-            new SyncOperationResourcePollingStrategy<>(httpPipeline, endpoint, serializer, null, context),
-            new SyncLocationPollingStrategy<>(httpPipeline, endpoint, serializer, context),
-            new SyncStatusCheckPollingStrategy<>(serializer)));
+    public SyncDefaultPollingStrategy(
+        HttpPipeline httpPipeline,
+        String endpoint,
+        JsonSerializer serializer,
+        Context context
+    ) {
+        this.chainedPollingStrategy = new SyncChainedPollingStrategy<>(
+            Arrays.asList(
+                new SyncOperationResourcePollingStrategy<>(httpPipeline, endpoint, serializer, null, context),
+                new SyncLocationPollingStrategy<>(httpPipeline, endpoint, serializer, context),
+                new SyncStatusCheckPollingStrategy<>(serializer)
+            )
+        );
     }
 
     @Override
@@ -94,8 +101,8 @@ public final class SyncDefaultPollingStrategy<T, U> implements SyncPollingStrate
     }
 
     @Override
-    public PollResponse<T> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
-        TypeReference<T> pollResponseType) {
+    public PollResponse<T>
+        onInitialResponse(Response<?> response, PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
         return chainedPollingStrategy.onInitialResponse(response, pollingContext, pollResponseType);
     }
 

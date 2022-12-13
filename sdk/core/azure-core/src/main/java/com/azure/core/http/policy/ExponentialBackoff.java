@@ -37,8 +37,10 @@ public class ExponentialBackoff implements RetryStrategy {
                     defaultMaxRetries = 3;
                 }
             } catch (NumberFormatException ignored) {
-                LOGGER.verbose("{} was loaded but is an invalid number. Using 3 retries as the maximum.",
-                    PROPERTY_AZURE_REQUEST_RETRY_COUNT);
+                LOGGER.verbose(
+                    "{} was loaded but is an invalid number. Using 3 retries as the maximum.",
+                    PROPERTY_AZURE_REQUEST_RETRY_COUNT
+                );
             }
         }
 
@@ -69,13 +71,16 @@ public class ExponentialBackoff implements RetryStrategy {
         this(
             ObjectsUtil.requireNonNullElse(
                 Objects.requireNonNull(options, "'options' cannot be null.").getMaxRetries(),
-                DEFAULT_MAX_RETRIES),
+                DEFAULT_MAX_RETRIES
+            ),
             ObjectsUtil.requireNonNullElse(
                 Objects.requireNonNull(options, "'options' cannot be null.").getBaseDelay(),
-                DEFAULT_BASE_DELAY),
+                DEFAULT_BASE_DELAY
+            ),
             ObjectsUtil.requireNonNullElse(
                 Objects.requireNonNull(options, "'options' cannot be null.").getMaxDelay(),
-                DEFAULT_MAX_DELAY)
+                DEFAULT_MAX_DELAY
+            )
         );
     }
 

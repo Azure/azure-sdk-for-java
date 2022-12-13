@@ -64,8 +64,11 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
      * @param defaultDeserializer the default JSON mapperAdapter
      * @param mapper the object mapper for default deserialization
      */
-    protected FlatteningDeserializer(BeanDescription beanDesc, JsonDeserializer<?> defaultDeserializer,
-        ObjectMapper mapper) {
+    protected FlatteningDeserializer(
+        BeanDescription beanDesc,
+        JsonDeserializer<?> defaultDeserializer,
+        ObjectMapper mapper
+    ) {
         super(beanDesc.getBeanClass());
         this.beanDescription = beanDesc;
         this.defaultDeserializer = defaultDeserializer;
@@ -83,13 +86,17 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
         SimpleModule module = new SimpleModule();
         module.setDeserializerModifier(new BeanDeserializerModifier() {
             @Override
-            public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription beanDesc,
-                JsonDeserializer<?> deserializer) {
+            public JsonDeserializer<?> modifyDeserializer(
+                DeserializationConfig config,
+                BeanDescription beanDesc,
+                JsonDeserializer<?> deserializer
+            ) {
                 // If the class is annotated with @JsonFlatten add the deserializer.
                 // Else if any property is annotated with @JsonFlatten add the deserializer.
                 // Otherwise do not add the deserializer.
                 boolean hasJsonFlattenOnClass = beanDesc.getClassAnnotations().has(JsonFlatten.class);
-                boolean hasJsonFlattenOnProperty = beanDesc.findProperties().stream()
+                boolean hasJsonFlattenOnProperty = beanDesc.findProperties()
+                    .stream()
                     .filter(BeanPropertyDefinition::hasField)
                     .map(BeanPropertyDefinition::getField)
                     .anyMatch(field -> field.hasAnnotation(JsonFlatten.class));
@@ -105,8 +112,8 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
     }
 
     @Override
-    public Object deserializeWithType(JsonParser jp, DeserializationContext cxt,
-        TypeDeserializer tDeserializer) throws IOException {
+    public Object deserializeWithType(JsonParser jp, DeserializationContext cxt, TypeDeserializer tDeserializer)
+        throws IOException {
         // This method will be called from Jackson for each "Json object with TypeId" as it
         // process the input data. This enable us to pre-process then give it to the next
         // deserializer in the Jackson pipeline.
@@ -181,8 +188,10 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
                 ((ObjectNode) jsonNode).set(escapedJsonPropValue, jsonNode.get(jsonPropValue));
             }
 
-            if ((classHasJsonFlatten || annotatedField.hasAnnotation(JsonFlatten.class))
-                && IS_FLATTENED_PATTERN.matcher(jsonPropValue).matches()) {
+            if (
+                (classHasJsonFlatten || annotatedField.hasAnnotation(JsonFlatten.class))
+                    && IS_FLATTENED_PATTERN.matcher(jsonPropValue).matches()
+            ) {
                 // The jsonProperty value contains flattening dots, uplift the nested
                 // json node that this value resolving to the current level.
                 String[] jsonNodeKeys = Arrays.stream(SPLIT_KEY_PATTERN.split(jsonPropValue))
@@ -230,9 +239,11 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
                 for (int i = nodePath.size() - 2; i >= 0; i--) {
                     // On the first child node removal and if the full flattened path didn't exist, only remove the node
                     // if it doesn't have any other children nodes.
-                    if (i == nodePath.size() - 2
-                        && nodePath.size() - 1 != jsonNodeKeys.length
-                        && nodePath.get(i).get(jsonNodeKeys[i]).size() != 0) {
+                    if (
+                        i == nodePath.size() - 2
+                            && nodePath.size() - 1 != jsonNodeKeys.length
+                            && nodePath.get(i).get(jsonNodeKeys[i]).size() != 0
+                    ) {
                         break;
                     }
 

@@ -121,8 +121,11 @@ public final class ReferenceManagerImpl implements ReferenceManager {
                 reference = (CleanableReference<?>) queue.remove(30000);
             } catch (InterruptedException ex) {
                 // Thread has been interrupted while waiting for the queue to emit an element.
-                LOGGER.log(LogLevel.VERBOSE,
-                    () -> "ReferenceManager Thread interrupted while waiting for a reference to clean.", ex);
+                LOGGER.log(
+                    LogLevel.VERBOSE,
+                    () -> "ReferenceManager Thread interrupted while waiting for a reference to clean.",
+                    ex
+                );
             }
 
             try {

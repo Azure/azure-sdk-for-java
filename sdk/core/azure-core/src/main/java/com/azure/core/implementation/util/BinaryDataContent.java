@@ -21,8 +21,8 @@ public abstract class BinaryDataContent {
     public static final int STREAM_READ_SIZE = 8192;
 
     static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
-    static final String TOO_LARGE_FOR_BYTE_ARRAY
-        = "The content length is too large for a byte array. Content length is: ";
+    static final String TOO_LARGE_FOR_BYTE_ARRAY =
+        "The content length is too large for a byte array. Content length is: ";
 
     /**
      * Gets the length of the {@link BinaryDataContent} if it can be calculated.

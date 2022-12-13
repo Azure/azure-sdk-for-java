@@ -26,8 +26,7 @@ public class GeoBoundingBoxTests {
         double expectedEast = 180;
         double expectedNorth = 90;
 
-        GeoBoundingBox boundingBox = new GeoBoundingBox(expectedWest, expectedSouth, expectedEast,
-            expectedNorth);
+        GeoBoundingBox boundingBox = new GeoBoundingBox(expectedWest, expectedSouth, expectedEast, expectedNorth);
 
         assertEquals(expectedWest, boundingBox.getWest());
         assertEquals(expectedSouth, boundingBox.getSouth());
@@ -47,8 +46,14 @@ public class GeoBoundingBoxTests {
         double expectedMinAltitude = -1000;
         double expectedMaxAltitude = 1000;
 
-        GeoBoundingBox boundingBox = new GeoBoundingBox(expectedWest, expectedSouth, expectedEast,
-            expectedNorth, expectedMinAltitude, expectedMaxAltitude);
+        GeoBoundingBox boundingBox = new GeoBoundingBox(
+            expectedWest,
+            expectedSouth,
+            expectedEast,
+            expectedNorth,
+            expectedMinAltitude,
+            expectedMaxAltitude
+        );
 
         assertEquals(expectedWest, boundingBox.getWest());
         assertEquals(expectedSouth, boundingBox.getSouth());
@@ -65,8 +70,7 @@ public class GeoBoundingBoxTests {
         double expectedEast = 200;
         double expectedNorth = 100;
 
-        GeoBoundingBox boundingBox = new GeoBoundingBox(expectedWest, expectedSouth, expectedEast,
-            expectedNorth);
+        GeoBoundingBox boundingBox = new GeoBoundingBox(expectedWest, expectedSouth, expectedEast, expectedNorth);
 
         assertEquals(expectedWest, boundingBox.getWest());
         assertEquals(expectedSouth, boundingBox.getSouth());

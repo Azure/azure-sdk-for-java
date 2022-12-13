@@ -186,15 +186,14 @@ public final class CoreUtils {
      * @deprecated Use localized implementation.
      */
     @Deprecated
-    public static <T> Publisher<T> extractAndFetch(PagedResponse<T> page, Context context,
-        BiFunction<String, Context, Publisher<T>> content) {
+    public static <T> Publisher<T>
+        extractAndFetch(PagedResponse<T> page, Context context, BiFunction<String, Context, Publisher<T>> content) {
         String nextPageLink = page.getContinuationToken();
         if (nextPageLink == null) {
             return Flux.fromIterable(page.getElements());
         }
         return Flux.fromIterable(page.getElements()).concatWith(content.apply(nextPageLink, context));
     }
-
 
     /**
      * Helper method that returns an immutable {@link Map} of properties defined in {@code propertiesFileName}.
@@ -203,14 +202,15 @@ public final class CoreUtils {
      * @return an immutable {@link Map}.
      */
     public static Map<String, String> getProperties(String propertiesFileName) {
-        try (InputStream inputStream = CoreUtils.class.getClassLoader()
-            .getResourceAsStream(propertiesFileName)) {
+        try (InputStream inputStream = CoreUtils.class.getClassLoader().getResourceAsStream(propertiesFileName)) {
             if (inputStream != null) {
                 Properties properties = new Properties();
                 properties.load(inputStream);
-                return Collections.unmodifiableMap(properties.entrySet().stream()
-                    .collect(Collectors.toMap(entry -> (String) entry.getKey(),
-                        entry -> (String) entry.getValue())));
+                return Collections.unmodifiableMap(
+                    properties.entrySet()
+                        .stream()
+                        .collect(Collectors.toMap(entry -> (String) entry.getKey(), entry -> (String) entry.getValue()))
+                );
             }
         } catch (IOException ex) {
             LOGGER.warning("Failed to get properties from " + propertiesFileName, ex);
@@ -335,8 +335,12 @@ public final class CoreUtils {
      * @param logger A {@link ClientLogger} to log exceptions.
      * @return Either the environment configured default timeout, {@code defaultTimeoutMillis}, or 0.
      */
-    public static Duration getDefaultTimeoutFromEnvironment(Configuration configuration, String timeoutPropertyName,
-        Duration defaultTimeout, ClientLogger logger) {
+    public static Duration getDefaultTimeoutFromEnvironment(
+        Configuration configuration,
+        String timeoutPropertyName,
+        Duration defaultTimeout,
+        ClientLogger logger
+    ) {
         String environmentTimeout = configuration.get(timeoutPropertyName);
 
         // Environment wasn't configured with the timeout property.
@@ -403,28 +407,114 @@ public final class CoreUtils {
 
         int count = values.size();
         switch (count) {
-            case 0: return "";
-            case 1: return values.get(0);
-            case 2: return values.get(0) + delimiter + values.get(1);
-            case 3: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2);
-            case 4: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                + values.get(3);
-            case 5: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                + values.get(3) + delimiter + values.get(4);
-            case 6: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5);
-            case 7: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6);
-            case 8: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
-                + delimiter + values.get(7);
-            case 9: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
-                + delimiter + values.get(7) + delimiter + values.get(8);
-            case 10: return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
-                + delimiter + values.get(7) + delimiter + values.get(8) + delimiter + values.get(9);
-            default: return String.join(delimiter, values);
+            case 0:
+                return "";
+            case 1:
+                return values.get(0);
+            case 2:
+                return values.get(0) + delimiter + values.get(1);
+            case 3:
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2);
+            case 4:
+                return values.get(0)
+                    + delimiter
+                    + values.get(1)
+                    + delimiter
+                    + values.get(2)
+                    + delimiter
+                    + values.get(3);
+            case 5:
+                return values.get(0)
+                    + delimiter
+                    + values.get(1)
+                    + delimiter
+                    + values.get(2)
+                    + delimiter
+                    + values.get(3)
+                    + delimiter
+                    + values.get(4);
+            case 6:
+                return values.get(0)
+                    + delimiter
+                    + values.get(1)
+                    + delimiter
+                    + values.get(2)
+                    + delimiter
+                    + values.get(3)
+                    + delimiter
+                    + values.get(4)
+                    + delimiter
+                    + values.get(5);
+            case 7:
+                return values.get(0)
+                    + delimiter
+                    + values.get(1)
+                    + delimiter
+                    + values.get(2)
+                    + delimiter
+                    + values.get(3)
+                    + delimiter
+                    + values.get(4)
+                    + delimiter
+                    + values.get(5)
+                    + delimiter
+                    + values.get(6);
+            case 8:
+                return values.get(0)
+                    + delimiter
+                    + values.get(1)
+                    + delimiter
+                    + values.get(2)
+                    + delimiter
+                    + values.get(3)
+                    + delimiter
+                    + values.get(4)
+                    + delimiter
+                    + values.get(5)
+                    + delimiter
+                    + values.get(6)
+                    + delimiter
+                    + values.get(7);
+            case 9:
+                return values.get(0)
+                    + delimiter
+                    + values.get(1)
+                    + delimiter
+                    + values.get(2)
+                    + delimiter
+                    + values.get(3)
+                    + delimiter
+                    + values.get(4)
+                    + delimiter
+                    + values.get(5)
+                    + delimiter
+                    + values.get(6)
+                    + delimiter
+                    + values.get(7)
+                    + delimiter
+                    + values.get(8);
+            case 10:
+                return values.get(0)
+                    + delimiter
+                    + values.get(1)
+                    + delimiter
+                    + values.get(2)
+                    + delimiter
+                    + values.get(3)
+                    + delimiter
+                    + values.get(4)
+                    + delimiter
+                    + values.get(5)
+                    + delimiter
+                    + values.get(6)
+                    + delimiter
+                    + values.get(7)
+                    + delimiter
+                    + values.get(8)
+                    + delimiter
+                    + values.get(9);
+            default:
+                return String.join(delimiter, values);
         }
     }
 }

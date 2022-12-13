@@ -104,8 +104,10 @@ public final class TypeUtil {
                             }
                         }
                     }
-                    return createParameterizedType(((ParameterizedType) genericSuperClass).getRawType(),
-                        superTypeArguments);
+                    return createParameterizedType(
+                        ((ParameterizedType) genericSuperClass).getRawType(),
+                        superTypeArguments
+                    );
                 } else {
                     return genericSuperClass;
                 }

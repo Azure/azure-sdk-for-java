@@ -73,11 +73,17 @@ public final class ETag {
             return;
         }
 
-        if (!((eTag.startsWith(QUOTE_STRING) || eTag.startsWith(WEAK_ETAG_PREFIX_QUOTE))
-                  && eTag.endsWith(QUOTE_STRING))) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The value=%s should be equal to * , be wrapped in quotes, or be wrapped in quotes prefixed by W/",
-                eTag)));
+        if (
+            !((eTag.startsWith(QUOTE_STRING) || eTag.startsWith(WEAK_ETAG_PREFIX_QUOTE)) && eTag.endsWith(QUOTE_STRING))
+        ) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException(
+                    String.format(
+                        "The value=%s should be equal to * , be wrapped in quotes, or be wrapped in quotes prefixed by W/",
+                        eTag
+                    )
+                )
+            );
         }
     }
 }

@@ -34,41 +34,56 @@ import com.fasterxml.jackson.databind.util.NameTransformer;
 final class OptionSerializer extends ReferenceTypeSerializer<Option<?>> {
     private static final long serialVersionUID = 1L;
 
-    OptionSerializer(ReferenceType fullType,
+    OptionSerializer(
+        ReferenceType fullType,
         boolean staticTyping,
         TypeSerializer typeSerializer,
-        JsonSerializer<Object> valueSerializer) {
+        JsonSerializer<Object> valueSerializer
+    ) {
         super(fullType, staticTyping, typeSerializer, valueSerializer);
     }
 
-    private OptionSerializer(OptionSerializer base,
+    private OptionSerializer(
+        OptionSerializer base,
         BeanProperty property,
         TypeSerializer typeSerializer,
         JsonSerializer<?> valueSerializer,
         NameTransformer transformer,
         Object suppressableValue,
-        boolean suppressNulls) {
-        super(base, property, typeSerializer,
-            valueSerializer, transformer,
-            suppressableValue, suppressNulls);
+        boolean suppressNulls
+    ) {
+        super(base, property, typeSerializer, valueSerializer, transformer, suppressableValue, suppressNulls);
     }
 
     @Override
-    protected ReferenceTypeSerializer<Option<?>> withResolved(BeanProperty property,
+    protected ReferenceTypeSerializer<Option<?>> withResolved(
+        BeanProperty property,
         TypeSerializer typeSerializer,
         JsonSerializer<?> valueSerializer,
-        NameTransformer transformer) {
-        return new OptionSerializer(this, property, typeSerializer,
-            valueSerializer, transformer,
-            super._suppressableValue, super._suppressNulls);
+        NameTransformer transformer
+    ) {
+        return new OptionSerializer(
+            this,
+            property,
+            typeSerializer,
+            valueSerializer,
+            transformer,
+            super._suppressableValue,
+            super._suppressNulls
+        );
     }
 
     @Override
-    public ReferenceTypeSerializer<Option<?>> withContentInclusion(Object suppressableValue,
-        boolean suppressNulls) {
-        return new OptionSerializer(this, super._property, super._valueTypeSerializer,
-            super._valueSerializer, super._unwrapper,
-            suppressableValue, suppressNulls);
+    public ReferenceTypeSerializer<Option<?>> withContentInclusion(Object suppressableValue, boolean suppressNulls) {
+        return new OptionSerializer(
+            this,
+            super._property,
+            super._valueTypeSerializer,
+            super._valueSerializer,
+            super._unwrapper,
+            suppressableValue,
+            suppressNulls
+        );
     }
 
     @Override

@@ -37,8 +37,11 @@ public final class GeoPolygon extends GeoObject {
      * @throws NullPointerException If {@code ring} is {@code null}.
      */
     public GeoPolygon(GeoLinearRing ring, GeoBoundingBox boundingBox, Map<String, Object> customProperties) {
-        this(Collections.singletonList(Objects.requireNonNull(ring, "'ring' cannot be null.")), boundingBox,
-            customProperties);
+        this(
+            Collections.singletonList(Objects.requireNonNull(ring, "'ring' cannot be null.")),
+            boundingBox,
+            customProperties
+        );
     }
 
     /**
