@@ -572,7 +572,16 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             final int linkCredits = link.getCredits();
             final int credits = getCreditsToAdd(linkCredits);
             if (credits > 0) {
-                link.addCredits(credits).subscribe();
+                link.addCredits(credits).subscribe(__ -> { },
+                    // If add credits throw out an error, we need to notify the downstream subscriber by explicitly call the onError().
+                    // Otherwise, because there is no credits flow to the remote, the processor may keep waiting for a message. 
+                    error -> {
+                        LOGGER.atWarning()
+                            .addKeyValue(LINK_NAME_KEY, link.getLinkName())
+                            .addKeyValue(ENTITY_PATH_KEY, link.getEntityPath())
+                            .log("Fail to add credits on link. ");
+                        onError(error);
+                    });
             }
         }
     }
