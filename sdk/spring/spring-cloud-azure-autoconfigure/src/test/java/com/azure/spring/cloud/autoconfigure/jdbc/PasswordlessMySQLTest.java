@@ -21,7 +21,6 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
 
 @Testcontainers
 @EnabledOnOs(OS.LINUX)
@@ -31,10 +30,9 @@ public class PasswordlessMySQLTest {
         .withConfiguration(AutoConfigurations.of(DataSourceAutoConfiguration.class, JdbcTemplateAutoConfiguration.class,
             AzureJdbcAutoConfiguration.class, AzureGlobalPropertiesAutoConfiguration.class,
             AzureTokenCredentialAutoConfiguration.class));
-    private static DockerImageName dockerImageName = DockerImageName.parse("mysql:5.7");
 
     @Container
-    public static MySQLContainer mySQLContainer = new MySQLContainer(dockerImageName);
+    public static MySQLContainer mySQLContainer = new MySQLContainer("mysql:5.7");
 
     @BeforeEach
     void setUp() {
