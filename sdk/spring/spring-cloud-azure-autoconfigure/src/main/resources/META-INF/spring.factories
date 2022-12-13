@@ -1,7 +1,8 @@
-org.springframework.boot.env.EnvironmentPostProcessor=com.azure.spring.cloud.autoconfigure.implementation.cloudfoundry.environment.VcapProcessor,\
-com.azure.spring.cloud.autoconfigure.implementation.keyvault.environment.KeyVaultEnvironmentPostProcessor,\
+org.springframework.boot.env.EnvironmentPostProcessor=\
+com.azure.spring.cloud.autoconfigure.implementation.cloudfoundry.environment.VcapProcessor,\
 com.azure.spring.cloud.autoconfigure.implementation.cloudfoundry.AzureCloudFoundryEnvironmentPostProcessor,\
-com.azure.spring.cloud.autoconfigure.context.AzureGlobalConfigurationEnvironmentPostProcessor
+com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalConfigurationEnvironmentPostProcessor,\
+com.azure.spring.cloud.autoconfigure.implementation.keyvault.environment.KeyVaultEnvironmentPostProcessor
 
 org.springframework.boot.diagnostics.FailureAnalyzer=\
 com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureCompatibilityNotMetFailureAnalyzer

@@ -25,7 +25,7 @@ public class AzureSpringBootVersionVerifier {
     private final Map<String, String> supportedVersions = new HashMap<>();
 
     /**
-     * Versionsspecified in the configuration or environment.
+     * Versions specified in the configuration or environment.
      */
     private final List<String> acceptedVersions;
 

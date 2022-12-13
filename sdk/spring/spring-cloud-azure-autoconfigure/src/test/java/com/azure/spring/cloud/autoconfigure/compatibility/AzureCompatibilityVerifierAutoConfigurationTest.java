@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.compatibility;
 
+import com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureCompatibilityVerifierProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureSpringBootVersionVerifier;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.SpringBootVersion;
