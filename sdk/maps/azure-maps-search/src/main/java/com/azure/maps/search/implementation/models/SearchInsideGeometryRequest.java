@@ -11,11 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SearchInsideGeometryRequest {
     /*
-     * A valid `GeoJSON` object. Please refer to [RFC
-     * 7946](https://tools.ietf.org/html/rfc7946#section-3) for details.
+     * A valid `GeoJSON` object. Please refer to [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3) for details.
      */
     @JsonProperty(value = "geometry")
     private GeoJsonObject geometry;
+
+    /** Creates an instance of SearchInsideGeometryRequest class. */
+    public SearchInsideGeometryRequest() {}
 
     /**
      * Get the geometry property: A valid `GeoJSON` object. Please refer to [RFC

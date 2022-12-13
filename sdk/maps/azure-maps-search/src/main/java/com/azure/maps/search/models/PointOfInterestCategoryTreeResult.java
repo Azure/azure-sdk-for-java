@@ -17,6 +17,9 @@ public final class PointOfInterestCategoryTreeResult {
     @JsonProperty(value = "poiCategories", access = JsonProperty.Access.WRITE_ONLY)
     private List<PointOfInterestCategory> categories;
 
+    /** Creates an instance of PointOfInterestCategoryTreeResult class. */
+    public PointOfInterestCategoryTreeResult() {}
+
     /**
      * Get the categories property: Categories array.
      *
