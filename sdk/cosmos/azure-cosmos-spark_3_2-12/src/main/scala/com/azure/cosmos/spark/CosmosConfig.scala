@@ -86,7 +86,10 @@ private[spark] object CosmosConfigNames {
   val ThroughputControlPreferredRegionsList = "spark.cosmos.throughputControl.preferredRegionsList"
   val ThroughputControlDisableTcpConnectionEndpointRediscovery = "spark.cosmos.throughputControl.disableTcpConnectionEndpointRediscovery"
   val ThroughputControlUseGatewayMode = "spark.cosmos.throughputControl.useGatewayMode"
-  val MaxIntegratedCacheStalenessUseGatewayMode = "spark.cosmos.maxIntegratedCacheStaleness.useGatewayMode"
+  val MaxIntegratedCacheStalenessInMilliseconds = "spark.cosmos.maxIntegratedCacheStaleness.inMilliseconds"
+  val MaxIntegratedCacheStalenessInSeconds = "spark.cosmos.maxIntegratedCacheStaleness.inSeconds"
+  val MaxIntegratedCacheStalenessInMinutes = "spark.cosmos.maxIntegratedCacheStaleness.inMinutes"
+  val MaxIntegratedCacheStalenessInHours = "spark.cosmos.maxIntegratedCacheStaleness.inHours"
   val ThroughputControlName = "spark.cosmos.throughputControl.name"
   val ThroughputControlTargetThroughput = "spark.cosmos.throughputControl.targetThroughput"
   val ThroughputControlTargetThroughputThreshold = "spark.cosmos.throughputControl.targetThroughputThreshold"
@@ -154,7 +157,10 @@ private[spark] object CosmosConfigNames {
     ThroughputControlPreferredRegionsList,
     ThroughputControlDisableTcpConnectionEndpointRediscovery,
     ThroughputControlUseGatewayMode,
-    MaxIntegratedCacheStalenessUseGatewayMode,
+    MaxIntegratedCacheStalenessInMilliseconds,
+    MaxIntegratedCacheStalenessInSeconds,
+    MaxIntegratedCacheStalenessInMinutes,
+    MaxIntegratedCacheStalenessInHours,
     ThroughputControlName,
     ThroughputControlTargetThroughput,
     ThroughputControlTargetThroughputThreshold,
@@ -407,7 +413,7 @@ private case class CosmosReadConfig(forceEventualConsistency: Boolean,
                                     schemaConversionMode: SchemaConversionMode,
                                     maxItemCount: Int,
                                     prefetchBufferSize: Int,
-                                    maxIntegratedCacheStaleness: Int,
+                                    maxIntegratedCacheStaleness: Duration,
                                     customQuery: Option[CosmosParameterizedQuery])
 
 private object SchemaConversionModes extends Enumeration {
@@ -420,6 +426,10 @@ private object SchemaConversionModes extends Enumeration {
 private object CosmosReadConfig {
   private val DefaultSchemaConversionMode: SchemaConversionMode = SchemaConversionModes.Relaxed
   private val DefaultMaxItemCount : Int = 1000
+  private val integratedCacheHelpMessageInterpolator = (x: String) => s"The max integrated cache staleness is the time window in $x within which subsequent reads and queries are served from " +
+    "the integrated cache configured with the dedicated gateway. The request is served from the integrated cache itself provided the data " +
+    "has not been evicted from the cache or a new read is run with a lower MaxIntegratedCacheStaleness than the age of the current cached " +
+    "entry.";
 
   private val ForceEventualConsistency = CosmosConfigEntry[Boolean](key = CosmosConfigNames.ReadForceEventualConsistency,
     mandatory = false,
@@ -468,15 +478,36 @@ private object CosmosReadConfig {
       "See `reactor.util.concurrent.Queues.get(int)` for more details. This means by the max. memory used for " +
       "buffering is 5 MB multiplied by the effective prefetch buffer size for each Executor/CPU-Core.")
 
-  private val MaxIntegratedCacheStaleness = CosmosConfigEntry[Int](
-    key = CosmosConfigNames.MaxIntegratedCacheStalenessUseGatewayMode,
+  private val MaxIntegratedCacheStalenessInMilliseconds = CosmosConfigEntry[Duration](
+    key = CosmosConfigNames.MaxIntegratedCacheStalenessInMilliseconds,
     mandatory = false,
     defaultValue = None,
-    parseFromStringFunction = queryText => queryText.toInt,
-    helpMessage = "The max integrated cache staleness is the time window in milliseconds within which subsequent reads and queries are served from " +
-      "the integrated cache configured with the dedicated gateway. The request is served from the integrated cache itself provided the data " +
-      "has not been evicted from the cache or a new read is run with a lower MaxIntegratedCacheStaleness than the age of the current cached " +
-      "entry."
+    parseFromStringFunction = queryText => Duration.ofMillis(queryText.toInt),
+    helpMessage = integratedCacheHelpMessageInterpolator.apply("milliseconds")
+  )
+
+  private val MaxIntegratedCacheStalenessInSeconds = CosmosConfigEntry[Duration](
+    key = CosmosConfigNames.MaxIntegratedCacheStalenessInSeconds,
+    mandatory = false,
+    defaultValue = None,
+    parseFromStringFunction = queryText => Duration.ofSeconds(queryText.toInt),
+    helpMessage = integratedCacheHelpMessageInterpolator.apply("seconds")
+  )
+
+  private val MaxIntegratedCacheStalenessInMinutes = CosmosConfigEntry[Duration](
+    key = CosmosConfigNames.MaxIntegratedCacheStalenessInMinutes,
+    mandatory = false,
+    defaultValue = None,
+    parseFromStringFunction = queryText => Duration.ofMinutes(queryText.toInt),
+    helpMessage = integratedCacheHelpMessageInterpolator.apply("minutes")
+  )
+
+  private val MaxIntegratedCacheStalenessInHours = CosmosConfigEntry[Duration](
+    key = CosmosConfigNames.MaxIntegratedCacheStalenessInHours,
+    mandatory = false,
+    defaultValue = None,
+    parseFromStringFunction = queryText => Duration.ofHours(queryText.toInt),
+    helpMessage = integratedCacheHelpMessageInterpolator.apply("hours")
   )
 
   def parseCosmosReadConfig(cfg: Map[String, String]): CosmosReadConfig = {
@@ -485,7 +516,20 @@ private object CosmosReadConfig {
     val customQuery = CosmosConfigEntry.parse(cfg, CustomQuery)
     val maxItemCount = CosmosConfigEntry.parse(cfg, MaxItemCount)
     val prefetchBufferSize = CosmosConfigEntry.parse(cfg, PrefetchBufferSize)
-    val maxIntegratedCacheStaleness = CosmosConfigEntry.parse(cfg, MaxIntegratedCacheStaleness)
+
+    val maxIntegratedCacheStaleness = {
+      var duration = CosmosConfigEntry.parse(cfg, MaxIntegratedCacheStalenessInMilliseconds)
+      if (duration.getOrElse(Duration.ofMillis(-1)) == CosmosConstants.invalidDuration) {
+        duration = CosmosConfigEntry.parse(cfg, MaxIntegratedCacheStalenessInSeconds)
+      }
+      if (duration.getOrElse(Duration.ofMillis(-1)) == CosmosConstants.invalidDuration) {
+        duration = CosmosConfigEntry.parse(cfg, MaxIntegratedCacheStalenessInMinutes)
+      }
+      if (duration.getOrElse(Duration.ofMillis(-1)) == CosmosConstants.invalidDuration) {
+        duration = CosmosConfigEntry.parse(cfg, MaxIntegratedCacheStalenessInHours)
+      }
+      duration
+    }
 
     CosmosReadConfig(
       forceEventualConsistency.get,
@@ -506,7 +550,7 @@ private object CosmosReadConfig {
         maxIntegratedCacheStaleness match {
           case Some(maxIntegratedCacheStalenessProvidedByUser) =>  maxIntegratedCacheStalenessProvidedByUser
           // Return an invalid value for staleness if not configured by the user
-          case None => CosmosConstants.maxIntegratedCacheStalenessInvalidVal
+          case None => CosmosConstants.invalidDuration
         }
       ),
       customQuery)
