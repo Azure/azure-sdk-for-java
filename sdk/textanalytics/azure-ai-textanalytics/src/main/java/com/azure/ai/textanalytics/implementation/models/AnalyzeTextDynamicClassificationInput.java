@@ -26,6 +26,9 @@ public final class AnalyzeTextDynamicClassificationInput extends AnalyzeTextTask
     @JsonProperty(value = "parameters")
     private DynamicClassificationTaskParameters parameters;
 
+    /** Creates an instance of AnalyzeTextDynamicClassificationInput class. */
+    public AnalyzeTextDynamicClassificationInput() {}
+
     /**
      * Get the analysisInput property: The analysisInput property.
      *

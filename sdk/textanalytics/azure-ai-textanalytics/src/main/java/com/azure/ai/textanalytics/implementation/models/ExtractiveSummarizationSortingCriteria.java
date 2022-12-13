@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExtractiveSummarizationSortingCriteria. */
+/** The sorting criteria to use for the results of Extractive Summarization. */
 public final class ExtractiveSummarizationSortingCriteria
         extends ExpandableStringEnum<ExtractiveSummarizationSortingCriteria> {
     /** Static value Offset for ExtractiveSummarizationSortingCriteria. */

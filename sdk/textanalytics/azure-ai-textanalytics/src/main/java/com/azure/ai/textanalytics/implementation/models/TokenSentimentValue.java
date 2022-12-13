@@ -7,7 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for TokenSentimentValue. */
+/** Targeted sentiment in the sentence. */
 public enum TokenSentimentValue {
     /** Enum value positive. */
     POSITIVE("positive"),
@@ -45,6 +45,7 @@ public enum TokenSentimentValue {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

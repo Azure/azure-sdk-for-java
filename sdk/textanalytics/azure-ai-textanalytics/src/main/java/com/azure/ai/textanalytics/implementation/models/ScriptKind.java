@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScriptKind. */
+/** Identifies the script of the input document. */
 public final class ScriptKind extends ExpandableStringEnum<ScriptKind> {
     /** Static value Latin for ScriptKind. */
     public static final ScriptKind LATIN = fromString("Latin");

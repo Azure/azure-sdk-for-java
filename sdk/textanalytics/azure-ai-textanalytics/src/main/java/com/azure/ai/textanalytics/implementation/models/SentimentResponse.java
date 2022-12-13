@@ -17,6 +17,9 @@ public final class SentimentResponse extends PreBuiltResult {
     @JsonProperty(value = "documents", required = true)
     private List<SentimentResponseDocumentsItem> documents;
 
+    /** Creates an instance of SentimentResponse class. */
+    public SentimentResponse() {}
+
     /**
      * Get the documents property: Sentiment analysis per document.
      *

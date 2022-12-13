@@ -16,6 +16,9 @@ public class TasksState {
     @JsonProperty(value = "tasks", required = true)
     private TasksStateTasks tasks;
 
+    /** Creates an instance of TasksState class. */
+    public TasksState() {}
+
     /**
      * Get the tasks property: The tasks property.
      *

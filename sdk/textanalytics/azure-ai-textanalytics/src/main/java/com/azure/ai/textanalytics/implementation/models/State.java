@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for State. */
+/** The status of the task at the mentioned last update time. */
 public final class State extends ExpandableStringEnum<State> {
     /** Static value notStarted for State. */
     public static final State NOT_STARTED = fromString("notStarted");

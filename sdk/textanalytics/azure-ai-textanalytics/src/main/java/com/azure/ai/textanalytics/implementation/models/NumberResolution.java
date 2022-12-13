@@ -26,6 +26,9 @@ public final class NumberResolution extends BaseResolution {
     @JsonProperty(value = "value", required = true)
     private double value;
 
+    /** Creates an instance of NumberResolution class. */
+    public NumberResolution() {}
+
     /**
      * Get the numberKind property: The type of the extracted number entity.
      *

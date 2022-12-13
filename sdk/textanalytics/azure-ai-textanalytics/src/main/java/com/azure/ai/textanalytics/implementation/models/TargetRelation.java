@@ -22,6 +22,9 @@ public final class TargetRelation {
     @JsonProperty(value = "ref", required = true)
     private String ref;
 
+    /** Creates an instance of TargetRelation class. */
+    public TargetRelation() {}
+
     /**
      * Get the relationType property: The type related to the target.
      *

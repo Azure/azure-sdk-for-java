@@ -17,6 +17,9 @@ public class ExtractedSummaryDocumentResult extends DocumentResult {
     @JsonProperty(value = "sentences", required = true)
     private List<ExtractedSummarySentence> sentences;
 
+    /** Creates an instance of ExtractedSummaryDocumentResult class. */
+    public ExtractedSummaryDocumentResult() {}
+
     /**
      * Get the sentences property: A ranked list of sentences representing the extracted summary.
      *

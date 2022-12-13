@@ -26,6 +26,9 @@ public final class WeightResolution extends BaseResolution {
     @JsonProperty(value = "value", required = true)
     private double value;
 
+    /** Creates an instance of WeightResolution class. */
+    public WeightResolution() {}
+
     /**
      * Get the unit property: The weight Unit of measurement.
      *

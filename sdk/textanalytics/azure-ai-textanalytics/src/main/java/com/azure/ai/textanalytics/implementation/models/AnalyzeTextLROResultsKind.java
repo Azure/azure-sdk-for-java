@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AnalyzeTextLROResultsKind. */
+/** Enumeration of supported Text Analysis long-running operation task results. */
 public final class AnalyzeTextLROResultsKind extends ExpandableStringEnum<AnalyzeTextLROResultsKind> {
     /** Static value SentimentAnalysisLROResults for AnalyzeTextLROResultsKind. */
     public static final AnalyzeTextLROResultsKind SENTIMENT_ANALYSIS_LRORESULTS =

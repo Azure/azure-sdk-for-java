@@ -20,6 +20,9 @@ public final class SentimentAnalysisLROTask extends AnalyzeTextLROTask {
     @JsonProperty(value = "parameters")
     private SentimentAnalysisTaskParameters parameters;
 
+    /** Creates an instance of SentimentAnalysisLROTask class. */
+    public SentimentAnalysisLROTask() {}
+
     /**
      * Get the parameters property: Supported parameters for a Sentiment Analysis task.
      *

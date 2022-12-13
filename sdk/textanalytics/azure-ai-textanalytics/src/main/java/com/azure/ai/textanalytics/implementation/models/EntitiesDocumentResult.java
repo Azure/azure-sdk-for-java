@@ -17,6 +17,9 @@ public class EntitiesDocumentResult extends DocumentResult {
     @JsonProperty(value = "entities", required = true)
     private List<EntityWithResolution> entities;
 
+    /** Creates an instance of EntitiesDocumentResult class. */
+    public EntitiesDocumentResult() {}
+
     /**
      * Get the entities property: Recognized entities in the document.
      *

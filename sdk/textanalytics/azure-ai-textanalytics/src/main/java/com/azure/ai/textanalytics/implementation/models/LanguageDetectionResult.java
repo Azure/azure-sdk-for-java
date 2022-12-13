@@ -17,6 +17,9 @@ public final class LanguageDetectionResult extends PreBuiltResult {
     @JsonProperty(value = "documents", required = true)
     private List<LanguageDetectionDocumentResult> documents;
 
+    /** Creates an instance of LanguageDetectionResult class. */
+    public LanguageDetectionResult() {}
+
     /**
      * Get the documents property: Response by document.
      *

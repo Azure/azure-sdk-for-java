@@ -17,6 +17,9 @@ public class AbstractiveSummaryDocumentResult extends DocumentResult {
     @JsonProperty(value = "summaries", required = true)
     private List<AbstractiveSummary> summaries;
 
+    /** Creates an instance of AbstractiveSummaryDocumentResult class. */
+    public AbstractiveSummaryDocumentResult() {}
+
     /**
      * Get the summaries property: A list of abstractive summaries.
      *

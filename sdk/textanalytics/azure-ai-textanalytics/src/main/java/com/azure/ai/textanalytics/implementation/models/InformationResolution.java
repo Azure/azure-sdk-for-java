@@ -26,6 +26,9 @@ public final class InformationResolution extends BaseResolution {
     @JsonProperty(value = "value", required = true)
     private double value;
 
+    /** Creates an instance of InformationResolution class. */
+    public InformationResolution() {}
+
     /**
      * Get the unit property: The information (data) Unit of measurement.
      *

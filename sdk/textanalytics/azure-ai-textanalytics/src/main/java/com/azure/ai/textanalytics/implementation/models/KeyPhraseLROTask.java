@@ -20,6 +20,9 @@ public final class KeyPhraseLROTask extends AnalyzeTextLROTask {
     @JsonProperty(value = "parameters")
     private KeyPhraseTaskParameters parameters;
 
+    /** Creates an instance of KeyPhraseLROTask class. */
+    public KeyPhraseLROTask() {}
+
     /**
      * Get the parameters property: Supported parameters for a Key Phrase Extraction task.
      *

@@ -26,6 +26,9 @@ public final class AnalyzeTextPiiEntitiesRecognitionInput extends AnalyzeTextTas
     @JsonProperty(value = "parameters")
     private PiiTaskParameters parameters;
 
+    /** Creates an instance of AnalyzeTextPiiEntitiesRecognitionInput class. */
+    public AnalyzeTextPiiEntitiesRecognitionInput() {}
+
     /**
      * Get the analysisInput property: The analysisInput property.
      *

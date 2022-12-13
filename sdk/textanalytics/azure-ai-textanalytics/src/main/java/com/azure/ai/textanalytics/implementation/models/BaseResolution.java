@@ -34,4 +34,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "NumericRangeResolution", value = NumericRangeResolution.class)
 })
 @Immutable
-public class BaseResolution {}
+public class BaseResolution {
+    /** Creates an instance of BaseResolution class. */
+    public BaseResolution() {}
+}

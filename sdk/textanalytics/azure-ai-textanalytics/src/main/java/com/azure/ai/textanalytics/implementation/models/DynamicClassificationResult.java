@@ -17,6 +17,9 @@ public final class DynamicClassificationResult extends PreBuiltResult {
     @JsonProperty(value = "documents", required = true)
     private List<DynamicClassificationResultDocumentsItem> documents;
 
+    /** Creates an instance of DynamicClassificationResult class. */
+    public DynamicClassificationResult() {}
+
     /**
      * Get the documents property: Response by document.
      *

@@ -22,6 +22,9 @@ public final class SummaryContext {
     @JsonProperty(value = "length", required = true)
     private int length;
 
+    /** Creates an instance of SummaryContext class. */
+    public SummaryContext() {}
+
     /**
      * Get the offset property: Start position for the context. Use of different 'stringIndexType' values can affect the
      * offset returned.

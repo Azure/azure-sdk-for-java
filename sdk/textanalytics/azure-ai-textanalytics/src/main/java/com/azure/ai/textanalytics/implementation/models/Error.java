@@ -51,6 +51,9 @@ public final class Error {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of Error class. */
+    public Error() {}
+
     /**
      * Get the code property: One of a server-defined set of error codes.
      *

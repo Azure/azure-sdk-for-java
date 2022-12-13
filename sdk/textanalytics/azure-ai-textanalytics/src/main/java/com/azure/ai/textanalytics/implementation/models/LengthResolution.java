@@ -26,6 +26,9 @@ public final class LengthResolution extends BaseResolution {
     @JsonProperty(value = "value", required = true)
     private double value;
 
+    /** Creates an instance of LengthResolution class. */
+    public LengthResolution() {}
+
     /**
      * Get the unit property: The length Unit of measurement.
      *

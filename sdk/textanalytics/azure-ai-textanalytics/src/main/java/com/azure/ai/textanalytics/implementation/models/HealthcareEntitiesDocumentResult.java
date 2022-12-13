@@ -31,6 +31,9 @@ public class HealthcareEntitiesDocumentResult extends DocumentResult {
     @JsonProperty(value = "fhirBundle")
     private Map<String, Object> fhirBundle;
 
+    /** Creates an instance of HealthcareEntitiesDocumentResult class. */
+    public HealthcareEntitiesDocumentResult() {}
+
     /**
      * Get the entities property: Healthcare entities.
      *

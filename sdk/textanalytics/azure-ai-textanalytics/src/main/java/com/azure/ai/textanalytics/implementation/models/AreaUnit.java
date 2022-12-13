@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AreaUnit. */
+/** The area Unit of measurement. */
 public final class AreaUnit extends ExpandableStringEnum<AreaUnit> {
     /** Static value Unspecified for AreaUnit. */
     public static final AreaUnit UNSPECIFIED = fromString("Unspecified");

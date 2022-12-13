@@ -35,6 +35,9 @@ public final class AnalyzeTextJobsInput {
     @JsonProperty(value = "tasks", required = true)
     private List<AnalyzeTextLROTask> tasks;
 
+    /** Creates an instance of AnalyzeTextJobsInput class. */
+    public AnalyzeTextJobsInput() {}
+
     /**
      * Get the displayName property: Optional display name for the analysis job.
      *

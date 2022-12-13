@@ -35,6 +35,9 @@ public final class DetectedLanguage {
     @JsonProperty(value = "script")
     private ScriptKind script;
 
+    /** Creates an instance of DetectedLanguage class. */
+    public DetectedLanguage() {}
+
     /**
      * Get the name property: Long name of a detected language (e.g. English, French).
      *

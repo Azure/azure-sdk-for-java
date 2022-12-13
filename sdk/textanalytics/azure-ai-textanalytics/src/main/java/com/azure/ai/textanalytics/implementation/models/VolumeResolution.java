@@ -26,6 +26,9 @@ public final class VolumeResolution extends BaseResolution {
     @JsonProperty(value = "value", required = true)
     private double value;
 
+    /** Creates an instance of VolumeResolution class. */
+    public VolumeResolution() {}
+
     /**
      * Get the unit property: The Volume Unit of measurement.
      *

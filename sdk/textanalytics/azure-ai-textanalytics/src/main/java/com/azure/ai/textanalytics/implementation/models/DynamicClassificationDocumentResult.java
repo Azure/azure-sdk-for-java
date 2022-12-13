@@ -17,6 +17,9 @@ public class DynamicClassificationDocumentResult extends DocumentResult {
     @JsonProperty(value = "classifications", required = true)
     private List<ClassificationResult> classifications;
 
+    /** Creates an instance of DynamicClassificationDocumentResult class. */
+    public DynamicClassificationDocumentResult() {}
+
     /**
      * Get the classifications property: The classifications property.
      *

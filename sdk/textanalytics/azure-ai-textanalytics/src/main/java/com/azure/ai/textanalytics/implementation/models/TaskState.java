@@ -23,6 +23,9 @@ public class TaskState {
     @JsonProperty(value = "status", required = true)
     private State status;
 
+    /** Creates an instance of TaskState class. */
+    public TaskState() {}
+
     /**
      * Get the lastUpdateDateTime property: The last updated time in UTC for the task.
      *

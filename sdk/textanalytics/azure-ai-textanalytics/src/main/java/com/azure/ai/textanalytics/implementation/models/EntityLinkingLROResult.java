@@ -21,6 +21,9 @@ public final class EntityLinkingLROResult extends AnalyzeTextLROResult {
     @JsonProperty(value = "results", required = true)
     private EntityLinkingResult results;
 
+    /** Creates an instance of EntityLinkingLROResult class. */
+    public EntityLinkingLROResult() {}
+
     /**
      * Get the results property: The results property.
      *

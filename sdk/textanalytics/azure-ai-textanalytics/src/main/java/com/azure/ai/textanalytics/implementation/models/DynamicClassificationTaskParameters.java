@@ -24,6 +24,9 @@ public final class DynamicClassificationTaskParameters extends PreBuiltTaskParam
     @JsonProperty(value = "categories", required = true)
     private List<String> categories;
 
+    /** Creates an instance of DynamicClassificationTaskParameters class. */
+    public DynamicClassificationTaskParameters() {}
+
     /**
      * Get the classificationType property: Specifies either one or multiple categories per document. Defaults to multi
      * classification which may return more than one class for each document.

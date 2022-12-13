@@ -65,6 +65,9 @@ public final class HealthcareEntity {
     @JsonProperty(value = "links")
     private List<HealthcareEntityLink> links;
 
+    /** Creates an instance of HealthcareEntity class. */
+    public HealthcareEntity() {}
+
     /**
      * Get the text property: Entity text as appears in the request.
      *

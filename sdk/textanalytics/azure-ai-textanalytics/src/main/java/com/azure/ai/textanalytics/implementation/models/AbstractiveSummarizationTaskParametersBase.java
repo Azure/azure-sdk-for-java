@@ -23,6 +23,9 @@ public class AbstractiveSummarizationTaskParametersBase {
     @JsonProperty(value = "stringIndexType")
     private StringIndexType stringIndexType;
 
+    /** Creates an instance of AbstractiveSummarizationTaskParametersBase class. */
+    public AbstractiveSummarizationTaskParametersBase() {}
+
     /**
      * Get the sentenceCount property: It controls the approximate number of sentences in the output summaries.
      *

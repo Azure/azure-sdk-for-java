@@ -20,6 +20,9 @@ public final class AbstractiveSummarizationLROTask extends AnalyzeTextLROTask {
     @JsonProperty(value = "parameters", required = true)
     private AbstractiveSummarizationTaskParameters parameters;
 
+    /** Creates an instance of AbstractiveSummarizationLROTask class. */
+    public AbstractiveSummarizationLROTask() {}
+
     /**
      * Get the parameters property: Supported parameters for the pre-build Abstractive Summarization task.
      *

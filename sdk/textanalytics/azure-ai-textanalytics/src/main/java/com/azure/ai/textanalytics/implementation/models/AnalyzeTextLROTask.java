@@ -31,6 +31,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class AnalyzeTextLROTask extends TaskIdentifier {
+    /** Creates an instance of AnalyzeTextLROTask class. */
+    public AnalyzeTextLROTask() {}
+
     /** {@inheritDoc} */
     @Override
     public AnalyzeTextLROTask setTaskName(String taskName) {

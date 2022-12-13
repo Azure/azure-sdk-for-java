@@ -26,4 +26,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "DynamicClassification", value = AnalyzeTextDynamicClassificationInput.class)
 })
 @Immutable
-public class AnalyzeTextTask {}
+public class AnalyzeTextTask {
+    /** Creates an instance of AnalyzeTextTask class. */
+    public AnalyzeTextTask() {}
+}

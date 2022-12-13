@@ -17,6 +17,9 @@ public final class EntitiesResult extends PreBuiltResult {
     @JsonProperty(value = "documents", required = true)
     private List<EntitiesResultWithDetectedLanguage> documents;
 
+    /** Creates an instance of EntitiesResult class. */
+    public EntitiesResult() {}
+
     /**
      * Get the documents property: Response by document.
      *

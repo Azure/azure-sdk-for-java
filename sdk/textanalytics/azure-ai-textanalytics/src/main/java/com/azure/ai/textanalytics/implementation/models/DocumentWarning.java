@@ -28,6 +28,9 @@ public final class DocumentWarning {
     @JsonProperty(value = "targetRef")
     private String targetRef;
 
+    /** Creates an instance of DocumentWarning class. */
+    public DocumentWarning() {}
+
     /**
      * Get the code property: Error code.
      *

@@ -26,6 +26,9 @@ public final class AnalyzeTextKeyPhraseExtractionInput extends AnalyzeTextTask {
     @JsonProperty(value = "parameters")
     private KeyPhraseTaskParameters parameters;
 
+    /** Creates an instance of AnalyzeTextKeyPhraseExtractionInput class. */
+    public AnalyzeTextKeyPhraseExtractionInput() {}
+
     /**
      * Get the analysisInput property: The analysisInput property.
      *

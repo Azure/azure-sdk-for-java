@@ -17,6 +17,9 @@ public final class EntityLinkingResult extends PreBuiltResult {
     @JsonProperty(value = "documents", required = true)
     private List<EntityLinkingResultWithDetectedLanguage> documents;
 
+    /** Creates an instance of EntityLinkingResult class. */
+    public EntityLinkingResult() {}
+
     /**
      * Get the documents property: Response by document.
      *

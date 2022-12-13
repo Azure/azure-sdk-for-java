@@ -29,6 +29,9 @@ public final class ExtractiveSummarizationTaskParameters extends PreBuiltTaskPar
     @JsonProperty(value = "stringIndexType")
     private StringIndexType stringIndexType;
 
+    /** Creates an instance of ExtractiveSummarizationTaskParameters class. */
+    public ExtractiveSummarizationTaskParameters() {}
+
     /**
      * Get the sentenceCount property: The sentenceCount property.
      *

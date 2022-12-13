@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ResolutionKind. */
+/** The entity resolution object kind. */
 public final class ResolutionKind extends ExpandableStringEnum<ResolutionKind> {
     /** Static value BooleanResolution for ResolutionKind. */
     public static final ResolutionKind BOOLEAN_RESOLUTION = fromString("BooleanResolution");

@@ -39,6 +39,9 @@ public final class DateTimeResolution extends BaseResolution {
     @JsonProperty(value = "modifier")
     private TemporalModifier modifier;
 
+    /** Creates an instance of DateTimeResolution class. */
+    public DateTimeResolution() {}
+
     /**
      * Get the timex property: An extended ISO 8601 date/time representation as described in
      * (https://github.com/Microsoft/Recognizers-Text/blob/master/Patterns/English/English-DateTime.yaml).

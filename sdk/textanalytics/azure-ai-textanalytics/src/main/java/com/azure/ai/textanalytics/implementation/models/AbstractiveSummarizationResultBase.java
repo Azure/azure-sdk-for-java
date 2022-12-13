@@ -17,6 +17,9 @@ public class AbstractiveSummarizationResultBase {
     @JsonProperty(value = "documents", required = true)
     private List<AbstractiveSummaryDocumentResultWithDetectedLanguage> documents;
 
+    /** Creates an instance of AbstractiveSummarizationResultBase class. */
+    public AbstractiveSummarizationResultBase() {}
+
     /**
      * Get the documents property: Response by document.
      *

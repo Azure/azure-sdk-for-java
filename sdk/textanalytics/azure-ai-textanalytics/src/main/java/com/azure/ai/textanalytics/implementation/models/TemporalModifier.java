@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TemporalModifier. */
+/** An optional modifier of a date/time instance. */
 public final class TemporalModifier extends ExpandableStringEnum<TemporalModifier> {
     /** Static value AfterApprox for TemporalModifier. */
     public static final TemporalModifier AFTER_APPROX = fromString("AfterApprox");

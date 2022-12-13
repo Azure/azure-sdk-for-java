@@ -29,6 +29,9 @@ public class PreBuiltResult {
     @JsonProperty(value = "modelVersion", required = true)
     private String modelVersion;
 
+    /** Creates an instance of PreBuiltResult class. */
+    public PreBuiltResult() {}
+
     /**
      * Get the errors property: Errors by document id.
      *

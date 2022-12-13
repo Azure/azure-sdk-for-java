@@ -20,6 +20,9 @@ public final class KeyPhraseTaskResult extends AnalyzeTextTaskResult {
     @JsonProperty(value = "results", required = true)
     private KeyPhraseResult results;
 
+    /** Creates an instance of KeyPhraseTaskResult class. */
+    public KeyPhraseTaskResult() {}
+
     /**
      * Get the results property: The results property.
      *

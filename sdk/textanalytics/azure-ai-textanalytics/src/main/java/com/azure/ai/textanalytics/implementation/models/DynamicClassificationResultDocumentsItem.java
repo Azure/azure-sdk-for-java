@@ -10,6 +10,9 @@ import java.util.List;
 /** The DynamicClassificationResultDocumentsItem model. */
 @Fluent
 public final class DynamicClassificationResultDocumentsItem extends DynamicClassificationDocumentResult {
+    /** Creates an instance of DynamicClassificationResultDocumentsItem class. */
+    public DynamicClassificationResultDocumentsItem() {}
+
     /** {@inheritDoc} */
     @Override
     public DynamicClassificationResultDocumentsItem setClassifications(List<ClassificationResult> classifications) {

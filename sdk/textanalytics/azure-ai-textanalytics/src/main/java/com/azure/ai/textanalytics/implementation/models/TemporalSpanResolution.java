@@ -47,6 +47,9 @@ public final class TemporalSpanResolution extends BaseResolution {
     @JsonProperty(value = "timex")
     private String timex;
 
+    /** Creates an instance of TemporalSpanResolution class. */
+    public TemporalSpanResolution() {}
+
     /**
      * Get the begin property: An extended ISO 8601 date/time representation as described in
      * (https://github.com/Microsoft/Recognizers-Text/blob/master/Patterns/English/English-DateTime.yaml).

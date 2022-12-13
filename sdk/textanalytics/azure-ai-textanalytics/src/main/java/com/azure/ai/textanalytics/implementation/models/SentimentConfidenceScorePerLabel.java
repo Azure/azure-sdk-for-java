@@ -28,6 +28,9 @@ public final class SentimentConfidenceScorePerLabel {
     @JsonProperty(value = "negative", required = true)
     private double negative;
 
+    /** Creates an instance of SentimentConfidenceScorePerLabel class. */
+    public SentimentConfidenceScorePerLabel() {}
+
     /**
      * Get the positive property: Confidence score for positive sentiment.
      *

@@ -16,6 +16,9 @@ public final class Pagination {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of Pagination class. */
+    public Pagination() {}
+
     /**
      * Get the nextLink property: The nextLink property.
      *

@@ -26,6 +26,9 @@ public final class TemperatureResolution extends BaseResolution {
     @JsonProperty(value = "value", required = true)
     private double value;
 
+    /** Creates an instance of TemperatureResolution class. */
+    public TemperatureResolution() {}
+
     /**
      * Get the unit property: The temperature Unit of measurement.
      *

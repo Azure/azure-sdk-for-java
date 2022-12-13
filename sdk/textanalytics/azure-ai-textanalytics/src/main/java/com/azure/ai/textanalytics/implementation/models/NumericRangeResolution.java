@@ -32,6 +32,9 @@ public final class NumericRangeResolution extends BaseResolution {
     @JsonProperty(value = "maximum", required = true)
     private double maximum;
 
+    /** Creates an instance of NumericRangeResolution class. */
+    public NumericRangeResolution() {}
+
     /**
      * Get the rangeKind property: The kind of range that the resolution object represents.
      *

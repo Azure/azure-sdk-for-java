@@ -18,6 +18,9 @@ public final class CustomEntitiesResultDocumentsItem extends EntitiesDocumentRes
     @JsonProperty(value = "detectedLanguage")
     private DetectedLanguage detectedLanguage;
 
+    /** Creates an instance of CustomEntitiesResultDocumentsItem class. */
+    public CustomEntitiesResultDocumentsItem() {}
+
     /**
      * Get the detectedLanguage property: If 'language' is set to 'auto' for the document in the request this field will
      * contain a 2 letter ISO 639-1 representation of the language detected for this document.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VolumeUnit. */
+/** The Volume Unit of measurement. */
 public final class VolumeUnit extends ExpandableStringEnum<VolumeUnit> {
     /** Static value Unspecified for VolumeUnit. */
     public static final VolumeUnit UNSPECIFIED = fromString("Unspecified");

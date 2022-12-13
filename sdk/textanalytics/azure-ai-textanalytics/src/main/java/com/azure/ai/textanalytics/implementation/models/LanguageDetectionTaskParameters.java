@@ -9,6 +9,9 @@ import com.azure.core.annotation.Fluent;
 /** Supported parameters for a Language Detection task. */
 @Fluent
 public final class LanguageDetectionTaskParameters extends PreBuiltTaskParameters {
+    /** Creates an instance of LanguageDetectionTaskParameters class. */
+    public LanguageDetectionTaskParameters() {}
+
     /** {@inheritDoc} */
     @Override
     public LanguageDetectionTaskParameters setModelVersion(String modelVersion) {
