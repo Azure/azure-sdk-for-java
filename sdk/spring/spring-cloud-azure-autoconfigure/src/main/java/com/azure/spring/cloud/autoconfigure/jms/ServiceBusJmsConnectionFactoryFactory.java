@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.jms;
 
-import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.jms.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.core.implementation.connectionstring.ServiceBusConnectionString;
 import org.apache.qpid.jms.policy.JmsDefaultPrefetchPolicy;
 import org.springframework.util.Assert;
@@ -13,10 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * A factory for ServiceBusJmsConnectionFactory.
- */
-public class ServiceBusJmsConnectionFactoryFactory {
+class ServiceBusJmsConnectionFactoryFactory {
     private final AzureServiceBusJmsProperties properties;
     private final List<ServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers;
 

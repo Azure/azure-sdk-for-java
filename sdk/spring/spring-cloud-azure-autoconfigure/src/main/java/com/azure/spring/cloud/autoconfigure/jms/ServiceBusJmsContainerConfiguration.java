@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.jms;
 
-import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.jms.AzureServiceBusJmsProperties;
 import jakarta.jms.ConnectionFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -14,36 +14,19 @@ import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
 
-/**
- * Abstract autoconfiguration class of ServiceBusJMS for JmsListenerContainerFactory.
- */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(EnableJms.class)
-public class ServiceBusJmsContainerConfiguration {
+class ServiceBusJmsContainerConfiguration {
 
-    /**
-     * The Azure ServiceBus JMS properties
-     */
     private final AzureServiceBusJmsProperties azureServiceBusJMSProperties;
 
-    /**
-     * Creates a new instance of {@link ServiceBusJmsContainerConfiguration}.
-     *
-     * @param azureServiceBusJMSProperties the Azure ServiceBus JMS properties
-     */
-    public ServiceBusJmsContainerConfiguration(AzureServiceBusJmsProperties azureServiceBusJMSProperties) {
+    ServiceBusJmsContainerConfiguration(AzureServiceBusJmsProperties azureServiceBusJMSProperties) {
         this.azureServiceBusJMSProperties = azureServiceBusJMSProperties;
     }
 
-    /**
-     * Autoconfigure the {@link JmsListenerContainerFactory} for Service Bus queues.
-     * @param configurer the configurer to configure the container factory.
-     * @param connectionFactory the connection factory for the container factory.
-     * @return the jms listener container factory for Service Bus queues.
-     */
     @Bean
     @ConditionalOnMissingBean
-    public JmsListenerContainerFactory<?> jmsListenerContainerFactory(
+    JmsListenerContainerFactory<?> jmsListenerContainerFactory(
         DefaultJmsListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
         DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
         configurer.configure(jmsListenerContainerFactory, connectionFactory);
@@ -52,15 +35,9 @@ public class ServiceBusJmsContainerConfiguration {
         return jmsListenerContainerFactory;
     }
 
-    /**
-     * Autoconfigure the {@link JmsListenerContainerFactory} for Service Bus topics.
-     * @param configurer the configurer to configure the container factory.
-     * @param connectionFactory the connection factory for the container factory.
-     * @return the jms listener container factory for Service Bus topics.
-     */
     @Bean
     @ConditionalOnMissingBean(name = "topicJmsListenerContainerFactory")
-    public JmsListenerContainerFactory<?> topicJmsListenerContainerFactory(
+    JmsListenerContainerFactory<?> topicJmsListenerContainerFactory(
         DefaultJmsListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
         DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
         configurer.configure(jmsListenerContainerFactory, connectionFactory);

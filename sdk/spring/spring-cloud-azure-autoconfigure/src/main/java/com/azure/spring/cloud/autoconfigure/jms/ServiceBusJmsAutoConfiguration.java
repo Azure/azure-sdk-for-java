@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnMissingProperty;
-import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.jms.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
@@ -62,12 +62,6 @@ public class ServiceBusJmsAutoConfiguration {
         };
     }
 
-    /**
-     * The BeanPostProcessor to instrument the {@link AzureServiceBusJmsProperties} bean with provided connection string
-     * providers.
-     * @param connectionStringProviders the connection string providers to provide the Service Bus connection string.
-     * @return the bean post processor.
-     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnMissingProperty(prefix = "spring.jms.servicebus", name = "connection-string")
