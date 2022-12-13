@@ -341,25 +341,6 @@
       <version>5.3.24</version> <!-- {x-version-update;org.springframework:spring-jdbc;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-stream-binder-test</artifactId>
-      <version>3.2.6</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-stream-binder-test;external_dependency} -->
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>com.fasterxml.jackson.core</groupId>
-          <artifactId>jackson-databind</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-jdbc</artifactId>
-      <version>2.7.6</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-jdbc;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <!-- `spring-boot-starter-jdbc` is imported, DataSourceAutoConfiguration will be enabled by default. -->
     <!-- The h2 is used by DataSourceAutoConfiguration.  -->
     <dependency>
       <groupId>com.h2database</groupId>

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
 import com.azure.core.credential.TokenRequestContext;
@@ -26,7 +29,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @EnabledOnOs(OS.LINUX)
 @SuppressWarnings("rawtypes")
 public class PasswordlessMySQLTest {
-    protected final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withPropertyValues("spring.datasource.azure.passwordless-enabled=true")
         .withConfiguration(AutoConfigurations.of(
             DataSourceAutoConfiguration.class,
@@ -37,7 +40,7 @@ public class PasswordlessMySQLTest {
         ));
 
     @Container
-    public static MySQLContainer mySQLContainer = new MySQLContainer("mysql:5.7");
+    private static MySQLContainer mySQLContainer = new MySQLContainer("mysql:5.7");
 
     @BeforeEach
     void setUp() {
