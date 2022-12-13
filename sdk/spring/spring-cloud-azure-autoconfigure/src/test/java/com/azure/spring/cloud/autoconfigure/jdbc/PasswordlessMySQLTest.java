@@ -24,12 +24,17 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 @Testcontainers
 @EnabledOnOs(OS.LINUX)
+@SuppressWarnings("rawtypes")
 public class PasswordlessMySQLTest {
     protected final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withPropertyValues("spring.datasource.azure.passwordless-enabled=true")
-        .withConfiguration(AutoConfigurations.of(DataSourceAutoConfiguration.class, JdbcTemplateAutoConfiguration.class,
-            AzureJdbcAutoConfiguration.class, AzureGlobalPropertiesAutoConfiguration.class,
-            AzureTokenCredentialAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(
+            DataSourceAutoConfiguration.class,
+            JdbcTemplateAutoConfiguration.class,
+            AzureJdbcAutoConfiguration.class,
+            AzureGlobalPropertiesAutoConfiguration.class,
+            AzureTokenCredentialAutoConfiguration.class
+        ));
 
     @Container
     public static MySQLContainer mySQLContainer = new MySQLContainer("mysql:5.7");

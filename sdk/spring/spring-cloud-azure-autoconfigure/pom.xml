@@ -344,7 +344,7 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-stream-binder-test</artifactId>
-      <version>3.2.5</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-stream-binder-test;external_dependency} -->
+      <version>3.2.6</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-stream-binder-test;external_dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>
