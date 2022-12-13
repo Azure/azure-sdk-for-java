@@ -29,10 +29,6 @@ import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.BUSINESS_CA
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.CONTENT_FORM_JPG;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.CONTENT_GERMAN_PDF;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXAMPLE_DOCX;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXAMPLE_HTML;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXAMPLE_PPT;
-import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.EXAMPLE_XLSX;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.GERMAN_PNG;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVOICE_6_PDF;
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.INVOICE_PDF;
