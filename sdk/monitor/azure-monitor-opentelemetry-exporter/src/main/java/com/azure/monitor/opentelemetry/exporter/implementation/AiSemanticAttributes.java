@@ -5,8 +5,6 @@ package com.azure.monitor.opentelemetry.exporter.implementation;
 
 import io.opentelemetry.api.common.AttributeKey;
 
-import java.util.List;
-
 import static io.opentelemetry.api.common.AttributeKey.booleanKey;
 import static io.opentelemetry.api.common.AttributeKey.longKey;
 import static io.opentelemetry.api.common.AttributeKey.stringKey;
@@ -79,10 +77,6 @@ public final class AiSemanticAttributes {
         AttributeKey.stringKey("net.sock.peer.addr");
     public static final AttributeKey<Long> NET_SOCK_PEER_PORT =
         AttributeKey.longKey("net.sock.peer.port");
-
-    // TODO (trask) this can go away once new indexer is rolled out to gov clouds
-    public static final AttributeKey<List<String>> REQUEST_CONTEXT =
-        AttributeKey.stringArrayKey("http.response.header.request_context");
 
     public static final AttributeKey<String> LEGACY_PARENT_ID =
         AttributeKey.stringKey("applicationinsights.internal.legacy_parent_id");

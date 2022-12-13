@@ -5,6 +5,9 @@ package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
 import reactor.util.annotation.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public final class Strings {
 
     public static boolean isNullOrEmpty(@Nullable String string) {
@@ -18,6 +21,23 @@ public final class Strings {
         }
         String trimmed = str.trim();
         return trimmed.isEmpty() ? null : trimmed;
+    }
+
+    public static Map<String, String> splitToMap(String str) {
+        Map<String, String> map = new HashMap<>();
+        for (String part : str.split(";")) {
+            if (part.trim().isEmpty()) {
+                continue;
+            }
+            int index = part.indexOf('=');
+            if (index == -1) {
+                throw new IllegalArgumentException();
+            }
+            String key = part.substring(0, index);
+            String value = part.substring(index + 1);
+            map.put(key, value);
+        }
+        return map;
     }
 
     private Strings() {

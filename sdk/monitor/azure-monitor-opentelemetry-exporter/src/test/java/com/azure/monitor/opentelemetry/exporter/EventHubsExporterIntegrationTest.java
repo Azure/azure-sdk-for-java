@@ -59,21 +59,22 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
     public void producerTest() throws InterruptedException {
         CountDownLatch exporterCountDown = new CountDownLatch(2);
         String spanName = "event-hubs-producer-testing";
-        HttpPipelinePolicy validationPolicy = (context, next) -> {
-            Mono<String> asyncString =
-                FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody())
-                    .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
-            asyncString.subscribe(
-                value -> {
-                    if (value.contains(spanName)) {
-                        exporterCountDown.countDown();
-                    }
-                    if (value.contains("EventHubs.send")) {
-                        exporterCountDown.countDown();
-                    }
-                });
-            return next.process();
-        };
+        HttpPipelinePolicy validationPolicy =
+            (context, next) -> {
+                Mono<String> asyncString =
+                    FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody())
+                        .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
+                asyncString.subscribe(
+                    value -> {
+                        if (value.contains(spanName)) {
+                            exporterCountDown.countDown();
+                        }
+                        if (value.contains("EventHubs.send")) {
+                            exporterCountDown.countDown();
+                        }
+                    });
+                return next.process();
+            };
         Tracer tracer = TestUtils.configureAzureMonitorTraceExporter(getHttpPipeline(validationPolicy));
         EventHubProducerAsyncClient producer =
             new EventHubClientBuilder().connectionString(CONNECTION_STRING).buildAsyncProducerClient();
@@ -103,27 +104,28 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
         EventHubProducerAsyncClient producer =
             new EventHubClientBuilder().connectionString(CONNECTION_STRING).buildAsyncProducerClient();
 
-        HttpPipelinePolicy validationPolicy = (context, next) -> {
-            Mono<String> asyncString =
-                FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody())
-                    .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
-            asyncString.subscribe(
-                value -> {
-                    // user span
-                    if (value.contains("event-hubs-consumer-testing")) {
-                        exporterCountDown.countDown();
-                    }
-                    // process span
-                    if (value.contains("EventHubs.process")) {
-                        exporterCountDown.countDown();
-                    }
-                    // Storage call
-                    if (value.contains("AzureBlobStorageBlobs.setMetadata")) {
-                        exporterCountDown.countDown();
-                    }
-                });
-            return next.process();
-        };
+        HttpPipelinePolicy validationPolicy =
+            (context, next) -> {
+                Mono<String> asyncString =
+                    FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody())
+                        .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
+                asyncString.subscribe(
+                    value -> {
+                        // user span
+                        if (value.contains("event-hubs-consumer-testing")) {
+                            exporterCountDown.countDown();
+                        }
+                        // process span
+                        if (value.contains("EventHubs.process")) {
+                            exporterCountDown.countDown();
+                        }
+                        // Storage call
+                        if (value.contains("AzureBlobStorageBlobs.setMetadata")) {
+                            exporterCountDown.countDown();
+                        }
+                    });
+                return next.process();
+            };
         Tracer tracer = TestUtils.configureAzureMonitorTraceExporter(getHttpPipeline(validationPolicy));
 
         CountDownLatch partitionOwned = new CountDownLatch(1);

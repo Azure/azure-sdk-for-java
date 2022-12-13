@@ -55,7 +55,8 @@ public class AppConfigurationExporterIntegrationTest extends MonitorExporterClie
         CountDownLatch exporterCountDown = new CountDownLatch(1);
 
         ValidationPolicy validationPolicy = new ValidationPolicy(exporterCountDown, "AppConfig.setKey");
-        OpenTelemetry openTelemetry = TestUtils.createOpenTelemetrySdk(getHttpPipeline(validationPolicy));
+        OpenTelemetry openTelemetry =
+            TestUtils.createOpenTelemetrySdk(getHttpPipeline(validationPolicy));
 
         Tracer tracer = openTelemetry.getTracer("Sample");
 
@@ -82,8 +83,10 @@ public class AppConfigurationExporterIntegrationTest extends MonitorExporterClie
         CountDownLatch appConfigCountDown = new CountDownLatch(1);
         CountDownLatch exporterCountDown = new CountDownLatch(1);
 
-        ValidationPolicy validationPolicy = new ValidationPolicy(exporterCountDown, "disable-config-exporter-testing");
-        OpenTelemetry openTelemetry = TestUtils.createOpenTelemetrySdk(getHttpPipeline(validationPolicy));
+        ValidationPolicy validationPolicy =
+            new ValidationPolicy(exporterCountDown, "disable-config-exporter-testing");
+        OpenTelemetry openTelemetry =
+            TestUtils.createOpenTelemetrySdk(getHttpPipeline(validationPolicy));
 
         Tracer tracer = openTelemetry.getTracer("Sample");
 

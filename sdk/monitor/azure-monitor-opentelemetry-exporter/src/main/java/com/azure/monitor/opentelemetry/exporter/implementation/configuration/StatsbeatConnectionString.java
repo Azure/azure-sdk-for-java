@@ -29,56 +29,58 @@ public final class StatsbeatConnectionString {
 
     private static final Pattern pattern = Pattern.compile("^https?://(?:www\\.)?([^/.-]+)");
 
-    private static final Set<String> EU_REGION_GEO_SET = new HashSet<>(asList(
-        "westeurope",
-        "northeurope",
-        "francecentral",
-        "francesouth",
-        "germanywestcentral",
-        "norwayeast",
-        "norwaywest",
-        "swedencentral",
-        "switzerlandnorth",
-        "switzerlandwest",
-        "uksouth",
-        "ukwest"
-    ));
+    private static final Set<String> EU_REGION_GEO_SET =
+        new HashSet<>(
+            asList(
+                "westeurope",
+                "northeurope",
+                "francecentral",
+                "francesouth",
+                "germanywestcentral",
+                "norwayeast",
+                "norwaywest",
+                "swedencentral",
+                "switzerlandnorth",
+                "switzerlandwest",
+                "uksouth",
+                "ukwest"));
 
-    private static final Set<String> NON_EU_REGION_GEO_SET = new HashSet<>(asList(
-        "eastasia",
-        "southeastasia",
-        "chinaeast2",
-        "chinaeast3",
-        "chinanorth3",
-        "centralindia",
-        "southindia",
-        "jioindiacentral",
-        "jioindiawest",
-        "japaneast",
-        "japanwest",
-        "koreacentral",
-        "koreasouth",
-        "australiacentral",
-        "australiacentral2",
-        "australiaeast",
-        "australiasoutheast",
-        "canadacentral",
-        "canadaeast",
-        "qatarcentral",
-        "uaecentral",
-        "uaenorth",
-        "southafricanorth",
-        "brazilsouth",
-        "brazilsoutheast",
-        "centralus",
-        "eastus",
-        "eastus2",
-        "northcentralus",
-        "southcentralus",
-        "westus",
-        "westus2",
-        "westus3"
-    ));
+    private static final Set<String> NON_EU_REGION_GEO_SET =
+        new HashSet<>(
+            asList(
+                "eastasia",
+                "southeastasia",
+                "chinaeast2",
+                "chinaeast3",
+                "chinanorth3",
+                "centralindia",
+                "southindia",
+                "jioindiacentral",
+                "jioindiawest",
+                "japaneast",
+                "japanwest",
+                "koreacentral",
+                "koreasouth",
+                "australiacentral",
+                "australiacentral2",
+                "australiaeast",
+                "australiasoutheast",
+                "canadacentral",
+                "canadaeast",
+                "qatarcentral",
+                "uaecentral",
+                "uaenorth",
+                "southafricanorth",
+                "brazilsouth",
+                "brazilsoutheast",
+                "centralus",
+                "eastus",
+                "eastus2",
+                "northcentralus",
+                "southcentralus",
+                "westus",
+                "westus2",
+                "westus3"));
 
     private final String ingestionEndpoint;
     private final String instrumentationKey;
