@@ -61,7 +61,7 @@ public class JedisRedisCheckpointStore implements CheckpointStore {
      * @param jedisPool a JedisPool object that creates a pool connected to the Azure Redis Cache
      * @throws IllegalArgumentException thrown when JedisPool object supplied is null
      */
-    public JedisRedisCheckpointStore(JedisPool jedisPool) throws IllegalArgumentException {
+    public JedisRedisCheckpointStore(JedisPool jedisPool) {
         if (jedisPool == null) {
             throw LOGGER.logExceptionAsError(Exceptions
                 .propagate(new IllegalArgumentException(
