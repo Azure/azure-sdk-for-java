@@ -150,11 +150,11 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         this(cosmosFactory, cosmosConfig, mappingCosmosConverter, null);
     }
 
-    public String getDatabaseName() {
+    private String getDatabaseName() {
         return this.cosmosFactory.getDatabaseName();
     }
 
-    public CosmosAsyncClient getCosmosAsyncClient() {
+    private CosmosAsyncClient getCosmosAsyncClient() {
         return this.cosmosFactory.getCosmosAsyncClient();
     }
 

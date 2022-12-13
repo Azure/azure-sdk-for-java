@@ -78,14 +78,14 @@ public class MultiTenantDBCosmosFactoryUnitTest {
         // Create DB1 and add TEST_PERSON_1 to it
         cosmosTemplate.createContainerIfNotExists(personInfo);
         cosmosTemplate.deleteAll(personInfo.getContainerName(), Person.class);
-        assertThat(cosmosTemplate.getDatabaseName()).isEqualTo(testDB1);
+        assertThat(cosmosFactory.getDatabaseName()).isEqualTo(testDB1);
         cosmosTemplate.insert(TEST_PERSON_1, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_1)));
 
         // Create DB2 and add TEST_PERSON_2 to it
         cosmosFactory.databaseName = testDB2;
         cosmosTemplate.createContainerIfNotExists(personInfo);
         cosmosTemplate.deleteAll(personInfo.getContainerName(), Person.class);
-        assertThat(cosmosTemplate.getDatabaseName()).isEqualTo(testDB2);
+        assertThat(cosmosFactory.getDatabaseName()).isEqualTo(testDB2);
         cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
 
         // Check that DB2 has the correct contents

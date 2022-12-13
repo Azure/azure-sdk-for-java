@@ -10,7 +10,7 @@ import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import org.springframework.data.auditing.IsNewAwareAuditingHandler;
 
 /**
- * Template class for cosmos db
+ * Example for extending CosmosFactory for Mutli-Tenancy at the database level
  */
 public class MultiTenantDBCosmosFactory extends CosmosFactory {
 
