@@ -104,7 +104,7 @@ public final class RegistryArtifactAsync extends RegistryArtifactBase {
         return withContext(context -> this.deleteWithResponse(context));
     }
 
-    Mono<Response<Void>> deleteWithResponse(Context context) {
+    private Mono<Response<Void>> deleteWithResponse(Context context) {
         try {
             return this.getDigestMono()
                 .flatMap(res -> this.serviceClient.deleteManifestWithResponseAsync(getRepositoryName(), res, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE)))

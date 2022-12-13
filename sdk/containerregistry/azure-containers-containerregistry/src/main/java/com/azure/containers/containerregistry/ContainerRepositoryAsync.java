@@ -3,9 +3,9 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImplBuilder;
+import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.containers.containerregistry.implementation.models.RepositoryWriteableProperties;
 import com.azure.containers.containerregistry.models.ArtifactManifestOrder;
@@ -144,7 +144,7 @@ public final class ContainerRepositoryAsync {
         return withContext(context -> deleteWithResponse(context));
     }
 
-    Mono<Response<Void>> deleteWithResponse(Context context) {
+    private Mono<Response<Void>> deleteWithResponse(Context context) {
         try {
             return this.serviceClient.deleteRepositoryWithResponseAsync(repositoryName, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
                 .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
@@ -256,13 +256,13 @@ public final class ContainerRepositoryAsync {
             (token, pageSize) -> withContext(context -> listManifestPropertiesNextSinglePageAsync(token, context)));
     }
 
-    PagedFlux<ArtifactManifestProperties> listManifestProperties(ArtifactManifestOrder order, Context context) {
+    private PagedFlux<ArtifactManifestProperties> listManifestProperties(ArtifactManifestOrder order, Context context) {
         return new PagedFlux<>(
             (pageSize) -> listManifestPropertiesSinglePageAsync(pageSize, order, context),
             (token, pageSize) -> listManifestPropertiesNextSinglePageAsync(token, context));
     }
 
-    Mono<PagedResponse<ArtifactManifestProperties>> listManifestPropertiesSinglePageAsync(Integer pageSize, ArtifactManifestOrder order, Context context) {
+    private Mono<PagedResponse<ArtifactManifestProperties>> listManifestPropertiesSinglePageAsync(Integer pageSize, ArtifactManifestOrder order, Context context) {
         try {
             if (pageSize != null && pageSize < 0) {
                 return monoError(logger, new IllegalArgumentException("'pageSize' cannot be negative."));
@@ -279,7 +279,7 @@ public final class ContainerRepositoryAsync {
         }
     }
 
-    Mono<PagedResponse<ArtifactManifestProperties>> listManifestPropertiesNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<ArtifactManifestProperties>> listManifestPropertiesNextSinglePageAsync(String nextLink, Context context) {
         try {
             return this.serviceClient.getManifestsNextSinglePageAsync(nextLink, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
                 .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res,
@@ -317,7 +317,7 @@ public final class ContainerRepositoryAsync {
         return withContext(context -> this.getPropertiesWithResponse(context));
     }
 
-    Mono<Response<ContainerRepositoryProperties>> getPropertiesWithResponse(Context context) {
+    private Mono<Response<ContainerRepositoryProperties>> getPropertiesWithResponse(Context context) {
         try {
             return this.serviceClient.getPropertiesWithResponseAsync(repositoryName, context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE))
                 .onErrorMap(UtilsImpl::mapException);
@@ -378,7 +378,7 @@ public final class ContainerRepositoryAsync {
         return withContext(context -> this.updatePropertiesWithResponse(repositoryProperties, context));
     }
 
-    Mono<Response<ContainerRepositoryProperties>> updatePropertiesWithResponse(ContainerRepositoryProperties repositoryProperties, Context context) {
+    private Mono<Response<ContainerRepositoryProperties>> updatePropertiesWithResponse(ContainerRepositoryProperties repositoryProperties, Context context) {
         try {
             if (repositoryProperties == null) {
                 return monoError(logger, new NullPointerException("'value' cannot be null."));

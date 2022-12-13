@@ -147,10 +147,6 @@ public class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UploadManifestResult> uploadManifestWithResponse(UploadManifestOptions options, Context context) {
-        return this.uploadManifestWithResponseSync(options, context);
-    }
-
-    Response<UploadManifestResult> uploadManifestWithResponseSync(UploadManifestOptions options, Context context) {
         if (options == null) {
             throw logger.logExceptionAsError(new NullPointerException("'options' can't be null."));
         }
@@ -211,10 +207,6 @@ public class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UploadBlobResult> uploadBlobWithResponse(BinaryData data, Context context) {
-        return this.uploadBlobWithResponseSync(data, context);
-    }
-
-    Response<UploadBlobResult> uploadBlobWithResponseSync(BinaryData data, Context context) {
         if (data == null) {
             throw logger.logExceptionAsError(new NullPointerException("'data' can't be null."));
         }
@@ -275,10 +267,6 @@ public class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DownloadManifestResult> downloadManifestWithResponse(DownloadManifestOptions options, Context context) {
-        return this.downloadManifestWithResponseSync(options, context);
-    }
-
-    Response<DownloadManifestResult> downloadManifestWithResponseSync(DownloadManifestOptions options, Context context) {
         if (options == null) {
             throw logger.logExceptionAsError(new NullPointerException("'options' can't be null."));
         }
@@ -339,10 +327,6 @@ public class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DownloadBlobResult> downloadBlobWithResponse(String digest, Context context) {
-        return this.downloadBlobWithResponseSync(digest, context);
-    }
-
-    Response<DownloadBlobResult> downloadBlobWithResponseSync(String digest, Context context) {
         if (digest == null) {
             throw logger.logExceptionAsError(new NullPointerException("'digest' can't be null."));
         }
@@ -394,10 +378,6 @@ public class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteBlobWithResponse(String digest, Context context) {
-        return this.deleteBlobWithResponseSync(digest, context);
-    }
-
-    Response<Void> deleteBlobWithResponseSync(String digest, Context context) {
         try {
             if (digest == null) {
                 throw logger.logExceptionAsError(new NullPointerException("'digest' can't be null."));

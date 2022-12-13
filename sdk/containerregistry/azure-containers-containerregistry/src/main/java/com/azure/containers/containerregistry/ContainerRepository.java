@@ -347,13 +347,13 @@ public final class ContainerRepository {
         return this.listManifestPropertiesSync(order, context);
     }
 
-    PagedIterable<ArtifactManifestProperties> listManifestPropertiesSync(ArtifactManifestOrder order, Context context) {
+    private PagedIterable<ArtifactManifestProperties> listManifestPropertiesSync(ArtifactManifestOrder order, Context context) {
         return new PagedIterable<>(
             (pageSize) -> listManifestPropertiesSinglePageSync(pageSize, order, context),
             (token, pageSize) -> listManifestPropertiesNextSinglePageSync(token, context));
     }
 
-    PagedResponse<ArtifactManifestProperties> listManifestPropertiesSinglePageSync(Integer pageSize, ArtifactManifestOrder order, Context context) {
+    private PagedResponse<ArtifactManifestProperties> listManifestPropertiesSinglePageSync(Integer pageSize, ArtifactManifestOrder order, Context context) {
         if (pageSize != null && pageSize < 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'pageSize' cannot be negative."));
         }
@@ -371,7 +371,7 @@ public final class ContainerRepository {
         }
     }
 
-    PagedResponse<ArtifactManifestProperties> listManifestPropertiesNextSinglePageSync(String nextLink, Context context) {
+    private PagedResponse<ArtifactManifestProperties> listManifestPropertiesNextSinglePageSync(String nextLink, Context context) {
         try {
             PagedResponse<ManifestAttributesBase> res = this.serviceClient.getManifestsNextSinglePage(nextLink,
                 enableSync(getTracingContext(context)));
@@ -439,7 +439,7 @@ public final class ContainerRepository {
         return this.updatePropertiesWithResponse(repositoryProperties, Context.NONE).getValue();
     }
 
-    Response<ContainerRepositoryProperties> updatePropertiesWithResponseSync(ContainerRepositoryProperties repositoryProperties, Context context) {
+    private Response<ContainerRepositoryProperties> updatePropertiesWithResponseSync(ContainerRepositoryProperties repositoryProperties, Context context) {
         if (repositoryProperties == null) {
             throw logger.logExceptionAsError(new NullPointerException("'value' cannot be null."));
         }

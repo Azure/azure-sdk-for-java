@@ -153,7 +153,7 @@ public class ContainerRegistryBlobAsyncClient {
         return withContext(context -> this.uploadManifestWithResponse(options, context));
     }
 
-    Mono<Response<UploadManifestResult>> uploadManifestWithResponse(UploadManifestOptions options, Context context) {
+    private Mono<Response<UploadManifestResult>> uploadManifestWithResponse(UploadManifestOptions options, Context context) {
         if (options == null) {
             return monoError(logger, new NullPointerException("'options' can't be null."));
         }
@@ -215,7 +215,7 @@ public class ContainerRegistryBlobAsyncClient {
         return withContext(context -> this.uploadBlobWithResponse(data.toByteBuffer(), context));
     }
 
-    Mono<Response<UploadBlobResult>> uploadBlobWithResponse(ByteBuffer data, Context context) {
+    private Mono<Response<UploadBlobResult>> uploadBlobWithResponse(ByteBuffer data, Context context) {
         if (data == null) {
             return monoError(logger, new NullPointerException("'data' can't be null."));
         }
@@ -266,7 +266,7 @@ public class ContainerRegistryBlobAsyncClient {
         return withContext(context -> this.downloadManifestWithResponse(options, context));
     }
 
-    Mono<Response<DownloadManifestResult>> downloadManifestWithResponse(DownloadManifestOptions options, Context context) {
+    private Mono<Response<DownloadManifestResult>> downloadManifestWithResponse(DownloadManifestOptions options, Context context) {
         if (options == null) {
             return monoError(logger, new NullPointerException("'options' can't be null."));
         }
@@ -326,7 +326,7 @@ public class ContainerRegistryBlobAsyncClient {
         return withContext(context -> this.downloadBlobWithResponse(digest, context));
     }
 
-    Mono<Response<DownloadBlobResult>> downloadBlobWithResponse(String digest, Context context) {
+    private Mono<Response<DownloadBlobResult>> downloadBlobWithResponse(String digest, Context context) {
         if (digest == null) {
             return monoError(logger, new NullPointerException("'digest' can't be null."));
         }
@@ -378,7 +378,7 @@ public class ContainerRegistryBlobAsyncClient {
         return withContext(context -> deleteBlobWithResponse(digest, context));
     }
 
-    Mono<Response<Void>> deleteBlobWithResponse(String digest, Context context) {
+    private Mono<Response<Void>> deleteBlobWithResponse(String digest, Context context) {
         if (digest == null) {
             return monoError(logger, new NullPointerException("'digest' can't be null."));
         }
@@ -428,7 +428,7 @@ public class ContainerRegistryBlobAsyncClient {
         return withContext(context -> deleteManifestWithResponse(digest, context));
     }
 
-    Mono<Response<Void>> deleteManifestWithResponse(String digest, Context context) {
+    private Mono<Response<Void>> deleteManifestWithResponse(String digest, Context context) {
         return this.registriesImpl.deleteManifestWithResponseAsync(repositoryName, digest, context)
             .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
             .onErrorMap(UtilsImpl::mapException);

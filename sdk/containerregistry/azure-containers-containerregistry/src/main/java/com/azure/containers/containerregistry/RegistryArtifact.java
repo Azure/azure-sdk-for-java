@@ -81,10 +81,6 @@ public final class RegistryArtifact extends RegistryArtifactBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(Context context) {
-        return this.deleteWithResponseSync(context);
-    }
-
-    Response<Void> deleteWithResponseSync(Context context) {
         String res = this.getDigest();
         try {
             Response<Void> response = this.serviceClient.deleteManifestWithResponse(getRepositoryName(), res,
@@ -153,10 +149,6 @@ public final class RegistryArtifact extends RegistryArtifactBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTagWithResponse(String tag, Context context) {
-        return this.deleteTagWithResponseSync(tag, context);
-    }
-
-    Response<Void> deleteTagWithResponseSync(String tag, Context context) {
         if (tag == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'tag' cannot be null"));
         }
@@ -287,12 +279,7 @@ public final class RegistryArtifact extends RegistryArtifactBase {
      * @throws HttpResponseException thrown if any other unexpected exception is returned by the service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-
     public Response<ArtifactTagProperties> getTagPropertiesWithResponse(String tag, Context context) {
-        return this.getTagPropertiesWithResponseSync(tag, context);
-    }
-
-    Response<ArtifactTagProperties> getTagPropertiesWithResponseSync(String tag, Context context) {
         if (tag == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'tag' cannot be null."));
         }
@@ -434,13 +421,13 @@ public final class RegistryArtifact extends RegistryArtifactBase {
         return listTagPropertiesSync(order, context);
     }
 
-    PagedIterable<ArtifactTagProperties> listTagPropertiesSync(ArtifactTagOrder order, Context context) {
+    private PagedIterable<ArtifactTagProperties> listTagPropertiesSync(ArtifactTagOrder order, Context context) {
         return new PagedIterable<>(
             (pageSize) -> listTagPropertiesSinglePageSync(pageSize, order, context),
             (token, pageSize) -> listTagPropertiesNextSinglePageSync(token, context));
     }
 
-    PagedResponse<ArtifactTagProperties> listTagPropertiesSinglePageSync(Integer pageSize, ArtifactTagOrder order, Context context) {
+    private PagedResponse<ArtifactTagProperties> listTagPropertiesSinglePageSync(Integer pageSize, ArtifactTagOrder order, Context context) {
         if (pageSize != null && pageSize < 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'pageSize' cannot be negative."));
         }
@@ -459,7 +446,7 @@ public final class RegistryArtifact extends RegistryArtifactBase {
         }
     }
 
-    PagedResponse<ArtifactTagProperties> listTagPropertiesNextSinglePageSync(String nextLink, Context context) {
+    private PagedResponse<ArtifactTagProperties> listTagPropertiesNextSinglePageSync(String nextLink, Context context) {
         try {
             PagedResponse<TagAttributesBase> res = this.serviceClient.getTagsNextSinglePage(nextLink,
                 enableSync(getTracingContext(context)));

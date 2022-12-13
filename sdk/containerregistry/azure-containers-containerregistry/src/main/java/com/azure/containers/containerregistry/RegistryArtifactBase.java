@@ -14,6 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 class RegistryArtifactBase {
+    private static final ClientLogger LOGGER = new ClientLogger(RegistryArtifactBase.class);
     private final String fullyQualifiedReference;
     private final String endpoint;
     private final String repositoryName;
@@ -32,8 +33,6 @@ class RegistryArtifactBase {
      * Digest.
      */
     protected String digest;
-
-    private final ClientLogger LOGGER = new ClientLogger(RegistryArtifactBase.class);
 
     RegistryArtifactBase(String repositoryName, String tagOrDigest, HttpPipeline httpPipeline, String endpoint, String version) {
         if (repositoryName == null) {

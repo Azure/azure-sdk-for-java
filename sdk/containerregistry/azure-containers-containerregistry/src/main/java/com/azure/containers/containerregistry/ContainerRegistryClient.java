@@ -20,8 +20,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.enableSync;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.getTracingContext;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 
 /**
  * This class provides a client that exposes operations to managing container images and artifacts.
@@ -132,7 +132,7 @@ public final class ContainerRegistryClient {
             (token, pageSize) -> listRepositoryNamesNextSinglePageSync(token, context));
     }
 
-    PagedResponse<String> listRepositoryNamesSinglePageSync(Integer pageSize, Context context) {
+    private PagedResponse<String> listRepositoryNamesSinglePageSync(Integer pageSize, Context context) {
         if (pageSize != null && pageSize < 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'pageSize' cannot be negative."));
         }
@@ -145,7 +145,7 @@ public final class ContainerRegistryClient {
         }
     }
 
-    PagedResponse<String> listRepositoryNamesNextSinglePageSync(String nextLink, Context context) {
+    private PagedResponse<String> listRepositoryNamesNextSinglePageSync(String nextLink, Context context) {
         try {
             return this.registriesImplClient.getRepositoriesNextSinglePage(nextLink,
                 enableSync(getTracingContext(context)));
@@ -194,10 +194,6 @@ public final class ContainerRegistryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteRepositoryWithResponse(String repositoryName, Context context) {
-        return this.deleteRepositoryWithResponseSync(repositoryName, context);
-    }
-
-    Response<Void> deleteRepositoryWithResponseSync(String repositoryName, Context context) {
         if (repositoryName == null) {
             throw logger.logExceptionAsError(new NullPointerException("'repositoryName' cannot be null."));
         }
