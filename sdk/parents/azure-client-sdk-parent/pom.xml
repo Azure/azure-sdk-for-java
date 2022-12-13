@@ -906,7 +906,7 @@
             <java>
               <eclipse>
                 <version>4.21.0</version>
-                <file>${relative.path.to.eng.folder}/.vscode/eclipse-format-azure-sdk-for-java.xml</file>
+                <file>${project.basedir}/${relative.path.to.eng.folder}/.vscode/eclipse-format-azure-sdk-for-java.xml</file>
               </eclipse>
               <removeUnusedImports/>
             </java>
