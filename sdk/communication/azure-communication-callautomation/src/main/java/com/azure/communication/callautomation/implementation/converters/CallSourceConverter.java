@@ -21,7 +21,8 @@ public final class CallSourceConverter {
         }
 
         return new CallSource(CommunicationIdentifierConverter.convert(callSourceDto.getIdentifier()))
-            .setCallerId(PhoneNumberIdentifierConverter.convert(callSourceDto.getCallerId()));
+            .setCallerId(PhoneNumberIdentifierConverter.convert(callSourceDto.getCallerId()))
+            .setDisplayName(callSourceDto.getDisplayName());
     }
 
     /**
@@ -35,7 +36,8 @@ public final class CallSourceConverter {
 
         return new CallSourceInternal()
             .setIdentifier(CommunicationIdentifierConverter.convert(callSource.getIdentifier()))
-            .setCallerId(PhoneNumberIdentifierConverter.convert(callSource.getCallerId()));
+            .setCallerId(PhoneNumberIdentifierConverter.convert(callSource.getCallerId()))
+            .setDisplayName(callSource.getDisplayName());
     }
 
     private CallSourceConverter() {

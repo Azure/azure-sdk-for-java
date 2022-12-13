@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.westus2-1.ingest.monitor.azure.com/dataCollectionRules/dcr-adec84661d05465f8532f32a04af6f98/streams/Custom-MyTableRawData?api-version=2021-11-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-ingestion/1.0.0-beta.3 (17.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d10412ea-2df3-4fff-9293-596a985a4887",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ContentLengthLimitExceeded",
+      "retry-after" : "0",
+      "StatusCode" : "413",
+      "x-ms-request-id" : "d2ac85b1-70fe-462f-ae41-d26192d61a50",
+      "Body" : "{\"error\":{\"code\":\"ContentLengthLimitExceeded\",\"message\":\"Maximum allowed content length: 1048576 bytes (1 MB). Provided content length: 2821441 bytes.\"}}",
+      "x-ms-client-request-id" : "d10412ea-2df3-4fff-9293-596a985a4887",
+      "Date" : "Fri, 09 Sep 2022 21:14:55 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
