@@ -36,11 +36,11 @@ Select the latest Azure Databricks runtime version which supports Spark 3.0 or h
 
 ## Attach cluster and Run
 
-* In the `CosmosDBLiveContainerMigration` notebook, attach the cluster you created earlier:
+* In the `CosmosDBLiveSingleContainerMigration` notebook, attach the cluster you created earlier:
 
     ![image](./media/attach-cluster-o.jpg)
 
-* In the `CosmosDBLiveContainerMigration` notebook, replace the references to Cosmos DB account URI, key, source database/container, target database/container, and target container partition key values as approprate that are contained within each cell (see comments in each cell for guidance). Then you are ready to click "Run all":
+* In the `CosmosDBLiveSingleContainerMigration` notebook, replace the references to Cosmos DB account URI, key, source database/container, target database/container, and target container partition key values as approprate that are contained within each cell (see comments in each cell for guidance). Then you are ready to click "Run all":
 
     ![image](./media/run-notebook-o.jpg)
 
@@ -50,7 +50,7 @@ Select the latest Azure Databricks runtime version which supports Spark 3.0 or h
 
 ## Validation
 
-* Open the `CosmosDBLiveContainerMigrationValidation` notebook, and attach the same cluster. Replace the references to Cosmos DB account URI, key, source database/container, target database/container, and target container partition key values as appropriate that are contained within each cell (see comments in each cell for guidance). 
+* Open the `CosmosDBLiveSingleContainerMigrationValidation` notebook, and attach the same cluster. Replace the references to Cosmos DB account URI, key, source database/container, target database/container, and target container partition key values as appropriate that are contained within each cell (see comments in each cell for guidance). 
 
 * Select "Run All". The final two cells will show any records still present in the source container which are not yet in target container, and a count of those records. The closer this is to zero, the closer the process is to having migrated all of the historic data in the source container. 
 
@@ -73,31 +73,17 @@ Select the latest Azure Databricks runtime version which supports Spark 3.0 or h
     %sh rm -r /dbfs/tmp/LiveMigration_checkpoint
 ```
 
-## Attach cluster and Run - single container migration
-
-* In the `CosmosDBLiveContainerMigration` notebook, attach the cluster you created earlier:
-
-    ![image](./media/attach-cluster.jpg)
-
-* In the `CosmosDBLiveContainerMigration` notebook, replace the references to Cosmos DB account URI, key, region, source database/container, target database/container/provisioned throughput, and target container partition key values as approprate that are contained within each cell (see comments in each cell for guidance). Then you are ready to click "Run all":
-
-    ![image](./media/run-notebook.jpg)
-
-* As long as everything has been configured correctly, all cells should run in sequence. The final cell, which is writing data received from the source container's [change feed](https://docs.microsoft.com/azure/cosmos-db/change-feed) to the target container, will run continually. It will process all historic data from the beginning of the source container's change feed record, as well as any new changes that occur. It will not stop unless there is an error, or the notebook is explictly stopped. 
-
-    ![image](./media/streaming.jpg)
-
 ## Attach cluster and Run - multiple containers migration
 
 * In the `CosmosDBLiveParallelContainerMigration` notebook, attach the cluster you created earlier:
 
     ![image](./media/attach-cluster-p.jpg)
 
-* In the `cosmosDBLiveMigrationList.csv` csv, replace the references to Cosmos DB account URI, key, region, source database/container, target database/container/provisioned throughput, and target container partition key values as approprate:
+* In the `cosmosDBLiveMigrationList` csv, replace the references to Cosmos DB account URI, key, region, source database/container, target database/container/provisioned throughput, and target container partition key values as approprate:
 
     ![image](./media/metadata-p.jpg)
 
-* Upload `cosmosDBLiveMigrationList.csv` csv to dbfs:
+* Upload `cosmosDBLiveMigrationList` csv to dbfs:
     ![image](./media/upload-dbfs.jpg)
 
 * Change the number of containers you want to be migrated in parallel:
