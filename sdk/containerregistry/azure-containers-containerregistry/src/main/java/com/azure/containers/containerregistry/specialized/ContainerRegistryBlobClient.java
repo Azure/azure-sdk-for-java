@@ -127,7 +127,7 @@ public class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UploadManifestResult uploadManifest(UploadManifestOptions options) {
-        return this.uploadManifestWithResponse(options, null).getValue();
+        return this.uploadManifestWithResponse(options, Context.NONE).getValue();
     }
 
     /**
@@ -250,7 +250,7 @@ public class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DownloadManifestResult downloadManifest(DownloadManifestOptions options) {
-        return this.downloadManifestWithResponse(options, null).getValue();
+        return this.downloadManifestWithResponse(options, Context.NONE).getValue();
     }
 
     /**

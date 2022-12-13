@@ -219,7 +219,7 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
             .expectError(NullPointerException.class)
             .verify();
 
-        StepVerifier.create(asyncClient.updatePropertiesWithResponse(null, Context.NONE))
+        StepVerifier.create(asyncClient.updatePropertiesWithResponse(null))
             .expectError(NullPointerException.class)
             .verify();
         assertThrows(NullPointerException.class, () -> client.updateProperties(null));

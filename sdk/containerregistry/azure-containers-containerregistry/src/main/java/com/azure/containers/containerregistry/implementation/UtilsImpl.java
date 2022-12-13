@@ -425,9 +425,6 @@ public final class UtilsImpl {
         return tracingContext.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }
     public static Context getTracingContext(Context context) {
-        if (context == null) {
-            context = Context.NONE;
-        }
         return context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE);
     }
 
