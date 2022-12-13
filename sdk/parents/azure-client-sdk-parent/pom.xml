@@ -218,6 +218,12 @@
 
     <!-- Used by Java 18 and later to allow the security manager to be set while testing and linting. -->
     <java.security.manager.configuration></java.security.manager.configuration>
+
+    <!-- Skips Spotless applying code style formatting. -->
+    <spotless.apply.skip>false</spotless.apply.skip>
+
+    <!-- Skips Spotless running code style formatting verification. -->
+    <spotless.check.skip>false</spotless.check.skip>
   </properties>
 
   <build>
@@ -550,6 +556,10 @@
         <groupId>com.diffplug.spotless</groupId>
         <artifactId>spotless-maven-plugin</artifactId>
         <version>2.28.0</version> <!-- {x-version-update;com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
+        <configuration>
+          <applySkip>${spotless.apply.skip}</applySkip>
+          <checkSkip>${spotless.check.skip}</checkSkip>
+        </configuration>
       </plugin>
     </plugins>
 
@@ -901,7 +911,7 @@
         <plugin>
           <groupId>com.diffplug.spotless</groupId>
           <artifactId>spotless-maven-plugin</artifactId>
-          <version>2.28.0</version>
+          <version>2.28.0</version> <!-- {x-version-update;com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
           <configuration>
             <java>
               <eclipse>
