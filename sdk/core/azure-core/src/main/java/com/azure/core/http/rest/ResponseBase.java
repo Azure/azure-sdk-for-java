@@ -12,6 +12,7 @@ import com.azure.core.http.HttpRequest;
  * @param <T> The deserialized type of the response value, available from {@link Response#getValue()}.
  */
 public class ResponseBase<H, T> implements Response<T> {
+
     private final HttpRequest request;
     private final int statusCode;
     private final H deserializedHeaders;
@@ -77,4 +78,5 @@ public class ResponseBase<H, T> implements Response<T> {
     public T getValue() {
         return value;
     }
+
 }

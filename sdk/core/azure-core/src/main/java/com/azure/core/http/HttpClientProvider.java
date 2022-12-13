@@ -30,4 +30,5 @@ public interface HttpClientProvider {
     default HttpClient createInstance(HttpClientOptions clientOptions) {
         return createInstance();
     }
+
 }

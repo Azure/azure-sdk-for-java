@@ -16,10 +16,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Target(FIELD)
 public @interface HeaderCollection {
+
     /**
      * The header collection prefix.
      *
      * @return The header collection prefix
      */
     String value();
+
 }

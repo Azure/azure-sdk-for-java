@@ -14,15 +14,15 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 
-/**
- * The pipeline policy that adds the given host to each HttpRequest.
- */
+/** The pipeline policy that adds the given host to each HttpRequest. */
 public class HostPolicy implements HttpPipelinePolicy {
+
     private static final ClientLogger LOGGER = new ClientLogger(HostPolicy.class);
 
     private final String host;
 
     private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
+
         @Override
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
             LOGGER.log(LogLevel.VERBOSE, () -> "Setting host to " + host);
@@ -31,10 +31,11 @@ public class HostPolicy implements HttpPipelinePolicy {
             try {
                 context.getHttpRequest().setUrl(urlBuilder.setHost(host).toUrl());
             } catch (MalformedURLException e) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(String.format("Host URL '%s' is invalid.", host),
-                    e));
+                throw LOGGER
+                    .logExceptionAsError(new RuntimeException(String.format("Host URL '%s' is invalid.", host), e));
             }
         }
+
     };
 
     /**
@@ -55,4 +56,5 @@ public class HostPolicy implements HttpPipelinePolicy {
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         return inner.processSync(context, next);
     }
+
 }

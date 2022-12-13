@@ -15,10 +15,9 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * Tests {@link GeoPoint}.
- */
+/** Tests {@link GeoPoint}. */
 public class GeoPointTests {
+
     @Test
     public void nullPositionThrows() {
         Assertions.assertThrows(NullPointerException.class, () -> new GeoPoint(null));
@@ -85,4 +84,5 @@ public class GeoPointTests {
             Arguments.of(point1, new GeoPoint(position1, boundingBox, properties), true)
         );
     }
+
 }

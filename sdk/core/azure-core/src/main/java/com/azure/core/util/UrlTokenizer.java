@@ -4,6 +4,7 @@
 package com.azure.core.util;
 
 class UrlTokenizer {
+
     private final String text;
     private final int textLength;
     private UrlTokenizerState state;
@@ -222,4 +223,5 @@ class UrlTokenizer {
         }
         return result;
     }
+
 }

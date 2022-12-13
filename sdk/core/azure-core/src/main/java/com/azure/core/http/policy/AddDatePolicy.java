@@ -16,16 +16,14 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-/**
- * The pipeline policy that adds a "Date" header in RFC 1123 format when sending an HTTP request.
- */
+/** The pipeline policy that adds a "Date" header in RFC 1123 format when sending an HTTP request. */
 public class AddDatePolicy implements HttpPipelinePolicy {
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter
-            .ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'")
-            .withZone(ZoneOffset.UTC)
-            .withLocale(Locale.US);
+
+    private static final DateTimeFormatter FORMATTER =
+        DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'").withZone(ZoneOffset.UTC).withLocale(Locale.US);
 
     private static final HttpPipelineSyncPolicy INNER = new HttpPipelineSyncPolicy() {
+
         @Override
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
             OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
@@ -35,6 +33,7 @@ public class AddDatePolicy implements HttpPipelinePolicy {
                 context.getHttpRequest().setHeader(HttpHeaderName.DATE, FORMATTER.format(now));
             }
         }
+
     };
 
     /**
@@ -52,4 +51,5 @@ public class AddDatePolicy implements HttpPipelinePolicy {
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         return INNER.processSync(context, next);
     }
+
 }

@@ -12,10 +12,9 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
 
-/**
- * A serializer adapter used for mocking in tests.
- */
+/** A serializer adapter used for mocking in tests. */
 public class MockSerializerAdapter implements SerializerAdapter {
+
     @Override
     public String serialize(Object object, SerializerEncoding encoding) throws IOException {
         return null;
@@ -40,4 +39,5 @@ public class MockSerializerAdapter implements SerializerAdapter {
     public <T> T deserialize(HttpHeaders headers, Type type) throws IOException {
         return null;
     }
+
 }

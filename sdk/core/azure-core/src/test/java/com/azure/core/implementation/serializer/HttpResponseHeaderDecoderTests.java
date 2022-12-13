@@ -24,10 +24,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- * Tests {@link HttpResponseHeaderDecoder}.
- */
+/** Tests {@link HttpResponseHeaderDecoder}. */
 public class HttpResponseHeaderDecoderTests {
+
     @Test
     public void nullHeaderTypeReturnsMonoEmpty() {
         assertNull(HttpResponseHeaderDecoder.decode(null, null, null));
@@ -36,30 +35,36 @@ public class HttpResponseHeaderDecoderTests {
     @Test
     public void ioExceptionIsMappedToHttpResponseException() {
         SerializerAdapter serializer = new MockSerializerAdapter() {
+
             @Override
             public <T> T deserialize(HttpHeaders headers, Type type) throws IOException {
                 throw new IOException();
             }
+
         };
 
         HttpResponse response = new MockHttpResponse(null, 200);
 
-        assertThrows(HttpResponseException.class,
-            () -> HttpResponseHeaderDecoder.decode(response, serializer, MockHeaders.class));
+        assertThrows(
+            HttpResponseException.class,
+            () -> HttpResponseHeaderDecoder.decode(response, serializer, MockHeaders.class)
+        );
     }
 
     @Test
     public void headersAreDeserializedToType() {
         HttpResponse response = new MockHttpResponse(null, 200, new HttpHeaders().set("mock-a", "a"));
 
-        Object actual = assertDoesNotThrow(() -> HttpResponseHeaderDecoder.decode(response, new JacksonAdapter(),
-            MockHeaders.class));
+        Object actual = assertDoesNotThrow(
+            () -> HttpResponseHeaderDecoder.decode(response, new JacksonAdapter(), MockHeaders.class)
+        );
         assertTrue(actual instanceof MockHeaders);
         MockHeaders mockHeaders = (MockHeaders) actual;
         assertEquals(Collections.singletonMap("a", "a"), mockHeaders.getHeaderCollection());
     }
 
     public static final class MockHeaders {
+
         @HeaderCollection("mock-")
         private Map<String, String> headerCollection;
 
@@ -70,5 +75,7 @@ public class HttpResponseHeaderDecoderTests {
         public void setHeaderCollection(Map<String, String> headerCollection) {
             this.headerCollection = headerCollection;
         }
+
     }
+
 }

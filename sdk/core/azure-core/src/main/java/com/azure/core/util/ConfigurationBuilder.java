@@ -12,11 +12,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * Builds {@link Configuration} with external source.
- */
+/** Builds {@link Configuration} with external source. */
 @Fluent
 public final class ConfigurationBuilder {
+
     private static final ClientLogger LOGGER = new ClientLogger(ConfigurationBuilder.class);
     private final MutableConfigurationSource mutableSource;
     private final EnvironmentConfiguration environmentConfiguration;
@@ -60,6 +59,7 @@ public final class ConfigurationBuilder {
      * System.out.println&#40;configuration.get&#40;proxyHostnameProperty&#41;&#41;;
      * </pre>
      * <!-- end com.com.azure.core.util.Configuration -->
+     * 
      * @param source Custom {@link ConfigurationSource} containing known Azure SDK configuration properties.
      */
     public ConfigurationBuilder(ConfigurationSource source) {
@@ -68,24 +68,36 @@ public final class ConfigurationBuilder {
     }
 
     /**
-     * Creates {@code ConfigurationBuilder} with configuration sources for explicit configuration, system properties and environment configuration sources.
+     * Creates {@code ConfigurationBuilder} with configuration sources for explicit configuration, system properties and
+     * environment configuration sources.
      * Use this constructor to customize known Azure SDK system properties and environment variables retrieval.
      *
      * @param source Custom {@link ConfigurationSource} containing known Azure SDK configuration properties
-     * @param systemPropertiesConfigurationSource {@link ConfigurationSource} containing known Azure SDK system properties.
-     * @param environmentConfigurationSource {@link ConfigurationSource} containing known Azure SDK environment variables.
+     * @param systemPropertiesConfigurationSource {@link ConfigurationSource} containing known Azure SDK system
+     * properties.
+     * @param environmentConfigurationSource {@link ConfigurationSource} containing known Azure SDK environment
+     * variables.
      */
-    public ConfigurationBuilder(ConfigurationSource source, ConfigurationSource systemPropertiesConfigurationSource, ConfigurationSource environmentConfigurationSource) {
+    public ConfigurationBuilder(
+        ConfigurationSource source,
+        ConfigurationSource systemPropertiesConfigurationSource,
+        ConfigurationSource environmentConfigurationSource
+    ) {
         Objects.requireNonNull(source, "'source' cannot be null");
-        Objects.requireNonNull(systemPropertiesConfigurationSource, "'systemPropertiesConfigurationSource' cannot be null");
+        Objects.requireNonNull(
+            systemPropertiesConfigurationSource,
+            "'systemPropertiesConfigurationSource' cannot be null"
+        );
         Objects.requireNonNull(environmentConfigurationSource, "'environmentConfigurationSource' cannot be null");
         this.mutableSource = new MutableConfigurationSource(source);
-        this.environmentConfiguration = new EnvironmentConfiguration(systemPropertiesConfigurationSource, environmentConfigurationSource);
+        this.environmentConfiguration =
+            new EnvironmentConfiguration(systemPropertiesConfigurationSource, environmentConfigurationSource);
     }
 
     /**
      * Adds property to the configuration source.
-     * In case the source already contains property with the same name, the value will be overwritten with the new value passed.
+     * In case the source already contains property with the same name, the value will be overwritten with the new value
+     * passed.
      *
      * <!-- src_embed com.azure.core.util.ConfigurationBuilder#putProperty -->
      * <pre>
@@ -141,7 +153,8 @@ public final class ConfigurationBuilder {
     }
 
     /**
-     * Builds root {@link Configuration} section. Use it for shared properties only. To read client-specific configuration,
+     * Builds root {@link Configuration} section. Use it for shared properties only. To read client-specific
+     * configuration,
      * use {@link ConfigurationBuilder#buildSection(String)} which can read per-client and shared properties.
      *
      * <!-- src_embed com.azure.core.util.ConfigurationBuilder#build -->
@@ -165,7 +178,8 @@ public final class ConfigurationBuilder {
     }
 
     /**
-     * Builds {@link Configuration} section that supports retrieving properties from client-specific section with fallback to root section for
+     * Builds {@link Configuration} section that supports retrieving properties from client-specific section with
+     * fallback to root section for
      * properties that can be shared between clients.
      *
      * <!-- src_embed com.azure.core.util.ConfigurationBuilder#buildSection -->
@@ -231,7 +245,8 @@ public final class ConfigurationBuilder {
 
         @Override
         public Map<String, String> getProperties(String source) {
-            Map<String, String> original = originalSource == null ? Collections.emptyMap() : originalSource.getProperties(source);
+            Map<String, String> original =
+                originalSource == null ? Collections.emptyMap() : originalSource.getProperties(source);
             if (additionalConfigurations == null) {
                 return original;
             }
@@ -253,7 +268,10 @@ public final class ConfigurationBuilder {
         }
 
         private static boolean hasPrefix(String key, String prefix) {
-            return prefix == null || key.startsWith(prefix) && key.length() > prefix.length() && key.charAt(prefix.length()) == '.';
+            return prefix == null
+                || key.startsWith(prefix) && key.length() > prefix.length() && key.charAt(prefix.length()) == '.';
         }
+
     }
+
 }

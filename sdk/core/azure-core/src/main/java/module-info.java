@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 module com.azure.core {
+
     requires transitive reactor.core;
     requires transitive org.reactivestreams;
     requires transitive org.slf4j;
@@ -38,8 +39,11 @@ module com.azure.core {
     exports com.azure.core.implementation.jackson to com.azure.core.management, com.azure.core.serializer.json.jackson;
 
     // export core utilities to other core packages.
-    exports com.azure.core.implementation.util to com.azure.http.netty, com.azure.core.http.okhttp,
-        com.azure.core.http.jdk.httpclient;
+    exports com.azure.core.implementation.util
+        to
+            com.azure.http.netty,
+            com.azure.core.http.okhttp,
+            com.azure.core.http.jdk.httpclient;
 
     // exporting some packages specifically for Jackson
     opens com.azure.core.credential to com.fasterxml.jackson.databind;
@@ -66,4 +70,5 @@ module com.azure.core {
     uses com.azure.core.util.serializer.MemberNameConverterProvider;
     uses com.azure.core.util.tracing.Tracer;
     uses com.azure.core.util.metrics.MeterProvider;
+
 }

@@ -6,6 +6,7 @@ package com.azure.core.implementation.jackson;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class FlattenableAnimalInfo {
+
     @JsonProperty(value = "home")
     private String home;
 

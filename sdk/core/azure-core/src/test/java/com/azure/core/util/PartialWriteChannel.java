@@ -8,10 +8,9 @@ import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
 import java.util.Objects;
 
-/**
- * This channel simulates cases where channel won't consume whole buffer.
- */
+/** This channel simulates cases where channel won't consume whole buffer. */
 public final class PartialWriteChannel implements WritableByteChannel {
+
     private final WritableByteChannel delegate;
 
     public PartialWriteChannel(WritableByteChannel delegate) {
@@ -38,4 +37,5 @@ public final class PartialWriteChannel implements WritableByteChannel {
     public void close() throws IOException {
         delegate.close();
     }
+
 }

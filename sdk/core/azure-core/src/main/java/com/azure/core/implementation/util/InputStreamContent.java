@@ -22,10 +22,9 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.function.Supplier;
 
-/**
- * A {@link BinaryDataContent} implementation which is backed by an {@link InputStream}.
- */
+/** A {@link BinaryDataContent} implementation which is backed by an {@link InputStream}. */
 public final class InputStreamContent extends BinaryDataContent {
+
     private static final ClientLogger LOGGER = new ClientLogger(InputStreamContent.class);
     private static final int INITIAL_BUFFER_CHUNK_SIZE = 8 * 1024;
     private static final int MAX_BUFFER_CHUNK_SIZE = 8 * 1024 * 1024;
@@ -35,9 +34,8 @@ public final class InputStreamContent extends BinaryDataContent {
     private final boolean isReplayable;
 
     private volatile byte[] bytes;
-    private static final AtomicReferenceFieldUpdater<InputStreamContent, byte[]> BYTES_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(InputStreamContent.class, byte[].class, "bytes");
-
+    private static final AtomicReferenceFieldUpdater<InputStreamContent, byte[]> BYTES_UPDATER =
+        AtomicReferenceFieldUpdater.newUpdater(InputStreamContent.class, byte[].class, "bytes");
 
     /**
      * Creates an instance of {@link InputStreamContent}.
@@ -138,26 +136,22 @@ public final class InputStreamContent extends BinaryDataContent {
 
     private static InputStreamContent createMarkResetContent(InputStream inputStream, Long length) {
         inputStream.mark(length.intValue());
-        return new InputStreamContent(
-            () -> {
-                try {
-                    inputStream.reset();
-                    return inputStream;
-                } catch (IOException e) {
-                    throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
-                }
-            }, length, true
-        );
+        return new InputStreamContent(() -> {
+            try {
+                inputStream.reset();
+                return inputStream;
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+            }
+        }, length, true);
     }
 
     private static InputStreamContent readAndBuffer(InputStream inputStream, Long length) {
         try {
-            List<ByteBuffer> byteBuffers = StreamUtil.readStreamToListOfByteBuffers(
-                inputStream, length, INITIAL_BUFFER_CHUNK_SIZE, MAX_BUFFER_CHUNK_SIZE);
+            List<ByteBuffer> byteBuffers = StreamUtil
+                .readStreamToListOfByteBuffers(inputStream, length, INITIAL_BUFFER_CHUNK_SIZE, MAX_BUFFER_CHUNK_SIZE);
 
-            return new InputStreamContent(
-                () -> new IterableOfByteBuffersInputStream(byteBuffers),
-                length, true);
+            return new InputStreamContent(() -> new IterableOfByteBuffersInputStream(byteBuffers), length, true);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
         }
@@ -177,4 +171,5 @@ public final class InputStreamContent extends BinaryDataContent {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
+
 }

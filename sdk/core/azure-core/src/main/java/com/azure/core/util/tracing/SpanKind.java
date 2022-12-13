@@ -3,9 +3,7 @@
 
 package com.azure.core.util.tracing;
 
-/**
- * Represents the tracing span type.
- */
+/** Represents the tracing span type. */
 public enum SpanKind {
     /**
      * Indicates that the span is used internally.

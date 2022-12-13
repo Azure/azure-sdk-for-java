@@ -7,11 +7,13 @@ import java.io.ByteArrayOutputStream;
 import java.nio.charset.Charset;
 
 /**
- * This class is an extension of {@link ByteArrayOutputStream} which allows access to the backing {@code byte[]} without
+ * This class is an extension of {@link ByteArrayOutputStream} which allows access to the backing {@code byte[]}
+ * without
  * requiring a copying of the data. The only use of this class is for internal purposes where we know it is safe to
  * directly access the {@code byte[]} without copying.
  */
 public class AccessibleByteArrayOutputStream extends ByteArrayOutputStream {
+
     /**
      * Constructs an instance of {@link AccessibleByteArrayOutputStream} with the default initial capacity.
      */
@@ -52,4 +54,5 @@ public class AccessibleByteArrayOutputStream extends ByteArrayOutputStream {
     public String toString(Charset charset) {
         return new String(buf, 0, count, charset);
     }
+
 }

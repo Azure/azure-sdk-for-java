@@ -10,9 +10,7 @@ import java.util.Objects;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
-/**
- * Implements lightweight semantic version based on https://semver.org/ for internal use.
- */
+/** Implements lightweight semantic version based on https://semver.org/ for internal use. */
 public final class SemanticVersion implements Comparable<SemanticVersion> {
 
     /**
@@ -27,7 +25,8 @@ public final class SemanticVersion implements Comparable<SemanticVersion> {
     private final String versionString;
 
     /**
-     * Returns implementation version of the package for given class. If version can't be retrieved or parsed, returns invalid version.
+     * Returns implementation version of the package for given class. If version can't be retrieved or parsed, returns
+     * invalid version.
      *
      * @param className - class name to get package version of.
      * @return parsed {@link SemanticVersion} or invalid one.
@@ -121,6 +120,7 @@ public final class SemanticVersion implements Comparable<SemanticVersion> {
 
     /**
      * Creates invalid semantic version.
+     * 
      * @return instance of invalid semantic version.
      */
     public static SemanticVersion createInvalid() {
@@ -245,4 +245,5 @@ public final class SemanticVersion implements Comparable<SemanticVersion> {
     public boolean isValid() {
         return this.major >= 0;
     }
+
 }

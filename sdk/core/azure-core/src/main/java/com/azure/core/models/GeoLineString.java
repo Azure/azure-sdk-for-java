@@ -10,11 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * Represents a geometric line.
- */
+/** Represents a geometric line. */
 @Immutable
 public final class GeoLineString extends GeoObject {
+
     private final GeoArray<GeoPosition> coordinates;
 
     /**
@@ -35,7 +34,11 @@ public final class GeoLineString extends GeoObject {
      * @param customProperties Additional properties of the geometric line.
      * @throws NullPointerException If {@code positions} is {@code null}.
      */
-    public GeoLineString(List<GeoPosition> positions, GeoBoundingBox boundingBox, Map<String, Object> customProperties) {
+    public GeoLineString(
+        List<GeoPosition> positions,
+        GeoBoundingBox boundingBox,
+        Map<String, Object> customProperties
+    ) {
         super(boundingBox, customProperties);
 
         Objects.requireNonNull(positions, "'positions' cannot be null.");
@@ -74,4 +77,5 @@ public final class GeoLineString extends GeoObject {
         GeoLineString other = (GeoLineString) obj;
         return super.equals(other) && Objects.equals(coordinates, other.coordinates);
     }
+
 }

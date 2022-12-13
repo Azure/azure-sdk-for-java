@@ -21,6 +21,7 @@ import java.util.function.UnaryOperator;
  */
 @Immutable
 final class GeoArray<T> extends AbstractList<T> {
+
     private static final String NO_MUTATION_MESSAGE = "GeoArray cannot be mutated.";
     // GeoArray is a commonly used model, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(GeoArray.class);
@@ -167,4 +168,5 @@ final class GeoArray<T> extends AbstractList<T> {
     public int hashCode() {
         return Objects.hashCode(container);
     }
+
 }

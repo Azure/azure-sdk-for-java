@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Class for testing serialization.
- */
+/** Class for testing serialization. */
 @JsonFlatten
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "$type")
 @JsonTypeName("foo")
@@ -22,6 +20,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "foochild", value = FooChild.class)
 })
 public class Foo {
+
     @JsonProperty(value = "properties.bar")
     private String bar;
     @JsonProperty(value = "properties.props.baz")
@@ -82,4 +81,5 @@ public class Foo {
     public void additionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
     }
+
 }

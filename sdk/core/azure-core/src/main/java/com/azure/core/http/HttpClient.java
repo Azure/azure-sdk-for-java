@@ -8,10 +8,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.HttpClientOptions;
 import reactor.core.publisher.Mono;
 
-/**
- * A generic interface for sending HTTP requests and getting responses.
- */
+/** A generic interface for sending HTTP requests and getting responses. */
 public interface HttpClient {
+
     /**
      * Send the provided request asynchronously.
      *
@@ -60,4 +59,5 @@ public interface HttpClient {
     static HttpClient createDefault(HttpClientOptions clientOptions) {
         return HttpClientProviders.createInstance(clientOptions);
     }
+
 }

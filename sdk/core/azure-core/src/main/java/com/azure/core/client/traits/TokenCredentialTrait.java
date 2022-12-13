@@ -12,7 +12,7 @@ import com.azure.core.credential.TokenCredential;
  * documentation for more details on proper usage of the {@link TokenCredential} type.
  *
  * @param <T> The concrete type that implements the trait. This is required so that fluent operations can continue
- *           to return the concrete type, rather than the trait type.
+ * to return the concrete type, rather than the trait type.
  * @see com.azure.core.client.traits
  * @see TokenCredential
  */
@@ -25,7 +25,8 @@ public interface TokenCredentialTrait<T extends TokenCredentialTrait<T>> {
      *
      * @param credential {@link TokenCredential} used to authorize requests sent to the service.
      * @return Returns the same concrete type with the appropriate properties updated, to allow for fluent chaining of
-     *      operations.
+     * operations.
      */
     T credential(TokenCredential credential);
+
 }

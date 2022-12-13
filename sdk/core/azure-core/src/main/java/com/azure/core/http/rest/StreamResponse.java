@@ -18,10 +18,9 @@ import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.Objects;
 
-/**
- * REST response with a streaming content.
- */
+/** REST response with a streaming content. */
 public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> implements Closeable {
+
     private static final ClientLogger LOGGER = new ClientLogger(StreamResponse.class);
 
     private volatile boolean consumed;
@@ -71,6 +70,7 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
 
     /**
      * Transfers content bytes to the {@link AsynchronousByteChannel}.
+     * 
      * @param channel The destination {@link AsynchronousByteChannel}.
      * @return A {@link Mono} that completes when transfer is completed.
      */
@@ -85,6 +85,7 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
 
     /**
      * Transfers content bytes to the {@link WritableByteChannel}.
+     * 
      * @param channel The destination {@link WritableByteChannel}.
      * @throws UncheckedIOException When I/O operation fails.
      */
@@ -117,4 +118,5 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
             response.close();
         }
     }
+
 }

@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PollingUtilsTests {
+
     private static final ClientLogger LOGGER = new ClientLogger(PollingUtilsTests.class);
     private static final String FORWARD_SLASH = "/";
     private static final String LOCAL_HOST = "http://localhost";
@@ -19,8 +20,8 @@ public class PollingUtilsTests {
     @Test
     public void invalidPathTest() {
         String invalidPath = "`file";
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-            () -> getAbsolutePath(invalidPath, LOCAL_HOST, LOGGER));
+        IllegalArgumentException exception =
+            assertThrows(IllegalArgumentException.class, () -> getAbsolutePath(invalidPath, LOCAL_HOST, LOGGER));
         assertTrue("'path' must be a valid URI.".equals(exception.getMessage()));
         assertThrows(NullPointerException.class, () -> getAbsolutePath(null, LOCAL_HOST, LOGGER));
     }
@@ -31,10 +32,12 @@ public class PollingUtilsTests {
         assertEquals(LOCAL_HOST + relativePath, getAbsolutePath(relativePath, LOCAL_HOST, null));
         assertEquals(LOCAL_HOST + relativePath, getAbsolutePath(relativePath, LOCAL_HOST, LOGGER));
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
-                                                      getAbsolutePath(relativePath, null, LOGGER));
-        assertTrue("Relative path requires endpoint to be non-null and non-empty to create an absolute path."
-                       .equals(exception.getMessage()));
+        IllegalArgumentException exception =
+            assertThrows(IllegalArgumentException.class, () -> getAbsolutePath(relativePath, null, LOGGER));
+        assertTrue(
+            "Relative path requires endpoint to be non-null and non-empty to create an absolute path."
+                .equals(exception.getMessage())
+        );
 
         assertThrows(NullPointerException.class, () -> getAbsolutePath(relativePath, null, null));
         assertThrows(NullPointerException.class, () -> getAbsolutePath(relativePath, "", null));
@@ -64,4 +67,5 @@ public class PollingUtilsTests {
         // Case 4: both of endpoint and relative path have slash
         assertEquals(expectedPath, getAbsolutePath(relativePathWithSlash, endpointWithSlash, null));
     }
+
 }

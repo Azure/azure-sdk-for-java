@@ -5,10 +5,9 @@ package com.azure.core.util.serializer;
 
 import java.lang.reflect.Member;
 
-/**
- * Generic interface that attempts to retrieve the JSON serialized property name from {@link Member}.
- */
+/** Generic interface that attempts to retrieve the JSON serialized property name from {@link Member}. */
 public interface MemberNameConverter {
+
     /**
      * Attempts to get the JSON serialized property name from the passed {@link Member}.
      * <p>
@@ -19,4 +18,5 @@ public interface MemberNameConverter {
      * @return The JSON property name for the {@link Member}.
      */
     String convertMemberName(Member member);
+
 }

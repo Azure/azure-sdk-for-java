@@ -32,13 +32,24 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CoreUtilsTests {
+
     private static final byte[] BYTES = "Hello world!".getBytes(StandardCharsets.UTF_8);
 
-    private static final byte[] UTF_8_BOM = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
-    private static final byte[] UTF_16BE_BOM = {(byte) 0xFE, (byte) 0xFF};
-    private static final byte[] UTF_16LE_BOM = {(byte) 0xFF, (byte) 0xFE};
-    private static final byte[] UTF_32BE_BOM = {(byte) 0x00, (byte) 0x00, (byte) 0xFE, (byte) 0xFF};
-    private static final byte[] UTF_32LE_BOM = {(byte) 0xFF, (byte) 0xFE, (byte) 0x00, (byte) 0x00};
+    private static final byte[] UTF_8_BOM = {
+        (byte) 0xEF, (byte) 0xBB, (byte) 0xBF
+    };
+    private static final byte[] UTF_16BE_BOM = {
+        (byte) 0xFE, (byte) 0xFF
+    };
+    private static final byte[] UTF_16LE_BOM = {
+        (byte) 0xFF, (byte) 0xFE
+    };
+    private static final byte[] UTF_32BE_BOM = {
+        (byte) 0x00, (byte) 0x00, (byte) 0xFE, (byte) 0xFF
+    };
+    private static final byte[] UTF_32LE_BOM = {
+        (byte) 0xFF, (byte) 0xFE, (byte) 0x00, (byte) 0x00
+    };
 
     private static final String TIMEOUT_PROPERTY_NAME = "TIMEOUT_PROPERTY_NAME";
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
@@ -51,7 +62,9 @@ public class CoreUtilsTests {
     @Test
     public void findFirstOfTypeWithOneOfType() {
         int expected = 1;
-        Object[] args = { "string", expected };
+        Object[] args = {
+            "string", expected
+        };
         Integer actual = CoreUtils.findFirstOfType(args, Integer.class);
         Assertions.assertEquals(expected, actual);
     }
@@ -59,14 +72,18 @@ public class CoreUtilsTests {
     @Test
     public void findFirstOfTypeWithMultipleOfType() {
         int expected = 1;
-        Object[] args = { "string", expected, 10 };
+        Object[] args = {
+            "string", expected, 10
+        };
         Integer actual = CoreUtils.findFirstOfType(args, Integer.class);
         Assertions.assertEquals(expected, actual);
     }
 
     @Test
     public void findFirstOfTypeWithNoneOfType() {
-        Object[] args = { "string", "anotherString" };
+        Object[] args = {
+            "string", "anotherString"
+        };
         assertNull(CoreUtils.findFirstOfType(args, Integer.class));
     }
 
@@ -74,8 +91,9 @@ public class CoreUtilsTests {
     public void testProperties() {
         assertNotNull(CoreUtils.getProperties("azure-core.properties").get("version"));
         assertNotNull(CoreUtils.getProperties("azure-core.properties").get("name"));
-        assertTrue(CoreUtils.getProperties("azure-core.properties").get("version")
-            .matches("\\d+\\.\\d+\\.\\d+(-beta\\.\\d+)?"));
+        assertTrue(
+            CoreUtils.getProperties("azure-core.properties").get("version").matches("\\d+\\.\\d+\\.\\d+(-beta\\.\\d+)?")
+        );
     }
 
     @Test
@@ -92,11 +110,11 @@ public class CoreUtilsTests {
     }
 
     private static Stream<Arguments> cloneIntArraySupplier() {
-        return Stream.of(
-            Arguments.of(null, null),
-            Arguments.of(new int[0], new int[0]),
-            Arguments.of(new int[] { 1, 2, 3}, new int[] { 1, 2, 3})
-        );
+        return Stream.of(Arguments.of(null, null), Arguments.of(new int[0], new int[0]), Arguments.of(new int[] {
+            1, 2, 3
+        }, new int[] {
+            1, 2, 3
+        }));
     }
 
     @ParameterizedTest
@@ -106,11 +124,12 @@ public class CoreUtilsTests {
     }
 
     private static Stream<Arguments> cloneGenericArraySupplier() {
-        return Stream.of(
-            Arguments.of(null, null),
-            Arguments.of(new String[0], new String[0]),
-            Arguments.of(new String[] { "1", "2", "3"}, new String[] { "1", "2", "3" })
-        );
+        return Stream
+            .of(Arguments.of(null, null), Arguments.of(new String[0], new String[0]), Arguments.of(new String[] {
+                "1", "2", "3"
+            }, new String[] {
+                "1", "2", "3"
+            }));
     }
 
     @ParameterizedTest
@@ -139,9 +158,15 @@ public class CoreUtilsTests {
         return Stream.of(
             Arguments.of(null, null, null),
             Arguments.of(new String[0], toStringFunction, null),
-            Arguments.of(new String[] { "" }, toStringFunction, ""),
-            Arguments.of(new String[] { "Hello world!" }, toStringFunction, "Hello world!"),
-            Arguments.of(new String[] { "1", "2", "3" }, toStringFunction, "1,2,3")
+            Arguments.of(new String[] {
+                ""
+            }, toStringFunction, ""),
+            Arguments.of(new String[] {
+                "Hello world!"
+            }, toStringFunction, "Hello world!"),
+            Arguments.of(new String[] {
+                "1", "2", "3"
+            }, toStringFunction, "1,2,3")
         );
     }
 
@@ -234,8 +259,10 @@ public class CoreUtilsTests {
             Arguments.of(new ClientOptions(), null),
 
             // ClientOptions contains a single header value, a single header HttpHeaders is returned.
-            Arguments.of(new ClientOptions().setHeaders(Collections.singletonList(new Header("a", "header"))),
-                new HttpHeaders(Collections.singletonMap("a", "header"))),
+            Arguments.of(
+                new ClientOptions().setHeaders(Collections.singletonList(new Header("a", "header"))),
+                new HttpHeaders(Collections.singletonMap("a", "header"))
+            ),
 
             // ClientOptions contains multiple header values, a multi-header HttpHeaders is returned.
             Arguments.of(new ClientOptions().setHeaders(multipleHeadersList), new HttpHeaders(multipleHeadersMap))
@@ -244,10 +271,16 @@ public class CoreUtilsTests {
 
     @ParameterizedTest
     @MethodSource("getDefaultTimeoutFromEnvironmentSupplier")
-    public void getDefaultTimeoutFromEnvironmentTests(Configuration configuration, Duration defaultTimeout,
-        ClientLogger logger, Duration expectedTimeout) {
-        assertEquals(expectedTimeout, CoreUtils.getDefaultTimeoutFromEnvironment(configuration, TIMEOUT_PROPERTY_NAME,
-            defaultTimeout, logger));
+    public void getDefaultTimeoutFromEnvironmentTests(
+        Configuration configuration,
+        Duration defaultTimeout,
+        ClientLogger logger,
+        Duration expectedTimeout
+    ) {
+        assertEquals(
+            expectedTimeout,
+            CoreUtils.getDefaultTimeoutFromEnvironment(configuration, TIMEOUT_PROPERTY_NAME, defaultTimeout, logger)
+        );
     }
 
     private static Stream<Arguments> getDefaultTimeoutFromEnvironmentSupplier() {
@@ -258,34 +291,64 @@ public class CoreUtilsTests {
             Arguments.of(Configuration.NONE, Duration.ofMillis(10000), logger, Duration.ofMillis(10000)),
 
             // Configuration has an empty string timeout property configured.
-            Arguments.of(new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
-                    .put(TIMEOUT_PROPERTY_NAME, ""))
-                    .build(),
-                Duration.ofMillis(10000), logger, Duration.ofMillis(10000)),
+            Arguments.of(
+                new ConfigurationBuilder(
+                    EMPTY_SOURCE,
+                    EMPTY_SOURCE,
+                    new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "")
+                ).build(),
+                Duration.ofMillis(10000),
+                logger,
+                Duration.ofMillis(10000)
+            ),
 
             // Configuration has a value that isn't a valid number.
-            Arguments.of(new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
-                    .put(TIMEOUT_PROPERTY_NAME, "ten"))
-                    .build(),
-                Duration.ofMillis(10000), logger, Duration.ofMillis(10000)),
+            Arguments.of(
+                new ConfigurationBuilder(
+                    EMPTY_SOURCE,
+                    EMPTY_SOURCE,
+                    new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "ten")
+                ).build(),
+                Duration.ofMillis(10000),
+                logger,
+                Duration.ofMillis(10000)
+            ),
 
             // Configuration has a negative value.
-            Arguments.of(new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
-                    .put(TIMEOUT_PROPERTY_NAME, "-10"))
-                    .build(),
-                Duration.ofMillis(10000), logger, Duration.ZERO),
+            Arguments.of(
+                new ConfigurationBuilder(
+                    EMPTY_SOURCE,
+                    EMPTY_SOURCE,
+                    new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "-10")
+                ).build(),
+                Duration.ofMillis(10000),
+                logger,
+                Duration.ZERO
+            ),
 
             // Configuration has a zero value.
-            Arguments.of(new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
-                    .put(TIMEOUT_PROPERTY_NAME, "0"))
-                    .build(),
-                Duration.ofMillis(10000), logger, Duration.ZERO),
+            Arguments.of(
+                new ConfigurationBuilder(
+                    EMPTY_SOURCE,
+                    EMPTY_SOURCE,
+                    new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "0")
+                ).build(),
+                Duration.ofMillis(10000),
+                logger,
+                Duration.ZERO
+            ),
 
             // Configuration has a positive value.
-            Arguments.of(new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
-                    .put(TIMEOUT_PROPERTY_NAME, "42"))
-                    .build(),
-                Duration.ofMillis(10000), logger, Duration.ofMillis(42))
+            Arguments.of(
+                new ConfigurationBuilder(
+                    EMPTY_SOURCE,
+                    EMPTY_SOURCE,
+                    new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "42")
+                ).build(),
+                Duration.ofMillis(10000),
+                logger,
+                Duration.ofMillis(42)
+            )
         );
     }
 
@@ -296,10 +359,7 @@ public class CoreUtilsTests {
     }
 
     private static Stream<Arguments> invalidContextMergeSupplier() {
-        return Stream.of(
-            Arguments.of(null, Context.NONE),
-            Arguments.of(Context.NONE, null)
-        );
+        return Stream.of(Arguments.of(null, Context.NONE), Arguments.of(Context.NONE, null));
     }
 
     @Test
@@ -343,4 +403,5 @@ public class CoreUtilsTests {
             assertEquals(expected.getValue(), actual.getValue());
         }
     }
+
 }

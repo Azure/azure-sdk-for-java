@@ -16,7 +16,9 @@ import java.util.concurrent.locks.ReentrantLock;
  * forms a tree where child nodes track the progress of sub-operations and report to the parent which in turn
  * aggregates the total progress. The reporting tree can have arbitrary level of nesting.
  *
- * <p><strong>Code samples</strong></p>
+ * <p>
+ * <strong>Code samples</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.util.ProgressReportingE2ESample -->
  * <pre>
@@ -72,28 +74,29 @@ public final class ProgressReporter {
     /**
      * Creates top level {@link ProgressReporter}.
      * Only top level {@link ProgressReporter} can have {@link ProgressListener}.
+     * 
      * @param progressListener The {@link ProgressListener} to be notified about progress.
      */
     private ProgressReporter(ProgressListener progressListener) {
-        this.progressListener = Objects.requireNonNull(progressListener,
-            "'progressListener' must not be null");
+        this.progressListener = Objects.requireNonNull(progressListener, "'progressListener' must not be null");
         this.listenerLock = new ReentrantLock();
         this.parent = null;
     }
 
     /**
      * Creates child {@link ProgressReporter}. It tracks it's own progress and reports to parent.
+     * 
      * @param parent The parent {@link ProgressReporter}. Must not be null.
      */
     private ProgressReporter(ProgressReporter parent) {
-        this.parent = Objects.requireNonNull(parent,
-            "'parent' must not be null");
+        this.parent = Objects.requireNonNull(parent, "'parent' must not be null");
         this.progressListener = null;
         this.listenerLock = null;
     }
 
     /**
      * Creates a {@link ProgressReporter} that notifies {@link ProgressListener}.
+     * 
      * @param progressListener The {@link ProgressListener} to be notified about progress. Must not be null.
      * @return The {@link ProgressReporter} instance.
      * @throws NullPointerException If {@code progressReceiver} is null.
@@ -106,6 +109,7 @@ public final class ProgressReporter {
      * Creates child {@link ProgressReporter} that can be used to track sub-progress when tracked activity spans
      * across concurrent processes. Child {@link ProgressReporter} notifies parent about progress and
      * parent notifies {@link ProgressListener}.
+     * 
      * @return The child {@link ProgressReporter}.
      */
     public ProgressReporter createChild() {
@@ -167,4 +171,5 @@ public final class ProgressReporter {
             }
         }
     }
+
 }

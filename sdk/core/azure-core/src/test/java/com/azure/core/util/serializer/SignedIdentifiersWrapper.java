@@ -12,6 +12,7 @@ import java.util.List;
 
 @JacksonXmlRootElement(localName = "SignedIdentifiers")
 public class SignedIdentifiersWrapper {
+
     @JacksonXmlProperty(localName = "SignedIdentifier")
     private final List<SignedIdentifierInner> signedIdentifiers;
 
@@ -33,4 +34,5 @@ public class SignedIdentifiersWrapper {
     public List<SignedIdentifierInner> signedIdentifiers() {
         return signedIdentifiers;
     }
+
 }

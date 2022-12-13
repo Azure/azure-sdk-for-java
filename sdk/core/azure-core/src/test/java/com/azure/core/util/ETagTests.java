@@ -11,10 +11,9 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- * Tests {@link ETag}.
- */
+/** Tests {@link ETag}. */
 public class ETagTests {
+
     private static final String ETAG_CONTENT = "12345";
     private static final String QUOTE_STRING = "\"";
     private static final String WEAK_ETAG_PREFIX_QUOTE = "W/\"";
@@ -67,4 +66,5 @@ public class ETagTests {
         assertEquals(0, nullETag.hashCode());
         assertNotEquals(0, validStrongETag.hashCode());
     }
+
 }

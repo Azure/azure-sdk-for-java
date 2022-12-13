@@ -12,6 +12,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class MockFluxHttpResponse extends HttpResponse {
+
     private final int statusCode;
     private final HttpHeaders headers;
     private final Flux<ByteBuffer> bodyBytes;
@@ -64,9 +65,7 @@ public class MockFluxHttpResponse extends HttpResponse {
 
     @Override
     public Mono<String> getBodyAsString(Charset charset) {
-        return getBodyAsByteArray().map(
-            bytes -> new String(bytes, charset)
-        );
+        return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
     }
 
     @Override
@@ -78,4 +77,5 @@ public class MockFluxHttpResponse extends HttpResponse {
     public boolean isClosed() {
         return closed;
     }
+
 }

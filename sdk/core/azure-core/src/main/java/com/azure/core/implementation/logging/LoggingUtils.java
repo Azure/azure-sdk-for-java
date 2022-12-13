@@ -7,10 +7,9 @@ import com.azure.core.util.CoreUtils;
 
 import java.util.Arrays;
 
-/**
- * Contains utility methods for logging.
- */
+/** Contains utility methods for logging. */
 public final class LoggingUtils {
+
     private static final char CR = '\r';
     private static final char LF = '\n';
 
@@ -21,6 +20,7 @@ public final class LoggingUtils {
      * Removes CR, LF or CRLF pattern in the {@code logMessage}.
      *
      * @param logMessage The log message to sanitize.
+     * 
      * @return The updated logMessage.
      */
     public static String removeNewLinesFromLogMessage(String logMessage) {
@@ -56,6 +56,7 @@ public final class LoggingUtils {
      * element in the argument list.
      *
      * @param args The arguments passed to format the log message.
+     * 
      * @return True if the last element is a throwable, false otherwise.
      */
     public static boolean doesArgsHaveThrowable(Object... args) {
@@ -70,9 +71,11 @@ public final class LoggingUtils {
      * Removes the last element from the arguments as it is a throwable.
      *
      * @param args The arguments passed to format the log message.
+     * 
      * @return The arguments with the last element removed.
      */
     public static Object[] removeThrowable(Object... args) {
         return Arrays.copyOf(args, args.length - 1);
     }
+
 }

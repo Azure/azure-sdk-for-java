@@ -7,10 +7,9 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.http.HttpPipelineCallState;
 import com.azure.core.implementation.http.HttpPipelineNextSyncPolicyHelper;
 
-/**
- * A type that invokes next policy in the pipeline.
- */
+/** A type that invokes next policy in the pipeline. */
 public class HttpPipelineNextSyncPolicy {
+
     private final HttpPipelineCallState state;
 
     static {
@@ -35,8 +34,9 @@ public class HttpPipelineNextSyncPolicy {
     public HttpResponse processSync() {
         HttpPipelinePolicy nextPolicy = state.getNextPolicy();
         if (nextPolicy == null) {
-            return this.state.getPipeline().getHttpClient().sendSync(
-                this.state.getCallContext().getHttpRequest(), this.state.getCallContext().getContext());
+            return this.state.getPipeline()
+                .getHttpClient()
+                .sendSync(this.state.getCallContext().getHttpRequest(), this.state.getCallContext().getContext());
         } else {
             return nextPolicy.processSync(this.state.getCallContext(), this);
         }
@@ -62,4 +62,5 @@ public class HttpPipelineNextSyncPolicy {
     HttpPipelineNextPolicy toAsyncPolicy() {
         return new HttpPipelineNextPolicy(this.state, true);
     }
+
 }

@@ -7,18 +7,19 @@ import com.azure.core.models.GeoObject;
 
 import java.util.Map;
 
-/**
- * Helper class to access private values of {@link GeoObject} across package boundaries.
- */
+/** Helper class to access private values of {@link GeoObject} across package boundaries. */
 public final class GeoObjectHelper {
+
     private static GeoObjectAccessor accessor;
 
-    private GeoObjectHelper() { }
+    private GeoObjectHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link GeoObjectHelper} instance.
      */
     public interface GeoObjectAccessor {
+
         /**
          * Gets the custom properties of the passed {@link GeoObject}.
          *
@@ -26,6 +27,7 @@ public final class GeoObjectHelper {
          * @return The custom properties of the {@link GeoObject}.
          */
         Map<String, Object> getCustomProperties(GeoObject geoObject);
+
     }
 
     /**
@@ -46,4 +48,5 @@ public final class GeoObjectHelper {
     public static Map<String, Object> getCustomProperties(GeoObject geoObject) {
         return accessor.getCustomProperties(geoObject);
     }
+
 }

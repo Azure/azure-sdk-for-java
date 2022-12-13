@@ -22,10 +22,9 @@ import static com.azure.core.models.GeoTestHelpers.TRIANGLE_POLYGON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-/**
- * Tests {@link GeoPolygonCollection}.
- */
+/** Tests {@link GeoPolygonCollection}. */
 public class GeoPolygonCollectionTests {
+
     @Test
     public void nullPolygonsThrows() {
         Assertions.assertThrows(NullPointerException.class, () -> new GeoPolygonCollection(null));
@@ -107,4 +106,5 @@ public class GeoPolygonCollectionTests {
             Arguments.of(multiPolygon1, new GeoPolygonCollection(polygons1, boundingBox, properties), true)
         );
     }
+
 }

@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class OptionTests {
+
     @Test
     public void testOfNonNull() {
         final Option<Integer> setOption = Option.of(1);
@@ -72,4 +73,5 @@ public class OptionTests {
         assertNotEquals(Option.of(null), Option.of(44));
         assertNotEquals(Option.of(88), Option.of(44));
     }
+
 }

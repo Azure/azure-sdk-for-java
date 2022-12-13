@@ -5,10 +5,9 @@ package com.azure.core.util.serializer;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * signed identifier.
- */
+/** signed identifier. */
 public class SignedIdentifierInner {
+
     /**
      * a unique id.
      */

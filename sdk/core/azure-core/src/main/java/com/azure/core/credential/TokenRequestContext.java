@@ -8,10 +8,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Contains details of a request to get a token.
- */
+/** Contains details of a request to get a token. */
 public class TokenRequestContext {
+
     private final List<String> scopes;
     private String claims;
     private String tenantId;
@@ -25,6 +24,7 @@ public class TokenRequestContext {
 
     /**
      * Gets the scopes required for the token.
+     * 
      * @return the scopes required for the token
      */
     public List<String> getScopes() {
@@ -33,6 +33,7 @@ public class TokenRequestContext {
 
     /**
      * Sets the scopes required for the token.
+     * 
      * @param scopes the scopes required for the token
      * @return the TokenRequestContext itself
      */
@@ -45,6 +46,7 @@ public class TokenRequestContext {
 
     /**
      * Adds one or more scopes to the request scopes.
+     * 
      * @param scopes one or more scopes to add
      * @return the TokenRequestContext itself
      */
@@ -53,11 +55,11 @@ public class TokenRequestContext {
         return this;
     }
 
-   /**
+    /**
      * Set the additional claims to be included in the token.
      *
      * @see <a href="https://openid.net/specs/openid-connect-core-1_0-final.html#ClaimsParameter">
-     *     https://openid.net/specs/openid-connect-core-1_0-final.html#ClaimsParameter</a>
+     * https://openid.net/specs/openid-connect-core-1_0-final.html#ClaimsParameter</a>
      *
      * @param claims the additional claims to be included in the token.
      * @return the updated TokenRequestContext itself
@@ -71,7 +73,7 @@ public class TokenRequestContext {
      * Get the additional claims to be included in the token.
      *
      * @see <a href="https://openid.net/specs/openid-connect-core-1_0-final.html#ClaimsParameter">
-     *     https://openid.net/specs/openid-connect-core-1_0-final.html#ClaimsParameter</a>
+     * https://openid.net/specs/openid-connect-core-1_0-final.html#ClaimsParameter</a>
      *
      * @return the additional claims to be included in the token.
      */
@@ -98,4 +100,5 @@ public class TokenRequestContext {
     public String getTenantId() {
         return this.tenantId;
     }
+
 }

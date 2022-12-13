@@ -15,10 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Represents a JSON Patch document.
- */
+/** Represents a JSON Patch document. */
 public final class JsonPatchDocument {
+
     private static final Object SERIALIZER_INSTANTIATION_SYNCHRONIZER = new Object();
     private static volatile JsonSerializer defaultSerializer;
 
@@ -66,7 +65,9 @@ public final class JsonPatchDocument {
      * <p>
      * See <a href="https://tools.ietf.org/html/rfc6902#section-4.1">JSON Patch Add</a> for more information.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p>
+     * <strong>Code Samples</strong>
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendAdd#String-Object -->
      * <pre>
@@ -113,7 +114,9 @@ public final class JsonPatchDocument {
      * <p>
      * See <a href="https://tools.ietf.org/html/rfc6902#section-4.1">JSON Patch Add</a> for more information.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p>
+     * <strong>Code Samples</strong>
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendAddRaw#String-String -->
      * <pre>
@@ -163,7 +166,9 @@ public final class JsonPatchDocument {
      * <p>
      * See <a href="https://tools.ietf.org/html/rfc6902#section-4.3">JSON Patch replace</a> for more information.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p>
+     * <strong>Code Samples</strong>
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendReplace#String-Object -->
      * <pre>
@@ -201,7 +206,9 @@ public final class JsonPatchDocument {
      * <p>
      * See <a href="https://tools.ietf.org/html/rfc6902#section-4.3">JSON Patch replace</a> for more information.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p>
+     * <strong>Code Samples</strong>
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendReplaceRaw#String-String -->
      * <pre>
@@ -245,7 +252,9 @@ public final class JsonPatchDocument {
      * <p>
      * See <a href="https://tools.ietf.org/html/rfc6902#section-4.5">JSON Patch copy</a> for more information.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p>
+     * <strong>Code Samples</strong>
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendCopy#String-String -->
      * <pre>
@@ -288,7 +297,9 @@ public final class JsonPatchDocument {
      * <p>
      * See <a href="https://tools.ietf.org/html/rfc6902#section-4.4">JSON Patch move</a> for more information.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p>
+     * <strong>Code Samples</strong>
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendMove#String-String -->
      * <pre>
@@ -335,7 +346,9 @@ public final class JsonPatchDocument {
      * <p>
      * See <a href="https://tools.ietf.org/html/rfc6902#section-4.2">JSON Patch remove</a> for more information.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p>
+     * <strong>Code Samples</strong>
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendRemove#String -->
      * <pre>
@@ -374,7 +387,9 @@ public final class JsonPatchDocument {
      * <p>
      * See <a href="https://tools.ietf.org/html/rfc6902#section-4.6">JSON Patch test</a> for more information.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p>
+     * <strong>Code Samples</strong>
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendTest#String-Object -->
      * <pre>
@@ -410,7 +425,9 @@ public final class JsonPatchDocument {
      * <p>
      * See <a href="https://tools.ietf.org/html/rfc6902#section-4.6">JSON Patch test</a> for more information.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p>
+     * <strong>Code Samples</strong>
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.JsonPatchDocument.appendTestRaw#String-String -->
      * <pre>
@@ -470,8 +487,8 @@ public final class JsonPatchDocument {
         return Option.of(new String(bytes, StandardCharsets.UTF_8));
     }
 
-    private JsonPatchDocument appendOperation(JsonPatchOperationKind operationKind, String from, String path,
-        Option<String> optionalValue) {
+    private JsonPatchDocument
+        appendOperation(JsonPatchOperationKind operationKind, String from, String path, Option<String> optionalValue) {
         operations.add(new JsonPatchOperation(operationKind, from, path, optionalValue));
         return this;
     }
@@ -495,4 +512,5 @@ public final class JsonPatchDocument {
 
         return builder.append("]").toString();
     }
+
 }

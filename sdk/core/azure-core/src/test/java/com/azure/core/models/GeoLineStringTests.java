@@ -19,10 +19,9 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-/**
- * Tests {@link GeoLineString}.
- */
+/** Tests {@link GeoLineString}. */
 public class GeoLineStringTests {
+
     @Test
     public void nullPositionsThrows() {
         Assertions.assertThrows(NullPointerException.class, () -> new GeoLineString(null));
@@ -30,8 +29,8 @@ public class GeoLineStringTests {
 
     @Test
     public void simpleConstructor() {
-        GeoArray<GeoPosition> expectedPositions = new GeoArray<>(Arrays.asList(new GeoPosition(0, 0),
-            new GeoPosition(0, 1)));
+        GeoArray<GeoPosition> expectedPositions =
+            new GeoArray<>(Arrays.asList(new GeoPosition(0, 0), new GeoPosition(0, 1)));
 
         GeoLineString line = new GeoLineString(expectedPositions);
 
@@ -43,8 +42,8 @@ public class GeoLineStringTests {
 
     @Test
     public void complexConstructor() {
-        GeoArray<GeoPosition> expectedPositions = new GeoArray<>(Arrays.asList(new GeoPosition(0, 0),
-            new GeoPosition(0, 1)));
+        GeoArray<GeoPosition> expectedPositions =
+            new GeoArray<>(Arrays.asList(new GeoPosition(0, 0), new GeoPosition(0, 1)));
         GeoBoundingBox expectedBoundingBox = new GeoBoundingBox(0, 0, 1, 1);
         Map<String, Object> expectedProperties = Collections.singletonMap("key", "value");
 
@@ -104,4 +103,5 @@ public class GeoLineStringTests {
             Arguments.of(line1, new GeoLineString(positions1, boundingBox, properties), true)
         );
     }
+
 }

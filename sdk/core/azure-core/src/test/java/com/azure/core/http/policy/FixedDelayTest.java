@@ -10,9 +10,7 @@ import java.time.Duration;
 
 import org.junit.jupiter.api.Test;
 
-/**
- * Unit tests for {@link FixedDelay}.
- */
+/** Unit tests for {@link FixedDelay}. */
 public class FixedDelayTest {
 
     @Test
@@ -51,4 +49,5 @@ public class FixedDelayTest {
         assertEquals(fixedDelay.getMaxRetries(), 3);
         assertEquals(fixedDelay.calculateRetryDelay(2).toMillis(), 1000);
     }
+
 }

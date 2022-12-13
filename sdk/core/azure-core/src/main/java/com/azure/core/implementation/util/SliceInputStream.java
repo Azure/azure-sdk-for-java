@@ -10,9 +10,7 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.util.Objects;
 
-/**
- * An {@link InputStream} that gives access to a slice of underlying {@link InputStream}.
- */
+/** An {@link InputStream} that gives access to a slice of underlying {@link InputStream}. */
 public final class SliceInputStream extends InputStream {
 
     private static final ClientLogger LOGGER = new ClientLogger(SliceInputStream.class);
@@ -25,6 +23,7 @@ public final class SliceInputStream extends InputStream {
 
     /**
      * Creates {@link SliceInputStream}.
+     * 
      * @param inputStream An {@link InputStream} to be sliced.
      * @param position An offset of the slice.
      * @param count Maximum amount of bytes to read from the slice.
@@ -140,4 +139,5 @@ public final class SliceInputStream extends InputStream {
         innerStream.reset();
         innerPosition = mark;
     }
+
 }

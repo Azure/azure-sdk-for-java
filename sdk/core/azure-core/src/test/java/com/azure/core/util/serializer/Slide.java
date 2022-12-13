@@ -8,6 +8,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import java.util.Arrays;
 
 public class Slide {
+
     @JacksonXmlProperty(localName = "type", isAttribute = true)
     private String type;
 
@@ -46,4 +47,5 @@ public class Slide {
         }
         return Arrays.copyOf(items, items.length);
     }
+
 }

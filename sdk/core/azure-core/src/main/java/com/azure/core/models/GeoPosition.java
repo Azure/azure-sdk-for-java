@@ -8,11 +8,10 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Objects;
 
-/**
- * Represents a geo position.
- */
+/** Represents a geo position. */
 @Immutable
 public final class GeoPosition {
+
     // GeoPosition is a commonly used model, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(GeoPosition.class);
 
@@ -157,4 +156,5 @@ public final class GeoPosition {
             ? String.format("[%s, %s, %s]", longitude, latitude, altitude)
             : String.format("[%s, %s]", longitude, latitude);
     }
+
 }

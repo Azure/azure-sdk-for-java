@@ -18,7 +18,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * during evaluation, this should be treated as a default case. If no default case is annotated the fall through
  * exception is {@link HttpResponseException}.
  *
- * <p><strong>Example:</strong></p>
+ * <p>
+ * <strong>Example:</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.annotation.UnexpectedResponseExceptionType.class -->
  * <pre>
@@ -53,9 +55,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(METHOD)
 @Repeatable(UnexpectedResponseExceptionTypes.class)
 public @interface UnexpectedResponseExceptionType {
+
     /**
      * The type of HttpResponseException that should be thrown/returned when the API returns an unrecognized
      * status code.
+     * 
      * @return The type of RestException that should be thrown/returned.
      */
     Class<? extends HttpResponseException> value();
@@ -63,7 +67,9 @@ public @interface UnexpectedResponseExceptionType {
     /**
      * HTTP status codes which trigger the exception to be thrown or returned, if not status codes are listed the
      * exception is always thrown or returned.
+     * 
      * @return The HTTP status codes that trigger the exception to be thrown or returned.
      */
-    int[] code() default {};
+    int[] code() default { };
+
 }

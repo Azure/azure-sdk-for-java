@@ -54,6 +54,7 @@ import java.util.stream.Collectors;
  * {@code {'properties' : { 'name' : 'my_name' }}} in the serialized payload.
  */
 class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSerializer {
+
     private static final long serialVersionUID = -6130180289951110573L;
 
     private static final Pattern CHECK_IF_FLATTEN_PROPERTY_PATTERN = Pattern.compile(".+[^\\\\]\\..+");
@@ -109,7 +110,8 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
         } else {
             // Otherwise each property in the serialized class will be inspected for being annotated with @JsonFlatten
             // to determine which JSON properties need to be flattened.
-            this.jsonPropertiesWithJsonFlatten = beanDesc.findProperties().stream()
+            this.jsonPropertiesWithJsonFlatten = beanDesc.findProperties()
+                .stream()
                 .filter(BeanPropertyDefinition::hasField)
                 .filter(property -> property.getField().hasAnnotation(JsonFlatten.class))
                 .map(BeanPropertyDefinition::getName)
@@ -126,14 +128,16 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
     public static SimpleModule getModule(final ObjectMapper mapper) {
         SimpleModule module = new SimpleModule();
         module.setSerializerModifier(new BeanSerializerModifier() {
+
             @Override
-            public JsonSerializer<?> modifySerializer(SerializationConfig config, BeanDescription beanDesc,
-                JsonSerializer<?> serializer) {
+            public JsonSerializer<?>
+                modifySerializer(SerializationConfig config, BeanDescription beanDesc, JsonSerializer<?> serializer) {
                 // If the class is annotated with @JsonFlatten add the serializer.
                 // Else if any property is annotated with @JsonFlatten add the serializer.
                 // Otherwise do not add the serializer.
                 boolean hasJsonFlattenOnClass = beanDesc.getClassAnnotations().has(JsonFlatten.class);
-                boolean hasJsonFlattenOnProperty = beanDesc.findProperties().stream()
+                boolean hasJsonFlattenOnProperty = beanDesc.findProperties()
+                    .stream()
                     .filter(BeanPropertyDefinition::hasField)
                     .map(BeanPropertyDefinition::getField)
                     .anyMatch(field -> field.hasAnnotation(JsonFlatten.class));
@@ -144,6 +148,7 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
 
                 return serializer;
             }
+
         });
         return module;
     }
@@ -168,12 +173,14 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
             return;
         }
 
-        if (value.getClass().isPrimitive()
-            || value.getClass().isEnum()
-            || value instanceof OffsetDateTime
-            || value instanceof Duration
-            || value instanceof String
-            || value instanceof ExpandableStringEnum) {
+        if (
+            value.getClass().isPrimitive()
+                || value.getClass().isEnum()
+                || value instanceof OffsetDateTime
+                || value instanceof Duration
+                || value instanceof String
+                || value instanceof ExpandableStringEnum
+        ) {
             return;
         }
 
@@ -212,8 +219,8 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
     }
 
     @Override
-    public void serializeWithType(Object value, JsonGenerator gen, SerializerProvider provider,
-        TypeSerializer typeSer) throws IOException {
+    public void serializeWithType(Object value, JsonGenerator gen, SerializerProvider provider, TypeSerializer typeSer)
+        throws IOException {
         if (value == null) {
             gen.writeNull();
             return;
@@ -245,8 +252,9 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
         }
     }
 
-    private void propertyOnlyFlattenSerialize(Object value, JsonGenerator gen, SerializerProvider provider,
-        ObjectNode node) throws IOException {
+    private void
+        propertyOnlyFlattenSerialize(Object value, JsonGenerator gen, SerializerProvider provider, ObjectNode node)
+            throws IOException {
         for (BeanPropertyDefinition beanProp : beanDescription.findProperties()) {
             ObjectNode nodeToUse = node;
             String propertyName = beanProp.getName();
@@ -262,19 +270,19 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
                 // "flattened.number" should serialize into the following:
                 //
                 // {
-                //   "flattened": {
-                //     "string": "string",
-                //     "number": 0
-                //   }
+                // "flattened": {
+                // "string": "string",
+                // "number": 0
+                // }
                 // }
                 //
                 // If this isn't done it could result in the following:
                 //
                 // {
-                //   "flattened": {
-                //     { "string": "string" },
-                //     { "number": 0 }
-                //   }
+                // "flattened": {
+                // { "string": "string" },
+                // { "number": 0 }
+                // }
                 // }
                 for (int i = 0; i < splitNames.length - 1; i++) {
                     nodeToUse = (nodeToUse.has(splitNames[i]))
@@ -301,10 +309,15 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
         // Values from the any getter are serialized as key:fields and not as a sub-object.
         AnnotatedMember anyGetter = beanDescription.findAnyGetter();
         if (anyGetter != null && anyGetter.getAnnotation(JsonAnyGetter.class).enabled()) {
-            BeanProperty.Std anyProperty = new BeanProperty.Std(PropertyName.construct(anyGetter.getName()),
-                anyGetter.getType(), null, anyGetter, PropertyMetadata.STD_OPTIONAL);
-            JsonSerializer<Object> anySerializer = provider.findTypedValueSerializer(anyGetter.getType(), true,
-                anyProperty);
+            BeanProperty.Std anyProperty = new BeanProperty.Std(
+                PropertyName.construct(anyGetter.getName()),
+                anyGetter.getType(),
+                null,
+                anyGetter,
+                PropertyMetadata.STD_OPTIONAL
+            );
+            JsonSerializer<Object> anySerializer =
+                provider.findTypedValueSerializer(anyGetter.getType(), true, anyProperty);
             AnyGetterWriter anyGetterWriter = new AnyGetterWriter(anyProperty, anyGetter, anySerializer);
 
             try {
@@ -370,9 +383,11 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
                 if (field.getValue() instanceof ObjectNode) {
                     source.add((ObjectNode) field.getValue());
                     target.add((ObjectNode) outNode);
-                } else if (field.getValue() instanceof ArrayNode
-                    && (field.getValue()).size() > 0
-                    && (field.getValue()).get(0) instanceof ObjectNode) {
+                } else if (
+                    field.getValue() instanceof ArrayNode
+                        && (field.getValue()).size() > 0
+                        && (field.getValue()).get(0) instanceof ObjectNode
+                ) {
                     Iterator<JsonNode> sourceIt = field.getValue().elements();
                     Iterator<JsonNode> targetIt = outNode.elements();
                     while (sourceIt.hasNext()) {
@@ -384,4 +399,5 @@ class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSe
         }
         gen.writeTree(res);
     }
+
 }

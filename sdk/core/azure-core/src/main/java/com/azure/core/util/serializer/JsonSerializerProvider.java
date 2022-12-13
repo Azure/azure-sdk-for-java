@@ -4,7 +4,8 @@
 package com.azure.core.util.serializer;
 
 /**
- * Interface to be implemented by an azure-core plugin that wishes to provide a {@link JsonSerializer} implementation.
+ * Interface to be implemented by an azure-core plugin that wishes to provide a {@link JsonSerializer}
+ * implementation.
  */
 public interface JsonSerializerProvider {
 
@@ -14,4 +15,5 @@ public interface JsonSerializerProvider {
      * @return A new {@link JsonSerializer} instance.
      */
     JsonSerializer createInstance();
+
 }

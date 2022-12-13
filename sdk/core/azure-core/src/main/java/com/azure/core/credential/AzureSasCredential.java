@@ -8,10 +8,9 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Objects;
 import java.util.function.Function;
 
-/**
- * Represents a credential that uses a shared access signature to authenticate to an Azure Service.
- */
+/** Represents a credential that uses a shared access signature to authenticate to an Azure Service. */
 public final class AzureSasCredential {
+
     // AzureSasCredential is a commonly used credential type, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(AzureSasCredential.class);
     private final Function<String, String> signatureEncoder;
@@ -80,4 +79,5 @@ public final class AzureSasCredential {
         this.signature = (signatureEncoder == null) ? signature : signatureEncoder.apply(signature);
         return this;
     }
+
 }

@@ -21,10 +21,9 @@ import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
 import java.util.Objects;
 
-/**
- * The response of an {@link HttpRequest}.
- */
+/** The response of an {@link HttpRequest}. */
 public abstract class HttpResponse implements Closeable {
+
     private final HttpRequest request;
 
     /**
@@ -150,6 +149,7 @@ public abstract class HttpResponse implements Closeable {
 
     /**
      * Transfers body bytes to the {@link AsynchronousByteChannel}.
+     * 
      * @param channel The destination {@link AsynchronousByteChannel}.
      * @return A {@link Mono} that completes when transfer is completed.
      * @throws NullPointerException When {@code channel} is null.
@@ -166,6 +166,7 @@ public abstract class HttpResponse implements Closeable {
 
     /**
      * Transfers body bytes to the {@link WritableByteChannel}.
+     * 
      * @param channel The destination {@link WritableByteChannel}.
      * @throws IOException When I/O operation fails.
      * @throws NullPointerException When {@code channel} is null.
@@ -173,9 +174,7 @@ public abstract class HttpResponse implements Closeable {
     public void writeBodyTo(WritableByteChannel channel) throws IOException {
         Flux<ByteBuffer> body = getBody();
         if (body != null) {
-            FluxUtil.writeToWritableByteChannel(body, channel)
-                .doFinally(ignored -> close())
-                .block();
+            FluxUtil.writeToWritableByteChannel(body, channel).doFinally(ignored -> close()).block();
         }
     }
 
@@ -185,4 +184,5 @@ public abstract class HttpResponse implements Closeable {
     @Override
     public void close() {
     }
+
 }

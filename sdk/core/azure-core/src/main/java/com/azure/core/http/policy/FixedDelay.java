@@ -7,10 +7,9 @@ import com.azure.core.util.logging.ClientLogger;
 import java.time.Duration;
 import java.util.Objects;
 
-/**
- * A fixed-delay implementation of {@link RetryStrategy} that has a fixed delay duration between each retry attempt.
- */
+/** A fixed-delay implementation of {@link RetryStrategy} that has a fixed delay duration between each retry attempt. */
 public class FixedDelay implements RetryStrategy {
+
     private static final ClientLogger LOGGER = new ClientLogger(FixedDelay.class);
 
     private final int maxRetries;
@@ -53,4 +52,5 @@ public class FixedDelay implements RetryStrategy {
     public Duration calculateRetryDelay(int retryAttempts) {
         return delay;
     }
+
 }

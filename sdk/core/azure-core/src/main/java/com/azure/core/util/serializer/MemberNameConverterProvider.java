@@ -16,4 +16,5 @@ public interface MemberNameConverterProvider {
      * @return A new {@link MemberNameConverter} instance.
      */
     MemberNameConverter createInstance();
+
 }

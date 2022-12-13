@@ -8,10 +8,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
-/**
- * Represents the type of GeoJSON object.
- */
+/** Represents the type of GeoJSON object. */
 public final class GeoObjectType extends ExpandableStringEnum<GeoObjectType> {
+
     /**
      * Creates a new instance of {@link GeoObjectType} without a {@link #toString()} value.
      * <p>
@@ -78,4 +77,5 @@ public final class GeoObjectType extends ExpandableStringEnum<GeoObjectType> {
     public static Collection<GeoObjectType> values() {
         return values(GeoObjectType.class);
     }
+
 }

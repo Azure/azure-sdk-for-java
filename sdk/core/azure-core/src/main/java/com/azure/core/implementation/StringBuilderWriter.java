@@ -7,10 +7,9 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Objects;
 
-/**
- * Implementation of {@link Writer} that write content to a {@link StringBuilder}.
- */
+/** Implementation of {@link Writer} that write content to a {@link StringBuilder}. */
 public final class StringBuilderWriter extends Writer {
+
     private final StringBuilder builder;
 
     private volatile boolean closed = false;
@@ -114,4 +113,5 @@ public final class StringBuilderWriter extends Writer {
     public void close() {
         closed = true;
     }
+
 }

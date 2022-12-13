@@ -14,9 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- * Tests the ClientOptions API.
- */
+/** Tests the ClientOptions API. */
 public class ClientOptionsTest {
 
     @Test
@@ -56,9 +54,7 @@ public class ClientOptionsTest {
     }
 
     private static Stream<Arguments> invalidApplicationId() {
-        return Stream.of(
-            Arguments.arguments("AppId-0123456789012345678912345"),
-            Arguments.arguments("AppId 78912345")
-        );
+        return Stream.of(Arguments.arguments("AppId-0123456789012345678912345"), Arguments.arguments("AppId 78912345"));
     }
+
 }

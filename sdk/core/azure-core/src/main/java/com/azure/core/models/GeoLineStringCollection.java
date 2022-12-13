@@ -11,11 +11,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * Represents a collection of {@link GeoLineString GeoLines}.
- */
+/** Represents a collection of {@link GeoLineString GeoLines}. */
 @Immutable
 public final class GeoLineStringCollection extends GeoObject {
+
     private final List<GeoLineString> lines;
 
     /**
@@ -36,8 +35,11 @@ public final class GeoLineStringCollection extends GeoObject {
      * @param customProperties Additional properties of the multi-line.
      * @throws NullPointerException If {@code lines} is {@code null}.
      */
-    public GeoLineStringCollection(List<GeoLineString> lines, GeoBoundingBox boundingBox,
-        Map<String, Object> customProperties) {
+    public GeoLineStringCollection(
+        List<GeoLineString> lines,
+        GeoBoundingBox boundingBox,
+        Map<String, Object> customProperties
+    ) {
         super(boundingBox, customProperties);
 
         Objects.requireNonNull(lines, "'lines' cannot be null.");
@@ -88,4 +90,5 @@ public final class GeoLineStringCollection extends GeoObject {
 
         return super.equals(obj) && Objects.equals(lines, other.lines);
     }
+
 }

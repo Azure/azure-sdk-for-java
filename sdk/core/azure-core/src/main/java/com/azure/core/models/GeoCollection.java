@@ -11,11 +11,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * Represents a heterogeneous collection of {@link GeoObject GeoObjects}.
- */
+/** Represents a heterogeneous collection of {@link GeoObject GeoObjects}. */
 @Immutable
 public final class GeoCollection extends GeoObject {
+
     private final List<GeoObject> geometries;
 
     /**
@@ -36,8 +35,7 @@ public final class GeoCollection extends GeoObject {
      * @param customProperties Additional properties of the {@link GeoCollection}.
      * @throws NullPointerException If {@code geometries} is {@code null}.
      */
-    public GeoCollection(List<GeoObject> geometries, GeoBoundingBox boundingBox,
-        Map<String, Object> customProperties) {
+    public GeoCollection(List<GeoObject> geometries, GeoBoundingBox boundingBox, Map<String, Object> customProperties) {
         super(boundingBox, customProperties);
 
         Objects.requireNonNull(geometries, "'geometries' cannot be null.");
@@ -76,4 +74,5 @@ public final class GeoCollection extends GeoObject {
         GeoCollection other = (GeoCollection) obj;
         return super.equals(other) && Objects.equals(geometries, other.geometries);
     }
+
 }

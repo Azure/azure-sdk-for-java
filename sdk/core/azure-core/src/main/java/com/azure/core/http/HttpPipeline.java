@@ -20,9 +20,9 @@ import java.util.Objects;
  * @see HttpPipelinePolicy
  */
 public final class HttpPipeline {
+
     private final HttpClient httpClient;
     private final HttpPipelinePolicy[] pipelinePolicies;
-
 
     /**
      * Creates a HttpPipeline holding array of policies that gets applied to all request initiated through {@link
@@ -30,7 +30,7 @@ public final class HttpPipeline {
      *
      * @param httpClient the http client to write request to wire and receive response from wire.
      * @param pipelinePolicies pipeline policies in the order they need to be applied, a copy of this array will be made
-     * hence changing the original array after the creation of pipeline will not  mutate the pipeline
+     * hence changing the original array after the creation of pipeline will not mutate the pipeline
      */
     HttpPipeline(HttpClient httpClient, List<HttpPipelinePolicy> pipelinePolicies) {
         Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
@@ -90,7 +90,6 @@ public final class HttpPipeline {
         return this.send(new HttpPipelineCallContext(request, data));
     }
 
-
     /**
      * Sends the context (containing an HTTP request) through pipeline.
      *
@@ -101,8 +100,7 @@ public final class HttpPipeline {
     public Mono<HttpResponse> send(HttpPipelineCallContext context) {
         // Return deferred to mono for complete lazy behaviour.
         return Mono.defer(() -> {
-            HttpPipelineNextPolicy next =
-                new HttpPipelineNextPolicy(new HttpPipelineCallState(this, context));
+            HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(new HttpPipelineCallState(this, context));
             return next.process();
         });
     }
@@ -116,8 +114,9 @@ public final class HttpPipeline {
      * upon completion.
      */
     public HttpResponse sendSync(HttpRequest request, Context data) {
-        HttpPipelineNextSyncPolicy next = new HttpPipelineNextSyncPolicy(
-            new HttpPipelineCallState(this, new HttpPipelineCallContext(request, data)));
+        HttpPipelineNextSyncPolicy next =
+            new HttpPipelineNextSyncPolicy(new HttpPipelineCallState(this, new HttpPipelineCallContext(request, data)));
         return next.processSync();
     }
+
 }

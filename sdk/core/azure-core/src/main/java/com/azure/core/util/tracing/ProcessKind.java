@@ -2,10 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.util.tracing;
 
-/**
- * Contains constants common AMQP protocol process calls.
- *
- */
+/** Contains constants common AMQP protocol process calls. */
 public enum ProcessKind {
     /**
      * Amqp Send Message process call to send data.

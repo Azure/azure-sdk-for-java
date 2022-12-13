@@ -6,16 +6,18 @@ package com.azure.core.implementation.http;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 
-/**
- * Helper class to access private values of {@link HttpPipelineNextPolicy} across package boundaries.
- */
+/** Helper class to access private values of {@link HttpPipelineNextPolicy} across package boundaries. */
 public final class HttpPipelineNextSyncPolicyHelper {
+
     private static HttpPipelineNextSyncPolicyAccessor accessor;
 
-    private HttpPipelineNextSyncPolicyHelper() { }
+    private HttpPipelineNextSyncPolicyHelper() {
+    }
 
     public interface HttpPipelineNextSyncPolicyAccessor {
+
         HttpPipelineNextPolicy toAsyncPolicy(HttpPipelineNextSyncPolicy syncPolicy);
+
     }
 
     public static void setAccessor(final HttpPipelineNextSyncPolicyAccessor callContextAccessor) {
@@ -25,4 +27,5 @@ public final class HttpPipelineNextSyncPolicyHelper {
     public static HttpPipelineNextPolicy toAsyncPolicy(HttpPipelineNextSyncPolicy syncPolicy) {
         return accessor.toAsyncPolicy(syncPolicy);
     }
+
 }

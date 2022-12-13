@@ -16,9 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Class for testing serialization.
- */
+/** Class for testing serialization. */
 @JsonFlatten
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "$type")
 @JsonTypeName("newfoo")
@@ -26,10 +24,11 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "newfoochild", value = NewFooChild.class)
 })
 public class NewFoo {
+
     @JsonProperty(value = "properties.bar")
     private String bar;
     @JsonProperty(value = "properties.props.baz")
-    private List<String>  baz;
+    private List<String> baz;
     @JsonProperty(value = "properties.props.q.qux")
     private Map<String, String> qux;
     @JsonProperty(value = "properties.more\\.props")
@@ -105,4 +104,5 @@ public class NewFoo {
     public void additionalPropertiesProperty(Map<String, Object> additionalPropertiesProperty) {
         this.additionalPropertiesProperty = additionalPropertiesProperty;
     }
+
 }

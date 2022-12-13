@@ -13,9 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * An abstract geo object.
- */
+/** An abstract geo object. */
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Point", value = GeoPoint.class),
     @JsonSubTypes.Type(name = "LineString", value = GeoLineString.class),
@@ -27,6 +25,7 @@ import java.util.Objects;
 })
 @Immutable
 public abstract class GeoObject {
+
     private final GeoBoundingBox boundingBox;
     private final Map<String, Object> customProperties;
 
@@ -93,7 +92,8 @@ public abstract class GeoObject {
 
         GeoObject other = (GeoObject) obj;
 
-        return Objects.equals(boundingBox, other.boundingBox) && Objects.equals(
-            customProperties, other.customProperties);
+        return Objects.equals(boundingBox, other.boundingBox)
+            && Objects.equals(customProperties, other.customProperties);
     }
+
 }

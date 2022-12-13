@@ -17,6 +17,7 @@ import java.util.List;
     defaultImpl = RabbitWithTypeIdContainingDot.class)
 @JsonTypeName("#Favourite.Pet.RabbitWithTypeIdContainingDot")
 public class RabbitWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot {
+
     @JsonProperty(value = "tailLength")
     private Integer tailLength;
 
@@ -40,4 +41,5 @@ public class RabbitWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot
         this.meals = meals;
         return this;
     }
+
 }

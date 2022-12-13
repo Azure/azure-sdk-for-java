@@ -11,6 +11,7 @@ import java.util.function.Predicate;
  * @param <C> The type of the continuation token.
  */
 class ContinuationState<C> {
+
     private final Predicate<C> continuationPredicate;
 
     // The last seen continuation token
@@ -58,4 +59,5 @@ class ContinuationState<C> {
     boolean isDone() {
         return this.isDone;
     }
+
 }

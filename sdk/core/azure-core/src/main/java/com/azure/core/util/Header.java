@@ -16,6 +16,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * appended at the end of the same {@link Header} with commas separating them.
  */
 public class Header {
+
     private static final String[] EMPTY_HEADER_ARRAY = new String[0];
 
     private final String name;
@@ -28,8 +29,8 @@ public class Header {
 
     // but we also cache it to faster serve our public API
     private volatile String cachedStringValue;
-    private static final AtomicReferenceFieldUpdater<Header, String> CACHED_STRING_VALUE_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(Header.class, String.class, "cachedStringValue");
+    private static final AtomicReferenceFieldUpdater<Header, String> CACHED_STRING_VALUE_UPDATER =
+        AtomicReferenceFieldUpdater.newUpdater(Header.class, String.class, "cachedStringValue");
 
     /**
      * Create a Header instance using the provided name and value.
@@ -114,7 +115,9 @@ public class Header {
      */
     public String[] getValues() {
         if (value != null) {
-            return new String[] {value};
+            return new String[] {
+                value
+            };
         } else if (!CoreUtils.isNullOrEmpty(values)) {
             return values.toArray(new String[0]);
         } else {
@@ -176,4 +179,5 @@ public class Header {
     private void checkCachedStringValue() {
         CACHED_STRING_VALUE_UPDATER.compareAndSet(this, null, CoreUtils.stringJoin(",", values));
     }
+
 }

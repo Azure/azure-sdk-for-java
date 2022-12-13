@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ObjectMapperShimTests {
+
     @Test
     public void testConfigure() {
         final ObjectMapper innerMapper = new ObjectMapper();
@@ -33,7 +34,8 @@ public class ObjectMapperShimTests {
 
     @Test
     @SuppressWarnings("deprecation")
-    public void testConfigureJacksonAdapter() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void testConfigureJacksonAdapter()
+        throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         final AtomicReference<Boolean> configureIsCalled = new AtomicReference<>(false);
         final AtomicReference<ObjectMapper> outerMapper = new AtomicReference<>(null);
         final AtomicReference<ObjectMapper> innerMapper = new AtomicReference<>(null);
@@ -54,4 +56,5 @@ public class ObjectMapperShimTests {
         method.setAccessible(true);
         assertSame(innerMapper.get(), method.invoke(adapter));
     }
+
 }

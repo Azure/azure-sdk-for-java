@@ -11,9 +11,7 @@ import java.nio.channels.WritableByteChannel;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 
-/**
- * Count bytes written to the target channel.
- */
+/** Count bytes written to the target channel. */
 public class ByteCountingWritableByteChannel implements WritableByteChannel {
 
     private final WritableByteChannel channel;
@@ -53,4 +51,5 @@ public class ByteCountingWritableByteChannel implements WritableByteChannel {
     public long getBytesWritten() {
         return BYTES_WRITTEN_ATOMIC_UPDATER.get(this);
     }
+
 }

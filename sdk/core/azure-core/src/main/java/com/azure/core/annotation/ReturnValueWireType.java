@@ -19,19 +19,21 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * are:
  *
  * <ol>
- *     <li>{@link Base64Url}</li>
- *     <li>{@link DateTimeRfc1123}</li>
- *     <li>{@link Page}</li>
- *     <li>{@link List List&lt;T&gt;} where {@code T} can be one of the four values above.</li>
+ * <li>{@link Base64Url}</li>
+ * <li>{@link DateTimeRfc1123}</li>
+ * <li>{@link Page}</li>
+ * <li>{@link List List&lt;T&gt;} where {@code T} can be one of the four values above.</li>
  * </ol>
  */
 @Retention(RUNTIME)
 @Target(METHOD)
 public @interface ReturnValueWireType {
+
     /**
      * The type that the service interface method's return value will be converted from.
      *
      * @return The type that the service interface method's return value will be converted from.
      */
     Class<?> value();
+
 }

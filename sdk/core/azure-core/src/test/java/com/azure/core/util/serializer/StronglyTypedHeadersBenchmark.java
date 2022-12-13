@@ -28,10 +28,10 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @State(Scope.Thread)
 public class StronglyTypedHeadersBenchmark {
+
     private static final JacksonAdapter MAPPER = new JacksonAdapter();
 
-    private static final HttpHeaders HEADERS = new HttpHeaders()
-        .set("Date", "Tue, 04 May 2021 23:22:58 GMT")
+    private static final HttpHeaders HEADERS = new HttpHeaders().set("Date", "Tue, 04 May 2021 23:22:58 GMT")
         .set("Content-Length", "12345")
         .set("Content-Type", "application/json")
         .set("Last-Modified", "Tue, 04 May 2021 23:22:58 GMT")
@@ -95,6 +95,7 @@ public class StronglyTypedHeadersBenchmark {
     }
 
     private static final class Databind {
+
         @JsonProperty("Date")
         private DateTimeRfc1123 date;
 
@@ -129,9 +130,11 @@ public class StronglyTypedHeadersBenchmark {
         public String getETag() {
             return eTag;
         }
+
     }
 
     private static final class Deferred {
+
         private boolean hasDateBeenDeserialized;
         private DateTimeRfc1123 date;
 
@@ -197,9 +200,11 @@ public class StronglyTypedHeadersBenchmark {
 
             return eTag;
         }
+
     }
 
     private static final class Eager {
+
         private final DateTimeRfc1123 date;
 
         private final int contentLength;
@@ -237,5 +242,7 @@ public class StronglyTypedHeadersBenchmark {
         public String getETag() {
             return eTag;
         }
+
     }
+
 }

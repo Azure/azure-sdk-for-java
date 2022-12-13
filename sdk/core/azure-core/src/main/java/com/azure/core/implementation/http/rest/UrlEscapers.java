@@ -3,9 +3,7 @@
 
 package com.azure.core.implementation.http.rest;
 
-/**
- * Collection of useful URL escapers.
- */
+/** Collection of useful URL escapers. */
 public final class UrlEscapers {
 
     private static final String UNRESERVED_SYMBOLS = "-._~";

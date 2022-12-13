@@ -14,6 +14,7 @@ import java.util.Map;
  * @see TracerProxy
  */
 public interface Tracer {
+
     /**
      * Key for {@link Context} which indicates that the context contains parent span data. This span will be used
      * as the parent span for all spans the SDK creates.
@@ -92,9 +93,13 @@ public interface Tracer {
      * will be added as a child. Otherwise, the parent span will be created and added to the {@code context} and any
      * downstream {@code start()} calls will use the created span as the parent.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Starts a tracing span with provided method name and explicit parent span</p>
+     * <p>
+     * Starts a tracing span with provided method name and explicit parent span
+     * </p>
      * <!-- src_embed com.azure.core.util.tracing.start#string-context -->
      * <pre>
      * &#47;&#47; start a new tracing span with given name and parent context implicitly propagated
@@ -119,9 +124,13 @@ public interface Tracer {
      * will be added as a child. Otherwise, the parent span will be created and added to the {@code context} and any
      * downstream {@code start()} calls will use the created span as the parent.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Starts a tracing span with provided method name and explicit parent span</p>
+     * <p>
+     * Starts a tracing span with provided method name and explicit parent span
+     * </p>
      * <!-- src_embed com.azure.core.util.tracing.start#options-context -->
      * <pre>
      * &#47;&#47; start a new CLIENT tracing span with the given start options and explicit parent context
@@ -164,9 +173,13 @@ public interface Tracer {
      * Creates a new tracing span with remote parent and returns that scope when the given when {@code processKind}
      * is {@link ProcessKind#PROCESS ProcessKind.PROCESS}.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Starts a tracing span with provided method name and AMQP operation SEND</p>
+     * <p>
+     * Starts a tracing span with provided method name and AMQP operation SEND
+     * </p>
      * <!-- src_embed com.azure.core.util.tracing.start#string-context-processKind-SEND -->
      * <pre>
      * &#47;&#47; pass request metadata to the calling method
@@ -180,7 +193,9 @@ public interface Tracer {
      * </pre>
      * <!-- end com.azure.core.util.tracing.start#string-context-processKind-SEND -->
      *
-     * <p>Starts a tracing span with provided method name and AMQP operation MESSAGE</p>
+     * <p>
+     * Starts a tracing span with provided method name and AMQP operation MESSAGE
+     * </p>
      * <!-- src_embed com.azure.core.util.tracing.start#string-context-processKind-MESSAGE -->
      * <pre>
      * String diagnosticIdKey = &quot;Diagnostic-Id&quot;;
@@ -192,7 +207,9 @@ public interface Tracer {
      * </pre>
      * <!-- end com.azure.core.util.tracing.start#string-context-processKind-MESSAGE -->
      *
-     * <p>Starts a tracing span with provided method name and AMQP operation PROCESS</p>
+     * <p>
+     * Starts a tracing span with provided method name and AMQP operation PROCESS
+     * </p>
      * <!-- src_embed com.azure.core.util.tracing.start#string-context-processKind-PROCESS -->
      * <pre>
      * String spanImplContext = &quot;span-context&quot;;
@@ -217,10 +234,14 @@ public interface Tracer {
     /**
      * Completes the current tracing span.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Completes the tracing span present in the context, with the corresponding OpenTelemetry status for the given
-     * response status code</p>
+     * <p>
+     * Completes the tracing span present in the context, with the corresponding OpenTelemetry status for the given
+     * response status code
+     * </p>
      * <!-- src_embed com.azure.core.util.tracing.end#int-throwable-context -->
      * <pre>
      * &#47;&#47; context containing the span to end
@@ -242,9 +263,13 @@ public interface Tracer {
     /**
      * Completes the current tracing span for AMQP calls.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Completes the tracing span with the corresponding OpenTelemetry status for the given status message</p>
+     * <p>
+     * Completes the tracing span with the corresponding OpenTelemetry status for the given status message
+     * </p>
      * <!-- src_embed com.azure.core.util.tracing.end#string-throwable-context -->
      * <pre>
      * &#47;&#47; context containing the current trace context to end
@@ -274,9 +299,13 @@ public interface Tracer {
     /**
      * Sets the name for spans that are created.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Retrieve the span name of the returned span</p>
+     * <p>
+     * Retrieve the span name of the returned span
+     * </p>
      * <!-- src_embed com.azure.core.util.tracing.setSpanName#string-context -->
      * <pre>
      * &#47;&#47; Sets future span name - it will be used when span will be started on this context
@@ -299,9 +328,13 @@ public interface Tracer {
      * Provides a way to link multiple tracing spans.
      * Used in batching operations to relate multiple requests under a single batch.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Link multiple spans using their span context information</p>
+     * <p>
+     * Link multiple spans using their span context information
+     * </p>
      * <!-- src_embed com.azure.core.util.tracing.addLink#context -->
      * <pre>
      * &#47;&#47; start a new tracing span with given name and parent context implicitly propagated
@@ -322,9 +355,13 @@ public interface Tracer {
     /**
      * Extracts the span's context as {@link Context} from upstream.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Extracts the corresponding span context information from a valid diagnostic id</p>
+     * <p>
+     * Extracts the corresponding span context information from a valid diagnostic id
+     * </p>
      * <!-- src_embed com.azure.core.util.tracing.extractContext#string-context -->
      * <pre>
      * &#47;&#47; Extracts the span context information from the passed diagnostic Id that can be used for linking spans.
@@ -344,9 +381,13 @@ public interface Tracer {
     /**
      * Returns a span builder with the provided name in {@link Context}.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Returns a builder with the provided span name.</p>
+     * <p>
+     * Returns a builder with the provided span name.
+     * </p>
      * <!-- src_embed com.azure.core.util.tracing.getSpanBuilder#string-context -->
      * <pre>
      * &#47;&#47; Returns a span builder with the provided name
@@ -367,10 +408,14 @@ public interface Tracer {
 
     /**
      * Adds an event to the current span with the provided {@code timestamp} and {@code attributes}.
-     * <p>This API does not provide any normalization if provided timestamps are out of range of the current
-     * span timeline</p>
-     * <p>Supported attribute values include String, double, boolean, long, String [], double [], long [].
-     * Any other Object value type and null values will be silently ignored.</p>
+     * <p>
+     * This API does not provide any normalization if provided timestamps are out of range of the current
+     * span timeline
+     * </p>
+     * <p>
+     * Supported attribute values include String, double, boolean, long, String [], double [], long [].
+     * Any other Object value type and null values will be silently ignored.
+     * </p>
      *
      * @param name the name of the event.
      * @param attributes the additional attributes to be set for the event.
@@ -385,10 +430,14 @@ public interface Tracer {
     /**
      * Adds an event to the span present in the {@code Context} with the provided {@code timestamp}
      * and {@code attributes}.
-     * <p>This API does not provide any normalization if provided timestamps are out of range of the current
-     * span timeline</p>
-     * <p>Supported attribute values include String, double, boolean, long, String [], double [], long [].
-     * Any other Object value type and null values will be silently ignored.</p>
+     * <p>
+     * This API does not provide any normalization if provided timestamps are out of range of the current
+     * span timeline
+     * </p>
+     * <p>
+     * Supported attribute values include String, double, boolean, long, String [], double [], long [].
+     * Any other Object value type and null values will be silently ignored.
+     * </p>
      *
      * @param name the name of the event.
      * @param attributes the additional attributes to be set for the event.
@@ -396,19 +445,23 @@ public interface Tracer {
      * @param context the call metadata containing information of the span to which the event should be associated with.
      * @throws NullPointerException if {@code eventName} is {@code null}.
      */
-    default void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp,
-                          Context context) {
+    default void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp, Context context) {
 
     }
 
     /**
      * Makes span current. Implementations may put it on ThreadLocal.
      * Make sure to always use try-with-resource statement with makeSpanCurrent
+     * 
      * @param context Context with span.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Starts a tracing span, makes it current and ends it</p>
+     * <p>
+     * Starts a tracing span, makes it current and ends it
+     * </p>
      * <!-- src_embed com.azure.core.util.tracing.makeSpanCurrent#context -->
      * <pre>
      * &#47;&#47; Starts a span, makes it current and then stops it.
@@ -431,4 +484,5 @@ public interface Tracer {
     default AutoCloseable makeSpanCurrent(Context context) {
         return TracerProxy.NOOP_AUTOCLOSEABLE;
     }
+
 }

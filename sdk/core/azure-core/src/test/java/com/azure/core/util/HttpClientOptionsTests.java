@@ -17,14 +17,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- * Tests {@link HttpClientOptions}.
- */
+/** Tests {@link HttpClientOptions}. */
 public class HttpClientOptionsTests {
+
     @ParameterizedTest
     @MethodSource("timeoutSupplier")
-    public void nullTimeoutDefaultsTo60Seconds(BiFunction<HttpClientOptions, Duration, HttpClientOptions> timeoutSetter,
-        Function<HttpClientOptions, Duration> timeoutGetter) {
+    public void nullTimeoutDefaultsTo60Seconds(
+        BiFunction<HttpClientOptions, Duration, HttpClientOptions> timeoutSetter,
+        Function<HttpClientOptions, Duration> timeoutGetter
+    ) {
         HttpClientOptions httpClientOptions = timeoutSetter.apply(new HttpClientOptions(), null);
 
         assertEquals(Duration.ofSeconds(60), timeoutGetter.apply(httpClientOptions));
@@ -34,7 +35,8 @@ public class HttpClientOptionsTests {
     @MethodSource("timeoutSupplier")
     public void negativeTimeoutDefaultsToInfiniteTimeout(
         BiFunction<HttpClientOptions, Duration, HttpClientOptions> timeoutSetter,
-        Function<HttpClientOptions, Duration> timeoutGetter) {
+        Function<HttpClientOptions, Duration> timeoutGetter
+    ) {
         HttpClientOptions httpClientOptions = timeoutSetter.apply(new HttpClientOptions(), Duration.ofSeconds(-1));
 
         assertEquals(Duration.ZERO, timeoutGetter.apply(httpClientOptions));
@@ -42,7 +44,8 @@ public class HttpClientOptionsTests {
 
     public void zeroTimeoutDefaultsToInfiniteTimeout(
         BiFunction<HttpClientOptions, Duration, HttpClientOptions> timeoutSetter,
-        Function<HttpClientOptions, Duration> timeoutGetter) {
+        Function<HttpClientOptions, Duration> timeoutGetter
+    ) {
         HttpClientOptions httpClientOptions = timeoutSetter.apply(new HttpClientOptions(), Duration.ZERO);
 
         assertEquals(Duration.ZERO, timeoutGetter.apply(httpClientOptions));
@@ -52,7 +55,8 @@ public class HttpClientOptionsTests {
     @MethodSource("timeoutSupplier")
     public void smallTimeoutDefaultsToOneMillisecond(
         BiFunction<HttpClientOptions, Duration, HttpClientOptions> timeoutSetter,
-        Function<HttpClientOptions, Duration> timeoutGetter) {
+        Function<HttpClientOptions, Duration> timeoutGetter
+    ) {
         HttpClientOptions httpClientOptions = timeoutSetter.apply(new HttpClientOptions(), Duration.ofNanos(1));
 
         assertEquals(Duration.ofMillis(1), timeoutGetter.apply(httpClientOptions));
@@ -60,8 +64,10 @@ public class HttpClientOptionsTests {
 
     @ParameterizedTest
     @MethodSource("timeoutSupplier")
-    public void timeoutReturnsAsIs(BiFunction<HttpClientOptions, Duration, HttpClientOptions> timeoutSetter,
-        Function<HttpClientOptions, Duration> timeoutGetter) {
+    public void timeoutReturnsAsIs(
+        BiFunction<HttpClientOptions, Duration, HttpClientOptions> timeoutSetter,
+        Function<HttpClientOptions, Duration> timeoutGetter
+    ) {
         HttpClientOptions httpClientOptions = timeoutSetter.apply(new HttpClientOptions(), Duration.ofMinutes(5));
 
         assertEquals(Duration.ofMinutes(5), timeoutGetter.apply(httpClientOptions));
@@ -114,4 +120,5 @@ public class HttpClientOptionsTests {
         assertThrows(IllegalArgumentException.class, () -> new HttpClientOptions().setMaximumConnectionPoolSize(0));
         assertThrows(IllegalArgumentException.class, () -> new HttpClientOptions().setMaximumConnectionPoolSize(-1));
     }
+
 }

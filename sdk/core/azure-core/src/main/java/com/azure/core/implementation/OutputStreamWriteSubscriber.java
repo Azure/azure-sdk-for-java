@@ -13,11 +13,10 @@ import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 
-/**
- * Subscriber that writes a stream of {@link ByteBuffer ByteBuffers} to an {@link OutputStream}.
- */
+/** Subscriber that writes a stream of {@link ByteBuffer ByteBuffers} to an {@link OutputStream}. */
 @SuppressWarnings("ReactiveStreamsSubscriberImplementation")
 public final class OutputStreamWriteSubscriber implements Subscriber<ByteBuffer> {
+
     private final MonoSink<Void> emitter;
     private final OutputStream stream;
     private final ClientLogger logger;
@@ -62,4 +61,5 @@ public final class OutputStreamWriteSubscriber implements Subscriber<ByteBuffer>
     public void onComplete() {
         emitter.success();
     }
+
 }

@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
  * payload will be stored in this map.
  */
 final class AdditionalPropertiesDeserializer extends StdDeserializer<Object> implements ResolvableDeserializer {
+
     private static final long serialVersionUID = 700052863615540646L;
 
     private static final Pattern JSON_FLATTEN_SPLIT = Pattern.compile("((?<!\\\\))\\.");
@@ -51,8 +52,11 @@ final class AdditionalPropertiesDeserializer extends StdDeserializer<Object> imp
      * @param defaultDeserializer the default JSON mapperAdapter
      * @param mapper the object mapper for default deserializations
      */
-    protected AdditionalPropertiesDeserializer(Class<?> vc, JsonDeserializer<?> defaultDeserializer,
-        ObjectMapper mapper) {
+    protected AdditionalPropertiesDeserializer(
+        Class<?> vc,
+        JsonDeserializer<?> defaultDeserializer,
+        ObjectMapper mapper
+    ) {
         super(vc);
         this.defaultDeserializer = defaultDeserializer;
         this.mapper = mapper;
@@ -67,23 +71,31 @@ final class AdditionalPropertiesDeserializer extends StdDeserializer<Object> imp
     public static SimpleModule getModule(final ObjectMapper mapper) {
         SimpleModule module = new SimpleModule();
         module.setDeserializerModifier(new BeanDeserializerModifier() {
+
             @Override
-            public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription beanDesc,
-                JsonDeserializer<?> deserializer) {
+            public JsonDeserializer<?> modifyDeserializer(
+                DeserializationConfig config,
+                BeanDescription beanDesc,
+                JsonDeserializer<?> deserializer
+            ) {
                 for (Class<?> c : TypeUtil.getAllClasses(beanDesc.getBeanClass())) {
                     Field[] fields = c.getDeclaredFields();
                     for (Field field : fields) {
                         if ("additionalProperties".equalsIgnoreCase(field.getName())) {
                             JsonProperty property = field.getAnnotation(JsonProperty.class);
                             if (property != null && property.value().isEmpty()) {
-                                return new AdditionalPropertiesDeserializer(beanDesc.getBeanClass(), deserializer,
-                                    mapper);
+                                return new AdditionalPropertiesDeserializer(
+                                    beanDesc.getBeanClass(),
+                                    deserializer,
+                                    mapper
+                                );
                             }
                         }
                     }
                 }
                 return deserializer;
             }
+
         });
         return module;
     }
@@ -128,4 +140,5 @@ final class AdditionalPropertiesDeserializer extends StdDeserializer<Object> imp
     public void resolve(DeserializationContext ctxt) throws JsonMappingException {
         ((ResolvableDeserializer) defaultDeserializer).resolve(ctxt);
     }
+
 }

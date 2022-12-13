@@ -15,7 +15,9 @@ import java.util.stream.Stream;
  * This class provides utility to iterate over {@link PagedResponse} using {@link Stream} and {@link Iterable}
  * interfaces.
  *
- * <p><strong>Code sample using {@link Stream} by page</strong></p>
+ * <p>
+ * <strong>Code sample using {@link Stream} by page</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.http.rest.PagedIterable.streamByPage -->
  * <pre>
@@ -29,7 +31,9 @@ import java.util.stream.Stream;
  * </pre>
  * <!-- end com.azure.core.http.rest.PagedIterable.streamByPage -->
  *
- * <p><strong>Code sample using {@link Iterable} by page</strong></p>
+ * <p>
+ * <strong>Code sample using {@link Iterable} by page</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.http.rest.PagedIterable.iterableByPage -->
  * <pre>
@@ -42,7 +46,9 @@ import java.util.stream.Stream;
  * </pre>
  * <!-- end com.azure.core.http.rest.PagedIterable.iterableByPage -->
  *
- * <p><strong>Code sample using {@link Iterable} by page and while loop</strong></p>
+ * <p>
+ * <strong>Code sample using {@link Iterable} by page and while loop</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.http.rest.PagedIterable.iterableByPage.while -->
  * <pre>
@@ -55,7 +61,9 @@ import java.util.stream.Stream;
  * </pre>
  * <!-- end com.azure.core.http.rest.PagedIterable.iterableByPage.while -->
  *
- * <p><strong>Code sample using {@link Iterable} by page and continuation token</strong></p>
+ * <p>
+ * <strong>Code sample using {@link Iterable} by page and continuation token</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.http.rest.PagedIterable.pagesWithContinuationToken -->
  * <pre>
@@ -72,10 +80,12 @@ import java.util.stream.Stream;
  * @see IterableStream
  */
 public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
+
     private final PagedFlux<T> pagedFlux;
 
     /**
      * Creates instance given {@link PagedFlux}.
+     * 
      * @param pagedFlux to use as iterable
      */
     public PagedIterable(PagedFlux<T> pagedFlux) {
@@ -87,7 +97,9 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      * Creates an instance of {@link PagedIterable} that consists of only a single page. This constructor takes a {@code
      * Supplier} that return the single page of {@code T}.
      *
-     * <p><strong>Code sample</strong></p>
+     * <p>
+     * <strong>Code sample</strong>
+     * </p>
      * <!-- src_embed com.azure.core.http.rest.PagedIterable.singlepage.instantiation -->
      * <pre>
      * &#47;&#47; A supplier that fetches the first page of data from source&#47;service
@@ -97,6 +109,7 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      *     nextPageRetriever&#41;;
      * </pre>
      * <!-- end com.azure.core.http.rest.PagedIterable.singlepage.instantiation -->
+     * 
      * @param firstPageRetriever Supplier that retrieves the first page.
      */
     public PagedIterable(Supplier<PagedResponse<T>> firstPageRetriever) {
@@ -106,7 +119,9 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
     /**
      * Creates an instance of {@link PagedIterable} that consists of only a single page with a given element count.
      *
-     * <p><strong>Code sample</strong></p>
+     * <p>
+     * <strong>Code sample</strong>
+     * </p>
      * <!-- src_embed com.azure.core.http.rest.PagedFlux.singlepage.instantiationWithPageSize -->
      * <pre>
      * &#47;&#47; A function that fetches the single page of data from a source&#47;service.
@@ -116,6 +131,7 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      * PagedFlux&lt;Integer&gt; singlePageFluxWithPageSize = new PagedFlux&lt;Integer&gt;&#40;singlePageRetriever&#41;;
      * </pre>
      * <!-- end com.azure.core.http.rest.PagedFlux.singlepage.instantiationWithPageSize -->
+     * 
      * @param firstPageRetriever Function that retrieves the first page.
      */
     public PagedIterable(Function<Integer, PagedResponse<T>> firstPageRetriever) {
@@ -127,7 +143,9 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      * {@code Supplier} returns the first page of {@code T}, the {@code Function} retrieves subsequent pages of {@code
      * T}.
      *
-     * <p><strong>Code sample</strong></p>
+     * <p>
+     * <strong>Code sample</strong>
+     * </p>
      * <!-- src_embed com.azure.core.http.rest.PagedIterable.instantiation -->
      * <pre>
      * &#47;&#47; A supplier that fetches the first page of data from source&#47;service
@@ -141,21 +159,28 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      *     nextPageRetriever&#41;;
      * </pre>
      * <!-- end com.azure.core.http.rest.PagedIterable.instantiation -->
-
+     * 
      * @param firstPageRetriever Supplier that retrieves the first page
      * @param nextPageRetriever Function that retrieves the next page given a continuation token
      */
-    public PagedIterable(Supplier<PagedResponse<T>> firstPageRetriever,
-        Function<String, PagedResponse<T>> nextPageRetriever) {
-        this(() -> (continuationToken, pageSize) ->
-            continuationToken == null
-                 ? firstPageRetriever.get()
-                 : nextPageRetriever.apply(continuationToken), true);
+    public PagedIterable(
+        Supplier<PagedResponse<T>> firstPageRetriever,
+        Function<String, PagedResponse<T>> nextPageRetriever
+    ) {
+        this(
+            () -> (continuationToken, pageSize) -> continuationToken == null
+                ? firstPageRetriever.get()
+                : nextPageRetriever.apply(continuationToken),
+            true
+        );
     }
 
     /**
-     * Creates an instance of {@link PagedIterable} that is capable of retrieving multiple pages with of a given page size.
-     * <p><strong>Code sample</strong></p>
+     * Creates an instance of {@link PagedIterable} that is capable of retrieving multiple pages with of a given page
+     * size.
+     * <p>
+     * <strong>Code sample</strong>
+     * </p>
      * <!-- src_embed com.azure.core.http.rest.PagedIterable.instantiationWithPageSize -->
      * <pre>
      * &#47;&#47; A function that fetches the first page of data from a source&#47;service.
@@ -168,14 +193,20 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      * PagedIterable&lt;Integer&gt; pagedIterableWithPageSize = new PagedIterable&lt;&gt;&#40;firstPageRetriever, nextPageRetriever&#41;;
      * </pre>
      * <!-- end com.azure.core.http.rest.PagedIterable.instantiationWithPageSize -->
+     * 
      * @param firstPageRetriever Function that retrieves the first page.
      * @param nextPageRetriever BiFunction that retrieves the next page given a continuation token and page size.
      */
-    public PagedIterable(Function<Integer, PagedResponse<T>> firstPageRetriever,
-        BiFunction<String, Integer, PagedResponse<T>> nextPageRetriever) {
-        this(() -> (continuationToken, pageSize) -> continuationToken == null
-             ? firstPageRetriever.apply(pageSize)
-             : nextPageRetriever.apply(continuationToken, pageSize), true);
+    public PagedIterable(
+        Function<Integer, PagedResponse<T>> firstPageRetriever,
+        BiFunction<String, Integer, PagedResponse<T>> nextPageRetriever
+    ) {
+        this(
+            () -> (continuationToken, pageSize) -> continuationToken == null
+                ? firstPageRetriever.apply(pageSize)
+                : nextPageRetriever.apply(continuationToken, pageSize),
+            true
+        );
     }
 
     /**
@@ -200,4 +231,5 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
         super(provider);
         this.pagedFlux = null;
     }
+
 }

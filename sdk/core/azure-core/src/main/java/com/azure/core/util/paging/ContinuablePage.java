@@ -13,6 +13,7 @@ import com.azure.core.util.IterableStream;
  * @see ContinuablePagedFlux
  */
 public interface ContinuablePage<C, T> {
+
     /**
      * Gets an {@link IterableStream} of elements in the page.
      *
@@ -26,4 +27,5 @@ public interface ContinuablePage<C, T> {
      * @return The next page reference or {@code null} if there isn't a next page.
      */
     C getContinuationToken();
+
 }

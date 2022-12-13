@@ -9,14 +9,13 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Collections;
 
-/**
- * General configuration options for clients.
- */
+/** General configuration options for clients. */
 @Fluent
 public class ClientOptions {
+
     private static final int MAX_APPLICATION_ID_LENGTH = 24;
-    private static final String INVALID_APPLICATION_ID_LENGTH = "'applicationId' length cannot be greater than "
-        + MAX_APPLICATION_ID_LENGTH;
+    private static final String INVALID_APPLICATION_ID_LENGTH =
+        "'applicationId' length cannot be greater than " + MAX_APPLICATION_ID_LENGTH;
     private static final String INVALID_APPLICATION_ID_SPACE = "'applicationId' cannot contain spaces.";
 
     // ClientOptions is a commonly used class, use a static logger.
@@ -50,9 +49,13 @@ public class ClientOptions {
      * See <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry
      * policy</a> for additional information.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p>
+     * <strong>Code Samples</strong>
+     * </p>
      *
-     * <p>Create ClientOptions with application ID 'myApplicationId'</p>
+     * <p>
+     * Create ClientOptions with application ID 'myApplicationId'
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.ClientOptions.setApplicationId#String -->
      * <pre>
@@ -89,9 +92,13 @@ public class ClientOptions {
      * <p>
      * This overwrites all previously set headers.
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p>
+     * <strong>Code Samples</strong>
+     * </p>
      *
-     * <p>Create ClientOptions with Header 'myCustomHeader':'myStaticValue'</p>
+     * <p>
+     * Create ClientOptions with Header 'myCustomHeader':'myStaticValue'
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.ClientOptions.setHeaders#Iterable -->
      * <pre>
@@ -134,9 +141,11 @@ public class ClientOptions {
 
     /**
      * Gets {@link MetricsOptions}
+     * 
      * @return The {@link MetricsOptions} instance, if metric options weren't set previously, {@code null} is returned.
      */
     public MetricsOptions getMetricsOptions() {
         return metricsOptions;
     }
+
 }

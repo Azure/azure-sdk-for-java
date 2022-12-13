@@ -4,6 +4,7 @@
 package com.azure.core.util;
 
 class UrlToken {
+
     private final String text;
     private final UrlTokenType type;
 
@@ -58,4 +59,5 @@ class UrlToken {
     static UrlToken query(String text) {
         return new UrlToken(text, UrlTokenType.QUERY);
     }
+
 }

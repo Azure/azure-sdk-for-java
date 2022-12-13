@@ -163,7 +163,6 @@ public class Configuration implements Cloneable {
      */
     public static final String PROPERTY_AZURE_METRICS_DISABLED = "AZURE_METRICS_DISABLED";
 
-
     /**
      * Sets the default number of times a request will be retried, if it passes the conditions for retrying, before it
      * fails.
@@ -244,29 +243,42 @@ public class Configuration implements Cloneable {
     }
 
     /**
-     * Constructs a configuration containing the known Azure properties constants. Use {@link ConfigurationBuilder} to create instance of {@link Configuration}.
+     * Constructs a configuration containing the known Azure properties constants. Use {@link ConfigurationBuilder} to
+     * create instance of {@link Configuration}.
      *
      * @param configurationSource Configuration property source.
      * @param environmentConfiguration instance of {@link EnvironmentConfiguration} to mock environment for testing.
      * @param path Absolute path of current configuration section for logging and diagnostics purposes.
      * @param sharedConfiguration Instance of shared {@link Configuration} section to retrieve shared properties.
      */
-    Configuration(ConfigurationSource configurationSource, EnvironmentConfiguration environmentConfiguration, String path, Configuration sharedConfiguration) {
+    Configuration(
+        ConfigurationSource configurationSource,
+        EnvironmentConfiguration environmentConfiguration,
+        String path,
+        Configuration sharedConfiguration
+    ) {
         this(readConfigurations(configurationSource, path), environmentConfiguration, path, sharedConfiguration);
     }
 
     /**
-     * Constructs a configuration containing the known Azure properties constants. Use {@link ConfigurationBuilder} to create instance of {@link Configuration}.
+     * Constructs a configuration containing the known Azure properties constants. Use {@link ConfigurationBuilder} to
+     * create instance of {@link Configuration}.
      *
      * @param configurations map of all properties.
      * @param environmentConfiguration instance of {@link EnvironmentConfiguration} to mock environment for testing.
      * @param path Absolute path of current configuration section for logging and diagnostics purposes.
      * @param sharedConfiguration Instance of shared {@link Configuration} section to retrieve shared properties.
      */
-    private Configuration(Map<String, String> configurations, EnvironmentConfiguration environmentConfiguration, String path, Configuration sharedConfiguration) {
+    private Configuration(
+        Map<String, String> configurations,
+        EnvironmentConfiguration environmentConfiguration,
+        String path,
+        Configuration sharedConfiguration
+    ) {
         this.configurations = configurations;
         this.isEmpty = configurations.isEmpty();
-        this.environmentConfiguration = Objects.requireNonNull(environmentConfiguration, "'environmentConfiguration' cannot be null");
+        this.environmentConfiguration =
+            Objects.requireNonNull(environmentConfiguration, "'environmentConfiguration' cannot be null");
         this.path = path;
         this.sharedConfiguration = sharedConfiguration;
     }
@@ -308,7 +320,9 @@ public class Configuration implements Cloneable {
      * <p>
      * If no configuration is found, the {@code defaultValue} is returned.
      *
-     * <p><b>Following types are supported:</b></p>
+     * <p>
+     * <b>Following types are supported:</b>
+     * </p>
      * <ul>
      * <li>{@link Byte}</li>
      * <li>{@link Short}</li>
@@ -406,12 +420,19 @@ public class Configuration implements Cloneable {
     @SuppressWarnings("CloneDoesntCallSuperClone")
     @Deprecated
     public Configuration clone() {
-        return new Configuration(configurations, new EnvironmentConfiguration(environmentConfiguration), path, sharedConfiguration);
+        return new Configuration(
+            configurations,
+            new EnvironmentConfiguration(environmentConfiguration),
+            path,
+            sharedConfiguration
+        );
     }
 
     /**
-     * Checks if configuration contains the property. If property can be shared between clients, checks this {@code Configuration} and
-     * falls back to shared section. If property has aliases, system property or environment variable defined, checks them as well.
+     * Checks if configuration contains the property. If property can be shared between clients, checks this
+     * {@code Configuration} and
+     * falls back to shared section. If property has aliases, system property or environment variable defined, checks
+     * them as well.
      * <p>
      * Value is not validated.
      *
@@ -427,16 +448,20 @@ public class Configuration implements Cloneable {
      * Gets property value from all available sources in the following order:
      *
      * <ul>
-     *     <li>Explicit configuration from given {@link ConfigurationSource} by property name</li>
-     *     <li>Explicit configuration by property aliases in the order they were provided in {@link ConfigurationProperty}</li>
-     *     <li>Explicit configuration by property name in the shared section (if {@link ConfigurationProperty} is shared)</li>
-     *     <li>Explicit configuration by property aliases in the shared section (if {@link ConfigurationProperty} is shared)</li>
-     *     <li>System property (if set)</li>
-     *     <li>Environment variable (if set)</li>
+     * <li>Explicit configuration from given {@link ConfigurationSource} by property name</li>
+     * <li>Explicit configuration by property aliases in the order they were provided in
+     * {@link ConfigurationProperty}</li>
+     * <li>Explicit configuration by property name in the shared section (if {@link ConfigurationProperty} is
+     * shared)</li>
+     * <li>Explicit configuration by property aliases in the shared section (if {@link ConfigurationProperty} is
+     * shared)</li>
+     * <li>System property (if set)</li>
+     * <li>Environment variable (if set)</li>
      * </ul>
      *
      * <p>
-     * Property value is converted to specified type. If property value is missing and not required, default value is returned.
+     * Property value is converted to specified type. If property value is missing and not required, default value is
+     * returned.
      *
      * <!-- src_embed com.azure.core.util.Configuration.get#ConfigurationProperty -->
      * <pre>
@@ -578,16 +603,12 @@ public class Configuration implements Cloneable {
             String key = CoreUtils.isNullOrEmpty(path) ? prop.getKey() : prop.getKey().substring(path.length() + 1);
             String value = prop.getValue();
 
-            LOGGER.atVerbose()
-                .addKeyValue("name", prop.getKey())
-                .log("Got property from configuration source.");
+            LOGGER.atVerbose().addKeyValue("name", prop.getKey()).log("Got property from configuration source.");
 
             if (key != null && value != null) {
                 props.put(key, value);
             } else {
-                LOGGER.atWarning()
-                    .addKeyValue("name", prop.getKey())
-                    .log("Key or value is null, property is ignored.");
+                LOGGER.atWarning().addKeyValue("name", prop.getKey()).log("Key or value is null, property is ignored.");
             }
         }
 
@@ -598,7 +619,9 @@ public class Configuration implements Cloneable {
      * Attempts to convert the configuration value to given primitive {@code T} using
      * corresponding {@code parse} method on this type.
      *
-     * <p><b>Following types are supported:</b></p>
+     * <p>
+     * <b>Following types are supported:</b>
+     * </p>
      * <ul>
      * <li>{@link Byte}</li>
      * <li>{@link Short}</li>
@@ -645,4 +668,5 @@ public class Configuration implements Cloneable {
 
         return (T) convertedValue;
     }
+
 }

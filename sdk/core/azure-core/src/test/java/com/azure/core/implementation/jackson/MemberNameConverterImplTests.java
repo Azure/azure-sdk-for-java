@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class MemberNameConverterImplTests {
+
     @Test
     public void fieldsWithJsonProperty() throws NoSuchFieldException {
         final Field publicFieldWithAnnotationAndValue = Foo.class.getDeclaredField("publicFieldWithAnnotationAndValue");
@@ -24,8 +25,14 @@ public class MemberNameConverterImplTests {
 
         MemberNameConverterImpl memberNameConverter = new MemberNameConverterImpl(new ObjectMapper());
 
-        assertEquals("public-field-with-annotation-and-value", memberNameConverter.convertMemberName(publicFieldWithAnnotationAndValue));
-        assertEquals("publicFieldWithAnnotationNoValue", memberNameConverter.convertMemberName(publicFieldWithAnnotationNoValue));
+        assertEquals(
+            "public-field-with-annotation-and-value",
+            memberNameConverter.convertMemberName(publicFieldWithAnnotationAndValue)
+        );
+        assertEquals(
+            "publicFieldWithAnnotationNoValue",
+            memberNameConverter.convertMemberName(publicFieldWithAnnotationNoValue)
+        );
         assertNull(memberNameConverter.convertMemberName(privateFieldWithAnnotation));
     }
 
@@ -41,9 +48,18 @@ public class MemberNameConverterImplTests {
 
         MemberNameConverterImpl memberNameConverter = new MemberNameConverterImpl(new ObjectMapper());
 
-        assertEquals("public-getter-with-annotation-and-value", memberNameConverter.convertMemberName(getPublicWithAnnotationAndValue));
-        assertEquals("publicWithAnnotationNoValue", memberNameConverter.convertMemberName(getPublicWithAnnotationNoValue));
-        assertEquals("publicWithAnnotationBoolean", memberNameConverter.convertMemberName(isPublicWithAnnotationBoolean));
+        assertEquals(
+            "public-getter-with-annotation-and-value",
+            memberNameConverter.convertMemberName(getPublicWithAnnotationAndValue)
+        );
+        assertEquals(
+            "publicWithAnnotationNoValue",
+            memberNameConverter.convertMemberName(getPublicWithAnnotationNoValue)
+        );
+        assertEquals(
+            "publicWithAnnotationBoolean",
+            memberNameConverter.convertMemberName(isPublicWithAnnotationBoolean)
+        );
         assertNull(memberNameConverter.convertMemberName(publicWithAnnotationNoPrefix));
         assertNull(memberNameConverter.convertMemberName(isPublicWithAnnotationString));
         assertNull(memberNameConverter.convertMemberName(getPrivateWithAnnotation));
@@ -85,6 +101,7 @@ public class MemberNameConverterImplTests {
     }
 
     private static class Foo {
+
         @JsonProperty(value = "public-field-with-annotation-and-value")
         public String publicFieldWithAnnotationAndValue;
 
@@ -162,5 +179,7 @@ public class MemberNameConverterImplTests {
         private String getNoAnnotationPrivate() {
             return "foo";
         }
+
     }
+
 }

@@ -6,13 +6,18 @@ package com.azure.core.implementation.http.rest;
 import com.azure.core.http.HttpRequest;
 
 public class RequestDataConfiguration {
+
     private HttpRequest httpRequest;
     private SwaggerMethodParser methodParser;
     private boolean isJson;
     private Object bodyContent;
 
-    public RequestDataConfiguration(HttpRequest httpRequest, SwaggerMethodParser swaggerMethodParser,
-                                    boolean isJson, Object requestBodyContent) {
+    public RequestDataConfiguration(
+        HttpRequest httpRequest,
+        SwaggerMethodParser swaggerMethodParser,
+        boolean isJson,
+        Object requestBodyContent
+    ) {
 
         this.httpRequest = httpRequest;
         this.methodParser = swaggerMethodParser;
@@ -35,4 +40,5 @@ public class RequestDataConfiguration {
     public Object getBodyContent() {
         return bodyContent;
     }
+
 }

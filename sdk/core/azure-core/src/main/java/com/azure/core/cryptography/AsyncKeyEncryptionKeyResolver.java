@@ -5,9 +5,7 @@ package com.azure.core.cryptography;
 
 import reactor.core.publisher.Mono;
 
-/**
- * An object capable of asynchronously retrieving key encryption keys from a provided key identifier.
- */
+/** An object capable of asynchronously retrieving key encryption keys from a provided key identifier. */
 public interface AsyncKeyEncryptionKeyResolver {
 
     /**
@@ -17,4 +15,5 @@ public interface AsyncKeyEncryptionKeyResolver {
      * @return The key encryption key corresponding to the specified {@code keyId}
      */
     Mono<? extends AsyncKeyEncryptionKey> buildAsyncKeyEncryptionKey(String keyId);
+
 }

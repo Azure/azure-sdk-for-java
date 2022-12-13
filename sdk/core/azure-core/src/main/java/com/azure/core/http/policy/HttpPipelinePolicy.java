@@ -19,6 +19,7 @@ import reactor.core.publisher.Mono;
  */
 @FunctionalInterface
 public interface HttpPipelinePolicy {
+
     /**
      * Processes provided request context and invokes the next policy.
      *
@@ -49,4 +50,5 @@ public interface HttpPipelinePolicy {
     default HttpPipelinePosition getPipelinePosition() {
         return HttpPipelinePosition.PER_RETRY;
     }
+
 }

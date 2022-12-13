@@ -18,9 +18,7 @@ import org.openjdk.jmh.infra.Blackhole;
 
 import java.util.concurrent.TimeUnit;
 
-/**
- * Benchmarks retrieving the special parameters {@link Context} and {@link RequestOptions}.
- */
+/** Benchmarks retrieving the special parameters {@link Context} and {@link RequestOptions}. */
 @Fork(3)
 @Warmup(iterations = 5, time = 2)
 @Measurement(iterations = 5, time = 10)
@@ -28,16 +26,11 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @State(Scope.Thread)
 public class RestProxySpecialParametersBenchmark {
+
     // Context is last as it's usually the last parameter in the generated interface.
     // There isn't an exact known size of parameters but 7 is a good rough estimate for the average.
     private static final Object[] REST_PROXY_PARAMETERS = new Object[] {
-        "a string",
-        1,
-        1.5D,
-        "another string",
-        new Object(),
-        -7,
-        Context.NONE
+        "a string", 1, 1.5D, "another string", new Object(), -7, Context.NONE
     };
 
     /**
@@ -62,4 +55,5 @@ public class RestProxySpecialParametersBenchmark {
         // Iterate through the parameters until the first instance of Context is found.
         blackhole.consume(CoreUtils.findFirstOfType(REST_PROXY_PARAMETERS, Context.class));
     }
+
 }

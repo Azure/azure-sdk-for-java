@@ -90,7 +90,9 @@ public class TypeUtilTests {
     }
 
     private abstract static class Pet<T extends Human, V> {
+
         abstract T owner();
+
     }
 
     private static class Human {
@@ -100,14 +102,17 @@ public class TypeUtilTests {
     }
 
     private static class Dog<T extends Human> extends Pet<T, String> {
+
         private T owner;
 
         @Override
         public T owner() {
             return owner;
         }
+
     }
 
     private static class Puppy extends Dog<Kid> {
     }
+
 }

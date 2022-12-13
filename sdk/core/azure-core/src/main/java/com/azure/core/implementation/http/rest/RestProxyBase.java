@@ -46,6 +46,7 @@ import java.util.EnumSet;
 import java.util.function.Consumer;
 
 public abstract class RestProxyBase {
+
     static final String MUST_IMPLEMENT_PAGE_ERROR =
         "Unable to create PagedResponse<T>. Body must be of a type that implements: " + Page.class;
 
@@ -69,17 +70,27 @@ public abstract class RestProxyBase {
      * @param interfaceParser the parser that contains information about the interface describing REST API methods that
      * this RestProxy "implements".
      */
-    public RestProxyBase(HttpPipeline httpPipeline, SerializerAdapter serializer,
-        SwaggerInterfaceParser interfaceParser) {
+    public RestProxyBase(
+        HttpPipeline httpPipeline,
+        SerializerAdapter serializer,
+        SwaggerInterfaceParser interfaceParser
+    ) {
         this.httpPipeline = httpPipeline;
         this.serializer = serializer;
         this.interfaceParser = interfaceParser;
         this.decoder = new HttpResponseDecoder(this.serializer);
     }
 
-    public final Object invoke(Object proxy, final Method method, RequestOptions options,
-        EnumSet<ErrorOptions> errorOptions, Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser,
-        boolean isAsync, Object[] args) {
+    public final Object invoke(
+        Object proxy,
+        final Method method,
+        RequestOptions options,
+        EnumSet<ErrorOptions> errorOptions,
+        Consumer<HttpRequest> requestCallback,
+        SwaggerMethodParser methodParser,
+        boolean isAsync,
+        Object[] args
+    ) {
         RestProxyUtils.validateResumeOperationIsNotPresent(method);
 
         try {
@@ -113,16 +124,26 @@ public abstract class RestProxyBase {
         }
     }
 
-    protected abstract Object invoke(Object proxy, Method method, RequestOptions options,
-        EnumSet<ErrorOptions> errorOptions, Consumer<HttpRequest> httpRequestConsumer, SwaggerMethodParser methodParser,
-        HttpRequest request, Context context);
+    protected abstract Object invoke(
+        Object proxy,
+        Method method,
+        RequestOptions options,
+        EnumSet<ErrorOptions> errorOptions,
+        Consumer<HttpRequest> httpRequestConsumer,
+        SwaggerMethodParser methodParser,
+        HttpRequest request,
+        Context context
+    );
 
-    public abstract void updateRequest(RequestDataConfiguration requestDataConfiguration,
-        SerializerAdapter serializerAdapter) throws IOException;
+    public abstract void
+        updateRequest(RequestDataConfiguration requestDataConfiguration, SerializerAdapter serializerAdapter)
+            throws IOException;
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public Response createResponse(HttpResponseDecoder.HttpDecodedResponse response, Type entityType,
-        Object bodyAsObject) {
+    @SuppressWarnings({
+        "unchecked", "rawtypes"
+    })
+    public Response
+        createResponse(HttpResponseDecoder.HttpDecodedResponse response, Type entityType, Object bodyAsObject) {
         final Class<? extends Response<?>> cls = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
 
         final HttpResponse httpResponse = response.getSourceResponse();
@@ -150,8 +171,9 @@ public abstract class RestProxyBase {
             } else if (bodyAsObject == null) {
                 return cls.cast(new PagedResponseBase<>(request, statusCode, headers, null, null, decodedHeaders));
             } else {
-                return cls.cast(new PagedResponseBase<>(request, statusCode, headers, (Page<?>) bodyAsObject,
-                    decodedHeaders));
+                return cls.cast(
+                    new PagedResponseBase<>(request, statusCode, headers, (Page<?>) bodyAsObject, decodedHeaders)
+                );
             }
         }
 
@@ -190,15 +212,19 @@ public abstract class RestProxyBase {
 
     // This handles each onX for the response mono.
     // The signal indicates the status and contains the metadata we need to end the tracing span.
-    void endTracingSpan(HttpResponseDecoder.HttpDecodedResponse httpDecodedResponse, Throwable throwable,
-        Context tracingContext) {
+    void endTracingSpan(
+        HttpResponseDecoder.HttpDecodedResponse httpDecodedResponse,
+        Throwable throwable,
+        Context tracingContext
+    ) {
         if (tracingContext == null) {
             return;
         }
 
         // Get the context that was added to the mono, this will contain the information needed to end the span.
         Object disableTracingValue = (tracingContext.getData(Tracer.DISABLE_TRACING_KEY).isPresent()
-            ? tracingContext.getData(Tracer.DISABLE_TRACING_KEY).get() : null);
+            ? tracingContext.getData(Tracer.DISABLE_TRACING_KEY).get()
+            : null);
         boolean disableTracing = Boolean.TRUE.equals(disableTracingValue != null ? disableTracingValue : false);
 
         if (disableTracing) {
@@ -209,7 +235,7 @@ public abstract class RestProxyBase {
 
         // On next contains the response information.
         if (httpDecodedResponse != null) {
-            //noinspection ConstantConditions
+            // noinspection ConstantConditions
             statusCode = httpDecodedResponse.getSourceResponse().getStatusCode();
         } else if (throwable != null) {
             // The last status available is on error, this contains the error thrown by the REST response.
@@ -222,7 +248,6 @@ public abstract class RestProxyBase {
         TracerProxy.end(statusCode, throwable, tracingContext);
     }
 
-
     /**
      * Create a HttpRequest for the provided Swagger method using the provided arguments.
      *
@@ -231,8 +256,13 @@ public abstract class RestProxyBase {
      * @return a HttpRequest
      * @throws IOException thrown if the body contents cannot be serialized
      */
-    HttpRequest createHttpRequest(SwaggerMethodParser methodParser, SerializerAdapter serializerAdapter,
-        boolean isAsync, Object[] args) throws IOException {
+    HttpRequest createHttpRequest(
+        SwaggerMethodParser methodParser,
+        SerializerAdapter serializerAdapter,
+        boolean isAsync,
+        Object[] args
+    )
+        throws IOException {
         // Sometimes people pass in a full URL for the value of their PathParam annotated argument.
         // This definitely happens in paging scenarios. In that case, just use the full URL and
         // ignore the Host annotation.
@@ -266,8 +296,13 @@ public abstract class RestProxyBase {
         methodParser.setEncodedQueryParameters(args, urlBuilder, serializer);
 
         final URL url = urlBuilder.toUrl();
-        final HttpRequest request = configRequest(new HttpRequest(methodParser.getHttpMethod(), url),
-            methodParser, serializerAdapter, isAsync, args);
+        final HttpRequest request = configRequest(
+            new HttpRequest(methodParser.getHttpMethod(), url),
+            methodParser,
+            serializerAdapter,
+            isAsync,
+            args
+        );
 
         // Headers from Swagger method arguments always take precedence over inferred headers from body types
         HttpHeaders httpHeaders = request.getHeaders();
@@ -277,8 +312,14 @@ public abstract class RestProxyBase {
     }
 
     @SuppressWarnings("unchecked")
-    private HttpRequest configRequest(final HttpRequest request, final SwaggerMethodParser methodParser,
-        SerializerAdapter serializerAdapter, boolean isAsync, final Object[] args) throws IOException {
+    private HttpRequest configRequest(
+        final HttpRequest request,
+        final SwaggerMethodParser methodParser,
+        SerializerAdapter serializerAdapter,
+        boolean isAsync,
+        final Object[] args
+    )
+        throws IOException {
         final Object bodyContentObject = methodParser.setBody(args, serializer);
         if (bodyContentObject == null) {
             request.setHeader(HttpHeaderName.CONTENT_LENGTH, "0");
@@ -320,8 +361,10 @@ public abstract class RestProxyBase {
                     break;
                 }
             }
-            updateRequest(new RequestDataConfiguration(request, methodParser, isJson, bodyContentObject),
-                serializerAdapter);
+            updateRequest(
+                new RequestDataConfiguration(request, methodParser, isJson, bodyContentObject),
+                serializerAdapter
+            );
         }
 
         return request;
@@ -336,11 +379,14 @@ public abstract class RestProxyBase {
      * @param responseDecodedContent the decoded response content to use when constructing exception
      * @return the Unexpected Exception
      */
-    public Exception instantiateUnexpectedException(final UnexpectedExceptionInformation exception,
-        final HttpResponse httpResponse, final byte[] responseContent, final Object responseDecodedContent) {
-        StringBuilder exceptionMessage = new StringBuilder("Status code ")
-            .append(httpResponse.getStatusCode())
-            .append(", ");
+    public Exception instantiateUnexpectedException(
+        final UnexpectedExceptionInformation exception,
+        final HttpResponse httpResponse,
+        final byte[] responseContent,
+        final Object responseDecodedContent
+    ) {
+        StringBuilder exceptionMessage =
+            new StringBuilder("Status code ").append(httpResponse.getStatusCode()).append(", ");
 
         final String contentType = httpResponse.getHeaderValue("Content-Type");
         if ("application/octet-stream".equalsIgnoreCase(contentType)) {
@@ -372,10 +418,10 @@ public abstract class RestProxyBase {
             // Finally, if the HttpResponseException subclass doesn't exist in azure-core, use reflection to create a
             // new instance of it.
             try {
-                MethodHandle handle = RESPONSE_EXCEPTION_CONSTRUCTOR_CACHE.get(exceptionType,
-                    exception.getExceptionBodyType());
-                return ResponseExceptionConstructorCache.invoke(handle, exceptionMessage.toString(), httpResponse,
-                    responseDecodedContent);
+                MethodHandle handle =
+                    RESPONSE_EXCEPTION_CONSTRUCTOR_CACHE.get(exceptionType, exception.getExceptionBodyType());
+                return ResponseExceptionConstructorCache
+                    .invoke(handle, exceptionMessage.toString(), httpResponse, responseDecodedContent);
             } catch (RuntimeException e) {
                 // And if reflection fails, return an IOException.
                 // TODO (alzimmer): Determine if this should be an IOException or HttpResponseException.
@@ -428,5 +474,5 @@ public abstract class RestProxyBase {
     static ByteBuffer serializeAsXmlSerializable(Object bodyContent) throws IOException {
         return ReflectionSerializable.serializeAsXmlSerializable(bodyContent);
     }
-}
 
+}

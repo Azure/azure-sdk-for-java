@@ -7,10 +7,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
 
-/**
- * An Access policy.
- */
+/** An Access policy. */
 public class AccessPolicy {
+
     /**
      * the date-time the policy is active.
      */

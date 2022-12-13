@@ -15,10 +15,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-/**
- * Tests for {@link QueryParameter}.
- */
+/** Tests for {@link QueryParameter}. */
 public class QueryParameterTest {
+
     @Test
     public void testAddValue() {
         // Arrange
@@ -65,7 +64,9 @@ public class QueryParameterTest {
     public void testGetValues() {
         // Arrange
         String name = "a";
-        String[] values = {"b", "c"};
+        String[] values = {
+            "b", "c"
+        };
 
         // Act
         final QueryParameter parameter = new QueryParameter(name, values[0]);
@@ -76,9 +77,7 @@ public class QueryParameterTest {
     }
 
     private static Stream<Arguments> testNullArgsConstructor() {
-        return Stream.of(
-            Arguments.arguments(null, "a"),
-            Arguments.arguments(null, null)
-        );
+        return Stream.of(Arguments.arguments(null, "a"), Arguments.arguments(null, null));
     }
+
 }

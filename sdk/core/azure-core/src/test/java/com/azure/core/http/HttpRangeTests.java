@@ -12,10 +12,9 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- * Tests {@link HttpRange}.
- */
+/** Tests {@link HttpRange}. */
 public class HttpRangeTests {
+
     @ParameterizedTest
     @MethodSource("equalsTestSupplier")
     public void equalsTest(long offset, Long length, HttpRange expected) {
@@ -54,9 +53,7 @@ public class HttpRangeTests {
     }
 
     private static Stream<Arguments> invalidRangeSupplier() {
-        return Stream.of(
-            Arguments.of(-1, null),
-            Arguments.of(0, -1L)
-        );
+        return Stream.of(Arguments.of(-1, null), Arguments.of(0, -1L));
     }
+
 }

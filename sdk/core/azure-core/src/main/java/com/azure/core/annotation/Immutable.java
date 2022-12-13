@@ -10,7 +10,8 @@ import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 /**
- * Annotation given to all immutable classes. If a class has this annotation, checks can be made to ensure all fields in
+ * Annotation given to all immutable classes. If a class has this annotation, checks can be made to ensure all fields
+ * in
  * this class are final.
  */
 @Retention(SOURCE)

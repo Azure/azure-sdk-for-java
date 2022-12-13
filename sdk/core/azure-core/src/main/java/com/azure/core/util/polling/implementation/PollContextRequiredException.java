@@ -10,10 +10,12 @@ package com.azure.core.util.polling.implementation;
  * requires a {@link com.azure.core.util.polling.PollingContext}
  */
 public class PollContextRequiredException extends RuntimeException {
+
     /**
      * Creates PollContextRequiredException.
      */
     public PollContextRequiredException() {
         super("");
     }
+
 }

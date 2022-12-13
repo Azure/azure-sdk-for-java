@@ -25,10 +25,9 @@ import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-/**
- *  Retrieves the JSON serialized property name from {@link Member}.
- */
+/** Retrieves the JSON serialized property name from {@link Member}. */
 final class MemberNameConverterImpl implements MemberNameConverter {
+
     private static final ClientLogger LOGGER = new ClientLogger(MemberNameConverterImpl.class);
 
     private static final String ACCESSOR_NAMING_STRATEGY =
@@ -54,18 +53,33 @@ final class MemberNameConverterImpl implements MemberNameConverter {
         try {
             Class<?> accessorNamingStrategyProviderClass = Class.forName(ACCESSOR_NAMING_STRATEGY_PROVIDER);
             Class<?> accessorNamingStrategyClass = Class.forName(ACCESSOR_NAMING_STRATEGY);
-            getAccessorNaming = publicLookup.findVirtual(MapperConfig.class, "getAccessorNaming",
-                MethodType.methodType(accessorNamingStrategyProviderClass));
-            forPojo = publicLookup.findVirtual(accessorNamingStrategyProviderClass, "forPOJO",
-                MethodType.methodType(accessorNamingStrategyClass, MapperConfig.class, AnnotatedClass.class));
-            findNameForIsGetter = publicLookup.findVirtual(accessorNamingStrategyClass, "findNameForIsGetter",
-                MethodType.methodType(String.class, AnnotatedMethod.class, String.class));
-            findNameForRegularGetter = publicLookup.findVirtual(accessorNamingStrategyClass, "findNameForRegularGetter",
-                MethodType.methodType(String.class, AnnotatedMethod.class, String.class));
+            getAccessorNaming = publicLookup.findVirtual(
+                MapperConfig.class,
+                "getAccessorNaming",
+                MethodType.methodType(accessorNamingStrategyProviderClass)
+            );
+            forPojo = publicLookup.findVirtual(
+                accessorNamingStrategyProviderClass,
+                "forPOJO",
+                MethodType.methodType(accessorNamingStrategyClass, MapperConfig.class, AnnotatedClass.class)
+            );
+            findNameForIsGetter = publicLookup.findVirtual(
+                accessorNamingStrategyClass,
+                "findNameForIsGetter",
+                MethodType.methodType(String.class, AnnotatedMethod.class, String.class)
+            );
+            findNameForRegularGetter = publicLookup.findVirtual(
+                accessorNamingStrategyClass,
+                "findNameForRegularGetter",
+                MethodType.methodType(String.class, AnnotatedMethod.class, String.class)
+            );
             useReflectionForMemberName = true;
         } catch (LinkageError | ReflectiveOperationException ex) {
-            LOGGER.verbose("Failed to retrieve MethodHandles used to get naming strategy. Falling back to BeanUtils. "
-                + "Please consider updating your Jackson dependencies to at least version 2.12", ex);
+            LOGGER.verbose(
+                "Failed to retrieve MethodHandles used to get naming strategy. Falling back to BeanUtils. "
+                    + "Please consider updating your Jackson dependencies to at least version 2.12",
+                ex
+            );
         }
 
         GET_ACCESSOR_NAMING = getAccessorNaming;
@@ -91,8 +105,10 @@ final class MemberNameConverterImpl implements MemberNameConverter {
 
             if (f.isAnnotationPresent(JsonIgnore.class) || !visibilityChecker.isFieldVisible(f)) {
                 if (f.isAnnotationPresent(JsonProperty.class)) {
-                    LOGGER.info("Field {} is annotated with JsonProperty but isn't accessible to "
-                        + "JacksonJsonSerializer.", f.getName());
+                    LOGGER.info(
+                        "Field {} is annotated with JsonProperty but isn't accessible to " + "JacksonJsonSerializer.",
+                        f.getName()
+                    );
                 }
                 return null;
             }
@@ -112,12 +128,13 @@ final class MemberNameConverterImpl implements MemberNameConverter {
              * If the method isn't a getter, is annotated with JsonIgnore, or isn't visible to the ObjectMapper ignore
              * it.
              */
-            if (!verifyGetter(m)
-                || m.isAnnotationPresent(JsonIgnore.class)
-                || !visibilityChecker.isGetterVisible(m)) {
+            if (!verifyGetter(m) || m.isAnnotationPresent(JsonIgnore.class) || !visibilityChecker.isGetterVisible(m)) {
                 if (m.isAnnotationPresent(JsonGetter.class) || m.isAnnotationPresent(JsonProperty.class)) {
-                    LOGGER.info("Method {} is annotated with either JsonGetter or JsonProperty but isn't accessible "
-                        + "to JacksonJsonSerializer.", m.getName());
+                    LOGGER.info(
+                        "Method {} is annotated with either JsonGetter or JsonProperty but isn't accessible "
+                            + "to JacksonJsonSerializer.",
+                        m.getName()
+                    );
                 }
                 return null;
             }
@@ -150,16 +167,14 @@ final class MemberNameConverterImpl implements MemberNameConverter {
     private static boolean verifyGetter(Method method) {
         Class<?> returnType = method.getReturnType();
 
-        return method.getParameterCount() == 0
-            && returnType != void.class
-            && returnType != Void.class;
+        return method.getParameterCount() == 0 && returnType != void.class && returnType != Void.class;
     }
 
     private String removePrefix(Method method) {
         MapperConfig<?> config = mapper.getSerializationConfig();
 
-        AnnotatedClass annotatedClass = AnnotatedClassResolver.resolve(config,
-            mapper.constructType(method.getDeclaringClass()), null);
+        AnnotatedClass annotatedClass =
+            AnnotatedClassResolver.resolve(config, mapper.constructType(method.getDeclaringClass()), null);
 
         AnnotatedMethod annotatedMethod = new AnnotatedMethod(null, method, null, null);
         String annotatedMethodName = annotatedMethod.getName();
@@ -176,8 +191,12 @@ final class MemberNameConverterImpl implements MemberNameConverter {
         return name;
     }
 
-    private static String removePrefixWithReflection(MapperConfig<?> config, AnnotatedClass annotatedClass,
-        AnnotatedMethod method, String methodName) {
+    private static String removePrefixWithReflection(
+        MapperConfig<?> config,
+        AnnotatedClass annotatedClass,
+        AnnotatedMethod method,
+        String methodName
+    ) {
         try {
             Object accessorNamingStrategy = FOR_POJO.invoke(GET_ACCESSOR_NAMING.invoke(config), config, annotatedClass);
             String name = (String) FIND_NAME_FOR_IS_GETTER.invoke(accessorNamingStrategy, method, methodName);
@@ -200,4 +219,5 @@ final class MemberNameConverterImpl implements MemberNameConverter {
     private static String removePrefixWithBeanUtils(AnnotatedMethod annotatedMethod) {
         return BeanUtil.okNameForGetter(annotatedMethod, false);
     }
+
 }

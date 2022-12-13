@@ -13,10 +13,9 @@ import java.lang.ref.ReferenceQueue;
 import java.util.Objects;
 import java.util.concurrent.ThreadFactory;
 
-/**
- * Implementation of {@link ReferenceManager}.
- */
+/** Implementation of {@link ReferenceManager}. */
 public final class ReferenceManagerImpl implements ReferenceManager {
+
     private static final ClientLogger LOGGER = new ClientLogger(ReferenceManagerImpl.class);
 
     // If multiple instances of ReferenceManaged needs to be supported this maintains Thread name uniqueness.
@@ -73,7 +72,7 @@ public final class ReferenceManagerImpl implements ReferenceManager {
             // If multiple instances of ReferenceManager needs to be supported each Thread should have a unique name
             // with a consistent base name.
             // Thread thread = new Thread(Thread.currentThread().getThreadGroup(), this,
-            //     BASE_THREAD_NAME + "-" + RESOURCE_MANAGER_THREAD_NUMBER.getAndIncrement());
+            // BASE_THREAD_NAME + "-" + RESOURCE_MANAGER_THREAD_NUMBER.getAndIncrement());
 
             // Make the ReferenceManager Thread a daemon, this will prevent it from halting a JVM shutdown.
             thread.setDaemon(true);
@@ -121,8 +120,11 @@ public final class ReferenceManagerImpl implements ReferenceManager {
                 reference = (CleanableReference<?>) queue.remove(30000);
             } catch (InterruptedException ex) {
                 // Thread has been interrupted while waiting for the queue to emit an element.
-                LOGGER.log(LogLevel.VERBOSE,
-                    () -> "ReferenceManager Thread interrupted while waiting for a reference to clean.", ex);
+                LOGGER.log(
+                    LogLevel.VERBOSE,
+                    () -> "ReferenceManager Thread interrupted while waiting for a reference to clean.",
+                    ex
+                );
             }
 
             try {
@@ -147,4 +149,5 @@ public final class ReferenceManagerImpl implements ReferenceManager {
     CleanableReference<?> getCleanableReferenceList() {
         return cleanableReferenceList;
     }
+
 }

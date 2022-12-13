@@ -18,6 +18,7 @@ import java.util.Objects;
  */
 @Immutable
 public final class HttpRange {
+
     // HttpRange can be a highly used, short-lived class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(HttpRange.class);
 
@@ -50,8 +51,8 @@ public final class HttpRange {
         }
 
         if (length != null && length <= 0) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'length' cannot be equal to or less than 0."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("'length' cannot be equal to or less than 0."));
         }
 
         this.offset = offset;
@@ -107,8 +108,7 @@ public final class HttpRange {
      */
     @Override
     public String toString() {
-        return (length == null)
-            ? "bytes=" + offset + "-"
-            : "bytes=" + offset + "-" + (offset + length - 1);
+        return (length == null) ? "bytes=" + offset + "-" : "bytes=" + offset + "-" + (offset + length - 1);
     }
+
 }

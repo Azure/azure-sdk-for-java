@@ -7,10 +7,9 @@ import com.azure.core.util.Configuration;
 
 import static com.azure.core.util.Configuration.getGlobalConfiguration;
 
-/**
- * The level of detail to log on HTTP messages.
- */
+/** The level of detail to log on HTTP messages. */
 public enum HttpLogDetailLevel {
+
     /**
      * Logging is turned off.
      */
@@ -56,8 +55,9 @@ public enum HttpLogDetailLevel {
             logDetailLevel = HEADERS;
         } else if (BODY_VALUE.equalsIgnoreCase(detailLevel)) {
             logDetailLevel = BODY;
-        } else if (BODY_AND_HEADERS_VALUE.equalsIgnoreCase(detailLevel)
-            || BODYANDHEADERS_VALUE.equalsIgnoreCase(detailLevel)) {
+        } else if (
+            BODY_AND_HEADERS_VALUE.equalsIgnoreCase(detailLevel) || BODYANDHEADERS_VALUE.equalsIgnoreCase(detailLevel)
+        ) {
             logDetailLevel = BODY_AND_HEADERS;
         } else {
             logDetailLevel = NONE;
@@ -92,4 +92,5 @@ public enum HttpLogDetailLevel {
     public boolean shouldLogBody() {
         return this == BODY || this == BODY_AND_HEADERS;
     }
+
 }

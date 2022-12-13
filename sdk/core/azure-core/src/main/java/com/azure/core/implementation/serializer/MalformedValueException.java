@@ -3,10 +3,9 @@
 
 package com.azure.core.implementation.serializer;
 
-/**
- * An exception thrown while parsing an invalid input during serialization or deserialization.
- */
+/** An exception thrown while parsing an invalid input during serialization or deserialization. */
 public class MalformedValueException extends RuntimeException {
+
     /**
      * Create a MalformedValueException instance.
      *
@@ -25,4 +24,5 @@ public class MalformedValueException extends RuntimeException {
     public MalformedValueException(String message, Throwable cause) {
         super(message, cause);
     }
+
 }

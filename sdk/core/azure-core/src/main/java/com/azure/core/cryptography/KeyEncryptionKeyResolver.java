@@ -3,9 +3,7 @@
 
 package com.azure.core.cryptography;
 
-/**
- * An object capable of synchronously retrieving key encryption keys from a provided key identifier.
- */
+/** An object capable of synchronously retrieving key encryption keys from a provided key identifier. */
 public interface KeyEncryptionKeyResolver {
 
     /**
@@ -15,4 +13,5 @@ public interface KeyEncryptionKeyResolver {
      * @return The key encryption key corresponding to the specified {@code keyId}
      */
     KeyEncryptionKey buildKeyEncryptionKey(String keyId);
+
 }

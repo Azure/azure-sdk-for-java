@@ -14,10 +14,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * A collection of headers on an HTTP request or response.
- */
+/** A collection of headers on an HTTP request or response. */
 public class HttpHeaders implements Iterable<HttpHeader> {
+
     // This map is a case-insensitive key (i.e. lower-cased), but the returned HttpHeader key will be as-provided to us
     private final Map<String, HttpHeader> headers;
 
@@ -53,9 +52,9 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     HttpHeaders(HttpHeaders headers) {
         this.headers = new HashMap<>((int) (headers.headers.size() / 0.75f));
         // TODO (alzimmer): This, and the API above, should be copying using the value list as this will String
-        //  join multiple values. Or, better yet provide better copy methods on HttpHeader and Header.
-        headers.headers.forEach((key, value) ->
-            this.headers.put(key, new HttpHeader(value.getName(), value.getValue())));
+        // join multiple values. Or, better yet provide better copy methods on HttpHeader and Header.
+        headers.headers
+            .forEach((key, value) -> this.headers.put(key, new HttpHeader(value.getName(), value.getValue())));
     }
 
     /**
@@ -120,7 +119,9 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     /**
      * Sets a {@link HttpHeader header} with the given name and value.
      *
-     * <p>If header with same name already exists then the value will be overwritten.</p>
+     * <p>
+     * If header with same name already exists then the value will be overwritten.
+     * </p>
      *
      * @param name the name
      * @param value the value
@@ -305,7 +306,9 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     /**
      * Get the values for the provided header name. {@code Null} is returned if the header name isn't found.
      *
-     * <p>This returns {@link #getValue(String) getValue} split by {@code comma}.</p>
+     * <p>
+     * This returns {@link #getValue(String) getValue} split by {@code comma}.
+     * </p>
      *
      * @param name the name of the header whose value is being retrieved.
      * @return the values of the header, or null if the header isn't found
@@ -317,7 +320,9 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     /**
      * Get the values for the provided header name. {@code Null} is returned if the header name isn't found.
      *
-     * <p>This returns {@link #getValue(String) getValue} split by {@code comma}.</p>
+     * <p>
+     * This returns {@link #getValue(String) getValue} split by {@code comma}.
+     * </p>
      *
      * @param name the name of the header whose value is being retrieved.
      * @return the values of the header, or null if the header isn't found
@@ -336,10 +341,12 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * the time of the toMap call. This map will not change as the underlying http headers change, and nor will
      * modifying the key or values contained in the map have any effect on the state of the http headers.
      *
-     * <p>Note that there may be performance implications of using Map APIs on the returned Map. It is highly
+     * <p>
+     * Note that there may be performance implications of using Map APIs on the returned Map. It is highly
      * recommended that users prefer to use alternate APIs present on the HttpHeaders class, over using APIs present on
      * the returned Map class. For example, use the {@link #get(String)} API, rather than {@code
-     * httpHeaders.toMap().get(name)}.</p>
+     * httpHeaders.toMap().get(name)}.
+     * </p>
      *
      * @return the headers in a copied and unmodifiable form.
      */
@@ -356,10 +363,12 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * the time of the toMultiMap call. This map will not change as the underlying http headers change, and nor will
      * modifying the key or values contained in the map have any effect on the state of the http headers.
      *
-     * <p>Note that there may be performance implications of using Map APIs on the returned Map. It is highly
+     * <p>
+     * Note that there may be performance implications of using Map APIs on the returned Map. It is highly
      * recommended that users prefer to use alternate APIs present on the HttpHeaders class, over using APIs present on
      * the returned Map class. For example, use the {@link #get(String)} API, rather than {@code
-     * httpHeaders.toMap().get(name)}.</p>
+     * httpHeaders.toMap().get(name)}.
+     * </p>
      *
      * @return the headers in a copied and unmodifiable form.
      */
@@ -398,4 +407,5 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     private static String formatKey(String name) {
         return (name == null) ? null : name.toLowerCase(Locale.ROOT);
     }
+
 }

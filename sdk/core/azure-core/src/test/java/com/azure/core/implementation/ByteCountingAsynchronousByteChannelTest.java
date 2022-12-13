@@ -42,14 +42,16 @@ public class ByteCountingAsynchronousByteChannelTest {
     public void isOpenDelegates() {
         AtomicInteger openCalls = new AtomicInteger();
         AsynchronousByteChannel asynchronousByteChannel = new MockAsynchronousByteChannel() {
+
             @Override
             public boolean isOpen() {
                 return openCalls.getAndIncrement() == 0;
             }
+
         };
 
-        ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(asynchronousByteChannel,
-            null, null);
+        ByteCountingAsynchronousByteChannel channel =
+            new ByteCountingAsynchronousByteChannel(asynchronousByteChannel, null, null);
 
         assertTrue(channel.isOpen());
         assertFalse(channel.isOpen());
@@ -61,14 +63,16 @@ public class ByteCountingAsynchronousByteChannelTest {
     public void closeDelegates() throws IOException {
         AtomicInteger closeCalls = new AtomicInteger();
         AsynchronousByteChannel asynchronousByteChannel = new MockAsynchronousByteChannel() {
+
             @Override
             public void close() throws IOException {
                 closeCalls.incrementAndGet();
                 super.close();
             }
+
         };
-        ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(asynchronousByteChannel,
-            null, null);
+        ByteCountingAsynchronousByteChannel channel =
+            new ByteCountingAsynchronousByteChannel(asynchronousByteChannel, null, null);
 
         channel.close();
         channel.close();
@@ -83,9 +87,13 @@ public class ByteCountingAsynchronousByteChannelTest {
         Path tempFile = Files.createTempFile("bytecountingtest", null);
         tempFile.toFile().deleteOnExit();
 
-        try (ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
-            IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
-            null, null)) {
+        try (
+            ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
+                IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
+                null,
+                null
+            )
+        ) {
 
             int position = 0;
             while (position < data.length) {
@@ -95,6 +103,7 @@ public class ByteCountingAsynchronousByteChannelTest {
 
                 CompletableFuture<Integer> future = new CompletableFuture<>();
                 channel.write(buffer, "foo", new CompletionHandler<Integer, String>() {
+
                     @Override
                     public void completed(Integer result, String attachment) {
                         assertEquals("foo", attachment);
@@ -105,6 +114,7 @@ public class ByteCountingAsynchronousByteChannelTest {
                     public void failed(Throwable exc, String attachment) {
                         future.completeExceptionally(exc);
                     }
+
                 });
 
                 position += future.get();
@@ -123,9 +133,13 @@ public class ByteCountingAsynchronousByteChannelTest {
         Path tempFile = Files.createTempFile("bytecountingtest", null);
         tempFile.toFile().deleteOnExit();
 
-        try (ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
-            IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
-            null, null)) {
+        try (
+            ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
+                IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
+                null,
+                null
+            )
+        ) {
 
             int position = 0;
             while (position < data.length) {
@@ -147,10 +161,16 @@ public class ByteCountingAsynchronousByteChannelTest {
         Path tempFile = Files.createTempFile("bytecountingtest", null);
         tempFile.toFile().deleteOnExit();
 
-        try (ByteCountingAsynchronousByteChannel channel =
-                new ByteCountingAsynchronousByteChannel(new PartialWriteAsynchronousChannel(
-                    IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)),
-                    null, null)) {
+        try (
+            ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
+                new PartialWriteAsynchronousChannel(
+                    IOUtils
+                        .toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)
+                ),
+                null,
+                null
+            )
+        ) {
 
             int position = 0;
             while (position < data.length) {
@@ -160,6 +180,7 @@ public class ByteCountingAsynchronousByteChannelTest {
 
                 CompletableFuture<Integer> future = new CompletableFuture<>();
                 channel.write(buffer, "foo", new CompletionHandler<Integer, String>() {
+
                     @Override
                     public void completed(Integer result, String attachment) {
                         assertEquals("foo", attachment);
@@ -170,6 +191,7 @@ public class ByteCountingAsynchronousByteChannelTest {
                     public void failed(Throwable exc, String attachment) {
                         future.completeExceptionally(exc);
                     }
+
                 });
 
                 position += future.get();
@@ -182,15 +204,22 @@ public class ByteCountingAsynchronousByteChannelTest {
     }
 
     @Test
-    public void canWriteAndCountBytesWithPartialWritesWithFuture() throws IOException, ExecutionException, InterruptedException {
+    public void canWriteAndCountBytesWithPartialWritesWithFuture()
+        throws IOException, ExecutionException, InterruptedException {
         byte[] data = new byte[10 * 1204 + 127];
         Path tempFile = Files.createTempFile("bytecountingtest", null);
         tempFile.toFile().deleteOnExit();
 
-        try (ByteCountingAsynchronousByteChannel channel =
-                new ByteCountingAsynchronousByteChannel(new PartialWriteAsynchronousChannel(
-                    IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)),
-                    null, null)) {
+        try (
+            ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
+                new PartialWriteAsynchronousChannel(
+                    IOUtils
+                        .toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)
+                ),
+                null,
+                null
+            )
+        ) {
 
             int position = 0;
             while (position < data.length) {
@@ -208,7 +237,8 @@ public class ByteCountingAsynchronousByteChannelTest {
     }
 
     @Test
-    public void canWriteAndCountBytesWithProgressReporting() throws IOException, ExecutionException, InterruptedException {
+    public void canWriteAndCountBytesWithProgressReporting()
+        throws IOException, ExecutionException, InterruptedException {
         byte[] data = new byte[10 * 1204 + 127];
         RANDOM.nextBytes(data);
         Path tempFile = Files.createTempFile("bytecountingtest", null);
@@ -219,9 +249,13 @@ public class ByteCountingAsynchronousByteChannelTest {
         ConcurrentLinkedQueue<Long> readProgresses = new ConcurrentLinkedQueue<>();
         ProgressReporter readProgressReporter = ProgressReporter.withProgressListener(readProgresses::add);
 
-        try (ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
-            IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
-            readProgressReporter, writeProgressReporter)) {
+        try (
+            ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
+                IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
+                readProgressReporter,
+                writeProgressReporter
+            )
+        ) {
 
             int position = 0;
             while (position < data.length) {
@@ -231,6 +265,7 @@ public class ByteCountingAsynchronousByteChannelTest {
 
                 CompletableFuture<Integer> future = new CompletableFuture<>();
                 channel.write(buffer, "foo", new CompletionHandler<Integer, String>() {
+
                     @Override
                     public void completed(Integer result, String attachment) {
                         assertEquals("foo", attachment);
@@ -241,6 +276,7 @@ public class ByteCountingAsynchronousByteChannelTest {
                     public void failed(Throwable exc, String attachment) {
                         future.completeExceptionally(exc);
                     }
+
                 });
 
                 position += future.get();
@@ -255,7 +291,8 @@ public class ByteCountingAsynchronousByteChannelTest {
     }
 
     @Test
-    public void canWriteAndCountBytesWithProgressReportingWithFuture() throws IOException, ExecutionException, InterruptedException {
+    public void canWriteAndCountBytesWithProgressReportingWithFuture()
+        throws IOException, ExecutionException, InterruptedException {
         byte[] data = new byte[10 * 1204 + 127];
         RANDOM.nextBytes(data);
         Path tempFile = Files.createTempFile("bytecountingtest", null);
@@ -266,9 +303,13 @@ public class ByteCountingAsynchronousByteChannelTest {
         ConcurrentLinkedQueue<Long> readProgresses = new ConcurrentLinkedQueue<>();
         ProgressReporter readProgressReporter = ProgressReporter.withProgressListener(readProgresses::add);
 
-        try (ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
-            IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
-            readProgressReporter, writeProgressReporter)) {
+        try (
+            ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
+                IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
+                readProgressReporter,
+                writeProgressReporter
+            )
+        ) {
 
             int position = 0;
             while (position < data.length) {
@@ -288,7 +329,8 @@ public class ByteCountingAsynchronousByteChannelTest {
     }
 
     @Test
-    public void canWriteAndCountBytesWithProgressReportingWithPartialWrites() throws IOException, ExecutionException, InterruptedException {
+    public void canWriteAndCountBytesWithProgressReportingWithPartialWrites()
+        throws IOException, ExecutionException, InterruptedException {
         byte[] data = new byte[10 * 1204 + 127];
         RANDOM.nextBytes(data);
         Path tempFile = Files.createTempFile("bytecountingtest", null);
@@ -299,10 +341,16 @@ public class ByteCountingAsynchronousByteChannelTest {
         ConcurrentLinkedQueue<Long> readProgresses = new ConcurrentLinkedQueue<>();
         ProgressReporter readProgressReporter = ProgressReporter.withProgressListener(readProgresses::add);
 
-        try (ByteCountingAsynchronousByteChannel channel =
-                new ByteCountingAsynchronousByteChannel(new PartialWriteAsynchronousChannel(
-                    IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)),
-                    readProgressReporter, writeProgressReporter)) {
+        try (
+            ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
+                new PartialWriteAsynchronousChannel(
+                    IOUtils
+                        .toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)
+                ),
+                readProgressReporter,
+                writeProgressReporter
+            )
+        ) {
 
             int position = 0;
             while (position < data.length) {
@@ -312,6 +360,7 @@ public class ByteCountingAsynchronousByteChannelTest {
 
                 CompletableFuture<Integer> future = new CompletableFuture<>();
                 channel.write(buffer, "foo", new CompletionHandler<Integer, String>() {
+
                     @Override
                     public void completed(Integer result, String attachment) {
                         assertEquals("foo", attachment);
@@ -322,6 +371,7 @@ public class ByteCountingAsynchronousByteChannelTest {
                     public void failed(Throwable exc, String attachment) {
                         future.completeExceptionally(exc);
                     }
+
                 });
 
                 position += future.get();
@@ -336,7 +386,8 @@ public class ByteCountingAsynchronousByteChannelTest {
     }
 
     @Test
-    public void canWriteAndCountBytesWithProgressReportingWithPartialWritesWithFuture() throws IOException, ExecutionException, InterruptedException {
+    public void canWriteAndCountBytesWithProgressReportingWithPartialWritesWithFuture()
+        throws IOException, ExecutionException, InterruptedException {
         byte[] data = new byte[10 * 1204 + 127];
         RANDOM.nextBytes(data);
         Path tempFile = Files.createTempFile("bytecountingtest", null);
@@ -347,10 +398,16 @@ public class ByteCountingAsynchronousByteChannelTest {
         ConcurrentLinkedQueue<Long> readProgresses = new ConcurrentLinkedQueue<>();
         ProgressReporter readProgressReporter = ProgressReporter.withProgressListener(readProgresses::add);
 
-        try (ByteCountingAsynchronousByteChannel channel =
-                new ByteCountingAsynchronousByteChannel(new PartialWriteAsynchronousChannel(
-                    IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)),
-                    readProgressReporter, writeProgressReporter)) {
+        try (
+            ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
+                new PartialWriteAsynchronousChannel(
+                    IOUtils
+                        .toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)
+                ),
+                readProgressReporter,
+                writeProgressReporter
+            )
+        ) {
 
             int position = 0;
             while (position < data.length) {
@@ -378,9 +435,13 @@ public class ByteCountingAsynchronousByteChannelTest {
         Files.write(tempFile, data);
         ByteBuffer readData = ByteBuffer.allocate(data.length);
 
-        try (ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
-            IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.READ), 0),
-            null, null)) {
+        try (
+            ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
+                IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.READ), 0),
+                null,
+                null
+            )
+        ) {
 
             int position = 0;
             int read = 0;
@@ -389,6 +450,7 @@ public class ByteCountingAsynchronousByteChannelTest {
                 ByteBuffer buffer = ByteBuffer.allocate(size);
                 CompletableFuture<Integer> future = new CompletableFuture<>();
                 channel.read(buffer, "foo", new CompletionHandler<Integer, String>() {
+
                     @Override
                     public void completed(Integer result, String attachment) {
                         assertEquals("foo", attachment);
@@ -399,6 +461,7 @@ public class ByteCountingAsynchronousByteChannelTest {
                     public void failed(Throwable exc, String attachment) {
                         future.completeExceptionally(exc);
                     }
+
                 });
 
                 read = future.get();
@@ -416,7 +479,8 @@ public class ByteCountingAsynchronousByteChannelTest {
     }
 
     @Test
-    public void canReadAndCountBytesWithProgressReporting() throws IOException, ExecutionException, InterruptedException {
+    public void canReadAndCountBytesWithProgressReporting()
+        throws IOException, ExecutionException, InterruptedException {
         byte[] data = new byte[10 * 1204 + 127];
         RANDOM.nextBytes(data);
         Path tempFile = Files.createTempFile("bytecountingtest", null);
@@ -429,9 +493,13 @@ public class ByteCountingAsynchronousByteChannelTest {
         ConcurrentLinkedQueue<Long> readProgresses = new ConcurrentLinkedQueue<>();
         ProgressReporter readProgressReporter = ProgressReporter.withProgressListener(readProgresses::add);
 
-        try (ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
-            IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.READ), 0),
-            readProgressReporter, writeProgressReporter)) {
+        try (
+            ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
+                IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.READ), 0),
+                readProgressReporter,
+                writeProgressReporter
+            )
+        ) {
 
             int position = 0;
             int read = 0;
@@ -440,6 +508,7 @@ public class ByteCountingAsynchronousByteChannelTest {
                 ByteBuffer buffer = ByteBuffer.allocate(size);
                 CompletableFuture<Integer> future = new CompletableFuture<>();
                 channel.read(buffer, "foo", new CompletionHandler<Integer, String>() {
+
                     @Override
                     public void completed(Integer result, String attachment) {
                         assertEquals("foo", attachment);
@@ -450,6 +519,7 @@ public class ByteCountingAsynchronousByteChannelTest {
                     public void failed(Throwable exc, String attachment) {
                         future.completeExceptionally(exc);
                     }
+
                 });
 
                 read = future.get();
@@ -477,9 +547,13 @@ public class ByteCountingAsynchronousByteChannelTest {
         Files.write(tempFile, data);
         ByteBuffer readData = ByteBuffer.allocate(data.length);
 
-        try (ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
-            IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.READ), 0),
-            null, null)) {
+        try (
+            ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
+                IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.READ), 0),
+                null,
+                null
+            )
+        ) {
 
             int position = 0;
             int read = 0;
@@ -501,7 +575,8 @@ public class ByteCountingAsynchronousByteChannelTest {
     }
 
     @Test
-    public void canReadAndCountBytesWithFutureWithProgressReporting() throws IOException, ExecutionException, InterruptedException {
+    public void canReadAndCountBytesWithFutureWithProgressReporting()
+        throws IOException, ExecutionException, InterruptedException {
         byte[] data = new byte[10 * 1204 + 127];
         RANDOM.nextBytes(data);
         Path tempFile = Files.createTempFile("bytecountingtest", null);
@@ -514,9 +589,13 @@ public class ByteCountingAsynchronousByteChannelTest {
         ConcurrentLinkedQueue<Long> readProgresses = new ConcurrentLinkedQueue<>();
         ProgressReporter readProgressReporter = ProgressReporter.withProgressListener(readProgresses::add);
 
-        try (ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
-            IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.READ), 0),
-            readProgressReporter, writeProgressReporter)) {
+        try (
+            ByteCountingAsynchronousByteChannel channel = new ByteCountingAsynchronousByteChannel(
+                IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.READ), 0),
+                readProgressReporter,
+                writeProgressReporter
+            )
+        ) {
 
             int position = 0;
             int read = 0;
@@ -538,4 +617,5 @@ public class ByteCountingAsynchronousByteChannelTest {
 
         assertArrayEquals(data, Files.readAllBytes(tempFile));
     }
+
 }

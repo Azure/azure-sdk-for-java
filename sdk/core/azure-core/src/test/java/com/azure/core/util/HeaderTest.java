@@ -14,10 +14,9 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- * Tests for {@link Header}.
- */
+/** Tests for {@link Header}. */
 public class HeaderTest {
+
     @Test
     public void testAddValue() {
         // Arrange
@@ -54,7 +53,9 @@ public class HeaderTest {
     public void testGetValues() {
         // Arrange
         String name = "a";
-        String[] values = {"b", "c"};
+        String[] values = {
+            "b", "c"
+        };
 
         // Act
         final Header header = new Header(name, values[0]);
@@ -65,9 +66,7 @@ public class HeaderTest {
     }
 
     private static Stream<Arguments> testNullArgsConstructor() {
-        return Stream.of(
-            Arguments.arguments(null, "a"),
-            Arguments.arguments(null, null)
-        );
+        return Stream.of(Arguments.arguments(null, "a"), Arguments.arguments(null, null));
     }
+
 }

@@ -13,9 +13,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.CompletionHandler;
 
-/**
- * Subscriber that writes a stream of {@link ByteBuffer ByteBuffers} to a {@link AsynchronousByteChannel}.
- */
+/** Subscriber that writes a stream of {@link ByteBuffer ByteBuffers} to a {@link AsynchronousByteChannel}. */
 @SuppressWarnings("ReactiveStreamsSubscriberImplementation")
 public final class AsynchronousByteChannelWriteSubscriber implements Subscriber<ByteBuffer> {
 
@@ -67,6 +65,7 @@ public final class AsynchronousByteChannelWriteSubscriber implements Subscriber<
         isWriting = true;
 
         channel.write(bytes, bytes, new CompletionHandler<Integer, ByteBuffer>() {
+
             @Override
             public void completed(Integer result, ByteBuffer attachment) {
 
@@ -87,6 +86,7 @@ public final class AsynchronousByteChannelWriteSubscriber implements Subscriber<
             public void failed(Throwable exc, ByteBuffer attachment) {
                 onError(exc);
             }
+
         });
     }
 
@@ -104,4 +104,5 @@ public final class AsynchronousByteChannelWriteSubscriber implements Subscriber<
             emitter.success();
         }
     }
+
 }

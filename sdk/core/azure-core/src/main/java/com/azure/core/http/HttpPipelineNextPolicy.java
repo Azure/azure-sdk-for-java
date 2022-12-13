@@ -9,10 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-/**
- * A type that invokes next policy in the pipeline.
- */
+/** A type that invokes next policy in the pipeline. */
 public class HttpPipelineNextPolicy {
+
     private static final ClientLogger LOGGER = new ClientLogger(HttpPipelineNextPolicy.class);
     private final HttpPipelineCallState state;
     private final boolean originatedFromSyncPolicy;
@@ -54,15 +53,18 @@ public class HttpPipelineNextPolicy {
             return Mono.fromCallable(() -> new HttpPipelineNextSyncPolicy(state).processSync());
         } else {
             if (originatedFromSyncPolicy) {
-                LOGGER.warning("The pipeline switched from synchronous to asynchronous."
-                    + "Check if {} does not override HttpPipelinePolicy.processSync",
-                    this.state.getCurrentPolicy().getClass().getSimpleName());
+                LOGGER.warning(
+                    "The pipeline switched from synchronous to asynchronous."
+                        + "Check if {} does not override HttpPipelinePolicy.processSync",
+                    this.state.getCurrentPolicy().getClass().getSimpleName()
+                );
             }
 
             HttpPipelinePolicy nextPolicy = state.getNextPolicy();
             if (nextPolicy == null) {
-                return this.state.getPipeline().getHttpClient().send(
-                    this.state.getCallContext().getHttpRequest(), this.state.getCallContext().getContext());
+                return this.state.getPipeline()
+                    .getHttpClient()
+                    .send(this.state.getCallContext().getHttpRequest(), this.state.getCallContext().getContext());
             } else {
                 return nextPolicy.process(this.state.getCallContext(), this);
             }
@@ -78,4 +80,5 @@ public class HttpPipelineNextPolicy {
     public HttpPipelineNextPolicy clone() {
         return new HttpPipelineNextPolicy(this.state.clone(), this.originatedFromSyncPolicy);
     }
+
 }

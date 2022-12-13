@@ -8,6 +8,7 @@ package com.azure.core.implementation.http.rest;
  * "http://{host}.com/{fileName}.html", where "{host}" and "{fileName}" are the placeholders.
  */
 public class Substitution {
+
     private final String urlParameterName;
     private final int methodParameterIndex;
     private final boolean shouldEncode;
@@ -55,4 +56,5 @@ public class Substitution {
     public boolean shouldEncode() {
         return shouldEncode;
     }
+
 }

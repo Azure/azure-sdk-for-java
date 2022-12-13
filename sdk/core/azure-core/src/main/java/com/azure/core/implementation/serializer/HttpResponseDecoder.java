@@ -10,10 +10,9 @@ import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
 
-/**
- * Decode {@link HttpResponse} to {@link HttpDecodedResponse}.
- */
+/** Decode {@link HttpResponse} to {@link HttpDecodedResponse}. */
 public final class HttpResponseDecoder {
+
     // The adapter for deserialization
     private final SerializerAdapter serializer;
 
@@ -55,6 +54,7 @@ public final class HttpResponseDecoder {
      * header kickoff header decoding and emission of decoded object.
      */
     public static class HttpDecodedResponse implements Closeable {
+
         private final HttpResponse response;
         private final SerializerAdapter serializer;
         private final HttpResponseDecodeData decodeData;
@@ -68,8 +68,11 @@ public final class HttpResponseDecoder {
          * @param serializer the decoder
          * @param decodeData the necessary data required to decode a Http response
          */
-        HttpDecodedResponse(final HttpResponse response, SerializerAdapter serializer,
-            HttpResponseDecodeData decodeData) {
+        HttpDecodedResponse(
+            final HttpResponse response,
+            SerializerAdapter serializer,
+            HttpResponseDecodeData decodeData
+        ) {
             this.response = response;
             this.serializer = serializer;
             this.decodeData = decodeData;
@@ -113,5 +116,7 @@ public final class HttpResponseDecoder {
         public void close() {
             this.response.close();
         }
+
     }
+
 }

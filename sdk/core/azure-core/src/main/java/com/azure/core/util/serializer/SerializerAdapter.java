@@ -16,9 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-/**
- * An interface defining the behaviors of a serializer.
- */
+/** An interface defining the behaviors of a serializer. */
 public interface SerializerAdapter {
 
     /**
@@ -167,9 +165,9 @@ public interface SerializerAdapter {
      * 'Matching' headers are the REST API returned headers those with:
      *
      * <ol>
-     *   <li>header names same as name of a properties in the entity.</li>
-     *   <li>header names start with value of {@link com.azure.core.annotation.HeaderCollection} annotation applied to
-     *   the properties in the entity.</li>
+     * <li>header names same as name of a properties in the entity.</li>
+     * <li>header names start with value of {@link com.azure.core.annotation.HeaderCollection} annotation applied to
+     * the properties in the entity.</li>
      * </ol>
      *
      * When needed, the 'header entity' types must be declared as first generic argument of
@@ -179,9 +177,9 @@ public interface SerializerAdapter {
      * {@code
      *      class FooMetadataHeaders {
      *          String name;
-     *          {@literal @}HeaderCollection("header-collection-prefix-")
-     *          Map<String,String> headerCollection;
-     *      }
+     * {@literal @}HeaderCollection("header-collection-prefix-")
+     * Map<String,String> headerCollection;
+     * }
      * }
      *
      * in the case of above example, this method produces an instance of FooMetadataHeaders from provided
@@ -209,4 +207,5 @@ public interface SerializerAdapter {
     default <T> T deserializeHeader(Header header, Type type) throws IOException {
         return deserialize(new HttpHeaders().add(header.getName(), header.getValue()), type);
     }
+
 }

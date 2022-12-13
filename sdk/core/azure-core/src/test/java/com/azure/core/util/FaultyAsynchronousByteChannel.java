@@ -15,6 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
 public class FaultyAsynchronousByteChannel implements AsynchronousByteChannel {
+
     private final ByteCountingAsynchronousByteChannel delegate;
     private final Supplier<IOException> exceptionSupplier;
     private final int maxErrorCount;
@@ -22,13 +23,16 @@ public class FaultyAsynchronousByteChannel implements AsynchronousByteChannel {
     private final long emitAfterOffset;
 
     public FaultyAsynchronousByteChannel(
-        AsynchronousByteChannel delegate, Supplier<IOException> exceptionSupplier, int maxErrorCount, long emitAfterOffset) {
+        AsynchronousByteChannel delegate,
+        Supplier<IOException> exceptionSupplier,
+        int maxErrorCount,
+        long emitAfterOffset
+    ) {
         this.delegate = new ByteCountingAsynchronousByteChannel(delegate, null, null);
         this.exceptionSupplier = exceptionSupplier;
         this.maxErrorCount = maxErrorCount;
         this.emitAfterOffset = emitAfterOffset;
     }
-
 
     @Override
     public <A> void read(ByteBuffer dst, A attachment, CompletionHandler<Integer, ? super A> handler) {
@@ -75,7 +79,8 @@ public class FaultyAsynchronousByteChannel implements AsynchronousByteChannel {
     }
 
     private boolean shouldEmitError() {
-        return errorEmitted.get() < maxErrorCount && (delegate.getBytesWritten() >= emitAfterOffset || delegate.getBytesRead() >= emitAfterOffset);
+        return errorEmitted.get() < maxErrorCount
+            && (delegate.getBytesWritten() >= emitAfterOffset || delegate.getBytesRead() >= emitAfterOffset);
     }
 
     @Override
@@ -87,4 +92,5 @@ public class FaultyAsynchronousByteChannel implements AsynchronousByteChannel {
     public void close() throws IOException {
         delegate.close();
     }
+
 }

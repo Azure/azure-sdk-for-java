@@ -17,10 +17,9 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-/**
- * Tests {@link GeoObject}.
- */
+/** Tests {@link GeoObject}. */
 public class GeoObjectTests {
+
     @Test
     public void defaultGeo() {
         GeoObject geoObject = new ConcreteGeoObject(null, null);
@@ -41,7 +40,10 @@ public class GeoObjectTests {
         properties.put("key2", "value2");
         assertNotEquals(properties, geoObject.getCustomProperties());
 
-        Assertions.assertThrows(UnsupportedOperationException.class, () -> geoObject.getCustomProperties().put("key2", "value2"));
+        Assertions.assertThrows(
+            UnsupportedOperationException.class,
+            () -> geoObject.getCustomProperties().put("key2", "value2")
+        );
     }
 
     @ParameterizedTest
@@ -76,6 +78,7 @@ public class GeoObjectTests {
     }
 
     private static final class ConcreteGeoObject extends GeoObject {
+
         ConcreteGeoObject(GeoBoundingBox boundingBox, Map<String, Object> properties) {
             super(boundingBox, properties);
         }
@@ -84,5 +87,7 @@ public class GeoObjectTests {
         public GeoObjectType getType() {
             return null;
         }
+
     }
+
 }

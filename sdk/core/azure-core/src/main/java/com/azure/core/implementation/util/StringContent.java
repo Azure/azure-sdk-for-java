@@ -15,18 +15,18 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
-/**
- * A {@link BinaryDataContent} implementation which is backed by a {@code String}.
- */
+/** A {@link BinaryDataContent} implementation which is backed by a {@code String}. */
 public final class StringContent extends BinaryDataContent {
+
     private final String content;
 
     private volatile byte[] bytes;
-    private static final AtomicReferenceFieldUpdater<StringContent, byte[]> BYTES_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(StringContent.class, byte[].class, "bytes");
+    private static final AtomicReferenceFieldUpdater<StringContent, byte[]> BYTES_UPDATER =
+        AtomicReferenceFieldUpdater.newUpdater(StringContent.class, byte[].class, "bytes");
 
     /**
      * Creates a new instance of {@link StringContent}.
+     * 
      * @param content The string content.
      * @throws NullPointerException if {@code content} is null.
      */
@@ -87,4 +87,5 @@ public final class StringContent extends BinaryDataContent {
     private byte[] getBytes() {
         return this.content.getBytes(StandardCharsets.UTF_8);
     }
+
 }

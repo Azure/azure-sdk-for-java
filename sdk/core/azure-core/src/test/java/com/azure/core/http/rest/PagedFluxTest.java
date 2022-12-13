@@ -39,10 +39,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-/**
- * Unit tests for {@link PagedFlux}
- */
+/** Unit tests for {@link PagedFlux} */
 public class PagedFluxTest {
+
     private static final int DEFAULT_PAGE_COUNT = 4;
 
     private List<PagedResponse<Integer>> pagedResponses;
@@ -59,9 +58,7 @@ public class PagedFluxTest {
     @Test
     public void testPagedFluxSubscribeToItems() {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
-        StepVerifier.create(pagedFlux)
-            .expectNext(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14)
-            .verifyComplete();
+        StepVerifier.create(pagedFlux).expectNext(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14).verifyComplete();
     }
 
     @SuppressWarnings("deprecation")
@@ -78,8 +75,13 @@ public class PagedFluxTest {
     public void testPagedFluxSubscribeToPagesFromStart() {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
         StepVerifier.create(pagedFlux.byPage())
-            .expectNext(pagedResponses.get(0), pagedResponses.get(1), pagedResponses.get(2),
-                pagedResponses.get(3), pagedResponses.get(4))
+            .expectNext(
+                pagedResponses.get(0),
+                pagedResponses.get(1),
+                pagedResponses.get(2),
+                pagedResponses.get(3),
+                pagedResponses.get(4)
+            )
             .verifyComplete();
     }
 
@@ -87,9 +89,7 @@ public class PagedFluxTest {
     @Test
     public void testPagedFluxSubscribeToPagesFromStartWithConvertedType() {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
-        StepVerifier.create(pagedFlux.mapPage(String::valueOf).byPage())
-            .expectNextCount(5)
-            .verifyComplete();
+        StepVerifier.create(pagedFlux.mapPage(String::valueOf).byPage()).expectNextCount(5).verifyComplete();
 
         StepVerifier.create(pagedFlux.mapPage(String::valueOf).byPage())
             .expectNextMatches(pagedResponse -> pagedStringResponses.get(0).getValue().equals(pagedResponse.getValue()))
@@ -104,9 +104,7 @@ public class PagedFluxTest {
     @Test
     public void testPagedFluxSinglePageConvertedType() {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(1);
-        StepVerifier.create(pagedFlux.mapPage(String::valueOf).byPage())
-            .expectNextCount(1)
-            .verifyComplete();
+        StepVerifier.create(pagedFlux.mapPage(String::valueOf).byPage()).expectNextCount(1).verifyComplete();
 
         StepVerifier.create(pagedFlux.mapPage(String::valueOf).byPage())
             .expectNextMatches(pagedResponse -> pagedStringResponses.get(0).getValue().equals(pagedResponse.getValue()))
@@ -124,35 +122,25 @@ public class PagedFluxTest {
     @Test
     public void testPagedFluxSubscribeToPagesWithSinglePageResult() {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(1);
-        StepVerifier.create(pagedFlux.byPage())
-            .expectNext(pagedResponses.get(0))
-            .verifyComplete();
+        StepVerifier.create(pagedFlux.byPage()).expectNext(pagedResponses.get(0)).verifyComplete();
 
         pagedFlux = getIntegerPagedFlux(1);
-        StepVerifier.create(pagedFlux.byPage(null))
-            .verifyComplete();
+        StepVerifier.create(pagedFlux.byPage(null)).verifyComplete();
 
         pagedFlux = getIntegerPagedFlux(1);
-        StepVerifier.create(pagedFlux)
-            .expectNext(0, 1, 2)
-            .verifyComplete();
+        StepVerifier.create(pagedFlux).expectNext(0, 1, 2).verifyComplete();
     }
 
     @Test
     public void testPagedFluxSubscribeToPagesWithSinglePageResultWithoutNextPageRetriever() {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFluxSinglePage();
-        StepVerifier.create(pagedFlux.byPage())
-            .expectNext(pagedResponses.get(0))
-            .verifyComplete();
+        StepVerifier.create(pagedFlux.byPage()).expectNext(pagedResponses.get(0)).verifyComplete();
 
         pagedFlux = getIntegerPagedFluxSinglePage();
-        StepVerifier.create(pagedFlux.byPage(null))
-            .verifyComplete();
+        StepVerifier.create(pagedFlux.byPage(null)).verifyComplete();
 
         pagedFlux = getIntegerPagedFluxSinglePage();
-        StepVerifier.create(pagedFlux)
-            .expectNext(0, 1, 2)
-            .verifyComplete();
+        StepVerifier.create(pagedFlux).expectNext(0, 1, 2).verifyComplete();
     }
 
     @Test
@@ -163,21 +151,16 @@ public class PagedFluxTest {
             .verifyComplete();
 
         pagedFlux = getIntegerPagedFlux(2);
-        StepVerifier.create(pagedFlux.byPage("1"))
-            .expectNext(pagedResponses.get(1))
-            .verifyComplete();
+        StepVerifier.create(pagedFlux.byPage("1")).expectNext(pagedResponses.get(1)).verifyComplete();
 
         pagedFlux = getIntegerPagedFlux(2);
-        StepVerifier.create(pagedFlux)
-            .expectNext(0, 1, 2, 3, 4, 5)
-            .verifyComplete();
+        StepVerifier.create(pagedFlux).expectNext(0, 1, 2, 3, 4, 5).verifyComplete();
     }
 
     @Test
     public void testPagedFluxSubscribeToPagesFromNullContinuationToken() {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
-        StepVerifier.create(pagedFlux.byPage(null))
-            .verifyComplete();
+        StepVerifier.create(pagedFlux.byPage(null)).verifyComplete();
     }
 
     @Test
@@ -193,16 +176,22 @@ public class PagedFluxTest {
 
         HttpHeaders headers = new HttpHeaders();
         HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost");
-        final Function<String, PagedResponse<Integer>> pagedResponseSupplier = continuationToken ->
-            new PagedResponseBase<>(request, 200, headers, Collections.emptyList(), continuationToken, null);
+        final Function<String, PagedResponse<Integer>> pagedResponseSupplier =
+            continuationToken -> new PagedResponseBase<>(
+                request,
+                200,
+                headers,
+                Collections.emptyList(),
+                continuationToken,
+                null
+            );
 
         PagedFlux<Integer> singlePageFlux = new PagedFlux<>(() -> withContext(context -> {
             contextVerifier.accept(context);
             return Mono.just(pagedResponseSupplier.apply(null));
         }));
 
-        StepVerifier.create(singlePageFlux.byPage()
-            .contextWrite(Context.of(expectedContextKey, expectedContextValue)))
+        StepVerifier.create(singlePageFlux.byPage().contextWrite(Context.of(expectedContextKey, expectedContextValue)))
             .assertNext(Assertions::assertNotNull)
             .verifyComplete();
 
@@ -216,8 +205,7 @@ public class PagedFluxTest {
             return Mono.just(pagedResponseSupplier.apply(null));
         }));
 
-        StepVerifier.create(multiPageFlux.byPage()
-            .contextWrite(Context.of(expectedContextKey, expectedContextValue)))
+        StepVerifier.create(multiPageFlux.byPage().contextWrite(Context.of(expectedContextKey, expectedContextValue)))
             .expectNextCount(2)
             .verifyComplete();
     }
@@ -228,8 +216,15 @@ public class PagedFluxTest {
 
         HttpHeaders headers = new HttpHeaders();
         HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost");
-        final Function<String, PagedResponse<Integer>> pagedResponseSupplier = continuationToken ->
-            new PagedResponseBase<>(request, 200, headers, Collections.emptyList(), continuationToken, null);
+        final Function<String, PagedResponse<Integer>> pagedResponseSupplier =
+            continuationToken -> new PagedResponseBase<>(
+                request,
+                200,
+                headers,
+                Collections.emptyList(),
+                continuationToken,
+                null
+            );
 
         PagedFlux<Integer> singlePageFlux = new PagedFlux<>(pageSize -> {
             assertEquals(expectedPageSize, pageSize);
@@ -250,14 +245,11 @@ public class PagedFluxTest {
             return Mono.just(pagedResponseSupplier.apply(null));
         });
 
-        StepVerifier.create(multiPageFlux.byPage(expectedPageSize))
-            .expectNextCount(2)
-            .verifyComplete();
+        StepVerifier.create(multiPageFlux.byPage(expectedPageSize)).expectNextCount(2).verifyComplete();
     }
 
     private PagedFlux<Integer> getIntegerPagedFlux(int noOfPages) {
-        HttpHeaders httpHeaders = new HttpHeaders().set("header1", "value1")
-            .set("header2", "value2");
+        HttpHeaders httpHeaders = new HttpHeaders().set("header1", "value1").set("header2", "value2");
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost");
 
         String deserializedHeaders = "header1,value1,header2,value2";
@@ -271,13 +263,14 @@ public class PagedFluxTest {
             .map(i -> createPagedResponseWithString(httpRequest, httpHeaders, deserializedHeaders, i, noOfPages))
             .collect(Collectors.toList());
 
-        return new PagedFlux<>(() -> pagedResponses.isEmpty() ? Mono.empty() : Mono.just(pagedResponses.get(0)),
-            continuationToken -> getNextPage(continuationToken, pagedResponses));
+        return new PagedFlux<>(
+            () -> pagedResponses.isEmpty() ? Mono.empty() : Mono.just(pagedResponses.get(0)),
+            continuationToken -> getNextPage(continuationToken, pagedResponses)
+        );
     }
 
     private PagedFlux<Integer> getIntegerPagedFluxSinglePage() {
-        HttpHeaders httpHeaders = new HttpHeaders().set("header1", "value1")
-            .set("header2", "value2");
+        HttpHeaders httpHeaders = new HttpHeaders().set("header1", "value1").set("header2", "value2");
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost");
 
         String deserializedHeaders = "header1,value1,header2,value2";
@@ -293,26 +286,42 @@ public class PagedFluxTest {
         return new PagedFlux<>(() -> pagedResponses.isEmpty() ? Mono.empty() : Mono.just(pagedResponses.get(0)));
     }
 
-    private PagedResponseBase<String, Integer> createPagedResponse(HttpRequest httpRequest,
-        HttpHeaders httpHeaders, String deserializedHeaders, int i, int noOfPages) {
-        return new PagedResponseBase<>(httpRequest, 200,
+    private PagedResponseBase<String, Integer> createPagedResponse(
+        HttpRequest httpRequest,
+        HttpHeaders httpHeaders,
+        String deserializedHeaders,
+        int i,
+        int noOfPages
+    ) {
+        return new PagedResponseBase<>(
+            httpRequest,
+            200,
             httpHeaders,
             getItems(i),
             i < noOfPages - 1 ? String.valueOf(i + 1) : null,
-            deserializedHeaders);
+            deserializedHeaders
+        );
     }
 
-    private PagedResponseBase<String, String> createPagedResponseWithString(HttpRequest httpRequest,
-        HttpHeaders httpHeaders, String deserializedHeaders, int i, int noOfPages) {
-        return new PagedResponseBase<>(httpRequest, 200,
+    private PagedResponseBase<String, String> createPagedResponseWithString(
+        HttpRequest httpRequest,
+        HttpHeaders httpHeaders,
+        String deserializedHeaders,
+        int i,
+        int noOfPages
+    ) {
+        return new PagedResponseBase<>(
+            httpRequest,
+            200,
             httpHeaders,
             getStringItems(i),
             i < noOfPages - 1 ? String.valueOf(i + 1) : null,
-            deserializedHeaders);
+            deserializedHeaders
+        );
     }
 
-    private Mono<PagedResponse<Integer>> getNextPage(String continuationToken,
-        List<PagedResponse<Integer>> pagedResponses) {
+    private Mono<PagedResponse<Integer>>
+        getNextPage(String continuationToken, List<PagedResponse<Integer>> pagedResponses) {
 
         if (continuationToken == null || continuationToken.isEmpty()) {
             return Mono.empty();
@@ -342,9 +351,7 @@ public class PagedFluxTest {
         pagedFlux.ignoreElements().block();
         assertEquals(DEFAULT_PAGE_COUNT, pageRetriever.getGetCount());
 
-        StepVerifier.create(pagedFlux.take(1)
-            .then(Mono.delay(Duration.ofMillis(500)).then()))
-            .verifyComplete();
+        StepVerifier.create(pagedFlux.take(1).then(Mono.delay(Duration.ofMillis(500)).then())).verifyComplete();
 
         assertEquals(1, pageRetriever.getGetCount() - DEFAULT_PAGE_COUNT);
     }
@@ -357,8 +364,7 @@ public class PagedFluxTest {
         pagedFlux.byPage().ignoreElements().block();
         assertEquals(DEFAULT_PAGE_COUNT, pageRetriever.getGetCount());
 
-        StepVerifier.create(pagedFlux.byPage().take(1)
-            .then(Mono.delay(Duration.ofMillis(500)).then()))
+        StepVerifier.create(pagedFlux.byPage().take(1).then(Mono.delay(Duration.ofMillis(500)).then()))
             .verifyComplete();
 
         assertEquals(1, pageRetriever.getGetCount() - DEFAULT_PAGE_COUNT);
@@ -366,16 +372,14 @@ public class PagedFluxTest {
 
     @ParameterizedTest
     @MethodSource("pagingTerminatesOnSupplier")
-    public <C, T, P extends ContinuablePage<C, T>> void pagingTerminatesOn(ContinuablePagedFlux<C, T, P> pagedFlux,
-        List<T> expectedItems) {
-        StepVerifier.create(pagedFlux.collectList())
-            .assertNext(actualItems -> {
-                assertEquals(expectedItems.size(), actualItems.size());
-                for (int i = 0; i < expectedItems.size(); i++) {
-                    assertEquals(expectedItems.get(i), actualItems.get(i));
-                }
-            })
-            .verifyComplete();
+    public <C, T, P extends ContinuablePage<C, T>> void
+        pagingTerminatesOn(ContinuablePagedFlux<C, T, P> pagedFlux, List<T> expectedItems) {
+        StepVerifier.create(pagedFlux.collectList()).assertNext(actualItems -> {
+            assertEquals(expectedItems.size(), actualItems.size());
+            for (int i = 0; i < expectedItems.size(); i++) {
+                assertEquals(expectedItems.get(i), actualItems.get(i));
+            }
+        }).verifyComplete();
     }
 
     @SuppressWarnings("deprecation")
@@ -387,40 +391,55 @@ public class PagedFluxTest {
         PagedFlux<String> pfEndsWithEmptyString = PagedFlux.create(() -> pfEndsWithEmptyStringPageRetriever);
 
         PageRetriever<String, PagedResponse<String>> pfbEndsWithNullPageRetriever = new GetPagesUntil(null);
-        PagedFluxBase<String, PagedResponse<String>> pfbEndsWithNull = new PagedFluxBase<>(
-            () -> pfbEndsWithNullPageRetriever, false);
+        PagedFluxBase<String, PagedResponse<String>> pfbEndsWithNull =
+            new PagedFluxBase<>(() -> pfbEndsWithNullPageRetriever, false);
 
         PageRetriever<String, PagedResponse<String>> pfbEndsWithEmptyStringPageRetriever = new GetPagesUntil("");
-        PagedFluxBase<String, PagedResponse<String>> pfbEndsWithEmptyString = new PagedFluxBase<>(
-            () -> pfbEndsWithEmptyStringPageRetriever, false);
-
+        PagedFluxBase<String, PagedResponse<String>> pfbEndsWithEmptyString =
+            new PagedFluxBase<>(() -> pfbEndsWithEmptyStringPageRetriever, false);
 
         PageRetriever<String, ContinuablePage<String, String>> cpfcStringTokenEndsWithNullPageRetriever =
-            new GetContinuablePagesUntil<>("1", null, token -> String.valueOf(Integer.parseInt(token) + 1),
-                token -> token.equals("4"));
+            new GetContinuablePagesUntil<>(
+                "1",
+                null,
+                token -> String.valueOf(Integer.parseInt(token) + 1),
+                token -> token.equals("4")
+            );
         ContinuablePagedFluxCore<String, String, ContinuablePage<String, String>> cpfcStringTokenEndsWithNull =
             createCpfc(() -> cpfcStringTokenEndsWithNullPageRetriever, null);
 
         PageRetriever<String, ContinuablePage<String, String>> cpfcStringTokenEndsWithPredicatePageRetriever =
-            new GetContinuablePagesUntil<>("1", "finalToken", token -> String.valueOf(Integer.parseInt(token) + 1),
-                token -> token.equals("4"));
+            new GetContinuablePagesUntil<>(
+                "1",
+                "finalToken",
+                token -> String.valueOf(Integer.parseInt(token) + 1),
+                token -> token.equals("4")
+            );
         ContinuablePagedFluxCore<String, String, ContinuablePage<String, String>> cpfcStringTokenEndsWithPredicate =
             createCpfc(() -> cpfcStringTokenEndsWithPredicatePageRetriever, token -> !token.equals("finalToken"));
 
         PageRetriever<byte[], ContinuablePage<byte[], String>> cpfcByteArrayTokenEndsWithNullPageRetriever =
-            new GetContinuablePagesUntil<>("1".getBytes(UTF_8), null,
+            new GetContinuablePagesUntil<>(
+                "1".getBytes(UTF_8),
+                null,
                 token -> String.valueOf(Integer.parseInt(new String(token, UTF_8)) + 1).getBytes(UTF_8),
-                token -> new String(token, UTF_8).equals("4"));
+                token -> new String(token, UTF_8).equals("4")
+            );
         ContinuablePagedFluxCore<byte[], String, ContinuablePage<byte[], String>> cpfcByteArrayTokenEndsWithNull =
             createCpfc(() -> cpfcByteArrayTokenEndsWithNullPageRetriever, null);
 
         PageRetriever<byte[], ContinuablePage<byte[], String>> cpfcByteArrayTokenEndsWithPredicatePageRetriever =
-            new GetContinuablePagesUntil<>("1".getBytes(UTF_8), "finalToken".getBytes(UTF_8),
+            new GetContinuablePagesUntil<>(
+                "1".getBytes(UTF_8),
+                "finalToken".getBytes(UTF_8),
                 token -> String.valueOf(Integer.parseInt(new String(token, UTF_8)) + 1).getBytes(UTF_8),
-                token -> new String(token, UTF_8).equals("4"));
+                token -> new String(token, UTF_8).equals("4")
+            );
         ContinuablePagedFluxCore<byte[], String, ContinuablePage<byte[], String>> cpfcByteArrayTokenEndsWithPredicate =
-            createCpfc(() -> cpfcByteArrayTokenEndsWithPredicatePageRetriever,
-                token -> !new String(token, UTF_8).equals("finalToken"));
+            createCpfc(
+                () -> cpfcByteArrayTokenEndsWithPredicatePageRetriever,
+                token -> !new String(token, UTF_8).equals("finalToken")
+            );
 
         List<String> pagedFluxExpectedItems = Arrays.asList("1", "2", "3", "4", "5");
 
@@ -436,24 +455,29 @@ public class PagedFluxTest {
         );
     }
 
-    private static <C, T, P extends ContinuablePage<C, T>> ContinuablePagedFluxCore<C, T, P> createCpfc(
-        Supplier<PageRetriever<C, P>> pageRetrieverSupplier, Predicate<C> continuationPredicate) {
+    private static <C, T, P extends ContinuablePage<C, T>> ContinuablePagedFluxCore<C, T, P>
+        createCpfc(Supplier<PageRetriever<C, P>> pageRetrieverSupplier, Predicate<C> continuationPredicate) {
         if (continuationPredicate == null) {
-            return new ContinuablePagedFluxCore<C, T, P>(pageRetrieverSupplier) { };
+            return new ContinuablePagedFluxCore<C, T, P>(pageRetrieverSupplier) {
+            };
         }
 
-        return new ContinuablePagedFluxCore<C, T, P>(pageRetrieverSupplier, null, continuationPredicate) { };
+        return new ContinuablePagedFluxCore<C, T, P>(pageRetrieverSupplier, null, continuationPredicate) {
+        };
     }
 
     private static final class GetPagesUntil implements PageRetriever<String, PagedResponse<String>> {
-        private static final Function<String, String> INCREMENT_STRING_AS_INT = str ->
-            String.valueOf(Integer.parseInt(str) + 1);
+
+        private static final Function<String, String> INCREMENT_STRING_AS_INT =
+            str -> String.valueOf(Integer.parseInt(str) + 1);
 
         private static final Function<String, String> NEXT_PAGE_VALUE = INCREMENT_STRING_AS_INT;
-        private static final BiFunction<String, String, PagedResponse<String>> PAGE_CREATOR = (token, item) ->
-            createPagedResponse(token, Collections.singletonList(item));
+        private static final BiFunction<String, String, PagedResponse<String>> PAGE_CREATOR =
+            (token, item) -> createPagedResponse(token, Collections.singletonList(item));
 
-        private final String[] pageValue = new String[] { "1" };
+        private final String[] pageValue = new String[] {
+            "1"
+        };
 
         private final Predicate<String> isFinalPage;
         private final String finalToken;
@@ -480,10 +504,12 @@ public class PagedFluxTest {
                 return page;
             }).flux();
         }
+
     }
 
     private static <T> PagedResponse<T> createPagedResponse(String continuationToken, List<T> items) {
         return new PagedResponseBase<Void, T>(null, 200, null, new Page<T>() {
+
             @Override
             public IterableStream<T> getElements() {
                 return IterableStream.of(items);
@@ -493,26 +519,34 @@ public class PagedFluxTest {
             public String getContinuationToken() {
                 return continuationToken;
             }
+
         }, null);
     }
 
     private static final class GetContinuablePagesUntil<C> implements PageRetriever<C, ContinuablePage<C, String>> {
-        private static final Function<String, String> INCREMENT_STRING_AS_INT = str ->
-            String.valueOf(Integer.parseInt(str) + 1);
+
+        private static final Function<String, String> INCREMENT_STRING_AS_INT =
+            str -> String.valueOf(Integer.parseInt(str) + 1);
 
         private static final Function<String, String> NEXT_PAGE_VALUE = INCREMENT_STRING_AS_INT;
-        private final BiFunction<C, String, ContinuablePage<C, String>> pageCreator = (token, item) ->
-            createPage(token, Collections.singletonList(item));
+        private final BiFunction<C, String, ContinuablePage<C, String>> pageCreator =
+            (token, item) -> createPage(token, Collections.singletonList(item));
 
-        private final String[] pageValue = new String[] { "1" };
+        private final String[] pageValue = new String[] {
+            "1"
+        };
 
         private final C initialToken;
         private final C finalToken;
         private final Function<C, C> nextToken;
         private final Predicate<C> isFinalPage;
 
-        private GetContinuablePagesUntil(C initialToken, C finalToken, Function<C, C> nextToken,
-            Predicate<C> isFinalPage) {
+        private GetContinuablePagesUntil(
+            C initialToken,
+            C finalToken,
+            Function<C, C> nextToken,
+            Predicate<C> isFinalPage
+        ) {
             this.initialToken = initialToken;
             this.finalToken = finalToken;
             this.nextToken = nextToken;
@@ -536,10 +570,12 @@ public class PagedFluxTest {
                 return page;
             }).flux();
         }
+
     }
 
     private static <C, T> ContinuablePage<C, T> createPage(C token, List<T> items) {
         return new ContinuablePage<C, T>() {
+
             @Override
             public IterableStream<T> getElements() {
                 return IterableStream.of(items);
@@ -549,6 +585,8 @@ public class PagedFluxTest {
             public C getContinuationToken() {
                 return token;
             }
+
         };
     }
+
 }

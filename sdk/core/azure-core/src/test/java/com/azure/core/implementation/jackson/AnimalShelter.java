@@ -10,6 +10,7 @@ import java.util.List;
 
 @JsonFlatten
 public class AnimalShelter {
+
     @JsonProperty(value = "properties.description")
     private String description;
 
@@ -33,4 +34,5 @@ public class AnimalShelter {
         this.animalsInfo = animalsInfo;
         return this;
     }
+
 }

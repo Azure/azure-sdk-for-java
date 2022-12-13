@@ -8,6 +8,7 @@ import com.azure.core.util.TelemetryAttributes;
 
 /** A histogram instrument that records {@code long} values. */
 public interface DoubleHistogram {
+
     /**
      * Records a value with a set of attributes.
      *
@@ -17,12 +18,13 @@ public interface DoubleHistogram {
      */
     void record(double value, TelemetryAttributes attributes, Context context);
 
-
     /**
-     * Flag indicating if metric implementation is detected and functional, use it to minimize performance impact associated with metrics,
+     * Flag indicating if metric implementation is detected and functional, use it to minimize performance impact
+     * associated with metrics,
      * e.g. measuring latency.
      *
      * @return {@code true} if enabled, {@code false} otherwise
      */
     boolean isEnabled();
+
 }

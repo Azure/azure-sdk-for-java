@@ -8,18 +8,20 @@ package com.azure.core.client.traits;
  * service endpoints.
  *
  * @param <T> The concrete type that implements the trait. This is required so that fluent operations can continue
- *           to return the concrete type, rather than the trait type.
+ * to return the concrete type, rather than the trait type.
  * @see com.azure.core.client.traits
  */
 public interface EndpointTrait<T extends EndpointTrait<T>> {
+
     /**
      * Sets the service endpoint that will be connected to by clients.
      *
      * @param endpoint The URL of the service endpoint.
      * @return Returns the same concrete type with the appropriate properties updated, to allow for fluent chaining of
-     *      operations.
+     * operations.
      * @throws NullPointerException If {@code endpoint} is {@code null}.
      * @throws IllegalArgumentException If {@code endpoint} isn't a valid URL.
      */
     T endpoint(String endpoint);
+
 }

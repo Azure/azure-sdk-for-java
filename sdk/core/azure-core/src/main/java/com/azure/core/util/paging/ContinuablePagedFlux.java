@@ -20,6 +20,7 @@ import java.util.function.Predicate;
  * @see ContinuablePage
  */
 public abstract class ContinuablePagedFlux<C, T, P extends ContinuablePage<C, T>> extends Flux<T> {
+
     private final Predicate<C> continuationPredicate;
 
     /**
@@ -93,4 +94,5 @@ public abstract class ContinuablePagedFlux<C, T, P extends ContinuablePage<C, T>
     protected final Predicate<C> getContinuationPredicate() {
         return continuationPredicate;
     }
+
 }

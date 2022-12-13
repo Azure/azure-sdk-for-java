@@ -5,10 +5,9 @@ package com.azure.core.models;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Represents the JSON Patch operation kind.
- */
+/** Represents the JSON Patch operation kind. */
 enum JsonPatchOperationKind {
+
     /**
      * Add operation.
      */
@@ -54,4 +53,5 @@ enum JsonPatchOperationKind {
     public String toString() {
         return op;
     }
+
 }

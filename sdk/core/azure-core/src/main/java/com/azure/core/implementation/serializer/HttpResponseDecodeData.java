@@ -15,10 +15,9 @@ import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Type;
 
-/**
- * Type representing necessary information required to decode a specific Http response.
- */
+/** Type representing necessary information required to decode a specific Http response. */
 public interface HttpResponseDecodeData {
+
     /**
      * Gets the generic return type of the response.
      *
@@ -159,4 +158,5 @@ public interface HttpResponseDecodeData {
      * @return Whether the return type contains strongly-typed headers.
      */
     boolean isHeadersEagerlyConverted();
+
 }

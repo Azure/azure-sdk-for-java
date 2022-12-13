@@ -8,7 +8,9 @@ package com.azure.core.util;
  * The {@link #handleProgress(long)} method will be called periodically with the total progress accumulated
  * at the given point of time.
  *
- * <p><strong>Code samples</strong></p>
+ * <p>
+ * <strong>Code samples</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.util.ProgressReportingE2ESample -->
  * <pre>
@@ -53,6 +55,7 @@ package com.azure.core.util;
  */
 @FunctionalInterface
 public interface ProgressListener {
+
     /**
      * The callback function invoked as progress is reported.
      *
@@ -64,4 +67,5 @@ public interface ProgressListener {
      * @param progress The total progress at the current point of time.
      */
     void handleProgress(long progress);
+
 }

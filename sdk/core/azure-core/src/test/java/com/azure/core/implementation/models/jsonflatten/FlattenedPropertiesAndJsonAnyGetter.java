@@ -13,11 +13,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Class with {@link JsonFlatten} on a property along with {@link JsonAnyGetter} on a method.
- */
+/** Class with {@link JsonFlatten} on a property along with {@link JsonAnyGetter} on a method. */
 @Fluent
 public final class FlattenedPropertiesAndJsonAnyGetter {
+
     @JsonFlatten
     @JsonProperty("flattened.string")
     private String string;
@@ -48,4 +47,5 @@ public final class FlattenedPropertiesAndJsonAnyGetter {
         additionalProperties.put(key, value);
         return this;
     }
+
 }

@@ -17,13 +17,13 @@ import reactor.core.publisher.Mono;
  * order of the invocations is:
  *
  * <ol>
- *     <li>{@link #canPoll(Response)} - exits if returns false</li>
- *     <li>{@link #onInitialResponse(Response, PollingContext, TypeReference)} - immediately after
- *          {@link #canPoll(Response)} returns true</li>
- *     <li>{@link #poll(PollingContext, TypeReference)} - invoked after each polling interval, if the last polling
- *          response indicates an "In Progress" status. Returns a {@link PollResponse} with the latest status</li>
- *     <li>{@link #getResult(PollingContext, TypeReference)} - invoked when the last polling response indicates a
- *          "Successfully Completed" status. Returns the final result of the given type</li>
+ * <li>{@link #canPoll(Response)} - exits if returns false</li>
+ * <li>{@link #onInitialResponse(Response, PollingContext, TypeReference)} - immediately after
+ * {@link #canPoll(Response)} returns true</li>
+ * <li>{@link #poll(PollingContext, TypeReference)} - invoked after each polling interval, if the last polling
+ * response indicates an "In Progress" status. Returns a {@link PollResponse} with the latest status</li>
+ * <li>{@link #getResult(PollingContext, TypeReference)} - invoked when the last polling response indicates a
+ * "Successfully Completed" status. Returns the final result of the given type</li>
  * </ol>
  *
  * If the user decides to cancel the {@link AsyncPollResponse} or {@link SyncPoller}, the
@@ -38,11 +38,12 @@ import reactor.core.publisher.Mono;
  * overridden to accomplish the polling requirements, without writing an entire polling strategy from scratch.
  *
  * @param <T> the {@link TypeReference} of the response type from a polling call, or BinaryData if raw response body
- *            should be kept
+ * should be kept
  * @param <U> the {@link TypeReference} of the final result object to deserialize into, or BinaryData if raw response
- *            body should be kept
+ * body should be kept
  */
 public interface PollingStrategy<T, U> {
+
     /**
      * Checks if this strategy is able to handle polling for this long-running operation based on the information in
      * the initial response.
@@ -54,17 +55,18 @@ public interface PollingStrategy<T, U> {
 
     /**
      * Parses the initial response into a {@link LongRunningOperationStatus}, and stores information useful for polling
-     * in the {@link PollingContext}. If the result is anything other than {@link LongRunningOperationStatus#IN_PROGRESS},
+     * in the {@link PollingContext}. If the result is anything other than
+     * {@link LongRunningOperationStatus#IN_PROGRESS},
      * the long-running operation will be terminated and none of the other methods will be invoked.
      *
      * @param response the response from the initial method call to activate the long-running operation
      * @param pollingContext the {@link PollingContext} for the current polling operation
      * @param pollResponseType the {@link TypeReference} of the response type from a polling call, or BinaryData if raw
-     *                         response body should be kept. This should match the generic parameter {@link U}.
+     * response body should be kept. This should match the generic parameter {@link U}.
      * @return a publisher emitting the poll response containing the status and the response content
      */
-    Mono<PollResponse<T>> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
-                                            TypeReference<T> pollResponseType);
+    Mono<PollResponse<T>>
+        onInitialResponse(Response<?> response, PollingContext<T> pollingContext, TypeReference<T> pollResponseType);
 
     /**
      * Parses the response from the polling URL into a {@link PollResponse}, and stores information
@@ -73,7 +75,7 @@ public interface PollingStrategy<T, U> {
      *
      * @param pollingContext the {@link PollingContext} for the current polling operation
      * @param pollResponseType the {@link TypeReference} of the response type from a polling call, or BinaryData if raw
-     *                         response body should be kept. This should match the generic parameter {@link U}.
+     * response body should be kept. This should match the generic parameter {@link U}.
      * @return a publisher emitting the poll response containing the status and the response content
      */
     Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType);
@@ -83,7 +85,7 @@ public interface PollingStrategy<T, U> {
      *
      * @param pollingContext the {@link PollingContext} for the current polling operation
      * @param resultType the {@link TypeReference} of the final result object to deserialize into, or BinaryData if
-     *                   raw response body should be kept.
+     * raw response body should be kept.
      * @return a publisher emitting the final result
      */
     Mono<U> getResult(PollingContext<T> pollingContext, TypeReference<U> resultType);
@@ -95,11 +97,12 @@ public interface PollingStrategy<T, U> {
      * Implementing this method is optional - by default, cancellation will not be supported unless overridden.
      *
      * @param pollingContext the {@link PollingContext} for the current polling operation, or null if the polling has
-     *                       started in a {@link SyncPoller}
+     * started in a {@link SyncPoller}
      * @param initialResponse the response from the initial operation
      * @return a publisher emitting the cancellation response content
      */
     default Mono<T> cancel(PollingContext<T> pollingContext, PollResponse<T> initialResponse) {
         return Mono.error(new IllegalStateException("Cancellation is not supported."));
     }
+
 }

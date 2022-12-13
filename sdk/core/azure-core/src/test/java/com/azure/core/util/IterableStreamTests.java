@@ -12,10 +12,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * Tests for {@link IterableStream}.
- */
+/** Tests for {@link IterableStream}. */
 public class IterableStreamTests {
+
     @Test
     public void requiresFlux() {
         Assertions.assertThrows(NullPointerException.class, () -> new IterableStream<>((Flux<String>) null));
@@ -251,4 +250,5 @@ public class IterableStreamTests {
             Assertions.assertTrue(actual.contains(str));
         }
     }
+
 }

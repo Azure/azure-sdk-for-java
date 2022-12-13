@@ -9,10 +9,9 @@ import reactor.core.publisher.Mono;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 
-/**
- * Basic Auth credentials for use with a REST Service Client.
- */
+/** Basic Auth credentials for use with a REST Service Client. */
 public class BasicAuthenticationCredential implements TokenCredential {
+
     /**
      * Base64 encoded username-password credential.
      */
@@ -36,4 +35,5 @@ public class BasicAuthenticationCredential implements TokenCredential {
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return Mono.fromCallable(() -> new AccessToken(encodedCredential, OffsetDateTime.MAX));
     }
+
 }

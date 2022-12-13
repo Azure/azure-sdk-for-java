@@ -8,11 +8,10 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Model used for testing {@link JsonFlatten}.
- */
+/** Model used for testing {@link JsonFlatten}. */
 @Fluent
 public final class JsonFlattenOnJsonIgnoredProperty {
+
     @JsonProperty("name")
     private String name;
 
@@ -38,4 +37,5 @@ public final class JsonFlattenOnJsonIgnoredProperty {
     public String getIgnored() {
         return ignored;
     }
+
 }

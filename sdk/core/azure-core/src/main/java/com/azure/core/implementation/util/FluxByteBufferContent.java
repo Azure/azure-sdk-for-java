@@ -20,10 +20,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.function.BiConsumer;
 
-/**
- * A {@link BinaryDataContent} implementation which is backed by a {@link Flux} of {@link ByteBuffer}.
- */
+/** A {@link BinaryDataContent} implementation which is backed by a {@link Flux} of {@link ByteBuffer}. */
 public final class FluxByteBufferContent extends BinaryDataContent {
+
     private static final ClientLogger LOGGER = new ClientLogger(FluxByteBufferContent.class);
 
     private final Flux<ByteBuffer> content;
@@ -32,11 +31,12 @@ public final class FluxByteBufferContent extends BinaryDataContent {
     private final boolean isReplayable;
 
     private volatile byte[] bytes;
-    private static final AtomicReferenceFieldUpdater<FluxByteBufferContent, byte[]> BYTES_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(FluxByteBufferContent.class, byte[].class, "bytes");
+    private static final AtomicReferenceFieldUpdater<FluxByteBufferContent, byte[]> BYTES_UPDATER =
+        AtomicReferenceFieldUpdater.newUpdater(FluxByteBufferContent.class, byte[].class, "bytes");
 
     /**
      * Creates an instance of {@link FluxByteBufferContent}.
+     * 
      * @param content The content for this instance.
      * @throws NullPointerException if {@code content} is null.
      */
@@ -46,6 +46,7 @@ public final class FluxByteBufferContent extends BinaryDataContent {
 
     /**
      * Creates an instance of {@link FluxByteBufferContent}.
+     * 
      * @param content The content for this instance.
      * @param length The length of the content in bytes.
      * @throws NullPointerException if {@code content} is null.
@@ -125,21 +126,21 @@ public final class FluxByteBufferContent extends BinaryDataContent {
             return replayableContent;
         }
 
-        Flux<ByteBuffer> bufferedFlux = content
-            .map(buffer -> {
-                // deep copy direct buffers
-                ByteBuffer copy = ByteBuffer.allocate(buffer.remaining());
-                copy.put(buffer);
-                copy.flip();
-                return copy;
-            })
+        Flux<ByteBuffer> bufferedFlux = content.map(buffer -> {
+            // deep copy direct buffers
+            ByteBuffer copy = ByteBuffer.allocate(buffer.remaining());
+            copy.put(buffer);
+            copy.flip();
+            return copy;
+        })
             // collectList() uses ArrayList. We don't want to be bound by array capacity
             // and we don't need random access.
             .collect(LinkedList::new, (BiConsumer<LinkedList<ByteBuffer>, ByteBuffer>) LinkedList::add)
             .cache()
             .flatMapMany(
                 // Duplicate buffers on re-subscription.
-                listOfBuffers -> Flux.fromIterable(listOfBuffers).map(ByteBuffer::duplicate));
+                listOfBuffers -> Flux.fromIterable(listOfBuffers).map(ByteBuffer::duplicate)
+            );
         replayableContent = new FluxByteBufferContent(bufferedFlux, length, true);
         cachedReplayableContent.set(replayableContent);
         return replayableContent;
@@ -156,9 +157,10 @@ public final class FluxByteBufferContent extends BinaryDataContent {
         }
 
         return FluxUtil.collectBytesInByteBufferStream(content)
-                // this doesn't seem to be working (newBoundedElastic() didn't work either)
-                // .publishOn(Schedulers.boundedElastic())
-                .share()
-                .block();
+            // this doesn't seem to be working (newBoundedElastic() didn't work either)
+            // .publishOn(Schedulers.boundedElastic())
+            .share()
+            .block();
     }
+
 }

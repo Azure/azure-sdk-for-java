@@ -8,17 +8,20 @@ import com.azure.core.util.Context;
 
 import java.time.Duration;
 
-/**
- * Options class containing information available during HTTP response logging.
- */
+/** Options class containing information available during HTTP response logging. */
 public final class HttpResponseLoggingContext {
+
     private final HttpResponse httpResponse;
     private final Duration responseDuration;
     private final Context context;
     private final Integer tryCount;
 
-    HttpResponseLoggingContext(HttpResponse httpResponse, Duration responseDuration, Context context,
-        Integer tryCount) {
+    HttpResponseLoggingContext(
+        HttpResponse httpResponse,
+        Duration responseDuration,
+        Context context,
+        Integer tryCount
+    ) {
         this.httpResponse = httpResponse;
         this.responseDuration = responseDuration;
         this.context = context;
@@ -60,4 +63,5 @@ public final class HttpResponseLoggingContext {
     public Integer getTryCount() {
         return tryCount;
     }
+
 }

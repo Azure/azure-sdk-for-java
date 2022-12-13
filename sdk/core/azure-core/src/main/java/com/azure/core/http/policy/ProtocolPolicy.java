@@ -14,15 +14,15 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 
-/**
- * The pipeline policy that adds a given protocol to each HttpRequest.
- */
+/** The pipeline policy that adds a given protocol to each HttpRequest. */
 public class ProtocolPolicy implements HttpPipelinePolicy {
+
     private static final ClientLogger LOGGER = new ClientLogger(ProtocolPolicy.class);
     private final String protocol;
     private final boolean overwrite;
 
     private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
+
         @Override
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
             final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
@@ -32,11 +32,13 @@ public class ProtocolPolicy implements HttpPipelinePolicy {
                 try {
                     context.getHttpRequest().setUrl(urlBuilder.setScheme(protocol).toUrl());
                 } catch (MalformedURLException e) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException("Failed to set the HTTP request protocol to " + protocol + ".",
-                        e));
+                    throw LOGGER.logExceptionAsError(
+                        new RuntimeException("Failed to set the HTTP request protocol to " + protocol + ".", e)
+                    );
                 }
             }
         }
+
     };
 
     /**
@@ -59,4 +61,5 @@ public class ProtocolPolicy implements HttpPipelinePolicy {
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         return inner.processSync(context, next);
     }
+
 }

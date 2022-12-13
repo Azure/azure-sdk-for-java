@@ -32,9 +32,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Utility methods that aid processing in RestProxy.
- */
+/** Utility methods that aid processing in RestProxy. */
 public final class RestProxyUtils {
 
     private static final ByteBuffer VALIDATION_BUFFER = ByteBuffer.allocate(0);
@@ -64,13 +62,19 @@ public final class RestProxyUtils {
                 Long bodyLength = body.getLength();
                 if (bodyLength != null) {
                     if (bodyLength < expectedLength) {
-                        throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
-                            bodyLength, expectedLength), bodyLength, expectedLength);
+                        throw new UnexpectedLengthException(
+                            String.format(BODY_TOO_SMALL, bodyLength, expectedLength),
+                            bodyLength,
+                            expectedLength
+                        );
                     } else if (bodyLength > expectedLength) {
-                        throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
-                            bodyLength, expectedLength), bodyLength, expectedLength);
+                        throw new UnexpectedLengthException(
+                            String.format(BODY_TOO_LARGE, bodyLength, expectedLength),
+                            bodyLength,
+                            expectedLength
+                        );
                     }
-                } else  {
+                } else {
                     request.setBody(validateFluxLength(body.toFluxByteBuffer(), expectedLength));
                 }
             }
@@ -93,8 +97,13 @@ public final class RestProxyUtils {
 
                 if (buffer == VALIDATION_BUFFER) {
                     if (expectedLength != currentTotalLength[0]) {
-                        sink.error(new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
-                            currentTotalLength[0], expectedLength), currentTotalLength[0], expectedLength));
+                        sink.error(
+                            new UnexpectedLengthException(
+                                String.format(BODY_TOO_SMALL, currentTotalLength[0], expectedLength),
+                                currentTotalLength[0],
+                                expectedLength
+                            )
+                        );
                     } else {
                         sink.complete();
                     }
@@ -103,8 +112,13 @@ public final class RestProxyUtils {
 
                 currentTotalLength[0] += buffer.remaining();
                 if (currentTotalLength[0] > expectedLength) {
-                    sink.error(new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
-                        currentTotalLength[0], expectedLength), currentTotalLength[0], expectedLength));
+                    sink.error(
+                        new UnexpectedLengthException(
+                            String.format(BODY_TOO_LARGE, currentTotalLength[0], expectedLength),
+                            currentTotalLength[0],
+                            expectedLength
+                        )
+                    );
                     return;
                 }
 
@@ -115,6 +129,7 @@ public final class RestProxyUtils {
 
     /**
      * Validates the Length of the input request matches its configured Content Length.
+     * 
      * @param request the input request to validate.
      * @return the requests body as BinaryData on successful validation.
      */
@@ -150,13 +165,19 @@ public final class RestProxyUtils {
 
     private static void validateLength(long length, long expectedLength) {
         if (length > expectedLength) {
-            throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
-                length, expectedLength), length, expectedLength);
+            throw new UnexpectedLengthException(
+                String.format(BODY_TOO_LARGE, length, expectedLength),
+                length,
+                expectedLength
+            );
         }
 
         if (length < expectedLength) {
-            throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
-                length, expectedLength), length, expectedLength);
+            throw new UnexpectedLengthException(
+                String.format(BODY_TOO_SMALL, length, expectedLength),
+                length,
+                expectedLength
+            );
         }
     }
 
@@ -182,6 +203,7 @@ public final class RestProxyUtils {
 
     /**
      * Validates the input Method is not annotated with Resume Operation
+     * 
      * @param method the method input to validate
      * @throws IllegalStateException if the input method is annotated with the Resume Operation.
      */
@@ -214,8 +236,7 @@ public final class RestProxyUtils {
         policies.add(new RetryPolicy());
         policies.add(new CookiePolicy());
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .build();
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0])).build();
     }
+
 }

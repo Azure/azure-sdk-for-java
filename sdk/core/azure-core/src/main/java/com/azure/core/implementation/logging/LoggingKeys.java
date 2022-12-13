@@ -11,6 +11,7 @@ package com.azure.core.implementation.logging;
  * with these keys, but copy the value.
  */
 public final class LoggingKeys {
+
     private LoggingKeys() {
 
     }
@@ -56,4 +57,5 @@ public final class LoggingKeys {
      * Key representing response status code. The value should be a number.
      */
     public static final String STATUS_CODE_KEY = "statusCode";
+
 }

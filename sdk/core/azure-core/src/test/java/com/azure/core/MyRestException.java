@@ -8,6 +8,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
 public class MyRestException extends HttpResponseException {
+
     /**
      * Creates a service request exception.
      *
@@ -23,4 +24,5 @@ public class MyRestException extends HttpResponseException {
     public HttpBinJSON getValue() {
         return (HttpBinJSON) super.getValue();
     }
+
 }

@@ -14,8 +14,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
 public class IterableResponseTest {
+
     /**
      * Ensure that if we call stream multiple times, it always returns same values and they are same as original list of
      * values.
@@ -52,4 +52,5 @@ public class IterableResponseTest {
         Flux<Integer> integerFlux = Flux.range(startNumber, noOfValues);
         return new IterableStream<>(integerFlux);
     }
+
 }

@@ -12,12 +12,14 @@ import java.util.Map;
  * instruments that represent individual metrics such as number of active connections or
  * HTTP call latency.
  *
- * Choose instrument kind based on OpenTelemetry guidelines: https://opentelemetry.io/docs/reference/specification/metrics/api/#counter-creation
+ * Choose instrument kind based on OpenTelemetry guidelines:
+ * https://opentelemetry.io/docs/reference/specification/metrics/api/#counter-creation
  *
- * This class is intended to be used by Azure client libraries and provides abstraction over different metrics implementations.
+ * This class is intended to be used by Azure client libraries and provides abstraction over different metrics
+ * implementations.
  * Application developers should use metrics implementations such as OpenTelemetry or Micrometer directly.
  *
- *  <!-- src_embed com.azure.core.util.metrics.Meter.doubleHistogram -->
+ * <!-- src_embed com.azure.core.util.metrics.Meter.doubleHistogram -->
  * <pre>
  *
  * &#47;&#47; Meter and instruments should be created along with service client instance and retained for the client
@@ -41,11 +43,13 @@ import java.util.Map;
  *     amqpLinkDuration.record&#40;Instant.now&#40;&#41;.toEpochMilli&#40;&#41; - start.toEpochMilli&#40;&#41;, attributes, currentContext&#41;;
  * &#125;
  * </pre>
- *  <!-- end com.azure.core.util.metrics.Meter.doubleHistogram -->
+ * <!-- end com.azure.core.util.metrics.Meter.doubleHistogram -->
  */
 public interface Meter extends AutoCloseable {
+
     /**
-     * Creates histogram instrument allowing to record long values. Histograms should be used for latency or other measurements where
+     * Creates histogram instrument allowing to record long values. Histograms should be used for latency or other
+     * measurements where
      * distribution of values is important and values are statistically bounded.
      *
      * See https://opentelemetry.io/docs/reference/specification/metrics/api/#histogram for more details.
@@ -76,7 +80,8 @@ public interface Meter extends AutoCloseable {
      * </pre>
      * <!-- end com.azure.core.util.metrics.Meter.doubleHistogram -->
      *
-     * @param name short histogram name following https://opentelemetry.io/docs/reference/specification/metrics/api/#instrument-naming-rule
+     * @param name short histogram name following
+     * https://opentelemetry.io/docs/reference/specification/metrics/api/#instrument-naming-rule
      * @param description free-form text describing the instrument
      * @param unit optional unit of measurement.
      * @return new instance of {@link DoubleHistogram}
@@ -107,7 +112,8 @@ public interface Meter extends AutoCloseable {
      * </pre>
      * <!-- end com.azure.core.util.metrics.Meter.longCounter -->
      *
-     * @param name short counter  name following https://opentelemetry.io/docs/reference/specification/metrics/api/#instrument-naming-rule
+     * @param name short counter name following
+     * https://opentelemetry.io/docs/reference/specification/metrics/api/#instrument-naming-rule
      * @param description free-form text describing the counter
      * @param unit optional unit of measurement.
      * @return new instance of {@link LongCounter}
@@ -139,7 +145,8 @@ public interface Meter extends AutoCloseable {
      * </pre>
      * <!-- end com.azure.core.util.metrics.Meter.upDownCounter -->
      *
-     * @param name short counter name following https://opentelemetry.io/docs/reference/specification/metrics/api/#instrument-naming-rule
+     * @param name short counter name following
+     * https://opentelemetry.io/docs/reference/specification/metrics/api/#instrument-naming-rule
      * @param description free-form text describing the counter
      * @param unit optional unit of measurement.
      * @return new instance of {@link LongCounter}
@@ -175,7 +182,8 @@ public interface Meter extends AutoCloseable {
      * </pre>
      * <!-- end com.azure.core.util.metrics.Meter.longGauge -->
      *
-     * @param name short counter  name following https://opentelemetry.io/docs/reference/specification/metrics/api/#instrument-naming-rule
+     * @param name short counter name following
+     * https://opentelemetry.io/docs/reference/specification/metrics/api/#instrument-naming-rule
      * @param description free-form text describing the counter
      * @param unit optional unit of measurement.
      * @return new instance of {@link LongGauge}
@@ -219,6 +227,7 @@ public interface Meter extends AutoCloseable {
      *
      * </pre>
      * <!-- end com.azure.core.util.metrics.Meter.longCounter#errorFlag -->
+     * 
      * @param attributeMap map of key value pairs to cache.
      * @return an instance of {@code AttributesBuilder}
      */
@@ -236,4 +245,5 @@ public interface Meter extends AutoCloseable {
      */
     @Override
     void close();
+
 }

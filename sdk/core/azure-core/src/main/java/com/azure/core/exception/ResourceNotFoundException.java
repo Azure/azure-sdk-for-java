@@ -5,9 +5,7 @@ package com.azure.core.exception;
 
 import com.azure.core.http.HttpResponse;
 
-/**
- * An error response, typically triggered by a 412 response (for update) or 404 (for get/post)
- */
+/** An error response, typically triggered by a 412 response (for update) or 404 (for get/post) */
 public class ResourceNotFoundException extends HttpResponseException {
 
     /**
@@ -31,7 +29,6 @@ public class ResourceNotFoundException extends HttpResponseException {
         super(message, response, value);
     }
 
-
     /**
      * Initializes a new instance of the ResourceNotFoundException class.
      *
@@ -42,4 +39,5 @@ public class ResourceNotFoundException extends HttpResponseException {
     public ResourceNotFoundException(final String message, final HttpResponse response, final Throwable cause) {
         super(message, response, cause);
     }
+
 }

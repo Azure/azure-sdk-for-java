@@ -12,7 +12,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * Annotation for form parameters to be sent to a REST API Request URI.
  *
- * <p><strong>Example:</strong></p>
+ * <p>
+ * <strong>Example:</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.annotation.FormParam.class -->
  * <pre>
@@ -23,11 +25,15 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * </pre>
  * <!-- end com.azure.core.annotation.FormParam.class -->
  *
- * <p>The value of parameter text will be encoded and encoded value will be added to the form data sent to the API.</p>
+ * <p>
+ * The value of parameter text will be encoded and encoded value will be added to the form data sent to the
+ * API.
+ * </p>
  */
 @Retention(RUNTIME)
 @Target(PARAMETER)
 public @interface FormParam {
+
     /**
      * Gets the name of the key in a key-value pair as part of the form data.
      *
@@ -44,4 +50,5 @@ public @interface FormParam {
      * @return Whether this query parameter is already encoded.
      */
     boolean encoded() default false;
+
 }

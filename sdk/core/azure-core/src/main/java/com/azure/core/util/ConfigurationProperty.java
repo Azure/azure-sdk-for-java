@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
-
 /**
  * Represents configuration property.
  *
  * @param <T> Type of property value.
  */
 public final class ConfigurationProperty<T> {
+
     private static final String[] EMPTY_ARRAY = new String[0];
     private static final Function<String, String> REDACT_VALUE_SANITIZER = (value) -> "redacted";
 
@@ -42,8 +42,17 @@ public final class ConfigurationProperty<T> {
      * @param aliases list of alternative names of the property. Can be null.
      * @param valueSanitizer sanitizes property value for logging purposes.
      */
-    ConfigurationProperty(String name, T defaultValue, boolean isRequired, Function<String, T> converter, boolean isShared,
-                          String environmentVariable, String systemProperty, String[] aliases, Function<String, String> valueSanitizer) {
+    ConfigurationProperty(
+        String name,
+        T defaultValue,
+        boolean isRequired,
+        Function<String, T> converter,
+        boolean isShared,
+        String environmentVariable,
+        String systemProperty,
+        String[] aliases,
+        Function<String, String> valueSanitizer
+    ) {
         this.name = Objects.requireNonNull(name, "'name' cannot be null");
         this.converter = Objects.requireNonNull(converter, "'converter' cannot be null");
         this.environmentVariable = environmentVariable;
@@ -136,4 +145,5 @@ public final class ConfigurationProperty<T> {
     public String getSystemPropertyName() {
         return systemProperty;
     }
+
 }

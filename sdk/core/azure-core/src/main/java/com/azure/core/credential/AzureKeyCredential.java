@@ -7,10 +7,9 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Objects;
 
-/**
- * Represents a credential that uses a key to authenticate to an Azure Service.
- */
+/** Represents a credential that uses a key to authenticate to an Azure Service. */
 public final class AzureKeyCredential {
+
     // AzureKeyCredential is a commonly used credential type, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(AzureKeyCredential.class);
     private volatile String key;
@@ -57,4 +56,5 @@ public final class AzureKeyCredential {
         this.key = key;
         return this;
     }
+
 }

@@ -11,11 +11,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * Represents a collection of {@link GeoPolygon GeoPolygons}.
- */
+/** Represents a collection of {@link GeoPolygon GeoPolygons}. */
 @Immutable
 public final class GeoPolygonCollection extends GeoObject {
+
     private final List<GeoPolygon> polygons;
 
     /**
@@ -36,8 +35,11 @@ public final class GeoPolygonCollection extends GeoObject {
      * @param customProperties Additional properties of the multi-polygon.
      * @throws NullPointerException If {@code polygons} is {@code null}.
      */
-    public GeoPolygonCollection(List<GeoPolygon> polygons, GeoBoundingBox boundingBox,
-        Map<String, Object> customProperties) {
+    public GeoPolygonCollection(
+        List<GeoPolygon> polygons,
+        GeoBoundingBox boundingBox,
+        Map<String, Object> customProperties
+    ) {
         super(boundingBox, customProperties);
 
         Objects.requireNonNull(polygons, "'polygons' cannot be null.");
@@ -88,4 +90,5 @@ public final class GeoPolygonCollection extends GeoObject {
 
         return super.equals(obj) && Objects.equals(polygons, other.polygons);
     }
+
 }

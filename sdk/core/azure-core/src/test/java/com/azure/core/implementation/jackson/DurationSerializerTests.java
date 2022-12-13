@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class DurationSerializerTests {
+
     @Test
     public void toStringWithNull() {
         assertNull(DurationSerializer.toString(null));
@@ -205,4 +206,5 @@ public class DurationSerializerTests {
     public void toStringWith101Days() {
         assertEquals("P101D", DurationSerializer.toString(Duration.ofDays(101)));
     }
+
 }

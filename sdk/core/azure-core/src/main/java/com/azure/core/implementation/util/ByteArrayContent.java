@@ -14,10 +14,9 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
-/**
- * A {@link BinaryDataContent} implementation which is backed by a {@code byte[]}.
- */
+/** A {@link BinaryDataContent} implementation which is backed by a {@code byte[]}. */
 public final class ByteArrayContent extends BinaryDataContent {
+
     private final byte[] content;
 
     /**
@@ -79,4 +78,5 @@ public final class ByteArrayContent extends BinaryDataContent {
     public Mono<BinaryDataContent> toReplayableContentAsync() {
         return Mono.just(this);
     }
+
 }

@@ -9,11 +9,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-/**
- * Model used for testing {@link JsonFlatten}.
- */
+/** Model used for testing {@link JsonFlatten}. */
 @Fluent
 public final class JsonFlattenOnCollectionType {
+
     @JsonFlatten
     @JsonProperty("jsonflatten.collection")
     private List<String> jsonFlattenCollection;
@@ -26,4 +25,5 @@ public final class JsonFlattenOnCollectionType {
     public List<String> getJsonFlattenCollection() {
         return jsonFlattenCollection;
     }
+
 }

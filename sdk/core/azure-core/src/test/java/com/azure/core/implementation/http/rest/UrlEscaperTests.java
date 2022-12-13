@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class UrlEscaperTests {
+
     private static String simple = "abcABC-123";
     private static String genDelim = "abc[456#78";
     private static String safeForPath = "abc:456@78";
@@ -67,4 +68,5 @@ public class UrlEscaperTests {
         String actual = escaper.escape(safeForQuery);
         Assertions.assertEquals(safeForQuery, actual);
     }
+
 }

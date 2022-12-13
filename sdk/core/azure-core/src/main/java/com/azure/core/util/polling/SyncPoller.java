@@ -17,17 +17,18 @@ import java.util.function.Supplier;
  * <p>
  * It provides the following functionality:
  * <ul>
- *      <li>Querying the current state of the long-running operation.</li>
- *      <li>Requesting cancellation of long-running operation, if supported by the service.</li>
- *      <li>Fetching final result of long-running operation, if supported by the service.</li>
- *      <li>Wait for long-running operation to complete, with optional timeout.</li>
- *      <li>Wait for long-running operation to reach a specific state.</li>
+ * <li>Querying the current state of the long-running operation.</li>
+ * <li>Requesting cancellation of long-running operation, if supported by the service.</li>
+ * <li>Fetching final result of long-running operation, if supported by the service.</li>
+ * <li>Wait for long-running operation to complete, with optional timeout.</li>
+ * <li>Wait for long-running operation to reach a specific state.</li>
  * </ul>
  *
  * @param <T> The type of poll response value.
  * @param <U> The type of the final result of long-running operation.
  */
 public interface SyncPoller<T, U> {
+
     /**
      * Poll once and return the poll response received.
      *
@@ -110,7 +111,7 @@ public interface SyncPoller<T, U> {
      * service supports cancellation, this parameter is required and if service does not support cancellation then the
      * implementer should throw an exception with an error message indicating absence of cancellation support, the
      * operation will be called with current {@link PollingContext}.
-     * @param fetchResultOperation a {@link Function} that represents the  operation to retrieve final result of the
+     * @param fetchResultOperation a {@link Function} that represents the operation to retrieve final result of the
      * long-running operation if service support it, this parameter is required and operation will be called current
      * {@link PollingContext}, if service does not have an api to fetch final result and if final result is same as
      * final poll response value then implementer can choose to simply return value from provided final poll response.
@@ -119,13 +120,20 @@ public interface SyncPoller<T, U> {
      * @return new {@link SyncPoller} instance.
      */
     @SuppressWarnings("unchecked")
-    static <T, U> SyncPoller<T, U> createPoller(Duration pollInterval,
+    static <T, U> SyncPoller<T, U> createPoller(
+        Duration pollInterval,
         Function<PollingContext<T>, PollResponse<T>> syncActivationOperation,
         Function<PollingContext<T>, PollResponse<T>> pollOperation,
         BiFunction<PollingContext<T>, PollResponse<T>, T> cancelOperation,
-        Function<PollingContext<T>, U> fetchResultOperation) {
-        return new SimpleSyncPoller<>(pollInterval, syncActivationOperation, pollOperation, cancelOperation,
-            fetchResultOperation);
+        Function<PollingContext<T>, U> fetchResultOperation
+    ) {
+        return new SimpleSyncPoller<>(
+            pollInterval,
+            syncActivationOperation,
+            pollOperation,
+            cancelOperation,
+            fetchResultOperation
+        );
     }
 
     /**
@@ -149,8 +157,13 @@ public interface SyncPoller<T, U> {
      * @param <U> The type of the final result of long-running operation.
      * @return new {@link SyncPoller} instance.
      */
-    static <T, U> SyncPoller<T, U> createPoller(Duration pollInterval, Supplier<Response<?>> initialOperation,
-        SyncPollingStrategy<T, U> strategy, TypeReference<T> pollResponseType, TypeReference<U> resultType) {
+    static <T, U> SyncPoller<T, U> createPoller(
+        Duration pollInterval,
+        Supplier<Response<?>> initialOperation,
+        SyncPollingStrategy<T, U> strategy,
+        TypeReference<T> pollResponseType,
+        TypeReference<U> resultType
+    ) {
         Function<PollingContext<T>, PollResponse<T>> syncActivationOperation = pollingContext -> {
             Response<?> response = initialOperation.get();
             if (!strategy.canPoll(response)) {
@@ -165,7 +178,13 @@ public interface SyncPoller<T, U> {
         BiFunction<PollingContext<T>, PollResponse<T>, T> cancelOperation = strategy::cancel;
         Function<PollingContext<T>, U> fetchResultOperation = context -> strategy.getResult(context, resultType);
 
-        return createPoller(pollInterval, syncActivationOperation, pollOperation, cancelOperation,
-            fetchResultOperation);
+        return createPoller(
+            pollInterval,
+            syncActivationOperation,
+            pollOperation,
+            cancelOperation,
+            fetchResultOperation
+        );
     }
+
 }

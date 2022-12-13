@@ -19,26 +19,25 @@ import java.nio.charset.Charset;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class HttpResponseTests {
+
     @Test
     public void testBufferedResponseSubscribeOnceAndDoDeepCopy() {
         // A source Response that throws if body is subscribed more than once.
         SelfDisposedHttpResponse sourceHttpResponse = new SelfDisposedHttpResponse();
         // A Buffered response based on source response.
         Flux<ByteBuffer> bufferedContentFlux = sourceHttpResponse.buffer().getBody();
-        Flux<Tuple2<ByteBuffer, ByteBuffer>> zipped
-            = bufferedContentFlux.zipWith(sourceHttpResponse.getInnerContentFlux());
+        Flux<Tuple2<ByteBuffer, ByteBuffer>> zipped =
+            bufferedContentFlux.zipWith(sourceHttpResponse.getInnerContentFlux());
         // Validate that buffered Response is not replaying source Response body.
-        StepVerifier.create(zipped)
-            .thenConsumeWhile(o -> {
-                assertFalse(o.getT1() == o.getT2(),
-                    "Buffered response should not cache shallow copy of source.");
-                return true;
-            })
-            .verifyComplete();
+        StepVerifier.create(zipped).thenConsumeWhile(o -> {
+            assertFalse(o.getT1() == o.getT2(), "Buffered response should not cache shallow copy of source.");
+            return true;
+        }).verifyComplete();
     }
 
     // A Type to mimic Response with body content released/disposed as it consumed
     private static class SelfDisposedHttpResponse extends HttpResponse {
+
         private final Mono<ByteBuffer> contentMono;
         private final HttpHeaders headers = new HttpHeaders();
         private volatile boolean consumed;
@@ -69,20 +68,16 @@ public class HttpResponseTests {
 
         @Override
         public Flux<ByteBuffer> getBody() {
-            return this.contentMono
-                .doOnNext(bb -> {
-                    // This ensure BufferedHttpResponse subscribes only once.
-                    assertFalse(consumed, "content is already consumed");
-                    consumed = true;
-                })
-                .flux();
+            return this.contentMono.doOnNext(bb -> {
+                // This ensure BufferedHttpResponse subscribes only once.
+                assertFalse(consumed, "content is already consumed");
+                consumed = true;
+            }).flux();
         }
 
         @Override
         public Mono<byte[]> getBodyAsByteArray() {
-            return this.getBody()
-                .map(bb -> new byte[bb.remaining()])
-                .next();
+            return this.getBody().map(bb -> new byte[bb.remaining()]).next();
         }
 
         @Override
@@ -94,5 +89,7 @@ public class HttpResponseTests {
         public Mono<String> getBodyAsString(Charset charset) {
             throw new RuntimeException("Not implemented");
         }
+
     }
+
 }

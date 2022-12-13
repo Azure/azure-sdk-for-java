@@ -11,11 +11,12 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
  * Represents a single parameter to be added to a query string.
- *<p>
+ * <p>
  * If multiple values are added to a query string with the same name (case-insensitive), then the values will be
  * appended at the end of the same {@link QueryParameter} with commas separating them.
  */
 class QueryParameter {
+
     private static final String[] EMPTY_QUERY_PARAMETER_ARRAY = new String[0];
 
     private final String name;
@@ -30,8 +31,8 @@ class QueryParameter {
 
     // but we also cache it to faster serve our public API
     private volatile String cachedStringValue;
-    private static final AtomicReferenceFieldUpdater<QueryParameter, String> CACHED_STRING_VALUE_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(QueryParameter.class, String.class, "cachedStringValue");
+    private static final AtomicReferenceFieldUpdater<QueryParameter, String> CACHED_STRING_VALUE_UPDATER =
+        AtomicReferenceFieldUpdater.newUpdater(QueryParameter.class, String.class, "cachedStringValue");
 
     /**
      * Create a QueryParameter instance using the provided name and value.
@@ -98,7 +99,9 @@ class QueryParameter {
      */
     public String[] getValues() {
         if (value != null) {
-            return new String[] {value};
+            return new String[] {
+                value
+            };
         } else if (!CoreUtils.isNullOrEmpty(values)) {
             return values.toArray(new String[0]);
         } else {
@@ -160,4 +163,5 @@ class QueryParameter {
     private void checkCachedStringValue() {
         CACHED_STRING_VALUE_UPDATER.compareAndSet(this, null, CoreUtils.stringJoin(",", values));
     }
+
 }

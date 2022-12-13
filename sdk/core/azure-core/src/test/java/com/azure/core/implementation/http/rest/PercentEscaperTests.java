@@ -13,10 +13,9 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- * Tests {@link PercentEscaper}.
- */
+/** Tests {@link PercentEscaper}. */
 public class PercentEscaperTests {
+
     /**
      * Tests that using {@code ' '} as a safe character and treating {@code ' '} as {@code '+'} is an illegal
      * configuration.
@@ -73,4 +72,5 @@ public class PercentEscaperTests {
             Arguments.arguments("\uD800abcd")
         );
     }
+
 }

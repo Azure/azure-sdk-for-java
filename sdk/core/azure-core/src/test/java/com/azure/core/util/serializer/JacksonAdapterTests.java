@@ -30,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class JacksonAdapterTests {
+
     @Test
     public void emptyMap() throws IOException {
         final Map<String, String> map = new HashMap<>();
@@ -102,16 +103,15 @@ public class JacksonAdapterTests {
     @ParameterizedTest
     @MethodSource("serializeCollectionSupplier")
     public void testSerializeList(List<?> values, CollectionFormat format, String expectedSerializedString) {
-        String actualSerializedString = JacksonAdapter.createDefaultSerializerAdapter()
-            .serializeList(values, format);
+        String actualSerializedString = JacksonAdapter.createDefaultSerializerAdapter().serializeList(values, format);
         assertEquals(expectedSerializedString, actualSerializedString);
     }
 
     @ParameterizedTest
     @MethodSource("serializeCollectionSupplier")
     public void testSerializeIterable(Iterable<?> values, CollectionFormat format, String expectedSerializedString) {
-        String actualSerializedString = JacksonAdapter.createDefaultSerializerAdapter()
-            .serializeIterable(values, format);
+        String actualSerializedString =
+            JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(values, format);
         assertEquals(expectedSerializedString, actualSerializedString);
     }
 
@@ -173,6 +173,7 @@ public class JacksonAdapterTests {
 
     @JacksonXmlRootElement(localName = "Wrapper")
     private static class DateTimeWrapper {
+
         @JsonProperty(value = "OffsetDateTime", required = true)
         private OffsetDateTime offsetDateTime;
 
@@ -184,6 +185,7 @@ public class JacksonAdapterTests {
         public OffsetDateTime getOffsetDateTime() {
             return offsetDateTime;
         }
+
     }
 
     @Test
@@ -192,8 +194,8 @@ public class JacksonAdapterTests {
 
         HttpHeaders rawHeaders = new HttpHeaders().set("Date", expectedDate);
 
-        StronglyTypedHeaders stronglyTypedHeaders = JacksonAdapter.createDefaultSerializerAdapter()
-            .deserialize(rawHeaders, StronglyTypedHeaders.class);
+        StronglyTypedHeaders stronglyTypedHeaders =
+            JacksonAdapter.createDefaultSerializerAdapter().deserialize(rawHeaders, StronglyTypedHeaders.class);
 
         assertEquals(expectedDate, DateTimeRfc1123.toRfc1123String(stronglyTypedHeaders.getDate()));
     }
@@ -202,20 +204,26 @@ public class JacksonAdapterTests {
     public void stronglyTypedHeadersClassThrowsEagerly() {
         HttpHeaders rawHeaders = new HttpHeaders().set("Date", "invalid-rfc1123-date");
 
-        assertThrows(DateTimeParseException.class, () -> JacksonAdapter.createDefaultSerializerAdapter()
-            .deserialize(rawHeaders, StronglyTypedHeaders.class));
+        assertThrows(
+            DateTimeParseException.class,
+            () -> JacksonAdapter.createDefaultSerializerAdapter().deserialize(rawHeaders, StronglyTypedHeaders.class)
+        );
     }
 
     @Test
     public void invalidStronglyTypedHeadersClassThrowsCorrectException() throws IOException {
         try {
-            JacksonAdapter.createDefaultSerializerAdapter().deserialize(new HttpHeaders(),
-                InvalidStronglyTypedHeaders.class);
+            JacksonAdapter.createDefaultSerializerAdapter()
+                .deserialize(new HttpHeaders(), InvalidStronglyTypedHeaders.class);
 
             fail("An exception should have been thrown.");
         } catch (RuntimeException ex) {
-            assertTrue(ex.getCause() instanceof JsonProcessingException, "Exception cause type was "
-                + ex.getCause().getClass().getName() + " instead of the expected JsonProcessingException type.");
+            assertTrue(
+                ex.getCause() instanceof JsonProcessingException,
+                "Exception cause type was "
+                    + ex.getCause().getClass().getName()
+                    + " instead of the expected JsonProcessingException type."
+            );
         }
     }
 
@@ -236,6 +244,7 @@ public class JacksonAdapterTests {
     }
 
     public static final class StronglyTypedHeaders {
+
         private final DateTimeRfc1123 date;
 
         public StronglyTypedHeaders(HttpHeaders rawHeaders) {
@@ -246,11 +255,15 @@ public class JacksonAdapterTests {
         OffsetDateTime getDate() {
             return (date == null) ? null : date.getDateTime();
         }
+
     }
 
     public static final class InvalidStronglyTypedHeaders {
+
         public InvalidStronglyTypedHeaders(HttpHeaders httpHeaders) throws Exception {
             throw new Exception();
         }
+
     }
+
 }

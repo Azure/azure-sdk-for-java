@@ -3,7 +3,6 @@
 
 package com.azure.core.implementation.util;
 
-
 import com.azure.core.util.mocking.MockInputStream;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
@@ -33,10 +32,14 @@ public class SliceInputStreamTest {
     @Test
     public void ctorValidations() {
         assertThrows(NullPointerException.class, () -> new SliceInputStream(null, 0, 10));
-        assertThrows(IllegalArgumentException.class, () -> new SliceInputStream(
-            new ByteArrayInputStream(new byte[0]), -1, 10));
-        assertThrows(IllegalArgumentException.class, () -> new SliceInputStream(
-            new ByteArrayInputStream(new byte[0]), 0, -1));
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> new SliceInputStream(new ByteArrayInputStream(new byte[0]), -1, 10)
+        );
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> new SliceInputStream(new ByteArrayInputStream(new byte[0]), 0, -1)
+        );
     }
 
     @ParameterizedTest
@@ -121,10 +124,12 @@ public class SliceInputStreamTest {
     public void delegatesMarkSupported() {
         AtomicBoolean markSupported = new AtomicBoolean(true);
         InputStream innerStream = new MockInputStream() {
+
             @Override
             public boolean markSupported() {
                 return markSupported.compareAndSet(true, false);
             }
+
         };
 
         SliceInputStream sliceInputStream = new SliceInputStream(innerStream, 0, 10);
@@ -137,11 +142,13 @@ public class SliceInputStreamTest {
     public void delegatesClose() throws Exception {
         AtomicBoolean closed = new AtomicBoolean();
         InputStream innerStream = new MockInputStream() {
+
             @Override
             public void close() throws IOException {
                 closed.set(true);
                 super.close();
             }
+
         };
 
         SliceInputStream sliceInputStream = new SliceInputStream(innerStream, 0, 10);
@@ -178,13 +185,13 @@ public class SliceInputStreamTest {
     }
 
     private static Stream<Arguments> provideArguments() {
-        return Stream.of(0, 1, 2, 5, 13, 145, 1024, 1024 + 114, 10 * 1024 * 1024 + 113)
-            .flatMap(dataSize -> {
-                byte[] data = new byte[dataSize];
-                RANDOM.nextBytes(data);
+        return Stream.of(0, 1, 2, 5, 13, 145, 1024, 1024 + 114, 10 * 1024 * 1024 + 113).flatMap(dataSize -> {
+            byte[] data = new byte[dataSize];
+            RANDOM.nextBytes(data);
 
-                return Stream.of(0, 1, 2, 6, 15, 150, 998, 2048, 5 * 1024 * 1024, 50 * 1024 * 1024)
-                    .flatMap(offset -> Stream.of(0, 1, 2, 3, 5, 18, 211, 1568, 2098, 5 * 1024 * 1024, 50 * 1024 * 1024)
+            return Stream.of(0, 1, 2, 6, 15, 150, 998, 2048, 5 * 1024 * 1024, 50 * 1024 * 1024)
+                .flatMap(
+                    offset -> Stream.of(0, 1, 2, 3, 5, 18, 211, 1568, 2098, 5 * 1024 * 1024, 50 * 1024 * 1024)
                         .map(count -> {
                             byte[] expectedBytes;
                             if (offset >= data.length) {
@@ -198,10 +205,19 @@ public class SliceInputStreamTest {
 
                             return Arguments.of(
                                 Named.named("expectedBytes", expectedBytes),
-                                Named.named("sliceInputStream innerSize=" + data.length + " offset=" + offset + " count=" + count,
-                                    sliceInputStream)
+                                Named.named(
+                                    "sliceInputStream innerSize="
+                                        + data.length
+                                        + " offset="
+                                        + offset
+                                        + " count="
+                                        + count,
+                                    sliceInputStream
+                                )
                             );
-                        }));
-            });
+                        })
+                );
+        });
     }
+
 }

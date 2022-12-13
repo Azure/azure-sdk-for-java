@@ -9,11 +9,10 @@ import reactor.util.context.Context;
 
 import java.util.function.LongConsumer;
 
-/**
- * A Mono sink used for mocking in tests.
- */
+/** A Mono sink used for mocking in tests. */
 @SuppressWarnings("deprecation")
 public class MockMonoSink<T> implements MonoSink<T> {
+
     @Override
     public void success() {
 
@@ -48,4 +47,5 @@ public class MockMonoSink<T> implements MonoSink<T> {
     public MonoSink<T> onDispose(Disposable d) {
         return null;
     }
+
 }

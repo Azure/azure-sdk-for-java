@@ -18,6 +18,7 @@ import java.nio.ByteBuffer;
  * {@link HttpHeader} and request body.
  */
 public class HttpRequest {
+
     // HttpRequest is a highly used, short-lived class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(HttpRequest.class);
 
@@ -248,7 +249,7 @@ public class HttpRequest {
     public HttpRequest setBody(Flux<ByteBuffer> content) {
         if (content != null) {
             this.body = BinaryDataHelper.createBinaryData(new FluxByteBufferContent(content));
-        } else  {
+        } else {
             this.body = null;
         }
         return this;
@@ -291,4 +292,5 @@ public class HttpRequest {
         final HttpHeaders bufferedHeaders = new HttpHeaders(headers);
         return new HttpRequest(httpMethod, url, bufferedHeaders, body);
     }
+
 }

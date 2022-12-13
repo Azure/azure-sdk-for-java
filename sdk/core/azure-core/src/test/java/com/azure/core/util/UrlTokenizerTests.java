@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class UrlTokenizerTests {
+
     @Test
     public void constructor() {
         final UrlTokenizer tokenizer = new UrlTokenizer("http://www.bing.com");
@@ -40,161 +41,168 @@ public class UrlTokenizerTests {
 
     @Test
     public void nextWithSchemeAndColon() {
-        nextTest("http:",
-            UrlToken.host("http"),
-            UrlToken.port(""));
+        nextTest("http:", UrlToken.host("http"), UrlToken.port(""));
     }
 
     @Test
     public void nextWithSchemeAndColonAndForwardSlash() {
-        nextTest("http:/",
-            UrlToken.host("http"),
-            UrlToken.port(""),
-            UrlToken.path("/"));
+        nextTest("http:/", UrlToken.host("http"), UrlToken.port(""), UrlToken.path("/"));
     }
 
     @Test
     public void nextWithSchemeAndColonAndTwoForwardSlashes() {
-        nextTest("http://",
-            UrlToken.scheme("http"),
-            UrlToken.host(""));
+        nextTest("http://", UrlToken.scheme("http"), UrlToken.host(""));
     }
 
     @Test
     public void nextWithSchemeAndHost() {
-        nextTest("https://www.example.com",
-            UrlToken.scheme("https"),
-            UrlToken.host("www.example.com"));
+        nextTest("https://www.example.com", UrlToken.scheme("https"), UrlToken.host("www.example.com"));
     }
 
     @Test
     public void nextWithSchemeAndHostAndColon() {
-        nextTest("https://www.example.com:",
+        nextTest(
+            "https://www.example.com:",
             UrlToken.scheme("https"),
             UrlToken.host("www.example.com"),
-            UrlToken.port(""));
+            UrlToken.port("")
+        );
     }
 
     @Test
     public void nextWithSchemeAndHostAndPort() {
-        nextTest("https://www.example.com:8080",
+        nextTest(
+            "https://www.example.com:8080",
             UrlToken.scheme("https"),
             UrlToken.host("www.example.com"),
-            UrlToken.port("8080"));
+            UrlToken.port("8080")
+        );
     }
 
     @Test
     public void nextWithSchemeAndHostAndPortAndForwardSlash() {
-        nextTest("ftp://www.bing.com:132/",
+        nextTest(
+            "ftp://www.bing.com:132/",
             UrlToken.scheme("ftp"),
             UrlToken.host("www.bing.com"),
             UrlToken.port("132"),
-            UrlToken.path("/"));
+            UrlToken.path("/")
+        );
     }
 
     @Test
     public void nextWithSchemeAndHostAndPortAndPath() {
-        nextTest("ftp://www.bing.com:132/a/b/c.txt",
+        nextTest(
+            "ftp://www.bing.com:132/a/b/c.txt",
             UrlToken.scheme("ftp"),
             UrlToken.host("www.bing.com"),
             UrlToken.port("132"),
-            UrlToken.path("/a/b/c.txt"));
+            UrlToken.path("/a/b/c.txt")
+        );
     }
 
     @Test
     public void nextWithSchemeAndHostAndPortAndQuestionMark() {
-        nextTest("ftp://www.bing.com:132?",
+        nextTest(
+            "ftp://www.bing.com:132?",
             UrlToken.scheme("ftp"),
             UrlToken.host("www.bing.com"),
             UrlToken.port("132"),
-            UrlToken.query(""));
+            UrlToken.query("")
+        );
     }
 
     @Test
     public void nextWithSchemeAndHostAndPortAndQuery() {
-        nextTest("ftp://www.bing.com:132?a=b&c=d",
+        nextTest(
+            "ftp://www.bing.com:132?a=b&c=d",
             UrlToken.scheme("ftp"),
             UrlToken.host("www.bing.com"),
             UrlToken.port("132"),
-            UrlToken.query("a=b&c=d"));
+            UrlToken.query("a=b&c=d")
+        );
     }
 
     @Test
     public void nextWithSchemeAndHostAndForwardSlash() {
-        nextTest("https://www.example.com/",
+        nextTest(
+            "https://www.example.com/",
             UrlToken.scheme("https"),
             UrlToken.host("www.example.com"),
-            UrlToken.path("/"));
+            UrlToken.path("/")
+        );
     }
 
     @Test
     public void nextWithSchemeAndHostAndPath() {
-        nextTest("https://www.example.com/index.html",
+        nextTest(
+            "https://www.example.com/index.html",
             UrlToken.scheme("https"),
             UrlToken.host("www.example.com"),
-            UrlToken.path("/index.html"));
+            UrlToken.path("/index.html")
+        );
     }
 
     @Test
     public void nextWithSchemeAndHostAndPathAndQuestionMark() {
-        nextTest("https://www.example.com/index.html?",
+        nextTest(
+            "https://www.example.com/index.html?",
             UrlToken.scheme("https"),
             UrlToken.host("www.example.com"),
             UrlToken.path("/index.html"),
-            UrlToken.query(""));
+            UrlToken.query("")
+        );
     }
 
     @Test
     public void nextWithSchemeAndHostAndPathAndQuery() {
-        nextTest("https://www.example.com/index.html?alpha=beta",
+        nextTest(
+            "https://www.example.com/index.html?alpha=beta",
             UrlToken.scheme("https"),
             UrlToken.host("www.example.com"),
             UrlToken.path("/index.html"),
-            UrlToken.query("alpha=beta"));
+            UrlToken.query("alpha=beta")
+        );
     }
 
     @Test
     public void nextWithSchemeAndHostAndQuestionMark() {
-        nextTest("https://www.example.com?",
+        nextTest(
+            "https://www.example.com?",
             UrlToken.scheme("https"),
             UrlToken.host("www.example.com"),
-            UrlToken.query(""));
+            UrlToken.query("")
+        );
     }
 
     @Test
     public void nextWithSchemeAndHostAndQuery() {
-        nextTest("https://www.example.com?a=b",
+        nextTest(
+            "https://www.example.com?a=b",
             UrlToken.scheme("https"),
             UrlToken.host("www.example.com"),
-            UrlToken.query("a=b"));
+            UrlToken.query("a=b")
+        );
     }
 
     @Test
     public void nextWithHostAndForwardSlash() {
-        nextTest("www.test.com/",
-            UrlToken.host("www.test.com"),
-            UrlToken.path("/"));
+        nextTest("www.test.com/", UrlToken.host("www.test.com"), UrlToken.path("/"));
     }
 
     @Test
     public void nextWithHostAndQuestionMark() {
-        nextTest("www.test.com?",
-            UrlToken.host("www.test.com"),
-            UrlToken.query(""));
+        nextTest("www.test.com?", UrlToken.host("www.test.com"), UrlToken.query(""));
     }
 
     @Test
     public void nextWithPath() {
-        nextTest("folder/index.html",
-            UrlToken.host("folder"),
-            UrlToken.path("/index.html"));
+        nextTest("folder/index.html", UrlToken.host("folder"), UrlToken.path("/index.html"));
     }
 
     @Test
     public void nextWithForwardSlashAndPath() {
-        nextTest("/folder/index.html",
-            UrlToken.host(""),
-            UrlToken.path("/folder/index.html"));
+        nextTest("/folder/index.html", UrlToken.host(""), UrlToken.path("/folder/index.html"));
     }
 
     private static void nextTest(String text, UrlToken... expectedTokens) {
@@ -210,4 +218,5 @@ public class UrlTokenizerTests {
         assertFalse(tokenizer.next());
         assertNull(tokenizer.current());
     }
+
 }

@@ -3,12 +3,9 @@
 
 package com.azure.core.models;
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The inner error of a {@link ResponseError}.
- */
+/** The inner error of a {@link ResponseError}. */
 final class ResponseInnerError {
 
     @JsonProperty(value = "code")
@@ -56,4 +53,5 @@ final class ResponseInnerError {
         this.innerError = innerError;
         return this;
     }
+
 }

@@ -34,15 +34,15 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @State(Scope.Thread)
 public class RestProxyResponseConstructionBenchmark {
+
     private static final ResponseConstructorsCache CONSTRUCTORS_CACHE = new ResponseConstructorsCache();
 
     private static final HttpRequest REQUEST = new HttpRequest(HttpMethod.GET, "https://example.com");
     private static final HttpHeaders HEADERS = new HttpHeaders();
     private static final Object DESERIALIZED_HEADERS = new Object();
 
-    private static final Class<? extends Response<?>> RESPONSE_TYPE =
-        (Class<? extends Response<?>>) TypeUtil.getRawClass(TypeUtil.createParameterizedType(ResponseBase.class,
-            Object.class, String.class));
+    private static final Class<? extends Response<?>> RESPONSE_TYPE = (Class<? extends Response<?>>) TypeUtil
+        .getRawClass(TypeUtil.createParameterizedType(ResponseBase.class, Object.class, String.class));
 
     /**
      * Benchmarks creating a {@link Response} type using the constructor directly when possible (types outside the
@@ -64,4 +64,5 @@ public class RestProxyResponseConstructionBenchmark {
         MethodHandle constructor = CONSTRUCTORS_CACHE.get(RESPONSE_TYPE);
         blackhole.consume(constructor.invokeWithArguments(REQUEST, 200, HEADERS, "value", DESERIALIZED_HEADERS));
     }
+
 }

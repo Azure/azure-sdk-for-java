@@ -9,10 +9,9 @@ import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.CompletionHandler;
 import java.util.concurrent.Future;
 
-/**
- * An asynchronous byte channel used for mocking in tests.
- */
+/** An asynchronous byte channel used for mocking in tests. */
 public class MockAsynchronousByteChannel implements AsynchronousByteChannel {
+
     @Override
     public <A> void read(ByteBuffer dst, A attachment, CompletionHandler<Integer, ? super A> handler) {
 
@@ -42,4 +41,5 @@ public class MockAsynchronousByteChannel implements AsynchronousByteChannel {
     public void close() throws IOException {
 
     }
+
 }

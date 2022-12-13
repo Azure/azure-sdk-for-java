@@ -13,14 +13,13 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-/**
- * Unit tests for {@link HttpAuthorization}.
- */
+/** Unit tests for {@link HttpAuthorization}. */
 public class HttpAuthorizationTests {
+
     @ParameterizedTest
     @MethodSource("invalidConstructorParametersSupplier")
-    public void invalidConstructorParameters(String scheme, String parameter,
-        Class<? extends Throwable> expectedException) {
+    public void
+        invalidConstructorParameters(String scheme, String parameter, Class<? extends Throwable> expectedException) {
         assertThrows(expectedException, () -> new HttpAuthorization(scheme, parameter));
     }
 
@@ -44,4 +43,5 @@ public class HttpAuthorizationTests {
 
         Assertions.assertEquals(String.format("%s %s", scheme, parameter), httpAuthorization.toString());
     }
+
 }

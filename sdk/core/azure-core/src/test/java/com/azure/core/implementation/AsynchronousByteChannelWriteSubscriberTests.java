@@ -15,25 +15,26 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * Tests {@link AsynchronousByteChannelWriteSubscriber}.
- */
+/** Tests {@link AsynchronousByteChannelWriteSubscriber}. */
 public class AsynchronousByteChannelWriteSubscriberTests {
+
     @SuppressWarnings("unchecked")
     @Test
     public void multipleSubscriptionsCancelsLaterSubscriptions() {
         AsynchronousFileChannel channel = new MockAsynchronousFileChannel() {
+
             @Override
-            public <A> void write(ByteBuffer src, long position, A attachment,
-                CompletionHandler<Integer, ? super A> handler) {
+            public <A> void
+                write(ByteBuffer src, long position, A attachment, CompletionHandler<Integer, ? super A> handler) {
                 int remaining = src.remaining();
                 src.position(src.position() + remaining);
                 handler.completed(remaining, attachment);
             }
+
         };
 
-        AsynchronousByteChannelWriteSubscriber fileWriteSubscriber = new AsynchronousByteChannelWriteSubscriber(
-            IOUtils.toAsynchronousByteChannel(channel, 0), null);
+        AsynchronousByteChannelWriteSubscriber fileWriteSubscriber =
+            new AsynchronousByteChannelWriteSubscriber(IOUtils.toAsynchronousByteChannel(channel, 0), null);
 
         CallTrackingSubscription subscription1 = new CallTrackingSubscription();
         CallTrackingSubscription subscription2 = new CallTrackingSubscription();
@@ -49,6 +50,7 @@ public class AsynchronousByteChannelWriteSubscriberTests {
     }
 
     private static final class CallTrackingSubscription implements Subscription {
+
         private final AtomicInteger requestOneCalls = new AtomicInteger();
         private final AtomicInteger cancelCalls = new AtomicInteger();
 
@@ -63,5 +65,7 @@ public class AsynchronousByteChannelWriteSubscriberTests {
         public void cancel() {
             cancelCalls.incrementAndGet();
         }
+
     }
+
 }

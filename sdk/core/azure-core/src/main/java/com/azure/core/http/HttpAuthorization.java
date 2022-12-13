@@ -8,11 +8,10 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Objects;
 
-/**
- * Represents the value of an HTTP Authorization header.
- */
+/** Represents the value of an HTTP Authorization header. */
 @Immutable
 public final class HttpAuthorization {
+
     // HttpAuthorization can be used commonly, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(HttpAuthorization.class);
 
@@ -63,4 +62,5 @@ public final class HttpAuthorization {
     public String toString() {
         return scheme + " " + parameter;
     }
+
 }

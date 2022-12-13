@@ -21,9 +21,10 @@ import java.util.Objects;
  *
  * @param <T> the type of the response type from a polling call, or BinaryData if raw response body should be kept
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
- *           kept
+ * kept
  */
 public final class ChainedPollingStrategy<T, U> implements PollingStrategy<T, U> {
+
     private static final ClientLogger LOGGER = new ClientLogger(ChainedPollingStrategy.class);
 
     private final List<PollingStrategy<T, U>> pollingStrategies;
@@ -31,6 +32,7 @@ public final class ChainedPollingStrategy<T, U> implements PollingStrategy<T, U>
 
     /**
      * Creates a chained polling strategy with a list of polling strategies.
+     * 
      * @param strategies the list of polling strategies
      * @throws NullPointerException If {@code strategies} is null.
      * @throws IllegalArgumentException If {@code strategies} is an empty list.
@@ -48,8 +50,7 @@ public final class ChainedPollingStrategy<T, U> implements PollingStrategy<T, U>
         // Find the first strategy that can poll in series so that
         // pollableStrategy is only set once
         return Flux.fromIterable(pollingStrategies)
-            .concatMap(strategy -> strategy.canPoll(initialResponse)
-                .map(canPoll -> Tuples.of(strategy, canPoll)))
+            .concatMap(strategy -> strategy.canPoll(initialResponse).map(canPoll -> Tuples.of(strategy, canPoll)))
             .takeUntil(Tuple2::getT2)
             .last()
             .map(tuple2 -> {
@@ -75,8 +76,8 @@ public final class ChainedPollingStrategy<T, U> implements PollingStrategy<T, U>
      * @throws NullPointerException if {@link #canPoll(Response)} is not called prior to this, or if it returns false.
      */
     @Override
-    public Mono<PollResponse<T>> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
-                                                              TypeReference<T> pollResponseType) {
+    public Mono<PollResponse<T>>
+        onInitialResponse(Response<?> response, PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
         return pollableStrategy.onInitialResponse(response, pollingContext, pollResponseType);
     }
 
@@ -99,4 +100,5 @@ public final class ChainedPollingStrategy<T, U> implements PollingStrategy<T, U>
     public Mono<T> cancel(PollingContext<T> pollingContext, PollResponse<T> initialResponse) {
         return pollableStrategy.cancel(pollingContext, initialResponse);
     }
+
 }

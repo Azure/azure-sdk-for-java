@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class NoopMeterTests {
+
     @Test
     public void noopMeter() {
         Meter noopMeter = MeterProvider.getDefaultProvider().createMeter("foo", null, null);
@@ -46,8 +47,14 @@ public class NoopMeterTests {
         Meter noopMeter = MeterProvider.getDefaultProvider().createMeter("foo", null, null);
 
         assertThrows(NullPointerException.class, () -> noopMeter.createAttributes(null));
-        assertThrows(NullPointerException.class, () -> noopMeter.createAttributes(Collections.singletonMap(null, "foo")));
-        assertThrows(NullPointerException.class, () -> noopMeter.createAttributes(Collections.singletonMap("foo", null)));
+        assertThrows(
+            NullPointerException.class,
+            () -> noopMeter.createAttributes(Collections.singletonMap(null, "foo"))
+        );
+        assertThrows(
+            NullPointerException.class,
+            () -> noopMeter.createAttributes(Collections.singletonMap("foo", null))
+        );
     }
 
     @Test
@@ -70,7 +77,10 @@ public class NoopMeterTests {
 
     @Test
     public void createMeterNullNameThrows() {
-        assertThrows(NullPointerException.class, () -> MeterProvider.getDefaultProvider().createMeter(null, null, null));
+        assertThrows(
+            NullPointerException.class,
+            () -> MeterProvider.getDefaultProvider().createMeter(null, null, null)
+        );
     }
 
     @Test
@@ -83,4 +93,5 @@ public class NoopMeterTests {
         assertThrows(NullPointerException.class, () -> noopMeter.createLongUpDownCounter(null, "description", null));
         assertThrows(NullPointerException.class, () -> noopMeter.createLongUpDownCounter("name", null, null));
     }
+
 }

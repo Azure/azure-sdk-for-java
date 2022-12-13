@@ -21,6 +21,7 @@ import java.io.UncheckedIOException;
  * no JsonSerializerProvider is in the class path.
  */
 public final class DefaultJsonSerializer implements JsonSerializer {
+
     // DefaultJsonSerializer is a commonly used class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(DefaultJsonSerializer.class);
 
@@ -81,4 +82,5 @@ public final class DefaultJsonSerializer implements JsonSerializer {
     public Mono<Void> serializeAsync(OutputStream stream, Object value) {
         return Mono.fromRunnable(() -> serialize(stream, value));
     }
+
 }

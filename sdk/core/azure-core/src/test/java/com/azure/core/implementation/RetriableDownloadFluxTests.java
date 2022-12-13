@@ -15,14 +15,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * Tests {@link RetriableDownloadFlux}.
- */
+/** Tests {@link RetriableDownloadFlux}. */
 public class RetriableDownloadFluxTests {
+
     @Test
     public void initialDownloadIsEmpty() {
-        RetriableDownloadFlux retriableDownloadFlux = new RetriableDownloadFlux(Flux::empty,
-            (ignoredThrowable, ignoredOffset) -> Flux.empty(), 0, 0L);
+        RetriableDownloadFlux retriableDownloadFlux =
+            new RetriableDownloadFlux(Flux::empty, (ignoredThrowable, ignoredOffset) -> Flux.empty(), 0, 0L);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(retriableDownloadFlux))
             .assertNext(bytes -> assertEquals(0, bytes.length))
@@ -31,8 +30,12 @@ public class RetriableDownloadFluxTests {
 
     @Test
     public void initialDownloadIsAnErrorButRetries() {
-        RetriableDownloadFlux retriableDownloadFlux = new RetriableDownloadFlux(() -> Flux.error(new RuntimeException()),
-            (ignoredThrowable, ignoredOffset) -> Flux.empty(), 1, 0L);
+        RetriableDownloadFlux retriableDownloadFlux = new RetriableDownloadFlux(
+            () -> Flux.error(new RuntimeException()),
+            (ignoredThrowable, ignoredOffset) -> Flux.empty(),
+            1,
+            0L
+        );
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(retriableDownloadFlux))
             .assertNext(bytes -> assertEquals(0, bytes.length))
@@ -43,8 +46,8 @@ public class RetriableDownloadFluxTests {
     public void initialDownloadAndRetryErrorButRetriesUntilCompletion() {
         AtomicInteger retryCount = new AtomicInteger(0);
 
-        RetriableDownloadFlux retriableDownloadFlux = new RetriableDownloadFlux(() -> Flux.error(new RuntimeException()),
-            (throwable, offset) -> {
+        RetriableDownloadFlux retriableDownloadFlux =
+            new RetriableDownloadFlux(() -> Flux.error(new RuntimeException()), (throwable, offset) -> {
                 if (retryCount.getAndIncrement() == 0) {
                     return Flux.error(new RuntimeException());
                 } else {
@@ -59,8 +62,12 @@ public class RetriableDownloadFluxTests {
 
     @Test
     public void initialDownloadIsAnErrorAndNoRetriesAreAvailable() {
-        RetriableDownloadFlux retriableDownloadFlux = new RetriableDownloadFlux(() -> Flux.error(new RuntimeException()),
-            (ignoredThrowable, ignoredOffset) -> Flux.empty(), 0, 0L);
+        RetriableDownloadFlux retriableDownloadFlux = new RetriableDownloadFlux(
+            () -> Flux.error(new RuntimeException()),
+            (ignoredThrowable, ignoredOffset) -> Flux.empty(),
+            0,
+            0L
+        );
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(retriableDownloadFlux))
             .verifyError(RuntimeException.class);
@@ -68,8 +75,8 @@ public class RetriableDownloadFluxTests {
 
     @Test
     public void initialDownloadIsANonRetriableError() {
-        RetriableDownloadFlux retriableDownloadFlux = new RetriableDownloadFlux(() -> Flux.error(new RuntimeException()),
-            (throwable, offset) -> {
+        RetriableDownloadFlux retriableDownloadFlux =
+            new RetriableDownloadFlux(() -> Flux.error(new RuntimeException()), (throwable, offset) -> {
                 if (!(throwable instanceof IOException)) {
                     return Flux.error(throwable);
                 }
@@ -83,8 +90,8 @@ public class RetriableDownloadFluxTests {
 
     @Test
     public void retryFailsWithNonRetriableError() {
-        RetriableDownloadFlux retriableDownloadFlux = new RetriableDownloadFlux(() -> Flux.error(new IOException()),
-            (throwable, offset) -> {
+        RetriableDownloadFlux retriableDownloadFlux =
+            new RetriableDownloadFlux(() -> Flux.error(new IOException()), (throwable, offset) -> {
                 if (!(throwable instanceof IOException)) {
                     return Flux.error(throwable);
                 }
@@ -98,8 +105,12 @@ public class RetriableDownloadFluxTests {
 
     @Test
     public void allRetriesAreConsumed() {
-        RetriableDownloadFlux retriableDownloadFlux = new RetriableDownloadFlux(() -> Flux.error(new RuntimeException()),
-            (throwable, offset) -> Flux.error(new RuntimeException()), 100, 0L);
+        RetriableDownloadFlux retriableDownloadFlux = new RetriableDownloadFlux(
+            () -> Flux.error(new RuntimeException()),
+            (throwable, offset) -> Flux.error(new RuntimeException()),
+            100,
+            0L
+        );
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(retriableDownloadFlux))
             .verifyError(RuntimeException.class);
@@ -107,26 +118,33 @@ public class RetriableDownloadFluxTests {
 
     @Test
     public void multipleSubscriptionsWorkAppropriately() {
-        RetriableDownloadFlux retriableDownloadFlux = new RetriableDownloadFlux(() -> generateFromOffset(0),
-            (throwable, offset) -> generateFromOffset(offset), 1, 0L);
+        RetriableDownloadFlux retriableDownloadFlux = new RetriableDownloadFlux(
+            () -> generateFromOffset(0),
+            (throwable, offset) -> generateFromOffset(offset),
+            1,
+            0L
+        );
 
-        byte[] expected = new byte[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        byte[] expected = new byte[] {
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        };
 
-        StepVerifier.create(Flux.range(0, 100)
-            .parallel()
-            .flatMap(ignored -> FluxUtil.collectBytesInByteBufferStream(retriableDownloadFlux))
-            .map(bytes -> {
-                assertArrayEquals(expected, bytes);
-                return bytes;
-            })
-            .then())
-            .verifyComplete();
+        StepVerifier.create(
+            Flux.range(0, 100)
+                .parallel()
+                .flatMap(ignored -> FluxUtil.collectBytesInByteBufferStream(retriableDownloadFlux))
+                .map(bytes -> {
+                    assertArrayEquals(expected, bytes);
+                    return bytes;
+                })
+                .then()
+        ).verifyComplete();
     }
 
     @Test
     public void downloadFromAnInitialOffset() {
-        RetriableDownloadFlux retriableDownloadFlux = new RetriableDownloadFlux(() -> Flux.error(new IOException()),
-            ((throwable, offset) -> {
+        RetriableDownloadFlux retriableDownloadFlux =
+            new RetriableDownloadFlux(() -> Flux.error(new IOException()), ((throwable, offset) -> {
                 if (!(throwable instanceof IOException)) {
                     return Flux.error(throwable);
                 }
@@ -134,7 +152,9 @@ public class RetriableDownloadFluxTests {
                 return generateFromOffset(offset);
             }), 1, 5L);
 
-        byte[] expected = new byte[]{0, 0, 0, 0, 0};
+        byte[] expected = new byte[] {
+            0, 0, 0, 0, 0
+        };
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(retriableDownloadFlux))
             .assertNext(bytes -> assertArrayEquals(expected, bytes))
@@ -146,10 +166,13 @@ public class RetriableDownloadFluxTests {
             if (count >= 10) {
                 sink.complete();
             } else {
-                sink.next(ByteBuffer.wrap(new byte[]{0}));
+                sink.next(ByteBuffer.wrap(new byte[] {
+                    0
+                }));
             }
 
             return count + 1;
         });
     }
+
 }

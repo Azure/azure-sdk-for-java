@@ -7,11 +7,10 @@ import com.azure.core.annotation.Fluent;
 
 import java.time.OffsetDateTime;
 
-/**
- * Specifies HTTP options for conditional requests based on modification time.
- */
+/** Specifies HTTP options for conditional requests based on modification time. */
 @Fluent
 public class RequestConditions extends MatchConditions {
+
     private OffsetDateTime ifModifiedSince;
     private OffsetDateTime ifUnmodifiedSince;
 
@@ -86,4 +85,5 @@ public class RequestConditions extends MatchConditions {
         this.ifUnmodifiedSince = ifUnmodifiedSince;
         return this;
     }
+
 }

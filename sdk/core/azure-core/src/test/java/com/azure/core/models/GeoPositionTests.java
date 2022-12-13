@@ -16,6 +16,7 @@ import static com.azure.core.models.GeoTestHelpers.PIKES_PLACE_POSITION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GeoPositionTests {
+
     @Test
     public void simpleConstructor() {
         double expectedLongitude = -180;
@@ -83,4 +84,5 @@ public class GeoPositionTests {
             Arguments.of(mtRainierPosition, MT_RAINIER_POSITION.get(), true)
         );
     }
+
 }

@@ -16,9 +16,11 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Wrapper over java.time.OffsetDateTime used for specifying RFC1123 format during serialization and deserialization.
+ * Wrapper over java.time.OffsetDateTime used for specifying RFC1123 format during serialization and
+ * deserialization.
  */
 public final class DateTimeRfc1123 {
+
     private static final ClientLogger LOGGER = new ClientLogger(DateTimeRfc1123.class);
 
     /**
@@ -28,6 +30,7 @@ public final class DateTimeRfc1123 {
 
     /**
      * Creates a new DateTimeRfc1123 object with the specified DateTime.
+     * 
      * @param dateTime The DateTime object to wrap.
      */
     public DateTimeRfc1123(OffsetDateTime dateTime) {
@@ -36,6 +39,7 @@ public final class DateTimeRfc1123 {
 
     /**
      * Creates a new DateTimeRfc1123 object with the specified DateTime.
+     * 
      * @param formattedString The datetime string in RFC1123 format
      */
     public DateTimeRfc1123(String formattedString) {
@@ -44,6 +48,7 @@ public final class DateTimeRfc1123 {
 
     /**
      * Returns the underlying DateTime.
+     * 
      * @return The underlying DateTime.
      */
     public OffsetDateTime getDateTime() {
@@ -76,7 +81,7 @@ public final class DateTimeRfc1123 {
      * @throws DateTimeException If the processing character is not a digit character.
      * @throws IllegalArgumentException if the given character is not recognized in the pattern of Month. such as 'Jan'.
      * @throws IndexOutOfBoundsException if the {@code beginIndex} is negative, or beginIndex is larger than length of
-     *   {@code date}.
+     * {@code date}.
      */
     private static OffsetDateTime parse(final String date) {
         try {
@@ -90,7 +95,8 @@ public final class DateTimeRfc1123 {
                     parseInt(date, 23, 25),  // second
                     0                        // nanoOfSecond
                 ),
-                ZoneOffset.UTC);
+                ZoneOffset.UTC
+            );
         } catch (DateTimeException | IllegalArgumentException | IndexOutOfBoundsException e) {
             return OffsetDateTime.parse(date, DateTimeFormatter.RFC_1123_DATE_TIME);
         }
@@ -137,36 +143,52 @@ public final class DateTimeRfc1123 {
             case 'J':
                 // Jan, Jun, Jul
                 switch (date.charAt(9)) {
-                    case 'a': return Month.JANUARY;
+                    case 'a':
+                        return Month.JANUARY;
                     case 'u':
                         switch (date.charAt(10)) {
-                            case 'n': return Month.JUNE;
-                            case 'l': return Month.JULY;
-                            default: throw LOGGER.logExceptionAsError(
-                                new IllegalArgumentException("Unknown month " + date));
+                            case 'n':
+                                return Month.JUNE;
+                            case 'l':
+                                return Month.JULY;
+                            default:
+                                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
                         }
-                    default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
+                    default:
+                        throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
                 }
-            case 'F': return Month.FEBRUARY;
+            case 'F':
+                return Month.FEBRUARY;
             case 'M':
                 // Mar, May
                 switch (date.charAt(10)) {
-                    case 'r': return Month.MARCH;
-                    case 'y': return Month.MAY;
-                    default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
+                    case 'r':
+                        return Month.MARCH;
+                    case 'y':
+                        return Month.MAY;
+                    default:
+                        throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
                 }
             case 'A':
                 // Apr, Aug
                 switch (date.charAt(10)) {
-                    case 'r': return Month.APRIL;
-                    case 'g': return Month.AUGUST;
-                    default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
+                    case 'r':
+                        return Month.APRIL;
+                    case 'g':
+                        return Month.AUGUST;
+                    default:
+                        throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
                 }
-            case 'S': return Month.SEPTEMBER;
-            case 'O': return Month.OCTOBER;
-            case 'N': return Month.NOVEMBER;
-            case 'D': return Month.DECEMBER;
-            default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
+            case 'S':
+                return Month.SEPTEMBER;
+            case 'O':
+                return Month.OCTOBER;
+            case 'N':
+                return Month.NOVEMBER;
+            case 'D':
+                return Month.DECEMBER;
+            default:
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
         }
     }
 
@@ -227,7 +249,8 @@ public final class DateTimeRfc1123 {
                 bytes[2] = 'n';
                 break;
 
-            default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown day of week " + dayOfWeek));
+            default:
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown day of week " + dayOfWeek));
         }
 
         bytes[3] = ',';
@@ -310,7 +333,8 @@ public final class DateTimeRfc1123 {
                 bytes[10] = 'c';
                 break;
 
-            default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + month));
+            default:
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + month));
         }
         bytes[11] = ' ';
 
@@ -375,4 +399,5 @@ public final class DateTimeRfc1123 {
         DateTimeRfc1123 rhs = (DateTimeRfc1123) obj;
         return this.dateTime.equals(rhs.getDateTime());
     }
+
 }

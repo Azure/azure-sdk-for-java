@@ -14,29 +14,30 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.ElementType.TYPE;
 
-/**
- * Annotation to indicate that a functionality is in preview.
- */
+/** Annotation to indicate that a functionality is in preview. */
 @Documented
 @Retention(RetentionPolicy.CLASS)
-@Target({ TYPE, METHOD, PARAMETER, CONSTRUCTOR })
+@Target({
+    TYPE, METHOD, PARAMETER, CONSTRUCTOR
+})
 @Inherited
 /**
  * Indicates functionality that is in preview and as such is subject to change in non-backwards compatible ways in
  * future releases, including removal, regardless of any compatibility expectations set by the containing library
  * version.
  *
- *  Examples:
+ * Examples:
  *
- *  {@literal @}Beta
- *  {@literal @}Beta(since="v1.0.0")
- *  {@literal @}Beta(since="v1.2.0", reason="the feature is in preview")
- *  {@literal @}Beta("introducing Foo which eventually replaces Bar")
+ * {@literal @}Beta
+ * {@literal @}Beta(since="v1.0.0")
+ * {@literal @}Beta(since="v1.2.0", reason="the feature is in preview")
+ * {@literal @}Beta("introducing Foo which eventually replaces Bar")
  */
 public @interface Beta {
+
     /**
      * @return the free-form value for the annotation (used if details cannot be provided using since and reason
-     *     attributes).
+     * attributes).
      */
     String value() default "";
 
@@ -56,4 +57,5 @@ public @interface Beta {
     String warningText() default "This functionality is in preview and as such is subject to change in non-backwards "
         + "compatible ways in future releases, including removal, regardless of any compatibility expectations set by"
         + " the containing library version.";
+
 }

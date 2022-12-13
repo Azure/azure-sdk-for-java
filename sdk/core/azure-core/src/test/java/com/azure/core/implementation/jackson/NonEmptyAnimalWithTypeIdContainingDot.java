@@ -10,7 +10,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @JsonFlatten
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY,
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
     property = "@odata\\.type",
     defaultImpl = NonEmptyAnimalWithTypeIdContainingDot.class)
 @JsonTypeName("NonEmptyAnimalWithTypeIdContainingDot")
@@ -19,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         value = TurtleWithTypeIdContainingDot.class)
 })
 public class NonEmptyAnimalWithTypeIdContainingDot {
+
     @JsonProperty(value = "age")
     private Integer age;
 
@@ -30,4 +32,5 @@ public class NonEmptyAnimalWithTypeIdContainingDot {
         this.age = age;
         return this;
     }
+
 }

@@ -17,10 +17,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- * Tests {@link ExpandableStringEnum}
- */
+/** Tests {@link ExpandableStringEnum} */
 public class ExpandableStringEnumTests {
+
     /**
      * Tests that using {@code null} to get an {@link ExpandableStringEnum} will return {@code null}.
      */
@@ -88,6 +87,7 @@ public class ExpandableStringEnumTests {
     }
 
     public static final class TestStringEnum extends ExpandableStringEnum<TestStringEnum> {
+
         @Deprecated
         public TestStringEnum() {
         }
@@ -95,9 +95,11 @@ public class ExpandableStringEnumTests {
         static TestStringEnum fromString(String name) {
             return fromString(name, TestStringEnum.class);
         }
+
     }
 
     public static final class TestStringEnum2 extends ExpandableStringEnum<TestStringEnum2> {
+
         @Deprecated
         public TestStringEnum2() {
         }
@@ -105,9 +107,11 @@ public class ExpandableStringEnumTests {
         static TestStringEnum2 fromString(String name) {
             return fromString(name, TestStringEnum2.class);
         }
+
     }
 
     private static final class PrivateStringEnum extends ExpandableStringEnum<PrivateStringEnum> {
+
         @Deprecated
         private PrivateStringEnum() {
         }
@@ -115,9 +119,11 @@ public class ExpandableStringEnumTests {
         static PrivateStringEnum fromString(String name) {
             return fromString(name, PrivateStringEnum.class);
         }
+
     }
 
     public static final class ValuesTestStringEnum extends ExpandableStringEnum<ValuesTestStringEnum> {
+
         @Deprecated
         public ValuesTestStringEnum() {
         }
@@ -125,5 +131,7 @@ public class ExpandableStringEnumTests {
         static ValuesTestStringEnum fromString(String name) {
             return fromString(name, ValuesTestStringEnum.class);
         }
+
     }
+
 }

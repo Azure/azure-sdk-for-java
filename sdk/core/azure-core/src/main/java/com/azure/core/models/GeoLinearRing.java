@@ -10,11 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Represents a linear ring that is part of a {@link GeoPolygon}.
- */
+/** Represents a linear ring that is part of a {@link GeoPolygon}. */
 @Immutable
 public final class GeoLinearRing {
+
     // GeoLinearRing is a commonly used model class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(GeoLinearRing.class);
 
@@ -33,13 +32,14 @@ public final class GeoLinearRing {
 
         int size = coordinates.size();
         if (size < 4) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("A linear ring requires at least 4 coordinates."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("A linear ring requires at least 4 coordinates."));
         }
 
         if (!Objects.equals(coordinates.get(0), coordinates.get(size - 1))) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("The first and last coordinates of a linear ring must be equivalent."));
+                new IllegalArgumentException("The first and last coordinates of a linear ring must be equivalent.")
+            );
         }
 
         this.coordinates = new GeoArray<>(new ArrayList<>(coordinates));
@@ -73,4 +73,5 @@ public final class GeoLinearRing {
         GeoLinearRing other = (GeoLinearRing) obj;
         return Objects.equals(coordinates, other.coordinates);
     }
+
 }

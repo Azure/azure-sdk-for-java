@@ -3,9 +3,7 @@
 
 package com.azure.core.util;
 
-/**
- * A generic interface for sending HTTP requests using the provided service version.
- */
+/** A generic interface for sending HTTP requests using the provided service version. */
 public interface ServiceVersion {
 
     /**
@@ -14,4 +12,5 @@ public interface ServiceVersion {
      * @return the string representation of the {@link ServiceVersion}
      */
     String getVersion();
+
 }

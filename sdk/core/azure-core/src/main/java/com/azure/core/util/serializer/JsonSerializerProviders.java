@@ -8,10 +8,9 @@ import com.azure.core.implementation.serializer.DefaultJsonSerializer;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 
-/**
- * This class is a proxy for using a {@link JsonSerializerProvider} loaded from the classpath.
- */
+/** This class is a proxy for using a {@link JsonSerializerProvider} loaded from the classpath. */
 public final class JsonSerializerProviders {
+
     private static final String CANNOT_FIND_JSON_SERIALIZER_PROVIDER = "A request was made to load the default JSON "
         + "serializer provider but one could not be found on the classpath. If you are using a dependency manager, "
         + "consider including a dependency on azure-core-serializer-json-jackson or azure-core-serializer-json-gson. "
@@ -35,7 +34,8 @@ public final class JsonSerializerProviders {
 
     /**
      * Creates an instance of {@link JsonSerializer} using the first {@link JsonSerializerProvider} found in the
-     * classpath. If no provider is found in classpath, a default provider will be included if {@code useDefaultIfAbsent}
+     * classpath. If no provider is found in classpath, a default provider will be included if
+     * {@code useDefaultIfAbsent}
      * is set to true.
      *
      * @param useDefaultIfAbsent If no provider is found in classpath, a default provider will be used.
@@ -71,8 +71,7 @@ public final class JsonSerializerProviders {
         // classloading differently (OSGi, Spring and others) and don't/ depend on the
         // System classloader to load JsonSerializerProviders classes.
         Iterator<JsonSerializerProvider> iterator =
-            ServiceLoader.load(JsonSerializerProvider.class, JsonSerializerProviders.class.getClassLoader())
-                .iterator();
+            ServiceLoader.load(JsonSerializerProvider.class, JsonSerializerProviders.class.getClassLoader()).iterator();
         if (iterator.hasNext()) {
             jsonSerializerProvider = iterator.next();
         }
@@ -81,4 +80,5 @@ public final class JsonSerializerProviders {
     private JsonSerializerProviders() {
         // no-op
     }
+
 }

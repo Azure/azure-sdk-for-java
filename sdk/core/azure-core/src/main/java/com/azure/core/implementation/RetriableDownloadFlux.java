@@ -15,6 +15,7 @@ import java.util.function.Supplier;
  * operation if an error occurs during the download.
  */
 public final class RetriableDownloadFlux extends Flux<ByteBuffer> {
+
     private final Supplier<Flux<ByteBuffer>> downloadSupplier;
     private final BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume;
     private final int maxRetries;
@@ -30,14 +31,22 @@ public final class RetriableDownloadFlux extends Flux<ByteBuffer> {
      * @param maxRetries The maximum number of times a download can be resumed when an error occurs.
      * @param position The initial offset for the download.
      */
-    public RetriableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
-        BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume, int maxRetries, long position) {
+    public RetriableDownloadFlux(
+        Supplier<Flux<ByteBuffer>> downloadSupplier,
+        BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume,
+        int maxRetries,
+        long position
+    ) {
         this(downloadSupplier, onDownloadErrorResume, maxRetries, position, 0);
     }
 
-    private RetriableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
-        BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume, int maxRetries, long position,
-        int retryCount) {
+    private RetriableDownloadFlux(
+        Supplier<Flux<ByteBuffer>> downloadSupplier,
+        BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume,
+        int maxRetries,
+        long position,
+        int retryCount
+    ) {
         this.downloadSupplier = downloadSupplier;
         this.onDownloadErrorResume = onDownloadErrorResume;
         this.maxRetries = maxRetries;
@@ -47,23 +56,28 @@ public final class RetriableDownloadFlux extends Flux<ByteBuffer> {
 
     @Override
     public void subscribe(CoreSubscriber<? super ByteBuffer> actual) {
-        final long[] currentPosition = new long[]{position};
+        final long[] currentPosition = new long[] {
+            position
+        };
 
-        downloadSupplier.get()
-            .map(buffer -> {
-                currentPosition[0] += buffer.remaining();
-                return buffer;
-            })
-            .onErrorResume(Exception.class, exception -> {
-                int updatedRetryCount = retryCount + 1;
+        downloadSupplier.get().map(buffer -> {
+            currentPosition[0] += buffer.remaining();
+            return buffer;
+        }).onErrorResume(Exception.class, exception -> {
+            int updatedRetryCount = retryCount + 1;
 
-                if (updatedRetryCount > maxRetries) {
-                    return Flux.error(exception);
-                }
+            if (updatedRetryCount > maxRetries) {
+                return Flux.error(exception);
+            }
 
-                return new RetriableDownloadFlux(() -> onDownloadErrorResume.apply(exception, currentPosition[0]),
-                    onDownloadErrorResume, maxRetries, currentPosition[0], updatedRetryCount);
-            })
-            .subscribe(actual);
+            return new RetriableDownloadFlux(
+                () -> onDownloadErrorResume.apply(exception, currentPosition[0]),
+                onDownloadErrorResume,
+                maxRetries,
+                currentPosition[0],
+                updatedRetryCount
+            );
+        }).subscribe(actual);
     }
+
 }

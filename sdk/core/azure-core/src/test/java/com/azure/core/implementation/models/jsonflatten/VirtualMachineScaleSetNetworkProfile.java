@@ -9,16 +9,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-/**
- * Model used for testing {@link JsonFlatten}.
- */
+/** Model used for testing {@link JsonFlatten}. */
 @Fluent
 public final class VirtualMachineScaleSetNetworkProfile {
+
     @JsonProperty(value = "networkInterfaceConfigurations")
     private List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations;
 
     public VirtualMachineScaleSetNetworkProfile setNetworkInterfaceConfigurations(
-        List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations) {
+        List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations
+    ) {
         this.networkInterfaceConfigurations = networkInterfaceConfigurations;
         return this;
     }
@@ -26,4 +26,5 @@ public final class VirtualMachineScaleSetNetworkProfile {
     public List<VirtualMachineScaleSetNetworkConfiguration> getNetworkInterfaceConfigurations() {
         return networkInterfaceConfigurations;
     }
+
 }

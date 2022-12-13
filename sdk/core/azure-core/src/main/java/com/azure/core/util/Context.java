@@ -22,6 +22,7 @@ import java.util.Optional;
  */
 @Immutable
 public class Context {
+
     private static final ClientLogger LOGGER = new ClientLogger(Context.class);
 
     private static final Context[] EMPTY_CHAIN = new Context[0];
@@ -32,6 +33,7 @@ public class Context {
      * Signifies that no data needs to be passed to the pipeline.
      */
     public static final Context NONE = new Context(null, null, null, 0) {
+
         @Override
         public Optional<Object> getData(Object key) {
             if (key == null) {
@@ -50,6 +52,7 @@ public class Context {
         Context[] getContextChain() {
             return EMPTY_CHAIN;
         }
+
     };
 
     private final Context parent;
@@ -60,7 +63,9 @@ public class Context {
     /**
      * Constructs a new {@link Context} object.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.context#object-object -->
      * <pre>
@@ -109,7 +114,9 @@ public class Context {
      * Adds a new immutable {@link Context} object with the specified key-value pair to
      * the existing {@link Context} chain.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.context.addData#object-object -->
      * <pre>
@@ -148,7 +155,9 @@ public class Context {
      * Creates a new immutable {@link Context} object with all the keys and values provided by
      * the input {@link Map}.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.context.of#map -->
      * <pre>
@@ -187,7 +196,9 @@ public class Context {
      * Scans the linked-list of {@link Context} objects looking for one with the specified key.
      * Note that the first key found, i.e. the most recently added, will be returned.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.context.getData#object -->
      * <pre>
@@ -226,7 +237,9 @@ public class Context {
     /**
      * Scans the linked-list of {@link Context} objects populating a {@link Map} with the values of the context.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.Context.getValues -->
      * <pre>
@@ -284,4 +297,5 @@ public class Context {
 
         return chain;
     }
+
 }

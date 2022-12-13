@@ -22,10 +22,9 @@ import static com.azure.core.models.GeoTestHelpers.TRIANGLE_LINE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-/**
- * Tests {@link GeoLineStringCollection}.
- */
+/** Tests {@link GeoLineStringCollection}. */
 public class GeoLineStringCollectionTests {
+
     @Test
     public void nullLinesThrows() {
         Assertions.assertThrows(NullPointerException.class, () -> new GeoLineStringCollection(null));
@@ -106,4 +105,5 @@ public class GeoLineStringCollectionTests {
             Arguments.of(multiLine1, new GeoLineStringCollection(lines1, boundingBox, properties), true)
         );
     }
+
 }

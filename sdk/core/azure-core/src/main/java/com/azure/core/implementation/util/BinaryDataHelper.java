@@ -5,16 +5,16 @@ package com.azure.core.implementation.util;
 
 import com.azure.core.util.BinaryData;
 
-/**
- * Helper class to access private values of {@link BinaryData} across package boundaries.
- */
+/** Helper class to access private values of {@link BinaryData} across package boundaries. */
 public final class BinaryDataHelper {
+
     private static BinaryDataAccessor accessor;
 
     /**
      * Type defining the methods that access private values of {@link BinaryData}.
      */
     public interface BinaryDataAccessor {
+
         /**
          * Creates a new {@link BinaryData} with the given content.
          *
@@ -31,6 +31,7 @@ public final class BinaryDataHelper {
          * @return The {@link BinaryDataContent} that backs the {@link BinaryData}.
          */
         BinaryDataContent getContent(BinaryData binaryData);
+
     }
 
     /**
@@ -75,4 +76,5 @@ public final class BinaryDataHelper {
             BinaryData.fromString("");
         }
     }
+
 }

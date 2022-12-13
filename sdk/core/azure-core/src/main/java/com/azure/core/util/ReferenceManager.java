@@ -12,6 +12,7 @@ import com.azure.core.implementation.util.ReferenceManagerImpl;
  * Expected usage of this is through {@link ReferenceManager#INSTANCE}.
  */
 public interface ReferenceManager {
+
     /**
      * The global instance of {@link ReferenceManager} that should be used to maintain object references.
      */
@@ -30,4 +31,5 @@ public interface ReferenceManager {
      * @throws NullPointerException If either {@code object} or {@code cleanupAction} are null.
      */
     void register(Object object, Runnable cleanupAction);
+
 }

@@ -5,10 +5,9 @@ package com.azure.core.exception;
 
 import com.azure.core.http.HttpResponse;
 
-/**
- * Error raised during response deserialization. The HTTP response could not be decoded.
- */
+/** Error raised during response deserialization. The HTTP response could not be decoded. */
 public class DecodeException extends HttpResponseException {
+
     /**
      * Initializes a new instance of the DecodeException class.
      *
@@ -40,4 +39,5 @@ public class DecodeException extends HttpResponseException {
     public DecodeException(final String message, final HttpResponse response, final Throwable cause) {
         super(message, response, cause);
     }
+
 }

@@ -34,26 +34,36 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PollingStrategyTests {
-    private static final TypeReference<PollResult> POLL_RESULT_TYPE_REFERENCE
-        = TypeReference.createInstance(PollResult.class);
+
+    private static final TypeReference<PollResult> POLL_RESULT_TYPE_REFERENCE =
+        TypeReference.createInstance(PollResult.class);
 
     @Test
     public void statusCheckPollingStrategySucceedsOnActivation() {
         int[] activationCallCount = new int[1];
         Supplier<Mono<Response<PollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
-            return new SimpleResponse<>(new HttpRequest(HttpMethod.GET, "http://localhost"), 200, new HttpHeaders(),
-                new PollResult("ActivationDone"));
+            return new SimpleResponse<>(
+                new HttpRequest(HttpMethod.GET, "http://localhost"),
+                200,
+                new HttpHeaders(),
+                new PollResult("ActivationDone")
+            );
         });
 
-        PollerFlux<PollResult, PollResult> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
-            activationOperation::get, new StatusCheckPollingStrategy<>(), POLL_RESULT_TYPE_REFERENCE,
-            POLL_RESULT_TYPE_REFERENCE);
+        PollerFlux<PollResult, PollResult> pollerFlux = PollerFlux.create(
+            Duration.ofSeconds(1),
+            activationOperation::get,
+            new StatusCheckPollingStrategy<>(),
+            POLL_RESULT_TYPE_REFERENCE,
+            POLL_RESULT_TYPE_REFERENCE
+        );
 
         StepVerifier.create(pollerFlux)
             .expectSubscription()
-            .expectNextMatches(asyncPollResponse ->
-                asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+            .expectNextMatches(
+                asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
+            )
             .verifyComplete();
 
         assertEquals(1, activationCallCount[0]);
@@ -67,38 +77,57 @@ public class PollingStrategyTests {
 
         Supplier<Mono<Response<PollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
-            return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost"), 200,
-                new HttpHeaders().set("Operation-Location", mockPollUrl), new PollResult("InProgress"));
+            return new SimpleResponse<>(
+                new HttpRequest(HttpMethod.POST, "http://localhost"),
+                200,
+                new HttpHeaders().set("Operation-Location", mockPollUrl),
+                new PollResult("InProgress")
+            );
         });
 
         HttpRequest pollRequest = new HttpRequest(HttpMethod.GET, mockPollUrl);
 
         HttpClient httpClient = request -> {
             if (mockPollUrl.equals(request.getUrl().toString())) {
-                return Mono.just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
-                    new PollResult("Succeeded", finalResultUrl)));
+                return Mono.just(
+                    new MockHttpResponse(
+                        pollRequest,
+                        200,
+                        new HttpHeaders(),
+                        new PollResult("Succeeded", finalResultUrl)
+                    )
+                );
             } else if (finalResultUrl.equals(request.getUrl().toString())) {
-                return Mono.just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
-                    new PollResult("final-state", finalResultUrl)));
+                return Mono.just(
+                    new MockHttpResponse(
+                        pollRequest,
+                        200,
+                        new HttpHeaders(),
+                        new PollResult("final-state", finalResultUrl)
+                    )
+                );
             } else {
                 return Mono.error(new IllegalArgumentException("Unknown request URL " + request.getUrl()));
             }
         };
 
-        PollerFlux<PollResult, PollResult> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
-            activationOperation::get, new OperationResourcePollingStrategy<>(createPipeline(httpClient)),
-            POLL_RESULT_TYPE_REFERENCE, POLL_RESULT_TYPE_REFERENCE);
+        PollerFlux<PollResult, PollResult> pollerFlux = PollerFlux.create(
+            Duration.ofSeconds(1),
+            activationOperation::get,
+            new OperationResourcePollingStrategy<>(createPipeline(httpClient)),
+            POLL_RESULT_TYPE_REFERENCE,
+            POLL_RESULT_TYPE_REFERENCE
+        );
 
         StepVerifier.create(pollerFlux)
             .expectSubscription()
-            .expectNextMatches(asyncPollResponse ->
-                asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS);
+            .expectNextMatches(
+                asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
+            );
 
-        StepVerifier.create(pollerFlux.takeUntil(apr -> apr.getStatus().isComplete())
-                .last()
-                .flatMap(AsyncPollResponse::getFinalResult))
-            .expectNextMatches(pollResult -> "final-state".equals(pollResult.getStatus()))
-            .verifyComplete();
+        StepVerifier.create(
+            pollerFlux.takeUntil(apr -> apr.getStatus().isComplete()).last().flatMap(AsyncPollResponse::getFinalResult)
+        ).expectNextMatches(pollResult -> "final-state".equals(pollResult.getStatus())).verifyComplete();
 
         assertEquals(1, activationCallCount[0]);
     }
@@ -111,39 +140,45 @@ public class PollingStrategyTests {
 
         Supplier<Mono<Response<PollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
-            return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost"), 200,
+            return new SimpleResponse<>(
+                new HttpRequest(HttpMethod.POST, "http://localhost"),
+                200,
                 new HttpHeaders().set("Operation-Location", mockPollUrl).set("Location", finalResultUrl),
-                new PollResult("InProgress"));
+                new PollResult("InProgress")
+            );
         });
 
         HttpRequest pollRequest = new HttpRequest(HttpMethod.GET, mockPollUrl);
 
         HttpClient httpClient = request -> {
             if (mockPollUrl.equals(request.getUrl().toString())) {
-                return Mono.just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
-                    new PollResult("Succeeded")));
+                return Mono
+                    .just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(), new PollResult("Succeeded")));
             } else if (finalResultUrl.equals(request.getUrl().toString())) {
-                return Mono.just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
-                    new PollResult("final-state")));
+                return Mono
+                    .just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(), new PollResult("final-state")));
             } else {
                 return Mono.error(new IllegalArgumentException("Unknown request URL " + request.getUrl()));
             }
         };
 
-        PollerFlux<PollResult, PollResult> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
-            activationOperation::get, new OperationResourcePollingStrategy<>(createPipeline(httpClient)),
-            POLL_RESULT_TYPE_REFERENCE, POLL_RESULT_TYPE_REFERENCE);
+        PollerFlux<PollResult, PollResult> pollerFlux = PollerFlux.create(
+            Duration.ofSeconds(1),
+            activationOperation::get,
+            new OperationResourcePollingStrategy<>(createPipeline(httpClient)),
+            POLL_RESULT_TYPE_REFERENCE,
+            POLL_RESULT_TYPE_REFERENCE
+        );
 
         StepVerifier.create(pollerFlux)
             .expectSubscription()
-            .expectNextMatches(asyncPollResponse ->
-                asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS);
+            .expectNextMatches(
+                asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
+            );
 
-        StepVerifier.create(pollerFlux.takeUntil(apr -> apr.getStatus().isComplete())
-                .last().
-                flatMap(AsyncPollResponse::getFinalResult))
-            .expectNextMatches(pollResult -> "final-state".equals(pollResult.getStatus()))
-            .verifyComplete();
+        StepVerifier.create(
+            pollerFlux.takeUntil(apr -> apr.getStatus().isComplete()).last().flatMap(AsyncPollResponse::getFinalResult)
+        ).expectNextMatches(pollResult -> "final-state".equals(pollResult.getStatus())).verifyComplete();
         assertEquals(1, activationCallCount[0]);
     }
 
@@ -155,38 +190,45 @@ public class PollingStrategyTests {
 
         Supplier<Mono<Response<PollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
-            return new SimpleResponse<>(new HttpRequest(HttpMethod.PUT, putUrl), 200,
-                new HttpHeaders().set("Operation-Location", mockPollUrl), new PollResult("InProgress"));
+            return new SimpleResponse<>(
+                new HttpRequest(HttpMethod.PUT, putUrl),
+                200,
+                new HttpHeaders().set("Operation-Location", mockPollUrl),
+                new PollResult("InProgress")
+            );
         });
 
         HttpRequest pollRequest = new HttpRequest(HttpMethod.GET, mockPollUrl);
 
         HttpClient httpClient = request -> {
             if (mockPollUrl.equals(request.getUrl().toString())) {
-                return Mono.just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
-                    new PollResult("Succeeded")));
+                return Mono
+                    .just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(), new PollResult("Succeeded")));
             } else if (putUrl.equals(request.getUrl().toString())) {
-                return Mono.just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
-                    new PollResult("final-state")));
+                return Mono
+                    .just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(), new PollResult("final-state")));
             } else {
                 return Mono.error(new IllegalArgumentException("Unknown request URL " + request.getUrl()));
             }
         };
 
-        PollerFlux<PollResult, PollResult> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
-            activationOperation::get, new OperationResourcePollingStrategy<>(createPipeline(httpClient)),
-            POLL_RESULT_TYPE_REFERENCE, POLL_RESULT_TYPE_REFERENCE);
+        PollerFlux<PollResult, PollResult> pollerFlux = PollerFlux.create(
+            Duration.ofSeconds(1),
+            activationOperation::get,
+            new OperationResourcePollingStrategy<>(createPipeline(httpClient)),
+            POLL_RESULT_TYPE_REFERENCE,
+            POLL_RESULT_TYPE_REFERENCE
+        );
 
         StepVerifier.create(pollerFlux)
             .expectSubscription()
-            .expectNextMatches(asyncPollResponse ->
-                asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS);
+            .expectNextMatches(
+                asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
+            );
 
-        StepVerifier.create(pollerFlux.takeUntil(apr -> apr.getStatus().isComplete())
-                .last()
-                .flatMap(AsyncPollResponse::getFinalResult))
-            .expectNextMatches(pollResult -> "final-state".equals(pollResult.getStatus()))
-            .verifyComplete();
+        StepVerifier.create(
+            pollerFlux.takeUntil(apr -> apr.getStatus().isComplete()).last().flatMap(AsyncPollResponse::getFinalResult)
+        ).expectNextMatches(pollResult -> "final-state".equals(pollResult.getStatus())).verifyComplete();
 
         assertEquals(1, activationCallCount[0]);
     }
@@ -198,8 +240,12 @@ public class PollingStrategyTests {
 
         Supplier<Mono<Response<PollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
-            return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost"), 200,
-                new HttpHeaders().set("Operation-Location", mockPollUrl), new PollResult("InProgress"));
+            return new SimpleResponse<>(
+                new HttpRequest(HttpMethod.POST, "http://localhost"),
+                200,
+                new HttpHeaders().set("Operation-Location", mockPollUrl),
+                new PollResult("InProgress")
+            );
         });
 
         HttpRequest pollRequest = new HttpRequest(HttpMethod.GET, mockPollUrl);
@@ -212,26 +258,31 @@ public class PollingStrategyTests {
             }
         };
 
-        PollerFlux<PollResult, PollResult> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
-            activationOperation::get, new OperationResourcePollingStrategy<>(createPipeline(httpClient)),
-            POLL_RESULT_TYPE_REFERENCE, POLL_RESULT_TYPE_REFERENCE);
+        PollerFlux<PollResult, PollResult> pollerFlux = PollerFlux.create(
+            Duration.ofSeconds(1),
+            activationOperation::get,
+            new OperationResourcePollingStrategy<>(createPipeline(httpClient)),
+            POLL_RESULT_TYPE_REFERENCE,
+            POLL_RESULT_TYPE_REFERENCE
+        );
 
         StepVerifier.create(pollerFlux)
             .expectSubscription()
-            .expectNextMatches(asyncPollResponse ->
-                asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS);
+            .expectNextMatches(
+                asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
+            );
 
-        StepVerifier.create(pollerFlux.takeUntil(apr -> apr.getStatus().isComplete())
-                .last()
-                .flatMap(AsyncPollResponse::getFinalResult))
-            .expectErrorMessage("Long running operation failed.")
-            .verify();
+        StepVerifier.create(
+            pollerFlux.takeUntil(apr -> apr.getStatus().isComplete()).last().flatMap(AsyncPollResponse::getFinalResult)
+        ).expectErrorMessage("Long running operation failed.").verify();
 
         assertEquals(1, activationCallCount[0]);
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"Operation-Location", "resourceLocation"})
+    @ValueSource(strings = {
+        "Operation-Location", "resourceLocation"
+    })
     public void operationResourcePollingStrategyRelativePath(String headerName) {
         int[] activationCallCount = new int[1];
         String endpointUrl = "http://localhost";
@@ -243,40 +294,64 @@ public class PollingStrategyTests {
         Supplier<Mono<Response<PollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
 
-            return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost/post"), 200,
-                new HttpHeaders().set(headerName, mockPollRelativePath), new PollResult("InProgress"));
+            return new SimpleResponse<>(
+                new HttpRequest(HttpMethod.POST, "http://localhost/post"),
+                200,
+                new HttpHeaders().set(headerName, mockPollRelativePath),
+                new PollResult("InProgress")
+            );
         });
 
         HttpRequest pollRequest = new HttpRequest(HttpMethod.GET, mockPollAbsolutePath);
         HttpClient httpClient = request -> {
             if (mockPollAbsolutePath.equals(request.getUrl().toString())) {
-                return Mono.just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
-                    new PollResult("Succeeded", finalResultAbsolutePath)));
+                return Mono.just(
+                    new MockHttpResponse(
+                        pollRequest,
+                        200,
+                        new HttpHeaders(),
+                        new PollResult("Succeeded", finalResultAbsolutePath)
+                    )
+                );
             } else if (finalResultAbsolutePath.equals(request.getUrl().toString())) {
-                return Mono.just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
-                    new PollResult("final-state", finalResultAbsolutePath)));
+                return Mono.just(
+                    new MockHttpResponse(
+                        pollRequest,
+                        200,
+                        new HttpHeaders(),
+                        new PollResult("final-state", finalResultAbsolutePath)
+                    )
+                );
             } else {
                 return Mono.error(new IllegalArgumentException("Unknown request URL " + request.getUrl()));
             }
         };
 
         // Create OperationResourcePollingStrategy
-        PollerFlux<PollResult, PollResult> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
-            activationOperation::get, new OperationResourcePollingStrategy<>(createPipeline(httpClient), endpointUrl,
-                new DefaultJsonSerializer(), headerName, Context.NONE),
-            POLL_RESULT_TYPE_REFERENCE, POLL_RESULT_TYPE_REFERENCE);
+        PollerFlux<PollResult, PollResult> pollerFlux = PollerFlux.create(
+            Duration.ofSeconds(1),
+            activationOperation::get,
+            new OperationResourcePollingStrategy<>(
+                createPipeline(httpClient),
+                endpointUrl,
+                new DefaultJsonSerializer(),
+                headerName,
+                Context.NONE
+            ),
+            POLL_RESULT_TYPE_REFERENCE,
+            POLL_RESULT_TYPE_REFERENCE
+        );
 
         // Verify
         StepVerifier.create(pollerFlux)
             .expectSubscription()
-            .expectNextMatches(asyncPollResponse ->
-                asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS);
+            .expectNextMatches(
+                asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
+            );
 
-        StepVerifier.create(pollerFlux.takeUntil(apr -> apr.getStatus().isComplete())
-                .last()
-                .flatMap(AsyncPollResponse::getFinalResult))
-            .expectNextMatches(pollResult -> "final-state".equals(pollResult.getStatus()))
-            .verifyComplete();
+        StepVerifier.create(
+            pollerFlux.takeUntil(apr -> apr.getStatus().isComplete()).last().flatMap(AsyncPollResponse::getFinalResult)
+        ).expectNextMatches(pollResult -> "final-state".equals(pollResult.getStatus())).verifyComplete();
 
         assertEquals(1, activationCallCount[0]);
     }
@@ -289,39 +364,51 @@ public class PollingStrategyTests {
 
         Supplier<Mono<Response<PollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
-            return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost"), 200,
-                new HttpHeaders().set("Location", mockPollUrl), new PollResult("InProgress"));
+            return new SimpleResponse<>(
+                new HttpRequest(HttpMethod.POST, "http://localhost"),
+                200,
+                new HttpHeaders().set("Location", mockPollUrl),
+                new PollResult("InProgress")
+            );
         });
 
         HttpRequest pollRequest = new HttpRequest(HttpMethod.GET, mockPollUrl);
 
         HttpClient httpClient = request -> {
             if (mockPollUrl.equals(request.getUrl().toString())) {
-                return Mono.just(new MockHttpResponse(pollRequest, 200,
-                    new HttpHeaders().set("Location", finalResultUrl),
-                    new PollResult("Succeeded")));
+                return Mono.just(
+                    new MockHttpResponse(
+                        pollRequest,
+                        200,
+                        new HttpHeaders().set("Location", finalResultUrl),
+                        new PollResult("Succeeded")
+                    )
+                );
             } else if (finalResultUrl.equals(request.getUrl().toString())) {
-                return Mono.just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
-                    new PollResult("final-state")));
+                return Mono
+                    .just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(), new PollResult("final-state")));
             } else {
                 return Mono.error(new IllegalArgumentException("Unknown request URL " + request.getUrl()));
             }
         };
 
-        PollerFlux<PollResult, PollResult> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
-            activationOperation::get, new LocationPollingStrategy<>(createPipeline(httpClient)),
-            POLL_RESULT_TYPE_REFERENCE, POLL_RESULT_TYPE_REFERENCE);
+        PollerFlux<PollResult, PollResult> pollerFlux = PollerFlux.create(
+            Duration.ofSeconds(1),
+            activationOperation::get,
+            new LocationPollingStrategy<>(createPipeline(httpClient)),
+            POLL_RESULT_TYPE_REFERENCE,
+            POLL_RESULT_TYPE_REFERENCE
+        );
 
         StepVerifier.create(pollerFlux)
             .expectSubscription()
-            .expectNextMatches(asyncPollResponse ->
-                asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS);
+            .expectNextMatches(
+                asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
+            );
 
-        StepVerifier.create(pollerFlux.takeUntil(apr -> apr.getStatus().isComplete())
-                .last()
-                .flatMap(AsyncPollResponse::getFinalResult))
-            .expectNextMatches(pollResult -> "final-state".equals(pollResult.getStatus()))
-            .verifyComplete();
+        StepVerifier.create(
+            pollerFlux.takeUntil(apr -> apr.getStatus().isComplete()).last().flatMap(AsyncPollResponse::getFinalResult)
+        ).expectNextMatches(pollResult -> "final-state".equals(pollResult.getStatus())).verifyComplete();
 
         assertEquals(1, activationCallCount[0]);
     }
@@ -337,40 +424,57 @@ public class PollingStrategyTests {
         // Mocking
         Supplier<Mono<Response<PollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
-            return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost/post"), 200,
-                new HttpHeaders().set("Location", mockPollRelativePath), new PollResult("InProgress"));
+            return new SimpleResponse<>(
+                new HttpRequest(HttpMethod.POST, "http://localhost/post"),
+                200,
+                new HttpHeaders().set("Location", mockPollRelativePath),
+                new PollResult("InProgress")
+            );
         });
 
         HttpRequest pollRequest = new HttpRequest(HttpMethod.GET, mockPollAbsolutePath);
 
         HttpClient httpClient = request -> {
             if (mockPollAbsolutePath.equals(request.getUrl().toString())) {
-                return Mono.just(new MockHttpResponse(pollRequest, 200,
-                    new HttpHeaders().set("Location", finalResultAbsolutePath),
-                    new PollResult("Succeeded")));
+                return Mono.just(
+                    new MockHttpResponse(
+                        pollRequest,
+                        200,
+                        new HttpHeaders().set("Location", finalResultAbsolutePath),
+                        new PollResult("Succeeded")
+                    )
+                );
             } else if (finalResultAbsolutePath.equals(request.getUrl().toString())) {
-                return Mono.just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
-                    new PollResult("final-state")));
+                return Mono
+                    .just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(), new PollResult("final-state")));
             } else {
                 return Mono.error(new IllegalArgumentException("Unknown request URL " + request.getUrl()));
             }
         };
 
         // Create LocationPollingStrategy
-        PollerFlux<PollResult, PollResult> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
-            activationOperation::get, new LocationPollingStrategy<>(createPipeline(httpClient), endpointUrl,
-                new DefaultJsonSerializer(), Context.NONE), POLL_RESULT_TYPE_REFERENCE, POLL_RESULT_TYPE_REFERENCE);
+        PollerFlux<PollResult, PollResult> pollerFlux = PollerFlux.create(
+            Duration.ofSeconds(1),
+            activationOperation::get,
+            new LocationPollingStrategy<>(
+                createPipeline(httpClient),
+                endpointUrl,
+                new DefaultJsonSerializer(),
+                Context.NONE
+            ),
+            POLL_RESULT_TYPE_REFERENCE,
+            POLL_RESULT_TYPE_REFERENCE
+        );
 
         StepVerifier.create(pollerFlux)
             .expectSubscription()
-            .expectNextMatches(asyncPollResponse ->
-                asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS);
+            .expectNextMatches(
+                asyncPollResponse -> asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS
+            );
 
-        StepVerifier.create(pollerFlux.takeUntil(apr -> apr.getStatus().isComplete())
-                .last()
-                .flatMap(AsyncPollResponse::getFinalResult))
-            .expectNextMatches(pollResult -> "final-state".equals(pollResult.getStatus()))
-            .verifyComplete();
+        StepVerifier.create(
+            pollerFlux.takeUntil(apr -> apr.getStatus().isComplete()).last().flatMap(AsyncPollResponse::getFinalResult)
+        ).expectNextMatches(pollResult -> "final-state".equals(pollResult.getStatus())).verifyComplete();
 
         assertEquals(1, activationCallCount[0]);
     }
@@ -383,14 +487,19 @@ public class PollingStrategyTests {
 
         Supplier<Mono<Response<PollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
-            return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost"), 200,
-                new HttpHeaders().set("Location", mockPollUrl), new PollResult("InProgress"));
+            return new SimpleResponse<>(
+                new HttpRequest(HttpMethod.POST, "http://localhost"),
+                200,
+                new HttpHeaders().set("Location", mockPollUrl),
+                new PollResult("InProgress")
+            );
         });
 
         HttpRequest pollRequest = new HttpRequest(HttpMethod.GET, mockPollUrl);
 
         AtomicReference<Context> lastContext = new AtomicReference<>();
         HttpClient httpClient = new HttpClient() {
+
             @Override
             public Mono<HttpResponse> send(HttpRequest request) {
                 return send(request, Context.NONE);
@@ -400,22 +509,32 @@ public class PollingStrategyTests {
             public Mono<HttpResponse> send(HttpRequest request, Context context) {
                 lastContext.set(context);
                 if (mockPollUrl.equals(request.getUrl().toString())) {
-                    return Mono.just(new MockHttpResponse(pollRequest, 200,
-                        new HttpHeaders().set("Location", finalResultUrl),
-                        new PollResult("Succeeded")));
+                    return Mono.just(
+                        new MockHttpResponse(
+                            pollRequest,
+                            200,
+                            new HttpHeaders().set("Location", finalResultUrl),
+                            new PollResult("Succeeded")
+                        )
+                    );
                 } else if (finalResultUrl.equals(request.getUrl().toString())) {
-                    return Mono.just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
-                        new PollResult("final-state")));
+                    return Mono
+                        .just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(), new PollResult("final-state")));
                 } else {
                     return Mono.error(new IllegalArgumentException("Unknown request URL " + request.getUrl()));
                 }
             }
+
         };
 
         // PollingStrategy with context = Context.NONE
-        PollerFlux<PollResult, PollResult> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
-            activationOperation::get, new DefaultPollingStrategy<>(createPipeline(httpClient), null, null),
-            POLL_RESULT_TYPE_REFERENCE, POLL_RESULT_TYPE_REFERENCE);
+        PollerFlux<PollResult, PollResult> pollerFlux = PollerFlux.create(
+            Duration.ofSeconds(1),
+            activationOperation::get,
+            new DefaultPollingStrategy<>(createPipeline(httpClient), null, null),
+            POLL_RESULT_TYPE_REFERENCE,
+            POLL_RESULT_TYPE_REFERENCE
+        );
 
         StepVerifier.create(pollerFlux.map(AsyncPollResponse::getStatus))
             .expectSubscription()
@@ -425,9 +544,13 @@ public class PollingStrategyTests {
 
         // PollingStrategy with context
         final Context context = new Context("key", "value");
-        pollerFlux = PollerFlux.create(Duration.ofSeconds(1), activationOperation::get,
-            new DefaultPollingStrategy<>(createPipeline(httpClient), null, context), POLL_RESULT_TYPE_REFERENCE,
-            POLL_RESULT_TYPE_REFERENCE);
+        pollerFlux = PollerFlux.create(
+            Duration.ofSeconds(1),
+            activationOperation::get,
+            new DefaultPollingStrategy<>(createPipeline(httpClient), null, context),
+            POLL_RESULT_TYPE_REFERENCE,
+            POLL_RESULT_TYPE_REFERENCE
+        );
 
         StepVerifier.create(pollerFlux.map(AsyncPollResponse::getStatus))
             .expectSubscription()
@@ -435,11 +558,19 @@ public class PollingStrategyTests {
             .verifyComplete();
         Assertions.assertEquals("value", lastContext.get().getData("key").orElse(null));
 
-        pollerFlux = PollerFlux.create(Duration.ofSeconds(1), activationOperation::get,
-            new DefaultPollingStrategy<>(createPipeline(httpClient), null, Context.NONE), POLL_RESULT_TYPE_REFERENCE,
-            POLL_RESULT_TYPE_REFERENCE);
+        pollerFlux = PollerFlux.create(
+            Duration.ofSeconds(1),
+            activationOperation::get,
+            new DefaultPollingStrategy<>(createPipeline(httpClient), null, Context.NONE),
+            POLL_RESULT_TYPE_REFERENCE,
+            POLL_RESULT_TYPE_REFERENCE
+        );
 
-        StepVerifier.create(pollerFlux.contextWrite(reactor.util.context.Context.of("key2", "value2")).map(AsyncPollResponse::getStatus))
+        StepVerifier
+            .create(
+                pollerFlux.contextWrite(reactor.util.context.Context.of("key2", "value2"))
+                    .map(AsyncPollResponse::getStatus)
+            )
             .expectSubscription()
             .expectNext(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
             .verifyComplete();
@@ -457,53 +588,68 @@ public class PollingStrategyTests {
 
         Supplier<Mono<Response<PollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
-            return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost"), 200,
+            return new SimpleResponse<>(
+                new HttpRequest(HttpMethod.POST, "http://localhost"),
+                200,
                 new HttpHeaders().set("Operation-Location", mockPollUrl).set("Location", finalResultUrl),
-                new PollResult("InProgress"));
+                new PollResult("InProgress")
+            );
         });
 
         HttpRequest pollRequest = new HttpRequest(HttpMethod.GET, mockPollUrl);
         AtomicInteger attemptCount = new AtomicInteger();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new RetryPolicy())
-            .httpClient(request -> {
-                int count = attemptCount.getAndIncrement();
-                if (mockPollUrl.equals(request.getUrl().toString()) && count == 0) {
-                    return Mono.just(new MockHttpResponse(pollRequest, args[0],
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RetryPolicy()).httpClient(request -> {
+            int count = attemptCount.getAndIncrement();
+            if (mockPollUrl.equals(request.getUrl().toString()) && count == 0) {
+                return Mono.just(
+                    new MockHttpResponse(
+                        pollRequest,
+                        args[0],
                         new HttpHeaders().set("Location", finalResultUrl),
-                        new PollResult("Retry")));
-                } else if (mockPollUrl.equals(request.getUrl().toString()) && count == 1) {
-                    return Mono.just(new MockHttpResponse(pollRequest, args[1],
+                        new PollResult("Retry")
+                    )
+                );
+            } else if (mockPollUrl.equals(request.getUrl().toString()) && count == 1) {
+                return Mono.just(
+                    new MockHttpResponse(
+                        pollRequest,
+                        args[1],
                         new HttpHeaders().set("Location", finalResultUrl),
-                        new PollResult("Succeeded")));
-                } else if (finalResultUrl.equals(request.getUrl().toString())) {
-                    return Mono.just(new MockHttpResponse(pollRequest, args[2], new HttpHeaders(),
-                        new PollResult("final-state")));
-                } else {
-                    return Mono.error(new IllegalArgumentException("Unknown request URL " + request.getUrl()));
-                }
-            })
-            .build();
-        PollerFlux<PollResult, PollResult> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
-            activationOperation::get, new OperationResourcePollingStrategy<>(pipeline), POLL_RESULT_TYPE_REFERENCE,
-            POLL_RESULT_TYPE_REFERENCE);
+                        new PollResult("Succeeded")
+                    )
+                );
+            } else if (finalResultUrl.equals(request.getUrl().toString())) {
+                return Mono
+                    .just(new MockHttpResponse(pollRequest, args[2], new HttpHeaders(), new PollResult("final-state")));
+            } else {
+                return Mono.error(new IllegalArgumentException("Unknown request URL " + request.getUrl()));
+            }
+        }).build();
+        PollerFlux<PollResult, PollResult> pollerFlux = PollerFlux.create(
+            Duration.ofSeconds(1),
+            activationOperation::get,
+            new OperationResourcePollingStrategy<>(pipeline),
+            POLL_RESULT_TYPE_REFERENCE,
+            POLL_RESULT_TYPE_REFERENCE
+        );
 
-        StepVerifier.create(pollerFlux.takeUntil(apr -> apr.getStatus().isComplete())
-                .last()
-                .flatMap(AsyncPollResponse::getFinalResult))
-            .expectNextMatches(pollResult -> "final-state".equals(pollResult.getStatus()))
-            .verifyComplete();
+        StepVerifier.create(
+            pollerFlux.takeUntil(apr -> apr.getStatus().isComplete()).last().flatMap(AsyncPollResponse::getFinalResult)
+        ).expectNextMatches(pollResult -> "final-state".equals(pollResult.getStatus())).verifyComplete();
         assertEquals(args[3], attemptCount.get());
         assertEquals(1, activationCallCount[0]);
     }
 
     static Stream<int[]> statusCodeProvider() {
-        return Stream.of(
-            new int[]{500, 200, 200, 3},
-            new int[]{200, 500, 200, 2});
+        return Stream.of(new int[] {
+            500, 200, 200, 3
+        }, new int[] {
+            200, 500, 200, 2
+        });
     }
 
     public static class PollResult {
+
         private String status;
         private String resourceLocation;
 
@@ -542,9 +688,11 @@ public class PollingStrategyTests {
         public String toString() {
             return "Status: " + status;
         }
+
     }
 
     private static HttpPipeline createPipeline(HttpClient httpClient) {
         return new HttpPipelineBuilder().httpClient(httpClient).build();
     }
+
 }

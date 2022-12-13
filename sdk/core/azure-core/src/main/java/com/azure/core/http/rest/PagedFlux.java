@@ -18,8 +18,12 @@ import java.util.stream.Collectors;
  * and individual items in such pages. When processing the response by page each response will contain the items in the
  * page as well as the REST response details such as status code and headers.
  *
- * <p>To process one item at a time, simply subscribe to this flux as shown below </p>
- * <p><strong>Code sample</strong></p>
+ * <p>
+ * To process one item at a time, simply subscribe to this flux as shown below
+ * </p>
+ * <p>
+ * <strong>Code sample</strong>
+ * </p>
  * <!-- src_embed com.azure.core.http.rest.pagedflux.items -->
  * <pre>
  * &#47;&#47; Subscribe to process one item at a time
@@ -31,8 +35,12 @@ import java.util.stream.Collectors;
  * </pre>
  * <!-- end com.azure.core.http.rest.pagedflux.items -->
  *
- * <p>To process one page at a time, use {@link #byPage()} method as shown below </p>
- * <p><strong>Code sample</strong></p>
+ * <p>
+ * To process one page at a time, use {@link #byPage()} method as shown below
+ * </p>
+ * <p>
+ * <strong>Code sample</strong>
+ * </p>
  * <!-- src_embed com.azure.core.http.rest.pagedflux.pages -->
  * <pre>
  * &#47;&#47; Subscribe to process one page at a time from the beginning
@@ -46,9 +54,13 @@ import java.util.stream.Collectors;
  * </pre>
  * <!-- end com.azure.core.http.rest.pagedflux.pages -->
  *
- * <p>To process items one page at a time starting from any page associated with a continuation token,
- * use {@link #byPage(String)} as shown below</p>
- * <p><strong>Code sample</strong></p>
+ * <p>
+ * To process items one page at a time starting from any page associated with a continuation token,
+ * use {@link #byPage(String)} as shown below
+ * </p>
+ * <p>
+ * <strong>Code sample</strong>
+ * </p>
  * <!-- src_embed com.azure.core.http.rest.pagedflux.pagesWithContinuationToken -->
  * <pre>
  * &#47;&#47; Subscribe to process one page at a time starting from a page associated with
@@ -73,11 +85,14 @@ import java.util.stream.Collectors;
  */
 @SuppressWarnings("deprecation")
 public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
+
     /**
      * Creates an instance of {@link PagedFlux} that consists of only a single page. This constructor takes a {@code
      * Supplier} that return the single page of {@code T}.
      *
-     * <p><strong>Code sample</strong></p>
+     * <p>
+     * <strong>Code sample</strong>
+     * </p>
      * <!-- src_embed com.azure.core.http.rest.pagedflux.singlepage.instantiation -->
      * <pre>
      * &#47;&#47; A supplier that fetches the first page of data from source&#47;service
@@ -97,7 +112,9 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
     /**
      * Creates an instance of {@link PagedFlux} that consists of only a single page with a given element count.
      *
-     * <p><strong>Code sample</strong></p>
+     * <p>
+     * <strong>Code sample</strong>
+     * </p>
      *
      * <!-- src_embed com.azure.core.http.rest.PagedFlux.singlepage.instantiationWithPageSize -->
      * <pre>
@@ -120,7 +137,9 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      * {@code Supplier} returns the first page of {@code T}, the {@code Function} retrieves subsequent pages of {@code
      * T}.
      *
-     * <p><strong>Code sample</strong></p>
+     * <p>
+     * <strong>Code sample</strong>
+     * </p>
      *
      * <!-- src_embed com.azure.core.http.rest.pagedflux.instantiation -->
      * <pre>
@@ -139,17 +158,24 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      * @param firstPageRetriever Supplier that retrieves the first page
      * @param nextPageRetriever Function that retrieves the next page given a continuation token
      */
-    public PagedFlux(Supplier<Mono<PagedResponse<T>>> firstPageRetriever,
-        Function<String, Mono<PagedResponse<T>>> nextPageRetriever) {
-        this(() -> (continuationToken, pageSize) -> continuationToken == null
-            ? firstPageRetriever.get().flux()
-            : nextPageRetriever.apply(continuationToken).flux(), true);
+    public PagedFlux(
+        Supplier<Mono<PagedResponse<T>>> firstPageRetriever,
+        Function<String, Mono<PagedResponse<T>>> nextPageRetriever
+    ) {
+        this(
+            () -> (continuationToken, pageSize) -> continuationToken == null
+                ? firstPageRetriever.get().flux()
+                : nextPageRetriever.apply(continuationToken).flux(),
+            true
+        );
     }
 
     /**
      * Creates an instance of {@link PagedFlux} that is capable of retrieving multiple pages with of a given page size.
      *
-     * <p><strong>Code sample</strong></p>
+     * <p>
+     * <strong>Code sample</strong>
+     * </p>
      *
      * <!-- src_embed com.azure.core.http.rest.PagedFlux.instantiationWithPageSize -->
      * <pre>
@@ -167,11 +193,16 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      * @param firstPageRetriever Function that retrieves the first page.
      * @param nextPageRetriever BiFunction that retrieves the next page given a continuation token and page size.
      */
-    public PagedFlux(Function<Integer, Mono<PagedResponse<T>>> firstPageRetriever,
-        BiFunction<String, Integer, Mono<PagedResponse<T>>> nextPageRetriever) {
-        this(() -> (continuationToken, pageSize) -> continuationToken == null
-            ? firstPageRetriever.apply(pageSize).flux()
-            : nextPageRetriever.apply(continuationToken, pageSize).flux(), true);
+    public PagedFlux(
+        Function<Integer, Mono<PagedResponse<T>>> firstPageRetriever,
+        BiFunction<String, Integer, Mono<PagedResponse<T>>> nextPageRetriever
+    ) {
+        this(
+            () -> (continuationToken, pageSize) -> continuationToken == null
+                ? firstPageRetriever.apply(pageSize).flux()
+                : nextPageRetriever.apply(continuationToken, pageSize).flux(),
+            true
+        );
     }
 
     /**
@@ -193,11 +224,13 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      *
      * The provider is useful mainly in two scenarios:
      * <ul>
-     * <li> To manage state across multiple call to Page Retrieval within the same Subscription.
-     * <li> To decorate a PagedFlux to produce new PagedFlux.
+     * <li>To manage state across multiple call to Page Retrieval within the same Subscription.
+     * <li>To decorate a PagedFlux to produce new PagedFlux.
      * </ul>
      *
-     * <p><strong>Decoration sample</strong></p>
+     * <p>
+     * <strong>Decoration sample</strong>
+     * </p>
      * <!-- src_embed com.azure.core.http.rest.pagedflux.create.decoration -->
      * <pre>
      *
@@ -256,20 +289,21 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
     @Deprecated
     public <S> PagedFlux<S> mapPage(Function<T, S> mapper) {
         Supplier<PageRetriever<String, PagedResponse<S>>> provider = () -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<T>> flux = (continuationToken == null)
-                ? byPage()
-                : byPage(continuationToken);
+            Flux<PagedResponse<T>> flux = (continuationToken == null) ? byPage() : byPage(continuationToken);
             return flux.map(mapPagedResponse(mapper));
         };
         return PagedFlux.create(provider);
     }
 
     private <S> Function<PagedResponse<T>, PagedResponse<S>> mapPagedResponse(Function<T, S> mapper) {
-        return pagedResponse -> new PagedResponseBase<HttpRequest, S>(pagedResponse.getRequest(),
+        return pagedResponse -> new PagedResponseBase<HttpRequest, S>(
+            pagedResponse.getRequest(),
             pagedResponse.getStatusCode(),
             pagedResponse.getHeaders(),
             pagedResponse.getValue().stream().map(mapper).collect(Collectors.toList()),
             pagedResponse.getContinuationToken(),
-            null);
+            null
+        );
     }
+
 }

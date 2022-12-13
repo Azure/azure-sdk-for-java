@@ -16,6 +16,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class MockHttpResponse extends HttpResponse {
+
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 
     private final int statusCode;
@@ -105,4 +106,5 @@ public class MockHttpResponse extends HttpResponse {
             return Mono.just(new String(bodyBytes, charset));
         }
     }
+
 }

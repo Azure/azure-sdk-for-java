@@ -6,11 +6,10 @@ package com.azure.core.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
 
-/**
- * An abstraction for a message containing a content type along with its data.
- */
+/** An abstraction for a message containing a content type along with its data. */
 @Fluent
 public class MessageContent {
+
     private BinaryData binaryData;
     private String contentType;
 
@@ -59,4 +58,5 @@ public class MessageContent {
         this.contentType = contentType;
         return this;
     }
+
 }

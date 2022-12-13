@@ -8,11 +8,10 @@ import com.azure.core.annotation.Immutable;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * Represents a geometric point.
- */
+/** Represents a geometric point. */
 @Immutable
 public final class GeoPoint extends GeoObject {
+
     private final GeoPosition coordinates;
 
     /**
@@ -93,4 +92,5 @@ public final class GeoPoint extends GeoObject {
 
         return super.equals(obj) && Objects.equals(coordinates, other.coordinates);
     }
+
 }

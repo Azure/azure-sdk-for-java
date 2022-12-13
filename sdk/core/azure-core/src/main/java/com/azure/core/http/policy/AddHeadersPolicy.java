@@ -11,19 +11,20 @@ import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Mono;
 
-/**
- * The pipeline policy that adds a particular set of headers to HTTP requests.
- */
+/** The pipeline policy that adds a particular set of headers to HTTP requests. */
 public class AddHeadersPolicy implements HttpPipelinePolicy {
+
     private final HttpHeaders headers;
 
     private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
+
         @Override
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
             for (HttpHeader header : headers) {
                 context.getHttpRequest().setHeader(header.getName(), header.getValue());
             }
         }
+
     };
 
     /**
@@ -44,4 +45,5 @@ public class AddHeadersPolicy implements HttpPipelinePolicy {
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         return inner.processSync(context, next);
     }
+
 }

@@ -5,10 +5,9 @@ package com.azure.core.credential;
 
 import java.time.OffsetDateTime;
 
-/**
- * Represents an immutable access token with a token string and an expiration time.
- */
+/** Represents an immutable access token with a token string and an expiration time. */
 public class AccessToken {
+
     private final String token;
     private final OffsetDateTime expiresAt;
 
@@ -49,4 +48,5 @@ public class AccessToken {
     public boolean isExpired() {
         return OffsetDateTime.now().isAfter(expiresAt);
     }
+
 }

@@ -3,10 +3,9 @@
 
 package com.azure.core.http;
 
-/**
- * The different values that commonly used for Content-Type header.
- */
+/** The different values that commonly used for Content-Type header. */
 public final class ContentType {
+
     /**
      * the default JSON Content-Type header.
      */
@@ -27,4 +26,5 @@ public final class ContentType {
      */
     private ContentType() {
     }
+
 }

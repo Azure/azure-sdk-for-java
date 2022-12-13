@@ -8,10 +8,9 @@ import com.azure.core.implementation.serializer.HttpResponseDecodeData;
 
 import java.lang.reflect.Type;
 
-/**
- * An HTTP response decode data used for mocking in tests.
- */
+/** An HTTP response decode data used for mocking in tests. */
 public class MockHttpResponseDecodeData implements HttpResponseDecodeData {
+
     private final Integer expectedResponseStatusCode;
     private final UnexpectedExceptionInformation unexpectedExceptionInformation;
     private final Type returnType;
@@ -26,8 +25,10 @@ public class MockHttpResponseDecodeData implements HttpResponseDecodeData {
         this(expectedResponseStatusCode, null, null, false, null);
     }
 
-    public MockHttpResponseDecodeData(int expectedResponseStatusCode,
-        UnexpectedExceptionInformation unexpectedExceptionInformation) {
+    public MockHttpResponseDecodeData(
+        int expectedResponseStatusCode,
+        UnexpectedExceptionInformation unexpectedExceptionInformation
+    ) {
         this(expectedResponseStatusCode, null, null, false, unexpectedExceptionInformation);
     }
 
@@ -35,13 +36,22 @@ public class MockHttpResponseDecodeData implements HttpResponseDecodeData {
         this(expectedResponseStatusCode, returnType, null, isReturnTypeDecodeable, null);
     }
 
-    public MockHttpResponseDecodeData(int expectedResponseStatusCode, Type returnType, Type returnValueWireType,
-        boolean isReturnTypeDecodeable) {
+    public MockHttpResponseDecodeData(
+        int expectedResponseStatusCode,
+        Type returnType,
+        Type returnValueWireType,
+        boolean isReturnTypeDecodeable
+    ) {
         this(expectedResponseStatusCode, returnType, returnValueWireType, isReturnTypeDecodeable, null);
     }
 
-    private MockHttpResponseDecodeData(Integer expectedResponseStatusCode, Type returnType, Type returnValueWireType,
-        boolean isReturnTypeDecodeable, UnexpectedExceptionInformation unexpectedExceptionInformation) {
+    private MockHttpResponseDecodeData(
+        Integer expectedResponseStatusCode,
+        Type returnType,
+        Type returnValueWireType,
+        boolean isReturnTypeDecodeable,
+        UnexpectedExceptionInformation unexpectedExceptionInformation
+    ) {
         this.expectedResponseStatusCode = expectedResponseStatusCode;
         this.returnType = returnType;
         this.returnValueWireType = returnValueWireType;
@@ -93,4 +103,5 @@ public class MockHttpResponseDecodeData implements HttpResponseDecodeData {
     public boolean isHeadersEagerlyConverted() {
         return false;
     }
+
 }

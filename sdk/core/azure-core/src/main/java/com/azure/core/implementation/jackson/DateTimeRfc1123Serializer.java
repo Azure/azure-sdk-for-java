@@ -12,10 +12,9 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.io.IOException;
 
-/**
- * Custom serializer for serializing {@link DateTimeRfc1123} object into RFC1123 formats.
- */
+/** Custom serializer for serializing {@link DateTimeRfc1123} object into RFC1123 formats. */
 final class DateTimeRfc1123Serializer extends JsonSerializer<DateTimeRfc1123> {
+
     /**
      * Gets a module wrapping this serializer as an adapter for the Jackson
      * ObjectMapper.
@@ -33,7 +32,8 @@ final class DateTimeRfc1123Serializer extends JsonSerializer<DateTimeRfc1123> {
         if (provider.isEnabled(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)) {
             jgen.writeNumber(value.getDateTime().toInstant().toEpochMilli());
         } else {
-            jgen.writeString(value.toString()); //Use the default toString as it is RFC1123.
+            jgen.writeString(value.toString()); // Use the default toString as it is RFC1123.
         }
     }
+
 }

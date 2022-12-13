@@ -20,8 +20,11 @@ import java.util.UUID;
  * The pipeline policy that puts a UUID in the request header. Azure uses the request id as
  * the unique identifier for the request.
  *
- * <p>The default {@link HttpHeader} name can be overwritten as shown below
- * <p><strong>Code sample</strong></p>
+ * <p>
+ * The default {@link HttpHeader} name can be overwritten as shown below
+ * <p>
+ * <strong>Code sample</strong>
+ * </p>
  * <!-- src_embed com.azure.core.http.policy.RequestIdPolicy.constructor.overrideRequestIdHeaderName -->
  * <pre>
  * new RequestIdPolicy&#40;&quot;x-ms-my-custom-request-id&quot;&#41;;
@@ -34,6 +37,7 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
     private final HttpHeaderName requestIdHeaderName;
 
     private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
+
         @Override
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
             HttpHeaders headers = context.getHttpRequest().getHeaders();
@@ -42,15 +46,17 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
                 headers.set(requestIdHeaderName, UUID.randomUUID().toString());
             }
         }
+
     };
 
     /**
-     * Creates  {@link RequestIdPolicy} with provided {@code requestIdHeaderName}.
+     * Creates {@link RequestIdPolicy} with provided {@code requestIdHeaderName}.
+     * 
      * @param requestIdHeaderName to be used to set in {@link HttpRequest}.
      */
     public RequestIdPolicy(String requestIdHeaderName) {
-        this.requestIdHeaderName = HttpHeaderName.fromString(Objects.requireNonNull(requestIdHeaderName,
-            "requestIdHeaderName can not be null."));
+        this.requestIdHeaderName = HttpHeaderName
+            .fromString(Objects.requireNonNull(requestIdHeaderName, "requestIdHeaderName can not be null."));
     }
 
     /**
@@ -64,9 +70,10 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return inner.process(context, next);
     }
+
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         return inner.processSync(context, next);
     }
-}
 
+}

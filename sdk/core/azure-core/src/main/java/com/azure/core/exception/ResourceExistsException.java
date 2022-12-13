@@ -42,4 +42,5 @@ public class ResourceExistsException extends HttpResponseException {
     public ResourceExistsException(final String message, final HttpResponse response, final Throwable cause) {
         super(message, response, cause);
     }
+
 }

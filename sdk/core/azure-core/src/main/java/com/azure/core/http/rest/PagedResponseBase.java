@@ -17,6 +17,7 @@ import java.util.List;
  * @see com.azure.core.http.rest.PagedResponse
  */
 public class PagedResponseBase<H, T> implements PagedResponse<T> {
+
     private final HttpRequest request;
     private final int statusCode;
     private final H deserializedHeaders;
@@ -34,8 +35,13 @@ public class PagedResponseBase<H, T> implements PagedResponse<T> {
      * @param deserializedHeaders The headers, deserialized into an instance of type H.
      */
     @SuppressWarnings("deprecation")
-    public PagedResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, Page<T> page,
-                             H deserializedHeaders) {
+    public PagedResponseBase(
+        HttpRequest request,
+        int statusCode,
+        HttpHeaders headers,
+        Page<T> page,
+        H deserializedHeaders
+    ) {
         this(request, statusCode, headers, page.getItems(), page.getContinuationToken(), deserializedHeaders);
     }
 
@@ -47,11 +53,17 @@ public class PagedResponseBase<H, T> implements PagedResponse<T> {
      * @param headers The headers from the response.
      * @param items The items returned from the service within the response.
      * @param continuationToken The continuation token returned from the service, to enable future requests to pick up
-     *      from the same place in the paged iteration.
+     * from the same place in the paged iteration.
      * @param deserializedHeaders The headers, deserialized into an instance of type H.
      */
-    public PagedResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, List<T> items,
-                             String continuationToken, H deserializedHeaders) {
+    public PagedResponseBase(
+        HttpRequest request,
+        int statusCode,
+        HttpHeaders headers,
+        List<T> items,
+        String continuationToken,
+        H deserializedHeaders
+    ) {
         this.request = request;
         this.statusCode = statusCode;
         this.headers = headers;
@@ -115,4 +127,5 @@ public class PagedResponseBase<H, T> implements PagedResponse<T> {
     @Override
     public void close() {
     }
+
 }

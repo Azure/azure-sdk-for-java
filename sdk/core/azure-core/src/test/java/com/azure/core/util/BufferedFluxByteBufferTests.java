@@ -12,18 +12,17 @@ import java.security.SecureRandom;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-/**
- * Tests {@link BufferedFluxByteBuffer}.
- */
+/** Tests {@link BufferedFluxByteBuffer}. */
 public class BufferedFluxByteBufferTests {
+
     @Test
     public void coldBufferIsBuffered() {
         byte[] randomBytes = new byte[1024 * 1024];
         SecureRandom secureRandom = new SecureRandom();
         secureRandom.nextBytes(randomBytes);
 
-        BufferedFluxByteBuffer bufferedFluxByteBuffer = new BufferedFluxByteBuffer(
-            Flux.fromArray(splitBytesIntoBuffers(randomBytes)));
+        BufferedFluxByteBuffer bufferedFluxByteBuffer =
+            new BufferedFluxByteBuffer(Flux.fromArray(splitBytesIntoBuffers(randomBytes)));
 
         // Run once to verify that the results are expected.
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(bufferedFluxByteBuffer))
@@ -42,8 +41,8 @@ public class BufferedFluxByteBufferTests {
         SecureRandom secureRandom = new SecureRandom();
         secureRandom.nextBytes(randomBytes);
 
-        BufferedFluxByteBuffer bufferedFluxByteBuffer = new BufferedFluxByteBuffer(
-            Flux.fromArray(splitBytesIntoBuffers(randomBytes)).share());
+        BufferedFluxByteBuffer bufferedFluxByteBuffer =
+            new BufferedFluxByteBuffer(Flux.fromArray(splitBytesIntoBuffers(randomBytes)).share());
 
         // Run once to verify that the results are expected.
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(bufferedFluxByteBuffer))
@@ -67,4 +66,5 @@ public class BufferedFluxByteBufferTests {
 
         return buffers;
     }
+
 }

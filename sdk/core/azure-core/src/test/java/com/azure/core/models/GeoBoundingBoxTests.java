@@ -15,10 +15,9 @@ import static com.azure.core.models.GeoTestHelpers.MT_RAINIER_BOUNDING_BOX;
 import static com.azure.core.models.GeoTestHelpers.PIKES_PLACE_BOUNDING_BOX;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * Tests {@link GeoBoundingBox}.
- */
+/** Tests {@link GeoBoundingBox}. */
 public class GeoBoundingBoxTests {
+
     @Test
     public void simpleConstructor() {
         double expectedWest = -180;
@@ -26,8 +25,7 @@ public class GeoBoundingBoxTests {
         double expectedEast = 180;
         double expectedNorth = 90;
 
-        GeoBoundingBox boundingBox = new GeoBoundingBox(expectedWest, expectedSouth, expectedEast,
-            expectedNorth);
+        GeoBoundingBox boundingBox = new GeoBoundingBox(expectedWest, expectedSouth, expectedEast, expectedNorth);
 
         assertEquals(expectedWest, boundingBox.getWest());
         assertEquals(expectedSouth, boundingBox.getSouth());
@@ -47,8 +45,14 @@ public class GeoBoundingBoxTests {
         double expectedMinAltitude = -1000;
         double expectedMaxAltitude = 1000;
 
-        GeoBoundingBox boundingBox = new GeoBoundingBox(expectedWest, expectedSouth, expectedEast,
-            expectedNorth, expectedMinAltitude, expectedMaxAltitude);
+        GeoBoundingBox boundingBox = new GeoBoundingBox(
+            expectedWest,
+            expectedSouth,
+            expectedEast,
+            expectedNorth,
+            expectedMinAltitude,
+            expectedMaxAltitude
+        );
 
         assertEquals(expectedWest, boundingBox.getWest());
         assertEquals(expectedSouth, boundingBox.getSouth());
@@ -65,8 +69,7 @@ public class GeoBoundingBoxTests {
         double expectedEast = 200;
         double expectedNorth = 100;
 
-        GeoBoundingBox boundingBox = new GeoBoundingBox(expectedWest, expectedSouth, expectedEast,
-            expectedNorth);
+        GeoBoundingBox boundingBox = new GeoBoundingBox(expectedWest, expectedSouth, expectedEast, expectedNorth);
 
         assertEquals(expectedWest, boundingBox.getWest());
         assertEquals(expectedSouth, boundingBox.getSouth());
@@ -104,4 +107,5 @@ public class GeoBoundingBoxTests {
             Arguments.of(mtRainierBoundingBox, MT_RAINIER_BOUNDING_BOX.get(), true)
         );
     }
+
 }

@@ -7,11 +7,10 @@ import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Locale;
 
-/**
- * Represents HTTP header names for multiple versions of HTTP.
- */
+/** Represents HTTP header names for multiple versions of HTTP. */
 @SuppressWarnings("unused")
 public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
+
     private String caseInsensitive;
 
     /**
@@ -95,8 +94,8 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
     /**
      * {@code Access-Control-Allow-Credentials}/{@code access-control-allow-credentials}
      */
-    public static final HttpHeaderName ACCESS_CONTROL_ALLOW_CREDENTIALS
-        = fromString("Access-Control-Allow-Credentials");
+    public static final HttpHeaderName ACCESS_CONTROL_ALLOW_CREDENTIALS =
+        fromString("Access-Control-Allow-Credentials");
 
     /**
      * {@code Access-Control-Allow-Headers}/{@code access-control-allow-headers}
@@ -412,4 +411,5 @@ public final class HttpHeaderName extends ExpandableStringEnum<HttpHeaderName> {
      * {@code x-ms-client-request-id}
      */
     public static final HttpHeaderName X_MS_CLIENT_REQUEST_ID = fromString("x-ms-client-request-id");
+
 }

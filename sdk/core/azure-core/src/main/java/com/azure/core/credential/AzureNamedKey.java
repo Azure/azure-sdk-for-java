@@ -12,6 +12,7 @@ import com.azure.core.annotation.Immutable;
  */
 @Immutable
 public final class AzureNamedKey {
+
     private final String name;
     private final String key;
 
@@ -37,4 +38,5 @@ public final class AzureNamedKey {
     public String getName() {
         return name;
     }
+
 }

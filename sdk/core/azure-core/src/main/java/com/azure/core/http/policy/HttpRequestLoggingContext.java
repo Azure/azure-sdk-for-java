@@ -6,10 +6,9 @@ package com.azure.core.http.policy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.Context;
 
-/**
- * Options class containing information available during HTTP request logging.
- */
+/** Options class containing information available during HTTP request logging. */
 public final class HttpRequestLoggingContext {
+
     private final HttpRequest httpRequest;
     private final Context context;
     private final Integer tryCount;
@@ -46,4 +45,5 @@ public final class HttpRequestLoggingContext {
     public Integer getTryCount() {
         return tryCount;
     }
+
 }

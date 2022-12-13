@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = CatWithTypeIdContainingDot.class)
 @JsonTypeName("#Favourite.Pet.CatWithTypeIdContainingDot")
 public class CatWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot {
+
     @JsonProperty(value = "breed", required = true)
     private String breed;
 
@@ -26,4 +27,5 @@ public class CatWithTypeIdContainingDot extends AnimalWithTypeIdContainingDot {
         this.breed = presetName;
         return this;
     }
+
 }

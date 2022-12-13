@@ -11,6 +11,7 @@ import com.azure.core.http.HttpRequest;
  * @param <T> The deserialized type of the response content.
  */
 public class SimpleResponse<T> implements Response<T> {
+
     private final HttpRequest request;
     private final int statusCode;
     private final HttpHeaders headers;
@@ -81,4 +82,5 @@ public class SimpleResponse<T> implements Response<T> {
     public T getValue() {
         return value;
     }
+
 }

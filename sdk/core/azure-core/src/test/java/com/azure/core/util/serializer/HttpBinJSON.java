@@ -7,10 +7,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
 
-/**
- * Maps to the JSON return values from http://httpbin.org.
- */
+/** Maps to the JSON return values from http://httpbin.org. */
 public class HttpBinJSON {
+
     @JsonProperty()
     private String url;
 
@@ -73,4 +72,5 @@ public class HttpBinJSON {
     public void data(Object data) {
         this.data = data;
     }
+
 }

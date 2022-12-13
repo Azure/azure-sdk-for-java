@@ -40,4 +40,5 @@ public interface Response<T> {
      * @return The deserialized value of the HTTP response.
      */
     T getValue();
+
 }

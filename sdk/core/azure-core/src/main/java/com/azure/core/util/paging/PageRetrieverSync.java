@@ -19,7 +19,10 @@ public interface PageRetrieverSync<C, P> {
      * the first page.
      * @param pageSize The number of items to retrieve per page, passing {@code null} will use the source's default
      * page size.
-     * @return A page of elements type <P>.
+     * @return A page of elements type
+     * <P>
+     * .
      */
     P getPage(C continuationToken, Integer pageSize);
+
 }

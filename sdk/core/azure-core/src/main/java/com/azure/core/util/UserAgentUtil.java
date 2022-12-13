@@ -8,9 +8,10 @@ package com.azure.core.util;
  * <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">design guidelines</a>.
  */
 public final class UserAgentUtil {
+
     private static final int MAX_APPLICATION_ID_LENGTH = 24;
-    private static final String INVALID_APPLICATION_ID_LENGTH = "'applicationId' length cannot be greater than "
-        + MAX_APPLICATION_ID_LENGTH;
+    private static final String INVALID_APPLICATION_ID_LENGTH =
+        "'applicationId' length cannot be greater than " + MAX_APPLICATION_ID_LENGTH;
     private static final String INVALID_APPLICATION_ID_SPACE = "'applicationId' cannot contain spaces.";
 
     /**
@@ -43,8 +44,8 @@ public final class UserAgentUtil {
      * @throws IllegalArgumentException If {@code applicationId} contains spaces or is larger than 24 characters in
      * length.
      */
-    public static String toUserAgentString(String applicationId, String sdkName, String sdkVersion,
-        Configuration configuration) {
+    public static String
+        toUserAgentString(String applicationId, String sdkName, String sdkVersion, Configuration configuration) {
         StringBuilder userAgentBuilder = new StringBuilder();
 
         if (!CoreUtils.isNullOrEmpty(applicationId)) {
@@ -58,18 +59,11 @@ public final class UserAgentUtil {
         }
 
         // Add the required default User-Agent string.
-        userAgentBuilder.append(DEFAULT_USER_AGENT_HEADER)
-            .append("-")
-            .append(sdkName)
-            .append("/")
-            .append(sdkVersion);
+        userAgentBuilder.append(DEFAULT_USER_AGENT_HEADER).append("-").append(sdkName).append("/").append(sdkVersion);
 
         // Only add the platform telemetry if it is allowed as it is optional.
         if (!isTelemetryDisabled(configuration)) {
-            userAgentBuilder.append(" ")
-                .append("(")
-                .append(getPlatformInfo())
-                .append(")");
+            userAgentBuilder.append(" ").append("(").append(getPlatformInfo()).append(")");
         }
 
         return userAgentBuilder.toString();

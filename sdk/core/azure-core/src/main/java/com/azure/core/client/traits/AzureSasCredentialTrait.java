@@ -12,11 +12,12 @@ import com.azure.core.credential.AzureSasCredential;
  * documentation for more details on proper usage of the {@link AzureSasCredential} type.
  *
  * @param <T> The concrete type that implements the trait. This is required so that fluent operations can continue
- *           to return the concrete type, rather than the trait type.
+ * to return the concrete type, rather than the trait type.
  * @see com.azure.core.client.traits
  * @see AzureSasCredential
  */
 public interface AzureSasCredentialTrait<T extends AzureSasCredentialTrait<T>> {
+
     /**
      * Sets the {@link AzureSasCredential} used for authentication. Refer to the Azure SDK for Java
      * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
@@ -24,7 +25,8 @@ public interface AzureSasCredentialTrait<T extends AzureSasCredentialTrait<T>> {
      *
      * @param credential the {@link AzureSasCredential} to be used for authentication.
      * @return Returns the same concrete type with the appropriate properties updated, to allow for fluent chaining of
-     *      operations.
+     * operations.
      */
     T credential(AzureSasCredential credential);
+
 }

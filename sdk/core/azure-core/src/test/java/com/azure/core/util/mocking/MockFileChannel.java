@@ -11,10 +11,9 @@ import java.nio.channels.FileLock;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 
-/**
- * A file channel used for mocking in tests.
- */
+/** A file channel used for mocking in tests. */
 public class MockFileChannel extends FileChannel {
+
     public MockFileChannel() {
         super();
     }
@@ -102,4 +101,5 @@ public class MockFileChannel extends FileChannel {
     public FileLock tryLock(long position, long size, boolean shared) throws IOException {
         return null;
     }
+
 }

@@ -8,10 +8,9 @@ import com.azure.core.util.Context;
 import java.util.Objects;
 import java.util.Optional;
 
-/**
- * Represents the information used to make a single HTTP request.
- */
+/** Represents the information used to make a single HTTP request. */
 public final class HttpPipelineCallContext {
+
     private HttpRequest httpRequest;
     private Context data;
 
@@ -67,11 +66,11 @@ public final class HttpPipelineCallContext {
     }
 
     /**
-     *  Gets the context associated to the HTTP call.
+     * Gets the context associated to the HTTP call.
      *
-     *  <p>
-     *  The returned context is a snapshot of the data stored in this http pipeline call context.
-     *  </p>
+     * <p>
+     * The returned context is a snapshot of the data stored in this http pipeline call context.
+     * </p>
      *
      * @return The context associated to the HTTP call.
      */
@@ -98,4 +97,5 @@ public final class HttpPipelineCallContext {
         this.httpRequest = request;
         return this;
     }
+
 }

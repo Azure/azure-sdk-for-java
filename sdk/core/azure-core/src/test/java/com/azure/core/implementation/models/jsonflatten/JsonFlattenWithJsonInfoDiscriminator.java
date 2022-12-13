@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("JsonFlattenWithJsonInfoDiscriminator")
 @Fluent
 public final class JsonFlattenWithJsonInfoDiscriminator {
+
     @JsonFlatten
     @JsonProperty("jsonflatten.discriminator")
     private String jsonFlattenDiscriminator;
@@ -25,4 +26,5 @@ public final class JsonFlattenWithJsonInfoDiscriminator {
     public String getJsonFlattenDiscriminator() {
         return jsonFlattenDiscriminator;
     }
+
 }

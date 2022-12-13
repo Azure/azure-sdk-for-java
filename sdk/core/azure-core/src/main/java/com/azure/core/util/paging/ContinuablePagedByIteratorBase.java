@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @param <E> The type that the {@link ContinuablePagedIterable} will emit.
  */
 abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C, T>, E> implements Iterator<E> {
+
     private final PageRetriever<C, P> pageRetriever;
     private final PageRetrieverSync<C, P> pageRetrieverSync;
 
@@ -31,8 +32,12 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
 
     private volatile boolean done;
 
-    ContinuablePagedByIteratorBase(PageRetriever<C, P> pageRetriever, ContinuationState<C> continuationState,
-        Integer defaultPageSize, ClientLogger logger) {
+    ContinuablePagedByIteratorBase(
+        PageRetriever<C, P> pageRetriever,
+        ContinuationState<C> continuationState,
+        Integer defaultPageSize,
+        ClientLogger logger
+    ) {
         this.continuationState = continuationState;
         this.pageRetriever = pageRetriever;
         this.defaultPageSize = defaultPageSize;
@@ -40,8 +45,12 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
         this.pageRetrieverSync = null;
     }
 
-    ContinuablePagedByIteratorBase(PageRetrieverSync<C, P> pageRetrieverSync, ContinuationState<C> continuationState,
-                                   Integer defaultPageSize, ClientLogger logger) {
+    ContinuablePagedByIteratorBase(
+        PageRetrieverSync<C, P> pageRetrieverSync,
+        ContinuationState<C> continuationState,
+        Integer defaultPageSize,
+        ClientLogger logger
+    ) {
         this.continuationState = continuationState;
         this.pageRetrieverSync = pageRetrieverSync;
         this.defaultPageSize = defaultPageSize;
@@ -87,7 +96,8 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
         AtomicBoolean receivedPages = new AtomicBoolean(false);
         if (pageRetriever != null) {
             /*
-             * In the scenario where multiple threads were waiting on synchronization, check that no earlier thread made a
+             * In the scenario where multiple threads were waiting on synchronization, check that no earlier thread made
+             * a
              * request that would satisfy the current element request. Additionally, check to make sure that any earlier
              * requests didn't consume the paged responses to completion.
              */
@@ -95,11 +105,10 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
                 return;
             }
 
-            pageRetriever.get(continuationState.getLastContinuationToken(), defaultPageSize)
-                .map(page -> {
-                    receivePage(receivedPages, page);
-                    return page;
-                }).blockLast();
+            pageRetriever.get(continuationState.getLastContinuationToken(), defaultPageSize).map(page -> {
+                receivePage(receivedPages, page);
+                return page;
+            }).blockLast();
         } else if (pageRetrieverSync != null) {
             P page = pageRetrieverSync.getPage(continuationState.getLastContinuationToken(), defaultPageSize);
             if (page != null) {
@@ -126,4 +135,5 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
         continuationState.setLastContinuationToken(page.getContinuationToken());
         this.done = continuationState.isDone();
     }
+
 }

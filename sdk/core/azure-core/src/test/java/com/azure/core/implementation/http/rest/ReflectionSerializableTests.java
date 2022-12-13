@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
  * {@code azure-core-experimental} contains tests for these code paths to ensure correct functionality.
  */
 public class ReflectionSerializableTests {
+
     @Test
     public void supportsJsonSerializableIsFalse() {
         assertFalse(ReflectionSerializable.JSON_SERIALIZABLE_SUPPORTED);
@@ -28,4 +29,5 @@ public class ReflectionSerializableTests {
     public void supportsXmlSerializableIsFalse() {
         assertFalse(ReflectionSerializable.XML_SERIALIZABLE_SUPPORTED);
     }
+
 }

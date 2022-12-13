@@ -7,9 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Model used for testing {@link JsonFlatten}.
- */
+/** Model used for testing {@link JsonFlatten}. */
 @Fluent
 @JsonFlatten
 public class JsonFlattenNestedInner {
@@ -26,4 +24,5 @@ public class JsonFlattenNestedInner {
         this.identity = identity;
         return this;
     }
+
 }

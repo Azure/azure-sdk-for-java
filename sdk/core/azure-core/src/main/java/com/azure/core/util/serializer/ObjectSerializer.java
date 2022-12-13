@@ -10,10 +10,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-/**
- * Generic interface covering serializing and deserialization objects.
- */
+/** Generic interface covering serializing and deserialization objects. */
 public interface ObjectSerializer {
+
     /**
      * Reads a byte array into its object representation.
      *
@@ -103,4 +102,5 @@ public interface ObjectSerializer {
      * @return Reactive stream that will indicate operation completion.
      */
     Mono<Void> serializeAsync(OutputStream stream, Object value);
+
 }

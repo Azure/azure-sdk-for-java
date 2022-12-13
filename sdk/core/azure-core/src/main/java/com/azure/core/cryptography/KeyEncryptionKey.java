@@ -3,9 +3,7 @@
 
 package com.azure.core.cryptography;
 
-/**
- * A key which is used to synchronously encrypt, or wrap, another key.
- */
+/** A key which is used to synchronously encrypt, or wrap, another key. */
 public interface KeyEncryptionKey {
 
     /**
@@ -14,7 +12,7 @@ public interface KeyEncryptionKey {
      * @return The key identifier.
      */
     String getKeyId();
-    
+
     /**
      * Encrypts the specified key using the specified algorithm.
      *
@@ -32,4 +30,5 @@ public interface KeyEncryptionKey {
      * @return The decrypted key bytes.
      */
     byte[] unwrapKey(String algorithm, byte[] encryptedKey);
+
 }

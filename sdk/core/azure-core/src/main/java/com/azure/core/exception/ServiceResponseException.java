@@ -32,4 +32,5 @@ public class ServiceResponseException extends AzureException {
     public ServiceResponseException(final String message, final Throwable cause) {
         super(message, cause);
     }
+
 }

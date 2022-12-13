@@ -10,12 +10,12 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import java.util.Objects;
 
 public class Person {
+
     @JsonProperty
     private String name;
 
     @JsonProperty
     private int age;
-
 
     public Person() {
     }
@@ -61,4 +61,5 @@ public class Person {
     public int hashCode() {
         return Objects.hash(name, age);
     }
+
 }

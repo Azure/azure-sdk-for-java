@@ -12,10 +12,9 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Handles serialization of a {@link JsonPatchDocument}.
- */
+/** Handles serialization of a {@link JsonPatchDocument}. */
 final class JsonPatchDocumentSerializer extends JsonSerializer<JsonPatchDocument> {
+
     private static final SimpleModule MODULE;
 
     static {
@@ -47,4 +46,5 @@ final class JsonPatchDocumentSerializer extends JsonSerializer<JsonPatchDocument
 
         gen.writeEndArray();
     }
+
 }

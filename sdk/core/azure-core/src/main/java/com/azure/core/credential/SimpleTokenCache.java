@@ -14,10 +14,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-/**
- * A token cache that supports caching a token and refreshing it.
- */
+/** A token cache that supports caching a token and refreshing it. */
 public class SimpleTokenCache {
+
     // The delay after a refresh to attempt another token refresh
     private static final Duration REFRESH_DELAY = Duration.ofSeconds(30);
     // the offset before token expiry to attempt proactive token refresh
@@ -38,12 +37,13 @@ public class SimpleTokenCache {
     public SimpleTokenCache(Supplier<Mono<AccessToken>> tokenSupplier) {
         this.wip = new AtomicReference<>();
         this.tokenSupplier = tokenSupplier;
-        this.shouldRefresh = accessToken -> OffsetDateTime.now()
-            .isAfter(accessToken.getExpiresAt().minus(REFRESH_OFFSET));
+        this.shouldRefresh =
+            accessToken -> OffsetDateTime.now().isAfter(accessToken.getExpiresAt().minus(REFRESH_OFFSET));
     }
 
     /**
      * Asynchronously get a token from either the cache or replenish the cache with a new token.
+     * 
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> getToken() {
@@ -65,8 +65,8 @@ public class SimpleTokenCache {
                             tokenRefresh = Mono.defer(tokenSupplier);
                         } else {
                             // wait for timeout, then refresh
-                            tokenRefresh = Mono.defer(tokenSupplier)
-                                .delaySubscription(Duration.between(now, nextTokenRefresh));
+                            tokenRefresh =
+                                Mono.defer(tokenSupplier).delaySubscription(Duration.between(now, nextTokenRefresh));
                         }
                         // cache doesn't exist or expired, no fallback
                         fallback = Mono.empty();
@@ -82,30 +82,30 @@ public class SimpleTokenCache {
                         // cache hasn't expired, ignore refresh error this time
                         fallback = Mono.just(cache);
                     }
-                    return tokenRefresh
-                        .materialize()
-                        .flatMap(signal -> {
-                            AccessToken accessToken = signal.get();
-                            Throwable error = signal.getThrowable();
-                            if (signal.isOnNext() && accessToken != null) { // SUCCESS
-                                LOGGER.log(LogLevel.INFORMATIONAL,
-                                    () -> refreshLog(cache, now, "Acquired a new access token"));
-                                cache = accessToken;
-                                sinksOne.tryEmitValue(accessToken);
-                                nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
-                                return Mono.just(accessToken);
-                            } else if (signal.isOnError() && error != null) { // ERROR
-                                LOGGER.log(LogLevel.ERROR,
-                                    () -> refreshLog(cache, now, "Failed to acquire a new access token"));
-                                nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
-                                return fallback.switchIfEmpty(Mono.error(() -> error));
-                            } else { // NO REFRESH
-                                sinksOne.tryEmitEmpty();
-                                return fallback;
-                            }
-                        })
-                        .doOnError(sinksOne::tryEmitError)
-                        .doOnTerminate(() -> wip.set(null));
+                    return tokenRefresh.materialize().flatMap(signal -> {
+                        AccessToken accessToken = signal.get();
+                        Throwable error = signal.getThrowable();
+                        if (signal.isOnNext() && accessToken != null) { // SUCCESS
+                            LOGGER.log(
+                                LogLevel.INFORMATIONAL,
+                                () -> refreshLog(cache, now, "Acquired a new access token")
+                            );
+                            cache = accessToken;
+                            sinksOne.tryEmitValue(accessToken);
+                            nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
+                            return Mono.just(accessToken);
+                        } else if (signal.isOnError() && error != null) { // ERROR
+                            LOGGER.log(
+                                LogLevel.ERROR,
+                                () -> refreshLog(cache, now, "Failed to acquire a new access token")
+                            );
+                            nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
+                            return fallback.switchIfEmpty(Mono.error(() -> error));
+                        } else { // NO REFRESH
+                            sinksOne.tryEmitEmpty();
+                            return fallback;
+                        }
+                    }).doOnError(sinksOne::tryEmitError).doOnTerminate(() -> wip.set(null));
                 } else if (cache != null && !cache.isExpired()) {
                     // another thread might be refreshing the token proactively, but the current token is still valid
                     return Mono.just(cache);
@@ -132,13 +132,19 @@ public class SimpleTokenCache {
             info.append(".");
         } else {
             Duration tte = Duration.between(now, cache.getExpiresAt());
-            info.append(" at ").append(tte.abs().getSeconds()).append(" seconds ")
-                .append(tte.isNegative() ? "after" : "before").append(" expiry. ")
-                .append("Retry may be attempted after ").append(REFRESH_DELAY.getSeconds()).append(" seconds.");
+            info.append(" at ")
+                .append(tte.abs().getSeconds())
+                .append(" seconds ")
+                .append(tte.isNegative() ? "after" : "before")
+                .append(" expiry. ")
+                .append("Retry may be attempted after ")
+                .append(REFRESH_DELAY.getSeconds())
+                .append(" seconds.");
             if (!tte.isNegative()) {
                 info.append(" The token currently cached will be used.");
             }
         }
         return info.toString();
     }
+
 }

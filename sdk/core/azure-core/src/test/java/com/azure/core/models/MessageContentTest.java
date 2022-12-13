@@ -8,10 +8,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-/**
- * Tests for {@link MessageContent}
- */
+/** Tests for {@link MessageContent} */
 public class MessageContentTest {
+
     /**
      * Verify default parameters.
      */
@@ -36,11 +35,11 @@ public class MessageContentTest {
         final MessageContent message = new MessageContent();
 
         // Act
-        final MessageContent actual = message.setContentType(contentType)
-            .setBodyAsBinaryData(binaryData);
+        final MessageContent actual = message.setContentType(contentType).setBodyAsBinaryData(binaryData);
 
         // Assert
         assertEquals(binaryData, actual.getBodyAsBinaryData());
         assertEquals(contentType, actual.getContentType());
     }
+
 }

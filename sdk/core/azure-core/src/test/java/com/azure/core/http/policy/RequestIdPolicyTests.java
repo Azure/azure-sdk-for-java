@@ -27,6 +27,7 @@ import java.time.temporal.ChronoUnit;
 public class RequestIdPolicyTests {
 
     private final HttpResponse mockResponse = new HttpResponse(null) {
+
         @Override
         public int getStatusCode() {
             return 500;
@@ -61,32 +62,33 @@ public class RequestIdPolicyTests {
         public Mono<String> getBodyAsString(Charset charset) {
             return Mono.empty();
         }
+
     };
 
     private static final String REQUEST_ID_HEADER = "x-ms-client-request-id";
 
     @SyncAsyncTest
     public void newRequestIdForEachCall() throws Exception {
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient() {
-                String firstRequestId = null;
-                @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
-                    if (firstRequestId != null) {
-                        String newRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
-                        Assertions.assertNotNull(newRequestId);
-                        Assertions.assertNotEquals(newRequestId, firstRequestId);
-                    }
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
 
-                    firstRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
-                    if (firstRequestId == null) {
-                        Assertions.fail();
-                    }
-                    return Mono.just(mockResponse);
+            String firstRequestId = null;
+
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                if (firstRequestId != null) {
+                    String newRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
+                    Assertions.assertNotNull(newRequestId);
+                    Assertions.assertNotEquals(newRequestId, firstRequestId);
                 }
-            })
-            .policies(new RequestIdPolicy())
-            .build();
+
+                firstRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
+                if (firstRequestId == null) {
+                    Assertions.fail();
+                }
+                return Mono.just(mockResponse);
+            }
+
+        }).policies(new RequestIdPolicy()).build();
 
         SyncAsyncExtension.execute(
             () -> pipeline.sendSync(createHttpRequest("https://www.bing.com"), Context.NONE),
@@ -96,24 +98,25 @@ public class RequestIdPolicyTests {
 
     @SyncAsyncTest
     public void sameRequestIdForRetry() throws Exception {
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient() {
-                String firstRequestId = null;
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
 
-                @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
-                    if (firstRequestId != null) {
-                        String newRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
-                        Assertions.assertNotNull(newRequestId);
-                        Assertions.assertEquals(newRequestId, firstRequestId);
-                    }
-                    firstRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
-                    if (firstRequestId == null) {
-                        Assertions.fail();
-                    }
-                    return Mono.just(mockResponse);
+            String firstRequestId = null;
+
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                if (firstRequestId != null) {
+                    String newRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
+                    Assertions.assertNotNull(newRequestId);
+                    Assertions.assertEquals(newRequestId, firstRequestId);
                 }
-            })
+                firstRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
+                if (firstRequestId == null) {
+                    Assertions.fail();
+                }
+                return Mono.just(mockResponse);
+            }
+
+        })
             .policies(new RequestIdPolicy(), new RetryPolicy(new FixedDelay(1, Duration.of(0, ChronoUnit.SECONDS))))
             .build();
 
@@ -126,4 +129,5 @@ public class RequestIdPolicyTests {
     private static HttpRequest createHttpRequest(String url) throws MalformedURLException {
         return new HttpRequest(HttpMethod.GET, new URL(url));
     }
+
 }

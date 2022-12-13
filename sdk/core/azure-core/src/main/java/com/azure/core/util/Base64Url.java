@@ -6,10 +6,9 @@ package com.azure.core.util;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-/**
- * Encodes and decodes using Base64 URL encoding.
- */
+/** Encodes and decodes using Base64 URL encoding. */
 public final class Base64Url {
+
     /**
      * The Base64Url encoded bytes.
      */
@@ -124,4 +123,5 @@ public final class Base64Url {
         Base64Url rhs = (Base64Url) obj;
         return Arrays.equals(this.bytes, rhs.encodedBytes());
     }
+
 }

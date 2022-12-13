@@ -16,10 +16,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Target(TYPE)
 public @interface ServiceInterface {
+
     /**
      * Name of the service - this must be short and without spaces.
      *
      * @return the service name given to the interface.
      */
     String name();
+
 }

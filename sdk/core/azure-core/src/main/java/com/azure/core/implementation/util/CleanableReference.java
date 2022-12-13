@@ -10,6 +10,7 @@ import java.lang.ref.PhantomReference;
  * reachable.
  */
 final class CleanableReference<T> extends PhantomReference<T> {
+
     // The cleanup action to run once the reference is phantom reachable.
     private final Runnable cleanupAction;
 
@@ -74,4 +75,5 @@ final class CleanableReference<T> extends PhantomReference<T> {
             return false;
         }
     }
+
 }

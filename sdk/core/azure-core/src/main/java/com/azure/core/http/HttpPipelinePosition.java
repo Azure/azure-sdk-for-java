@@ -6,9 +6,7 @@ package com.azure.core.http;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 
-/**
- * Indicates the position in an {@link HttpPipeline} to place an {@link HttpPipelinePolicy}.
- */
+/** Indicates the position in an {@link HttpPipeline} to place an {@link HttpPipelinePolicy}. */
 public enum HttpPipelinePosition {
     /**
      * Policy is placed before a {@link RetryPolicy} and will only be invoked once per pipeline invocation (service

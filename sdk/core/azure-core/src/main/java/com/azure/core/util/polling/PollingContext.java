@@ -17,6 +17,7 @@ import java.util.Objects;
  * @param <T> the type of the poll response.
  */
 public final class PollingContext<T> {
+
     // PollingContext is a commonly used class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(PollingContext.class);
     private final Map<String, String> map;
@@ -79,8 +80,9 @@ public final class PollingContext<T> {
      */
     void setOnetimeActivationResponse(PollResponse<T> activationResponse) {
         if (this.activationResponse != null) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "setOnetimeActivationResponse can be called only once."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("setOnetimeActivationResponse can be called only once.")
+            );
         } else {
             this.activationResponse = activationResponse;
             this.latestResponse = this.activationResponse;
@@ -105,10 +107,14 @@ public final class PollingContext<T> {
      * @param latestResponse latest poll response from pollOperation.
      * @param map the map to store context
      */
-    private PollingContext(PollResponse<T> activationResponse, PollResponse<T> latestResponse,
-        Map<String, String> map) {
+    private PollingContext(
+        PollResponse<T> activationResponse,
+        PollResponse<T> latestResponse,
+        Map<String, String> map
+    ) {
         this.activationResponse = Objects.requireNonNull(activationResponse, "'activationResponse' cannot be null.");
         this.latestResponse = Objects.requireNonNull(latestResponse, "'latestResponse' cannot be null.");
         this.map = Objects.requireNonNull(map, "'map' cannot be null.");
     }
+
 }

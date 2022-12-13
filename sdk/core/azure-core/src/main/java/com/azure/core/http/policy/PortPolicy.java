@@ -15,16 +15,16 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 
-/**
- * The pipeline policy that adds a given port to each {@link HttpRequest}.
- */
+/** The pipeline policy that adds a given port to each {@link HttpRequest}. */
 public class PortPolicy implements HttpPipelinePolicy {
+
     private static final ClientLogger LOGGER = new ClientLogger(PortPolicy.class);
 
     private final int port;
     private final boolean overwrite;
 
     private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
+
         @Override
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
             final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
@@ -34,11 +34,13 @@ public class PortPolicy implements HttpPipelinePolicy {
                 try {
                     context.getHttpRequest().setUrl(urlBuilder.setPort(port).toUrl());
                 } catch (MalformedURLException e) {
-                    throw LOGGER.logExceptionAsError(new
-                        RuntimeException("Failed to set the HTTP request port to " + port + ".", e));
+                    throw LOGGER.logExceptionAsError(
+                        new RuntimeException("Failed to set the HTTP request port to " + port + ".", e)
+                    );
                 }
             }
         }
+
     };
 
     /**
@@ -61,4 +63,5 @@ public class PortPolicy implements HttpPipelinePolicy {
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         return inner.processSync(context, next);
     }
+
 }

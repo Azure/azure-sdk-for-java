@@ -8,10 +8,12 @@ import com.azure.core.util.MetricsOptions;
 /**
  * Resolves and provides {@link Meter} implementation.
  *
- * This class is intended to be used by Azure client libraries and provides abstraction over different metrics implementations.
+ * This class is intended to be used by Azure client libraries and provides abstraction over different metrics
+ * implementations.
  * Application developers should use metrics implementations such as OpenTelemetry or Micrometer directly.
  */
 public interface MeterProvider {
+
     /**
      * Creates named and versioned meter instance.
      *
@@ -32,9 +34,11 @@ public interface MeterProvider {
 
     /**
      * Returns default implementation of {@code MeterProvider} that uses SPI to resolve metrics implementation.
+     * 
      * @return an instance of {@code MeterProvider}
      */
     static MeterProvider getDefaultProvider() {
         return DefaultMeterProvider.getInstance();
     }
+
 }

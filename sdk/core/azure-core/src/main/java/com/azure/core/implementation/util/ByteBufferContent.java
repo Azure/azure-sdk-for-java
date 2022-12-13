@@ -15,15 +15,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
-/**
- * A {@link BinaryDataContent} implementation which is backed by a {@link ByteBuffer}.
- */
+/** A {@link BinaryDataContent} implementation which is backed by a {@link ByteBuffer}. */
 public final class ByteBufferContent extends BinaryDataContent {
+
     private final ByteBuffer content;
 
     private volatile byte[] bytes;
-    private static final AtomicReferenceFieldUpdater<ByteBufferContent, byte[]> BYTES_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(ByteBufferContent.class, byte[].class, "bytes");
+    private static final AtomicReferenceFieldUpdater<ByteBufferContent, byte[]> BYTES_UPDATER =
+        AtomicReferenceFieldUpdater.newUpdater(ByteBufferContent.class, byte[].class, "bytes");
 
     /**
      * Creates a new instance of {@link BinaryDataContent}.
@@ -94,4 +93,5 @@ public final class ByteBufferContent extends BinaryDataContent {
 
         return bytes;
     }
+
 }

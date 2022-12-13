@@ -33,7 +33,6 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- *
  * Represents the CloudEvent conforming to the 1.0 schema defined by the
  * <a href="https://github.com/cloudevents/spec/blob/v1.0.1/spec.md">Cloud Native Computing Foundation</a>.
  * <q>
@@ -41,18 +40,26 @@ import java.util.UUID;
  * services, platforms and systems.
  * </q>
  *
- * <p>Some Azure services, for instance, EventGrid, are compatible with this specification. You can use this class to
- * communicate with these Azure services.</p>
- * <p>Depending on your scenario, you can either use the constructor
+ * <p>
+ * Some Azure services, for instance, EventGrid, are compatible with this specification. You can use this class to
+ * communicate with these Azure services.
+ * </p>
+ * <p>
+ * Depending on your scenario, you can either use the constructor
  * {@link #CloudEvent(String, String, BinaryData, CloudEventDataFormat, String)} to
  * create a CloudEvent, or use the factory method {@link #fromString(String)} to deserialize CloudEvent instances
- * from a Json String representation of CloudEvents.</p>
+ * from a Json String representation of CloudEvents.
+ * </p>
  *
- * <p>If you have the data payload of a CloudEvent and want to send it out, use the constructor
+ * <p>
+ * If you have the data payload of a CloudEvent and want to send it out, use the constructor
  * {@link #CloudEvent(String, String, BinaryData, CloudEventDataFormat, String)} to create it. Then you can
- * serialize the CloudEvent into its Json String representation and send it.</p>
+ * serialize the CloudEvent into its Json String representation and send it.
+ * </p>
  *
- * <p><strong>Create CloudEvent Samples</strong></p>
+ * <p>
+ * <strong>Create CloudEvent Samples</strong>
+ * </p>
  * <!-- src_embed com.azure.core.model.CloudEvent#constructor -->
  * <pre>
  * &#47;&#47; Use BinaryData.fromBytes&#40;&#41; to create data in format CloudEventDataFormat.BYTES
@@ -89,10 +96,14 @@ import java.util.UUID;
  * </pre>
  * <!-- end com.azure.core.model.CloudEvent#constructor -->
  *
- * <p>On the contrary, if you receive CloudEvents and have the Json string representation of one or more of CloudEvents,
- * use {@link #fromString(String)} to deserialize them from the Json string.</p>
+ * <p>
+ * On the contrary, if you receive CloudEvents and have the Json string representation of one or more of CloudEvents,
+ * use {@link #fromString(String)} to deserialize them from the Json string.
+ * </p>
  *
- * <p><strong>Deserialize CloudEvent Samples</strong></p>
+ * <p>
+ * <strong>Deserialize CloudEvent Samples</strong>
+ * </p>
  * <!-- src_embed com.azure.core.model.CloudEvent.fromString -->
  * <pre>
  * List&lt;CloudEvent&gt; cloudEventList = CloudEvent.fromString&#40;cloudEventJsonString&#41;;
@@ -110,6 +121,7 @@ import java.util.UUID;
  */
 @Fluent
 public final class CloudEvent {
+
     private static final String SPEC_VERSION = "1.0";
 
     private static final JsonSerializer SERIALIZER = JsonSerializerProviders.createInstance(true);
@@ -122,7 +134,9 @@ public final class CloudEvent {
         new TypeReference<List<CloudEvent>>() {
         };
     private static final ClientLogger LOGGER = new ClientLogger(CloudEvent.class);
-    private static final Set<String> RESERVED_ATTRIBUTE_NAMES = new HashSet<String>() {{
+    private static final Set<String> RESERVED_ATTRIBUTE_NAMES = new HashSet<String>() {
+
+        {
             add("specversion");
             add("id");
             add("source");
@@ -133,7 +147,9 @@ public final class CloudEvent {
             add("time");
             add("data");
             add("data_base64");
-        }};
+        }
+
+    };
 
     /*
      * An identifier for the event. The combination of id and source must be
@@ -208,27 +224,32 @@ public final class CloudEvent {
     @JsonIgnore
     private BinaryData binaryData;
 
-
-
     /**
      * Create an instance of {@link CloudEvent}.
-     * <p>{@code source}, {@code type}, {@code id}, and {@code specversion} are required attributes according to the
+     * <p>
+     * {@code source}, {@code type}, {@code id}, and {@code specversion} are required attributes according to the
      * <a href="https://github.com/cloudevents/spec/blob/v1.0.1/spec.md">CNCF CloudEvent spec</a>.
      * You must set the {@code source} and {@code type} when using this constructor.
      * For convenience, {@code id} and {@code specversion} are automatically assigned. You can change the {@code id}
      * by using {@link #setId(String)} after you create a CloudEvent. But you can not change {@code specversion}
-     * because this class is specifically for CloudEvent 1.0 schema.</p>
+     * because this class is specifically for CloudEvent 1.0 schema.
+     * </p>
      *
-     * <p>For the CloudEvent data payload, this constructor accepts {@code data} of {@link BinaryData} as the CloudEvent payload.
+     * <p>
+     * For the CloudEvent data payload, this constructor accepts {@code data} of {@link BinaryData} as the CloudEvent
+     * payload.
      * The {@code data} can be created from objects of type String, bytes, boolean, null, array or other types.
      * A CloudEvent will be serialized to its Json String representation
      * to be sent out. Use param {@code format} to indicate whether the {@code data} will be serialized as
      * bytes, or Json. When {@link CloudEventDataFormat#BYTES} is used, the data payload will be serialized to base64
      * bytes and stored in attribute <em>data_base64</em> of the CloudEvent's Json representation. When
      * {@link CloudEventDataFormat#JSON} is used, the data payload will be serialized as Json data and stored in
-     * attribute <em>data</em> of the CloudEvent's Json representation.</p>
+     * attribute <em>data</em> of the CloudEvent's Json representation.
+     * </p>
      *
-     * <p><strong>Create CloudEvent Samples</strong></p>
+     * <p>
+     * <strong>Create CloudEvent Samples</strong>
+     * </p>
      * <!-- src_embed com.azure.core.model.CloudEvent#constructor -->
      * <pre>
      * &#47;&#47; Use BinaryData.fromBytes&#40;&#41; to create data in format CloudEventDataFormat.BYTES
@@ -266,19 +287,25 @@ public final class CloudEvent {
      * <!-- end com.azure.core.model.CloudEvent#constructor -->
      *
      * @param source Identifies the context in which an event happened. The combination of id and source must be unique
-     *               for each distinct event.
+     * for each distinct event.
      * @param type Type of event related to the originating occurrence.
      * @param data A {@link BinaryData} that wraps the original data, which can be a String, byte[], or model class.
      * @param format Set to {@link CloudEventDataFormat#BYTES} to serialize the data to base64 format, or
-     *               {@link CloudEventDataFormat#JSON} to serialize the data to JSON value.
+     * {@link CloudEventDataFormat#JSON} to serialize the data to JSON value.
      * @param dataContentType The content type of the data. It has no impact on how the data is serialized but tells
-     *                        the event subscriber how to use the data. Typically the value is of MIME types such as
-     *                        "application/json", "text/plain", "text/xml", "avro/binary", etc. It can be null.
+     * the event subscriber how to use the data. Typically the value is of MIME types such as
+     * "application/json", "text/plain", "text/xml", "avro/binary", etc. It can be null.
      * @throws NullPointerException if source, type is null, or format is null while data isn't null.
      * @throws IllegalArgumentException if format is {@link CloudEventDataFormat#JSON} but the data isn't in a correct
      * JSON format.
      */
-    public CloudEvent(String source, String type, BinaryData data, CloudEventDataFormat format, String dataContentType) {
+    public CloudEvent(
+        String source,
+        String type,
+        BinaryData data,
+        CloudEventDataFormat format,
+        String dataContentType
+    ) {
         Objects.requireNonNull(source, "'source' cannot be null.");
         Objects.requireNonNull(type, "'type' cannot be null.");
         this.source = source;
@@ -291,8 +318,8 @@ public final class CloudEvent {
                 try {
                     this.data = BINARY_DATA_OBJECT_MAPPER.readTree(data.toBytes());
                 } catch (IOException e) {
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException("'data' isn't in valid Json format",
-                        e));
+                    throw LOGGER
+                        .logExceptionAsError(new IllegalArgumentException("'data' isn't in valid Json format", e));
                 }
             }
         }
@@ -309,9 +336,12 @@ public final class CloudEvent {
     /**
      * Deserialize {@link CloudEvent} JSON string representation that has one CloudEvent object or
      * an array of CloudEvent objects into a list of CloudEvents, and validate whether any CloudEvents have
-     * null {@code id}, {@code source}, or {@code type}. If you want to skip this validation, use {@link #fromString(String, boolean)}.
+     * null {@code id}, {@code source}, or {@code type}. If you want to skip this validation, use
+     * {@link #fromString(String, boolean)}.
      *
-     * <p><strong>Deserialize CloudEvent Samples</strong></p>
+     * <p>
+     * <strong>Deserialize CloudEvent Samples</strong>
+     * </p>
      * <!-- src_embed com.azure.core.model.CloudEvent.fromString -->
      * <pre>
      * List&lt;CloudEvent&gt; cloudEventList = CloudEvent.fromString&#40;cloudEventJsonString&#41;;
@@ -332,7 +362,8 @@ public final class CloudEvent {
      * @return all of the events in the payload deserialized as {@link CloudEvent CloudEvents}.
      * @throws NullPointerException if cloudEventsJson is null.
      * @throws IllegalArgumentException if the input parameter isn't a correct JSON string for a CloudEvent
-     * or an array of CloudEvents, or any deserialized CloudEvents have null {@code id}, {@code source}, or {@code type}.
+     * or an array of CloudEvents, or any deserialized CloudEvents have null {@code id}, {@code source}, or
+     * {@code type}.
      */
     public static List<CloudEvent> fromString(String cloudEventsJson) {
         return fromString(cloudEventsJson, false);
@@ -344,7 +375,7 @@ public final class CloudEvent {
      *
      * @param cloudEventsJson the JSON payload containing one or more events.
      * @param skipValidation set to true if you'd like to skip the validation for the deserialized CloudEvents. A valid
-     *                       CloudEvent should have 'id', 'source' and 'type' not null.
+     * CloudEvent should have 'id', 'source' and 'type' not null.
      *
      * @return all of the events in the payload deserialized as {@link CloudEvent CloudEvents}.
      * @throws NullPointerException if cloudEventsJson is null.
@@ -356,7 +387,8 @@ public final class CloudEvent {
         try {
             List<CloudEvent> events = SERIALIZER.deserialize(
                 new ByteArrayInputStream(cloudEventsJson.getBytes(StandardCharsets.UTF_8)),
-                DESERIALIZER_TYPE_REFERENCE);
+                DESERIALIZER_TYPE_REFERENCE
+            );
             if (skipValidation) {
                 return events;
             }
@@ -373,23 +405,33 @@ public final class CloudEvent {
                     if (event.getType() == null) {
                         nullAttributes.add("'type'");
                     }
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                        "'id', 'source' and 'type' are mandatory attributes for a CloudEvent according to the spec."
-                            + " This Json string doesn't have " + String.join(",", nullAttributes)
-                            + " for the object at index " + i
-                            + ". Please make sure the input Json string has the required attributes"
-                            + " or use CloudEvent.fromString(cloudEventsJson, true) to skip the null check."));
+                    throw LOGGER.logExceptionAsError(
+                        new IllegalArgumentException(
+                            "'id', 'source' and 'type' are mandatory attributes for a CloudEvent according to the spec."
+                                + " This Json string doesn't have "
+                                + String.join(",", nullAttributes)
+                                + " for the object at index "
+                                + i
+                                + ". Please make sure the input Json string has the required attributes"
+                                + " or use CloudEvent.fromString(cloudEventsJson, true) to skip the null check."
+                        )
+                    );
                 }
             }
             return events;
         } catch (UncheckedIOException uncheckedIOException) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("The input parameter isn't a JSON string.",
-                uncheckedIOException.getCause()));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException(
+                    "The input parameter isn't a JSON string.",
+                    uncheckedIOException.getCause()
+                )
+            );
         }
     }
 
     /**
      * Get the id of the cloud event.
+     * 
      * @return the id.
      */
     public String getId() {
@@ -398,6 +440,7 @@ public final class CloudEvent {
 
     /**
      * Set a custom id. Note that a random id is already set by default.
+     * 
      * @param id the id to set.
      *
      * @return the cloud event itself.
@@ -415,6 +458,7 @@ public final class CloudEvent {
 
     /**
      * Get the source of the event.
+     * 
      * @return the source.
      */
     public String getSource() {
@@ -440,6 +484,7 @@ public final class CloudEvent {
 
     /**
      * Get the type of event, e.g. "Contoso.Items.ItemReceived".
+     * 
      * @return the type of the event.
      */
     public String getType() {
@@ -448,6 +493,7 @@ public final class CloudEvent {
 
     /**
      * Get the time associated with the occurrence of the event.
+     * 
      * @return the event time, or null if the time is not set.
      */
     public OffsetDateTime getTime() {
@@ -456,6 +502,7 @@ public final class CloudEvent {
 
     /**
      * Set the time associated with the occurrence of the event.
+     * 
      * @param time the time to set.
      *
      * @return the cloud event itself.
@@ -467,6 +514,7 @@ public final class CloudEvent {
 
     /**
      * Get the content MIME type that the data is in.
+     * 
      * @return the content type the data is in, or null it is not set.
      */
     public String getDataContentType() {
@@ -475,6 +523,7 @@ public final class CloudEvent {
 
     /**
      * Get the schema that the data adheres to.
+     * 
      * @return a URI of the data schema, or null if it is not set.
      */
     public String getDataSchema() {
@@ -483,9 +532,11 @@ public final class CloudEvent {
 
     /**
      * Set the schema that the data adheres to.
-     * @param dataSchema a String identifying the schema of the data. The <a href="https://github.com/cloudevents/spec/blob/v1.0.1/spec.md#dataschema">
-     *                   CNCF CloudEvent spec dataschema</a> is defined as a URI. For compatibility with legacy system, this class
-     *                   accepts any String. But for interoperability, you should use a URI format string.
+     * 
+     * @param dataSchema a String identifying the schema of the data. The <a
+     * href="https://github.com/cloudevents/spec/blob/v1.0.1/spec.md#dataschema">
+     * CNCF CloudEvent spec dataschema</a> is defined as a URI. For compatibility with legacy system, this class
+     * accepts any String. But for interoperability, you should use a URI format string.
      *
      * @return the cloud event itself.
      */
@@ -496,6 +547,7 @@ public final class CloudEvent {
 
     /**
      * Get the subject associated with this event.
+     * 
      * @return the subject, or null if it is not set.
      */
     public String getSubject() {
@@ -504,6 +556,7 @@ public final class CloudEvent {
 
     /**
      * Set the subject of the event.
+     * 
      * @param subject the subject to set.
      *
      * @return the cloud event itself.
@@ -515,18 +568,21 @@ public final class CloudEvent {
 
     /**
      * Get a map of the additional user-defined attributes associated with this event.
+     * 
      * @return an unmodifiable map of the extension attributes.
      */
     @JsonAnyGetter
     public Map<String, Object> getExtensionAttributes() {
         return this.extensionAttributes == null
-            ? EMPTY_ATTRIBUTES_MAP : Collections.unmodifiableMap(this.extensionAttributes);
+            ? EMPTY_ATTRIBUTES_MAP
+            : Collections.unmodifiableMap(this.extensionAttributes);
     }
 
     /**
      * Add/Overwrite a single extension attribute to the cloud event.
+     * 
      * @param name the name of the attribute. It must contains only lower-case alphanumeric characters and not be be any
-     *             CloudEvent reserved attribute names.
+     * CloudEvent reserved attribute names.
      * @param value the value to associate with the name.
      *
      * @return the cloud event itself.
@@ -538,9 +594,13 @@ public final class CloudEvent {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(value, "'value' cannot be null.");
         if (!validateAttributeName(name)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Extension attribute 'name' must have only lower-case alphanumeric characters and not be one of the "
-                    + "CloudEvent reserved attribute names: " + String.join(",", RESERVED_ATTRIBUTE_NAMES)));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException(
+                    "Extension attribute 'name' must have only lower-case alphanumeric characters and not be one of the "
+                        + "CloudEvent reserved attribute names: "
+                        + String.join(",", RESERVED_ATTRIBUTE_NAMES)
+                )
+            );
         }
         if (this.extensionAttributes == null) {
             this.extensionAttributes = new HashMap<>();
@@ -552,6 +612,7 @@ public final class CloudEvent {
     /**
      * Get the spec version. Users don't need to access it because it's always 1.0.
      * Make it package level to test deserialization.
+     * 
      * @return The spec version.
      */
     String getSpecVersion() {
@@ -561,6 +622,7 @@ public final class CloudEvent {
     /**
      * Set the spec version. Users don't need to access it because it's always 1.0.
      * Make it package level to test serialization.
+     * 
      * @return the cloud event itself.
      */
     CloudEvent setSpecVersion(String specVersion) {
@@ -580,4 +642,5 @@ public final class CloudEvent {
         }
         return true;
     }
+
 }

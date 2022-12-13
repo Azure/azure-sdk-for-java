@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class StartSpanOptionsTests {
+
     @Test
     public void kindCannotBeNull() {
         assertThrows(NullPointerException.class, () -> new StartSpanOptions(null));
@@ -34,13 +35,13 @@ public class StartSpanOptionsTests {
 
     @Test
     public void setAttributes() {
-        StartSpanOptions options = new StartSpanOptions(SpanKind.CLIENT)
-            .setAttribute("foo", "bar")
-            .setAttribute("1", 1);
+        StartSpanOptions options =
+            new StartSpanOptions(SpanKind.CLIENT).setAttribute("foo", "bar").setAttribute("1", 1);
 
         assertEquals(SpanKind.CLIENT, options.getSpanKind());
         assertEquals(2, options.getAttributes().size());
         assertEquals("bar", options.getAttributes().get("foo"));
         assertEquals(1, options.getAttributes().get("1"));
     }
+
 }

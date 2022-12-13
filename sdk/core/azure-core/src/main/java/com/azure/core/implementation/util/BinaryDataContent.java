@@ -14,15 +14,14 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ReadOnlyBufferException;
 
-/**
- * An abstract internal representation of the content stored in {@link BinaryData}.
- */
+/** An abstract internal representation of the content stored in {@link BinaryData}. */
 public abstract class BinaryDataContent {
+
     public static final int STREAM_READ_SIZE = 8192;
 
     static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
-    static final String TOO_LARGE_FOR_BYTE_ARRAY
-        = "The content length is too large for a byte array. Content length is: ";
+    static final String TOO_LARGE_FOR_BYTE_ARRAY =
+        "The content length is too large for a byte array. Content length is: ";
 
     /**
      * Gets the length of the {@link BinaryDataContent} if it can be calculated.
@@ -52,7 +51,9 @@ public abstract class BinaryDataContent {
      * Returns an {@link Object} representation of this {@link BinaryDataContent} by deserializing its data using the
      * {@link JsonSerializer}.
      *
-     * <p><strong>Get a non-generic Object from the BinaryDataContent</strong></p>
+     * <p>
+     * <strong>Get a non-generic Object from the BinaryDataContent</strong>
+     * </p>
      *
      * @param <T> Type of the deserialized Object.
      * @param typeReference The {@link Class} representing the Object's type.
@@ -130,4 +131,5 @@ public abstract class BinaryDataContent {
      * @return Mono that emits replayable {@link BinaryDataContent}.
      */
     public abstract Mono<BinaryDataContent> toReplayableContentAsync();
+
 }

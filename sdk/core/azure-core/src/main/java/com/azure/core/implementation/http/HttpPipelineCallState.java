@@ -8,10 +8,9 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.logging.ClientLogger;
 
-/**
- * Represents a class responsible for maintaining information related to request-specific context and pipeline data.
- */
+/** Represents a class responsible for maintaining information related to request-specific context and pipeline data. */
 public class HttpPipelineCallState {
+
     private static final ClientLogger LOGGER = new ClientLogger(HttpPipelineCallState.class);
     private final HttpPipeline pipeline;
     private final HttpPipelineCallContext callContext;
@@ -82,4 +81,5 @@ public class HttpPipelineCallState {
         cloned.currentPolicyIndex = this.currentPolicyIndex;
         return cloned;
     }
+
 }

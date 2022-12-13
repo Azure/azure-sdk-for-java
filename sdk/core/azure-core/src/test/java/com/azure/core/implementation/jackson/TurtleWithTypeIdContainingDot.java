@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = TurtleWithTypeIdContainingDot.class)
 @JsonTypeName("#Favourite.Pet.TurtleWithTypeIdContainingDot")
 public class TurtleWithTypeIdContainingDot extends NonEmptyAnimalWithTypeIdContainingDot {
+
     @JsonProperty(value = "size")
     private Integer size;
 
@@ -24,5 +25,5 @@ public class TurtleWithTypeIdContainingDot extends NonEmptyAnimalWithTypeIdConta
         this.size = size;
         return this;
     }
-}
 
+}

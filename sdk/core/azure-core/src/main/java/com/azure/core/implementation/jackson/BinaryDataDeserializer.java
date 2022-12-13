@@ -14,10 +14,9 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import java.io.IOException;
 import java.io.Writer;
 
-/**
- * Custom deserializer for deserializing {@link BinaryData}.
- */
+/** Custom deserializer for deserializing {@link BinaryData}. */
 final class BinaryDataDeserializer extends JsonDeserializer<BinaryData> {
+
     /**
      * Gets a module wrapping this serializer as an adapter for the Jackson ObjectMapper.
      *
@@ -87,4 +86,5 @@ final class BinaryDataDeserializer extends JsonDeserializer<BinaryData> {
 
         return buffer.toString();
     }
+
 }

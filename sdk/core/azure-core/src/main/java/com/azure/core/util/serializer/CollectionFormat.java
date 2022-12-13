@@ -9,6 +9,7 @@ package com.azure.core.util.serializer;
  * https://github.com/swagger-api/swagger-spec/blob/master/versions/2.0.md#fixed-fields-7</a>.
  */
 public enum CollectionFormat {
+
     /**
      * Comma separated values. E.g. foo,bar
      */
@@ -53,4 +54,5 @@ public enum CollectionFormat {
     public String getDelimiter() {
         return delimiter;
     }
+
 }

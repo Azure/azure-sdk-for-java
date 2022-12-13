@@ -13,6 +13,7 @@ import java.nio.ByteBuffer;
  * emitting them downstream.
  */
 final class BufferedFluxByteBuffer extends Flux<ByteBuffer> {
+
     private final Flux<ByteBuffer> flux;
 
     /**
@@ -33,4 +34,5 @@ final class BufferedFluxByteBuffer extends Flux<ByteBuffer> {
     public void subscribe(CoreSubscriber<? super ByteBuffer> actual) {
         flux.subscribe(actual);
     }
+
 }

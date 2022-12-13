@@ -20,6 +20,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TokenCacheTests {
+
     private static final Random RANDOM = new Random();
 
     @Test
@@ -34,7 +35,8 @@ public class TokenCacheTests {
 
         CountDownLatch latch = new CountDownLatch(1);
 
-        Flux.range(1, 10).flatMap(ignored -> Mono.just(OffsetDateTime.now()))
+        Flux.range(1, 10)
+            .flatMap(ignored -> Mono.just(OffsetDateTime.now()))
             .parallel(10)
             // Runs cache.getToken() on 10 different threads
             .runOn(Schedulers.boundedElastic())
@@ -85,6 +87,7 @@ public class TokenCacheTests {
     }
 
     private static class Token extends AccessToken {
+
         Token(String token) {
             this(token, 5000);
         }
@@ -92,5 +95,7 @@ public class TokenCacheTests {
         Token(String token, long validityInMillis) {
             super(token, OffsetDateTime.now().plus(Duration.ofMillis(validityInMillis)));
         }
+
     }
+
 }

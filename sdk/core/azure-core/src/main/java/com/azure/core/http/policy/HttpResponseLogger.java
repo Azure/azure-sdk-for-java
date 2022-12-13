@@ -8,11 +8,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import reactor.core.publisher.Mono;
 
-/**
- * Manages logging HTTP responses in {@link HttpLoggingPolicy}.
- */
+/** Manages logging HTTP responses in {@link HttpLoggingPolicy}. */
 @FunctionalInterface
 public interface HttpResponseLogger {
+
     /**
      * Gets the {@link LogLevel} used to log the HTTP response.
      * <p>
@@ -47,4 +46,5 @@ public interface HttpResponseLogger {
     default HttpResponse logResponseSync(ClientLogger logger, HttpResponseLoggingContext loggingOptions) {
         return logResponse(logger, loggingOptions).block();
     }
+
 }

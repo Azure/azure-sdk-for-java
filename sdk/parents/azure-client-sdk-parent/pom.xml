@@ -545,6 +545,12 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>2.28.0</version>
+      </plugin>
     </plugins>
 
     <pluginManagement>
@@ -889,6 +895,38 @@
               <version>0.4.5</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
             </dependency>
           </dependencies>
+        </plugin>
+
+        <!-- This plugin formats source code. -->
+        <plugin>
+          <groupId>com.diffplug.spotless</groupId>
+          <artifactId>spotless-maven-plugin</artifactId>
+          <version>2.28.0</version>
+          <configuration>
+            <java>
+              <eclipse>
+                <version>4.21.0</version>
+                <file>${relative.path.to.eng.folder}/.vscode/eclipse-format-azure-sdk-for-java.xml</file>
+              </eclipse>
+              <removeUnusedImports/>
+            </java>
+          </configuration>
+          <executions>
+            <execution>
+              <id>spotless-apply</id>
+              <goals>
+                <goal>apply</goal>
+              </goals>
+              <phase>validate</phase>
+            </execution>
+            <execution>
+              <id>spotless-check</id>
+              <goals>
+                <goal>check</goal>
+              </goals>
+              <phase>verify</phase>
+            </execution>
+          </executions>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -1548,27 +1586,27 @@
     <!-- Used when Reactor had milestone releases to the Spring Milestone repository. -->
     <!-- If Reactor milestones are needed again in the future, and they're being released -->
     <!-- to the Spring Milestone repository uncomment the XML below. -->
-<!--    <profile>-->
-<!--      <id>external-dependency-version-overrides</id>-->
-<!--      <activation>-->
-<!--        <property>-->
-<!--          <name>env.AZURE_VERSION_OVERRIDE_TESTS</name>-->
-<!--        </property>-->
-<!--      </activation>-->
-<!--      <repositories>-->
-<!--        <repository>-->
-<!--          <id>repository.spring.milestone</id>-->
-<!--          <name>Spring Milestone Repository</name>-->
-<!--          <url>https://repo.spring.io/milestone</url>-->
-<!--          <releases>-->
-<!--            <enabled>true</enabled>-->
-<!--          </releases>-->
-<!--          <snapshots>-->
-<!--            <enabled>true</enabled>-->
-<!--          </snapshots>-->
-<!--        </repository>-->
-<!--      </repositories>-->
-<!--    </profile>-->
+    <!--    <profile>-->
+    <!--      <id>external-dependency-version-overrides</id>-->
+    <!--      <activation>-->
+    <!--        <property>-->
+    <!--          <name>env.AZURE_VERSION_OVERRIDE_TESTS</name>-->
+    <!--        </property>-->
+    <!--      </activation>-->
+    <!--      <repositories>-->
+    <!--        <repository>-->
+    <!--          <id>repository.spring.milestone</id>-->
+    <!--          <name>Spring Milestone Repository</name>-->
+    <!--          <url>https://repo.spring.io/milestone</url>-->
+    <!--          <releases>-->
+    <!--            <enabled>true</enabled>-->
+    <!--          </releases>-->
+    <!--          <snapshots>-->
+    <!--            <enabled>true</enabled>-->
+    <!--          </snapshots>-->
+    <!--        </repository>-->
+    <!--      </repositories>-->
+    <!--    </profile>-->
 
     <profile>
       <id>test-module-base-compile</id>

@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Model used for testing {@link JsonFlatten}.
- */
+/** Model used for testing {@link JsonFlatten}. */
 @Fluent
 public final class VirtualMachineIdentity {
 
@@ -35,9 +33,9 @@ public final class VirtualMachineIdentity {
         return userAssignedIdentities;
     }
 
-    public VirtualMachineIdentity setUserAssignedIdentities(
-        Map<String, Object> userAssignedIdentities) {
+    public VirtualMachineIdentity setUserAssignedIdentities(Map<String, Object> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }
+
 }

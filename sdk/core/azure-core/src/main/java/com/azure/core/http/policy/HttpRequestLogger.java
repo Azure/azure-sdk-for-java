@@ -7,11 +7,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import reactor.core.publisher.Mono;
 
-/**
- * Manages logging HTTP requests in {@link HttpLoggingPolicy}.
- */
+/** Manages logging HTTP requests in {@link HttpLoggingPolicy}. */
 @FunctionalInterface
 public interface HttpRequestLogger {
+
     /**
      * Gets the {@link LogLevel} used to log the HTTP request.
      * <p>
@@ -45,4 +44,5 @@ public interface HttpRequestLogger {
     default void logRequestSync(ClientLogger logger, HttpRequestLoggingContext loggingOptions) {
         logRequest(logger, loggingOptions).block();
     }
+
 }

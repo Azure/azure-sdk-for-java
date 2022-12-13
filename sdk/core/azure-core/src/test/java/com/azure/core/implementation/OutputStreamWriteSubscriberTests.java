@@ -16,18 +16,19 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * Tests {@link OutputStreamWriteSubscriber}.
- */
+/** Tests {@link OutputStreamWriteSubscriber}. */
 public class OutputStreamWriteSubscriberTests {
+
     private static final ClientLogger LOGGER = new ClientLogger(OutputStreamWriteSubscriberTests.class);
 
     @Test
     public void multipleSubscriptionsCancelsLaterSubscriptions() {
         OutputStream stream = new MockOutputStream() {
+
             @Override
             public void write(byte[] b, int off, int len) {
             }
+
         };
 
         OutputStreamWriteSubscriber subscriber = new OutputStreamWriteSubscriber(null, stream, LOGGER);
@@ -51,10 +52,12 @@ public class OutputStreamWriteSubscriberTests {
 
         AtomicReference<Throwable> error = new AtomicReference<>();
         MonoSink<Void> sink = new MockMonoSink<Void>() {
+
             @Override
             public void error(Throwable e) {
                 error.set(e);
             }
+
         };
 
         OutputStreamWriteSubscriber subscriber = new OutputStreamWriteSubscriber(sink, stream, LOGGER);
@@ -69,6 +72,7 @@ public class OutputStreamWriteSubscriberTests {
     }
 
     private static final class CountingSubscription implements Subscription {
+
         private final AtomicInteger requestOneCalls = new AtomicInteger();
         private final AtomicInteger cancelCalls = new AtomicInteger();
 
@@ -83,5 +87,7 @@ public class OutputStreamWriteSubscriberTests {
         public void cancel() {
             cancelCalls.incrementAndGet();
         }
+
     }
+
 }

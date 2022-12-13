@@ -11,10 +11,9 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.io.IOException;
 
-/**
- * Custom serializer for serializing {@code Byte[]} objects into Base64 strings.
- */
+/** Custom serializer for serializing {@code Byte[]} objects into Base64 strings. */
 final class Base64UrlSerializer extends JsonSerializer<Base64Url> {
+
     /**
      * Gets a module wrapping this serializer as an adapter for the Jackson
      * ObjectMapper.
@@ -31,4 +30,5 @@ final class Base64UrlSerializer extends JsonSerializer<Base64Url> {
     public void serialize(Base64Url value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         jgen.writeString(value.toString());
     }
+
 }

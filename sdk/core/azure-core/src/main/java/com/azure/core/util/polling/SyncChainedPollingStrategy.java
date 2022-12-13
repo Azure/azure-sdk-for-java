@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * A synchronous polling strategy that chains multiple synchronous polling strategies, finds the first strategy that can
+ * A synchronous polling strategy that chains multiple synchronous polling strategies, finds the first strategy that
+ * can
  * poll the current long-running operation, and polls with that strategy.
  *
  * @param <T> the type of the response type from a polling call, or BinaryData if raw response body should be kept
@@ -20,6 +21,7 @@ import java.util.Objects;
  * kept
  */
 public final class SyncChainedPollingStrategy<T, U> implements SyncPollingStrategy<T, U> {
+
     private static final ClientLogger LOGGER = new ClientLogger(SyncChainedPollingStrategy.class);
 
     private final List<SyncPollingStrategy<T, U>> pollingStrategies;
@@ -70,8 +72,8 @@ public final class SyncChainedPollingStrategy<T, U> implements SyncPollingStrate
      * @throws NullPointerException if {@link #canPoll(Response)} is not called prior to this, or if it returns false.
      */
     @Override
-    public PollResponse<T> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
-        TypeReference<T> pollResponseType) {
+    public PollResponse<T>
+        onInitialResponse(Response<?> response, PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
         return pollableStrategy.onInitialResponse(response, pollingContext, pollResponseType);
     }
 
@@ -94,4 +96,5 @@ public final class SyncChainedPollingStrategy<T, U> implements SyncPollingStrate
     public T cancel(PollingContext<T> pollingContext, PollResponse<T> initialResponse) {
         return pollableStrategy.cancel(pollingContext, initialResponse);
     }
+
 }

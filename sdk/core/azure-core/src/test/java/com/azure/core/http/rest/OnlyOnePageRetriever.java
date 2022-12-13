@@ -9,6 +9,7 @@ import reactor.core.publisher.Flux;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class OnlyOnePageRetriever implements PageRetriever<Integer, OnlyOneContinuablePage> {
+
     private final AtomicInteger getCount = new AtomicInteger();
 
     private final int pageCount;
@@ -33,4 +34,5 @@ public class OnlyOnePageRetriever implements PageRetriever<Integer, OnlyOneConti
     public int getGetCount() {
         return getCount.get();
     }
+
 }

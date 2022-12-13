@@ -12,10 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Utility type exposing methods to deal with {@link Type}.
- */
+/** Utility type exposing methods to deal with {@link Type}. */
 public final class TypeUtil {
+
     private static final Map<Type, Type> SUPER_TYPE_MAP = new ConcurrentHashMap<>();
 
     /**
@@ -104,8 +103,10 @@ public final class TypeUtil {
                             }
                         }
                     }
-                    return createParameterizedType(((ParameterizedType) genericSuperClass).getRawType(),
-                        superTypeArguments);
+                    return createParameterizedType(
+                        ((ParameterizedType) genericSuperClass).getRawType(),
+                        superTypeArguments
+                    );
                 } else {
                     return genericSuperClass;
                 }
@@ -169,6 +170,7 @@ public final class TypeUtil {
      */
     public static ParameterizedType createParameterizedType(Type rawClass, Type... genericTypes) {
         return new ParameterizedType() {
+
             @Override
             public Type[] getActualTypeArguments() {
                 return genericTypes;
@@ -183,6 +185,7 @@ public final class TypeUtil {
             public Type getOwnerType() {
                 return null;
             }
+
         };
     }
 
@@ -217,4 +220,5 @@ public final class TypeUtil {
     // Private Ctr
     private TypeUtil() {
     }
+
 }

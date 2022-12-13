@@ -5,15 +5,15 @@ package com.azure.core.util;
 
 import com.azure.core.http.ProxyOptions;
 
-/**
- * Metrics configuration options for clients.
- */
+/** Metrics configuration options for clients. */
 public class MetricsOptions {
-    private static final ConfigurationProperty<Boolean> IS_DISABLED_PROPERTY = ConfigurationPropertyBuilder.ofBoolean("metrics.disabled")
-        .environmentVariableName(Configuration.PROPERTY_AZURE_METRICS_DISABLED)
-        .shared(true)
-        .defaultValue(false)
-        .build();
+
+    private static final ConfigurationProperty<Boolean> IS_DISABLED_PROPERTY =
+        ConfigurationPropertyBuilder.ofBoolean("metrics.disabled")
+            .environmentVariableName(Configuration.PROPERTY_AZURE_METRICS_DISABLED)
+            .shared(true)
+            .defaultValue(false)
+            .build();
 
     private boolean isEnabled;
 
@@ -23,6 +23,7 @@ public class MetricsOptions {
     public MetricsOptions() {
         isEnabled = !Configuration.getGlobalConfiguration().get(IS_DISABLED_PROPERTY);
     }
+
     /**
      * Attempts to load metrics options from the configuration.
      *
@@ -43,6 +44,7 @@ public class MetricsOptions {
 
     /**
      * Flag indicating if metrics should be enabled.
+     * 
      * @return {@code true} if metrics are enabled, {@code false} otherwise.
      */
     public boolean isEnabled() {
@@ -59,4 +61,5 @@ public class MetricsOptions {
         this.isEnabled = enabled;
         return this;
     }
+
 }

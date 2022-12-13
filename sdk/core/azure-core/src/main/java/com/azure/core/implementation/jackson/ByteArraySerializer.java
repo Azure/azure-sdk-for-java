@@ -10,10 +10,9 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.io.IOException;
 
-/**
- * Custom serializer for serializing {@code Byte[]} objects into Base64 strings.
- */
+/** Custom serializer for serializing {@code Byte[]} objects into Base64 strings. */
 final class ByteArraySerializer extends JsonSerializer<Byte[]> {
+
     /**
      * Gets a module wrapping this serializer as an adapter for the Jackson ObjectMapper.
      *
@@ -33,4 +32,5 @@ final class ByteArraySerializer extends JsonSerializer<Byte[]> {
         }
         jgen.writeBinary(bytes);
     }
+
 }

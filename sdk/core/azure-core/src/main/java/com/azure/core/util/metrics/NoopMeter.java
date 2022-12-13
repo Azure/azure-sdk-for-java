@@ -9,12 +9,12 @@ import com.azure.core.util.TelemetryAttributes;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * {@inheritDoc}
- */
+/** {@inheritDoc} */
 final class NoopMeter implements Meter {
+
     public static final Meter INSTANCE = new NoopMeter();
     private static final DoubleHistogram NOOP_LONG_HISTOGRAM = new DoubleHistogram() {
+
         @Override
         public void record(double value, TelemetryAttributes attributes, Context context) {
         }
@@ -23,9 +23,11 @@ final class NoopMeter implements Meter {
         public boolean isEnabled() {
             return false;
         }
+
     };
 
     private static final LongCounter NOOP_LONG_COUNTER = new LongCounter() {
+
         @Override
         public void add(long value, TelemetryAttributes attributes, Context context) {
         }
@@ -34,6 +36,7 @@ final class NoopMeter implements Meter {
         public boolean isEnabled() {
             return false;
         }
+
     };
 
     private static final TelemetryAttributes NOOP_ATTRIBUTES = new TelemetryAttributes() {
@@ -97,4 +100,5 @@ final class NoopMeter implements Meter {
     @Override
     public void close() {
     }
+
 }

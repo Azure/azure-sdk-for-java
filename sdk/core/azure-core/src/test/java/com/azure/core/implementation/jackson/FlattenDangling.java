@@ -6,10 +6,9 @@ package com.azure.core.implementation.jackson;
 import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Class for testing serialization.
- */
+/** Class for testing serialization. */
 public class FlattenDangling {
+
     @JsonProperty("a.flattened.property")
     @JsonFlatten
     private String flattenedProperty;
@@ -22,4 +21,5 @@ public class FlattenDangling {
         this.flattenedProperty = flattenedProperty;
         return this;
     }
+
 }

@@ -24,9 +24,13 @@ import static com.azure.core.implementation.logging.LoggingUtils.removeThrowable
  * This class provides fluent API to write logs using {@link ClientLogger} and
  * enrich them with additional context.
  *
- * <p><strong>Code samples</strong></p>
+ * <p>
+ * <strong>Code samples</strong>
+ * </p>
  *
- * <p>Logging event with context.</p>
+ * <p>
+ * Logging event with context.
+ * </p>
  *
  * <!-- src_embed com.azure.core.util.logging.loggingeventbuilder -->
  * <pre>
@@ -40,6 +44,7 @@ import static com.azure.core.implementation.logging.LoggingUtils.removeThrowable
  */
 @Fluent
 public final class LoggingEventBuilder {
+
     private static final JsonStringEncoder JSON_STRING_ENCODER = JsonStringEncoder.getInstance();
     private static final LoggingEventBuilder NOOP = new LoggingEventBuilder(null, null, null, false);
     private static final String AZURE_SDK_LOG_MESSAGE_KEY = "az.sdk.message";
@@ -54,10 +59,11 @@ public final class LoggingEventBuilder {
     private final boolean isEnabled;
 
     /**
-     * Creates {@code LoggingEventBuilder} for provided level and  {@link ClientLogger}.
+     * Creates {@code LoggingEventBuilder} for provided level and {@link ClientLogger}.
      * If level is disabled, returns no-op instance.
      */
-    static LoggingEventBuilder create(Logger logger, LogLevel level, String globalContextSerialized, boolean canLogAtLevel) {
+    static LoggingEventBuilder
+        create(Logger logger, LogLevel level, String globalContextSerialized, boolean canLogAtLevel) {
         if (canLogAtLevel) {
             return new LoggingEventBuilder(logger, level, globalContextSerialized, true);
         }
@@ -77,9 +83,13 @@ public final class LoggingEventBuilder {
     /**
      * Adds key with String value pair to the context of current log being created.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Adding string value to logging event context.</p>
+     * <p>
+     * Adding string value to logging event context.
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.atInfo -->
      * <pre>
@@ -106,9 +116,13 @@ public final class LoggingEventBuilder {
      * If logging is enabled at given level, and object is not null, uses {@code value.toString()} to
      * serialize object.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Adding string value to logging event context.</p>
+     * <p>
+     * Adding string value to logging event context.
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#object -->
      * <pre>
@@ -148,9 +162,13 @@ public final class LoggingEventBuilder {
     /**
      * Adds key with long value to the context of current log event being created.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Adding an integer value to logging event context.</p>
+     * <p>
+     * Adding an integer value to logging event context.
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
      * <pre>
@@ -278,7 +296,8 @@ public final class LoggingEventBuilder {
             message = "";
         }
 
-        StringBuilder sb = new StringBuilder(20 + context.size() * 20 + message.length() + globalContextCached.length());
+        StringBuilder sb =
+            new StringBuilder(20 + context.size() * 20 + message.length() + globalContextCached.length());
         sb.append("{\"")
             // message must be first for log parsing tooling to work, key also works as a
             // marker for Azure SDK logs so we'll write it even if there is no message
@@ -305,8 +324,7 @@ public final class LoggingEventBuilder {
         }
 
         for (int i = 0; i < context.size(); i++) {
-            context.get(i)
-                .write(sb.append(","));
+            context.get(i).write(sb.append(","));
         }
 
         sb.append("}");
@@ -325,6 +343,7 @@ public final class LoggingEventBuilder {
      * Performs the logging.
      *
      * @param format format-able message.
+     * 
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     private void performLogging(LogLevel logLevel, String format, Object... args) {
@@ -390,8 +409,7 @@ public final class LoggingEventBuilder {
         }
 
         // remove trailing comma just in case
-        return formatter.deleteCharAt(formatter.length() - 1)
-            .toString();
+        return formatter.deleteCharAt(formatter.length() - 1).toString();
     }
 
     private static StringBuilder writeKeyAndValue(String key, Object value, StringBuilder formatter) {
@@ -414,7 +432,7 @@ public final class LoggingEventBuilder {
     }
 
     /**
-     *  Returns true if the value is an instance of a primitive type and false otherwise.
+     * Returns true if the value is an instance of a primitive type and false otherwise.
      */
     private static boolean isPrimitive(Object value) {
         // most of the time values are strings
@@ -422,12 +440,14 @@ public final class LoggingEventBuilder {
             return false;
         }
 
-        if (value instanceof Boolean
-            || value instanceof Integer
-            || value instanceof Long
-            || value instanceof Byte
-            || value instanceof Double
-            || value instanceof Float) {
+        if (
+            value instanceof Boolean
+                || value instanceof Integer
+                || value instanceof Long
+                || value instanceof Byte
+                || value instanceof Double
+                || value instanceof Float
+        ) {
             return true;
         }
 
@@ -435,6 +455,7 @@ public final class LoggingEventBuilder {
     }
 
     private static final class ContextKeyValuePair {
+
         private final String key;
         private final Object value;
         private final Supplier<String> valueSupplier;
@@ -461,5 +482,7 @@ public final class LoggingEventBuilder {
 
             return writeKeyAndValue(key, valueSupplier.get(), formatter);
         }
+
     }
+
 }

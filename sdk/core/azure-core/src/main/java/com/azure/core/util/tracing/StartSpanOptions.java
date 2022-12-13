@@ -8,11 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * Represents span options that are available before span starts and describe it.
- */
+/** Represents span options that are available before span starts and describe it. */
 @Fluent
 public final class StartSpanOptions {
+
     private final SpanKind spanKind;
     private Map<String, Object> spanAttributes;
 
@@ -33,12 +32,12 @@ public final class StartSpanOptions {
      * @param key attribute key.
      * @param value attribute value. Note that underlying tracer implementations limit supported value types:
      * <ul>
-     *     <li>{@link String}</li>
-     *     <li>{@code int}</li>
-     *     <li>{@code double}</li>
-     *     <li>{@code boolean}</li>
-     *     <li>{@code long}</li>
-     *     <li>Arrays of the above</li>
+     * <li>{@link String}</li>
+     * <li>{@code int}</li>
+     * <li>{@code double}</li>
+     * <li>{@code boolean}</li>
+     * <li>{@code long}</li>
+     * <li>Arrays of the above</li>
      * </ul>
      * @return this instance for chaining.
      */
@@ -68,4 +67,5 @@ public final class StartSpanOptions {
     public Map<String, Object> getAttributes() {
         return this.spanAttributes;
     }
+
 }

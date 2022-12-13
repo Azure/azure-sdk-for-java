@@ -37,6 +37,7 @@ import com.azure.core.util.serializer.TypeReference;
  * body should be kept
  */
 public interface SyncPollingStrategy<T, U> {
+
     /**
      * Checks if this strategy is able to handle polling for this long-running operation based on the information in the
      * initial response.
@@ -58,8 +59,8 @@ public interface SyncPollingStrategy<T, U> {
      * response body should be kept. This should match the generic parameter {@link U}.
      * @return the poll response containing the status and the response content
      */
-    PollResponse<T> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
-        TypeReference<T> pollResponseType);
+    PollResponse<T>
+        onInitialResponse(Response<?> response, PollingContext<T> pollingContext, TypeReference<T> pollResponseType);
 
     /**
      * Parses the response from the polling URL into a {@link PollResponse}, and stores information useful for further
@@ -99,4 +100,5 @@ public interface SyncPollingStrategy<T, U> {
     default T cancel(PollingContext<T> pollingContext, PollResponse<T> initialResponse) {
         throw new IllegalStateException("Cancellation is not supported.");
     }
+
 }

@@ -11,10 +11,9 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.io.IOException;
 
-/**
- * Custom serializer for serializing {@code HttpHeaders} objects into Base64 strings.
- */
+/** Custom serializer for serializing {@code HttpHeaders} objects into Base64 strings. */
 final class HttpHeadersSerializer extends JsonSerializer<HttpHeaders> {
+
     /**
      * Gets a module wrapping this serializer as an adapter for the Jackson
      * ObjectMapper.
@@ -31,4 +30,5 @@ final class HttpHeadersSerializer extends JsonSerializer<HttpHeaders> {
     public void serialize(HttpHeaders value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         jgen.writeObject(value.toMap());
     }
+
 }

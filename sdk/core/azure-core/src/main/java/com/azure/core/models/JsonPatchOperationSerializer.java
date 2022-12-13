@@ -11,10 +11,9 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.io.IOException;
 
-/**
- * Handles serialization of a {@link JsonPatchOperation}.
- */
+/** Handles serialization of a {@link JsonPatchOperation}. */
 final class JsonPatchOperationSerializer extends JsonSerializer<JsonPatchOperation> {
+
     private static final SimpleModule MODULE;
 
     static {
@@ -57,4 +56,5 @@ final class JsonPatchOperationSerializer extends JsonSerializer<JsonPatchOperati
 
         gen.writeEndObject();
     }
+
 }

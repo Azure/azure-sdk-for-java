@@ -14,10 +14,14 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LoggingUtilsTests {
+
     private static final String NEW_LINE = System.lineSeparator();
+
     @ParameterizedTest
     @NullAndEmptySource
-    @ValueSource(strings = {"hello", "hello world\t123"})
+    @ValueSource(strings = {
+        "hello", "hello world\t123"
+    })
     public void noNewLine(String message) {
         assertEquals(message, LoggingUtils.removeNewLinesFromLogMessage(message));
     }
@@ -43,6 +47,8 @@ public class LoggingUtilsTests {
             "hello" + NEW_LINE + NEW_LINE,
             NEW_LINE + "hello" + NEW_LINE,
             NEW_LINE + NEW_LINE + "hello",
-            NEW_LINE + "he" + NEW_LINE + "l" + NEW_LINE + "lo");
+            NEW_LINE + "he" + NEW_LINE + "l" + NEW_LINE + "lo"
+        );
     }
+
 }

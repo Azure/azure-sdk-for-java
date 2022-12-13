@@ -13,6 +13,7 @@ import java.time.Duration;
  * provided max delay duration.
  */
 public class ExponentialBackoffOptions {
+
     private static final ClientLogger LOGGER = new ClientLogger(ExponentialBackoffOptions.class);
 
     private Integer maxRetries;
@@ -108,4 +109,5 @@ public class ExponentialBackoffOptions {
                 .logExceptionAsError(new IllegalArgumentException("'baseDelay' cannot be greater than 'maxDelay'."));
         }
     }
+
 }

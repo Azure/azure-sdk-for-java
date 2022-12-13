@@ -14,10 +14,9 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
-/**
- * Custom serializer for serializing {@link OffsetDateTime} object into ISO8601 formats.
- */
+/** Custom serializer for serializing {@link OffsetDateTime} object into ISO8601 formats. */
 final class DateTimeSerializer extends JsonSerializer<OffsetDateTime> {
+
     private static final SimpleModule MODULE;
 
     static {
@@ -59,4 +58,5 @@ final class DateTimeSerializer extends JsonSerializer<OffsetDateTime> {
         }
         return result;
     }
+
 }

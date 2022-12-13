@@ -11,10 +11,9 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import java.io.IOException;
 import java.time.Duration;
 
-/**
- * Custom serializer for serializing {@link Duration} object into ISO8601 formats.
- */
+/** Custom serializer for serializing {@link Duration} object into ISO8601 formats. */
 final class DurationSerializer extends JsonSerializer<Duration> {
+
     /**
      * Gets a module wrapping this serializer as an adapter for the Jackson
      * ObjectMapper.
@@ -35,6 +34,7 @@ final class DurationSerializer extends JsonSerializer<Duration> {
 
     /**
      * Convert to provided Duration to an ISO 8601 String with a days component.
+     * 
      * @param duration The Duration to convert.
      * @return The String representation of the provided Duration.
      */
@@ -120,4 +120,5 @@ final class DurationSerializer extends JsonSerializer<Duration> {
         }
         return result;
     }
+
 }

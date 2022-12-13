@@ -8,9 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-/**
- * This class represents the error details of an HTTP response.
- */
+/** This class represents the error details of an HTTP response. */
 public final class ResponseError {
 
     @JsonProperty(value = "code", required = true)
@@ -35,8 +33,10 @@ public final class ResponseError {
      * @param message the error message of this error.
      */
     @JsonCreator
-    public ResponseError(@JsonProperty(value = "code", required = true)String code,
-                         @JsonProperty(value = "message", required = true)String message) {
+    public ResponseError(
+        @JsonProperty(value = "code", required = true) String code,
+        @JsonProperty(value = "message", required = true) String message
+    ) {
         this.code = code;
         this.message = message;
     }
@@ -90,6 +90,7 @@ public final class ResponseError {
 
     /**
      * Sets the inner error information for this error.
+     * 
      * @param innerError the inner error for this error.
      * @return the updated {@link ResponseError} instance.
      */
@@ -117,4 +118,5 @@ public final class ResponseError {
         this.errorDetails = errorDetails;
         return this;
     }
+
 }

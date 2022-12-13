@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 class ResponseConstructorsNoCacheReflection {
+
     private final ClientLogger logger = new ClientLogger(ResponseConstructorsCacheLambdaMetaFactory.class);
 
     Constructor<? extends Response<?>> get(Class<? extends Response<?>> responseClass) {
@@ -42,9 +43,11 @@ class ResponseConstructorsNoCacheReflection {
         return null;
     }
 
-    Mono<Response<?>> invoke(final Constructor<? extends Response<?>> constructor,
+    Mono<Response<?>> invoke(
+        final Constructor<? extends Response<?>> constructor,
         final HttpResponseDecoder.HttpDecodedResponse decodedResponse,
-        final Object bodyAsObject) {
+        final Object bodyAsObject
+    ) {
         final HttpResponse httpResponse = decodedResponse.getSourceResponse();
         final HttpRequest httpRequest = httpResponse.getRequest();
         final int responseStatusCode = httpResponse.getStatusCode();
@@ -57,20 +60,28 @@ class ResponseConstructorsNoCacheReflection {
             case 4:
                 return constructResponse(constructor, httpRequest, responseStatusCode, responseHeaders, bodyAsObject);
             case 5:
-                return constructResponse(constructor, httpRequest, responseStatusCode, responseHeaders, bodyAsObject,
-                    decodedResponse.getDecodedHeaders());
+                return constructResponse(
+                    constructor,
+                    httpRequest,
+                    responseStatusCode,
+                    responseHeaders,
+                    bodyAsObject,
+                    decodedResponse.getDecodedHeaders()
+                );
             default:
                 throw logger.logExceptionAsError(
-                    new IllegalStateException("Response constructor with expected parameters not found."));
+                    new IllegalStateException("Response constructor with expected parameters not found.")
+                );
         }
     }
 
-    private static Mono<Response<?>> constructResponse(Constructor<? extends Response<?>> constructor,
-        Object... params) {
+    private static Mono<Response<?>>
+        constructResponse(Constructor<? extends Response<?>> constructor, Object... params) {
         try {
             return Mono.just(constructor.newInstance(params));
         } catch (IllegalAccessException | InvocationTargetException | InstantiationException ex) {
             throw Exceptions.propagate(ex);
         }
     }
+
 }

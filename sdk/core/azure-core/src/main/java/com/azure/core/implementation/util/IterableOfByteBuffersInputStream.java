@@ -9,9 +9,7 @@ import java.nio.ByteBuffer;
 import java.util.Iterator;
 import java.util.Objects;
 
-/**
- * An {@link InputStream} implementation that is based on {@link Iterator} of {@link java.nio.ByteBuffer}.
- */
+/** An {@link InputStream} implementation that is based on {@link Iterator} of {@link java.nio.ByteBuffer}. */
 public class IterableOfByteBuffersInputStream extends InputStream {
 
     private final Iterator<ByteBuffer> buffers;
@@ -77,4 +75,5 @@ public class IterableOfByteBuffersInputStream extends InputStream {
             return null;
         }
     }
+
 }

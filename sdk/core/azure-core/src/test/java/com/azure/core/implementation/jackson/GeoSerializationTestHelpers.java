@@ -24,10 +24,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * Test helpers for {@link GeoJsonDeserializerTests} and {@link GeoJsonSerializerTests}.
- */
+/** Test helpers for {@link GeoJsonDeserializerTests} and {@link GeoJsonSerializerTests}. */
 public class GeoSerializationTestHelpers {
+
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     static String geoToJson(GeoObject geoObject) {
@@ -180,10 +179,7 @@ public class GeoSerializationTestHelpers {
     }
 
     private static void addPosition(GeoPosition position, StringBuilder builder) {
-        builder.append("[")
-            .append(position.getLongitude())
-            .append(",")
-            .append(position.getLatitude());
+        builder.append("[").append(position.getLongitude()).append(",").append(position.getLatitude());
 
         Double altitude = position.getAltitude();
         if (altitude != null) {
@@ -242,9 +238,7 @@ public class GeoSerializationTestHelpers {
             builder.append(minAltitude).append(",");
         }
 
-        builder.append(boundingBox.getEast())
-            .append(",")
-            .append(boundingBox.getNorth());
+        builder.append(boundingBox.getEast()).append(",").append(boundingBox.getNorth());
 
         Double maxAltitude = boundingBox.getMaxAltitude();
         if (maxAltitude != null) {
@@ -274,4 +268,5 @@ public class GeoSerializationTestHelpers {
             throw new RuntimeException(ex);
         }
     }
+
 }

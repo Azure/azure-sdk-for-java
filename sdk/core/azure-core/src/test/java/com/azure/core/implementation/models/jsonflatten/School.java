@@ -8,12 +8,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
 
-/**
- * Model used for testing {@link JsonFlatten}.
- */
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
+/** Model used for testing {@link JsonFlatten}. */
+@SuppressWarnings({
+    "unused", "FieldCanBeLocal"
+})
 @JsonFlatten
 public class School {
+
     @JsonProperty(value = "teacher")
     private Teacher teacher;
 
@@ -37,4 +38,5 @@ public class School {
         this.tags = tags;
         return this;
     }
+
 }

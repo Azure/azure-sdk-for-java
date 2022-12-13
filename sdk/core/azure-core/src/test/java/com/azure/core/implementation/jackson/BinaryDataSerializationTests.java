@@ -31,18 +31,16 @@ import static java.util.Collections.singletonMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BinaryDataSerializationTests {
+
     private static final SerializerAdapter ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
     private static final byte[] HELLO_BYTES = "hello".getBytes(StandardCharsets.UTF_8);
     private static final String BASE64_HELLO_BYTES = Base64.getEncoder().encodeToString(HELLO_BYTES);
-    private static final SimplePojo SIMPLE_POJO = new SimplePojo()
-        .setString("hello")
-        .setNumber(3.14)
-        .setBool(true);
+    private static final SimplePojo SIMPLE_POJO = new SimplePojo().setString("hello").setNumber(3.14).setBool(true);
 
     private static final BinaryData FROM_BYTES = BinaryData.fromBytes(HELLO_BYTES);
-    private static final Supplier<BinaryData> FROM_STREAM
-        = () -> BinaryData.fromStream(new ByteArrayInputStream(HELLO_BYTES));
+    private static final Supplier<BinaryData> FROM_STREAM =
+        () -> BinaryData.fromStream(new ByteArrayInputStream(HELLO_BYTES));
     private static final BinaryData FROM_STRING = BinaryData.fromString("hello");
     private static final BinaryData FROM_OBJECT = BinaryData.fromObject(SIMPLE_POJO);
     private static final BinaryData FROM_STRING_BASE64 = BinaryData.fromString(BASE64_HELLO_BYTES);
@@ -52,72 +50,78 @@ public class BinaryDataSerializationTests {
     private static final String SIMPLE_PROPERTY_BYTES_JSON = "{\"simpleProperty\":\"" + BASE64_HELLO_BYTES + "\"}";
     private static final String SIMPLE_PROPERTY_STREAM_JSON = "{\"simpleProperty\":\"" + BASE64_HELLO_BYTES + "\"}";
     private static final String SIMPLE_PROPERTY_STRING_JSON = "{\"simpleProperty\":\"hello\"}";
-    private static final String SIMPLE_PROPERTY_OBJECT_JSON
-        = "{\"simpleProperty\":{\"string\":\"hello\",\"number\":3.14,\"boolean\":true}}";
+    private static final String SIMPLE_PROPERTY_OBJECT_JSON =
+        "{\"simpleProperty\":{\"string\":\"hello\",\"number\":3.14,\"boolean\":true}}";
 
     private static final SimpleProperty SIMPLE_PROPERTY_NULL = new SimpleProperty();
-    private static final SimpleProperty SIMPLE_PROPERTY_FROM_BYTES = new SimpleProperty()
-        .setSimpleProperty(FROM_BYTES);
-    private static final SimpleProperty SIMPLE_PROPERTY_FROM_STREAM = new SimpleProperty()
-        .setSimpleProperty(FROM_STREAM.get());
-    private static final SimpleProperty SIMPLE_PROPERTY_FROM_STRING = new SimpleProperty()
-        .setSimpleProperty(FROM_STRING);
-    private static final SimpleProperty SIMPLE_PROPERTY_FROM_OBJECT = new SimpleProperty()
-        .setSimpleProperty(FROM_OBJECT);
-    private static final SimpleProperty SIMPLE_PROPERTY_BASE64 = new SimpleProperty()
-        .setSimpleProperty(FROM_STRING_BASE64);
+    private static final SimpleProperty SIMPLE_PROPERTY_FROM_BYTES = new SimpleProperty().setSimpleProperty(FROM_BYTES);
+    private static final SimpleProperty SIMPLE_PROPERTY_FROM_STREAM =
+        new SimpleProperty().setSimpleProperty(FROM_STREAM.get());
+    private static final SimpleProperty SIMPLE_PROPERTY_FROM_STRING =
+        new SimpleProperty().setSimpleProperty(FROM_STRING);
+    private static final SimpleProperty SIMPLE_PROPERTY_FROM_OBJECT =
+        new SimpleProperty().setSimpleProperty(FROM_OBJECT);
+    private static final SimpleProperty SIMPLE_PROPERTY_BASE64 =
+        new SimpleProperty().setSimpleProperty(FROM_STRING_BASE64);
 
     private static final String LIST_PROPERTY_BYTES_JSON = "{\"listProperty\":[\"" + BASE64_HELLO_BYTES + "\"]}";
     private static final String LIST_PROPERTY_STREAM_JSON = "{\"listProperty\":[\"" + BASE64_HELLO_BYTES + "\"]}";
     private static final String LIST_PROPERTY_STRING_JSON = "{\"listProperty\":[\"hello\"]}";
-    private static final String LIST_PROPERTY_OBJECT_JSON
-        = "{\"listProperty\":[{\"string\":\"hello\",\"number\":3.14,\"boolean\":true}]}";
-    private static final String LIST_PROPERTY_MULTI_JSON
-        = "{\"listProperty\":[\"" + BASE64_HELLO_BYTES + "\",\"" + BASE64_HELLO_BYTES + "\",\"hello\","
+    private static final String LIST_PROPERTY_OBJECT_JSON =
+        "{\"listProperty\":[{\"string\":\"hello\",\"number\":3.14,\"boolean\":true}]}";
+    private static final String LIST_PROPERTY_MULTI_JSON = "{\"listProperty\":[\""
+        + BASE64_HELLO_BYTES
+        + "\",\""
+        + BASE64_HELLO_BYTES
+        + "\",\"hello\","
         + "{\"string\":\"hello\",\"number\":3.14,\"boolean\":true}]}";
 
     private static final ListProperty LIST_PROPERTY_NULL = new ListProperty();
-    private static final ListProperty LIST_PROPERTY_FROM_BYTES = new ListProperty()
-        .setListProperty(singletonList(FROM_BYTES));
-    private static final ListProperty LIST_PROPERTY_FROM_STREAM = new ListProperty()
-        .setListProperty(singletonList(FROM_STREAM.get()));
-    private static final ListProperty LIST_PROPERTY_FROM_STRING = new ListProperty()
-        .setListProperty(singletonList(FROM_STRING));
-    private static final ListProperty LIST_PROPERTY_FROM_OBJECT = new ListProperty()
-        .setListProperty(singletonList(FROM_OBJECT));
-    private static final ListProperty LIST_PROPERTY_MULTIPLE = new ListProperty()
-        .setListProperty(Arrays.asList(FROM_BYTES, FROM_STREAM.get(), FROM_STRING, FROM_OBJECT));
-    private static final ListProperty LIST_PROPERTY_BASE64 = new ListProperty()
-        .setListProperty(singletonList(FROM_STRING_BASE64));
+    private static final ListProperty LIST_PROPERTY_FROM_BYTES =
+        new ListProperty().setListProperty(singletonList(FROM_BYTES));
+    private static final ListProperty LIST_PROPERTY_FROM_STREAM =
+        new ListProperty().setListProperty(singletonList(FROM_STREAM.get()));
+    private static final ListProperty LIST_PROPERTY_FROM_STRING =
+        new ListProperty().setListProperty(singletonList(FROM_STRING));
+    private static final ListProperty LIST_PROPERTY_FROM_OBJECT =
+        new ListProperty().setListProperty(singletonList(FROM_OBJECT));
+    private static final ListProperty LIST_PROPERTY_MULTIPLE =
+        new ListProperty().setListProperty(Arrays.asList(FROM_BYTES, FROM_STREAM.get(), FROM_STRING, FROM_OBJECT));
+    private static final ListProperty LIST_PROPERTY_BASE64 =
+        new ListProperty().setListProperty(singletonList(FROM_STRING_BASE64));
     private static final ListProperty LIST_PROPERTY_BASE64_MULTIPLE = new ListProperty()
         .setListProperty(Arrays.asList(FROM_STRING_BASE64, FROM_STRING_BASE64, FROM_STRING, FROM_OBJECT));
 
     private static final String MAP_PROPERTY_BYTES_JSON = "{\"mapProperty\":{\"key\":\"" + BASE64_HELLO_BYTES + "\"}}";
     private static final String MAP_PROPERTY_STREAM_JSON = "{\"mapProperty\":{\"key\":\"" + BASE64_HELLO_BYTES + "\"}}";
     private static final String MAP_PROPERTY_STRING_JSON = "{\"mapProperty\":{\"key\":\"hello\"}}";
-    private static final String MAP_PROPERTY_OBJECT_JSON
-        = "{\"mapProperty\":{\"key\":{\"string\":\"hello\",\"number\":3.14,\"boolean\":true}}}";
+    private static final String MAP_PROPERTY_OBJECT_JSON =
+        "{\"mapProperty\":{\"key\":{\"string\":\"hello\",\"number\":3.14,\"boolean\":true}}}";
     private static final String MAP_PROPERTY_MULTI_JSON = "{\"mapProperty\":{"
-        + "\"fromBytes\":\"" + BASE64_HELLO_BYTES + "\","
-        + "\"fromStream\":\"" + BASE64_HELLO_BYTES + "\","
+        + "\"fromBytes\":\""
+        + BASE64_HELLO_BYTES
+        + "\","
+        + "\"fromStream\":\""
+        + BASE64_HELLO_BYTES
+        + "\","
         + "\"fromString\":\"hello\","
         + "\"fromObject\":{\"string\":\"hello\",\"number\":3.14,\"boolean\":true}}}";
 
     private static final MapProperty MAP_PROPERTY_NULL = new MapProperty();
-    private static final MapProperty MAP_PROPERTY_FROM_BYTES = new MapProperty()
-        .setMapProperty(singletonMap("key", FROM_BYTES));
-    private static final MapProperty MAP_PROPERTY_FROM_STREAM = new MapProperty()
-        .setMapProperty(singletonMap("key", FROM_STREAM.get()));
-    private static final MapProperty MAP_PROPERTY_FROM_STRING = new MapProperty()
-        .setMapProperty(singletonMap("key", FROM_STRING));
-    private static final MapProperty MAP_PROPERTY_FROM_OBJECT = new MapProperty()
-        .setMapProperty(singletonMap("key", FROM_OBJECT));
-    private static final MapProperty MAP_PROPERTY_MULTIPLE = new MapProperty()
-        .setMapProperty(createMapPropertyMultiMap(false));
-    private static final MapProperty MAP_PROPERTY_BASE64 = new MapProperty()
-        .setMapProperty(singletonMap("key", FROM_STRING_BASE64));
-    private static final MapProperty MAP_PROPERTY_BASE64_MULTIPLE = new MapProperty()
-        .setMapProperty(createMapPropertyMultiMap(true));
+    private static final MapProperty MAP_PROPERTY_FROM_BYTES =
+        new MapProperty().setMapProperty(singletonMap("key", FROM_BYTES));
+    private static final MapProperty MAP_PROPERTY_FROM_STREAM =
+        new MapProperty().setMapProperty(singletonMap("key", FROM_STREAM.get()));
+    private static final MapProperty MAP_PROPERTY_FROM_STRING =
+        new MapProperty().setMapProperty(singletonMap("key", FROM_STRING));
+    private static final MapProperty MAP_PROPERTY_FROM_OBJECT =
+        new MapProperty().setMapProperty(singletonMap("key", FROM_OBJECT));
+    private static final MapProperty MAP_PROPERTY_MULTIPLE =
+        new MapProperty().setMapProperty(createMapPropertyMultiMap(false));
+    private static final MapProperty MAP_PROPERTY_BASE64 =
+        new MapProperty().setMapProperty(singletonMap("key", FROM_STRING_BASE64));
+    private static final MapProperty MAP_PROPERTY_BASE64_MULTIPLE =
+        new MapProperty().setMapProperty(createMapPropertyMultiMap(true));
 
     private static Map<String, BinaryData> createMapPropertyMultiMap(boolean base64) {
         Map<String, BinaryData> map = new LinkedHashMap<>();
@@ -195,6 +199,7 @@ public class BinaryDataSerializationTests {
     }
 
     public static final class SimpleProperty {
+
         @JsonProperty("simpleProperty")
         private BinaryData simpleProperty;
 
@@ -221,9 +226,11 @@ public class BinaryDataSerializationTests {
             SimpleProperty other = (SimpleProperty) obj;
             return binaryDataEquals(simpleProperty, other.simpleProperty);
         }
+
     }
 
     public static final class ListProperty {
+
         @JsonProperty("listProperty")
         private List<BinaryData> listProperty;
 
@@ -270,9 +277,11 @@ public class BinaryDataSerializationTests {
 
             return true;
         }
+
     }
 
     public static final class MapProperty {
+
         @JsonProperty("mapProperty")
         private Map<String, BinaryData> mapProperty;
 
@@ -322,9 +331,11 @@ public class BinaryDataSerializationTests {
 
             return true;
         }
+
     }
 
     public static final class SimplePojo {
+
         @JsonProperty("string")
         private String string;
 
@@ -360,6 +371,7 @@ public class BinaryDataSerializationTests {
             this.bool = bool;
             return this;
         }
+
     }
 
     private static int binaryDataHash(BinaryData data) {
@@ -370,4 +382,5 @@ public class BinaryDataSerializationTests {
         return (data1 == null && data2 == null)
             || (data1 != null && data2 != null && Objects.equals(data1.toString(), data2.toString()));
     }
+
 }

@@ -8,11 +8,10 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Objects;
 
-/**
- * Represents a geometric bounding box.
- */
+/** Represents a geometric bounding box. */
 @Immutable
 public final class GeoBoundingBox {
+
     // GeoBoundingBox is a commonly used model, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(GeoBoundingBox.class);
 
@@ -46,16 +45,29 @@ public final class GeoBoundingBox {
      * @param minAltitude Minimum altitude boundary.
      * @param maxAltitude Maximum altitude boundary.
      */
-    public GeoBoundingBox(double west, double south, double east, double north, double minAltitude,
-        double maxAltitude) {
+    public GeoBoundingBox(
+        double west,
+        double south,
+        double east,
+        double north,
+        double minAltitude,
+        double maxAltitude
+    ) {
         this(west, south, east, north, minAltitude, maxAltitude, null);
     }
 
     /*
      * This constructor allows the one above to require both min altitude and max altitude to be non-null.
      */
-    private GeoBoundingBox(double west, double south, double east, double north, Double minAltitude,
-        Double maxAltitude, String ignored) {
+    private GeoBoundingBox(
+        double west,
+        double south,
+        double east,
+        double north,
+        Double minAltitude,
+        Double maxAltitude,
+        String ignored
+    ) {
         this.west = west;
         this.south = south;
         this.east = east;
@@ -190,4 +202,5 @@ public final class GeoBoundingBox {
             ? String.format("[%s, %s, %s, %s, %s, %s]", west, south, minAltitude, east, north, maxAltitude)
             : String.format("[%s, %s, %s, %s]", west, south, east, north);
     }
+
 }

@@ -22,6 +22,7 @@ import java.util.Set;
  * redirect status response codes (301, 302, 307, 308) to determine if request should be redirected.
  */
 public final class DefaultRedirectStrategy implements RedirectStrategy {
+
     private static final ClientLogger LOGGER = new ClientLogger(DefaultRedirectStrategy.class);
 
     private static final int DEFAULT_MAX_REDIRECT_ATTEMPTS = 3;
@@ -95,15 +96,19 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
         }
     }
 
-
     @Override
-    public boolean shouldAttemptRedirect(HttpPipelineCallContext context,
-                                         HttpResponse httpResponse, int tryCount,
-                                         Set<String> attemptedRedirectUrls) {
+    public boolean shouldAttemptRedirect(
+        HttpPipelineCallContext context,
+        HttpResponse httpResponse,
+        int tryCount,
+        Set<String> attemptedRedirectUrls
+    ) {
 
-        if (isValidRedirectStatusCode(httpResponse.getStatusCode())
-            && isValidRedirectCount(tryCount)
-            && isAllowedRedirectMethod(httpResponse.getRequest().getHttpMethod())) {
+        if (
+            isValidRedirectStatusCode(httpResponse.getStatusCode())
+                && isValidRedirectCount(tryCount)
+                && isAllowedRedirectMethod(httpResponse.getRequest().getHttpMethod())
+        ) {
             String redirectUrl = httpResponse.getHeaderValue(locationHeader);
             if (redirectUrl != null && !alreadyAttemptedRedirectUrl(redirectUrl, attemptedRedirectUrls)) {
                 LOGGER.atVerbose()
@@ -138,8 +143,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
      * @return {@code true} if the redirectUrl provided in the response header is already being attempted for redirect
      * , {@code false} otherwise.
      */
-    private boolean alreadyAttemptedRedirectUrl(String redirectUrl,
-                                                Set<String> attemptedRedirectUrls) {
+    private boolean alreadyAttemptedRedirectUrl(String redirectUrl, Set<String> attemptedRedirectUrls) {
         if (attemptedRedirectUrls.contains(redirectUrl)) {
             LOGGER.atError()
                 .addKeyValue(LoggingKeys.REDIRECT_URL_KEY, redirectUrl)
@@ -158,9 +162,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
      */
     private boolean isValidRedirectCount(int tryCount) {
         if (tryCount >= getMaxAttempts()) {
-            LOGGER.atError()
-                .addKeyValue("maxAttempts", getMaxAttempts())
-                .log("Redirect attempts have been exhausted.");
+            LOGGER.atError().addKeyValue("maxAttempts", getMaxAttempts()).log("Redirect attempts have been exhausted.");
 
             return false;
         }
@@ -197,4 +199,5 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
             || statusCode == PERMANENT_REDIRECT_STATUS_CODE
             || statusCode == TEMPORARY_REDIRECT_STATUS_CODE;
     }
+
 }

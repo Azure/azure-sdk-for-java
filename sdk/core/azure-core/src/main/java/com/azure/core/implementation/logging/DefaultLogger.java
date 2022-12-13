@@ -16,10 +16,9 @@ import java.nio.file.InvalidPathException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/**
- * This class is an internal implementation of slf4j logger.
- */
+/** This class is an internal implementation of slf4j logger. */
 public final class DefaultLogger extends MarkerIgnoringBase {
+
     private static final long serialVersionUID = -144261058636441630L;
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
@@ -193,7 +192,6 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         return isInfoEnabled;
     }
 
-
     /**
      * {@inheritDoc}
      */
@@ -355,8 +353,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         // Use a larger initial buffer for the StringBuilder as it defaults to 16 and non-empty information is expected
         // to be much larger than that. This will reduce the amount of resizing and copying needed to be done.
         StringBuilder stringBuilder = new StringBuilder(256);
-        stringBuilder
-            .append(dateTime)
+        stringBuilder.append(dateTime)
             .append(OPEN_BRACKET)
             .append(threadName)
             .append(CLOSE_BRACKET)
@@ -398,4 +395,5 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         }
         System.out.print(stringBuilder.toString());
     }
+
 }

@@ -19,9 +19,11 @@ import reactor.core.publisher.Mono;
  * Pipeline policy that adds "User-Agent" header to a request.
  * <p>
  * The format for the "User-Agent" string is outlined in
- * <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>.
+ * <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry
+ * policy</a>.
  */
 public class UserAgentPolicy implements HttpPipelinePolicy {
+
     /**
      * Key for {@link Context} to add a value which will override the User-Agent supplied in this policy in an ad-hoc
      * manner.
@@ -36,12 +38,15 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
 
     private final String userAgent;
     private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
+
         /**
          * Updates the "User-Agent" header with the value supplied in the policy.
          *
-         * <p>The {@code context} will be checked for {@code Override-User-Agent} and {@code Append-User-Agent}.
+         * <p>
+         * The {@code context} will be checked for {@code Override-User-Agent} and {@code Append-User-Agent}.
          * {@code Override-User-Agent} will take precedence over the value supplied in the policy,
-         * {@code Append-User-Agent} will be appended to the value supplied in the policy.</p>
+         * {@code Append-User-Agent} will be appended to the value supplied in the policy.
+         * </p>
          *
          * @param context request context
          */
@@ -61,6 +66,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
 
             context.getHttpRequest().setHeader(HttpHeaderName.USER_AGENT, userAgentValue);
         }
+
     };
 
     /**
@@ -88,8 +94,10 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     /**
      * Creates a UserAgentPolicy with the {@code sdkName} and {@code sdkVersion} in the User-Agent header value.
      *
-     * <p>If the passed configuration contains true for AZURE_TELEMETRY_DISABLED the platform information won't be
-     * included in the user agent.</p>
+     * <p>
+     * If the passed configuration contains true for AZURE_TELEMETRY_DISABLED the platform information won't be
+     * included in the user agent.
+     * </p>
      *
      * @param applicationId User specified application Id.
      * @param sdkName Name of the client library.
@@ -105,8 +113,10 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     /**
      * Creates a UserAgentPolicy with the {@code sdkName} and {@code sdkVersion} in the User-Agent header value.
      *
-     * <p>If the passed configuration contains true for AZURE_TELEMETRY_DISABLED the platform information won't be
-     * included in the user agent.</p>
+     * <p>
+     * If the passed configuration contains true for AZURE_TELEMETRY_DISABLED the platform information won't be
+     * included in the user agent.
+     * </p>
      *
      * @param sdkName Name of the client library.
      * @param sdkVersion Version of the client library.
@@ -124,9 +134,11 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     /**
      * Updates the "User-Agent" header with the value supplied in the policy.
      *
-     * <p>The {@code context} will be checked for {@code Override-User-Agent} and {@code Append-User-Agent}.
+     * <p>
+     * The {@code context} will be checked for {@code Override-User-Agent} and {@code Append-User-Agent}.
      * {@code Override-User-Agent} will take precedence over the value supplied in the policy,
-     * {@code Append-User-Agent} will be appended to the value supplied in the policy.</p>
+     * {@code Append-User-Agent} will be appended to the value supplied in the policy.
+     * </p>
      *
      * @param context request context
      * @param next The next policy to invoke.
@@ -140,9 +152,11 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     /**
      * Updates the "User-Agent" header with the value supplied in the policy synchronously.
      *
-     * <p>The {@code context} will be checked for {@code Override-User-Agent} and {@code Append-User-Agent}.
+     * <p>
+     * The {@code context} will be checked for {@code Override-User-Agent} and {@code Append-User-Agent}.
      * {@code Override-User-Agent} will take precedence over the value supplied in the policy,
-     * {@code Append-User-Agent} will be appended to the value supplied in the policy.</p>
+     * {@code Append-User-Agent} will be appended to the value supplied in the policy.
+     * </p>
      *
      * @param context request context
      * @param next The next policy to invoke.
@@ -152,4 +166,5 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         return inner.processSync(context, next);
     }
+
 }

@@ -11,7 +11,9 @@ import java.util.Objects;
  * information such as the current {@link LongRunningOperationStatus status} of the long-running operation, any
  * {@link #getValue value} returned in the poll, as well as other useful information provided by the service.
  *
- * <p><strong>Code Sample Creating PollResponse Object</strong></p>
+ * <p>
+ * <strong>Code Sample Creating PollResponse Object</strong>
+ * </p>
  * <!-- src_embed com.azure.core.util.polling.pollresponse.status.value -->
  * <pre>
  * &#47;&#47; Lets say we want to crete poll response with status as IN_PROGRESS
@@ -22,7 +24,9 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.core.util.polling.pollresponse.status.value -->
  *
- * <p><strong>Code Sample Creating PollResponse Object with custom status</strong></p>
+ * <p>
+ * <strong>Code Sample Creating PollResponse Object with custom status</strong>
+ * </p>
  * <!-- src_embed com.azure.core.util.polling.pollresponse.custom.status.value -->
  * <pre>
  * &#47;&#47; Lets say we want to crete poll response with custom status as OTHER_CUSTOM_STATUS
@@ -45,7 +49,9 @@ public final class PollResponse<T> {
     /**
      * Creates a new {@link PollResponse} with status, value, retryAfter and properties.
      *
-     * <p><strong>Code Sample Creating PollResponse Object</strong></p>
+     * <p>
+     * <strong>Code Sample Creating PollResponse Object</strong>
+     * </p>
      * <!-- src_embed com.azure.core.util.polling.pollresponse.status.value.retryAfter.properties -->
      * <pre>
      *
@@ -58,14 +64,13 @@ public final class PollResponse<T> {
      *
      * @param status Mandatory operation status as defined in {@link LongRunningOperationStatus}.
      * @param value The value as a result of poll operation. This can be any custom user-defined object. Null is also
-     *     valid.
+     * valid.
      * @param retryAfter Represents the delay the service has requested until the next polling operation is performed. A
-     *     {@code null}, zero or negative value will be taken to mean that the poller should determine on its
-     *     own when the next poll operation is to occur.
+     * {@code null}, zero or negative value will be taken to mean that the poller should determine on its
+     * own when the next poll operation is to occur.
      * @throws NullPointerException If {@code status} is {@code null}.
      */
-    public PollResponse(LongRunningOperationStatus status, T value,
-                        Duration retryAfter) {
+    public PollResponse(LongRunningOperationStatus status, T value, Duration retryAfter) {
         Objects.requireNonNull(status, "The status input parameter cannot be null.");
         this.status = status;
         this.value = value;
@@ -75,7 +80,9 @@ public final class PollResponse<T> {
     /**
      * Creates a new {@link PollResponse} with status and value.
      *
-     * <p><strong>Code Sample Creating PollResponse Object</strong></p>
+     * <p>
+     * <strong>Code Sample Creating PollResponse Object</strong>
+     * </p>
      * <!-- src_embed com.azure.core.util.polling.pollresponse.status.value -->
      * <pre>
      * &#47;&#47; Lets say we want to crete poll response with status as IN_PROGRESS
@@ -88,7 +95,7 @@ public final class PollResponse<T> {
      *
      * @param status Mandatory operation status as defined in {@link LongRunningOperationStatus}.
      * @param value The value as a result of poll operation. This can be any custom user-defined object. Null is also
-     *     valid.
+     * valid.
      * @throws NullPointerException If {@code status} is {@code null}.
      */
     public PollResponse(LongRunningOperationStatus status, T value) {
@@ -97,6 +104,7 @@ public final class PollResponse<T> {
 
     /**
      * Represents the status of the long-running operation at the time the last polling operation finished successfully.
+     * 
      * @return A {@link LongRunningOperationStatus} representing the result of the poll operation.
      */
     public LongRunningOperationStatus getStatus() {
@@ -117,9 +125,11 @@ public final class PollResponse<T> {
      * Returns the delay the service has requested until the next polling operation is performed. A null or negative
      * value will be taken to mean that the poller should determine on its own when the next poll operation is
      * to occur.
+     * 
      * @return Duration How long to wait before next retry.
      */
     public Duration getRetryAfter() {
         return retryAfter;
     }
+
 }

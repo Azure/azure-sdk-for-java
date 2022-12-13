@@ -3,9 +3,7 @@
 
 package com.azure.core.http;
 
-/**
- * The HTTP request methods.
- */
+/** The HTTP request methods. */
 public enum HttpMethod {
     /**
      * The HTTP GET method.

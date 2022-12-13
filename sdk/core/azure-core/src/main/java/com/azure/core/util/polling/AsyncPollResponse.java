@@ -25,6 +25,7 @@ import java.util.function.Function;
  * @param <U> The type of the final result of long-running operation.
  */
 public final class AsyncPollResponse<T, U> {
+
     // AsyncPollResponse is a commonly used class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(AsyncPollResponse.class);
     private final PollingContext<T> pollingContext;
@@ -38,17 +39,18 @@ public final class AsyncPollResponse<T, U> {
      * @param pollingContext the polling context
      * @param cancellationOperation the cancellation operation if supported by the service
      * @param fetchResultOperation the operation to fetch final result of long-running operation, if supported
-     *                             by the service
+     * by the service
      */
-    AsyncPollResponse(PollingContext<T> pollingContext,
-                      BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancellationOperation,
-                      Function<PollingContext<T>, Mono<U>> fetchResultOperation) {
-        this.pollingContext = Objects.requireNonNull(pollingContext,
-                "'pollingContext' cannot be null.");
-        this.cancellationOperation = Objects.requireNonNull(cancellationOperation,
-                "'cancellationOperation' cannot be null.");
-        this.fetchResultOperation = Objects.requireNonNull(fetchResultOperation,
-                "'fetchResultOperation' cannot be null.");
+    AsyncPollResponse(
+        PollingContext<T> pollingContext,
+        BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancellationOperation,
+        Function<PollingContext<T>, Mono<U>> fetchResultOperation
+    ) {
+        this.pollingContext = Objects.requireNonNull(pollingContext, "'pollingContext' cannot be null.");
+        this.cancellationOperation =
+            Objects.requireNonNull(cancellationOperation, "'cancellationOperation' cannot be null.");
+        this.fetchResultOperation =
+            Objects.requireNonNull(fetchResultOperation, "'fetchResultOperation' cannot be null.");
         this.pollResponse = this.pollingContext.getLatestResponse();
     }
 
@@ -82,7 +84,7 @@ public final class AsyncPollResponse<T, U> {
         return Mono.defer(() -> {
             try {
                 return this.cancellationOperation
-                        .apply(this.pollingContext, this.pollingContext.getActivationResponse());
+                    .apply(this.pollingContext, this.pollingContext.getActivationResponse());
             } catch (RuntimeException re) {
                 return FluxUtil.monoError(LOGGER, re);
             }
@@ -105,8 +107,7 @@ public final class AsyncPollResponse<T, U> {
                 return Mono.empty();
             } else {
                 try {
-                    return this.fetchResultOperation
-                            .apply(this.pollingContext);
+                    return this.fetchResultOperation.apply(this.pollingContext);
                 } catch (RuntimeException re) {
                     return FluxUtil.monoError(LOGGER, re);
                 }
@@ -124,5 +125,5 @@ public final class AsyncPollResponse<T, U> {
     Duration getRetryAfter() {
         return pollResponse.getRetryAfter();
     }
-}
 
+}

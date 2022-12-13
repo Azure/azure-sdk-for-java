@@ -9,9 +9,7 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.CLASS;
 
-/**
- * Annotation given to all service client classes.
- */
+/** Annotation given to all service client classes. */
 @Retention(CLASS)
 @Target(TYPE)
 public @interface ServiceClient {
@@ -39,5 +37,6 @@ public @interface ServiceClient {
      *
      * @return An array of all services this service client interacts with
      */
-    Class<?>[] serviceInterfaces() default {};
+    Class<?>[] serviceInterfaces() default { };
+
 }

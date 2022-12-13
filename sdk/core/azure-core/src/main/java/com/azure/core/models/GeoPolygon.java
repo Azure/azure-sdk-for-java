@@ -11,11 +11,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * Represents a geometric polygon.
- */
+/** Represents a geometric polygon. */
 @Immutable
 public final class GeoPolygon extends GeoObject {
+
     private final List<GeoLinearRing> rings;
 
     /**
@@ -37,8 +36,11 @@ public final class GeoPolygon extends GeoObject {
      * @throws NullPointerException If {@code ring} is {@code null}.
      */
     public GeoPolygon(GeoLinearRing ring, GeoBoundingBox boundingBox, Map<String, Object> customProperties) {
-        this(Collections.singletonList(Objects.requireNonNull(ring, "'ring' cannot be null.")), boundingBox,
-            customProperties);
+        this(
+            Collections.singletonList(Objects.requireNonNull(ring, "'ring' cannot be null.")),
+            boundingBox,
+            customProperties
+        );
     }
 
     /**
@@ -117,4 +119,5 @@ public final class GeoPolygon extends GeoObject {
 
         return super.equals(obj) && Objects.equals(rings, other.rings);
     }
+
 }

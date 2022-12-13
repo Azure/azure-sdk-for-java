@@ -5,11 +5,10 @@ package com.azure.core.http;
 
 import com.azure.core.annotation.Fluent;
 
-/**
- * Specifies HTTP options for conditional requests.
- */
+/** Specifies HTTP options for conditional requests. */
 @Fluent
 public class MatchConditions {
+
     private String ifMatch;
     private String ifNoneMatch;
 
@@ -58,4 +57,5 @@ public class MatchConditions {
         this.ifNoneMatch = ifNoneMatch;
         return this;
     }
+
 }

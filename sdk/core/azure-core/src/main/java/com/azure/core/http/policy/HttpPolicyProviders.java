@@ -7,10 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ServiceLoader;
 
-/**
- * This class handles adding SPI plug-able policies to a pipeline automatically.
- */
+/** This class handles adding SPI plug-able policies to a pipeline automatically. */
 public final class HttpPolicyProviders {
+
     private static final String INVALID_POLICY = "HttpPipelinePolicy created with %s resulted in a null policy.";
 
     private static final List<BeforeRetryPolicyProvider> BEFORE_PROVIDER = new ArrayList<>();
@@ -60,4 +59,5 @@ public final class HttpPolicyProviders {
             policies.add(policy);
         }
     }
+
 }

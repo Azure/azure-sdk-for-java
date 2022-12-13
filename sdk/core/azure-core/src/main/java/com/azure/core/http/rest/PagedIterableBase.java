@@ -15,7 +15,9 @@ import java.util.stream.Stream;
  * This class provides utility to iterate over responses that extend {@link PagedResponse} using {@link Stream} and
  * {@link Iterable} interfaces.
  *
- * <p><strong>Code sample using {@link Stream} by page</strong></p>
+ * <p>
+ * <strong>Code sample using {@link Stream} by page</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.http.rest.pagedIterableBase.streamByPage -->
  * <pre>
@@ -31,7 +33,9 @@ import java.util.stream.Stream;
  * </pre>
  * <!-- end com.azure.core.http.rest.pagedIterableBase.streamByPage -->
  *
- * <p><strong>Code sample using {@link Iterable} by page</strong></p>
+ * <p>
+ * <strong>Code sample using {@link Iterable} by page</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.http.rest.pagedIterableBase.iterableByPage -->
  * <pre>
@@ -44,7 +48,9 @@ import java.util.stream.Stream;
  * </pre>
  * <!-- end com.azure.core.http.rest.pagedIterableBase.iterableByPage -->
  *
- * <p><strong>Code sample using {@link Iterable} by page and while loop</strong></p>
+ * <p>
+ * <strong>Code sample using {@link Iterable} by page and while loop</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.http.rest.pagedIterableBase.iterableByPage.while -->
  * <pre>
@@ -63,6 +69,7 @@ import java.util.stream.Stream;
  * @see IterableStream
  */
 public class PagedIterableBase<T, P extends PagedResponse<T>> extends ContinuablePagedIterable<String, T, P> {
+
     /**
      * Creates instance given {@link PagedFluxBase}.
      *
@@ -83,4 +90,5 @@ public class PagedIterableBase<T, P extends PagedResponse<T>> extends Continuabl
     PagedIterableBase(Supplier<PageRetrieverSync<String, P>> provider) {
         super(provider, null, token -> !CoreUtils.isNullOrEmpty(token));
     }
+
 }

@@ -11,11 +11,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * Represents a collection of {@link GeoPoint GeoPoints}.
- */
+/** Represents a collection of {@link GeoPoint GeoPoints}. */
 @Immutable
 public final class GeoPointCollection extends GeoObject {
+
     private final List<GeoPoint> points;
 
     /**
@@ -86,4 +85,5 @@ public final class GeoPointCollection extends GeoObject {
 
         return super.equals(obj) && Objects.equals(points, other.points);
     }
+
 }

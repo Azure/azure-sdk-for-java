@@ -22,9 +22,7 @@ import java.nio.channels.WritableByteChannel;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
-/**
- * Utilities related to IO operations that involve channels, streams, byte transfers.
- */
+/** Utilities related to IO operations that involve channels, streams, byte transfers. */
 public final class IOUtils {
 
     private static final ClientLogger LOGGER = new ClientLogger(IOUtils.class);
@@ -33,14 +31,15 @@ public final class IOUtils {
 
     /**
      * Adapts {@link AsynchronousFileChannel} to {@link AsynchronousByteChannel}.
+     * 
      * @param fileChannel The {@link AsynchronousFileChannel}.
      * @param position The position in the file to begin writing or reading the {@code content}.
      * @return A {@link AsynchronousByteChannel} that delegates to {@code fileChannel}.
      * @throws NullPointerException When {@code fileChannel} is null.
      * @throws IllegalArgumentException When {@code position} is negative.
      */
-    public static AsynchronousByteChannel toAsynchronousByteChannel(
-        AsynchronousFileChannel fileChannel, long position) {
+    public static AsynchronousByteChannel
+        toAsynchronousByteChannel(AsynchronousFileChannel fileChannel, long position) {
         Objects.requireNonNull(fileChannel, "'fileChannel' must not be null");
         if (position < 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'position' cannot be less than 0."));
@@ -50,6 +49,7 @@ public final class IOUtils {
 
     /**
      * Transfers bytes from {@link ReadableByteChannel} to {@link WritableByteChannel}.
+     * 
      * @param source A source {@link ReadableByteChannel}.
      * @param destination A destination {@link WritableByteChannel}.
      * @throws IOException When I/O operation fails.
@@ -73,6 +73,7 @@ public final class IOUtils {
 
     /**
      * Transfers bytes from {@link ReadableByteChannel} to {@link AsynchronousByteChannel}.
+     * 
      * @param source A source {@link ReadableByteChannel}.
      * @param destination A destination {@link AsynchronousByteChannel}.
      * @return A {@link Mono} that completes when transfer is finished.
@@ -93,13 +94,18 @@ public final class IOUtils {
     }
 
     private static void transferAsynchronously(
-        ReadableByteChannel source, AsynchronousByteChannel destination,
-        ByteBuffer buffer, MonoSink<Void> sink) throws IOException {
+        ReadableByteChannel source,
+        AsynchronousByteChannel destination,
+        ByteBuffer buffer,
+        MonoSink<Void> sink
+    )
+        throws IOException {
         buffer.clear();
         int read = source.read(buffer);
         if (read >= 0) {
             buffer.flip();
             destination.write(buffer, buffer, new CompletionHandler<Integer, ByteBuffer>() {
+
                 @Override
                 public void completed(Integer result, ByteBuffer attachment) {
                     try {
@@ -119,6 +125,7 @@ public final class IOUtils {
                 public void failed(Throwable e, ByteBuffer attachment) {
                     sink.error(e);
                 }
+
             });
         } else {
             sink.success();
@@ -142,18 +149,26 @@ public final class IOUtils {
         AsynchronousByteChannel targetChannel,
         StreamResponse sourceResponse,
         BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
-        ProgressReporter progressReporter, int maxRetries) {
+        ProgressReporter progressReporter,
+        int maxRetries
+    ) {
 
         return transferStreamResponseToAsynchronousByteChannelHelper(
             new ByteCountingAsynchronousByteChannel(targetChannel, null, progressReporter),
-            sourceResponse, onErrorResume, maxRetries, 0);
+            sourceResponse,
+            onErrorResume,
+            maxRetries,
+            0
+        );
     }
 
     private static Mono<Void> transferStreamResponseToAsynchronousByteChannelHelper(
         ByteCountingAsynchronousByteChannel targetChannel,
         StreamResponse response,
         BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
-        int maxRetries, int retryCount) {
+        int maxRetries,
+        int retryCount
+    ) {
 
         return response.writeValueToAsync(targetChannel)
             .doFinally(ignored -> response.close())
@@ -170,12 +185,19 @@ public final class IOUtils {
                 }
 
                 return onErrorResume.apply(exception, targetChannel.getBytesWritten())
-                    .flatMap(newResponse -> transferStreamResponseToAsynchronousByteChannelHelper(
-                        targetChannel, newResponse,
-                        onErrorResume, maxRetries, updatedRetryCount));
+                    .flatMap(
+                        newResponse -> transferStreamResponseToAsynchronousByteChannelHelper(
+                            targetChannel,
+                            newResponse,
+                            onErrorResume,
+                            maxRetries,
+                            updatedRetryCount
+                        )
+                    );
             });
     }
 
     private IOUtils() {
     }
+
 }

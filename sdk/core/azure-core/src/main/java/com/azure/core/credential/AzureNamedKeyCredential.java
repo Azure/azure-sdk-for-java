@@ -10,11 +10,17 @@ import java.util.Objects;
 /**
  * Represents a credential with a key name and the key and uses the key to authenticate to an Azure Service.
  *
- * <p>The named credential can be created for keys which have a name identifier associated with them.</p>
+ * <p>
+ * The named credential can be created for keys which have a name identifier associated with them.
+ * </p>
  *
- * <p><strong>Code Samples</strong></p>
+ * <p>
+ * <strong>Code Samples</strong>
+ * </p>
  *
- * <p>Create a named credential for a service specific sas key.</p>
+ * <p>
+ * Create a named credential for a service specific sas key.
+ * </p>
  *
  * <!-- src_embed com.azure.core.credential.azureNamedKeyCredenialSasKey -->
  * <pre>
@@ -22,9 +28,9 @@ import java.util.Objects;
  *     new AzureNamedKeyCredential&#40;&quot;AZURE-SERVICE-SAS-KEY-NAME&quot;, &quot;AZURE-SERVICE-SAS-KEY&quot;&#41;;
  * </pre>
  * <!-- end com.azure.core.credential.azureNamedKeyCredenialSasKey -->
- *
  */
 public final class AzureNamedKeyCredential {
+
     // AzureNamedKeyCredential is a commonly used credential type, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(AzureNamedKeyCredential.class);
 
@@ -53,7 +59,7 @@ public final class AzureNamedKeyCredential {
     }
 
     /**
-     * Rotates the {@code name} and  {@code key} associated to this credential.
+     * Rotates the {@code name} and {@code key} associated to this credential.
      *
      * @param name The new name of the key credential.
      * @param key The new key to be associated with this credential.
@@ -77,4 +83,5 @@ public final class AzureNamedKeyCredential {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'key' cannot be empty."));
         }
     }
+
 }

@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
 public final class HeaderSubstitution extends Substitution {
+
     private final HttpHeaderName headerName;
 
     /**
@@ -34,4 +35,5 @@ public final class HeaderSubstitution extends Substitution {
     public HttpHeaderName getHeaderName() {
         return headerName;
     }
+
 }

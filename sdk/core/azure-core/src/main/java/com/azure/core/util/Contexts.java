@@ -5,9 +5,7 @@ package com.azure.core.util;
 
 import java.util.Objects;
 
-/**
- * A utility type that can be used to add and retrieve instances commonly used in {@link Context}.
- */
+/** A utility type that can be used to add and retrieve instances commonly used in {@link Context}. */
 public final class Contexts {
 
     private Context context;
@@ -18,6 +16,7 @@ public final class Contexts {
 
     /**
      * Creates {@link Contexts} from empty {@link Context}.
+     * 
      * @return The {@link Contexts} instance.
      */
     public static Contexts empty() {
@@ -26,6 +25,7 @@ public final class Contexts {
 
     /**
      * Creates {@link Contexts} from supplied {@link Context}.
+     * 
      * @param context Existing {@link Context}. Must not be null.
      * @return The {@link Contexts} instance.
      * @throws NullPointerException If {@code context} is null.
@@ -36,6 +36,7 @@ public final class Contexts {
 
     /**
      * Adds request's {@link ProgressReporter} instance to the {@link Context}.
+     * 
      * @param progressReporter The {@link ProgressReporter} instance.
      * @return Itself.
      */
@@ -46,6 +47,7 @@ public final class Contexts {
 
     /**
      * Retrieves request's {@link ProgressReporter} from the {@link Context}.
+     * 
      * @return The {@link ProgressReporter}.
      */
     public ProgressReporter getHttpRequestProgressReporter() {
@@ -54,6 +56,7 @@ public final class Contexts {
 
     /**
      * Returns a version of the {@link Context} reflecting mutations.
+     * 
      * @return The version of the {@link Context} reflecting mutations.
      */
     public Context getContext() {
@@ -64,6 +67,7 @@ public final class Contexts {
      * Defines {@link Context} keys commonly used in Azure SDKs.
      */
     private static final class Keys {
+
         private Keys() {
         }
 
@@ -71,5 +75,7 @@ public final class Contexts {
          * A {@link Context} key for the outgoing request's {@link ProgressReporter}.
          */
         public static final String HTTP_REQUEST_PROGRESS_REPORTER = "com.azure.core.http.request.progress.reporter";
+
     }
+
 }

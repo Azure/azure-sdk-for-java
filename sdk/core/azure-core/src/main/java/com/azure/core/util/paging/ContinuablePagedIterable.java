@@ -24,6 +24,7 @@ import java.util.stream.StreamSupport;
  * @see ContinuablePagedFlux
  */
 public class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> extends IterableStream<T> {
+
     private static final ClientLogger LOGGER = new ClientLogger(ContinuablePagedIterable.class);
     private final ContinuablePagedFlux<C, T, P> pagedFlux;
     private final int batchSize;
@@ -64,15 +65,20 @@ public class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> ext
      * @throws NullPointerException If {@code pageRetrieverSyncProvider} is null.
      * @throws IllegalArgumentException If {@code pageSize} is not null and is less than or equal to zero.
      */
-    public ContinuablePagedIterable(Supplier<PageRetrieverSync<C, P>> pageRetrieverSyncProvider, Integer pageSize,
-                                    Predicate<C> continuationPredicate) {
-        super(new ContinuablePagedByItemIterable<>(pageRetrieverSyncProvider.get(), null,
-            continuationPredicate, pageSize));
-        this.pageRetrieverSyncProvider = Objects.requireNonNull(pageRetrieverSyncProvider,
-            "'pageRetrieverSyncProvider' function cannot be null.");
+    public ContinuablePagedIterable(
+        Supplier<PageRetrieverSync<C, P>> pageRetrieverSyncProvider,
+        Integer pageSize,
+        Predicate<C> continuationPredicate
+    ) {
+        super(
+            new ContinuablePagedByItemIterable<>(pageRetrieverSyncProvider.get(), null, continuationPredicate, pageSize)
+        );
+        this.pageRetrieverSyncProvider =
+            Objects.requireNonNull(pageRetrieverSyncProvider, "'pageRetrieverSyncProvider' function cannot be null.");
         if (pageSize != null && pageSize <= 0) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'pageSize' must be greater than 0 required but provided: " + pageSize));
+                new IllegalArgumentException("'pageSize' must be greater than 0 required but provided: " + pageSize)
+            );
         }
         this.continuationPredicate = (continuationPredicate == null) ? Objects::nonNull : continuationPredicate;
         this.defaultPageSize = pageSize;
@@ -103,8 +109,11 @@ public class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> ext
      * @return {@link Stream} of a pages
      */
     public Stream<P> streamByPage(C continuationToken) {
-        return streamByPageInternal(continuationToken, null,
-            () -> this.pagedFlux.byPage(continuationToken).toStream(batchSize));
+        return streamByPageInternal(
+            continuationToken,
+            null,
+            () -> this.pagedFlux.byPage(continuationToken).toStream(batchSize)
+        );
     }
 
     /**
@@ -117,8 +126,11 @@ public class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> ext
      * @return {@link Stream} of a pages
      */
     public Stream<P> streamByPage(int preferredPageSize) {
-        return streamByPageInternal(null, preferredPageSize,
-            () -> this.pagedFlux.byPage(preferredPageSize).toStream(batchSize));
+        return streamByPageInternal(
+            null,
+            preferredPageSize,
+            () -> this.pagedFlux.byPage(preferredPageSize).toStream(batchSize)
+        );
     }
 
     /**
@@ -132,8 +144,11 @@ public class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> ext
      * @return {@link Stream} of a pages
      */
     public Stream<P> streamByPage(C continuationToken, int preferredPageSize) {
-        return streamByPageInternal(continuationToken, preferredPageSize,
-            () -> this.pagedFlux.byPage(continuationToken, preferredPageSize).toStream(batchSize));
+        return streamByPageInternal(
+            continuationToken,
+            preferredPageSize,
+            () -> this.pagedFlux.byPage(continuationToken, preferredPageSize).toStream(batchSize)
+        );
     }
 
     @Override
@@ -159,8 +174,11 @@ public class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> ext
      * @return {@link Iterable} of a pages
      */
     public Iterable<P> iterableByPage(C continuationToken) {
-        return iterableByPageInternal(continuationToken, null,
-            () -> this.pagedFlux.byPage(continuationToken).toIterable(batchSize));
+        return iterableByPageInternal(
+            continuationToken,
+            null,
+            () -> this.pagedFlux.byPage(continuationToken).toIterable(batchSize)
+        );
     }
 
     /**
@@ -173,8 +191,11 @@ public class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> ext
      * @return {@link Iterable} of a pages
      */
     public Iterable<P> iterableByPage(int preferredPageSize) {
-        return iterableByPageInternal(null, preferredPageSize,
-            () -> this.pagedFlux.byPage(preferredPageSize).toIterable(batchSize));
+        return iterableByPageInternal(
+            null,
+            preferredPageSize,
+            () -> this.pagedFlux.byPage(preferredPageSize).toIterable(batchSize)
+        );
     }
 
     /**
@@ -188,34 +209,51 @@ public class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> ext
      * @return {@link Iterable} of a pages
      */
     public Iterable<P> iterableByPage(C continuationToken, int preferredPageSize) {
-        return iterableByPageInternal(continuationToken, preferredPageSize,
-            () -> this.pagedFlux.byPage(continuationToken, preferredPageSize).toIterable(batchSize));
+        return iterableByPageInternal(
+            continuationToken,
+            preferredPageSize,
+            () -> this.pagedFlux.byPage(continuationToken, preferredPageSize).toIterable(batchSize)
+        );
     }
 
-    private Stream<P> streamByPageInternal(C continuationToken, Integer preferredPageSize,
-        Supplier<Stream<P>> nonPagedFluxCoreIterableSupplier) {
+    private Stream<P> streamByPageInternal(
+        C continuationToken,
+        Integer preferredPageSize,
+        Supplier<Stream<P>> nonPagedFluxCoreIterableSupplier
+    ) {
         if (pagedFlux == null) {
-            return StreamSupport.stream(iterableByPageInternal(continuationToken, preferredPageSize, null)
-                .spliterator(), false);
+            return StreamSupport
+                .stream(iterableByPageInternal(continuationToken, preferredPageSize, null).spliterator(), false);
         }
         if (pagedFlux instanceof ContinuablePagedFluxCore) {
-            return StreamSupport.stream(iterableByPageInternal(continuationToken, preferredPageSize, null)
-                .spliterator(), false);
+            return StreamSupport
+                .stream(iterableByPageInternal(continuationToken, preferredPageSize, null).spliterator(), false);
         } else {
             return nonPagedFluxCoreIterableSupplier.get();
         }
     }
 
-    private Iterable<P> iterableByPageInternal(C continuationToken, Integer preferredPageSize,
-        Supplier<Iterable<P>> nonPagedFluxCoreIterableSupplier) {
+    private Iterable<P> iterableByPageInternal(
+        C continuationToken,
+        Integer preferredPageSize,
+        Supplier<Iterable<P>> nonPagedFluxCoreIterableSupplier
+    ) {
         if (pagedFlux == null) {
-            return new ContinuablePagedByPageIterable<>(pageRetrieverSyncProvider.get(), continuationToken,
-                this.continuationPredicate, preferredPageSize);
+            return new ContinuablePagedByPageIterable<>(
+                pageRetrieverSyncProvider.get(),
+                continuationToken,
+                this.continuationPredicate,
+                preferredPageSize
+            );
         }
         if (pagedFlux instanceof ContinuablePagedFluxCore) {
             ContinuablePagedFluxCore<C, T, P> pagedFluxCore = (ContinuablePagedFluxCore<C, T, P>) pagedFlux;
-            return new ContinuablePagedByPageIterable<>(pagedFluxCore.pageRetrieverProvider.get(), continuationToken,
-                pagedFluxCore.getContinuationPredicate(), preferredPageSize);
+            return new ContinuablePagedByPageIterable<>(
+                pagedFluxCore.pageRetrieverProvider.get(),
+                continuationToken,
+                pagedFluxCore.getContinuationPredicate(),
+                preferredPageSize
+            );
         } else {
             return nonPagedFluxCoreIterableSupplier.get();
         }
@@ -223,15 +261,24 @@ public class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> ext
 
     private Iterable<T> iterableByItemInternal() {
         if (pagedFlux == null) {
-            return new ContinuablePagedByItemIterable<>(this.pageRetrieverSyncProvider.get(), null,
-                this.continuationPredicate, null);
+            return new ContinuablePagedByItemIterable<>(
+                this.pageRetrieverSyncProvider.get(),
+                null,
+                this.continuationPredicate,
+                null
+            );
         }
         if (pagedFlux instanceof ContinuablePagedFluxCore) {
             ContinuablePagedFluxCore<C, T, P> pagedFluxCore = (ContinuablePagedFluxCore<C, T, P>) pagedFlux;
-            return new ContinuablePagedByItemIterable<>(pagedFluxCore.pageRetrieverProvider.get(), null,
-                pagedFluxCore.getContinuationPredicate(), null);
+            return new ContinuablePagedByItemIterable<>(
+                pagedFluxCore.pageRetrieverProvider.get(),
+                null,
+                pagedFluxCore.getContinuationPredicate(),
+                null
+            );
         } else {
             return this.pagedFlux.toIterable(this.batchSize);
         }
     }
+
 }

@@ -5,11 +5,10 @@ package com.azure.core.credential;
 
 import reactor.core.publisher.Mono;
 
-/**
- * The interface for credentials that can provide a token.
- */
+/** The interface for credentials that can provide a token. */
 @FunctionalInterface
 public interface TokenCredential {
+
     /**
      * Asynchronously get a token for a given resource/audience.
      *
@@ -35,4 +34,5 @@ public interface TokenCredential {
     default AccessToken getTokenSync(TokenRequestContext request) {
         return getToken(request).block();
     }
+
 }

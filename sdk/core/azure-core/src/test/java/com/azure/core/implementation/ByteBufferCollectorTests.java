@@ -19,10 +19,9 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-/**
- * Tests {@link ByteBufferCollector}.
- */
+/** Tests {@link ByteBufferCollector}. */
 public class ByteBufferCollectorTests {
+
     @Test
     public void throwsOnNegativeInitialSize() {
         assertThrows(IllegalArgumentException.class, () -> new ByteBufferCollector(-1));
@@ -34,8 +33,10 @@ public class ByteBufferCollectorTests {
          * This assumption validates that the JVM running this test has a maximum heap size large enough for the test
          * to run without triggering an OutOfMemoryError.
          */
-        assumeTrue(Runtime.getRuntime().maxMemory() > (Integer.MAX_VALUE * 1.5),
-            "JVM doesn't have the requisite max heap size to support running this test.");
+        assumeTrue(
+            Runtime.getRuntime().maxMemory() > (Integer.MAX_VALUE * 1.5),
+            "JVM doesn't have the requisite max heap size to support running this test."
+        );
 
         ByteBuffer buffer = ByteBuffer.allocate((Integer.MAX_VALUE / 2) + 1);
 
@@ -83,4 +84,5 @@ public class ByteBufferCollectorTests {
             Arguments.of(manyHelloWorldsByteBuffers, manyHelloWorldsBytes)
         );
     }
+
 }

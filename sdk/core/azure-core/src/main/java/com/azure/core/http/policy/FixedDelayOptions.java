@@ -8,10 +8,9 @@ import com.azure.core.util.logging.ClientLogger;
 import java.time.Duration;
 import java.util.Objects;
 
-/**
- * The configuration for a fixed-delay retry that has a fixed delay duration between each retry attempt.
- */
+/** The configuration for a fixed-delay retry that has a fixed delay duration between each retry attempt. */
 public class FixedDelayOptions {
+
     private static final ClientLogger LOGGER = new ClientLogger(FixedDelayOptions.class);
     private final int maxRetries;
     private final Duration delay;
@@ -49,4 +48,5 @@ public class FixedDelayOptions {
     public Duration getDelay() {
         return delay;
     }
+
 }

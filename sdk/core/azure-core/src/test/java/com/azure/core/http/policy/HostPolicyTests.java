@@ -19,34 +19,27 @@ import java.net.URL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HostPolicyTests {
+
     @SyncAsyncTest
     public void withNoPort() throws Exception {
         final HttpPipeline pipeline = createPipeline("localhost", "ftp://localhost");
         final HttpRequest request = createHttpRequest("ftp://www.example.com");
-        SyncAsyncExtension.execute(
-            () -> sendRequestSync(pipeline, request),
-            () -> sendRequest(pipeline, request)
-        );
+        SyncAsyncExtension.execute(() -> sendRequestSync(pipeline, request), () -> sendRequest(pipeline, request));
     }
 
     @SyncAsyncTest
     public void withPort() throws Exception {
         final HttpPipeline pipeline = createPipeline("localhost", "ftp://localhost:1234");
         final HttpRequest request = createHttpRequest("ftp://www.example.com:1234");
-        SyncAsyncExtension.execute(
-            () -> sendRequestSync(pipeline, request),
-            () -> sendRequest(pipeline, request)
-        );
+        SyncAsyncExtension.execute(() -> sendRequestSync(pipeline, request), () -> sendRequest(pipeline, request));
     }
 
     private static HttpPipeline createPipeline(String host, String expectedUrl) {
-        return new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient())
-            .policies(new HostPolicy(host),
-                (context, next) -> {
-                    assertEquals(expectedUrl, context.getHttpRequest().getUrl().toString());
-                    return next.process();
-                })
+        return new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
+            .policies(new HostPolicy(host), (context, next) -> {
+                assertEquals(expectedUrl, context.getHttpRequest().getUrl().toString());
+                return next.process();
+            })
             .build();
     }
 
@@ -61,4 +54,5 @@ public class HostPolicyTests {
     private HttpResponse sendRequestSync(HttpPipeline pipeline, HttpRequest httpRequest) {
         return pipeline.sendSync(httpRequest, Context.NONE);
     }
+
 }

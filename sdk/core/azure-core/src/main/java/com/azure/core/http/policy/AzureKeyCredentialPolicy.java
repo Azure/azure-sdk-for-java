@@ -21,21 +21,25 @@ import java.util.Objects;
  * an exception will be thrown to prevent leaking the key.
  */
 public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
+
     // AzureKeyCredentialPolicy can be a commonly used policy, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(AzureKeyCredentialPolicy.class);
     private final HttpHeaderName name;
     private final AzureKeyCredential credential;
 
     private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
+
         @Override
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
             if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
                 throw LOGGER.logExceptionAsError(
-                    new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));
+                    new IllegalStateException("Key credentials require HTTPS to prevent leaking the key.")
+                );
             }
 
             context.getHttpRequest().setHeader(name, credential.getKey());
         }
+
     };
 
     /**
@@ -66,4 +70,5 @@ public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         return inner.processSync(context, next);
     }
+
 }

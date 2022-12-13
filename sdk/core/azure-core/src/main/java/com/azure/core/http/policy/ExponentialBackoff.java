@@ -20,6 +20,7 @@ import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RETRY_COU
  * provided max delay duration.
  */
 public class ExponentialBackoff implements RetryStrategy {
+
     private static final double JITTER_FACTOR = 0.05;
     private static final int DEFAULT_MAX_RETRIES;
     private static final Duration DEFAULT_BASE_DELAY = Duration.ofMillis(800);
@@ -37,8 +38,10 @@ public class ExponentialBackoff implements RetryStrategy {
                     defaultMaxRetries = 3;
                 }
             } catch (NumberFormatException ignored) {
-                LOGGER.verbose("{} was loaded but is an invalid number. Using 3 retries as the maximum.",
-                    PROPERTY_AZURE_REQUEST_RETRY_COUNT);
+                LOGGER.verbose(
+                    "{} was loaded but is an invalid number. Using 3 retries as the maximum.",
+                    PROPERTY_AZURE_REQUEST_RETRY_COUNT
+                );
             }
         }
 
@@ -69,13 +72,16 @@ public class ExponentialBackoff implements RetryStrategy {
         this(
             ObjectsUtil.requireNonNullElse(
                 Objects.requireNonNull(options, "'options' cannot be null.").getMaxRetries(),
-                DEFAULT_MAX_RETRIES),
+                DEFAULT_MAX_RETRIES
+            ),
             ObjectsUtil.requireNonNullElse(
                 Objects.requireNonNull(options, "'options' cannot be null.").getBaseDelay(),
-                DEFAULT_BASE_DELAY),
+                DEFAULT_BASE_DELAY
+            ),
             ObjectsUtil.requireNonNullElse(
                 Objects.requireNonNull(options, "'options' cannot be null.").getMaxDelay(),
-                DEFAULT_MAX_DELAY)
+                DEFAULT_MAX_DELAY
+            )
         );
     }
 
@@ -120,4 +126,5 @@ public class ExponentialBackoff implements RetryStrategy {
             .nextLong((long) (baseDelayNanos * (1 - JITTER_FACTOR)), (long) (baseDelayNanos * (1 + JITTER_FACTOR)));
         return Duration.ofNanos(Math.min((1L << retryAttempts) * delayWithJitterInNanos, maxDelayNanos));
     }
+
 }

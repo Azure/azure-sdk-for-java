@@ -9,9 +9,7 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-/**
- * Annotation given to all service client builder classes.
- */
+/** Annotation given to all service client builder classes. */
 @Retention(RUNTIME)
 @Target(TYPE)
 public @interface ServiceClientBuilder {
@@ -30,4 +28,5 @@ public @interface ServiceClientBuilder {
      * @return The {@link ServiceClientProtocol}.
      */
     ServiceClientProtocol protocol() default ServiceClientProtocol.HTTP;
+
 }

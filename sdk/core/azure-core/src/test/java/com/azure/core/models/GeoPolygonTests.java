@@ -18,10 +18,9 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-/**
- * Tests {@link GeoPolygon}.
- */
+/** Tests {@link GeoPolygon}. */
 public class GeoPolygonTests {
+
     @Test
     public void nullRingsThrows() {
         Assertions.assertThrows(NullPointerException.class, () -> new GeoPolygon((GeoLinearRing) null));
@@ -100,4 +99,5 @@ public class GeoPolygonTests {
             Arguments.of(polygon1, new GeoPolygon(triangleLine, boundingBox, properties), true)
         );
     }
+
 }

@@ -6,10 +6,9 @@ package com.azure.core.util.serializer;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 
-/**
- * This class is a proxy for using a {@link MemberNameConverterProvider} loaded from the classpath.
- */
+/** This class is a proxy for using a {@link MemberNameConverterProvider} loaded from the classpath. */
 public final class MemberNameConverterProviders {
+
     private static final String CANNOT_FIND_MEMBER_NAME_CONVERTER_PROVIDER =
         "Cannot find any member name converter provider on the classpath.";
 
@@ -56,4 +55,5 @@ public final class MemberNameConverterProviders {
     private MemberNameConverterProviders() {
         // no-op
     }
+
 }

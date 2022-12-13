@@ -8,6 +8,7 @@ import com.azure.core.util.paging.PageRetrieverSync;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class OnlyOnePageRetrieverSync implements PageRetrieverSync<Integer, OnlyOneContinuablePage> {
+
     private final AtomicInteger getCount = new AtomicInteger();
 
     private final int pageCount;
@@ -32,4 +33,5 @@ public class OnlyOnePageRetrieverSync implements PageRetrieverSync<Integer, Only
     public int getGetCount() {
         return getCount.get();
     }
+
 }

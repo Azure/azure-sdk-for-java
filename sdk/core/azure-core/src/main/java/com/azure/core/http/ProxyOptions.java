@@ -21,10 +21,9 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-/**
- * This represents proxy configuration to be used in http clients..
- */
+/** This represents proxy configuration to be used in http clients.. */
 public class ProxyOptions {
+
     private static final ClientLogger LOGGER = new ClientLogger(ProxyOptions.class);
     private static final String INVALID_AZURE_PROXY_URL = "Configuration {} is an invalid URL and is being ignored.";
 
@@ -62,25 +61,28 @@ public class ProxyOptions {
     private static final Pattern UNESCAPED_PERIOD = Pattern.compile("(?<!\\\\)\\.");
     private static final Pattern ANY = Pattern.compile("\\*");
 
-    private static final ConfigurationProperty<String> NON_PROXY_PROPERTY = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_NON_PROXY_HOSTS)
-        .shared(true)
-        .logValue(true)
-        .build();
-    private static final ConfigurationProperty<String> HOST_PROPERTY = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_HOST)
-        .shared(true)
-        .logValue(true)
-        .build();
-    private static final ConfigurationProperty<Integer> PORT_PROPERTY = ConfigurationPropertyBuilder.ofInteger(ConfigurationProperties.HTTP_PROXY_PORT)
-        .shared(true)
-        .defaultValue(DEFAULT_HTTPS_PORT)
-        .build();
-    private static final ConfigurationProperty<String> USER_PROPERTY = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_USER)
-        .shared(true)
-        .logValue(true)
-        .build();
-    private static final ConfigurationProperty<String> PASSWORD_PROPERTY = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_PASSWORD)
-        .shared(true)
-        .build();
+    private static final ConfigurationProperty<String> NON_PROXY_PROPERTY =
+        ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_NON_PROXY_HOSTS)
+            .shared(true)
+            .logValue(true)
+            .build();
+    private static final ConfigurationProperty<String> HOST_PROPERTY =
+        ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_HOST)
+            .shared(true)
+            .logValue(true)
+            .build();
+    private static final ConfigurationProperty<Integer> PORT_PROPERTY =
+        ConfigurationPropertyBuilder.ofInteger(ConfigurationProperties.HTTP_PROXY_PORT)
+            .shared(true)
+            .defaultValue(DEFAULT_HTTPS_PORT)
+            .build();
+    private static final ConfigurationProperty<String> USER_PROPERTY =
+        ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_USER)
+            .shared(true)
+            .logValue(true)
+            .build();
+    private static final ConfigurationProperty<String> PASSWORD_PROPERTY =
+        ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_PASSWORD).shared(true).build();
 
     private final InetSocketAddress address;
     private final Type type;
@@ -178,10 +180,10 @@ public class ProxyOptions {
      * <p>
      * Environment configurations are loaded in this order:
      * <ol>
-     *     <li>Azure HTTPS</li>
-     *     <li>Azure HTTP</li>
-     *     <li>Java HTTPS</li>
-     *     <li>Java HTTP</li>
+     * <li>Azure HTTPS</li>
+     * <li>Azure HTTP</li>
+     * <li>Java HTTPS</li>
+     * <li>Java HTTP</li>
      * </ol>
      *
      * Azure proxy configurations will be preferred over Java proxy configurations as they are more closely scoped to
@@ -208,10 +210,10 @@ public class ProxyOptions {
      * <p>
      * Environment configurations are loaded in this order:
      * <ol>
-     *     <li>Azure HTTPS</li>
-     *     <li>Azure HTTP</li>
-     *     <li>Java HTTPS</li>
-     *     <li>Java HTTP</li>
+     * <li>Azure HTTPS</li>
+     * <li>Azure HTTP</li>
+     * <li>Java HTTPS</li>
+     * <li>Java HTTP</li>
      * </ol>
      *
      * Azure proxy configurations will be preferred over Java proxy configurations as they are more closely scoped to
@@ -227,9 +229,8 @@ public class ProxyOptions {
      * will be returned.
      */
     public static ProxyOptions fromConfiguration(Configuration configuration, boolean createUnresolved) {
-        Configuration proxyConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
+        Configuration proxyConfiguration =
+            (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
         return attemptToLoadProxy(proxyConfiguration, createUnresolved);
     }
@@ -243,7 +244,8 @@ public class ProxyOptions {
         // System proxy configuration is only possible through system properties.
         // Only use system proxies when the prerequisite property is 'true'.
         if (Boolean.parseBoolean(configuration.get(JAVA_SYSTEM_PROXY_PREREQUISITE))) {
-            proxyOptions = attemptToLoadSystemProxy(configuration, createUnresolved, Configuration.PROPERTY_HTTPS_PROXY);
+            proxyOptions =
+                attemptToLoadSystemProxy(configuration, createUnresolved, Configuration.PROPERTY_HTTPS_PROXY);
             if (proxyOptions != null) {
                 LOGGER.verbose("Using proxy created from HTTPS_PROXY environment variable.");
                 return proxyOptions;
@@ -276,8 +278,8 @@ public class ProxyOptions {
         return null;
     }
 
-    private static ProxyOptions attemptToLoadSystemProxy(Configuration configuration, boolean createUnresolved,
-        String proxyProperty) {
+    private static ProxyOptions
+        attemptToLoadSystemProxy(Configuration configuration, boolean createUnresolved, String proxyProperty) {
         String proxyConfiguration = configuration.get(proxyProperty);
 
         // No proxy configuration setup.
@@ -331,8 +333,8 @@ public class ProxyOptions {
         return sanitizeNonProxyHosts(NO_PROXY_SPLIT.split(noProxyString));
     }
 
-    private static ProxyOptions attemptToLoadJavaProxy(Configuration configuration, boolean createUnresolved,
-                                                       String type) {
+    private static ProxyOptions
+        attemptToLoadJavaProxy(Configuration configuration, boolean createUnresolved, String type) {
         String host = configuration.get(type + "." + JAVA_PROXY_HOST);
 
         // No proxy configuration setup.
@@ -370,10 +372,16 @@ public class ProxyOptions {
         return createOptions(host, port, nonProxyHostsString, username, password, createUnresolved);
     }
 
-    private static ProxyOptions createOptions(String host, int port, String nonProxyHostsString, String username, String password, boolean createUnresolved) {
-        InetSocketAddress socketAddress = (createUnresolved)
-            ? InetSocketAddress.createUnresolved(host, port)
-            : new InetSocketAddress(host, port);
+    private static ProxyOptions createOptions(
+        String host,
+        int port,
+        String nonProxyHostsString,
+        String username,
+        String password,
+        boolean createUnresolved
+    ) {
+        InetSocketAddress socketAddress =
+            (createUnresolved) ? InetSocketAddress.createUnresolved(host, port) : new InetSocketAddress(host, port);
 
         ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, socketAddress);
 
@@ -389,6 +397,7 @@ public class ProxyOptions {
 
         return proxyOptions;
     }
+
     /*
      * Helper function that sanitizes 'http.nonProxyHosts' into a Pattern safe string.
      */
@@ -488,6 +497,7 @@ public class ProxyOptions {
      * The type of the proxy.
      */
     public enum Type {
+
         /**
          * HTTP proxy type.
          */
@@ -517,16 +527,19 @@ public class ProxyOptions {
         public Proxy.Type toProxyType() {
             return proxyType;
         }
+
     }
 
     /**
      * Lists available configuration property names for HTTP {@link ProxyOptions}.
      */
     private static class ConfigurationProperties {
+
         /**
          * Represents a list of hosts that should be reached directly, bypassing the proxy.
          * This is a list of patterns separated by '|'. The patterns may start or end with a '*' for wildcards.
-         * Any host matching one of these patterns will be reached through a direct connection instead of through a proxy.
+         * Any host matching one of these patterns will be reached through a direct connection instead of through a
+         * proxy.
          * <p>
          * Default value is {@code null}
          */
@@ -557,5 +570,7 @@ public class ProxyOptions {
          * Default value is {@code null}.
          */
         public static final String HTTP_PROXY_PASSWORD = "http.proxy.password";
+
     }
+
 }

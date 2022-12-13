@@ -15,20 +15,19 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
-/**
- * A {@link BinaryDataContent} implementation which is backed by a serializable object.
- */
+/** A {@link BinaryDataContent} implementation which is backed by a serializable object. */
 public final class SerializableContent extends BinaryDataContent {
 
     private final Object content;
     private final ObjectSerializer serializer;
 
     private volatile byte[] bytes;
-    private static final AtomicReferenceFieldUpdater<SerializableContent, byte[]> BYTES_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(SerializableContent.class, byte[].class, "bytes");
+    private static final AtomicReferenceFieldUpdater<SerializableContent, byte[]> BYTES_UPDATER =
+        AtomicReferenceFieldUpdater.newUpdater(SerializableContent.class, byte[].class, "bytes");
 
     /**
      * Creates a new instance of {@link SerializableContent}.
+     * 
      * @param content The serializable object that forms the content of this instance.
      * @param serializer The serializer that serializes the {@code content}.
      * @throws NullPointerException if {@code serializer} is null.
@@ -91,4 +90,5 @@ public final class SerializableContent extends BinaryDataContent {
     private byte[] getBytes() {
         return serializer.serializeToBytes(content);
     }
+
 }

@@ -15,9 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Utility type exposing methods to deal with streams.
- */
+/** Utility type exposing methods to deal with streams. */
 public final class StreamUtil {
 
     private static final ClientLogger LOGGER = new ClientLogger(StreamUtil.class);
@@ -45,20 +43,24 @@ public final class StreamUtil {
      * @throws IOException If IO operation fails.
      */
     public static List<ByteBuffer> readStreamToListOfByteBuffers(
-        InputStream inputStream, Long lengthHint,
-        int initialBufferSize, int maxBufferSize) throws IOException {
+        InputStream inputStream,
+        Long lengthHint,
+        int initialBufferSize,
+        int maxBufferSize
+    )
+        throws IOException {
         Objects.requireNonNull(inputStream, "'inputStream' must not be null");
         if (initialBufferSize <= 0) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'initialBufferSize' must be positive integer"));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("'initialBufferSize' must be positive integer"));
         }
         if (maxBufferSize < initialBufferSize) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'maxBufferSize' must not be smaller than 'maxBufferSize'"));
+                new IllegalArgumentException("'maxBufferSize' must not be smaller than 'maxBufferSize'")
+            );
         }
         if (lengthHint != null && lengthHint < 0) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'length' must not be negative"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'length' must not be negative"));
         }
 
         // Start small.
@@ -72,7 +74,6 @@ public final class StreamUtil {
         long totalRead = 0;
         long actualLength = lengthHint != null ? lengthHint : Long.MAX_VALUE; // assume infinity for unknown length.
 
-
         ReadableByteChannel channel = Channels.newChannel(inputStream);
         List<ByteBuffer> buffers = new LinkedList<>();
         ByteBuffer chunk = ByteBuffer.allocate(chunkSize);
@@ -85,8 +86,7 @@ public final class StreamUtil {
                     // Keep doubling the chunk until we hit max or known length.
                     // This is to not over allocate for small streams eagerly.
                     int nextChunkSizeCandidate = 2 * chunkSize;
-                    if (nextChunkSizeCandidate <= actualLength - totalRead
-                        && nextChunkSizeCandidate <= maxBufferSize) {
+                    if (nextChunkSizeCandidate <= actualLength - totalRead && nextChunkSizeCandidate <= maxBufferSize) {
                         chunkSize = nextChunkSizeCandidate;
                     }
 
@@ -119,4 +119,5 @@ public final class StreamUtil {
 
         return Collections.unmodifiableList(buffers);
     }
+
 }

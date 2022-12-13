@@ -9,6 +9,7 @@ package com.azure.core.util.polling.implementation;
  * The constants use for polling related operations.
  */
 public final class PollingConstants {
+
     /**
      * The header used for location based polling or sending the final result URL.
      */
@@ -57,4 +58,5 @@ public final class PollingConstants {
      * The polling status indicating the long running operation has succeeded.
      */
     public static final String STATUS_SUCCEEDED = "Succeeded";
+
 }

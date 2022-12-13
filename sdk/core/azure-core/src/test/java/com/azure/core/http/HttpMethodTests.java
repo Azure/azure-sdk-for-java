@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HttpMethodTests {
+
     @Test
     public void getTest() {
         assertEquals("GET", HttpMethod.GET.toString());
@@ -37,4 +38,5 @@ public class HttpMethodTests {
     public void headTest() {
         assertEquals("HEAD", HttpMethod.HEAD.toString());
     }
+
 }

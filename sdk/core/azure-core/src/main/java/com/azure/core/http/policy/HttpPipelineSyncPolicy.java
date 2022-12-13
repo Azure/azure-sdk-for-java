@@ -9,10 +9,9 @@ import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Mono;
 
-/**
- * Represents a {@link HttpPipelinePolicy} that doesn't do any asynchronous or synchronously blocking operations.
- */
+/** Represents a {@link HttpPipelinePolicy} that doesn't do any asynchronous or synchronously blocking operations. */
 public class HttpPipelineSyncPolicy implements HttpPipelinePolicy {
+
     /**
      * Creates a new instance of {@link HttpPipelineSyncPolicy}.
      */
@@ -24,13 +23,10 @@ public class HttpPipelineSyncPolicy implements HttpPipelinePolicy {
      */
     @Override
     public final Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return Mono.fromCallable(
-                () -> {
-                    beforeSendingRequest(context);
-                    return next;
-                })
-            .flatMap(ignored -> next.process())
-            .map(response -> afterReceivedResponse(context, response));
+        return Mono.fromCallable(() -> {
+            beforeSendingRequest(context);
+            return next;
+        }).flatMap(ignored -> next.process()).map(response -> afterReceivedResponse(context, response));
     }
 
     /**
@@ -63,4 +59,5 @@ public class HttpPipelineSyncPolicy implements HttpPipelinePolicy {
         // empty by default
         return response;
     }
+
 }

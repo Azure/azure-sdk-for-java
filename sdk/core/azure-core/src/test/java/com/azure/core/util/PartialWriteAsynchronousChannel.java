@@ -10,9 +10,7 @@ import java.nio.channels.CompletionHandler;
 import java.util.Objects;
 import java.util.concurrent.Future;
 
-/**
- * An AsynchronousByteChannel that simulates incomplete writes, i.e. when not whole buffer is written.
- */
+/** An AsynchronousByteChannel that simulates incomplete writes, i.e. when not whole buffer is written. */
 public final class PartialWriteAsynchronousChannel implements AsynchronousByteChannel {
 
     private final AsynchronousByteChannel delegate;
@@ -62,4 +60,5 @@ public final class PartialWriteAsynchronousChannel implements AsynchronousByteCh
     public void close() throws IOException {
         delegate.close();
     }
+
 }

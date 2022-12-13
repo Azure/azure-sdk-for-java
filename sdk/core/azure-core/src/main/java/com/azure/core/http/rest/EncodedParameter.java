@@ -9,6 +9,7 @@ package com.azure.core.http.rest;
  * header's value.
  */
 class EncodedParameter {
+
     private final String name;
     private final String encodedValue;
 
@@ -40,4 +41,5 @@ class EncodedParameter {
     public String getEncodedValue() {
         return encodedValue;
     }
+
 }

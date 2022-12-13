@@ -23,15 +23,21 @@ import static com.azure.core.implementation.logging.LoggingUtils.removeThrowable
 /**
  * This is a fluent logger helper class that wraps a pluggable {@link Logger}.
  *
- * <p>This logger logs format-able messages that use {@code {}} as the placeholder. When a {@link Throwable throwable}
+ * <p>
+ * This logger logs format-able messages that use {@code {}} as the placeholder. When a {@link Throwable throwable}
  * is the last argument of the format varargs and the logger is enabled for {@link ClientLogger#verbose(String,
- * Object...) verbose}, the stack trace for the throwable is logged.</p>
+ * Object...) verbose}, the stack trace for the throwable is logged.
+ * </p>
  *
- * <p>A minimum logging level threshold is determined by the
+ * <p>
+ * A minimum logging level threshold is determined by the
  * {@link Configuration#PROPERTY_AZURE_LOG_LEVEL AZURE_LOG_LEVEL} environment configuration. By default logging is
- * <b>disabled</b>.</p>
+ * <b>disabled</b>.
+ * </p>
  *
- * <p><strong>Log level hierarchy</strong></p>
+ * <p>
+ * <strong>Log level hierarchy</strong>
+ * </p>
  * <ol>
  * <li>{@link ClientLogger#error(String, Object...) Error}</li>
  * <li>{@link ClientLogger#warning(String, Object...) Warning}</li>
@@ -39,11 +45,15 @@ import static com.azure.core.implementation.logging.LoggingUtils.removeThrowable
  * <li>{@link ClientLogger#verbose(String, Object...) Verbose}</li>
  * </ol>
  *
- * <p>The logger is capable of producing json-formatted messages enriched with key value pairs.
- * Context can be provided in the constructor and populated on every message or added per each log record.</p>
+ * <p>
+ * The logger is capable of producing json-formatted messages enriched with key value pairs.
+ * Context can be provided in the constructor and populated on every message or added per each log record.
+ * </p>
+ * 
  * @see Configuration
  */
 public class ClientLogger {
+
     private final Logger logger;
     private final String globalContextSerialized;
     private final boolean hasGlobalContext;
@@ -72,7 +82,7 @@ public class ClientLogger {
      *
      * @param clazz Class creating the logger.
      * @param context Context to be populated on every log record written with this logger.
-     *                Objects are serialized with {@code toString()} method.
+     * Objects are serialized with {@code toString()} method.
      */
     public ClientLogger(Class<?> clazz, Map<String, Object> context) {
         this(clazz.getName(), context);
@@ -94,7 +104,7 @@ public class ClientLogger {
      *
      * @param className Class name creating the logger.
      * @param context Context to be populated on every log record written with this logger.
-     *                Objects are serialized with {@code toString()} method.
+     * Objects are serialized with {@code toString()} method.
      * @throws RuntimeException when logging configuration is invalid depending on SLF4J implementation.
      */
     public ClientLogger(String className, Map<String, Object> context) {
@@ -107,9 +117,13 @@ public class ClientLogger {
     /**
      * Logs a format-able message that uses {@code {}} as the placeholder at the given {@code logLevel}.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Logging with a specific log level</p>
+     * <p>
+     * Logging with a specific log level
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.log -->
      * <pre>
@@ -128,9 +142,13 @@ public class ClientLogger {
     /**
      * Logs a format-able message that uses {@code {}} as the placeholder at {@code verbose} log level.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Logging with a specific log level and exception</p>
+     * <p>
+     * Logging with a specific log level and exception
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.log#throwable -->
      * <pre>
@@ -154,9 +172,13 @@ public class ClientLogger {
     /**
      * Logs a message at {@code verbose} log level.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Logging a message at verbose log level.</p>
+     * <p>
+     * Logging a message at verbose log level.
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.verbose -->
      * <pre>
@@ -179,9 +201,13 @@ public class ClientLogger {
     /**
      * Logs a format-able message that uses {@code {}} as the placeholder at {@code verbose} log level.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Logging a message at verbose log level.</p>
+     * <p>
+     * Logging a message at verbose log level.
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.verbose#string-object -->
      * <pre>
@@ -202,9 +228,13 @@ public class ClientLogger {
     /**
      * Logs a message at {@code info} log level.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Logging a message at verbose log level.</p>
+     * <p>
+     * Logging a message at verbose log level.
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.info -->
      * <pre>
@@ -227,9 +257,13 @@ public class ClientLogger {
     /**
      * Logs a format-able message that uses {@code {}} as the placeholder at {@code informational} log level.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Logging a message at informational log level.</p>
+     * <p>
+     * Logging a message at informational log level.
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.info#string-object -->
      * <pre>
@@ -250,9 +284,13 @@ public class ClientLogger {
     /**
      * Logs a message at {@code warning} log level.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Logging a message at warning log level.</p>
+     * <p>
+     * Logging a message at warning log level.
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.warning -->
      * <pre>
@@ -276,9 +314,13 @@ public class ClientLogger {
     /**
      * Logs a format-able message that uses {@code {}} as the placeholder at {@code warning} log level.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Logging a message at warning log level.</p>
+     * <p>
+     * Logging a message at warning log level.
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.warning#string-object -->
      * <pre>
@@ -300,9 +342,13 @@ public class ClientLogger {
     /**
      * Logs a message at {@code error} log level.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Logging a message at error log level.</p>
+     * <p>
+     * Logging a message at error log level.
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.error -->
      * <pre>
@@ -329,9 +375,13 @@ public class ClientLogger {
     /**
      * Logs a format-able message that uses {@code {}} as the placeholder at {@code error} log level.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Logging an error with stack trace.</p>
+     * <p>
+     * Logging an error with stack trace.
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.error#string-object -->
      * <pre>
@@ -453,12 +503,12 @@ public class ClientLogger {
      * Performs the logging. Call only if logging at this level is enabled.
      *
      * @param format format-able message.
+     * 
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     private void performLogging(LogLevel logLevel, boolean isExceptionLogging, String format, Object... args) {
         if (hasGlobalContext) {
-            LoggingEventBuilder.create(logger, logLevel, globalContextSerialized, true)
-                .log(format, args);
+            LoggingEventBuilder.create(logger, logLevel, globalContextSerialized, true).log(format, args);
             return;
         }
 
@@ -515,6 +565,7 @@ public class ClientLogger {
      * Performs deferred logging. Call only if logging at this level is enabled.
      *
      * @param logLevel sets the logging level
+     * 
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     private void performDeferredLogging(LogLevel logLevel, Supplier<String> messageSupplier, Throwable throwable) {
@@ -522,8 +573,7 @@ public class ClientLogger {
         if (hasGlobalContext) {
             // LoggingEventBuilder writes log messages as json and performs all necessary escaping, i.e. no
             // sanitization needed
-            LoggingEventBuilder.create(logger, logLevel, globalContextSerialized, true)
-                .log(messageSupplier, throwable);
+            LoggingEventBuilder.create(logger, logLevel, globalContextSerialized, true).log(messageSupplier, throwable);
             return;
         }
 
@@ -561,6 +611,7 @@ public class ClientLogger {
 
     /*
      * @param args The arguments passed to evaluate suppliers in args.
+     * 
      * @return Return the argument with evaluated supplier
      */
     Object[] evaluateSupplierArgument(Object[] args) {
@@ -572,6 +623,7 @@ public class ClientLogger {
 
     /*
      * @param args The arguments passed to determine supplier evaluation
+     * 
      * @return Determines if it is supplier logging
      */
     boolean isSupplierLogging(Object[] args) {
@@ -606,9 +658,13 @@ public class ClientLogger {
     /**
      * Creates {@link LoggingEventBuilder} for {@code error} log level that can be
      * used to enrich log with additional context.
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Logging with context at error level.</p>
+     * <p>
+     * Logging with context at error level.
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
      * <pre>
@@ -618,19 +674,24 @@ public class ClientLogger {
      * </pre>
      * <!-- end com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
      *
-     * @return instance of {@link LoggingEventBuilder}  or no-op if error logging is disabled.
+     * @return instance of {@link LoggingEventBuilder} or no-op if error logging is disabled.
      */
     public LoggingEventBuilder atError() {
-        return LoggingEventBuilder.create(logger, LogLevel.ERROR, globalContextSerialized, canLogAtLevel(LogLevel.ERROR));
+        return LoggingEventBuilder
+            .create(logger, LogLevel.ERROR, globalContextSerialized, canLogAtLevel(LogLevel.ERROR));
     }
 
     /**
      * Creates {@link LoggingEventBuilder} for {@code warning} log level that can be
      * used to enrich log with additional context.
-
-     * <p><strong>Code samples</strong></p>
+     * 
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Logging with context at warning level.</p>
+     * <p>
+     * Logging with context at warning level.
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.atWarning -->
      * <pre>
@@ -643,16 +704,21 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder} or no-op if warn logging is disabled.
      */
     public LoggingEventBuilder atWarning() {
-        return LoggingEventBuilder.create(logger, LogLevel.WARNING, globalContextSerialized, canLogAtLevel(LogLevel.WARNING));
+        return LoggingEventBuilder
+            .create(logger, LogLevel.WARNING, globalContextSerialized, canLogAtLevel(LogLevel.WARNING));
     }
 
     /**
      * Creates {@link LoggingEventBuilder} for {@code info} log level that can be
      * used to enrich log with additional context.
      *
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Logging with context at info level.</p>
+     * <p>
+     * Logging with context at info level.
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.atInfo -->
      * <pre>
@@ -665,15 +731,20 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder} or no-op if info logging is disabled.
      */
     public LoggingEventBuilder atInfo() {
-        return LoggingEventBuilder.create(logger, LogLevel.INFORMATIONAL, globalContextSerialized, canLogAtLevel(LogLevel.INFORMATIONAL));
+        return LoggingEventBuilder
+            .create(logger, LogLevel.INFORMATIONAL, globalContextSerialized, canLogAtLevel(LogLevel.INFORMATIONAL));
     }
 
     /**
      * Creates {@link LoggingEventBuilder} for {@code verbose} log level that can be
      * used to enrich log with additional context.
-     * <p><strong>Code samples</strong></p>
+     * <p>
+     * <strong>Code samples</strong>
+     * </p>
      *
-     * <p>Logging with context at verbose level.</p>
+     * <p>
+     * Logging with context at verbose level.
+     * </p>
      *
      * <!-- src_embed com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
      * <pre>
@@ -686,6 +757,8 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder} or no-op if verbose logging is disabled.
      */
     public LoggingEventBuilder atVerbose() {
-        return LoggingEventBuilder.create(logger, LogLevel.VERBOSE, globalContextSerialized, canLogAtLevel(LogLevel.VERBOSE));
+        return LoggingEventBuilder
+            .create(logger, LogLevel.VERBOSE, globalContextSerialized, canLogAtLevel(LogLevel.VERBOSE));
     }
+
 }

@@ -13,6 +13,7 @@ import reactor.core.publisher.Flux;
  */
 @FunctionalInterface
 public interface PageRetriever<C, P> {
+
     /**
      * Retrieves one or more pages starting from the page identified by the given continuation token.
      *
@@ -23,4 +24,5 @@ public interface PageRetriever<C, P> {
      * @return A {@link Flux} that emits one or more pages.
      */
     Flux<P> get(C continuationToken, Integer pageSize);
+
 }

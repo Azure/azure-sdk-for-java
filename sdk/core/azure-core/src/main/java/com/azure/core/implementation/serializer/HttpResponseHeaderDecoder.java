@@ -12,10 +12,9 @@ import reactor.core.Exceptions;
 import java.io.IOException;
 import java.lang.reflect.Type;
 
-/**
- * {@link HttpResponse} {@link HttpHeaders} decoder.
- */
+/** {@link HttpResponse} {@link HttpHeaders} decoder. */
 final class HttpResponseHeaderDecoder {
+
     private static final String MALFORMED_HEADERS_MESSAGE = "HTTP response has malformed headers";
 
     /**
@@ -41,4 +40,5 @@ final class HttpResponseHeaderDecoder {
             throw Exceptions.propagate(new HttpResponseException(MALFORMED_HEADERS_MESSAGE, response, ex));
         }
     }
+
 }

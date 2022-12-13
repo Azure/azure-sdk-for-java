@@ -8,11 +8,10 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Model used for testing {@link JsonFlatten}.
- */
+/** Model used for testing {@link JsonFlatten}. */
 @Fluent
 public final class JsonFlattenOnArrayType {
+
     @JsonFlatten
     @JsonProperty("jsonflatten.array")
     private String[] jsonFlattenArray;
@@ -25,4 +24,5 @@ public final class JsonFlattenOnArrayType {
     public String[] getJsonFlattenArray() {
         return CoreUtils.clone(jsonFlattenArray);
     }
+
 }

@@ -18,10 +18,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.time.temporal.TemporalQueries;
 
-/**
- * Custom deserializer that handles converting ISO8601 dates into {@link OffsetDateTime} objects.
- */
+/** Custom deserializer that handles converting ISO8601 dates into {@link OffsetDateTime} objects. */
 class DateTimeDeserializer extends JsonDeserializer<OffsetDateTime> {
+
     private static final SimpleModule MODULE;
 
     static {
@@ -53,4 +52,5 @@ class DateTimeDeserializer extends JsonDeserializer<OffsetDateTime> {
             }
         }
     }
+
 }

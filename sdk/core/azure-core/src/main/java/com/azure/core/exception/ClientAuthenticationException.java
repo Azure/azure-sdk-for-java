@@ -50,4 +50,5 @@ public class ClientAuthenticationException extends HttpResponseException {
     public ClientAuthenticationException(final String message, final HttpResponse response, final Throwable cause) {
         super(message, response, cause);
     }
+
 }

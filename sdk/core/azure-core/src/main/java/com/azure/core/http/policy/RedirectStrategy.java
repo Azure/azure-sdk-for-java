@@ -9,10 +9,9 @@ import com.azure.core.http.HttpResponse;
 
 import java.util.Set;
 
-/**
- * The interface for determining the {@link RedirectStrategy redirect strategy} used in {@link RedirectPolicy}.
- */
+/** The interface for determining the {@link RedirectStrategy redirect strategy} used in {@link RedirectPolicy}. */
 public interface RedirectStrategy {
+
     /**
      * Max number of redirect attempts to be made.
      *
@@ -29,8 +28,12 @@ public interface RedirectStrategy {
      * @param attemptedRedirectUrls attempted redirect locations used so far.
      * @return {@code true} if the request should be redirected, {@code false} otherwise
      */
-    boolean shouldAttemptRedirect(HttpPipelineCallContext context, HttpResponse httpResponse, int tryCount,
-                                  Set<String> attemptedRedirectUrls);
+    boolean shouldAttemptRedirect(
+        HttpPipelineCallContext context,
+        HttpResponse httpResponse,
+        int tryCount,
+        Set<String> attemptedRedirectUrls
+    );
 
     /**
      * Creates an {@link HttpRequest request} for the redirect attempt.
@@ -39,4 +42,5 @@ public interface RedirectStrategy {
      * @return the modified {@link HttpRequest} to redirect the incoming request.
      */
     HttpRequest createRedirectRequest(HttpResponse httpResponse);
+
 }

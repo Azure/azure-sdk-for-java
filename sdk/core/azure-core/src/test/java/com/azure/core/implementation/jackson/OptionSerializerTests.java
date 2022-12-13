@@ -12,11 +12,11 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-/**
- * Tests for {@link Option} that can represent tri-sate (non-null-value, null-value, or no-value).
- */
+/** Tests for {@link Option} that can represent tri-sate (non-null-value, null-value, or no-value). */
 public class OptionSerializerTests {
-    private static final JacksonAdapter ADAPTER = new JacksonAdapter((outerMapper, innerMapper) -> outerMapper.registerModule(new OptionModule()));
+
+    private static final JacksonAdapter ADAPTER =
+        new JacksonAdapter((outerMapper, innerMapper) -> outerMapper.registerModule(new OptionModule()));
 
     @Test
     public void canSerializeExplicitNull() throws IOException {
@@ -68,6 +68,7 @@ public class OptionSerializerTests {
     }
 
     private static class PatchModel {
+
         @JsonProperty("sku")
         private Option<String> sku;
 
@@ -75,9 +76,11 @@ public class OptionSerializerTests {
             this.sku = sku;
             return this;
         }
+
     }
 
     private static class RawModel {
+
         @JsonProperty("name")
         private String name;
 
@@ -85,5 +88,7 @@ public class OptionSerializerTests {
             this.name = name;
             return this;
         }
+
     }
+
 }

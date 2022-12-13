@@ -10,12 +10,11 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.Objects;
 import java.util.Optional;
 
-/**
- * Represents a JSON Patch operation.
- */
+/** Represents a JSON Patch operation. */
 @Immutable
 @JsonSerialize(using = JsonPatchOperationSerializer.class)
 final class JsonPatchOperation {
+
     private final JsonPatchOperationKind op;
     private final String from;
     private final String path;
@@ -79,8 +78,7 @@ final class JsonPatchOperation {
 
     @Override
     public int hashCode() {
-        return Objects.hash(op.toString(), from, path,
-            (value == null) ? null : value.getValue());
+        return Objects.hash(op.toString(), from, path, (value == null) ? null : value.getValue());
     }
 
     @Override
@@ -106,25 +104,19 @@ final class JsonPatchOperation {
     }
 
     StringBuilder buildString(StringBuilder builder) {
-        builder.append("{\"op\":\"")
-            .append(op.toString())
-            .append("\"");
+        builder.append("{\"op\":\"").append(op.toString()).append("\"");
 
         if (from != null) {
-            builder.append(",\"from\":\"")
-                .append(from)
-                .append("\"");
+            builder.append(",\"from\":\"").append(from).append("\"");
         }
 
-        builder.append(",\"path\":\"")
-            .append(path)
-            .append("\"");
+        builder.append(",\"path\":\"").append(path).append("\"");
 
         if (value.isInitialized()) {
-            builder.append(",\"value\":")
-                .append(value.getValue());
+            builder.append(",\"value\":").append(value.getValue());
         }
 
         return builder.append("}");
     }
+
 }

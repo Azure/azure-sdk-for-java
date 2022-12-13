@@ -19,10 +19,9 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-/**
- * Tests {@link GeoPointCollectionTests}.
- */
+/** Tests {@link GeoPointCollectionTests}. */
 public class GeoPointCollectionTests {
+
     @Test
     public void nullPointsThrows() {
         Assertions.assertThrows(NullPointerException.class, () -> new GeoPointCollection(null));
@@ -30,10 +29,7 @@ public class GeoPointCollectionTests {
 
     @Test
     public void simpleConstructor() {
-        List<GeoPoint> points = Arrays.asList(
-            new GeoPoint(new GeoPosition(0, 0)),
-            new GeoPoint(new GeoPosition(1, 1))
-        );
+        List<GeoPoint> points = Arrays.asList(new GeoPoint(new GeoPosition(0, 0)), new GeoPoint(new GeoPosition(1, 1)));
 
         GeoPointCollection multiPoint = new GeoPointCollection(points);
 
@@ -45,10 +41,7 @@ public class GeoPointCollectionTests {
 
     @Test
     public void complexConstructor() {
-        List<GeoPoint> points = Arrays.asList(
-            new GeoPoint(new GeoPosition(0, 0)),
-            new GeoPoint(new GeoPosition(1, 1))
-        );
+        List<GeoPoint> points = Arrays.asList(new GeoPoint(new GeoPosition(0, 0)), new GeoPoint(new GeoPosition(1, 1)));
 
         GeoBoundingBox boundingBox = new GeoBoundingBox(0, 0, 1, 1);
         Map<String, Object> properties = Collections.singletonMap("key", "value");
@@ -80,15 +73,10 @@ public class GeoPointCollectionTests {
     }
 
     private static Stream<Arguments> equalsSupplier() {
-        List<GeoPoint> points = Arrays.asList(
-            new GeoPoint(new GeoPosition(0, 0)),
-            new GeoPoint(new GeoPosition(1, 1))
-        );
+        List<GeoPoint> points = Arrays.asList(new GeoPoint(new GeoPosition(0, 0)), new GeoPoint(new GeoPosition(1, 1)));
 
-        List<GeoPoint> points1 = Arrays.asList(
-            new GeoPoint(new GeoPosition(0, 0)),
-            new GeoPoint(new GeoPosition(0, 1))
-        );
+        List<GeoPoint> points1 =
+            Arrays.asList(new GeoPoint(new GeoPosition(0, 0)), new GeoPoint(new GeoPosition(0, 1)));
 
         GeoBoundingBox boundingBox = new GeoBoundingBox(0, 0, 1, 1);
         Map<String, Object> properties = Collections.singletonMap("key", "value");
@@ -116,4 +104,5 @@ public class GeoPointCollectionTests {
             Arguments.of(multiPoint1, new GeoPointCollection(points1, boundingBox, properties), true)
         );
     }
+
 }

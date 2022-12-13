@@ -17,17 +17,18 @@ import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-/**
- * Utility class for Polling APIs.
- */
+/** Utility class for Polling APIs. */
 class PollingUtil {
+
     private static final ClientLogger LOGGER = new ClientLogger(PollingUtil.class);
 
-
-    static <T> PollResponse<T> pollingLoop(PollingContext<T> pollingContext, Duration timeout,
-                                                  LongRunningOperationStatus statusToWaitFor,
-                                                  Function<PollingContext<T>, PollResponse<T>> pollOperation,
-                                                  Duration pollInterval) {
+    static <T> PollResponse<T> pollingLoop(
+        PollingContext<T> pollingContext,
+        Duration timeout,
+        LongRunningOperationStatus statusToWaitFor,
+        Function<PollingContext<T>, PollResponse<T>> pollOperation,
+        Duration pollInterval
+    ) {
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         boolean timeBound = timeout != null;
         long timeoutInMillis = timeBound ? timeout.toMillis() : -1;
@@ -41,7 +42,7 @@ class PollingUtil {
         };
         while (!intermediatePollResponse.getStatus().isComplete()) {
             long elapsedTime = System.currentTimeMillis() - startTime;
-            if (timeBound ?  elapsedTime >= timeoutInMillis : false) {
+            if (timeBound ? elapsedTime >= timeoutInMillis : false) {
                 scheduler.shutdown();
                 return intermediatePollResponse;
             }
@@ -49,8 +50,11 @@ class PollingUtil {
                 scheduler.shutdown();
                 return intermediatePollResponse;
             }
-            final ScheduledFuture<?> pollOp =
-                scheduler.schedule(pollOpRunnable, getDelay(intermediatePollResponse, pollInterval).toMillis(), TimeUnit.MILLISECONDS);
+            final ScheduledFuture<?> pollOp = scheduler.schedule(
+                pollOpRunnable,
+                getDelay(intermediatePollResponse, pollInterval).toMillis(),
+                TimeUnit.MILLISECONDS
+            );
             try {
                 if (timeBound) {
                     pollOp.get(timeoutInMillis - elapsedTime, TimeUnit.MILLISECONDS);
@@ -68,11 +72,13 @@ class PollingUtil {
         return intermediatePollResponse;
     }
 
-    static <T, U> Flux<AsyncPollResponse<T, U>> pollingLoopAsync(PollingContext<T> pollingContext,
-                                                Function<PollingContext<T>, Mono<PollResponse<T>>> pollOperation,
-                                                BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation,
-                                                Function<PollingContext<T>, Mono<U>> fetchResultOperation,
-                                                Duration pollInterval) {
+    static <T, U> Flux<AsyncPollResponse<T, U>> pollingLoopAsync(
+        PollingContext<T> pollingContext,
+        Function<PollingContext<T>, Mono<PollResponse<T>>> pollOperation,
+        BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation,
+        Function<PollingContext<T>, Mono<U>> fetchResultOperation,
+        Duration pollInterval
+    ) {
         return Flux.using(
             // Create a Polling Context per subscription
             () -> pollingContext,
@@ -85,11 +91,11 @@ class PollingUtil {
                 .takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
                 .concatMap(currentPollResponse -> {
                     cxt.setLatestResponse(currentPollResponse);
-                    return Mono.just(new AsyncPollResponse<>(cxt,
-                        cancelOperation,
-                        fetchResultOperation));
+                    return Mono.just(new AsyncPollResponse<>(cxt, cancelOperation, fetchResultOperation));
                 }),
-            cxt -> { });
+            cxt -> {
+            }
+        );
     }
 
     /**
@@ -103,20 +109,20 @@ class PollingUtil {
         if (retryAfter == null) {
             return pollInterval;
         } else {
-            return retryAfter.compareTo(Duration.ZERO) > 0
-                ? retryAfter
-                : pollInterval;
+            return retryAfter.compareTo(Duration.ZERO) > 0 ? retryAfter : pollInterval;
         }
     }
 
     static <T, U> PollResponse<T> toPollResponse(AsyncPollResponse<T, U> asyncPollResponse) {
-        return new PollResponse<>(asyncPollResponse.getStatus(),
+        return new PollResponse<>(
+            asyncPollResponse.getStatus(),
             asyncPollResponse.getValue(),
-            asyncPollResponse.getRetryAfter());
+            asyncPollResponse.getRetryAfter()
+        );
     }
 
-    static <T, U> boolean matchStatus(AsyncPollResponse<T, U> currentPollResponse,
-                                LongRunningOperationStatus statusToWaitFor) {
+    static <T, U> boolean
+        matchStatus(AsyncPollResponse<T, U> currentPollResponse, LongRunningOperationStatus statusToWaitFor) {
         if (currentPollResponse == null || statusToWaitFor == null) {
             return false;
         }
@@ -125,4 +131,5 @@ class PollingUtil {
         }
         return false;
     }
+
 }

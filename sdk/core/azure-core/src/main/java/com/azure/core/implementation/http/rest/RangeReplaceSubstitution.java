@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
  * generate a {@link Pattern} to perform replacing.
  */
 public class RangeReplaceSubstitution extends Substitution {
+
     private final List<Range> ranges;
 
     /**
@@ -30,8 +31,12 @@ public class RangeReplaceSubstitution extends Substitution {
      * taking place.
      * @param substitutionBase The string that will have its ranges substituted.
      */
-    public RangeReplaceSubstitution(String urlParameterName, int methodParameterIndex, boolean shouldEncode,
-        String substitutionBase) {
+    public RangeReplaceSubstitution(
+        String urlParameterName,
+        int methodParameterIndex,
+        boolean shouldEncode,
+        String substitutionBase
+    ) {
         super(urlParameterName, methodParameterIndex, shouldEncode);
         this.ranges = new ArrayList<>();
 
@@ -54,6 +59,7 @@ public class RangeReplaceSubstitution extends Substitution {
     }
 
     static final class Range implements Comparable<Range> {
+
         private final int start;
         private final int end;
 
@@ -100,5 +106,7 @@ public class RangeReplaceSubstitution extends Substitution {
 
             return start == other.start && end == other.end;
         }
+
     }
+
 }

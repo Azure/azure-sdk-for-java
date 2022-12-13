@@ -19,10 +19,9 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * A concurrent cache of {@link Response} {@link MethodHandle} constructors.
- */
+/** A concurrent cache of {@link Response} {@link MethodHandle} constructors. */
 public final class ResponseConstructorsCache {
+
     private static final String THREE_PARAM_ERROR = "Failed to deserialize 3-parameter response.";
     private static final String FOUR_PARAM_ERROR = "Failed to deserialize 4-parameter response.";
     private static final String FIVE_PARAM_ERROR = "Failed to deserialize 5-parameter response.";
@@ -104,8 +103,8 @@ public final class ResponseConstructorsCache {
         // Before this was returning null, but in all cases where null is returned from this method an exception would
         // be thrown later. Instead, just throw here to properly use computeIfAbsent by not inserting a null key-value
         // pair that would cause the computation to always be performed.
-        throw LOGGER.logExceptionAsError(new RuntimeException("Cannot find suitable constructor for class "
-            + responseClass));
+        throw LOGGER
+            .logExceptionAsError(new RuntimeException("Cannot find suitable constructor for class " + responseClass));
     }
 
     /**
@@ -116,8 +115,11 @@ public final class ResponseConstructorsCache {
      * @param bodyAsObject The HTTP response body.
      * @return An instance of the {@link Response} implementation.
      */
-    public Response<?> invoke(final MethodHandle handle,
-        final HttpResponseDecoder.HttpDecodedResponse decodedResponse, final Object bodyAsObject) {
+    public Response<?> invoke(
+        final MethodHandle handle,
+        final HttpResponseDecoder.HttpDecodedResponse decodedResponse,
+        final Object bodyAsObject
+    ) {
         final HttpResponse httpResponse = decodedResponse.getSourceResponse();
         final HttpRequest httpRequest = httpResponse.getRequest();
         final int responseStatusCode = httpResponse.getStatusCode();
@@ -126,14 +128,26 @@ public final class ResponseConstructorsCache {
         final int paramCount = handle.type().parameterCount();
         switch (paramCount) {
             case 3:
-                return constructResponse(handle, THREE_PARAM_ERROR, httpRequest, responseStatusCode,
-                    responseHeaders);
+                return constructResponse(handle, THREE_PARAM_ERROR, httpRequest, responseStatusCode, responseHeaders);
             case 4:
-                return constructResponse(handle, FOUR_PARAM_ERROR, httpRequest, responseStatusCode,
-                    responseHeaders, bodyAsObject);
+                return constructResponse(
+                    handle,
+                    FOUR_PARAM_ERROR,
+                    httpRequest,
+                    responseStatusCode,
+                    responseHeaders,
+                    bodyAsObject
+                );
             case 5:
-                return constructResponse(handle, FIVE_PARAM_ERROR, httpRequest, responseStatusCode,
-                    responseHeaders, bodyAsObject, decodedResponse.getDecodedHeaders());
+                return constructResponse(
+                    handle,
+                    FIVE_PARAM_ERROR,
+                    httpRequest,
+                    responseStatusCode,
+                    responseHeaders,
+                    bodyAsObject,
+                    decodedResponse.getDecodedHeaders()
+                );
             default:
                 throw LOGGER.logExceptionAsError(new IllegalStateException(INVALID_PARAM_COUNT));
         }
@@ -154,4 +168,5 @@ public final class ResponseConstructorsCache {
             throw LOGGER.logExceptionAsError(new IllegalStateException(exceptionMessage, throwable));
         }
     }
+
 }

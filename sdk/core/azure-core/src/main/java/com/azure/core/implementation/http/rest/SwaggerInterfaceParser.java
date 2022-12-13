@@ -12,10 +12,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.core.implementation.ImplUtils.MAX_CACHE_SIZE;
 
-/**
- * The type responsible for creating individual Swagger interface method parsers from a Swagger interface.
- */
+/** The type responsible for creating individual Swagger interface method parsers from a Swagger interface. */
 public final class SwaggerInterfaceParser {
+
     private static final Map<Class<?>, SwaggerInterfaceParser> INTERFACE_PARSERS = new ConcurrentHashMap<>();
 
     private final String host;
@@ -76,4 +75,5 @@ public final class SwaggerInterfaceParser {
     public String getServiceName() {
         return serviceName;
     }
+
 }

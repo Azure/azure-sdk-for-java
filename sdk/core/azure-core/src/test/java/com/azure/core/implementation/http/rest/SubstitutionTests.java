@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SubstitutionTests {
+
     @Test
     public void substitutionConstructor() {
         final Substitution s = new Substitution("A", 2, true);
@@ -24,4 +25,5 @@ public class SubstitutionTests {
         assertEquals(true, s.shouldEncode());
         assertEquals(true, s.mergeParameters());
     }
+
 }

@@ -12,6 +12,7 @@ import java.util.Objects;
  * For more information, check out <a href="https://en.wikipedia.org/wiki/HTTP_ETag">Wikipedia's HTTP Etag</a>.
  */
 public final class ETag {
+
     private static final ClientLogger LOGGER = new ClientLogger(ETag.class);
 
     private static final String QUOTE_STRING = "\"";
@@ -62,9 +63,9 @@ public final class ETag {
 
     /**
      * Checks if the {@code eTag} a valid ETag value. Valid ETags show below,
-     *  - The special character, '*'.
-     *  - A strong ETag, which the value is wrapped in quotes, ex, "12345".
-     *  - A weak ETag, which value is wrapped in quotes and prefixed by "W/", ex, W/"12345".
+     * - The special character, '*'.
+     * - A strong ETag, which the value is wrapped in quotes, ex, "12345".
+     * - A weak ETag, which value is wrapped in quotes and prefixed by "W/", ex, W/"12345".
      *
      * @param eTag ETag string value.
      */
@@ -73,11 +74,18 @@ public final class ETag {
             return;
         }
 
-        if (!((eTag.startsWith(QUOTE_STRING) || eTag.startsWith(WEAK_ETAG_PREFIX_QUOTE))
-                  && eTag.endsWith(QUOTE_STRING))) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The value=%s should be equal to * , be wrapped in quotes, or be wrapped in quotes prefixed by W/",
-                eTag)));
+        if (
+            !((eTag.startsWith(QUOTE_STRING) || eTag.startsWith(WEAK_ETAG_PREFIX_QUOTE)) && eTag.endsWith(QUOTE_STRING))
+        ) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException(
+                    String.format(
+                        "The value=%s should be equal to * , be wrapped in quotes, or be wrapped in quotes prefixed by W/",
+                        eTag
+                    )
+                )
+            );
         }
     }
+
 }

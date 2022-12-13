@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class TestConfigurationSource implements ConfigurationSource {
+
     private Map<String, String> testData;
 
     public TestConfigurationSource() {
@@ -24,8 +25,10 @@ public class TestConfigurationSource implements ConfigurationSource {
         if (path == null) {
             return testData;
         }
-        return testData.entrySet().stream()
+        return testData.entrySet()
+            .stream()
             .filter(prop -> prop.getKey().startsWith(path + "."))
             .collect(Collectors.toMap(Map.Entry<String, String>::getKey, Map.Entry<String, String>::getValue));
     }
+
 }

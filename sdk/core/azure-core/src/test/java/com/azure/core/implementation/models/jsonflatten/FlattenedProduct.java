@@ -7,12 +7,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Model used for testing {@link JsonFlatten}.
- */
+/** Model used for testing {@link JsonFlatten}. */
 @Fluent
 @JsonFlatten
 public class FlattenedProduct {
+
     // Flattened and escaped property
     @JsonProperty(value = "properties.p\\.name")
     private String productName;
@@ -37,4 +36,5 @@ public class FlattenedProduct {
         this.productType = productType;
         return this;
     }
+
 }

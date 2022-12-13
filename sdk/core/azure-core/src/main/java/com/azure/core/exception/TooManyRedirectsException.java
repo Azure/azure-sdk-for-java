@@ -44,4 +44,5 @@ public class TooManyRedirectsException extends HttpResponseException {
     public TooManyRedirectsException(final String message, final HttpResponse response, final Throwable cause) {
         super(message, response, cause);
     }
+
 }

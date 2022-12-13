@@ -16,6 +16,7 @@ import java.util.Arrays;
  * where ByteBuffer data may need to be first copied into a temporary buffer resulting in an extra memory copy.
  */
 public final class ByteBufferCollector {
+
     /*
      * Start with a default size of 1 KB as this is small enough to be performant while covering most small response
      * sizes.
@@ -131,4 +132,5 @@ public final class ByteBufferCollector {
 
         buffer = Arrays.copyOf(buffer, proposedNewCapacity);
     }
+
 }

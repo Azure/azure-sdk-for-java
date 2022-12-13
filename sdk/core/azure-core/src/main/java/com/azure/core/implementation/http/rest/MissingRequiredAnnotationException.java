@@ -7,10 +7,9 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.List;
 
-/**
- * An exception thrown when a Swagger interface is parsed and it is missing required annotations.
- */
+/** An exception thrown when a Swagger interface is parsed and it is missing required annotations. */
 public class MissingRequiredAnnotationException extends RuntimeException {
+
     /**
      * Create a new MissingRequiredAnnotationException for the provided missing required annotation on the provided
      * swaggerInterface.
@@ -18,10 +17,17 @@ public class MissingRequiredAnnotationException extends RuntimeException {
      * @param requiredAnnotation The annotation that is required.
      * @param swaggerInterface The swagger interface that is missing the required annotation.
      */
-    public MissingRequiredAnnotationException(Class<? extends Annotation> requiredAnnotation,
-        Class<?> swaggerInterface) {
-        super("A " + getAnnotationName(requiredAnnotation) + " annotation must be defined on "
-            + swaggerInterface.getName() + ".");
+    public MissingRequiredAnnotationException(
+        Class<? extends Annotation> requiredAnnotation,
+        Class<?> swaggerInterface
+    ) {
+        super(
+            "A "
+                + getAnnotationName(requiredAnnotation)
+                + " annotation must be defined on "
+                + swaggerInterface.getName()
+                + "."
+        );
     }
 
     /**
@@ -31,10 +37,17 @@ public class MissingRequiredAnnotationException extends RuntimeException {
      * @param requiredAnnotationOptions The options for the annotation that is required.
      * @param swaggerInterfaceMethod The swagger interface method that is missing the required annotation.
      */
-    public MissingRequiredAnnotationException(List<Class<? extends Annotation>> requiredAnnotationOptions,
-        Method swaggerInterfaceMethod) {
-        super("Either " + optionsToString(requiredAnnotationOptions) + " annotation must be defined on the method "
-            + methodFullName(swaggerInterfaceMethod) + ".");
+    public MissingRequiredAnnotationException(
+        List<Class<? extends Annotation>> requiredAnnotationOptions,
+        Method swaggerInterfaceMethod
+    ) {
+        super(
+            "Either "
+                + optionsToString(requiredAnnotationOptions)
+                + " annotation must be defined on the method "
+                + methodFullName(swaggerInterfaceMethod)
+                + "."
+        );
     }
 
     private static String getAnnotationName(Class<? extends Annotation> annotation) {
@@ -61,4 +74,5 @@ public class MissingRequiredAnnotationException extends RuntimeException {
     private static String methodFullName(Method swaggerInterfaceMethod) {
         return swaggerInterfaceMethod.getDeclaringClass().getName() + "." + swaggerInterfaceMethod.getName() + "()";
     }
+
 }

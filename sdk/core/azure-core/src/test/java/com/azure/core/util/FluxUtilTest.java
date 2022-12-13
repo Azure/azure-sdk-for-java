@@ -59,18 +59,21 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FluxUtilTest {
+
     @Test
     public void testCallWithContextGetSingle() {
-        StepVerifier.create(getSingle()
-                .contextWrite(reactor.util.context.Context.of("FirstName", "Foo", "LastName", "Bar")))
+        StepVerifier
+            .create(getSingle().contextWrite(reactor.util.context.Context.of("FirstName", "Foo", "LastName", "Bar")))
             .assertNext(response -> assertEquals("Hello, Foo Bar", response))
             .verifyComplete();
     }
 
     @Test
     public void testCallWithContextGetCollection() {
-        StepVerifier.create(getCollection()
-                .contextWrite(reactor.util.context.Context.of("FirstName", "Foo", "LastName", "Bar")))
+        StepVerifier
+            .create(
+                getCollection().contextWrite(reactor.util.context.Context.of("FirstName", "Foo", "LastName", "Bar"))
+            )
             .assertNext(response -> assertEquals("Hello,", response))
             .assertNext(response -> assertEquals("Foo", response))
             .assertNext(response -> assertEquals("Bar", response))
@@ -79,8 +82,8 @@ public class FluxUtilTest {
 
     @Test
     public void testCallWithDefaultContextGetSingle() {
-        StepVerifier.create(getSingleWithContextAttributes()
-                .contextWrite(reactor.util.context.Context.of("FirstName", "Foo")))
+        StepVerifier
+            .create(getSingleWithContextAttributes().contextWrite(reactor.util.context.Context.of("FirstName", "Foo")))
             .assertNext(response -> assertEquals("Hello, Foo additionalContextValue", response))
             .verifyComplete();
     }
@@ -109,8 +112,7 @@ public class FluxUtilTest {
         assertTrue(reactorContext.hasKey("key1"));
         assertEquals("value1", reactorContext.get("key1"));
 
-        context = context.addData("key2", "value2")
-            .addData("key1", "value3");
+        context = context.addData("key2", "value2").addData("key1", "value3");
 
         reactorContext = FluxUtil.toReactorContext(context);
         assertEquals(2, reactorContext.size());
@@ -135,11 +137,13 @@ public class FluxUtilTest {
     @Test
     public void testToMono() {
         String testValue = "some value";
-        Response<String> response = new SimpleResponse<>(new HttpRequest(HttpMethod.GET, "http://www.test.com"),
-            202, new HttpHeaders(), testValue);
-        StepVerifier.create(FluxUtil.toMono(response))
-            .assertNext(val -> assertEquals(val, testValue))
-            .verifyComplete();
+        Response<String> response = new SimpleResponse<>(
+            new HttpRequest(HttpMethod.GET, "http://www.test.com"),
+            202,
+            new HttpHeaders(),
+            testValue
+        );
+        StepVerifier.create(FluxUtil.toMono(response)).assertNext(val -> assertEquals(val, testValue)).verifyComplete();
     }
 
     @Test
@@ -147,8 +151,7 @@ public class FluxUtilTest {
         String errMsg = "It is an error message";
         RuntimeException ex = new RuntimeException(errMsg);
         ClientLogger logger = new ClientLogger(FluxUtilTest.class);
-        StepVerifier.create(FluxUtil.monoError(logger, ex))
-            .verifyErrorMessage(errMsg);
+        StepVerifier.create(FluxUtil.monoError(logger, ex)).verifyErrorMessage(errMsg);
     }
 
     @Test
@@ -156,8 +159,7 @@ public class FluxUtilTest {
         String errMsg = "It is an error message";
         RuntimeException ex = new RuntimeException(errMsg);
         ClientLogger logger = new ClientLogger(FluxUtilTest.class);
-        StepVerifier.create(FluxUtil.fluxError(logger, ex))
-            .verifyErrorMessage(errMsg);
+        StepVerifier.create(FluxUtil.fluxError(logger, ex)).verifyErrorMessage(errMsg);
     }
 
     @Test
@@ -165,8 +167,7 @@ public class FluxUtilTest {
         String errMsg = "It is an error message";
         RuntimeException ex = new RuntimeException(errMsg);
         ClientLogger logger = new ClientLogger(FluxUtilTest.class);
-        StepVerifier.create(FluxUtil.pagedFluxError(logger, ex))
-            .verifyErrorMessage(errMsg);
+        StepVerifier.create(FluxUtil.pagedFluxError(logger, ex)).verifyErrorMessage(errMsg);
     }
 
     @Test
@@ -227,8 +228,11 @@ public class FluxUtilTest {
 
     @ParameterizedTest
     @MethodSource("writeFileDoesNotSwallowErrorSupplier")
-    public void writeFileDoesNotSwallowError(Flux<ByteBuffer> data, AsynchronousFileChannel channel,
-        Class<? extends Throwable> expectedException) {
+    public void writeFileDoesNotSwallowError(
+        Flux<ByteBuffer> data,
+        AsynchronousFileChannel channel,
+        Class<? extends Throwable> expectedException
+    ) {
         Flux<Void> writeFile = Flux.using(() -> channel, c -> FluxUtil.writeFile(data, c), c -> {
             try {
                 c.close();
@@ -237,19 +241,19 @@ public class FluxUtilTest {
             }
         });
 
-        StepVerifier.create(writeFile)
-            .expectError(expectedException)
-            .verify(Duration.ofSeconds(30));
+        StepVerifier.create(writeFile).expectError(expectedException).verify(Duration.ofSeconds(30));
     }
 
     private static Stream<Arguments> writeFileDoesNotSwallowErrorSupplier() {
         // AsynchronousFileChannel that throws NonWritableChannelException.
         AsynchronousFileChannel nonWritableChannel = new MockAsynchronousFileChannel() {
+
             @Override
-            public <A> void write(ByteBuffer src, long position, A attachment,
-                CompletionHandler<Integer, ? super A> handler) {
+            public <A> void
+                write(ByteBuffer src, long position, A attachment, CompletionHandler<Integer, ? super A> handler) {
                 handler.failed(new NonWritableChannelException(), attachment);
             }
+
         };
 
         // Flux<ByteBuffer> that throws an error during processing.
@@ -263,22 +267,26 @@ public class FluxUtilTest {
             return count + 1;
         });
         AsynchronousFileChannel exceptionThrowingChannel = new MockAsynchronousFileChannel() {
+
             @Override
-            public <A> void write(ByteBuffer src, long position, A attachment,
-                CompletionHandler<Integer, ? super A> handler) {
+            public <A> void
+                write(ByteBuffer src, long position, A attachment, CompletionHandler<Integer, ? super A> handler) {
                 int remaining = src.remaining();
                 src.position(src.position() + remaining);
                 handler.completed(remaining, attachment);
             }
+
         };
 
         // Improper Flux<ByteBuffer> implementation that ignores downstream requests.
         final byte[] data = new byte[4096];
         new SecureRandom().nextBytes(data);
         Flux<ByteBuffer> ignoresRequestFlux = new Flux<ByteBuffer>() {
+
             @Override
             public void subscribe(CoreSubscriber<? super ByteBuffer> actual) {
                 actual.onSubscribe(new Subscription() {
+
                     @Override
                     public void request(long n) {
                         IntStream.range(0, 16).forEach(ignored -> actual.onNext(ByteBuffer.wrap(data)));
@@ -289,19 +297,23 @@ public class FluxUtilTest {
                     @Override
                     public void cancel() {
                     }
+
                 });
             }
+
         };
 
         AsynchronousFileChannel ignoresRequestChannel = new MockAsynchronousFileChannel();
 
         // CompletionHandler that emits a writing error.
         AsynchronousFileChannel completionHandlerPropagatesError = new MockAsynchronousFileChannel() {
+
             @Override
-            public <A> void write(ByteBuffer src, long position, A attachment,
-                CompletionHandler<Integer, ? super A> handler) {
+            public <A> void
+                write(ByteBuffer src, long position, A attachment, CompletionHandler<Integer, ? super A> handler) {
                 handler.failed(new FileLockInterruptionException(), attachment);
             }
+
         };
 
         return Stream.of(
@@ -315,8 +327,11 @@ public class FluxUtilTest {
             Arguments.of(ignoresRequestFlux, ignoresRequestChannel, IllegalStateException.class),
 
             // AsynchronousFileChannel that has an error propagated from the CompletionHandler.
-            Arguments.of(Flux.just(ByteBuffer.allocate(0)), completionHandlerPropagatesError,
-                FileLockInterruptionException.class)
+            Arguments.of(
+                Flux.just(ByteBuffer.allocate(0)),
+                completionHandlerPropagatesError,
+                FileLockInterruptionException.class
+            )
         );
     }
 
@@ -328,30 +343,35 @@ public class FluxUtilTest {
         AtomicInteger errorCount = new AtomicInteger();
         Flux<ByteBuffer> retriableStream = FluxUtil.createRetriableDownloadFlux(
             () -> generateStream(data, 0, errorCount),
-            (throwable, position) -> generateStream(data, position, errorCount), 5);
+            (throwable, position) -> generateStream(data, position, errorCount),
+            5
+        );
 
         Path file = Files.createTempFile("writingRetriableStreamThatFails" + UUID.randomUUID(), ".txt");
         file.toFile().deleteOnExit();
 
-        Flux<Void> writeFile = Flux.using(() -> AsynchronousFileChannel.open(file, StandardOpenOption.WRITE),
-            channel -> FluxUtil.writeFile(retriableStream, channel), channel -> {
+        Flux<Void> writeFile = Flux.using(
+            () -> AsynchronousFileChannel.open(file, StandardOpenOption.WRITE),
+            channel -> FluxUtil.writeFile(retriableStream, channel),
+            channel -> {
                 try {
                     channel.close();
                 } catch (IOException ex) {
                     throw new UncheckedIOException(ex);
                 }
-            });
+            }
+        );
 
-        StepVerifier.create(writeFile)
-            .expectComplete()
-            .verify(Duration.ofSeconds(30));
+        StepVerifier.create(writeFile).expectComplete().verify(Duration.ofSeconds(30));
 
         byte[] writtenData = Files.readAllBytes(file);
         assertArrayEquals(data, writtenData);
     }
 
     private Flux<ByteBuffer> generateStream(byte[] data, long offset, AtomicInteger errorCount) {
-        final long[] pos = new long[]{offset};
+        final long[] pos = new long[] {
+            offset
+        };
 
         return Flux.push(emitter -> {
             while (pos[0] != data.length) {
@@ -383,8 +403,8 @@ public class FluxUtilTest {
         }
 
         try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
-            StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(FluxUtil.readFile(channel),
-                    expectedFileBytes.length))
+            StepVerifier
+                .create(FluxUtil.collectBytesInByteBufferStream(FluxUtil.readFile(channel), expectedFileBytes.length))
                 .assertNext(bytes -> assertArrayEquals(expectedFileBytes, bytes))
                 .verifyComplete();
         }
@@ -421,7 +441,8 @@ public class FluxUtilTest {
                 } else {
                     return true;
                 }
-            }).verifyComplete();
+            })
+            .verifyComplete();
     }
 
     private static Stream<Arguments> toFluxByteBufferSupplier() {
@@ -464,24 +485,23 @@ public class FluxUtilTest {
 
     @Test
     public void illegalToFluxByteBufferChunkSize() {
-        StepVerifier.create(FluxUtil.toFluxByteBuffer(null, 0))
-            .verifyError(IllegalArgumentException.class);
+        StepVerifier.create(FluxUtil.toFluxByteBuffer(null, 0)).verifyError(IllegalArgumentException.class);
 
-        StepVerifier.create(FluxUtil.toFluxByteBuffer(null, -1))
-            .verifyError(IllegalArgumentException.class);
+        StepVerifier.create(FluxUtil.toFluxByteBuffer(null, -1)).verifyError(IllegalArgumentException.class);
     }
 
     @Test
     public void toFluxByteBufferSinkException() {
         InputStream inputStream = new ByteArrayInputStream(new byte[0]) {
+
             @Override
             public synchronized int read(byte[] b, int off, int len) {
                 throw new IllegalStateException("error");
             }
+
         };
 
-        StepVerifier.create(FluxUtil.toFluxByteBuffer(inputStream))
-            .verifyError(IllegalStateException.class);
+        StepVerifier.create(FluxUtil.toFluxByteBuffer(inputStream)).verifyError(IllegalStateException.class);
     }
 
     @Test
@@ -491,6 +511,7 @@ public class FluxUtilTest {
         AtomicInteger implCloseChannelCalls = new AtomicInteger();
 
         MockFileChannel channel = new MockFileChannel() {
+
             @Override
             public void implCloseChannel() {
                 implCloseChannelCalls.incrementAndGet();
@@ -507,19 +528,21 @@ public class FluxUtilTest {
                 sizeCalls.incrementAndGet();
                 return 0L;
             }
+
         };
 
         AtomicInteger getChannelCalls = new AtomicInteger();
         FileInputStream inputStream = new FileInputStream(new FileDescriptor()) {
+
             @Override
             public FileChannel getChannel() {
                 getChannelCalls.incrementAndGet();
                 return channel;
             }
+
         };
 
-        StepVerifier.create(FluxUtil.toFluxByteBuffer(inputStream))
-            .verifyComplete();
+        StepVerifier.create(FluxUtil.toFluxByteBuffer(inputStream)).verifyComplete();
 
         assertEquals(1, getChannelCalls.get());
         assertEquals(1, positionCalls.get());
@@ -540,23 +563,21 @@ public class FluxUtilTest {
     }
 
     private Mono<String> getSingleWithContextAttributes() {
-        return FluxUtil.withContext(this::serviceCallWithContextMetadata,
-            Collections.singletonMap("additionalContextKey", "additionalContextValue"));
+        return FluxUtil.withContext(
+            this::serviceCallWithContextMetadata,
+            Collections.singletonMap("additionalContextKey", "additionalContextValue")
+        );
     }
 
     private Mono<String> serviceCallSingle(Context context) {
-        String msg = "Hello, "
-            + context.getData("FirstName").orElse("Stranger")
-            + " "
-            + context.getData("LastName").orElse("");
+        String msg =
+            "Hello, " + context.getData("FirstName").orElse("Stranger") + " " + context.getData("LastName").orElse("");
         return Mono.just(msg);
     }
 
     private Flux<String> serviceCallCollection(Context context) {
-        String msg = "Hello, "
-            + context.getData("FirstName").orElse("Stranger")
-            + " "
-            + context.getData("LastName").orElse("");
+        String msg =
+            "Hello, " + context.getData("FirstName").orElse("Stranger") + " " + context.getData("LastName").orElse("");
 
         return Flux.just(msg.split(" "));
     }
@@ -584,4 +605,5 @@ public class FluxUtilTest {
             throw new UncheckedIOException(ex);
         }
     }
+
 }

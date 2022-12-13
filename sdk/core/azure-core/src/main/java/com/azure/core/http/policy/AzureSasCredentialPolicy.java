@@ -14,22 +14,25 @@ import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
-/**
- * Pipeline policy that uses an {@link AzureSasCredential} to set the shared access signature for a request.
- */
+/** Pipeline policy that uses an {@link AzureSasCredential} to set the shared access signature for a request. */
 public final class AzureSasCredentialPolicy implements HttpPipelinePolicy {
+
     private static final ClientLogger LOGGER = new ClientLogger(AzureSasCredentialPolicy.class);
     private final AzureSasCredential credential;
     private final boolean requireHttps;
 
     private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
+
         @Override
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
             HttpRequest httpRequest = context.getHttpRequest();
             if (requireHttps && "http".equals(httpRequest.getUrl().getProtocol())) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(
-                    "Shared access signature credentials require HTTPS to prevent leaking"
-                        + " the shared access signature."));
+                throw LOGGER.logExceptionAsError(
+                    new IllegalStateException(
+                        "Shared access signature credentials require HTTPS to prevent leaking"
+                            + " the shared access signature."
+                    )
+                );
             }
 
             String signature = credential.getSignature();
@@ -50,6 +53,7 @@ public final class AzureSasCredentialPolicy implements HttpPipelinePolicy {
             }
             httpRequest.setUrl(url);
         }
+
     };
 
     /**
@@ -88,4 +92,5 @@ public final class AzureSasCredentialPolicy implements HttpPipelinePolicy {
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         return inner.processSync(context, next);
     }
+
 }

@@ -14,12 +14,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * Tests for {@link ReferenceManager}.
- */
+/** Tests for {@link ReferenceManager}. */
 @Execution(ExecutionMode.SAME_THREAD)
 @Isolated("Forces JVM GC")
 public class ReferenceManagerTests {
+
     @Test
     public void cleanupActionIsPerformedWhenObjectIsPhantomReachable() throws InterruptedException {
         byte[] expectedInitialBytes = new byte[4096];
@@ -82,10 +81,13 @@ public class ReferenceManagerTests {
     }
 
     private static final class WrapperClass {
+
         private final byte[] wrappedBytes;
 
         private WrapperClass(byte[] wrappedBytes) {
             this.wrappedBytes = wrappedBytes;
         }
+
     }
+
 }

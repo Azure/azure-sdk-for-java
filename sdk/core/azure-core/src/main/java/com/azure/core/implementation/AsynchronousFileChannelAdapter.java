@@ -18,9 +18,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
-/**
- * Adapts {@link AsynchronousFileChannel} to {@link AsynchronousByteChannel}
- */
+/** Adapts {@link AsynchronousFileChannel} to {@link AsynchronousByteChannel} */
 public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
 
     private static final ClientLogger LOGGER = new ClientLogger(AsynchronousFileChannelAdapter.class);
@@ -33,8 +31,8 @@ public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
 
     // AsynchronousByteChannel implementation may disallow concurrent reads and writes.
     private static final AtomicReferenceFieldUpdater<AsynchronousFileChannelAdapter, Operation> PENDING_OPERATION_ATOMIC_UPDATER =
-        AtomicReferenceFieldUpdater.newUpdater(
-            AsynchronousFileChannelAdapter.class, Operation.class, "pendingOperation");
+        AtomicReferenceFieldUpdater
+            .newUpdater(AsynchronousFileChannelAdapter.class, Operation.class, "pendingOperation");
     private volatile Operation pendingOperation = null;
 
     public AsynchronousFileChannelAdapter(AsynchronousFileChannel fileChannel, long position) {
@@ -45,16 +43,24 @@ public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
     @Override
     public <A> void read(ByteBuffer dst, A attachment, CompletionHandler<Integer, ? super A> handler) {
         beginOperation(Operation.READ);
-        fileChannel.read(dst, POSITION_ATOMIC_UPDATER.get(this), attachment,
-            new DelegatingCompletionHandler<>(handler, Operation.READ));
+        fileChannel.read(
+            dst,
+            POSITION_ATOMIC_UPDATER.get(this),
+            attachment,
+            new DelegatingCompletionHandler<>(handler, Operation.READ)
+        );
     }
 
     @Override
     public Future<Integer> read(ByteBuffer dst) {
         beginOperation(Operation.READ);
         CompletableFuture<Integer> future = new CompletableFuture<>();
-        fileChannel.read(dst, POSITION_ATOMIC_UPDATER.get(this), dst,
-            new DelegatingCompletionHandler<>(future, Operation.READ));
+        fileChannel.read(
+            dst,
+            POSITION_ATOMIC_UPDATER.get(this),
+            dst,
+            new DelegatingCompletionHandler<>(future, Operation.READ)
+        );
         return future;
     }
 
@@ -63,8 +69,12 @@ public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
         beginOperation(Operation.WRITE);
         // We're implementing channel interface here, i.e. we don't have to consume whole buffer in one shot.
         // Caller is responsible for that.
-        fileChannel.write(src, POSITION_ATOMIC_UPDATER.get(this), attachment,
-            new DelegatingCompletionHandler<>(handler, Operation.WRITE));
+        fileChannel.write(
+            src,
+            POSITION_ATOMIC_UPDATER.get(this),
+            attachment,
+            new DelegatingCompletionHandler<>(handler, Operation.WRITE)
+        );
     }
 
     @Override
@@ -73,8 +83,12 @@ public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
         CompletableFuture<Integer> future = new CompletableFuture<>();
         // We're implementing channel interface here, i.e. we don't have to consume whole buffer in one shot.
         // Caller is responsible for that.
-        fileChannel.write(src, POSITION_ATOMIC_UPDATER.get(this), src,
-            new DelegatingCompletionHandler<>(future, Operation.WRITE));
+        fileChannel.write(
+            src,
+            POSITION_ATOMIC_UPDATER.get(this),
+            src,
+            new DelegatingCompletionHandler<>(future, Operation.WRITE)
+        );
         return future;
     }
 
@@ -108,10 +122,12 @@ public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
     }
 
     private enum Operation {
-        READ, WRITE
+        READ,
+        WRITE
     }
 
     private final class DelegatingCompletionHandler<T> implements CompletionHandler<Integer, T> {
+
         private final CompletionHandler<Integer, ? super T> handler;
         private final CompletableFuture<Integer> future;
         private final Operation operation;
@@ -150,5 +166,7 @@ public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
                 future.completeExceptionally(exc);
             }
         }
+
     }
+
 }

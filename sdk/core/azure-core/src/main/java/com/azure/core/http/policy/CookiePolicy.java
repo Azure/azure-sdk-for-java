@@ -23,13 +23,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The pipeline policy that which stores cookies based on the response "Set-Cookie" header and adds cookies to requests.
+ * The pipeline policy that which stores cookies based on the response "Set-Cookie" header and adds cookies to
+ * requests.
  */
 public class CookiePolicy implements HttpPipelinePolicy {
+
     private static final ClientLogger LOGGER = new ClientLogger(CookiePolicy.class);
     private final CookieHandler cookies = new CookieManager();
 
     private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
+
         @Override
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
             try {
@@ -64,6 +67,7 @@ public class CookiePolicy implements HttpPipelinePolicy {
             }
             return response;
         }
+
     };
 
     /**
@@ -81,4 +85,5 @@ public class CookiePolicy implements HttpPipelinePolicy {
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         return inner.processSync(context, next);
     }
+
 }

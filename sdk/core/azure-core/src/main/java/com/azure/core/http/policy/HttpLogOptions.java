@@ -14,10 +14,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * The log configurations for HTTP messages.
- */
+/** The log configurations for HTTP messages. */
 public class HttpLogOptions {
+
     private String applicationId;
     private HttpLogDetailLevel logLevel;
     private Set<String> allowedHeaderNames;
@@ -31,8 +30,8 @@ public class HttpLogOptions {
     private static final ClientLogger LOGGER = new ClientLogger(HttpLogOptions.class);
 
     private static final int MAX_APPLICATION_ID_LENGTH = 24;
-    private static final String INVALID_APPLICATION_ID_LENGTH = "'applicationId' length cannot be greater than "
-        + MAX_APPLICATION_ID_LENGTH;
+    private static final String INVALID_APPLICATION_ID_LENGTH =
+        "'applicationId' length cannot be greater than " + MAX_APPLICATION_ID_LENGTH;
     private static final String INVALID_APPLICATION_ID_SPACE = "'applicationId' cannot contain spaces.";
     private static final List<String> DEFAULT_HEADERS_ALLOWLIST = Arrays.asList(
         "x-ms-request-id",
@@ -63,9 +62,7 @@ public class HttpLogOptions {
         "WWW-Authenticate"
     );
 
-    private static final List<String> DEFAULT_QUERY_PARAMS_ALLOWLIST = Collections.singletonList(
-        "api-version"
-    );
+    private static final List<String> DEFAULT_QUERY_PARAMS_ALLOWLIST = Collections.singletonList("api-version");
 
     /**
      * Creates a new instance that does not log any information about HTTP requests or responses.
@@ -89,7 +86,9 @@ public class HttpLogOptions {
     /**
      * Sets the level of detail to log on Http messages.
      *
-     * <p>If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
+     * <p>
+     * If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
+     * </p>
      *
      * @param logLevel The {@link HttpLogDetailLevel}.
      * @return The updated HttpLogOptions object.
@@ -279,4 +278,5 @@ public class HttpLogOptions {
         this.responseLogger = responseLogger;
         return this;
     }
+
 }

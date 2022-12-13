@@ -51,4 +51,5 @@ class NoopConfiguration extends Configuration {
     public NoopConfiguration clone() {
         return new NoopConfiguration();
     }
+
 }

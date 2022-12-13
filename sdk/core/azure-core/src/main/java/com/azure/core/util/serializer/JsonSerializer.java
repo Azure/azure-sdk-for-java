@@ -8,10 +8,9 @@ import reactor.core.publisher.Mono;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-/**
- * Generic interface covering basic JSON serialization and deserialization methods.
- */
+/** Generic interface covering basic JSON serialization and deserialization methods. */
 public interface JsonSerializer extends ObjectSerializer {
+
     /**
      * Reads a JSON byte array into its object representation.
      *
@@ -100,4 +99,5 @@ public interface JsonSerializer extends ObjectSerializer {
      */
     @Override
     Mono<Void> serializeAsync(OutputStream stream, Object value);
+
 }

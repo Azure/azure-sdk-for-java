@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @State(Scope.Thread)
 public class SerializationBenchmark {
+
     private JacksonAdapter serializer;
     private ObjectMapper mapper;
     private OuterModel simpleModel;
@@ -49,6 +50,7 @@ public class SerializationBenchmark {
     }
 
     class InnerModel {
+
         InnerModel(String foo, String bar, String baz) {
             this.foo = foo;
             this.bar = bar;
@@ -63,9 +65,11 @@ public class SerializationBenchmark {
 
         @JsonProperty
         private String baz;
+
     }
 
     class InnerModelAdditionalProperties {
+
         InnerModelAdditionalProperties(String foo, String bar, String baz) {
             this.additionalProperties = new HashMap<>();
             additionalProperties.put("foo", foo);
@@ -75,9 +79,11 @@ public class SerializationBenchmark {
 
         @JsonProperty
         private Map<String, String> additionalProperties;
+
     }
 
     class InnerModelJsonAny {
+
         InnerModelJsonAny(String foo, String bar, String baz) {
             this.any = new HashMap<>();
             any.put("foo", foo);
@@ -92,10 +98,11 @@ public class SerializationBenchmark {
 
         @JsonAnySetter
         private Map<String, String> any;
+
     }
 
-
     class MiddleModel {
+
         MiddleModel(String foo, String bar, String baz, Test test) {
             if (test == Test.PLAIN) {
                 this.inner = new InnerModel(foo, bar, baz);
@@ -108,19 +115,23 @@ public class SerializationBenchmark {
 
         @JsonProperty()
         private Object inner;
+
     }
 
     class OuterModel {
+
         OuterModel(String foo, String bar, String baz, Test test) {
             this.middle = new MiddleModel(foo, bar, baz, test);
         }
 
         @JsonProperty()
         private MiddleModel middle;
+
     }
 
     @JsonFlatten
     class OuterModelFlatten {
+
         OuterModelFlatten(String foo, String bar, String baz) {
             this.foo = foo;
             this.bar = bar;
@@ -135,6 +146,7 @@ public class SerializationBenchmark {
 
         @JsonProperty("middle.inner.baz")
         private String baz;
+
     }
 
     @Benchmark
@@ -170,4 +182,5 @@ public class SerializationBenchmark {
     public static void main(String... args) throws IOException, RunnerException {
         Main.main(args);
     }
+
 }

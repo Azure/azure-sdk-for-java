@@ -16,10 +16,9 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/**
- * Tests for {@link DateTimeDeserializer}.
- */
+/** Tests for {@link DateTimeDeserializer}. */
 public class DateTimeDeserializerTests {
+
     private static final JacksonAdapter MAPPER = new JacksonAdapter();
 
     @ParameterizedTest
@@ -43,4 +42,5 @@ public class DateTimeDeserializerTests {
             Arguments.of("\"2020-01-01T00:00:00-07:00\"", nonUtcTimeZone)
         );
     }
+
 }

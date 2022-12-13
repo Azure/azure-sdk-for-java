@@ -32,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @State(Scope.Thread)
 public class ResponseConstructorsCacheBenchMark {
+
     private ResponseConstructorsCacheBenchMarkTestData testData;
     // Cache Types
     private ResponseConstructorsCache defaultCache;
@@ -57,8 +58,7 @@ public class ResponseConstructorsCacheBenchMark {
             // Step1: Locate Constructor using Reflection.
             MethodHandle handle = defaultCache.get(responseClass);
             // Step2: Invoke Constructor using Reflection.
-            Response<?> response = defaultCache.invoke(handle, inputs[i].decodedResponse(),
-                inputs[i].bodyAsObject());
+            Response<?> response = defaultCache.invoke(handle, inputs[i].decodedResponse(), inputs[i].bodyAsObject());
             // avoid JVM dead code detection
             blackhole.consume(response);
         }
@@ -79,8 +79,7 @@ public class ResponseConstructorsCacheBenchMark {
                 throw new IllegalStateException("Response constructor with expected parameters not found.");
             }
             // Step2: Invoke Constructor using LambdaMetaFactory functional interface.
-            Mono<Response<?>> response = constructor.invoke(inputs[i].decodedResponse(),
-                inputs[i].bodyAsObject());
+            Mono<Response<?>> response = constructor.invoke(inputs[i].decodedResponse(), inputs[i].bodyAsObject());
             // avoid JVM dead code detection
             blackhole.consume(response.block());
         }
@@ -100,8 +99,8 @@ public class ResponseConstructorsCacheBenchMark {
                 throw new IllegalStateException("Response constructor with expected parameters not found.");
             }
             // Step2: Invoke Constructor using Reflection.
-            Mono<Response<?>> response = reflectionNoCache.invoke(constructor, inputs[i].decodedResponse(),
-                inputs[i].bodyAsObject());
+            Mono<Response<?>> response =
+                reflectionNoCache.invoke(constructor, inputs[i].decodedResponse(), inputs[i].bodyAsObject());
             // avoid JVM dead code detection
             blackhole.consume(response.block());
         }
@@ -110,4 +109,5 @@ public class ResponseConstructorsCacheBenchMark {
     public static void main(String... args) throws IOException, RunnerException {
         Main.main(args);
     }
+
 }

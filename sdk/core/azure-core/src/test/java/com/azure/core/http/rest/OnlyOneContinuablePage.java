@@ -10,13 +10,16 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public final class OnlyOneContinuablePage implements ContinuablePage<Integer, Integer> {
+
     private final IterableStream<Integer> elements;
     private final Integer nextContinuationToken;
 
     public OnlyOneContinuablePage(Integer continuationToken, Integer nextContinuationToken, Integer pageSize) {
-        elements = IterableStream.of(IntStream.range(continuationToken * 10, (continuationToken * 10) + pageSize)
-            .boxed()
-            .collect(Collectors.toList()));
+        elements = IterableStream.of(
+            IntStream.range(continuationToken * 10, (continuationToken * 10) + pageSize)
+                .boxed()
+                .collect(Collectors.toList())
+        );
 
         this.nextContinuationToken = nextContinuationToken;
     }
@@ -30,4 +33,5 @@ public final class OnlyOneContinuablePage implements ContinuablePage<Integer, In
     public Integer getContinuationToken() {
         return nextContinuationToken;
     }
+
 }

@@ -3,9 +3,7 @@
 
 package com.azure.core.util;
 
-/**
- * Class to hold the properties used in user agent strings.
- */
+/** Class to hold the properties used in user agent strings. */
 public class UserAgentProperties {
 
     private final String name;
@@ -39,4 +37,5 @@ public class UserAgentProperties {
     public String getVersion() {
         return version;
     }
+
 }

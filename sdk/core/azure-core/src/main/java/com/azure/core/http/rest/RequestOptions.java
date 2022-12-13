@@ -31,7 +31,9 @@ import java.util.function.Consumer;
  * definition.</a>
  * </p>
  *
- * <p><strong>Creating an instance of RequestOptions</strong></p>
+ * <p>
+ * <strong>Creating an instance of RequestOptions</strong>
+ * </p>
  * <!-- src_embed com.azure.core.http.rest.requestoptions.instantiation -->
  * <pre>
  * RequestOptions options = new RequestOptions&#40;&#41;
@@ -40,13 +42,17 @@ import java.util.function.Consumer;
  * </pre>
  * <!-- end com.azure.core.http.rest.requestoptions.instantiation -->
  *
- * <p><strong>Configuring the request with JSON body and making a HTTP POST request</strong></p>
+ * <p>
+ * <strong>Configuring the request with JSON body and making a HTTP POST request</strong>
+ * </p>
  * To <a href="https://petstore.swagger.io/#/pet/addPet">add a new pet to the pet store</a>, an HTTP POST call should be
  * made to the service with the details of the pet that is to be added. The details of the pet are included as the
  * request body in JSON format.
  *
  * The JSON structure for the request is defined as follows:
- * <pre>{@code
+ * 
+ * <pre>
+ * <code>
  * {
  *   "id": 0,
  *   "category": {
@@ -65,7 +71,8 @@ import java.util.function.Consumer;
  *   ],
  *   "status": "available"
  * }
- * }</pre>
+ * </code>
+ * </pre>
  *
  * To create a concrete request, Json builder provided in javax package is used here for demonstration. However, any
  * other Json building library can be used to achieve similar results.
@@ -116,6 +123,7 @@ import java.util.function.Consumer;
  * <!-- end com.azure.core.http.rest.requestoptions.postrequest -->
  */
 public final class RequestOptions {
+
     private static final ClientLogger LOGGER = new ClientLogger(RequestOptions.class);
 
     private static final EnumSet<ErrorOptions> DEFAULT = EnumSet.of(ErrorOptions.THROW);
@@ -254,8 +262,8 @@ public final class RequestOptions {
      * <p>
      * Default is to throw.
      * <p>
-     * If both {@link ErrorOptions#THROW} and {@link ErrorOptions#NO_THROW} are included in {@code errorOptions}
-     * an exception will be thrown as they aren't compatible with each other.
+     * If both {@link ErrorOptions#THROW} and {@link ErrorOptions#NO_THROW} are included in {@code errorOptions} an
+     * exception will be thrown as they aren't compatible with each other.
      *
      * @param errorOptions The {@link ErrorOptions} that determines how error responses (400 or above) are handled.
      * @return the modified RequestOptions object
@@ -267,8 +275,11 @@ public final class RequestOptions {
         Objects.requireNonNull(errorOptions, "'errorOptions' cannot be null.");
 
         if (errorOptions.contains(ErrorOptions.THROW) && errorOptions.contains(ErrorOptions.NO_THROW)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "'errorOptions' cannot contain both 'ErrorOptions.THROW' and 'ErrorOptions.NO_THROW'."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException(
+                    "'errorOptions' cannot contain both 'ErrorOptions.THROW' and 'ErrorOptions.NO_THROW'."
+                )
+            );
         }
 
         this.errorOptions = errorOptions;
@@ -285,4 +296,5 @@ public final class RequestOptions {
         this.context = context;
         return this;
     }
+
 }
