@@ -188,7 +188,7 @@ public class ContainerRegistryBlobClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UploadBlobResult uploadBlob(BinaryData data) {
-        return this.uploadBlobWithResponse(data, null).getValue();
+        return this.uploadBlobWithResponse(data, Context.NONE).getValue();
     }
 
     /**

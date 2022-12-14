@@ -3,9 +3,9 @@
 
 package com.azure.containers.containerregistry;
 
-import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImplBuilder;
+import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -114,12 +114,6 @@ public final class ContainerRegistryAsyncClient {
         return new PagedFlux<>(
             (pageSize) -> withContext(context -> listRepositoryNamesSinglePageAsync(pageSize, context)),
             (token, pageSize) -> withContext(context -> listRepositoryNamesNextSinglePageAsync(token, context)));
-    }
-
-    private PagedFlux<String> listRepositoryNames(Context context) {
-        return new PagedFlux<>(
-            (pageSize) -> listRepositoryNamesSinglePageAsync(pageSize, context),
-            (token, pageSize) -> listRepositoryNamesNextSinglePageAsync(token, context));
     }
 
     private Mono<PagedResponse<String>> listRepositoryNamesSinglePageAsync(Integer pageSize, Context context) {
