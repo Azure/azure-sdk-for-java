@@ -6,7 +6,7 @@ import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAuthorizationRequestRes
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cConstants;
 import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.WebOAuth2ClientApp;
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

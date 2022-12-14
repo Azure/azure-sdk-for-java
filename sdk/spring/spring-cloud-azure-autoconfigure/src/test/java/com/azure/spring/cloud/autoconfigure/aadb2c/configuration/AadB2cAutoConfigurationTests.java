@@ -11,7 +11,7 @@ import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cOidcLoginConfigurer;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cConditions;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties;
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;

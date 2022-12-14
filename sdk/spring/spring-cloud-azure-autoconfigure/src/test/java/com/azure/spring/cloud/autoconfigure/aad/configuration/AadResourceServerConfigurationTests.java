@@ -4,7 +4,7 @@ package com.azure.spring.cloud.autoconfigure.aad.configuration;
 
 import com.azure.spring.cloud.autoconfigure.aad.AadResourceServerHttpSecurityConfigurer;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;

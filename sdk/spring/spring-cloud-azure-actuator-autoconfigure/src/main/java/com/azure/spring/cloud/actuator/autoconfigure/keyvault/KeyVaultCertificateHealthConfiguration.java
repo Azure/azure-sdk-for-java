@@ -5,7 +5,7 @@ package com.azure.spring.cloud.actuator.autoconfigure.keyvault;
 
 import com.azure.security.keyvault.certificates.CertificateAsyncClient;
 import com.azure.spring.cloud.actuator.keyvault.KeyVaultCertificateHealthIndicator;
-import com.azure.spring.cloud.autoconfigure.keyvault.certificates.AzureKeyVaultCertificateAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificates.AzureKeyVaultCertificateAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;

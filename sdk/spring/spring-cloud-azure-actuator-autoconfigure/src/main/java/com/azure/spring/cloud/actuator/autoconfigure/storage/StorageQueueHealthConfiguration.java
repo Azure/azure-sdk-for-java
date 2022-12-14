@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.actuator.autoconfigure.storage;
 
 import com.azure.spring.cloud.actuator.storage.StorageQueueHealthIndicator;
-import com.azure.spring.cloud.autoconfigure.storage.queue.AzureStorageQueueAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.AzureStorageQueueAutoConfiguration;
 import com.azure.storage.queue.QueueServiceAsyncClient;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.actuate.health.HealthIndicator;

@@ -158,7 +158,7 @@
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.application-id",
       "type": "java.lang.String",
       "description": "Represents current application and is used for telemetry\/monitoring purposes.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.client.ClientConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.ClientConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.connect-timeout",
@@ -188,25 +188,25 @@
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.logging.allowed-header-names",
       "type": "java.util.Set<java.lang.String>",
       "description": "Comma-delimited list of allowlist headers that should be logged.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpLoggingConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.logging.allowed-query-param-names",
       "type": "java.util.Set<java.lang.String>",
       "description": "Comma-delimited list of allowlist query parameters.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpLoggingConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.logging.level",
       "type": "com.azure.core.http.policy.HttpLogDetailLevel",
       "description": "The level of detail to log on HTTP messages.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpLoggingConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.logging.pretty-print-body",
       "type": "java.lang.Boolean",
       "description": "Whether to pretty print the message bodies.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.client.HttpLoggingConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].client.maximum-connection-pool-size",
@@ -236,44 +236,44 @@
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].credential.client-certificate-password",
       "type": "java.lang.String",
       "description": "Password of the certificate file.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.authentication.TokenCredentialConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].credential.client-certificate-path",
       "type": "java.lang.String",
       "description": "Path of a PEM certificate file to use when performing service principal authentication with Azure.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.authentication.TokenCredentialConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].credential.client-id",
       "type": "java.lang.String",
       "description": "Client ID to use when performing service principal authentication with Azure.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.authentication.TokenCredentialConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].credential.client-secret",
       "type": "java.lang.String",
       "description": "Client secret to use when performing service principal authentication with Azure.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.authentication.TokenCredentialConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].credential.managed-identity-enabled",
       "type": "java.lang.Boolean",
       "description": "Whether to enable managed identity to authenticate with Azure. If true and the client-id is set, will use the client ID as user assigned managed identity client ID.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialConfigurationProperties",
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.authentication.TokenCredentialConfigurationProperties",
       "defaultValue": false
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].credential.password",
       "type": "java.lang.String",
       "description": "Password to use when performing username\/password authentication with Azure.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.authentication.TokenCredentialConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].credential.username",
       "type": "java.lang.String",
       "description": "Username to use when performing username\/password authentication with Azure.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.authentication.TokenCredentialConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].enabled",
@@ -298,139 +298,139 @@
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.cloud-type",
       "type": "com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider$CloudType",
       "description": "Name of the Azure cloud to connect to.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.active-directory-endpoint",
       "type": "java.lang.String",
       "description": "The Azure Active Directory endpoint to connect to.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.active-directory-graph-api-version",
       "type": "java.lang.String",
       "description": "The Azure Active Directory Graph API version.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.active-directory-graph-endpoint",
       "type": "java.lang.String",
       "description": "The Azure Active Directory Graph endpoint.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.active-directory-resource-id",
       "type": "java.lang.String",
       "description": "The Azure Active Directory resource ID.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.azure-application-insights-endpoint",
       "type": "java.lang.String",
       "description": "The Azure Application Insights endpoint.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.azure-data-lake-analytics-catalog-and-job-endpoint-suffix",
       "type": "java.lang.String",
       "description": "The Data Lake analytics catalog and job endpoint suffix.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.azure-data-lake-store-file-system-endpoint-suffix",
       "type": "java.lang.String",
       "description": "The Data Lake storage file system endpoint suffix.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.azure-log-analytics-endpoint",
       "type": "java.lang.String",
       "description": "The Azure Log Analytics endpoint.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.data-lake-endpoint-resource-id",
       "type": "java.lang.String",
       "description": "The Data Lake endpoint.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.gallery-endpoint",
       "type": "java.lang.String",
       "description": "The gallery endpoint.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.key-vault-dns-suffix",
       "type": "java.lang.String",
       "description": "The Key Vault DNS suffix.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.management-endpoint",
       "type": "java.lang.String",
       "description": "The management service endpoint.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.microsoft-graph-endpoint",
       "type": "java.lang.String",
       "description": "The Microsoft Graph endpoint.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.portal",
       "type": "java.lang.String",
       "description": "The management portal URL.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.publishing-profile",
       "type": "java.lang.String",
       "description": "The publishing settings file URL.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.resource-manager-endpoint",
       "type": "java.lang.String",
       "description": "The resource management endpoint.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.sql-management-endpoint",
       "type": "java.lang.String",
       "description": "The SQL management endpoint.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.sql-server-hostname-suffix",
       "type": "java.lang.String",
       "description": "The SQL Server hostname suffix.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.environment.storage-endpoint-suffix",
       "type": "java.lang.String",
       "description": "The Storage endpoint suffix.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties$AzureEnvironmentConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.subscription-id",
       "type": "java.lang.String",
       "description": "Subscription ID to use when connecting to Azure resources.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].profile.tenant-id",
       "type": "java.lang.String",
       "description": "Tenant ID for Azure resources.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.profile.AzureProfileConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].proxy.hostname",
       "type": "java.lang.String",
       "description": "The host of the proxy.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy.ProxyConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].proxy.non-proxy-hosts",
@@ -442,25 +442,25 @@
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].proxy.password",
       "type": "java.lang.String",
       "description": "Password used to authenticate with the proxy.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy.ProxyConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].proxy.port",
       "type": "java.lang.Integer",
       "description": "The port of the proxy.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy.ProxyConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].proxy.type",
       "type": "java.lang.String",
       "description": "Type of the proxy.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy.ProxyConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].proxy.username",
       "type": "java.lang.String",
       "description": "Username used to authenticate with the proxy.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy.ProxyConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].resource.region",
@@ -484,37 +484,37 @@
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].retry.exponential.base-delay",
       "type": "java.time.Duration",
       "description": "Amount of time to wait between retry attempts.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.retry.ExponentialRetryConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.retry.ExponentialRetryConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].retry.exponential.max-delay",
       "type": "java.time.Duration",
       "description": "Maximum permissible amount of time between retry attempts.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.retry.ExponentialRetryConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.retry.ExponentialRetryConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].retry.exponential.max-retries",
       "type": "java.lang.Integer",
       "description": "The maximum number of attempts.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.retry.ExponentialRetryConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.retry.ExponentialRetryConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].retry.fixed.delay",
       "type": "java.time.Duration",
       "description": "Amount of time to wait between retry attempts.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.retry.FixedRetryConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.retry.FixedRetryConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].retry.fixed.max-retries",
       "type": "java.lang.Integer",
       "description": "The maximum number of attempts.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.retry.FixedRetryConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.retry.FixedRetryConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].retry.mode",
       "type": "com.azure.spring.cloud.core.provider.RetryOptionsProvider$RetryMode",
       "description": "Retry backoff mode.",
-      "sourceType": "com.azure.spring.cloud.autoconfigure.properties.core.retry.RetryConfigurationProperties"
+      "sourceType": "com.azure.spring.cloud.autoconfigure.implementation.properties.core.retry.RetryConfigurationProperties"
     },
     {
       "name": "spring.cloud.azure.keyvault.secret.property-sources[0].secret-keys",

@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.actuator.autoconfigure.storage;
 
 import com.azure.spring.cloud.actuator.storage.StorageBlobHealthIndicator;
-import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.AzureStorageBlobAutoConfiguration;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.actuate.health.HealthIndicator;

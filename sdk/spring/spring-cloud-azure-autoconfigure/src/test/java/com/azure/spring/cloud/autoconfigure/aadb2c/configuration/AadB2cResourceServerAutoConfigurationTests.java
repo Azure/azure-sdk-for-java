@@ -8,7 +8,7 @@ import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cConstants;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cTrustedIssuerRepository;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cConditions;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;

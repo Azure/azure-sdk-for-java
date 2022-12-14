@@ -4,8 +4,8 @@
 package com.azure.spring.cloud.actuator.autoconfigure.keyvault;
 
 import com.azure.spring.cloud.actuator.keyvault.KeyVaultCertificateHealthIndicator;
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
-import com.azure.spring.cloud.autoconfigure.keyvault.certificates.AzureKeyVaultCertificateAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificates.AzureKeyVaultCertificateAutoConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;

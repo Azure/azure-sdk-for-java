@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.aad.implementation.conditions;
 
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionMessage;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
 import org.springframework.boot.autoconfigure.condition.SpringBootCondition;

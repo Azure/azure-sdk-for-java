@@ -8,7 +8,7 @@ import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProp
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadCredentialProperties;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadProfileProperties;
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.proc.BadJOSEException;
 import jakarta.servlet.FilterChain;

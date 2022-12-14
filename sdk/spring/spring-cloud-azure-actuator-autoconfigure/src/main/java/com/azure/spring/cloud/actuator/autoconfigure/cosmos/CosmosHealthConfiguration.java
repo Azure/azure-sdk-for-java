@@ -5,7 +5,7 @@ package com.azure.spring.cloud.actuator.autoconfigure.cosmos;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.spring.cloud.actuator.cosmos.CosmosHealthIndicator;
-import com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.cosmos.AzureCosmosAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosProperties;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.actuate.health.HealthIndicator;

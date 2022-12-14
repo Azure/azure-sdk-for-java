@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.actuator.autoconfigure.storage;
 
 import com.azure.spring.cloud.actuator.storage.StorageFileShareHealthIndicator;
-import com.azure.spring.cloud.autoconfigure.storage.fileshare.AzureStorageFileShareAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.storage.fileshare.AzureStorageFileShareAutoConfiguration;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.actuate.health.HealthIndicator;
