@@ -92,11 +92,10 @@ public class AadOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
 
     /**
      * Returns an {@link OAuth2User} instance.
-     *
      * @param userRequest the user request
      * @return an {@link OAuth2User}
      * @throws OAuth2AuthenticationException if an error occurs while attempting to obtain
-     *                                       the user attributes from the UserInfo Endpoint
+     * the user attributes from the UserInfo Endpoint.
      */
     @Override
     public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
