@@ -62,7 +62,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.25</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.5.0</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- for file lock tests, ideally should be removed in the future -->
@@ -75,13 +75,13 @@
     <dependency>
       <groupId>redis.clients</groupId>
       <artifactId>jedis</artifactId>
-      <version>4.2.3</version> <!-- {x-version-update;redis.clients:jedis;external_dependency} -->
+      <version>4.3.1</version> <!-- {x-version-update;redis.clients:jedis;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.lettuce</groupId>
       <artifactId>lettuce-core</artifactId>
-      <version>6.2.0.RELEASE</version> <!-- {x-version-update;io.lettuce:lettuce-core;external_dependency} -->
+      <version>6.2.1.RELEASE</version> <!-- {x-version-update;io.lettuce:lettuce-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -105,7 +105,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-inline</artifactId>
-      <version>4.5.1</version> <!-- {x-version-update;org.mockito:mockito-inline;external_dependency} -->
+      <version>4.8.1</version> <!-- {x-version-update;org.mockito:mockito-inline;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
