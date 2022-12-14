@@ -23,7 +23,6 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -92,11 +91,20 @@ public class AadOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
     }
 
     /**
-     * Returns an {@link OAuth2User} instance.
+     * Returns a {@link DefaultOidcUser} instance.
+     * <p/>
+     *
+     * The {@link DefaultOidcUser} instance is constructed with {@link GrantedAuthority}, {@link OidcIdToken} and nameAttributeKey.
+     * <a href="https://learn.microsoft.com/azure/active-directory/develop/userinfo#consider-using-an-id-token-instead">Azure AD</a> suggests get userinfo from idToken instead from the UserInfo Endpoint,
+     * this implementation will not get userinfo from the UserInfo Endpoint. Calling {@link org.springframework.security.oauth2.core.oidc.user.OidcUser#getUserInfo()} with the return instance will return null.
+     *
+     * <p/>
+     *
      * @param userRequest the user request
-     * @return an {@link OAuth2User}
-     * @throws OAuth2AuthenticationException if an error occurs while attempting to obtain
-     * the user attributes from the UserInfo Endpoint.
+     *
+     * @return a {@link DefaultOidcUser} instance.
+     *
+     * @throws OAuth2AuthenticationException if an error occurs.
      */
     @Override
     public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
