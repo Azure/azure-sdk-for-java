@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class MySqlDatabaseTypeTest extends DatabaseTypeTest {
+class MySqlDatabaseTypeTests extends DatabaseTypeTests {
 
     private static final String MYSQL_SCHEMA = "jdbc:mysql";
     private static final String MYSQL_PATH_QUERY_DELIMITER = "?";

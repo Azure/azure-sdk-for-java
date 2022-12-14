@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.aadb2c.implementation;
 
 import static com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties.PREFIX;
 
-class AadB2cConstants {
+class TestAadB2cConstants {
     static final String AUTHENTICATE_ADDITIONAL_PARAMETERS_LOGIN_HINT = ".authenticate-additional-parameters"
         + ".login-hint";
 

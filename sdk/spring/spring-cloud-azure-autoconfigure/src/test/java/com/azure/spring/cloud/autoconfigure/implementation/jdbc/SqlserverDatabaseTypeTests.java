@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.jdbc;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class SqlserverDatabaseTypeTest extends DatabaseTypeTest {
+class SqlserverDatabaseTypeTests extends DatabaseTypeTests {
 
     private static final String SQLSERVER_SCHEMA = "jdbc:sqlserver";
     private static final String SQLSERVER_PATH_QUERY_DELIMITER = ";";

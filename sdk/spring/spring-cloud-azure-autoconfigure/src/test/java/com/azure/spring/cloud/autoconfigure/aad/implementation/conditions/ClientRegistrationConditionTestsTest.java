@@ -10,76 +10,68 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthenticationToken;
 
-class WebApplicationConditionTests extends AbstractCondition {
+class ClientRegistrationConditionTestsTest extends TestAbstractCondition {
 
     @Test
-    void testWebApplicationConditionWhenApplicationTypeIsEmpty() {
+    void testClientConditionWhenApplicationTypeIsEmpty() {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.credential.client-id = fake-client-id")
-            .withUserConfiguration(AllWebApplicationConditionConfig.class)
-            .run(assertConditionMatch(false));
-    }
-
-    @Test
-    void testWebAppConditionWhenNoOAuth2ResourceDependency() {
-        this.contextRunner
-            .withPropertyValues("spring.cloud.azure.active-directory.credential.client-id = fake-client-id")
-            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .withUserConfiguration(AllWebApplicationConditionConfig.class)
+            .withUserConfiguration(ClientRegistrationConditionConfig.class)
             .run(assertConditionMatch(true));
     }
-
+    
     @Test
-    void testWebAppConditionWhenNoOAuth2ClientDependency() {
+    void testClientConditionWhenNoOAuth2ClientDependency() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.active-directory.credential.client-id = fake-client-id")
             .withClassLoader(new FilteredClassLoader(ClientRegistration.class))
-            .withUserConfiguration(AllWebApplicationConditionConfig.class)
+            .withUserConfiguration(ClientRegistrationConditionConfig.class)
             .run(assertConditionMatch(false));
     }
 
     @Test
-    void testWebAppConditionWhenApplicationTypeIsWebApplication() {
+    void testClientConditionWhenApplicationTypeIsWebApplication() {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.credential.client-id = fake-client-id",
                 "spring.cloud.azure.active-directory.application-type=web_application")
-            .withUserConfiguration(AllWebApplicationConditionConfig.class)
+            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
+            .withUserConfiguration(ClientRegistrationConditionConfig.class)
             .run(assertConditionMatch(true));
     }
 
     @Test
-    void testWebAppConditionWhenApplicationTypeIsResourceServer() {
+    void testClientConditionWhenApplicationTypeIsResourceServer() {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.credential.client-id = fake-client-id",
                 "spring.cloud.azure.active-directory.application-type=resource_server")
-            .withUserConfiguration(AllWebApplicationConditionConfig.class)
+            .withUserConfiguration(ClientRegistrationConditionConfig.class)
             .run(assertConditionMatch(false));
     }
 
     @Test
-    void testWebAppConditionWhenApplicationTypeIsResourceServerWithOBO() {
+    void testClientConditionWhenApplicationTypeIsResourceServerWithOBO() {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.credential.client-id = fake-client-id",
                 "spring.cloud.azure.active-directory.application-type=resource_server_with_obo")
-            .withUserConfiguration(AllWebApplicationConditionConfig.class)
-            .run(assertConditionMatch(false));
+            .withUserConfiguration(ClientRegistrationConditionConfig.class)
+            .run(assertConditionMatch(true));
     }
 
     @Test
-    void testWebAppConditionWhenApplicationTypeIsWebApplicationAndResourceServer() {
+    void testClientConditionWhenApplicationTypeIsWebApplicationAndResourceServer() {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.credential.client-id = fake-client-id",
                 "spring.cloud.azure.active-directory.application-type=web_application_and_resource_server")
-            .withUserConfiguration(AllWebApplicationConditionConfig.class)
+            .withUserConfiguration(ClientRegistrationConditionConfig.class)
             .run(assertConditionMatch(true));
     }
 
     @Configuration
-    @Conditional(WebApplicationCondition.class)
-    static class AllWebApplicationConditionConfig extends Config { }
+    @Conditional(ClientRegistrationCondition.class)
+    static class ClientRegistrationConditionConfig extends Config { }
 }

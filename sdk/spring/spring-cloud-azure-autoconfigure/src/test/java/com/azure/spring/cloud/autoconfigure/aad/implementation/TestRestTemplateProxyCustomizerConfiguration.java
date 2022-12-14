@@ -13,7 +13,7 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 
 @Configuration
-public class RestTemplateProxyCustomizerConfiguration {
+public class TestRestTemplateProxyCustomizerConfiguration {
 
     public static final SimpleClientHttpRequestFactory FACTORY = createProxyFactory();
 

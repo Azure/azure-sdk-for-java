@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class PostgreSqlDatabaseTypeTest extends DatabaseTypeTest {
+class PostgreSqlDatabaseTypeTests extends DatabaseTypeTests {
 
 
     private static final String POSTGRESQL_SCHEMA = "jdbc:postgresql";

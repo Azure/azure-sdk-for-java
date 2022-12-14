@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.jdbc;
 
 import com.azure.identity.extensions.implementation.enums.AuthProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
-import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringUtils;
+import com.azure.spring.cloud.autoconfigure.implementation.jdbc.TestJdbcConnectionStringUtils;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -20,7 +20,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPrope
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRES_AUTH_PLUGIN_CLASS_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigurationTest {
+class PostgreSqlAzureJdbcAutoConfigurationTests extends AbstractAzureJdbcAutoConfigurationTests {
     private static final String POSTGRESQL_SSLMODE_PROPERTY
         = POSTGRESQL_PROPERTY_NAME_SSL_MODE + "=" + POSTGRESQL_PROPERTY_VALUE_SSL_MODE;
     private static final String POSTGRESQL_AUTHENTICATIONPLUGINCLASSNAME_PROPERTY
@@ -68,7 +68,7 @@ class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConf
             .withPropertyValues("spring.datasource.azure.passwordlessEnabled = " + true)
             .run((context) -> {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
-                String expectedUrl = JdbcConnectionStringUtils.enhanceJdbcUrl(
+                String expectedUrl = TestJdbcConnectionStringUtils.enhanceJdbcUrl(
                     DatabaseType.POSTGRESQL,
                     false,
                     connectionString,
@@ -92,7 +92,7 @@ class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConf
             .withPropertyValues("spring.datasource.azure.credential.clientId = " + "fake-clientId")
             .run((context) -> {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
-                String expectedUrl = JdbcConnectionStringUtils.enhanceJdbcUrl(
+                String expectedUrl = TestJdbcConnectionStringUtils.enhanceJdbcUrl(
                     DatabaseType.POSTGRESQL,
                     false,
                     connectionString,

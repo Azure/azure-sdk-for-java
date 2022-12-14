@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 
 @Isolated("Run this by itself as it captures System.out")
 @ExtendWith({OutputCaptureExtension.class})
-class AzureSpringBootVersionVerifierTest {
+class AzureSpringBootVersionVerifierTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "3.0.0", "3.0.x", "3.0.0-M" })

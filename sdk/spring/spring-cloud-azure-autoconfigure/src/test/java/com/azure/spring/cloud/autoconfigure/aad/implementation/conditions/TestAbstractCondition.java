@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-abstract class AbstractCondition {
+abstract class TestAbstractCondition {
 
     final ApplicationContextRunner contextRunner = new ApplicationContextRunner();
 

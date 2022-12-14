@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.jdbc;
 
 import com.azure.identity.extensions.implementation.enums.AuthProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
-import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringUtils;
+import com.azure.spring.cloud.autoconfigure.implementation.jdbc.TestJdbcConnectionStringUtils;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -23,7 +23,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPrope
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_VALUE_USE_SSL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigurationTest {
+class MySqlAzureJdbcAutoConfigurationTests extends AbstractAzureJdbcAutoConfigurationTests {
     private static final String MYSQL_AUTH_PLUGIN_PROPERTY
         = MYSQL_PROPERTY_NAME_AUTHENTICATION_PLUGINS + "=" + MYSQL_AUTH_PLUGIN_CLASS_NAME;
 
@@ -80,7 +80,7 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
             .run((context) -> {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
 
-                String expectedUrl = JdbcConnectionStringUtils.enhanceJdbcUrl(
+                String expectedUrl = TestJdbcConnectionStringUtils.enhanceJdbcUrl(
                     DatabaseType.MYSQL,
                     false,
                     connectionString,
@@ -105,7 +105,7 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
             .run((context) -> {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
 
-                String expectedUrl = JdbcConnectionStringUtils.enhanceJdbcUrl(
+                String expectedUrl = TestJdbcConnectionStringUtils.enhanceJdbcUrl(
                     DatabaseType.MYSQL,
                     false,
                     connectionString,

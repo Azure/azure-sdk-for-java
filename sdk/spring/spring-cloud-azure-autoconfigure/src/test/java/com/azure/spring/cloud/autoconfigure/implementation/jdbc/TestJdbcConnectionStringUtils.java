@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-public class JdbcConnectionStringUtils {
+public class TestJdbcConnectionStringUtils {
 
     private static String buildEnhancedPropertiesOrderedString(Map<String, String> enhancedProperties, String queryDelimiter) {
         String enhancedPropertyString = new TreeMap<>(enhancedProperties).entrySet()

@@ -8,7 +8,7 @@ import com.azure.identity.extensions.jdbc.postgresql.AzurePostgresqlAuthenticati
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class JdbcPropertyConstantsTest {
+class JdbcPropertyConstantsTests {
 
     private static final String POSTGRES_DRIVER_CLASS_NAME = "org.postgresql.Driver";
     private static final String POSTGRES_AUTH_PLUGIN_INTERFACE_CLASS_NAME = "org.postgresql.plugin.AuthenticationPlugin";
