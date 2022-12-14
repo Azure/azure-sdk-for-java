@@ -3,6 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.jms;
 
+import com.azure.spring.cloud.autoconfigure.implementation.jms.ServiceBusJmsConnectionFactory;
+
 /**
  * A customizer for {@link ServiceBusJmsConnectionFactory}.
  */
