@@ -17,6 +17,9 @@ public final class ReverseSearchAddressBatchResult extends BatchResult {
     @JsonProperty(value = "batchItems", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReverseSearchAddressBatchItemPrivate> batchItems;
 
+    /** Creates an instance of ReverseSearchAddressBatchResult class. */
+    public ReverseSearchAddressBatchResult() {}
+
     /**
      * Get the batchItems property: Array containing the batch results.
      *

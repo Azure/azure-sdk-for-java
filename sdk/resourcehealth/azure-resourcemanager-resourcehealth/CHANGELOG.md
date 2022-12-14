@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,46 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2022-12-09)
+
+- Azure Resource Manager ResourceHealth client library for Java. This package contains Microsoft Azure SDK for ResourceHealth Management SDK. The Resource Health Client. Package tag package-2020-05-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.AvailabilityStatusPropertiesRecentlyResolved` was modified
+
+* `unavailabilitySummary()` was removed
+* `unavailableOccurredTime()` was removed
+* `withUnavailableOccurredTime(java.time.OffsetDateTime)` was removed
+* `withUnavailabilitySummary(java.lang.String)` was removed
+
+#### `models.AvailabilityStatusProperties` was modified
+
+* `withOccurredTime(java.time.OffsetDateTime)` was removed
+* `occurredTime()` was removed
+
+### Features Added
+
+#### `ResourceHealthManager` was modified
+
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+
+#### `models.AvailabilityStatusPropertiesRecentlyResolved` was modified
+
+* `withUnavailableSummary(java.lang.String)` was added
+* `withUnavailableOccuredTime(java.time.OffsetDateTime)` was added
+* `unavailableSummary()` was added
+* `unavailableOccuredTime()` was added
+
+#### `models.AvailabilityStatusProperties` was modified
+
+* `withOccuredTime(java.time.OffsetDateTime)` was added
+* `occuredTime()` was added
+
+#### `ResourceHealthManager$Configurable` was modified
+
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
 
 ## 1.0.0-beta.2 (2022-03-29)
 

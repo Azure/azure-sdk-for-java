@@ -22,12 +22,6 @@ public final class TextSource extends PlaySource {
     private String sourceLocale;
 
     /*
-     * Target language locale to be played
-     */
-    @JsonProperty(value = "targetLocale")
-    private String targetLocale;
-
-    /*
      * Voice gender type
      */
     @JsonProperty(value = "voiceGender")
@@ -76,26 +70,6 @@ public final class TextSource extends PlaySource {
      */
     public TextSource setSourceLocale(String sourceLocale) {
         this.sourceLocale = sourceLocale;
-        return this;
-    }
-
-    /**
-     * Get the targetLocale property: Target language locale to be played.
-     *
-     * @return the targetLocale value.
-     */
-    public String getTargetLocale() {
-        return this.targetLocale;
-    }
-
-    /**
-     * Set the targetLocale property: Target language locale to be played.
-     *
-     * @param targetLocale the targetLocale value to set.
-     * @return the TextSource object itself.
-     */
-    public TextSource setTargetLocale(String targetLocale) {
-        this.targetLocale = targetLocale;
         return this;
     }
 

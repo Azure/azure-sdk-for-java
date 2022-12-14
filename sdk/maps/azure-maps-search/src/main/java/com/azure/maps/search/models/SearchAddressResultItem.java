@@ -34,25 +34,21 @@ public final class SearchAddressResultItem {
     private String id;
 
     /*
-     * The value within a result set to indicate the relative matching score
-     * between results.  You can use this to  determine that result x is twice
-     * as likely to be as relevant as result y if the value of x is 2x the
-     * value of y.   The values vary between queries and is only meant as a
-     * relative value for one result set.
+     * The value within a result set to indicate the relative matching score between results.  You can use this to
+     * determine that result x is twice as likely to be as relevant as result y if the value of x is 2x the value of y.
+     * The values vary between queries and is only meant as a relative value for one result set.
      */
     @JsonProperty(value = "score", access = JsonProperty.Access.WRITE_ONLY)
     private Double score;
 
     /*
-     * Straight line distance between the result and geobias location in
-     * meters.
+     * Straight line distance between the result and geobias location in meters.
      */
     @JsonProperty(value = "dist", access = JsonProperty.Access.WRITE_ONLY)
     private Double distanceInMeters;
 
     /*
-     * Information about the original data source of the Result. Used for
-     * support requests.
+     * Information about the original data source of the Result. Used for support requests.
      */
     @JsonProperty(value = "info", access = JsonProperty.Access.WRITE_ONLY)
     private String info;
@@ -64,8 +60,7 @@ public final class SearchAddressResultItem {
     private GeographicEntityType entityType;
 
     /*
-     * Details of the returned POI including information such as the name,
-     * phone, url address, and classifications.
+     * Details of the returned POI including information such as the name, phone, url address, and classifications.
      */
     @JsonProperty(value = "poi", access = JsonProperty.Access.WRITE_ONLY)
     private PointOfInterest pointOfInterest;
@@ -77,39 +72,34 @@ public final class SearchAddressResultItem {
     private MapsSearchAddress address;
 
     /*
-     * A location represented as a latitude and longitude using short names
-     * 'lat' & 'lon'.
+     * A location represented as a latitude and longitude using short names 'lat' & 'lon'.
      */
     @JsonProperty(value = "position")
     private LatLongPairAbbreviated position;
 
     /*
-     * The viewport that covers the result represented by the top-left and
-     * bottom-right coordinates of the viewport.
+     * The viewport that covers the result represented by the top-left and bottom-right coordinates of the viewport.
      */
     @JsonProperty(value = "viewport", access = JsonProperty.Access.WRITE_ONLY)
     private BoundingBoxPrivate viewport;
 
     /*
-     * Array of EntryPoints. Those describe the types of entrances available at
-     * the location. The type can be "main" for main entrances such as a front
-     * door, or a lobby, and "minor", for side and back doors.
+     * Array of EntryPoints. Those describe the types of entrances available at the location. The type can be "main"
+     * for main entrances such as a front door, or a lobby, and "minor", for side and back doors.
      */
     @JsonProperty(value = "entryPoints", access = JsonProperty.Access.WRITE_ONLY)
     private List<EntryPoint> entryPoints;
 
     /*
-     * Describes the address range on both sides of the street for a search
-     * result. Coordinates for the start and end locations of the address range
-     * are included.
+     * Describes the address range on both sides of the street for a search result. Coordinates for the start and end
+     * locations of the address range are included.
      */
     @JsonProperty(value = "addressRanges", access = JsonProperty.Access.WRITE_ONLY)
     private AddressRanges addressRanges;
 
     /*
      * Optional section. Reference geometry id for use with the [Get Search
-     * Polygon](https://docs.microsoft.com/rest/api/maps/search/getsearchpolygon)
-     * API.
+     * Polygon](https://docs.microsoft.com/rest/api/maps/search/getsearchpolygon) API.
      */
     @JsonProperty(value = "dataSources", access = JsonProperty.Access.WRITE_ONLY)
     private DataSource dataSources;
@@ -126,11 +116,13 @@ public final class SearchAddressResultItem {
     private MatchType matchType;
 
     /*
-     * Detour time in seconds. Only returned for calls to the Search Along
-     * Route API.
+     * Detour time in seconds. Only returned for calls to the Search Along Route API.
      */
     @JsonProperty(value = "detourTime", access = JsonProperty.Access.WRITE_ONLY)
     private Integer detourTime;
+
+    /** Creates an instance of SearchAddressResultItem class. */
+    public SearchAddressResultItem() {}
 
     /**
      * Get the type property: One of: * POI * Street * Geography * Point Address * Address Range * Cross Street.

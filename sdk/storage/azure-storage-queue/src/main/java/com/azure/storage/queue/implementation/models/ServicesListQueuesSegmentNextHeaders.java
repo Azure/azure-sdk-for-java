@@ -5,6 +5,7 @@
 package com.azure.storage.queue.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -33,6 +34,10 @@ public final class ServicesListQueuesSegmentNextHeaders {
     @JsonProperty(value = "Date")
     private DateTimeRfc1123 date;
 
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of ServicesListQueuesSegmentNextHeaders class.
@@ -40,9 +45,9 @@ public final class ServicesListQueuesSegmentNextHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ServicesListQueuesSegmentNextHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        String date = rawHeaders.getValue("Date");
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }

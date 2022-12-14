@@ -10,6 +10,11 @@
 
 ### Other Changes
 
+## 1.7.2 (2022-12-09)
+
+### Bugs Fixed
+- Fixed MSI token `expires_in` parsing issue.
+
 ## 1.7.1 (2022-11-17)
 
 ### Features Added
