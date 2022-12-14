@@ -5,6 +5,7 @@ package com.azure.spring.data.cosmos.core.convert;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
@@ -18,7 +19,8 @@ public class ObjectMapperFactory {
     static {
         OBJECT_MAPPER.registerModule(new ParameterNamesModule())
                         .registerModule(new Jdk8Module())
-                        .registerModule(new JavaTimeModule());
+                        .registerModule(new JavaTimeModule())
+                        .enable(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS);
         OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
