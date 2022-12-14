@@ -66,12 +66,12 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
     private String[] getB2CResourceServerProperties() {
         return new String[] {
             "spring.cloud.azure.active-directory.b2c.enabled=true",
-            String.format("%s=%s", AadB2cConstants.BASE_URI, AadB2cConstants.TEST_BASE_URI),
-            String.format("%s=%s", AadB2cConstants.TENANT_ID, AadB2cConstants.TEST_TENANT_ID),
-            String.format("%s=%s", AadB2cConstants.CLIENT_ID, AadB2cConstants.TEST_CLIENT_ID),
-            String.format("%s=%s", AadB2cConstants.APP_ID_URI, AadB2cConstants.TEST_APP_ID_URI),
-            String.format("%s.%s=%s", AadB2cConstants.USER_FLOWS, AadB2cConstants.TEST_KEY_SIGN_UP_OR_IN,
-                AadB2cConstants.TEST_SIGN_UP_OR_IN_NAME),
+            String.format("%s=%s", TestAadB2cConstants.BASE_URI, TestAadB2cConstants.TEST_BASE_URI),
+            String.format("%s=%s", TestAadB2cConstants.TENANT_ID, TestAadB2cConstants.TEST_TENANT_ID),
+            String.format("%s=%s", TestAadB2cConstants.CLIENT_ID, TestAadB2cConstants.TEST_CLIENT_ID),
+            String.format("%s=%s", TestAadB2cConstants.APP_ID_URI, TestAadB2cConstants.TEST_APP_ID_URI),
+            String.format("%s.%s=%s", TestAadB2cConstants.USER_FLOWS, TestAadB2cConstants.TEST_KEY_SIGN_UP_OR_IN,
+                TestAadB2cConstants.TEST_SIGN_UP_OR_IN_NAME),
         };
     }
 
@@ -88,9 +88,9 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
             final AadB2cProperties properties = c.getBean(AadB2cProperties.class);
 
             Assertions.assertNotNull(properties);
-            Assertions.assertEquals(properties.getProfile().getTenantId(), AadB2cConstants.TEST_TENANT_ID);
-            Assertions.assertEquals(properties.getCredential().getClientId(), AadB2cConstants.TEST_CLIENT_ID);
-            Assertions.assertEquals(properties.getAppIdUri(), AadB2cConstants.TEST_APP_ID_URI);
+            Assertions.assertEquals(properties.getProfile().getTenantId(), TestAadB2cConstants.TEST_TENANT_ID);
+            Assertions.assertEquals(properties.getCredential().getClientId(), TestAadB2cConstants.TEST_CLIENT_ID);
+            Assertions.assertEquals(properties.getAppIdUri(), TestAadB2cConstants.TEST_APP_ID_URI);
         };
     }
 

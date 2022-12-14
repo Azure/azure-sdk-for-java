@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class ThreadInterruptedStatusRestoreTest {
+public class ThreadInterruptedStatusRestoreTests {
 
     @Test
     void testThreadInterruptedRestoreFromAnotherThread() throws InterruptedException {

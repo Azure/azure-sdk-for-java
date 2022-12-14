@@ -20,13 +20,13 @@ import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.core.env.ConfigurableEnvironment;
 
-import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringUtils.enhanceJdbcUrl;
-import static com.azure.spring.cloud.autoconfigure.jdbc.MySqlAzureJdbcAutoConfigurationTest.MYSQL_USER_AGENT;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.TestJdbcConnectionStringUtils.enhanceJdbcUrl;
+import static com.azure.spring.cloud.autoconfigure.jdbc.MySqlAzureJdbcAutoConfigurationTests.MYSQL_USER_AGENT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
+class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTests {
 
     private static final String MYSQL_CONNECTION_STRING = "jdbc:mysql://host/database?enableSwitch1&property1=value1";
     private static final String PUBLIC_AUTHORITY_HOST_STRING = AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.com/";

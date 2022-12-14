@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.jdbc;
 
 import org.junit.jupiter.api.Test;
 
-abstract class DatabaseTypeTest {
+abstract class DatabaseTypeTests {
 
     abstract void databaseTypeConstructor();
     abstract void databasePluginAvailable();

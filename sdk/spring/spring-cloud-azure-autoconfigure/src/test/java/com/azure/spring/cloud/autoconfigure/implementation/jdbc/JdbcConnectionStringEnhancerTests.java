@@ -10,15 +10,15 @@ import org.junit.jupiter.params.provider.EnumSource;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringTest.PATH_WITHOUT_QUERY_PATTERN;
-import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringTest.PATH_WITH_QUERY_PATTERN;
-import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringUtils.enhanceJdbcUrl;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringTests.PATH_WITHOUT_QUERY_PATTERN;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringTests.PATH_WITH_QUERY_PATTERN;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.TestJdbcConnectionStringUtils.enhanceJdbcUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class JdbcConnectionStringEnhancerTest {
+class JdbcConnectionStringEnhancerTests {
 
     @ParameterizedTest
     @EnumSource(value = DatabaseType.class, names = { "MYSQL", "POSTGRESQL" })

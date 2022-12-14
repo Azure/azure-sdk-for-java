@@ -3,7 +3,7 @@
 package com.azure.spring.cloud.autoconfigure.aadb2c.implementation;
 
 import com.azure.spring.cloud.autoconfigure.aad.RestTemplateTestUtil;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.RestTemplateProxyCustomizerConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.TestRestTemplateProxyCustomizerConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAuthorizationRequestResolver;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cLogoutSuccessHandler;
@@ -68,8 +68,8 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
                 assertEquals(authenticateAdditionalParameters.size(), 2);
                 assertTrue(authenticateAdditionalParameters.containsKey("login-hint"));
                 assertTrue(authenticateAdditionalParameters.containsKey("prompt"));
-                assertEquals(authenticateAdditionalParameters.get("login-hint"), AadB2cConstants.TEST_LOGIN_HINT);
-                assertEquals(authenticateAdditionalParameters.get("prompt"), AadB2cConstants.TEST_PROMPT);
+                assertEquals(authenticateAdditionalParameters.get("login-hint"), TestAadB2cConstants.TEST_LOGIN_HINT);
+                assertEquals(authenticateAdditionalParameters.get("prompt"), TestAadB2cConstants.TEST_PROMPT);
             });
     }
 
@@ -88,24 +88,24 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
     }
 
     private String[] getGlobalConfigurableItems() {
-        return new String[] { String.format("%s=%s", AadB2cConstants.TENANT_ID, AadB2cConstants.TEST_TENANT_ID),
-            String.format("%s=%s", AadB2cConstants.CLIENT_ID, AadB2cConstants.TEST_CLIENT_ID),
-            String.format("%s=%s", AadB2cConstants.CLIENT_SECRET, AadB2cConstants.TEST_CLIENT_SECRET) };
+        return new String[] { String.format("%s=%s", TestAadB2cConstants.TENANT_ID, TestAadB2cConstants.TEST_TENANT_ID),
+            String.format("%s=%s", TestAadB2cConstants.CLIENT_ID, TestAadB2cConstants.TEST_CLIENT_ID),
+            String.format("%s=%s", TestAadB2cConstants.CLIENT_SECRET, TestAadB2cConstants.TEST_CLIENT_SECRET) };
     }
 
     private String[] getWebappCommonPropertyValuesWithOutGlobalConfigurableItems() {
-        return new String[] { String.format("%s=%s", AadB2cConstants.BASE_URI, AadB2cConstants.TEST_BASE_URI),
-            String.format("%s=%s", AadB2cConstants.LOGOUT_SUCCESS_URL, AadB2cConstants.TEST_LOGOUT_SUCCESS_URL),
-            String.format("%s=%s", AadB2cConstants.LOGIN_FLOW, AadB2cConstants.TEST_KEY_SIGN_UP_OR_IN),
-            String.format("%s.%s=%s", AadB2cConstants.USER_FLOWS,
-                AadB2cConstants.TEST_KEY_SIGN_UP_OR_IN, AadB2cConstants.TEST_SIGN_UP_OR_IN_NAME),
-            String.format("%s.%s=%s", AadB2cConstants.USER_FLOWS,
-                AadB2cConstants.TEST_KEY_SIGN_IN, AadB2cConstants.TEST_SIGN_IN_NAME),
-            String.format("%s.%s=%s", AadB2cConstants.USER_FLOWS,
-                AadB2cConstants.TEST_KEY_SIGN_UP, AadB2cConstants.TEST_SIGN_UP_NAME),
-            String.format("%s=%s", AadB2cConstants.CONFIG_PROMPT, AadB2cConstants.TEST_PROMPT),
-            String.format("%s=%s", AadB2cConstants.CONFIG_LOGIN_HINT, AadB2cConstants.TEST_LOGIN_HINT),
-            String.format("%s=%s", AadB2cConstants.USER_NAME_ATTRIBUTE_NAME, AadB2cConstants.TEST_ATTRIBUTE_NAME) };
+        return new String[] { String.format("%s=%s", TestAadB2cConstants.BASE_URI, TestAadB2cConstants.TEST_BASE_URI),
+            String.format("%s=%s", TestAadB2cConstants.LOGOUT_SUCCESS_URL, TestAadB2cConstants.TEST_LOGOUT_SUCCESS_URL),
+            String.format("%s=%s", TestAadB2cConstants.LOGIN_FLOW, TestAadB2cConstants.TEST_KEY_SIGN_UP_OR_IN),
+            String.format("%s.%s=%s", TestAadB2cConstants.USER_FLOWS,
+                TestAadB2cConstants.TEST_KEY_SIGN_UP_OR_IN, TestAadB2cConstants.TEST_SIGN_UP_OR_IN_NAME),
+            String.format("%s.%s=%s", TestAadB2cConstants.USER_FLOWS,
+                TestAadB2cConstants.TEST_KEY_SIGN_IN, TestAadB2cConstants.TEST_SIGN_IN_NAME),
+            String.format("%s.%s=%s", TestAadB2cConstants.USER_FLOWS,
+                TestAadB2cConstants.TEST_KEY_SIGN_UP, TestAadB2cConstants.TEST_SIGN_UP_NAME),
+            String.format("%s=%s", TestAadB2cConstants.CONFIG_PROMPT, TestAadB2cConstants.TEST_PROMPT),
+            String.format("%s=%s", TestAadB2cConstants.CONFIG_LOGIN_HINT, TestAadB2cConstants.TEST_LOGIN_HINT),
+            String.format("%s=%s", TestAadB2cConstants.USER_NAME_ATTRIBUTE_NAME, TestAadB2cConstants.TEST_ATTRIBUTE_NAME) };
     }
 
     @Test
@@ -141,22 +141,22 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
                 final AadB2cProperties properties = c.getBean(AadB2cProperties.class);
 
                 Assertions.assertNotNull(properties);
-                Assertions.assertEquals(properties.getCredential().getClientId(), AadB2cConstants.TEST_CLIENT_ID);
-                Assertions.assertEquals(properties.getCredential().getClientSecret(), AadB2cConstants.TEST_CLIENT_SECRET);
-                Assertions.assertEquals(properties.getUserNameAttributeName(), AadB2cConstants.TEST_ATTRIBUTE_NAME);
+                Assertions.assertEquals(properties.getCredential().getClientId(), TestAadB2cConstants.TEST_CLIENT_ID);
+                Assertions.assertEquals(properties.getCredential().getClientSecret(), TestAadB2cConstants.TEST_CLIENT_SECRET);
+                Assertions.assertEquals(properties.getUserNameAttributeName(), TestAadB2cConstants.TEST_ATTRIBUTE_NAME);
 
                 Map<String, String> userFlows = properties.getUserFlows();
                 Assertions.assertTrue(userFlows.size() > 0);
-                final Object prompt = properties.getAuthenticateAdditionalParameters().get(AadB2cConstants.PROMPT);
+                final Object prompt = properties.getAuthenticateAdditionalParameters().get(TestAadB2cConstants.PROMPT);
                 final String loginHint =
-                    String.valueOf(properties.getAuthenticateAdditionalParameters().get(AadB2cConstants.LOGIN_HINT));
-                Set<Object> clientNames = new HashSet<>(Arrays.asList(AadB2cConstants.TEST_SIGN_IN_NAME,
-                    AadB2cConstants.TEST_SIGN_UP_NAME, AadB2cConstants.TEST_SIGN_UP_OR_IN_NAME));
+                    String.valueOf(properties.getAuthenticateAdditionalParameters().get(TestAadB2cConstants.LOGIN_HINT));
+                Set<Object> clientNames = new HashSet<>(Arrays.asList(TestAadB2cConstants.TEST_SIGN_IN_NAME,
+                    TestAadB2cConstants.TEST_SIGN_UP_NAME, TestAadB2cConstants.TEST_SIGN_UP_OR_IN_NAME));
                 for (String clientName : userFlows.keySet()) {
                     Assertions.assertTrue(clientNames.contains(userFlows.get(clientName)));
                 }
-                Assertions.assertEquals(prompt, AadB2cConstants.TEST_PROMPT);
-                Assertions.assertEquals(loginHint, AadB2cConstants.TEST_LOGIN_HINT);
+                Assertions.assertEquals(prompt, TestAadB2cConstants.TEST_PROMPT);
+                Assertions.assertEquals(loginHint, TestAadB2cConstants.TEST_LOGIN_HINT);
             });
     }
 
@@ -276,7 +276,7 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
     @Test
     void testRestTemplateWellConfigured() {
         getDefaultContextRunner()
-                .withUserConfiguration(RestTemplateProxyCustomizerConfiguration.class, AadB2cTestWebSecurityConfiguration.class)
+                .withUserConfiguration(TestRestTemplateProxyCustomizerConfiguration.class, AadB2cTestWebSecurityConfiguration.class)
                 .withPropertyValues("spring.cloud.azure.active-directory.b2c.enabled=true")
                 .run(RestTemplateTestUtil::assertRestTemplateWellConfigured);
     }

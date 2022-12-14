@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class AzureCompatibilityVerifierAutoConfigurationTest {
+public class AzureCompatibilityVerifierAutoConfigurationTests {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureCompatibilityVerifierAutoConfiguration.class));

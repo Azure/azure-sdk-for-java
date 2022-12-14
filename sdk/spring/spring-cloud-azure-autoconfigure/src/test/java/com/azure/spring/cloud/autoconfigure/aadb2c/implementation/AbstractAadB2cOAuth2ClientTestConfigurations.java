@@ -37,10 +37,10 @@ abstract class AbstractAadB2cOAuth2ClientTestConfigurations {
     protected String[] getAuthorizationClientPropertyValues() {
         return new String[] {
             "spring.cloud.azure.active-directory.b2c.enabled=true",
-            String.format("%s.%s.scopes=%s", AadB2cConstants.AUTHORIZATION_CLIENTS,
-                AadB2cConstants.CLIENT_CREDENTIAL_NAME, AadB2cConstants.TEST_CLIENT_CREDENTIAL_SCOPES),
-            String.format("%s.%s.authorization-grant-type=%s", AadB2cConstants.AUTHORIZATION_CLIENTS,
-                AadB2cConstants.CLIENT_CREDENTIAL_NAME, AadB2cConstants.TEST_CLIENT_CREDENTIAL_GRANT_TYPE),
+            String.format("%s.%s.scopes=%s", TestAadB2cConstants.AUTHORIZATION_CLIENTS,
+                TestAadB2cConstants.CLIENT_CREDENTIAL_NAME, TestAadB2cConstants.TEST_CLIENT_CREDENTIAL_SCOPES),
+            String.format("%s.%s.authorization-grant-type=%s", TestAadB2cConstants.AUTHORIZATION_CLIENTS,
+                TestAadB2cConstants.CLIENT_CREDENTIAL_NAME, TestAadB2cConstants.TEST_CLIENT_CREDENTIAL_GRANT_TYPE),
         };
     }
 
@@ -54,9 +54,9 @@ abstract class AbstractAadB2cOAuth2ClientTestConfigurations {
                 Map<String, AuthorizationClientProperties> authorizationClients = properties.getAuthorizationClients();
                 Assertions.assertTrue(authorizationClients.size() > 0);
                 for (String clientName: authorizationClients.keySet()) {
-                    Assertions.assertEquals(clientName, AadB2cConstants.CLIENT_CREDENTIAL_NAME);
+                    Assertions.assertEquals(clientName, TestAadB2cConstants.CLIENT_CREDENTIAL_NAME);
                     Assertions.assertEquals(authorizationClients.get(clientName).getScopes().get(0),
-                        AadB2cConstants.TEST_CLIENT_CREDENTIAL_SCOPES);
+                        TestAadB2cConstants.TEST_CLIENT_CREDENTIAL_SCOPES);
                     Assertions.assertEquals(authorizationClients.get(clientName).getAuthorizationGrantType(),
                         AuthorizationGrantType.CLIENT_CREDENTIALS);
                 }

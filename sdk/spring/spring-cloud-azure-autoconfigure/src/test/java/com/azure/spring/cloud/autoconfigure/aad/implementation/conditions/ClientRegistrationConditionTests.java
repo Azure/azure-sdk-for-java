@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 
-class ClientRegistrationConditionTests extends AbstractCondition {
+class ClientRegistrationConditionTests extends TestAbstractCondition {
 
     @Test
     void testClientConditionWhenApplicationTypeIsEmpty() {

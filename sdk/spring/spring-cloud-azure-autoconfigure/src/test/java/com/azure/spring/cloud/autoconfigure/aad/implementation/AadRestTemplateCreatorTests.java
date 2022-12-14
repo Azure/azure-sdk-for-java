@@ -31,7 +31,7 @@ import java.util.List;
 
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createOAuth2AccessTokenResponseClientRestTemplate;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createOAuth2ErrorResponseHandledRestTemplate;
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.RestTemplateProxyCustomizerConfiguration.FACTORY;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.TestRestTemplateProxyCustomizerConfiguration.FACTORY;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.isA;
@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 
-class AadRestTemplateCreatorTest {
+class AadRestTemplateCreatorTests {
 
     @Test
     void testAadRestOperationConfiguration() {
@@ -106,7 +106,7 @@ class AadRestTemplateCreatorTest {
         new ApplicationContextRunner()
                 .withUserConfiguration(
                         RestTemplateAutoConfiguration.class,
-                        RestTemplateProxyCustomizerConfiguration.class)
+                        TestRestTemplateProxyCustomizerConfiguration.class)
                 .run((context) -> {
                     RestTemplate restTemplate = context.getBean(RestTemplateBuilder.class).build();
                     assertSame(restTemplate.getRequestFactory(), FACTORY);

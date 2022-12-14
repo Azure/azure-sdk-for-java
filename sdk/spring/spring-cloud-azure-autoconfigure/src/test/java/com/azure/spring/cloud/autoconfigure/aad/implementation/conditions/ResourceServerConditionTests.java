@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 
-class ResourceServerConditionTests extends AbstractCondition {
+class ResourceServerConditionTests extends TestAbstractCondition {
 
     @Test
     void testResourceServerConditionWhenApplicationTypeIsEmpty() {

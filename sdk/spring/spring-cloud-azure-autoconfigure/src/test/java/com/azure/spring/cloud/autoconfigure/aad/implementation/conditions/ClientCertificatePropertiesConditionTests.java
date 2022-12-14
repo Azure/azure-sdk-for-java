@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 
-public class ClientCertificatePropertiesConditionTests extends AbstractCondition {
+public class ClientCertificatePropertiesConditionTests extends TestAbstractCondition {
 
     @Test
     void match() {

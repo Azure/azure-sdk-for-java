@@ -18,7 +18,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-abstract class AbstractAzureJdbcAutoConfigurationTest {
+abstract class AbstractAzureJdbcAutoConfigurationTests {
 
     public static final String PUBLIC_AUTHORITY_HOST_STRING = AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.com/";
 

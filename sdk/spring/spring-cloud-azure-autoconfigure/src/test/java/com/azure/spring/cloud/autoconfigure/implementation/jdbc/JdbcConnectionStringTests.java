@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class JdbcConnectionStringTest {
+class JdbcConnectionStringTests {
 
     static final String PATH_WITH_QUERY_PATTERN = "%s://host/database%s%s";
     static final String PATH_WITHOUT_QUERY_PATTERN = "%s://host/database";
