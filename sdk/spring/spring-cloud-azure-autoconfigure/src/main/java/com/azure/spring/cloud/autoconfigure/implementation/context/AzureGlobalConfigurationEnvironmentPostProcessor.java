@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.context;
+package com.azure.spring.cloud.autoconfigure.implementation.context;
 
 import org.apache.commons.logging.Log;
 import org.springframework.boot.SpringApplication;
@@ -33,26 +33,15 @@ import static com.azure.core.util.Configuration.PROPERTY_AZURE_TENANT_ID;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_USERNAME;
 import static com.azure.core.util.Configuration.PROPERTY_NO_PROXY;
 
-/**
- * An EnvironmentPostProcessor to convert environment variables predefined by Azure Core and Azure SDKs to Azure Spring
- * properties, and add a property source for them as well.
- */
 public class AzureGlobalConfigurationEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
 
     private final Log logger;
 
-    /**
-     * Creates a new instance of {@link AzureGlobalConfigurationEnvironmentPostProcessor}.
-     * @param logger The logger used in this class.
-     */
     public AzureGlobalConfigurationEnvironmentPostProcessor(Log logger) {
         this.logger = logger;
         AzureCoreEnvMapping.setLogger(logger);
     }
 
-    /**
-     * Construct a {@link AzureGlobalConfigurationEnvironmentPostProcessor} instance with default value.
-     */
     public AzureGlobalConfigurationEnvironmentPostProcessor() {
         this.logger = new DeferredLog();
         AzureCoreEnvMapping.setLogger(logger);
