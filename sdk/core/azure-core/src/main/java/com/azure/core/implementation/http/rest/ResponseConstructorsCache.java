@@ -116,11 +116,9 @@ public final class ResponseConstructorsCache {
      * @param bodyAsObject The HTTP response body.
      * @return An instance of the {@link Response} implementation.
      */
-    public Response<?> invoke(
-        final MethodHandle handle,
-        final HttpResponseDecoder.HttpDecodedResponse decodedResponse,
-        final Object bodyAsObject
-    ) {
+    public Response<?> invoke(final MethodHandle handle,
+                              final HttpResponseDecoder.HttpDecodedResponse decodedResponse,
+                              final Object bodyAsObject) {
         final HttpResponse httpResponse = decodedResponse.getSourceResponse();
         final HttpRequest httpRequest = httpResponse.getRequest();
         final int responseStatusCode = httpResponse.getStatusCode();
@@ -131,24 +129,11 @@ public final class ResponseConstructorsCache {
             case 3:
                 return constructResponse(handle, THREE_PARAM_ERROR, httpRequest, responseStatusCode, responseHeaders);
             case 4:
-                return constructResponse(
-                    handle,
-                    FOUR_PARAM_ERROR,
-                    httpRequest,
-                    responseStatusCode,
-                    responseHeaders,
-                    bodyAsObject
-                );
+                return constructResponse(handle, FOUR_PARAM_ERROR, httpRequest, responseStatusCode, responseHeaders,
+                    bodyAsObject);
             case 5:
-                return constructResponse(
-                    handle,
-                    FIVE_PARAM_ERROR,
-                    httpRequest,
-                    responseStatusCode,
-                    responseHeaders,
-                    bodyAsObject,
-                    decodedResponse.getDecodedHeaders()
-                );
+                return constructResponse(handle, FIVE_PARAM_ERROR, httpRequest, responseStatusCode, responseHeaders,
+                    bodyAsObject, decodedResponse.getDecodedHeaders());
             default:
                 throw LOGGER.logExceptionAsError(new IllegalStateException(INVALID_PARAM_COUNT));
         }

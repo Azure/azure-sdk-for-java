@@ -50,7 +50,8 @@ final class GeoJsonDeserializer extends JsonDeserializer<GeoObject> {
     static final SimpleModule MODULE;
 
     static {
-        MODULE = new SimpleModule().addDeserializer(GeoObject.class, new GeoJsonDeserializer())
+        MODULE = new SimpleModule()
+            .addDeserializer(GeoObject.class, new GeoJsonDeserializer())
             .addDeserializer(GeoPoint.class, geoSubclassDeserializer(GeoPoint.class))
             .addDeserializer(GeoLineString.class, geoSubclassDeserializer(GeoLineString.class))
             .addDeserializer(GeoPolygon.class, geoSubclassDeserializer(GeoPolygon.class))
@@ -121,8 +122,9 @@ final class GeoJsonDeserializer extends JsonDeserializer<GeoObject> {
         return type.toString().equalsIgnoreCase(jsonType);
     }
 
-    private static GeoPolygonCollection
-        readMultiPolygon(JsonNode node, GeoBoundingBox boundingBox, Map<String, Object> properties) {
+    private static GeoPolygonCollection readMultiPolygon(JsonNode node,
+                                                         GeoBoundingBox boundingBox,
+                                                         Map<String, Object> properties) {
         List<GeoPolygon> polygons = new ArrayList<>();
         for (JsonNode polygon : node) {
             List<GeoLinearRing> rings = new ArrayList<>();
@@ -145,9 +147,9 @@ final class GeoJsonDeserializer extends JsonDeserializer<GeoObject> {
         JsonNode requiredNode = node.get(name);
 
         if (requiredNode == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException(String.format("GeoJSON object expected to have '%s' property.", name))
-            );
+            throw LOGGER
+                .logExceptionAsError(new IllegalStateException(String
+                    .format("GeoJSON object expected to have '%s' property.", name)));
         }
 
         return requiredNode;
@@ -158,25 +160,17 @@ final class GeoJsonDeserializer extends JsonDeserializer<GeoObject> {
         if (boundingBoxNode != null) {
             switch (boundingBoxNode.size()) {
                 case 4:
-                    return new GeoBoundingBox(
-                        boundingBoxNode.get(0).asDouble(),
-                        boundingBoxNode.get(1).asDouble(),
-                        boundingBoxNode.get(2).asDouble(),
-                        boundingBoxNode.get(3).asDouble()
-                    );
+                    return new GeoBoundingBox(boundingBoxNode.get(0).asDouble(), boundingBoxNode.get(1).asDouble(),
+                        boundingBoxNode.get(2).asDouble(), boundingBoxNode.get(3).asDouble());
                 case 6:
-                    return new GeoBoundingBox(
-                        boundingBoxNode.get(0).asDouble(),
-                        boundingBoxNode.get(1).asDouble(),
-                        boundingBoxNode.get(3).asDouble(),
-                        boundingBoxNode.get(4).asDouble(),
-                        boundingBoxNode.get(2).asDouble(),
-                        boundingBoxNode.get(5).asDouble()
-                    );
+                    return new GeoBoundingBox(boundingBoxNode.get(0).asDouble(), boundingBoxNode.get(1).asDouble(),
+                        boundingBoxNode.get(3).asDouble(), boundingBoxNode.get(4).asDouble(), boundingBoxNode
+                            .get(2)
+                            .asDouble(), boundingBoxNode.get(5).asDouble());
                 default:
-                    throw LOGGER.logExceptionAsError(
-                        new IllegalStateException("Only 2 or 3 dimension bounding boxes are supported.")
-                    );
+                    throw LOGGER
+                        .logExceptionAsError(new IllegalStateException(
+                            "Only 2 or 3 dimension bounding boxes are supported."));
             }
         }
 
@@ -193,11 +187,9 @@ final class GeoJsonDeserializer extends JsonDeserializer<GeoObject> {
         while (fieldsIterator.hasNext()) {
             Map.Entry<String, JsonNode> field = fieldsIterator.next();
             String propertyName = field.getKey();
-            if (
-                propertyName.equalsIgnoreCase(TYPE_PROPERTY)
-                    || propertyName.equalsIgnoreCase(BOUNDING_BOX_PROPERTY)
-                    || propertyName.equalsIgnoreCase(knownProperty)
-            ) {
+            if (propertyName.equalsIgnoreCase(TYPE_PROPERTY)
+                || propertyName.equalsIgnoreCase(BOUNDING_BOX_PROPERTY)
+                || propertyName.equalsIgnoreCase(knownProperty)) {
                 continue;
             }
 
@@ -232,10 +224,10 @@ final class GeoJsonDeserializer extends JsonDeserializer<GeoObject> {
                 return null;
             case OBJECT:
                 Map<String, Object> object = new HashMap<>();
-                node.fields()
-                    .forEachRemaining(
-                        field -> object.put(field.getKey(), readAdditionalPropertyValue(field.getValue()))
-                    );
+                node
+                    .fields()
+                    .forEachRemaining(field -> object
+                        .put(field.getKey(), readAdditionalPropertyValue(field.getValue())));
 
                 return object;
             case ARRAY:
@@ -244,11 +236,9 @@ final class GeoJsonDeserializer extends JsonDeserializer<GeoObject> {
 
                 return array;
             default:
-                throw LOGGER.logExceptionAsError(
-                    new IllegalStateException(
-                        String.format("Unsupported additional property type %s.", node.getNodeType())
-                    )
-                );
+                throw LOGGER
+                    .logExceptionAsError(new IllegalStateException(String
+                        .format("Unsupported additional property type %s.", node.getNodeType())));
         }
     }
 

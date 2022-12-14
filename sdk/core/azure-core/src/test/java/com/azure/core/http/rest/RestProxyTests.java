@@ -56,65 +56,43 @@ public class RestProxyTests {
     @ServiceInterface(name = "myService")
     interface TestInterface {
         @Post("my/url/path")
-        @ExpectedResponses({
-            200
-        })
-        Mono<Response<Void>> testMethod(
-            @BodyParam("application/octet-stream") Flux<ByteBuffer> request,
-            @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Content-Length") Long contentLength
-        );
+        @ExpectedResponses({ 200 })
+        Mono<Response<Void>> testMethod(@BodyParam("application/octet-stream") Flux<ByteBuffer> request,
+                                        @HeaderParam("Content-Type") String contentType,
+                                        @HeaderParam("Content-Length") Long contentLength);
 
         @Post("my/url/path")
-        @ExpectedResponses({
-            200
-        })
-        Mono<Response<Void>> testMethod(
-            @BodyParam("application/octet-stream") BinaryData data,
-            @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Content-Length") Long contentLength
-        );
+        @ExpectedResponses({ 200 })
+        Mono<Response<Void>> testMethod(@BodyParam("application/octet-stream") BinaryData data,
+                                        @HeaderParam("Content-Type") String contentType,
+                                        @HeaderParam("Content-Length") Long contentLength);
 
         @Get("{nextLink}")
-        @ExpectedResponses({
-            200
-        })
+        @ExpectedResponses({ 200 })
         Mono<Response<Void>> testListNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
 
         @Get("my/url/path")
-        @ExpectedResponses({
-            200
-        })
+        @ExpectedResponses({ 200 })
         Mono<Void> testMethodReturnsMonoVoid();
 
         @Get("my/url/path")
-        @ExpectedResponses({
-            200
-        })
+        @ExpectedResponses({ 200 })
         void testVoidMethod();
 
         @Get("my/url/path")
-        @ExpectedResponses({
-            200
-        })
+        @ExpectedResponses({ 200 })
         Mono<Response<Void>> testMethodReturnsMonoResponseVoid();
 
         @Get("my/url/path")
-        @ExpectedResponses({
-            200
-        })
+        @ExpectedResponses({ 200 })
         Response<Void> testMethodReturnsResponseVoid();
 
         @Get("my/url/path")
-        @ExpectedResponses({
-            200
-        })
+        @ExpectedResponses({ 200 })
         StreamResponse testDownload();
 
         @Get("my/url/path")
-        @ExpectedResponses({
-            200
-        })
+        @ExpectedResponses({ 200 })
         Mono<StreamResponse> testDownloadAsync();
     }
 
@@ -125,9 +103,9 @@ public class RestProxyTests {
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         byte[] bytes = "hello".getBytes();
-        Response<Void> response =
-            testInterface.testMethod(Flux.just(ByteBuffer.wrap(bytes)), "application/json", (long) bytes.length)
-                .block();
+        Response<Void> response = testInterface
+            .testMethod(Flux.just(ByteBuffer.wrap(bytes)), "application/json", (long) bytes.length)
+            .block();
         assertEquals(200, response.getStatusCode());
     }
 
@@ -149,7 +127,8 @@ public class RestProxyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
-        StepVerifier.create(testInterface.testDownloadAsync().doOnNext(StreamResponse::close))
+        StepVerifier
+            .create(testInterface.testDownloadAsync().doOnNext(StreamResponse::close))
             .expectNextCount(1)
             .verifyComplete();
         // This indirectly tests that StreamResponse has HttpResponse reference
@@ -174,13 +153,13 @@ public class RestProxyTests {
         Path file = Files.createTempFile("knownLengthBinaryDataIsPassthroughArgumentProvider", null);
         file.toFile().deleteOnExit();
         Files.write(file, bytes);
-        return Stream.of(
-            Arguments.of(Named.of("bytes", BinaryData.fromBytes(bytes)), bytes.length),
-            Arguments.of(Named.of("string", BinaryData.fromString(string)), bytes.length),
-            Arguments.of(Named.of("file", BinaryData.fromFile(file)), bytes.length),
-            Arguments
-                .of(Named.of("serializable", BinaryData.fromObject(bytes)), BinaryData.fromObject(bytes).getLength())
-        );
+        return Stream
+            .of(Arguments.of(Named.of("bytes", BinaryData.fromBytes(bytes)), bytes.length), Arguments
+                .of(Named.of("string", BinaryData.fromString(string)), bytes.length), Arguments
+                    .of(Named.of("file", BinaryData.fromFile(file)), bytes.length), Arguments
+                        .of(Named.of("serializable", BinaryData.fromObject(bytes)), BinaryData
+                            .fromObject(bytes)
+                            .getLength()));
     }
 
     @ParameterizedTest
@@ -194,8 +173,9 @@ public class RestProxyTests {
         Response<Void> response = testInterface.testMethod(data, "application/json", contentLength).block();
         assertEquals(200, response.getStatusCode());
 
-        Class<? extends BinaryDataContent> actualContentClazz =
-            BinaryDataHelper.getContent(client.getLastHttpRequest().getBodyAsBinaryData()).getClass();
+        Class<? extends BinaryDataContent> actualContentClazz = BinaryDataHelper
+            .getContent(client.getLastHttpRequest().getBodyAsBinaryData())
+            .getClass();
         assertEquals(expectedContentClazz, actualContentClazz);
     }
 
@@ -292,7 +272,8 @@ public class RestProxyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
-        StepVerifier.create(testInterface.testDownloadAsync().doOnNext(StreamResponse::close))
+        StepVerifier
+            .create(testInterface.testDownloadAsync().doOnNext(StreamResponse::close))
             .expectNextCount(1)
             .verifyComplete();
 
@@ -306,29 +287,27 @@ public class RestProxyTests {
         file.toFile().deleteOnExit();
         Files.write(file, bytes);
         ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
-        return Stream.of(
-            Arguments.of(Named.of("bytes", BinaryData.fromBytes(bytes)), bytes.length),
-            Arguments.of(Named.of("string", BinaryData.fromString(string)), bytes.length),
-            Arguments.of(Named.of("file", BinaryData.fromFile(file)), bytes.length),
-            Arguments.of(Named.of("stream", BinaryData.fromStream(stream)), bytes.length),
-            Arguments.of(
-                Named.of("eager flux with length", BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes))).block()),
-                bytes.length
-            ),
-            Arguments.of(
-                Named.of("lazy flux", BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes)), null, false).block()),
-                bytes.length
-            ),
-            Arguments.of(
-                Named.of(
-                    "lazy flux with length",
-                    BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes)), (long) bytes.length, false).block()
-                ),
-                bytes.length
-            ),
-            Arguments
-                .of(Named.of("serializable", BinaryData.fromObject(bytes)), BinaryData.fromObject(bytes).getLength())
-        );
+        return Stream
+            .of(Arguments.of(Named.of("bytes", BinaryData.fromBytes(bytes)), bytes.length), Arguments
+                .of(Named.of("string", BinaryData.fromString(string)), bytes.length), Arguments
+                    .of(Named.of("file", BinaryData.fromFile(file)), bytes.length), Arguments
+                        .of(Named.of("stream", BinaryData.fromStream(stream)), bytes.length), Arguments
+                            .of(Named
+                                .of("eager flux with length", BinaryData
+                                    .fromFlux(Flux.just(ByteBuffer.wrap(bytes)))
+                                    .block()), bytes.length), Arguments
+                                        .of(Named
+                                            .of("lazy flux", BinaryData
+                                                .fromFlux(Flux.just(ByteBuffer.wrap(bytes)), null, false)
+                                                .block()), bytes.length), Arguments
+                                                    .of(Named
+                                                        .of("lazy flux with length", BinaryData
+                                                            .fromFlux(Flux.just(ByteBuffer.wrap(bytes)),
+                                                                (long) bytes.length, false)
+                                                            .block()), bytes.length), Arguments
+                                                                .of(Named
+                                                                    .of("serializable", BinaryData.fromObject(bytes)),
+                                                                    BinaryData.fromObject(bytes).getLength()));
     }
 
     private static final class LocalHttpClient implements HttpClient {
@@ -369,17 +348,18 @@ public class RestProxyTests {
 
     @ParameterizedTest
     @MethodSource("mergeRequestOptionsContextSupplier")
-    public void
-        mergeRequestOptionsContext(Context context, RequestOptions options, Map<Object, Object> expectedContextValues) {
-        Map<Object, Object> actualContextValues =
-            RestProxyUtils.mergeRequestOptionsContext(context, options).getValues();
+    public void mergeRequestOptionsContext(Context context,
+                                           RequestOptions options,
+                                           Map<Object, Object> expectedContextValues) {
+        Map<Object, Object> actualContextValues = RestProxyUtils
+            .mergeRequestOptionsContext(context, options)
+            .getValues();
 
         assertEquals(expectedContextValues.size(), actualContextValues.size());
         for (Map.Entry<Object, Object> expectedKvp : expectedContextValues.entrySet()) {
-            assertTrue(
-                actualContextValues.containsKey(expectedKvp.getKey()),
-                () -> "Missing expected key '" + expectedKvp.getKey() + "'."
-            );
+            assertTrue(actualContextValues.containsKey(expectedKvp.getKey()), () -> "Missing expected key '"
+                + expectedKvp.getKey()
+                + "'.");
             assertEquals(expectedKvp.getValue(), actualContextValues.get(expectedKvp.getKey()));
         }
     }
@@ -389,33 +369,27 @@ public class RestProxyTests {
         twoValuesMap.put("key", "value");
         twoValuesMap.put("key2", "value2");
 
-        return Stream.of(
-            // Cases where the RequestOptions or it's Context doesn't exist.
-            Arguments.of(Context.NONE, null, Collections.emptyMap()),
-            Arguments.of(Context.NONE, new RequestOptions(), Collections.emptyMap()),
-            Arguments.of(Context.NONE, new RequestOptions().setContext(Context.NONE), Collections.emptyMap()),
+        return Stream
+            .of(
+                // Cases where the RequestOptions or it's Context doesn't exist.
+                Arguments.of(Context.NONE, null, Collections.emptyMap()), Arguments
+                    .of(Context.NONE, new RequestOptions(), Collections.emptyMap()), Arguments
+                        .of(Context.NONE, new RequestOptions().setContext(Context.NONE), Collections.emptyMap()),
 
-            // Case where the RequestOptions Context is merged into an empty Context.
-            Arguments.of(
-                Context.NONE,
-                new RequestOptions().setContext(new Context("key", "value")),
-                Collections.singletonMap("key", "value")
-            ),
+                // Case where the RequestOptions Context is merged into an empty Context.
+                Arguments
+                    .of(Context.NONE, new RequestOptions().setContext(new Context("key", "value")), Collections
+                        .singletonMap("key", "value")),
 
-            // Case where the RequestOptions Context is merged, without replacement, into an existing Context.
-            Arguments.of(
-                new Context("key", "value"),
-                new RequestOptions().setContext(new Context("key2", "value2")),
-                twoValuesMap
-            ),
+                // Case where the RequestOptions Context is merged, without replacement, into an existing Context.
+                Arguments
+                    .of(new Context("key", "value"), new RequestOptions().setContext(new Context("key2", "value2")),
+                        twoValuesMap),
 
-            // Case where the RequestOptions Context is merged and overrides an existing Context.
-            Arguments.of(
-                new Context("key", "value"),
-                new RequestOptions().setContext(new Context("key", "value2")),
-                Collections.singletonMap("key", "value2")
-            )
-        );
+                // Case where the RequestOptions Context is merged and overrides an existing Context.
+                Arguments
+                    .of(new Context("key", "value"), new RequestOptions().setContext(new Context("key", "value2")),
+                        Collections.singletonMap("key", "value2")));
     }
 
     @Test

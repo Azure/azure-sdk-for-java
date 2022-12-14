@@ -18,17 +18,13 @@ public class MissingRequiredAnnotationException extends RuntimeException {
      * @param requiredAnnotation The annotation that is required.
      * @param swaggerInterface The swagger interface that is missing the required annotation.
      */
-    public MissingRequiredAnnotationException(
-        Class<? extends Annotation> requiredAnnotation,
-        Class<?> swaggerInterface
-    ) {
-        super(
-            "A "
-                + getAnnotationName(requiredAnnotation)
-                + " annotation must be defined on "
-                + swaggerInterface.getName()
-                + "."
-        );
+    public MissingRequiredAnnotationException(Class<? extends Annotation> requiredAnnotation,
+                                              Class<?> swaggerInterface) {
+        super("A "
+            + getAnnotationName(requiredAnnotation)
+            + " annotation must be defined on "
+            + swaggerInterface.getName()
+            + ".");
     }
 
     /**
@@ -38,17 +34,13 @@ public class MissingRequiredAnnotationException extends RuntimeException {
      * @param requiredAnnotationOptions The options for the annotation that is required.
      * @param swaggerInterfaceMethod The swagger interface method that is missing the required annotation.
      */
-    public MissingRequiredAnnotationException(
-        List<Class<? extends Annotation>> requiredAnnotationOptions,
-        Method swaggerInterfaceMethod
-    ) {
-        super(
-            "Either "
-                + optionsToString(requiredAnnotationOptions)
-                + " annotation must be defined on the method "
-                + methodFullName(swaggerInterfaceMethod)
-                + "."
-        );
+    public MissingRequiredAnnotationException(List<Class<? extends Annotation>> requiredAnnotationOptions,
+                                              Method swaggerInterfaceMethod) {
+        super("Either "
+            + optionsToString(requiredAnnotationOptions)
+            + " annotation must be defined on the method "
+            + methodFullName(swaggerInterfaceMethod)
+            + ".");
     }
 
     private static String getAnnotationName(Class<? extends Annotation> annotation) {

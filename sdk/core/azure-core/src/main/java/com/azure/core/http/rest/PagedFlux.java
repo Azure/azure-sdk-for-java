@@ -139,16 +139,11 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      * @param firstPageRetriever Supplier that retrieves the first page
      * @param nextPageRetriever Function that retrieves the next page given a continuation token
      */
-    public PagedFlux(
-        Supplier<Mono<PagedResponse<T>>> firstPageRetriever,
-        Function<String, Mono<PagedResponse<T>>> nextPageRetriever
-    ) {
-        this(
-            () -> (continuationToken, pageSize) -> continuationToken == null
-                ? firstPageRetriever.get().flux()
-                : nextPageRetriever.apply(continuationToken).flux(),
-            true
-        );
+    public PagedFlux(Supplier<Mono<PagedResponse<T>>> firstPageRetriever,
+                     Function<String, Mono<PagedResponse<T>>> nextPageRetriever) {
+        this(() -> (continuationToken, pageSize) -> continuationToken == null
+            ? firstPageRetriever.get().flux()
+            : nextPageRetriever.apply(continuationToken).flux(), true);
     }
 
     /**
@@ -172,16 +167,11 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
      * @param firstPageRetriever Function that retrieves the first page.
      * @param nextPageRetriever BiFunction that retrieves the next page given a continuation token and page size.
      */
-    public PagedFlux(
-        Function<Integer, Mono<PagedResponse<T>>> firstPageRetriever,
-        BiFunction<String, Integer, Mono<PagedResponse<T>>> nextPageRetriever
-    ) {
-        this(
-            () -> (continuationToken, pageSize) -> continuationToken == null
-                ? firstPageRetriever.apply(pageSize).flux()
-                : nextPageRetriever.apply(continuationToken, pageSize).flux(),
-            true
-        );
+    public PagedFlux(Function<Integer, Mono<PagedResponse<T>>> firstPageRetriever,
+                     BiFunction<String, Integer, Mono<PagedResponse<T>>> nextPageRetriever) {
+        this(() -> (continuationToken, pageSize) -> continuationToken == null
+            ? firstPageRetriever.apply(pageSize).flux()
+            : nextPageRetriever.apply(continuationToken, pageSize).flux(), true);
     }
 
     /**
@@ -273,13 +263,11 @@ public class PagedFlux<T> extends PagedFluxBase<T, PagedResponse<T>> {
     }
 
     private <S> Function<PagedResponse<T>, PagedResponse<S>> mapPagedResponse(Function<T, S> mapper) {
-        return pagedResponse -> new PagedResponseBase<HttpRequest, S>(
-            pagedResponse.getRequest(),
-            pagedResponse.getStatusCode(),
-            pagedResponse.getHeaders(),
-            pagedResponse.getValue().stream().map(mapper).collect(Collectors.toList()),
-            pagedResponse.getContinuationToken(),
-            null
-        );
+        return pagedResponse -> new PagedResponseBase<HttpRequest, S>(pagedResponse.getRequest(), pagedResponse
+            .getStatusCode(), pagedResponse.getHeaders(), pagedResponse
+                .getValue()
+                .stream()
+                .map(mapper)
+                .collect(Collectors.toList()), pagedResponse.getContinuationToken(), null);
     }
 }

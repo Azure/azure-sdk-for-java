@@ -126,7 +126,8 @@ public final class InputStreamContent extends BinaryDataContent {
             return Mono.fromCallable(() -> createMarkResetContent(inputStream, length));
         }
 
-        return Mono.just(inputStream)
+        return Mono
+            .just(inputStream)
             .publishOn(Schedulers.boundedElastic()) // reading stream can be blocking.
             .map(is -> readAndBuffer(is, length));
     }

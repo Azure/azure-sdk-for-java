@@ -86,24 +86,22 @@ public class GeoLineStringCollectionTests {
         GeoLineStringCollection multiLine = new GeoLineStringCollection(lines);
         GeoLineStringCollection multiLine1 = new GeoLineStringCollection(lines1, boundingBox, properties);
 
-        return Stream.of(
-            // Other is null.
-            Arguments.of(multiLine, null, false),
+        return Stream
+            .of(
+                // Other is null.
+                Arguments.of(multiLine, null, false),
 
-            // Other isn't instance of type.
-            Arguments.of(multiLine, 1, false),
+                // Other isn't instance of type.
+                Arguments.of(multiLine, 1, false),
 
-            // Other is itself.
-            Arguments.of(multiLine, multiLine, true),
-            Arguments.of(multiLine1, multiLine1, true),
+                // Other is itself.
+                Arguments.of(multiLine, multiLine, true), Arguments.of(multiLine1, multiLine1, true),
 
-            // Other is a different value.
-            Arguments.of(multiLine, multiLine1, false),
-            Arguments.of(multiLine1, multiLine, false),
+                // Other is a different value.
+                Arguments.of(multiLine, multiLine1, false), Arguments.of(multiLine1, multiLine, false),
 
-            // Other is the same value.
-            Arguments.of(multiLine, new GeoLineStringCollection(lines), true),
-            Arguments.of(multiLine1, new GeoLineStringCollection(lines1, boundingBox, properties), true)
-        );
+                // Other is the same value.
+                Arguments.of(multiLine, new GeoLineStringCollection(lines), true), Arguments
+                    .of(multiLine1, new GeoLineStringCollection(lines1, boundingBox, properties), true));
     }
 }

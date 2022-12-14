@@ -79,10 +79,8 @@ public class IOUtilsTest {
         tempFile.toFile().deleteOnExit();
 
         ReadableByteChannel source = Channels.newChannel(new ByteArrayInputStream(data));
-        try (
-            AsynchronousByteChannel destination =
-                IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)
-        ) {
+        try (AsynchronousByteChannel destination = IOUtils
+            .toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)) {
             IOUtils.transferAsync(source, destination).block();
         }
 
@@ -98,10 +96,8 @@ public class IOUtilsTest {
         tempFile.toFile().deleteOnExit();
 
         ReadableByteChannel source = Channels.newChannel(new ByteArrayInputStream(data));
-        try (
-            AsynchronousByteChannel destination =
-                IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)
-        ) {
+        try (AsynchronousByteChannel destination = IOUtils
+            .toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0)) {
             AsynchronousByteChannel paritialWriteDestination = new PartialWriteAsynchronousChannel(destination);
             IOUtils.transferAsync(source, paritialWriteDestination).block();
         }
@@ -116,8 +112,8 @@ public class IOUtilsTest {
         Path tempFile = Files.createTempFile("ioutilstest", null);
         tempFile.toFile().deleteOnExit();
 
-        Function<Integer, Flux<ByteBuffer>> fluxSupplier =
-            offset -> Flux.generate(() -> offset, (currentOffset, sink) -> {
+        Function<Integer, Flux<ByteBuffer>> fluxSupplier = offset -> Flux
+            .generate(() -> offset, (currentOffset, sink) -> {
                 int size = Math.min(64, data.length - currentOffset);
                 if (size > 0) {
                     sink.next(ByteBuffer.wrap(data, currentOffset, size));
@@ -137,25 +133,20 @@ public class IOUtilsTest {
             retries.incrementAndGet();
             offsets.add(offset);
             throwables.add(throwable);
-            MockFluxHttpResponse newHttpResponse =
-                new MockFluxHttpResponse(MOCK_REQUEST, fluxSupplier.apply(offset.intValue()));
+            MockFluxHttpResponse newHttpResponse = new MockFluxHttpResponse(MOCK_REQUEST, fluxSupplier
+                .apply(offset.intValue()));
             responses.add(newHttpResponse);
             return Mono.just(new StreamResponse(newHttpResponse));
         };
 
-        try (
-            FaultyAsynchronousByteChannel channel = new FaultyAsynchronousByteChannel(
-                IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
-                () -> new IOException("KABOOM"),
-                3,
-                1024
-            )
-        ) {
+        try (FaultyAsynchronousByteChannel channel = new FaultyAsynchronousByteChannel(IOUtils
+            .toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
+            () -> new IOException("KABOOM"), 3, 1024)) {
 
-            StepVerifier.create(
-                IOUtils
-                    .transferStreamResponseToAsynchronousByteChannel(channel, initialResponse, onErrorResume, null, 5)
-            ).verifyComplete();
+            StepVerifier
+                .create(IOUtils
+                    .transferStreamResponseToAsynchronousByteChannel(channel, initialResponse, onErrorResume, null, 5))
+                .verifyComplete();
         }
 
         assertEquals(3, retries.get());
@@ -176,8 +167,8 @@ public class IOUtilsTest {
         Path tempFile = Files.createTempFile("ioutilstest", null);
         tempFile.toFile().deleteOnExit();
 
-        Function<Integer, Flux<ByteBuffer>> fluxSupplier =
-            offset -> Flux.generate(() -> offset, (currentOffset, sink) -> {
+        Function<Integer, Flux<ByteBuffer>> fluxSupplier = offset -> Flux
+            .generate(() -> offset, (currentOffset, sink) -> {
                 int size = Math.min(64, data.length - currentOffset);
                 if (size > 0) {
                     sink.next(ByteBuffer.wrap(data, currentOffset, size));
@@ -197,25 +188,21 @@ public class IOUtilsTest {
             retries.incrementAndGet();
             offsets.add(offset);
             throwables.add(throwable);
-            MockFluxHttpResponse newHttpResponse =
-                new MockFluxHttpResponse(MOCK_REQUEST, fluxSupplier.apply(offset.intValue()));
+            MockFluxHttpResponse newHttpResponse = new MockFluxHttpResponse(MOCK_REQUEST, fluxSupplier
+                .apply(offset.intValue()));
             responses.add(newHttpResponse);
             return Mono.just(new StreamResponse(newHttpResponse));
         };
 
-        try (
-            FaultyAsynchronousByteChannel channel = new FaultyAsynchronousByteChannel(
-                IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
-                () -> new IOException("KABOOM"),
-                3,
-                1024
-            )
-        ) {
+        try (FaultyAsynchronousByteChannel channel = new FaultyAsynchronousByteChannel(IOUtils
+            .toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
+            () -> new IOException("KABOOM"), 3, 1024)) {
 
-            StepVerifier.create(
-                IOUtils
-                    .transferStreamResponseToAsynchronousByteChannel(channel, initialResponse, onErrorResume, null, 2)
-            ).expectErrorMessage("KABOOM").verify();
+            StepVerifier
+                .create(IOUtils
+                    .transferStreamResponseToAsynchronousByteChannel(channel, initialResponse, onErrorResume, null, 2))
+                .expectErrorMessage("KABOOM")
+                .verify();
         }
 
         assertEquals(2, retries.get());

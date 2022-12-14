@@ -83,13 +83,11 @@ class ResponseConstructorsCacheBenchMarkTestData {
 
     // 5. PagedResponseBase<FooHeader, Foo> (Ctr_args: 5)
     static final class FooPagedResponseBase extends PagedResponseBase<FooHeader, Foo> {
-        FooPagedResponseBase(
-            HttpRequest request,
-            int statusCode,
-            HttpHeaders headers,
-            Page<Foo> page,
-            FooHeader decodedHeaders
-        ) {
+        FooPagedResponseBase(HttpRequest request,
+                             int statusCode,
+                             HttpHeaders headers,
+                             Page<Foo> page,
+                             FooHeader decodedHeaders) {
             super(request, statusCode, headers, page, decodedHeaders);
         }
     }
@@ -165,7 +163,8 @@ class ResponseConstructorsCacheBenchMarkTestData {
     //
     private static final HttpRequest HTTP_REQUEST = new HttpRequest(HttpMethod.GET, createUrl());
     private static final HttpHeaders RESPONSE_HEADERS = new HttpHeaders().set("hello", "world");
-    private static final HttpHeaders RESPONSE_CUSTOM_HEADERS = new HttpHeaders().set("hello", "world")          // General header
+    private static final HttpHeaders RESPONSE_CUSTOM_HEADERS = new HttpHeaders()
+        .set("hello", "world")          // General header
         .set("customHdr", "customVal"); // Custom header
     private static final int RESPONSE_STATUS_CODE = 200;
     private static final Foo FOO = new Foo().setName("foo1");
@@ -186,16 +185,16 @@ class ResponseConstructorsCacheBenchMarkTestData {
     };
     private static final byte[] PAGE_FOO_BYTE_ARRAY = asJsonByteArray(PAGE_FOO);
     // MOCK RESPONSES
-    private static final Mono<HttpResponse> VOID_RESPONSE =
-        Mono.just(new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE, RESPONSE_HEADERS, null));
-    private static final Mono<HttpResponse> FOO_RESPONSE =
-        Mono.just(new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE, RESPONSE_HEADERS, FOO_BYTE_ARRAY));
-    private static final Mono<HttpResponse> STREAM_RESPONSE =
-        Mono.just(new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE, RESPONSE_HEADERS, STREAM_BYTE_ARRAY));
-    private static final Mono<HttpResponse> FOO_PAGE_RESPONSE =
-        Mono.just(new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE, RESPONSE_HEADERS, PAGE_FOO_BYTE_ARRAY));
-    private static final Mono<HttpResponse> FOO_CUSTOM_HEADER_RESPONSE =
-        Mono.just(new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE, RESPONSE_CUSTOM_HEADERS, FOO_BYTE_ARRAY));
+    private static final Mono<HttpResponse> VOID_RESPONSE = Mono
+        .just(new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE, RESPONSE_HEADERS, null));
+    private static final Mono<HttpResponse> FOO_RESPONSE = Mono
+        .just(new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE, RESPONSE_HEADERS, FOO_BYTE_ARRAY));
+    private static final Mono<HttpResponse> STREAM_RESPONSE = Mono
+        .just(new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE, RESPONSE_HEADERS, STREAM_BYTE_ARRAY));
+    private static final Mono<HttpResponse> FOO_PAGE_RESPONSE = Mono
+        .just(new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE, RESPONSE_HEADERS, PAGE_FOO_BYTE_ARRAY));
+    private static final Mono<HttpResponse> FOO_CUSTOM_HEADER_RESPONSE = Mono
+        .just(new MockResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE, RESPONSE_CUSTOM_HEADERS, FOO_BYTE_ARRAY));
     // ARRAY HOLDING TEST DATA
     private final Input[] inputs;
 
@@ -204,10 +203,10 @@ class ResponseConstructorsCacheBenchMarkTestData {
         this.inputs[0] = new Input(RESPONSE_DECODER, FooService.class, "getVoidResponse", VOID_RESPONSE, null);
         this.inputs[1] = new Input(RESPONSE_DECODER, FooService.class, "getFooSimpleResponse", FOO_RESPONSE, FOO);
         this.inputs[2] = new Input(RESPONSE_DECODER, FooService.class, "getStreamResponse", STREAM_RESPONSE, null);
-        this.inputs[3] =
-            new Input(RESPONSE_DECODER, FooService.class, "getResponseBaseFoo", FOO_CUSTOM_HEADER_RESPONSE, FOO);
-        this.inputs[4] =
-            new Input(RESPONSE_DECODER, FooService.class, "getPagedResponseBaseFoo", FOO_PAGE_RESPONSE, PAGE_FOO);
+        this.inputs[3] = new Input(RESPONSE_DECODER, FooService.class, "getResponseBaseFoo", FOO_CUSTOM_HEADER_RESPONSE,
+            FOO);
+        this.inputs[4] = new Input(RESPONSE_DECODER, FooService.class, "getPagedResponseBaseFoo", FOO_PAGE_RESPONSE,
+            PAGE_FOO);
     }
 
     Input[] inputs() {
@@ -238,13 +237,11 @@ class ResponseConstructorsCacheBenchMarkTestData {
         private final HttpResponseDecoder.HttpDecodedResponse decodedResponse;
         private final Object bodyAsObject;
 
-        Input(
-            HttpResponseDecoder decoder,
-            Class<?> serviceClass,
-            String methodName,
-            Mono<HttpResponse> httpResponse,
-            Object bodyAsObject
-        ) {
+        Input(HttpResponseDecoder decoder,
+              Class<?> serviceClass,
+              String methodName,
+              Mono<HttpResponse> httpResponse,
+              Object bodyAsObject) {
             this.returnType = findMethod(serviceClass, methodName).getGenericReturnType();
             this.decodedResponse = decoder.decode(httpResponse, new HttpResponseDecodeData() {
                 @Override
@@ -278,7 +275,8 @@ class ResponseConstructorsCacheBenchMarkTestData {
         }
 
         private Method findMethod(Class<?> cls, String methodName) {
-            Optional<Method> optMethod = Arrays.stream(cls.getDeclaredMethods())
+            Optional<Method> optMethod = Arrays
+                .stream(cls.getDeclaredMethods())
                 .filter(m -> m.getName().equalsIgnoreCase(methodName))
                 .findFirst();
             if (optMethod.isPresent()) {

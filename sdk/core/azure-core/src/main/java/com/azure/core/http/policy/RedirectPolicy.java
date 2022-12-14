@@ -56,13 +56,11 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
      * Function to process through the HTTP Response received in the pipeline
      * and redirect sending the request with new redirect url.
      */
-    private Mono<HttpResponse> attemptRedirect(
-        final HttpPipelineCallContext context,
-        final HttpPipelineNextPolicy next,
-        final HttpRequest originalHttpRequest,
-        final int redirectAttempt,
-        Set<String> attemptedRedirectUrls
-    ) {
+    private Mono<HttpResponse> attemptRedirect(final HttpPipelineCallContext context,
+                                               final HttpPipelineNextPolicy next,
+                                               final HttpRequest originalHttpRequest,
+                                               final int redirectAttempt,
+                                               Set<String> attemptedRedirectUrls) {
         // make sure the context is not modified during retry, except for the URL
         context.setHttpRequest(originalHttpRequest.copy());
 
@@ -74,11 +72,11 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
                 // causing it to leak your authorization token to.
                 httpResponse.getHeaders().remove("Authorization");
 
-                return httpResponse.getBody()
+                return httpResponse
+                    .getBody()
                     .ignoreElements()
-                    .then(
-                        attemptRedirect(context, next, redirectRequestCopy, redirectAttempt + 1, attemptedRedirectUrls)
-                    );
+                    .then(attemptRedirect(context, next, redirectRequestCopy, redirectAttempt + 1,
+                        attemptedRedirectUrls));
             } else {
                 return Mono.just(httpResponse);
             }
@@ -89,13 +87,11 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
      * Function to process through the HTTP Response received in the pipeline
      * and redirect sending the request with new redirect url.
      */
-    private HttpResponse attemptRedirectSync(
-        final HttpPipelineCallContext context,
-        final HttpPipelineNextSyncPolicy next,
-        final HttpRequest originalHttpRequest,
-        final int redirectAttempt,
-        Set<String> attemptedRedirectUrls
-    ) {
+    private HttpResponse attemptRedirectSync(final HttpPipelineCallContext context,
+                                             final HttpPipelineNextSyncPolicy next,
+                                             final HttpRequest originalHttpRequest,
+                                             final int redirectAttempt,
+                                             Set<String> attemptedRedirectUrls) {
         // make sure the context is not modified during retry, except for the URL
         context.setHttpRequest(originalHttpRequest.copy());
 

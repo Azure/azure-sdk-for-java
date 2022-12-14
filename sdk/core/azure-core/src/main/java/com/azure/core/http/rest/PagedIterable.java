@@ -145,16 +145,11 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      * @param firstPageRetriever Supplier that retrieves the first page
      * @param nextPageRetriever Function that retrieves the next page given a continuation token
      */
-    public PagedIterable(
-        Supplier<PagedResponse<T>> firstPageRetriever,
-        Function<String, PagedResponse<T>> nextPageRetriever
-    ) {
-        this(
-            () -> (continuationToken, pageSize) -> continuationToken == null
-                ? firstPageRetriever.get()
-                : nextPageRetriever.apply(continuationToken),
-            true
-        );
+    public PagedIterable(Supplier<PagedResponse<T>> firstPageRetriever,
+                         Function<String, PagedResponse<T>> nextPageRetriever) {
+        this(() -> (continuationToken, pageSize) -> continuationToken == null
+            ? firstPageRetriever.get()
+            : nextPageRetriever.apply(continuationToken), true);
     }
 
     /**
@@ -175,16 +170,11 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      * @param firstPageRetriever Function that retrieves the first page.
      * @param nextPageRetriever BiFunction that retrieves the next page given a continuation token and page size.
      */
-    public PagedIterable(
-        Function<Integer, PagedResponse<T>> firstPageRetriever,
-        BiFunction<String, Integer, PagedResponse<T>> nextPageRetriever
-    ) {
-        this(
-            () -> (continuationToken, pageSize) -> continuationToken == null
-                ? firstPageRetriever.apply(pageSize)
-                : nextPageRetriever.apply(continuationToken, pageSize),
-            true
-        );
+    public PagedIterable(Function<Integer, PagedResponse<T>> firstPageRetriever,
+                         BiFunction<String, Integer, PagedResponse<T>> nextPageRetriever) {
+        this(() -> (continuationToken, pageSize) -> continuationToken == null
+            ? firstPageRetriever.apply(pageSize)
+            : nextPageRetriever.apply(continuationToken, pageSize), true);
     }
 
     /**

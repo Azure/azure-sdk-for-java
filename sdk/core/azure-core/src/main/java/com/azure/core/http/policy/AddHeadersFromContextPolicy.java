@@ -63,8 +63,7 @@ public class AddHeadersFromContextPolicy implements HttpPipelinePolicy {
     /**
      * Creates a new instance of {@link AddHeadersFromContextPolicy}.
      */
-    public AddHeadersFromContextPolicy() {
-    }
+    public AddHeadersFromContextPolicy() {}
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {

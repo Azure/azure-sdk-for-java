@@ -64,11 +64,9 @@ public enum SerializerEncoding {
 
         final String[] mimeTypeParts = parts[0].split("/");
         if (mimeTypeParts.length != 2) {
-            LOGGER.warning(
-                "Content-Type '{}' does not match mime-type formatting 'type'/'subtype'. " + "Returning default: {}",
-                parts[0],
-                DEFAULT_ENCODING
-            );
+            LOGGER
+                .warning("Content-Type '{}' does not match mime-type formatting 'type'/'subtype'. "
+                    + "Returning default: {}", parts[0], DEFAULT_ENCODING);
             return DEFAULT_ENCODING;
         }
 
@@ -85,11 +83,9 @@ public enum SerializerEncoding {
             return serializerEncoding;
         }
 
-        LOGGER.warning(
-            "Content-Type '{}' does not match any supported one. Returning default: {}",
-            mimeContentType,
-            DEFAULT_ENCODING
-        );
+        LOGGER
+            .warning("Content-Type '{}' does not match any supported one. Returning default: {}", mimeContentType,
+                DEFAULT_ENCODING);
 
         return DEFAULT_ENCODING;
     }

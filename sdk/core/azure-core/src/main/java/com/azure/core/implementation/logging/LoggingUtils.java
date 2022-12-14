@@ -14,8 +14,7 @@ public final class LoggingUtils {
     private static final char CR = '\r';
     private static final char LF = '\n';
 
-    private LoggingUtils() {
-    }
+    private LoggingUtils() {}
 
     /*
      * Removes CR, LF or CRLF pattern in the {@code logMessage}.

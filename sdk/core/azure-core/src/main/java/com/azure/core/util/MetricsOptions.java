@@ -9,12 +9,12 @@ import com.azure.core.http.ProxyOptions;
  * Metrics configuration options for clients.
  */
 public class MetricsOptions {
-    private static final ConfigurationProperty<Boolean> IS_DISABLED_PROPERTY =
-        ConfigurationPropertyBuilder.ofBoolean("metrics.disabled")
-            .environmentVariableName(Configuration.PROPERTY_AZURE_METRICS_DISABLED)
-            .shared(true)
-            .defaultValue(false)
-            .build();
+    private static final ConfigurationProperty<Boolean> IS_DISABLED_PROPERTY = ConfigurationPropertyBuilder
+        .ofBoolean("metrics.disabled")
+        .environmentVariableName(Configuration.PROPERTY_AZURE_METRICS_DISABLED)
+        .shared(true)
+        .defaultValue(false)
+        .build();
 
     private boolean isEnabled;
 

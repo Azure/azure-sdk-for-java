@@ -305,49 +305,62 @@ public class UrlBuilderTests {
 
     @Test
     public void schemeAndHostAndOneQueryParameter() {
-        final UrlBuilder builder =
-            new UrlBuilder().setScheme("http").setHost("www.example.com").setQueryParameter("A", "B");
+        final UrlBuilder builder = new UrlBuilder()
+            .setScheme("http")
+            .setHost("www.example.com")
+            .setQueryParameter("A", "B");
         assertEquals("http://www.example.com?A=B", builder.toString());
     }
 
     @Test
     public void schemeAndHostAndPathAndOneQueryParameterGetQuery() {
-        final UrlBuilder builder =
-            new UrlBuilder().setScheme("http").setHost("www.example.com").setQueryParameter("A", "B");
+        final UrlBuilder builder = new UrlBuilder()
+            .setScheme("http")
+            .setHost("www.example.com")
+            .setQueryParameter("A", "B");
         assertEquals(builder.getQuery().get("A"), "B");
     }
 
     @Test
     public void schemeAndHostAndOneQueryParameterWhenQueryParameterNameHasWhitespace() {
-        final UrlBuilder builder =
-            new UrlBuilder().setScheme("http").setHost("www.example.com").setQueryParameter("App les", "B");
+        final UrlBuilder builder = new UrlBuilder()
+            .setScheme("http")
+            .setHost("www.example.com")
+            .setQueryParameter("App les", "B");
         assertEquals("http://www.example.com?App les=B", builder.toString());
     }
 
     @Test
     public void schemeAndHostAndOneQueryParameterWhenQueryParameterNameHasPercent20() {
-        final UrlBuilder builder =
-            new UrlBuilder().setScheme("http").setHost("www.example.com").setQueryParameter("App%20les", "B");
+        final UrlBuilder builder = new UrlBuilder()
+            .setScheme("http")
+            .setHost("www.example.com")
+            .setQueryParameter("App%20les", "B");
         assertEquals("http://www.example.com?App%20les=B", builder.toString());
     }
 
     @Test
     public void schemeAndHostAndOneQueryParameterWhenQueryParameterValueHasWhitespace() {
-        final UrlBuilder builder =
-            new UrlBuilder().setScheme("http").setHost("www.example.com").setQueryParameter("Apples", "Go od");
+        final UrlBuilder builder = new UrlBuilder()
+            .setScheme("http")
+            .setHost("www.example.com")
+            .setQueryParameter("Apples", "Go od");
         assertEquals("http://www.example.com?Apples=Go od", builder.toString());
     }
 
     @Test
     public void schemeAndHostAndOneQueryParameterWhenQueryParameterValueHasPercent20() {
-        final UrlBuilder builder =
-            new UrlBuilder().setScheme("http").setHost("www.example.com").setQueryParameter("Apples", "Go%20od");
+        final UrlBuilder builder = new UrlBuilder()
+            .setScheme("http")
+            .setHost("www.example.com")
+            .setQueryParameter("Apples", "Go%20od");
         assertEquals("http://www.example.com?Apples=Go%20od", builder.toString());
     }
 
     @Test
     public void schemeAndHostAndTwoQueryParameters() {
-        final UrlBuilder builder = new UrlBuilder().setScheme("http")
+        final UrlBuilder builder = new UrlBuilder()
+            .setScheme("http")
             .setHost("www.example.com")
             .setQueryParameter("A", "B")
             .setQueryParameter("C", "D");
@@ -356,7 +369,8 @@ public class UrlBuilderTests {
 
     @Test
     public void schemeAndHostAndPathAndTwoQueryParameters() {
-        final UrlBuilder builder = new UrlBuilder().setScheme("http")
+        final UrlBuilder builder = new UrlBuilder()
+            .setScheme("http")
             .setHost("www.example.com")
             .setQueryParameter("A", "B")
             .setQueryParameter("C", "D")
@@ -366,7 +380,8 @@ public class UrlBuilderTests {
 
     @Test
     public void schemeAndHostAndPathAndTwoIdenticalQueryParameters() {
-        final UrlBuilder builder = new UrlBuilder().setScheme("http")
+        final UrlBuilder builder = new UrlBuilder()
+            .setScheme("http")
             .setHost("www.example.com")
             .addQueryParameter("A", "B")
             .addQueryParameter("A", "D")
@@ -376,7 +391,8 @@ public class UrlBuilderTests {
 
     @Test
     public void schemeAndHostAndPathAndTwoIdenticalQueryParametersGetQuery() {
-        final UrlBuilder builder = new UrlBuilder().setScheme("http")
+        final UrlBuilder builder = new UrlBuilder()
+            .setScheme("http")
             .setHost("www.example.com")
             .addQueryParameter("A", "B")
             .addQueryParameter("A", "D")
@@ -474,14 +490,17 @@ public class UrlBuilderTests {
 
     @Test
     public void withAbsolutePath() {
-        final UrlBuilder builder =
-            new UrlBuilder().setScheme("http").setHost("www.example.com").setPath("http://www.othersite.com");
+        final UrlBuilder builder = new UrlBuilder()
+            .setScheme("http")
+            .setHost("www.example.com")
+            .setPath("http://www.othersite.com");
         assertEquals("http://www.othersite.com", builder.toString());
     }
 
     @Test
     public void queryInPath() {
-        final UrlBuilder builder = new UrlBuilder().setScheme("http")
+        final UrlBuilder builder = new UrlBuilder()
+            .setScheme("http")
             .setHost("www.example.com")
             .setPath("mypath?thing=stuff")
             .setQueryParameter("otherthing", "otherstuff");
@@ -490,7 +509,8 @@ public class UrlBuilderTests {
 
     @Test
     public void withAbsolutePathAndQuery() {
-        final UrlBuilder builder = new UrlBuilder().setScheme("http")
+        final UrlBuilder builder = new UrlBuilder()
+            .setScheme("http")
             .setHost("www.example.com")
             .setPath("http://www.othersite.com/mypath?thing=stuff")
             .setQueryParameter("otherthing", "otherstuff");
@@ -700,12 +720,8 @@ public class UrlBuilderTests {
 
     @Test
     public void parallelParsing() throws InterruptedException {
-        ForkJoinPool pool = new ForkJoinPool(
-            Runtime.getRuntime().availableProcessors(),
-            ForkJoinPool.defaultForkJoinWorkerThreadFactory,
-            null,
-            false
-        );
+        ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime().availableProcessors(),
+            ForkJoinPool.defaultForkJoinWorkerThreadFactory, null, false);
 
         AtomicInteger callCount = new AtomicInteger();
         List<Callable<UrlBuilder>> tasks = IntStream.range(0, 20000).mapToObj(i -> (Callable<UrlBuilder>) () -> {
@@ -721,14 +737,16 @@ public class UrlBuilderTests {
 
     @Test
     public void fluxParallelParsing() {
-        Mono<Long> mono = Flux.range(0, 20000)
+        Mono<Long> mono = Flux
+            .range(0, 20000)
             .parallel()
             .runOn(Schedulers.parallel())
             .map(i -> UrlBuilder.parse("https://example" + i + ".com"))
             .sequential()
             .count();
 
-        StepVerifier.create(mono)
+        StepVerifier
+            .create(mono)
             .assertNext(count -> assertEquals(20000, count))
             .expectComplete()
             .verify(Duration.ofSeconds(10));

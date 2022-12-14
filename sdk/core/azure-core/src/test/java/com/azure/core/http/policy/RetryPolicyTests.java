@@ -48,9 +48,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class RetryPolicyTests {
 
     @ParameterizedTest
-    @ValueSource(ints = {
-        408, 429, 500, 502, 503
-    })
+    @ValueSource(ints = { 408, 429, 500, 502, 503 })
     public void defaultRetryPolicyRetriesExpectedErrorCodes(int returnCode) {
         AtomicInteger attemptCount = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RetryPolicy()).httpClient(request -> {
@@ -65,15 +63,14 @@ public class RetryPolicyTests {
             }
         }).build();
 
-        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
+        StepVerifier
+            .create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {
-        408, 429, 500, 502, 503
-    })
+    @ValueSource(ints = { 408, 429, 500, 502, 503 })
     public void defaultRetryPolicySyncRetriesExpectedErrorCodes(int returnCode) {
         AtomicInteger attemptCount = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RetryPolicy()).httpClient(new NoOpHttpClient() {
@@ -101,9 +98,7 @@ public class RetryPolicyTests {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {
-        400, 401, 402, 403, 404, 409, 412, 501, 505
-    })
+    @ValueSource(ints = { 400, 401, 402, 403, 404, 409, 412, 501, 505 })
     public void defaultRetryPolicyDoesntRetryOnErrorCodes(int returnCode) {
         AtomicInteger attemptCount = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RetryPolicy()).httpClient(request -> {
@@ -115,15 +110,14 @@ public class RetryPolicyTests {
             }
         }).build();
 
-        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
+        StepVerifier
+            .create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
             .assertNext(response -> assertEquals(returnCode, response.getStatusCode()))
             .verifyComplete();
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {
-        400, 401, 402, 403, 404, 409, 412, 501, 505
-    })
+    @ValueSource(ints = { 400, 401, 402, 403, 404, 409, 412, 501, 505 })
     public void defaultRetryPolicySyncDoesntRetryOnErrorCodes(int returnCode) {
         AtomicInteger attemptCount = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RetryPolicy()).httpClient(new NoOpHttpClient() {
@@ -161,7 +155,8 @@ public class RetryPolicyTests {
             }
         }).build();
 
-        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
+        StepVerifier
+            .create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
@@ -208,37 +203,37 @@ public class RetryPolicyTests {
             }
         }).build();
 
-        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
+        StepVerifier
+            .create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
             .verifyError(throwable.getClass());
     }
 
     @ParameterizedTest
     @MethodSource("customRetryPolicyCanDetermineRetryStatusCodesSupplier")
-    public void customRetryPolicyCanDetermineRetryStatusCodes(
-        RetryStrategy retryStrategy,
-        int[] statusCodes,
-        int expectedStatusCode
-    ) {
+    public void customRetryPolicyCanDetermineRetryStatusCodes(RetryStrategy retryStrategy,
+                                                              int[] statusCodes,
+                                                              int expectedStatusCode) {
         AtomicInteger attempt = new AtomicInteger();
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RetryPolicy(retryStrategy))
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy(retryStrategy))
             .httpClient(request -> Mono.just(new MockHttpResponse(request, statusCodes[attempt.getAndIncrement()])))
             .build();
 
-        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
+        StepVerifier
+            .create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
             .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
             .verifyComplete();
     }
 
     @ParameterizedTest
     @MethodSource("customRetryPolicyCanDetermineRetryStatusCodesSupplier")
-    public void customRetryPolicySyncCanDetermineRetryStatusCodes(
-        RetryStrategy retryStrategy,
-        int[] statusCodes,
-        int expectedStatusCode
-    ) {
+    public void customRetryPolicySyncCanDetermineRetryStatusCodes(RetryStrategy retryStrategy,
+                                                                  int[] statusCodes,
+                                                                  int expectedStatusCode) {
         AtomicInteger attempt = new AtomicInteger();
-        HttpPipeline pipeline =
-            new HttpPipelineBuilder().policies(new RetryPolicy(retryStrategy)).httpClient(new NoOpHttpClient() {
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy(retryStrategy))
+            .httpClient(new NoOpHttpClient() {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     throw new IllegalStateException("Expected to call 'sendSync' API");
@@ -248,7 +243,8 @@ public class RetryPolicyTests {
                 public HttpResponse sendSync(HttpRequest request, Context context) {
                     return new MockHttpResponse(request, statusCodes[attempt.getAndIncrement()]);
                 }
-            }).build();
+            })
+            .build();
 
         HttpResponse response = sendRequestSync(pipeline);
         assertEquals(expectedStatusCode, response.getStatusCode());
@@ -256,17 +252,17 @@ public class RetryPolicyTests {
 
     @ParameterizedTest
     @MethodSource("customRetryPolicyCanDetermineRetryExceptionsSupplier")
-    public void customRetryPolicyCanDetermineRetryExceptions(
-        RetryStrategy retryStrategy,
-        Throwable[] exceptions,
-        Class<? extends Throwable> expectedException
-    ) {
+    public void customRetryPolicyCanDetermineRetryExceptions(RetryStrategy retryStrategy,
+                                                             Throwable[] exceptions,
+                                                             Class<? extends Throwable> expectedException) {
         AtomicInteger attempt = new AtomicInteger();
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RetryPolicy(retryStrategy))
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy(retryStrategy))
             .httpClient(request -> Mono.error(exceptions[attempt.getAndIncrement()]))
             .build();
 
-        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
+        StepVerifier
+            .create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")))
             .verifyError(expectedException);
     }
 
@@ -289,8 +285,8 @@ public class RetryPolicyTests {
             }
         }).policies(new RetryPolicy(new FixedDelay(maxRetries, Duration.ofMillis(1)))).build();
 
-        HttpResponse response =
-            SyncAsyncExtension.execute(() -> sendRequestSync(pipeline), () -> sendRequest(pipeline));
+        HttpResponse response = SyncAsyncExtension
+            .execute(() -> sendRequestSync(pipeline), () -> sendRequest(pipeline));
         assertEquals(500, response.getStatusCode());
     }
 
@@ -323,8 +319,8 @@ public class RetryPolicyTests {
             }
         }).policies(new RetryPolicy(new FixedDelay(maxRetries, Duration.ofMillis(delayMillis)))).build();
 
-        HttpResponse response =
-            SyncAsyncExtension.execute(() -> sendRequestSync(pipeline), () -> sendRequest(pipeline));
+        HttpResponse response = SyncAsyncExtension
+            .execute(() -> sendRequestSync(pipeline), () -> sendRequest(pipeline));
         assertEquals(500, response.getStatusCode());
     }
 
@@ -333,8 +329,8 @@ public class RetryPolicyTests {
         final int maxRetries = 5;
         final long baseDelayMillis = 100;
         final long maxDelayMillis = 1000;
-        ExponentialBackoff exponentialBackoff =
-            new ExponentialBackoff(maxRetries, Duration.ofMillis(baseDelayMillis), Duration.ofMillis(maxDelayMillis));
+        ExponentialBackoff exponentialBackoff = new ExponentialBackoff(maxRetries, Duration.ofMillis(baseDelayMillis),
+            Duration.ofMillis(maxDelayMillis));
         final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
             int count = -1;
             long previousAttemptMadeAt = -1;
@@ -342,8 +338,8 @@ public class RetryPolicyTests {
             private void beforeSendingRequest() {
                 if (count > 0) {
                     long requestMadeAt = System.currentTimeMillis();
-                    long expectedToBeMadeAt =
-                        previousAttemptMadeAt + ((1L << (count - 1)) * (long) (baseDelayMillis * 0.95));
+                    long expectedToBeMadeAt = previousAttemptMadeAt
+                                              + ((1L << (count - 1)) * (long) (baseDelayMillis * 0.95));
                     Assertions.assertTrue(requestMadeAt >= expectedToBeMadeAt);
                 }
                 Assertions.assertTrue(count++ < maxRetries);
@@ -363,8 +359,8 @@ public class RetryPolicyTests {
             }
         }).policies(new RetryPolicy(exponentialBackoff)).build();
 
-        HttpResponse response =
-            SyncAsyncExtension.execute(() -> sendRequestSync(pipeline), () -> sendRequest(pipeline));
+        HttpResponse response = SyncAsyncExtension
+            .execute(() -> sendRequestSync(pipeline), () -> sendRequest(pipeline));
 
         assertEquals(503, response.getStatusCode());
     }
@@ -380,21 +376,21 @@ public class RetryPolicyTests {
             }
         };
 
-        final HttpPipeline pipeline =
-            new HttpPipelineBuilder().policies(new RetryPolicy(new FixedDelay(2, Duration.ofMillis(1))))
-                .httpClient(new NoOpHttpClient() {
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy(new FixedDelay(2, Duration.ofMillis(1))))
+            .httpClient(new NoOpHttpClient() {
 
-                    @Override
-                    public HttpResponse sendSync(HttpRequest request, Context context) {
-                        return closeTrackingHttpResponse;
-                    }
+                @Override
+                public HttpResponse sendSync(HttpRequest request, Context context) {
+                    return closeTrackingHttpResponse;
+                }
 
-                    @Override
-                    public Mono<HttpResponse> send(HttpRequest request) {
-                        return Mono.just(closeTrackingHttpResponse);
-                    }
-                })
-                .build();
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    return Mono.just(closeTrackingHttpResponse);
+                }
+            })
+            .build();
 
         SyncAsyncExtension.execute(() -> sendRequestSync(pipeline), () -> sendRequest(pipeline));
 
@@ -404,22 +400,21 @@ public class RetryPolicyTests {
     @SyncAsyncTest
     public void propagatingExceptionHasOtherErrorsAsSuppressedExceptions() {
         AtomicInteger count = new AtomicInteger();
-        final HttpPipeline pipeline =
-            new HttpPipelineBuilder().policies(new RetryPolicy(new FixedDelay(2, Duration.ofMillis(1))))
-                .httpClient(new NoOpHttpClient() {
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(new RetryPolicy(new FixedDelay(2, Duration.ofMillis(1))))
+            .httpClient(new NoOpHttpClient() {
 
-                    @Override
-                    public HttpResponse sendSync(HttpRequest request, Context context) {
-                        throw new UncheckedIOException(new IOException("Attempt " + count.incrementAndGet()));
-                    }
+                @Override
+                public HttpResponse sendSync(HttpRequest request, Context context) {
+                    throw new UncheckedIOException(new IOException("Attempt " + count.incrementAndGet()));
+                }
 
-                    @Override
-                    public Mono<HttpResponse> send(HttpRequest request) {
-                        return Mono
-                            .error(new UncheckedIOException(new IOException("Attempt " + count.incrementAndGet())));
-                    }
-                })
-                .build();
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    return Mono.error(new UncheckedIOException(new IOException("Attempt " + count.incrementAndGet())));
+                }
+            })
+            .build();
         try {
             SyncAsyncExtension.execute(() -> sendRequestSync(pipeline), () -> sendRequest(pipeline));
             fail("Should throw");
@@ -432,10 +427,8 @@ public class RetryPolicyTests {
     @ParameterizedTest
     @MethodSource("getWellKnownRetryDelaySupplier")
     public void getWellKnownRetryDelay(HttpHeaders responseHeaders, RetryStrategy retryStrategy, Duration expected) {
-        assertEquals(
-            expected,
-            RetryPolicy.getWellKnownRetryDelay(responseHeaders, 1, retryStrategy, OffsetDateTime::now)
-        );
+        assertEquals(expected, RetryPolicy
+            .getWellKnownRetryDelay(responseHeaders, 1, retryStrategy, OffsetDateTime::now));
     }
 
     @Test
@@ -451,34 +444,18 @@ public class RetryPolicyTests {
         RetryStrategy onlyRetries429And503 = createStatusCodeRetryStrategy(429, 503);
         RetryStrategy onlyRetries409And412 = createStatusCodeRetryStrategy(409, 412);
 
-        return Stream.of(Arguments.of(onlyRetries429And503, new int[] {
-            429, 503, 404
-        }, 404), Arguments.of(onlyRetries429And503, new int[] {
-            429, 404
-        }, 404), Arguments.of(onlyRetries429And503, new int[] {
-            503, 404
-        }, 404), Arguments.of(onlyRetries429And503, new int[] {
-            429, 503, 503
-        }, 503), Arguments.of(onlyRetries429And503, new int[] {
-            429, 503, 429
-        }, 429),
+        return Stream
+            .of(Arguments.of(onlyRetries429And503, new int[] { 429, 503, 404 }, 404), Arguments
+                .of(onlyRetries429And503, new int[] { 429, 404 }, 404), Arguments
+                    .of(onlyRetries429And503, new int[] { 503, 404 }, 404), Arguments
+                        .of(onlyRetries429And503, new int[] { 429, 503, 503 }, 503), Arguments
+                            .of(onlyRetries429And503, new int[] { 429, 503, 429 }, 429),
 
-            Arguments.of(onlyRetries409And412, new int[] {
-                409, 412, 404
-            }, 404),
-            Arguments.of(onlyRetries409And412, new int[] {
-                409, 404
-            }, 404),
-            Arguments.of(onlyRetries409And412, new int[] {
-                412, 404
-            }, 404),
-            Arguments.of(onlyRetries409And412, new int[] {
-                409, 412, 409
-            }, 409),
-            Arguments.of(onlyRetries409And412, new int[] {
-                409, 412, 412
-            }, 412)
-        );
+                Arguments.of(onlyRetries409And412, new int[] { 409, 412, 404 }, 404), Arguments
+                    .of(onlyRetries409And412, new int[] { 409, 404 }, 404), Arguments
+                        .of(onlyRetries409And412, new int[] { 412, 404 }, 404), Arguments
+                            .of(onlyRetries409And412, new int[] { 409, 412, 409 }, 409), Arguments
+                                .of(onlyRetries409And412, new int[] { 409, 412, 412 }, 412));
     }
 
     static RetryStrategy createExceptionRetryStrategy(List<Class<? extends Throwable>> retriableExceptions) {
@@ -495,7 +472,8 @@ public class RetryPolicyTests {
 
             @Override
             public boolean shouldRetryException(Throwable throwable) {
-                return retriableExceptions.stream()
+                return retriableExceptions
+                    .stream()
                     .anyMatch(retriableException -> retriableException.isAssignableFrom(throwable.getClass()));
             }
         };
@@ -523,7 +501,8 @@ public class RetryPolicyTests {
 
             @Override
             public boolean shouldRetry(HttpResponse httpResponse) {
-                return Arrays.stream(retriableErrorCodes)
+                return Arrays
+                    .stream(retriableErrorCodes)
                     .anyMatch(retriableErrorCode -> httpResponse.getStatusCode() == retriableErrorCode);
             }
         };
@@ -542,53 +521,46 @@ public class RetryPolicyTests {
             }
         };
 
-        return Stream.of(
-            // No well-known headers, fallback to the default.
-            Arguments.of(new HttpHeaders(), retryStrategy, Duration.ofSeconds(1)),
+        return Stream
+            .of(
+                // No well-known headers, fallback to the default.
+                Arguments.of(new HttpHeaders(), retryStrategy, Duration.ofSeconds(1)),
 
-            // x-ms-retry-after-ms should be respected as milliseconds.
-            Arguments.of(new HttpHeaders().set("x-ms-retry-after-ms", "10"), retryStrategy, Duration.ofMillis(10)),
+                // x-ms-retry-after-ms should be respected as milliseconds.
+                Arguments.of(new HttpHeaders().set("x-ms-retry-after-ms", "10"), retryStrategy, Duration.ofMillis(10)),
 
-            // x-ms-retry-after-ms wasn't a valid number, fallback to the default.
-            Arguments.of(new HttpHeaders().set("x-ms-retry-after-ms", "-10"), retryStrategy, Duration.ofSeconds(1)),
-            Arguments.of(new HttpHeaders().set("x-ms-retry-after-ms", "ten"), retryStrategy, Duration.ofSeconds(1)),
+                // x-ms-retry-after-ms wasn't a valid number, fallback to the default.
+                Arguments.of(new HttpHeaders().set("x-ms-retry-after-ms", "-10"), retryStrategy, Duration.ofSeconds(1)),
+                Arguments.of(new HttpHeaders().set("x-ms-retry-after-ms", "ten"), retryStrategy, Duration.ofSeconds(1)),
 
-            // retry-after-ms should be respected as milliseconds.
-            Arguments.of(new HttpHeaders().set("retry-after-ms", "64"), retryStrategy, Duration.ofMillis(64)),
+                // retry-after-ms should be respected as milliseconds.
+                Arguments.of(new HttpHeaders().set("retry-after-ms", "64"), retryStrategy, Duration.ofMillis(64)),
 
-            // retry-after-ms wasn't a valid number, fallback to the default.
-            Arguments.of(new HttpHeaders().set("retry-after-ms", "-10"), retryStrategy, Duration.ofSeconds(1)),
-            Arguments.of(new HttpHeaders().set("retry-after-ms", "ten"), retryStrategy, Duration.ofSeconds(1)),
+                // retry-after-ms wasn't a valid number, fallback to the default.
+                Arguments.of(new HttpHeaders().set("retry-after-ms", "-10"), retryStrategy, Duration.ofSeconds(1)),
+                Arguments.of(new HttpHeaders().set("retry-after-ms", "ten"), retryStrategy, Duration.ofSeconds(1)),
 
-            // Retry-After should be respected as seconds.
-            Arguments.of(new HttpHeaders().set("Retry-After", "10"), retryStrategy, Duration.ofSeconds(10)),
+                // Retry-After should be respected as seconds.
+                Arguments.of(new HttpHeaders().set("Retry-After", "10"), retryStrategy, Duration.ofSeconds(10)),
 
-            // Retry-After wasn't a valid number, fallback to the default.
-            Arguments.of(new HttpHeaders().set("Retry-After", "-10"), retryStrategy, Duration.ofSeconds(1)),
-            Arguments.of(new HttpHeaders().set("Retry-After", "ten"), retryStrategy, Duration.ofSeconds(1)),
+                // Retry-After wasn't a valid number, fallback to the default.
+                Arguments.of(new HttpHeaders().set("Retry-After", "-10"), retryStrategy, Duration.ofSeconds(1)),
+                Arguments.of(new HttpHeaders().set("Retry-After", "ten"), retryStrategy, Duration.ofSeconds(1)),
 
-            // Retry-After was before the current time, fallback to the default.
-            Arguments.of(
-                new HttpHeaders().set(
-                    "Retry-After",
-                    OffsetDateTime.now()
-                        .minusMinutes(1)
-                        .atZoneSameInstant(ZoneOffset.UTC)
-                        .format(DateTimeFormatter.RFC_1123_DATE_TIME)
-                ),
-                retryStrategy,
-                Duration.ofSeconds(1)
-            )
-        );
+                // Retry-After was before the current time, fallback to the default.
+                Arguments
+                    .of(new HttpHeaders()
+                        .set("Retry-After", OffsetDateTime
+                            .now()
+                            .minusMinutes(1)
+                            .atZoneSameInstant(ZoneOffset.UTC)
+                            .format(DateTimeFormatter.RFC_1123_DATE_TIME)), retryStrategy, Duration.ofSeconds(1)));
     }
 
     static Stream<Throwable> defaultRetryPolicyRetriesAllExceptionsSupplier() {
-        return Stream.of(
-            new MalformedURLException(),
-            new RuntimeException(),
-            new IllegalStateException(),
-            new TimeoutException()
-        );
+        return Stream
+            .of(new MalformedURLException(), new RuntimeException(), new IllegalStateException(),
+                new TimeoutException());
     }
 
     static Stream<Throwable> defaultRetryPolicyDoesNotRetryErrorsSupplier() {
@@ -598,36 +570,40 @@ public class RetryPolicyTests {
     }
 
     static Stream<Arguments> customRetryPolicyCanDetermineRetryExceptionsSupplier() {
-        RetryStrategy onlyRetriesIOExceptions =
-            createExceptionRetryStrategy(Collections.singletonList(IOException.class));
-        RetryStrategy onlyRetriesTimeoutAndRuntimeExceptions =
-            createExceptionRetryStrategy(Arrays.asList(TimeoutException.class, RuntimeException.class));
+        RetryStrategy onlyRetriesIOExceptions = createExceptionRetryStrategy(Collections
+            .singletonList(IOException.class));
+        RetryStrategy onlyRetriesTimeoutAndRuntimeExceptions = createExceptionRetryStrategy(Arrays
+            .asList(TimeoutException.class, RuntimeException.class));
 
-        return Stream.of(Arguments.of(onlyRetriesIOExceptions, new Throwable[] {
-            new IOException(), new IOException(), new RuntimeException()
-        }, RuntimeException.class), Arguments.of(onlyRetriesIOExceptions, new Throwable[] {
-            new IOException(), new RuntimeException()
-        }, RuntimeException.class), Arguments.of(onlyRetriesIOExceptions, new Throwable[] {
-            new IOException(), new TimeoutException()
-        }, TimeoutException.class), Arguments.of(onlyRetriesIOExceptions, new Throwable[] {
-            new IOException(), new IOException(), new IOException()
-        }, IOException.class),
+        return Stream
+            .of(Arguments
+                .of(onlyRetriesIOExceptions, new Throwable[] { new IOException(),
+                    new IOException(),
+                    new RuntimeException() }, RuntimeException.class), Arguments
+                        .of(onlyRetriesIOExceptions, new Throwable[] { new IOException(), new RuntimeException() },
+                            RuntimeException.class), Arguments
+                                .of(onlyRetriesIOExceptions, new Throwable[] { new IOException(),
+                                    new TimeoutException() }, TimeoutException.class), Arguments
+                                        .of(onlyRetriesIOExceptions, new Throwable[] { new IOException(),
+                                            new IOException(),
+                                            new IOException() }, IOException.class),
 
-            Arguments.of(onlyRetriesTimeoutAndRuntimeExceptions, new Throwable[] {
-                new TimeoutException(), new RuntimeException(), new IOException()
-            }, IOException.class),
-            Arguments.of(onlyRetriesTimeoutAndRuntimeExceptions, new Throwable[] {
-                new TimeoutException(), new IOException()
-            }, IOException.class),
-            Arguments.of(onlyRetriesTimeoutAndRuntimeExceptions, new Throwable[] {
-                new RuntimeException(), new IOException()
-            }, IOException.class),
-            Arguments.of(onlyRetriesTimeoutAndRuntimeExceptions, new Throwable[] {
-                new TimeoutException(), new RuntimeException(), new TimeoutException()
-            }, TimeoutException.class),
-            Arguments.of(onlyRetriesTimeoutAndRuntimeExceptions, new Throwable[] {
-                new TimeoutException(), new RuntimeException(), new RuntimeException()
-            }, RuntimeException.class)
-        );
+                Arguments
+                    .of(onlyRetriesTimeoutAndRuntimeExceptions, new Throwable[] { new TimeoutException(),
+                        new RuntimeException(),
+                        new IOException() }, IOException.class), Arguments
+                            .of(onlyRetriesTimeoutAndRuntimeExceptions, new Throwable[] { new TimeoutException(),
+                                new IOException() }, IOException.class), Arguments
+                                    .of(onlyRetriesTimeoutAndRuntimeExceptions, new Throwable[] {
+                                        new RuntimeException(),
+                                        new IOException() }, IOException.class), Arguments
+                                            .of(onlyRetriesTimeoutAndRuntimeExceptions, new Throwable[] {
+                                                new TimeoutException(),
+                                                new RuntimeException(),
+                                                new TimeoutException() }, TimeoutException.class), Arguments
+                                                    .of(onlyRetriesTimeoutAndRuntimeExceptions, new Throwable[] {
+                                                        new TimeoutException(),
+                                                        new RuntimeException(),
+                                                        new RuntimeException() }, RuntimeException.class));
     }
 }

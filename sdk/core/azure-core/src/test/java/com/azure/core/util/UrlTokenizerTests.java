@@ -60,128 +60,74 @@ public class UrlTokenizerTests {
 
     @Test
     public void nextWithSchemeAndHostAndColon() {
-        nextTest(
-            "https://www.example.com:",
-            UrlToken.scheme("https"),
-            UrlToken.host("www.example.com"),
-            UrlToken.port("")
-        );
+        nextTest("https://www.example.com:", UrlToken.scheme("https"), UrlToken.host("www.example.com"), UrlToken
+            .port(""));
     }
 
     @Test
     public void nextWithSchemeAndHostAndPort() {
-        nextTest(
-            "https://www.example.com:8080",
-            UrlToken.scheme("https"),
-            UrlToken.host("www.example.com"),
-            UrlToken.port("8080")
-        );
+        nextTest("https://www.example.com:8080", UrlToken.scheme("https"), UrlToken.host("www.example.com"), UrlToken
+            .port("8080"));
     }
 
     @Test
     public void nextWithSchemeAndHostAndPortAndForwardSlash() {
-        nextTest(
-            "ftp://www.bing.com:132/",
-            UrlToken.scheme("ftp"),
-            UrlToken.host("www.bing.com"),
-            UrlToken.port("132"),
-            UrlToken.path("/")
-        );
+        nextTest("ftp://www.bing.com:132/", UrlToken.scheme("ftp"), UrlToken.host("www.bing.com"), UrlToken.port("132"),
+            UrlToken.path("/"));
     }
 
     @Test
     public void nextWithSchemeAndHostAndPortAndPath() {
-        nextTest(
-            "ftp://www.bing.com:132/a/b/c.txt",
-            UrlToken.scheme("ftp"),
-            UrlToken.host("www.bing.com"),
-            UrlToken.port("132"),
-            UrlToken.path("/a/b/c.txt")
-        );
+        nextTest("ftp://www.bing.com:132/a/b/c.txt", UrlToken.scheme("ftp"), UrlToken.host("www.bing.com"), UrlToken
+            .port("132"), UrlToken.path("/a/b/c.txt"));
     }
 
     @Test
     public void nextWithSchemeAndHostAndPortAndQuestionMark() {
-        nextTest(
-            "ftp://www.bing.com:132?",
-            UrlToken.scheme("ftp"),
-            UrlToken.host("www.bing.com"),
-            UrlToken.port("132"),
-            UrlToken.query("")
-        );
+        nextTest("ftp://www.bing.com:132?", UrlToken.scheme("ftp"), UrlToken.host("www.bing.com"), UrlToken.port("132"),
+            UrlToken.query(""));
     }
 
     @Test
     public void nextWithSchemeAndHostAndPortAndQuery() {
-        nextTest(
-            "ftp://www.bing.com:132?a=b&c=d",
-            UrlToken.scheme("ftp"),
-            UrlToken.host("www.bing.com"),
-            UrlToken.port("132"),
-            UrlToken.query("a=b&c=d")
-        );
+        nextTest("ftp://www.bing.com:132?a=b&c=d", UrlToken.scheme("ftp"), UrlToken.host("www.bing.com"), UrlToken
+            .port("132"), UrlToken.query("a=b&c=d"));
     }
 
     @Test
     public void nextWithSchemeAndHostAndForwardSlash() {
-        nextTest(
-            "https://www.example.com/",
-            UrlToken.scheme("https"),
-            UrlToken.host("www.example.com"),
-            UrlToken.path("/")
-        );
+        nextTest("https://www.example.com/", UrlToken.scheme("https"), UrlToken.host("www.example.com"), UrlToken
+            .path("/"));
     }
 
     @Test
     public void nextWithSchemeAndHostAndPath() {
-        nextTest(
-            "https://www.example.com/index.html",
-            UrlToken.scheme("https"),
-            UrlToken.host("www.example.com"),
-            UrlToken.path("/index.html")
-        );
+        nextTest("https://www.example.com/index.html", UrlToken.scheme("https"), UrlToken.host("www.example.com"),
+            UrlToken.path("/index.html"));
     }
 
     @Test
     public void nextWithSchemeAndHostAndPathAndQuestionMark() {
-        nextTest(
-            "https://www.example.com/index.html?",
-            UrlToken.scheme("https"),
-            UrlToken.host("www.example.com"),
-            UrlToken.path("/index.html"),
-            UrlToken.query("")
-        );
+        nextTest("https://www.example.com/index.html?", UrlToken.scheme("https"), UrlToken.host("www.example.com"),
+            UrlToken.path("/index.html"), UrlToken.query(""));
     }
 
     @Test
     public void nextWithSchemeAndHostAndPathAndQuery() {
-        nextTest(
-            "https://www.example.com/index.html?alpha=beta",
-            UrlToken.scheme("https"),
-            UrlToken.host("www.example.com"),
-            UrlToken.path("/index.html"),
-            UrlToken.query("alpha=beta")
-        );
+        nextTest("https://www.example.com/index.html?alpha=beta", UrlToken.scheme("https"), UrlToken
+            .host("www.example.com"), UrlToken.path("/index.html"), UrlToken.query("alpha=beta"));
     }
 
     @Test
     public void nextWithSchemeAndHostAndQuestionMark() {
-        nextTest(
-            "https://www.example.com?",
-            UrlToken.scheme("https"),
-            UrlToken.host("www.example.com"),
-            UrlToken.query("")
-        );
+        nextTest("https://www.example.com?", UrlToken.scheme("https"), UrlToken.host("www.example.com"), UrlToken
+            .query(""));
     }
 
     @Test
     public void nextWithSchemeAndHostAndQuery() {
-        nextTest(
-            "https://www.example.com?a=b",
-            UrlToken.scheme("https"),
-            UrlToken.host("www.example.com"),
-            UrlToken.query("a=b")
-        );
+        nextTest("https://www.example.com?a=b", UrlToken.scheme("https"), UrlToken.host("www.example.com"), UrlToken
+            .query("a=b"));
     }
 
     @Test

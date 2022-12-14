@@ -55,7 +55,7 @@ public interface SerializerAdapter {
      * @throws IOException If an IO exception was thrown during serialization.
      */
     default void serialize(final Object object, final SerializerEncoding encoding, OutputStream outputStream)
-        throws IOException {
+                                                                                                              throws IOException {
         String serializedObject = serialize(object, encoding);
 
         if (serializedObject != null) {
@@ -94,7 +94,8 @@ public interface SerializerAdapter {
             return null;
         }
 
-        return StreamSupport.stream(iterable.spliterator(), false)
+        return StreamSupport
+            .stream(iterable.spliterator(), false)
             .map(this::serializeRaw)
             .map(serializedString -> serializedString == null ? "" : serializedString)
             .collect(Collectors.joining(format.getDelimiter()));
@@ -137,7 +138,7 @@ public interface SerializerAdapter {
      * @throws IOException If an IO exception was thrown during serialization.
      */
     default <T> T deserialize(final InputStream inputStream, final Type type, final SerializerEncoding encoding)
-        throws IOException {
+                                                                                                                 throws IOException {
         if (inputStream == null) {
             return deserialize((String) null, type, encoding);
         }

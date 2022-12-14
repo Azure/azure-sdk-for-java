@@ -57,8 +57,10 @@ public final class LoggingEventBuilder {
      * Creates {@code LoggingEventBuilder} for provided level and  {@link ClientLogger}.
      * If level is disabled, returns no-op instance.
      */
-    static LoggingEventBuilder
-        create(Logger logger, LogLevel level, String globalContextSerialized, boolean canLogAtLevel) {
+    static LoggingEventBuilder create(Logger logger,
+                                      LogLevel level,
+                                      String globalContextSerialized,
+                                      boolean canLogAtLevel) {
         if (canLogAtLevel) {
             return new LoggingEventBuilder(logger, level, globalContextSerialized, true);
         }
@@ -279,9 +281,12 @@ public final class LoggingEventBuilder {
             message = "";
         }
 
-        StringBuilder sb =
-            new StringBuilder(20 + context.size() * 20 + message.length() + globalContextCached.length());
-        sb.append("{\"")
+        StringBuilder sb = new StringBuilder(20
+                                             + context.size() * 20
+                                             + message.length()
+                                             + globalContextCached.length());
+        sb
+            .append("{\"")
             // message must be first for log parsing tooling to work, key also works as a
             // marker for Azure SDK logs so we'll write it even if there is no message
             .append(AZURE_SDK_LOG_MESSAGE_KEY)
@@ -422,14 +427,12 @@ public final class LoggingEventBuilder {
             return false;
         }
 
-        if (
-            value instanceof Boolean
-                || value instanceof Integer
-                || value instanceof Long
-                || value instanceof Byte
-                || value instanceof Double
-                || value instanceof Float
-        ) {
+        if (value instanceof Boolean
+            || value instanceof Integer
+            || value instanceof Long
+            || value instanceof Byte
+            || value instanceof Double
+            || value instanceof Float) {
             return true;
         }
 

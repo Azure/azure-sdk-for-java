@@ -38,9 +38,9 @@ public final class GeoLinearRing {
         }
 
         if (!Objects.equals(coordinates.get(0), coordinates.get(size - 1))) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("The first and last coordinates of a linear ring must be equivalent.")
-            );
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException(
+                    "The first and last coordinates of a linear ring must be equivalent."));
         }
 
         this.coordinates = new GeoArray<>(new ArrayList<>(coordinates));

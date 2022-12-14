@@ -91,12 +91,10 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
      * @param context an instance of {@link Context}
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
-    public LocationPollingStrategy(
-        HttpPipeline httpPipeline,
-        String endpoint,
-        ObjectSerializer serializer,
-        Context context
-    ) {
+    public LocationPollingStrategy(HttpPipeline httpPipeline,
+                                   String endpoint,
+                                   ObjectSerializer serializer,
+                                   Context context) {
         this.httpPipeline = Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null");
         this.endpoint = endpoint;
         this.serializer = (serializer == null) ? DEFAULT_SERIALIZER : serializer;
@@ -119,8 +117,9 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
     }
 
     @Override
-    public Mono<PollResponse<T>>
-        onInitialResponse(Response<?> response, PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
+    public Mono<PollResponse<T>> onInitialResponse(Response<?> response,
+                                                   PollingContext<T> pollingContext,
+                                                   TypeReference<T> pollResponseType) {
         HttpHeader locationHeader = response.getHeaders().get(HttpHeaderName.LOCATION);
         if (locationHeader != null) {
             pollingContext
@@ -129,32 +128,22 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
         pollingContext.setData(PollingConstants.HTTP_METHOD, response.getRequest().getHttpMethod().name());
         pollingContext.setData(PollingConstants.REQUEST_URL, response.getRequest().getUrl().toString());
 
-        if (
-            response.getStatusCode() == 200
-                || response.getStatusCode() == 201
-                || response.getStatusCode() == 202
-                || response.getStatusCode() == 204
-        ) {
+        if (response.getStatusCode() == 200
+            || response.getStatusCode() == 201
+            || response.getStatusCode() == 202
+            || response.getStatusCode() == 204) {
             Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
-            return PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType)
+            return PollingUtils
+                .convertResponse(response.getValue(), serializer, pollResponseType)
                 .map(value -> new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, value, retryAfter))
-                .switchIfEmpty(
-                    Mono.fromSupplier(
-                        () -> new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, null, retryAfter)
-                    )
-                );
+                .switchIfEmpty(Mono
+                    .fromSupplier(() -> new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, null, retryAfter)));
         } else {
-            return Mono.error(
-                new AzureException(
-                    String.format(
-                        "Operation failed or cancelled with status code %d,"
-                            + ", 'Location' header: %s, and response body: %s",
-                        response.getStatusCode(),
-                        locationHeader,
-                        PollingUtils.serializeResponse(response.getValue(), serializer)
-                    )
-                )
-            );
+            return Mono
+                .error(new AzureException(String
+                    .format("Operation failed or cancelled with status code %d,"
+                        + ", 'Location' header: %s, and response body: %s", response.getStatusCode(), locationHeader,
+                        PollingUtils.serializeResponse(response.getValue(), serializer))));
         }
     }
 
@@ -180,9 +169,10 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
 
                 return response.getBodyAsByteArray().map(BinaryData::fromBytes).flatMap(binaryData -> {
                     pollingContext.setData(PollingConstants.POLL_RESPONSE_BODY, binaryData.toString());
-                    Duration retryAfter =
-                        ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
-                    return PollingUtils.deserializeResponse(binaryData, serializer, pollResponseType)
+                    Duration retryAfter = ImplUtils
+                        .getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
+                    return PollingUtils
+                        .deserializeResponse(binaryData, serializer, pollResponseType)
                         .map(value -> new PollResponse<>(status, value, retryAfter));
                 });
             });
@@ -198,14 +188,11 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
 
         String finalGetUrl;
         String httpMethod = pollingContext.getData(PollingConstants.HTTP_METHOD);
-        if (
-            HttpMethod.PUT.name().equalsIgnoreCase(httpMethod) || HttpMethod.PATCH.name().equalsIgnoreCase(httpMethod)
-        ) {
+        if (HttpMethod.PUT.name().equalsIgnoreCase(httpMethod)
+            || HttpMethod.PATCH.name().equalsIgnoreCase(httpMethod)) {
             finalGetUrl = pollingContext.getData(PollingConstants.REQUEST_URL);
-        } else if (
-            HttpMethod.POST.name().equalsIgnoreCase(httpMethod)
-                && pollingContext.getData(PollingConstants.LOCATION) != null
-        ) {
+        } else if (HttpMethod.POST.name().equalsIgnoreCase(httpMethod)
+            && pollingContext.getData(PollingConstants.LOCATION) != null) {
             finalGetUrl = pollingContext.getData(PollingConstants.LOCATION);
         } else {
             return Mono.error(new AzureException("Cannot get final result"));

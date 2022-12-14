@@ -32,8 +32,9 @@ public class RequestOptionsTests {
     public void addHeader() throws MalformedURLException {
         final HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("http://request.url"));
 
-        RequestOptions options =
-            new RequestOptions().addHeader("x-ms-foo", "bar").addHeader("Content-Type", "application/json");
+        RequestOptions options = new RequestOptions()
+            .addHeader("x-ms-foo", "bar")
+            .addHeader("Content-Type", "application/json");
         options.getRequestCallback().accept(request);
 
         HttpHeaders headers = request.getHeaders();
@@ -52,7 +53,8 @@ public class RequestOptionsTests {
         options.getRequestCallback().accept(request);
 
         assertSame(requestBody, request.getBodyAsBinaryData());
-        StepVerifier.create(BinaryData.fromFlux(request.getBody()).map(BinaryData::toString))
+        StepVerifier
+            .create(BinaryData.fromFlux(request.getBody()).map(BinaryData::toString))
             .expectNext(expected)
             .verifyComplete();
     }
@@ -61,7 +63,8 @@ public class RequestOptionsTests {
     public void addRequestCallback() throws MalformedURLException {
         final HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("http://request.url"));
 
-        RequestOptions options = new RequestOptions().addHeader("x-ms-foo", "bar")
+        RequestOptions options = new RequestOptions()
+            .addHeader("x-ms-foo", "bar")
             .addRequestCallback(r -> r.setHttpMethod(HttpMethod.GET))
             .addRequestCallback(r -> r.setUrl("https://request.url"))
             .addQueryParam("$skipToken", "1")

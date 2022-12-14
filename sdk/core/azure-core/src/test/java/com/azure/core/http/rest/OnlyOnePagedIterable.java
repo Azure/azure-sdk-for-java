@@ -15,18 +15,14 @@ public class OnlyOnePagedIterable extends ContinuablePagedIterable<Integer, Inte
         this(pagedFlux, 1);
     }
 
-    public OnlyOnePagedIterable(
-        ContinuablePagedFlux<Integer, Integer, OnlyOneContinuablePage> pagedFlux,
-        int batchSize
-    ) {
+    public OnlyOnePagedIterable(ContinuablePagedFlux<Integer, Integer, OnlyOneContinuablePage> pagedFlux,
+                                int batchSize) {
         super(pagedFlux, batchSize);
     }
 
-    public OnlyOnePagedIterable(
-        Supplier<PageRetrieverSync<Integer, OnlyOneContinuablePage>> pageRetrieverProvider,
-        Integer pageSize,
-        Predicate<Integer> continuationPredicate
-    ) {
+    public OnlyOnePagedIterable(Supplier<PageRetrieverSync<Integer, OnlyOneContinuablePage>> pageRetrieverProvider,
+                                Integer pageSize,
+                                Predicate<Integer> continuationPredicate) {
         super(pageRetrieverProvider, pageSize, continuationPredicate);
     }
 }

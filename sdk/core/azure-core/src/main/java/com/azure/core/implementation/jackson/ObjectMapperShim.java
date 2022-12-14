@@ -58,8 +58,8 @@ public final class ObjectMapperShim {
      * @param configure applies additional configuration to {@code ObjectMapper}.
      * @return Instance of shimmed {@code ObjectMapperShim}.
      */
-    public static ObjectMapperShim
-        createJsonMapper(ObjectMapperShim innerMapperShim, BiConsumer<ObjectMapper, ObjectMapper> configure) {
+    public static ObjectMapperShim createJsonMapper(ObjectMapperShim innerMapperShim,
+                                                    BiConsumer<ObjectMapper, ObjectMapper> configure) {
         try {
             ObjectMapper mapper = ObjectMapperFactory.INSTANCE.createJsonMapper(innerMapperShim.mapper);
             configure.accept(mapper, innerMapperShim.mapper);
@@ -285,11 +285,9 @@ public final class ObjectMapperShim {
                 javaTypeArguments[i] = createJavaType(actualTypeArguments[i]);
             }
 
-            return getFromTypeCache(
-                type,
-                t -> mapper.getTypeFactory()
-                    .constructParametricType((Class<?>) parameterizedType.getRawType(), javaTypeArguments)
-            );
+            return getFromTypeCache(type, t -> mapper
+                .getTypeFactory()
+                .constructParametricType((Class<?>) parameterizedType.getRawType(), javaTypeArguments));
         } else {
             return getFromTypeCache(type, t -> mapper.getTypeFactory().constructType(t));
         }
@@ -317,11 +315,10 @@ public final class ObjectMapperShim {
                 throw (RuntimeException) throwable;
             }
 
-            LOGGER.verbose(
-                "Failed to find or use MethodHandle Constructor that accepts HttpHeaders for "
+            LOGGER
+                .verbose("Failed to find or use MethodHandle Constructor that accepts HttpHeaders for "
                     + deserializedHeadersType
-                    + "."
-            );
+                    + ".");
         }
 
         T deserializedHeaders = mapper.convertValue(headers, createJavaType(deserializedHeadersType));
@@ -355,11 +352,9 @@ public final class ObjectMapperShim {
             }
 
             final Type[] mapTypeArguments = TypeUtil.getTypeArguments(declaredFieldType);
-            if (
-                mapTypeArguments.length != 2
-                    || mapTypeArguments[0] != String.class
-                    || mapTypeArguments[1] != String.class
-            ) {
+            if (mapTypeArguments.length != 2
+                || mapTypeArguments[0] != String.class
+                || mapTypeArguments[1] != String.class) {
                 continue;
             }
 

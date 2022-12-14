@@ -119,20 +119,13 @@ public interface SyncPoller<T, U> {
      * @return new {@link SyncPoller} instance.
      */
     @SuppressWarnings("unchecked")
-    static <T, U> SyncPoller<T, U> createPoller(
-        Duration pollInterval,
-        Function<PollingContext<T>, PollResponse<T>> syncActivationOperation,
-        Function<PollingContext<T>, PollResponse<T>> pollOperation,
-        BiFunction<PollingContext<T>, PollResponse<T>, T> cancelOperation,
-        Function<PollingContext<T>, U> fetchResultOperation
-    ) {
-        return new SimpleSyncPoller<>(
-            pollInterval,
-            syncActivationOperation,
-            pollOperation,
-            cancelOperation,
-            fetchResultOperation
-        );
+    static <T, U> SyncPoller<T, U> createPoller(Duration pollInterval,
+                                                Function<PollingContext<T>, PollResponse<T>> syncActivationOperation,
+                                                Function<PollingContext<T>, PollResponse<T>> pollOperation,
+                                                BiFunction<PollingContext<T>, PollResponse<T>, T> cancelOperation,
+                                                Function<PollingContext<T>, U> fetchResultOperation) {
+        return new SimpleSyncPoller<>(pollInterval, syncActivationOperation, pollOperation, cancelOperation,
+            fetchResultOperation);
     }
 
     /**
@@ -156,13 +149,11 @@ public interface SyncPoller<T, U> {
      * @param <U> The type of the final result of long-running operation.
      * @return new {@link SyncPoller} instance.
      */
-    static <T, U> SyncPoller<T, U> createPoller(
-        Duration pollInterval,
-        Supplier<Response<?>> initialOperation,
-        SyncPollingStrategy<T, U> strategy,
-        TypeReference<T> pollResponseType,
-        TypeReference<U> resultType
-    ) {
+    static <T, U> SyncPoller<T, U> createPoller(Duration pollInterval,
+                                                Supplier<Response<?>> initialOperation,
+                                                SyncPollingStrategy<T, U> strategy,
+                                                TypeReference<T> pollResponseType,
+                                                TypeReference<U> resultType) {
         Function<PollingContext<T>, PollResponse<T>> syncActivationOperation = pollingContext -> {
             Response<?> response = initialOperation.get();
             if (!strategy.canPoll(response)) {
@@ -172,17 +163,12 @@ public interface SyncPoller<T, U> {
             return strategy.onInitialResponse(response, pollingContext, pollResponseType);
         };
 
-        Function<PollingContext<T>, PollResponse<T>> pollOperation =
-            context -> strategy.poll(context, pollResponseType);
+        Function<PollingContext<T>, PollResponse<T>> pollOperation = context -> strategy
+            .poll(context, pollResponseType);
         BiFunction<PollingContext<T>, PollResponse<T>, T> cancelOperation = strategy::cancel;
         Function<PollingContext<T>, U> fetchResultOperation = context -> strategy.getResult(context, resultType);
 
-        return createPoller(
-            pollInterval,
-            syncActivationOperation,
-            pollOperation,
-            cancelOperation,
-            fetchResultOperation
-        );
+        return createPoller(pollInterval, syncActivationOperation, pollOperation, cancelOperation,
+            fetchResultOperation);
     }
 }

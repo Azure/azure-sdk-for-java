@@ -40,16 +40,14 @@ public final class AsyncPollResponse<T, U> {
      * @param fetchResultOperation the operation to fetch final result of long-running operation, if supported
      *                             by the service
      */
-    AsyncPollResponse(
-        PollingContext<T> pollingContext,
-        BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancellationOperation,
-        Function<PollingContext<T>, Mono<U>> fetchResultOperation
-    ) {
+    AsyncPollResponse(PollingContext<T> pollingContext,
+                      BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancellationOperation,
+                      Function<PollingContext<T>, Mono<U>> fetchResultOperation) {
         this.pollingContext = Objects.requireNonNull(pollingContext, "'pollingContext' cannot be null.");
-        this.cancellationOperation =
-            Objects.requireNonNull(cancellationOperation, "'cancellationOperation' cannot be null.");
-        this.fetchResultOperation =
-            Objects.requireNonNull(fetchResultOperation, "'fetchResultOperation' cannot be null.");
+        this.cancellationOperation = Objects
+            .requireNonNull(cancellationOperation, "'cancellationOperation' cannot be null.");
+        this.fetchResultOperation = Objects
+            .requireNonNull(fetchResultOperation, "'fetchResultOperation' cannot be null.");
         this.pollResponse = this.pollingContext.getLatestResponse();
     }
 

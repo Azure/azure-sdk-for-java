@@ -67,8 +67,8 @@ public class HttpPipelineTests {
             })
             .build();
 
-        HttpPipelineCallContext context =
-            new HttpPipelineCallContext(new HttpRequest(HttpMethod.GET, new URL("http://foo.com")));
+        HttpPipelineCallContext context = new HttpPipelineCallContext(new HttpRequest(HttpMethod.GET, new URL(
+            "http://foo.com")));
         assertNotNull(context);
         assertNotNull(pipeline.getHttpClient());
     }
@@ -108,8 +108,10 @@ public class HttpPipelineTests {
             }
         };
 
-        final HttpPipeline httpPipeline =
-            new HttpPipelineBuilder().httpClient(httpClient).policies(new UserAgentPolicy(expectedUserAgent)).build();
+        final HttpPipeline httpPipeline = new HttpPipelineBuilder()
+            .httpClient(httpClient)
+            .policies(new UserAgentPolicy(expectedUserAgent))
+            .build();
 
         final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl)).block();
         assertNotNull(response);
@@ -155,11 +157,13 @@ public class HttpPipelineTests {
             }
         };
 
-        final HttpPipeline httpPipeline =
-            new HttpPipelineBuilder().httpClient(httpClient).policies((new UserAgentPolicy(expectedUserAgent))).build();
+        final HttpPipeline httpPipeline = new HttpPipelineBuilder()
+            .httpClient(httpClient)
+            .policies((new UserAgentPolicy(expectedUserAgent)))
+            .build();
 
-        final HttpResponse response =
-            httpPipeline.sendSync(new HttpRequest(expectedHttpMethod, expectedUrl), Context.NONE);
+        final HttpResponse response = httpPipeline
+            .sendSync(new HttpRequest(expectedHttpMethod, expectedUrl), Context.NONE);
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
     }
@@ -178,8 +182,8 @@ public class HttpPipelineTests {
             }
         }).build();
 
-        final HttpResponse response =
-            httpPipeline.sendSync(new HttpRequest(expectedHttpMethod, expectedUrl), Context.NONE);
+        final HttpResponse response = httpPipeline
+            .sendSync(new HttpRequest(expectedHttpMethod, expectedUrl), Context.NONE);
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
     }

@@ -379,8 +379,7 @@ public interface Tracer {
      * @deprecated Use {@link #addEvent(String, Map, OffsetDateTime, Context)}
      */
     @Deprecated
-    default void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp) {
-    }
+    default void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp) {}
 
     /**
      * Adds an event to the span present in the {@code Context} with the provided {@code timestamp}

@@ -70,8 +70,9 @@ final class AdditionalPropertiesSerializer extends StdSerializer<Object> impleme
         SimpleModule module = new SimpleModule();
         module.setSerializerModifier(new BeanSerializerModifier() {
             @Override
-            public JsonSerializer<?>
-                modifySerializer(SerializationConfig config, BeanDescription beanDesc, JsonSerializer<?> serializer) {
+            public JsonSerializer<?> modifySerializer(SerializationConfig config,
+                                                      BeanDescription beanDesc,
+                                                      JsonSerializer<?> serializer) {
                 for (Class<?> c : TypeUtil.getAllClasses(beanDesc.getBeanClass())) {
                     if (c.isAssignableFrom(Object.class)) {
                         continue;
@@ -122,11 +123,9 @@ final class AdditionalPropertiesSerializer extends StdSerializer<Object> impleme
                 if (field.getValue() instanceof ObjectNode) {
                     source.add((ObjectNode) field.getValue());
                     target.add((ObjectNode) outNode);
-                } else if (
-                    field.getValue() instanceof ArrayNode
-                        && (field.getValue()).size() > 0
-                        && (field.getValue()).get(0) instanceof ObjectNode
-                ) {
+                } else if (field.getValue() instanceof ArrayNode
+                    && (field.getValue()).size() > 0
+                    && (field.getValue()).get(0) instanceof ObjectNode) {
                     Iterator<JsonNode> sourceIt = field.getValue().elements();
                     Iterator<JsonNode> targetIt = outNode.elements();
                     while (sourceIt.hasNext()) {
@@ -145,9 +144,10 @@ final class AdditionalPropertiesSerializer extends StdSerializer<Object> impleme
     }
 
     @Override
-    public void
-        serializeWithType(Object value, JsonGenerator gen, SerializerProvider provider, TypeSerializer typeSerializer)
-            throws IOException {
+    public void serializeWithType(Object value,
+                                  JsonGenerator gen,
+                                  SerializerProvider provider,
+                                  TypeSerializer typeSerializer) throws IOException {
         serialize(value, gen, provider);
     }
 }

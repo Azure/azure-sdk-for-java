@@ -34,10 +34,8 @@ public class ByteBufferCollectorTests {
          * This assumption validates that the JVM running this test has a maximum heap size large enough for the test
          * to run without triggering an OutOfMemoryError.
          */
-        assumeTrue(
-            Runtime.getRuntime().maxMemory() > (Integer.MAX_VALUE * 1.5),
-            "JVM doesn't have the requisite max heap size to support running this test."
-        );
+        assumeTrue(Runtime.getRuntime().maxMemory() > (Integer.MAX_VALUE * 1.5),
+            "JVM doesn't have the requisite max heap size to support running this test.");
 
         ByteBuffer buffer = ByteBuffer.allocate((Integer.MAX_VALUE / 2) + 1);
 
@@ -71,18 +69,18 @@ public class ByteBufferCollectorTests {
             manyHelloWorldsByteBuffers.add(worldBuffer.duplicate());
         }
 
-        return Stream.of(
-            // All buffers are null.
-            Arguments.of(Arrays.asList(null, null), new byte[0]),
+        return Stream
+            .of(
+                // All buffers are null.
+                Arguments.of(Arrays.asList(null, null), new byte[0]),
 
-            // All buffers are empty.
-            Arguments.of(Arrays.asList(ByteBuffer.allocate(0), ByteBuffer.allocate(0)), new byte[0]),
+                // All buffers are empty.
+                Arguments.of(Arrays.asList(ByteBuffer.allocate(0), ByteBuffer.allocate(0)), new byte[0]),
 
-            // Hello world buffers.
-            Arguments.of(Arrays.asList(helloBuffer.duplicate(), worldBuffer.duplicate()), helloWorldBytes),
+                // Hello world buffers.
+                Arguments.of(Arrays.asList(helloBuffer.duplicate(), worldBuffer.duplicate()), helloWorldBytes),
 
-            // Many hello world buffers.
-            Arguments.of(manyHelloWorldsByteBuffers, manyHelloWorldsBytes)
-        );
+                // Many hello world buffers.
+                Arguments.of(manyHelloWorldsByteBuffers, manyHelloWorldsBytes));
     }
 }

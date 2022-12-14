@@ -42,15 +42,11 @@ public class AddHeadersFromContextPolicyTest {
             }
         }).policies(new RequestIdPolicy()).policies(new AddHeadersFromContextPolicy()).build();
 
-        SyncAsyncExtension.execute(
-            () -> pipeline.sendSync(
-                new HttpRequest(HttpMethod.GET, new URL("http://localhost/")),
-                new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers)
-            ),
-            () -> pipeline.send(
-                new HttpRequest(HttpMethod.GET, new URL("http://localhost/")),
-                new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers)
-            )
-        );
+        SyncAsyncExtension
+            .execute(() -> pipeline
+                .sendSync(new HttpRequest(HttpMethod.GET, new URL("http://localhost/")), new Context(
+                    AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers)), () -> pipeline
+                        .send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/")), new Context(
+                            AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers)));
     }
 }

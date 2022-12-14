@@ -31,12 +31,10 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
 
     private volatile boolean done;
 
-    ContinuablePagedByIteratorBase(
-        PageRetriever<C, P> pageRetriever,
-        ContinuationState<C> continuationState,
-        Integer defaultPageSize,
-        ClientLogger logger
-    ) {
+    ContinuablePagedByIteratorBase(PageRetriever<C, P> pageRetriever,
+                                   ContinuationState<C> continuationState,
+                                   Integer defaultPageSize,
+                                   ClientLogger logger) {
         this.continuationState = continuationState;
         this.pageRetriever = pageRetriever;
         this.defaultPageSize = defaultPageSize;
@@ -44,12 +42,10 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
         this.pageRetrieverSync = null;
     }
 
-    ContinuablePagedByIteratorBase(
-        PageRetrieverSync<C, P> pageRetrieverSync,
-        ContinuationState<C> continuationState,
-        Integer defaultPageSize,
-        ClientLogger logger
-    ) {
+    ContinuablePagedByIteratorBase(PageRetrieverSync<C, P> pageRetrieverSync,
+                                   ContinuationState<C> continuationState,
+                                   Integer defaultPageSize,
+                                   ClientLogger logger) {
         this.continuationState = continuationState;
         this.pageRetrieverSync = pageRetrieverSync;
         this.defaultPageSize = defaultPageSize;

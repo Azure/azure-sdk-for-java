@@ -80,18 +80,16 @@ public final class DateTimeRfc1123 {
      */
     private static OffsetDateTime parse(final String date) {
         try {
-            return OffsetDateTime.of(
-                LocalDateTime.of(
-                    parseInt(date, 12, 16),  // year
-                    parseMonth(date),        // month
-                    parseInt(date, 5, 7),    // dayOfMonth
-                    parseInt(date, 17, 19),  // hour
-                    parseInt(date, 20, 22),  // minute
-                    parseInt(date, 23, 25),  // second
-                    0                        // nanoOfSecond
-                ),
-                ZoneOffset.UTC
-            );
+            return OffsetDateTime
+                .of(LocalDateTime
+                    .of(parseInt(date, 12, 16),  // year
+                        parseMonth(date),        // month
+                        parseInt(date, 5, 7),    // dayOfMonth
+                        parseInt(date, 17, 19),  // hour
+                        parseInt(date, 20, 22),  // minute
+                        parseInt(date, 23, 25),  // second
+                        0                        // nanoOfSecond
+                    ), ZoneOffset.UTC);
         } catch (DateTimeException | IllegalArgumentException | IndexOutOfBoundsException e) {
             return OffsetDateTime.parse(date, DateTimeFormatter.RFC_1123_DATE_TIME);
         }

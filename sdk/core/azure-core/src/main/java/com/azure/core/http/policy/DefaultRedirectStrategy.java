@@ -96,21 +96,18 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
     }
 
     @Override
-    public boolean shouldAttemptRedirect(
-        HttpPipelineCallContext context,
-        HttpResponse httpResponse,
-        int tryCount,
-        Set<String> attemptedRedirectUrls
-    ) {
+    public boolean shouldAttemptRedirect(HttpPipelineCallContext context,
+                                         HttpResponse httpResponse,
+                                         int tryCount,
+                                         Set<String> attemptedRedirectUrls) {
 
-        if (
-            isValidRedirectStatusCode(httpResponse.getStatusCode())
-                && isValidRedirectCount(tryCount)
-                && isAllowedRedirectMethod(httpResponse.getRequest().getHttpMethod())
-        ) {
+        if (isValidRedirectStatusCode(httpResponse.getStatusCode())
+            && isValidRedirectCount(tryCount)
+            && isAllowedRedirectMethod(httpResponse.getRequest().getHttpMethod())) {
             String redirectUrl = httpResponse.getHeaderValue(locationHeader);
             if (redirectUrl != null && !alreadyAttemptedRedirectUrl(redirectUrl, attemptedRedirectUrls)) {
-                LOGGER.atVerbose()
+                LOGGER
+                    .atVerbose()
                     .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
                     .addKeyValue(REDIRECT_URLS_KEY, attemptedRedirectUrls::toString)
                     .log("Redirecting.");
@@ -144,7 +141,8 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
      */
     private boolean alreadyAttemptedRedirectUrl(String redirectUrl, Set<String> attemptedRedirectUrls) {
         if (attemptedRedirectUrls.contains(redirectUrl)) {
-            LOGGER.atError()
+            LOGGER
+                .atError()
                 .addKeyValue(LoggingKeys.REDIRECT_URL_KEY, redirectUrl)
                 .log("Request was redirected more than once to the same URL.");
 
@@ -178,7 +176,8 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
         if (allowedRedirectHttpMethods.contains(httpMethod)) {
             return true;
         } else {
-            LOGGER.atError()
+            LOGGER
+                .atError()
                 .addKeyValue(LoggingKeys.HTTP_METHOD_KEY, httpMethod)
                 .log("Request was redirected from an invalid redirect allowed method.");
 

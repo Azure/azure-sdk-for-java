@@ -54,9 +54,7 @@ public class HeaderTest {
     public void testGetValues() {
         // Arrange
         String name = "a";
-        String[] values = {
-            "b", "c"
-        };
+        String[] values = { "b", "c" };
 
         // Act
         final Header header = new Header(name, values[0]);

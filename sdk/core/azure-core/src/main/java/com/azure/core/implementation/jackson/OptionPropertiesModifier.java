@@ -34,11 +34,9 @@ import java.util.List;
  */
 final class OptionPropertiesModifier extends BeanSerializerModifier {
     @Override
-    public List<BeanPropertyWriter> changeProperties(
-        SerializationConfig config,
-        BeanDescription beanDesc,
-        List<BeanPropertyWriter> beanPropertyWriters
-    ) {
+    public List<BeanPropertyWriter> changeProperties(SerializationConfig config,
+                                                     BeanDescription beanDesc,
+                                                     List<BeanPropertyWriter> beanPropertyWriters) {
         for (int i = 0; i < beanPropertyWriters.size(); i++) {
             final BeanPropertyWriter writer = beanPropertyWriters.get(i);
             if (writer.getType().isTypeOrSubTypeOf(Option.class)) {

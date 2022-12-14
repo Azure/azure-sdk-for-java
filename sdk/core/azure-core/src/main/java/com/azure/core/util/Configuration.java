@@ -250,12 +250,10 @@ public class Configuration implements Cloneable {
      * @param path Absolute path of current configuration section for logging and diagnostics purposes.
      * @param sharedConfiguration Instance of shared {@link Configuration} section to retrieve shared properties.
      */
-    Configuration(
-        ConfigurationSource configurationSource,
-        EnvironmentConfiguration environmentConfiguration,
-        String path,
-        Configuration sharedConfiguration
-    ) {
+    Configuration(ConfigurationSource configurationSource,
+                  EnvironmentConfiguration environmentConfiguration,
+                  String path,
+                  Configuration sharedConfiguration) {
         this(readConfigurations(configurationSource, path), environmentConfiguration, path, sharedConfiguration);
     }
 
@@ -267,16 +265,14 @@ public class Configuration implements Cloneable {
      * @param path Absolute path of current configuration section for logging and diagnostics purposes.
      * @param sharedConfiguration Instance of shared {@link Configuration} section to retrieve shared properties.
      */
-    private Configuration(
-        Map<String, String> configurations,
-        EnvironmentConfiguration environmentConfiguration,
-        String path,
-        Configuration sharedConfiguration
-    ) {
+    private Configuration(Map<String, String> configurations,
+                          EnvironmentConfiguration environmentConfiguration,
+                          String path,
+                          Configuration sharedConfiguration) {
         this.configurations = configurations;
         this.isEmpty = configurations.isEmpty();
-        this.environmentConfiguration =
-            Objects.requireNonNull(environmentConfiguration, "'environmentConfiguration' cannot be null");
+        this.environmentConfiguration = Objects
+            .requireNonNull(environmentConfiguration, "'environmentConfiguration' cannot be null");
         this.path = path;
         this.sharedConfiguration = sharedConfiguration;
     }
@@ -416,12 +412,8 @@ public class Configuration implements Cloneable {
     @SuppressWarnings("CloneDoesntCallSuperClone")
     @Deprecated
     public Configuration clone() {
-        return new Configuration(
-            configurations,
-            new EnvironmentConfiguration(environmentConfiguration),
-            path,
-            sharedConfiguration
-        );
+        return new Configuration(configurations, new EnvironmentConfiguration(environmentConfiguration), path,
+            sharedConfiguration);
     }
 
     /**
@@ -480,7 +472,8 @@ public class Configuration implements Cloneable {
 
         if (value == null) {
             if (property.isRequired()) {
-                throw LOGGER.atError()
+                throw LOGGER
+                    .atError()
                     .addKeyValue("name", property.getName())
                     .addKeyValue("path", path)
                     .log(new IllegalArgumentException("Missing required property."));
@@ -491,7 +484,8 @@ public class Configuration implements Cloneable {
         try {
             return property.getConverter().apply(value);
         } catch (RuntimeException ex) {
-            throw LOGGER.atError()
+            throw LOGGER
+                .atError()
                 .addKeyValue("name", property.getName())
                 .addKeyValue("path", path)
                 .addKeyValue("value", property.getValueSanitizer().apply(value))
@@ -506,7 +500,8 @@ public class Configuration implements Cloneable {
 
         final String value = configurations.get(name);
         if (value != null) {
-            LOGGER.atVerbose()
+            LOGGER
+                .atVerbose()
                 .addKeyValue("name", name)
                 .addKeyValue("path", path)
                 .addKeyValue("value", () -> valueSanitizer.apply(value))
@@ -518,7 +513,8 @@ public class Configuration implements Cloneable {
         for (String alias : aliases) {
             final String valueByAlias = configurations.get(alias);
             if (valueByAlias != null) {
-                LOGGER.atVerbose()
+                LOGGER
+                    .atVerbose()
                     .addKeyValue("name", name)
                     .addKeyValue("path", path)
                     .addKeyValue("alias", alias)
@@ -554,7 +550,8 @@ public class Configuration implements Cloneable {
         if (systemProperty != null) {
             final String value = environmentConfiguration.getSystemProperty(systemProperty);
             if (value != null) {
-                LOGGER.atVerbose()
+                LOGGER
+                    .atVerbose()
                     .addKeyValue("name", property.getName())
                     .addKeyValue("systemProperty", systemProperty)
                     .addKeyValue("value", () -> property.getValueSanitizer().apply(value))
@@ -567,7 +564,8 @@ public class Configuration implements Cloneable {
         if (envVar != null) {
             final String value = environmentConfiguration.getEnvironmentVariable(envVar);
             if (value != null) {
-                LOGGER.atVerbose()
+                LOGGER
+                    .atVerbose()
                     .addKeyValue("name", property.getName())
                     .addKeyValue("envVar", envVar)
                     .addKeyValue("value", () -> property.getValueSanitizer().apply(value))

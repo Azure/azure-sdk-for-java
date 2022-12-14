@@ -86,10 +86,9 @@ public class RequestIdPolicyTests {
             }
         }).policies(new RequestIdPolicy()).build();
 
-        SyncAsyncExtension.execute(
-            () -> pipeline.sendSync(createHttpRequest("https://www.bing.com"), Context.NONE),
-            () -> pipeline.send(createHttpRequest("https://www.bing.com"))
-        );
+        SyncAsyncExtension
+            .execute(() -> pipeline.sendSync(createHttpRequest("https://www.bing.com"), Context.NONE), () -> pipeline
+                .send(createHttpRequest("https://www.bing.com")));
     }
 
     @SyncAsyncTest
@@ -114,10 +113,9 @@ public class RequestIdPolicyTests {
             .policies(new RequestIdPolicy(), new RetryPolicy(new FixedDelay(1, Duration.of(0, ChronoUnit.SECONDS))))
             .build();
 
-        SyncAsyncExtension.execute(
-            () -> pipeline.sendSync(createHttpRequest("https://www.bing.com"), Context.NONE),
-            () -> pipeline.send(createHttpRequest("https://www.bing.com"))
-        );
+        SyncAsyncExtension
+            .execute(() -> pipeline.sendSync(createHttpRequest("https://www.bing.com"), Context.NONE), () -> pipeline
+                .send(createHttpRequest("https://www.bing.com")));
     }
 
     private static HttpRequest createHttpRequest(String url) throws MalformedURLException {

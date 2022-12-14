@@ -38,10 +38,9 @@ public class FixedDelay implements RetryStrategy {
      * @param fixedDelayOptions The {@link FixedDelayOptions}.
      */
     public FixedDelay(FixedDelayOptions fixedDelayOptions) {
-        this(
-            Objects.requireNonNull(fixedDelayOptions, "'fixedDelayOptions' cannot be null.").getMaxRetries(),
-            Objects.requireNonNull(fixedDelayOptions, "'fixedDelayOptions' cannot be null.").getDelay()
-        );
+        this(Objects.requireNonNull(fixedDelayOptions, "'fixedDelayOptions' cannot be null.").getMaxRetries(), Objects
+            .requireNonNull(fixedDelayOptions, "'fixedDelayOptions' cannot be null.")
+            .getDelay());
     }
 
     @Override

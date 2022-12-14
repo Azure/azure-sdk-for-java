@@ -93,11 +93,9 @@ public class TypeUtilTests {
         abstract T owner();
     }
 
-    private static class Human {
-    }
+    private static class Human {}
 
-    private static class Kid extends Human {
-    }
+    private static class Kid extends Human {}
 
     private static class Dog<T extends Human> extends Pet<T, String> {
         private T owner;
@@ -108,6 +106,5 @@ public class TypeUtilTests {
         }
     }
 
-    private static class Puppy extends Dog<Kid> {
-    }
+    private static class Puppy extends Dog<Kid> {}
 }

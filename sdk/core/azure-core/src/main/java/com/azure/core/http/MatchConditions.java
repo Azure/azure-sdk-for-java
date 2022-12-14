@@ -16,8 +16,7 @@ public class MatchConditions {
     /**
      * Creates a new instance of {@link MatchConditions}.
      */
-    public MatchConditions() {
-    }
+    public MatchConditions() {}
 
     /**
      * Gets the ETag that resources must match.

@@ -45,24 +45,18 @@ public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
     @Override
     public <A> void read(ByteBuffer dst, A attachment, CompletionHandler<Integer, ? super A> handler) {
         beginOperation(Operation.READ);
-        fileChannel.read(
-            dst,
-            POSITION_ATOMIC_UPDATER.get(this),
-            attachment,
-            new DelegatingCompletionHandler<>(handler, Operation.READ)
-        );
+        fileChannel
+            .read(dst, POSITION_ATOMIC_UPDATER.get(this), attachment, new DelegatingCompletionHandler<>(handler,
+                Operation.READ));
     }
 
     @Override
     public Future<Integer> read(ByteBuffer dst) {
         beginOperation(Operation.READ);
         CompletableFuture<Integer> future = new CompletableFuture<>();
-        fileChannel.read(
-            dst,
-            POSITION_ATOMIC_UPDATER.get(this),
-            dst,
-            new DelegatingCompletionHandler<>(future, Operation.READ)
-        );
+        fileChannel
+            .read(dst, POSITION_ATOMIC_UPDATER.get(this), dst, new DelegatingCompletionHandler<>(future,
+                Operation.READ));
         return future;
     }
 
@@ -71,12 +65,9 @@ public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
         beginOperation(Operation.WRITE);
         // We're implementing channel interface here, i.e. we don't have to consume whole buffer in one shot.
         // Caller is responsible for that.
-        fileChannel.write(
-            src,
-            POSITION_ATOMIC_UPDATER.get(this),
-            attachment,
-            new DelegatingCompletionHandler<>(handler, Operation.WRITE)
-        );
+        fileChannel
+            .write(src, POSITION_ATOMIC_UPDATER.get(this), attachment, new DelegatingCompletionHandler<>(handler,
+                Operation.WRITE));
     }
 
     @Override
@@ -85,12 +76,9 @@ public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
         CompletableFuture<Integer> future = new CompletableFuture<>();
         // We're implementing channel interface here, i.e. we don't have to consume whole buffer in one shot.
         // Caller is responsible for that.
-        fileChannel.write(
-            src,
-            POSITION_ATOMIC_UPDATER.get(this),
-            src,
-            new DelegatingCompletionHandler<>(future, Operation.WRITE)
-        );
+        fileChannel
+            .write(src, POSITION_ATOMIC_UPDATER.get(this), src, new DelegatingCompletionHandler<>(future,
+                Operation.WRITE));
         return future;
     }
 

@@ -65,9 +65,7 @@ public class QueryParameterTest {
     public void testGetValues() {
         // Arrange
         String name = "a";
-        String[] values = {
-            "b", "c"
-        };
+        String[] values = { "b", "c" };
 
         // Act
         final QueryParameter parameter = new QueryParameter(name, values[0]);

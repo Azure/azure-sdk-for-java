@@ -24,10 +24,8 @@ public class EnvironmentConfigurationTests {
      */
     @Test
     public void runtimeConfigurationFound() {
-        EnvironmentConfiguration configuration = new EnvironmentConfiguration(
-            new TestConfigurationSource().put(MY_CONFIGURATION, EXPECTED_VALUE),
-            EMPTY_SOURCE
-        );
+        EnvironmentConfiguration configuration = new EnvironmentConfiguration(new TestConfigurationSource()
+            .put(MY_CONFIGURATION, EXPECTED_VALUE), EMPTY_SOURCE);
 
         assertEquals(EXPECTED_VALUE, configuration.getSystemProperty(MY_CONFIGURATION));
         assertEquals(EXPECTED_VALUE, configuration.get(MY_CONFIGURATION));
@@ -39,10 +37,8 @@ public class EnvironmentConfigurationTests {
      */
     @Test
     public void environmentConfigurationFound() {
-        EnvironmentConfiguration configuration = new EnvironmentConfiguration(
-            EMPTY_SOURCE,
-            new TestConfigurationSource().put(MY_CONFIGURATION, EXPECTED_VALUE)
-        );
+        EnvironmentConfiguration configuration = new EnvironmentConfiguration(EMPTY_SOURCE,
+            new TestConfigurationSource().put(MY_CONFIGURATION, EXPECTED_VALUE));
 
         assertEquals(EXPECTED_VALUE, configuration.getEnvironmentVariable(MY_CONFIGURATION));
         assertEquals(EXPECTED_VALUE, configuration.get(MY_CONFIGURATION));
@@ -65,20 +61,17 @@ public class EnvironmentConfigurationTests {
      */
     @Test
     public void runtimeConfigurationPreferredOverEnvironmentConfiguration() {
-        EnvironmentConfiguration configuration = new EnvironmentConfiguration(
-            new TestConfigurationSource().put(MY_CONFIGURATION, EXPECTED_VALUE),
-            new TestConfigurationSource().put(MY_CONFIGURATION, UNEXPECTED_VALUE)
-        );
+        EnvironmentConfiguration configuration = new EnvironmentConfiguration(new TestConfigurationSource()
+            .put(MY_CONFIGURATION, EXPECTED_VALUE), new TestConfigurationSource()
+                .put(MY_CONFIGURATION, UNEXPECTED_VALUE));
 
         assertEquals(EXPECTED_VALUE, configuration.getSystemProperty(MY_CONFIGURATION));
     }
 
     @Test
     public void cloneConfiguration() {
-        EnvironmentConfiguration configuration = new EnvironmentConfiguration(
-            new TestConfigurationSource().put("sys", "sysVal"),
-            new TestConfigurationSource().put("env", "envVal")
-        );
+        EnvironmentConfiguration configuration = new EnvironmentConfiguration(new TestConfigurationSource()
+            .put("sys", "sysVal"), new TestConfigurationSource().put("env", "envVal"));
 
         EnvironmentConfiguration configurationClone = new EnvironmentConfiguration(configuration);
 
@@ -92,10 +85,8 @@ public class EnvironmentConfigurationTests {
 
     @Test
     public void removeDoesNotChangeEnvironmentOrSystemVariables() {
-        EnvironmentConfiguration configuration = new EnvironmentConfiguration(
-            new TestConfigurationSource().put("sys", "sysVal"),
-            new TestConfigurationSource().put("env", "envVal")
-        );
+        EnvironmentConfiguration configuration = new EnvironmentConfiguration(new TestConfigurationSource()
+            .put("sys", "sysVal"), new TestConfigurationSource().put("env", "envVal"));
 
         configuration.put("foo", "bar");
 
@@ -115,10 +106,8 @@ public class EnvironmentConfigurationTests {
 
     @Test
     public void putAndRemoveOverride() {
-        EnvironmentConfiguration configuration = new EnvironmentConfiguration(
-            new TestConfigurationSource().put("sys", "sysVal"),
-            new TestConfigurationSource().put("env", "envVal")
-        );
+        EnvironmentConfiguration configuration = new EnvironmentConfiguration(new TestConfigurationSource()
+            .put("sys", "sysVal"), new TestConfigurationSource().put("env", "envVal"));
 
         configuration.put("env", "bar1");
         configuration.put("sys", "bar2");

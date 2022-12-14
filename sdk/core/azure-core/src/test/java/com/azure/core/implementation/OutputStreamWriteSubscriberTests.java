@@ -26,8 +26,7 @@ public class OutputStreamWriteSubscriberTests {
     public void multipleSubscriptionsCancelsLaterSubscriptions() {
         OutputStream stream = new MockOutputStream() {
             @Override
-            public void write(byte[] b, int off, int len) {
-            }
+            public void write(byte[] b, int off, int len) {}
         };
 
         OutputStreamWriteSubscriber subscriber = new OutputStreamWriteSubscriber(null, stream, LOGGER);

@@ -35,14 +35,14 @@ public class LoggingBenchmark {
 
     @Setup
     public void setup() {
-        EnvironmentConfiguration.getGlobalConfiguration()
+        EnvironmentConfiguration
+            .getGlobalConfiguration()
             .put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.WARNING));
         this.logger = new ClientLogger(LoggingBenchmark.class);
 
         System.setOut(new PrintStream(new OutputStream() {
             @Override
-            public void write(int b) throws IOException {
-            }
+            public void write(int b) throws IOException {}
         }));
     }
 

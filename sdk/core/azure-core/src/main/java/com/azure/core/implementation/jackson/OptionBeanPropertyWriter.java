@@ -57,7 +57,7 @@ final class OptionBeanPropertyWriter extends BeanPropertyWriter {
 
     @Override
     public void serializeAsField(Object bean, JsonGenerator jsonGenerator, SerializerProvider provider)
-        throws Exception {
+                                                                                                        throws Exception {
         // Follow the same pattern that standard Optional serializer (Jdk8Module) follows.
         if (super._nullSerializer == null) {
             Object option = super.get(bean);
@@ -75,11 +75,9 @@ final class OptionBeanPropertyWriter extends BeanPropertyWriter {
             super(base, transformer);
         }
 
-        private UnwrappingOptionBeanPropertyWriter(
-            UnwrappingOptionBeanPropertyWriter base,
-            NameTransformer transformer,
-            SerializedString name
-        ) {
+        private UnwrappingOptionBeanPropertyWriter(UnwrappingOptionBeanPropertyWriter base,
+                                                   NameTransformer transformer,
+                                                   SerializedString name) {
             super(base, transformer, name);
         }
 
@@ -90,7 +88,7 @@ final class OptionBeanPropertyWriter extends BeanPropertyWriter {
 
         @Override
         public void serializeAsField(Object bean, JsonGenerator jsonGenerator, SerializerProvider provider)
-            throws Exception {
+                                                                                                            throws Exception {
             // Follow the same pattern that standard Optional serializer (Jdk8Module) follows.
             if (super._nullSerializer == null) {
                 Object option = super.get(bean);

@@ -45,15 +45,13 @@ public class ContextTests {
     }
 
     private static Stream<Arguments> addDataSupplier() {
-        return Stream.of(
-            // Adding with same key overwrites value.
-            Arguments.of("key", "newValue", "newValue"),
-            Arguments.of("key", "", ""),
+        return Stream
+            .of(
+                // Adding with same key overwrites value.
+                Arguments.of("key", "newValue", "newValue"), Arguments.of("key", "", ""),
 
-            // New values.
-            Arguments.of("key2", "newValue", "value"),
-            Arguments.of("key2", "", "value")
-        );
+                // New values.
+                Arguments.of("key2", "newValue", "value"), Arguments.of("key2", "", "value"));
     }
 
     @Test
@@ -124,11 +122,10 @@ public class ContextTests {
 
         Context contextWithMultipleSameKeys = new Context("key", "value").addData("key", "value2");
 
-        return Stream.of(
-            Arguments.of(Context.NONE, Collections.emptyMap()),
-            Arguments.of(new Context("key", "value"), Collections.singletonMap("key", "value")),
-            Arguments.of(contextWithMultipleKeys, expectedMultipleKeys),
-            Arguments.of(contextWithMultipleSameKeys, Collections.singletonMap("key", "value2"))
-        );
+        return Stream
+            .of(Arguments.of(Context.NONE, Collections.emptyMap()), Arguments
+                .of(new Context("key", "value"), Collections.singletonMap("key", "value")), Arguments
+                    .of(contextWithMultipleKeys, expectedMultipleKeys), Arguments
+                        .of(contextWithMultipleSameKeys, Collections.singletonMap("key", "value2")));
     }
 }

@@ -65,8 +65,8 @@ public final class ProgressReporter {
     private final Lock listenerLock;
     private final ProgressReporter parent;
 
-    private static final AtomicLongFieldUpdater<ProgressReporter> PROGRESS_ATOMIC_UPDATER =
-        AtomicLongFieldUpdater.newUpdater(ProgressReporter.class, "progress");
+    private static final AtomicLongFieldUpdater<ProgressReporter> PROGRESS_ATOMIC_UPDATER = AtomicLongFieldUpdater
+        .newUpdater(ProgressReporter.class, "progress");
     private volatile long progress;
 
     /**

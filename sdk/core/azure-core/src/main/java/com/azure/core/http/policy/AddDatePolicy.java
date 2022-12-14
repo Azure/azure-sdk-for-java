@@ -20,8 +20,10 @@ import java.util.Locale;
  * The pipeline policy that adds a "Date" header in RFC 1123 format when sending an HTTP request.
  */
 public class AddDatePolicy implements HttpPipelinePolicy {
-    private static final DateTimeFormatter FORMATTER =
-        DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'").withZone(ZoneOffset.UTC).withLocale(Locale.US);
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter
+        .ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'")
+        .withZone(ZoneOffset.UTC)
+        .withLocale(Locale.US);
 
     private static final HttpPipelineSyncPolicy INNER = new HttpPipelineSyncPolicy() {
         @Override
@@ -38,8 +40,7 @@ public class AddDatePolicy implements HttpPipelinePolicy {
     /**
      * Creates a new instance of {@link AddDatePolicy}.
      */
-    public AddDatePolicy() {
-    }
+    public AddDatePolicy() {}
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {

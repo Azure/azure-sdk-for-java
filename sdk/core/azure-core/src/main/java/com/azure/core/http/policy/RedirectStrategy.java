@@ -29,12 +29,10 @@ public interface RedirectStrategy {
      * @param attemptedRedirectUrls attempted redirect locations used so far.
      * @return {@code true} if the request should be redirected, {@code false} otherwise
      */
-    boolean shouldAttemptRedirect(
-        HttpPipelineCallContext context,
-        HttpResponse httpResponse,
-        int tryCount,
-        Set<String> attemptedRedirectUrls
-    );
+    boolean shouldAttemptRedirect(HttpPipelineCallContext context,
+                                  HttpResponse httpResponse,
+                                  int tryCount,
+                                  Set<String> attemptedRedirectUrls);
 
     /**
      * Creates an {@link HttpRequest request} for the redirect attempt.

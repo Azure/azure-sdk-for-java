@@ -12,9 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class Base64UtilTests {
     @Test
     public void testEncodeAndDecode() {
-        byte[] src = new byte[] {
-            65, 65, 69, 67, 65, 119, 81, 70, 66, 103, 99, 73, 67, 81
-        };
+        byte[] src = new byte[] { 65, 65, 69, 67, 65, 119, 81, 70, 66, 103, 99, 73, 67, 81 };
         byte[] dst = Base64Util.encode(src);
         assertTrue(Arrays.equals(Base64Util.decode(dst), src));
     }
@@ -31,9 +29,7 @@ public class Base64UtilTests {
 
     @Test
     public void testDecodeString() {
-        byte[] src = new byte[] {
-            65, 65, 69, 67, 65, 119, 81, 70, 66, 103, 99, 73, 67, 81
-        };
+        byte[] src = new byte[] { 65, 65, 69, 67, 65, 119, 81, 70, 66, 103, 99, 73, 67, 81 };
         String dstString = Base64Util.encodeToString(src);
         assertTrue(Arrays.equals(Base64Util.decodeString(dstString), src));
     }

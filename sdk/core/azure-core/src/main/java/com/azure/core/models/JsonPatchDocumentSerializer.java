@@ -33,7 +33,7 @@ final class JsonPatchDocumentSerializer extends JsonSerializer<JsonPatchDocument
 
     @Override
     public void serialize(JsonPatchDocument value, JsonGenerator gen, SerializerProvider serializers)
-        throws IOException {
+                                                                                                      throws IOException {
         List<JsonPatchOperation> operations = value.getOperations();
         if (CoreUtils.isNullOrEmpty(operations)) {
             return;

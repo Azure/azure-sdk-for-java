@@ -34,10 +34,8 @@ public final class PollResult {
     public PollResult setStatus(String status) {
         if (PollingConstants.STATUS_NOT_STARTED.equalsIgnoreCase(status)) {
             this.status = LongRunningOperationStatus.NOT_STARTED;
-        } else if (
-            PollingConstants.STATUS_IN_PROGRESS.equalsIgnoreCase(status)
-                || PollingConstants.STATUS_RUNNING.equalsIgnoreCase(status)
-        ) {
+        } else if (PollingConstants.STATUS_IN_PROGRESS.equalsIgnoreCase(status)
+            || PollingConstants.STATUS_RUNNING.equalsIgnoreCase(status)) {
             this.status = LongRunningOperationStatus.IN_PROGRESS;
         } else if (PollingConstants.STATUS_SUCCEEDED.equalsIgnoreCase(status)) {
             this.status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;

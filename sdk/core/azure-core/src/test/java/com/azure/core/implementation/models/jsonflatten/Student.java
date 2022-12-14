@@ -8,5 +8,4 @@ import com.azure.core.annotation.JsonFlatten;
 /**
  * Model used for testing {@link JsonFlatten}.
  */
-public class Student {
-}
+public class Student {}

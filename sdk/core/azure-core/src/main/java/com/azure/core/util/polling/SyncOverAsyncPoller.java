@@ -51,25 +51,23 @@ final class SyncOverAsyncPoller<T, U> implements SyncPoller<T, U> {
      *     is same as final poll response value then implementer can choose to simply return value from provided
      *     final poll response.
      */
-    SyncOverAsyncPoller(
-        Duration pollInterval,
-        Function<PollingContext<T>, PollResponse<T>> syncActivationOperation,
-        Function<PollingContext<T>, Mono<PollResponse<T>>> pollOperation,
-        BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation,
-        Function<PollingContext<T>, Mono<U>> fetchResultOperation
-    ) {
+    SyncOverAsyncPoller(Duration pollInterval,
+                        Function<PollingContext<T>, PollResponse<T>> syncActivationOperation,
+                        Function<PollingContext<T>, Mono<PollResponse<T>>> pollOperation,
+                        BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation,
+                        Function<PollingContext<T>, Mono<U>> fetchResultOperation) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
         if (pollInterval.isNegative() || pollInterval.isZero()) {
-            throw LOGGER.logExceptionAsWarning(
-                new IllegalArgumentException("Negative or zero value for 'defaultPollInterval' is not allowed.")
-            );
+            throw LOGGER
+                .logExceptionAsWarning(new IllegalArgumentException(
+                    "Negative or zero value for 'defaultPollInterval' is not allowed."));
         }
         this.pollInterval = pollInterval;
         Objects.requireNonNull(syncActivationOperation, "'syncActivationOperation' cannot be null.");
         this.pollOperation = Objects.requireNonNull(pollOperation, "'pollOperation' cannot be null.");
         this.cancelOperation = Objects.requireNonNull(cancelOperation, "'cancelOperation' cannot be null.");
-        this.fetchResultOperation =
-            Objects.requireNonNull(fetchResultOperation, "'fetchResultOperation' cannot be null.");
+        this.fetchResultOperation = Objects
+            .requireNonNull(fetchResultOperation, "'fetchResultOperation' cannot be null.");
         this.activationResponse = syncActivationOperation.apply(this.pollingContext);
         //
         this.pollingContext.setOnetimeActivationResponse(this.activationResponse);
@@ -126,10 +124,8 @@ final class SyncOverAsyncPoller<T, U> implements SyncPoller<T, U> {
     public PollResponse<T> waitUntil(LongRunningOperationStatus statusToWaitFor) {
         Objects.requireNonNull(statusToWaitFor, "'statusToWaitFor' cannot be null.");
         PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
-        if (
-            currentTerminalPollContext != null
-                && currentTerminalPollContext.getLatestResponse().getStatus() == statusToWaitFor
-        ) {
+        if (currentTerminalPollContext != null
+            && currentTerminalPollContext.getLatestResponse().getStatus() == statusToWaitFor) {
             return currentTerminalPollContext.getLatestResponse();
         } else {
             PollingContext<T> context = this.pollingContext.copy();
@@ -137,13 +133,10 @@ final class SyncOverAsyncPoller<T, U> implements SyncPoller<T, U> {
                 .pollingLoopAsync(context, pollOperation, cancelOperation, fetchResultOperation, pollInterval)
                 .takeUntil(apr -> PollingUtil.matchStatus(apr, statusToWaitFor))
                 .last()
-                .switchIfEmpty(
-                    Mono.error(
-                        () -> new NoSuchElementException(
-                            "Polling completed without receiving the given status '" + statusToWaitFor + "'."
-                        )
-                    )
-                )
+                .switchIfEmpty(Mono
+                    .error(() -> new NoSuchElementException("Polling completed without receiving the given status '"
+                        + statusToWaitFor
+                        + "'.")))
                 .block();
             PollResponse<T> response = PollingUtil.toPollResponse(asyncPollResponse);
             if (response.getStatus().isComplete()) {
@@ -157,16 +150,14 @@ final class SyncOverAsyncPoller<T, U> implements SyncPoller<T, U> {
     public PollResponse<T> waitUntil(Duration timeout, LongRunningOperationStatus statusToWaitFor) {
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
         if (timeout.isNegative() || timeout.isZero()) {
-            throw LOGGER.logExceptionAsWarning(
-                new IllegalArgumentException("Negative or zero value for timeout is not allowed.")
-            );
+            throw LOGGER
+                .logExceptionAsWarning(new IllegalArgumentException(
+                    "Negative or zero value for timeout is not allowed."));
         }
         Objects.requireNonNull(statusToWaitFor, "'statusToWaitFor' cannot be null.");
         PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
-        if (
-            currentTerminalPollContext != null
-                && currentTerminalPollContext.getLatestResponse().getStatus() == statusToWaitFor
-        ) {
+        if (currentTerminalPollContext != null
+            && currentTerminalPollContext.getLatestResponse().getStatus() == statusToWaitFor) {
             return currentTerminalPollContext.getLatestResponse();
         } else {
             PollingContext<T> context = this.pollingContext.copy();
@@ -175,13 +166,10 @@ final class SyncOverAsyncPoller<T, U> implements SyncPoller<T, U> {
                 .takeUntil(apr -> PollingUtil.matchStatus(apr, statusToWaitFor))
                 .last()
                 .timeout(timeout)
-                .switchIfEmpty(
-                    Mono.error(
-                        () -> new NoSuchElementException(
-                            "Polling completed without receiving the given status '" + statusToWaitFor + "'."
-                        )
-                    )
-                )
+                .switchIfEmpty(Mono
+                    .error(() -> new NoSuchElementException("Polling completed without receiving the given status '"
+                        + statusToWaitFor
+                        + "'.")))
                 .block();
             PollResponse<T> response = PollingUtil.toPollResponse(asyncPollResponse);
             if (response.getStatus().isComplete()) {
@@ -229,9 +217,9 @@ final class SyncOverAsyncPoller<T, U> implements SyncPoller<T, U> {
     public SyncPoller<T, U> setPollInterval(Duration pollInterval) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
         if (pollInterval.isNegative() || pollInterval.isZero()) {
-            throw LOGGER.logExceptionAsWarning(
-                new IllegalArgumentException("Negative or zero value for 'pollInterval' is not allowed.")
-            );
+            throw LOGGER
+                .logExceptionAsWarning(new IllegalArgumentException(
+                    "Negative or zero value for 'pollInterval' is not allowed."));
         }
         this.pollInterval = pollInterval;
         return this;

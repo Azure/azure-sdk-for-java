@@ -40,11 +40,15 @@ public class UserAgentTests {
     @ParameterizedTest(name = "{displayName} [{index}]")
     @MethodSource("userAgentAndExpectedSupplier")
     public void validateUserAgentPolicyHandling(UserAgentPolicy userAgentPolicy, String expected) {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(
-            new ValidationHttpClient(request -> assertEquals(expected, request.getHeaders().getValue(USER_AGENT)))
-        ).policies(userAgentPolicy).build();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(new ValidationHttpClient(request -> assertEquals(expected, request
+                .getHeaders()
+                .getValue(USER_AGENT))))
+            .policies(userAgentPolicy)
+            .build();
 
-        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost")))
+        StepVerifier
+            .create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost")))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
@@ -56,11 +60,16 @@ public class UserAgentTests {
     @ParameterizedTest(name = "{displayName} [{index}]")
     @MethodSource("userAgentAndExpectedSupplier")
     public void userAgentPolicyAfterRetryPolicy(UserAgentPolicy userAgentPolicy, String expected) {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(
-            new RetryValidationHttpClient(request -> assertEquals(expected, request.getHeaders().getValue(USER_AGENT)))
-        ).policies(new RetryPolicy(new FixedDelay(5, Duration.ofMillis(10)))).policies(userAgentPolicy).build();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(new RetryValidationHttpClient(request -> assertEquals(expected, request
+                .getHeaders()
+                .getValue(USER_AGENT))))
+            .policies(new RetryPolicy(new FixedDelay(5, Duration.ofMillis(10))))
+            .policies(userAgentPolicy)
+            .build();
 
-        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost")))
+        StepVerifier
+            .create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost")))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
@@ -72,11 +81,15 @@ public class UserAgentTests {
     @ParameterizedTest(name = "{displayName} [{index}]")
     @MethodSource("userAgentAndExpectedSupplier")
     public void multipleUserAgentPolicies(UserAgentPolicy userAgentPolicy, String expected) {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(
-            new ValidationHttpClient(request -> assertEquals(expected, request.getHeaders().getValue(USER_AGENT)))
-        ).policies(userAgentPolicy, userAgentPolicy).build();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(new ValidationHttpClient(request -> assertEquals(expected, request
+                .getHeaders()
+                .getValue(USER_AGENT))))
+            .policies(userAgentPolicy, userAgentPolicy)
+            .build();
 
-        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost")))
+        StepVerifier
+            .create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost")))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
@@ -89,23 +102,17 @@ public class UserAgentTests {
     @MethodSource("userAgentAndExpectedSupplier")
     public void overrideUserAgentContext(UserAgentPolicy userAgentPolicy, String expected) {
         String overrideUserAgent = "overrideUserAgent";
-        HttpPipeline pipeline =
-            new HttpPipelineBuilder()
-                .httpClient(
-                    new ValidationHttpClient(
-                        request -> assertEquals(overrideUserAgent, request.getHeaders().getValue(USER_AGENT))
-                    )
-                )
-                .policies(userAgentPolicy)
-                .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(new ValidationHttpClient(request -> assertEquals(overrideUserAgent, request
+                .getHeaders()
+                .getValue(USER_AGENT))))
+            .policies(userAgentPolicy)
+            .build();
 
         StepVerifier
-            .create(
-                pipeline.send(
-                    new HttpRequest(HttpMethod.GET, "http://localhost"),
-                    new Context(UserAgentPolicy.OVERRIDE_USER_AGENT_CONTEXT_KEY, overrideUserAgent)
-                )
-            )
+            .create(pipeline
+                .send(new HttpRequest(HttpMethod.GET, "http://localhost"), new Context(
+                    UserAgentPolicy.OVERRIDE_USER_AGENT_CONTEXT_KEY, overrideUserAgent)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
@@ -118,19 +125,17 @@ public class UserAgentTests {
     @MethodSource("userAgentAndExpectedSupplier")
     public void appendUserAgentContext(UserAgentPolicy userAgentPolicy, String expected) {
         String appendUserAgent = "appendUserAgent";
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(
-            new ValidationHttpClient(
-                request -> assertEquals(expected + " " + appendUserAgent, request.getHeaders().getValue(USER_AGENT))
-            )
-        ).policies(userAgentPolicy).build();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(new ValidationHttpClient(request -> assertEquals(expected + " " + appendUserAgent, request
+                .getHeaders()
+                .getValue(USER_AGENT))))
+            .policies(userAgentPolicy)
+            .build();
 
         StepVerifier
-            .create(
-                pipeline.send(
-                    new HttpRequest(HttpMethod.GET, "http://localhost"),
-                    new Context(UserAgentPolicy.APPEND_USER_AGENT_CONTEXT_KEY, appendUserAgent)
-                )
-            )
+            .create(pipeline
+                .send(new HttpRequest(HttpMethod.GET, "http://localhost"), new Context(
+                    UserAgentPolicy.APPEND_USER_AGENT_CONTEXT_KEY, appendUserAgent)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
@@ -143,16 +148,16 @@ public class UserAgentTests {
     @MethodSource("userAgentAndExpectedSupplier")
     public void appendUserAgentContextSendSync(UserAgentPolicy userAgentPolicy, String expected) {
         String appendUserAgent = "appendUserAgent";
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(
-            new ValidationHttpClient(
-                request -> assertEquals(expected + " " + appendUserAgent, request.getHeaders().getValue(USER_AGENT))
-            )
-        ).policies(userAgentPolicy).build();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(new ValidationHttpClient(request -> assertEquals(expected + " " + appendUserAgent, request
+                .getHeaders()
+                .getValue(USER_AGENT))))
+            .policies(userAgentPolicy)
+            .build();
 
-        HttpResponse response = pipeline.sendSync(
-            new HttpRequest(HttpMethod.GET, "http://localhost"),
-            new Context(UserAgentPolicy.APPEND_USER_AGENT_CONTEXT_KEY, appendUserAgent)
-        );
+        HttpResponse response = pipeline
+            .sendSync(new HttpRequest(HttpMethod.GET, "http://localhost"), new Context(
+                UserAgentPolicy.APPEND_USER_AGENT_CONTEXT_KEY, appendUserAgent));
         assertEquals(200, response.getStatusCode());
     }
 
@@ -163,60 +168,47 @@ public class UserAgentTests {
         String sdkVersion = "sdkVersion";
         String baseUserAgent = String.format("%s-%s/%s", defaultUserAgent, sdkName, sdkVersion);
         String applicationId = "applicationId";
-        String platformInfo = String.format(
-            "%s; %s; %s",
-            Configuration.getGlobalConfiguration().get("java.version"),
-            Configuration.getGlobalConfiguration().get("os.name"),
-            Configuration.getGlobalConfiguration().get("os.version")
-        );
+        String platformInfo = String
+            .format("%s; %s; %s", Configuration.getGlobalConfiguration().get("java.version"), Configuration
+                .getGlobalConfiguration()
+                .get("os.name"), Configuration.getGlobalConfiguration().get("os.version"));
 
-        Configuration enabledTelemetryConfiguration = new ConfigurationBuilder(
-            EMPTY_SOURCE,
-            EMPTY_SOURCE,
-            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, "false")
-        ).build();
-        Configuration disabledTelemetryConfiguration = new ConfigurationBuilder(
-            EMPTY_SOURCE,
-            EMPTY_SOURCE,
-            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, "true")
-        ).build();
+        Configuration enabledTelemetryConfiguration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, "false")).build();
+        Configuration disabledTelemetryConfiguration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, "true")).build();
 
-        return Stream.of(
-            // Tests using the default User-Agent
-            Arguments.of(new UserAgentPolicy(), defaultUserAgent),
+        return Stream
+            .of(
+                // Tests using the default User-Agent
+                Arguments.of(new UserAgentPolicy(), defaultUserAgent),
 
-            // Tests using a simple custom User-Agent
-            Arguments.of(new UserAgentPolicy("AutoRest-Java"), "AutoRest-Java"),
+                // Tests using a simple custom User-Agent
+                Arguments.of(new UserAgentPolicy("AutoRest-Java"), "AutoRest-Java"),
 
-            // Tests using SDK name and version without platform information or application ID
-            Arguments.of(new UserAgentPolicy(null, sdkName, sdkVersion, disabledTelemetryConfiguration), baseUserAgent),
-            Arguments.of(
-                new UserAgentPolicy(sdkName, sdkVersion, disabledTelemetryConfiguration, () -> "1.0"),
-                baseUserAgent
-            ),
+                // Tests using SDK name and version without platform information or application ID
+                Arguments
+                    .of(new UserAgentPolicy(null, sdkName, sdkVersion, disabledTelemetryConfiguration), baseUserAgent),
+                Arguments
+                    .of(new UserAgentPolicy(sdkName, sdkVersion, disabledTelemetryConfiguration, () -> "1.0"),
+                        baseUserAgent),
 
-            // Tests using SDK name and version with application ID and without platform information
-            Arguments.of(
-                new UserAgentPolicy("applicationId", "sdkName", "sdkVersion", disabledTelemetryConfiguration),
-                String.format("%s %s", applicationId, baseUserAgent)
-            ),
+                // Tests using SDK name and version with application ID and without platform information
+                Arguments
+                    .of(new UserAgentPolicy("applicationId", "sdkName", "sdkVersion", disabledTelemetryConfiguration),
+                        String.format("%s %s", applicationId, baseUserAgent)),
 
-            // Tests using SDK name and version with platform information and without application ID
-            Arguments.of(
-                new UserAgentPolicy(null, "sdkName", "sdkVersion", enabledTelemetryConfiguration),
-                String.format("%s (%s)", baseUserAgent, platformInfo)
-            ),
-            Arguments.of(
-                new UserAgentPolicy(sdkName, sdkVersion, enabledTelemetryConfiguration, () -> "1.0"),
-                String.format("%s (%s)", baseUserAgent, platformInfo)
-            ),
+                // Tests using SDK name and version with platform information and without application ID
+                Arguments
+                    .of(new UserAgentPolicy(null, "sdkName", "sdkVersion", enabledTelemetryConfiguration), String
+                        .format("%s (%s)", baseUserAgent, platformInfo)), Arguments
+                            .of(new UserAgentPolicy(sdkName, sdkVersion, enabledTelemetryConfiguration, () -> "1.0"),
+                                String.format("%s (%s)", baseUserAgent, platformInfo)),
 
-            // Tests using SDK name and version with platform information and application ID
-            Arguments.of(
-                new UserAgentPolicy("applicationId", "sdkName", "sdkVersion", enabledTelemetryConfiguration),
-                String.format("%s %s (%s)", applicationId, baseUserAgent, platformInfo)
-            )
-        );
+                // Tests using SDK name and version with platform information and application ID
+                Arguments
+                    .of(new UserAgentPolicy("applicationId", "sdkName", "sdkVersion", enabledTelemetryConfiguration),
+                        String.format("%s %s (%s)", applicationId, baseUserAgent, platformInfo)));
     }
 
     /*

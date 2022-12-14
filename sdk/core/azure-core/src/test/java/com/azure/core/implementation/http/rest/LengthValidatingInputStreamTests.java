@@ -27,10 +27,8 @@ public class LengthValidatingInputStreamTests {
 
     @Test
     public void negativeExpectedReadSizeThrows() {
-        assertThrows(
-            IllegalArgumentException.class,
-            () -> new LengthValidatingInputStream(new ByteArrayInputStream(new byte[0]), -1)
-        );
+        assertThrows(IllegalArgumentException.class, () -> new LengthValidatingInputStream(new ByteArrayInputStream(
+            new byte[0]), -1));
     }
 
     @Test
@@ -92,9 +90,7 @@ public class LengthValidatingInputStreamTests {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {
-        10, 4096, 4097
-    })
+    @ValueSource(ints = { 10, 4096, 4097 })
     public void canReadStream(int bufferSize) throws Exception {
         byte[] bytes = new byte[4096];
         new Random().nextBytes(bytes);
@@ -107,9 +103,7 @@ public class LengthValidatingInputStreamTests {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {
-        10, 4096, 4097
-    })
+    @ValueSource(ints = { 10, 4096, 4097 })
     public void canReadStreamWithReset(int bufferSize) throws Exception {
         byte[] bytes = new byte[4096];
         new Random().nextBytes(bytes);
@@ -125,9 +119,7 @@ public class LengthValidatingInputStreamTests {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {
-        10, 4096, 4097
-    })
+    @ValueSource(ints = { 10, 4096, 4097 })
     public void canReadStreamWithSkip(int bufferSize) throws Exception {
         byte[] bytes = new byte[4096];
         new Random().nextBytes(bytes);

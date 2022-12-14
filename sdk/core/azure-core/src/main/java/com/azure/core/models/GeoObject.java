@@ -16,15 +16,13 @@ import java.util.Objects;
 /**
  * An abstract geo object.
  */
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Point", value = GeoPoint.class),
+@JsonSubTypes({ @JsonSubTypes.Type(name = "Point", value = GeoPoint.class),
     @JsonSubTypes.Type(name = "LineString", value = GeoLineString.class),
     @JsonSubTypes.Type(name = "Polygon", value = GeoPolygon.class),
     @JsonSubTypes.Type(name = "MultiPoint", value = GeoPointCollection.class),
     @JsonSubTypes.Type(name = "MultiLineString", value = GeoLineStringCollection.class),
     @JsonSubTypes.Type(name = "MultiPolygon", value = GeoPolygonCollection.class),
-    @JsonSubTypes.Type(name = "GeometryCollection", value = GeoCollection.class)
-})
+    @JsonSubTypes.Type(name = "GeometryCollection", value = GeoCollection.class) })
 @Immutable
 public abstract class GeoObject {
     private final GeoBoundingBox boundingBox;

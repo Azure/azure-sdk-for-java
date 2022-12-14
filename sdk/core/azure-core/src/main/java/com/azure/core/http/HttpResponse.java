@@ -181,6 +181,5 @@ public abstract class HttpResponse implements Closeable {
      * Closes the response content stream, if any.
      */
     @Override
-    public void close() {
-    }
+    public void close() {}
 }

@@ -138,8 +138,7 @@ public final class FluxByteBufferContent extends BinaryDataContent {
             .cache()
             .flatMapMany(
                 // Duplicate buffers on re-subscription.
-                listOfBuffers -> Flux.fromIterable(listOfBuffers).map(ByteBuffer::duplicate)
-            );
+                listOfBuffers -> Flux.fromIterable(listOfBuffers).map(ByteBuffer::duplicate));
         replayableContent = new FluxByteBufferContent(bufferedFlux, length, true);
         cachedReplayableContent.set(replayableContent);
         return replayableContent;
@@ -155,7 +154,8 @@ public final class FluxByteBufferContent extends BinaryDataContent {
             throw LOGGER.logExceptionAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
         }
 
-        return FluxUtil.collectBytesInByteBufferStream(content)
+        return FluxUtil
+            .collectBytesInByteBufferStream(content)
             // this doesn't seem to be working (newBoundedElastic() didn't work either)
             // .publishOn(Schedulers.boundedElastic())
             .share()

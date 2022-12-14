@@ -124,9 +124,9 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
-            throw LOGGER.logExceptionAsError(
-                new RuntimeException("token credentials require a URL using the HTTPS protocol scheme")
-            );
+            throw LOGGER
+                .logExceptionAsError(new RuntimeException(
+                    "token credentials require a URL using the HTTPS protocol scheme"));
         }
         HttpPipelineNextSyncPolicy nextPolicy = next.clone();
 
@@ -171,22 +171,18 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
         setAuthorizationHeaderHelperSync(context, tokenRequestContext, true);
     }
 
-    private Mono<Void> setAuthorizationHeaderHelper(
-        HttpPipelineCallContext context,
-        TokenRequestContext tokenRequestContext,
-        boolean checkToForceFetchToken
-    ) {
+    private Mono<Void> setAuthorizationHeaderHelper(HttpPipelineCallContext context,
+                                                    TokenRequestContext tokenRequestContext,
+                                                    boolean checkToForceFetchToken) {
         return cache.getToken(tokenRequestContext, checkToForceFetchToken).flatMap(token -> {
             setAuthorizationHeader(context.getHttpRequest().getHeaders(), token.getToken());
             return Mono.empty();
         });
     }
 
-    private void setAuthorizationHeaderHelperSync(
-        HttpPipelineCallContext context,
-        TokenRequestContext tokenRequestContext,
-        boolean checkToForceFetchToken
-    ) {
+    private void setAuthorizationHeaderHelperSync(HttpPipelineCallContext context,
+                                                  TokenRequestContext tokenRequestContext,
+                                                  boolean checkToForceFetchToken) {
         AccessToken token = cache.getTokenSync(tokenRequestContext, checkToForceFetchToken);
         setAuthorizationHeader(context.getHttpRequest().getHeaders(), token.getToken());
     }

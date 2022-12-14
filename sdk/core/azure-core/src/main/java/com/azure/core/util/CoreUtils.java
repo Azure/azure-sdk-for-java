@@ -186,8 +186,9 @@ public final class CoreUtils {
      * @deprecated Use localized implementation.
      */
     @Deprecated
-    public static <T> Publisher<T>
-        extractAndFetch(PagedResponse<T> page, Context context, BiFunction<String, Context, Publisher<T>> content) {
+    public static <T> Publisher<T> extractAndFetch(PagedResponse<T> page,
+                                                   Context context,
+                                                   BiFunction<String, Context, Publisher<T>> content) {
         String nextPageLink = page.getContinuationToken();
         if (nextPageLink == null) {
             return Flux.fromIterable(page.getElements());
@@ -206,11 +207,12 @@ public final class CoreUtils {
             if (inputStream != null) {
                 Properties properties = new Properties();
                 properties.load(inputStream);
-                return Collections.unmodifiableMap(
-                    properties.entrySet()
+                return Collections
+                    .unmodifiableMap(properties
+                        .entrySet()
                         .stream()
-                        .collect(Collectors.toMap(entry -> (String) entry.getKey(), entry -> (String) entry.getValue()))
-                );
+                        .collect(Collectors
+                            .toMap(entry -> (String) entry.getKey(), entry -> (String) entry.getValue())));
             }
         } catch (IOException ex) {
             LOGGER.warning("Failed to get properties from " + propertiesFileName, ex);
@@ -335,12 +337,10 @@ public final class CoreUtils {
      * @param logger A {@link ClientLogger} to log exceptions.
      * @return Either the environment configured default timeout, {@code defaultTimeoutMillis}, or 0.
      */
-    public static Duration getDefaultTimeoutFromEnvironment(
-        Configuration configuration,
-        String timeoutPropertyName,
-        Duration defaultTimeout,
-        ClientLogger logger
-    ) {
+    public static Duration getDefaultTimeoutFromEnvironment(Configuration configuration,
+                                                            String timeoutPropertyName,
+                                                            Duration defaultTimeout,
+                                                            ClientLogger logger) {
         String environmentTimeout = configuration.get(timeoutPropertyName);
 
         // Environment wasn't configured with the timeout property.
@@ -351,7 +351,8 @@ public final class CoreUtils {
         try {
             long timeoutMillis = Long.parseLong(environmentTimeout);
             if (timeoutMillis < 0) {
-                logger.atVerbose()
+                logger
+                    .atVerbose()
                     .addKeyValue(timeoutPropertyName, timeoutMillis)
                     .log("Negative timeout values are not allowed. Using 'Duration.ZERO' to indicate no timeout..");
                 return Duration.ZERO;
@@ -359,7 +360,8 @@ public final class CoreUtils {
 
             return Duration.ofMillis(timeoutMillis);
         } catch (NumberFormatException ex) {
-            logger.atWarning()
+            logger
+                .atWarning()
                 .addKeyValue(timeoutPropertyName, environmentTimeout)
                 .addKeyValue("defaultTimeout", defaultTimeout)
                 .log("Timeout is not valid number. Using default value.", ex);
@@ -417,102 +419,102 @@ public final class CoreUtils {
                 return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2);
             case 4:
                 return values.get(0)
-                    + delimiter
-                    + values.get(1)
-                    + delimiter
-                    + values.get(2)
-                    + delimiter
-                    + values.get(3);
+                       + delimiter
+                       + values.get(1)
+                       + delimiter
+                       + values.get(2)
+                       + delimiter
+                       + values.get(3);
             case 5:
                 return values.get(0)
-                    + delimiter
-                    + values.get(1)
-                    + delimiter
-                    + values.get(2)
-                    + delimiter
-                    + values.get(3)
-                    + delimiter
-                    + values.get(4);
+                       + delimiter
+                       + values.get(1)
+                       + delimiter
+                       + values.get(2)
+                       + delimiter
+                       + values.get(3)
+                       + delimiter
+                       + values.get(4);
             case 6:
                 return values.get(0)
-                    + delimiter
-                    + values.get(1)
-                    + delimiter
-                    + values.get(2)
-                    + delimiter
-                    + values.get(3)
-                    + delimiter
-                    + values.get(4)
-                    + delimiter
-                    + values.get(5);
+                       + delimiter
+                       + values.get(1)
+                       + delimiter
+                       + values.get(2)
+                       + delimiter
+                       + values.get(3)
+                       + delimiter
+                       + values.get(4)
+                       + delimiter
+                       + values.get(5);
             case 7:
                 return values.get(0)
-                    + delimiter
-                    + values.get(1)
-                    + delimiter
-                    + values.get(2)
-                    + delimiter
-                    + values.get(3)
-                    + delimiter
-                    + values.get(4)
-                    + delimiter
-                    + values.get(5)
-                    + delimiter
-                    + values.get(6);
+                       + delimiter
+                       + values.get(1)
+                       + delimiter
+                       + values.get(2)
+                       + delimiter
+                       + values.get(3)
+                       + delimiter
+                       + values.get(4)
+                       + delimiter
+                       + values.get(5)
+                       + delimiter
+                       + values.get(6);
             case 8:
                 return values.get(0)
-                    + delimiter
-                    + values.get(1)
-                    + delimiter
-                    + values.get(2)
-                    + delimiter
-                    + values.get(3)
-                    + delimiter
-                    + values.get(4)
-                    + delimiter
-                    + values.get(5)
-                    + delimiter
-                    + values.get(6)
-                    + delimiter
-                    + values.get(7);
+                       + delimiter
+                       + values.get(1)
+                       + delimiter
+                       + values.get(2)
+                       + delimiter
+                       + values.get(3)
+                       + delimiter
+                       + values.get(4)
+                       + delimiter
+                       + values.get(5)
+                       + delimiter
+                       + values.get(6)
+                       + delimiter
+                       + values.get(7);
             case 9:
                 return values.get(0)
-                    + delimiter
-                    + values.get(1)
-                    + delimiter
-                    + values.get(2)
-                    + delimiter
-                    + values.get(3)
-                    + delimiter
-                    + values.get(4)
-                    + delimiter
-                    + values.get(5)
-                    + delimiter
-                    + values.get(6)
-                    + delimiter
-                    + values.get(7)
-                    + delimiter
-                    + values.get(8);
+                       + delimiter
+                       + values.get(1)
+                       + delimiter
+                       + values.get(2)
+                       + delimiter
+                       + values.get(3)
+                       + delimiter
+                       + values.get(4)
+                       + delimiter
+                       + values.get(5)
+                       + delimiter
+                       + values.get(6)
+                       + delimiter
+                       + values.get(7)
+                       + delimiter
+                       + values.get(8);
             case 10:
                 return values.get(0)
-                    + delimiter
-                    + values.get(1)
-                    + delimiter
-                    + values.get(2)
-                    + delimiter
-                    + values.get(3)
-                    + delimiter
-                    + values.get(4)
-                    + delimiter
-                    + values.get(5)
-                    + delimiter
-                    + values.get(6)
-                    + delimiter
-                    + values.get(7)
-                    + delimiter
-                    + values.get(8)
-                    + delimiter
-                    + values.get(9);
+                       + delimiter
+                       + values.get(1)
+                       + delimiter
+                       + values.get(2)
+                       + delimiter
+                       + values.get(3)
+                       + delimiter
+                       + values.get(4)
+                       + delimiter
+                       + values.get(5)
+                       + delimiter
+                       + values.get(6)
+                       + delimiter
+                       + values.get(7)
+                       + delimiter
+                       + values.get(8)
+                       + delimiter
+                       + values.get(9);
             default:
                 return String.join(delimiter, values);
         }

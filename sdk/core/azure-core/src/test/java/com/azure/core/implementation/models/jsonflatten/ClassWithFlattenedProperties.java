@@ -21,10 +21,8 @@ public final class ClassWithFlattenedProperties {
     private final String odataETag;
 
     @JsonCreator
-    public ClassWithFlattenedProperties(
-        @JsonProperty(value = "@odata.type") String odataType,
-        @JsonProperty(value = "@odata.etag") String odataETag
-    ) {
+    public ClassWithFlattenedProperties(@JsonProperty(value = "@odata.type") String odataType,
+                                        @JsonProperty(value = "@odata.etag") String odataETag) {
         this.odataType = odataType;
         this.odataETag = odataETag;
     }

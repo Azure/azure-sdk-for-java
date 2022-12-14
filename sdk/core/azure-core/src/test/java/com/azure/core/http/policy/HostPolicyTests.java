@@ -34,7 +34,8 @@ public class HostPolicyTests {
     }
 
     private static HttpPipeline createPipeline(String host, String expectedUrl) {
-        return new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
+        return new HttpPipelineBuilder()
+            .httpClient(new NoOpHttpClient())
             .policies(new HostPolicy(host), (context, next) -> {
                 assertEquals(expectedUrl, context.getHttpRequest().getUrl().toString());
                 return next.process();

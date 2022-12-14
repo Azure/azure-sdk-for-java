@@ -25,8 +25,8 @@ public class HttpResponseTests {
         SelfDisposedHttpResponse sourceHttpResponse = new SelfDisposedHttpResponse();
         // A Buffered response based on source response.
         Flux<ByteBuffer> bufferedContentFlux = sourceHttpResponse.buffer().getBody();
-        Flux<Tuple2<ByteBuffer, ByteBuffer>> zipped =
-            bufferedContentFlux.zipWith(sourceHttpResponse.getInnerContentFlux());
+        Flux<Tuple2<ByteBuffer, ByteBuffer>> zipped = bufferedContentFlux
+            .zipWith(sourceHttpResponse.getInnerContentFlux());
         // Validate that buffered Response is not replaying source Response body.
         StepVerifier.create(zipped).thenConsumeWhile(o -> {
             assertFalse(o.getT1() == o.getT2(), "Buffered response should not cache shallow copy of source.");

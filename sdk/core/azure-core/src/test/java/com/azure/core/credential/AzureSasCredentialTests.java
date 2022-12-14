@@ -69,8 +69,8 @@ public class AzureSasCredentialTests {
         final String updatedSignature = "sas=a b c";
         final String expectedSignature = "sas=a%20b%20c";
 
-        AzureSasCredential credential =
-            new AzureSasCredential(signature, sig -> sig.replaceAll(" ", "%20")).update(updatedSignature);
+        AzureSasCredential credential = new AzureSasCredential(signature, sig -> sig.replaceAll(" ", "%20"))
+            .update(updatedSignature);
         assertEquals(expectedSignature, credential.getSignature());
     }
 }

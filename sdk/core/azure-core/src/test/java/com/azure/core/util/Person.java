@@ -16,8 +16,7 @@ public class Person {
     @JsonProperty
     private int age;
 
-    public Person() {
-    }
+    public Person() {}
 
     @JsonSetter
     public Person setName(String name) {

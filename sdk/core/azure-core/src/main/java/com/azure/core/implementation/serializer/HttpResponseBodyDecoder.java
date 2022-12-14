@@ -47,23 +47,18 @@ public final class HttpResponseBodyDecoder {
      * @return The decoded response body, or null if the body wasn't able to be decoded.
      * @throws HttpResponseException If the body fails to decode.
      */
-    static Object decodeByteArray(
-        byte[] body,
-        HttpResponse httpResponse,
-        SerializerAdapter serializer,
-        HttpResponseDecodeData decodeData
-    ) {
+    static Object decodeByteArray(byte[] body,
+                                  HttpResponse httpResponse,
+                                  SerializerAdapter serializer,
+                                  HttpResponseDecodeData decodeData) {
         ensureRequestSet(httpResponse);
 
         if (isErrorStatus(httpResponse.getStatusCode(), decodeData)) {
             try {
-                return deserializeBody(
-                    body,
-                    decodeData.getUnexpectedException(httpResponse.getStatusCode()).getExceptionBodyType(),
-                    null,
-                    serializer,
-                    SerializerEncoding.fromHeaders(httpResponse.getHeaders())
-                );
+                return deserializeBody(body, decodeData
+                    .getUnexpectedException(httpResponse.getStatusCode())
+                    .getExceptionBodyType(), null, serializer, SerializerEncoding
+                        .fromHeaders(httpResponse.getHeaders()));
             } catch (IOException | MalformedValueException ex) {
                 // This translates in RestProxy as a RestException with no deserialized body.
                 // The response content will still be accessible via the .response() member.
@@ -80,13 +75,8 @@ public final class HttpResponseBodyDecoder {
 
             byte[] bodyAsByteArray = body == null ? httpResponse.getBodyAsBinaryData().toBytes() : body;
             try {
-                return deserializeBody(
-                    bodyAsByteArray,
-                    extractEntityTypeFromReturnType(decodeData),
-                    decodeData.getReturnValueWireType(),
-                    serializer,
-                    SerializerEncoding.fromHeaders(httpResponse.getHeaders())
-                );
+                return deserializeBody(bodyAsByteArray, extractEntityTypeFromReturnType(decodeData), decodeData
+                    .getReturnValueWireType(), serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
             } catch (MalformedValueException e) {
                 throw new HttpResponseException("HTTP response has a malformed body.", httpResponse, e);
             } catch (IOException e) {
@@ -138,20 +128,18 @@ public final class HttpResponseBodyDecoder {
      * @return Deserialized object
      * @throws IOException When the body cannot be deserialized
      */
-    private static Object deserializeBody(
-        byte[] value,
-        Type resultType,
-        Type wireType,
-        SerializerAdapter serializer,
-        SerializerEncoding encoding
-    )
-        throws IOException {
+    private static Object deserializeBody(byte[] value,
+                                          Type resultType,
+                                          Type wireType,
+                                          SerializerAdapter serializer,
+                                          SerializerEncoding encoding) throws IOException {
         if (wireType == null) {
             return deserialize(value, resultType, serializer, encoding);
         } else if (TypeUtil.isTypeOrSubTypeOf(wireType, Page.class)) {
             // If the type is the 'Page' interface [@ReturnValueWireType(Page.class)] we will use the 'ItemPage' class.
-            Type wireResponseType =
-                (wireType == Page.class) ? TypeUtil.createParameterizedType(ItemPage.class, resultType) : wireType;
+            Type wireResponseType = (wireType == Page.class)
+                ? TypeUtil.createParameterizedType(ItemPage.class, resultType)
+                : wireType;
 
             return deserialize(value, wireResponseType, serializer, encoding);
         } else {
@@ -162,9 +150,10 @@ public final class HttpResponseBodyDecoder {
         }
     }
 
-    private static Object
-        deserialize(byte[] value, Type type, SerializerAdapter serializer, SerializerEncoding encoding)
-            throws IOException {
+    private static Object deserialize(byte[] value,
+                                      Type type,
+                                      SerializerAdapter serializer,
+                                      SerializerEncoding encoding) throws IOException {
         Class<?> rawType = TypeUtil.getRawClass(type);
         if (encoding == SerializerEncoding.JSON && ReflectionSerializable.supportsJsonSerializable(rawType)) {
             return ReflectionSerializable.deserializeAsJsonSerializable(rawType, value);
@@ -211,11 +200,9 @@ public final class HttpResponseBodyDecoder {
             final Type resultValueType = typeArguments[1];
             final Type wireResponseValueType = constructWireResponseType(resultValueType, wireType);
 
-            return TypeUtil.createParameterizedType(
-                ((ParameterizedType) resultType).getRawType(),
-                typeArguments[0],
-                wireResponseValueType
-            );
+            return TypeUtil
+                .createParameterizedType(((ParameterizedType) resultType).getRawType(), typeArguments[0],
+                    wireResponseValueType);
         }
 
         return resultType;

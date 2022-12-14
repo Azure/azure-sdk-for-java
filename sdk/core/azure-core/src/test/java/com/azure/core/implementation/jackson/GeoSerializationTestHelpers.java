@@ -228,7 +228,8 @@ public class GeoSerializationTestHelpers {
             return;
         }
 
-        builder.append(",\"bbox\":[")
+        builder
+            .append(",\"bbox\":[")
             .append(boundingBox.getWest())
             .append(",")
             .append(boundingBox.getSouth())
@@ -260,7 +261,8 @@ public class GeoSerializationTestHelpers {
                     builder.append(",");
                 }
 
-                builder.append("\"")
+                builder
+                    .append("\"")
                     .append(property.getKey())
                     .append("\":")
                     .append(MAPPER.writeValueAsString(property.getValue()));

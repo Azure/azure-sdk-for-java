@@ -23,13 +23,11 @@ import java.util.function.Function;
 class PollingUtil {
     private static final ClientLogger LOGGER = new ClientLogger(PollingUtil.class);
 
-    static <T> PollResponse<T> pollingLoop(
-        PollingContext<T> pollingContext,
-        Duration timeout,
-        LongRunningOperationStatus statusToWaitFor,
-        Function<PollingContext<T>, PollResponse<T>> pollOperation,
-        Duration pollInterval
-    ) {
+    static <T> PollResponse<T> pollingLoop(PollingContext<T> pollingContext,
+                                           Duration timeout,
+                                           LongRunningOperationStatus statusToWaitFor,
+                                           Function<PollingContext<T>, PollResponse<T>> pollOperation,
+                                           Duration pollInterval) {
         final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         boolean timeBound = timeout != null;
         long timeoutInMillis = timeBound ? timeout.toMillis() : -1;
@@ -51,11 +49,9 @@ class PollingUtil {
                 scheduler.shutdown();
                 return intermediatePollResponse;
             }
-            final ScheduledFuture<?> pollOp = scheduler.schedule(
-                pollOpRunnable,
-                getDelay(intermediatePollResponse, pollInterval).toMillis(),
-                TimeUnit.MILLISECONDS
-            );
+            final ScheduledFuture<?> pollOp = scheduler
+                .schedule(pollOpRunnable, getDelay(intermediatePollResponse, pollInterval).toMillis(),
+                    TimeUnit.MILLISECONDS);
             try {
                 if (timeBound) {
                     pollOp.get(timeoutInMillis - elapsedTime, TimeUnit.MILLISECONDS);
@@ -73,30 +69,27 @@ class PollingUtil {
         return intermediatePollResponse;
     }
 
-    static <T, U> Flux<AsyncPollResponse<T, U>> pollingLoopAsync(
-        PollingContext<T> pollingContext,
-        Function<PollingContext<T>, Mono<PollResponse<T>>> pollOperation,
-        BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation,
-        Function<PollingContext<T>, Mono<U>> fetchResultOperation,
-        Duration pollInterval
-    ) {
-        return Flux.using(
-            // Create a Polling Context per subscription
-            () -> pollingContext,
-            // Do polling
-            // set|read to|from context as needed, reactor guarantee thread-safety of cxt object.
-            cxt -> Mono.defer(() -> pollOperation.apply(cxt))
-                .delaySubscription(getDelay(cxt.getLatestResponse(), pollInterval))
-                .switchIfEmpty(Mono.error(() -> new IllegalStateException("PollOperation returned Mono.empty().")))
-                .repeat()
-                .takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
-                .concatMap(currentPollResponse -> {
-                    cxt.setLatestResponse(currentPollResponse);
-                    return Mono.just(new AsyncPollResponse<>(cxt, cancelOperation, fetchResultOperation));
-                }),
-            cxt -> {
-            }
-        );
+    static <T, U> Flux<AsyncPollResponse<T, U>> pollingLoopAsync(PollingContext<T> pollingContext,
+                                                                 Function<PollingContext<T>, Mono<PollResponse<T>>> pollOperation,
+                                                                 BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation,
+                                                                 Function<PollingContext<T>, Mono<U>> fetchResultOperation,
+                                                                 Duration pollInterval) {
+        return Flux
+            .using(
+                // Create a Polling Context per subscription
+                () -> pollingContext,
+                // Do polling
+                // set|read to|from context as needed, reactor guarantee thread-safety of cxt object.
+                cxt -> Mono
+                    .defer(() -> pollOperation.apply(cxt))
+                    .delaySubscription(getDelay(cxt.getLatestResponse(), pollInterval))
+                    .switchIfEmpty(Mono.error(() -> new IllegalStateException("PollOperation returned Mono.empty().")))
+                    .repeat()
+                    .takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
+                    .concatMap(currentPollResponse -> {
+                        cxt.setLatestResponse(currentPollResponse);
+                        return Mono.just(new AsyncPollResponse<>(cxt, cancelOperation, fetchResultOperation));
+                    }), cxt -> {});
     }
 
     /**
@@ -115,15 +108,12 @@ class PollingUtil {
     }
 
     static <T, U> PollResponse<T> toPollResponse(AsyncPollResponse<T, U> asyncPollResponse) {
-        return new PollResponse<>(
-            asyncPollResponse.getStatus(),
-            asyncPollResponse.getValue(),
-            asyncPollResponse.getRetryAfter()
-        );
+        return new PollResponse<>(asyncPollResponse.getStatus(), asyncPollResponse.getValue(), asyncPollResponse
+            .getRetryAfter());
     }
 
-    static <T, U> boolean
-        matchStatus(AsyncPollResponse<T, U> currentPollResponse, LongRunningOperationStatus statusToWaitFor) {
+    static <T, U> boolean matchStatus(AsyncPollResponse<T, U> currentPollResponse,
+                                      LongRunningOperationStatus statusToWaitFor) {
         if (currentPollResponse == null || statusToWaitFor == null) {
             return false;
         }

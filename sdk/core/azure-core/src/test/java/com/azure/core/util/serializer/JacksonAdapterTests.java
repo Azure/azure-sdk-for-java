@@ -109,30 +109,31 @@ public class JacksonAdapterTests {
     @ParameterizedTest
     @MethodSource("serializeCollectionSupplier")
     public void testSerializeIterable(Iterable<?> values, CollectionFormat format, String expectedSerializedString) {
-        String actualSerializedString =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(values, format);
+        String actualSerializedString = JacksonAdapter
+            .createDefaultSerializerAdapter()
+            .serializeIterable(values, format);
         assertEquals(expectedSerializedString, actualSerializedString);
     }
 
     @ParameterizedTest
     @MethodSource("deserializeJsonSupplier")
     public void deserializeJson(String json, OffsetDateTime expected) throws IOException {
-        DateTimeWrapper wrapper = JacksonAdapter.createDefaultSerializerAdapter()
+        DateTimeWrapper wrapper = JacksonAdapter
+            .createDefaultSerializerAdapter()
             .deserialize(json, DateTimeWrapper.class, SerializerEncoding.JSON);
 
         assertEquals(expected, wrapper.getOffsetDateTime());
     }
 
     private static Stream<Arguments> serializeCollectionSupplier() {
-        return Stream.of(
-            Arguments.of(Arrays.asList("foo", "bar", "baz"), CollectionFormat.CSV, "foo,bar,baz"),
-            Arguments.of(Arrays.asList("foo", null, "baz"), CollectionFormat.CSV, "foo,,baz"),
-            Arguments.of(Arrays.asList(null, "bar", null, null), CollectionFormat.CSV, ",bar,,"),
-            Arguments.of(Arrays.asList(1, 2, 3), CollectionFormat.CSV, "1,2,3"),
-            Arguments.of(Arrays.asList(1, 2, 3), CollectionFormat.PIPES, "1|2|3"),
-            Arguments.of(Arrays.asList(1, 2, 3), CollectionFormat.SSV, "1 2 3"),
-            Arguments.of(Arrays.asList("foo", "bar", "baz"), CollectionFormat.MULTI, "foo&bar&baz")
-        );
+        return Stream
+            .of(Arguments.of(Arrays.asList("foo", "bar", "baz"), CollectionFormat.CSV, "foo,bar,baz"), Arguments
+                .of(Arrays.asList("foo", null, "baz"), CollectionFormat.CSV, "foo,,baz"), Arguments
+                    .of(Arrays.asList(null, "bar", null, null), CollectionFormat.CSV, ",bar,,"), Arguments
+                        .of(Arrays.asList(1, 2, 3), CollectionFormat.CSV, "1,2,3"), Arguments
+                            .of(Arrays.asList(1, 2, 3), CollectionFormat.PIPES, "1|2|3"), Arguments
+                                .of(Arrays.asList(1, 2, 3), CollectionFormat.SSV, "1 2 3"), Arguments
+                                    .of(Arrays.asList("foo", "bar", "baz"), CollectionFormat.MULTI, "foo&bar&baz"));
     }
 
     private static Stream<Arguments> deserializeJsonSupplier() {
@@ -140,18 +141,18 @@ public class JacksonAdapterTests {
         OffsetDateTime minValue = OffsetDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         OffsetDateTime unixEpoch = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
 
-        return Stream.of(
-            Arguments.of(String.format(jsonFormat, "0001-01-01T00:00:00"), minValue),
-            Arguments.of(String.format(jsonFormat, "0001-01-01T00:00:00Z"), minValue),
-            Arguments.of(String.format(jsonFormat, "1970-01-01T00:00:00"), unixEpoch),
-            Arguments.of(String.format(jsonFormat, "1970-01-01T00:00:00Z"), unixEpoch)
-        );
+        return Stream
+            .of(Arguments.of(String.format(jsonFormat, "0001-01-01T00:00:00"), minValue), Arguments
+                .of(String.format(jsonFormat, "0001-01-01T00:00:00Z"), minValue), Arguments
+                    .of(String.format(jsonFormat, "1970-01-01T00:00:00"), unixEpoch), Arguments
+                        .of(String.format(jsonFormat, "1970-01-01T00:00:00Z"), unixEpoch));
     }
 
     @ParameterizedTest
     @MethodSource("deserializeXmlSupplier")
     public void deserializeXml(String xml, OffsetDateTime expected) throws IOException {
-        DateTimeWrapper wrapper = JacksonAdapter.createDefaultSerializerAdapter()
+        DateTimeWrapper wrapper = JacksonAdapter
+            .createDefaultSerializerAdapter()
             .deserialize(xml, DateTimeWrapper.class, SerializerEncoding.XML);
 
         assertEquals(expected, wrapper.getOffsetDateTime());
@@ -162,12 +163,11 @@ public class JacksonAdapterTests {
         OffsetDateTime minValue = OffsetDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         OffsetDateTime unixEpoch = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
 
-        return Stream.of(
-            Arguments.of(String.format(xmlFormat, "0001-01-01T00:00:00"), minValue),
-            Arguments.of(String.format(xmlFormat, "0001-01-01T00:00:00Z"), minValue),
-            Arguments.of(String.format(xmlFormat, "1970-01-01T00:00:00"), unixEpoch),
-            Arguments.of(String.format(xmlFormat, "1970-01-01T00:00:00Z"), unixEpoch)
-        );
+        return Stream
+            .of(Arguments.of(String.format(xmlFormat, "0001-01-01T00:00:00"), minValue), Arguments
+                .of(String.format(xmlFormat, "0001-01-01T00:00:00Z"), minValue), Arguments
+                    .of(String.format(xmlFormat, "1970-01-01T00:00:00"), unixEpoch), Arguments
+                        .of(String.format(xmlFormat, "1970-01-01T00:00:00Z"), unixEpoch));
     }
 
     @JacksonXmlRootElement(localName = "Wrapper")
@@ -191,8 +191,9 @@ public class JacksonAdapterTests {
 
         HttpHeaders rawHeaders = new HttpHeaders().set("Date", expectedDate);
 
-        StronglyTypedHeaders stronglyTypedHeaders =
-            JacksonAdapter.createDefaultSerializerAdapter().deserialize(rawHeaders, StronglyTypedHeaders.class);
+        StronglyTypedHeaders stronglyTypedHeaders = JacksonAdapter
+            .createDefaultSerializerAdapter()
+            .deserialize(rawHeaders, StronglyTypedHeaders.class);
 
         assertEquals(expectedDate, DateTimeRfc1123.toRfc1123String(stronglyTypedHeaders.getDate()));
     }
@@ -201,26 +202,23 @@ public class JacksonAdapterTests {
     public void stronglyTypedHeadersClassThrowsEagerly() {
         HttpHeaders rawHeaders = new HttpHeaders().set("Date", "invalid-rfc1123-date");
 
-        assertThrows(
-            DateTimeParseException.class,
-            () -> JacksonAdapter.createDefaultSerializerAdapter().deserialize(rawHeaders, StronglyTypedHeaders.class)
-        );
+        assertThrows(DateTimeParseException.class, () -> JacksonAdapter
+            .createDefaultSerializerAdapter()
+            .deserialize(rawHeaders, StronglyTypedHeaders.class));
     }
 
     @Test
     public void invalidStronglyTypedHeadersClassThrowsCorrectException() throws IOException {
         try {
-            JacksonAdapter.createDefaultSerializerAdapter()
+            JacksonAdapter
+                .createDefaultSerializerAdapter()
                 .deserialize(new HttpHeaders(), InvalidStronglyTypedHeaders.class);
 
             fail("An exception should have been thrown.");
         } catch (RuntimeException ex) {
-            assertTrue(
-                ex.getCause() instanceof JsonProcessingException,
-                "Exception cause type was "
-                    + ex.getCause().getClass().getName()
-                    + " instead of the expected JsonProcessingException type."
-            );
+            assertTrue(ex.getCause() instanceof JsonProcessingException, "Exception cause type was "
+                + ex.getCause().getClass().getName()
+                + " instead of the expected JsonProcessingException type.");
         }
     }
 
@@ -231,13 +229,10 @@ public class JacksonAdapterTests {
     }
 
     private static Stream<Arguments> quoteRemovalSupplier() {
-        return Stream.of(
-            Arguments.of("", ""),
-            Arguments.of("\"\"", ""),
-            Arguments.of("\"\"\"\"\"\"\"\"", ""),
-            Arguments.of("\"\"hello\"\"", "hello"),
-            Arguments.of("\"\"they said \"hello\" to you\"\"", "they said \"hello\" to you")
-        );
+        return Stream
+            .of(Arguments.of("", ""), Arguments.of("\"\"", ""), Arguments.of("\"\"\"\"\"\"\"\"", ""), Arguments
+                .of("\"\"hello\"\"", "hello"), Arguments
+                    .of("\"\"they said \"hello\" to you\"\"", "they said \"hello\" to you"));
     }
 
     public static final class StronglyTypedHeaders {

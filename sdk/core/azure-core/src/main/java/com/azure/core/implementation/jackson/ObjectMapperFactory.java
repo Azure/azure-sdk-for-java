@@ -25,10 +25,10 @@ final class ObjectMapperFactory {
     public static final ObjectMapperFactory INSTANCE = new ObjectMapperFactory();
 
     public ObjectMapper createJsonMapper(ObjectMapper innerMapper) {
-        ObjectMapper flatteningMapper =
-            initializeMapperBuilder(JsonMapper.builder()).addModule(FlatteningSerializer.getModule(innerMapper))
-                .addModule(FlatteningDeserializer.getModule(innerMapper))
-                .build();
+        ObjectMapper flatteningMapper = initializeMapperBuilder(JsonMapper.builder())
+            .addModule(FlatteningSerializer.getModule(innerMapper))
+            .addModule(FlatteningDeserializer.getModule(innerMapper))
+            .build();
 
         return initializeMapperBuilder(JsonMapper.builder())
             // Order matters: must register in reverse order of hierarchy
@@ -56,13 +56,15 @@ final class ObjectMapperFactory {
     }
 
     public ObjectMapper createHeaderMapper() {
-        return initializeMapperBuilder(JsonMapper.builder()).enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
+        return initializeMapperBuilder(JsonMapper.builder())
+            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
             .build();
     }
 
     @SuppressWarnings("deprecation")
     static <S extends MapperBuilder<?, ?>> S initializeMapperBuilder(S mapper) {
-        mapper.enable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS)
+        mapper
+            .enable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS)
             .enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
             .enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)

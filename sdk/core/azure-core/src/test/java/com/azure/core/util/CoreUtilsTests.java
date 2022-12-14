@@ -34,21 +34,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CoreUtilsTests {
     private static final byte[] BYTES = "Hello world!".getBytes(StandardCharsets.UTF_8);
 
-    private static final byte[] UTF_8_BOM = {
-        (byte) 0xEF, (byte) 0xBB, (byte) 0xBF
-    };
-    private static final byte[] UTF_16BE_BOM = {
-        (byte) 0xFE, (byte) 0xFF
-    };
-    private static final byte[] UTF_16LE_BOM = {
-        (byte) 0xFF, (byte) 0xFE
-    };
-    private static final byte[] UTF_32BE_BOM = {
-        (byte) 0x00, (byte) 0x00, (byte) 0xFE, (byte) 0xFF
-    };
-    private static final byte[] UTF_32LE_BOM = {
-        (byte) 0xFF, (byte) 0xFE, (byte) 0x00, (byte) 0x00
-    };
+    private static final byte[] UTF_8_BOM = { (byte) 0xEF, (byte) 0xBB, (byte) 0xBF };
+    private static final byte[] UTF_16BE_BOM = { (byte) 0xFE, (byte) 0xFF };
+    private static final byte[] UTF_16LE_BOM = { (byte) 0xFF, (byte) 0xFE };
+    private static final byte[] UTF_32BE_BOM = { (byte) 0x00, (byte) 0x00, (byte) 0xFE, (byte) 0xFF };
+    private static final byte[] UTF_32LE_BOM = { (byte) 0xFF, (byte) 0xFE, (byte) 0x00, (byte) 0x00 };
 
     private static final String TIMEOUT_PROPERTY_NAME = "TIMEOUT_PROPERTY_NAME";
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
@@ -61,9 +51,7 @@ public class CoreUtilsTests {
     @Test
     public void findFirstOfTypeWithOneOfType() {
         int expected = 1;
-        Object[] args = {
-            "string", expected
-        };
+        Object[] args = { "string", expected };
         Integer actual = CoreUtils.findFirstOfType(args, Integer.class);
         Assertions.assertEquals(expected, actual);
     }
@@ -71,18 +59,14 @@ public class CoreUtilsTests {
     @Test
     public void findFirstOfTypeWithMultipleOfType() {
         int expected = 1;
-        Object[] args = {
-            "string", expected, 10
-        };
+        Object[] args = { "string", expected, 10 };
         Integer actual = CoreUtils.findFirstOfType(args, Integer.class);
         Assertions.assertEquals(expected, actual);
     }
 
     @Test
     public void findFirstOfTypeWithNoneOfType() {
-        Object[] args = {
-            "string", "anotherString"
-        };
+        Object[] args = { "string", "anotherString" };
         assertNull(CoreUtils.findFirstOfType(args, Integer.class));
     }
 
@@ -90,9 +74,10 @@ public class CoreUtilsTests {
     public void testProperties() {
         assertNotNull(CoreUtils.getProperties("azure-core.properties").get("version"));
         assertNotNull(CoreUtils.getProperties("azure-core.properties").get("name"));
-        assertTrue(
-            CoreUtils.getProperties("azure-core.properties").get("version").matches("\\d+\\.\\d+\\.\\d+(-beta\\.\\d+)?")
-        );
+        assertTrue(CoreUtils
+            .getProperties("azure-core.properties")
+            .get("version")
+            .matches("\\d+\\.\\d+\\.\\d+(-beta\\.\\d+)?"));
     }
 
     @Test
@@ -109,11 +94,9 @@ public class CoreUtilsTests {
     }
 
     private static Stream<Arguments> cloneIntArraySupplier() {
-        return Stream.of(Arguments.of(null, null), Arguments.of(new int[0], new int[0]), Arguments.of(new int[] {
-            1, 2, 3
-        }, new int[] {
-            1, 2, 3
-        }));
+        return Stream
+            .of(Arguments.of(null, null), Arguments.of(new int[0], new int[0]), Arguments
+                .of(new int[] { 1, 2, 3 }, new int[] { 1, 2, 3 }));
     }
 
     @ParameterizedTest
@@ -124,11 +107,8 @@ public class CoreUtilsTests {
 
     private static Stream<Arguments> cloneGenericArraySupplier() {
         return Stream
-            .of(Arguments.of(null, null), Arguments.of(new String[0], new String[0]), Arguments.of(new String[] {
-                "1", "2", "3"
-            }, new String[] {
-                "1", "2", "3"
-            }));
+            .of(Arguments.of(null, null), Arguments.of(new String[0], new String[0]), Arguments
+                .of(new String[] { "1", "2", "3" }, new String[] { "1", "2", "3" }));
     }
 
     @ParameterizedTest
@@ -138,11 +118,9 @@ public class CoreUtilsTests {
     }
 
     private static Stream<Arguments> isNullOrEmptyCollectionSupplier() {
-        return Stream.of(
-            Arguments.of(null, true),
-            Arguments.of(new ArrayList<>(), true),
-            Arguments.of(Collections.singletonList(1), false)
-        );
+        return Stream
+            .of(Arguments.of(null, true), Arguments.of(new ArrayList<>(), true), Arguments
+                .of(Collections.singletonList(1), false));
     }
 
     @ParameterizedTest
@@ -154,19 +132,11 @@ public class CoreUtilsTests {
     private static Stream<Arguments> arrayToStringSupplier() {
         Function<?, String> toStringFunction = String::valueOf;
 
-        return Stream.of(
-            Arguments.of(null, null, null),
-            Arguments.of(new String[0], toStringFunction, null),
-            Arguments.of(new String[] {
-                ""
-            }, toStringFunction, ""),
-            Arguments.of(new String[] {
-                "Hello world!"
-            }, toStringFunction, "Hello world!"),
-            Arguments.of(new String[] {
-                "1", "2", "3"
-            }, toStringFunction, "1,2,3")
-        );
+        return Stream
+            .of(Arguments.of(null, null, null), Arguments.of(new String[0], toStringFunction, null), Arguments
+                .of(new String[] { "" }, toStringFunction, ""), Arguments
+                    .of(new String[] { "Hello world!" }, toStringFunction, "Hello world!"), Arguments
+                        .of(new String[] { "1", "2", "3" }, toStringFunction, "1,2,3"));
     }
 
     @ParameterizedTest
@@ -176,19 +146,18 @@ public class CoreUtilsTests {
     }
 
     private static Stream<Arguments> bomAwareToStringSupplier() {
-        return Stream.of(
-            Arguments.arguments(null, null, null),
-            Arguments.arguments(BYTES, null, new String(BYTES, StandardCharsets.UTF_8)),
-            Arguments.arguments(BYTES, "charset=UTF-16BE", new String(BYTES, StandardCharsets.UTF_16BE)),
-            Arguments.arguments(BYTES, "charset=invalid", new String(BYTES, StandardCharsets.UTF_8)),
-            Arguments.arguments(addBom(UTF_8_BOM), null, new String(BYTES, StandardCharsets.UTF_8)),
-            Arguments.arguments(addBom(UTF_16BE_BOM), null, new String(BYTES, StandardCharsets.UTF_16BE)),
-            Arguments.arguments(addBom(UTF_16LE_BOM), null, new String(BYTES, StandardCharsets.UTF_16LE)),
-            Arguments.arguments(addBom(UTF_32BE_BOM), null, new String(BYTES, Charset.forName("UTF-32BE"))),
-            Arguments.arguments(addBom(UTF_32LE_BOM), null, new String(BYTES, Charset.forName("UTF-32LE"))),
-            Arguments.arguments(addBom(UTF_8_BOM), "charset=UTF-8", new String(BYTES, StandardCharsets.UTF_8)),
-            Arguments.arguments(addBom(UTF_8_BOM), "charset=UTF-16BE", new String(BYTES, StandardCharsets.UTF_8))
-        );
+        return Stream
+            .of(Arguments.arguments(null, null, null), Arguments
+                .arguments(BYTES, null, new String(BYTES, StandardCharsets.UTF_8)), Arguments
+                    .arguments(BYTES, "charset=UTF-16BE", new String(BYTES, StandardCharsets.UTF_16BE)), Arguments
+                        .arguments(BYTES, "charset=invalid", new String(BYTES, StandardCharsets.UTF_8)), Arguments
+                            .arguments(addBom(UTF_8_BOM), null, new String(BYTES, StandardCharsets.UTF_8)), Arguments
+                                .arguments(addBom(UTF_16BE_BOM), null, new String(BYTES, StandardCharsets.UTF_16BE)),
+                Arguments.arguments(addBom(UTF_16LE_BOM), null, new String(BYTES, StandardCharsets.UTF_16LE)), Arguments
+                    .arguments(addBom(UTF_32BE_BOM), null, new String(BYTES, Charset.forName("UTF-32BE"))), Arguments
+                        .arguments(addBom(UTF_32LE_BOM), null, new String(BYTES, Charset.forName("UTF-32LE"))),
+                Arguments.arguments(addBom(UTF_8_BOM), "charset=UTF-8", new String(BYTES, StandardCharsets.UTF_8)),
+                Arguments.arguments(addBom(UTF_8_BOM), "charset=UTF-16BE", new String(BYTES, StandardCharsets.UTF_8)));
     }
 
     private static byte[] addBom(byte[] arr1) {
@@ -217,17 +186,15 @@ public class CoreUtilsTests {
         HttpLogOptions logOptionsWithApplicationId = new HttpLogOptions().setApplicationId(logOptionsApplicationId);
         HttpLogOptions logOptionsWithoutApplicationId = new HttpLogOptions();
 
-        return Stream.of(
-            Arguments.of(clientOptionsWithApplicationId, logOptionsWithApplicationId, clientOptionApplicationId),
-            Arguments.of(clientOptionsWithApplicationId, logOptionsWithoutApplicationId, clientOptionApplicationId),
-            Arguments.of(clientOptionsWithApplicationId, null, clientOptionApplicationId),
-            Arguments.of(clientOptionsWithoutApplicationId, logOptionsWithApplicationId, logOptionsApplicationId),
-            Arguments.of(clientOptionsWithoutApplicationId, logOptionsWithoutApplicationId, null),
-            Arguments.of(clientOptionsWithoutApplicationId, null, null),
-            Arguments.of(null, logOptionsWithApplicationId, logOptionsApplicationId),
-            Arguments.of(null, logOptionsWithoutApplicationId, null),
-            Arguments.of(null, null, null)
-        );
+        return Stream
+            .of(Arguments.of(clientOptionsWithApplicationId, logOptionsWithApplicationId, clientOptionApplicationId),
+                Arguments.of(clientOptionsWithApplicationId, logOptionsWithoutApplicationId, clientOptionApplicationId),
+                Arguments.of(clientOptionsWithApplicationId, null, clientOptionApplicationId), Arguments
+                    .of(clientOptionsWithoutApplicationId, logOptionsWithApplicationId, logOptionsApplicationId),
+                Arguments.of(clientOptionsWithoutApplicationId, logOptionsWithoutApplicationId, null), Arguments
+                    .of(clientOptionsWithoutApplicationId, null, null), Arguments
+                        .of(null, logOptionsWithApplicationId, logOptionsApplicationId), Arguments
+                            .of(null, logOptionsWithoutApplicationId, null), Arguments.of(null, null, null));
     }
 
     @ParameterizedTest
@@ -250,105 +217,68 @@ public class CoreUtilsTests {
         multipleHeadersMap.put("a", "header");
         multipleHeadersMap.put("another", "headerValue");
 
-        return Stream.of(
-            // ClientOptions is null, null is returned.
-            Arguments.of(null, null),
+        return Stream
+            .of(
+                // ClientOptions is null, null is returned.
+                Arguments.of(null, null),
 
-            // ClientOptions doesn't contain Header values, null is returned.
-            Arguments.of(new ClientOptions(), null),
+                // ClientOptions doesn't contain Header values, null is returned.
+                Arguments.of(new ClientOptions(), null),
 
-            // ClientOptions contains a single header value, a single header HttpHeaders is returned.
-            Arguments.of(
-                new ClientOptions().setHeaders(Collections.singletonList(new Header("a", "header"))),
-                new HttpHeaders(Collections.singletonMap("a", "header"))
-            ),
+                // ClientOptions contains a single header value, a single header HttpHeaders is returned.
+                Arguments
+                    .of(new ClientOptions().setHeaders(Collections.singletonList(new Header("a", "header"))),
+                        new HttpHeaders(Collections.singletonMap("a", "header"))),
 
-            // ClientOptions contains multiple header values, a multi-header HttpHeaders is returned.
-            Arguments.of(new ClientOptions().setHeaders(multipleHeadersList), new HttpHeaders(multipleHeadersMap))
-        );
+                // ClientOptions contains multiple header values, a multi-header HttpHeaders is returned.
+                Arguments.of(new ClientOptions().setHeaders(multipleHeadersList), new HttpHeaders(multipleHeadersMap)));
     }
 
     @ParameterizedTest
     @MethodSource("getDefaultTimeoutFromEnvironmentSupplier")
-    public void getDefaultTimeoutFromEnvironmentTests(
-        Configuration configuration,
-        Duration defaultTimeout,
-        ClientLogger logger,
-        Duration expectedTimeout
-    ) {
-        assertEquals(
-            expectedTimeout,
-            CoreUtils.getDefaultTimeoutFromEnvironment(configuration, TIMEOUT_PROPERTY_NAME, defaultTimeout, logger)
-        );
+    public void getDefaultTimeoutFromEnvironmentTests(Configuration configuration,
+                                                      Duration defaultTimeout,
+                                                      ClientLogger logger,
+                                                      Duration expectedTimeout) {
+        assertEquals(expectedTimeout, CoreUtils
+            .getDefaultTimeoutFromEnvironment(configuration, TIMEOUT_PROPERTY_NAME, defaultTimeout, logger));
     }
 
     private static Stream<Arguments> getDefaultTimeoutFromEnvironmentSupplier() {
         ClientLogger logger = new ClientLogger(CoreUtilsTests.class);
 
-        return Stream.of(
-            // Configuration doesn't have the timeout property configured.
-            Arguments.of(Configuration.NONE, Duration.ofMillis(10000), logger, Duration.ofMillis(10000)),
+        return Stream
+            .of(
+                // Configuration doesn't have the timeout property configured.
+                Arguments.of(Configuration.NONE, Duration.ofMillis(10000), logger, Duration.ofMillis(10000)),
 
-            // Configuration has an empty string timeout property configured.
-            Arguments.of(
-                new ConfigurationBuilder(
-                    EMPTY_SOURCE,
-                    EMPTY_SOURCE,
-                    new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "")
-                ).build(),
-                Duration.ofMillis(10000),
-                logger,
-                Duration.ofMillis(10000)
-            ),
+                // Configuration has an empty string timeout property configured.
+                Arguments
+                    .of(new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
+                        .put(TIMEOUT_PROPERTY_NAME, "")).build(), Duration.ofMillis(10000), logger, Duration
+                            .ofMillis(10000)),
 
-            // Configuration has a value that isn't a valid number.
-            Arguments.of(
-                new ConfigurationBuilder(
-                    EMPTY_SOURCE,
-                    EMPTY_SOURCE,
-                    new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "ten")
-                ).build(),
-                Duration.ofMillis(10000),
-                logger,
-                Duration.ofMillis(10000)
-            ),
+                // Configuration has a value that isn't a valid number.
+                Arguments
+                    .of(new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
+                        .put(TIMEOUT_PROPERTY_NAME, "ten")).build(), Duration.ofMillis(10000), logger, Duration
+                            .ofMillis(10000)),
 
-            // Configuration has a negative value.
-            Arguments.of(
-                new ConfigurationBuilder(
-                    EMPTY_SOURCE,
-                    EMPTY_SOURCE,
-                    new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "-10")
-                ).build(),
-                Duration.ofMillis(10000),
-                logger,
-                Duration.ZERO
-            ),
+                // Configuration has a negative value.
+                Arguments
+                    .of(new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
+                        .put(TIMEOUT_PROPERTY_NAME, "-10")).build(), Duration.ofMillis(10000), logger, Duration.ZERO),
 
-            // Configuration has a zero value.
-            Arguments.of(
-                new ConfigurationBuilder(
-                    EMPTY_SOURCE,
-                    EMPTY_SOURCE,
-                    new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "0")
-                ).build(),
-                Duration.ofMillis(10000),
-                logger,
-                Duration.ZERO
-            ),
+                // Configuration has a zero value.
+                Arguments
+                    .of(new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
+                        .put(TIMEOUT_PROPERTY_NAME, "0")).build(), Duration.ofMillis(10000), logger, Duration.ZERO),
 
-            // Configuration has a positive value.
-            Arguments.of(
-                new ConfigurationBuilder(
-                    EMPTY_SOURCE,
-                    EMPTY_SOURCE,
-                    new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "42")
-                ).build(),
-                Duration.ofMillis(10000),
-                logger,
-                Duration.ofMillis(42)
-            )
-        );
+                // Configuration has a positive value.
+                Arguments
+                    .of(new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
+                        .put(TIMEOUT_PROPERTY_NAME, "42")).build(), Duration.ofMillis(10000), logger, Duration
+                            .ofMillis(42)));
     }
 
     @ParameterizedTest

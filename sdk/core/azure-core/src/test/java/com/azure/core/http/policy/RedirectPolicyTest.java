@@ -56,9 +56,7 @@ public class RedirectPolicyTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {
-        308, 307, 301, 302
-    })
+    @ValueSource(ints = { 308, 307, 301, 302 })
     public void defaultRedirectExpectedStatusCodes(int statusCode) throws Exception {
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUrl().toString().equals("http://localhost/")) {
@@ -81,9 +79,7 @@ public class RedirectPolicyTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {
-        308, 307, 301, 302
-    })
+    @ValueSource(ints = { 308, 307, 301, 302 })
     public void defaultRedirectExpectedStatusCodesSync(int statusCode) throws Exception {
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUrl().toString().equals("http://localhost/")) {
@@ -107,9 +103,7 @@ public class RedirectPolicyTest {
 
     @SyncAsyncTest
     public void redirectForNAttempts() throws Exception {
-        final int[] requestCount = {
-            1
-        };
+        final int[] requestCount = { 1 };
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             Map<String, String> headers = new HashMap<>();
             headers.put("Location", "http://redirecthost/" + requestCount[0]);
@@ -118,7 +112,8 @@ public class RedirectPolicyTest {
             return Mono.just(new MockHttpResponse(request, 308, httpHeader));
         });
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(httpClient)
             .policies(new RedirectPolicy(new DefaultRedirectStrategy(5)))
             .build();
 
@@ -142,7 +137,8 @@ public class RedirectPolicyTest {
             }
         });
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(httpClient)
             .policies(new RedirectPolicy(new DefaultRedirectStrategy(5)))
             .build();
 
@@ -167,7 +163,8 @@ public class RedirectPolicyTest {
             }
         });
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(httpClient)
             .policies(new RedirectPolicy(new DefaultRedirectStrategy()))
             .build();
 
@@ -196,7 +193,8 @@ public class RedirectPolicyTest {
             }
         });
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(httpClient)
             .policies(new RedirectPolicy(new DefaultRedirectStrategy()))
             .build();
 
@@ -209,9 +207,7 @@ public class RedirectPolicyTest {
 
     @SyncAsyncTest
     public void redirectForProvidedHeader() throws Exception {
-        final int[] requestCount = {
-            1
-        };
+        final int[] requestCount = { 1 };
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             Map<String, String> headers = new HashMap<>();
             headers.put("Location1", "http://redirecthost/" + requestCount[0]);
@@ -220,7 +216,8 @@ public class RedirectPolicyTest {
             return Mono.just(new MockHttpResponse(request, 308, httpHeader));
         });
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(httpClient)
             .policies(new RedirectPolicy(new DefaultRedirectStrategy(5, "Location1", null)))
             .build();
 
@@ -240,9 +237,7 @@ public class RedirectPolicyTest {
                 add(HttpMethod.POST);
             }
         };
-        final int[] requestCount = {
-            1
-        };
+        final int[] requestCount = { 1 };
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUrl().toString().equals("http://localhost/")) {
                 Map<String, String> headers = new HashMap<>();
@@ -251,9 +246,8 @@ public class RedirectPolicyTest {
                 request.setHttpMethod(HttpMethod.PUT);
                 requestCount[0]++;
                 return Mono.just(new MockHttpResponse(request, 308, httpHeader));
-            } else if (
-                request.getUrl().toString().equals("http://redirecthost/" + requestCount[0]) && requestCount[0] == 2
-            ) {
+            } else if (request.getUrl().toString().equals("http://redirecthost/" + requestCount[0])
+                && requestCount[0] == 2) {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Location", "http://redirecthost/" + requestCount[0]++);
                 HttpHeaders httpHeader = new HttpHeaders(headers);
@@ -264,7 +258,8 @@ public class RedirectPolicyTest {
             }
         });
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(httpClient)
             .policies(new RedirectPolicy(new DefaultRedirectStrategy(5, null, allowedMethods)))
             .build();
 
@@ -287,7 +282,8 @@ public class RedirectPolicyTest {
             }
         });
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(httpClient)
             .policies(new RedirectPolicy(new DefaultRedirectStrategy()))
             .build();
 

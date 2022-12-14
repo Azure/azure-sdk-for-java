@@ -32,7 +32,7 @@ final class JsonPatchOperationSerializer extends JsonSerializer<JsonPatchOperati
 
     @Override
     public void serialize(JsonPatchOperation value, JsonGenerator gen, SerializerProvider serializers)
-        throws IOException {
+                                                                                                       throws IOException {
         gen.writeStartObject();
 
         gen.writeStringField("op", value.getOp().toString());

@@ -100,7 +100,8 @@ public class ProgressReporterTest {
     public void testConcurrentReporting() {
         ProgressReporter progressReporter = ProgressReporter.withProgressListener(listener);
 
-        Flux.range(1, 100)
+        Flux
+            .range(1, 100)
             .parallel(10)
             .runOn(Schedulers.boundedElastic())
             .map(ignored -> progressReporter.createChild())
@@ -118,17 +119,15 @@ public class ProgressReporterTest {
         assertEquals(2700L, progresses.get(progresses.size() - 1));
         for (int i = 0; i < progresses.size() - 1; i++) {
             if (progresses.get(i + 1) <= progresses.get(i)) {
-                fail(
-                    "Progresses are not in raising order. "
-                        + "progress["
-                        + (i + 1)
-                        + "]="
-                        + progresses.get(i + 1)
-                        + " progress["
-                        + i
-                        + "]="
-                        + progresses.get(i)
-                );
+                fail("Progresses are not in raising order. "
+                    + "progress["
+                    + (i + 1)
+                    + "]="
+                    + progresses.get(i + 1)
+                    + " progress["
+                    + i
+                    + "]="
+                    + progresses.get(i));
             }
         }
     }

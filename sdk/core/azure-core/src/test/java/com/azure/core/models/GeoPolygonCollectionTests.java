@@ -87,24 +87,22 @@ public class GeoPolygonCollectionTests {
         GeoPolygonCollection multiPolygon = new GeoPolygonCollection(polygons);
         GeoPolygonCollection multiPolygon1 = new GeoPolygonCollection(polygons1, boundingBox, properties);
 
-        return Stream.of(
-            // Other is null.
-            Arguments.of(multiPolygon, null, false),
+        return Stream
+            .of(
+                // Other is null.
+                Arguments.of(multiPolygon, null, false),
 
-            // Other isn't instance of type.
-            Arguments.of(multiPolygon, 1, false),
+                // Other isn't instance of type.
+                Arguments.of(multiPolygon, 1, false),
 
-            // Other is itself.
-            Arguments.of(multiPolygon, multiPolygon, true),
-            Arguments.of(multiPolygon1, multiPolygon1, true),
+                // Other is itself.
+                Arguments.of(multiPolygon, multiPolygon, true), Arguments.of(multiPolygon1, multiPolygon1, true),
 
-            // Other is a different value.
-            Arguments.of(multiPolygon, multiPolygon1, false),
-            Arguments.of(multiPolygon1, multiPolygon, false),
+                // Other is a different value.
+                Arguments.of(multiPolygon, multiPolygon1, false), Arguments.of(multiPolygon1, multiPolygon, false),
 
-            // Other is the same value.
-            Arguments.of(multiPolygon, new GeoPolygonCollection(polygons), true),
-            Arguments.of(multiPolygon1, new GeoPolygonCollection(polygons1, boundingBox, properties), true)
-        );
+                // Other is the same value.
+                Arguments.of(multiPolygon, new GeoPolygonCollection(polygons), true), Arguments
+                    .of(multiPolygon1, new GeoPolygonCollection(polygons1, boundingBox, properties), true));
     }
 }

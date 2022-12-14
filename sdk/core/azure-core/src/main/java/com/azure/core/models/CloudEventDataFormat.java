@@ -25,8 +25,7 @@ public final class CloudEventDataFormat extends ExpandableStringEnum<CloudEventD
      * @deprecated Use one of the constants or the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public CloudEventDataFormat() {
-    }
+    public CloudEventDataFormat() {}
 
     /**
      * Bytes format.

@@ -15,8 +15,8 @@ import java.util.Collections;
 @Fluent
 public class ClientOptions {
     private static final int MAX_APPLICATION_ID_LENGTH = 24;
-    private static final String INVALID_APPLICATION_ID_LENGTH =
-        "'applicationId' length cannot be greater than " + MAX_APPLICATION_ID_LENGTH;
+    private static final String INVALID_APPLICATION_ID_LENGTH = "'applicationId' length cannot be greater than "
+        + MAX_APPLICATION_ID_LENGTH;
     private static final String INVALID_APPLICATION_ID_SPACE = "'applicationId' cannot contain spaces.";
 
     // ClientOptions is a commonly used class, use a static logger.
@@ -30,8 +30,7 @@ public class ClientOptions {
     /**
      * Creates a new instance of {@link ClientOptions}.
      */
-    public ClientOptions() {
-    }
+    public ClientOptions() {}
 
     /**
      * Gets the application ID.

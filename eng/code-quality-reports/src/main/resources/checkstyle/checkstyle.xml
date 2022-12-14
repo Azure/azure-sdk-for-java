@@ -233,6 +233,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
       <property name="allowEmptyConstructors" value="true"/>
       <property name="allowEmptyMethods" value="true"/>
       <property name="allowEmptyTypes" value="true"/>
+      <property name="allowEmptyLambdas" value="true"/>
     </module>
 
     <!-- Modifier Checks                                    -->

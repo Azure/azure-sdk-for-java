@@ -3,9 +3,9 @@
 
 package com.azure.core.http.policy;
 
-import java.time.Duration;
-
 import org.junit.jupiter.api.Test;
+
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -18,9 +18,8 @@ public class ExponentialBackoffTest {
 
     @Test
     public void testZeroBaseDelay() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new ExponentialBackoff(3, Duration.ofSeconds(0), Duration.ofMillis(1000));
-        });
+        assertThrows(IllegalArgumentException.class, () -> new ExponentialBackoff(3, Duration.ofSeconds(0), Duration
+            .ofMillis(1000)));
     }
 
     @Test
@@ -35,26 +34,20 @@ public class ExponentialBackoffTest {
 
     @Test
     public void testBaseGreaterThanMaxDelay() {
-        assertThrows(
-            IllegalArgumentException.class,
-            () -> new ExponentialBackoff(3, Duration.ofSeconds(1), Duration.ofMillis(500))
-        );
+        assertThrows(IllegalArgumentException.class, () -> new ExponentialBackoff(3, Duration.ofSeconds(1), Duration
+            .ofMillis(500)));
     }
 
     @Test
     public void testNegativeMaxRetries() {
-        assertThrows(
-            IllegalArgumentException.class,
-            () -> new ExponentialBackoff(-1, Duration.ofSeconds(1), Duration.ofMillis(5000))
-        );
+        assertThrows(IllegalArgumentException.class, () -> new ExponentialBackoff(-1, Duration.ofSeconds(1), Duration
+            .ofMillis(5000)));
     }
 
     @Test
     public void testNegativeBaseDelay() {
-        assertThrows(
-            IllegalArgumentException.class,
-            () -> new ExponentialBackoff(5, Duration.ofSeconds(-1), Duration.ofMillis(5000))
-        );
+        assertThrows(IllegalArgumentException.class, () -> new ExponentialBackoff(5, Duration.ofSeconds(-1), Duration
+            .ofMillis(5000)));
     }
 
     @Test
@@ -96,7 +89,8 @@ public class ExponentialBackoffTest {
 
     @Test
     public void testExponentialBackoffOptions() {
-        ExponentialBackoffOptions exponentialBackoffOptions = new ExponentialBackoffOptions().setMaxRetries(10)
+        ExponentialBackoffOptions exponentialBackoffOptions = new ExponentialBackoffOptions()
+            .setMaxRetries(10)
             .setBaseDelay(Duration.ofSeconds(1))
             .setMaxDelay(Duration.ofSeconds(10));
         ExponentialBackoff expBackoff = new ExponentialBackoff(exponentialBackoffOptions);

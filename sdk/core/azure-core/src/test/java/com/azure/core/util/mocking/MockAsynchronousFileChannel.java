@@ -31,8 +31,11 @@ public class MockAsynchronousFileChannel extends AsynchronousFileChannel {
     }
 
     @Override
-    public <A> void
-        lock(long position, long size, boolean shared, A attachment, CompletionHandler<FileLock, ? super A> handler) {
+    public <A> void lock(long position,
+                         long size,
+                         boolean shared,
+                         A attachment,
+                         CompletionHandler<FileLock, ? super A> handler) {
 
     }
 

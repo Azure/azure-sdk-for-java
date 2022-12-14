@@ -16,8 +16,7 @@ public class HttpPipelineSyncPolicy implements HttpPipelinePolicy {
     /**
      * Creates a new instance of {@link HttpPipelineSyncPolicy}.
      */
-    public HttpPipelineSyncPolicy() {
-    }
+    public HttpPipelineSyncPolicy() {}
 
     /**
      * {@inheritDoc}

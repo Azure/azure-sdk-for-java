@@ -19,9 +19,7 @@ import static java.lang.annotation.ElementType.TYPE;
  */
 @Documented
 @Retention(RetentionPolicy.CLASS)
-@Target({
-    TYPE, METHOD, PARAMETER, CONSTRUCTOR
-})
+@Target({ TYPE, METHOD, PARAMETER, CONSTRUCTOR })
 @Inherited
 /**
  * Indicates functionality that is in preview and as such is subject to change in non-backwards compatible ways in

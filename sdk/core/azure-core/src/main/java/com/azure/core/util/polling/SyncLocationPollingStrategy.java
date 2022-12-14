@@ -89,12 +89,10 @@ public class SyncLocationPollingStrategy<T, U> implements SyncPollingStrategy<T,
      * @param context an instance of {@link Context}
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
-    public SyncLocationPollingStrategy(
-        HttpPipeline httpPipeline,
-        String endpoint,
-        ObjectSerializer serializer,
-        Context context
-    ) {
+    public SyncLocationPollingStrategy(HttpPipeline httpPipeline,
+                                       String endpoint,
+                                       ObjectSerializer serializer,
+                                       Context context) {
         this.httpPipeline = Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null");
         this.endpoint = endpoint;
         this.serializer = (serializer == null) ? DEFAULT_SERIALIZER : serializer;
@@ -117,8 +115,9 @@ public class SyncLocationPollingStrategy<T, U> implements SyncPollingStrategy<T,
     }
 
     @Override
-    public PollResponse<T>
-        onInitialResponse(Response<?> response, PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
+    public PollResponse<T> onInitialResponse(Response<?> response,
+                                             PollingContext<T> pollingContext,
+                                             TypeReference<T> pollResponseType) {
         HttpHeader locationHeader = response.getHeaders().get(HttpHeaderName.LOCATION);
         if (locationHeader != null) {
             pollingContext
@@ -127,30 +126,20 @@ public class SyncLocationPollingStrategy<T, U> implements SyncPollingStrategy<T,
         pollingContext.setData(PollingConstants.HTTP_METHOD, response.getRequest().getHttpMethod().name());
         pollingContext.setData(PollingConstants.REQUEST_URL, response.getRequest().getUrl().toString());
 
-        if (
-            response.getStatusCode() == 200
-                || response.getStatusCode() == 201
-                || response.getStatusCode() == 202
-                || response.getStatusCode() == 204
-        ) {
+        if (response.getStatusCode() == 200
+            || response.getStatusCode() == 201
+            || response.getStatusCode() == 202
+            || response.getStatusCode() == 204) {
             Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
-            return new PollResponse<>(
-                LongRunningOperationStatus.IN_PROGRESS,
-                PollingUtils.convertResponseSync(response.getValue(), serializer, pollResponseType),
-                retryAfter
-            );
+            return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, PollingUtils
+                .convertResponseSync(response.getValue(), serializer, pollResponseType), retryAfter);
         }
 
-        throw LOGGER.logExceptionAsError(
-            new AzureException(
-                String.format(
+        throw LOGGER
+            .logExceptionAsError(new AzureException(String
+                .format(
                     "Operation failed or cancelled with status code %d, 'Location' header: %s, and response body: %s",
-                    response.getStatusCode(),
-                    locationHeader,
-                    serializeResponseSync(response.getValue(), serializer)
-                )
-            )
-        );
+                    response.getStatusCode(), locationHeader, serializeResponseSync(response.getValue(), serializer))));
     }
 
     @Override
@@ -177,11 +166,8 @@ public class SyncLocationPollingStrategy<T, U> implements SyncPollingStrategy<T,
             pollingContext.setData(PollingConstants.POLL_RESPONSE_BODY, responseBody.toString());
             Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
 
-            return new PollResponse<>(
-                status,
-                PollingUtils.deserializeResponseSync(responseBody, serializer, pollResponseType),
-                retryAfter
-            );
+            return new PollResponse<>(status, PollingUtils
+                .deserializeResponseSync(responseBody, serializer, pollResponseType), retryAfter);
         }
     }
 
@@ -195,14 +181,11 @@ public class SyncLocationPollingStrategy<T, U> implements SyncPollingStrategy<T,
 
         String finalGetUrl;
         String httpMethod = pollingContext.getData(PollingConstants.HTTP_METHOD);
-        if (
-            HttpMethod.PUT.name().equalsIgnoreCase(httpMethod) || HttpMethod.PATCH.name().equalsIgnoreCase(httpMethod)
-        ) {
+        if (HttpMethod.PUT.name().equalsIgnoreCase(httpMethod)
+            || HttpMethod.PATCH.name().equalsIgnoreCase(httpMethod)) {
             finalGetUrl = pollingContext.getData(PollingConstants.REQUEST_URL);
-        } else if (
-            HttpMethod.POST.name().equalsIgnoreCase(httpMethod)
-                && pollingContext.getData(PollingConstants.LOCATION) != null
-        ) {
+        } else if (HttpMethod.POST.name().equalsIgnoreCase(httpMethod)
+            && pollingContext.getData(PollingConstants.LOCATION) != null) {
             finalGetUrl = pollingContext.getData(PollingConstants.LOCATION);
         } else {
             throw LOGGER.logExceptionAsError(new AzureException("Cannot get final result"));

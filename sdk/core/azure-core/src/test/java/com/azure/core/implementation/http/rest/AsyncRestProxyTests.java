@@ -63,11 +63,11 @@ public class AsyncRestProxyTests {
     @ParameterizedTest
     @MethodSource
     public void handleBodyReturnTypeBoolean(Type returnType, int statusCode, Boolean expectedValue)
-        throws NoSuchMethodException {
+                                                                                                    throws NoSuchMethodException {
 
         // Arrange
-        SwaggerMethodParser methodParser =
-            swaggerInterfaceParser.getMethodParser(MockService.class.getDeclaredMethod("headBoolean"));
+        SwaggerMethodParser methodParser = swaggerInterfaceParser
+            .getMethodParser(MockService.class.getDeclaredMethod("headBoolean"));
         HttpResponse httpResponse = new MockHttpResponse(null, statusCode);
 
         // Act
@@ -87,8 +87,8 @@ public class AsyncRestProxyTests {
     @Test
     public void handleBodyReturnTypeByte() throws NoSuchMethodException {
         // Arrange
-        SwaggerMethodParser methodParser =
-            swaggerInterfaceParser.getMethodParser(MockService.class.getDeclaredMethod("getByteArray"));
+        SwaggerMethodParser methodParser = swaggerInterfaceParser
+            .getMethodParser(MockService.class.getDeclaredMethod("getByteArray"));
 
         final byte[] expectedBytes = "hello".getBytes(StandardCharsets.UTF_8);
         final Type returnType = byte[].class;
@@ -112,8 +112,8 @@ public class AsyncRestProxyTests {
     @Test
     public void handleBodyReturnTypeInputStream() throws NoSuchMethodException {
         // Arrange
-        SwaggerMethodParser methodParser =
-            swaggerInterfaceParser.getMethodParser(MockService.class.getDeclaredMethod("getInputStream"));
+        SwaggerMethodParser methodParser = swaggerInterfaceParser
+            .getMethodParser(MockService.class.getDeclaredMethod("getInputStream"));
 
         final byte[] expectedBytes = "hello".getBytes(StandardCharsets.UTF_8);
         final Type returnType = InputStream.class;

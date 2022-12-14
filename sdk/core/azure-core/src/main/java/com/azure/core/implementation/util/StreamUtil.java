@@ -22,8 +22,7 @@ public final class StreamUtil {
 
     private static final ClientLogger LOGGER = new ClientLogger(StreamUtil.class);
 
-    private StreamUtil() {
-    }
+    private StreamUtil() {}
 
     /**
      * Reads input stream into list of byte buffers.
@@ -44,22 +43,19 @@ public final class StreamUtil {
      * @return List of byte buffers.
      * @throws IOException If IO operation fails.
      */
-    public static List<ByteBuffer> readStreamToListOfByteBuffers(
-        InputStream inputStream,
-        Long lengthHint,
-        int initialBufferSize,
-        int maxBufferSize
-    )
-        throws IOException {
+    public static List<ByteBuffer> readStreamToListOfByteBuffers(InputStream inputStream,
+                                                                 Long lengthHint,
+                                                                 int initialBufferSize,
+                                                                 int maxBufferSize) throws IOException {
         Objects.requireNonNull(inputStream, "'inputStream' must not be null");
         if (initialBufferSize <= 0) {
             throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("'initialBufferSize' must be positive integer"));
         }
         if (maxBufferSize < initialBufferSize) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'maxBufferSize' must not be smaller than 'maxBufferSize'")
-            );
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException(
+                    "'maxBufferSize' must not be smaller than 'maxBufferSize'"));
         }
         if (lengthHint != null && lengthHint < 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'length' must not be negative"));
