@@ -7,7 +7,6 @@ Upgrade Spring Boot dependencies version to 3.0.0 and Spring Cloud dependencies 
  - Remove the `public` access modifier from bean methods [#32514](https://github.com/Azure/azure-sdk-for-java/pull/32514). 
  - Move Cloud Foundry classes to the implementation package [#32549](https://github.com/Azure/azure-sdk-for-java/pull/32549).
  - Move some JMS configuration classes into implementation, and reduce the number of public APIs [#32552](https://github.com/Azure/azure-sdk-for-java/pull/32552).
- - Move some compatibility verifier classes into implementation package [#32582](https://github.com/Azure/azure-sdk-for-java/pull/32582).
  - Move `ServiceBusJmsConnectionFactory` class into `com.azure.spring.jms` package [#32598](https://github.com/Azure/azure-sdk-for-java/pull/32598).
  
 ## 6.0.0-beta.4 (2022-12-07)
