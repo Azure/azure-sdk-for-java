@@ -11,7 +11,8 @@
 #### Other Changes
 
 ### 4.15.0 (2022-11-16)
-
+* Added the `spark.cosmos.read.maxIntegratedCacheStaleness.inMilliseconds` and `spark.cosmos.read.maxIntegratedCacheStaleness.inHours` configuration keys
+  to make `MaxIntegratedCacheStaleness` tunable for caching queries. - See [PR 32592](https://github.com/Azure/azure-sdk-for-java/pull/32592)
 
 #### Features Added
 Spark 3.3 support: - See [PR 31666](https://github.com/Azure/azure-sdk-for-java/pull/31666).
