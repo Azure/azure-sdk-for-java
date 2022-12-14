@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package theo.tests;
 
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 //import com.azure.spring.data.cosmos.samples.common.User;
@@ -54,13 +55,17 @@ public class TheoSampleApplication implements CommandLineRunner {
             .create()
             .add("/color", "blue");
 
-        userRepository.patch(testUser1.getId(), new PartitionKey(testUser1.getLastName()),operations);
+        CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
+        options.setFilterPredicate("FROM user p WHERE p.lastName = 'testLastName1'");
+
+        userRepository.patch(testUser1.getId(), new PartitionKey(testUser1.getLastName()),operations, User.class, options);
 
         CosmosPatchOperations reactiveOperations = CosmosPatchOperations
             .create()
             .add("/color", "green");
 
-        reactiveUserRepository.patch(testUser2.getId(), new PartitionKey(testUser2.getLastName()),reactiveOperations);
+
+        reactiveUserRepository.patch(testUser2.getId(), new PartitionKey(testUser2.getLastName()),reactiveOperations, User.class, options);
 
         // <Read>
         // This is a point read. See https://aka.ms/PointReadsInSpring for more information on the difference between point reads and queries.

@@ -5,6 +5,7 @@ package com.azure.spring.data.cosmos.repository.support;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosOperations;
@@ -109,13 +110,30 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
      *
      * @param id of entity to be patched
      * @param partitionKey partition key
+     * @param patchObjectClass class/type of the item to be patched
      * @param p path operations
      */
     //@Override
-    public void patch(String id, PartitionKey partitionKey, CosmosPatchOperations p) {
+    public <T> T patch(String id, PartitionKey partitionKey, CosmosPatchOperations p, Class<T> patchObjectClass) {
         Assert.notNull(id, "entity must not be null");
         // patch items
-        cosmosOperations.patch(entityInformation.getContainerName(), id, partitionKey, p);
+        return cosmosOperations.patch(entityInformation.getContainerName(), id, partitionKey, p, patchObjectClass);
+    }
+
+    /**
+     * patch entity with CosmosPatchItemRequestOptions
+     *
+     * @param id of entity to be patched
+     * @param partitionKey partition key
+     * @param patchObjectClass class/type of the item to be patched
+     * @param options including conditional patch syntax based on filter predicate, e.g. options.setFilterPredicate("FROM products p WHERE p.used = false");
+     * @param p path operations
+     */
+    //@Override
+    public <T> T patch(String id, PartitionKey partitionKey, CosmosPatchOperations p, Class<T> patchObjectClass, CosmosPatchItemRequestOptions options) {
+        Assert.notNull(id, "entity must not be null");
+        // patch items
+        return cosmosOperations.patch(entityInformation.getContainerName(), id, partitionKey, p, patchObjectClass, options);
     }
 
     @Override

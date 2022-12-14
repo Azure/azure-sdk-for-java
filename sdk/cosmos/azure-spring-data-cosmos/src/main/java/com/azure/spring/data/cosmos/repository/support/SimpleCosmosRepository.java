@@ -5,6 +5,7 @@ package com.azure.spring.data.cosmos.repository.support;
 
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.core.CosmosOperations;
@@ -105,11 +106,23 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
      * @param partitionKey partition key
      * @param p path operations
      */
-    //@Override
-    public void patch(String id, PartitionKey partitionKey, CosmosPatchOperations p) {
+    public <T> T patch(String id, PartitionKey partitionKey, CosmosPatchOperations p, Class<T> patchObjectClass) {
         Assert.notNull(id, "entity must not be null");
         // patch items
-        operation.patch(information.getContainerName(), id, partitionKey, p);
+        return operation.patch(information.getContainerName(), id, partitionKey, p, patchObjectClass);
+    }
+
+    /**
+     * patch entity with CosmosPatchItemRequestOptions
+     *
+     * @param id of entity to be patched
+     * @param partitionKey partition key
+     * @param p path operations
+     */
+    public <T> T patch(String id, PartitionKey partitionKey, CosmosPatchOperations p, Class<T> patchObjectClass, CosmosPatchItemRequestOptions options) {
+        Assert.notNull(id, "entity must not be null");
+        // patch items
+        return operation.patch(information.getContainerName(), id, partitionKey, p, patchObjectClass, options);
     }
 
     /**

@@ -3,6 +3,7 @@
 
 package com.azure.spring.data.cosmos.repository;
 
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -43,9 +44,22 @@ public interface CosmosRepository<T, ID extends Serializable> extends PagingAndS
      * @param ID must not be {@literal null}.
      * @param partitionKey partitionKey, must not be null.
      * @param patchOperations patch operations, must not be null.
+     * @param patchObjectClass class/type of the item to be patched, must not be null.
      * @throws IllegalArgumentException in case the given {@code id} is {@literal null}.
      */
-    public <T> void patch(String ID, PartitionKey partitionKey, CosmosPatchOperations patchOperations);
+    <T> T patch(String ID, PartitionKey partitionKey, CosmosPatchOperations patchOperations, Class<T> patchObjectClass);
+
+    /**
+     * patches an entity by its id and partition key with CosmosPatchItemRequestOptions
+     *
+     * @param ID must not be {@literal null}.
+     * @param partitionKey partitionKey, must not be null.
+     * @param patchOperations patch operations, must not be null.
+     * @param patchObjectClass class/type of the item to be patched, must not be null.
+     * @param options additional CosmosPatchItemRequestOptions options, e.g. options.setFilterPredicate("FROM products p WHERE p.used = false");
+     * @throws IllegalArgumentException in case the given {@code id} is {@literal null}.
+     */
+    <T> T patch(String ID, PartitionKey partitionKey, CosmosPatchOperations patchOperations, Class<T> patchObjectClass, CosmosPatchItemRequestOptions options);
 
     /**
      * Returns list of items in a specific partition

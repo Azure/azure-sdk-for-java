@@ -3,7 +3,12 @@
 
 package com.azure.spring.data.cosmos.core;
 
-import com.azure.cosmos.models.*;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchOperations;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
@@ -148,10 +153,24 @@ public interface ReactiveCosmosOperations {
      * @param id must not be {@literal null}
      * @param patchOperations must not be {@literal null}
      * @param partitionKey must not be {@literal null}
+     * @param patchObjectClass must not be {@literal null}
      * @param <T> type class of domain type
      * @return the inserted item
      */
-    <T> void patch(String containerName, String id, PartitionKey partitionKey, CosmosPatchOperations patchOperations);
+    <T> T  patch(String containerName, String id, PartitionKey partitionKey, CosmosPatchOperations patchOperations, Class<T> patchObjectClass);
+
+    /**
+     * patches item with CosmosPatchItemRequestOptions
+     *
+     * @param id must not be {@literal null}
+     * @param patchOperations must not be {@literal null}
+     * @param partitionKey must not be {@literal null}
+     * @param patchObjectClass must not be {@literal null}
+     * @param options must not be {@literal null}
+     * @param <T> type class of domain type
+     * @return the inserted item
+     */
+    <T> T  patch(String containerName, String id, PartitionKey partitionKey, CosmosPatchOperations patchOperations, Class<T> patchObjectClass, CosmosPatchItemRequestOptions options);
 
     /**
      * Upsert an item with partition key
