@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.implementation.jms.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.core.implementation.connectionstring.ServiceBusConnectionString;
+import com.azure.spring.jms.ServiceBusJmsConnectionFactory;
 import org.apache.qpid.jms.policy.JmsDefaultPrefetchPolicy;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
