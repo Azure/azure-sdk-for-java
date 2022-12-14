@@ -197,7 +197,7 @@ public class LogDataMapper {
         String invocationId = attributes.get(AiSemanticAttributes.AZ_FN_INVOCATION_ID);
         if (invocationId != null) {
             telemetryBuilder.addProperty(
-                "InvocationId", attributes.get(AiSemanticAttributes.AZ_FN_INVOCATION_ID));
+                "InvocationId", invocationId);
         }
         String processId = attributes.get(AiSemanticAttributes.AZ_FN_PROCESS_ID);
         if (processId != null) {
