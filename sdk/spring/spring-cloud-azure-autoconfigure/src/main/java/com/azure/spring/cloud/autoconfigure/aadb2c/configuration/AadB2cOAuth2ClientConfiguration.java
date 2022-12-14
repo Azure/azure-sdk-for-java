@@ -47,30 +47,20 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTem
 @Conditional(AadB2cConditions.ClientRegistrationCondition.class)
 @Import(AadB2cPropertiesConfiguration.class)
 @ConditionalOnClass({ OAuth2LoginAuthenticationFilter.class })
-public class AadB2cOAuth2ClientConfiguration {
+class AadB2cOAuth2ClientConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AadB2cOAuth2ClientConfiguration.class);
     private final AadB2cProperties properties;
     private final RestTemplateBuilder restTemplateBuilder;
 
-    /**
-     * Creates a new instance of {@link AadB2cOAuth2ClientConfiguration}.
-     *
-     * @param properties the AAD B2C properties
-     * @param restTemplateBuilder the restTemplateBuilder
-     */
-    public AadB2cOAuth2ClientConfiguration(AadB2cProperties properties, RestTemplateBuilder restTemplateBuilder) {
+    AadB2cOAuth2ClientConfiguration(AadB2cProperties properties, RestTemplateBuilder restTemplateBuilder) {
         this.properties = properties;
         this.restTemplateBuilder = restTemplateBuilder;
     }
 
-    /**
-     * Declare ClientRegistrationRepository bean.
-     * @return ClientRegistrationRepository bean
-     */
     @Bean
     @ConditionalOnMissingBean
-    public ClientRegistrationRepository clientRegistrationRepository() {
+    ClientRegistrationRepository clientRegistrationRepository() {
         Stream<ClientRegistration> clientRegistrationStream = properties.getUserFlows()
                                                                         .entrySet()
                                                                         .stream()
@@ -130,18 +120,10 @@ public class AadB2cOAuth2ClientConfiguration {
                                  .build();
     }
 
-    /**
-     * Declare OAuth2AuthorizedClientManager bean.
-     *
-     * @param clients the client registration repository
-     * @param authorizedClients the OAuth2 authorized client repository
-     * @return OAuth2AuthorizedClientManager bean
-     */
     @Bean
     @ConditionalOnMissingBean
-    public OAuth2AuthorizedClientManager authorizedClientManager(
-            ClientRegistrationRepository clients,
-            OAuth2AuthorizedClientRepository authorizedClients) {
+    OAuth2AuthorizedClientManager authorizedClientManager(ClientRegistrationRepository clients,
+                                                          OAuth2AuthorizedClientRepository authorizedClients) {
         OAuth2AuthorizedClientProvider authorizedClientProvider = OAuth2AuthorizedClientProviderBuilder.builder()
                 .authorizationCode()
                 .provider(azureRefreshTokenProvider())

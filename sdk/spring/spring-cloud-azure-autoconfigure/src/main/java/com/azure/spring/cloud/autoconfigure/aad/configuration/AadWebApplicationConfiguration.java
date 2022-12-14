@@ -22,52 +22,28 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import static com.azure.spring.cloud.autoconfigure.aad.AadWebApplicationHttpSecurityConfigurer.aadWebApplication;
 
-/**
- * Configure the necessary beans used for Azure AD authentication and authorization.
- */
 @Configuration(proxyBeanMethods = false)
 @Conditional(WebApplicationCondition.class)
-public class AadWebApplicationConfiguration {
+class AadWebApplicationConfiguration {
 
     private final RestTemplateBuilder restTemplateBuilder;
 
-    /**
-     * Creates a new instance of {@link AadWebApplicationConfiguration}.
-     *
-     * @param restTemplateBuilder the RestTemplateBuilder
-     *
-     */
-    public AadWebApplicationConfiguration(RestTemplateBuilder restTemplateBuilder) {
+    AadWebApplicationConfiguration(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplateBuilder = restTemplateBuilder;
     }
 
-    /**
-     * Declare OAuth2UserService bean.
-     *
-     * @param properties the Azure AD authentication properties
-     * @return OAuth2UserService bean
-     */
     @Bean
     @ConditionalOnMissingBean
-    public OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService(AadAuthenticationProperties properties) {
+    OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService(AadAuthenticationProperties properties) {
         return new AadOAuth2UserService(properties, restTemplateBuilder);
     }
 
-    /**
-     * The default security configuration of the web application, user can write another configuration bean to override it.
-     */
     @EnableWebSecurity
     @EnableMethodSecurity
     @ConditionalOnMissingBean(SecurityFilterChain.class)
     @ConditionalOnExpression("!'${spring.cloud.azure.active-directory.application-type}'.equalsIgnoreCase('web_application_and_resource_server')")
     static class DefaultAadWebSecurityConfiguration {
 
-        /**
-         * Create the {@link SecurityFilterChain} instance of the web application for Spring Security Filter Chain.
-         * @param http the {@link HttpSecurity} to use
-         * @return the {@link SecurityFilterChain} instance
-         * @throws Exception Configuration failed
-         */
         @Bean
         SecurityFilterChain defaultAadWebApplicationFilterChain(HttpSecurity http) throws Exception {
             http

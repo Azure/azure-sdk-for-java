@@ -26,7 +26,6 @@ import org.springframework.security.oauth2.jwt.JwtClaimValidator;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtTimestampValidator;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthenticationToken;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.util.StringUtils;
 
@@ -36,36 +35,19 @@ import java.util.List;
 import static com.azure.spring.cloud.autoconfigure.aad.AadResourceServerHttpSecurityConfigurer.aadResourceServer;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createRestTemplate;
 
-/**
- * <p>
- * The configuration will not be activated if no {@link BearerTokenAuthenticationToken} class provided.
- * </p>
- * By default, creating a JwtDecoder through JwkKeySetUri will be auto-configured.
- */
 @Configuration(proxyBeanMethods = false)
 @Conditional(ResourceServerCondition.class)
-public class AadResourceServerConfiguration {
+class AadResourceServerConfiguration {
 
     private final RestTemplateBuilder restTemplateBuilder;
 
-    /**
-     * Creates a new instance of {@link AadResourceServerConfiguration}.
-     *
-     * @param restTemplateBuilder the RestTemplateBuilder
-     */
-    public AadResourceServerConfiguration(RestTemplateBuilder restTemplateBuilder) {
+    AadResourceServerConfiguration(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplateBuilder = restTemplateBuilder;
     }
 
-    /**
-     * Use JwkKeySetUri to create JwtDecoder
-     *
-     * @param aadAuthenticationProperties the AAD properties
-     * @return Get the jwtDecoder instance
-     */
     @Bean
     @ConditionalOnMissingBean(JwtDecoder.class)
-    public JwtDecoder jwtDecoder(AadAuthenticationProperties aadAuthenticationProperties) {
+    JwtDecoder jwtDecoder(AadAuthenticationProperties aadAuthenticationProperties) {
         AadAuthorizationServerEndpoints identityEndpoints = new AadAuthorizationServerEndpoints(
             aadAuthenticationProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), aadAuthenticationProperties.getProfile().getTenantId());
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
@@ -77,12 +59,7 @@ public class AadResourceServerConfiguration {
         return nimbusJwtDecoder;
     }
 
-    /**
-     * Creates a default validator.
-     * @param aadAuthenticationProperties the AAD properties
-     * @return a default validator
-     */
-    public List<OAuth2TokenValidator<Jwt>> createDefaultValidator(AadAuthenticationProperties aadAuthenticationProperties) {
+    List<OAuth2TokenValidator<Jwt>> createDefaultValidator(AadAuthenticationProperties aadAuthenticationProperties) {
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
         List<String> validAudiences = new ArrayList<>();
         if (StringUtils.hasText(aadAuthenticationProperties.getAppIdUri())) {
