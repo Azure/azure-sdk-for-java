@@ -127,7 +127,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.7.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.7.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -258,7 +258,6 @@ Licensed under the MIT License.
       <version>4.5.1</version> <!-- {x-version-update;org.mockito:mockito-inline;external_dependency} -->
       <scope>test</scope>
     </dependency>
-
   </dependencies>
 
   <build>

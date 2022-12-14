@@ -5,58 +5,67 @@
 package com.azure.ai.anomalydetector.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Train result of a model including status, errors and diagnose info for model and variables. */
+/** Training result of a model including its status, errors and diagnostics information. */
 @Fluent
 public final class ModelInfo {
     /*
-     * An optional field, indicating how many previous points will be used to
-     * compute the anomaly score of the subsequent point.
+     * Source link to the input data to indicate an accessible Azure storage Uri,
+     * either pointed to an Azure blob storage folder, or pointed to a CSV file in
+     * Azure blob storage based on you data schema selection.
      */
-    @JsonProperty(value = "slidingWindow")
-    private Integer slidingWindow;
+    @JsonProperty(value = "dataSource", required = true)
+    private String dataSource;
 
     /*
-     * The alignPolicy property.
+     * Data schema of input data source: OneTable or MultiTable. The default
+     * DataSchema is OneTable.
      */
-    @JsonProperty(value = "alignPolicy")
-    private AlignPolicy alignPolicy;
+    @JsonProperty(value = "dataSchema")
+    private DataSchema dataSchema;
 
     /*
-     * Source link to the input variables. Each variable should be a csv file
-     * with two columns, `timestamp` and `value`. By default, the file name of
-     * the variable will be used as its variable name.
-     */
-    @JsonProperty(value = "source", required = true)
-    private String source;
-
-    /*
-     * A required field, indicating the start time of training data. Should be
-     * date-time.
+     * A required field, indicating the start time of training data, which should be
+     * date-time of ISO 8601 format.
      */
     @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
-     * A required field, indicating the end time of training data. Should be
-     * date-time.
+     * A required field, indicating the end time of training data, which should be
+     * date-time of ISO 8601 format.
      */
     @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
 
     /*
-     * An optional field. The name of the model whose maximum length is 24.
+     * An optional field. The display name of the model whose maximum length is 24
+     * characters.
      */
     @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
-     * Model training status.
+     * An optional field, indicating how many previous timestamps will be used to
+     * detect whether the timestamp is anomaly or not.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "slidingWindow")
+    private Integer slidingWindow;
+
+    /*
+     * An optional field, indicating the manner to align multiple variables.
+     */
+    @JsonProperty(value = "alignPolicy")
+    private AlignPolicy alignPolicy;
+
+    /*
+     * Model status. One of CREATED, RUNNING, READY, and FAILED.
+     */
+    @JsonProperty(value = "status")
     private ModelStatus status;
 
     /*
@@ -66,77 +75,64 @@ public final class ModelInfo {
     private List<ErrorResponse> errors;
 
     /*
-     * The diagnosticsInfo property.
+     * Diagnostics information to help inspect the states of model or variable.
      */
-    @JsonProperty(value = "diagnosticsInfo", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "diagnosticsInfo")
     private DiagnosticsInfo diagnosticsInfo;
 
     /**
-     * Get the slidingWindow property: An optional field, indicating how many previous points will be used to compute
-     * the anomaly score of the subsequent point.
+     * Creates an instance of ModelInfo class.
      *
-     * @return the slidingWindow value.
+     * @param dataSource the dataSource value to set.
+     * @param startTime the startTime value to set.
+     * @param endTime the endTime value to set.
      */
-    public Integer getSlidingWindow() {
-        return this.slidingWindow;
+    @JsonCreator
+    public ModelInfo(
+            @JsonProperty(value = "dataSource", required = true) String dataSource,
+            @JsonProperty(value = "startTime", required = true) OffsetDateTime startTime,
+            @JsonProperty(value = "endTime", required = true) OffsetDateTime endTime) {
+        this.dataSource = dataSource;
+        this.startTime = startTime;
+        this.endTime = endTime;
     }
 
     /**
-     * Set the slidingWindow property: An optional field, indicating how many previous points will be used to compute
-     * the anomaly score of the subsequent point.
+     * Get the dataSource property: Source link to the input data to indicate an accessible Azure storage Uri, either
+     * pointed to an Azure blob storage folder, or pointed to a CSV file in Azure blob storage based on you data schema
+     * selection.
      *
-     * @param slidingWindow the slidingWindow value to set.
+     * @return the dataSource value.
+     */
+    public String getDataSource() {
+        return this.dataSource;
+    }
+
+    /**
+     * Get the dataSchema property: Data schema of input data source: OneTable or MultiTable. The default DataSchema is
+     * OneTable.
+     *
+     * @return the dataSchema value.
+     */
+    public DataSchema getDataSchema() {
+        return this.dataSchema;
+    }
+
+    /**
+     * Set the dataSchema property: Data schema of input data source: OneTable or MultiTable. The default DataSchema is
+     * OneTable.
+     *
+     * @param dataSchema the dataSchema value to set.
      * @return the ModelInfo object itself.
      */
-    public ModelInfo setSlidingWindow(Integer slidingWindow) {
-        this.slidingWindow = slidingWindow;
+    public ModelInfo setDataSchema(DataSchema dataSchema) {
+        this.dataSchema = dataSchema;
         return this;
     }
 
     /**
-     * Get the alignPolicy property: The alignPolicy property.
-     *
-     * @return the alignPolicy value.
-     */
-    public AlignPolicy getAlignPolicy() {
-        return this.alignPolicy;
-    }
-
-    /**
-     * Set the alignPolicy property: The alignPolicy property.
-     *
-     * @param alignPolicy the alignPolicy value to set.
-     * @return the ModelInfo object itself.
-     */
-    public ModelInfo setAlignPolicy(AlignPolicy alignPolicy) {
-        this.alignPolicy = alignPolicy;
-        return this;
-    }
-
-    /**
-     * Get the source property: Source link to the input variables. Each variable should be a csv file with two columns,
-     * `timestamp` and `value`. By default, the file name of the variable will be used as its variable name.
-     *
-     * @return the source value.
-     */
-    public String getSource() {
-        return this.source;
-    }
-
-    /**
-     * Set the source property: Source link to the input variables. Each variable should be a csv file with two columns,
-     * `timestamp` and `value`. By default, the file name of the variable will be used as its variable name.
-     *
-     * @param source the source value to set.
-     * @return the ModelInfo object itself.
-     */
-    public ModelInfo setSource(String source) {
-        this.source = source;
-        return this;
-    }
-
-    /**
-     * Get the startTime property: A required field, indicating the start time of training data. Should be date-time.
+     * Get the startTime property: A required field, indicating the start time of training data, which should be
+     * date-time of ISO 8601 format.
      *
      * @return the startTime value.
      */
@@ -145,18 +141,8 @@ public final class ModelInfo {
     }
 
     /**
-     * Set the startTime property: A required field, indicating the start time of training data. Should be date-time.
-     *
-     * @param startTime the startTime value to set.
-     * @return the ModelInfo object itself.
-     */
-    public ModelInfo setStartTime(OffsetDateTime startTime) {
-        this.startTime = startTime;
-        return this;
-    }
-
-    /**
-     * Get the endTime property: A required field, indicating the end time of training data. Should be date-time.
+     * Get the endTime property: A required field, indicating the end time of training data, which should be date-time
+     * of ISO 8601 format.
      *
      * @return the endTime value.
      */
@@ -165,18 +151,8 @@ public final class ModelInfo {
     }
 
     /**
-     * Set the endTime property: A required field, indicating the end time of training data. Should be date-time.
-     *
-     * @param endTime the endTime value to set.
-     * @return the ModelInfo object itself.
-     */
-    public ModelInfo setEndTime(OffsetDateTime endTime) {
-        this.endTime = endTime;
-        return this;
-    }
-
-    /**
-     * Get the displayName property: An optional field. The name of the model whose maximum length is 24.
+     * Get the displayName property: An optional field. The display name of the model whose maximum length is 24
+     * characters.
      *
      * @return the displayName value.
      */
@@ -185,7 +161,8 @@ public final class ModelInfo {
     }
 
     /**
-     * Set the displayName property: An optional field. The name of the model whose maximum length is 24.
+     * Set the displayName property: An optional field. The display name of the model whose maximum length is 24
+     * characters.
      *
      * @param displayName the displayName value to set.
      * @return the ModelInfo object itself.
@@ -196,12 +173,65 @@ public final class ModelInfo {
     }
 
     /**
-     * Get the status property: Model training status.
+     * Get the slidingWindow property: An optional field, indicating how many previous timestamps will be used to detect
+     * whether the timestamp is anomaly or not.
+     *
+     * @return the slidingWindow value.
+     */
+    public Integer getSlidingWindow() {
+        return this.slidingWindow;
+    }
+
+    /**
+     * Set the slidingWindow property: An optional field, indicating how many previous timestamps will be used to detect
+     * whether the timestamp is anomaly or not.
+     *
+     * @param slidingWindow the slidingWindow value to set.
+     * @return the ModelInfo object itself.
+     */
+    public ModelInfo setSlidingWindow(Integer slidingWindow) {
+        this.slidingWindow = slidingWindow;
+        return this;
+    }
+
+    /**
+     * Get the alignPolicy property: An optional field, indicating the manner to align multiple variables.
+     *
+     * @return the alignPolicy value.
+     */
+    public AlignPolicy getAlignPolicy() {
+        return this.alignPolicy;
+    }
+
+    /**
+     * Set the alignPolicy property: An optional field, indicating the manner to align multiple variables.
+     *
+     * @param alignPolicy the alignPolicy value to set.
+     * @return the ModelInfo object itself.
+     */
+    public ModelInfo setAlignPolicy(AlignPolicy alignPolicy) {
+        this.alignPolicy = alignPolicy;
+        return this;
+    }
+
+    /**
+     * Get the status property: Model status. One of CREATED, RUNNING, READY, and FAILED.
      *
      * @return the status value.
      */
     public ModelStatus getStatus() {
         return this.status;
+    }
+
+    /**
+     * Set the status property: Model status. One of CREATED, RUNNING, READY, and FAILED.
+     *
+     * @param status the status value to set.
+     * @return the ModelInfo object itself.
+     */
+    public ModelInfo setStatus(ModelStatus status) {
+        this.status = status;
+        return this;
     }
 
     /**
@@ -214,11 +244,22 @@ public final class ModelInfo {
     }
 
     /**
-     * Get the diagnosticsInfo property: The diagnosticsInfo property.
+     * Get the diagnosticsInfo property: Diagnostics information to help inspect the states of model or variable.
      *
      * @return the diagnosticsInfo value.
      */
     public DiagnosticsInfo getDiagnosticsInfo() {
         return this.diagnosticsInfo;
+    }
+
+    /**
+     * Set the diagnosticsInfo property: Diagnostics information to help inspect the states of model or variable.
+     *
+     * @param diagnosticsInfo the diagnosticsInfo value to set.
+     * @return the ModelInfo object itself.
+     */
+    public ModelInfo setDiagnosticsInfo(DiagnosticsInfo diagnosticsInfo) {
+        this.diagnosticsInfo = diagnosticsInfo;
+        return this;
     }
 }

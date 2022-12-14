@@ -22,4 +22,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "FeatureCollection", value = GeoJsonFeatureCollection.class)
 })
 @Immutable
-public class GeoJsonObject {}
+public class GeoJsonObject {
+    /** Creates an instance of GeoJsonObject class. */
+    public GeoJsonObject() {}
+}

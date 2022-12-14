@@ -9,7 +9,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Permission information for the metadata call, includes apps/workspaces/resource the user didn't have access to. */
+/**
+ * Permission information.
+ *
+ * <p>Permission information for the metadata call, includes apps/workspaces/resource the user didn't have access to.
+ */
 @Fluent
 public final class MetadataPermissions {
     /*
@@ -19,15 +23,13 @@ public final class MetadataPermissions {
     private List<MetadataPermissionsWorkspacesItem> workspaces;
 
     /*
-     * The permission indication for the Azure resources on the metadata
-     * request.
+     * The permission indication for the Azure resources on the metadata request.
      */
     @JsonProperty(value = "resources")
     private List<MetadataPermissionsResourcesItem> resources;
 
     /*
-     * The permission indication for the Application Insights apps on the
-     * metadata request.
+     * The permission indication for the Application Insights apps on the metadata request.
      */
     @JsonProperty(value = "applications")
     private List<MetadataPermissionsApplicationsItem> applications;
