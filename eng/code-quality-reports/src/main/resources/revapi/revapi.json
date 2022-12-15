@@ -358,6 +358,18 @@
           "justification": "New method added to fix a bug."
         },
         {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "interface jakarta\\.jms\\..*",
+          "justification": "They are external interfaces."
+        },
+        {
+          "regex": true,
+          "code": "java.class.externalClassExposedInAPI",
+          "new": "class jakarta\\.jms\\..*",
+          "justification": "They are external classes."
+        },
+        {
           "code": "java.missing.newSuperType",
           "old": "class com.azure.messaging.eventhubs.EventData",
           "new": "class com.azure.messaging.eventhubs.EventData",
