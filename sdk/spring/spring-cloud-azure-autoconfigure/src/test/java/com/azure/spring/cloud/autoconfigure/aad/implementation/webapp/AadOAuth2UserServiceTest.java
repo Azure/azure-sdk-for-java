@@ -55,7 +55,6 @@ class AadOAuth2UserServiceTest {
     private Map<String, Object> idTokenClaims = new HashMap<>();
     private GraphClient graphClient;
     private AadAuthenticationProperties properties;
-
     private static final String DEFAULT_OIDC_USER = "defaultOidcUser";
 
 
@@ -82,12 +81,12 @@ class AadOAuth2UserServiceTest {
         idTokenClaims.put(StandardClaimNames.EMAIL, "user1@example.com");
 
         this.idToken = new OidcIdToken("access-token", Instant.MIN, Instant.MAX, idTokenClaims);
+        aadOAuth2UserService = new AadOAuth2UserService(properties, graphClient, null);
 
     }
 
     @Test
     void loadUserWhenUserRequestIsNullThenThrowIllegalArgumentException() {
-        aadOAuth2UserService = new AadOAuth2UserService(properties, graphClient, null);
         assertThatIllegalArgumentException().isThrownBy(() -> this.aadOAuth2UserService.loadUser(null));
     }
 
@@ -105,7 +104,6 @@ class AadOAuth2UserServiceTest {
         RequestContextHolder.setRequestAttributes(mockAttributes);
         SecurityContextHolder.getContext().setAuthentication(mockAuthentication);
 
-        aadOAuth2UserService = new AadOAuth2UserService(properties, graphClient, null);
         ClientRegistration clientRegistration = this.clientRegistrationBuilder
             .build();
 
@@ -119,13 +117,15 @@ class AadOAuth2UserServiceTest {
 
     @Test
     void loadUserWithDefaultAuthority() {
-        aadOAuth2UserService = new AadOAuth2UserService(properties, graphClient, null);
-
+        // given
         ClientRegistration clientRegistration = this.clientRegistrationBuilder
             .build();
+
+        // when
         OidcUser user = aadOAuth2UserService
             .getUser(new OidcUserRequest(clientRegistration, this.accessToken, this.idToken));
 
+        // then
         assertThat(user.getUserInfo()).isNull();
         assertThat(user.getClaims()).isEqualTo(idTokenClaims);
         assertThat(user.getAuthorities().size()).isEqualTo(1);
@@ -134,16 +134,47 @@ class AadOAuth2UserServiceTest {
     }
 
     @Test
+    void loadUserWhenCustomUserNameAttributeNameThenGetNameReturnsCustomUserName() {
+        // given
+        ClientRegistration clientRegistration = this.clientRegistrationBuilder
+            .userNameAttributeName(StandardClaimNames.EMAIL)
+            .build();
+
+        // when
+        OidcUser user = this.aadOAuth2UserService
+            .getUser(new OidcUserRequest(clientRegistration, this.accessToken, this.idToken));
+
+        // then
+        assertThat(user.getName()).isEqualTo("user1@example.com");
+    }
+
+    @Test
+    void loadUserWithDefaultUserNameAttributeName() {
+
+        // given
+        ClientRegistration clientRegistration = this.clientRegistrationBuilder
+            .build();
+
+        // when
+        OidcUser user = this.aadOAuth2UserService
+            .getUser(new OidcUserRequest(clientRegistration, this.accessToken, this.idToken));
+
+        // then
+        assertThat(user.getName()).isEqualTo("user1");
+    }
+
+    @Test
     void loadUserWithCustomAuthorities() {
 
+        // given
         idTokenClaims.put("roles", Stream.of("role1", "role2")
-                                         .collect(Collectors.toList()));
+            .collect(Collectors.toList()));
 
         GroupInformation groupInformation = new GroupInformation();
         groupInformation.setGroupsIds(Stream.of("groupId1", "groupId2")
-                                            .collect(Collectors.toSet()));
+            .collect(Collectors.toSet()));
         groupInformation.setGroupsNames(Stream.of("groupName1", "groupName2")
-                                               .collect(Collectors.toSet()));
+            .collect(Collectors.toSet()));
         graphClient = mock(GraphClient.class);
         when(graphClient.getGroupInformation(anyString())).thenReturn(groupInformation);
 
@@ -153,52 +184,29 @@ class AadOAuth2UserServiceTest {
         properties.getUserGroup().setAllowedGroupIds(Stream.of("groupId1", "groupId2")
             .collect(Collectors.toSet()));
 
-        aadOAuth2UserService = new AadOAuth2UserService(properties, graphClient, null);
+        AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(properties, graphClient, null);
 
         ClientRegistration clientRegistration = this.clientRegistrationBuilder
             .build();
 
-        OidcUser user = this.aadOAuth2UserService
+        // when
+        OidcUser user = aadOAuth2UserService
             .getUser(new OidcUserRequest(clientRegistration, this.accessToken,
                 new OidcIdToken("access-token", Instant.MIN, Instant.MAX, idTokenClaims)));
 
+        // then
         assertThat(user.getUserInfo()).isNull();
         assertThat(user.getClaims()).isEqualTo(idTokenClaims);
         assertThat(user.getAuthorities().size()).isEqualTo(6);
         Set<SimpleGrantedAuthority> simpleGrantedAuthorities
-                                    = Stream.of(new SimpleGrantedAuthority("APPROLE_role1"),
-                                            new SimpleGrantedAuthority("APPROLE_role2"),
-                                            new SimpleGrantedAuthority("ROLE_groupId1"),
-                                            new SimpleGrantedAuthority("ROLE_groupId2"),
-                                            new SimpleGrantedAuthority("ROLE_groupName1"),
-                                            new SimpleGrantedAuthority("ROLE_groupName2"))
-                                        .collect(Collectors.toSet());
+            = Stream.of(new SimpleGrantedAuthority("APPROLE_role1"),
+                new SimpleGrantedAuthority("APPROLE_role2"),
+                new SimpleGrantedAuthority("ROLE_groupId1"),
+                new SimpleGrantedAuthority("ROLE_groupId2"),
+                new SimpleGrantedAuthority("ROLE_groupName1"),
+                new SimpleGrantedAuthority("ROLE_groupName2"))
+            .collect(Collectors.toSet());
         assertThat(user.getAuthorities()).isEqualTo(simpleGrantedAuthorities);
-    }
-
-    @Test
-    void loadUserWhenCustomUserNameAttributeNameThenGetNameReturnsCustomUserName() {
-        aadOAuth2UserService = new AadOAuth2UserService(properties, graphClient, null);
-
-        ClientRegistration clientRegistration = this.clientRegistrationBuilder
-            .userNameAttributeName(StandardClaimNames.EMAIL)
-            .build();
-
-        OidcUser user = this.aadOAuth2UserService
-            .getUser(new OidcUserRequest(clientRegistration, this.accessToken, this.idToken));
-        assertThat(user.getName()).isEqualTo("user1@example.com");
-    }
-
-    @Test
-    void loadUserWithDefaultUserNameAttributeName() {
-        aadOAuth2UserService = new AadOAuth2UserService(properties, graphClient, null);
-
-        ClientRegistration clientRegistration = this.clientRegistrationBuilder
-            .build();
-
-        OidcUser user = this.aadOAuth2UserService
-            .getUser(new OidcUserRequest(clientRegistration, this.accessToken, this.idToken));
-        assertThat(user.getName()).isEqualTo("user1");
     }
 
     static class TestOAuth2AccessTokens {
@@ -206,12 +214,12 @@ class AadOAuth2UserServiceTest {
         private TestOAuth2AccessTokens() {
         }
 
-        public static OAuth2AccessToken noScopes() {
+        static OAuth2AccessToken noScopes() {
             return new OAuth2AccessToken(OAuth2AccessToken.TokenType.BEARER, "no-scopes", Instant.now(),
                 Instant.now().plus(Duration.ofDays(1)));
         }
 
-        public static OAuth2AccessToken scopes(String... scopes) {
+        static OAuth2AccessToken scopes(String... scopes) {
             return new OAuth2AccessToken(OAuth2AccessToken.TokenType.BEARER, "scopes", Instant.now(),
                 Instant.now().plus(Duration.ofDays(1)), new HashSet<>(Arrays.asList(scopes)));
         }
