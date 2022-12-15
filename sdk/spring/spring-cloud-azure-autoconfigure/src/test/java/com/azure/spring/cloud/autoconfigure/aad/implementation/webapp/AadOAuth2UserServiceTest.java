@@ -30,9 +30,10 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpSession;
 import java.time.Instant;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -135,17 +136,22 @@ public class AadOAuth2UserServiceTest {
     @Test
     void loadUserWithCustomAuthorities() {
 
-        idTokenClaims.put("roles", List.of("role1", "role2"));
+        idTokenClaims.put("roles", Stream.of("role1", "role2")
+                                         .collect(Collectors.toList()));
 
         GroupInformation groupInformation = new GroupInformation();
-        groupInformation.setGroupsIds(Set.of("groupId1", "groupId2"));
-        groupInformation.setGroupsNames(Set.of("groupName1", "groupName2"));
+        groupInformation.setGroupsIds(Stream.of("groupId1", "groupId2")
+                                            .collect(Collectors.toSet()));
+        groupInformation.setGroupsNames(Stream.of("groupName1", "groupName2")
+                                               .collect(Collectors.toSet()));
         graphClient = mock(GraphClient.class);
         when(graphClient.getGroupInformation(anyString())).thenReturn(groupInformation);
 
         properties = new AadAuthenticationProperties();
-        properties.getUserGroup().setAllowedGroupNames(List.of("groupName1", "groupName2"));
-        properties.getUserGroup().setAllowedGroupIds(Set.of("groupId1", "groupId2"));
+        properties.getUserGroup().setAllowedGroupNames(Stream.of("groupName1", "groupName2")
+            .collect(Collectors.toList()));
+        properties.getUserGroup().setAllowedGroupIds(Stream.of("groupId1", "groupId2")
+            .collect(Collectors.toSet()));
 
         aadOAuth2UserService = new AadOAuth2UserService(properties, graphClient, null);
 
@@ -160,13 +166,13 @@ public class AadOAuth2UserServiceTest {
         assertThat(user.getClaims()).isEqualTo(idTokenClaims);
         assertThat(user.getAuthorities().size()).isEqualTo(6);
         Set<SimpleGrantedAuthority> simpleGrantedAuthorities
-            = Set.of(new SimpleGrantedAuthority("APPROLE_role1"),
-            new SimpleGrantedAuthority("APPROLE_role2"),
-            new SimpleGrantedAuthority("ROLE_groupId1"),
-            new SimpleGrantedAuthority("ROLE_groupId2"),
-            new SimpleGrantedAuthority("ROLE_groupName1"),
-            new SimpleGrantedAuthority("ROLE_groupName2")
-        );
+                                    = Stream.of(new SimpleGrantedAuthority("APPROLE_role1"),
+                                            new SimpleGrantedAuthority("APPROLE_role2"),
+                                            new SimpleGrantedAuthority("ROLE_groupId1"),
+                                            new SimpleGrantedAuthority("ROLE_groupId2"),
+                                            new SimpleGrantedAuthority("ROLE_groupName1"),
+                                            new SimpleGrantedAuthority("ROLE_groupName2"))
+                                        .collect(Collectors.toSet());
         assertThat(user.getAuthorities()).isEqualTo(simpleGrantedAuthorities);
     }
 
