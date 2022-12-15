@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.aad;
+package com.azure.spring.cloud.autoconfigure.aad.configuration;
 
-import com.azure.spring.cloud.autoconfigure.aad.configuration.AadPropertiesConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.filter.AadAppRoleStatelessAuthenticationFilter;
 import com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter;
 import com.azure.spring.cloud.autoconfigure.aad.filter.UserPrincipalManager;
@@ -48,15 +47,8 @@ public class AadAuthenticationFilterAutoConfiguration {
     private final AadAuthorizationServerEndpoints endpoints;
     private final RestTemplateBuilder restTemplateBuilder;
 
-    /**
-     * Creates a new instance of {@link AadAuthenticationFilterAutoConfiguration}.
-     *
-     * @param properties the AAD authentication properties
-     * @param restTemplateBuilder the RestTemplateBuilder
-     */
-    public AadAuthenticationFilterAutoConfiguration(
-            AadAuthenticationProperties properties,
-            RestTemplateBuilder restTemplateBuilder) {
+    AadAuthenticationFilterAutoConfiguration(AadAuthenticationProperties properties,
+                                             RestTemplateBuilder restTemplateBuilder) {
         this.properties = properties;
         this.restTemplateBuilder = restTemplateBuilder;
         this.endpoints = new AadAuthorizationServerEndpoints(
@@ -64,19 +56,10 @@ public class AadAuthenticationFilterAutoConfiguration {
                 properties.getProfile().getTenantId());
     }
 
-    /**
-     * Declare AADAuthenticationFilter bean.
-     *
-     * @param resourceRetriever the resource retriever
-     * @param jwkSetCache the JWK set cache
-     * @return AADAuthenticationFilter bean
-     */
     @Bean
     @ConditionalOnMissingBean(AadAuthenticationFilter.class)
     @ConditionalOnExpression("${spring.cloud.azure.active-directory.session-stateless:false} == false")
-    public AadAuthenticationFilter aadAuthenticationFilter(
-            ResourceRetriever resourceRetriever,
-            JWKSetCache jwkSetCache) {
+    AadAuthenticationFilter aadAuthenticationFilter(ResourceRetriever resourceRetriever, JWKSetCache jwkSetCache) {
         LOGGER.info("AadAuthenticationFilter Constructor.");
         return new AadAuthenticationFilter(
             properties,
@@ -87,16 +70,10 @@ public class AadAuthenticationFilterAutoConfiguration {
         );
     }
 
-    /**
-     * Declare AADAppRoleStatelessAuthenticationFilter bean.
-     *
-     * @param resourceRetriever the resource retriever
-     * @return AADAppRoleStatelessAuthenticationFilter bean
-     */
     @Bean
     @ConditionalOnMissingBean(AadAppRoleStatelessAuthenticationFilter.class)
     @ConditionalOnExpression("${spring.cloud.azure.active-directory.session-stateless:false} == true")
-    public AadAppRoleStatelessAuthenticationFilter aadStatelessAuthFilter(ResourceRetriever resourceRetriever) {
+    AadAppRoleStatelessAuthenticationFilter aadStatelessAuthFilter(ResourceRetriever resourceRetriever) {
         LOGGER.info("Creating AadStatelessAuthFilter bean.");
         return new AadAppRoleStatelessAuthenticationFilter(
             new UserPrincipalManager(
@@ -108,14 +85,9 @@ public class AadAuthenticationFilterAutoConfiguration {
         );
     }
 
-    /**
-     * Declare JWT ResourceRetriever bean.
-     *
-     * @return JWT ResourceRetriever bean
-     */
     @Bean
     @ConditionalOnMissingBean(ResourceRetriever.class)
-    public ResourceRetriever jwtResourceRetriever() {
+    ResourceRetriever jwtResourceRetriever() {
         return new RestOperationsResourceRetriever(restTemplateBuilder);
     }
 
@@ -126,7 +98,7 @@ public class AadAuthenticationFilterAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean(JWKSetCache.class)
-    public JWKSetCache jwkSetCache() {
+    JWKSetCache jwkSetCache() {
         long lifespan = properties.getJwkSetCacheLifespan().toMillis();
         long refreshTime = properties.getJwkSetCacheRefreshTime().toMillis();
         return new DefaultJWKSetCache(lifespan, refreshTime, TimeUnit.MILLISECONDS);

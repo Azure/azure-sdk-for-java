@@ -1,14 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.autoconfigure.aadb2c;
+package com.azure.spring.cloud.autoconfigure.aadb2c.configuration;
 
 import com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadJwtClaimNames;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AadIssuerJwsKeySelector;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.RestOperationsResourceRetriever;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.validator.AadJwtIssuerValidator;
-import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration;
-import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cPropertiesConfiguration;
+import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cTrustedIssuerRepository;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jose.util.ResourceRetriever;
@@ -51,49 +50,26 @@ public class AadB2cResourceServerAutoConfiguration {
     private final AadB2cProperties properties;
     private final RestTemplateBuilder restTemplateBuilder;
 
-    /**
-     * Creates a new instance of {@link AadB2cResourceServerAutoConfiguration}.
-     *
-     * @param properties the Azure AD B2C properties
-     * @param restTemplateBuilder the restTemplateBuilder
-     */
-    public AadB2cResourceServerAutoConfiguration(AadB2cProperties properties, RestTemplateBuilder restTemplateBuilder) {
+    AadB2cResourceServerAutoConfiguration(AadB2cProperties properties, RestTemplateBuilder restTemplateBuilder) {
         this.properties = properties;
         this.restTemplateBuilder = restTemplateBuilder;
     }
 
-    /**
-     * Declare AADTrustedIssuerRepository bean.
-     *
-     * @return AADTrustedIssuerRepository bean
-     */
     @Bean
     @ConditionalOnMissingBean
-    public AadTrustedIssuerRepository trustedIssuerRepository() {
+    AadTrustedIssuerRepository trustedIssuerRepository() {
         return new AadB2cTrustedIssuerRepository(properties);
     }
 
-    /**
-     * Declare JWT ResourceRetriever bean.
-     *
-     * @return JWT ResourceRetriever bean
-     */
     @Bean
     @ConditionalOnMissingBean(ResourceRetriever.class)
-    public ResourceRetriever jwtResourceRetriever() {
+    ResourceRetriever jwtResourceRetriever() {
         return new RestOperationsResourceRetriever(restTemplateBuilder);
     }
 
-    /**
-     * Declare JWTClaimsSetAwareJWSKeySelector bean.
-     *
-     * @param aadTrustedIssuerRepository the AAD trusted issuer repository
-     * @param resourceRetriever the resource retriever
-     * @return JWTClaimsSetAwareJWSKeySelector bean
-     */
     @Bean
     @ConditionalOnMissingBean
-    public JWTClaimsSetAwareJWSKeySelector<SecurityContext> aadIssuerJwsKeySelector(
+    JWTClaimsSetAwareJWSKeySelector<SecurityContext> aadIssuerJwsKeySelector(
         AadTrustedIssuerRepository aadTrustedIssuerRepository,
         ResourceRetriever resourceRetriever) {
         return new AadIssuerJwsKeySelector(
@@ -102,32 +78,18 @@ public class AadB2cResourceServerAutoConfiguration {
             resourceRetriever);
     }
 
-    /**
-     * Declare JWTProcessor bean.
-     *
-     * @param keySelector the JWT claims set aware JWS key selector
-     * @return JWTProcessor bean
-     */
     @Bean
     @ConditionalOnMissingBean
-    public JWTProcessor<SecurityContext> jwtProcessor(
-        JWTClaimsSetAwareJWSKeySelector<SecurityContext> keySelector) {
+    JWTProcessor<SecurityContext> jwtProcessor(JWTClaimsSetAwareJWSKeySelector<SecurityContext> keySelector) {
         ConfigurableJWTProcessor<SecurityContext> jwtProcessor = new DefaultJWTProcessor<>();
         jwtProcessor.setJWTClaimsSetAwareJWSKeySelector(keySelector);
         return jwtProcessor;
     }
 
-    /**
-     * Declare JwtDecoder bean.
-     *
-     * @param jwtProcessor the JWT processor
-     * @param trustedIssuerRepository the AAD trusted issuer repository
-     * @return JwtDecoder bean
-     */
     @Bean
     @ConditionalOnMissingBean
-    public JwtDecoder jwtDecoder(JWTProcessor<SecurityContext> jwtProcessor,
-                                 AadTrustedIssuerRepository trustedIssuerRepository) {
+    JwtDecoder jwtDecoder(JWTProcessor<SecurityContext> jwtProcessor,
+                          AadTrustedIssuerRepository trustedIssuerRepository) {
         NimbusJwtDecoder decoder = new NimbusJwtDecoder(jwtProcessor);
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
         List<String> validAudiences = new ArrayList<>();

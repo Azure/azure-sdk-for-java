@@ -12,35 +12,23 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * Configure Azure Active Directory related property beans
- */
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties
-public class AadPropertiesConfiguration {
+class AadPropertiesConfiguration {
 
     /**
      * Azure Global Properties.
      */
     private final AzureGlobalProperties global;
 
-    /**
-     *
-     * @param global Azure global properties.
-     */
     AadPropertiesConfiguration(AzureGlobalProperties global) {
         this.global = global;
     }
 
-    /**
-     * AAD Authentication Properties.
-     *
-     * @return AAd Authentication Properties Bean
-     */
     @Bean
     @ConfigurationProperties(AadAuthenticationProperties.PREFIX)
     @ConditionalOnMissingBean
-    public AadAuthenticationProperties aadAuthenticationProperties() {
+    AadAuthenticationProperties aadAuthenticationProperties() {
         AadAuthenticationProperties aad = new AadAuthenticationProperties();
         aad.getProfile().setCloudType(global.getProfile().getCloudType());
         aad.getProfile().getEnvironment().setActiveDirectoryEndpoint(
@@ -55,12 +43,6 @@ public class AadPropertiesConfiguration {
         return aad;
     }
 
-
-    /**
-     * AAD Resource Server Properties.
-     *
-     * @return AAd Resource Server Properties Bean
-     */
     @Bean
     @ConfigurationProperties(AadResourceServerProperties.PREFIX)
     @ConditionalOnMissingBean

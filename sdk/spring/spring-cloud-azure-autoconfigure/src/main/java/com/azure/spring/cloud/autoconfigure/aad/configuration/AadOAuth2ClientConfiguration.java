@@ -16,14 +16,12 @@ import com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AadOidcIdT
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadProfileProperties;
-import com.nimbusds.jose.jwk.JWK;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer;
 import org.springframework.security.oauth2.client.JwtBearerOAuth2AuthorizedClientProvider;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
@@ -38,62 +36,33 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtDecoderFactory;
-import org.springframework.web.client.RestTemplate;
 
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createOAuth2AccessTokenResponseClientRestTemplate;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createRestTemplate;
 
-/**
- * <p>
- * The configuration will not be activated if no {@link ClientRegistration} classes provided.
- * </p>
- */
 @Configuration(proxyBeanMethods = false)
 @Conditional(ClientRegistrationCondition.class)
-public class AadOAuth2ClientConfiguration {
+class AadOAuth2ClientConfiguration {
 
     private final RestTemplateBuilder restTemplateBuilder;
 
-    /**
-     * Creates a new instance of {@link AadOAuth2ClientConfiguration}.
-     *
-     * @param restTemplateBuilder the RestTemplateBuilder
-     */
-    public AadOAuth2ClientConfiguration(RestTemplateBuilder restTemplateBuilder) {
+    AadOAuth2ClientConfiguration(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplateBuilder = restTemplateBuilder;
     }
 
-    /**
-     * Declare ClientRegistrationRepository bean.
-     *
-     * @param properties the AAD authentication properties
-     * @return ClientRegistrationRepository bean
-     */
     @Bean
     @ConditionalOnMissingBean
-    public ClientRegistrationRepository clientRegistrationRepository(AadAuthenticationProperties properties) {
+    ClientRegistrationRepository clientRegistrationRepository(AadAuthenticationProperties properties) {
         return new AadClientRegistrationRepository(properties);
     }
 
-    /**
-     * Declare OAuth2AuthorizedClientRepository bean.
-     *
-     * @return OAuth2AuthorizedClientRepository bean
-     */
     @Bean
     @ConditionalOnMissingBean
-    public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository() {
+    OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository() {
         return new JacksonHttpSessionOAuth2AuthorizedClientRepository();
     }
 
-    /**
-     * Return the resolver to resolve a {@link JWK} through the {@link ClientRegistration}.
-     *
-     * @param properties the AAD authentication properties
-     * @return the function that will resolve out the JWK.
-     */
     @Bean
     @ConditionalOnMissingBean
     @Conditional(ClientCertificatePropertiesCondition.class)
@@ -103,16 +72,6 @@ public class AadOAuth2ClientConfiguration {
                 properties.getCredential().getClientCertificatePassword());
     }
 
-    /**
-     * Declare OAuth2AuthorizedClientManager bean.
-     *
-     * @param clientRegistrations the client registration repository
-     * @param authorizedClients the OAuth2 authorized client repository
-     * @param refreshTokenProvider the refresh token grant type provider
-     * @param jwtBearerProvider the jwt bearer grant type provider
-     * @param jwkResolvers the {@link JWK} resolver
-     * @return OAuth2AuthorizedClientManager bean
-     */
     @Bean
     @ConditionalOnMissingBean
     OAuth2AuthorizedClientManager authorizedClientManager(
@@ -175,13 +134,6 @@ public class AadOAuth2ClientConfiguration {
         return provider;
     }
 
-    /**
-     * Provide {@link JwtDecoderFactory} used in {@link OAuth2LoginConfigurer#init}. The {@link JwtDecoder} created by
-     * current {@link JwtDecoderFactory} will use {@link RestTemplate} created by {@link RestTemplateBuilder} bean.
-     *
-     * @param properties the AadAuthenticationProperties
-     * @return JwtDecoderFactory
-     */
     @Bean
     @ConditionalOnMissingBean
     JwtDecoderFactory<ClientRegistration> azureAdJwtDecoderFactory(AadAuthenticationProperties properties) {

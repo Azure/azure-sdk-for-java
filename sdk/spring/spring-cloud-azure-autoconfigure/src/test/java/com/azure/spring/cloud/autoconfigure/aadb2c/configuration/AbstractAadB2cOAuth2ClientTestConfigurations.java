@@ -1,16 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.autoconfigure.aadb2c.implementation;
+package com.azure.spring.cloud.autoconfigure.aadb2c.configuration;
 
-import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration;
+import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cConstants;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
-import org.springframework.context.annotation.Import;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -20,17 +17,6 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import java.util.Map;
 
 abstract class AbstractAadB2cOAuth2ClientTestConfigurations {
-
-    @EnableWebSecurity
-    @Import(OAuth2ClientAutoConfiguration.class)
-    static class WebOAuth2ClientApp {
-
-    }
-
-    @EnableWebSecurity
-    static class WebResourceServerApp {
-
-    }
 
     abstract WebApplicationContextRunner getDefaultContextRunner();
 
