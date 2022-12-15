@@ -7,7 +7,10 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ConflictException;
+import com.azure.cosmos.implementation.PreconditionFailedException;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputResponse;
@@ -97,6 +100,13 @@ public class CosmosTemplateIT {
     private static final String PRECONDITION_IS_NOT_MET = "is not met";
 
     private static final String WRONG_ETAG = "WRONG_ETAG";
+
+    private static final CosmosPatchOperations operations = CosmosPatchOperations
+        .create()
+        .replace("/age", 25);
+
+    private static final CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
+
 
     @ClassRule
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
@@ -265,6 +275,27 @@ public class CosmosTemplateIT {
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
 
         assertEquals(person, updated);
+    }
+
+    @Test
+    public void testPatch() {
+        insertedPerson = cosmosTemplate.patch(containerName, insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), operations, Person.class);
+        Person patchedPerson = cosmosTemplate.findById(containerName, insertedPerson.getId(), Person.class);
+        assertEquals(insertedPerson.getAge(), patchedPerson.getAge());
+    }
+
+    @Test
+    public void testPatchPreConditionFail() {
+        try {
+            options.setFilterPredicate("FROM person p WHERE p.lastName = 'dummy'");
+            insertedPerson = cosmosTemplate.patch(containerName, insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), operations, Person.class,options);
+            Person patchedPerson = cosmosTemplate.findById(containerName, insertedPerson.getId(), Person.class);
+            assertEquals(insertedPerson.getAge(), patchedPerson.getAge());
+            fail();
+        } catch (CosmosAccessException ex) {
+            assertThat(ex.getCosmosException()).isInstanceOf(PreconditionFailedException.class);
+            assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        }
     }
 
     @Test
