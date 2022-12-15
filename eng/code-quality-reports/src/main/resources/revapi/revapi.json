@@ -78,7 +78,7 @@
           },
           {
             "matcher": "java-package",
-            "match": "/javax\\.(jms|servlet)(\\..*)?/"
+            "match": "/jakarta\\.(jms|servlet)(\\..*)?/"
           },
           {
             "matcher": "java-package",
@@ -356,18 +356,6 @@
           "code": "java.method.added",
           "new": "method void com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cOidcLoginConfigurer::<init>(org.springframework.security.web.authentication.logout.LogoutSuccessHandler, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver, org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient<org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest>, org.springframework.boot.web.client.RestTemplateBuilder)",
           "justification": "New method added to fix a bug."
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "interface jakarta\\.jms\\..*",
-          "justification": "They are external interfaces."
-        },
-        {
-          "regex": true,
-          "code": "java.class.externalClassExposedInAPI",
-          "new": "class jakarta\\.jms\\..*",
-          "justification": "They are external classes."
         },
         {
           "code": "java.missing.newSuperType",
