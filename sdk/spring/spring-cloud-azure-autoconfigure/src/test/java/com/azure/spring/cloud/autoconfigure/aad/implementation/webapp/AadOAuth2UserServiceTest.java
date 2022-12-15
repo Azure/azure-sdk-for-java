@@ -10,7 +10,9 @@ import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProp
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.AuthenticationMethod;
@@ -20,10 +22,12 @@ import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.core.oidc.StandardClaimNames;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +37,7 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -47,6 +52,9 @@ public class AadOAuth2UserServiceTest {
     private Map<String, Object> idTokenClaims = new HashMap<>();
     private GraphClient graphClient;
     private AadAuthenticationProperties properties;
+
+    private static final String DEFAULT_OIDC_USER = "defaultOidcUser";
+
 
     @BeforeEach
     void setup() {
@@ -80,6 +88,32 @@ public class AadOAuth2UserServiceTest {
     void loadUserWhenUserRequestIsNullThenThrowIllegalArgumentException() {
         aadOAuth2UserService = new AadOAuth2UserService(properties, graphClient, null);
         assertThatIllegalArgumentException().isThrownBy(() -> this.aadOAuth2UserService.loadUser(null));
+    }
+
+    @Test
+    void loadUserFromSession() {
+        //given
+        ServletRequestAttributes mockAttributes = mock(ServletRequestAttributes.class, RETURNS_DEEP_STUBS);
+        DefaultOidcUser mockDefaultOidcUser = mock(DefaultOidcUser.class);
+        HttpSession mockHttpSession = mock(HttpSession.class);
+        when(mockHttpSession.getAttribute(DEFAULT_OIDC_USER)).thenReturn(mockDefaultOidcUser);
+        Authentication mockAuthentication = mock(Authentication.class);
+
+        when(mockAttributes.getRequest().getSession(true)).thenReturn(mockHttpSession);
+
+        RequestContextHolder.setRequestAttributes(mockAttributes);
+        SecurityContextHolder.getContext().setAuthentication(mockAuthentication);
+
+        aadOAuth2UserService = new AadOAuth2UserService(properties, graphClient, null);
+        ClientRegistration clientRegistration = this.clientRegistrationBuilder
+            .build();
+
+        // when
+        OidcUser user = aadOAuth2UserService
+            .loadUser(new OidcUserRequest(clientRegistration, this.accessToken, this.idToken));
+
+        // then
+        assertThat(user).isEqualTo(mockDefaultOidcUser);
     }
 
     @Test
