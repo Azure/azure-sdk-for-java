@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Bean;
  */
 @ConditionalOnProperty(value = "spring.cloud.azure.active-directory.b2c.enabled", havingValue = "true")
 @EnableConfigurationProperties
-public class AadB2cPropertiesConfiguration {
+class AadB2cPropertiesConfiguration {
 
     /**
      * Azure Global Properties.

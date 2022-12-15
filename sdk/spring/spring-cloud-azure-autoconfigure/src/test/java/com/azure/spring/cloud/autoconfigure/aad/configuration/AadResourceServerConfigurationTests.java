@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aad.configuration;
 
-import com.azure.spring.cloud.autoconfigure.aad.AadAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.AadResourceServerHttpSecurityConfigurer;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;

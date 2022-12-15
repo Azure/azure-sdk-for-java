@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.autoconfigure.aadb2c;
+package com.azure.spring.cloud.autoconfigure.aadb2c.configuration;
 
-import com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration;
-import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration;
-import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cPropertiesConfiguration;
+import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAuthorizationRequestResolver;
+import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cLogoutSuccessHandler;
+import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cOidcLoginConfigurer;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cConditions;
 import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cOidcIdTokenDecoderFactory;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
@@ -16,12 +16,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtDecoderFactory;
-import org.springframework.web.client.RestTemplate;
 
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createRestTemplate;
 
@@ -38,59 +35,30 @@ public class AadB2cAutoConfiguration {
 
     private final RestTemplateBuilder restTemplateBuilder;
 
-    /**
-     * Creates a new instance of {@link AadOAuth2ClientConfiguration}.
-     *
-     * @param restTemplateBuilder the RestTemplateBuilder
-     */
-    public AadB2cAutoConfiguration(RestTemplateBuilder restTemplateBuilder) {
+    AadB2cAutoConfiguration(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplateBuilder = restTemplateBuilder;
     }
 
-    /**
-     * Declare AADB2CAuthorizationRequestResolver bean.
-     * @param repository The clientRegistrationRepository,
-     * @param properties The AADB2CProperties,
-     * @return AADB2CAuthorizationRequestResolver bean
-     */
     @Bean
     @ConditionalOnMissingBean
-    public AadB2cAuthorizationRequestResolver b2cOAuth2AuthorizationRequestResolver(
-            ClientRegistrationRepository repository, AadB2cProperties properties) {
+    AadB2cAuthorizationRequestResolver b2cOAuth2AuthorizationRequestResolver(ClientRegistrationRepository repository,
+                                                                             AadB2cProperties properties) {
         return new AadB2cAuthorizationRequestResolver(repository, properties);
     }
 
-    /**
-     * Declare AADB2CLogoutSuccessHandler bean.
-     * @param properties The AADB2CProperties
-     * @return AADB2CLogoutSuccessHandler bean
-     */
     @Bean
     @ConditionalOnMissingBean
-    public AadB2cLogoutSuccessHandler b2cLogoutSuccessHandler(AadB2cProperties properties) {
+    AadB2cLogoutSuccessHandler b2cLogoutSuccessHandler(AadB2cProperties properties) {
         return new AadB2cLogoutSuccessHandler(properties);
     }
 
-    /**
-     * Declare AADB2COidcLoginConfigurer bean.
-     *
-     * @param handler the AAD B2C logout success handler
-     * @param resolver the AAD B2C authorization request resolver
-     * @return AADB2COidcLoginConfigurer bean
-     */
     @Bean
     @ConditionalOnMissingBean
-    public AadB2cOidcLoginConfigurer b2cLoginConfigurer(AadB2cLogoutSuccessHandler handler,
-                                                        AadB2cAuthorizationRequestResolver resolver) {
+    AadB2cOidcLoginConfigurer b2cLoginConfigurer(AadB2cLogoutSuccessHandler handler,
+                                                 AadB2cAuthorizationRequestResolver resolver) {
         return new AadB2cOidcLoginConfigurer(handler, resolver, null, restTemplateBuilder);
     }
 
-    /**
-     * Provide {@link JwtDecoderFactory} used in {@link OAuth2LoginConfigurer#init}. The {@link JwtDecoder} created by
-     * current {@link JwtDecoderFactory} will use {@link RestTemplate} created by {@link RestTemplateBuilder} bean.
-     *
-     * @return JwtDecoderFactory
-     */
     @Bean
     @ConditionalOnMissingBean
     JwtDecoderFactory<ClientRegistration> azureAdJwtDecoderFactory() {

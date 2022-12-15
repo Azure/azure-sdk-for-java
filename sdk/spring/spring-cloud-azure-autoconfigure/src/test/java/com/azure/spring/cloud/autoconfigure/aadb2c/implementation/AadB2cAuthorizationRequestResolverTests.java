@@ -3,7 +3,9 @@
 package com.azure.spring.cloud.autoconfigure.aadb2c.implementation;
 
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAuthorizationRequestResolver;
-import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cConstants;
+import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.WebOAuth2ClientApp;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
@@ -28,7 +30,7 @@ class AadB2cAuthorizationRequestResolverTests {
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .withConfiguration(AutoConfigurations.of(
                 AzureGlobalPropertiesAutoConfiguration.class,
-                AbstractAadB2cOAuth2ClientTestConfigurations.WebOAuth2ClientApp.class,
+                WebOAuth2ClientApp.class,
                 AadB2cAutoConfiguration.class,
                 HttpMessageConvertersAutoConfiguration.class,
                 RestTemplateAutoConfiguration.class))

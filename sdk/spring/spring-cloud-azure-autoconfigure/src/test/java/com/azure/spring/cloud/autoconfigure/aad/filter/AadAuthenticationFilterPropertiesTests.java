@@ -3,17 +3,14 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.filter;
 
-import com.azure.spring.cloud.autoconfigure.aad.configuration.AadPropertiesConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.configuration.AzureAuthenticationFilterConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBindException;
 import org.springframework.boot.context.properties.bind.validation.BindValidationException;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.validation.ObjectError;
 
 import java.util.Arrays;
@@ -33,7 +30,7 @@ public class AadAuthenticationFilterPropertiesTests {
     public void canSetProperties() {
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
             configureAllRequiredProperties(context);
-            context.register(Config.class);
+            context.register(AzureAuthenticationFilterConfiguration.class);
             context.refresh();
 
             final AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
@@ -70,7 +67,7 @@ public class AadAuthenticationFilterPropertiesTests {
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
             Exception exception = null;
 
-            context.register(Config.class);
+            context.register(AzureAuthenticationFilterConfiguration.class);
 
             try {
                 context.refresh();
@@ -103,9 +100,6 @@ public class AadAuthenticationFilterPropertiesTests {
         }
     }
 
-    @Configuration
-    @Import({ AadPropertiesConfiguration.class, AzureGlobalPropertiesAutoConfiguration.class })
-    static class Config {
-    }
+
 }
 

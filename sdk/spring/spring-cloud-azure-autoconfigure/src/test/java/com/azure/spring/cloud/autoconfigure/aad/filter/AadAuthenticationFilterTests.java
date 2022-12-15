@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.filter;
 
-import com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.configuration.AadAuthenticationFilterAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadCredentialProperties;
@@ -39,7 +39,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class AadAuthenticationFilterTests {
+class AadAuthenticationFilterTests {
     private static final String TOKEN = "dummy-token";
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(
@@ -52,7 +52,7 @@ public class AadAuthenticationFilterTests {
     private final HttpServletResponse response;
     private final AadAuthenticationFilter filter;
 
-    public AadAuthenticationFilterTests() {
+    AadAuthenticationFilterTests() {
         userPrincipalManager = mock(UserPrincipalManager.class);
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
@@ -70,7 +70,7 @@ public class AadAuthenticationFilterTests {
     //TODO (Zhou Liu): current test case is out of date, a new test case need to cover here, do it later.
     @Test
     @Disabled
-    public void doFilterInternal() {
+    void doFilterInternal() {
         this.contextRunner.withPropertyValues("spring.cloud.azure.active-directory.credential.client-id", TestConstants.CLIENT_ID)
                 .withPropertyValues("spring.cloud.azure.active-directory.credential.client-secret", TestConstants.CLIENT_SECRET)
                 .withPropertyValues("spring.cloud.azure.active-directory.credential.client-secret",
@@ -113,7 +113,7 @@ public class AadAuthenticationFilterTests {
     }
 
     @Test
-    public void testTokenNotIssuedByAAD() throws ServletException, IOException {
+    void testTokenNotIssuedByAAD() throws ServletException, IOException {
         when(userPrincipalManager.isTokenIssuedByAad(TOKEN)).thenReturn(false);
 
         final FilterChain filterChain = (request, response) -> {
@@ -127,7 +127,7 @@ public class AadAuthenticationFilterTests {
     }
 
     @Test
-    public void testAlreadyAuthenticated() throws ServletException, IOException, ParseException, JOSEException,
+    void testAlreadyAuthenticated() throws ServletException, IOException, ParseException, JOSEException,
         BadJOSEException {
         final Authentication authentication = mock(Authentication.class);
         when(authentication.isAuthenticated()).thenReturn(true);

@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation;
 
-import com.azure.spring.cloud.autoconfigure.aad.AadAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.configuration.AadAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;

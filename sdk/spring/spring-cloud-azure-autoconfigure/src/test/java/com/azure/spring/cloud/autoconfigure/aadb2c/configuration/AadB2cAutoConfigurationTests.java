@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.autoconfigure.aadb2c.implementation;
+package com.azure.spring.cloud.autoconfigure.aadb2c.configuration;
 
 import com.azure.spring.cloud.autoconfigure.aad.RestTemplateTestUtil;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.RestTemplateProxyCustomizerConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAuthorizationRequestResolver;
-import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cConstants;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cLogoutSuccessHandler;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cOidcLoginConfigurer;
-import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.aadb2c.implementation.AadB2cConditions;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AuthorizationClientProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
@@ -69,7 +69,7 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
                 assertEquals(authenticateAdditionalParameters.size(), 2);
                 assertTrue(authenticateAdditionalParameters.containsKey("login-hint"));
                 assertTrue(authenticateAdditionalParameters.containsKey("prompt"));
-                assertEquals(authenticateAdditionalParameters.get("login-hint"), AadB2cConstants.TEST_LOGIN_HINT);
+                Assertions.assertEquals(authenticateAdditionalParameters.get("login-hint"), AadB2cConstants.TEST_LOGIN_HINT);
                 assertEquals(authenticateAdditionalParameters.get("prompt"), AadB2cConstants.TEST_PROMPT);
             });
     }
