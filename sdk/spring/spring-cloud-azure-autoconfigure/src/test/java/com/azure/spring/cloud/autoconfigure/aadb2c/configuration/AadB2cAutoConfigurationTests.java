@@ -3,7 +3,7 @@
 package com.azure.spring.cloud.autoconfigure.aadb2c.configuration;
 
 import com.azure.spring.cloud.autoconfigure.aad.RestTemplateTestUtil;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.RestTemplateProxyCustomizerConfiguration;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.RestTemplateProxyCustomizerTestConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cAuthorizationRequestResolver;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cConstants;
 import com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cLogoutSuccessHandler;
@@ -277,7 +277,7 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
     @Test
     void testRestTemplateWellConfigured() {
         getDefaultContextRunner()
-            .withUserConfiguration(RestTemplateProxyCustomizerConfiguration.class, AadB2cTestWebSecurityConfiguration.class)
+            .withUserConfiguration(RestTemplateProxyCustomizerTestConfiguration.class, AadB2cTestWebSecurityConfiguration.class)
             .withPropertyValues("spring.cloud.azure.active-directory.b2c.enabled=true")
             .run(RestTemplateTestUtil::assertRestTemplateWellConfigured);
     }

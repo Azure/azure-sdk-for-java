@@ -30,7 +30,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.RestTemplateProxyCustomizerConfiguration.FACTORY;
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.RestTemplateProxyCustomizerTestConfiguration.FACTORY;
 import static com.azure.spring.cloud.core.implementation.util.ReflectionUtils.getField;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
