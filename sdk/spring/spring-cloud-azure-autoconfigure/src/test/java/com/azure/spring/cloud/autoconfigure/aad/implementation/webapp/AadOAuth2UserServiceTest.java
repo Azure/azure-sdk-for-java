@@ -7,6 +7,7 @@ import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.Authori
 import com.azure.spring.cloud.autoconfigure.aad.implementation.graph.GraphClient;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.graph.GroupInformation;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -199,5 +200,10 @@ public class AadOAuth2UserServiceTest {
         OidcUser user = this.aadOAuth2UserService
             .loadUser(new OidcUserRequest(clientRegistration, this.accessToken, this.idToken));
         assertThat(user.getName()).isEqualTo("user1");
+    }
+
+    @AfterEach
+    void cleanUp() {
+        SecurityContextHolder.getContext().setAuthentication(null);
     }
 }
