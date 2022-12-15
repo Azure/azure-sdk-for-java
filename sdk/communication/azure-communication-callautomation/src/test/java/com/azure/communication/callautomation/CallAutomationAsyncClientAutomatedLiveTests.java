@@ -5,6 +5,7 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
+import com.azure.communication.callautomation.models.CallSource;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.HangUpOptions;
@@ -64,7 +65,7 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
 
             // create a call
             List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
-            CreateCallOptions createCallOptions = new CreateCallOptions(caller, targets,
+            CreateCallOptions createCallOptions = new CreateCallOptions(new CallSource(caller), targets,
                 DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).setRepeatabilityHeaders(null);
             Response<CreateCallResult> createCallResultResponse = callAsyncClient.createCallWithResponse(createCallOptions).block();
 
@@ -153,7 +154,7 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
 
             // create a call
             List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
-            CreateCallOptions createCallOptions = new CreateCallOptions(caller, targets,
+            CreateCallOptions createCallOptions = new CreateCallOptions(new CallSource(caller), targets,
                 DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).setRepeatabilityHeaders(null);
             Response<CreateCallResult> createCallResultResponse = callAsyncClient.createCallWithResponse(createCallOptions).block();
 
