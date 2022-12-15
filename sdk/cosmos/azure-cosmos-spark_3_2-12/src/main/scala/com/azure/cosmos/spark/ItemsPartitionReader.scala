@@ -142,11 +142,14 @@ private case class ItemsPartitionReader
         ).toInt
       )
 
-      if (readConfig.maxIntegratedCacheStaleness != CosmosConstants.invalidDuration) {
-        val dedicatedGatewayRequestOptions = new DedicatedGatewayRequestOptions
-        dedicatedGatewayRequestOptions.setMaxIntegratedCacheStaleness(readConfig.maxIntegratedCacheStaleness)
-        queryOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions)
+      readConfig.maxIntegratedCacheStaleness match {
+        case CosmosConstants.invalidDuration =>
+        case _ =>
+          val dedicatedGatewayRequestOptions = new DedicatedGatewayRequestOptions
+          dedicatedGatewayRequestOptions.setMaxIntegratedCacheStaleness(readConfig.maxIntegratedCacheStaleness)
+          queryOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions)
       }
+
 
       ImplementationBridgeHelpers
         .CosmosQueryRequestOptionsHelper
