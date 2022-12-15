@@ -216,7 +216,7 @@ class AadOAuth2UserServiceTest {
         assertThat(user.getAuthorities()).isEqualTo(simpleGrantedAuthorities);
     }
 
-    static class TestOAuth2AccessTokens {
+    static final class TestOAuth2AccessTokens {
 
         private TestOAuth2AccessTokens() {
         }
