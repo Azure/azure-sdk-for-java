@@ -50,7 +50,6 @@ import static org.mockito.Mockito.when;
 class AadOAuth2UserServiceTest {
     private ClientRegistration.Builder clientRegistrationBuilder;
     private OidcIdToken idToken;
-    private AadOAuth2UserService aadOAuth2UserService;
     private OAuth2AccessToken accessToken;
     private Map<String, Object> idTokenClaims = new HashMap<>();
     private GraphClient graphClient;
@@ -81,13 +80,14 @@ class AadOAuth2UserServiceTest {
         idTokenClaims.put(StandardClaimNames.EMAIL, "user1@example.com");
 
         this.idToken = new OidcIdToken("access-token", Instant.MIN, Instant.MAX, idTokenClaims);
-        aadOAuth2UserService = new AadOAuth2UserService(properties, graphClient, null);
 
     }
 
     @Test
     void loadUserWhenUserRequestIsNullThenThrowIllegalArgumentException() {
-        assertThatIllegalArgumentException().isThrownBy(() -> this.aadOAuth2UserService.loadUser(null));
+        AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(properties, graphClient, null);
+
+        assertThatIllegalArgumentException().isThrownBy(() -> aadOAuth2UserService.loadUser(null));
     }
 
     @Test
@@ -106,6 +106,7 @@ class AadOAuth2UserServiceTest {
 
         ClientRegistration clientRegistration = this.clientRegistrationBuilder
             .build();
+        AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(properties, graphClient, null);
 
         // when
         OidcUser user = aadOAuth2UserService
@@ -120,6 +121,8 @@ class AadOAuth2UserServiceTest {
         // given
         ClientRegistration clientRegistration = this.clientRegistrationBuilder
             .build();
+        AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(properties, graphClient, null);
+
 
         // when
         OidcUser user = aadOAuth2UserService
@@ -139,9 +142,11 @@ class AadOAuth2UserServiceTest {
         ClientRegistration clientRegistration = this.clientRegistrationBuilder
             .userNameAttributeName(StandardClaimNames.EMAIL)
             .build();
+        AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(properties, graphClient, null);
+
 
         // when
-        OidcUser user = this.aadOAuth2UserService
+        OidcUser user = aadOAuth2UserService
             .getUser(new OidcUserRequest(clientRegistration, this.accessToken, this.idToken));
 
         // then
@@ -154,9 +159,10 @@ class AadOAuth2UserServiceTest {
         // given
         ClientRegistration clientRegistration = this.clientRegistrationBuilder
             .build();
+        AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(properties, graphClient, null);
 
         // when
-        OidcUser user = this.aadOAuth2UserService
+        OidcUser user = aadOAuth2UserService
             .getUser(new OidcUserRequest(clientRegistration, this.accessToken, this.idToken));
 
         // then
@@ -184,10 +190,11 @@ class AadOAuth2UserServiceTest {
         properties.getUserGroup().setAllowedGroupIds(Stream.of("groupId1", "groupId2")
             .collect(Collectors.toSet()));
 
-        AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(properties, graphClient, null);
 
         ClientRegistration clientRegistration = this.clientRegistrationBuilder
             .build();
+        AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(properties, graphClient, null);
+
 
         // when
         OidcUser user = aadOAuth2UserService
