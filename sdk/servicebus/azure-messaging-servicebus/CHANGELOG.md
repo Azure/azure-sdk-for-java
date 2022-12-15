@@ -8,6 +8,7 @@
 
 ### Bugs Fixed
 - Fixed incorrect queue description parameter order. ([#30880](https://github.com/Azure/azure-sdk-for-java/issues/30880))
+- Added error handler for `link.addCredits()`. ([#31793](https://github.com/Azure/azure-sdk-for-java/issues/31793))
 
 ### Other Changes
 

@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 - Removing inactive session when it has timed out, so `ReactorConnection.getSession(String)` does not return the same session.
+- Added disposition check for existing links, so `ReactorSession.getSubscription()` will not return a disposed link. ([#31793](https://github.com/Azure/azure-sdk-for-java/issues/31793))
 
 ### Other Changes
 
