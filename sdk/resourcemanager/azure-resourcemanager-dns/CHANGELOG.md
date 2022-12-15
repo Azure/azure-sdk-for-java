@@ -10,6 +10,14 @@
 
 ### Other Changes
 
+## 2.21.0 (2022-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
 ## 2.20.0 (2022-10-26)
 
 ### Other Changes

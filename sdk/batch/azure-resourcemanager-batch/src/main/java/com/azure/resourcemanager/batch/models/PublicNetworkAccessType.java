@@ -7,7 +7,7 @@ package com.azure.resourcemanager.batch.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for PublicNetworkAccessType. */
+/** The network access type for operating on the resources in the Batch account. */
 public enum PublicNetworkAccessType {
     /** Enum value Enabled. */
     ENABLED("Enabled"),
@@ -30,6 +30,9 @@ public enum PublicNetworkAccessType {
      */
     @JsonCreator
     public static PublicNetworkAccessType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         PublicNetworkAccessType[] items = PublicNetworkAccessType.values();
         for (PublicNetworkAccessType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum PublicNetworkAccessType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

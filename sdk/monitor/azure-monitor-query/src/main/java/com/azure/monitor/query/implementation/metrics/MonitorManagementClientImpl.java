@@ -62,13 +62,13 @@ public final class MonitorManagementClientImpl {
         return this.serializerAdapter;
     }
 
-    /** The MetricsImpl object to access its operations. */
+    /** The Metrics object to access its operations. */
     private final MetricsImpl metrics;
 
     /**
-     * Gets the MetricsImpl object to access its operations.
+     * Gets the Metrics object to access its operations.
      *
-     * @return the MetricsImpl object.
+     * @return the Metrics object.
      */
     public MetricsImpl getMetrics() {
         return this.metrics;

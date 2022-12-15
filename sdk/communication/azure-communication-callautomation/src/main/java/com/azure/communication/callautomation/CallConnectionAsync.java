@@ -264,7 +264,6 @@ public class CallConnectionAsync {
             TransferToParticipantRequestInternal request = new TransferToParticipantRequestInternal()
                 .setTargetParticipant(CommunicationIdentifierConverter.convert(transferToParticipantCallOptions.getTargetParticipant()))
                 .setTransfereeCallerId(PhoneNumberIdentifierConverter.convert(transferToParticipantCallOptions.getTransfereeCallerId()))
-                .setUserToUserInformation(transferToParticipantCallOptions.getUserToUserInformation())
                 .setOperationContext(transferToParticipantCallOptions.getOperationContext());
 
             transferToParticipantCallOptions.setRepeatabilityHeaders(handleApiIdempotency(transferToParticipantCallOptions.getRepeatabilityHeaders()));

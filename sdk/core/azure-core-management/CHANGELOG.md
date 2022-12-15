@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Deprecated `AzureEnvironment.AZURE_GERMANY`. Removed it from response of `AzureEnvironment.knownEnvironments`.
+
 ## 1.9.0 (2022-11-04)
 
 ### Other Changes

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.batch.generated;
 /** Samples for ApplicationPackage Create. */
 public final class ApplicationPackageCreateSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-01-01/examples/ApplicationPackageCreate.json
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2022-10-01/examples/ApplicationPackageCreate.json
      */
     /**
      * Sample code: ApplicationPackageCreate.

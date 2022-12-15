@@ -19,8 +19,8 @@ public final class ManagedServiceIdentityTests {
         ManagedServiceIdentity model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"ebc3a072-5a8d-4601-b051-def22134612e\",\"tenantId\":\"53185b8b-e6df-478c-bc24-60681d1ad656\",\"type\":\"SystemAssigned,"
-                        + " UserAssigned\",\"userAssignedIdentities\":{\"uxinpmqnjaq\":{\"principalId\":\"d406f4c6-eb9c-4f70-8c44-644b35a077b7\",\"clientId\":\"2dec27fa-ab02-4792-adfc-c2afca88a09a\"},\"jsprozvcpute\":{\"principalId\":\"96617c1e-b4a3-47d4-8cef-28d12173a812\",\"clientId\":\"f9d5e59a-78bc-4438-bc24-4c0c539033fd\"}}}")
+                    "{\"principalId\":\"4c382a05-386b-4ad1-9ab7-9542f99f3605\",\"tenantId\":\"447037b8-c0b4-4e45-853f-7f9f92810a52\",\"type\":\"SystemAssigned,"
+                        + " UserAssigned\",\"userAssignedIdentities\":{\"zw\":{\"principalId\":\"eee277a0-3e9d-4ce5-9f7b-fa8f8eb18c3a\",\"clientId\":\"7303041d-8a8e-4546-bd1c-c7a918421f5f\"}}}")
                 .toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
@@ -30,8 +30,7 @@ public final class ManagedServiceIdentityTests {
         ManagedServiceIdentity model =
             new ManagedServiceIdentity()
                 .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf("uxinpmqnjaq", new UserAssignedIdentity(), "jsprozvcpute", new UserAssignedIdentity()));
+                .withUserAssignedIdentities(mapOf("zw", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }

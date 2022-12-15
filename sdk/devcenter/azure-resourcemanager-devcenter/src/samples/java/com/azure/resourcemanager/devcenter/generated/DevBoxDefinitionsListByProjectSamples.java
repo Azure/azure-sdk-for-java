@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DevBoxDefinitions ListByProject. */
 public final class DevBoxDefinitionsListByProjectSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-10-12-preview/examples/DevBoxDefinitions_ListByProject.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/DevBoxDefinitions_ListByProject.json
      */
     /**
      * Sample code: DevBoxDefinitions_ListByProject.

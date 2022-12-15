@@ -175,20 +175,20 @@ public final class AccountImpl implements Account, Account.Definition, Account.U
         return this;
     }
 
-    public ApiKeys listKeys() {
-        return serviceManager.accounts().listKeys(resourceGroupName, accountName);
-    }
-
     public Response<ApiKeys> listKeysWithResponse(Context context) {
         return serviceManager.accounts().listKeysWithResponse(resourceGroupName, accountName, context);
     }
 
-    public ApiKeys regenerateKey(RegenerateKeyParameters parameters) {
-        return serviceManager.accounts().regenerateKey(resourceGroupName, accountName, parameters);
+    public ApiKeys listKeys() {
+        return serviceManager.accounts().listKeys(resourceGroupName, accountName);
     }
 
     public Response<ApiKeys> regenerateKeyWithResponse(RegenerateKeyParameters parameters, Context context) {
         return serviceManager.accounts().regenerateKeyWithResponse(resourceGroupName, accountName, parameters, context);
+    }
+
+    public ApiKeys regenerateKey(RegenerateKeyParameters parameters) {
+        return serviceManager.accounts().regenerateKey(resourceGroupName, accountName, parameters);
     }
 
     public AccountImpl withRegion(Region location) {

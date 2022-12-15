@@ -389,7 +389,8 @@ public class EventGridCustomization extends Customization {
         logger.info("Total number of events with proper description " + validEventDescription.size());
 
         customization.getRawEditor()
-            .addFile("src/main/java/com/azure/messaging/eventgrid/SystemEventNames.java", sb.toString());
+        .addFile("src/main/java/com/azure/messaging/eventgrid/SystemEventNames.java", sb.toString());
+
         
         customizeMediaJobOutputAsset(customization);
         customizeStorageDirectoryDeletedEventData(customization);

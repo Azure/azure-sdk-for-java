@@ -46,7 +46,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <jacoco.min.linecoverage>0.80</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.80</jacoco.min.branchcoverage>
+    <jacoco.min.branchcoverage>0.75</jacoco.min.branchcoverage>
     <javaModulesSurefireArgLine>
       --add-opens com.azure.core.http.okhttp/com.azure.core.http.okhttp=ALL-UNNAMED
       --add-opens com.azure.core.http.okhttp/com.azure.core.http.okhttp.implementation=ALL-UNNAMED
@@ -100,7 +100,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.23</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.25</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 

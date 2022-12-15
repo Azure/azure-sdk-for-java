@@ -5,6 +5,8 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ContainerRegistryBlobsMountBlobHeaders model. */
@@ -27,6 +29,22 @@ public final class ContainerRegistryBlobsMountBlobHeaders {
      */
     @JsonProperty(value = "Docker-Content-Digest")
     private String dockerContentDigest;
+
+    private static final HttpHeaderName DOCKER_UPLOAD_UUID = HttpHeaderName.fromString("Docker-Upload-UUID");
+
+    private static final HttpHeaderName DOCKER_CONTENT_DIGEST = HttpHeaderName.fromString("Docker-Content-Digest");
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of ContainerRegistryBlobsMountBlobHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public ContainerRegistryBlobsMountBlobHeaders(HttpHeaders rawHeaders) {
+        this.dockerUploadUUID = rawHeaders.getValue("Docker-Upload-UUID");
+        this.location = rawHeaders.getValue("Location");
+        this.dockerContentDigest = rawHeaders.getValue("Docker-Content-Digest");
+    }
 
     /**
      * Get the dockerUploadUUID property: The Docker-Upload-UUID property.

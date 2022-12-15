@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Removing inactive session when it has timed out, so `ReactorConnection.getSession(String)` does not return the same session.
+
 ### Other Changes
 
 ## 2.8.0 (2022-11-04)
@@ -18,8 +20,6 @@
 - Enabling HTTP Proxy for custom endpoint and updating Proxy CONNECT request to use the actual front-end host ([31826](https://github.com/Azure/azure-sdk-for-java/issues/31826))
 
 ### Other Changes
-
-- 
 
 #### Dependency Updates
 

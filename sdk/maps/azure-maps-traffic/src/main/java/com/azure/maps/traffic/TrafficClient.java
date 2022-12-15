@@ -72,13 +72,14 @@ public final class TrafficClient {
      * &#47;&#47; options
      * client.getTrafficFlowTile&#40;
      *     new TrafficFlowTileOptions&#40;&#41;
-     *         .setTrafficFlowTileStyle&#40;TrafficFlowTileStyle.RELATIVE_DELAY&#41;.setFormat&#40;TileFormat.PNG&#41;.setZoom&#40;10&#41;&#41;;
+     *         .setTrafficFlowTileStyle&#40;TrafficFlowTileStyle.RELATIVE_DELAY&#41;.setFormat&#40;TileFormat.PNG&#41;.setZoom&#40;10&#41;
+     *         .setTileIndex&#40;new TileIndex&#40;&#41;.setX&#40;1022&#41;.setY&#40;680&#41;&#41;&#41;;
      *
      * &#47;&#47; complete
      * client.getTrafficFlowTile&#40;
      *     new TrafficFlowTileOptions&#40;&#41;
      *         .setTrafficFlowTileStyle&#40;TrafficFlowTileStyle.RELATIVE_DELAY&#41;.setFormat&#40;TileFormat.PNG&#41;.setZoom&#40;10&#41;
-     *         .setTileIndex&#40;new TileIndex&#40;&#41;.setX&#40;2044&#41;.setY&#40;1360&#41;&#41;.setThickness&#40;10&#41;&#41;;
+     *         .setTileIndex&#40;new TileIndex&#40;&#41;.setX&#40;1022&#41;.setY&#40;680&#41;&#41;.setThickness&#40;10&#41;&#41;;
      * </pre>
      * <!-- end com.azure.maps.traffic.sync.get_traffic_flow_tile -->
      *
@@ -110,13 +111,14 @@ public final class TrafficClient {
      * &#47;&#47; options
      * client.getTrafficFlowTile&#40;
      *     new TrafficFlowTileOptions&#40;&#41;
-     *         .setTrafficFlowTileStyle&#40;TrafficFlowTileStyle.RELATIVE_DELAY&#41;.setFormat&#40;TileFormat.PNG&#41;.setZoom&#40;10&#41;&#41;;
+     *         .setTrafficFlowTileStyle&#40;TrafficFlowTileStyle.RELATIVE_DELAY&#41;.setFormat&#40;TileFormat.PNG&#41;.setZoom&#40;10&#41;
+     *         .setTileIndex&#40;new TileIndex&#40;&#41;.setX&#40;1022&#41;.setY&#40;680&#41;&#41;&#41;;
      *
      * &#47;&#47; complete
      * client.getTrafficFlowTile&#40;
      *     new TrafficFlowTileOptions&#40;&#41;
      *         .setTrafficFlowTileStyle&#40;TrafficFlowTileStyle.RELATIVE_DELAY&#41;.setFormat&#40;TileFormat.PNG&#41;.setZoom&#40;10&#41;
-     *         .setTileIndex&#40;new TileIndex&#40;&#41;.setX&#40;2044&#41;.setY&#40;1360&#41;&#41;.setThickness&#40;10&#41;&#41;;
+     *         .setTileIndex&#40;new TileIndex&#40;&#41;.setX&#40;1022&#41;.setY&#40;680&#41;&#41;.setThickness&#40;10&#41;&#41;;
      * </pre>
      * <!-- end com.azure.maps.traffic.sync.get_traffic_flow_tile -->
      * 
@@ -216,7 +218,7 @@ public final class TrafficClient {
      * client.getTrafficIncidentTile&#40;
      *     new TrafficIncidentTileOptions&#40;&#41;
      *         .setFormat&#40;TileFormat.PNG&#41;.setTrafficIncidentTileStyle&#40;TrafficIncidentTileStyle.S3&#41;
-     *         .setZoom&#40;10&#41;&#41;;
+     *         .setZoom&#40;10&#41;.setTileIndex&#40;new TileIndex&#40;&#41;.setX&#40;1022&#41;.setY&#40;680&#41;&#41;&#41;;
      *
      * &#47;&#47; complete
      * client.getTrafficIncidentTile&#40;
@@ -254,7 +256,7 @@ public final class TrafficClient {
      * client.getTrafficIncidentTile&#40;
      *     new TrafficIncidentTileOptions&#40;&#41;
      *         .setFormat&#40;TileFormat.PNG&#41;.setTrafficIncidentTileStyle&#40;TrafficIncidentTileStyle.S3&#41;
-     *         .setZoom&#40;10&#41;&#41;;
+     *         .setZoom&#40;10&#41;.setTileIndex&#40;new TileIndex&#40;&#41;.setX&#40;1022&#41;.setY&#40;680&#41;&#41;&#41;;
      *
      * &#47;&#47; complete
      * client.getTrafficIncidentTile&#40;
@@ -362,7 +364,7 @@ public final class TrafficClient {
      * 
      * <!-- src_embed com.azure.maps.traffic.sync.get_traffic_incident_viewport -->
      * <pre>
-     * System.out.println&#40;&quot;Get Traffic Incident Tile:&quot;&#41;;
+     * System.out.println&#40;&quot;Get Traffic Incident Viewport:&quot;&#41;;
      *
      * &#47;&#47; options
      * client.getTrafficIncidentViewport&#40;
@@ -405,7 +407,7 @@ public final class TrafficClient {
      * 
      * <!-- src_embed com.azure.maps.traffic.sync.get_traffic_incident_viewport -->
      * <pre>
-     * System.out.println&#40;&quot;Get Traffic Incident Tile:&quot;&#41;;
+     * System.out.println&#40;&quot;Get Traffic Incident Viewport:&quot;&#41;;
      *
      * &#47;&#47; options
      * client.getTrafficIncidentViewport&#40;

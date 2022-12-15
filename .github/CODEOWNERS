@@ -65,7 +65,7 @@
 /sdk/communication/sdk/communication/azure-communication-networktraversal/ @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
 
 # PRLabel: %Communication - Phone Numbers
-/sdk/communication/azure-communication-phonenumbers/ @miguhern @whisper6284 @lucasrsant @RoyHerrod @danielav7
+/sdk/communication/azure-communication-phonenumbers/ @miguhern @whisper6284 @RoyHerrod @danielav7
 
 # PRLabel: %Communication - SMS
 /sdk/communication/azure-communication-sms/         @RoyHerrod @arifibrahim4
@@ -130,6 +130,8 @@
 
 # PRLabel: %Azure.Identity
 /sdk/identity/                                      @g2vinay @schaabs @joshfree @billwert
+# PRLabel: %azure-spring
+/sdk/identity/azure-identity-extensions/           @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 
 # PRLabel: %KeyVault
 /sdk/keyvault/                                      @vcolin7 @g2vinay @samvaity
@@ -139,7 +141,7 @@
 /sdk/loganalytics/microsoft-azure-loganalytics/     @divyajay @alongafni
 
 # PRLabel:  %Monitor - Exporter
-/sdk/monitor/azure-monitor-opentelemetry-exporter   @trask @ramthi @heyams
+/sdk/monitor/azure-monitor-opentelemetry-exporter   @trask @ramthi @heyams @jeanbisutti
 
 # PRLabel:  %Monitor
 /sdk/monitor/azure-monitor-query                    @srnagar @lmolkova @ki1729
@@ -179,9 +181,6 @@
 
 # PRLabel: %Azure SDK Tools
 /sdk/tools/                                         @srnagar @jonathangiles
-
-# PRLabel: %azure-spring
-/sdk/jdbc/                                          @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 
 # PRLabel: %azure-spring
 /sdk/spring/                                        @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
