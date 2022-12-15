@@ -475,7 +475,7 @@ public final class BinaryData {
      *
      * @param data Content to wrap.
      * @param length Optional known length of the content in bytes.
-     * @return BinaryData instane wrapping the flux.
+     * @return BinaryData instance wrapping the flux.
      */
     public static BinaryData wrapFlux(Flux<ByteBuffer> data, Long length) {
         return wrapFlux(data, length, false);
