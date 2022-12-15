@@ -49,13 +49,8 @@ import static org.mockito.Mockito.when;
  */
 class AadOAuth2UserServiceTest {
     private ClientRegistration.Builder clientRegistrationBuilder;
-    private OidcIdToken idToken;
     private OAuth2AccessToken accessToken;
-    private Map<String, Object> idTokenClaims = new HashMap<>();
-    private GraphClient graphClient;
-    private AadAuthenticationProperties properties;
     private static final String DEFAULT_OIDC_USER = "defaultOidcUser";
-
 
     @BeforeEach
     void setup() {
@@ -74,25 +69,24 @@ class AadOAuth2UserServiceTest {
 
         this.accessToken = TestOAuth2AccessTokens.scopes(OidcScopes.OPENID, OidcScopes.PROFILE);
 
-        idTokenClaims.put(IdTokenClaimNames.ISS, "https://provider.com");
-        idTokenClaims.put(IdTokenClaimNames.SUB, "subject1");
-        idTokenClaims.put(StandardClaimNames.NAME, "user1");
-        idTokenClaims.put(StandardClaimNames.EMAIL, "user1@example.com");
-
-        this.idToken = new OidcIdToken("access-token", Instant.MIN, Instant.MAX, idTokenClaims);
-
     }
 
     @Test
     void loadUserWhenUserRequestIsNullThenThrowIllegalArgumentException() {
-        AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(properties, graphClient, null);
-
+        AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(null, null, null);
         assertThatIllegalArgumentException().isThrownBy(() -> aadOAuth2UserService.loadUser(null));
     }
 
     @Test
     void loadUserFromSession() {
         //given
+        Map<String, Object> idTokenClaims = new HashMap<>();
+        idTokenClaims.put(IdTokenClaimNames.ISS, "https://provider.com");
+        idTokenClaims.put(IdTokenClaimNames.SUB, "subject1");
+        idTokenClaims.put(StandardClaimNames.NAME, "user1");
+        idTokenClaims.put(StandardClaimNames.EMAIL, "user1@example.com");
+        OidcIdToken idToken = new OidcIdToken("access-token", Instant.MIN, Instant.MAX, idTokenClaims);
+
         ServletRequestAttributes mockAttributes = mock(ServletRequestAttributes.class, RETURNS_DEEP_STUBS);
         DefaultOidcUser mockDefaultOidcUser = mock(DefaultOidcUser.class);
         HttpSession mockHttpSession = mock(HttpSession.class);
@@ -106,11 +100,11 @@ class AadOAuth2UserServiceTest {
 
         ClientRegistration clientRegistration = this.clientRegistrationBuilder
             .build();
-        AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(properties, graphClient, null);
+        AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(null, null, null);
 
         // when
         OidcUser user = aadOAuth2UserService
-            .loadUser(new OidcUserRequest(clientRegistration, this.accessToken, this.idToken));
+            .loadUser(new OidcUserRequest(clientRegistration, this.accessToken, idToken));
 
         // then
         assertThat(user).isEqualTo(mockDefaultOidcUser);
@@ -119,14 +113,20 @@ class AadOAuth2UserServiceTest {
     @Test
     void loadUserWithDefaultAuthority() {
         // given
+        Map<String, Object> idTokenClaims = new HashMap<>();
+        idTokenClaims.put(IdTokenClaimNames.ISS, "https://provider.com");
+        idTokenClaims.put(IdTokenClaimNames.SUB, "subject1");
+        idTokenClaims.put(StandardClaimNames.NAME, "user1");
+        idTokenClaims.put(StandardClaimNames.EMAIL, "user1@example.com");
+        OidcIdToken idToken = new OidcIdToken("access-token", Instant.MIN, Instant.MAX, idTokenClaims);
+
         ClientRegistration clientRegistration = this.clientRegistrationBuilder
             .build();
-        AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(properties, graphClient, null);
-
+        AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(null, null, null);
 
         // when
         OidcUser user = aadOAuth2UserService
-            .getUser(new OidcUserRequest(clientRegistration, this.accessToken, this.idToken));
+            .getUser(new OidcUserRequest(clientRegistration, this.accessToken, idToken));
 
         // then
         assertThat(user.getUserInfo()).isNull();
@@ -139,15 +139,22 @@ class AadOAuth2UserServiceTest {
     @Test
     void loadUserWhenCustomUserNameAttributeNameThenGetNameReturnsCustomUserName() {
         // given
+        Map<String, Object> idTokenClaims = new HashMap<>();
+        idTokenClaims.put(IdTokenClaimNames.ISS, "https://provider.com");
+        idTokenClaims.put(IdTokenClaimNames.SUB, "subject1");
+        idTokenClaims.put(StandardClaimNames.NAME, "user1");
+        idTokenClaims.put(StandardClaimNames.EMAIL, "user1@example.com");
+        OidcIdToken idToken = new OidcIdToken("access-token", Instant.MIN, Instant.MAX, idTokenClaims);
+
         ClientRegistration clientRegistration = this.clientRegistrationBuilder
             .userNameAttributeName(StandardClaimNames.EMAIL)
             .build();
-        AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(properties, graphClient, null);
+        AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(null, null, null);
 
 
         // when
         OidcUser user = aadOAuth2UserService
-            .getUser(new OidcUserRequest(clientRegistration, this.accessToken, this.idToken));
+            .getUser(new OidcUserRequest(clientRegistration, this.accessToken, idToken));
 
         // then
         assertThat(user.getName()).isEqualTo("user1@example.com");
@@ -157,13 +164,20 @@ class AadOAuth2UserServiceTest {
     void loadUserWithDefaultUserNameAttributeName() {
 
         // given
+        Map<String, Object> idTokenClaims = new HashMap<>();
+        idTokenClaims.put(IdTokenClaimNames.ISS, "https://provider.com");
+        idTokenClaims.put(IdTokenClaimNames.SUB, "subject1");
+        idTokenClaims.put(StandardClaimNames.NAME, "user1");
+        idTokenClaims.put(StandardClaimNames.EMAIL, "user1@example.com");
+        OidcIdToken idToken = new OidcIdToken("access-token", Instant.MIN, Instant.MAX, idTokenClaims);
+
         ClientRegistration clientRegistration = this.clientRegistrationBuilder
             .build();
-        AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(properties, graphClient, null);
+        AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(null, null, null);
 
         // when
         OidcUser user = aadOAuth2UserService
-            .getUser(new OidcUserRequest(clientRegistration, this.accessToken, this.idToken));
+            .getUser(new OidcUserRequest(clientRegistration, this.accessToken, idToken));
 
         // then
         assertThat(user.getName()).isEqualTo("user1");
@@ -171,35 +185,38 @@ class AadOAuth2UserServiceTest {
 
     @Test
     void loadUserWithCustomAuthorities() {
-
         // given
+        Map<String, Object> idTokenClaims = new HashMap<>();
+        idTokenClaims.put(IdTokenClaimNames.ISS, "https://provider.com");
+        idTokenClaims.put(IdTokenClaimNames.SUB, "subject1");
+        idTokenClaims.put(StandardClaimNames.NAME, "user1");
+        idTokenClaims.put(StandardClaimNames.EMAIL, "user1@example.com");
         idTokenClaims.put("roles", Stream.of("role1", "role2")
             .collect(Collectors.toList()));
+        OidcIdToken idToken = new OidcIdToken("access-token", Instant.MIN, Instant.MAX, idTokenClaims);
 
         GroupInformation groupInformation = new GroupInformation();
         groupInformation.setGroupsIds(Stream.of("groupId1", "groupId2")
             .collect(Collectors.toSet()));
         groupInformation.setGroupsNames(Stream.of("groupName1", "groupName2")
             .collect(Collectors.toSet()));
-        graphClient = mock(GraphClient.class);
+        GraphClient graphClient = mock(GraphClient.class);
         when(graphClient.getGroupInformation(anyString())).thenReturn(groupInformation);
 
+        AadAuthenticationProperties properties = new AadAuthenticationProperties();
         properties = new AadAuthenticationProperties();
         properties.getUserGroup().setAllowedGroupNames(Stream.of("groupName1", "groupName2")
             .collect(Collectors.toList()));
         properties.getUserGroup().setAllowedGroupIds(Stream.of("groupId1", "groupId2")
             .collect(Collectors.toSet()));
 
-
         ClientRegistration clientRegistration = this.clientRegistrationBuilder
             .build();
         AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(properties, graphClient, null);
 
-
         // when
         OidcUser user = aadOAuth2UserService
-            .getUser(new OidcUserRequest(clientRegistration, this.accessToken,
-                new OidcIdToken("access-token", Instant.MIN, Instant.MAX, idTokenClaims)));
+            .getUser(new OidcUserRequest(clientRegistration, this.accessToken, idToken));
 
         // then
         assertThat(user.getUserInfo()).isNull();
