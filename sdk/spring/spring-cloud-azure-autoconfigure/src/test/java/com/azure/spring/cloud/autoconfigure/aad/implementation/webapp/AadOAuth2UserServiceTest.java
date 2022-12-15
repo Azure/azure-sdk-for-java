@@ -98,8 +98,7 @@ class AadOAuth2UserServiceTest {
         RequestContextHolder.setRequestAttributes(mockAttributes);
         SecurityContextHolder.getContext().setAuthentication(mockAuthentication);
 
-        ClientRegistration clientRegistration = this.clientRegistrationBuilder
-            .build();
+        ClientRegistration clientRegistration = this.clientRegistrationBuilder.build();
         AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(null, null, null);
 
         // when
@@ -120,8 +119,7 @@ class AadOAuth2UserServiceTest {
         idTokenClaims.put(StandardClaimNames.EMAIL, "user1@example.com");
         OidcIdToken idToken = new OidcIdToken("access-token", Instant.MIN, Instant.MAX, idTokenClaims);
 
-        ClientRegistration clientRegistration = this.clientRegistrationBuilder
-            .build();
+        ClientRegistration clientRegistration = this.clientRegistrationBuilder.build();
         AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(null, null, null);
 
         // when
@@ -147,10 +145,9 @@ class AadOAuth2UserServiceTest {
         OidcIdToken idToken = new OidcIdToken("access-token", Instant.MIN, Instant.MAX, idTokenClaims);
 
         ClientRegistration clientRegistration = this.clientRegistrationBuilder
-            .userNameAttributeName(StandardClaimNames.EMAIL)
-            .build();
+                                                    .userNameAttributeName(StandardClaimNames.EMAIL)
+                                                    .build();
         AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(null, null, null);
-
 
         // when
         OidcUser user = aadOAuth2UserService
@@ -171,8 +168,7 @@ class AadOAuth2UserServiceTest {
         idTokenClaims.put(StandardClaimNames.EMAIL, "user1@example.com");
         OidcIdToken idToken = new OidcIdToken("access-token", Instant.MIN, Instant.MAX, idTokenClaims);
 
-        ClientRegistration clientRegistration = this.clientRegistrationBuilder
-            .build();
+        ClientRegistration clientRegistration = this.clientRegistrationBuilder.build();
         AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(null, null, null);
 
         // when
