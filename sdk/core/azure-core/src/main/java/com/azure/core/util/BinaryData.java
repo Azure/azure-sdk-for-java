@@ -487,7 +487,7 @@ public final class BinaryData {
      * @param data Content to wrap.
      * @param length Optional known length of the content in bytes.
      * @param isReplayable Whether the content is replayable.
-     * @return BinaryData instane wrapping the flux.
+     * @return BinaryData instance wrapping the flux.
      */
     public static BinaryData wrapFlux(Flux<ByteBuffer> data, Long length, boolean isReplayable) {
         if (data == null) {
