@@ -471,25 +471,27 @@ public final class BinaryData {
     }
 
     /**
-     * Wraps the given flux in a BinaryData instance without subscribing to it.
+     * Creates an instance of {@link BinaryData} from the given {@link Flux} of {@link ByteBuffer}.
+     * This API does perform any asynchronous operations on the given data, and so cannot eagerly operate on it.
      *
      * @param data Content to wrap.
      * @param length Optional known length of the content in bytes.
      * @return BinaryData instance wrapping the flux.
      */
-    public static BinaryData wrapFlux(Flux<ByteBuffer> data, Long length) {
-        return wrapFlux(data, length, false);
+    public static BinaryData fromFluxSync(Flux<ByteBuffer> data, Long length) {
+        return fromFluxSync(data, length, false);
     }
 
     /**
-     * Wraps the given flux in a BinaryData instance without subscribing to it.
+     * Creates an instance of {@link BinaryData} from the given {@link Flux} of {@link ByteBuffer}.
+     *      * This API does perform any asynchronous operations on the given data, and so cannot eagerly operate on it.
      *
      * @param data Content to wrap.
      * @param length Optional known length of the content in bytes.
      * @param isReplayable Whether the content is replayable.
      * @return BinaryData instance wrapping the flux.
      */
-    public static BinaryData wrapFlux(Flux<ByteBuffer> data, Long length, boolean isReplayable) {
+    public static BinaryData fromFluxSync(Flux<ByteBuffer> data, Long length, boolean isReplayable) {
         if (data == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'data' cannot be null."));
         }
