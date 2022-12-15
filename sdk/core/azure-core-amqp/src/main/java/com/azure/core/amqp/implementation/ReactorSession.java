@@ -364,7 +364,7 @@ public class ReactorSession implements AmqpSession {
         }
 
         final LinkSubscription<AmqpReceiveLink> existingLink = openReceiveLinks.get(linkName);
-        if (existingLink != null) {
+        if (existingLink != null && !existingLink.isDisposed()) {
             logger.atInfo()
                 .addKeyValue(LINK_NAME_KEY, linkName)
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
@@ -381,7 +381,7 @@ public class ReactorSession implements AmqpSession {
                     provider.getReactorDispatcher().invoke(() -> {
                         final LinkSubscription<AmqpReceiveLink> computed = openReceiveLinks.compute(linkName,
                             (linkNameKey, existing) -> {
-                                if (existing != null) {
+                                if (existing != null && !existing.isDisposed()) {
                                     logger.atInfo()
                                         .addKeyValue(LINK_NAME_KEY, linkName)
                                         .log("Another receive link exists. Disposing of new one.");
@@ -468,7 +468,7 @@ public class ReactorSession implements AmqpSession {
         }
 
         final LinkSubscription<AmqpSendLink> existing = openSendLinks.get(linkName);
-        if (existing != null) {
+        if (existing != null && !existing.isDisposed()) {
             logger.atVerbose()
                 .addKeyValue(LINK_NAME_KEY, linkName)
                 .log("Returning existing send link.");
@@ -492,7 +492,7 @@ public class ReactorSession implements AmqpSession {
                 provider.getReactorDispatcher().invoke(() -> {
                     final LinkSubscription<AmqpSendLink> computed = openSendLinks.compute(linkName,
                         (linkNameKey, existingLink) -> {
-                            if (existingLink != null) {
+                            if (existingLink != null && !existingLink.isDisposed()) {
                                 logger.atInfo()
                                     .addKeyValue(LINK_NAME_KEY, linkName)
                                     .log("Another send link exists. Disposing of new one.");
@@ -555,6 +555,10 @@ public class ReactorSession implements AmqpSession {
         final Disposable subscription = reactorSender.getEndpointStates().subscribe(state -> {
         }, error -> {
             if (!isDisposed.get()) {
+                logger.atInfo()
+                    .addKeyValue(LINK_NAME_KEY, linkName)
+                    .log("Error. Removing and disposing send link.");
+
                 removeLink(openSendLinks, linkName);
             }
         }, () -> {
@@ -621,6 +625,11 @@ public class ReactorSession implements AmqpSession {
         final Disposable subscription = reactorReceiver.getEndpointStates().subscribe(state -> {
         }, error -> {
             if (!isDisposed.get()) {
+                logger.atInfo()
+                    .addKeyValue(LINK_NAME_KEY, linkName)
+                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                    .log("Error. Removing receive link.");
+
                 removeLink(openReceiveLinks, linkName);
             }
         }, () -> {
@@ -781,6 +790,10 @@ public class ReactorSession implements AmqpSession {
 
         public T getLink() {
             return link;
+        }
+
+        public boolean isDisposed() {
+            return isDisposed.get() || link.isDisposed();
         }
 
         Mono<Void> closeAsync(ErrorCondition errorCondition) {
