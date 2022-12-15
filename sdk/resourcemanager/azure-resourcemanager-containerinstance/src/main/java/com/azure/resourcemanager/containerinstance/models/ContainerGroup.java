@@ -923,6 +923,76 @@ public interface ContainerGroup
             }
 
             /**
+             * The stage of the container instance definition allowing to specify liveness probe.
+             * Azure Container Instances supports liveness probes so that you can configure your containers within your
+             * container group to restart if critical functionality is not working.
+             *
+             * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+             */
+            interface WithLivenessProbe<ParentT> {
+                /**
+                 * Specifies the container's liveness probe to execute a given command at a given interval.
+                 *
+                 * @param command the command for the probe to execute
+                 * @param probePeriodSeconds the interval at which the command executes
+                 * @return the next stage of the definition
+                 */
+                WithContainerInstanceAttach<ParentT> withLivenessProbeExec(List<String> command, int probePeriodSeconds);
+
+                /**
+                 * Specifies the container's liveness probe to perform an Http Get at a given interval.
+                 *
+                 * @param path the path to perform the Http Get
+                 * @param probePeriodSeconds the interval at which the Http Get performs
+                 * @return the next stage of the definition
+                 */
+                WithContainerInstanceAttach<ParentT> withLivenessProbeHttpGet(String path, int probePeriodSeconds);
+
+                /**
+                 * Specifies the container's liveness probe.
+                 *
+                 * @param containerProbe the liveness probe
+                 * @return the next stage of the definition
+                 */
+                WithContainerInstanceAttach<ParentT> withLivenessProbe(ContainerProbe containerProbe);
+            }
+
+            /**
+             * The stage of the container instance definition allowing to specify readiness probe.
+             * Azure Container Instances supports readiness probes to include configurations so that your container
+             * can't be accessed under certain conditions.
+             *
+             * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+             */
+            interface WithReadinessProbe<ParentT> {
+                /**
+                 * Specifies the container's readiness probe to execute a given command at a given interval.
+                 *
+                 * @param command the command for the probe to execute
+                 * @param probePeriodSeconds the interval at which the command executes
+                 * @return the next stage of the definition
+                 */
+                WithContainerInstanceAttach<ParentT> withReadinessProbeExec(List<String> command, int probePeriodSeconds);
+
+                /**
+                 * Specifies the container's readiness probe to perform an Http Get at a given interval.
+                 *
+                 * @param path the path to perform the Http Get
+                 * @param probePeriodSeconds the interval at which the Http Get performs
+                 * @return the next stage of the definition
+                 */
+                WithContainerInstanceAttach<ParentT> withReadinessProbeHttpGet(String path, int probePeriodSeconds);
+
+                /**
+                 * Specifies the container's readiness probe.
+                 *
+                 * @param containerProbe the readiness probe
+                 * @return the next stage of the definition
+                 */
+                WithContainerInstanceAttach<ParentT> withReadinessProbe(ContainerProbe containerProbe);
+            }
+
+            /**
              * The final stage of the container instance definition.
              *
              * <p>At this stage, any remaining optional settings can be specified, or the subnet definition can be
@@ -937,6 +1007,8 @@ public interface ContainerGroup
                     WithStartingCommandLine<ParentT>,
                     WithEnvironmentVariables<ParentT>,
                     WithVolumeMountSetting<ParentT>,
+                    WithLivenessProbe<ParentT>,
+                    WithReadinessProbe<ParentT>,
                     Attachable.InDefinition<ParentT> {
             }
 
