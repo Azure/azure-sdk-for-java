@@ -1,7 +1,7 @@
-com.azure.spring.cloud.autoconfigure.aad.configuration.AadAutoConfiguration
-com.azure.spring.cloud.autoconfigure.aad.configuration.AadAuthenticationFilterAutoConfiguration
-com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cAutoConfiguration
-com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cResourceServerAutoConfiguration
+com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.AadAutoConfiguration
+com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.AadAuthenticationFilterAutoConfiguration
+com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.AadB2cAutoConfiguration
+com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.AadB2cResourceServerAutoConfiguration
 com.azure.spring.cloud.autoconfigure.implementation.redis.AzureRedisAutoConfiguration
 com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration
 com.azure.spring.cloud.autoconfigure.implementation.context.AzureTokenCredentialAutoConfiguration

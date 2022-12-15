@@ -43,25 +43,15 @@ public class AzureAppConfigurationAutoConfiguration extends AzureServiceConfigur
         return loadProperties(getAzureGlobalProperties(), new AzureAppConfigurationProperties());
     }
 
-    /**
-     * Autoconfigure the {@link ConfigurationClient} instance.
-     * @param builder The {@link ConfigurationClientBuilder} to build the instance.
-     * @return the configuration client instance.
-     */
     @Bean
     @ConditionalOnMissingBean
-    public ConfigurationClient azureConfigurationClient(ConfigurationClientBuilder builder) {
+    ConfigurationClient azureConfigurationClient(ConfigurationClientBuilder builder) {
         return builder.buildClient();
     }
 
-    /**
-     * Autoconfigure the {@link ConfigurationAsyncClient} instance.
-     * @param builder The {@link ConfigurationClientBuilder} to build the instance.
-     * @return the configuration async client instance.
-     */
     @Bean
     @ConditionalOnMissingBean
-    public ConfigurationAsyncClient azureConfigurationAsyncClient(ConfigurationClientBuilder builder) {
+    ConfigurationAsyncClient azureConfigurationAsyncClient(ConfigurationClientBuilder builder) {
         return builder.buildAsyncClient();
     }
 
