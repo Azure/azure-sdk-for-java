@@ -8,6 +8,9 @@ Upgrade Spring Boot dependencies version to 3.0.0 and Spring Cloud dependencies 
  - Move Cloud Foundry classes to the implementation package [#32549](https://github.com/Azure/azure-sdk-for-java/pull/32549).
  - Move some configuration classes into implementation package, and reduce the number of public APIs [#32552](https://github.com/Azure/azure-sdk-for-java/pull/32552), [#32582](https://github.com/Azure/azure-sdk-for-java/pull/32582), [#32597](https://github.com/Azure/azure-sdk-for-java/pull/32597).
 
+#### Bugs Fixed
+- Remove unused class `RestTemplateProxyCustomizerConfiguration` [#32612](https://github.com/Azure/azure-sdk-for-java/pull/32612)
+
 ## 6.0.0-beta.4 (2022-12-07)
 Upgrade Spring Boot dependencies version to 3.0.0-RC2 and Spring Cloud dependencies version to 2022.0.0-RC2.
 
