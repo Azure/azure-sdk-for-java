@@ -401,6 +401,8 @@ class SparkE2EWriteITest
   patchParameterTest = Seq(
     PatchParameterTest(bulkEnabled = true, CosmosPatchOperationTypes.Replace, "[col(car).op(replace)]", "from c where exists(c.id)"),
     PatchParameterTest(bulkEnabled = false, CosmosPatchOperationTypes.Replace, "[col(car).op(replace)]", "from c where exists(c.id)"),
+    PatchParameterTest(bulkEnabled = true, CosmosPatchOperationTypes.Replace, "[col(car).op(replace).rawJson]", "from c where exists(c.id)"),
+    PatchParameterTest(bulkEnabled = false, CosmosPatchOperationTypes.Replace, "[col(car).op(replace).rawJson]", "from c where exists(c.id)"),
   )
 
   for (PatchParameterTest(bulkEnabled, patchDefaultOperationType, patchColumnConfigString, patchConditionFilter) <- patchParameterTest) {
@@ -444,10 +446,30 @@ class SparkE2EWriteITest
       df.show(false)
       df.write.format("cosmos.oltp").mode("Append").options(cfg).save()
 
-      val patchDf = Seq(("Quark", "{ \"manufacturer\": \"BMW\", \"carType\": \"X5\" }"))
-        .toDF("id", "childNodeJson")
-        .withColumn("car", from_json(col("childNodeJson"), StructType(Array(StructField("manufacturer", StringType, true), StructField("carType", StringType, true)))))
-        .drop("childNodeJson")
+      // verify data is written
+      // wait for a second to allow replication is completed.
+      Thread.sleep(1000)
+
+      // the item with the same id/pk will be persisted based on the upsert config
+      var quarks = queryItems("SELECT * FROM r where r.id = 'Quark'").toArray
+      quarks should have size 1
+
+      var quark = quarks(0)
+      quark.get("particle name").asText() shouldEqual "Quark"
+      quark.get("id").asText() shouldEqual "Quark"
+      quark.get("car").get("carType").asText() shouldEqual "X3"
+
+      val patchDf = if(patchColumnConfigString.endsWith(".rawJson]")) {
+        Seq(("Quark", "{ \"manufacturer\": \"BMW\", \"carType\": \"X5\" }"))
+          .toDF("id", "car")
+      } else {
+        Seq(("Quark", "{ \"manufacturer\": \"BMW\", \"carType\": \"X5\" }"))
+          .toDF("id", "childNodeJson")
+          .withColumn("car", from_json(col("childNodeJson"), StructType(Array(StructField("manufacturer", StringType, true), StructField("carType", StringType, true)))))
+          .drop("childNodeJson")
+      }
+
+      logInfo(s"Schema of patchDf: ${patchDf.schema}")
 
       patchDf.write.format("cosmos.oltp").mode("Append").options(cfgPatch).save()
 
@@ -456,10 +478,12 @@ class SparkE2EWriteITest
       Thread.sleep(1000)
 
       // the item with the same id/pk will be persisted based on the upsert config
-      val quarks = queryItems("SELECT * FROM r where r.id = 'Quark'").toArray
+      quarks = queryItems("SELECT * FROM r where r.id = 'Quark'").toArray
       quarks should have size 1
 
-      val quark = quarks(0)
+      logInfo(s"JSON returned from query: ${quarks(0)}")
+
+      quark = quarks(0)
       quark.get("particle name").asText() shouldEqual "Quark"
       quark.get("id").asText() shouldEqual "Quark"
       quark.get("car").get("carType").asText() shouldEqual "X5"
