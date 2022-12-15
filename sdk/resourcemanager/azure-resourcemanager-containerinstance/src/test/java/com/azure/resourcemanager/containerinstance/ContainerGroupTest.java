@@ -119,11 +119,11 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
                     .withImage("mcr.microsoft.com/azuredocs/aci-helloworld")
                     .withExternalTcpPort(80)
                     .withLivenessProbeExec(Arrays.asList("/bin/bash", "myCustomScript.sh"), 30)
-                    .withReadinessProbeHttpGet("https://www.example.org", 30)
+                    .withReadinessProbeHttpGet("/mypath", 80, 30)
                 .attach()
                 .defineContainerInstance(containerName2)
                     .withImage("mcr.microsoft.com/azuredocs/aci-helloworld")
-                    .withExternalTcpPort(80)
+                    .withExternalTcpPort(8080)
                     .withLivenessProbe(
                         new ContainerProbe()
                             .withExec(
@@ -135,7 +135,7 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
                             .withHttpGet(
                                 new ContainerHttpGet()
                                     .withPath("/")
-                                    .withPort(80)
+                                    .withPort(8080)
                                     .withScheme(Scheme.HTTP))
                             .withPeriodSeconds(30)
                             .withInitialDelaySeconds(0))

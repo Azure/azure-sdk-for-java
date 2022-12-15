@@ -942,19 +942,20 @@ public interface ContainerGroup
                 /**
                  * Specifies the container's liveness probe to perform an Http Get at a given interval.
                  *
-                 * @param path the path to perform the Http Get
+                 * @param path the path to perform the Http Get, starts with "/"
                  * @param probePeriodSeconds the interval at which the Http Get performs
+                 * @param port the port number to probe
                  * @return the next stage of the definition
                  */
-                WithContainerInstanceAttach<ParentT> withLivenessProbeHttpGet(String path, int probePeriodSeconds);
+                WithContainerInstanceAttach<ParentT> withLivenessProbeHttpGet(String path, int port, int probePeriodSeconds);
 
                 /**
                  * Specifies the container's liveness probe.
                  *
-                 * @param containerProbe the liveness probe
+                 * @param livenessProbe the liveness probe
                  * @return the next stage of the definition
                  */
-                WithContainerInstanceAttach<ParentT> withLivenessProbe(ContainerProbe containerProbe);
+                WithContainerInstanceAttach<ParentT> withLivenessProbe(ContainerProbe livenessProbe);
             }
 
             /**
@@ -977,19 +978,20 @@ public interface ContainerGroup
                 /**
                  * Specifies the container's readiness probe to perform an Http Get at a given interval.
                  *
-                 * @param path the path to perform the Http Get
+                 * @param path the path to perform the Http Get, starts with "/"
+                 * @param port the port number to probe
                  * @param probePeriodSeconds the interval at which the Http Get performs
                  * @return the next stage of the definition
                  */
-                WithContainerInstanceAttach<ParentT> withReadinessProbeHttpGet(String path, int probePeriodSeconds);
+                WithContainerInstanceAttach<ParentT> withReadinessProbeHttpGet(String path, int port, int probePeriodSeconds);
 
                 /**
                  * Specifies the container's readiness probe.
                  *
-                 * @param containerProbe the readiness probe
+                 * @param readinessProbe the readiness probe
                  * @return the next stage of the definition
                  */
-                WithContainerInstanceAttach<ParentT> withReadinessProbe(ContainerProbe containerProbe);
+                WithContainerInstanceAttach<ParentT> withReadinessProbe(ContainerProbe readinessProbe);
             }
 
             /**
