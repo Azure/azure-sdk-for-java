@@ -7,10 +7,8 @@ import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.Authori
 import com.azure.spring.cloud.autoconfigure.aad.implementation.graph.GraphClient;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.graph.GroupInformation;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,8 +27,11 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -46,7 +47,7 @@ import static org.mockito.Mockito.when;
 /**
  * Tests for {@link AadOAuth2UserService}.
  */
-public class AadOAuth2UserServiceTest {
+class AadOAuth2UserServiceTest {
     private ClientRegistration.Builder clientRegistrationBuilder;
     private OidcIdToken idToken;
     private AadOAuth2UserService aadOAuth2UserService;
@@ -82,8 +83,6 @@ public class AadOAuth2UserServiceTest {
 
         this.idToken = new OidcIdToken("access-token", Instant.MIN, Instant.MAX, idTokenClaims);
 
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
     }
 
     @Test
@@ -125,7 +124,7 @@ public class AadOAuth2UserServiceTest {
         ClientRegistration clientRegistration = this.clientRegistrationBuilder
             .build();
         OidcUser user = aadOAuth2UserService
-            .loadUser(new OidcUserRequest(clientRegistration, this.accessToken, this.idToken));
+            .getUser(new OidcUserRequest(clientRegistration, this.accessToken, this.idToken));
 
         assertThat(user.getUserInfo()).isNull();
         assertThat(user.getClaims()).isEqualTo(idTokenClaims);
@@ -160,7 +159,7 @@ public class AadOAuth2UserServiceTest {
             .build();
 
         OidcUser user = this.aadOAuth2UserService
-            .loadUser(new OidcUserRequest(clientRegistration, this.accessToken,
+            .getUser(new OidcUserRequest(clientRegistration, this.accessToken,
                 new OidcIdToken("access-token", Instant.MIN, Instant.MAX, idTokenClaims)));
 
         assertThat(user.getUserInfo()).isNull();
@@ -186,7 +185,7 @@ public class AadOAuth2UserServiceTest {
             .build();
 
         OidcUser user = this.aadOAuth2UserService
-            .loadUser(new OidcUserRequest(clientRegistration, this.accessToken, this.idToken));
+            .getUser(new OidcUserRequest(clientRegistration, this.accessToken, this.idToken));
         assertThat(user.getName()).isEqualTo("user1@example.com");
     }
 
@@ -198,12 +197,25 @@ public class AadOAuth2UserServiceTest {
             .build();
 
         OidcUser user = this.aadOAuth2UserService
-            .loadUser(new OidcUserRequest(clientRegistration, this.accessToken, this.idToken));
+            .getUser(new OidcUserRequest(clientRegistration, this.accessToken, this.idToken));
         assertThat(user.getName()).isEqualTo("user1");
     }
 
-    @AfterEach
-    void cleanUp() {
-        SecurityContextHolder.getContext().setAuthentication(null);
+    static class TestOAuth2AccessTokens {
+
+        private TestOAuth2AccessTokens() {
+        }
+
+        public static OAuth2AccessToken noScopes() {
+            return new OAuth2AccessToken(OAuth2AccessToken.TokenType.BEARER, "no-scopes", Instant.now(),
+                Instant.now().plus(Duration.ofDays(1)));
+        }
+
+        public static OAuth2AccessToken scopes(String... scopes) {
+            return new OAuth2AccessToken(OAuth2AccessToken.TokenType.BEARER, "scopes", Instant.now(),
+                Instant.now().plus(Duration.ofDays(1)), new HashSet<>(Arrays.asList(scopes)));
+        }
+
     }
+
 }

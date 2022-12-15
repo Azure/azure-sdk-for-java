@@ -70,6 +70,7 @@ public class AadOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
      *
      * @param properties the AAD authentication properties
      * @param graphClient the graph client
+     * @param restTemplateBuilder the restTemplateBuilder
      */
     public AadOAuth2UserService(AadAuthenticationProperties properties,
                                 GraphClient graphClient,
@@ -78,7 +79,7 @@ public class AadOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
     }
 
     private AadOAuth2UserService(AadAuthenticationProperties properties,
-                                GraphClient graphClient) {
+                                 GraphClient graphClient) {
         allowedGroupNames = Optional.ofNullable(properties)
             .map(AadAuthenticationProperties::getUserGroup)
             .map(AadAuthenticationProperties.UserGroupProperties::getAllowedGroupNames)
@@ -124,7 +125,7 @@ public class AadOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
         return defaultOidcUser;
     }
 
-    private DefaultOidcUser getUser(OidcUserRequest userRequest) {
+    DefaultOidcUser getUser(OidcUserRequest userRequest) {
         Set<SimpleGrantedAuthority> authorities = buildAuthorities(userRequest);
         String nameAttributeKey = getNameAttributeKey(userRequest);
         OidcIdToken idToken = userRequest.getIdToken();
