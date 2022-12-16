@@ -11,7 +11,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 // BEGIN: readme-sample-MultiTenantDBCosmosFactory
 public class MultiTenantDBCosmosFactory extends CosmosFactory {
 
-    public String manuallySetDatabaseName;
+    private String manuallySetDatabaseName;
 
     /**
      * Validate config and initialization
@@ -28,6 +28,14 @@ public class MultiTenantDBCosmosFactory extends CosmosFactory {
     @Override
     public String getDatabaseName() {
         return this.manuallySetDatabaseName;
+    }
+
+    public void setManuallySetDatabaseName(String manuallySetDatabaseName) {
+        this.manuallySetDatabaseName = manuallySetDatabaseName;
+    }
+
+    public String getManuallySetDatabaseName() {
+        return manuallySetDatabaseName;
     }
 }
 // END: readme-sample-MultiTenantDBCosmosFactory
