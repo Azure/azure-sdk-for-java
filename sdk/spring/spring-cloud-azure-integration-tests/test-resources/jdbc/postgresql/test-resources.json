@@ -112,11 +112,11 @@
       "type": "string",
       "value": "[reference(parameters('serverName')).fullyQualifiedDomainName]"
     },
-    "POSTGRESQL_SERVER_USERNAME": {
+    "POSTGRESQL_USERNAME": {
       "type": "string",
       "value": "[parameters('postgresql_server_username')]"
     },
-    "POSTGRESQL_SERVERNAME": {
+    "POSTGRESQL_SINGLE_ACCOUNTNAME": {
       "type": "string",
       "value": "[parameters('serverName')]"
     }

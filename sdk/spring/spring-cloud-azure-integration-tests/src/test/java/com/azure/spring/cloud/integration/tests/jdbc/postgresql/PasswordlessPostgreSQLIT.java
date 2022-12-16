@@ -17,7 +17,7 @@ import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("jdbc-postgresql-single")
-class PasswordlessPostgreSQLFlexibleIT {
+class PasswordlessPostgreSQLIT {
     String VALUE = "azure_maintenance,postgres,azure_sys,db";
 
     @Autowired
