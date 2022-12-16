@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.aad.utils;
 
-import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.RestTemplateProxyCustomizerConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.RestTemplateProxyCustomizerTestConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -30,7 +30,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.RestTemplateProxyCustomizerConfiguration.FACTORY;
+import static com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.RestTemplateProxyCustomizerTestConfiguration.FACTORY;
 import static com.azure.spring.cloud.autoconfigure.implementation.aad.utils.AadRestTemplateCreator.createOAuth2AccessTokenResponseClientRestTemplate;
 import static com.azure.spring.cloud.autoconfigure.implementation.aad.utils.AadRestTemplateCreator.createOAuth2ErrorResponseHandledRestTemplate;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -107,7 +107,7 @@ class AadRestTemplateCreatorTest {
         new ApplicationContextRunner()
                 .withUserConfiguration(
                         RestTemplateAutoConfiguration.class,
-                        RestTemplateProxyCustomizerConfiguration.class)
+                        RestTemplateProxyCustomizerTestConfiguration.class)
                 .run((context) -> {
                     RestTemplate restTemplate = context.getBean(RestTemplateBuilder.class).build();
                     assertSame(restTemplate.getRequestFactory(), FACTORY);

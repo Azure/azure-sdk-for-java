@@ -13,7 +13,7 @@ class AadOAuth2ClientJackson2Module extends SimpleModule {
 
     private static final long serialVersionUID = 30_80_00L;
 
-    public AadOAuth2ClientJackson2Module() {
+    AadOAuth2ClientJackson2Module() {
         super(AadOAuth2ClientJackson2Module.class.getName(), new Version(3, 8, 0, null, null, null));
     }
 

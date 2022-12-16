@@ -68,7 +68,7 @@ class AadGraphClient {
      * @param aadAuthenticationProperties the AAD authentication properties
      * @param endpoints the AAF authorization server endpoints
      */
-    public AadGraphClient(String clientId,
+    AadGraphClient(String clientId,
                           String clientSecret,
                           AadAuthenticationProperties aadAuthenticationProperties,
                           AadAuthorizationServerEndpoints endpoints,
