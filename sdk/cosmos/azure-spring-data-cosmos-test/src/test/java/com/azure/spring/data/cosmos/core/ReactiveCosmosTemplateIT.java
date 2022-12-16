@@ -96,6 +96,12 @@ public class ReactiveCosmosTemplateIT {
         .create()
         .replace("/age", 25);
 
+    CosmosPatchOperations multiPatchOperations = CosmosPatchOperations
+        .create()
+        .replace("/firstName", "first_name_replace")
+        .add("/hobbies/2", "shopping")
+        .increment("/age", 2);
+
     private static final CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
 
     @ClassRule
@@ -292,18 +298,27 @@ public class ReactiveCosmosTemplateIT {
 
     @Test
     public void testPatch() {
-        insertedPerson = cosmosTemplate.patch(containerName, insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), operations, Person.class);
+        cosmosTemplate.patch(containerName, insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), operations, Person.class);
         Mono<Person> patchedPerson = cosmosTemplate.findById(containerName, insertedPerson.getId(), Person.class);
         assertEquals(insertedPerson.getAge(), patchedPerson.block().getAge());
+    }
+
+    @Test
+    public void testPatchMultiOperations() {
+        cosmosTemplate.patch(containerName, insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), multiPatchOperations, Person.class);
+        Mono<Person> patchedPerson = cosmosTemplate.findById(containerName, insertedPerson.getId(), Person.class);
+        assertEquals(insertedPerson.getAge(), patchedPerson.block().getAge());
+        assertEquals(insertedPerson.getHobbies(), patchedPerson.block().getHobbies());
+        assertEquals(insertedPerson.getFirstName(), patchedPerson.block().getFirstName());
     }
 
     @Test
     public void testPatchPreConditionFail() {
         try {
             options.setFilterPredicate("FROM person p WHERE p.lastName = 'dummy'");
-            insertedPerson = cosmosTemplate.patch(containerName, insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), operations, Person.class,options);
+            Mono<Person> person = cosmosTemplate.patch(containerName, insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), operations, Person.class,options);
             Mono<Person> patchedPerson = cosmosTemplate.findById(containerName, insertedPerson.getId(), Person.class);
-            assertEquals(insertedPerson.getAge(), patchedPerson.block().getAge());
+            assertEquals(person.block().getAge(), patchedPerson.block().getAge());
             fail();
         } catch (CosmosAccessException ex) {
             assertThat(ex.getCosmosException()).isInstanceOf(PreconditionFailedException.class);

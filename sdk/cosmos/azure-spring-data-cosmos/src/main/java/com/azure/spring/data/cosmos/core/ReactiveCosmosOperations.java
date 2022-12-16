@@ -157,7 +157,7 @@ public interface ReactiveCosmosOperations {
      * @param <T> type class of domain type
      * @return the inserted item
      */
-    <T> T  patch(String containerName, String id, PartitionKey partitionKey, CosmosPatchOperations patchOperations, Class<T> patchObjectClass);
+    <T> Mono<T>  patch(String containerName, String id, PartitionKey partitionKey, CosmosPatchOperations patchOperations, Class<T> patchObjectClass);
 
     /**
      * patches item with CosmosPatchItemRequestOptions
@@ -170,7 +170,7 @@ public interface ReactiveCosmosOperations {
      * @param <T> type class of domain type
      * @return the inserted item
      */
-    <T> T  patch(String containerName, String id, PartitionKey partitionKey, CosmosPatchOperations patchOperations, Class<T> patchObjectClass, CosmosPatchItemRequestOptions options);
+    <T> Mono<T>  patch(String containerName, String id, PartitionKey partitionKey, CosmosPatchOperations patchOperations, Class<T> patchObjectClass, CosmosPatchItemRequestOptions options);
 
     /**
      * Upsert an item with partition key

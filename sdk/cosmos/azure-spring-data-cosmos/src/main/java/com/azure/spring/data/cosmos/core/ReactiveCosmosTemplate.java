@@ -468,7 +468,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * @return the inserted item
      */
     @Override
-    public <T> T patch(String containerName, String id, PartitionKey partitionKey, CosmosPatchOperations patchOperations, Class<T> patchObjectClass){
+    public <T> Mono<T> patch(String containerName, String id, PartitionKey partitionKey, CosmosPatchOperations patchOperations, Class<T> patchObjectClass){
         return patch(containerName, id, partitionKey, patchOperations,  patchObjectClass, null);
     }
 
@@ -483,35 +483,33 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * @param <T> type class of domain type
      * @return the inserted item
      */
-    public <T> T patch(String containerName, String id, PartitionKey partitionKey, CosmosPatchOperations patchOperations, Class<T> patchObjectClass, CosmosPatchItemRequestOptions options) {
+    public <T> Mono<T>  patch(String containerName, String id, PartitionKey partitionKey, CosmosPatchOperations patchOperations, Class<T> patchObjectClass, CosmosPatchItemRequestOptions options) {
         Assert.notNull(id, "objectToSave should not be null");
         Assert.notNull(partitionKey, "partitionKey should not be null, empty or only whitespaces");
         Assert.notNull(patchOperations, "patchOperations should not be null, empty or only whitespaces");
 
-        @SuppressWarnings("unchecked") final Class<T> domainType = patchObjectClass;
-
-        LOGGER.debug("execute createItem in database {} container {}", this.getDatabaseName(),
-            containerName);
+        LOGGER.debug("execute patchItem in database {} container {}", this.getDatabaseName(), containerName);
 
         if(options==null){
             options = new CosmosPatchItemRequestOptions();
         }
 
         //  if the partition key is null, SDK will get the partitionKey from the object
-        final CosmosItemResponse<JsonNode> response = this.getCosmosAsyncClient()
+
+        return this.getCosmosAsyncClient()
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
             .patchItem(id, partitionKey, patchOperations, options, JsonNode.class)
             .publishOn(Schedulers.parallel())
-            .doOnNext(cosmosItemResponse ->
-                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                    cosmosItemResponse.getDiagnostics(), null))
             .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to patch item", throwable,
+                CosmosExceptionUtils.exceptionHandler("Failed to insert item", throwable,
                     this.responseDiagnosticsProcessor))
-            .block();
-        assert response != null;
-        return toDomainObject(domainType, response.getItem());
+            .flatMap(cosmosItemResponse -> {
+                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                    cosmosItemResponse.getDiagnostics(), null);
+                return Mono.just(toDomainObject(patchObjectClass, cosmosItemResponse.getItem()));
+            });
+
     }
 
     @SuppressWarnings("unchecked")

@@ -294,7 +294,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                     this.responseDiagnosticsProcessor))
             .block();
         assert response != null;
-        return toDomainObject(domainType, response.getItem());
+        return toDomainObject(patchObjectClass, response.getItem());
     }
 
     @SuppressWarnings("unchecked")

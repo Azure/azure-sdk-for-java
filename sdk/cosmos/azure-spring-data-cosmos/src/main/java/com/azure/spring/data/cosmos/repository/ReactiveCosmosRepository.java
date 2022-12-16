@@ -42,7 +42,7 @@ public interface ReactiveCosmosRepository<T, K> extends ReactiveSortingRepositor
      * @param patchObjectClass class/type of the item to be patched, must not be null.
      * @throws IllegalArgumentException in case the given {@code id} is {@literal null}.
      */
-    <T> T patch(String ID, PartitionKey partitionKey, CosmosPatchOperations patchOperations, Class<T> patchObjectClass);
+    <T> Mono<T> patch(String ID, PartitionKey partitionKey, CosmosPatchOperations patchOperations, Class<T> patchObjectClass);
 
     /**
      * patches an entity by its id and partition key with CosmosPatchItemRequestOptions
@@ -54,7 +54,7 @@ public interface ReactiveCosmosRepository<T, K> extends ReactiveSortingRepositor
      * @param options additional CosmosPatchItemRequestOptions options, e.g. options.setFilterPredicate("FROM products p WHERE p.used = false");
      * @throws IllegalArgumentException in case the given {@code id} is {@literal null}.
      */
-    <T> T patch(String ID, PartitionKey partitionKey, CosmosPatchOperations patchOperations, Class<T> patchObjectClass, CosmosPatchItemRequestOptions options);
+    <T> Mono<T> patch(String ID, PartitionKey partitionKey, CosmosPatchOperations patchOperations, Class<T> patchObjectClass, CosmosPatchItemRequestOptions options);
 
     /**
      * Returns Flux of items in a specific partition

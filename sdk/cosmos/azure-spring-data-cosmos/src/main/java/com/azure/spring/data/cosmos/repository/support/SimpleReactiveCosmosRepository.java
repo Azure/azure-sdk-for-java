@@ -114,7 +114,7 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
      * @param p path operations
      */
     //@Override
-    public <T> T patch(String id, PartitionKey partitionKey, CosmosPatchOperations p, Class<T> patchObjectClass) {
+    public <T> Mono<T>patch(String id, PartitionKey partitionKey, CosmosPatchOperations p, Class<T> patchObjectClass) {
         Assert.notNull(id, "entity must not be null");
         // patch items
         return cosmosOperations.patch(entityInformation.getContainerName(), id, partitionKey, p, patchObjectClass);
@@ -130,7 +130,7 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
      * @param p path operations
      */
     //@Override
-    public <T> T patch(String id, PartitionKey partitionKey, CosmosPatchOperations p, Class<T> patchObjectClass, CosmosPatchItemRequestOptions options) {
+    public <T> Mono<T> patch(String id, PartitionKey partitionKey, CosmosPatchOperations p, Class<T> patchObjectClass, CosmosPatchItemRequestOptions options) {
         Assert.notNull(id, "entity must not be null");
         // patch items
         return cosmosOperations.patch(entityInformation.getContainerName(), id, partitionKey, p, patchObjectClass, options);
