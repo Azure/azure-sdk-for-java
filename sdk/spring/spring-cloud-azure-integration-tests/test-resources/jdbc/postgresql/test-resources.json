@@ -13,6 +13,10 @@
       "defaultValue": "[resourceGroup().name]",
       "type": "String"
     },
+    "administratorLogin": {
+      "defaultValue": "postgresqladmin",
+      "type": "String"
+    },
     "serverName": {
       "type": "string",
       "defaultValue": "[concat(parameters('baseName'),'-passwordless-postgresql-flexible-it')]",
