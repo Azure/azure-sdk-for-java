@@ -54,6 +54,8 @@ public class TestProxyRecordTests extends TestBase {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
+        testResourceNamer.randomName("test", 10);
+        testResourceNamer.now();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         HttpResponse response = pipeline.sendSync(request, Context.NONE);
 
