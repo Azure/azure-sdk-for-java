@@ -59,6 +59,9 @@ public final class PointOfInterest {
     @JsonProperty(value = "openingHours")
     private OperatingHours operatingHours;
 
+    /** Creates an instance of PointOfInterest class. */
+    public PointOfInterest() {}
+
     /**
      * Get the name property: Name of the POI property.
      *

@@ -5,6 +5,7 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
+import com.azure.communication.callautomation.models.CallSource;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.FileSource;
@@ -62,7 +63,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
 
             // create a call
             List<CommunicationIdentifier> targets = new ArrayList<>(Arrays.asList(receiver));
-            CreateCallOptions createCallOptions = new CreateCallOptions(caller, targets,
+            CreateCallOptions createCallOptions = new CreateCallOptions(new CallSource(caller), targets,
                 DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).setRepeatabilityHeaders(null);
             Response<CreateCallResult> createCallResultResponse = callAsyncClient.createCallWithResponse(createCallOptions).block();
             assertNotNull(createCallResultResponse);

@@ -41,6 +41,9 @@ public final class MetadataCategoryRelated {
     @JsonProperty(value = "solutions")
     private List<String> solutions;
 
+    /** Creates an instance of MetadataCategoryRelated class. */
+    public MetadataCategoryRelated() {}
+
     /**
      * Get the tables property: The tables related to the category.
      *

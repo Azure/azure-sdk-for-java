@@ -4,13 +4,13 @@
 
 package com.azure.monitor.query.implementation.metricsdefinitions.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents collection of metric definitions. */
-@Fluent
+@Immutable
 public final class MetricDefinitionCollection {
     /*
      * the values for the metric definitions.
