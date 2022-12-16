@@ -28,7 +28,7 @@
         "description": "Server Name for Azure database for MySQL"
       }
     },
-    "postgresql_flexible_server_username": {
+    "postgresql_server_username": {
       "defaultValue": "passwordless-postgresql-test-admin",
       "type": "String"
     },
@@ -42,58 +42,52 @@
   },
   "resources": [
     {
-      "type": "Microsoft.DBforPostgreSQL/flexibleServers",
-      "apiVersion": "2022-01-20-preview",
+      "type": "Microsoft.DBforPostgreSQL/servers",
+      "apiVersion": "2017-12-01",
       "name": "[parameters('serverName')]",
-      "location": "East US",
+      "location": "[resourceGroup().location]",
       "sku": {
-        "name": "Standard_D2ds_v4",
-        "tier": "GeneralPurpose"
+        "name": "GP_Gen5_4",
+        "tier": "GeneralPurpose",
+        "family": "Gen5",
+        "capacity": 4
       },
       "properties": {
-        "version": "[variables('version')]",
+        "version": "11",
         "administratorLogin": "[parameters('administratorLogin')]",
         "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
-        "availabilityZone": "2",
-        "storage": {
-          "storageSizeGB": 128
-        },
-        "backup": {
+        "storageProfile": {
+          "storageMB": 102400,
           "backupRetentionDays": 7,
-          "geoRedundantBackup": "Disabled"
+          "geoRedundantBackup": "Disabled",
+          "storageAutogrow": "Enabled"
         },
-        "network": {},
-        "highAvailability": {
-          "mode": "Disabled"
-        },
-        "maintenanceWindow": {
-          "customWindow": "Disabled",
-          "dayOfWeek": 0,
-          "startHour": 0,
-          "startMinute": 0
-        }
+        "sslEnforcement": "Disabled",
+        "minimalTlsVersion": "TLSEnforcementDisabled",
+        "infrastructureEncryption": "Disabled",
+        "publicNetworkAccess": "Enabled"
       }
     },
     {
       "type": "Microsoft.DBforPostgreSQL/servers/administrators",
       "apiVersion": "2017-12-01",
       "dependsOn": [
-        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('serverName'))]"
+        "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('serverName'))]"
       ],
       "name": "[concat(parameters('serverName'), '/ActiveDirectory')]",
       "properties": {
         "administratorType": "ActiveDirectory",
-        "login": "[parameters('postgresql_flexible_server_username')]",
+        "login": "[parameters('postgresql_server_username')]",
         "sid": "[parameters('testApplicationId')]",
         "tenantId": "[parameters('tenantId')]"
       }
     },
     {
-      "type": "Microsoft.DBforPostgreSQL/flexibleServers/databases",
-      "apiVersion": "2022-01-20-preview",
+      "type": "Microsoft.DBforPostgreSQL/servers/databases",
+      "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/db')]",
       "dependsOn": [
-        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('serverName'))]"
+        "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('serverName'))]"
       ],
       "properties": {
         "charset": "UTF8",
@@ -101,11 +95,11 @@
       }
     },
     {
-      "type": "Microsoft.DBforPostgreSQL/flexibleServers/firewallRules",
-      "apiVersion": "2022-01-20-preview",
+      "type": "Microsoft.DBforPostgreSQL/servers/firewallRules",
+      "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/AllowAll')]",
       "dependsOn": [
-        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('serverName'))]"
+        "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('serverName'))]"
       ],
       "properties": {
         "startIpAddress": "0.0.0.0",
@@ -118,9 +112,13 @@
       "type": "string",
       "value": "[reference(parameters('serverName')).fullyQualifiedDomainName]"
     },
-    "POSTGRESQL_FLEXIBLE_SERVER_USERNAME": {
+    "POSTGRESQL_SERVER_USERNAME": {
       "type": "string",
-      "value": "[parameters('postgresql_flexible_server_username')]"
+      "value": "[parameters('postgresql_server_username')]"
+    },
+    "POSTGRESQL_SERVERNAME": {
+      "type": "string",
+      "value": "[parameters('serverName')]"
     }
   }
 }

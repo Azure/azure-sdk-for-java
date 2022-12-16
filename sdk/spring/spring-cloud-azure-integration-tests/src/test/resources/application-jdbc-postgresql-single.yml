@@ -1,7 +1,7 @@
 spring:
   datasource:
     url: jdbc:postgresql://${AZURE_POSTGRESQL_FLEXIBLE_SERVER_ENDPOINT}:5432/db
-    username: ${POSTGRESQL_FLEXIBLE_SERVER_USERNAME}
+    username: ${POSTGRESQL_SERVER_USERNAME}@${POSTGRESQL_SERVERNAME}
     hikari:
       maximum-pool-size: 5
       minimum-idle: 5
