@@ -244,32 +244,28 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * applies partial update (patch) to an item
      *
      * @param containerName must not be {@literal null}
-     * @param id must not be {@literal null}
-     * @param partitionKey must not be {@literal null}
      * @param patchOperations must not be {@literal null}
      * @param <T> type class of domain type
      * @return the inserted item
      */
     @Override
-    public <T> T patch(String containerName, String id, PartitionKey partitionKey, CosmosPatchOperations patchOperations, Class<T> patchObjectClass){
-        return patch(containerName, id, partitionKey, patchOperations,  patchObjectClass, null);
+    public <T> T save(String containerName, T objectToPatch, CosmosPatchOperations patchOperations ){
+        return save(containerName, objectToPatch, patchOperations, null);
     }
 
     /**
      * applies partial update (patch) to an item with CosmosPatchItemRequestOptions
      *
      * @param containerName must not be {@literal null}
-     * @param id must not be {@literal null}
-     * @param partitionKey must not be {@literal null}
      * @param patchOperations must not be {@literal null}
      * @param options must not be {@literal null}
      * @param <T> type class of domain type
      * @return the inserted item
      */
-    public <T> T patch(String containerName, String id, PartitionKey partitionKey, CosmosPatchOperations patchOperations, Class<T> patchObjectClass, CosmosPatchItemRequestOptions options) {
-        Assert.notNull(id, "id should not be null");
-        Assert.notNull(partitionKey, "partitionKey should not be null, empty or only whitespaces");
+    public <T> T save(String containerName, T objectToPatch, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options) {
         Assert.notNull(patchOperations, "patchOperations should not be null, empty or only whitespaces");
+
+        @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) objectToPatch.getClass();
 
         LOGGER.debug("execute createItem in database {} container {}", this.getDatabaseName(),
             containerName);
@@ -278,11 +274,14 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             options = new CosmosPatchItemRequestOptions();
         }
 
-        //  if the partition key is null, SDK will get the partitionKey from the object
+        CosmosEntityInformation<T, String> objectToPatchInfo;
+        objectToPatchInfo = new CosmosEntityInformation<>(domainType);
+
+        //  extract id and partitionKey from the objectToPatchInfo
         final CosmosItemResponse<JsonNode> response = this.getCosmosAsyncClient()
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
-            .patchItem(id, partitionKey, patchOperations, options, JsonNode.class)
+            .patchItem(objectToPatchInfo.getId(objectToPatch).toString(), new PartitionKey(objectToPatchInfo.getPartitionKeyFieldValue(objectToPatch).toString()), patchOperations, options, JsonNode.class)
             .publishOn(Schedulers.parallel())
             .doOnNext(cosmosItemResponse ->
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
@@ -292,7 +291,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                     this.responseDiagnosticsProcessor))
             .block();
         assert response != null;
-        return toDomainObject(patchObjectClass, response.getItem());
+        return toDomainObject(domainType, response.getItem());
     }
 
     @SuppressWarnings("unchecked")

@@ -461,45 +461,45 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * applies partial update (patch) to an item
      *
      * @param containerName must not be {@literal null}
-     * @param id must not be {@literal null}
-     * @param partitionKey must not be {@literal null}
      * @param patchOperations must not be {@literal null}
-     * @param <T> type class of domain type
+     * @param <T> entity to be patched
      * @return the inserted item
      */
     @Override
-    public <T> Mono<T> patch(String containerName, String id, PartitionKey partitionKey, CosmosPatchOperations patchOperations, Class<T> patchObjectClass){
-        return patch(containerName, id, partitionKey, patchOperations,  patchObjectClass, null);
+    public <T> Mono<T> save(String containerName, T objectToPatch, CosmosPatchOperations patchOperations) {
+        return save(containerName, objectToPatch, patchOperations, null);
     }
 
     /**
      * applies partial update (patch) to an item with CosmosPatchItemRequestOptions
      *
      * @param containerName must not be {@literal null}
-     * @param id must not be {@literal null}
-     * @param partitionKey must not be {@literal null}
      * @param patchOperations must not be {@literal null}
      * @param options must not be {@literal null}
-     * @param <T> type class of domain type
+     * @param <T> entity to be patched
      * @return the inserted item
      */
-    public <T> Mono<T>  patch(String containerName, String id, PartitionKey partitionKey, CosmosPatchOperations patchOperations, Class<T> patchObjectClass, CosmosPatchItemRequestOptions options) {
-        Assert.notNull(id, "objectToSave should not be null");
-        Assert.notNull(partitionKey, "partitionKey should not be null, empty or only whitespaces");
+    public <T> Mono<T>  save(String containerName, T objectToPatch, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options) {
         Assert.notNull(patchOperations, "patchOperations should not be null, empty or only whitespaces");
 
         LOGGER.debug("execute patchItem in database {} container {}", this.getDatabaseName(), containerName);
+
+        @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) objectToPatch.getClass();
+
+        LOGGER.debug("execute createItem in database {} container {}", this.getDatabaseName(),
+            containerName);
 
         if(options==null){
             options = new CosmosPatchItemRequestOptions();
         }
 
-        //  if the partition key is null, SDK will get the partitionKey from the object
+        CosmosEntityInformation<T, String> objectToPatchInfo;
+        objectToPatchInfo = new CosmosEntityInformation<>(domainType);
 
         return this.getCosmosAsyncClient()
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
-            .patchItem(id, partitionKey, patchOperations, options, JsonNode.class)
+            .patchItem(objectToPatchInfo.getId(objectToPatch).toString(), new PartitionKey(objectToPatchInfo.getPartitionKeyFieldValue(objectToPatch).toString()), patchOperations, options, JsonNode.class)
             .publishOn(Schedulers.parallel())
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to insert item", throwable,
@@ -507,7 +507,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
             .flatMap(cosmosItemResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosItemResponse.getDiagnostics(), null);
-                return Mono.just(toDomainObject(patchObjectClass, cosmosItemResponse.getItem()));
+                return Mono.just(toDomainObject(domainType, cosmosItemResponse.getItem()));
             });
 
     }

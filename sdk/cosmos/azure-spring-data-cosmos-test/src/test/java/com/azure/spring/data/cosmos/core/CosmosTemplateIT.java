@@ -285,14 +285,14 @@ public class CosmosTemplateIT {
 
     @Test
     public void testPatch() {
-        insertedPerson = cosmosTemplate.patch(containerName, insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), patchOperations, Person.class);
+        insertedPerson = cosmosTemplate.save(containerName, insertedPerson, patchOperations);
         Person patchedPerson = cosmosTemplate.findById(containerName, insertedPerson.getId(), Person.class);
         assertEquals(insertedPerson.getAge(), patchedPerson.getAge());
     }
 
     @Test
     public void testPatchMultiOperations() {
-        insertedPerson = cosmosTemplate.patch(containerName, insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), multiPatchOperations, Person.class);
+        insertedPerson = cosmosTemplate.save(containerName, insertedPerson, multiPatchOperations);
         Person patchedPerson = cosmosTemplate.findById(containerName, insertedPerson.getId(), Person.class);
         assertEquals(insertedPerson.getAge(), patchedPerson.getAge());
         assertEquals(insertedPerson.getHobbies(), patchedPerson.getHobbies());
@@ -303,7 +303,7 @@ public class CosmosTemplateIT {
     public void testPatchPreConditionFail() {
         try {
             options.setFilterPredicate("FROM person p WHERE p.lastName = 'dummy'");
-            insertedPerson = cosmosTemplate.patch(containerName, insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), patchOperations, Person.class,options);
+            insertedPerson = cosmosTemplate.save(containerName, insertedPerson, patchOperations,options);
             Person patchedPerson = cosmosTemplate.findById(containerName, insertedPerson.getId(), Person.class);
             assertEquals(insertedPerson.getAge(), patchedPerson.getAge());
             fail();

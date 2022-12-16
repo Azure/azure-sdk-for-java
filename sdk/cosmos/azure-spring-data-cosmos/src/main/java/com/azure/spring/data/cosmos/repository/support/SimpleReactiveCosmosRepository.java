@@ -105,35 +105,18 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
         }
     }
 
-    /**
-     * patch entity
-     *
-     * @param id of entity to be patched
-     * @param partitionKey partition key
-     * @param patchObjectClass class/type of the item to be patched
-     * @param p path operations
-     */
-    //@Override
-    public <T> Mono<T>patch(String id, PartitionKey partitionKey, CosmosPatchOperations p, Class<T> patchObjectClass) {
-        Assert.notNull(id, "entity must not be null");
+    @Override
+    public <T> Mono<T> save(String containerName, T objectToPatch, CosmosPatchOperations patchOperations) {
+        Assert.notNull(objectToPatch, "entity must not be null");
         // patch items
-        return cosmosOperations.patch(entityInformation.getContainerName(), id, partitionKey, p, patchObjectClass);
+        return cosmosOperations.save(entityInformation.getContainerName(), objectToPatch, patchOperations);
     }
 
-    /**
-     * patch entity with CosmosPatchItemRequestOptions
-     *
-     * @param id of entity to be patched
-     * @param partitionKey partition key
-     * @param patchObjectClass class/type of the item to be patched
-     * @param options including conditional patch syntax based on filter predicate, e.g. options.setFilterPredicate("FROM products p WHERE p.used = false");
-     * @param p path operations
-     */
-    //@Override
-    public <T> Mono<T> patch(String id, PartitionKey partitionKey, CosmosPatchOperations p, Class<T> patchObjectClass, CosmosPatchItemRequestOptions options) {
-        Assert.notNull(id, "entity must not be null");
+    @Override
+    public <T> Mono<T> save(String containerName, T objectToPatch, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options) {
+        Assert.notNull(objectToPatch, "entity must not be null");
         // patch items
-        return cosmosOperations.patch(entityInformation.getContainerName(), id, partitionKey, p, patchObjectClass, options);
+        return cosmosOperations.save(entityInformation.getContainerName(), objectToPatch, patchOperations, options);
     }
 
     @Override
