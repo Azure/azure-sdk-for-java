@@ -3,7 +3,6 @@
 package com.azure.spring.cloud.autoconfigure.implementation.aadb2c.security;
 
 
-import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.security.AadB2cUrl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

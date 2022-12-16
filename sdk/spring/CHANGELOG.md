@@ -10,6 +10,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
  - Remove the `public` access modifier from bean methods [#32514](https://github.com/Azure/azure-sdk-for-java/pull/32514). 
  - Move Cloud Foundry classes to the implementation package [#32549](https://github.com/Azure/azure-sdk-for-java/pull/32549).
  - Move some configuration classes into implementation package, and reduce the number of public APIs [#32552](https://github.com/Azure/azure-sdk-for-java/pull/32552), [#32582](https://github.com/Azure/azure-sdk-for-java/pull/32582), [#32597](https://github.com/Azure/azure-sdk-for-java/pull/32597), [#32616](https://github.com/Azure/azure-sdk-for-java/pull/32616).
+- Move `ServiceBusJmsConnectionFactory` class to `com.azure.spring.jms` package [#32616](https://github.com/Azure/azure-sdk-for-java/pull/32616).
 
 #### Bugs Fixed
 - Remove unused class `RestTemplateProxyCustomizerConfiguration` [#32616](https://github.com/Azure/azure-sdk-for-java/pull/32616)

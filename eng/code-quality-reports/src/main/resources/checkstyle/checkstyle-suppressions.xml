@@ -405,14 +405,9 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Suppress package name warning: b2c is the product name. -->
   <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.aadb2c.*" />
-  <!-- Suppress package name warning: oauth2 is the protocol name. -->
-  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2" />
-  <suppress checks="EnforceFinalFields" files="com.azure.spring.cloud.autoconfigure.aad.AadResourceServerWebSecurityConfigurerAdapter"/>
   <!-- The package name length limit -->
   <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificates.properties.AzureKeyVaultCertificateProperties"/>
-  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.keyvault.certificates.properties.package-info.java"/>
   <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.properties.core.authentication.TokenCredentialConfigurationProperties"/>
-  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.properties.core.authentication.package-info.java"/>
 
   <!--DenyListedWordsCheck: URL is the name -->
   <suppress checks="com.azure.tools.checkstyle.checks.DenyListedWordsCheck" files="com.azure.spring.cloud.core.resource.StorageBlobResource.java"/>

@@ -2,9 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.implementation.aadb2c.security;
 
-import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.security.AadB2cLogoutSuccessHandler;
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.properties.AadB2cProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.security.AadB2cUrl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

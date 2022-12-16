@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.implementation.aadb2c.security;
 
-import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.security.AadB2cAuthorizationRequestResolver;
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.AadB2cConstants;
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.AadB2cAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.WebOAuth2ClientTestApp;
