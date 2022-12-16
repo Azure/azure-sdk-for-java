@@ -17,6 +17,10 @@ public final class VirtualMachineScaleSetVMExtensionsListResultInner {
     @JsonProperty(value = "value")
     private List<VirtualMachineScaleSetVMExtensionInner> value;
 
+    /** Creates an instance of VirtualMachineScaleSetVMExtensionsListResultInner class. */
+    public VirtualMachineScaleSetVMExtensionsListResultInner() {
+    }
+
     /**
      * Get the value property: The list of VMSS VM extensions.
      *

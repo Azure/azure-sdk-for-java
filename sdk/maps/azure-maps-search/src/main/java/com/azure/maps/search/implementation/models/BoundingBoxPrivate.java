@@ -11,18 +11,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class BoundingBoxPrivate {
     /*
-     * A location represented as a latitude and longitude using short names
-     * 'lat' & 'lon'.
+     * A location represented as a latitude and longitude using short names 'lat' & 'lon'.
      */
     @JsonProperty(value = "topLeftPoint")
     private LatLongPairAbbreviated topLeft;
 
     /*
-     * A location represented as a latitude and longitude using short names
-     * 'lat' & 'lon'.
+     * A location represented as a latitude and longitude using short names 'lat' & 'lon'.
      */
     @JsonProperty(value = "btmRightPoint")
     private LatLongPairAbbreviated bottomRight;
+
+    /** Creates an instance of BoundingBoxPrivate class. */
+    public BoundingBoxPrivate() {}
 
     /**
      * Get the topLeft property: A location represented as a latitude and longitude using short names 'lat' &amp; 'lon'.

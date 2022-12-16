@@ -21,21 +21,6 @@ public interface DeletedAccountsClient {
      * @param location Resource location.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
-     *     and SKU.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AccountInner get(String location, String resourceGroupName, String accountName);
-
-    /**
-     * Returns a Cognitive Services account specified by the parameters.
-     *
-     * @param location Resource location.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -46,6 +31,21 @@ public interface DeletedAccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AccountInner> getWithResponse(
         String location, String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Returns a Cognitive Services account specified by the parameters.
+     *
+     * @param location Resource location.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
+     *     and SKU.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AccountInner get(String location, String resourceGroupName, String accountName);
 
     /**
      * Deletes a Cognitive Services account from the resource group.

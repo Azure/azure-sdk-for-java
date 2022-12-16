@@ -38,6 +38,10 @@ public final class MicrosoftGraphPublicErrorDetail {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphPublicErrorDetail class. */
+    public MicrosoftGraphPublicErrorDetail() {
+    }
+
     /**
      * Get the code property: The code property.
      *

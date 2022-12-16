@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ArtifactManifestOrder. */
+/** Sort options for ordering manifests in a collection. */
 public final class ArtifactManifestOrder extends ExpandableStringEnum<ArtifactManifestOrder> {
     /** Static value none for ArtifactManifestOrder. */
     public static final ArtifactManifestOrder NONE = fromString("none");
@@ -30,7 +30,11 @@ public final class ArtifactManifestOrder extends ExpandableStringEnum<ArtifactMa
         return fromString(name, ArtifactManifestOrder.class);
     }
 
-    /** @return known ArtifactManifestOrder values. */
+    /**
+     * Gets known ArtifactManifestOrder values.
+     *
+     * @return known ArtifactManifestOrder values.
+     */
     public static Collection<ArtifactManifestOrder> values() {
         return values(ArtifactManifestOrder.class);
     }

@@ -17,6 +17,10 @@ public final class CustomEntityStoreAssignmentRequestProperties {
     @JsonProperty(value = "principal")
     private String principal;
 
+    /** Creates an instance of CustomEntityStoreAssignmentRequestProperties class. */
+    public CustomEntityStoreAssignmentRequestProperties() {
+    }
+
     /**
      * Get the principal property: The principal assigned with entity store. If not provided, will use caller principal.
      * Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId].

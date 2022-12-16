@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphChatMessageType. */
+/** chatMessageType. */
 public final class MicrosoftGraphChatMessageType extends ExpandableStringEnum<MicrosoftGraphChatMessageType> {
     /** Static value message for MicrosoftGraphChatMessageType. */
     public static final MicrosoftGraphChatMessageType MESSAGE = fromString("message");
@@ -33,7 +33,11 @@ public final class MicrosoftGraphChatMessageType extends ExpandableStringEnum<Mi
         return fromString(name, MicrosoftGraphChatMessageType.class);
     }
 
-    /** @return known MicrosoftGraphChatMessageType values. */
+    /**
+     * Gets known MicrosoftGraphChatMessageType values.
+     *
+     * @return known MicrosoftGraphChatMessageType values.
+     */
     public static Collection<MicrosoftGraphChatMessageType> values() {
         return values(MicrosoftGraphChatMessageType.class);
     }

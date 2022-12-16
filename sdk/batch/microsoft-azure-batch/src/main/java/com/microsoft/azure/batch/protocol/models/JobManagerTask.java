@@ -196,7 +196,8 @@ public class JobManagerTask {
     private AuthenticationTokenSettings authenticationTokenSettings;
 
     /**
-     * Whether the Job Manager Task may run on a low-priority Compute Node.
+     * Whether the Job Manager Task may run on a Spot/Low-priority Compute
+     * Node.
      * The default value is true.
      */
     @JsonProperty(value = "allowLowPriorityNode")

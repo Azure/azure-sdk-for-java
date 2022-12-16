@@ -38,6 +38,10 @@ public final class RoleInstanceViewInner {
     @JsonProperty(value = "statuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceInstanceViewStatus> statuses;
 
+    /** Creates an instance of RoleInstanceViewInner class. */
+    public RoleInstanceViewInner() {
+    }
+
     /**
      * Get the platformUpdateDomain property: The Update Domain.
      *

@@ -29,6 +29,10 @@ public final class RecommendationConfigurationProperties {
     @JsonProperty(value = "status", required = true)
     private RecommendationConfigStatus status;
 
+    /** Creates an instance of RecommendationConfigurationProperties class. */
+    public RecommendationConfigurationProperties() {
+    }
+
     /**
      * Get the recommendationType property: The type of IoT Security recommendation.
      *

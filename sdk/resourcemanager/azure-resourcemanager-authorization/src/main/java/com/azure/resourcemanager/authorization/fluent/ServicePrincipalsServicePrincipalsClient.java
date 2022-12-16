@@ -136,19 +136,6 @@ public interface ServicePrincipalsServicePrincipalsClient {
      * Add new entity to servicePrincipals.
      *
      * @param body New entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return servicePrincipal.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MicrosoftGraphServicePrincipalInner createServicePrincipal(MicrosoftGraphServicePrincipalInner body);
-
-    /**
-     * Add new entity to servicePrincipals.
-     *
-     * @param body New entity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
@@ -159,6 +146,19 @@ public interface ServicePrincipalsServicePrincipalsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MicrosoftGraphServicePrincipalInner> createServicePrincipalWithResponse(
         MicrosoftGraphServicePrincipalInner body, Context context);
+
+    /**
+     * Add new entity to servicePrincipals.
+     *
+     * @param body New entity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return servicePrincipal.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MicrosoftGraphServicePrincipalInner createServicePrincipal(MicrosoftGraphServicePrincipalInner body);
 
     /**
      * Get entity from servicePrincipals by key.
@@ -185,26 +185,6 @@ public interface ServicePrincipalsServicePrincipalsClient {
      * Get entity from servicePrincipals by key.
      *
      * @param servicePrincipalId key: id of servicePrincipal.
-     * @param consistencyLevel Indicates the requested consistency level.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from servicePrincipals by key on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<MicrosoftGraphServicePrincipalInner> getServicePrincipalAsync(
-        String servicePrincipalId,
-        String consistencyLevel,
-        List<ServicePrincipalsServicePrincipalSelect> select,
-        List<ServicePrincipalsServicePrincipalExpand> expand);
-
-    /**
-     * Get entity from servicePrincipals by key.
-     *
-     * @param servicePrincipalId key: id of servicePrincipal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
@@ -213,19 +193,6 @@ public interface ServicePrincipalsServicePrincipalsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MicrosoftGraphServicePrincipalInner> getServicePrincipalAsync(String servicePrincipalId);
-
-    /**
-     * Get entity from servicePrincipals by key.
-     *
-     * @param servicePrincipalId key: id of servicePrincipal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from servicePrincipals by key.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    MicrosoftGraphServicePrincipalInner getServicePrincipal(String servicePrincipalId);
 
     /**
      * Get entity from servicePrincipals by key.
@@ -248,6 +215,19 @@ public interface ServicePrincipalsServicePrincipalsClient {
         List<ServicePrincipalsServicePrincipalSelect> select,
         List<ServicePrincipalsServicePrincipalExpand> expand,
         Context context);
+
+    /**
+     * Get entity from servicePrincipals by key.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return entity from servicePrincipals by key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MicrosoftGraphServicePrincipalInner getServicePrincipal(String servicePrincipalId);
 
     /**
      * Update entity in servicePrincipals.
@@ -283,19 +263,6 @@ public interface ServicePrincipalsServicePrincipalsClient {
      *
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body New property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void updateServicePrincipal(String servicePrincipalId, MicrosoftGraphServicePrincipalInner body);
-
-    /**
-     * Update entity in servicePrincipals.
-     *
-     * @param servicePrincipalId key: id of servicePrincipal.
-     * @param body New property values.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
@@ -306,6 +273,19 @@ public interface ServicePrincipalsServicePrincipalsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> updateServicePrincipalWithResponse(
         String servicePrincipalId, MicrosoftGraphServicePrincipalInner body, Context context);
+
+    /**
+     * Update entity in servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void updateServicePrincipal(String servicePrincipalId, MicrosoftGraphServicePrincipalInner body);
 
     /**
      * Delete entity from servicePrincipals.
@@ -325,20 +305,6 @@ public interface ServicePrincipalsServicePrincipalsClient {
      * Delete entity from servicePrincipals.
      *
      * @param servicePrincipalId key: id of servicePrincipal.
-     * @param ifMatch ETag.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteServicePrincipalAsync(String servicePrincipalId, String ifMatch);
-
-    /**
-     * Delete entity from servicePrincipals.
-     *
-     * @param servicePrincipalId key: id of servicePrincipal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
@@ -347,18 +313,6 @@ public interface ServicePrincipalsServicePrincipalsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteServicePrincipalAsync(String servicePrincipalId);
-
-    /**
-     * Delete entity from servicePrincipals.
-     *
-     * @param servicePrincipalId key: id of servicePrincipal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteServicePrincipal(String servicePrincipalId);
 
     /**
      * Delete entity from servicePrincipals.
@@ -374,4 +328,16 @@ public interface ServicePrincipalsServicePrincipalsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteServicePrincipalWithResponse(String servicePrincipalId, String ifMatch, Context context);
+
+    /**
+     * Delete entity from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteServicePrincipal(String servicePrincipalId);
 }

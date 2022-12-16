@@ -22,6 +22,10 @@ public final class AdaptiveApplicationControlIssueSummary {
     @JsonProperty(value = "numberOfVms")
     private Float numberOfVms;
 
+    /** Creates an instance of AdaptiveApplicationControlIssueSummary class. */
+    public AdaptiveApplicationControlIssueSummary() {
+    }
+
     /**
      * Get the issue property: An alert that machines within a group can have.
      *

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,112 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.3 (2022-11-18)
+
+- Azure Resource Manager Security client library for Java. This package contains Microsoft Azure SDK for Security Management SDK. API spec for Microsoft.Security (Azure Security Center) resource provider. Package tag package-composite-v3. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.GovernanceRule` was modified
+
+* `ruleIdExecuteSingleSubscription(models.ExecuteGovernanceRuleParams)` was removed
+
+#### `models.SecurityConnectors` was modified
+
+* `deleteWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.Automations` was modified
+
+* `deleteWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.AutomationActionLogicApp` was modified
+
+* `java.lang.String uri()` -> `java.net.URL uri()`
+* `withUri(java.lang.String)` was removed
+
+#### `models.Assessments` was modified
+
+* `deleteWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.CustomAssessmentAutomations` was modified
+
+* `deleteWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.CustomEntityStoreAssignments` was modified
+
+* `deleteWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.DeviceSecurityGroups` was modified
+
+* `deleteWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.AdaptiveApplicationControls` was modified
+
+* `deleteWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.GovernanceRulesOperations` was modified
+
+* `ruleIdExecuteSingleSecurityConnector(java.lang.String,java.lang.String,java.lang.String,models.ExecuteGovernanceRuleParams)` was removed
+* `ruleIdExecuteSingleSubscription(java.lang.String,models.ExecuteGovernanceRuleParams)` was removed
+
+#### `models.IotSecuritySolutions` was modified
+
+* `deleteWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.ApiCollectionOffboardings` was added
+
+* `models.ApiCollections` was added
+
+* `models.ApiCollectionResponse` was added
+
+* `models.ApiCollectionOnboardings` was added
+
+* `models.ApiCollectionResponseList` was added
+
+#### `models.SecurityConnectors` was modified
+
+* `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Automations` was modified
+
+* `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.AutomationActionLogicApp` was modified
+
+* `withUri(java.net.URL)` was added
+
+#### `models.Assessments` was modified
+
+* `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.CustomAssessmentAutomations` was modified
+
+* `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.CustomEntityStoreAssignments` was modified
+
+* `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.DeviceSecurityGroups` was modified
+
+* `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.AdaptiveApplicationControls` was modified
+
+* `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.IotSecuritySolutions` was modified
+
+* `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `SecurityManager` was modified
+
+* `apiCollectionOffboardings()` was added
+* `apiCollectionOnboardings()` was added
+* `apiCollections()` was added
 
 ## 1.0.0-beta.2 (2022-09-22)
 

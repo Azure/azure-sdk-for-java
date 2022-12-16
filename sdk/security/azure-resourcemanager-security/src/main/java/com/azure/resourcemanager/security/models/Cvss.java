@@ -16,6 +16,10 @@ public final class Cvss {
     @JsonProperty(value = "base", access = JsonProperty.Access.WRITE_ONLY)
     private Float base;
 
+    /** Creates an instance of Cvss class. */
+    public Cvss() {
+    }
+
     /**
      * Get the base property: CVSS base.
      *

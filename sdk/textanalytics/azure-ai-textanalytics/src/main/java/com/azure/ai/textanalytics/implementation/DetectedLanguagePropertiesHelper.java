@@ -19,7 +19,7 @@ public final class DetectedLanguagePropertiesHelper {
      * instance.
      */
     public interface DetectedLanguageAccessor {
-        void setScript(DetectedLanguage detectedLanguage, ScriptKind script);
+        void setScriptKind(DetectedLanguage detectedLanguage, ScriptKind scriptKind);
     }
 
     /**
@@ -32,7 +32,7 @@ public final class DetectedLanguagePropertiesHelper {
         accessor = detectedLanguageAccessor;
     }
 
-    public static void setScript(DetectedLanguage detectedLanguage, ScriptKind script) {
-        accessor.setScript(detectedLanguage, script);
+    public static void setScriptKind(DetectedLanguage detectedLanguage, ScriptKind scriptKind) {
+        accessor.setScriptKind(detectedLanguage, scriptKind);
     }
 }

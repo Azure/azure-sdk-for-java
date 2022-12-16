@@ -46,6 +46,10 @@ public final class SkuAvailability {
     @JsonProperty(value = "message")
     private String message;
 
+    /** Creates an instance of SkuAvailability class. */
+    public SkuAvailability() {
+    }
+
     /**
      * Get the kind property: The Kind of the resource.
      *

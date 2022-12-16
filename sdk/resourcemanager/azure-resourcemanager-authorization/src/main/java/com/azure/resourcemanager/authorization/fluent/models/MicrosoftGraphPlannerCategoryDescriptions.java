@@ -56,6 +56,10 @@ public final class MicrosoftGraphPlannerCategoryDescriptions {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphPlannerCategoryDescriptions class. */
+    public MicrosoftGraphPlannerCategoryDescriptions() {
+    }
+
     /**
      * Get the category1 property: The label associated with Category 1.
      *

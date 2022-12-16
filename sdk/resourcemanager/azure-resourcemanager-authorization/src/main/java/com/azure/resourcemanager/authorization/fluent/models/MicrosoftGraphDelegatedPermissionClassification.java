@@ -22,17 +22,15 @@ public final class MicrosoftGraphDelegatedPermissionClassification extends Micro
     private MicrosoftGraphPermissionClassificationType classification;
 
     /*
-     * The unique identifier (id) for the delegated permission listed in the
-     * oauth2PermissionScopes collection of the servicePrincipal. Required on
-     * create. Does not support $filter.
+     * The unique identifier (id) for the delegated permission listed in the oauth2PermissionScopes collection of the
+     * servicePrincipal. Required on create. Does not support $filter.
      */
     @JsonProperty(value = "permissionId")
     private String permissionId;
 
     /*
-     * The claim value (value) for the delegated permission listed in the
-     * oauth2PermissionScopes collection of the servicePrincipal. Does not
-     * support $filter.
+     * The claim value (value) for the delegated permission listed in the oauth2PermissionScopes collection of the
+     * servicePrincipal. Does not support $filter.
      */
     @JsonProperty(value = "permissionName")
     private String permissionName;
@@ -41,6 +39,10 @@ public final class MicrosoftGraphDelegatedPermissionClassification extends Micro
      * delegatedPermissionClassification
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphDelegatedPermissionClassification class. */
+    public MicrosoftGraphDelegatedPermissionClassification() {
+    }
 
     /**
      * Get the classification property: permissionClassificationType.

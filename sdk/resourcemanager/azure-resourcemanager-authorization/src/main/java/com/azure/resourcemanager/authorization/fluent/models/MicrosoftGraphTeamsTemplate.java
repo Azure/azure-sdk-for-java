@@ -19,6 +19,10 @@ public final class MicrosoftGraphTeamsTemplate extends MicrosoftGraphEntity {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphTeamsTemplate class. */
+    public MicrosoftGraphTeamsTemplate() {
+    }
+
     /**
      * Get the additionalProperties property: teamsTemplate.
      *

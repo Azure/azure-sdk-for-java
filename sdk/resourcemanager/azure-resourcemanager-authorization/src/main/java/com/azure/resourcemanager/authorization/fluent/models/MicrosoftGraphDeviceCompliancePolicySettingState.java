@@ -13,7 +13,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** deviceCompliancePolicySettingState Device Compilance Policy Setting State for a given device. */
+/**
+ * deviceCompliancePolicySettingState
+ *
+ * <p>Device Compilance Policy Setting State for a given device.
+ */
 @Fluent
 public final class MicrosoftGraphDeviceCompliancePolicySettingState {
     /*
@@ -92,6 +96,10 @@ public final class MicrosoftGraphDeviceCompliancePolicySettingState {
      * Device Compilance Policy Setting State for a given device.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphDeviceCompliancePolicySettingState class. */
+    public MicrosoftGraphDeviceCompliancePolicySettingState() {
+    }
 
     /**
      * Get the currentValue property: Current value of setting on device.

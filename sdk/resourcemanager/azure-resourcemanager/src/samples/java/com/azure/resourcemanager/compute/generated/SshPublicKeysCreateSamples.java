@@ -26,7 +26,7 @@ public final class SshPublicKeysCreateSamples {
             .createWithResponse(
                 "myResourceGroup",
                 "mySshPublicKeyName",
-                new SshPublicKeyResourceInner().withLocation("westus").withPublicKey("{ssh-rsa public key}"),
+                new SshPublicKeyResourceInner().withLocation("westus").withPublicKey("fakeTokenPlaceholder"),
                 Context.NONE);
     }
 }

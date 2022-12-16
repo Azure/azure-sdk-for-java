@@ -18,6 +18,10 @@ public final class RunCommandResultInner {
     @JsonProperty(value = "value")
     private List<InstanceViewStatus> value;
 
+    /** Creates an instance of RunCommandResultInner class. */
+    public RunCommandResultInner() {
+    }
+
     /**
      * Get the value property: Run command operation response.
      *

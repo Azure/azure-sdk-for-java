@@ -39,6 +39,10 @@ public final class RoleEligibilityScheduleInstanceInner {
     @JsonProperty(value = "properties")
     private RoleEligibilityScheduleInstanceProperties innerProperties;
 
+    /** Creates an instance of RoleEligibilityScheduleInstanceInner class. */
+    public RoleEligibilityScheduleInstanceInner() {
+    }
+
     /**
      * Get the id property: The role eligibility schedule instance ID.
      *

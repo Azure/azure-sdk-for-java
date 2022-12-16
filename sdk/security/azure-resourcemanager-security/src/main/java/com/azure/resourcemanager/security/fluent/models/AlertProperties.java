@@ -190,6 +190,10 @@ public final class AlertProperties {
     @JsonProperty(value = "supportingEvidence")
     private AlertPropertiesSupportingEvidence supportingEvidence;
 
+    /** Creates an instance of AlertProperties class. */
+    public AlertProperties() {
+    }
+
     /**
      * Get the version property: Schema version.
      *

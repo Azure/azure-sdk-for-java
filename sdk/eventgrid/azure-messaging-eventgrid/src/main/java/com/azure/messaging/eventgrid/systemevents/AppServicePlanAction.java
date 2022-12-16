@@ -24,7 +24,11 @@ public final class AppServicePlanAction extends ExpandableStringEnum<AppServiceP
         return fromString(name, AppServicePlanAction.class);
     }
 
-    /** @return known AppServicePlanAction values. */
+    /**
+     * Gets known AppServicePlanAction values.
+     *
+     * @return known AppServicePlanAction values.
+     */
     public static Collection<AppServicePlanAction> values() {
         return values(AppServicePlanAction.class);
     }

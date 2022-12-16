@@ -31,6 +31,10 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
     @JsonProperty(value = "properties")
     private VirtualMachineScaleSetExtensionProperties innerProperties;
 
+    /** Creates an instance of VirtualMachineScaleSetExtensionInner class. */
+    public VirtualMachineScaleSetExtensionInner() {
+    }
+
     /**
      * Get the name property: The name of the extension.
      *

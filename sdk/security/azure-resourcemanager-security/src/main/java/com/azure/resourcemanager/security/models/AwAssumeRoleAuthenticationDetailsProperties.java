@@ -38,6 +38,10 @@ public final class AwAssumeRoleAuthenticationDetailsProperties extends Authentic
     @JsonProperty(value = "awsExternalId", required = true)
     private String awsExternalId;
 
+    /** Creates an instance of AwAssumeRoleAuthenticationDetailsProperties class. */
+    public AwAssumeRoleAuthenticationDetailsProperties() {
+    }
+
     /**
      * Get the accountId property: The ID of the cloud account.
      *

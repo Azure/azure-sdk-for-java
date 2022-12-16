@@ -38,6 +38,10 @@ public final class MicrosoftGraphWebsite {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWebsite class. */
+    public MicrosoftGraphWebsite() {
+    }
+
     /**
      * Get the address property: The URL of the website.
      *

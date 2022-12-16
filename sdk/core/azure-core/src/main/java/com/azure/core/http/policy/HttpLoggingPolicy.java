@@ -5,6 +5,7 @@ package com.azure.core.http.policy;
 
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
@@ -13,7 +14,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.ImplUtils;
-import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.implementation.jackson.ObjectMapperShim;
 import com.azure.core.implementation.logging.LoggingKeys;
 import com.azure.core.util.Context;
@@ -208,7 +208,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 return;
             }
 
-            String contentType = HttpHeadersHelper.getValueNoKeyFormatting(request.getHeaders(), "content-type");
+            String contentType = request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
             long contentLength = getContentLength(logger, request.getHeaders());
 
             logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLength);
@@ -400,7 +400,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static long getContentLength(ClientLogger logger, HttpHeaders headers) {
         long contentLength = 0;
 
-        String contentLengthString = HttpHeadersHelper.getValueNoKeyFormatting(headers, "content-length");
+        String contentLengthString = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
         if (CoreUtils.isNullOrEmpty(contentLengthString)) {
             return contentLength;
         }

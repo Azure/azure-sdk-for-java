@@ -37,15 +37,6 @@ public final class ComplianceResultsImpl implements ComplianceResults {
         return Utils.mapPage(inner, inner1 -> new ComplianceResultImpl(inner1, this.manager()));
     }
 
-    public ComplianceResult get(String resourceId, String complianceResultName) {
-        ComplianceResultInner inner = this.serviceClient().get(resourceId, complianceResultName);
-        if (inner != null) {
-            return new ComplianceResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ComplianceResult> getWithResponse(String resourceId, String complianceResultName, Context context) {
         Response<ComplianceResultInner> inner =
             this.serviceClient().getWithResponse(resourceId, complianceResultName, context);
@@ -55,6 +46,15 @@ public final class ComplianceResultsImpl implements ComplianceResults {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ComplianceResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ComplianceResult get(String resourceId, String complianceResultName) {
+        ComplianceResultInner inner = this.serviceClient().get(resourceId, complianceResultName);
+        if (inner != null) {
+            return new ComplianceResultImpl(inner, this.manager());
         } else {
             return null;
         }

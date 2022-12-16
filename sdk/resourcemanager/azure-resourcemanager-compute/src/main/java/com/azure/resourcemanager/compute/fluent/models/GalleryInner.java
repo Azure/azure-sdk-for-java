@@ -23,6 +23,10 @@ public final class GalleryInner extends Resource {
     @JsonProperty(value = "properties")
     private GalleryProperties innerProperties;
 
+    /** Creates an instance of GalleryInner class. */
+    public GalleryInner() {
+    }
+
     /**
      * Get the innerProperties property: Describes the properties of a Shared Image Gallery.
      *
