@@ -873,7 +873,7 @@ public final class BulkExecutor<TContext> implements Disposable {
                     completeEmitResult,
                     this.operationContextText);
             } else {
-                logger.info(
+                logger.warn(
                     "Main sink completion failed. EmitResult: {}, Context: {}",
                     completeEmitResult,
                     this.operationContextText);
