@@ -932,28 +932,64 @@ public interface ContainerGroup
             interface WithLivenessProbe<ParentT> {
                 /**
                  * Specifies the container's liveness probe to execute a given command at a given interval.
+                 * <p>If the probe command execution fails, the container will restart.</p>
+                 * <p>Only 1 liveness probe can be set for a given container.</p>
                  *
                  * @param command the command for the probe to execute
                  * @param probePeriodSeconds the interval at which the command executes
                  * @return the next stage of the definition
+                 * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-liveness-probe#liveness-command">liveness command</a>
+                 * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-liveness-probe#liveness-probes-and-restart-policies">liveness probes and restart policies</a>
                  */
-                WithContainerInstanceAttach<ParentT> withLivenessProbeExec(List<String> command, int probePeriodSeconds);
+                WithContainerInstanceAttach<ParentT> withLivenessProbeExecutionCommand(List<String> command, int probePeriodSeconds);
+
+                /**
+                 * Specifies the container's liveness probe to execute a given command at a given interval.
+                 * <p>After the probe command execution failure reaches the given threshold, the container will restart.</p>
+                 * <p>Only 1 liveness probe can be set for a given container.</p>
+                 *
+                 * @param command the command for the probe to execute
+                 * @param probePeriodSeconds the interval at which the command executes
+                 * @param failureThreshold the failure threshold before the container restarts
+                 * @return the next stage of the definition
+                 * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-liveness-probe#liveness-command">liveness command</a>
+                 * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-liveness-probe#liveness-probes-and-restart-policies">liveness probes and restart policies</a>
+                 */
+                WithContainerInstanceAttach<ParentT> withLivenessProbeExecutionCommand(List<String> command, int probePeriodSeconds, int failureThreshold);
 
                 /**
                  * Specifies the container's liveness probe to perform an Http Get at a given interval.
+                 * <p>If the probe HTTP GET operation fails with non-200 response, the container will restart.</p>
+                 * <p>Only 1 liveness probe can be set for a given container.</p>
                  *
                  * @param path the path to perform the Http Get, starts with "/"
                  * @param probePeriodSeconds the interval at which the Http Get performs
                  * @param port the port number to probe
                  * @return the next stage of the definition
+                 * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-liveness-probe#liveness-probes-and-restart-policies">liveness probes and restart policies</a>
                  */
                 WithContainerInstanceAttach<ParentT> withLivenessProbeHttpGet(String path, int port, int probePeriodSeconds);
+
+                /**
+                 * Specifies the container's liveness probe to perform an Http Get at a given interval.
+                 * <p>After the probe HTTP GET failure with non-200 response reaches the given threshold, the container will restart.</p>
+                 * <p>Only 1 liveness probe can be set for a given container.</p>
+                 *
+                 * @param path the path to perform the Http Get, starts with "/"
+                 * @param probePeriodSeconds the interval at which the Http Get performs
+                 * @param port the port number to probe
+                 * @param failureThreshold the failure threshold before the container restarts
+                 * @return the next stage of the definition
+                 * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-liveness-probe#liveness-probes-and-restart-policies">liveness probes and restart policies</a>
+                 */
+                WithContainerInstanceAttach<ParentT> withLivenessProbeHttpGet(String path, int port, int probePeriodSeconds, int failureThreshold);
 
                 /**
                  * Specifies the container's liveness probe.
                  *
                  * @param livenessProbe the liveness probe
                  * @return the next stage of the definition
+                 * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-liveness-probe#liveness-probes-and-restart-policies">liveness probes and restart policies</a>
                  */
                 WithContainerInstanceAttach<ParentT> withLivenessProbe(ContainerProbe livenessProbe);
             }
@@ -968,15 +1004,33 @@ public interface ContainerGroup
             interface WithReadinessProbe<ParentT> {
                 /**
                  * Specifies the container's readiness probe to execute a given command at a given interval.
+                 * <p>If the probe command execution fails, the container will continue to run but can't be accessed.</p>
+                 * <p>Only 1 readiness probe can be set for a given container.</p>
                  *
                  * @param command the command for the probe to execute
                  * @param probePeriodSeconds the interval at which the command executes
                  * @return the next stage of the definition
+                 * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-readiness-probe#readiness-command">readiness command</a>
                  */
-                WithContainerInstanceAttach<ParentT> withReadinessProbeExec(List<String> command, int probePeriodSeconds);
+                WithContainerInstanceAttach<ParentT> withReadinessProbeExecutionCommand(List<String> command, int probePeriodSeconds);
+
+                /**
+                 * Specifies the container's readiness probe to execute a given command at a given interval.
+                 * <p>After the probe command execution failure reaches the given threshold, the container will continue to run but can't be accessed.</p>
+                 * <p>Only 1 readiness probe can be set for a given container.</p>
+                 *
+                 * @param command the command for the probe to execute
+                 * @param probePeriodSeconds the interval at which the command executes
+                 * @param failureThreshold the failure threshold before the container becomes inaccessible
+                 * @return the next stage of the definition
+                 * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-readiness-probe#readiness-command">readiness command</a>
+                 */
+                WithContainerInstanceAttach<ParentT> withReadinessProbeExecutionCommand(List<String> command, int probePeriodSeconds, int failureThreshold);
 
                 /**
                  * Specifies the container's readiness probe to perform an Http Get at a given interval.
+                 * <p>If the probe HTTP GET operation fails with non-200 response, the container will continue to run but can't be accessed.</p>
+                 * <p>Only 1 readiness probe can be set for a given container.</p>
                  *
                  * @param path the path to perform the Http Get, starts with "/"
                  * @param port the port number to probe
@@ -984,6 +1038,19 @@ public interface ContainerGroup
                  * @return the next stage of the definition
                  */
                 WithContainerInstanceAttach<ParentT> withReadinessProbeHttpGet(String path, int port, int probePeriodSeconds);
+
+                /**
+                 * Specifies the container's readiness probe to perform an Http Get at a given interval.
+                 * <p>After the probe HTTP GET failure with non-200 response reaches the given threshold, the container will continue to run but can't be accessed.</p>
+                 * <p>Only 1 readiness probe can be set for a given container.</p>
+                 *
+                 * @param path the path to perform the Http Get, starts with "/"
+                 * @param port the port number to probe
+                 * @param probePeriodSeconds the interval at which the Http Get performs
+                 * @param failureThreshold the failure threshold before the container becomes inaccessible
+                 * @return the next stage of the definition
+                 */
+                WithContainerInstanceAttach<ParentT> withReadinessProbeHttpGet(String path, int port, int probePeriodSeconds, int failureThreshold);
 
                 /**
                  * Specifies the container's readiness probe.

@@ -277,13 +277,24 @@ class ContainerImpl
     }
 
     @Override
-    public ContainerImpl withLivenessProbeExec(List<String> command, int probePeriodSeconds) {
+    public ContainerImpl withLivenessProbeExecutionCommand(List<String> command, int probePeriodSeconds) {
         return this.withLivenessProbe(
             new ContainerProbe()
                 .withExec(
                     new ContainerExec()
                         .withCommand(command))
                 .withPeriodSeconds(probePeriodSeconds));
+    }
+
+    @Override
+    public ContainerImpl withLivenessProbeExecutionCommand(List<String> command, int probePeriodSeconds, int failureThreshold) {
+        return this.withLivenessProbe(
+            new ContainerProbe()
+                .withExec(
+                    new ContainerExec()
+                        .withCommand(command))
+                .withPeriodSeconds(probePeriodSeconds)
+                .withFailureThreshold(failureThreshold));
     }
 
     @Override
@@ -298,6 +309,18 @@ class ContainerImpl
     }
 
     @Override
+    public ContainerImpl withLivenessProbeHttpGet(String path, int port, int probePeriodSeconds, int failureThreshold) {
+        return this.withLivenessProbe(
+            new ContainerProbe()
+                .withHttpGet(
+                    new ContainerHttpGet()
+                        .withPath(path)
+                        .withPort(port))
+                .withPeriodSeconds(probePeriodSeconds)
+                .withFailureThreshold(failureThreshold));
+    }
+
+    @Override
     public ContainerImpl withLivenessProbe(ContainerProbe livenessProbe) {
         if (livenessProbe != null) {
             this.innerContainer.withLivenessProbe(livenessProbe);
@@ -306,13 +329,24 @@ class ContainerImpl
     }
 
     @Override
-    public ContainerImpl withReadinessProbeExec(List<String> command, int probePeriodSeconds) {
+    public ContainerImpl withReadinessProbeExecutionCommand(List<String> command, int probePeriodSeconds) {
         return this.withReadinessProbe(
             new ContainerProbe()
                 .withExec(
                     new ContainerExec()
                         .withCommand(command))
                 .withPeriodSeconds(probePeriodSeconds));
+    }
+
+    @Override
+    public ContainerImpl withReadinessProbeExecutionCommand(List<String> command, int probePeriodSeconds, int failureThreshold) {
+        return this.withReadinessProbe(
+            new ContainerProbe()
+                .withExec(
+                    new ContainerExec()
+                        .withCommand(command))
+                .withPeriodSeconds(probePeriodSeconds)
+                .withFailureThreshold(failureThreshold));
     }
 
     @Override
@@ -324,6 +358,18 @@ class ContainerImpl
                         .withPath(path)
                         .withPort(port))
                 .withPeriodSeconds(probePeriodSeconds));
+    }
+
+    @Override
+    public ContainerImpl withReadinessProbeHttpGet(String path, int port, int probePeriodSeconds, int failureThreshold) {
+        return this.withReadinessProbe(
+            new ContainerProbe()
+                .withHttpGet(
+                    new ContainerHttpGet()
+                        .withPath(path)
+                        .withPort(port))
+                .withPeriodSeconds(probePeriodSeconds)
+                .withFailureThreshold(failureThreshold));
     }
 
     @Override
