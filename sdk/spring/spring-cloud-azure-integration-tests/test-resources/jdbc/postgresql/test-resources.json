@@ -17,6 +17,10 @@
       "defaultValue": "postgresqladmin",
       "type": "String"
     },
+    "administratorLoginPassword": {
+      "defaultValue": "[concat(parameters('baseName'),'1PostgreSqlTestpw&')]",
+      "type": "String"
+    },
     "serverName": {
       "type": "string",
       "defaultValue": "[concat(parameters('baseName'),'-passwordless-postgresql-flexible-it')]",
@@ -43,6 +47,7 @@
       "properties": {
         "version": "14",
         "administratorLogin": "[parameters('administratorLogin')]",
+        "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
         "availabilityZone": "2",
         "storage": {
           "storageSizeGB": 128
