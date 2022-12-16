@@ -28,7 +28,7 @@ class AzureSpringBootVersionVerifierTest {
 
     @ParameterizedTest
     @ValueSource(strings = { "3.0.0", "3.0.x", "3.0.0-M" })
-    public void shouldMatchWhenManifestNumberAndAcceptedNumberSpecifiedCase1(String acceptedVersion) {
+    void shouldMatchWhenManifestNumberAndAcceptedNumberSpecifiedCase1(String acceptedVersion) {
         List<String> acceptedVersions = Collections.singletonList(acceptedVersion);
         ClassNameResolverPredicate mockResolver = mock(ClassNameResolverPredicate.class);
         AzureSpringBootVersionVerifier versionVerifier = new AzureSpringBootVersionVerifier(acceptedVersions,
@@ -45,7 +45,7 @@ class AzureSpringBootVersionVerifierTest {
 
     @ParameterizedTest
     @ValueSource(strings = { "3.0.0", "3.0.x" })
-    public void shouldNotMatchWhenManifestNumberAndAcceptedNumberSpecifiedCase1(String acceptedVersion) {
+    void shouldNotMatchWhenManifestNumberAndAcceptedNumberSpecifiedCase1(String acceptedVersion) {
         List<String> acceptedVersions = Collections.singletonList(acceptedVersion);
         ClassNameResolverPredicate mockResolver = mock(ClassNameResolverPredicate.class);
         AzureSpringBootVersionVerifier versionVerifier = new AzureSpringBootVersionVerifier(acceptedVersions,
@@ -61,7 +61,7 @@ class AzureSpringBootVersionVerifierTest {
 
     @ParameterizedTest
     @ValueSource(strings = { "3.0", "3.0.x" })
-    public void shouldMatchWhenManifestNumberNotPresentAndAcceptedNumberSpecifiedCase1(String acceptedVersion) {
+    void shouldMatchWhenManifestNumberNotPresentAndAcceptedNumberSpecifiedCase1(String acceptedVersion) {
         List<String> acceptedVersions = Collections.singletonList(acceptedVersion);
         ClassNameResolverPredicate mockResolver = mock(ClassNameResolverPredicate.class);
         when(mockResolver.resolve(SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_0)).thenReturn(true);
@@ -82,7 +82,7 @@ class AzureSpringBootVersionVerifierTest {
 
     @ParameterizedTest
     @ValueSource(strings = { "3.1", "3.1.x" })
-    public void shouldNotMatchWhenManifestNumberNotPresentAndAcceptedNumberSpecifiedCase1(String acceptedVersion) {
+    void shouldNotMatchWhenManifestNumberNotPresentAndAcceptedNumberSpecifiedCase1(String acceptedVersion) {
         List<String> acceptedVersions = Collections.singletonList(acceptedVersion);
         ClassNameResolverPredicate mockResolver = mock(ClassNameResolverPredicate.class);
         when(mockResolver.resolve(SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_0)).thenReturn(true);
@@ -99,7 +99,7 @@ class AzureSpringBootVersionVerifierTest {
 
     @ParameterizedTest
     @ValueSource(strings = { "3.0.0-M3" })
-    public void shouldNotMatchWhenManifestNumberNotPresentAndAcceptedNumberSpecifiedCase2(String acceptedVersion) {
+    void shouldNotMatchWhenManifestNumberNotPresentAndAcceptedNumberSpecifiedCase2(String acceptedVersion) {
         List<String> acceptedVersions = Collections.singletonList(acceptedVersion);
         ClassNameResolverPredicate mockResolver = mock(ClassNameResolverPredicate.class);
         when(mockResolver.resolve(SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_0)).thenReturn(true);
@@ -116,7 +116,7 @@ class AzureSpringBootVersionVerifierTest {
 
     @ParameterizedTest
     @ValueSource(strings = { "3.0.0-M4" })
-    public void shouldNotMatchWhenManifestNumberNotPresentAndAcceptedNumberSpecifiedCase3(String acceptedVersion) {
+    void shouldNotMatchWhenManifestNumberNotPresentAndAcceptedNumberSpecifiedCase3(String acceptedVersion) {
         List<String> acceptedVersions = Collections.singletonList(acceptedVersion);
         ClassNameResolverPredicate mockResolver = mock(ClassNameResolverPredicate.class);
         when(mockResolver.resolve(SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_0)).thenReturn(true);
@@ -134,7 +134,7 @@ class AzureSpringBootVersionVerifierTest {
 
     @ParameterizedTest
     @ValueSource(strings = { "3.0", "3.0.x" })
-    public void shouldNotMatchWhenManifestNumberNotPresentAndAcceptedNumberSpecifiedCase4(String acceptedVersion) {
+    void shouldNotMatchWhenManifestNumberNotPresentAndAcceptedNumberSpecifiedCase4(String acceptedVersion) {
         List<String> acceptedVersions = Collections.singletonList(acceptedVersion);
         ClassNameResolverPredicate mockResolver = mock(ClassNameResolverPredicate.class);
         when(mockResolver.resolve(SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_0)).thenReturn(false);
@@ -150,7 +150,7 @@ class AzureSpringBootVersionVerifierTest {
     }
 
     @Test
-    public void testVersionVerifierLog(CapturedOutput capturedOutput) {
+    void testVersionVerifierLog(CapturedOutput capturedOutput) {
         List<String> acceptedVersions = Arrays.asList("2.5.x", "2.6.x", "2.7.x");
         ClassNameResolverPredicate mockResolver = mock(ClassNameResolverPredicate.class);
 
