@@ -31,9 +31,15 @@
     "postgresql_flexible_server_username": {
       "defaultValue": "passwordless-postgresql-test-admin",
       "type": "String"
+    },
+    "currentEpoch": {
+      "type": "int",
+      "defaultValue": "[dateTimeToEpoch(utcNow())]"
     }
   },
-  "variables": {},
+  "variables": {
+    "version": "[string(add(mod(parameters('currentEpoch'),4), 11))]"
+  },
   "resources": [
     {
       "type": "Microsoft.DBforPostgreSQL/flexibleServers",
@@ -45,7 +51,7 @@
         "tier": "GeneralPurpose"
       },
       "properties": {
-        "version": "14",
+        "version": "[variables('version')]",
         "administratorLogin": "[parameters('administratorLogin')]",
         "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
         "availabilityZone": "2",
