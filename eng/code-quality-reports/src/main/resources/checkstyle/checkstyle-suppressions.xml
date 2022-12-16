@@ -401,8 +401,6 @@ the main ServiceBusClientBuilder. -->
   <!-- ExternalDependencyExposedCheck: Spring will directly use classes from spring dependencies in methods-->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
 
-  <suppress files="com.azure.spring[\\/].*Metadata\.java" checks="MissingJavadocMethod" />
-
   <!-- Suppress package name warning: b2c is the product name. -->
   <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.aadb2c.*" />
   <!-- The package name length limit -->
@@ -413,18 +411,6 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.DenyListedWordsCheck" files="com.azure.spring.cloud.core.resource.StorageBlobResource.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.DenyListedWordsCheck" files="com.azure.spring.cloud.core.resource.StorageFileResource.java"/>
 
-  <!-- EnforceFinalFieldsCheck: The property will be filled by Spring framework -->
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.messaging.container.AbstractListenerContainer.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.keyvault.environment.KeyVaultOperation.java"/>
-
-  <suppress checks="MethodName" files="com.azure.resourcemanager.appplatform.models.BuildProperties.java"/>
-  <suppress checks="EnforceFinalFields" files="com.azure.spring.data.cosmos.core.query.CosmosPageRequest"/>
-
-  <!-- Checkstyle suppressions for azure.spring.data.cosmos package -->
-  <suppress checks="MethodName|MemberName|ParameterName" files="src[/\\]test[/\\]java[/\\]com[/\\]azure[/\\]spring[/\\]data[/\\]cosmos[/\\]domain|repository.*.java"/>
-  <suppress checks="MethodName" files="com.azure.spring.data.cosmos.config.CosmosConfig.java"/>
-  <suppress checks="MemberName" files="com.azure.spring.data.cosmos.MyItem.java"/>
   <!-- ### end: Spring related suppression -->
   
   <!-- TODO: (https://github.com/Azure/azure-sdk-for-java/issues/18279) -->
