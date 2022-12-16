@@ -14,7 +14,7 @@ import org.springframework.data.auditing.IsNewAwareAuditingHandler;
  */
 public class MultiTenantDBCosmosFactory extends CosmosFactory {
 
-    public String databaseName;
+    public String manuallySetDatabaseName;
 
     /**
      * Validate config and initialization
@@ -28,7 +28,8 @@ public class MultiTenantDBCosmosFactory extends CosmosFactory {
         this.databaseName = databaseName;
     }
 
+    @Override
     public String getDatabaseName() {
-        return this.databaseName;
+        return this.manuallySetDatabaseName;
     }
 }
