@@ -46,7 +46,7 @@ public class TokenGenerationTest {
         JWTClaimsSet jwtClaimsSet = parse.getJWTClaimsSet();
         assertEquals(expectedSubject, jwtClaimsSet.getSubject());
         assertEquals(expectedRoles, jwtClaimsSet.getClaim("role"));
-        assertEquals(expectedGroups, jwtClaimsSet.getClaim("group"));
+        assertEquals(expectedGroups, jwtClaimsSet.getClaim("webpubsub.group"));
 
     }
 

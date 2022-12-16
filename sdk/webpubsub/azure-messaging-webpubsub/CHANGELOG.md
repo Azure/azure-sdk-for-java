@@ -5,7 +5,7 @@
 ### Features Added
 
 - Added method `removeConnectionFromAllGroupsWithResponse` in `WebPubSubServiceClient` and `WebPubSubServiceAsyncClient` to remove the connection from all the groups it is in.
-- Added a `groups` option in `GetClientAccessTokenOptions`, to enable connections join initial groups once it is connected.
+- Added a `webpubsub.group` option in `GetClientAccessTokenOptions`, to enable connections join initial groups once it is connected.
 - Added a `filter` parameter when sending messages to connections in a hub/group/user to filter out the connections recieving message, details about `filter` syntax please see [OData filter syntax for Azure Web PubSub](https://aka.ms/awps/filter-syntax).
 
 ## 1.1.8 (2022-11-09)
