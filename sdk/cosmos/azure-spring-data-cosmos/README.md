@@ -939,8 +939,8 @@ public class MultiDatabaseApplication implements CommandLineRunner {
 ```java readme-sample-MultiTenantDBCosmosFactory
 public class MultiTenantDBCosmosFactory extends CosmosFactory {
 
-    private String manuallySetDatabaseName;
-
+    private String tenantId;
+    
     /**
      * Validate config and initialization
      *
@@ -949,21 +949,13 @@ public class MultiTenantDBCosmosFactory extends CosmosFactory {
      */
     public MultiTenantDBCosmosFactory(CosmosAsyncClient cosmosAsyncClient, String databaseName) {
         super(cosmosAsyncClient, databaseName);
-
-        this.manuallySetDatabaseName = databaseName;
+        
+        this.tenantId = databaseName;
     }
 
     @Override
     public String getDatabaseName() {
-        return this.manuallySetDatabaseName;
-    }
-
-    public void setManuallySetDatabaseName(String manuallySetDatabaseName) {
-        this.manuallySetDatabaseName = manuallySetDatabaseName;
-    }
-
-    public String getManuallySetDatabaseName() {
-        return manuallySetDatabaseName;
+        return this.getCosmosAsyncClient().getDatabase(this.tenantId).toString();
     }
 }
 ```
