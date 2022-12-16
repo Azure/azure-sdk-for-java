@@ -270,7 +270,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         LOGGER.debug("execute createItem in database {} container {}", this.getDatabaseName(),
             containerName);
 
-        if(options==null){
+        if (options == null) {
             options = new CosmosPatchItemRequestOptions();
         }
 

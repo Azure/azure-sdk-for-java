@@ -101,6 +101,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
 
     /**
      * patch entity
+     * @param objectToPatch entity to be patched
      * @param p operations to patch
      * @param <T> type of entity
      */
@@ -112,8 +113,9 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
 
     /**
      * patch entity with CosmosPatchItemRequestOptions
-     *
+     * @param objectToPatch entity to be patched
      * @param p path operations
+     * @param options options
      * @param <T> type of entity
      */
     public <T> T save(T objectToPatch, CosmosPatchOperations p, CosmosPatchItemRequestOptions options) {

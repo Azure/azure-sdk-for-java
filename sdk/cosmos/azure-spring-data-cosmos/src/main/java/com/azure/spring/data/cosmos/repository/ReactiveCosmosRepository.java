@@ -36,6 +36,8 @@ public interface ReactiveCosmosRepository<T, K> extends ReactiveSortingRepositor
     /**
      * patches an entity by its id and partition key.
      *
+     * @param containerName container name, must not be null.
+     * @param objectToPatch, entity to be patched, must not be null.
      * @param patchOperations patch operations, must not be null.
      * @param <T> entity to be patched
      * @throws IllegalArgumentException in case the given {@code id} is {@literal null}.
@@ -45,6 +47,8 @@ public interface ReactiveCosmosRepository<T, K> extends ReactiveSortingRepositor
     /**
      * patches an entity by its id and partition key with CosmosPatchItemRequestOptions
      *
+     * @param containerName container name, must not be null.
+     * @param objectToPatch, entity to be patched, must not be null.
      * @param patchOperations patch operations, must not be null.
      * @param options additional CosmosPatchItemRequestOptions options, e.g. options.setFilterPredicate("FROM products p WHERE p.used = false");
      * @param <T> entity to be patched

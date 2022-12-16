@@ -9,7 +9,6 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -461,6 +460,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * applies partial update (patch) to an item
      *
      * @param containerName must not be {@literal null}
+     * @param objectToPatch must not be {@literal null}
      * @param patchOperations must not be {@literal null}
      * @param <T> entity to be patched
      * @return the inserted item
@@ -474,6 +474,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * applies partial update (patch) to an item with CosmosPatchItemRequestOptions
      *
      * @param containerName must not be {@literal null}
+     * @param objectToPatch must not be {@literal null}
      * @param patchOperations must not be {@literal null}
      * @param options must not be {@literal null}
      * @param <T> entity to be patched
@@ -489,7 +490,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         LOGGER.debug("execute createItem in database {} container {}", this.getDatabaseName(),
             containerName);
 
-        if(options==null){
+        if (options == null) {
             options = new CosmosPatchItemRequestOptions();
         }
 
