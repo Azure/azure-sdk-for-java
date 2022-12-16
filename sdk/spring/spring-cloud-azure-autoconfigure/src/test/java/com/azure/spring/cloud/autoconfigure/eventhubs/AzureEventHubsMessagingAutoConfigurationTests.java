@@ -89,6 +89,7 @@ class AzureEventHubsMessagingAutoConfigurationTests {
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .run(context -> assertThatIllegalStateException());
     }
+
     @Test
     void withIsolatedObjectMapper() {
         this.contextRunner

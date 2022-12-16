@@ -60,7 +60,7 @@ public class AzureStorageQueueMessagingAutoConfiguration {
     }
 
     /**
-     * Autoconfigure the {@link StorageQueueMessageConverter} instance with an isolate ObjectMapper.
+     * Autoconfigure the {@link StorageQueueMessageConverter} instance with an isolated ObjectMapper.
      * @return the storage queue message converter.
      */
     @Bean

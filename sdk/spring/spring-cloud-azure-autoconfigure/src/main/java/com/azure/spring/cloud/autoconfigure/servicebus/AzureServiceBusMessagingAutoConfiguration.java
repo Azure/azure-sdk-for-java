@@ -116,7 +116,7 @@ public class AzureServiceBusMessagingAutoConfiguration {
         }
 
         /**
-         * Creates a Service Bus message converter with an isolate ObjectMapper.
+         * Creates a Service Bus message converter with an isolated ObjectMapper.
          *
          * @return A Service Bus message converter.
          */

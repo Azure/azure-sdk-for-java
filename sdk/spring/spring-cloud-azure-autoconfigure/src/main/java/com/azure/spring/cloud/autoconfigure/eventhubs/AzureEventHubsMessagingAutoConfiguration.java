@@ -122,7 +122,7 @@ public class AzureEventHubsMessagingAutoConfiguration {
         }
 
         /**
-         * Creates an Event Hubs message converter with an isolate ObjectMapper.
+         * Creates an Event Hubs message converter with an isolated ObjectMapper.
          *
          * @return An Event Hubs message converter.
          */
