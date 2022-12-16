@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 /**
  * Example for extending CosmosFactory for Mutli-Tenancy at the database level
  */
+// BEGIN: readme-sample-MultiTenantDBCosmosFactory
 public class MultiTenantDBCosmosFactory extends CosmosFactory {
 
     public String manuallySetDatabaseName;
@@ -29,3 +30,4 @@ public class MultiTenantDBCosmosFactory extends CosmosFactory {
         return this.manuallySetDatabaseName;
     }
 }
+// END: readme-sample-MultiTenantDBCosmosFactory
