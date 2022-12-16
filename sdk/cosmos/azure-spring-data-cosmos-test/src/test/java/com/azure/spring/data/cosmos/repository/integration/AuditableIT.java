@@ -107,8 +107,6 @@ public class AuditableIT {
         final AuditableIdGeneratedEntity savedEntity = auditableIdGeneratedRepository.save(entity);
 
         assertThat(savedEntity.getCreatedBy()).isEqualTo("created-by");
-        System.out.println(now);
-        System.out.println(savedEntity.getCreatedDate());
         assertThat(savedEntity.getCreatedDate()).isEqualTo(now);
         assertThat(savedEntity.getLastModifiedBy()).isEqualTo("created-by");
         assertThat(savedEntity.getLastModifiedByDate()).isEqualTo(now);
