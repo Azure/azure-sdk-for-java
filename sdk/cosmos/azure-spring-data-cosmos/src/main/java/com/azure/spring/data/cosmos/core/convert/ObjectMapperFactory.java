@@ -19,9 +19,8 @@ public class ObjectMapperFactory {
     static {
         OBJECT_MAPPER.registerModule(new ParameterNamesModule())
                         .registerModule(new Jdk8Module())
-                        .registerModule(new JavaTimeModule())
-                        .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-                        //.enable(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS);
+                        .registerModule(new JavaTimeModule());
+                        //.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
