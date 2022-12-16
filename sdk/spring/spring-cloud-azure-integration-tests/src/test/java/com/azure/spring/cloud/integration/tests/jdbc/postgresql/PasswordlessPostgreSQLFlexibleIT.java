@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@ActiveProfiles("jdbc-postgresql-flexible")
+@ActiveProfiles("jdbc-postgresql-single")
 class PasswordlessPostgreSQLFlexibleIT {
     String VALUE = "azure_maintenance,postgres,azure_sys,db";
 
