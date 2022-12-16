@@ -15,8 +15,6 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("jdbc-postgresql-flexible")
 class PasswordlessPostgreSQLFlexibleIT {
@@ -33,7 +31,7 @@ class PasswordlessPostgreSQLFlexibleIT {
         List<String> list = new ArrayList<>();
         while (sqlRowSet.next()) {
             String datname = sqlRowSet.getString("datname");
-            if (datname.contains("template")){
+            if (datname.contains("template")) {
                 list.add(sqlRowSet.getString("datname"));
             }
         }
