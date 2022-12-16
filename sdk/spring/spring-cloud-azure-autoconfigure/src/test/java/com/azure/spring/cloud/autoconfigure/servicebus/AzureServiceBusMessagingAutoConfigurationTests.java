@@ -83,9 +83,8 @@ class AzureServiceBusMessagingAutoConfigurationTests {
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .run(context -> {
                     assertNotNull(context.getBean("serviceBusMessageConverter"));
-                    assertThrows(NoSuchBeanDefinitionException.class,() -> context.getBean("nonIsolateServiceBusMessageConverter"));
-                }
-            );
+                    assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("nonIsolateServiceBusMessageConverter"));
+            });
     }
 
     @Test
@@ -96,9 +95,8 @@ class AzureServiceBusMessagingAutoConfigurationTests {
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .run(context -> {
                     assertNotNull(context.getBean("nonIsolateServiceBusMessageConverter"));
-                    assertThrows(NoSuchBeanDefinitionException.class,() -> context.getBean("serviceBusMessageConverter"));
-                }
-            );
+                    assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("serviceBusMessageConverter"));
+            });
     }
 
 }

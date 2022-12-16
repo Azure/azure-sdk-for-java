@@ -95,9 +95,8 @@ class AzureEventHubsMessagingAutoConfigurationTests {
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .run(context -> {
                 assertNotNull(context.getBean("eventHubsMessageConverter"));
-                assertThrows(NoSuchBeanDefinitionException.class,() -> context.getBean("nonIsolateEventHubsMessageConverter"));
-                }
-            );
+                assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("nonIsolateEventHubsMessageConverter"));
+            });
     }
 
     @Test
@@ -108,9 +107,8 @@ class AzureEventHubsMessagingAutoConfigurationTests {
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .run(context -> {
                 assertNotNull(context.getBean("nonIsolateEventHubsMessageConverter"));
-                assertThrows(NoSuchBeanDefinitionException.class,() -> context.getBean("eventHubsMessageConverter"));
-                }
-            );
+                assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("eventHubsMessageConverter"));
+            });
     }
 
 }

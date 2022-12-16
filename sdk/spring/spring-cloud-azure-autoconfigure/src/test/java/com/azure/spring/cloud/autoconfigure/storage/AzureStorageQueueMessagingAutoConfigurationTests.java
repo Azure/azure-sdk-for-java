@@ -44,7 +44,7 @@ public class AzureStorageQueueMessagingAutoConfigurationTests {
             .withUserConfiguration(AzureStorageQueuePropertiesTestConfiguration.class)
             .run(context -> {
                 assertNotNull(context.getBean("storageQueueMessageConverter"));
-                assertThrows(NoSuchBeanDefinitionException.class,() -> context.getBean("nonIsolateStorageQueueMessageConverter"));
+                assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("nonIsolateStorageQueueMessageConverter"));
             });
     }
 
@@ -56,9 +56,8 @@ public class AzureStorageQueueMessagingAutoConfigurationTests {
             .withUserConfiguration(AzureStorageQueuePropertiesTestConfiguration.class)
             .run(context -> {
                     assertNotNull(context.getBean("nonIsolateStorageQueueMessageConverter"));
-                    assertThrows(NoSuchBeanDefinitionException.class,() -> context.getBean("storageQueueMessageConverter"));
-                }
-            );
+                    assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("storageQueueMessageConverter"));
+            });
     }
 
     @Configuration

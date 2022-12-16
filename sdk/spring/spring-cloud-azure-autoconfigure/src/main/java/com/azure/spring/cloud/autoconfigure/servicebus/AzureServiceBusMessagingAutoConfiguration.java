@@ -130,7 +130,7 @@ public class AzureServiceBusMessagingAutoConfiguration {
         /**
          * Creates a Service Bus message converter with ObjectMapper from Spring context.
          * @param objectMapper An ObjectMapper from Spring context.
-         * @return
+         * @return A Service Bus message converter.
          */
         @Bean
         @ConditionalOnMissingBean
