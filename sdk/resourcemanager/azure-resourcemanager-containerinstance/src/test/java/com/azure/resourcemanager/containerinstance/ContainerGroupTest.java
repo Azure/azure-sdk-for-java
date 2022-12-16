@@ -9,13 +9,17 @@ import com.azure.resourcemanager.containerinstance.models.ContainerAttachResult;
 import com.azure.resourcemanager.containerinstance.models.ContainerExec;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
 import com.azure.core.management.Region;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroupRestartPolicy;
 import com.azure.resourcemanager.containerinstance.models.ContainerHttpGet;
 import com.azure.resourcemanager.containerinstance.models.ContainerProbe;
+import com.azure.resourcemanager.containerinstance.models.ContainerState;
 import com.azure.resourcemanager.containerinstance.models.Scheme;
 import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
 import java.util.Arrays;
 
 public class ContainerGroupTest extends ContainerInstanceManagementTest {
@@ -106,6 +110,10 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
         String containerName1 = generateRandomResourceName("container", 20);
         String containerName2 = generateRandomResourceName("container", 20);
 
+        int healthySeconds = 30;
+        int failureThreshold = 3;
+        int probePeriodSeconds = 10;
+
         ContainerGroup containerGroup =
             containerInstanceManager
                 .containerGroups()
@@ -118,8 +126,10 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
                 .defineContainerInstance(containerName1)
                     .withImage("mcr.microsoft.com/azuredocs/aci-helloworld")
                     .withExternalTcpPort(80)
-                    .withLivenessProbeExecutionCommand(Arrays.asList("/bin/bash", "myCustomScript.sh"), 30, 2)
-                    .withReadinessProbeHttpGet("/mypath", 80, 30, 2)
+                    // simulate the situation where, container starts healthy for a given period of time, and then becomes unhealthy
+                    .withStartingCommandLine("/bin/sh", "-c", "touch /tmp/healthy; sleep " + healthySeconds + "; rm -rf /tmp/healthy; sleep 600;")
+                    .withLivenessProbeExecutionCommand(Arrays.asList("cat", "/tmp/healthy"), probePeriodSeconds, failureThreshold)
+                    .withReadinessProbeHttpGet("/mypath", 80, 30, 3)
                 .attach()
                 .defineContainerInstance(containerName2)
                     .withImage("mcr.microsoft.com/azuredocs/aci-helloworld")
@@ -142,12 +152,32 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
                             .withInitialDelaySeconds(0))
                     .attach()
                 .withDnsPrefix(dnsPrefix)
+                .withRestartPolicy(ContainerGroupRestartPolicy.ALWAYS)
                 .create();
+
+        Assertions.assertEquals(0, containerGroup.containers().get(containerName1).instanceView().restartCount());
+        Assertions.assertNull(containerGroup.containers().get(containerName1).instanceView().previousState());
 
         Assertions.assertNotNull(containerGroup.containers().get(containerName1).livenessProbe());
         Assertions.assertNotNull(containerGroup.containers().get(containerName1).readinessProbe());
 
         Assertions.assertNotNull(containerGroup.containers().get(containerName2).livenessProbe());
         Assertions.assertNotNull(containerGroup.containers().get(containerName2).readinessProbe());
+
+        // wait for probe exhaustion and container restart
+        while (containerGroup.containers().get(containerName1).instanceView().restartCount() == 0) {
+            containerGroup.refresh();
+            ResourceManagerUtils.sleep(Duration.ofSeconds(probePeriodSeconds / 2));
+        }
+
+        Container container = containerGroup.containers().get(containerName1);
+        ContainerState previousState = container.instanceView().previousState();
+        Assertions.assertNotNull(previousState);
+
+        Duration durationBeforeRestart = Duration.ofSeconds(previousState.finishTime().toEpochSecond() - previousState.startTime().toEpochSecond());
+
+        // duration before restart should be in between healthy duration plus last probe and healthy duration plus latest probe
+        Assertions.assertTrue(durationBeforeRestart.compareTo(Duration.ofSeconds(healthySeconds + probePeriodSeconds * (failureThreshold - 1))) > 0);
+        Assertions.assertTrue(durationBeforeRestart.compareTo(Duration.ofSeconds(healthySeconds + probePeriodSeconds * failureThreshold)) <= 0);
     }
 }

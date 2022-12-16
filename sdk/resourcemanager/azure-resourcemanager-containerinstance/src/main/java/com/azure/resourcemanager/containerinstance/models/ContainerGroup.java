@@ -950,7 +950,7 @@ public interface ContainerGroup
                  *
                  * @param command the command for the probe to execute
                  * @param probePeriodSeconds the interval at which the command executes
-                 * @param failureThreshold the failure threshold before the container restarts
+                 * @param failureThreshold the consecutive probe failure count before the container restarts
                  * @return the next stage of the definition
                  * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-liveness-probe#liveness-command">liveness command</a>
                  * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-liveness-probe#liveness-probes-and-restart-policies">liveness probes and restart policies</a>
@@ -978,7 +978,7 @@ public interface ContainerGroup
                  * @param path the path to perform the Http Get, starts with "/"
                  * @param probePeriodSeconds the interval at which the Http Get performs
                  * @param port the port number to probe
-                 * @param failureThreshold the failure threshold before the container restarts
+                 * @param failureThreshold the consecutive probe failure count before the container restarts
                  * @return the next stage of the definition
                  * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-liveness-probe#liveness-probes-and-restart-policies">liveness probes and restart policies</a>
                  */
@@ -1021,7 +1021,7 @@ public interface ContainerGroup
                  *
                  * @param command the command for the probe to execute
                  * @param probePeriodSeconds the interval at which the command executes
-                 * @param failureThreshold the failure threshold before the container becomes inaccessible
+                 * @param failureThreshold the consecutive probe failure count before the container becomes inaccessible
                  * @return the next stage of the definition
                  * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-readiness-probe#readiness-command">readiness command</a>
                  */
@@ -1047,7 +1047,7 @@ public interface ContainerGroup
                  * @param path the path to perform the Http Get, starts with "/"
                  * @param port the port number to probe
                  * @param probePeriodSeconds the interval at which the Http Get performs
-                 * @param failureThreshold the failure threshold before the container becomes inaccessible
+                 * @param failureThreshold the consecutive probe failure count before the container becomes inaccessible
                  * @return the next stage of the definition
                  */
                 WithContainerInstanceAttach<ParentT> withReadinessProbeHttpGet(String path, int port, int probePeriodSeconds, int failureThreshold);
