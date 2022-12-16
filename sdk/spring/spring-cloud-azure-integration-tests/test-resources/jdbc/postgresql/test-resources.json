@@ -1,0 +1,147 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "testApplicationId": {
+      "type": "string"
+    },
+    "tenantId": {
+      "defaultValue": "[subscription().tenantId]",
+      "type": "string"
+    },
+    "baseName": {
+      "defaultValue": "[resourceGroup().name]",
+      "type": "String"
+    },
+    "serverName": {
+      "type": "string",
+      "defaultValue": "[concat(parameters('baseName'),'-passwordless-postgresql-flexible-it')]",
+      "metadata": {
+        "description": "Server Name for Azure database for MySQL"
+      }
+    },
+    "postgresql_flexible_server_username": {
+      "defaultValue": "passwordless-postgresql-test-admin",
+      "type": "String"
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers",
+      "apiVersion": "2022-01-20-preview",
+      "name": "[parameters('serverName')]",
+      "location": "East US",
+      "sku": {
+        "name": "Standard_D2ds_v4",
+        "tier": "GeneralPurpose"
+      },
+      "properties": {
+        "version": "14",
+        "administratorLogin": "[parameters('administratorLogin')]",
+        "availabilityZone": "2",
+        "storage": {
+          "storageSizeGB": 128
+        },
+        "backup": {
+          "backupRetentionDays": 7,
+          "geoRedundantBackup": "Disabled"
+        },
+        "network": {},
+        "highAvailability": {
+          "mode": "Disabled"
+        },
+        "maintenanceWindow": {
+          "customWindow": "Disabled",
+          "dayOfWeek": 0,
+          "startHour": 0,
+          "startMinute": 0
+        }
+      }
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/servers/administrators",
+      "apiVersion": "2017-12-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('serverName'))]"
+      ],
+      "name": "[concat(parameters('serverName'), '/ActiveDirectory')]",
+      "properties": {
+        "administratorType": "ActiveDirectory",
+        "login": "[parameters('postgresql_flexible_server_username')]",
+        "sid": "[parameters('testApplicationId')]",
+        "tenantId": "[parameters('tenantId')]"
+      }
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/databases",
+      "apiVersion": "2022-01-20-preview",
+      "name": "[concat(parameters('serverName'), '/azure_maintenance')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('serverName'))]"
+      ],
+      "properties": {
+        "charset": "UTF8",
+        "collation": "en_US.utf8"
+      }
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/databases",
+      "apiVersion": "2022-01-20-preview",
+      "name": "[concat(parameters('serverName'), '/azure_sys')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('serverName'))]"
+      ],
+      "properties": {
+        "charset": "UTF8",
+        "collation": "en_US.utf8"
+      }
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/databases",
+      "apiVersion": "2022-01-20-preview",
+      "name": "[concat(parameters('serverName'), '/db')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('serverName'))]"
+      ],
+      "properties": {
+        "charset": "UTF8",
+        "collation": "en_US.utf8"
+      }
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/databases",
+      "apiVersion": "2022-01-20-preview",
+      "name": "[concat(parameters('serverName'), '/postgres')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('serverName'))]"
+      ],
+      "properties": {
+        "charset": "UTF8",
+        "collation": "en_US.utf8"
+      }
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/flexibleServers/firewallRules",
+      "apiVersion": "2022-01-20-preview",
+      "name": "[concat(parameters('serverName'), '/AllowAll')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('serverName'))]"
+      ],
+      "properties": {
+        "startIpAddress": "0.0.0.0",
+        "endIpAddress": "255.255.255.255"
+      }
+    }
+  ],
+  "outputs": {
+    "AZURE_POSTGRESQL_FLEXIBLE_SERVER_ENDPOINT": {
+      "type": "string",
+      "value": "[reference(parameters('serverName')).fullyQualifiedDomainName]"
+    },
+    "POSTGRESQL_FLEXIBLE_SERVER_USERNAME": {
+      "type": "string",
+      "value": "[parameters('postgresql_flexible_server_username')]"
+    }
+  }
+}
