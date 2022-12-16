@@ -59,10 +59,6 @@ public class AzureStorageQueueMessagingAutoConfiguration {
         return storageQueueTemplate;
     }
 
-    /**
-     * Autoconfigure the {@link StorageQueueMessageConverter} instance with an isolated ObjectMapper.
-     * @return the storage queue message converter.
-     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper.enabled", havingValue = "true", matchIfMissing = true)
@@ -70,11 +66,6 @@ public class AzureStorageQueueMessagingAutoConfiguration {
         return new StorageQueueMessageConverter();
     }
 
-    /**
-     * Autoconfigure the {@link StorageQueueMessageConverter} instance with ObjectMapper from Spring context.
-     * @param objectMapper An ObjectMapper from Spring context.
-     * @return the storage queue message converter.
-     */
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper.enabled", havingValue = "false")

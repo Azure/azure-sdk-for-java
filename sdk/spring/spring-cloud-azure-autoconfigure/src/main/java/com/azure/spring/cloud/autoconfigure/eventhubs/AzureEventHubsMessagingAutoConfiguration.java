@@ -121,11 +121,6 @@ public class AzureEventHubsMessagingAutoConfiguration {
             return new DefaultEventHubsNamespaceProducerFactory(properties, suppliers.getIfAvailable());
         }
 
-        /**
-         * Creates an Event Hubs message converter with an isolated ObjectMapper.
-         *
-         * @return An Event Hubs message converter.
-         */
         @Bean
         @ConditionalOnMissingBean
         @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper.enabled", havingValue = "true", matchIfMissing = true)
@@ -133,11 +128,6 @@ public class AzureEventHubsMessagingAutoConfiguration {
             return new EventHubsMessageConverter();
         }
 
-        /**
-         * Creates an Event Hubs message converter with ObjectMapper from Spring context.
-         * @param objectMapper An ObjectMapper from Spring context.
-         * @return An Event Hubs message converter.
-         */
         @Bean
         @ConditionalOnMissingBean
         @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper.enabled", havingValue = "false")

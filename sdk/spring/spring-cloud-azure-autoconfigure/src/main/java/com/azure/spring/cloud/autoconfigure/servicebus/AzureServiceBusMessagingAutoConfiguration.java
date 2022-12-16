@@ -115,11 +115,6 @@ public class AzureServiceBusMessagingAutoConfiguration {
             return new DefaultServiceBusNamespaceProducerFactory(properties, suppliers.getIfAvailable());
         }
 
-        /**
-         * Creates a Service Bus message converter with an isolated ObjectMapper.
-         *
-         * @return A Service Bus message converter.
-         */
         @Bean
         @ConditionalOnMissingBean
         @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper.enabled", havingValue = "true", matchIfMissing = true)
@@ -127,11 +122,6 @@ public class AzureServiceBusMessagingAutoConfiguration {
             return new ServiceBusMessageConverter();
         }
 
-        /**
-         * Creates a Service Bus message converter with ObjectMapper from Spring context.
-         * @param objectMapper An ObjectMapper from Spring context.
-         * @return A Service Bus message converter.
-         */
         @Bean
         @ConditionalOnMissingBean
         @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper.enabled", havingValue = "false")
