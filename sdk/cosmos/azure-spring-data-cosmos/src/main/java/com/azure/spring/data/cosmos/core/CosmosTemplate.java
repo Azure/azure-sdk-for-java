@@ -271,8 +271,6 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.notNull(partitionKey, "partitionKey should not be null, empty or only whitespaces");
         Assert.notNull(patchOperations, "patchOperations should not be null, empty or only whitespaces");
 
-        @SuppressWarnings("unchecked") final Class<T> domainType = patchObjectClass;
-
         LOGGER.debug("execute createItem in database {} container {}", this.getDatabaseName(),
             containerName);
 
