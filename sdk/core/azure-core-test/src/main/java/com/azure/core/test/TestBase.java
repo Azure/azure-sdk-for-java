@@ -136,7 +136,9 @@ public abstract class TestBase implements BeforeEachCallback {
         }
 
         if (enableTestProxy()) {
-            testResourceNamer = new TestResourceNamer(testContextManager, interceptorManager.getProxyVariables());
+            testResourceNamer = new TestResourceNamer(testContextManager,
+                interceptorManager.getProxyVariableConsumer(),
+                interceptorManager.getProxyVariableSupplier());
         } else {
             testResourceNamer = new TestResourceNamer(testContextManager, interceptorManager.getRecordedData());
         }
