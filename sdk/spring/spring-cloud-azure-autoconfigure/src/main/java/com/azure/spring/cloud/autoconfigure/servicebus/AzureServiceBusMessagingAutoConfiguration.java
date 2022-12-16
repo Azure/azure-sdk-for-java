@@ -18,6 +18,7 @@ import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties
 import com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ProducerProperties;
 import com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -115,14 +116,27 @@ public class AzureServiceBusMessagingAutoConfiguration {
         }
 
         /**
-         * Creates a Service Bus message converter.
+         * Creates a Service Bus message converter with isolate ObjectMapper.
          *
          * @return A Service Bus message converter.
          */
         @Bean
         @ConditionalOnMissingBean
-        public ServiceBusMessageConverter serviceBusMessageConverter() {
+        @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper.enabled", havingValue = "true", matchIfMissing = true)
+        ServiceBusMessageConverter serviceBusMessageConverter() {
             return new ServiceBusMessageConverter();
+        }
+
+        /**
+         * Creates a Service Bus message converter with ObjectMapper from Spring context.
+         * @param objectMapper An ObjectMapper from Spring context.
+         * @return
+         */
+        @Bean
+        @ConditionalOnMissingBean
+        @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper.enabled", havingValue = "false")
+        ServiceBusMessageConverter nonIsolateServiceBusMessageConverter(ObjectMapper objectMapper) {
+            return new ServiceBusMessageConverter(objectMapper);
         }
 
         /**

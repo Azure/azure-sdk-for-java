@@ -10,6 +10,7 @@ import com.azure.spring.messaging.storage.queue.core.factory.StorageQueueClientF
 import com.azure.spring.messaging.storage.queue.core.properties.StorageQueueProperties;
 import com.azure.spring.messaging.storage.queue.implementation.factory.DefaultStorageQueueClientFactory;
 import com.azure.spring.messaging.storage.queue.support.converter.StorageQueueMessageConverter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -59,12 +60,25 @@ public class AzureStorageQueueMessagingAutoConfiguration {
     }
 
     /**
-     * Autoconfigure the {@link StorageQueueMessageConverter} instance.
+     * Autoconfigure the {@link StorageQueueMessageConverter} instance with isolate ObjectMapper.
      * @return the storage queue message converter.
      */
     @Bean
     @ConditionalOnMissingBean
-    public StorageQueueMessageConverter messageConverter() {
+    @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper.enabled", havingValue = "true", matchIfMissing = true)
+    StorageQueueMessageConverter storageQueueMessageConverter() {
         return new StorageQueueMessageConverter();
+    }
+
+    /**
+     * Autoconfigure the {@link StorageQueueMessageConverter} instance with ObjectMapper from Spring context.
+     * @param objectMapper An ObjectMapper from Spring context.
+     * @return the storage queue message converter.
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper.enabled", havingValue = "false")
+    StorageQueueMessageConverter nonIsolateStorageQueueMessageConverter(ObjectMapper objectMapper) {
+        return new StorageQueueMessageConverter(objectMapper);
     }
 }
