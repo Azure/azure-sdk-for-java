@@ -20,6 +20,9 @@ public class CosmosFactory {
 
     private final CosmosAsyncClient cosmosAsyncClient;
 
+    /**
+     * Database Name to be used for operations.
+     */
     protected String databaseName;
 
     private static final String USER_AGENT_SUFFIX =
