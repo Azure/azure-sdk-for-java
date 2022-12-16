@@ -101,9 +101,15 @@ public class CosmosTemplateIT {
 
     private static final String WRONG_ETAG = "WRONG_ETAG";
 
-    private static final CosmosPatchOperations operations = CosmosPatchOperations
+    private static final CosmosPatchOperations patchOperations = CosmosPatchOperations
         .create()
         .replace("/age", 25);
+
+    CosmosPatchOperations multiPatchOperations = CosmosPatchOperations
+        .create()
+        .replace("/firstName", "first_name_replace")
+        .add("/hobbies/2", "shopping")
+        .increment("/age", 2);
 
     private static final CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
 
@@ -279,16 +285,25 @@ public class CosmosTemplateIT {
 
     @Test
     public void testPatch() {
-        insertedPerson = cosmosTemplate.patch(containerName, insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), operations, Person.class);
+        insertedPerson = cosmosTemplate.patch(containerName, insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), patchOperations, Person.class);
         Person patchedPerson = cosmosTemplate.findById(containerName, insertedPerson.getId(), Person.class);
         assertEquals(insertedPerson.getAge(), patchedPerson.getAge());
+    }
+
+    @Test
+    public void testPatchMultiOperations() {
+        insertedPerson = cosmosTemplate.patch(containerName, insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), multiPatchOperations, Person.class);
+        Person patchedPerson = cosmosTemplate.findById(containerName, insertedPerson.getId(), Person.class);
+        assertEquals(insertedPerson.getAge(), patchedPerson.getAge());
+        assertEquals(insertedPerson.getHobbies(), patchedPerson.getHobbies());
+        assertEquals(insertedPerson.getFirstName(), patchedPerson.getFirstName());
     }
 
     @Test
     public void testPatchPreConditionFail() {
         try {
             options.setFilterPredicate("FROM person p WHERE p.lastName = 'dummy'");
-            insertedPerson = cosmosTemplate.patch(containerName, insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), operations, Person.class,options);
+            insertedPerson = cosmosTemplate.patch(containerName, insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), patchOperations, Person.class,options);
             Person patchedPerson = cosmosTemplate.findById(containerName, insertedPerson.getId(), Person.class);
             assertEquals(insertedPerson.getAge(), patchedPerson.getAge());
             fail();
