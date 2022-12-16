@@ -55,7 +55,7 @@ public class AzureStorageQueueMessagingAutoConfigurationTests {
     void withNonIsolatedObjectMapper() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.storage.queue.enabled=true",
-                "spring.cloud.azure.message-converter.isolated-object-mapper.enabled=false")
+                "spring.cloud.azure.message-converter.isolated-object-mapper=false")
             .withUserConfiguration(AzureStorageQueuePropertiesTestConfiguration.class)
             .run(context -> {
                 assertNotNull(context.getBean("storageQueueMessageConverterWithNonIsolatedObjectMapper"));

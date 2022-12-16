@@ -123,14 +123,14 @@ public class AzureEventHubsMessagingAutoConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper.enabled", havingValue = "true", matchIfMissing = true)
+        @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper", havingValue = "true", matchIfMissing = true)
         EventHubsMessageConverter eventHubsMessageConverter() {
             return new EventHubsMessageConverter();
         }
 
         @Bean
         @ConditionalOnMissingBean
-        @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper.enabled", havingValue = "false")
+        @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper", havingValue = "false")
         EventHubsMessageConverter eventHubsMessageConverterWithNonIsolatedObjectMapper(ObjectMapper objectMapper) {
             return new EventHubsMessageConverter(objectMapper);
         }

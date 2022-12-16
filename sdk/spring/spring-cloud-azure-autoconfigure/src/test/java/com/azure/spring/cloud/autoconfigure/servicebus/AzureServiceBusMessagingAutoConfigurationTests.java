@@ -93,7 +93,7 @@ class AzureServiceBusMessagingAutoConfigurationTests {
     void withNonIsolatedObjectMapper() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
-                "spring.cloud.azure.message-converter.isolated-object-mapper.enabled=false")
+                "spring.cloud.azure.message-converter.isolated-object-mapper=false")
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .run(context -> {
                 assertNotNull(context.getBean("serviceBusMessageConverterWithNonIsolatedObjectMapper"));
