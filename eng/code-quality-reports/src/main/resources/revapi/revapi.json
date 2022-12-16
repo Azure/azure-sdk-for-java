@@ -333,13 +333,13 @@
         {
           "code" : "java.method.visibilityReduced",
           "old" : "method com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration::eventHubsMessageConverter()",
-          "new" : "method com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration::eventHubsMessageConverter()",
+          "new" : "method com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration::eventHubsMessageConverter(com.fasterxml.jackson.databind.ObjectMapper)",
           "justification": "Shouldn't have been a public API."
         },
         {
           "code" : "java.method.visibilityReduced",
           "old" : "method com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration.ServiceBusTemplateConfiguration::serviceBusMessageConverter()",
-          "new" : "method com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration.ServiceBusTemplateConfiguration::serviceBusMessageConverter()",
+          "new" : "method com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration.ServiceBusTemplateConfiguration::serviceBusMessageConverter(com.fasterxml.jackson.databind.ObjectMapper)",
           "justification": "Shouldn't have been a public API."
         },
         {
