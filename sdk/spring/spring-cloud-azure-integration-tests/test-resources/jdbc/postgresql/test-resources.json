@@ -85,43 +85,7 @@
     {
       "type": "Microsoft.DBforPostgreSQL/flexibleServers/databases",
       "apiVersion": "2022-01-20-preview",
-      "name": "[concat(parameters('serverName'), '/azure_maintenance')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('serverName'))]"
-      ],
-      "properties": {
-        "charset": "UTF8",
-        "collation": "en_US.utf8"
-      }
-    },
-    {
-      "type": "Microsoft.DBforPostgreSQL/flexibleServers/databases",
-      "apiVersion": "2022-01-20-preview",
-      "name": "[concat(parameters('serverName'), '/azure_sys')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('serverName'))]"
-      ],
-      "properties": {
-        "charset": "UTF8",
-        "collation": "en_US.utf8"
-      }
-    },
-    {
-      "type": "Microsoft.DBforPostgreSQL/flexibleServers/databases",
-      "apiVersion": "2022-01-20-preview",
       "name": "[concat(parameters('serverName'), '/db')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('serverName'))]"
-      ],
-      "properties": {
-        "charset": "UTF8",
-        "collation": "en_US.utf8"
-      }
-    },
-    {
-      "type": "Microsoft.DBforPostgreSQL/flexibleServers/databases",
-      "apiVersion": "2022-01-20-preview",
-      "name": "[concat(parameters('serverName'), '/postgres')]",
       "dependsOn": [
         "[resourceId('Microsoft.DBforPostgreSQL/flexibleServers', parameters('serverName'))]"
       ],
