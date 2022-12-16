@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.actuator.autoconfigure.cosmos;
+package com.azure.spring.cloud.actuator.autoconfigure.implementation.cosmos;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.spring.cloud.actuator.cosmos.CosmosHealthIndicator;

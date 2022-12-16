@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.actuator.autoconfigure.eventhubs;
+package com.azure.spring.cloud.actuator.autoconfigure.implementation.eventhubs;
 
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.actuator.eventhubs.EventHubsHealthIndicator;

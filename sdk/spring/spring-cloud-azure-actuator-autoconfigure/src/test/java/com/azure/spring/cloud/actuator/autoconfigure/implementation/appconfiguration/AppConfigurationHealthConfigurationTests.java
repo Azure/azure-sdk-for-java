@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.actuator.autoconfigure.appconfiguration;
+package com.azure.spring.cloud.actuator.autoconfigure.implementation.appconfiguration;
 
 import com.azure.spring.cloud.actuator.appconfiguration.AppConfigurationHealthIndicator;
 import com.azure.spring.cloud.autoconfigure.implementation.appconfiguration.AzureAppConfigurationAutoConfiguration;

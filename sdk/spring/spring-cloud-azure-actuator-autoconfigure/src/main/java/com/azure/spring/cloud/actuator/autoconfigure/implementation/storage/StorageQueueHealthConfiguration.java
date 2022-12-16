@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.actuator.autoconfigure.storage;
+package com.azure.spring.cloud.actuator.autoconfigure.implementation.storage;
 
 import com.azure.spring.cloud.actuator.storage.StorageQueueHealthIndicator;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.AzureStorageQueueAutoConfiguration;

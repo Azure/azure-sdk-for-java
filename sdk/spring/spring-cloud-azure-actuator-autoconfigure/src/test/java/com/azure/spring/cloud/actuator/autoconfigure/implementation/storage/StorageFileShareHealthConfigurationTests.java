@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.actuator.autoconfigure.storage;
+package com.azure.spring.cloud.actuator.autoconfigure.implementation.storage;
 
 import com.azure.spring.cloud.actuator.storage.StorageFileShareHealthIndicator;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
