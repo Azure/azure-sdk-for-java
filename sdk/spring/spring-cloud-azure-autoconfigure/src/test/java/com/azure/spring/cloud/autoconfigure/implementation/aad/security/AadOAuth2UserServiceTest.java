@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.aad.implementation.webapp;
+package com.azure.spring.cloud.autoconfigure.implementation.aad.security;
 
-import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AuthorityPrefix;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.graph.GraphClient;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.graph.GroupInformation;
-import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.security.constants.AuthorityPrefix;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.security.graph.GraphClient;
+import com.azure.spring.cloud.autoconfigure.implementation.aad.security.graph.GroupInformation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.Authentication;
