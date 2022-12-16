@@ -19,18 +19,13 @@ import java.util.stream.Collectors;
 
 public class TestProxyPlaybackClient implements HttpClient {
 
-    private final String proxyUrlScheme = "http";
-    private final String proxyUrlHost = "localhost";
-    private final int proxyUrlPort = 5000;
-    private final String proxyUrl = String.format("%s://%s:%d", proxyUrlScheme, proxyUrlHost, proxyUrlPort);
-
     private final HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
     private String xRecordingId;
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 
     public Queue<String> startPlayback(String recordFile, Map<String, String> textReplacementRules) {
         // TODO: replacement rules
-        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/start", proxyUrl))
+        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/start", TestProxyUtils.getProxyUrl()))
             .setBody(String.format("{\"x-recording-file\": \"%s\"}", recordFile));
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             xRecordingId = response.getHeaderValue("x-recording-id");
@@ -41,11 +36,8 @@ public class TestProxyPlaybackClient implements HttpClient {
             throw new RuntimeException(e);
         }
     }
-
-
-
     public void stopPlayback() {
-        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/stop", proxyUrl))
+        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/stop", TestProxyUtils.getProxyUrl()))
             .setHeader("x-recording-id", xRecordingId);
         client.sendSync(request, Context.NONE);
     }
