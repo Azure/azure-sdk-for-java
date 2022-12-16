@@ -6,6 +6,7 @@ package com.azure.core.test;
 import com.azure.core.http.*;
 import com.azure.core.test.http.TestProxyTestServer;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
 import org.junit.jupiter.api.*;
@@ -20,6 +21,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SuppressWarnings("deprecation")
 public class TestProxyTests extends TestBase {
     static TestProxyTestServer server;
+    private String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_ENDPOINT");
+    private String API_KEY = Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_API_KEY");
+
     @BeforeAll
     public static void setupClass() {
         enableTestProxy();
@@ -116,6 +120,31 @@ public class TestProxyTests extends TestBase {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         HttpResponse response = client.sendSync(request, Context.NONE);
         assertEquals(response.getBodyAsString().block(), "first path");
+        assertEquals(response.getStatusCode(), 200);
+    }
+
+    @Test
+    @Tag("RECORD")
+    public void testRecordWithRedaction() {
+
+        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .policies(interceptorManager.getRecordPolicy()).build();
+        URL url = null;
+        try {
+            url = new UrlBuilder().setHost(ENDPOINT).setPath("/formrecognizer/documentModels")
+                .setQueryParameter("api-version", "2022-08-31").setScheme("https").toUrl();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+        testResourceNamer.randomName("test", 10);
+        testResourceNamer.now();
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+        request.setHeader("Ocp-Apim-Subscription-Key", API_KEY);
+        request.setHeader("Content-Type", "application/json");
+        HttpResponse response = pipeline.sendSync(request, Context.NONE);
+
         assertEquals(response.getStatusCode(), 200);
     }
 }

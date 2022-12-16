@@ -9,6 +9,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -21,45 +22,44 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
-/**
- * An implementation of {@link HttpClient} using the JDK {@link HttpURLConnectionHttpClient} for communicating with
- * the test proxy.
- */
 public class HttpURLConnectionHttpClient implements HttpClient {
 
     @Override
-    public Mono<HttpResponse> send(HttpRequest request) {
+    public HttpResponse sendSync(HttpRequest request, Context context) {
         HttpURLConnection connection = null;
 
         try {
 
             connection = (HttpURLConnection) request.getUrl().openConnection();
+            connection.setRequestMethod(request.getHttpMethod().name());
+
+            setHeadersOnRequest(request, connection);
+            setBodyOnRequest(request, connection);
+            connection.connect();
+
+            return createHttpResponse(connection, request);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (connection != null ) { connection.disconnect(); }
+        }
+    }
+
+    @Override
+    public Mono<HttpResponse> send(HttpRequest request) {
+        HttpURLConnection connection = null;
+        try {
+            connection = (HttpURLConnection) request.getUrl().openConnection();
             connection.setRequestMethod(request.getHttpMethod().toString());
 
-            HttpHeaders headers = request.getHeaders();
-            if (headers != null) {
-                for (HttpHeader header : headers) {
-                    String name = header.getName();
-
-                    connection.setRequestProperty(name, headers.getValue(name));
-                }
-            }
-            BinaryData body = request.getBodyAsBinaryData();
-            if (body != null) {
-                connection.setDoOutput(true);
-                try (BufferedOutputStream stream = new BufferedOutputStream(connection.getOutputStream())) {
-                    stream.write(body.toBytes());
-                    stream.flush();
-                }
-            }
+            setHeadersOnRequest(request, connection);
+            setBodyOnRequest(request, connection);
             connection.connect();
             return Mono.just(createHttpResponse(connection, request));
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
+            if (connection != null ) { connection.disconnect(); }
         }
     }
 
@@ -71,6 +71,27 @@ public class HttpURLConnectionHttpClient implements HttpClient {
 
 
         return new HttpURLResponse(connection, request);
+    }
+
+    private static void setBodyOnRequest(HttpRequest request, HttpURLConnection connection) throws IOException {
+        BinaryData body = request.getBodyAsBinaryData();
+        if(body != null) {
+            connection.setDoOutput(true);
+            BufferedOutputStream stream = new BufferedOutputStream(connection.getOutputStream());
+            stream.write(body.toBytes());
+            stream.flush();
+        }
+    }
+
+    private static void setHeadersOnRequest(HttpRequest request, HttpURLConnection connection) {
+        HttpHeaders headers = request.getHeaders();
+        if (headers != null) {
+            for (HttpHeader header : headers) {
+                String name = header.getName();
+
+                connection.setRequestProperty(name, headers.getValue(name));
+            }
+        }
     }
 
     private static class HttpURLResponse extends HttpResponse {
