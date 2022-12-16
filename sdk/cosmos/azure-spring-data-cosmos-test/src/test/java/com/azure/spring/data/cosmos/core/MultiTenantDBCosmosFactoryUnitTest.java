@@ -82,7 +82,7 @@ public class MultiTenantDBCosmosFactoryUnitTest {
         cosmosTemplate.insert(TEST_PERSON_1, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_1)));
 
         // Create DB2 and add TEST_PERSON_2 to it
-        cosmosFactory.databaseName = testDB2;
+        cosmosFactory.manuallySetDatabaseName = testDB2;
         cosmosTemplate.createContainerIfNotExists(personInfo);
         cosmosTemplate.deleteAll(personInfo.getContainerName(), Person.class);
         assertThat(cosmosFactory.getDatabaseName()).isEqualTo(testDB2);
@@ -97,7 +97,7 @@ public class MultiTenantDBCosmosFactoryUnitTest {
         Assert.assertEquals(expectedResultsDB2, resultDB2);
 
         // Check that DB1 has the correct contents
-        cosmosFactory.databaseName = testDB1;
+        cosmosFactory.manuallySetDatabaseName = testDB1;
         List<Person> expectedResultsDB1 = new ArrayList<>();
         expectedResultsDB1.add(TEST_PERSON_1);
         Iterable<Person> iterableDB1 = cosmosTemplate.findAll(personInfo.getContainerName(), Person.class);

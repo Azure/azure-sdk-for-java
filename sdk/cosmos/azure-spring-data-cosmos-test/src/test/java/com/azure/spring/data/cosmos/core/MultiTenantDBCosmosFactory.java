@@ -25,7 +25,7 @@ public class MultiTenantDBCosmosFactory extends CosmosFactory {
     public MultiTenantDBCosmosFactory(CosmosAsyncClient cosmosAsyncClient, String databaseName) {
         super(cosmosAsyncClient, databaseName);
 
-        this.databaseName = databaseName;
+        this.manuallySetDatabaseName = databaseName;
     }
 
     @Override
