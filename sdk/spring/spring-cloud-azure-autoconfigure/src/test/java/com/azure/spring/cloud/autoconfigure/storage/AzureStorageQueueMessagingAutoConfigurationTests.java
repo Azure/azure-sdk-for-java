@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.storage;
 
 import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties.AzureStorageQueueProperties;
+import com.azure.spring.messaging.storage.queue.support.converter.StorageQueueMessageConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -15,6 +16,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -44,7 +46,8 @@ public class AzureStorageQueueMessagingAutoConfigurationTests {
             .withUserConfiguration(AzureStorageQueuePropertiesTestConfiguration.class)
             .run(context -> {
                 assertNotNull(context.getBean("storageQueueMessageConverter"));
-                assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("nonIsolateStorageQueueMessageConverter"));
+                assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("storageQueueMessageConverterWithNonIsolatedObjectMapper"));
+                assertThat(context).hasSingleBean(StorageQueueMessageConverter.class);
             });
     }
 
@@ -55,8 +58,9 @@ public class AzureStorageQueueMessagingAutoConfigurationTests {
                 "spring.cloud.azure.message-converter.isolated-object-mapper.enabled=false")
             .withUserConfiguration(AzureStorageQueuePropertiesTestConfiguration.class)
             .run(context -> {
-                    assertNotNull(context.getBean("nonIsolateStorageQueueMessageConverter"));
-                    assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("storageQueueMessageConverter"));
+                assertNotNull(context.getBean("storageQueueMessageConverterWithNonIsolatedObjectMapper"));
+                assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("storageQueueMessageConverter"));
+                assertThat(context).hasSingleBean(StorageQueueMessageConverter.class);
             });
     }
 

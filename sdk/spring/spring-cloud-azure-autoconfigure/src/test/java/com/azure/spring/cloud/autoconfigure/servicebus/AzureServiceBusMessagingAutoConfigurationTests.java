@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
+import com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -82,8 +83,9 @@ class AzureServiceBusMessagingAutoConfigurationTests {
             .withPropertyValues("spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"))
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .run(context -> {
-                    assertNotNull(context.getBean("serviceBusMessageConverter"));
-                    assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("nonIsolateServiceBusMessageConverter"));
+                assertNotNull(context.getBean("serviceBusMessageConverter"));
+                assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("serviceBusMessageConverterWithNonIsolatedObjectMapper"));
+                assertThat(context).hasSingleBean(ServiceBusMessageConverter.class);
             });
     }
 
@@ -94,8 +96,9 @@ class AzureServiceBusMessagingAutoConfigurationTests {
                 "spring.cloud.azure.message-converter.isolated-object-mapper.enabled=false")
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .run(context -> {
-                    assertNotNull(context.getBean("nonIsolateServiceBusMessageConverter"));
-                    assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("serviceBusMessageConverter"));
+                assertNotNull(context.getBean("serviceBusMessageConverterWithNonIsolatedObjectMapper"));
+                assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("serviceBusMessageConverter"));
+                assertThat(context).hasSingleBean(ServiceBusMessageConverter.class);
             });
     }
 

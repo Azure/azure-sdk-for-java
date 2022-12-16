@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.eventhubs;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.messaging.eventhubs.core.EventHubsTemplate;
+import com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -95,7 +96,8 @@ class AzureEventHubsMessagingAutoConfigurationTests {
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .run(context -> {
                 assertNotNull(context.getBean("eventHubsMessageConverter"));
-                assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("nonIsolateEventHubsMessageConverter"));
+                assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("eventHubsMessageConverterWithNonIsolatedObjectMapper"));
+                assertThat(context).hasSingleBean(EventHubsMessageConverter.class);
             });
     }
 
@@ -106,8 +108,9 @@ class AzureEventHubsMessagingAutoConfigurationTests {
                 "spring.cloud.azure.message-converter.isolated-object-mapper.enabled=false")
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .run(context -> {
-                assertNotNull(context.getBean("nonIsolateEventHubsMessageConverter"));
+                assertNotNull(context.getBean("eventHubsMessageConverterWithNonIsolatedObjectMapper"));
                 assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("eventHubsMessageConverter"));
+                assertThat(context).hasSingleBean(EventHubsMessageConverter.class);
             });
     }
 

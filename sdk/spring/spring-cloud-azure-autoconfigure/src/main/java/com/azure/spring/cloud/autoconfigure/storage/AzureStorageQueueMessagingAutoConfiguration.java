@@ -60,7 +60,7 @@ public class AzureStorageQueueMessagingAutoConfiguration {
     }
 
     /**
-     * Autoconfigure the {@link StorageQueueMessageConverter} instance with isolate ObjectMapper.
+     * Autoconfigure the {@link StorageQueueMessageConverter} instance with an isolate ObjectMapper.
      * @return the storage queue message converter.
      */
     @Bean
@@ -78,7 +78,7 @@ public class AzureStorageQueueMessagingAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper.enabled", havingValue = "false")
-    StorageQueueMessageConverter nonIsolateStorageQueueMessageConverter(ObjectMapper objectMapper) {
+    StorageQueueMessageConverter storageQueueMessageConverterWithNonIsolatedObjectMapper(ObjectMapper objectMapper) {
         return new StorageQueueMessageConverter(objectMapper);
     }
 }

@@ -1579,7 +1579,7 @@
     {
       "name": "spring.cloud.azure.message-converter.isolated-object-mapper.enabled",
       "type": "java.lang.Boolean",
-      "description": "Whether to use an isolated object mapper to serialize message in EventHubsMessageConverter/ServiceBusMessageConverter/StorageQueueMessageConverter.",
+      "description": "Whether to use an isolated object mapper to serialize/deserialize message in EventHubsMessageConverter/ServiceBusMessageConverter/StorageQueueMessageConverter.",
       "defaultValue": "true"
     }
   ],
