@@ -23,8 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class AzureServiceBusMessagingAutoConfigurationTests {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureServiceBusMessagingAutoConfiguration.class,
-            JacksonAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureServiceBusMessagingAutoConfiguration.class));
 
     @Test
     void disableServiceBusShouldNotConfigure() {
@@ -73,6 +72,7 @@ class AzureServiceBusMessagingAutoConfigurationTests {
             .withPropertyValues(
                 "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
             )
+            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .run(context -> assertThatIllegalStateException());
     }
@@ -82,9 +82,10 @@ class AzureServiceBusMessagingAutoConfigurationTests {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"))
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
+            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .run(context -> {
-                assertNotNull(context.getBean("serviceBusMessageConverter"));
-                assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("serviceBusMessageConverterWithNonIsolatedObjectMapper"));
+                assertNotNull(context.getBean("defaultServiceBusMessageConverter"));
+                assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("serviceBusMessageConverter"));
                 assertThat(context).hasSingleBean(ServiceBusMessageConverter.class);
             });
     }
@@ -95,9 +96,10 @@ class AzureServiceBusMessagingAutoConfigurationTests {
             .withPropertyValues("spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
                 "spring.cloud.azure.message-converter.isolated-object-mapper=false")
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
+            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .run(context -> {
-                assertNotNull(context.getBean("serviceBusMessageConverterWithNonIsolatedObjectMapper"));
-                assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("serviceBusMessageConverter"));
+                assertNotNull(context.getBean("serviceBusMessageConverter"));
+                assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("defaultServiceBusMessageConverter"));
                 assertThat(context).hasSingleBean(ServiceBusMessageConverter.class);
             });
     }

@@ -9,6 +9,7 @@ import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionSt
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
+import com.azure.spring.messaging.implementation.converter.ObjectMapperHolder;
 import com.azure.spring.messaging.servicebus.core.DefaultServiceBusNamespaceProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.DefaultServiceBusNamespaceProducerFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
@@ -118,14 +119,14 @@ public class AzureServiceBusMessagingAutoConfiguration {
         @Bean
         @ConditionalOnMissingBean
         @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper", havingValue = "true", matchIfMissing = true)
-        ServiceBusMessageConverter serviceBusMessageConverter() {
-            return new ServiceBusMessageConverter();
+        ServiceBusMessageConverter defaultServiceBusMessageConverter() {
+            return new ServiceBusMessageConverter(ObjectMapperHolder.OBJECT_MAPPER);
         }
 
         @Bean
         @ConditionalOnMissingBean
         @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper", havingValue = "false")
-        ServiceBusMessageConverter serviceBusMessageConverterWithNonIsolatedObjectMapper(ObjectMapper objectMapper) {
+        ServiceBusMessageConverter serviceBusMessageConverter(ObjectMapper objectMapper) {
             return new ServiceBusMessageConverter(objectMapper);
         }
 

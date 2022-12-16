@@ -24,8 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class AzureEventHubsMessagingAutoConfigurationTests {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureEventHubsMessagingAutoConfiguration.class,
-            JacksonAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureEventHubsMessagingAutoConfiguration.class));
 
     @Test
     void disableEventHubsShouldNotConfigure() {
@@ -83,6 +82,7 @@ class AzureEventHubsMessagingAutoConfigurationTests {
     void withoutObjectMapperShouldNotConfigure() {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(ObjectMapper.class))
+            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .withPropertyValues(
             "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
         )
@@ -95,9 +95,10 @@ class AzureEventHubsMessagingAutoConfigurationTests {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"))
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
+            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .run(context -> {
-                assertNotNull(context.getBean("eventHubsMessageConverter"));
-                assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("eventHubsMessageConverterWithNonIsolatedObjectMapper"));
+                assertNotNull(context.getBean("defaultEventHubsMessageConverter"));
+                assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("eventHubsMessageConverter"));
                 assertThat(context).hasSingleBean(EventHubsMessageConverter.class);
             });
     }
@@ -108,9 +109,10 @@ class AzureEventHubsMessagingAutoConfigurationTests {
             .withPropertyValues("spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
                 "spring.cloud.azure.message-converter.isolated-object-mapper=false")
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
+            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .run(context -> {
-                assertNotNull(context.getBean("eventHubsMessageConverterWithNonIsolatedObjectMapper"));
-                assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("eventHubsMessageConverter"));
+                assertNotNull(context.getBean("eventHubsMessageConverter"));
+                assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("defaultEventHubsMessageConverter"));
                 assertThat(context).hasSingleBean(EventHubsMessageConverter.class);
             });
     }

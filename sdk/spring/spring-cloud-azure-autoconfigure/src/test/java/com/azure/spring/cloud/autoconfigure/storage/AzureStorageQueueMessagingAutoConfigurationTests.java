@@ -24,15 +24,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class AzureStorageQueueMessagingAutoConfigurationTests {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureStorageQueueMessagingAutoConfiguration.class, JacksonAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureStorageQueueMessagingAutoConfiguration.class));
 
     @Test
     void withoutObjectMapperShouldNotConfigure() {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(ObjectMapper.class))
-            .withPropertyValues(
-                "spring.cloud.azure.storage.queue.enabled=true"
-            )
+            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
+            .withPropertyValues("spring.cloud.azure.storage.queue.enabled=true")
             .withUserConfiguration(AzureStorageQueuePropertiesTestConfiguration.class)
             .run(context -> assertThatIllegalStateException());
     }
@@ -40,13 +39,12 @@ public class AzureStorageQueueMessagingAutoConfigurationTests {
     @Test
     void withIsolatedObjectMapper() {
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.storage.queue.enabled=true"
-            )
+            .withPropertyValues("spring.cloud.azure.storage.queue.enabled=true")
+            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .withUserConfiguration(AzureStorageQueuePropertiesTestConfiguration.class)
             .run(context -> {
-                assertNotNull(context.getBean("storageQueueMessageConverter"));
-                assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("storageQueueMessageConverterWithNonIsolatedObjectMapper"));
+                assertNotNull(context.getBean("defaultStorageQueueMessageConverter"));
+                assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("storageQueueMessageConverter"));
                 assertThat(context).hasSingleBean(StorageQueueMessageConverter.class);
             });
     }
@@ -56,10 +54,11 @@ public class AzureStorageQueueMessagingAutoConfigurationTests {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.storage.queue.enabled=true",
                 "spring.cloud.azure.message-converter.isolated-object-mapper=false")
+            .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .withUserConfiguration(AzureStorageQueuePropertiesTestConfiguration.class)
             .run(context -> {
-                assertNotNull(context.getBean("storageQueueMessageConverterWithNonIsolatedObjectMapper"));
-                assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("storageQueueMessageConverter"));
+                assertNotNull(context.getBean("storageQueueMessageConverter"));
+                assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean("defaultStorageQueueMessageConverter"));
                 assertThat(context).hasSingleBean(StorageQueueMessageConverter.class);
             });
     }
