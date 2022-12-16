@@ -92,7 +92,7 @@ public final class WebPubSubAuthenticationPolicy implements HttpPipelinePolicy {
                     claimsBuilder.subject(userId);
                 }
                 if (!CoreUtils.isNullOrEmpty(options.getGroups())) {
-                    claimsBuilder.claim("group", options.getGroups());
+                    claimsBuilder.claim("webpubsub.group", options.getGroups());
                 }
             }
 
