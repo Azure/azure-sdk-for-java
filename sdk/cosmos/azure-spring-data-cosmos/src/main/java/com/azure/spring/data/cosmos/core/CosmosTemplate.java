@@ -248,25 +248,24 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * @param <T>             type class of domain type
      * @return the inserted item
      */
-    @Override
-    public <T> T save(String containerName, T objectToPatch, CosmosPatchOperations patchOperations) {
-        return save(containerName, objectToPatch, patchOperations, null);
+    public <T> T patch(String containerName, T entityToPatch, CosmosPatchOperations patchOperations) {
+        return patch(containerName, entityToPatch, patchOperations, null);
     }
 
     /**
      * applies partial update (patch) to an item with CosmosPatchItemRequestOptions
      *
      * @param containerName   must not be {@literal null}
-     * @param objectToPatch must not be {@literal null}
+     * @param entityToPatch must not be {@literal null}
      * @param patchOperations must not be {@literal null}
      * @param options         must not be {@literal null}
      * @param <T>             type class of domain type
      * @return the inserted item
      */
-    public <T> T save(String containerName, T objectToPatch, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options) {
+    public <T> T patch(String containerName, T entityToPatch, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options) {
         Assert.notNull(patchOperations, "patchOperations should not be null, empty or only whitespaces");
 
-        @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) objectToPatch.getClass();
+        @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) entityToPatch.getClass();
 
         LOGGER.debug("execute createItem in database {} container {}", this.getDatabaseName(),
             containerName);
@@ -282,7 +281,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         final CosmosItemResponse<JsonNode> response = this.getCosmosAsyncClient()
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
-            .patchItem(objectToPatchInfo.getId(objectToPatch).toString(), new PartitionKey(objectToPatchInfo.getPartitionKeyFieldValue(objectToPatch).toString()), patchOperations, options, JsonNode.class)
+            .patchItem(objectToPatchInfo.getId(entityToPatch).toString(), new PartitionKey(objectToPatchInfo.getPartitionKeyFieldValue(entityToPatch).toString()), patchOperations, options, JsonNode.class)
             .publishOn(Schedulers.parallel())
             .doOnNext(cosmosItemResponse ->
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,

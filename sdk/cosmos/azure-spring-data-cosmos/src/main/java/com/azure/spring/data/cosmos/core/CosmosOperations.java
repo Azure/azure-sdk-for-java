@@ -128,23 +128,23 @@ public interface CosmosOperations {
     /**
      * patches item
      * @param containerName must not be {@literal null}
-     * @param objectToPatch must not be {@literal null}
+     * @param entityToPatch must not be {@literal null}
      * @param patchOperations must not be {@literal null}
      * @param <T> type class of domain type
      * @return the inserted item
      */
-    <T> T  save(String containerName, T objectToPatch, CosmosPatchOperations patchOperations);
+    <T> T patch(String containerName, T entityToPatch, CosmosPatchOperations patchOperations);
 
     /**
      * patches item
      * @param containerName must not be {@literal null}
-     * @param objectToPatch must not be {@literal null}
+     * @param entityToPatch must not be {@literal null}
      * @param patchOperations must not be {@literal null}
      * @param options must not be {@literal null}
      * @param <T> type class of domain type
      * @return the patched item
      */
-    <T> T  save(String containerName, T objectToPatch, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options);
+    <T> T patch(String containerName, T entityToPatch, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options);
 
     /**
      * Inserts item

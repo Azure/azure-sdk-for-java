@@ -40,25 +40,25 @@ public interface CosmosRepository<T, ID extends Serializable> extends PagingAndS
 
     /**
      * patches an entity by its id and partition key.
-     * @param objectToPatch patch operations, must not be null.
+     * @param entityToPatch entity to patch, must not be null.
      * @param patchOperations patch operations, must not be null.
-     * @param <T> type of entity
+     * @param <S> type of entity
      * @return the patched entity
      * @throws IllegalArgumentException in case the given {@code id} is {@literal null}.
      */
-    <T> T save(T objectToPatch, CosmosPatchOperations patchOperations);
+    <S extends T> S save(S entityToPatch, CosmosPatchOperations patchOperations);
 
     /**
      * patches an entity by its id and partition key with CosmosPatchItemRequestOptions
      *
-     * @param objectToPatch patch operations, must not be null.
+     * @param entityToPatch entity to patch, must not be null.
      * @param patchOperations patch operations, must not be null.
      * @param options additional CosmosPatchItemRequestOptions options, e.g. options.setFilterPredicate("FROM products p WHERE p.used = false");
-     * @param <T> type of entity
+     * @param <S> type of entity
      * @return the patched entity
      * @throws IllegalArgumentException in case the given {@code id} is {@literal null}.
      */
-    <T> T save(T objectToPatch, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options);
+    <S extends T> S save(S entityToPatch, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options);
 
     /**
      * Returns list of items in a specific partition

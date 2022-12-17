@@ -460,32 +460,31 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * applies partial update (patch) to an item
      *
      * @param containerName must not be {@literal null}
-     * @param objectToPatch must not be {@literal null}
+     * @param entityToPatch must not be {@literal null}
      * @param patchOperations must not be {@literal null}
      * @param <T> entity to be patched
      * @return the inserted item
      */
-    @Override
-    public <T> Mono<T> save(String containerName, T objectToPatch, CosmosPatchOperations patchOperations) {
-        return save(containerName, objectToPatch, patchOperations, null);
+    public <T> Mono<T> patch(String containerName, T entityToPatch, CosmosPatchOperations patchOperations) {
+        return patch(containerName, entityToPatch, patchOperations, null);
     }
 
     /**
      * applies partial update (patch) to an item with CosmosPatchItemRequestOptions
      *
      * @param containerName must not be {@literal null}
-     * @param objectToPatch must not be {@literal null}
+     * @param entityToPatch must not be {@literal null}
      * @param patchOperations must not be {@literal null}
      * @param options must not be {@literal null}
      * @param <T> entity to be patched
      * @return the inserted item
      */
-    public <T> Mono<T>  save(String containerName, T objectToPatch, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options) {
+    public <T> Mono<T> patch(String containerName, T entityToPatch, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options) {
         Assert.notNull(patchOperations, "patchOperations should not be null, empty or only whitespaces");
 
         LOGGER.debug("execute patchItem in database {} container {}", this.getDatabaseName(), containerName);
 
-        @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) objectToPatch.getClass();
+        @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) entityToPatch.getClass();
 
         LOGGER.debug("execute createItem in database {} container {}", this.getDatabaseName(),
             containerName);
@@ -500,10 +499,10 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         return this.getCosmosAsyncClient()
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
-            .patchItem(objectToPatchInfo.getId(objectToPatch).toString(), new PartitionKey(objectToPatchInfo.getPartitionKeyFieldValue(objectToPatch).toString()), patchOperations, options, JsonNode.class)
+            .patchItem(objectToPatchInfo.getId(entityToPatch).toString(), new PartitionKey(objectToPatchInfo.getPartitionKeyFieldValue(entityToPatch).toString()), patchOperations, options, JsonNode.class)
             .publishOn(Schedulers.parallel())
             .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to insert item", throwable,
+                CosmosExceptionUtils.exceptionHandler("Failed to patch item", throwable,
                     this.responseDiagnosticsProcessor))
             .flatMap(cosmosItemResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,

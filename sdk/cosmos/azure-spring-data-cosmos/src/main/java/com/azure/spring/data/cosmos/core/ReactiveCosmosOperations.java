@@ -150,23 +150,23 @@ public interface ReactiveCosmosOperations {
     /**
      * patches item
      * @param containerName must not be {@literal null}
-     * @param objectToPatch must not be {@literal null}
+     * @param entityToPatch must not be {@literal null}
      * @param patchOperations must not be {@literal null}
      * @param <T> type class of domain type
      * @return the patched item
      */
-    <T> Mono<T>  save(String containerName, T objectToPatch, CosmosPatchOperations patchOperations);
+    <T> Mono<T> patch(String containerName, T entityToPatch, CosmosPatchOperations patchOperations);
 
     /**
      * patches item with CosmosPatchItemRequestOptions
      * @param containerName must not be {@literal null}
-     * @param objectToPatch must not be {@literal null}
+     * @param entityToPatch must not be {@literal null}
      * @param patchOperations must not be {@literal null}
      * @param options must not be {@literal null}
      * @param <T> entity to be patched
      * @return the patched item
      */
-    <T> Mono<T>  save(String containerName, T objectToPatch, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options);
+    <T> Mono<T> patch(String containerName, T entityToPatch, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options);
 
     /**
      * Upsert an item with partition key
