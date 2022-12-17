@@ -285,14 +285,14 @@ public class CosmosTemplateIT {
 
     @Test
     public void testPatch() {
-        insertedPerson = cosmosTemplate.save(containerName, insertedPerson, patchOperations);
+        insertedPerson = cosmosTemplate.patch(containerName, insertedPerson, patchOperations);
         Person patchedPerson = cosmosTemplate.findById(containerName, insertedPerson.getId(), Person.class);
         assertEquals(insertedPerson.getAge(), patchedPerson.getAge());
     }
 
     @Test
     public void testPatchMultiOperations() {
-        insertedPerson = cosmosTemplate.save(containerName, insertedPerson, multiPatchOperations);
+        insertedPerson = cosmosTemplate.patch(containerName, insertedPerson, multiPatchOperations);
         Person patchedPerson = cosmosTemplate.findById(containerName, insertedPerson.getId(), Person.class);
         assertEquals(insertedPerson.getAge(), patchedPerson.getAge());
         assertEquals(insertedPerson.getHobbies(), patchedPerson.getHobbies());
@@ -303,7 +303,7 @@ public class CosmosTemplateIT {
     public void testPatchPreConditionFail() {
         try {
             options.setFilterPredicate("FROM person p WHERE p.lastName = 'dummy'");
-            insertedPerson = cosmosTemplate.save(containerName, insertedPerson, patchOperations,options);
+            insertedPerson = cosmosTemplate.patch(containerName, insertedPerson, patchOperations,options);
             Person patchedPerson = cosmosTemplate.findById(containerName, insertedPerson.getId(), Person.class);
             assertEquals(insertedPerson.getAge(), patchedPerson.getAge());
             fail();
