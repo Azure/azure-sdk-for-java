@@ -89,11 +89,11 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     /**
      * Initialization
      *
-     * @param client must not be {@literal null}
-     * @param databaseName must not be {@literal null}
-     * @param cosmosConfig must not be {@literal null}
+     * @param client                 must not be {@literal null}
+     * @param databaseName           must not be {@literal null}
+     * @param cosmosConfig           must not be {@literal null}
      * @param mappingCosmosConverter must not be {@literal null}
-     * @param cosmosAuditingHandler can be {@literal null}
+     * @param cosmosAuditingHandler  can be {@literal null}
      */
     public CosmosTemplate(CosmosAsyncClient client, String databaseName,
                           CosmosConfig cosmosConfig, MappingCosmosConverter mappingCosmosConverter,
@@ -104,9 +104,9 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     /**
      * Initialization
      *
-     * @param client must not be {@literal null}
-     * @param databaseName must not be {@literal null}
-     * @param cosmosConfig must not be {@literal null}
+     * @param client                 must not be {@literal null}
+     * @param databaseName           must not be {@literal null}
+     * @param cosmosConfig           must not be {@literal null}
      * @param mappingCosmosConverter must not be {@literal null}
      */
     public CosmosTemplate(CosmosAsyncClient client, String databaseName,
@@ -117,10 +117,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     /**
      * Initialization
      *
-     * @param cosmosFactory must not be {@literal null}
-     * @param cosmosConfig must not be {@literal null}
+     * @param cosmosFactory          must not be {@literal null}
+     * @param cosmosConfig           must not be {@literal null}
      * @param mappingCosmosConverter must not be {@literal null}
-     * @param cosmosAuditingHandler can be {@literal null}
+     * @param cosmosAuditingHandler  can be {@literal null}
      */
     public CosmosTemplate(CosmosFactory cosmosFactory,
                           CosmosConfig cosmosConfig,
@@ -142,8 +142,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     /**
      * Initialization
      *
-     * @param cosmosFactory must not be {@literal null}
-     * @param cosmosConfig must not be {@literal null}
+     * @param cosmosFactory          must not be {@literal null}
+     * @param cosmosConfig           must not be {@literal null}
      * @param mappingCosmosConverter must not be {@literal null}
      */
     public CosmosTemplate(CosmosFactory cosmosFactory,
@@ -175,7 +175,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      *
      * @param objectToSave must not be {@literal null}
      * @param partitionKey must not be {@literal null}
-     * @param <T> type class of domain type
+     * @param <T>          type class of domain type
      * @return the inserted item
      */
     public <T> T insert(T objectToSave, PartitionKey partitionKey) {
@@ -186,8 +186,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * Inserts item into the given container
      *
      * @param containerName must not be {@literal null}
-     * @param objectToSave must not be {@literal null}
-     * @param <T> type class of domain type
+     * @param objectToSave  must not be {@literal null}
+     * @param <T>           type class of domain type
      * @return the inserted item
      */
     @Override
@@ -199,9 +199,9 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * Inserts item into the given container
      *
      * @param containerName must not be {@literal null}
-     * @param objectToSave must not be {@literal null}
-     * @param partitionKey must not be {@literal null}
-     * @param <T> type class of domain type
+     * @param objectToSave  must not be {@literal null}
+     * @param partitionKey  must not be {@literal null}
+     * @param <T>           type class of domain type
      * @return the inserted item
      */
     public <T> T insert(String containerName, T objectToSave, PartitionKey partitionKey) {
@@ -240,26 +240,27 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
     /**
      * Inserts item
-     *
+     * <p>
      * applies partial update (patch) to an item
      *
-     * @param containerName must not be {@literal null}
+     * @param containerName   must not be {@literal null}
      * @param patchOperations must not be {@literal null}
-     * @param <T> type class of domain type
+     * @param <T>             type class of domain type
      * @return the inserted item
      */
     @Override
-    public <T> T save(String containerName, T objectToPatch, CosmosPatchOperations patchOperations ){
+    public <T> T save(String containerName, T objectToPatch, CosmosPatchOperations patchOperations) {
         return save(containerName, objectToPatch, patchOperations, null);
     }
 
     /**
      * applies partial update (patch) to an item with CosmosPatchItemRequestOptions
      *
-     * @param containerName must not be {@literal null}
+     * @param containerName   must not be {@literal null}
+     * @param objectToPatch must not be {@literal null}
      * @param patchOperations must not be {@literal null}
-     * @param options must not be {@literal null}
-     * @param <T> type class of domain type
+     * @param options         must not be {@literal null}
+     * @param <T>             type class of domain type
      * @return the inserted item
      */
     public <T> T save(String containerName, T objectToPatch, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options) {
@@ -305,9 +306,9 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     /**
      * Finds item by id
      *
-     * @param id must not be {@literal null}
+     * @param id         must not be {@literal null}
      * @param domainType must not be {@literal null}
-     * @param <T> type class of domain type
+     * @param <T>        type class of domain type
      * @return found item
      */
     public <T> T findById(Object id, Class<T> domainType) {
@@ -342,9 +343,9 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * Finds item by id
      *
      * @param containerName must not be {@literal null}
-     * @param id must not be {@literal null}
-     * @param domainType must not be {@literal null}
-     * @param <T> type class of domain type
+     * @param id            must not be {@literal null}
+     * @param domainType    must not be {@literal null}
+     * @param <T>           type class of domain type
      * @return found item
      */
     public <T> T findById(String containerName, Object id, Class<T> domainType) {
@@ -384,7 +385,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * Upserts an item with partition key
      *
      * @param object upsert object
-     * @param <T> type of upsert object
+     * @param <T>    type of upsert object
      */
     public <T> void upsert(T object) {
         Assert.notNull(object, "Upsert object should not be null");
@@ -396,8 +397,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * Upserts an item into container with partition key
      *
      * @param containerName the container name
-     * @param object upsert object
-     * @param <T> type of upsert object
+     * @param object        upsert object
+     * @param <T>           type of upsert object
      */
     public <T> void upsert(String containerName, T object) {
         upsertAndReturnEntity(containerName, object);
@@ -407,8 +408,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * Upserts an item and return item properties
      *
      * @param containerName the container name
-     * @param object upsert object
-     * @param <T> type of upsert object
+     * @param object        upsert object
+     * @param <T>           type of upsert object
      * @return upsert object entity
      */
     public <T> T upsertAndReturnEntity(String containerName, T object) {
@@ -447,7 +448,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * Find the DocumentQuery, find all the items specified by domain type.
      *
      * @param domainType the domain type
-     * @param <T> class type of domain
+     * @param <T>        class type of domain
      * @return found results in a List
      */
     public <T> Iterable<T> findAll(Class<T> domainType) {
@@ -460,8 +461,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * Find the DocumentQuery, find all the items specified by domain type in the given container.
      *
      * @param containerName the container name
-     * @param domainType the domain type
-     * @param <T> class type of domain
+     * @param domainType    the domain type
+     * @param <T>           class type of domain
      * @return found results in a List
      */
     public <T> Iterable<T> findAll(String containerName, final Class<T> domainType) {
@@ -509,7 +510,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * Delete the DocumentQuery, delete all the items in the given container.
      *
      * @param containerName Container name of database
-     * @param domainType the domain type
+     * @param domainType    the domain type
      */
     public void deleteAll(@NonNull String containerName, @NonNull Class<?> domainType) {
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
@@ -632,8 +633,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * Deletes the item by id and partition key.
      *
      * @param containerName Container name of database
-     * @param id item id
-     * @param partitionKey the partition key
+     * @param id            item id
+     * @param partitionKey  the partition key
      */
     public void deleteById(String containerName, Object id, PartitionKey partitionKey) {
         deleteById(containerName, id, partitionKey, new CosmosItemRequestOptions());
@@ -642,15 +643,14 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     /**
      * Deletes the entity
      *
-     * @param <T> type class of domain type
+     * @param <T>           type class of domain type
      * @param containerName the container name
-     * @param entity the entity object
+     * @param entity        the entity object
      */
     @Override
     public <T> void deleteEntity(String containerName, T entity) {
         Assert.notNull(entity, "entity to be deleted should not be null");
-        @SuppressWarnings("unchecked")
-        final Class<T> domainType = (Class<T>) entity.getClass();
+        @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) entity.getClass();
         final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         applyVersioning(entity.getClass(), originalItem, options);
@@ -698,10 +698,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     /**
      * Finds the document query items
      *
-     * @param query The representation for query method.
-     * @param domainType Class of domain
+     * @param query         The representation for query method.
+     * @param domainType    Class of domain
      * @param containerName Container name of database
-     * @param <T> class of domainType
+     * @param <T>           class of domainType
      * @return All the found items as List.
      */
     public <T> Iterable<T> find(@NonNull CosmosQuery query, @NonNull Class<T> domainType,
@@ -716,10 +716,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     /**
      * Checks if document query items exist
      *
-     * @param query The representation for query method.
-     * @param domainType Class of domain
+     * @param query         The representation for query method.
+     * @param domainType    Class of domain
      * @param containerName Container name of database
-     * @param <T> class of domainType
+     * @param <T>           class of domainType
      * @return if items exist
      */
     public <T> Boolean exists(@NonNull CosmosQuery query, @NonNull Class<T> domainType,
@@ -731,10 +731,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * Delete the DocumentQuery, need to query the domains at first, then delete the item from the result. The cosmos db
      * Sql API do _NOT_ support DELETE query, we cannot add one DeleteQueryGenerator.
      *
-     * @param query The representation for query method.
-     * @param domainType Class of domain
+     * @param query         The representation for query method.
+     * @param domainType    Class of domain
      * @param containerName Container name of database
-     * @param <T> class of domainType
+     * @param <T>           class of domainType
      * @return All the deleted items as List.
      */
     @Override
