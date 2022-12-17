@@ -242,7 +242,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * Inserts item
      * <p>
      * applies partial update (patch) to an item
-     *
+     * @param entityToPatch must not be {@literal null}
      * @param containerName   must not be {@literal null}
      * @param patchOperations must not be {@literal null}
      * @param <T>             type class of domain type
@@ -281,7 +281,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         final CosmosItemResponse<JsonNode> response = this.getCosmosAsyncClient()
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
-            .patchItem(objectToPatchInfo.getId(entityToPatch).toString(), new PartitionKey(objectToPatchInfo.getPartitionKeyFieldValue(entityToPatch).toString()), patchOperations, options, JsonNode.class)
+            .patchItem(objectToPatchInfo.getId(entityToPatch), new PartitionKey(objectToPatchInfo.getPartitionKeyFieldValue(entityToPatch)), patchOperations, options, JsonNode.class)
             .publishOn(Schedulers.parallel())
             .doOnNext(cosmosItemResponse ->
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,

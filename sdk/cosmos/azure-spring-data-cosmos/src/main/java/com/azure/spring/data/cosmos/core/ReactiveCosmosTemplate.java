@@ -499,7 +499,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         return this.getCosmosAsyncClient()
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
-            .patchItem(objectToPatchInfo.getId(entityToPatch).toString(), new PartitionKey(objectToPatchInfo.getPartitionKeyFieldValue(entityToPatch).toString()), patchOperations, options, JsonNode.class)
+            .patchItem(objectToPatchInfo.getId(entityToPatch), new PartitionKey(objectToPatchInfo.getPartitionKeyFieldValue(entityToPatch)), patchOperations, options, JsonNode.class)
             .publishOn(Schedulers.parallel())
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to patch item", throwable,
