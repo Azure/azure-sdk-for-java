@@ -309,7 +309,7 @@ public final class SchemasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a registered schema by its unique ID along with {@link Response}.
+     * @return a registered schema by its unique ID along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SchemasGetByIdHeaders, BinaryData> getByIdWithResponse(String id, Context context) {
@@ -578,7 +578,7 @@ public final class SchemasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return one specific version of one schema along with {@link Response}.
+     * @return one specific version of one schema along with {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SchemasGetSchemaVersionHeaders, BinaryData> getSchemaVersionWithResponse(
