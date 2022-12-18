@@ -136,7 +136,7 @@ public final class HelloWorld {
             // handle interruption
         }
 
-        Response<BinaryData> stoppedTestRunOut = testRunClient.stopWithResponse(testRunId, null);
+        Response<BinaryData> stoppedTestRunOut = testRunClient.stopTestRunWithResponse(testRunId, null);
         System.out.println(stoppedTestRunOut.getValue().toString());
         /*
          * END: Stop test run

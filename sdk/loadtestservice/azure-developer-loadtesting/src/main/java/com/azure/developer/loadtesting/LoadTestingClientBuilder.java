@@ -111,7 +111,8 @@ public final class LoadTestingClientBuilder
     }
 
     /*
-     * The client options such as application ID and custom headers to set on a request.
+     * The client options such as application ID and custom headers to set on a
+     * request.
      */
     @Generated private ClientOptions clientOptions;
 
@@ -145,7 +146,8 @@ public final class LoadTestingClientBuilder
     }
 
     /*
-     * The configuration store that is used during construction of the service client.
+     * The configuration store that is used during construction of the service
+     * client.
      */
     @Generated private Configuration configuration;
 
@@ -201,7 +203,8 @@ public final class LoadTestingClientBuilder
     }
 
     /*
-     * The retry policy that will attempt to retry failed requests, if applicable.
+     * The retry policy that will attempt to retry failed requests, if
+     * applicable.
      */
     @Generated private RetryPolicy retryPolicy;
 
@@ -224,12 +227,15 @@ public final class LoadTestingClientBuilder
      */
     @Generated
     private LoadTestingClientImpl buildInnerClient() {
-        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        LoadTestingServiceVersion localServiceVersion =
-                (serviceVersion != null) ? serviceVersion : LoadTestingServiceVersion.getLatest();
+        if (pipeline == null) {
+            this.pipeline = createHttpPipeline();
+        }
+        if (serviceVersion == null) {
+            this.serviceVersion = LoadTestingServiceVersion.getLatest();
+        }
         LoadTestingClientImpl client =
                 new LoadTestingClientImpl(
-                        localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, localServiceVersion);
+                        pipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
         return client;
     }
 

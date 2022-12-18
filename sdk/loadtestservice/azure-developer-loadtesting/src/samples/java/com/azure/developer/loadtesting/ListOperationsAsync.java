@@ -69,7 +69,7 @@ public final class ListOperationsAsync {
                 .addQueryParam("status", "EXECUTING,DONE")
                 .addQueryParam("maxPageSize", "10");
 
-        PagedFlux<BinaryData> testRuns = client.list(reqOpts);
+        PagedFlux<BinaryData> testRuns = client.listTestRuns(reqOpts);
 
         testRuns.subscribe((testRunBinary) -> {
             try {

@@ -80,7 +80,7 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     @Test
     @Order(4)
     public void getTestRunFile() {
-        Response<BinaryData> response = builder.buildLoadTestRunClient().getFileWithResponse(newTestRunId, uploadJmxFileName, null);
+        Response<BinaryData> response = builder.buildLoadTestRunClient().getTestRunFileWithResponse(newTestRunId, uploadJmxFileName, null);
         try {
             JsonNode file = OBJECT_MAPPER.readTree(response.getValue().toString());
             Assertions.assertTrue(file.get("fileName").asText().equals(uploadJmxFileName) && file.get("fileType").asText().equals("JMX_FILE"));
@@ -93,7 +93,7 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     @Test
     @Order(5)
     public void getTestRun() {
-        Response<BinaryData> response = builder.buildLoadTestRunClient().getWithResponse(newTestRunId, null);
+        Response<BinaryData> response = builder.buildLoadTestRunClient().getTestRunWithResponse(newTestRunId, null);
         try {
             JsonNode test = OBJECT_MAPPER.readTree(response.getValue().toString());
             Assertions.assertTrue(test.get("testRunId").asText().equals(newTestRunId));
@@ -174,7 +174,7 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     @Order(10)
     public void listMetrics() {
         String startDateTime = "", endDateTime = "";
-        Response<BinaryData> response = builder.buildLoadTestRunClient().getWithResponse(newTestRunId, null);
+        Response<BinaryData> response = builder.buildLoadTestRunClient().getTestRunWithResponse(newTestRunId, null);
         try {
             JsonNode test = OBJECT_MAPPER.readTree(response.getValue().toString());
 
@@ -206,7 +206,7 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     public void listTestRuns() {
         RequestOptions reqOpts = new RequestOptions()
                                     .addQueryParam("testId", existingTestId);
-        PagedIterable<BinaryData> response = builder.buildLoadTestRunClient().list(reqOpts);
+        PagedIterable<BinaryData> response = builder.buildLoadTestRunClient().listTestRuns(reqOpts);
         boolean found = response.stream().anyMatch((testRunBinary) -> {
             try {
                 JsonNode testRun = OBJECT_MAPPER.readTree(testRunBinary.toString());
@@ -227,7 +227,7 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     @Order(12)
     public void deleteTestRun() {
         Assertions.assertDoesNotThrow(() -> {
-            builder.buildLoadTestRunClient().deleteWithResponse(newTestRunId, null);
+            builder.buildLoadTestRunClient().deleteTestRunWithResponse(newTestRunId, null);
         });
     }
 }

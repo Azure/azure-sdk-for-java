@@ -66,7 +66,7 @@ reqOpts = new RequestOptions()
     .addQueryParam("orderBy", "lastModifiedDateTime")
     .addQueryParam("status", "EXECUTING,DONE")
     .addQueryParam("maxPageSize", "10");
-testRunClient.list(reqOpts);
+testRunClient.listTestRuns(reqOpts);
 ```
 
 ## Key concepts
@@ -212,19 +212,20 @@ testRunMap.put("displayName", "SDK-Created-TestRun");
 // convert the object Map to JSON BinaryData
 BinaryData testRun = BinaryData.fromObject(testRunMap);
 
-// receive response with BinaryData content
-Response<BinaryData> testRunOut = testRunClient.createOrUpdateWithResponse("testrun12345", testRun, null);
-System.out.println(testRunOut.getValue().toString());
+// start test with poller
+SyncPoller<BinaryData, BinaryData> poller = testRunClient.beginTestRun("testrun12345", testRun, null);
+Duration pollInterval = Duration.ofSeconds(5);
+poller = poller.setPollInterval(pollInterval);
 
 // wait for test to reach terminal state
 JsonNode testRunJson = null;
-String testStatus = null, startDateTime = null, endDateTime = null;
-while (testStatus == null || (testStatus != "DONE" && testStatus != "CANCELLED" && testStatus != "FAILED")) {
-    testRunOut = testRunClient.getWithResponse("testrun12345", null);
-    // parse JSON and read status value
+String testStatus;
+PollResponse<BinaryData> pollResponse = poller.poll();
+while (pollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS || pollResponse.getStatus() == LongRunningOperationStatus.NOT_STARTED) {
     try {
-        testRunJson = new ObjectMapper().readTree(testRunOut.getValue().toString());
+        testRunJson = new ObjectMapper().readTree(pollResponse.getValue().toString());
         testStatus = testRunJson.get("status").asText();
+        System.out.println("Test run status: " + testStatus);
     } catch (JsonProcessingException e) {
         System.out.println("Error processing JSON response");
         // handle error condition
@@ -232,14 +233,26 @@ while (testStatus == null || (testStatus != "DONE" && testStatus != "CANCELLED" 
 
     // wait and check test status every 5 seconds
     try {
-        Thread.sleep(5000);
+        Thread.sleep(pollInterval.toMillis());
     } catch (InterruptedException e) {
         // handle interruption
     }
+
+    pollResponse = poller.poll();
 }
 
-startDateTime = testRunJson.get("startDateTime").asText();
-endDateTime = testRunJson.get("endDateTime").asText();
+poller.waitForCompletion();
+BinaryData testRunBinary = poller.getFinalResult();
+try {
+    testRunJson = new ObjectMapper().readTree(testRunBinary.toString());
+    testStatus = testRunJson.get("status").asText();
+} catch (JsonProcessingException e) {
+    System.out.println("Error processing JSON response");
+    // handle error condition
+}
+
+String startDateTime = testRunJson.get("startDateTime").asText();
+String endDateTime = testRunJson.get("endDateTime").asText();
 
 // get list of all metric namespaces and pick the first one
 Response<BinaryData> metricNamespacesOut = testRunClient.listMetricNamespacesWithResponse("testrun12345", null);

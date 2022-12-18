@@ -1,47 +1,47 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/tests/22222222-1234-1234-1234-123456789012/files/additional-data.csv?api-version=2022-11-01&fileType=ADDITIONAL_ARTIFACTS",
+    "Uri" : "https://REDACTED.eastus.cnt-prod.loadtesting.azure.com/tests/22222222-1234-1234-1234-123456789012/files/additional-data.csv?api-version=2022-11-01&fileType=ADDITIONAL_ARTIFACTS",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "6beceb3f-6331-47a7-9ac2-df142e698ed1",
+      "x-ms-client-request-id" : "927942b1-8c90-4ac5-9cb6-88cfca09e8b9",
       "Content-Type" : "application/octet-stream"
     },
     "Response" : {
-      "content-length" : "383",
+      "content-length" : "397",
       "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
-      "mise-correlation-id" : "6b529f84-b7bb-4c13-a8c7-08c5bd9ca44f",
+      "mise-correlation-id" : "78207510-b2c1-48dd-8a63-70d3591490cc",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Fri, 09 Dec 2022 07:10:36 GMT",
-      "x-ms-correlation-request-id" : "2233a1ec-45cc-4fba-8ac7-58607d609f28",
+      "Date" : "Sun, 18 Dec 2022 18:58:08 GMT",
+      "x-ms-correlation-request-id" : "1e0e440b-b8ce-4817-9adc-c26fbfd03f2e",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Body" : "{\"url\":\"REDACTED\",\"fileName\":\"additional-data.csv\",\"fileType\":\"ADDITIONAL_ARTIFACTS\",\"expireDateTime\":\"2022-12-09T07:20:36.9568837\",\"validationStatus\":\"NOT_VALIDATED\"}",
-      "Location" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/tests/22222222-1234-1234-1234-123456789012/files/additional-data.csv?api-version=2022-11-01",
+      "Body" : "{\"url\":\"REDACTED\",\"fileName\":\"additional-data.csv\",\"fileType\":\"ADDITIONAL_ARTIFACTS\",\"expireDateTime\":\"2022-12-18T19:08:09.0037332\",\"validationStatus\":\"VALIDATION_NOT_REQUIRED\"}",
+      "Location" : "https://REDACTED.eastus.cnt-prod.loadtesting.azure.com/tests/22222222-1234-1234-1234-123456789012/files/additional-data.csv?api-version=2022-11-01",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.eus.cnt-prod.loadtesting.azure.com/tests/22222222-1234-1234-1234-123456789012/files/additional-data.csv?api-version=2022-11-01",
+    "Uri" : "https://REDACTED.eastus.cnt-prod.loadtesting.azure.com/tests/22222222-1234-1234-1234-123456789012/files/additional-data.csv?api-version=2022-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "502bde7f-7202-47c9-a089-4e089be5345e"
+      "x-ms-client-request-id" : "746b9584-ea14-4d07-b732-098488d0ae3d"
     },
     "Response" : {
-      "content-length" : "387",
+      "content-length" : "397",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
       "X-Content-Type-Options" : "nosniff",
       "Connection" : "keep-alive",
-      "mise-correlation-id" : "9228a3a6-4e29-4f24-9a66-6138c660e562",
+      "mise-correlation-id" : "0a87473f-6a7d-4c88-b24a-7810c4047456",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"url\":\"REDACTED\",\"fileName\":\"additional-data.csv\",\"fileType\":\"ADDITIONAL_ARTIFACTS\",\"expireDateTime\":\"2022-12-09T07:20:37.3389707\",\"validationStatus\":\"NOT_VALIDATED\"}",
-      "Date" : "Fri, 09 Dec 2022 07:10:37 GMT",
-      "x-ms-correlation-request-id" : "c45001af-d9f5-4762-be20-6325df413793",
+      "Body" : "{\"url\":\"REDACTED\",\"fileName\":\"additional-data.csv\",\"fileType\":\"ADDITIONAL_ARTIFACTS\",\"expireDateTime\":\"2022-12-18T19:08:09.3947664\",\"validationStatus\":\"VALIDATION_NOT_REQUIRED\"}",
+      "Date" : "Sun, 18 Dec 2022 18:58:09 GMT",
+      "x-ms-correlation-request-id" : "7ec4945c-6a7d-41af-a140-17b5e9400d60",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

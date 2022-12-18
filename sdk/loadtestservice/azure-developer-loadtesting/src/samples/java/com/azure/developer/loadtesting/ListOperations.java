@@ -69,7 +69,7 @@ public final class ListOperations {
                 .addQueryParam("status", "EXECUTING,DONE")
                 .addQueryParam("maxPageSize", "10");
 
-        PagedIterable<BinaryData> testRuns = client.list(reqOpts);
+        PagedIterable<BinaryData> testRuns = client.listTestRuns(reqOpts);
 
         testRuns.forEach((testRunBinary) -> {
             try {
