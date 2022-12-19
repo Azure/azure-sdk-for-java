@@ -53,6 +53,9 @@ function Get-java-PackageLevelReadme($packageMetadata) {
 
 function Get-java-DocsMsTocData($packageMetadata, $docRepoLocation) {
     $packageLevelReadmeName = GetPackageReadmeName -packageMetadata $packageMetadata
+    if ($packageMetadata.Package -eq 'Storage - Blobs') {
+        Write-Host "I am here"
+    }
     $packageTocHeader = GetDocsTocDisplayName -pkg $packageMetadata
 
     $children = @()
