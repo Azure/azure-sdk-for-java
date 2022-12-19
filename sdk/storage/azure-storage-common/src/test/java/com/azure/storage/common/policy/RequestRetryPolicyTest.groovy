@@ -11,7 +11,7 @@ import java.util.concurrent.TimeoutException
 class RequestRetryPolicyTest extends Specification {
     def "should exception be retried"() {
         expect:
-        RequestRetryPolicy.shouldErrorBeRetried(error).getKey() == shouldBeRetried
+        RequestRetryPolicy.shouldErrorBeRetried(error, 0, 1).canBeRetried == shouldBeRetried
 
         where:
         error                                                       | shouldBeRetried

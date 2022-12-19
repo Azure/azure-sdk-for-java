@@ -23,10 +23,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.util.AbstractMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeoutException;
 
@@ -198,9 +196,10 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
              * better to optimistically retry instead of failing too soon. A Timeout Exception is a client-side timeout
              * coming from Rx.
              */
-            Map.Entry<Boolean, Throwable> errorRetry = shouldErrorBeRetried(throwable);
+            ExceptionRetryStatus exceptionRetryStatus = shouldErrorBeRetried(throwable, attempt,
+                requestRetryOptions.getMaxTries());
 
-            if (errorRetry.getKey() && attempt < requestRetryOptions.getMaxTries()) {
+            if (exceptionRetryStatus.canBeRetried) {
                 /*
                  * We increment primaryTry if we are about to try the primary again (which is when we consider the
                  * secondary and tried the secondary this time (tryingPrimary==false) or we do not consider the
@@ -209,30 +208,44 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                  */
                 int newPrimaryTry = (!tryingPrimary || !considerSecondary) ? primaryTry + 1 : primaryTry;
                 List<Throwable> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
-                suppressedLocal.add(errorRetry.getValue());
+                suppressedLocal.add(exceptionRetryStatus.unwrappedThrowable);
                 return attemptAsync(context, next, originalRequest, considerSecondary, newPrimaryTry, attempt + 1,
                     suppressedLocal);
             }
+
             if (suppressed != null) {
                 suppressed.forEach(throwable::addSuppressed);
             }
+
             return Mono.error(throwable);
         });
     }
 
-    static Map.Entry<Boolean, Throwable> shouldErrorBeRetried(Throwable error) {
+    static ExceptionRetryStatus shouldErrorBeRetried(Throwable error, int attempt, int maxAttempts) {
         Throwable unwrappedThrowable = Exceptions.unwrap(error);
 
-        // TODO (alzimmer): Should the causal exception hierarchy be walked until completion?
-        //  Ex. RuntimeException with an IllegalStateException cause with an IOException cause.
-        Throwable causalThrowable = unwrappedThrowable.getCause();
+        // Check if there are any attempts remaining.
+        if (attempt >= maxAttempts) {
+            return new ExceptionRetryStatus(false, unwrappedThrowable);
+        }
 
-        boolean retry = unwrappedThrowable instanceof IOException
-            || causalThrowable instanceof IOException
-            || unwrappedThrowable instanceof TimeoutException
-            || causalThrowable instanceof TimeoutException;
+        // Check if the unwrapped error is an IOException or TimeoutException.
+        if (unwrappedThrowable instanceof IOException || unwrappedThrowable instanceof TimeoutException) {
+            return new ExceptionRetryStatus(true, unwrappedThrowable);
+        }
 
-        return new AbstractMap.SimpleEntry<>(retry, unwrappedThrowable);
+        // Check the causal exception chain for this exception being caused by an IOException or TimeoutException.
+        Throwable causalException = unwrappedThrowable.getCause();
+        while (causalException != null) {
+            if (causalException instanceof IOException || causalException instanceof TimeoutException) {
+                return new ExceptionRetryStatus(true, unwrappedThrowable);
+            }
+
+            causalException = causalException.getCause();
+        }
+
+        // Finally all exceptions have been checked and none can be retried.
+        return new ExceptionRetryStatus(false, unwrappedThrowable);
     }
 
     static boolean shouldStatusCodeBeRetried(int statusCode, boolean isPrimary) {
@@ -243,5 +256,15 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
          */
         return (statusCode == 429 || statusCode == 500 || statusCode == 503)
             || (!isPrimary && statusCode == 404);
+    }
+
+    static final class ExceptionRetryStatus {
+        final boolean canBeRetried;
+        final Throwable unwrappedThrowable;
+
+        ExceptionRetryStatus(boolean canBeRetried, Throwable unwrappedThrowable) {
+            this.canBeRetried = canBeRetried;
+            this.unwrappedThrowable = unwrappedThrowable;
+        }
     }
 }
