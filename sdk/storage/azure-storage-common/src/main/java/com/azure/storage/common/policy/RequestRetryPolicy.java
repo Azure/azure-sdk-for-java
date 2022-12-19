@@ -23,8 +23,10 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.util.AbstractMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeoutException;
 
@@ -110,6 +112,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             Flux<ByteBuffer> bufferedBody = context.getHttpRequest().getBody().map(ByteBuffer::duplicate);
             context.getHttpRequest().setBody(bufferedBody);
         }
+
         if (!tryingPrimary) {
             UrlBuilder builder = UrlBuilder.parse(context.getHttpRequest().getUrl());
             builder.setHost(this.requestRetryOptions.getSecondaryHost());
@@ -119,23 +122,18 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                 return Mono.error(e);
             }
         }
-        /*
-        Update the RETRY_COUNT_CONTEXT to log retries.
-         */
+
+        // Update the RETRY_COUNT_CONTEXT to log retries.
         context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, attempt);
 
-        /*
-        Reset progress if progress is tracked.
-         */
+        // Reset progress if progress is tracked.
         ProgressReporter progressReporter = Contexts.with(context.getContext()).getHttpRequestProgressReporter();
         if (progressReporter != null) {
             progressReporter.reset();
         }
 
-        /*
-         We want to send the request with a given timeout, but we don't want to kickoff that timeout-bound operation
-         until after the retry backoff delay, so we call delaySubscription.
-         */
+        // We want to send the request with a given timeout, but we don't want to kick off that timeout-bound operation
+        // until after the retry backoff delay, so we call delaySubscription.
         Mono<HttpResponse> responseMono = next.clone().process();
 
         // Default try timeout is Integer.MAX_VALUE seconds, if it's that don't set a timeout as that's about 68 years
@@ -152,19 +150,11 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
 
         return responseMono.flatMap(response -> {
             boolean newConsiderSecondary = considerSecondary;
-            boolean retry = false;
             int statusCode = response.getStatusCode();
 
-            /*
-             * If attempt was against the secondary & it returned a StatusNotFound (404), then the resource was not
-             * found. This may be due to replication delay. So, in this case, we'll never try the secondary again for
-             * this operation.
-             */
+            boolean retry = shouldStatusCodeBeRetried(statusCode, tryingPrimary);
             if (!tryingPrimary && statusCode == 404) {
                 newConsiderSecondary = false;
-                retry = true;
-            } else if (statusCode == 503 || statusCode == 500) {
-                retry = true;
             }
 
             if (retry && attempt < requestRetryOptions.getMaxTries()) {
@@ -208,15 +198,9 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
              * better to optimistically retry instead of failing too soon. A Timeout Exception is a client-side timeout
              * coming from Rx.
              */
-            boolean retry = false;
-            Throwable unwrappedThrowable = Exceptions.unwrap(throwable);
-            if (unwrappedThrowable instanceof IOException) {
-                retry = true;
-            } else if (unwrappedThrowable instanceof TimeoutException) {
-                retry = true;
-            }
+            Map.Entry<Boolean, Throwable> errorRetry = shouldErrorBeRetried(throwable);
 
-            if (retry && attempt < requestRetryOptions.getMaxTries()) {
+            if (errorRetry.getKey() && attempt < requestRetryOptions.getMaxTries()) {
                 /*
                  * We increment primaryTry if we are about to try the primary again (which is when we consider the
                  * secondary and tried the secondary this time (tryingPrimary==false) or we do not consider the
@@ -225,7 +209,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                  */
                 int newPrimaryTry = (!tryingPrimary || !considerSecondary) ? primaryTry + 1 : primaryTry;
                 List<Throwable> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
-                suppressedLocal.add(unwrappedThrowable);
+                suppressedLocal.add(errorRetry.getValue());
                 return attemptAsync(context, next, originalRequest, considerSecondary, newPrimaryTry, attempt + 1,
                     suppressedLocal);
             }
@@ -234,5 +218,27 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             }
             return Mono.error(throwable);
         });
+    }
+
+    static Map.Entry<Boolean, Throwable> shouldErrorBeRetried(Throwable error) {
+        Throwable unwrappedThrowable = Exceptions.unwrap(error);
+        Throwable causalThrowable = unwrappedThrowable.getCause();
+
+        boolean retry = unwrappedThrowable instanceof IOException
+            || causalThrowable instanceof IOException
+            || unwrappedThrowable instanceof TimeoutException
+            || causalThrowable instanceof TimeoutException;
+
+        return new AbstractMap.SimpleEntry<>(retry, unwrappedThrowable);
+    }
+
+    static boolean shouldStatusCodeBeRetried(int statusCode, boolean isPrimary) {
+        /*
+         * Retry the request if the server had an error (500), was unavailable (503), or requested a backoff (429),
+         * or if the secondary was being tried and the resources didn't exist there (404). Only the secondary can retry
+         * if the resource wasn't found as there may be a delay in replication from the primary.
+         */
+        return (statusCode == 429 || statusCode == 500 || statusCode == 503)
+            || (!isPrimary && statusCode == 404);
     }
 }
