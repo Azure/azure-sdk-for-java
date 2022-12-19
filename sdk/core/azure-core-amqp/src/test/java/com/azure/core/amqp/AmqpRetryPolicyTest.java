@@ -128,7 +128,10 @@ public class AmqpRetryPolicyTest {
         }
 
         @Override
-        protected Duration calculateRetryDelay(int retryCount, Duration baseDelay, Duration baseJitter, ThreadLocalRandom random) {
+        protected Duration calculateRetryDelay(int retryCount,
+                                               Duration baseDelay,
+                                               Duration baseJitter,
+                                               ThreadLocalRandom random) {
             return expectedDuration;
         }
 

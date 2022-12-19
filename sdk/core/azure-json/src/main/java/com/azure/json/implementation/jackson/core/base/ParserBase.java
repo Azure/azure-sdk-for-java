@@ -22,12 +22,10 @@ import com.azure.json.implementation.jackson.core.util.TextBuffer;
  * implementations. Contains most common things that are independent
  * of actual underlying input source.
  */
-public abstract class ParserBase extends ParserMinimalBase
-{
+public abstract class ParserBase extends ParserMinimalBase {
     // JSON capabilities are the same as defaults
     // @since 2.12
-    protected final static JacksonFeatureSet<StreamReadCapability> JSON_READ_CAPABILITIES
-        = DEFAULT_READ_CAPABILITIES;
+    protected final static JacksonFeatureSet<StreamReadCapability> JSON_READ_CAPABILITIES = DEFAULT_READ_CAPABILITIES;
 
     /*
     /**********************************************************
@@ -130,7 +128,7 @@ public abstract class ParserBase extends ParserMinimalBase
      * the next token is to be parsed (root, array, object).
      */
     protected JsonReadContext _parsingContext;
-    
+
     /**
      * Secondary token related to the next token after current one;
      * used if its type is known. This may be value token that
@@ -241,11 +239,15 @@ public abstract class ParserBase extends ParserMinimalBase
         _ioContext = ctxt;
         _textBuffer = ctxt.constructTextBuffer();
         DupDetector dups = Feature.STRICT_DUPLICATE_DETECTION.enabledIn(features)
-                ? DupDetector.rootDetector(this) : null;
+            ? DupDetector.rootDetector(this)
+            : null;
         _parsingContext = JsonReadContext.createRootContext(dups);
     }
 
-    @Override public Version version() { return PackageVersion.VERSION; }
+    @Override
+    public Version version() {
+        return PackageVersion.VERSION;
+    }
 
     @Override
     public Object getCurrentValue() {
@@ -256,7 +258,7 @@ public abstract class ParserBase extends ParserMinimalBase
     public void setCurrentValue(Object v) {
         _parsingContext.setCurrentValue(v);
     }
-    
+
     /*
     /**********************************************************
     /* Overrides for Feature handling
@@ -315,10 +317,9 @@ public abstract class ParserBase extends ParserMinimalBase
      *
      * @since 2.7
      */
-    protected void _checkStdFeatureChanges(int newFeatureFlags, int changedFeatures)
-    {
+    protected void _checkStdFeatureChanges(int newFeatureFlags, int changedFeatures) {
         int f = Feature.STRICT_DUPLICATE_DETECTION.getMask();
-        
+
         if ((changedFeatures & f) != 0) {
             if ((newFeatureFlags & f) != 0) {
                 if (_parsingContext.getDupDetector() == null) {
@@ -335,12 +336,13 @@ public abstract class ParserBase extends ParserMinimalBase
     /* JsonParser impl
     /**********************************************************
      */
-    
+
     /**
      * Method that can be called to get the name associated with
      * the current event.
      */
-    @Override public String getCurrentName() throws IOException {
+    @Override
+    public String getCurrentName() throws IOException {
         // [JACKSON-395]: start markers require information from parent
         if (_currToken == JsonToken.START_OBJECT || _currToken == JsonToken.START_ARRAY) {
             JsonReadContext parent = _parsingContext.getParent();
@@ -351,7 +353,8 @@ public abstract class ParserBase extends ParserMinimalBase
         return _parsingContext.getCurrentName();
     }
 
-    @Override public void overrideCurrentName(String name) {
+    @Override
+    public void overrideCurrentName(String name) {
         // Simple, but need to look for START_OBJECT/ARRAY's "off-by-one" thing:
         JsonReadContext ctxt = _parsingContext;
         if (_currToken == JsonToken.START_OBJECT || _currToken == JsonToken.START_ARRAY) {
@@ -366,7 +369,8 @@ public abstract class ParserBase extends ParserMinimalBase
         }
     }
 
-    @Override public void close() throws IOException {
+    @Override
+    public void close() throws IOException {
         if (!_closed) {
             // 19-Jan-2018, tatu: as per [core#440] need to ensure no more data assumed available
             _inputPtr = Math.max(_inputPtr, _inputEnd);
@@ -381,8 +385,15 @@ public abstract class ParserBase extends ParserMinimalBase
         }
     }
 
-    @Override public boolean isClosed() { return _closed; }
-    @Override public JsonReadContext getParsingContext() { return _parsingContext; }
+    @Override
+    public boolean isClosed() {
+        return _closed;
+    }
+
+    @Override
+    public JsonReadContext getParsingContext() {
+        return _parsingContext;
+    }
 
     /**
      * Method that return the <b>starting</b> location of the current
@@ -391,10 +402,8 @@ public abstract class ParserBase extends ParserMinimalBase
      */
     @Override
     public JsonLocation getTokenLocation() {
-        return new JsonLocation(_contentReference(),
-                -1L, getTokenCharacterOffset(), // bytes, chars
-                getTokenLineNr(),
-                getTokenColumnNr());
+        return new JsonLocation(_contentReference(), -1L, getTokenCharacterOffset(), // bytes, chars
+            getTokenLineNr(), getTokenColumnNr());
     }
 
     /**
@@ -404,9 +413,8 @@ public abstract class ParserBase extends ParserMinimalBase
     @Override
     public JsonLocation getCurrentLocation() {
         int col = _inputPtr - _currInputRowStart + 1; // 1-based
-        return new JsonLocation(_contentReference(),
-                -1L, _currInputProcessed + _inputPtr, // bytes, chars
-                _currInputRow, col);
+        return new JsonLocation(_contentReference(), -1L, _currInputProcessed + _inputPtr, // bytes, chars
+            _currInputRow, col);
     }
 
     /*
@@ -417,18 +425,21 @@ public abstract class ParserBase extends ParserMinimalBase
 
     @Override
     public boolean hasTextCharacters() {
-        if (_currToken == JsonToken.VALUE_STRING) { return true; } // usually true        
-        if (_currToken == JsonToken.FIELD_NAME) { return _nameCopied; }
+        if (_currToken == JsonToken.VALUE_STRING) {
+            return true;
+        } // usually true        
+        if (_currToken == JsonToken.FIELD_NAME) {
+            return _nameCopied;
+        }
         return false;
     }
 
     @SuppressWarnings("resource")
     @Override // since 2.7
-    public byte[] getBinaryValue(Base64Variant variant) throws IOException
-    {
+    public byte[] getBinaryValue(Base64Variant variant) throws IOException {
         if (_binaryValue == null) {
             if (_currToken != JsonToken.VALUE_STRING) {
-                _reportError("Current token ("+_currToken+") not VALUE_STRING, can not access as binary");
+                _reportError("Current token (" + _currToken + ") not VALUE_STRING, can not access as binary");
             }
             ByteArrayBuilder builder = _getByteArrayBuilder();
             _decodeBase64(getText(), builder, variant);
@@ -443,8 +454,14 @@ public abstract class ParserBase extends ParserMinimalBase
     /**********************************************************
      */
 
-    public long getTokenCharacterOffset() { return _tokenInputTotal; }
-    public int getTokenLineNr() { return _tokenInputRow; }
+    public long getTokenCharacterOffset() {
+        return _tokenInputTotal;
+    }
+
+    public int getTokenLineNr() {
+        return _tokenInputRow;
+    }
+
     public int getTokenColumnNr() {
         // note: value of -1 means "not available"; otherwise convert from 0-based to 1-based
         int col = _tokenInputCol;
@@ -458,7 +475,7 @@ public abstract class ParserBase extends ParserMinimalBase
      */
 
     protected abstract void _closeInput() throws IOException;
-    
+
     /*
     /**********************************************************
     /* Low-level reading, other
@@ -482,7 +499,7 @@ public abstract class ParserBase extends ParserMinimalBase
             _ioContext.releaseNameCopyBuffer(buf);
         }
     }
-    
+
     /**
      * Method called when an EOF is encountered between tokens.
      * If so, it may be a legitimate EOF, but only iff there
@@ -492,11 +509,9 @@ public abstract class ParserBase extends ParserMinimalBase
     protected void _handleEOF() throws JsonParseException {
         if (!_parsingContext.inRoot()) {
             String marker = _parsingContext.inArray() ? "Array" : "Object";
-            _reportInvalidEOF(String.format(
-                    ": expected close marker for %s (start marker at %s)",
-                    marker,
-                    _parsingContext.startLocation(_contentReference())),
-                    null);
+            _reportInvalidEOF(String
+                .format(": expected close marker for %s (start marker at %s)", marker, _parsingContext
+                    .startLocation(_contentReference())), null);
         }
     }
 
@@ -518,9 +533,8 @@ public abstract class ParserBase extends ParserMinimalBase
     /* Internal/package methods: shared/reusable builders
     /**********************************************************
      */
-    
-    public ByteArrayBuilder _getByteArrayBuilder()
-    {
+
+    public ByteArrayBuilder _getByteArrayBuilder() {
         if (_byteArrayBuilder == null) {
             _byteArrayBuilder = new ByteArrayBuilder();
         } else {
@@ -536,17 +550,15 @@ public abstract class ParserBase extends ParserMinimalBase
      */
 
     // // // Life-cycle of number-parsing
-    
-    protected final JsonToken reset(boolean negative, int intLen, int fractLen, int expLen)
-    {
+
+    protected final JsonToken reset(boolean negative, int intLen, int fractLen, int expLen) {
         if (fractLen < 1 && expLen < 1) { // integer
             return resetInt(negative, intLen);
         }
         return resetFloat(negative, intLen, fractLen, expLen);
     }
-        
-    protected final JsonToken resetInt(boolean negative, int intLen)
-    {
+
+    protected final JsonToken resetInt(boolean negative, int intLen) {
         _numberNegative = negative;
         _intLength = intLen;
         _fractLength = 0;
@@ -554,9 +566,8 @@ public abstract class ParserBase extends ParserMinimalBase
         _numTypesValid = NR_UNKNOWN; // to force parsing
         return JsonToken.VALUE_NUMBER_INT;
     }
-    
-    protected final JsonToken resetFloat(boolean negative, int intLen, int fractLen, int expLen)
-    {
+
+    protected final JsonToken resetFloat(boolean negative, int intLen, int fractLen, int expLen) {
         _numberNegative = negative;
         _intLength = intLen;
         _fractLength = fractLen;
@@ -564,9 +575,8 @@ public abstract class ParserBase extends ParserMinimalBase
         _numTypesValid = NR_UNKNOWN; // to force parsing
         return JsonToken.VALUE_NUMBER_FLOAT;
     }
-    
-    protected final JsonToken resetAsNaN(String valueStr, double value)
-    {
+
+    protected final JsonToken resetAsNaN(String valueStr, double value) {
         _textBuffer.resetWithString(valueStr);
         _numberDouble = value;
         _numTypesValid = NR_DOUBLE;
@@ -579,7 +589,7 @@ public abstract class ParserBase extends ParserMinimalBase
             if ((_numTypesValid & NR_DOUBLE) != 0) {
                 // 10-Mar-2017, tatu: Alas, `Double.isFinite(d)` only added in JDK 8
                 double d = _numberDouble;
-                return Double.isNaN(d) || Double.isInfinite(d);              
+                return Double.isNaN(d) || Double.isInfinite(d);
             }
         }
         return false;
@@ -592,8 +602,7 @@ public abstract class ParserBase extends ParserMinimalBase
      */
 
     @Override
-    public Number getNumberValue() throws IOException
-    {
+    public Number getNumberValue() throws IOException {
         if (_numTypesValid == NR_UNKNOWN) {
             _parseNumericValue(NR_UNKNOWN); // will also check event type
         }
@@ -624,8 +633,7 @@ public abstract class ParserBase extends ParserMinimalBase
 
     // NOTE: mostly copied from above
     @Override
-    public Number getNumberValueExact() throws IOException
-    {
+    public Number getNumberValueExact() throws IOException {
         if (_currToken == JsonToken.VALUE_NUMBER_INT) {
             if (_numTypesValid == NR_UNKNOWN) {
                 _parseNumericValue(NR_UNKNOWN);
@@ -655,8 +663,7 @@ public abstract class ParserBase extends ParserMinimalBase
     }
 
     @Override
-    public NumberType getNumberType() throws IOException
-    {
+    public NumberType getNumberType() throws IOException {
         if (_numTypesValid == NR_UNKNOWN) {
             _parseNumericValue(NR_UNKNOWN); // will also check event type
         }
@@ -669,7 +676,7 @@ public abstract class ParserBase extends ParserMinimalBase
             }
             return NumberType.BIG_INTEGER;
         }
-    
+
         /* And then floating point types. Here optimal type
          * needs to be big decimal, to avoid losing any data?
          * However... using BD is slow, so let's allow returning
@@ -681,10 +688,9 @@ public abstract class ParserBase extends ParserMinimalBase
         }
         return NumberType.DOUBLE;
     }
-    
+
     @Override
-    public int getIntValue() throws IOException
-    {
+    public int getIntValue() throws IOException {
         if ((_numTypesValid & NR_INT) == 0) {
             if (_numTypesValid == NR_UNKNOWN) { // not parsed at all
                 return _parseIntValue();
@@ -695,10 +701,9 @@ public abstract class ParserBase extends ParserMinimalBase
         }
         return _numberInt;
     }
-    
+
     @Override
-    public long getLongValue() throws IOException
-    {
+    public long getLongValue() throws IOException {
         if ((_numTypesValid & NR_LONG) == 0) {
             if (_numTypesValid == NR_UNKNOWN) {
                 _parseNumericValue(NR_LONG);
@@ -709,10 +714,9 @@ public abstract class ParserBase extends ParserMinimalBase
         }
         return _numberLong;
     }
-    
+
     @Override
-    public BigInteger getBigIntegerValue() throws IOException
-    {
+    public BigInteger getBigIntegerValue() throws IOException {
         if ((_numTypesValid & NR_BIGINT) == 0) {
             if (_numTypesValid == NR_UNKNOWN) {
                 _parseNumericValue(NR_BIGINT);
@@ -723,10 +727,9 @@ public abstract class ParserBase extends ParserMinimalBase
         }
         return _numberBigInt;
     }
-    
+
     @Override
-    public float getFloatValue() throws IOException
-    {
+    public float getFloatValue() throws IOException {
         double value = getDoubleValue();
         /* 22-Jan-2009, tatu: Bounds/range checks would be tricky
          *   here, so let's not bother even trying...
@@ -738,10 +741,9 @@ public abstract class ParserBase extends ParserMinimalBase
         */
         return (float) value;
     }
-    
+
     @Override
-    public double getDoubleValue() throws IOException
-    {
+    public double getDoubleValue() throws IOException {
         if ((_numTypesValid & NR_DOUBLE) == 0) {
             if (_numTypesValid == NR_UNKNOWN) {
                 _parseNumericValue(NR_DOUBLE);
@@ -752,10 +754,9 @@ public abstract class ParserBase extends ParserMinimalBase
         }
         return _numberDouble;
     }
-    
+
     @Override
-    public BigDecimal getDecimalValue() throws IOException
-    {
+    public BigDecimal getDecimalValue() throws IOException {
         if ((_numTypesValid & NR_BIGDECIMAL) == 0) {
             if (_numTypesValid == NR_UNKNOWN) {
                 _parseNumericValue(NR_BIGDECIMAL);
@@ -785,8 +786,7 @@ public abstract class ParserBase extends ParserMinimalBase
      * @throws IOException If there are problems reading content
      * @throws JsonParseException If there are problems decoding number value
      */
-    protected void _parseNumericValue(int expType) throws IOException
-    {
+    protected void _parseNumericValue(int expType) throws IOException {
         // 12-Jun-2020, tatu: Sanity check to prevent more cryptic error for this case.
         //    (note: could alternatively see if TextBuffer has aggregated contents, avoid
         //    exception -- but that might be more confusing)
@@ -837,8 +837,7 @@ public abstract class ParserBase extends ParserMinimalBase
     }
 
     // @since 2.6
-    protected int _parseIntValue() throws IOException
-    {
+    protected int _parseIntValue() throws IOException {
         // 12-Jun-2020, tatu: Sanity check to prevent more cryptic error for this case.
         //    (note: could alternatively see if TextBuffer has aggregated contents, avoid
         //    exception -- but that might be more confusing)
@@ -862,8 +861,7 @@ public abstract class ParserBase extends ParserMinimalBase
         return _numberInt;
     }
 
-    private void _parseSlowFloat(int expType) throws IOException
-    {
+    private void _parseSlowFloat(int expType) throws IOException {
         /* Nope: floating point. Here we need to be careful to get
          * optimal parsing strategy: choice is between accurate but
          * slow (BigDecimal) and lossy but fast (Double). For now
@@ -882,12 +880,11 @@ public abstract class ParserBase extends ParserMinimalBase
             }
         } catch (NumberFormatException nex) {
             // Can this ever occur? Due to overflow, maybe?
-            _wrapError("Malformed numeric value ("+_longNumberDesc(_textBuffer.contentsAsString())+")", nex);
+            _wrapError("Malformed numeric value (" + _longNumberDesc(_textBuffer.contentsAsString()) + ")", nex);
         }
     }
 
-    private void _parseSlowInt(int expType) throws IOException
-    {
+    private void _parseSlowInt(int expType) throws IOException {
         String numStr = _textBuffer.contentsAsString();
         try {
             int len = _intLength;
@@ -917,13 +914,12 @@ public abstract class ParserBase extends ParserMinimalBase
             }
         } catch (NumberFormatException nex) {
             // Can this ever occur? Due to overflow, maybe?
-            _wrapError("Malformed numeric value ("+_longNumberDesc(numStr)+")", nex);
+            _wrapError("Malformed numeric value (" + _longNumberDesc(numStr) + ")", nex);
         }
     }
 
     // @since 2.9.8
-    protected void _reportTooLongIntegral(int expType, String rawNum) throws IOException
-    {
+    protected void _reportTooLongIntegral(int expType, String rawNum) throws IOException {
         if (expType == NR_INT) {
             reportOverflowInt(rawNum);
         } else {
@@ -935,10 +931,9 @@ public abstract class ParserBase extends ParserMinimalBase
     /**********************************************************
     /* Numeric conversions
     /**********************************************************
-     */    
-    
-    protected void convertNumberToInt() throws IOException
-    {
+     */
+
+    protected void convertNumberToInt() throws IOException {
         // First, converting from long ought to be easy
         if ((_numTypesValid & NR_LONG) != 0) {
             // Let's verify it's lossless conversion by simple roundtrip
@@ -948,8 +943,7 @@ public abstract class ParserBase extends ParserMinimalBase
             }
             _numberInt = result;
         } else if ((_numTypesValid & NR_BIGINT) != 0) {
-            if (BI_MIN_INT.compareTo(_numberBigInt) > 0 
-                    || BI_MAX_INT.compareTo(_numberBigInt) < 0) {
+            if (BI_MIN_INT.compareTo(_numberBigInt) > 0 || BI_MAX_INT.compareTo(_numberBigInt) < 0) {
                 reportOverflowInt();
             }
             _numberInt = _numberBigInt.intValue();
@@ -960,8 +954,7 @@ public abstract class ParserBase extends ParserMinimalBase
             }
             _numberInt = (int) _numberDouble;
         } else if ((_numTypesValid & NR_BIGDECIMAL) != 0) {
-            if (BD_MIN_INT.compareTo(_numberBigDecimal) > 0 
-                || BD_MAX_INT.compareTo(_numberBigDecimal) < 0) {
+            if (BD_MIN_INT.compareTo(_numberBigDecimal) > 0 || BD_MAX_INT.compareTo(_numberBigDecimal) < 0) {
                 reportOverflowInt();
             }
             _numberInt = _numberBigDecimal.intValue();
@@ -970,14 +963,12 @@ public abstract class ParserBase extends ParserMinimalBase
         }
         _numTypesValid |= NR_INT;
     }
-    
-    protected void convertNumberToLong() throws IOException
-    {
+
+    protected void convertNumberToLong() throws IOException {
         if ((_numTypesValid & NR_INT) != 0) {
             _numberLong = (long) _numberInt;
         } else if ((_numTypesValid & NR_BIGINT) != 0) {
-            if (BI_MIN_LONG.compareTo(_numberBigInt) > 0 
-                    || BI_MAX_LONG.compareTo(_numberBigInt) < 0) {
+            if (BI_MIN_LONG.compareTo(_numberBigInt) > 0 || BI_MAX_LONG.compareTo(_numberBigInt) < 0) {
                 reportOverflowLong();
             }
             _numberLong = _numberBigInt.longValue();
@@ -988,8 +979,7 @@ public abstract class ParserBase extends ParserMinimalBase
             }
             _numberLong = (long) _numberDouble;
         } else if ((_numTypesValid & NR_BIGDECIMAL) != 0) {
-            if (BD_MIN_LONG.compareTo(_numberBigDecimal) > 0 
-                || BD_MAX_LONG.compareTo(_numberBigDecimal) < 0) {
+            if (BD_MIN_LONG.compareTo(_numberBigDecimal) > 0 || BD_MAX_LONG.compareTo(_numberBigDecimal) < 0) {
                 reportOverflowLong();
             }
             _numberLong = _numberBigDecimal.longValue();
@@ -998,9 +988,8 @@ public abstract class ParserBase extends ParserMinimalBase
         }
         _numTypesValid |= NR_LONG;
     }
-    
-    protected void convertNumberToBigInteger() throws IOException
-    {
+
+    protected void convertNumberToBigInteger() throws IOException {
         if ((_numTypesValid & NR_BIGDECIMAL) != 0) {
             // here it'll just get truncated, no exceptions thrown
             _numberBigInt = _numberBigDecimal.toBigInteger();
@@ -1015,15 +1004,14 @@ public abstract class ParserBase extends ParserMinimalBase
         }
         _numTypesValid |= NR_BIGINT;
     }
-    
-    protected void convertNumberToDouble() throws IOException
-    {
+
+    protected void convertNumberToDouble() throws IOException {
         /* 05-Aug-2008, tatus: Important note: this MUST start with
          *   more accurate representations, since we don't know which
          *   value is the original one (others get generated when
          *   requested)
          */
-    
+
         if ((_numTypesValid & NR_BIGDECIMAL) != 0) {
             _numberDouble = _numberBigDecimal.doubleValue();
         } else if ((_numTypesValid & NR_BIGINT) != 0) {
@@ -1037,15 +1025,14 @@ public abstract class ParserBase extends ParserMinimalBase
         }
         _numTypesValid |= NR_DOUBLE;
     }
-    
-    protected void convertNumberToBigDecimal() throws IOException
-    {
+
+    protected void convertNumberToBigDecimal() throws IOException {
         /* 05-Aug-2008, tatus: Important note: this MUST start with
          *   more accurate representations, since we don't know which
          *   value is the original one (others get generated when
          *   requested)
          */
-    
+
         if ((_numTypesValid & NR_DOUBLE) != 0) {
             /* Let's actually parse from String representation, to avoid
              * rounding errors that non-decimal floating operations could incur
@@ -1071,10 +1058,9 @@ public abstract class ParserBase extends ParserMinimalBase
 
     protected void _reportMismatchedEndMarker(int actCh, char expCh) throws JsonParseException {
         JsonReadContext ctxt = getParsingContext();
-        _reportError(String.format(
-                "Unexpected close marker '%s': expected '%c' (for %s starting at %s)",
-                (char) actCh, expCh, ctxt.typeDesc(),
-                ctxt.startLocation(_contentReference())));
+        _reportError(String
+            .format("Unexpected close marker '%s': expected '%c' (for %s starting at %s)", (char) actCh, expCh, ctxt
+                .typeDesc(), ctxt.startLocation(_contentReference())));
     }
 
     @SuppressWarnings("deprecation")
@@ -1087,7 +1073,7 @@ public abstract class ParserBase extends ParserMinimalBase
         if (ch == '\'' && isEnabled(Feature.ALLOW_SINGLE_QUOTES)) {
             return ch;
         }
-        _reportError("Unrecognized character escape "+_getCharDesc(ch));
+        _reportError("Unrecognized character escape " + _getCharDesc(ch));
         return ch;
     }
 
@@ -1107,7 +1093,10 @@ public abstract class ParserBase extends ParserMinimalBase
         // JACKSON-208; possible to allow unquoted control chars:
         if (!isEnabled(Feature.ALLOW_UNQUOTED_CONTROL_CHARS) || i > INT_SPACE) {
             char c = (char) i;
-            String msg = "Illegal unquoted character ("+_getCharDesc(c)+"): has to be escaped using backslash to be included in "+ctxtDesc;
+            String msg = "Illegal unquoted character ("
+                + _getCharDesc(c)
+                + "): has to be escaped using backslash to be included in "
+                + ctxtDesc;
             _reportError(msg);
         }
     }
@@ -1160,9 +1149,8 @@ public abstract class ParserBase extends ParserMinimalBase
     protected char _decodeEscaped() throws IOException {
         throw new UnsupportedOperationException();
     }
-    
-    protected final int _decodeBase64Escape(Base64Variant b64variant, int ch, int index) throws IOException
-    {
+
+    protected final int _decodeBase64Escape(Base64Variant b64variant, int ch, int index) throws IOException {
         // 17-May-2011, tatu: As per [JACKSON-xxx], need to handle escaped chars
         if (ch != '\\') {
             throw reportInvalidBase64Char(b64variant, ch, index);
@@ -1183,9 +1171,8 @@ public abstract class ParserBase extends ParserMinimalBase
         }
         return bits;
     }
-    
-    protected final int _decodeBase64Escape(Base64Variant b64variant, char ch, int index) throws IOException
-    {
+
+    protected final int _decodeBase64Escape(Base64Variant b64variant, char ch, int index) throws IOException {
         if (ch != '\\') {
             throw reportInvalidBase64Char(b64variant, ch, index);
         }
@@ -1206,8 +1193,9 @@ public abstract class ParserBase extends ParserMinimalBase
         }
         return bits;
     }
-    
-    protected IllegalArgumentException reportInvalidBase64Char(Base64Variant b64variant, int ch, int bindex) throws IllegalArgumentException {
+
+    protected IllegalArgumentException reportInvalidBase64Char(Base64Variant b64variant, int ch, int bindex)
+                                                                                                             throws IllegalArgumentException {
         return reportInvalidBase64Char(b64variant, ch, bindex, null);
     }
 
@@ -1215,18 +1203,25 @@ public abstract class ParserBase extends ParserMinimalBase
      * @param bindex Relative index within base64 character unit; between 0
      *  and 3 (as unit has exactly 4 characters)
      */
-    protected IllegalArgumentException reportInvalidBase64Char(Base64Variant b64variant, int ch, int bindex, String msg) throws IllegalArgumentException {
+    protected IllegalArgumentException reportInvalidBase64Char(Base64Variant b64variant, int ch, int bindex, String msg)
+                                                                                                                         throws IllegalArgumentException {
         String base;
         if (ch <= INT_SPACE) {
-            base = String.format("Illegal white space character (code 0x%s) as character #%d of 4-char base64 unit: can only used between units",
-                    Integer.toHexString(ch), (bindex+1));
+            base = String
+                .format(
+                    "Illegal white space character (code 0x%s) as character #%d of 4-char base64 unit: can only used between units",
+                    Integer.toHexString(ch), (bindex + 1));
         } else if (b64variant.usesPaddingChar(ch)) {
-            base = "Unexpected padding character ('"+b64variant.getPaddingChar()+"') as character #"+(bindex+1)+" of 4-char base64 unit: padding only legal as 3rd or 4th character";
+            base = "Unexpected padding character ('"
+                + b64variant.getPaddingChar()
+                + "') as character #"
+                + (bindex + 1)
+                + " of 4-char base64 unit: padding only legal as 3rd or 4th character";
         } else if (!Character.isDefined(ch) || Character.isISOControl(ch)) {
             // Not sure if we can really get here... ? (most illegal xml chars are caught at lower level)
-            base = "Illegal character (code 0x"+Integer.toHexString(ch)+") in base64 content";
+            base = "Illegal character (code 0x" + Integer.toHexString(ch) + ") in base64 content";
         } else {
-            base = "Illegal character '"+((char)ch)+"' (code 0x"+Integer.toHexString(ch)+") in base64 content";
+            base = "Illegal character '" + ((char) ch) + "' (code 0x" + Integer.toHexString(ch) + ") in base64 content";
         }
         if (msg != null) {
             base = base + ": " + msg;
@@ -1235,8 +1230,7 @@ public abstract class ParserBase extends ParserMinimalBase
     }
 
     // since 2.9.8
-    protected void _handleBase64MissingPadding(Base64Variant b64variant) throws IOException
-    {
+    protected void _handleBase64MissingPadding(Base64Variant b64variant) throws IOException {
         _reportError(b64variant.missingPaddingMessage());
     }
 
@@ -1274,14 +1268,13 @@ public abstract class ParserBase extends ParserMinimalBase
         return ContentReference.unknown();
     }
 
-    protected static int[] growArrayBy(int[] arr, int more)
-    {
+    protected static int[] growArrayBy(int[] arr, int more) {
         if (arr == null) {
             return new int[more];
         }
         return Arrays.copyOf(arr, arr.length + more);
     }
-    
+
     /*
     /**********************************************************
     /* Stuff that was abstract and required before 2.8, but that
@@ -1291,12 +1284,16 @@ public abstract class ParserBase extends ParserMinimalBase
 
     @Deprecated // since 2.8
     protected void loadMoreGuaranteed() throws IOException {
-        if (!loadMore()) { _reportInvalidEOF(); }
+        if (!loadMore()) {
+            _reportInvalidEOF();
+        }
     }
 
     @Deprecated // since 2.8
-    protected boolean loadMore() throws IOException { return false; }
+    protected boolean loadMore() throws IOException {
+        return false;
+    }
 
     // Can't declare as deprecated, for now, but shouldn't be needed
-    protected void _finishString() throws IOException { }
+    protected void _finishString() throws IOException {}
 }

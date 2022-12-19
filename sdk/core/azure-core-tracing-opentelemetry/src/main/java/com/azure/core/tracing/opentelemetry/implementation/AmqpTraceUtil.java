@@ -8,7 +8,7 @@ import io.opentelemetry.api.trace.StatusCode;
 
 public final class AmqpTraceUtil {
 
-    private AmqpTraceUtil() { }
+    private AmqpTraceUtil() {}
 
     /**
      * Parses an OpenTelemetry Status from AMQP Error Condition.

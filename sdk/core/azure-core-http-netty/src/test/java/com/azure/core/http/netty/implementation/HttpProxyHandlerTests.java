@@ -106,7 +106,7 @@ public class HttpProxyHandlerTests {
     @MethodSource("authSchemeIsDeterminedByAuthorizationTypeSupplier")
     @SuppressWarnings("unchecked")
     public void authSchemeIsDeterminedByAuthorizationType(ChallengeHolder challengeHolder, String expectedAuthScheme)
-        throws Exception {
+                                                                                                                      throws Exception {
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(new InetSocketAddress("localhost", 8888),
             new AuthorizationChallengeHandler("1", "1"), new AtomicReference<>(challengeHolder));
 
@@ -125,16 +125,16 @@ public class HttpProxyHandlerTests {
     }
 
     public static Stream<Arguments> authSchemeIsDeterminedByAuthorizationTypeSupplier() {
-        return Stream.of(
-            // ChallengeHolder only containing Basic challenge.
-            Arguments.of(new ChallengeHolder(true, null), BASIC),
+        return Stream
+            .of(
+                // ChallengeHolder only containing Basic challenge.
+                Arguments.of(new ChallengeHolder(true, null), BASIC),
 
-            // ChallengeHolder only containing Digest challenge.
-            Arguments.of(new ChallengeHolder(false, Collections.singletonList(PARSED_DIGEST_CHALLENGE)), DIGEST),
+                // ChallengeHolder only containing Digest challenge.
+                Arguments.of(new ChallengeHolder(false, Collections.singletonList(PARSED_DIGEST_CHALLENGE)), DIGEST),
 
-            // ChallengeHolder containing both Basic and Digest challenge.
-            Arguments.of(new ChallengeHolder(true, Collections.singletonList(PARSED_DIGEST_CHALLENGE)), DIGEST)
-        );
+                // ChallengeHolder containing both Basic and Digest challenge.
+                Arguments.of(new ChallengeHolder(true, Collections.singletonList(PARSED_DIGEST_CHALLENGE)), DIGEST));
     }
 
     /**
@@ -247,7 +247,7 @@ public class HttpProxyHandlerTests {
     @ParameterizedTest
     @MethodSource("challengeIsCapturedSupplier")
     public void challengeIsCaptured(List<String> proxyAuthenticateChallenges, ChallengeHolder expected)
-        throws ProxyConnectException {
+                                                                                                        throws ProxyConnectException {
         AtomicReference<ChallengeHolder> proxyChallengeHolder = new AtomicReference<>();
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(new InetSocketAddress("localhost", 8888),
             new AuthorizationChallengeHandler("1", "1"), proxyChallengeHolder);
@@ -272,34 +272,39 @@ public class HttpProxyHandlerTests {
         Map<String, String> anotherParsedDigestChallenge = parseDigestChallenge(anotherDigestChallenge);
 
         ChallengeHolder basicOnlyHolder = new ChallengeHolder(true, Collections.emptyList());
-        ChallengeHolder digestOnlyHolder = new ChallengeHolder(false,
-            Collections.singletonList(PARSED_DIGEST_CHALLENGE));
-        ChallengeHolder basicAndDigestHolder = new ChallengeHolder(true,
-            Collections.singletonList(PARSED_DIGEST_CHALLENGE));
-        ChallengeHolder multipleDigestHolder = new ChallengeHolder(false,
-            Stream.of(PARSED_DIGEST_CHALLENGE, anotherParsedDigestChallenge).collect(Collectors.toList()));
-        ChallengeHolder basicAndMultipleDigestHolder = new ChallengeHolder(true,
-            Stream.of(PARSED_DIGEST_CHALLENGE, anotherParsedDigestChallenge).collect(Collectors.toList()));
+        ChallengeHolder digestOnlyHolder = new ChallengeHolder(false, Collections
+            .singletonList(PARSED_DIGEST_CHALLENGE));
+        ChallengeHolder basicAndDigestHolder = new ChallengeHolder(true, Collections
+            .singletonList(PARSED_DIGEST_CHALLENGE));
+        ChallengeHolder multipleDigestHolder = new ChallengeHolder(false, Stream
+            .of(PARSED_DIGEST_CHALLENGE, anotherParsedDigestChallenge)
+            .collect(Collectors.toList()));
+        ChallengeHolder basicAndMultipleDigestHolder = new ChallengeHolder(true, Stream
+            .of(PARSED_DIGEST_CHALLENGE, anotherParsedDigestChallenge)
+            .collect(Collectors.toList()));
 
-        return Stream.of(
-            // Basic only Proxy-Authenticate challenge.
-            Arguments.of(Collections.singletonList(basicChallenge), basicOnlyHolder),
+        return Stream
+            .of(
+                // Basic only Proxy-Authenticate challenge.
+                Arguments.of(Collections.singletonList(basicChallenge), basicOnlyHolder),
 
-            // Digest only Proxy-Authenticate challenge.
-            Arguments.of(Collections.singletonList(DIGEST_CHALLENGE), digestOnlyHolder),
+                // Digest only Proxy-Authenticate challenge.
+                Arguments.of(Collections.singletonList(DIGEST_CHALLENGE), digestOnlyHolder),
 
-            // Basic and Digest Proxy-Authenticate challenges.
-            Arguments.of(Stream.of(basicChallenge, DIGEST_CHALLENGE).collect(Collectors.toList()),
-                basicAndDigestHolder),
+                // Basic and Digest Proxy-Authenticate challenges.
+                Arguments
+                    .of(Stream.of(basicChallenge, DIGEST_CHALLENGE).collect(Collectors.toList()), basicAndDigestHolder),
 
-            // Multiple Digest Proxy-Authenticate challenges.
-            Arguments.of(Stream.of(DIGEST_CHALLENGE, anotherDigestChallenge).collect(Collectors.toList()),
-                multipleDigestHolder),
+                // Multiple Digest Proxy-Authenticate challenges.
+                Arguments
+                    .of(Stream.of(DIGEST_CHALLENGE, anotherDigestChallenge).collect(Collectors.toList()),
+                        multipleDigestHolder),
 
-            // Basic and multiple Digest Proxy-Authenticate challenges.
-            Arguments.of(Stream.of(basicChallenge, DIGEST_CHALLENGE, anotherDigestChallenge)
-                .collect(Collectors.toList()), basicAndMultipleDigestHolder)
-        );
+                // Basic and multiple Digest Proxy-Authenticate challenges.
+                Arguments
+                    .of(Stream
+                        .of(basicChallenge, DIGEST_CHALLENGE, anotherDigestChallenge)
+                        .collect(Collectors.toList()), basicAndMultipleDigestHolder));
     }
 
     /**
@@ -310,7 +315,7 @@ public class HttpProxyHandlerTests {
     @MethodSource("authorizationIsAppliedSupplier")
     @SuppressWarnings("unchecked")
     public void authorizationIsApplied(ChallengeHolder challengeHolder, Predicate<String> expectedPredicate)
-        throws Exception {
+                                                                                                             throws Exception {
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(new InetSocketAddress("localhost", 8888),
             new AuthorizationChallengeHandler("1", "1"), new AtomicReference<>(challengeHolder));
 
@@ -335,17 +340,20 @@ public class HttpProxyHandlerTests {
         Predicate<String> basicPredicate = "Basic MTox"::equals;
         Predicate<String> digestPredicate = (authHeader) -> authHeader.startsWith("Digest");
 
-        return Stream.of(
-            // ChallengeHolder only containing Basic challenge.
-            Arguments.of(new ChallengeHolder(true, null), basicPredicate),
+        return Stream
+            .of(
+                // ChallengeHolder only containing Basic challenge.
+                Arguments.of(new ChallengeHolder(true, null), basicPredicate),
 
-            // ChallengeHolder only containing Digest challenge.
-            Arguments.of(new ChallengeHolder(false, Collections.singletonList(PARSED_DIGEST_CHALLENGE)),
-                digestPredicate),
+                // ChallengeHolder only containing Digest challenge.
+                Arguments
+                    .of(new ChallengeHolder(false, Collections.singletonList(PARSED_DIGEST_CHALLENGE)),
+                        digestPredicate),
 
-            // ChallengeHolder containing both Basic and Digest challenge.
-            Arguments.of(new ChallengeHolder(true, Collections.singletonList(PARSED_DIGEST_CHALLENGE)), digestPredicate)
-        );
+                // ChallengeHolder containing both Basic and Digest challenge.
+                Arguments
+                    .of(new ChallengeHolder(true, Collections.singletonList(PARSED_DIGEST_CHALLENGE)),
+                        digestPredicate));
     }
 
     /**
@@ -356,7 +364,7 @@ public class HttpProxyHandlerTests {
     @MethodSource("authorizationCanBePipelinedSupplier")
     @SuppressWarnings("unchecked")
     public void authorizationCanBePipelined(AuthorizationChallengeHandler challengeHandler,
-        Predicate<String> expectedPredicate) throws Exception {
+                                            Predicate<String> expectedPredicate) throws Exception {
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(new InetSocketAddress("localhost", 8888),
             challengeHandler, new AtomicReference<>());
 
@@ -383,17 +391,18 @@ public class HttpProxyHandlerTests {
         Predicate<String> basicPredicate = "Basic MTox"::equals;
 
         AuthorizationChallengeHandler digestChallengeHandler = new AuthorizationChallengeHandler("1", "1");
-        digestChallengeHandler.handleDigest(HttpMethod.CONNECT.name(), "/",
-            Collections.singletonList(PARSED_DIGEST_CHALLENGE), () -> new byte[0]);
+        digestChallengeHandler
+            .handleDigest(HttpMethod.CONNECT.name(), "/", Collections.singletonList(PARSED_DIGEST_CHALLENGE),
+                () -> new byte[0]);
         Predicate<String> digestPredicate = (authHeader) -> authHeader.startsWith("Digest");
 
-        return Stream.of(
-            // Pipelined Basic authorization.
-            Arguments.of(basicChallengeHandler, basicPredicate),
+        return Stream
+            .of(
+                // Pipelined Basic authorization.
+                Arguments.of(basicChallengeHandler, basicPredicate),
 
-            // Pipelined Digest authorization.
-            Arguments.of(digestChallengeHandler, digestPredicate)
-        );
+                // Pipelined Digest authorization.
+                Arguments.of(digestChallengeHandler, digestPredicate));
     }
 
     /**
@@ -404,8 +413,9 @@ public class HttpProxyHandlerTests {
     @SuppressWarnings("unchecked")
     public void nullOrEmptyProxyAuthenticateInfoIsIgnored() throws ProxyConnectException {
         AuthorizationChallengeHandler challengeHandler = new AuthorizationChallengeHandler("1", "1");
-        challengeHandler.handleDigest(HttpMethod.CONNECT.name(), "/",
-            Collections.singletonList(PARSED_DIGEST_CHALLENGE), () -> new byte[0]);
+        challengeHandler
+            .handleDigest(HttpMethod.CONNECT.name(), "/", Collections.singletonList(PARSED_DIGEST_CHALLENGE),
+                () -> new byte[0]);
 
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(new InetSocketAddress("localhost", 8888),
             challengeHandler, new AtomicReference<>());
@@ -424,9 +434,11 @@ public class HttpProxyHandlerTests {
         when(ctx.channel()).thenReturn(channel);
 
         proxyAuthenticationHandler.handleResponse(ctx, response);
-        String challengeResponse = challengeHandler.handleDigest(HttpMethod.CONNECT.name(), "/",
-            Collections.singletonList(PARSED_DIGEST_CHALLENGE), () -> new byte[0]);
-        String nonce = AuthorizationChallengeHandler.parseAuthenticationOrAuthorizationHeader(challengeResponse)
+        String challengeResponse = challengeHandler
+            .handleDigest(HttpMethod.CONNECT.name(), "/", Collections.singletonList(PARSED_DIGEST_CHALLENGE),
+                () -> new byte[0]);
+        String nonce = AuthorizationChallengeHandler
+            .parseAuthenticationOrAuthorizationHeader(challengeResponse)
             .get("nonce");
 
         assertEquals(ORIGINAL_NONCE, nonce);
@@ -440,9 +452,11 @@ public class HttpProxyHandlerTests {
     @SuppressWarnings("unchecked")
     public void proxyAuthenticateInfoValidatesProxyAuthorization() throws ProxyConnectException {
         AuthorizationChallengeHandler challengeHandler = new AuthorizationChallengeHandler("1", "1");
-        String authorizationHeader = challengeHandler.handleDigest(HttpMethod.CONNECT.name(), "/",
-            Collections.singletonList(PARSED_DIGEST_CHALLENGE), () -> new byte[0]);
-        String cnonce = AuthorizationChallengeHandler.parseAuthenticationOrAuthorizationHeader(authorizationHeader)
+        String authorizationHeader = challengeHandler
+            .handleDigest(HttpMethod.CONNECT.name(), "/", Collections.singletonList(PARSED_DIGEST_CHALLENGE),
+                () -> new byte[0]);
+        String cnonce = AuthorizationChallengeHandler
+            .parseAuthenticationOrAuthorizationHeader(authorizationHeader)
             .get("cnonce");
 
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(new InetSocketAddress("localhost", 8888),
@@ -465,9 +479,11 @@ public class HttpProxyHandlerTests {
         when(ctx.channel()).thenReturn(channel);
 
         proxyAuthenticationHandler.handleResponse(ctx, response);
-        String challengeResponse = challengeHandler.handleDigest(HttpMethod.CONNECT.name(), "/",
-            Collections.singletonList(PARSED_DIGEST_CHALLENGE), () -> new byte[0]);
-        String nonce = AuthorizationChallengeHandler.parseAuthenticationOrAuthorizationHeader(challengeResponse)
+        String challengeResponse = challengeHandler
+            .handleDigest(HttpMethod.CONNECT.name(), "/", Collections.singletonList(PARSED_DIGEST_CHALLENGE),
+                () -> new byte[0]);
+        String nonce = AuthorizationChallengeHandler
+            .parseAuthenticationOrAuthorizationHeader(challengeResponse)
             .get("nonce");
 
         assertEquals(ORIGINAL_NONCE, nonce);
@@ -481,8 +497,9 @@ public class HttpProxyHandlerTests {
     @SuppressWarnings("unchecked")
     public void proxyAuthenticateInfoFailsValidation() {
         AuthorizationChallengeHandler challengeHandler = new AuthorizationChallengeHandler("1", "1");
-        String authorizationHeader = challengeHandler.handleDigest(HttpMethod.CONNECT.name(), "/",
-            Collections.singletonList(PARSED_DIGEST_CHALLENGE), () -> new byte[0]);
+        String authorizationHeader = challengeHandler
+            .handleDigest(HttpMethod.CONNECT.name(), "/", Collections.singletonList(PARSED_DIGEST_CHALLENGE),
+                () -> new byte[0]);
 
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(new InetSocketAddress("localhost", 8888),
             challengeHandler, new AtomicReference<>());
@@ -515,8 +532,8 @@ public class HttpProxyHandlerTests {
     public void proxyAuthenticateInfoUpdatesNonce() throws ProxyConnectException {
         Map<String, String> challengeCopy = new HashMap<>(PARSED_DIGEST_CHALLENGE);
         AuthorizationChallengeHandler challengeHandler = new AuthorizationChallengeHandler("1", "1");
-        challengeHandler.handleDigest(HttpMethod.CONNECT.name(), "/", Collections.singletonList(challengeCopy),
-            () -> new byte[0]);
+        challengeHandler
+            .handleDigest(HttpMethod.CONNECT.name(), "/", Collections.singletonList(challengeCopy), () -> new byte[0]);
 
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(new InetSocketAddress("localhost", 8888),
             challengeHandler, new AtomicReference<>());
@@ -538,9 +555,10 @@ public class HttpProxyHandlerTests {
         when(ctx.channel()).thenReturn(channel);
 
         proxyAuthenticationHandler.handleResponse(ctx, response);
-        String challengeResponse = challengeHandler.attemptToPipelineAuthorization(HttpMethod.CONNECT.name(), "/",
-            () -> new byte[0]);
-        String nonce = AuthorizationChallengeHandler.parseAuthenticationOrAuthorizationHeader(challengeResponse)
+        String challengeResponse = challengeHandler
+            .attemptToPipelineAuthorization(HttpMethod.CONNECT.name(), "/", () -> new byte[0]);
+        String nonce = AuthorizationChallengeHandler
+            .parseAuthenticationOrAuthorizationHeader(challengeResponse)
             .get("nonce");
 
         assertEquals(UPDATED_NONCE, nonce);

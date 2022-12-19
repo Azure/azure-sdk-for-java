@@ -36,7 +36,9 @@ public class ExponentialAmqpRetryPolicy extends AmqpRetryPolicy {
      * @return The duration to delay before retrying a request.
      */
     @Override
-    protected Duration calculateRetryDelay(int retryCount, Duration baseDelay, Duration baseJitter,
+    protected Duration calculateRetryDelay(int retryCount,
+                                           Duration baseDelay,
+                                           Duration baseJitter,
                                            ThreadLocalRandom random) {
         final double jitterSeconds = random.nextDouble() * baseJitter.getSeconds();
         final double nextRetrySeconds = Math.pow(retryFactor, (double) retryCount);
@@ -62,8 +64,7 @@ public class ExponentialAmqpRetryPolicy extends AmqpRetryPolicy {
             return true;
         }
 
-        return obj instanceof ExponentialAmqpRetryPolicy
-            && super.equals(obj);
+        return obj instanceof ExponentialAmqpRetryPolicy && super.equals(obj);
     }
 
     private double computeRetryFactor() {

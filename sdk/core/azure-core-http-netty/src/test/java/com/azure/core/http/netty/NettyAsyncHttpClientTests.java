@@ -81,7 +81,8 @@ public class NettyAsyncHttpClientTests {
 
     static final String TEST_HEADER = "testHeader";
 
-    private static final StepVerifierOptions EMPTY_INITIAL_REQUEST_OPTIONS = StepVerifierOptions.create()
+    private static final StepVerifierOptions EMPTY_INITIAL_REQUEST_OPTIONS = StepVerifierOptions
+        .create()
         .initialRequest(0);
 
     private static WireMockServer server;
@@ -98,14 +99,18 @@ public class NettyAsyncHttpClientTests {
         server.stubFor(get(LONG_BODY_PATH).willReturn(aResponse().withBody(LONG_BODY)));
         server.stubFor(get(ERROR_BODY_PATH).willReturn(aResponse().withBody("error").withStatus(500)));
         server.stubFor(post(SHORT_POST_BODY_PATH).willReturn(aResponse().withBody(SHORT_BODY)));
-        server.stubFor(post(HTTP_HEADERS_PATH).willReturn(aResponse()
-            .withTransformers(NettyAsyncHttpClientResponseTransformer.NAME)));
-        server.stubFor(get(NO_DOUBLE_UA_PATH).willReturn(aResponse()
-            .withTransformers(NettyAsyncHttpClientResponseTransformer.NAME)));
-        server.stubFor(get(IO_EXCEPTION_PATH).willReturn(aResponse().withStatus(200).but()
-            .withFault(Fault.RANDOM_DATA_THEN_CLOSE)));
-        server.stubFor(get(RETURN_HEADERS_AS_IS_PATH).willReturn(aResponse()
-            .withTransformers(NettyAsyncHttpClientResponseTransformer.NAME)));
+        server
+            .stubFor(post(HTTP_HEADERS_PATH)
+                .willReturn(aResponse().withTransformers(NettyAsyncHttpClientResponseTransformer.NAME)));
+        server
+            .stubFor(get(NO_DOUBLE_UA_PATH)
+                .willReturn(aResponse().withTransformers(NettyAsyncHttpClientResponseTransformer.NAME)));
+        server
+            .stubFor(get(IO_EXCEPTION_PATH)
+                .willReturn(aResponse().withStatus(200).but().withFault(Fault.RANDOM_DATA_THEN_CLOSE)));
+        server
+            .stubFor(get(RETURN_HEADERS_AS_IS_PATH)
+                .willReturn(aResponse().withTransformers(NettyAsyncHttpClientResponseTransformer.NAME)));
 
         server.stubFor(get(PROXY_TO_ADDRESS).willReturn(aResponse().withStatus(418).withBody("I'm a teapot")));
 
@@ -145,11 +150,13 @@ public class NettyAsyncHttpClientTests {
          */
         HttpResponse response = getResponse(SHORT_BODY_PATH);
         // Subscription:1
-        StepVerifier.create(response.getBodyAsByteArray())
+        StepVerifier
+            .create(response.getBodyAsByteArray())
             .assertNext(bytes -> assertArrayEquals(SHORT_BODY, bytes))
             .verifyComplete();
         // Subscription:2
-        StepVerifier.create(response.getBodyAsByteArray())
+        StepVerifier
+            .create(response.getBodyAsByteArray())
             .expectNextCount(0)
             // Reactor netty 0.9.0.RELEASE behavior changed - second subscription returns onComplete() instead
             // of throwing an error
@@ -161,9 +168,7 @@ public class NettyAsyncHttpClientTests {
     @Test
     public void testDispose() {
         NettyAsyncHttpResponse response = getResponse(LONG_BODY_PATH);
-        StepVerifier.create(response.getBody())
-            .thenCancel()
-            .verify();
+        StepVerifier.create(response.getBody()).thenCancel().verify();
         Assertions.assertTrue(response.internConnection().isDisposed());
     }
 
@@ -171,7 +176,8 @@ public class NettyAsyncHttpClientTests {
     public void testCancel() {
         NettyAsyncHttpResponse response = getResponse(LONG_BODY_PATH);
         //
-        StepVerifier.create(response.getBody(), EMPTY_INITIAL_REQUEST_OPTIONS)
+        StepVerifier
+            .create(response.getBody(), EMPTY_INITIAL_REQUEST_OPTIONS)
             .expectNextCount(0)
             .thenRequest(1)
             .expectNextCount(1)
@@ -183,7 +189,8 @@ public class NettyAsyncHttpClientTests {
     @Test
     public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() {
         HttpResponse response = getResponse(ERROR_BODY_PATH);
-        StepVerifier.create(response.getBodyAsString())
+        StepVerifier
+            .create(response.getBodyAsString())
             .expectNext("error")
             .expectComplete()
             .verify(Duration.ofSeconds(20));
@@ -194,7 +201,8 @@ public class NettyAsyncHttpClientTests {
     public void testFlowableBackpressure() {
         HttpResponse response = getResponse(LONG_BODY_PATH);
         //
-        StepVerifier.create(response.getBody(), EMPTY_INITIAL_REQUEST_OPTIONS)
+        StepVerifier
+            .create(response.getBody(), EMPTY_INITIAL_REQUEST_OPTIONS)
             .expectNextCount(0)
             .thenRequest(1)
             .expectNextCount(1)
@@ -212,9 +220,7 @@ public class NettyAsyncHttpClientTests {
             .setHeader("Content-Length", "132")
             .setBody(Flux.error(new RuntimeException("boo")));
 
-        StepVerifier.create(client.send(request))
-            .expectErrorMessage("boo")
-            .verify();
+        StepVerifier.create(client.send(request)).expectErrorMessage("boo").verify();
     }
 
     @Test
@@ -225,14 +231,13 @@ public class NettyAsyncHttpClientTests {
 
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, SHORT_POST_BODY_PATH))
             .setHeader("Content-Length", String.valueOf(contentChunk.length() * (repetitions + 1)))
-            .setBody(Flux.just(contentChunk)
+            .setBody(Flux
+                .just(contentChunk)
                 .repeat(repetitions)
                 .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
                 .concatWith(Flux.error(new RuntimeException("boo"))));
 
-        StepVerifier.create(client.send(request))
-            .expectErrorMessage("boo")
-            .verify(Duration.ofSeconds(10));
+        StepVerifier.create(client.send(request)).expectErrorMessage("boo").verify(Duration.ofSeconds(10));
     }
 
     @Test
@@ -240,13 +245,10 @@ public class NettyAsyncHttpClientTests {
         HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, IO_EXCEPTION_PATH));
 
-        StepVerifier.create(client.send(request)
-                .flatMap(response -> {
-                    assertEquals(200, response.getStatusCode());
-                    return response.getBodyAsByteArray();
-                }))
-            .expectError(IOException.class)
-            .verify();
+        StepVerifier.create(client.send(request).flatMap(response -> {
+            assertEquals(200, response.getStatusCode());
+            return response.getBodyAsByteArray();
+        })).expectError(IOException.class).verify();
     }
 
     @Test
@@ -254,17 +256,20 @@ public class NettyAsyncHttpClientTests {
         HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
 
         int numberOfRequests = 100; // 100 = 100MB of data
-        Mono<Long> numberOfBytesMono = Flux.range(1, numberOfRequests)
+        Mono<Long> numberOfBytesMono = Flux
+            .range(1, numberOfRequests)
             .parallel(25)
             .runOn(Schedulers.boundedElastic())
-            .flatMap(ignored -> httpClient.send(new HttpRequest(HttpMethod.GET, url(server, LONG_BODY_PATH)))
+            .flatMap(ignored -> httpClient
+                .send(new HttpRequest(HttpMethod.GET, url(server, LONG_BODY_PATH)))
                 .flatMap(HttpResponse::getBodyAsByteArray)
                 .doOnNext(bytes -> assertArrayEquals(LONG_BODY, bytes)))
             .sequential()
             .map(bytes -> (long) bytes.length)
             .reduce(0L, Long::sum);
 
-        StepVerifier.create(numberOfBytesMono)
+        StepVerifier
+            .create(numberOfBytesMono)
             .expectNext((long) numberOfRequests * LONG_BODY.length)
             .expectComplete()
             .verify(Duration.ofSeconds(60));
@@ -328,7 +333,8 @@ public class NettyAsyncHttpClientTests {
         HttpHeaders headers = new HttpHeaders().set(TEST_HEADER, headerValue);
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, HTTP_HEADERS_PATH), headers, Flux.empty());
 
-        StepVerifier.create(client.send(request))
+        StepVerifier
+            .create(client.send(request))
             .assertNext(response -> assertEquals(expectedValue, response.getHeaderValue(TEST_HEADER)))
             .verifyComplete();
     }
@@ -337,8 +343,10 @@ public class NettyAsyncHttpClientTests {
     public void validateRequestHasOneUserAgentHeader() {
         HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
 
-        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, url(server, NO_DOUBLE_UA_PATH),
-                new HttpHeaders().set("User-Agent", EXPECTED_HEADER), Flux.empty())))
+        StepVerifier
+            .create(httpClient
+                .send(new HttpRequest(HttpMethod.GET, url(server, NO_DOUBLE_UA_PATH), new HttpHeaders()
+                    .set("User-Agent", EXPECTED_HEADER), Flux.empty())))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
@@ -357,8 +365,9 @@ public class NettyAsyncHttpClientTests {
             .set(singleValueHeaderName, singleValueHeaderValue)
             .set(multiValueHeaderName, multiValueHeaderValue);
 
-        StepVerifier.create(client.send(new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH),
-                headers, Flux.empty())))
+        StepVerifier
+            .create(client
+                .send(new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH), headers, Flux.empty())))
             .assertNext(response -> {
                 assertEquals(200, response.getStatusCode());
 
@@ -383,7 +392,9 @@ public class NettyAsyncHttpClientTests {
     public void proxyAuthenticationErrorEagerlyRetries() {
         // Create a Netty HttpClient to share backing resources that are warmed up before making a time based call.
         reactor.netty.http.client.HttpClient warmedUpClient = reactor.netty.http.client.HttpClient.create();
-        StepVerifier.create(new NettyAsyncHttpClientBuilder(warmedUpClient).build()
+        StepVerifier
+            .create(new NettyAsyncHttpClientBuilder(warmedUpClient)
+                .build()
                 .send(new HttpRequest(HttpMethod.GET, url(server, SHORT_BODY_PATH))))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
@@ -396,13 +407,16 @@ public class NettyAsyncHttpClientTests {
 
             // Create an HttpPipeline where any exception has a retry delay of 10 seconds.
             HttpPipeline httpPipeline = new HttpPipelineBuilder()
-                .policies(retryPolicy, (context, next) -> next.process()
+                .policies(retryPolicy, (context, next) -> next
+                    .process()
                     .doOnNext(ignored -> responseHandleCount.incrementAndGet()))
                 .httpClient(new NettyAsyncHttpClientBuilder(warmedUpClient).proxy(proxyOptions).build())
                 .build();
 
-            StepVerifier.create(httpPipeline.send(new HttpRequest(HttpMethod.GET, url(server, PROXY_TO_ADDRESS)),
-                    new Context("azure-eagerly-read-response", true)))
+            StepVerifier
+                .create(httpPipeline
+                    .send(new HttpRequest(HttpMethod.GET, url(server, PROXY_TO_ADDRESS)), new Context(
+                        "azure-eagerly-read-response", true)))
                 .assertNext(response -> assertEquals(418, response.getStatusCode()))
                 .expectComplete()
                 .verify();
@@ -425,7 +439,8 @@ public class NettyAsyncHttpClientTests {
                     .build())
                 .build();
 
-            StepVerifier.create(httpPipeline.send(new HttpRequest(HttpMethod.GET, url(server, PROXY_TO_ADDRESS))))
+            StepVerifier
+                .create(httpPipeline.send(new HttpRequest(HttpMethod.GET, url(server, PROXY_TO_ADDRESS))))
                 .verifyErrorMatches(exception -> exception instanceof ProxyConnectException
                     && exception.getMessage().contains("Failed to connect to proxy. Status: "));
         }
@@ -434,11 +449,9 @@ public class NettyAsyncHttpClientTests {
     @Test
     public void httpClientWithDefaultResolverUsesNoopResolverWithProxy() {
         try (MockProxyServer mockProxyServer = new MockProxyServer()) {
-            NettyAsyncHttpClient httpClient =
-                (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder()
-                    .proxy(new ProxyOptions(
-                        ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()))
-                    .build();
+            NettyAsyncHttpClient httpClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder()
+                .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()))
+                .build();
 
             assertEquals(NoopAddressResolverGroup.INSTANCE, httpClient.nettyClient.configuration().resolver());
         }
@@ -447,12 +460,10 @@ public class NettyAsyncHttpClientTests {
     @Test
     public void httpClientWithConnectionProviderUsesNoopResolverWithProxy() {
         try (MockProxyServer mockProxyServer = new MockProxyServer()) {
-            NettyAsyncHttpClient httpClient =
-                (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder()
-                    .connectionProvider(ConnectionProvider.newConnection())
-                    .proxy(new ProxyOptions(
-                        ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()))
-                    .build();
+            NettyAsyncHttpClient httpClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder()
+                .connectionProvider(ConnectionProvider.newConnection())
+                .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()))
+                .build();
 
             assertEquals(NoopAddressResolverGroup.INSTANCE, httpClient.nettyClient.configuration().resolver());
         }
@@ -461,22 +472,18 @@ public class NettyAsyncHttpClientTests {
     @Test
     public void httpClientWithResolverUsesConfiguredResolverWithProxy() {
         try (MockProxyServer mockProxyServer = new MockProxyServer()) {
-            NettyAsyncHttpClient httpClient =
-                (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(
-                    reactor.netty.http.client.HttpClient.create().resolver(DefaultAddressResolverGroup.INSTANCE))
-                    .proxy(new ProxyOptions(
-                        ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()))
+            NettyAsyncHttpClient httpClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(
+                reactor.netty.http.client.HttpClient.create().resolver(DefaultAddressResolverGroup.INSTANCE))
+                    .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()))
                     .build();
             assertNotEquals(NoopAddressResolverGroup.INSTANCE, httpClient.nettyClient.configuration().resolver());
         }
     }
 
     private static Stream<Arguments> requestHeaderSupplier() {
-        return Stream.of(
-            Arguments.of(null, NettyAsyncHttpClientResponseTransformer.NULL_REPLACEMENT),
-            Arguments.of("", ""),
-            Arguments.of("aValue", "aValue")
-        );
+        return Stream
+            .of(Arguments.of(null, NettyAsyncHttpClientResponseTransformer.NULL_REPLACEMENT), Arguments.of("", ""),
+                Arguments.of("aValue", "aValue"));
     }
 
     private static NettyAsyncHttpResponse getResponse(String path) {
@@ -510,7 +517,9 @@ public class NettyAsyncHttpClientTests {
 
     private void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
-        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, url(server, path)))
+        StepVerifier
+            .create(httpClient
+                .send(new HttpRequest(HttpMethod.GET, url(server, path)))
                 .flatMap(HttpResponse::getBodyAsByteArray))
             .assertNext(bytes -> assertArrayEquals(expectedBody, bytes))
             .verifyComplete();
@@ -527,7 +536,8 @@ public class NettyAsyncHttpClientTests {
         }
 
         public byte[] aggregateBuffers() {
-            return FluxUtil.collectBytesInByteBufferStream(Flux.fromIterable(internalBuffers), totalStreamSize.get())
+            return FluxUtil
+                .collectBytesInByteBufferStream(Flux.fromIterable(internalBuffers), totalStreamSize.get())
                 .block();
         }
     }

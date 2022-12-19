@@ -23,14 +23,11 @@ public final class AmqpPropagationFormatUtil {
     private static final int SPAN_ID_HEX_SIZE = SpanId.getLength();
     private static final int TRACE_OPTION_HEX_SIZE = TraceFlags.getLength();
     private static final int TRACE_ID_OFFSET = VERSION_SIZE + TRACEPARENT_DELIMITER_SIZE;
-    private static final int SPAN_ID_OFFSET =
-        TRACE_ID_OFFSET + TRACE_ID_HEX_SIZE + TRACEPARENT_DELIMITER_SIZE;
-    private static final int TRACE_OPTION_OFFSET =
-        SPAN_ID_OFFSET + SPAN_ID_HEX_SIZE + TRACEPARENT_DELIMITER_SIZE;
+    private static final int SPAN_ID_OFFSET = TRACE_ID_OFFSET + TRACE_ID_HEX_SIZE + TRACEPARENT_DELIMITER_SIZE;
+    private static final int TRACE_OPTION_OFFSET = SPAN_ID_OFFSET + SPAN_ID_HEX_SIZE + TRACEPARENT_DELIMITER_SIZE;
     private static final int TRACEPARENT_HEADER_SIZE = TRACE_OPTION_OFFSET + TRACE_OPTION_HEX_SIZE;
 
-    private AmqpPropagationFormatUtil() {
-    }
+    private AmqpPropagationFormatUtil() {}
 
     /**
      * This method is called to extract the Span Context information from the received event's diagnostic Id.
@@ -101,16 +98,11 @@ public final class AmqpPropagationFormatUtil {
             return SpanContext.getInvalid();
         }
 
-        String traceId =
-            traceparent.substring(TRACE_ID_OFFSET, TRACE_ID_OFFSET + TraceId.getLength());
+        String traceId = traceparent.substring(TRACE_ID_OFFSET, TRACE_ID_OFFSET + TraceId.getLength());
         String spanId = traceparent.substring(SPAN_ID_OFFSET, SPAN_ID_OFFSET + SpanId.getLength());
 
         TraceFlags traceFlags = TraceFlags.fromHex(traceparent, TRACE_OPTION_OFFSET);
 
-        return SpanContext.createFromRemoteParent(
-            traceId,
-            spanId,
-            traceFlags,
-            TraceState.builder().build());
+        return SpanContext.createFromRemoteParent(traceId, spanId, traceFlags, TraceState.builder().build());
     }
 }

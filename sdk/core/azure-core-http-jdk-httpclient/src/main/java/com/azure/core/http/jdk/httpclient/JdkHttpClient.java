@@ -44,8 +44,9 @@ class JdkHttpClient implements HttpClient {
         this.jdkHttpClient = httpClient;
         int javaVersion = getJavaVersion();
         if (javaVersion <= 11) {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException("JdkAsyncHttpClient is not supported in Java version 11 and below."));
+            throw LOGGER
+                .logExceptionAsError(new UnsupportedOperationException(
+                    "JdkAsyncHttpClient is not supported in Java version 11 and below."));
         }
 
         this.restrictedHeaders = restrictedHeaders;
@@ -98,8 +99,8 @@ class JdkHttpClient implements HttpClient {
 
             if (eagerlyReadResponse || ignoreResponseBody) {
                 java.net.http.HttpResponse<byte[]> jdKResponse = jdkHttpClient.send(jdkRequest, ofByteArray());
-                return new JdkHttpResponseSync(request, jdKResponse.statusCode(),
-                    fromJdkHttpHeaders(jdKResponse.headers()), jdKResponse.body());
+                return new JdkHttpResponseSync(request, jdKResponse.statusCode(), fromJdkHttpHeaders(jdKResponse
+                    .headers()), jdKResponse.body());
             } else {
                 return new JdkHttpResponseSync(request, jdkHttpClient.send(jdkRequest, ofInputStream()));
             }
@@ -132,10 +133,13 @@ class JdkHttpClient implements HttpClient {
                 if (!restrictedHeaders.contains(headerName)) {
                     header.getValuesList().forEach(headerValue -> builder.header(headerName, headerValue));
                 } else {
-                    LOGGER.warning("The header '" + headerName + "' is restricted by default in JDK HttpClient 12 "
-                        + "and above. This header can be added to allow list in JAVA_HOME/conf/net.properties "
-                        + "or in System.setProperty() or in Configuration. Use the key 'jdk.httpclient"
-                        + ".allowRestrictedHeaders' and a comma separated list of header names.");
+                    LOGGER
+                        .warning("The header '"
+                            + headerName
+                            + "' is restricted by default in JDK HttpClient 12 "
+                            + "and above. This header can be added to allow list in JAVA_HOME/conf/net.properties "
+                            + "or in System.setProperty() or in Configuration. Use the key 'jdk.httpclient"
+                            + ".allowRestrictedHeaders' and a comma separated list of header names.");
                 }
             }
         }
@@ -145,7 +149,8 @@ class JdkHttpClient implements HttpClient {
             case HEAD:
                 return builder.method("HEAD", noBody()).build();
             default:
-                java.net.http.HttpRequest.BodyPublisher bodyPublisher = BodyPublisherUtils.toBodyPublisher(request, progressReporter);
+                java.net.http.HttpRequest.BodyPublisher bodyPublisher = BodyPublisherUtils
+                    .toBodyPublisher(request, progressReporter);
                 return builder.method(request.getHttpMethod().toString(), bodyPublisher).build();
         }
     }

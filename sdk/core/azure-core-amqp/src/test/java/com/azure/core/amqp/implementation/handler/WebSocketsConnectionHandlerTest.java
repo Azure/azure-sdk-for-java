@@ -81,11 +81,12 @@ public class WebSocketsConnectionHandlerTest {
         mocksCloseable = MockitoAnnotations.openMocks(this);
 
         this.connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "authorization-scope",
-            AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS,
-            scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION);
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "authorization-scope", AmqpTransportType.AMQP_WEB_SOCKETS,
+            new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT,
+            CLIENT_VERSION);
 
-        this.handler = new WebSocketsConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, AmqpMetricsProvider.noop());
+        this.handler = new WebSocketsConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails,
+            AmqpMetricsProvider.noop());
     }
 
     @AfterEach
@@ -139,7 +140,8 @@ public class WebSocketsConnectionHandlerTest {
         // Act
         handler.onConnectionBound(event);
 
-        StepVerifier.create(handler.getEndpointStates())
+        StepVerifier
+            .create(handler.getEndpointStates())
             .expectNext(EndpointState.CLOSED)
             .then(handler::close)
             .verifyComplete();
@@ -195,9 +197,9 @@ public class WebSocketsConnectionHandlerTest {
         final int port = 9888;
 
         final ConnectionOptions connectionOptions = new ConnectionOptions(fullyQualifiedNamespace, tokenCredential,
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "authorization-scope",
-            AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler,
-            CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION, customEndpoint, port);
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "authorization-scope", AmqpTransportType.AMQP_WEB_SOCKETS,
+            new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT,
+            CLIENT_VERSION, customEndpoint, port);
 
         try (WebSocketsConnectionHandler handler = new WebSocketsConnectionHandler(CONNECTION_ID, connectionOptions,
             peerDetails, AmqpMetricsProvider.noop())) {
@@ -232,21 +234,18 @@ public class WebSocketsConnectionHandlerTest {
     @Test
     public void websocketConfigureUsesFqdnAsHostname() {
         try (MockedConstruction<WebSocketImpl> mockConstruction = mockConstruction(WebSocketImpl.class)) {
-            handler.addTransportLayers(mock(Event.class, Mockito.CALLS_REAL_METHODS),
-                mock(TransportImpl.class, Mockito.CALLS_REAL_METHODS));
+            handler
+                .addTransportLayers(mock(Event.class, Mockito.CALLS_REAL_METHODS), mock(TransportImpl.class,
+                    Mockito.CALLS_REAL_METHODS));
 
             final List<WebSocketImpl> constructed = mockConstruction.constructed();
             assertEquals(1, constructed.size());
             // The WebSocketImpl object constructed inside addTransportLayer method.
             final WebSocketImpl webSocketImpl = constructed.get(0);
             final String expectedHostName = HOSTNAME;
-            verify(webSocketImpl).configure(eq(expectedHostName),
-                eq("/$servicebus/websocket"),
-                eq(""),
-                eq(0),
-                eq("AMQPWSB10"),
-                eq(null),
-                eq(null));
+            verify(webSocketImpl)
+                .configure(eq(expectedHostName), eq("/$servicebus/websocket"), eq(""), eq(0), eq("AMQPWSB10"), eq(null),
+                    eq(null));
         }
     }
 
@@ -259,23 +258,19 @@ public class WebSocketsConnectionHandlerTest {
             CLIENT_VERSION, customEndpointHostname, 200);
 
         try (WebSocketsConnectionHandler handler = new WebSocketsConnectionHandler(CONNECTION_ID,
-            connectionOptionsWithCustomEndpoint,
-            peerDetails, AmqpMetricsProvider.noop())) {
+            connectionOptionsWithCustomEndpoint, peerDetails, AmqpMetricsProvider.noop())) {
             try (MockedConstruction<WebSocketImpl> mockConstruction = mockConstruction(WebSocketImpl.class)) {
-                handler.addTransportLayers(mock(Event.class, Mockito.CALLS_REAL_METHODS),
-                    mock(TransportImpl.class, Mockito.CALLS_REAL_METHODS));
+                handler
+                    .addTransportLayers(mock(Event.class, Mockito.CALLS_REAL_METHODS), mock(TransportImpl.class,
+                        Mockito.CALLS_REAL_METHODS));
 
                 final List<WebSocketImpl> constructed = mockConstruction.constructed();
                 assertEquals(1, constructed.size());
                 // The WebSocketImpl object constructed inside addTransportLayer method.
                 final WebSocketImpl webSocketImpl = constructed.get(0);
-                verify(webSocketImpl).configure(eq(customEndpointHostname),
-                    eq("/$servicebus/websocket"),
-                    eq(""),
-                    eq(0),
-                    eq("AMQPWSB10"),
-                    eq(null),
-                    eq(null));
+                verify(webSocketImpl)
+                    .configure(eq(customEndpointHostname), eq("/$servicebus/websocket"), eq(""), eq(0), eq("AMQPWSB10"),
+                        eq(null), eq(null));
             }
         }
     }
@@ -283,7 +278,8 @@ public class WebSocketsConnectionHandlerTest {
     @Test
     void onConnectionCloseMetrics() {
         // Arrange
-        final ErrorCondition errorCondition = new ErrorCondition(Symbol.valueOf(AmqpErrorCode.SERVER_BUSY_ERROR.toString()), "");
+        final ErrorCondition errorCondition = new ErrorCondition(Symbol
+            .valueOf(AmqpErrorCode.SERVER_BUSY_ERROR.toString()), "");
         Event openEvent = mock(Event.class);
         Event closeEventWithError = mock(Event.class);
         Event closeEventNoError = mock(Event.class);
@@ -303,8 +299,8 @@ public class WebSocketsConnectionHandlerTest {
         when(connectionNoError.getRemoteState()).thenReturn(EndpointState.ACTIVE);
 
         TestMeter meter = new TestMeter();
-        WebSocketsConnectionHandler handlerWithMetrics = new WebSocketsConnectionHandler(CONNECTION_ID, connectionOptions,
-            peerDetails, new AmqpMetricsProvider(meter, HOSTNAME, null));
+        WebSocketsConnectionHandler handlerWithMetrics = new WebSocketsConnectionHandler(CONNECTION_ID,
+            connectionOptions, peerDetails, new AmqpMetricsProvider(meter, HOSTNAME, null));
 
         handlerWithMetrics.onConnectionInit(openEvent);
         handlerWithMetrics.onConnectionInit(openEvent);
@@ -312,14 +308,20 @@ public class WebSocketsConnectionHandlerTest {
         handlerWithMetrics.onConnectionFinal(closeEventNoError);
 
         // Assert
-        List<TestMeasurement<Long>> closedConnections = meter.getCounters().get("messaging.az.amqp.client.connections.closed").getMeasurements();
+        List<TestMeasurement<Long>> closedConnections = meter
+            .getCounters()
+            .get("messaging.az.amqp.client.connections.closed")
+            .getMeasurements();
         assertEquals(2, closedConnections.size());
 
         assertEquals(1, closedConnections.get(0).getValue());
         assertEquals(1, closedConnections.get(1).getValue());
 
         assertEquals(HOSTNAME, closedConnections.get(0).getAttributes().get(ClientConstants.HOSTNAME_KEY));
-        assertEquals("com.microsoft:server-busy", closedConnections.get(0).getAttributes().get(ClientConstants.ERROR_CONDITION_KEY));
+        assertEquals("com.microsoft:server-busy", closedConnections
+            .get(0)
+            .getAttributes()
+            .get(ClientConstants.ERROR_CONDITION_KEY));
         assertEquals("ok", closedConnections.get(1).getAttributes().get(ClientConstants.ERROR_CONDITION_KEY));
     }
 }

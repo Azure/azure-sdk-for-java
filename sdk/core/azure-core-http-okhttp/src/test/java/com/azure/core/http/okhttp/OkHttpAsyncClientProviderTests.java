@@ -22,8 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class OkHttpAsyncClientProviderTests {
     @Test
     public void nullOptionsReturnsBaseClient() {
-        OkHttpAsyncHttpClient httpClient = (OkHttpAsyncHttpClient) new OkHttpAsyncClientProvider()
-            .createInstance(null);
+        OkHttpAsyncHttpClient httpClient = (OkHttpAsyncHttpClient) new OkHttpAsyncClientProvider().createInstance(null);
 
         ProxyOptions environmentProxy = ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration());
         if (environmentProxy == null) {

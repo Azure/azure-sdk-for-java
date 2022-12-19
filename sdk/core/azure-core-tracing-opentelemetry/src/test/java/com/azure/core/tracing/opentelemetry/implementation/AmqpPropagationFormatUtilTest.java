@@ -12,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
 public class AmqpPropagationFormatUtilTest {
 
     @Test
@@ -39,7 +38,8 @@ public class AmqpPropagationFormatUtilTest {
     @Test
     public void getValidSpanContext() {
         // Act
-        Context context = AmqpPropagationFormatUtil.extractContext("00-0af7651916cd43dd8448eb211c80319c-b9c7c989f97918e1-01", Context.NONE);
+        Context context = AmqpPropagationFormatUtil
+            .extractContext("00-0af7651916cd43dd8448eb211c80319c-b9c7c989f97918e1-01", Context.NONE);
 
         // Assert
         assertNotNull(context);

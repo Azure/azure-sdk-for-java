@@ -68,15 +68,20 @@ public class NamespacePropertiesEntryContent implements XmlSerializable<Namespac
 
         if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
             throw new IllegalStateException("Illegal start of XML deserialization. "
-                + "Expected 'XmlToken.START_ELEMENT' but it was: 'XmlToken." + xmlReader.currentToken() + "'.");
+                + "Expected 'XmlToken.START_ELEMENT' but it was: 'XmlToken."
+                + xmlReader.currentToken()
+                + "'.");
         }
 
         QName qName = xmlReader.getElementName();
-        if (!"content".equals(qName.getLocalPart())
-            || !"http://www.w3.org/2005/Atom".equals(qName.getNamespaceURI())) {
+        if (!"content".equals(qName.getLocalPart()) || !"http://www.w3.org/2005/Atom".equals(qName.getNamespaceURI())) {
             throw new IllegalStateException("Expected XML element to be 'content' in namespace "
                 + "'http://www.w3.org/2005/Atom' but it was: "
-                + "{'" + qName.getNamespaceURI() + "'}'" + qName.getLocalPart() + "'.");
+                + "{'"
+                + qName.getNamespaceURI()
+                + "'}'"
+                + qName.getLocalPart()
+                + "'.");
         }
 
         String type = xmlReader.getStringAttribute(null, "type");

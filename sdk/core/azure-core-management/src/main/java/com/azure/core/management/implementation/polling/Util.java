@@ -23,6 +23,7 @@ class Util {
         MalformedUrlException(String message) {
             super(message);
         }
+
         MalformedUrlException(String message, Throwable cause) {
             super(message, cause);
         }

@@ -36,7 +36,8 @@ import java.util.Optional;
  * requests.
  */
 public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
-    private static final StartSpanOptions DEFAULT_OPTIONS = new StartSpanOptions(com.azure.core.util.tracing.SpanKind.INTERNAL);
+    private static final StartSpanOptions DEFAULT_OPTIONS = new StartSpanOptions(
+        com.azure.core.util.tracing.SpanKind.INTERNAL);
     private static final String SPAN_KIND_KEY = "span-kind";
     private static final String START_TIME_KEY = "span-start-time";
     private final Tracer tracer;
@@ -67,7 +68,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     static final String PEER_ENDPOINT = "peer.address";
 
     private static final ClientLogger LOGGER = new ClientLogger(OpenTelemetryTracer.class);
-    private static final AutoCloseable NOOP_CLOSEABLE = () -> { };
+    private static final AutoCloseable NOOP_CLOSEABLE = () -> {};
     private static final SpanKind DEFAULT_SHARED_SPAN_BUILDER_KIND = SpanKind.CLIENT;
     private static final String SUPPRESSED_SPAN_FLAG = "suppressed-span-flag";
     private static final String CLIENT_METHOD_CALL_FLAG = "client-method-call-flag";
@@ -94,8 +95,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         }
 
         context = unsuppress(context);
-        SpanBuilder spanBuilder = createSpanBuilder(spanName, null, spanKind,
-            options.getAttributes(), context);
+        SpanBuilder spanBuilder = createSpanBuilder(spanName, null, spanKind, options.getAttributes(), context);
 
         return startSpanInternal(spanBuilder, isClientCall(spanKind), null, context);
     }
@@ -122,7 +122,8 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
                 if (spanBuilder == null) {
                     // we can't return context here, because caller would not know that span was not created.
                     // it will add attributes or events to parent span and end parent span.
-                    LOGGER.atWarning()
+                    LOGGER
+                        .atWarning()
                         .addKeyValue("spanName", spanName)
                         .addKeyValue("processKind", processKind)
                         .log("Start span is called without builder on the context, creating default builder.");
@@ -149,7 +150,8 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
                 //  closed in the same thread where it was started to prevent leaking the context.
                 return context.addData(SCOPE_KEY, makeSpanCurrent(context));
             default:
-                LOGGER.atWarning()
+                LOGGER
+                    .atWarning()
                     .addKeyValue("spanName", spanName)
                     .addKeyValue("processKind", processKind)
                     .log("Start span is called with unknown process kind, suppressing the span.");
@@ -259,7 +261,8 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      */
     @Override
     public Context getSharedSpanBuilder(String spanName, Context context) {
-        com.azure.core.util.tracing.SpanKind spanKind = getOrNull(context, SPAN_KIND_KEY, com.azure.core.util.tracing.SpanKind.class);
+        com.azure.core.util.tracing.SpanKind spanKind = getOrNull(context, SPAN_KIND_KEY,
+            com.azure.core.util.tracing.SpanKind.class);
         if (spanKind == null) {
             spanKind = com.azure.core.util.tracing.SpanKind.CLIENT;
         }
@@ -295,14 +298,18 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     @Override
     @SuppressWarnings("deprecation")
     public void addEvent(String eventName, Map<String, Object> traceEventAttributes, OffsetDateTime timestamp) {
-        addEvent(eventName, traceEventAttributes, timestamp, new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current()));
+        addEvent(eventName, traceEventAttributes, timestamp, new Context(PARENT_TRACE_CONTEXT_KEY,
+            io.opentelemetry.context.Context.current()));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void addEvent(String eventName, Map<String, Object> traceEventAttributes, OffsetDateTime timestamp, Context context) {
+    public void addEvent(String eventName,
+                         Map<String, Object> traceEventAttributes,
+                         OffsetDateTime timestamp,
+                         Context context) {
         Objects.requireNonNull(eventName, "'eventName' cannot be null.");
         Span currentSpan = getSpanOrNull(context);
 
@@ -312,15 +319,15 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         }
 
         if (timestamp == null) {
-            currentSpan.addEvent(
-                eventName,
-                traceEventAttributes == null ? Attributes.empty() : convertToOtelAttributes(traceEventAttributes));
+            currentSpan
+                .addEvent(eventName, traceEventAttributes == null
+                    ? Attributes.empty()
+                    : convertToOtelAttributes(traceEventAttributes));
         } else {
-            currentSpan.addEvent(
-                eventName,
-                traceEventAttributes == null ? Attributes.empty() : convertToOtelAttributes(traceEventAttributes),
-                timestamp.toInstant()
-            );
+            currentSpan
+                .addEvent(eventName, traceEventAttributes == null
+                    ? Attributes.empty()
+                    : convertToOtelAttributes(traceEventAttributes), timestamp.toInstant());
         }
     }
 
@@ -333,9 +340,9 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * @return A {@link Context} with created {@link Span}.
      */
     private Context startSpanInternal(SpanBuilder spanBuilder,
-        boolean isClientMethod,
-        java.util.function.BiConsumer<Span, Context> setAttributes,
-        Context context) {
+                                      boolean isClientMethod,
+                                      java.util.function.BiConsumer<Span, Context> setAttributes,
+                                      Context context) {
         Objects.requireNonNull(spanBuilder, "'spanBuilder' cannot be null.");
         Objects.requireNonNull(context, "'context' cannot be null.");
 
@@ -358,7 +365,8 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         }
 
         return context
-            .addData(PARENT_TRACE_CONTEXT_KEY, getTraceContextOrDefault(context, io.opentelemetry.context.Context.current()).with(span));
+            .addData(PARENT_TRACE_CONTEXT_KEY, getTraceContextOrDefault(context, io.opentelemetry.context.Context
+                .current()).with(span));
     }
 
     /**
@@ -374,20 +382,20 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      */
     @SuppressWarnings("unchecked")
     private SpanBuilder createSpanBuilder(String spanName,
-        SpanContext remoteParentContext,
-        SpanKind spanKind,
-        Map<String, Object> beforeSamplingAttributes,
-        Context context) {
+                                          SpanContext remoteParentContext,
+                                          SpanKind spanKind,
+                                          Map<String, Object> beforeSamplingAttributes,
+                                          Context context) {
         String spanNameKey = getOrNull(context, USER_SPAN_NAME_KEY, String.class);
 
         if (spanNameKey == null) {
             spanNameKey = spanName;
         }
 
-        SpanBuilder spanBuilder = tracer.spanBuilder(spanNameKey)
-            .setSpanKind(spanKind);
+        SpanBuilder spanBuilder = tracer.spanBuilder(spanNameKey).setSpanKind(spanKind);
 
-        io.opentelemetry.context.Context parentContext = getTraceContextOrDefault(context, io.opentelemetry.context.Context.current());
+        io.opentelemetry.context.Context parentContext = getTraceContextOrDefault(context,
+            io.opentelemetry.context.Context.current());
         // if remote parent is provided, it has higher priority
         if (remoteParentContext != null) {
             spanBuilder.setParent(parentContext.with(Span.wrap(remoteParentContext)));
@@ -398,8 +406,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         // if some attributes are provided, set them
         if (!CoreUtils.isNullOrEmpty(beforeSamplingAttributes)) {
             Attributes otelAttributes = convertToOtelAttributes(beforeSamplingAttributes);
-            otelAttributes.forEach(
-                (key, value) -> spanBuilder.setAttribute((AttributeKey<Object>) key, value));
+            otelAttributes.forEach((key, value) -> spanBuilder.setAttribute((AttributeKey<Object>) key, value));
         }
 
         return spanBuilder;
@@ -536,21 +543,18 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         return (T) result;
     }
 
-
     /**
      * Returns OpenTelemetry trace context from given com.azure.core.Context under PARENT_TRACE_CONTEXT_KEY
      * or PARENT_SPAN_KEY (for backward-compatibility) or default value.
      */
     @SuppressWarnings("deprecation")
-    private static io.opentelemetry.context.Context getTraceContextOrDefault(Context azContext, io.opentelemetry.context.Context defaultContext) {
-        io.opentelemetry.context.Context traceContext = getOrNull(azContext,
-            PARENT_TRACE_CONTEXT_KEY,
+    private static io.opentelemetry.context.Context getTraceContextOrDefault(Context azContext,
+                                                                             io.opentelemetry.context.Context defaultContext) {
+        io.opentelemetry.context.Context traceContext = getOrNull(azContext, PARENT_TRACE_CONTEXT_KEY,
             io.opentelemetry.context.Context.class);
 
         if (traceContext == null) {
-            Span parentSpan = getOrNull(azContext,
-                PARENT_SPAN_KEY,
-                Span.class);
+            Span parentSpan = getOrNull(azContext, PARENT_SPAN_KEY, Span.class);
 
             if (parentSpan != null) {
                 traceContext = io.opentelemetry.context.Context.current().with(parentSpan);
@@ -569,14 +573,11 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
             return null;
         }
 
-        io.opentelemetry.context.Context traceContext = getOrNull(azContext,
-            PARENT_TRACE_CONTEXT_KEY,
+        io.opentelemetry.context.Context traceContext = getOrNull(azContext, PARENT_TRACE_CONTEXT_KEY,
             io.opentelemetry.context.Context.class);
 
         if (traceContext == null) {
-            Span parentSpan = getOrNull(azContext,
-                PARENT_SPAN_KEY,
-                Span.class);
+            Span parentSpan = getOrNull(azContext, PARENT_SPAN_KEY, Span.class);
 
             if (parentSpan != null) {
                 return parentSpan;

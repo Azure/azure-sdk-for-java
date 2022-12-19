@@ -28,7 +28,8 @@ public class TransportHandler extends BaseHandler {
         final Transport transport = event.getTransport();
         final Connection connection = event.getConnection();
 
-        logger.atInfo()
+        logger
+            .atInfo()
             .addKeyValue(HOSTNAME_KEY, connection != null ? connection.getHostname() : NOT_APPLICABLE)
             .log("onTransportClosed");
 

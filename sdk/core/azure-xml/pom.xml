@@ -50,6 +50,8 @@
       --add-opens com.azure.xml/com.azure.xml=ALL-UNNAMED
       --add-opens com.azure.xml/com.azure.xml.contract=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+
+    <spotless.disabled>false</spotless.disabled>
   </properties>
 
   <developers>

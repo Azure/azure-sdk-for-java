@@ -19,10 +19,9 @@ public final class JacksonJsonSerializerBuilder {
      * default Jackson values so that JacksonJsonSerializer has less friction when this default is used.
      */
     private static final ObjectMapperShim DEFAULT_MAPPER = ObjectMapperShim
-        .createJsonMapper(ObjectMapperShim.createSimpleMapper(),
-                  (mapper, innerMapper) -> mapper
-                    .setSerializationInclusion(JsonInclude.Include.USE_DEFAULTS)
-                    .setDefaultVisibility(JsonAutoDetect.Value.defaultVisibility()));
+        .createJsonMapper(ObjectMapperShim.createSimpleMapper(), (mapper, innerMapper) -> mapper
+            .setSerializationInclusion(JsonInclude.Include.USE_DEFAULTS)
+            .setDefaultVisibility(JsonAutoDetect.Value.defaultVisibility()));
 
     private ObjectMapperShim objectMapper;
 

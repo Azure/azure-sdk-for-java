@@ -134,7 +134,8 @@ public class VertxAsyncHttpClientProviderTests {
             providers.add(mockVertxProvider);
 
             Class<?> providerClass = VertxProvider.class;
-            serviceLoader.when(() -> ServiceLoader.load(providerClass, providerClass.getClassLoader()))
+            serviceLoader
+                .when(() -> ServiceLoader.load(providerClass, providerClass.getClassLoader()))
                 .thenReturn(mockServiceLoader);
 
             Mockito.when(mockServiceLoader.iterator()).thenReturn(providers.iterator());
@@ -167,7 +168,8 @@ public class VertxAsyncHttpClientProviderTests {
             providers.add(mockVertxProviderB);
 
             Class<?> providerClass = VertxProvider.class;
-            serviceLoader.when(() -> ServiceLoader.load(providerClass, providerClass.getClassLoader()))
+            serviceLoader
+                .when(() -> ServiceLoader.load(providerClass, providerClass.getClassLoader()))
                 .thenReturn(mockServiceLoader);
 
             Mockito.when(mockServiceLoader.iterator()).thenReturn(providers.iterator());

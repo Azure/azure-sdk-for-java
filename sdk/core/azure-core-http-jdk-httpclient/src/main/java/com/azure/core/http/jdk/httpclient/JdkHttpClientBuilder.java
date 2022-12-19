@@ -45,13 +45,7 @@ public class JdkHttpClientBuilder {
 
     static {
         TreeSet<String> treeSet = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        treeSet.addAll(Set.of(
-            "connection",
-            "content-length",
-            "expect",
-            "host",
-            "upgrade"
-        ));
+        treeSet.addAll(Set.of("connection", "content-length", "expect", "host", "upgrade"));
         DEFAULT_RESTRICTED_HEADERS = Collections.unmodifiableSet(treeSet);
     }
 
@@ -66,8 +60,7 @@ public class JdkHttpClientBuilder {
     /**
      * Creates JdkHttpClientBuilder.
      */
-    public JdkHttpClientBuilder() {
-    }
+    public JdkHttpClientBuilder() {}
 
     /**
      * Creates JdkHttpClientBuilder from the builder of an existing {@link java.net.http.HttpClient.Builder}.
@@ -185,15 +178,14 @@ public class JdkHttpClientBuilder {
         }
 
         if (buildProxyOptions != null) {
-            httpClientBuilder = httpClientBuilder.proxy(new JdkHttpClientProxySelector(
-                buildProxyOptions.getType().toProxyType(),
-                buildProxyOptions.getAddress(),
-                buildProxyOptions.getNonProxyHosts()));
+            httpClientBuilder = httpClientBuilder
+                .proxy(new JdkHttpClientProxySelector(buildProxyOptions.getType().toProxyType(), buildProxyOptions
+                    .getAddress(), buildProxyOptions.getNonProxyHosts()));
 
             if (buildProxyOptions.getUsername() != null) {
                 httpClientBuilder
-                    .authenticator(new ProxyAuthenticator(buildProxyOptions.getUsername(),
-                        buildProxyOptions.getPassword()));
+                    .authenticator(new ProxyAuthenticator(buildProxyOptions.getUsername(), buildProxyOptions
+                        .getPassword()));
             }
         }
         return new JdkHttpClient(httpClientBuilder.build(), Collections.unmodifiableSet(getRestrictedHeaders()));
@@ -210,14 +202,14 @@ public class JdkHttpClientBuilder {
 
     private Set<String> getAllowRestrictedHeaders() {
         Properties properties = getNetworkProperties();
-        String[] allowRestrictedHeadersNetProperties =
-            properties.getProperty(JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS, "").split(",");
+        String[] allowRestrictedHeadersNetProperties = properties
+            .getProperty(JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS, "")
+            .split(",");
 
         // Read all allowed restricted headers from configuration
-        Configuration config = (this.configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
-        String[] allowRestrictedHeadersSystemProperties = config.get(JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS, "")
+        Configuration config = (this.configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        String[] allowRestrictedHeadersSystemProperties = config
+            .get(JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS, "")
             .split(",");
 
         Set<String> allowRestrictedHeaders = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);

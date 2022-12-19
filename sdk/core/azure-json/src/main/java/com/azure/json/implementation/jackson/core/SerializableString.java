@@ -22,8 +22,7 @@ import java.nio.ByteBuffer;
  * 
  * @see com.azure.json.implementation.jackson.core.io.SerializedString
  */
-public interface SerializableString
-{
+public interface SerializableString {
     /**
      * Returns unquoted String that this object represents (and offers
      * serialized forms for)
@@ -31,7 +30,7 @@ public interface SerializableString
      * @return Unquoted String
      */
     String getValue();
-    
+
     /**
      * Returns length of the (unquoted) String as characters.
      * Functionally equivalent to:
@@ -48,7 +47,7 @@ public interface SerializableString
     /* Accessors for byte sequences
     /**********************************************************
      */
-    
+
     /**
      * Returns JSON quoted form of the String, as character array.
      * Result can be embedded as-is in textual JSON as property name or JSON String.
@@ -117,7 +116,7 @@ public interface SerializableString
      * @return Number of characters appended, if successful, otherwise -1
      */
     int appendQuoted(char[] buffer, int offset);
-    
+
     /**
      * Method that will append unquoted ('raw') UTF-8 bytes of this String into given
      * buffer. Functionally equivalent to:

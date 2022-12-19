@@ -68,7 +68,9 @@ class VertxAsyncHttpClient implements HttpClient {
             HttpClientRequest vertxHttpRequest = requestResult.result();
             vertxHttpRequest.exceptionHandler(sink::error);
 
-            request.getHeaders().stream()
+            request
+                .getHeaders()
+                .stream()
                 .forEach(header -> vertxHttpRequest.putHeader(header.getName(), header.getValuesList()));
 
             if (request.getHeaders().get("Content-Length") == null) {
@@ -109,7 +111,8 @@ class VertxAsyncHttpClient implements HttpClient {
                     });
                 }
 
-                FluxUtil.collectBytesFromNetworkResponse(requestBody, request.getHeaders())
+                FluxUtil
+                    .collectBytesFromNetworkResponse(requestBody, request.getHeaders())
                     .subscribeOn(scheduler)
                     .subscribe(bytes -> vertxHttpRequest.write(Buffer.buffer(Unpooled.wrappedBuffer(bytes))),
                         sink::error, vertxHttpRequest::end);

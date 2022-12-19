@@ -6,5 +6,4 @@ package com.azure.core.amqp.experimental;
 /**
  * Stub class so the package isn't empty.
  */
-public class Stub {
-}
+public class Stub {}

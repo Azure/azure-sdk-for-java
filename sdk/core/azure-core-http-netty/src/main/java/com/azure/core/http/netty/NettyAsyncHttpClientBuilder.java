@@ -184,8 +184,9 @@ public class NettyAsyncHttpClientBuilder {
                     ? null
                     : Pattern.compile(buildProxyOptions.getNonProxyHosts(), Pattern.CASE_INSENSITIVE);
             } else {
-                nettyHttpClient = nettyHttpClient.proxy(proxy ->
-                    proxy.type(toReactorNettyProxyType(buildProxyOptions.getType()))
+                nettyHttpClient = nettyHttpClient
+                    .proxy(proxy -> proxy
+                        .type(toReactorNettyProxyType(buildProxyOptions.getType()))
                         .address(buildProxyOptions.getAddress())
                         .username(buildProxyOptions.getUsername())
                         .password(ignored -> buildProxyOptions.getPassword())
@@ -199,10 +200,10 @@ public class NettyAsyncHttpClientBuilder {
             }
         }
 
-        return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy,
-            getTimeoutMillis(readTimeout, DEFAULT_READ_TIMEOUT), getTimeoutMillis(writeTimeout, DEFAULT_WRITE_TIMEOUT),
-            getTimeoutMillis(responseTimeout, DEFAULT_RESPONSE_TIMEOUT), addProxyHandler, buildProxyOptions,
-            nonProxyHostsPattern, handler, proxyChallengeHolder);
+        return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy, getTimeoutMillis(readTimeout,
+            DEFAULT_READ_TIMEOUT), getTimeoutMillis(writeTimeout, DEFAULT_WRITE_TIMEOUT), getTimeoutMillis(
+                responseTimeout, DEFAULT_RESPONSE_TIMEOUT), addProxyHandler, buildProxyOptions, nonProxyHostsPattern,
+            handler, proxyChallengeHolder);
     }
 
     /**
@@ -449,12 +450,10 @@ public class NettyAsyncHttpClientBuilder {
             case SOCKS5:
                 return ProxyProvider.Proxy.SOCKS5;
             default:
-                throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Unknown 'ProxyOptions.Type' enum value"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("Unknown 'ProxyOptions.Type' enum value"));
         }
     }
-
-
 
     /*
      * Returns the timeout in milliseconds to use based on the passed Duration and default timeout.

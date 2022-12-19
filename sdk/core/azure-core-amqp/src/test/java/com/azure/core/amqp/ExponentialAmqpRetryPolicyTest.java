@@ -13,7 +13,8 @@ import java.time.Duration;
 
 public class ExponentialAmqpRetryPolicyTest {
     private final AmqpErrorContext errorContext = new AmqpErrorContext("test-namespace");
-    private final AmqpException exception = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "error message", errorContext);
+    private final AmqpException exception = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR,
+        "error message", errorContext);
     private final Duration minBackoff = Duration.ofSeconds(15);
     private final Duration maxBackoff = Duration.ofSeconds(60);
     private final int retryAttempts = 5;

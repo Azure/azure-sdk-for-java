@@ -37,8 +37,7 @@ public class UserData implements Cloneable {
     @JsonProperty("about")
     private String about;
 
-
-    public UserData() { }
+    public UserData() {}
 
     public String getId() {
         return id;

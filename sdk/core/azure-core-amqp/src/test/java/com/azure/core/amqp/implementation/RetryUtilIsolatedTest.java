@@ -51,14 +51,14 @@ public class RetryUtilIsolatedTest {
         final AtomicInteger resubscribe = new AtomicInteger();
         final TestPublisher<AmqpTransportType> singleItem = TestPublisher.create();
 
-        final Flux<AmqpTransportType> flux = singleItem.flux()
-            .doOnSubscribe(s -> resubscribe.incrementAndGet());
+        final Flux<AmqpTransportType> flux = singleItem.flux().doOnSubscribe(s -> resubscribe.incrementAndGet());
 
         final VirtualTimeScheduler virtualTimeScheduler = VirtualTimeScheduler.create();
         try {
             // Act & Assert
-            StepVerifier.withVirtualTime(() -> RetryUtil.withRetry(flux, options, timeoutMessage),
-                    () -> virtualTimeScheduler, 1)
+            StepVerifier
+                .withVirtualTime(() -> RetryUtil.withRetry(flux, options, timeoutMessage), () -> virtualTimeScheduler,
+                    1)
                 .expectSubscription()
                 .then(() -> singleItem.next(AmqpTransportType.AMQP_WEB_SOCKETS))
                 .expectNext(AmqpTransportType.AMQP_WEB_SOCKETS)
@@ -73,10 +73,9 @@ public class RetryUtilIsolatedTest {
     }
 
     static Stream<Throwable> withNonTransientError() {
-        return Stream.of(
-            new AmqpException(false, "Test-exception", new AmqpErrorContext("test-ns")),
-            new IllegalStateException("Some illegal State")
-        );
+        return Stream
+            .of(new AmqpException(false, "Test-exception", new AmqpErrorContext("test-ns")), new IllegalStateException(
+                "Some illegal State"));
     }
 
     @ParameterizedTest
@@ -92,17 +91,17 @@ public class RetryUtilIsolatedTest {
             .setMaxRetries(1)
             .setTryTimeout(timeout);
 
-        final Flux<Integer> stream = Flux.concat(
-            Flux.defer(() -> Flux.just(0, 1, 2)),
-            Flux.defer(() -> Flux.error(nonTransientError)),
-            Flux.defer(() -> Flux.just(3, 4)));
+        final Flux<Integer> stream = Flux
+            .concat(Flux.defer(() -> Flux.just(0, 1, 2)), Flux.defer(() -> Flux.error(nonTransientError)), Flux
+                .defer(() -> Flux.just(3, 4)));
 
         final VirtualTimeScheduler virtualTimeScheduler = VirtualTimeScheduler.create(true);
 
         // Act & Assert
         try {
-            StepVerifier.withVirtualTime(() -> RetryUtil.withRetry(stream, options, timeoutMessage),
-                    () -> virtualTimeScheduler, 4)
+            StepVerifier
+                .withVirtualTime(() -> RetryUtil.withRetry(stream, options, timeoutMessage), () -> virtualTimeScheduler,
+                    4)
                 .expectNext(0, 1, 2)
                 .expectErrorMatches(error -> error.equals(nonTransientError))
                 .verify();

@@ -48,12 +48,15 @@ public final class TestUtils {
      * @param actualOffset Starting offset to begin comparing in the actual array.
      * @param length Amount of bytes to compare.
      */
-    public static void assertArraysEqual(byte[] expected, int expectedOffset, byte[] actual,
-        int actualOffset, int length) {
+    public static void assertArraysEqual(byte[] expected,
+                                         int expectedOffset,
+                                         byte[] actual,
+                                         int actualOffset,
+                                         int length) {
         // Use ByteBuffer comparison as it provides an optimized byte array comparison.
         // In Java 9+ there is Arrays.mismatch that provides this functionality directly, but Java 8 needs support.
-        assertByteBuffersEqual(ByteBuffer.wrap(expected, expectedOffset, length),
-            ByteBuffer.wrap(actual, actualOffset, length));
+        assertByteBuffersEqual(ByteBuffer.wrap(expected, expectedOffset, length), ByteBuffer
+            .wrap(actual, actualOffset, length));
     }
 
     /**
@@ -83,6 +86,5 @@ public final class TestUtils {
         }
     }
 
-    private TestUtils() {
-    }
+    private TestUtils() {}
 }

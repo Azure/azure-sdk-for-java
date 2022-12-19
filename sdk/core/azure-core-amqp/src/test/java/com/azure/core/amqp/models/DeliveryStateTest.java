@@ -24,10 +24,12 @@ public class DeliveryStateTest {
     @Test
     public void values() {
         // Arrange
-        final DeliveryState[] expected = new DeliveryState[] {
-            DeliveryState.ACCEPTED, DeliveryState.MODIFIED, DeliveryState.RECEIVED, DeliveryState.REJECTED,
-            DeliveryState.RELEASED, DeliveryState.TRANSACTIONAL
-        };
+        final DeliveryState[] expected = new DeliveryState[] { DeliveryState.ACCEPTED,
+            DeliveryState.MODIFIED,
+            DeliveryState.RECEIVED,
+            DeliveryState.REJECTED,
+            DeliveryState.RELEASED,
+            DeliveryState.TRANSACTIONAL };
 
         // Act
         final Collection<DeliveryState> actual = DeliveryState.values();

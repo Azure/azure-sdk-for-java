@@ -62,14 +62,16 @@ public class JdkHttpClientTests {
     private static final byte[] SHORT_BODY = "hi there".getBytes(StandardCharsets.UTF_8);
     private static final byte[] LONG_BODY = createLongBody();
 
-    private static final StepVerifierOptions EMPTY_INITIAL_REQUEST_OPTIONS = StepVerifierOptions.create()
+    private static final StepVerifierOptions EMPTY_INITIAL_REQUEST_OPTIONS = StepVerifierOptions
+        .create()
         .initialRequest(0);
 
     private static WireMockServer server;
 
     @BeforeAll
     public static void beforeClass() {
-        server = new WireMockServer(WireMockConfiguration.options()
+        server = new WireMockServer(WireMockConfiguration
+            .options()
             .dynamicPort()
             .disableRequestJournal()
             .gzipDisabled(true));
@@ -129,7 +131,8 @@ public class JdkHttpClientTests {
         Mono<byte[]> response = getResponse("/short").cache().flatMap(HttpResponse::getBodyAsByteArray);
 
         // Subscription:1
-        StepVerifier.create(response)
+        StepVerifier
+            .create(response)
             .assertNext(Assertions::assertNotNull)
             .expectComplete()
             .verify(Duration.ofSeconds(20));
@@ -137,7 +140,8 @@ public class JdkHttpClientTests {
         // Subscription:2
         // Getting the bytes of an JDK HttpClient response closes the stream on first read.
         // Subsequent reads will return an IllegalStateException (from reactor) due to the stream being closed.
-        StepVerifier.create(response)
+        StepVerifier
+            .create(response)
             .expectNextCount(0)
             .expectError(IllegalStateException.class)
             .verify(Duration.ofSeconds(20));
@@ -151,7 +155,8 @@ public class JdkHttpClientTests {
         Mono<byte[]> responseBody = response.getBodyAsByteArray();
 
         // Subscription:1
-        StepVerifier.create(responseBody)
+        StepVerifier
+            .create(responseBody)
             .assertNext(Assertions::assertNotNull)
             .expectComplete()
             .verify(Duration.ofSeconds(20));
@@ -159,7 +164,8 @@ public class JdkHttpClientTests {
         // Subscription:2
         // Getting the bytes of an JDK HttpClient response closes the stream on first read.
         // Subsequent reads will return an IOException due to the stream being closed.
-        StepVerifier.create(responseBody)
+        StepVerifier
+            .create(responseBody)
             .expectNextCount(0)
             .expectError(IOException.class)
             .verify(Duration.ofSeconds(20));
@@ -177,14 +183,10 @@ public class JdkHttpClientTests {
 
     @Test
     public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() {
-        StepVerifier.create(getResponse("/error")
-                .flatMap(response -> {
-                    assertEquals(500, response.getStatusCode());
-                    return response.getBodyAsString();
-                }))
-            .expectNext("error")
-            .expectComplete()
-            .verify(Duration.ofSeconds(20));
+        StepVerifier.create(getResponse("/error").flatMap(response -> {
+            assertEquals(500, response.getStatusCode());
+            return response.getBodyAsString();
+        })).expectNext("error").expectComplete().verify(Duration.ofSeconds(20));
     }
 
     @Test
@@ -198,7 +200,8 @@ public class JdkHttpClientTests {
 
     @Test
     public void testFlowableBackpressure() {
-        StepVerifier.create(getResponse("/long").flatMapMany(HttpResponse::getBody), EMPTY_INITIAL_REQUEST_OPTIONS)
+        StepVerifier
+            .create(getResponse("/long").flatMapMany(HttpResponse::getBody), EMPTY_INITIAL_REQUEST_OPTIONS)
             .expectNextCount(0)
             .thenRequest(1)
             .expectNextCount(1)
@@ -216,9 +219,7 @@ public class JdkHttpClientTests {
             .setHeader("Content-Length", "132")
             .setBody(Flux.error(new RuntimeException("boo")));
 
-        StepVerifier.create(client.send(request))
-            .expectErrorMessage("boo")
-            .verify();
+        StepVerifier.create(client.send(request)).expectErrorMessage("boo").verify();
     }
 
     @Test
@@ -228,14 +229,12 @@ public class JdkHttpClientTests {
         ConcurrentLinkedDeque<Long> progress = new ConcurrentLinkedDeque<>();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
             .setHeader("Content-Length", String.valueOf(SHORT_BODY.length + LONG_BODY.length))
-            .setBody(Flux.just(ByteBuffer.wrap(LONG_BODY))
-                .concatWith(Flux.just(ByteBuffer.wrap(SHORT_BODY))));
+            .setBody(Flux.just(ByteBuffer.wrap(LONG_BODY)).concatWith(Flux.just(ByteBuffer.wrap(SHORT_BODY))));
 
-        Contexts contexts = Contexts.with(Context.NONE).setHttpRequestProgressReporter(ProgressReporter.withProgressListener(p -> progress.add(p)));
-        StepVerifier.create(client.send(request, contexts.getContext()))
-            .expectNextCount(1)
-            .expectComplete()
-            .verify();
+        Contexts contexts = Contexts
+            .with(Context.NONE)
+            .setHttpRequestProgressReporter(ProgressReporter.withProgressListener(p -> progress.add(p)));
+        StepVerifier.create(client.send(request, contexts.getContext())).expectNextCount(1).expectComplete().verify();
 
         List<Long> progressList = progress.stream().collect(Collectors.toList());
         assertEquals(LONG_BODY.length, progressList.get(0));
@@ -249,10 +248,11 @@ public class JdkHttpClientTests {
         ConcurrentLinkedDeque<Long> progress = new ConcurrentLinkedDeque<>();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
             .setHeader("Content-Length", String.valueOf(SHORT_BODY.length + LONG_BODY.length))
-            .setBody(Flux.just(ByteBuffer.wrap(LONG_BODY))
-                .concatWith(Flux.just(ByteBuffer.wrap(SHORT_BODY))));
+            .setBody(Flux.just(ByteBuffer.wrap(LONG_BODY)).concatWith(Flux.just(ByteBuffer.wrap(SHORT_BODY))));
 
-        Contexts contexts = Contexts.with(Context.NONE).setHttpRequestProgressReporter(ProgressReporter.withProgressListener(p -> progress.add(p)));
+        Contexts contexts = Contexts
+            .with(Context.NONE)
+            .setHttpRequestProgressReporter(ProgressReporter.withProgressListener(p -> progress.add(p)));
         HttpResponse response = client.sendSync(request, contexts.getContext());
         assertEquals(200, response.getStatusCode());
         List<Long> progressList = progress.stream().collect(Collectors.toList());
@@ -262,7 +262,8 @@ public class JdkHttpClientTests {
 
     @Test
     public void testFileUploadSync() throws IOException {
-        WireMockServer local = new WireMockServer(WireMockConfiguration.options()
+        WireMockServer local = new WireMockServer(WireMockConfiguration
+            .options()
             .dynamicPort()
             .maxRequestJournalEntries(1)
             .gzipDisabled(true));
@@ -275,8 +276,7 @@ public class JdkHttpClientTests {
         BinaryData body = BinaryData.fromFile(tempFile, 1L, 42L);
 
         HttpClient client = new JdkHttpClientProvider().createInstance();
-        HttpRequest request = new HttpRequest(HttpMethod.POST, url(local, "/shortPost"))
-            .setBody(body);
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url(local, "/shortPost")).setBody(body);
 
         HttpResponse response = client.sendSync(request, Context.NONE);
         assertEquals(200, response.getStatusCode());
@@ -287,7 +287,8 @@ public class JdkHttpClientTests {
 
     @Test
     public void testStreamUploadAsync() throws IOException {
-        WireMockServer local = new WireMockServer(WireMockConfiguration.options()
+        WireMockServer local = new WireMockServer(WireMockConfiguration
+            .options()
             .dynamicPort()
             .maxRequestJournalEntries(1)
             .gzipDisabled(true));
@@ -303,13 +304,10 @@ public class JdkHttpClientTests {
             .setHeader("Content-Length", String.valueOf(SHORT_BODY.length))
             .setBody(body);
 
-        StepVerifier.create(client.send(request))
-            .consumeNextWith(r -> {
-                assertEquals(200, r.getStatusCode());
-                local.verify(postRequestedFor(urlEqualTo("/post")).withRequestBody(binaryEqualTo(SHORT_BODY)));
-            })
-            .expectComplete()
-            .verify();
+        StepVerifier.create(client.send(request)).consumeNextWith(r -> {
+            assertEquals(200, r.getStatusCode());
+            local.verify(postRequestedFor(urlEqualTo("/post")).withRequestBody(binaryEqualTo(SHORT_BODY)));
+        }).expectComplete().verify();
 
         local.shutdown();
     }
@@ -321,7 +319,8 @@ public class JdkHttpClientTests {
             .setHeader("Content-Length", "132")
             .setBody(Flux.error(new RuntimeException("boo")));
 
-        UncheckedIOException thrown = assertThrows(UncheckedIOException.class, () -> client.sendSync(request, Context.NONE));
+        UncheckedIOException thrown = assertThrows(UncheckedIOException.class, () -> client
+            .sendSync(request, Context.NONE));
         assertEquals("boo", thrown.getCause().getMessage());
     }
 
@@ -332,15 +331,14 @@ public class JdkHttpClientTests {
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
             .setHeader("Content-Length", String.valueOf(contentChunk.length() * (repetitions + 1)))
-            .setBody(Flux.just(contentChunk)
+            .setBody(Flux
+                .just(contentChunk)
                 .repeat(repetitions)
                 .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
                 .concatWith(Flux.error(new RuntimeException("boo"))));
 
         try {
-            StepVerifier.create(client.send(request))
-                .expectErrorMessage("boo")
-                .verify(Duration.ofSeconds(10));
+            StepVerifier.create(client.send(request)).expectErrorMessage("boo").verify(Duration.ofSeconds(10));
         } catch (Exception ex) {
             assertEquals("boo", ex.getMessage());
         }
@@ -353,12 +351,14 @@ public class JdkHttpClientTests {
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
             .setHeader("Content-Length", String.valueOf(contentChunk.length() * (repetitions + 1)))
-            .setBody(Flux.just(contentChunk)
+            .setBody(Flux
+                .just(contentChunk)
                 .repeat(repetitions)
                 .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
                 .concatWith(Flux.error(new RuntimeException("boo"))));
 
-        UncheckedIOException thrown = assertThrows(UncheckedIOException.class, () -> client.sendSync(request, Context.NONE));
+        UncheckedIOException thrown = assertThrows(UncheckedIOException.class, () -> client
+            .sendSync(request, Context.NONE));
         assertEquals("boo", thrown.getCause().getMessage());
     }
 
@@ -368,7 +368,8 @@ public class JdkHttpClientTests {
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, "/connectionClose"));
 
-        StepVerifier.create(client.send(request).flatMap(HttpResponse::getBodyAsByteArray))
+        StepVerifier
+            .create(client.send(request).flatMap(HttpResponse::getBodyAsByteArray))
             .verifyError(IOException.class);
     }
 
@@ -385,7 +386,8 @@ public class JdkHttpClientTests {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new JdkHttpClientProvider().createInstance();
 
-        Mono<Long> numBytesMono = Flux.range(1, numRequests)
+        Mono<Long> numBytesMono = Flux
+            .range(1, numRequests)
             .parallel(25)
             .runOn(Schedulers.boundedElastic())
             .flatMap(ignored -> doRequest(client, "/long")
@@ -395,7 +397,8 @@ public class JdkHttpClientTests {
             .map(buffer -> (long) buffer.length)
             .reduce(0L, Long::sum);
 
-        StepVerifier.create(numBytesMono)
+        StepVerifier
+            .create(numBytesMono)
             .expectNext((long) numRequests * LONG_BODY.length)
             .expectComplete()
             .verify(Duration.ofSeconds(60));
@@ -406,7 +409,8 @@ public class JdkHttpClientTests {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new JdkHttpClientProvider().createInstance();
 
-        Mono<Long> numBytesMono = Flux.range(1, numRequests)
+        Mono<Long> numBytesMono = Flux
+            .range(1, numRequests)
             .parallel(25)
             .runOn(Schedulers.boundedElastic())
             .flatMap(ignored -> {
@@ -418,7 +422,8 @@ public class JdkHttpClientTests {
             .sequential()
             .reduce(0L, Long::sum);
 
-        StepVerifier.create(numBytesMono)
+        StepVerifier
+            .create(numBytesMono)
             .expectNext((long) numRequests * LONG_BODY.length)
             .expectComplete()
             .verify(Duration.ofSeconds(60));
@@ -450,7 +455,8 @@ public class JdkHttpClientTests {
 
     private void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient client = new JdkHttpClientBuilder().build();
-        StepVerifier.create(doRequest(client, path).flatMap(HttpResponse::getBodyAsByteArray))
+        StepVerifier
+            .create(doRequest(client, path).flatMap(HttpResponse::getBodyAsByteArray))
             .assertNext(bytes -> Assertions.assertArrayEquals(expectedBody, bytes))
             .verifyComplete();
     }

@@ -8,13 +8,11 @@ import com.azure.json.implementation.jackson.core.*;
  *
  * @since 2.10
  */
-public enum JsonWriteFeature
-    implements FormatFeature
-{
+public enum JsonWriteFeature implements FormatFeature {
     // // // Support for non-standard data format constructs: comments
 
     // // Quoting/ecsaping-related features
-    
+
     /**
      * Feature that determines whether JSON Object field names are
      * quoted using double-quotes, as specified by JSON specification
@@ -60,7 +58,7 @@ public enum JsonWriteFeature
      */
     @SuppressWarnings("deprecation")
     WRITE_NUMBERS_AS_STRINGS(false, JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS),
-    
+
     /**
      * Feature that specifies that all characters beyond 7-bit ASCII
      * range (i.e. code points of 128 and above) need to be output
@@ -105,15 +103,14 @@ public enum JsonWriteFeature
      * if so, this is the feature to enable/disable.
      */
     final private JsonGenerator.Feature _mappedFeature;
-    
+
     /**
      * Method that calculates bit set (flags) of all features that
      * are enabled by default.
      *
      * @return Bit mask of all features that are enabled by default
      */
-    public static int collectDefaults()
-    {
+    public static int collectDefaults() {
         int flags = 0;
         for (JsonWriteFeature f : values()) {
             if (f.enabledByDefault()) {
@@ -122,20 +119,29 @@ public enum JsonWriteFeature
         }
         return flags;
     }
-    
-    private JsonWriteFeature(boolean defaultState,
-            JsonGenerator.Feature  mapTo) {
+
+    private JsonWriteFeature(boolean defaultState, JsonGenerator.Feature mapTo) {
         _defaultState = defaultState;
         _mask = (1 << ordinal());
         _mappedFeature = mapTo;
     }
 
     @Override
-    public boolean enabledByDefault() { return _defaultState; }
-    @Override
-    public int getMask() { return _mask; }
-    @Override
-    public boolean enabledIn(int flags) { return (flags & _mask) != 0; }
+    public boolean enabledByDefault() {
+        return _defaultState;
+    }
 
-    public JsonGenerator.Feature mappedFeature() { return _mappedFeature; }
+    @Override
+    public int getMask() {
+        return _mask;
+    }
+
+    @Override
+    public boolean enabledIn(int flags) {
+        return (flags & _mask) != 0;
+    }
+
+    public JsonGenerator.Feature mappedFeature() {
+        return _mappedFeature;
+    }
 }

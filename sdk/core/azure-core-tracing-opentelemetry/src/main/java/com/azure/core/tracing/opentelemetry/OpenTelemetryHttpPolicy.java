@@ -93,9 +93,9 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
         // to pick up Azure SDK context. While we're working on explicit
         // context propagation, ScalarPropagatingMono.INSTANCE is the workaround
         return ScalarPropagatingMono.INSTANCE
-                .flatMap(ignored -> next.process())
-                .doOnEach(OpenTelemetryHttpPolicy::handleResponse)
-                .contextWrite(reactor.util.context.Context.of(REACTOR_PARENT_TRACE_CONTEXT_KEY, startSpan(context)));
+            .flatMap(ignored -> next.process())
+            .doOnEach(OpenTelemetryHttpPolicy::handleResponse)
+            .contextWrite(reactor.util.context.Context.of(REACTOR_PARENT_TRACE_CONTEXT_KEY, startSpan(context)));
     }
 
     private Context startSpan(HttpPipelineCallContext azContext) {
@@ -105,7 +105,8 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
 
         // Build new child span representing this outgoing request.
         String methodName = request.getHttpMethod().toString();
-        Span span = tracer.spanBuilder("HTTP " + methodName)
+        Span span = tracer
+            .spanBuilder("HTTP " + methodName)
             .setAttribute(HTTP_METHOD, methodName)
             .setAttribute(HTTP_URL, request.getUrl().toString())
             .setParent(parentContext)
@@ -121,13 +122,11 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
         return traceContext;
     }
 
-    private static void addPostSamplingAttributes(Span span, HttpRequest request,
-        HttpPipelineCallContext context) {
-        putAttributeIfNotEmptyOrNull(span, HTTP_USER_AGENT,
-            request.getHeaders().getValue("User-Agent"));
+    private static void addPostSamplingAttributes(Span span, HttpRequest request, HttpPipelineCallContext context) {
+        putAttributeIfNotEmptyOrNull(span, HTTP_USER_AGENT, request.getHeaders().getValue("User-Agent"));
         Optional<Object> tracingNamespace = context.getData(AZ_TRACING_NAMESPACE_KEY);
-        tracingNamespace.ifPresent(o -> putAttributeIfNotEmptyOrNull(span, OpenTelemetryTracer.AZ_NAMESPACE_KEY,
-            o.toString()));
+        tracingNamespace
+            .ifPresent(o -> putAttributeIfNotEmptyOrNull(span, OpenTelemetryTracer.AZ_NAMESPACE_KEY, o.toString()));
 
         String requestId = request.getHeaders().getValue(CLIENT_REQUEST_ID_HEADER);
         putAttributeIfNotEmptyOrNull(span, CLIENT_REQUEST_ID_ATTRIBUTE, requestId);
@@ -215,8 +214,9 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     }
 
     // lambda that actually injects arbitrary header into the request
-    private final TextMapSetter<HttpRequest> contextSetter =
-        (request, key, value) -> request.getHeaders().set(key, value);
+    private final TextMapSetter<HttpRequest> contextSetter = (request, key, value) -> request
+        .getHeaders()
+        .set(key, value);
 
     /**
      * Helper class allowing to run Mono subscription and any hot path
@@ -230,8 +230,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
         public static final Mono<Object> INSTANCE = new ScalarPropagatingMono();
         private final Object value = new Object();
 
-        private ScalarPropagatingMono() {
-        }
+        private ScalarPropagatingMono() {}
 
         @Override
         @SuppressWarnings("try")

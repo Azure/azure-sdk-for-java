@@ -23,8 +23,7 @@ import java.nio.ByteBuffer;
 @ServiceInterface(name = "MyMockService")
 public interface MyRestProxyService {
     @Get("RawData/{id}")
-    Mono<Response<Flux<ByteBuffer>>> getRawDataAsync(@HostParam("$host") String endpoint,
-                                                     @PathParam("id") String id);
+    Mono<Response<Flux<ByteBuffer>>> getRawDataAsync(@HostParam("$host") String endpoint, @PathParam("id") String id);
 
     @Put("RawData/{id}")
     Mono<Void> setRawData(@HostParam("$host") String endpoint,
@@ -33,8 +32,7 @@ public interface MyRestProxyService {
                           @HeaderParam("Content-Length") long length);
 
     @Get("BinaryData/{id}")
-    Mono<Response<BinaryData>> getBinaryDataAsync(@HostParam("$host") String endpoint,
-                                                  @PathParam("id") String id);
+    Mono<Response<BinaryData>> getBinaryDataAsync(@HostParam("$host") String endpoint, @PathParam("id") String id);
 
     @Put("BinaryData/{id}")
     Mono<Void> setBinaryData(@HostParam("$host") String endpoint,

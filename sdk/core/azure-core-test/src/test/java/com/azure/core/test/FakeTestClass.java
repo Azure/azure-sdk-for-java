@@ -15,8 +15,7 @@ public final class FakeTestClass {
     public static final Method DONOTRECORD_FALSE_SKIPINPLAYBACK = getTestMethod("testWithDoNotRecordRunInPlayback");
     public static final Method DONOTRECORD_SKIPINPLAYBACK = getTestMethod("testWithDoNotRecordSkipInPlayback");
 
-    public void testWithoutDoNotRecord() {
-    }
+    public void testWithoutDoNotRecord() {}
 
     @DoNotRecord
     public void testWithDoNotRecordRunInPlayback() {
@@ -24,8 +23,7 @@ public final class FakeTestClass {
     }
 
     @DoNotRecord(skipInPlayback = true)
-    public void testWithDoNotRecordSkipInPlayback() {
-    }
+    public void testWithDoNotRecordSkipInPlayback() {}
 
     private static Method getTestMethod(String methodName) {
         try {

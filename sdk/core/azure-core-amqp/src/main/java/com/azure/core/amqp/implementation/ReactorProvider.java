@@ -48,7 +48,8 @@ public class ReactorProvider {
             }
 
             if (maxFrameSize <= 0) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("'maxFrameSize' must be a positive number."));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'maxFrameSize' must be a positive number."));
             }
 
             final ReactorOptions reactorOptions = new ReactorOptions();

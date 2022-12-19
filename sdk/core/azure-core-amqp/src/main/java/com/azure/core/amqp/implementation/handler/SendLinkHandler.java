@@ -54,7 +54,11 @@ public class SendLinkHandler extends LinkHandler {
         this(connectionId, hostname, linkName, entityPath, new AmqpMetricsProvider(null, hostname, null));
     }
 
-    public SendLinkHandler(String connectionId, String hostname, String linkName, String entityPath, AmqpMetricsProvider metricsProvider) {
+    public SendLinkHandler(String connectionId,
+                           String hostname,
+                           String linkName,
+                           String entityPath,
+                           AmqpMetricsProvider metricsProvider) {
         super(connectionId, hostname, entityPath, metricsProvider);
         this.linkName = Objects.requireNonNull(linkName, "'linkName' cannot be null.");
         this.entityPath = entityPath;
@@ -99,7 +103,8 @@ public class SendLinkHandler extends LinkHandler {
     public void onLinkLocalOpen(Event event) {
         final Link link = event.getLink();
         if (link instanceof Sender) {
-            logger.atVerbose()
+            logger
+                .atVerbose()
                 .addKeyValue(LINK_NAME_KEY, link.getName())
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .addKeyValue("localTarget", link.getTarget())
@@ -114,7 +119,8 @@ public class SendLinkHandler extends LinkHandler {
             return;
         }
 
-        LoggingEventBuilder logBuilder = logger.atInfo()
+        LoggingEventBuilder logBuilder = logger
+            .atInfo()
             .addKeyValue(LINK_NAME_KEY, link.getName())
             .addKeyValue(ENTITY_PATH_KEY, entityPath);
 
@@ -125,8 +131,7 @@ public class SendLinkHandler extends LinkHandler {
                 onNext(EndpointState.ACTIVE);
             }
         } else {
-            logBuilder.addKeyValue("remoteTarget", NOT_APPLICABLE)
-                .addKeyValue("action", "waitingForError");
+            logBuilder.addKeyValue("remoteTarget", NOT_APPLICABLE).addKeyValue("action", "waitingForError");
         }
         logBuilder.log("onLinkRemoteOpen");
     }
@@ -140,7 +145,8 @@ public class SendLinkHandler extends LinkHandler {
         final Sender sender = event.getSender();
         final int credits = sender.getRemoteCredit();
         creditProcessor.emitNext(credits, (signalType, emitResult) -> {
-            logger.atVerbose()
+            logger
+                .atVerbose()
                 .addKeyValue(LINK_NAME_KEY, linkName)
                 .addKeyValue(EMIT_RESULT_KEY, emitResult)
                 .addKeyValue("credits", credits)
@@ -148,7 +154,8 @@ public class SendLinkHandler extends LinkHandler {
             return false;
         });
 
-        logger.atVerbose()
+        logger
+            .atVerbose()
             .addKeyValue(LINK_NAME_KEY, linkName)
             .addKeyValue("unsettled", sender.getUnsettled())
             .addKeyValue("credits", credits)
@@ -162,7 +169,8 @@ public class SendLinkHandler extends LinkHandler {
         // Someone called sender.close() to set the local link state to close. Since the link was never remotely
         // active, we complete getEndpointStates() ourselves.
         if (!isRemoteActive.get()) {
-            logger.atInfo()
+            logger
+                .atInfo()
                 .addKeyValue(LINK_NAME_KEY, getLinkName())
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .log("Sender link was never active. Closing endpoint states.");
@@ -179,7 +187,8 @@ public class SendLinkHandler extends LinkHandler {
             final Sender sender = (Sender) delivery.getLink();
             final String deliveryTag = new String(delivery.getTag(), StandardCharsets.UTF_8);
 
-            logger.atVerbose()
+            logger
+                .atVerbose()
                 .addKeyValue(LINK_NAME_KEY, getLinkName())
                 .addKeyValue("unsettled", sender.getUnsettled())
                 .addKeyValue("credit", sender.getRemoteCredit())
@@ -189,7 +198,8 @@ public class SendLinkHandler extends LinkHandler {
                 .log("onDelivery");
 
             deliveryProcessor.emitNext(delivery, (signalType, emitResult) -> {
-                logger.atWarning()
+                logger
+                    .atWarning()
                     .addKeyValue(LINK_NAME_KEY, getLinkName())
                     .addKeyValue(EMIT_RESULT_KEY, emitResult)
                     .addKeyValue("delivery.id", deliveryTag)

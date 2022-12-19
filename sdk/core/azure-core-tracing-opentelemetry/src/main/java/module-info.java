@@ -11,8 +11,6 @@ module com.azure.core.tracing.opentelemetry {
 
     exports com.azure.core.tracing.opentelemetry;
 
-    provides com.azure.core.util.tracing.Tracer
-        with OpenTelemetryTracer;
-    provides com.azure.core.http.policy.AfterRetryPolicyProvider
-        with OpenTelemetryHttpPolicy;
+    provides com.azure.core.util.tracing.Tracer with OpenTelemetryTracer;
+    provides com.azure.core.http.policy.AfterRetryPolicyProvider with OpenTelemetryHttpPolicy;
 }

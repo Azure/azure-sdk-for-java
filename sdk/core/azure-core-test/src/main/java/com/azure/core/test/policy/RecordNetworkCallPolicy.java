@@ -92,11 +92,8 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
         final NetworkCallRecord networkCallRecord = new NetworkCallRecord();
         Map<String, String> headers = new HashMap<>();
 
-        captureRequestHeaders(context.getHttpRequest().getHeaders(), headers,
-            X_MS_CLIENT_REQUEST_ID,
-            CONTENT_TYPE,
-            X_MS_VERSION,
-            USER_AGENT);
+        captureRequestHeaders(context.getHttpRequest().getHeaders(), headers, X_MS_CLIENT_REQUEST_ID, CONTENT_TYPE,
+            X_MS_VERSION, USER_AGENT);
 
         networkCallRecord.setHeaders(headers);
         networkCallRecord.setMethod(context.getHttpRequest().getHttpMethod().toString());
@@ -110,12 +107,12 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
         String uriString = urlBuilder.toString();
         networkCallRecord.setUri(uriString.endsWith("?") ? uriString.substring(0, uriString.length() - 2) : uriString);
 
-        return next.process()
-            .doOnError(throwable -> {
-                networkCallRecord.setException(new NetworkCallError(throwable));
-                recordedData.addNetworkCall(networkCallRecord);
-                throw logger.logExceptionAsWarning(Exceptions.propagate(throwable));
-            }).flatMap(httpResponse -> extractResponseData(httpResponse, redactor, logger)
+        return next.process().doOnError(throwable -> {
+            networkCallRecord.setException(new NetworkCallError(throwable));
+            recordedData.addNetworkCall(networkCallRecord);
+            throw logger.logExceptionAsWarning(Exceptions.propagate(throwable));
+        })
+            .flatMap(httpResponse -> extractResponseData(httpResponse, redactor, logger)
                 .map(responseAndSessionRecordData -> {
                     Map<String, String> sessionRecordData = responseAndSessionRecordData.getT2();
                     networkCallRecord.setResponse(sessionRecordData);
@@ -143,8 +140,9 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private static void captureRequestHeaders(HttpHeaders requestHeaders, Map<String, String> captureHeaders,
-        String... headerNames) {
+    private static void captureRequestHeaders(HttpHeaders requestHeaders,
+                                              Map<String, String> captureHeaders,
+                                              String... headerNames) {
         for (String headerName : headerNames) {
             if (requestHeaders.getValue(headerName) != null) {
                 captureHeaders.put(headerName, requestHeaders.getValue(headerName));
@@ -153,7 +151,8 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
     }
 
     private static Mono<Tuple2<HttpResponse, Map<String, String>>> extractResponseData(final HttpResponse response,
-        final RecordingRedactor redactor, final ClientLogger logger) {
+                                                                                       final RecordingRedactor redactor,
+                                                                                       final ClientLogger logger) {
         final Map<String, String> responseData = new HashMap<>();
         responseData.put(STATUS_CODE, Integer.toString(response.getStatusCode()));
 
@@ -186,70 +185,68 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
         final HttpResponse bufferedResponse = response.buffer();
         final Mono<byte[]> responseBody = FluxUtil.collectBytesInByteBufferStream(bufferedResponse.getBody());
         if (contentType == null) {
-            return responseBody.switchIfEmpty(Mono.fromSupplier(() -> new byte[0]))
-                .map(bytes -> {
-                    if (bytes.length == 0) {
-                        return Tuples.of(bufferedResponse, responseData);
-                    }
-
-                    String content = new String(bytes, StandardCharsets.UTF_8);
-                    responseData.put(CONTENT_LENGTH, Integer.toString(content.length()));
-                    responseData.put(BODY, content);
+            return responseBody.switchIfEmpty(Mono.fromSupplier(() -> new byte[0])).map(bytes -> {
+                if (bytes.length == 0) {
                     return Tuples.of(bufferedResponse, responseData);
-                });
+                }
+
+                String content = new String(bytes, StandardCharsets.UTF_8);
+                responseData.put(CONTENT_LENGTH, Integer.toString(content.length()));
+                responseData.put(BODY, content);
+                return Tuples.of(bufferedResponse, responseData);
+            });
         } else if (contentType.equalsIgnoreCase(ContentType.APPLICATION_OCTET_STREAM)
             || "avro/binary".equalsIgnoreCase(contentType)) {
-            return responseBody.switchIfEmpty(Mono.fromSupplier(() -> new byte[0]))
-                .map(bytes -> {
-                    if (bytes.length == 0) {
-                        return Tuples.of(bufferedResponse, responseData);
-                    }
-
-                    responseData.put(BODY, Base64.getEncoder().encodeToString(bytes));
+            return responseBody.switchIfEmpty(Mono.fromSupplier(() -> new byte[0])).map(bytes -> {
+                if (bytes.length == 0) {
                     return Tuples.of(bufferedResponse, responseData);
-                });
+                }
+
+                responseData.put(BODY, Base64.getEncoder().encodeToString(bytes));
+                return Tuples.of(bufferedResponse, responseData);
+            });
         } else if (contentType.contains("json") || response.getHeaderValue(CONTENT_ENCODING) == null) {
-            return responseBody.map(bytes -> CoreUtils.bomAwareToString(bytes, response.getHeaderValue(CONTENT_TYPE)))
+            return responseBody
+                .map(bytes -> CoreUtils.bomAwareToString(bytes, response.getHeaderValue(CONTENT_TYPE)))
                 .switchIfEmpty(Mono.just(""))
                 .map(content -> {
                     responseData.put(BODY, redactor.redact(content));
                     return Tuples.of(bufferedResponse, responseData);
                 });
         } else {
-            return responseBody.switchIfEmpty(Mono.fromSupplier(() -> new byte[0]))
-                .map(bytes -> {
-                    if (bytes.length == 0) {
-                        return Tuples.of(bufferedResponse, responseData);
-                    }
-
-                    String content;
-                    if ("gzip".equalsIgnoreCase(response.getHeaderValue(CONTENT_ENCODING))) {
-                        try (GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(bytes));
-                             ByteArrayOutputStream output = new ByteArrayOutputStream()) {
-                            byte[] buffer = new byte[DEFAULT_BUFFER_LENGTH];
-                            int position = 0;
-                            int bytesRead = gis.read(buffer, position, buffer.length);
-
-                            while (bytesRead != -1) {
-                                output.write(buffer, 0, bytesRead);
-                                position += bytesRead;
-                                bytesRead = gis.read(buffer, position, buffer.length);
-                            }
-
-                            content = output.toString("UTF-8");
-                        } catch (IOException e) {
-                            throw logger.logExceptionAsWarning(Exceptions.propagate(e));
-                        }
-                    } else {
-                        content = new String(bytes, StandardCharsets.UTF_8);
-                    }
-
-                    responseData.remove(CONTENT_ENCODING);
-                    responseData.put(CONTENT_LENGTH, Integer.toString(content.length()));
-
-                    responseData.put(BODY, content);
+            return responseBody.switchIfEmpty(Mono.fromSupplier(() -> new byte[0])).map(bytes -> {
+                if (bytes.length == 0) {
                     return Tuples.of(bufferedResponse, responseData);
-                });
+                }
+
+                String content;
+                if ("gzip".equalsIgnoreCase(response.getHeaderValue(CONTENT_ENCODING))) {
+                    try (GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(bytes));
+                         ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+                        byte[] buffer = new byte[DEFAULT_BUFFER_LENGTH];
+                        int position = 0;
+                        int bytesRead = gis.read(buffer, position, buffer.length);
+
+                        while (bytesRead != -1) {
+                            output.write(buffer, 0, bytesRead);
+                            position += bytesRead;
+                            bytesRead = gis.read(buffer, position, buffer.length);
+                        }
+
+                        content = output.toString("UTF-8");
+                    } catch (IOException e) {
+                        throw logger.logExceptionAsWarning(Exceptions.propagate(e));
+                    }
+                } else {
+                    content = new String(bytes, StandardCharsets.UTF_8);
+                }
+
+                responseData.remove(CONTENT_ENCODING);
+                responseData.put(CONTENT_LENGTH, Integer.toString(content.length()));
+
+                responseData.put(BODY, content);
+                return Tuples.of(bufferedResponse, responseData);
+            });
         }
     }
 }

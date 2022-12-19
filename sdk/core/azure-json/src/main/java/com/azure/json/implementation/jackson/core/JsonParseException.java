@@ -14,9 +14,7 @@ import com.azure.json.implementation.jackson.core.util.RequestPayload;
  * (content that does not conform to JSON syntax as per specification)
  * is encountered.
  */
-public class JsonParseException
-    extends StreamReadException
-{
+public class JsonParseException extends StreamReadException {
     private static final long serialVersionUID = 2L; // 2.7
 
     @Deprecated // since 2.7
@@ -111,9 +109,9 @@ public class JsonParseException
     public String getRequestPayloadAsString() {
         return super.getRequestPayloadAsString();
     }
-    
+
     // NOTE: overloaded in 2.10 just to retain binary compatibility with 2.9 (remove from 3.0)
-    @Override 
+    @Override
     public String getMessage() {
         return super.getMessage();
     }

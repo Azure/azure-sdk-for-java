@@ -40,14 +40,18 @@ public class SignedIdentifiersWrapper implements XmlSerializable<SignedIdentifie
 
         if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
             throw new IllegalStateException("Illegal start of XML deserialization. "
-                + "Expected 'XmlToken.START_ELEMENT' but it was: 'XmlToken." + xmlReader.currentToken() + "'.");
+                + "Expected 'XmlToken.START_ELEMENT' but it was: 'XmlToken."
+                + xmlReader.currentToken()
+                + "'.");
         }
 
         QName elementQName = xmlReader.getElementName();
         String elementName = elementQName.toString();
         if (!"SignedIdentifiers".equals(elementName)) {
             throw new IllegalStateException("Expected XML element to be 'SignedIdentifiers' but it was: "
-                + "'" + elementName + "'.");
+                + "'"
+                + elementName
+                + "'.");
         }
 
         List<SignedIdentifier> signedIdentifiers = null;

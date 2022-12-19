@@ -63,6 +63,7 @@ public class JdkHttpClientBuilderTests {
         final java.net.http.HttpClient.Builder existingClientBuilder = java.net.http.HttpClient.newBuilder();
         existingClientBuilder.executor(new Executor() {
             private final ExecutorService executorService = Executors.newFixedThreadPool(2);
+
             @Override
             public void execute(Runnable command) {
                 marker[0] = "on_custom_executor";
@@ -73,13 +74,16 @@ public class JdkHttpClientBuilderTests {
         final JdkHttpClient client = (JdkHttpClient) new JdkHttpClientBuilder(existingClientBuilder).build();
 
         final String defaultPath = "/default";
-        final WireMockServer server
-            = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
+        final WireMockServer server = new WireMockServer(WireMockConfiguration
+            .options()
+            .dynamicPort()
+            .disableRequestJournal());
         server.stubFor(WireMock.get(defaultPath).willReturn(WireMock.aResponse().withStatus(200)));
         server.start();
         final String defaultUrl = "http://localhost:" + server.port() + defaultPath;
         try {
-            StepVerifier.create(client.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+            StepVerifier
+                .create(client.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
                 .assertNext(response -> assertEquals(200, response.getStatusCode()))
                 .verifyComplete();
         } finally {
@@ -106,25 +110,27 @@ public class JdkHttpClientBuilderTests {
     @Test
     public void buildWithExecutor() {
         final String[] marker = new String[1];
-        final HttpClient httpClient = new JdkHttpClientBuilder()
-            .executor(new Executor() {
-                private final ExecutorService executorService = Executors.newFixedThreadPool(10);
-                @Override
-                public void execute(Runnable command) {
-                    marker[0] = "on_custom_executor";
-                    executorService.submit(command);
-                }
-            })
-            .build();
+        final HttpClient httpClient = new JdkHttpClientBuilder().executor(new Executor() {
+            private final ExecutorService executorService = Executors.newFixedThreadPool(10);
+
+            @Override
+            public void execute(Runnable command) {
+                marker[0] = "on_custom_executor";
+                executorService.submit(command);
+            }
+        }).build();
 
         final String defaultPath = "/default";
-        final WireMockServer server
-            = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
+        final WireMockServer server = new WireMockServer(WireMockConfiguration
+            .options()
+            .dynamicPort()
+            .disableRequestJournal());
         server.stubFor(WireMock.get(defaultPath).willReturn(WireMock.aResponse().withStatus(200)));
         server.start();
         final String defaultUrl = "http://localhost:" + server.port() + defaultPath;
         try {
-            StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+            StepVerifier
+                .create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
                 .assertNext(response -> assertEquals(200, response.getStatusCode()))
                 .verifyComplete();
         } finally {
@@ -151,21 +157,20 @@ public class JdkHttpClientBuilderTests {
     @Test
     public void buildWithHttpProxy() {
         final SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
-            PROXY_PASSWORD,
-            new String[] {SERVICE_ENDPOINT});
+            PROXY_PASSWORD, new String[] { SERVICE_ENDPOINT });
         try {
             SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
 
-            ProxyOptions clientProxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP,
-                new InetSocketAddress(proxyEndpoint.getHost(), proxyEndpoint.getPort()))
-                .setCredentials(PROXY_USERNAME, PROXY_PASSWORD);
+            ProxyOptions clientProxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress(
+                proxyEndpoint.getHost(), proxyEndpoint.getPort())).setCredentials(PROXY_USERNAME, PROXY_PASSWORD);
 
             HttpClient httpClient = new JdkHttpClientBuilder(java.net.http.HttpClient.newBuilder())
                 .proxy(clientProxyOptions)
                 .build();
             // Url of the service behind proxy
             final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
-            StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
+            StepVerifier
+                .create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
                 .expectNextCount(1)
                 .verifyComplete();
         } finally {
@@ -176,17 +181,19 @@ public class JdkHttpClientBuilderTests {
     @Test
     public void buildWithHttpProxyFromEnvConfiguration() {
         final SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
-            PROXY_PASSWORD,
-            new String[] {SERVICE_ENDPOINT});
+            PROXY_PASSWORD, new String[] { SERVICE_ENDPOINT });
 
         try {
             SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
 
             Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
                 new TestConfigurationSource()
-                    .put(Configuration.PROPERTY_HTTP_PROXY, "http://" + PROXY_USER_INFO + proxyEndpoint.getHost() + ":" + proxyEndpoint.getPort())
-                    .put("java.net.useSystemProxies", "true"))
-                .build();
+                    .put(Configuration.PROPERTY_HTTP_PROXY, "http://"
+                        + PROXY_USER_INFO
+                        + proxyEndpoint.getHost()
+                        + ":"
+                        + proxyEndpoint.getPort())
+                    .put("java.net.useSystemProxies", "true")).build();
 
             configurationProxyTest(configuration);
         } finally {
@@ -196,7 +203,8 @@ public class JdkHttpClientBuilderTests {
 
     @Test
     public void buildWithHttpProxyFromExplicitConfiguration() {
-        final SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME, PROXY_PASSWORD, new String[] {SERVICE_ENDPOINT});
+        final SimpleBasicAuthHttpProxyServer proxyServer = new SimpleBasicAuthHttpProxyServer(PROXY_USERNAME,
+            PROXY_PASSWORD, new String[] { SERVICE_ENDPOINT });
 
         try {
             SimpleBasicAuthHttpProxyServer.ProxyEndpoint proxyEndpoint = proxyServer.start();
@@ -214,18 +222,19 @@ public class JdkHttpClientBuilderTests {
 
     @Test
     public void buildWithConfigurationNone() {
-        final HttpClient httpClient = new JdkHttpClientBuilder()
-            .configuration(Configuration.NONE)
-            .build();
+        final HttpClient httpClient = new JdkHttpClientBuilder().configuration(Configuration.NONE).build();
 
         final String defaultPath = "/default";
-        final WireMockServer server
-            = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
+        final WireMockServer server = new WireMockServer(WireMockConfiguration
+            .options()
+            .dynamicPort()
+            .disableRequestJournal());
         server.stubFor(WireMock.get(defaultPath).willReturn(WireMock.aResponse().withStatus(200)));
         server.start();
         final String defaultUrl = "http://localhost:" + server.port() + defaultPath;
         try {
-            StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+            StepVerifier
+                .create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
                 .assertNext(response -> assertEquals(200, response.getStatusCode()))
                 .verifyComplete();
         } finally {
@@ -238,18 +247,19 @@ public class JdkHttpClientBuilderTests {
     @ParameterizedTest
     @MethodSource("buildWithExplicitConfigurationProxySupplier")
     public void buildWithNonProxyConfigurationProxy(Configuration configuration) {
-        final HttpClient httpClient = new JdkHttpClientBuilder()
-            .configuration(configuration)
-            .build();
+        final HttpClient httpClient = new JdkHttpClientBuilder().configuration(configuration).build();
 
         final String defaultPath = "/default";
-        final WireMockServer server
-            = new WireMockServer(WireMockConfiguration.options().dynamicPort().disableRequestJournal());
+        final WireMockServer server = new WireMockServer(WireMockConfiguration
+            .options()
+            .dynamicPort()
+            .disableRequestJournal());
         server.stubFor(WireMock.get(defaultPath).willReturn(WireMock.aResponse().withStatus(200)));
         server.start();
         final String defaultUrl = "http://localhost:" + server.port() + defaultPath;
         try {
-            StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+            StepVerifier
+                .create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
                 .assertNext(response -> assertEquals(200, response.getStatusCode()))
                 .verifyComplete();
         } finally {
@@ -265,8 +275,7 @@ public class JdkHttpClientBuilderTests {
         final Configuration envConfiguration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
             new TestConfigurationSource()
                 .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:8888")
-                .put(Configuration.PROPERTY_NO_PROXY, "localhost"))
-            .build();
+                .put(Configuration.PROPERTY_NO_PROXY, "localhost")).build();
 
         arguments.add(Arguments.of(envConfiguration));
 
@@ -288,7 +297,8 @@ public class JdkHttpClientBuilderTests {
         when(jdkHttpClientBuilder.getNetworkProperties()).thenReturn(properties);
 
         Set<String> expectedRestrictedHeaders = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        expectedRestrictedHeaders.addAll(com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.DEFAULT_RESTRICTED_HEADERS);
+        expectedRestrictedHeaders
+            .addAll(com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.DEFAULT_RESTRICTED_HEADERS);
         expectedRestrictedHeaders.removeAll(Arrays.asList("content-length", "upgrade"));
 
         validateRestrictedHeaders(jdkHttpClientBuilder, expectedRestrictedHeaders, 3);
@@ -296,19 +306,17 @@ public class JdkHttpClientBuilderTests {
 
     @Test
     void testAllowedHeadersFromConfiguration() {
-        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE,
-                new TestConfigurationSource().put("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade"),
-                EMPTY_SOURCE)
-            .build();
+        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, new TestConfigurationSource()
+            .put("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade"), EMPTY_SOURCE).build();
 
-        JdkHttpClientBuilder jdkHttpClientBuilder = spy(
-            new JdkHttpClientBuilder().configuration(configuration));
+        JdkHttpClientBuilder jdkHttpClientBuilder = spy(new JdkHttpClientBuilder().configuration(configuration));
 
         Properties properties = new Properties();
         when(jdkHttpClientBuilder.getNetworkProperties()).thenReturn(properties);
 
         Set<String> expectedRestrictedHeaders = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        expectedRestrictedHeaders.addAll(com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.DEFAULT_RESTRICTED_HEADERS);
+        expectedRestrictedHeaders
+            .addAll(com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.DEFAULT_RESTRICTED_HEADERS);
         expectedRestrictedHeaders.removeAll(Arrays.asList("content-length", "upgrade"));
 
         validateRestrictedHeaders(jdkHttpClientBuilder, expectedRestrictedHeaders, 3);
@@ -317,19 +325,18 @@ public class JdkHttpClientBuilderTests {
     @Test
     void testAllowedHeadersFromBoth() {
         Configuration configuration = new ConfigurationBuilder(new TestConfigurationSource(),
-                new TestConfigurationSource().put("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade"),
-                new TestConfigurationSource())
-            .build();
+            new TestConfigurationSource().put("jdk.httpclient.allowRestrictedHeaders", "content-length, upgrade"),
+            new TestConfigurationSource()).build();
 
-        JdkHttpClientBuilder jdkHttpClientBuilder = spy(
-            new JdkHttpClientBuilder().configuration(configuration));
+        JdkHttpClientBuilder jdkHttpClientBuilder = spy(new JdkHttpClientBuilder().configuration(configuration));
 
         Properties properties = new Properties();
         properties.put("jdk.httpclient.allowRestrictedHeaders", "host, connection, upgrade");
         when(jdkHttpClientBuilder.getNetworkProperties()).thenReturn(properties);
 
         Set<String> expectedRestrictedHeaders = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        expectedRestrictedHeaders.addAll(com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.DEFAULT_RESTRICTED_HEADERS);
+        expectedRestrictedHeaders
+            .addAll(com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.DEFAULT_RESTRICTED_HEADERS);
         expectedRestrictedHeaders.removeAll(Arrays.asList("content-length", "host", "connection", "upgrade"));
 
         validateRestrictedHeaders(jdkHttpClientBuilder, expectedRestrictedHeaders, 1);
@@ -344,7 +351,8 @@ public class JdkHttpClientBuilderTests {
         when(jdkHttpClientBuilder.getNetworkProperties()).thenReturn(properties);
 
         Set<String> expectedRestrictedHeaders = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        expectedRestrictedHeaders.addAll(com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.DEFAULT_RESTRICTED_HEADERS);
+        expectedRestrictedHeaders
+            .addAll(com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.DEFAULT_RESTRICTED_HEADERS);
         expectedRestrictedHeaders.removeAll(Arrays.asList("content-length", "upgrade"));
 
         validateRestrictedHeaders(jdkHttpClientBuilder, expectedRestrictedHeaders, 3);
@@ -368,20 +376,21 @@ public class JdkHttpClientBuilderTests {
         assertFalse(restrictedHeaders.contains("CONTENT-length"), "content-length not removed");
     }
 
-
     private static void configurationProxyTest(Configuration configuration) {
         HttpClient httpClient = new JdkHttpClientBuilder(java.net.http.HttpClient.newBuilder())
             .configuration(configuration)
             .build();
         // Url of the service behind proxy
         final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
-        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
+        StepVerifier
+            .create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
             .expectNextCount(1)
             .verifyComplete();
     }
 
     private void validateRestrictedHeaders(JdkHttpClientBuilder jdkHttpClientBuilder,
-        Set<String> expectedRestrictedHeaders, int expectedRestrictedHeadersSize) {
+                                           Set<String> expectedRestrictedHeaders,
+                                           int expectedRestrictedHeadersSize) {
         Set<String> restrictedHeaders = jdkHttpClientBuilder.getRestrictedHeaders();
         assertEquals(expectedRestrictedHeadersSize, restrictedHeaders.size());
         assertEquals(expectedRestrictedHeaders, restrictedHeaders);

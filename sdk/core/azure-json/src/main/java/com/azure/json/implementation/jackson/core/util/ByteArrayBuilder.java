@@ -27,13 +27,12 @@ import java.util.*;
  * theoretically this builder can aggregate more content it will not be usable
  * as things are. Behavior may be improved if we solve the access problem.
  */
-public final class ByteArrayBuilder extends OutputStream
-{
+public final class ByteArrayBuilder extends OutputStream {
     public final static byte[] NO_BYTES = new byte[0];
-    
+
     // Size of the first block we will allocate.
     private final static int INITIAL_BLOCK_SIZE = 500;
-    
+
     // Maximum block size we will use for individual non-aggregated blocks.
     // For 2.10, let's limit to using 128k chunks (was 256k up to 2.9)
     private final static int MAX_BLOCK_SIZE = (1 << 17);
@@ -43,15 +42,23 @@ public final class ByteArrayBuilder extends OutputStream
     // Optional buffer recycler instance that we can use for allocating the first block.
     private final BufferRecycler _bufferRecycler;
     private final LinkedList<byte[]> _pastBlocks = new LinkedList<byte[]>();
-    
+
     // Number of bytes within byte arrays in {@link _pastBlocks}.
     private int _pastLen;
     private byte[] _currBlock;
     private int _currBlockPtr;
 
-    public ByteArrayBuilder() { this(null); }
-    public ByteArrayBuilder(BufferRecycler br) { this(br, INITIAL_BLOCK_SIZE); }
-    public ByteArrayBuilder(int firstBlockSize) { this(null, firstBlockSize); }
+    public ByteArrayBuilder() {
+        this(null);
+    }
+
+    public ByteArrayBuilder(BufferRecycler br) {
+        this(br, INITIAL_BLOCK_SIZE);
+    }
+
+    public ByteArrayBuilder(int firstBlockSize) {
+        this(null, firstBlockSize);
+    }
 
     public ByteArrayBuilder(BufferRecycler br, int firstBlockSize) {
         _bufferRecycler = br;
@@ -60,7 +67,9 @@ public final class ByteArrayBuilder extends OutputStream
         if (firstBlockSize > MAX_BLOCK_SIZE) {
             firstBlockSize = MAX_BLOCK_SIZE;
         }
-        _currBlock = (br == null) ? new byte[firstBlockSize] : br.allocByteBuffer(BufferRecycler.BYTE_WRITE_CONCAT_BUFFER);
+        _currBlock = (br == null)
+            ? new byte[firstBlockSize]
+            : br.allocByteBuffer(BufferRecycler.BYTE_WRITE_CONCAT_BUFFER);
     }
 
     private ByteArrayBuilder(BufferRecycler br, byte[] initialBlock, int initialLen) {
@@ -72,7 +81,7 @@ public final class ByteArrayBuilder extends OutputStream
     public static ByteArrayBuilder fromInitial(byte[] initialBlock, int length) {
         return new ByteArrayBuilder(null, initialBlock, length);
     }
-    
+
     public void reset() {
         _pastLen = 0;
         _currBlockPtr = 0;
@@ -147,17 +156,16 @@ public final class ByteArrayBuilder extends OutputStream
             append(b32);
         }
     }
-    
+
     /**
      * Method called when results are finalized and we can get the
      * full aggregated result buffer to return to the caller
      *
      * @return Aggregated contents as a {@code byte[]}
      */
-    public byte[] toByteArray()
-    {
+    public byte[] toByteArray() {
         int totalLen = _pastLen + _currBlockPtr;
-        
+
         if (totalLen == 0) { // quick check: nothing aggregated?
             return NO_BYTES;
         }
@@ -172,7 +180,11 @@ public final class ByteArrayBuilder extends OutputStream
         System.arraycopy(_currBlock, 0, result, offset, _currBlockPtr);
         offset += _currBlockPtr;
         if (offset != totalLen) { // just a sanity check
-            throw new RuntimeException("Internal error: total len assumed to be "+totalLen+", copied "+offset+" bytes");
+            throw new RuntimeException("Internal error: total len assumed to be "
+                + totalLen
+                + ", copied "
+                + offset
+                + " bytes");
         }
         // Let's only reset if there's sizable use, otherwise will get reset later on
         if (!_pastBlocks.isEmpty()) {
@@ -224,9 +236,17 @@ public final class ByteArrayBuilder extends OutputStream
         return toByteArray();
     }
 
-    public byte[] getCurrentSegment() { return _currBlock; }
-    public void setCurrentSegmentLength(int len) { _currBlockPtr = len; }
-    public int getCurrentSegmentLength() { return _currBlockPtr; }
+    public byte[] getCurrentSegment() {
+        return _currBlock;
+    }
+
+    public void setCurrentSegmentLength(int len) {
+        _currBlockPtr = len;
+    }
+
+    public int getCurrentSegmentLength() {
+        return _currBlockPtr;
+    }
 
     /*
     /**********************************************************
@@ -240,8 +260,7 @@ public final class ByteArrayBuilder extends OutputStream
     }
 
     @Override
-    public void write(byte[] b, int off, int len)
-    {
+    public void write(byte[] b, int off, int len) {
         while (true) {
             int max = _currBlock.length - _currBlockPtr;
             int toCopy = Math.min(max, len);
@@ -251,7 +270,8 @@ public final class ByteArrayBuilder extends OutputStream
                 _currBlockPtr += toCopy;
                 len -= toCopy;
             }
-            if (len <= 0) break;
+            if (len <= 0)
+                break;
             _allocMore();
         }
     }
@@ -261,8 +281,11 @@ public final class ByteArrayBuilder extends OutputStream
         append(b);
     }
 
-    @Override public void close() { /* NOP */ }
-    @Override public void flush() { /* NOP */ }
+    @Override
+    public void close() { /* NOP */ }
+
+    @Override
+    public void flush() { /* NOP */ }
 
     /*
     /**********************************************************
@@ -270,8 +293,7 @@ public final class ByteArrayBuilder extends OutputStream
     /**********************************************************
      */
 
-    private void _allocMore()
-    {
+    private void _allocMore() {
         final int newPastLen = _pastLen + _currBlock.length;
 
         // 13-Feb-2016, tatu: As per [core#351] let's try to catch problem earlier;

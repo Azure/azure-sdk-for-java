@@ -14,15 +14,14 @@ import com.azure.json.implementation.jackson.core.util.JacksonFeature;
  * 
  * @since 2.6
  */
-public interface FormatFeature
-    extends JacksonFeature // since 2.12
+public interface FormatFeature extends JacksonFeature // since 2.12
 {
     /**
      * Accessor for checking whether this feature is enabled by default.
      */
     @Override
     public boolean enabledByDefault();
-    
+
     /**
      * Returns bit mask for this feature instance; must be a single bit,
      * that is of form <code>(1 &lt;&lt; N)</code>

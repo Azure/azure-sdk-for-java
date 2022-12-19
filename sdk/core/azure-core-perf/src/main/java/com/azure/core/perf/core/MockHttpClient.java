@@ -33,7 +33,8 @@ public class MockHttpClient implements HttpClient {
                 return Mono.just(responseSupplier.apply(request));
             } else {
                 // consume body
-                return FluxUtil.collectBytesInByteBufferStream(request.getBody())
+                return FluxUtil
+                    .collectBytesInByteBufferStream(request.getBody())
                     .map(bytes -> responseSupplier.apply(request));
             }
         } else {

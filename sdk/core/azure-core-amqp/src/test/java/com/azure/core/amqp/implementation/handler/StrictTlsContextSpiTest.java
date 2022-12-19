@@ -72,7 +72,7 @@ class StrictTlsContextSpiTest {
     /**
      * Verify that SSLv2Hello protocol is removed.
      */
-    @ValueSource(strings = {"SSLv2Hello", "Sslv2hello"})
+    @ValueSource(strings = { "SSLv2Hello", "Sslv2hello" })
     @ParameterizedTest
     void engineCreateSSLEngine(String protocol) {
         // Arrange
@@ -98,7 +98,7 @@ class StrictTlsContextSpiTest {
     /**
      * Verify that SSLv2Hello protocol is removed.
      */
-    @ValueSource(strings = {"SSLv2Hello", "Sslv2hello"})
+    @ValueSource(strings = { "SSLv2Hello", "Sslv2hello" })
     @ParameterizedTest
     void engineCreateSSLEngineHostPort(String protocol) {
         // Arrange

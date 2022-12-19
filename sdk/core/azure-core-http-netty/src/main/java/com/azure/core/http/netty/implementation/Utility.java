@@ -53,6 +53,5 @@ public final class Utility {
         }
     }
 
-    private Utility() {
-    }
+    private Utility() {}
 }

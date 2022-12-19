@@ -50,8 +50,7 @@ public final class DeliveryState extends ExpandableStringEnum<DeliveryState> {
      * @deprecated Use one of the constants or the {@link #fromString(String, Class)} factory method.
      */
     @Deprecated
-    public DeliveryState() {
-    }
+    public DeliveryState() {}
 
     /**
      * Gets the corresponding delivery state from its string representation.

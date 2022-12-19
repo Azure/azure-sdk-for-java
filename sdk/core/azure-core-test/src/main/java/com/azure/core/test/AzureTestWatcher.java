@@ -19,8 +19,8 @@ import java.util.function.Supplier;
 public class AzureTestWatcher implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
     private static final String AZURE_TEST_DEBUG = "AZURE_TEST_DEBUG";
 
-    private static final Supplier<Boolean> SHOULD_LOG_EXECUTION_STATUS = () ->
-        Boolean.parseBoolean(Configuration.getGlobalConfiguration().get(AZURE_TEST_DEBUG));
+    private static final Supplier<Boolean> SHOULD_LOG_EXECUTION_STATUS = () -> Boolean
+        .parseBoolean(Configuration.getGlobalConfiguration().get(AZURE_TEST_DEBUG));
 
     @Override
     public void beforeTestExecution(ExtensionContext extensionContext) {
@@ -38,19 +38,17 @@ public class AzureTestWatcher implements BeforeTestExecutionCallback, AfterTestE
             fullyQualifiedTestName = method.getDeclaringClass().getName() + "." + testName;
         }
 
-        StringBuilder logPrefixBuilder = new StringBuilder("Starting test ")
-            .append(fullyQualifiedTestName);
+        StringBuilder logPrefixBuilder = new StringBuilder("Starting test ").append(fullyQualifiedTestName);
 
         if (!Objects.equals(displayName, testName)) {
-            logPrefixBuilder.append("(")
-                .append(displayName)
-                .append(")");
+            logPrefixBuilder.append("(").append(displayName).append(")");
         }
 
         logPrefixBuilder.append(",");
 
-        getStore(extensionContext).put(extensionContext.getRequiredTestMethod(),
-            new TestRunMetrics(logPrefixBuilder.toString(), System.currentTimeMillis()));
+        getStore(extensionContext)
+            .put(extensionContext.getRequiredTestMethod(), new TestRunMetrics(logPrefixBuilder.toString(), System
+                .currentTimeMillis()));
     }
 
     @Override

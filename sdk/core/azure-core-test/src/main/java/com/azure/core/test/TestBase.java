@@ -54,7 +54,8 @@ public abstract class TestBase implements BeforeEachCallback {
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
 
     private static final Duration PLAYBACK_POLL_INTERVAL = Duration.ofMillis(1);
-    private static final String CONFIGURED_HTTP_CLIENTS_TO_TEST = Configuration.getGlobalConfiguration()
+    private static final String CONFIGURED_HTTP_CLIENTS_TO_TEST = Configuration
+        .getGlobalConfiguration()
         .get(AZURE_TEST_HTTP_CLIENTS);
     private static final boolean DEFAULT_TO_NETTY = CoreUtils.isNullOrEmpty(CONFIGURED_HTTP_CLIENTS_TO_TEST);
     private static final List<String> CONFIGURED_HTTP_CLIENTS;
@@ -179,15 +180,13 @@ public abstract class TestBase implements BeforeEachCallback {
      * Performs any set-up before each test case. Any initialization that occurs in TestBase occurs first before this.
      * Can be overridden in an inheriting class to add additional functionality during test set-up.
      */
-    protected void beforeTest() {
-    }
+    protected void beforeTest() {}
 
     /**
      * Dispose of any resources and clean-up after a test case runs. Can be overridden in an inheriting class to add
      * additional functionality during test teardown.
      */
-    protected void afterTest() {
-    }
+    protected void afterTest() {}
 
     /**
      * Returns a list of {@link HttpClient HttpClients} that should be tested.
@@ -206,7 +205,9 @@ public abstract class TestBase implements BeforeEachCallback {
 
         List<HttpClient> httpClientsToTest = new ArrayList<>();
         for (HttpClientProvider httpClientProvider : ServiceLoader.load(HttpClientProvider.class)) {
-            if (includeHttpClientOrHttpClientProvider(httpClientProvider.getClass().getSimpleName()
+            if (includeHttpClientOrHttpClientProvider(httpClientProvider
+                .getClass()
+                .getSimpleName()
                 .toLowerCase(Locale.ROOT))) {
                 httpClientsToTest.add(httpClientProvider.createInstance());
             }

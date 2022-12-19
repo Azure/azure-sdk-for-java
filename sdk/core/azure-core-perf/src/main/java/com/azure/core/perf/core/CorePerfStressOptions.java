@@ -8,19 +8,20 @@ import com.beust.jcommander.Parameter;
 
 public class CorePerfStressOptions extends PerfStressOptions {
 
-    @Parameter(names = { "--backend-type"}, description = "The backend type used for tests. "
-        + "Options are mock, blobs or wiremock. "
-        + "Defaults to mock.")
+    @Parameter(names = { "--backend-type" },
+               description = "The backend type used for tests. "
+                   + "Options are mock, blobs or wiremock. "
+                   + "Defaults to mock.")
     private BackendType backendType = BackendType.MOCK;
 
-    @Parameter(names = { "--binary-data-source"}, description =
-        "The binary data source used for tests that use BinaryData. "
-        + "Options are bytes, file or stream. "
-        + "Defaults to file.")
+    @Parameter(names = { "--binary-data-source" },
+               description = "The binary data source used for tests that use BinaryData. "
+                   + "Options are bytes, file or stream. "
+                   + "Defaults to file.")
     private BinaryDataSource binaryDataSource = BinaryDataSource.FILE;
 
     @Parameter(names = { "--include-pipeline-policies" },
-        description = "Includes a bunch of core pipeline policies in the test")
+               description = "Includes a bunch of core pipeline policies in the test")
     private boolean includePipelinePolicies;
 
     /**
@@ -50,10 +51,15 @@ public class CorePerfStressOptions extends PerfStressOptions {
     }
 
     public enum BackendType {
-        MOCK, BLOBS, WIREMOCK
+        MOCK,
+        BLOBS,
+        WIREMOCK
     }
 
     public enum BinaryDataSource {
-        BYTES, FILE, FLUX, STREAM
+        BYTES,
+        FILE,
+        FLUX,
+        STREAM
     }
 }

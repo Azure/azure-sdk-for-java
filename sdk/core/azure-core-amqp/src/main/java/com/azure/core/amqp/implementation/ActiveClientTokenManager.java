@@ -63,38 +63,36 @@ public class ActiveClientTokenManager implements TokenManager {
     @Override
     public Mono<Long> authorize() {
         if (hasDisposed.get()) {
-            return Mono.error(new AzureException(
-                "Cannot authorize with CBS node when this token manager has been disposed of."));
+            return Mono
+                .error(new AzureException(
+                    "Cannot authorize with CBS node when this token manager has been disposed of."));
         }
 
-        return cbsNode.flatMap(cbsNode -> cbsNode.authorize(tokenAudience, scopes))
-            .map(expiresOn -> {
-                final Duration between = Duration.between(OffsetDateTime.now(ZoneOffset.UTC), expiresOn);
+        return cbsNode.flatMap(cbsNode -> cbsNode.authorize(tokenAudience, scopes)).map(expiresOn -> {
+            final Duration between = Duration.between(OffsetDateTime.now(ZoneOffset.UTC), expiresOn);
 
-                // We want to refresh the token when 90% of the time before expiry has elapsed.
-                final long refreshSeconds = (long) Math.floor(between.getSeconds() * 0.9);
+            // We want to refresh the token when 90% of the time before expiry has elapsed.
+            final long refreshSeconds = (long) Math.floor(between.getSeconds() * 0.9);
 
-                // This converts it to milliseconds
-                final long refreshIntervalMS = refreshSeconds * 1000;
+            // This converts it to milliseconds
+            final long refreshIntervalMS = refreshSeconds * 1000;
 
-                // If this is the first time authorize is called, the task will not have been scheduled yet.
-                if (!hasScheduled.getAndSet(true)) {
-                    LOGGER.atInfo()
-                        .addKeyValue("scopes", scopes)
-                        .log("Scheduling refresh token task.");
+            // If this is the first time authorize is called, the task will not have been scheduled yet.
+            if (!hasScheduled.getAndSet(true)) {
+                LOGGER.atInfo().addKeyValue("scopes", scopes).log("Scheduling refresh token task.");
 
-                    final Duration firstInterval = Duration.ofMillis(refreshIntervalMS);
-                    lastRefreshInterval.set(firstInterval);
-                    authorizationResults.emitNext(AmqpResponseCode.ACCEPTED, (signalType, emitResult) -> {
-                        addSignalTypeAndResult(LOGGER.atVerbose(), signalType, emitResult).log("Could not emit ACCEPTED.");
-                        return false;
-                    });
+                final Duration firstInterval = Duration.ofMillis(refreshIntervalMS);
+                lastRefreshInterval.set(firstInterval);
+                authorizationResults.emitNext(AmqpResponseCode.ACCEPTED, (signalType, emitResult) -> {
+                    addSignalTypeAndResult(LOGGER.atVerbose(), signalType, emitResult).log("Could not emit ACCEPTED.");
+                    return false;
+                });
 
-                    subscription = scheduleRefreshTokenTask(firstInterval);
-                }
+                subscription = scheduleRefreshTokenTask(firstInterval);
+            }
 
-                return refreshIntervalMS;
-            });
+            return refreshIntervalMS;
+        });
     }
 
     @Override
@@ -104,7 +102,8 @@ public class ActiveClientTokenManager implements TokenManager {
         }
 
         authorizationResults.emitComplete((signalType, emitResult) -> {
-            addSignalTypeAndResult(LOGGER.atVerbose(), signalType, emitResult).log("Could not close authorizationResults.");
+            addSignalTypeAndResult(LOGGER.atVerbose(), signalType, emitResult)
+                .log("Could not close authorizationResults.");
 
             return false;
         });
@@ -122,41 +121,43 @@ public class ActiveClientTokenManager implements TokenManager {
     private Disposable scheduleRefreshTokenTask(Duration initialRefresh) {
         // EmitterProcessor can queue up an initial refresh interval before any subscribers are received.
         durationSource.emitNext(initialRefresh, (signalType, emitResult) -> {
-            addSignalTypeAndResult(LOGGER.atVerbose(), signalType, emitResult).log("Could not emit initial refresh interval.");
+            addSignalTypeAndResult(LOGGER.atVerbose(), signalType, emitResult)
+                .log("Could not emit initial refresh interval.");
 
             return false;
         });
 
-        return Flux.switchOnNext(durationSource.asFlux().map(Flux::interval))
+        return Flux
+            .switchOnNext(durationSource.asFlux().map(Flux::interval))
             .takeUntil(duration -> hasDisposed.get())
             .flatMap(delay -> {
 
-                LOGGER.atInfo()
-                    .addKeyValue("scopes", scopes)
-                    .log("Refreshing token.");
+                LOGGER.atInfo().addKeyValue("scopes", scopes).log("Refreshing token.");
 
                 return authorize();
             })
-            .onErrorContinue(
-                error -> (error instanceof AmqpException) && ((AmqpException) error).isTransient(),
-                (amqpException, interval) -> {
-                    final Duration lastRefresh = lastRefreshInterval.get();
+            .onErrorContinue(error -> (error instanceof AmqpException) && ((AmqpException) error).isTransient(), (
+                                                                                                                  amqpException,
+                                                                                                                  interval) -> {
+                final Duration lastRefresh = lastRefreshInterval.get();
 
-                    LOGGER.atError()
-                        .addKeyValue("scopes", scopes)
-                        .addKeyValue(INTERVAL_KEY, interval)
-                        .log("Error is transient. Rescheduling authorization task.", amqpException);
+                LOGGER
+                    .atError()
+                    .addKeyValue("scopes", scopes)
+                    .addKeyValue(INTERVAL_KEY, interval)
+                    .log("Error is transient. Rescheduling authorization task.", amqpException);
 
-                    durationSource.emitNext(lastRefresh, (signalType, emitResult) -> {
-                        addSignalTypeAndResult(LOGGER.atVerbose(), signalType, emitResult)
-                            .addKeyValue("lastRefresh", lastRefresh)
-                            .log("Could not emit lastRefresh.");
+                durationSource.emitNext(lastRefresh, (signalType, emitResult) -> {
+                    addSignalTypeAndResult(LOGGER.atVerbose(), signalType, emitResult)
+                        .addKeyValue("lastRefresh", lastRefresh)
+                        .log("Could not emit lastRefresh.");
 
-                        return false;
-                    });
-                })
+                    return false;
+                });
+            })
             .subscribe(interval -> {
-                LOGGER.atVerbose()
+                LOGGER
+                    .atVerbose()
                     .addKeyValue("scopes", scopes)
                     .addKeyValue(INTERVAL_KEY, interval)
                     .log("Authorization successful. Refreshing token.");
@@ -178,7 +179,8 @@ public class ActiveClientTokenManager implements TokenManager {
                     return false;
                 });
             }, error -> {
-                LOGGER.atError()
+                LOGGER
+                    .atError()
                     .addKeyValue("scopes", scopes)
                     .addKeyValue("audience", tokenAudience)
                     .log("Error occurred while refreshing token that is not retriable. Not scheduling"

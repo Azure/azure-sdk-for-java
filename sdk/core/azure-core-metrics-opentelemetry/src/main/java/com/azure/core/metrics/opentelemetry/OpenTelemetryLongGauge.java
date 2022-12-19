@@ -13,8 +13,7 @@ import java.util.function.Supplier;
  * {@inheritDoc}
  */
 class OpenTelemetryLongGauge implements LongGauge {
-    private static final AutoCloseable NOOP_CLOSEABLE = () -> {
-    };
+    private static final AutoCloseable NOOP_CLOSEABLE = () -> {};
 
     static final LongGauge NOOP = new LongGauge() {
         @Override
@@ -29,6 +28,7 @@ class OpenTelemetryLongGauge implements LongGauge {
     };
 
     private final LongGaugeBuilder gaugeBuilder;
+
     OpenTelemetryLongGauge(LongGaugeBuilder gaugeBuilder) {
         this.gaugeBuilder = gaugeBuilder;
     }
@@ -38,8 +38,9 @@ class OpenTelemetryLongGauge implements LongGauge {
      */
     @Override
     public AutoCloseable registerCallback(Supplier<Long> valueSupplier, TelemetryAttributes attributes) {
-        return gaugeBuilder.buildWithCallback((measurement) ->
-            measurement.record(valueSupplier.get(), OpenTelemetryUtils.getAttributes(attributes)));
+        return gaugeBuilder
+            .buildWithCallback((measurement) -> measurement
+                .record(valueSupplier.get(), OpenTelemetryUtils.getAttributes(attributes)));
     }
 
     /**

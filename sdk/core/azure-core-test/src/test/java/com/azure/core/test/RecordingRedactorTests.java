@@ -150,7 +150,9 @@ public class RecordingRedactorTests {
      */
     @Test
     public void replaceUserDelegationKeyForSignedOidTag() {
-        assertFalse(new RecordingRedactor().redact(USER_DELEGATION_KEY_FOR_SIGNED_OID_RESPONSE).contains(DUMMY_SENSITIVE_INFORMATION));
+        assertFalse(new RecordingRedactor()
+            .redact(USER_DELEGATION_KEY_FOR_SIGNED_OID_RESPONSE)
+            .contains(DUMMY_SENSITIVE_INFORMATION));
     }
 
     /**
@@ -158,7 +160,9 @@ public class RecordingRedactorTests {
      */
     @Test
     public void replaceUserDelegationKeyForSignedTidTag() {
-        assertFalse(new RecordingRedactor().redact(USER_DELEGATION_KEY_FOR_SIGNED_TID_RESPONSE).contains(DUMMY_SENSITIVE_INFORMATION));
+        assertFalse(new RecordingRedactor()
+            .redact(USER_DELEGATION_KEY_FOR_SIGNED_TID_RESPONSE)
+            .contains(DUMMY_SENSITIVE_INFORMATION));
     }
 
     @Test
@@ -181,26 +185,25 @@ public class RecordingRedactorTests {
     }
 
     private static Stream<Arguments> sensitiveDataSupplier() {
-        return Stream.of(
-            Arguments.of(NON_SENSITIVE_DATA_CONTENT, NON_SENSITIVE_DATA_CONTENT),
-            Arguments.of(API_ID_RESPONSE_BODY, REDACTED_API_ID_RESPONSE_BODY),
-            Arguments.of(AUTH_HEADER_RESPONSE_BODY, REDACTED_AUTH_HEADER_RESPONSE_BODY),
-            Arguments.of(ACCOUNT_NAME_RESPONSE_BODY, REDACTED_ACCOUNT_NAME_RESPONSE_BODY),
-            Arguments.of(ACCOUNT_KEY_RESPONSE_BODY, REDACTED_ACCOUNT_KEY_RESPONSE_BODY),
-            Arguments.of(ACCESS_TOKEN_LAST_PAIR, EXPECTED_ACCESS_TOKEN_LAST_PAIR_REDACTED),
-            Arguments.of(ACCESS_TOKEN_FIRST_PAIR, EXPECTED_ACCESS_TOKEN_FIRST_PAIR_REDACTED),
-            Arguments.of(APPLICATION_ID_RESPONSE_BODY, REDACTED_APPLICATION_ID_RESPONSE_BODY),
-            Arguments.of(CONNECTION_STRING_RESPONSE_BODY, REDACTED_CONNECTION_STRING_RESPONSE),
-            Arguments.of(HTTP_URL_RESPONSE_BODY, REDACTED_HTTP_URL_RESPONSE_BODY),
-            Arguments.of(HOST_RESPONSE_BODY, REDACTED_HOST_RESPONSE_BODY),
-            Arguments.of(USER_DELEGATION_KEY_FOR_VALUE_RESPONSE, EXPECTED_USER_DELEGATION_KEY_FOR_VALUE_RESPONSE_REDACTED),
-            Arguments.of(PASSWORD_RESPONSE_BODY, REDACTED_PASSWORD_RESPONSE_BODY),
-            Arguments.of(USERNAME_RESPONSE_BODY, REDACTED_USERNAME_RESPONSE),
-            Arguments.of(REDACTED_EMPTY_KEY_RESPONSE_BODY, EMPTY_KEY_RESPONSE_BODY),
-            Arguments.of(NON_SENSITIVE_DATA_CONTENT, NON_SENSITIVE_DATA_CONTENT)
-        );
+        return Stream
+            .of(Arguments.of(NON_SENSITIVE_DATA_CONTENT, NON_SENSITIVE_DATA_CONTENT), Arguments
+                .of(API_ID_RESPONSE_BODY, REDACTED_API_ID_RESPONSE_BODY), Arguments
+                    .of(AUTH_HEADER_RESPONSE_BODY, REDACTED_AUTH_HEADER_RESPONSE_BODY), Arguments
+                        .of(ACCOUNT_NAME_RESPONSE_BODY, REDACTED_ACCOUNT_NAME_RESPONSE_BODY), Arguments
+                            .of(ACCOUNT_KEY_RESPONSE_BODY, REDACTED_ACCOUNT_KEY_RESPONSE_BODY), Arguments
+                                .of(ACCESS_TOKEN_LAST_PAIR, EXPECTED_ACCESS_TOKEN_LAST_PAIR_REDACTED), Arguments
+                                    .of(ACCESS_TOKEN_FIRST_PAIR, EXPECTED_ACCESS_TOKEN_FIRST_PAIR_REDACTED), Arguments
+                                        .of(APPLICATION_ID_RESPONSE_BODY, REDACTED_APPLICATION_ID_RESPONSE_BODY),
+                Arguments.of(CONNECTION_STRING_RESPONSE_BODY, REDACTED_CONNECTION_STRING_RESPONSE), Arguments
+                    .of(HTTP_URL_RESPONSE_BODY, REDACTED_HTTP_URL_RESPONSE_BODY), Arguments
+                        .of(HOST_RESPONSE_BODY, REDACTED_HOST_RESPONSE_BODY), Arguments
+                            .of(USER_DELEGATION_KEY_FOR_VALUE_RESPONSE,
+                                EXPECTED_USER_DELEGATION_KEY_FOR_VALUE_RESPONSE_REDACTED), Arguments
+                                    .of(PASSWORD_RESPONSE_BODY, REDACTED_PASSWORD_RESPONSE_BODY), Arguments
+                                        .of(USERNAME_RESPONSE_BODY, REDACTED_USERNAME_RESPONSE), Arguments
+                                            .of(REDACTED_EMPTY_KEY_RESPONSE_BODY, EMPTY_KEY_RESPONSE_BODY), Arguments
+                                                .of(NON_SENSITIVE_DATA_CONTENT, NON_SENSITIVE_DATA_CONTENT));
     }
-
 
     /**
      * Verify if the value in the json key {@code httpUrl}  is redacted successfully.

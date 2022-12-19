@@ -24,8 +24,7 @@ public class NetworkCallError {
     /**
      * Empty constructor used by deserialization.
      */
-    public NetworkCallError() {
-    }
+    public NetworkCallError() {}
 
     /**
      * Constructs the class setting the throwable and its class name.

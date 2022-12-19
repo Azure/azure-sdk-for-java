@@ -52,29 +52,25 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
         }
 
         // Use Flux.using to close the stream after complete emission
-        return Flux.using(this.responseBody::byteStream, OkHttpAsyncResponse::toFluxByteBuffer,
-            bodyStream -> this.close(), false);
+        return Flux
+            .using(this.responseBody::byteStream, OkHttpAsyncResponse::toFluxByteBuffer, bodyStream -> this.close(),
+                false);
     }
 
     private static Flux<ByteBuffer> toFluxByteBuffer(InputStream responseBody) {
-        return Flux.just(true)
-            .repeat()
-            .flatMap(ignored -> {
-                byte[] buffer = new byte[BYTE_BUFFER_CHUNK_SIZE];
-                try {
-                    int read = responseBody.read(buffer);
-                    if (read > 0) {
-                        return Mono.just(Tuples.of(read, ByteBuffer.wrap(buffer, 0, read)));
-                    } else {
-                        return Mono.just(Tuples.of(read, EMPTY_BYTE_BUFFER));
-                    }
-                } catch (IOException ex) {
-                    return Mono.error(ex);
+        return Flux.just(true).repeat().flatMap(ignored -> {
+            byte[] buffer = new byte[BYTE_BUFFER_CHUNK_SIZE];
+            try {
+                int read = responseBody.read(buffer);
+                if (read > 0) {
+                    return Mono.just(Tuples.of(read, ByteBuffer.wrap(buffer, 0, read)));
+                } else {
+                    return Mono.just(Tuples.of(read, EMPTY_BYTE_BUFFER));
                 }
-            })
-            .takeUntil(tuple -> tuple.getT1() == -1)
-            .filter(tuple -> tuple.getT1() > 0)
-            .map(Tuple2::getT2);
+            } catch (IOException ex) {
+                return Mono.error(ex);
+            }
+        }).takeUntil(tuple -> tuple.getT1() == -1).filter(tuple -> tuple.getT1() > 0).map(Tuple2::getT2);
     }
 
     @Override

@@ -22,8 +22,9 @@ public final class OkHttpProxySelector extends ProxySelector {
     private final Supplier<InetSocketAddress> proxyAddressSupplier;
     private final Pattern nonProxyHostsPattern;
 
-    public OkHttpProxySelector(Proxy.Type proxyType, Supplier<InetSocketAddress> proxyAddressSupplier,
-        String nonProxyHosts) {
+    public OkHttpProxySelector(Proxy.Type proxyType,
+                               Supplier<InetSocketAddress> proxyAddressSupplier,
+                               String nonProxyHosts) {
         this.proxyType = proxyType;
         this.proxyAddressSupplier = proxyAddressSupplier;
         this.nonProxyHostsPattern = (nonProxyHosts == null)

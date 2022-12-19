@@ -27,14 +27,24 @@ class RetriableWorkItem {
     private final AmqpMetricsProvider metricsProvider;
     private long tryStartTime = 0;
 
-    RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<DeliveryState> monoSink,
-                      Duration timeout, DeliveryState deliveryState, AmqpMetricsProvider metricsProvider) {
-        this(amqpMessage, encodedMessageSize, messageFormat, monoSink, new TimeoutTracker(timeout,
-            false), deliveryState, metricsProvider);
+    RetriableWorkItem(byte[] amqpMessage,
+                      int encodedMessageSize,
+                      int messageFormat,
+                      MonoSink<DeliveryState> monoSink,
+                      Duration timeout,
+                      DeliveryState deliveryState,
+                      AmqpMetricsProvider metricsProvider) {
+        this(amqpMessage, encodedMessageSize, messageFormat, monoSink, new TimeoutTracker(timeout, false),
+            deliveryState, metricsProvider);
     }
 
-    private RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<DeliveryState>
-        monoSink, TimeoutTracker timeout, DeliveryState deliveryState, AmqpMetricsProvider metricsProvider) {
+    private RetriableWorkItem(byte[] amqpMessage,
+                              int encodedMessageSize,
+                              int messageFormat,
+                              MonoSink<DeliveryState> monoSink,
+                              TimeoutTracker timeout,
+                              DeliveryState deliveryState,
+                              AmqpMetricsProvider metricsProvider) {
         this.amqpMessage = amqpMessage;
         this.encodedMessageSize = encodedMessageSize;
         this.messageFormat = messageFormat;

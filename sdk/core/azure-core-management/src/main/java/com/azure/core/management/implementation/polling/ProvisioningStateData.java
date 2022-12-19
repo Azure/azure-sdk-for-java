@@ -25,8 +25,7 @@ final class ProvisioningStateData {
     @JsonProperty(value = "finalResult")
     private FinalResult finalResult;
 
-    ProvisioningStateData() {
-    }
+    ProvisioningStateData() {}
 
     /**
      * Creates ProvisioningStateData.
@@ -36,8 +35,7 @@ final class ProvisioningStateData {
      */
     ProvisioningStateData(URL pollUrl, String provisioningState) {
         this.pollUrl = Objects.requireNonNull(pollUrl, "'pollUrl' cannot be null.");
-        this.provisioningState
-            = Objects.requireNonNull(provisioningState, "'provisioningState' cannot be null.");
+        this.provisioningState = Objects.requireNonNull(provisioningState, "'provisioningState' cannot be null.");
     }
 
     /**
@@ -84,25 +82,19 @@ final class ProvisioningStateData {
         if (pollResponseStatusCode != 200) {
             this.provisioningState = ProvisioningState.FAILED;
             this.pollError = new Error("Polling failed with status code:" + pollResponseStatusCode,
-                pollResponseStatusCode,
-                pollResponseHeaders.toMap(),
-                pollResponseBody);
+                pollResponseStatusCode, pollResponseHeaders.toMap(), pollResponseBody);
         } else {
             String value = tryParseProvisioningState(pollResponseBody, adapter);
             if (value == null) {
                 this.provisioningState = ProvisioningState.FAILED;
-                this.pollError = new Error("Polling response does not contain a valid body.",
-                    pollResponseStatusCode,
-                    pollResponseHeaders.toMap(),
-                    pollResponseBody);
+                this.pollError = new Error("Polling response does not contain a valid body.", pollResponseStatusCode,
+                    pollResponseHeaders.toMap(), pollResponseBody);
             } else {
                 this.provisioningState = value;
                 if (ProvisioningState.FAILED.equalsIgnoreCase(this.provisioningState)
                     || ProvisioningState.CANCELED.equalsIgnoreCase(this.provisioningState)) {
-                    this.pollError = new Error("Long running operation failed or cancelled.",
-                        pollResponseStatusCode,
-                        pollResponseHeaders.toMap(),
-                        pollResponseBody);
+                    this.pollError = new Error("Long running operation failed or cancelled.", pollResponseStatusCode,
+                        pollResponseHeaders.toMap(), pollResponseBody);
                 } else if (ProvisioningState.SUCCEEDED.equalsIgnoreCase(this.provisioningState)) {
                     this.finalResult = new FinalResult(null, pollResponseBody);
                 }
@@ -121,16 +113,14 @@ final class ProvisioningStateData {
             return null;
         }
         try {
-            ResourceWithProvisioningState resource = adapter.deserialize(value,
-                ResourceWithProvisioningState.class,
-                SerializerEncoding.JSON);
-            return resource != null
-                ? resource.getProvisioningState()
-                : null;
+            ResourceWithProvisioningState resource = adapter
+                .deserialize(value, ResourceWithProvisioningState.class, SerializerEncoding.JSON);
+            return resource != null ? resource.getProvisioningState() : null;
         } catch (IOException | RuntimeException ignored) {
             return null;
         }
     }
+
     /**
      * Schema of an azure resource with provisioningState property.
      */
@@ -152,4 +142,3 @@ final class ProvisioningStateData {
         }
     }
 }
-

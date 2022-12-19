@@ -13,9 +13,7 @@ import com.azure.json.implementation.jackson.core.util.JacksonFeature;
  *
  * @since 2.12
  */
-public enum StreamReadCapability
-    implements JacksonFeature
-{
+public enum StreamReadCapability implements JacksonFeature {
     /**
      * Capability that indicates that data format can expose multiple properties
      * with same name ("duplicates") within one Object context.
@@ -48,8 +46,7 @@ public enum StreamReadCapability
      *<p>
      * This capability is true for many textual formats like CSV, Properties and XML.
      */
-    UNTYPED_SCALARS(false),
-    ;
+    UNTYPED_SCALARS(false),;
 
     /**
      * Whether feature is enabled or disabled by default.
@@ -64,9 +61,17 @@ public enum StreamReadCapability
     }
 
     @Override
-    public boolean enabledByDefault() { return _defaultState; }
+    public boolean enabledByDefault() {
+        return _defaultState;
+    }
+
     @Override
-    public boolean enabledIn(int flags) { return (flags & _mask) != 0; }
+    public boolean enabledIn(int flags) {
+        return (flags & _mask) != 0;
+    }
+
     @Override
-    public int getMask() { return _mask; }
+    public int getMask() {
+        return _mask;
+    }
 }

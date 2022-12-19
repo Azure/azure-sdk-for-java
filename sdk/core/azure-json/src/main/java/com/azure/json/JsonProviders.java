@@ -33,8 +33,8 @@ public final class JsonProviders {
         // But this choice here provides additional flexibility in managed environments that control
         // classloading differently (OSGi, Spring and others) and don't/ depend on the
         // System classloader to load HttpClientProvider classes.
-        ServiceLoader<JsonProvider> serviceLoader = ServiceLoader.load(JsonProvider.class,
-            JsonProvider.class.getClassLoader());
+        ServiceLoader<JsonProvider> serviceLoader = ServiceLoader
+            .load(JsonProvider.class, JsonProvider.class.getClassLoader());
         // Use the first provider found in the service loader iterator.
         Iterator<JsonProvider> it = serviceLoader.iterator();
         if (it.hasNext()) {
@@ -153,7 +153,8 @@ public final class JsonProviders {
      * @throws IllegalStateException If a provider could not be found on the classpath and {@code useDefault} is false.
      * @throws IOException If a {@link JsonReader} cannot be instantiated.
      */
-    public static JsonReader createReader(InputStream json, JsonOptions options, boolean useDefault) throws IOException {
+    public static JsonReader createReader(InputStream json, JsonOptions options, boolean useDefault)
+                                                                                                     throws IOException {
         if (defaultProvider == null) {
             if (useDefault) {
                 return DefaultJsonReader.fromStream(json, options);
@@ -230,7 +231,8 @@ public final class JsonProviders {
      * @throws IllegalStateException If a provider could not be found on the classpath and {@code useDefault} is false.
      * @throws IOException If a {@link JsonWriter} cannot be instantiated.
      */
-    public static JsonWriter createWriter(OutputStream json, JsonOptions options, boolean useDefault) throws IOException {
+    public static JsonWriter createWriter(OutputStream json, JsonOptions options, boolean useDefault)
+                                                                                                      throws IOException {
         if (defaultProvider == null) {
             if (useDefault) {
                 return DefaultJsonWriter.toStream(json, options);

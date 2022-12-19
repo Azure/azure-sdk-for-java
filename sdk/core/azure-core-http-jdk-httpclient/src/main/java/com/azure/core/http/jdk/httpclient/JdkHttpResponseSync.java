@@ -30,6 +30,7 @@ final class JdkHttpResponseSync extends JdkHttpResponseBase {
     private byte[] bodyBytes;
 
     private volatile boolean disposed = false;
+
     JdkHttpResponseSync(final HttpRequest request, int statusCode, HttpHeaders headers, byte[] bytes) {
         super(request, statusCode, headers);
         this.bodyStream = null;

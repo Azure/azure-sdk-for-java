@@ -13,8 +13,7 @@ import com.azure.json.implementation.jackson.core.JsonToken;
  *
  * @since 2.8
  */
-public class JsonEOFException extends JsonParseException
-{
+public class JsonEOFException extends JsonParseException {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -22,7 +21,7 @@ public class JsonEOFException extends JsonParseException
      * to recognize type (such as starting double-quote for Strings)
      */
     protected final JsonToken _token;
-    
+
     public JsonEOFException(JsonParser p, JsonToken token, String msg) {
         super(p, msg);
         _token = token;

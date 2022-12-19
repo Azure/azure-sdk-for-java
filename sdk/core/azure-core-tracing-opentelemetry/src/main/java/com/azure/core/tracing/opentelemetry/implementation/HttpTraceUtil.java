@@ -35,7 +35,7 @@ public final class HttpTraceUtil {
     private static final String STATUS_504 = "Gateway Timeout";
     private static final String STATUS_505 = "HTTP Version not supported";
 
-    private HttpTraceUtil() { }
+    private HttpTraceUtil() {}
 
     /**
      * Parse OpenTelemetry Status from HTTP response status code.
@@ -179,4 +179,3 @@ public final class HttpTraceUtil {
         return span.setStatus(openTelemetryStatusCode, message);
     }
 }
-

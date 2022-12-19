@@ -31,6 +31,10 @@
     <tag>HEAD</tag>
   </scm>
 
+  <properties>
+    <spotless.disabled>false</spotless.disabled>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>

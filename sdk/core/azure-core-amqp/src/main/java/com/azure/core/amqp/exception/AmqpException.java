@@ -57,7 +57,9 @@ public class AmqpException extends AzureException {
      *     be logged as an aid to resolving issues.
      * @param errorContext The context that caused this AMQP error.
      */
-    public AmqpException(boolean isTransient, AmqpErrorCondition errorCondition, String message,
+    public AmqpException(boolean isTransient,
+                         AmqpErrorCondition errorCondition,
+                         String message,
                          AmqpErrorContext errorContext) {
         super(message);
         this.errorCondition = errorCondition;
@@ -76,7 +78,10 @@ public class AmqpException extends AzureException {
      * @param cause The Throwable which caused the creation of this AmqpException.
      * @param errorContext The context that caused this AMQP error.
      */
-    public AmqpException(boolean isTransient, AmqpErrorCondition errorCondition, String message, Throwable cause,
+    public AmqpException(boolean isTransient,
+                         AmqpErrorCondition errorCondition,
+                         String message,
+                         Throwable cause,
                          AmqpErrorContext errorContext) {
         super(message, cause);
         this.errorCondition = errorCondition;
@@ -93,7 +98,9 @@ public class AmqpException extends AzureException {
      * @param cause The Throwable which caused the creation of this AmqpException.
      * @param errorContext The context that caused this AMQP error.
      */
-    public AmqpException(boolean isTransient, AmqpErrorCondition errorCondition, Throwable cause,
+    public AmqpException(boolean isTransient,
+                         AmqpErrorCondition errorCondition,
+                         Throwable cause,
                          AmqpErrorContext errorContext) {
         super(cause.getMessage(), cause);
         this.errorCondition = errorCondition;

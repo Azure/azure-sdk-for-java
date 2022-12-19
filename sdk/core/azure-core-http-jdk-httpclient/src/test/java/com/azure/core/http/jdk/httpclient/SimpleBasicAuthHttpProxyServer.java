@@ -58,22 +58,16 @@ final class SimpleBasicAuthHttpProxyServer {
                             .build();
                     } else {
                         if (!proxyAuthorization.startsWith("Basic")) {
-                            return new com.github.tomakehurst.wiremock.http.Response.Builder()
-                                .status(401)
-                                .build();
+                            return new com.github.tomakehurst.wiremock.http.Response.Builder().status(401).build();
                         }
                         String encodedCred = proxyAuthorization.substring("Basic".length());
                         encodedCred = encodedCred.trim();
                         final Base64.Decoder decoder = Base64.getDecoder();
                         final byte[] decodedCred = decoder.decode(encodedCred);
                         if (new String(decodedCred).equals(userName + ":" + password)) {
-                            return new Response.Builder()
-                                .status(200)
-                                .build();
+                            return new Response.Builder().status(200).build();
                         } else {
-                            return new Response.Builder()
-                                .status(401)
-                                .build();
+                            return new Response.Builder().status(401).build();
                         }
                     }
                 }
@@ -85,8 +79,7 @@ final class SimpleBasicAuthHttpProxyServer {
             })
             .disableRequestJournal());
         for (String endpoint : this.serviceEndpoints) {
-            proxyService.stubFor(WireMock.any(WireMock.urlEqualTo(endpoint))
-                .willReturn(WireMock.aResponse()));
+            proxyService.stubFor(WireMock.any(WireMock.urlEqualTo(endpoint)).willReturn(WireMock.aResponse()));
         }
         this.proxyService.start();
         return new ProxyEndpoint("localhost", this.proxyService.port());

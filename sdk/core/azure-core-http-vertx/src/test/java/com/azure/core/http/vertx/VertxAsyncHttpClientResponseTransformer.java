@@ -22,10 +22,7 @@ public class VertxAsyncHttpClientResponseTransformer extends ResponseTransformer
         String url = request.getUrl();
 
         if (RETURN_HEADERS_AS_IS_PATH.equalsIgnoreCase(url)) {
-            return Response.response()
-                .status(200)
-                .headers(request.getHeaders())
-                .build();
+            return Response.response().status(200).headers(request.getHeaders()).build();
         }
 
         return response;

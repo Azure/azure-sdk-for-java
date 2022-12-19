@@ -40,7 +40,8 @@ class ActiveClientTokenManagerTest {
 
         // Act & Assert
         final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
-        StepVerifier.create(tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults()))
+        StepVerifier
+            .create(tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults()))
             .expectNext(AmqpResponseCode.ACCEPTED)
             .thenAwait(DEFAULT_DURATION)
             .expectNext(AmqpResponseCode.ACCEPTED)
@@ -67,7 +68,8 @@ class ActiveClientTokenManagerTest {
 
         // Act & Assert
         final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
-        StepVerifier.create(tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults()))
+        StepVerifier
+            .create(tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults()))
             .expectNext(AmqpResponseCode.ACCEPTED)
             .assertNext(code -> {
                 assertEquals(AmqpResponseCode.ACCEPTED, code);
@@ -90,9 +92,7 @@ class ActiveClientTokenManagerTest {
         tokenManager.authorize().then(Mono.fromRunnable(tokenManager::close)).block();
 
         // Act & Assert
-        StepVerifier.create(tokenManager.authorize())
-            .expectError(AzureException.class)
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(tokenManager.authorize()).expectError(AzureException.class).verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -107,17 +107,22 @@ class ActiveClientTokenManagerTest {
         AtomicInteger authorizationCalls = new AtomicInteger();
         ClaimsBasedSecurityNode cbsNode = new MockClaimsBasedSecurityNode(() -> {
             switch (authorizationCalls.getAndIncrement()) {
-                case 0: return getNextExpiration(DEFAULT_DURATION);
-                case 1: return Mono.error(error);
-                case 2: return getNextExpiration(DEFAULT_DURATION);
-                default: return Mono.error(new IllegalStateException("Too many authorization requests"));
+                case 0:
+                    return getNextExpiration(DEFAULT_DURATION);
+                case 1:
+                    return Mono.error(error);
+                case 2:
+                    return getNextExpiration(DEFAULT_DURATION);
+                default:
+                    return Mono.error(new IllegalStateException("Too many authorization requests"));
             }
         });
         final Mono<ClaimsBasedSecurityNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
 
         // Act & Assert
         final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
-        StepVerifier.create(tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults()))
+        StepVerifier
+            .create(tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults()))
             .expectNext(AmqpResponseCode.ACCEPTED)
             .thenAwait(DEFAULT_DURATION)
 
@@ -140,17 +145,22 @@ class ActiveClientTokenManagerTest {
         AtomicInteger authorizationCalls = new AtomicInteger();
         ClaimsBasedSecurityNode cbsNode = new MockClaimsBasedSecurityNode(() -> {
             switch (authorizationCalls.getAndIncrement()) {
-                case 0: return getNextExpiration(DEFAULT_DURATION);
-                case 1: return Mono.error(error);
-                case 2: return getNextExpiration(DEFAULT_DURATION);
-                default: return Mono.error(new IllegalStateException("Too many authorization requests"));
+                case 0:
+                    return getNextExpiration(DEFAULT_DURATION);
+                case 1:
+                    return Mono.error(error);
+                case 2:
+                    return getNextExpiration(DEFAULT_DURATION);
+                default:
+                    return Mono.error(new IllegalStateException("Too many authorization requests"));
             }
         });
         final Mono<ClaimsBasedSecurityNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
 
         // Act & Assert
         final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
-        StepVerifier.create(tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults()))
+        StepVerifier
+            .create(tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults()))
             .expectNext(AmqpResponseCode.ACCEPTED)
             .thenAwait(DEFAULT_DURATION)
             .expectErrorSatisfies(throwable -> {

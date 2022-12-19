@@ -96,8 +96,11 @@ public final class PlaybackClient implements HttpClient {
             logger.warning("NOT FOUND - Method: {} URL: {}", incomingMethod, incomingUrl);
             logger.warning("Records requested: {}.", count);
 
-            throw logger.logExceptionAsError(
-                new IllegalStateException("==> Unexpected request: " + incomingMethod + " " + incomingUrl));
+            throw logger
+                .logExceptionAsError(new IllegalStateException("==> Unexpected request: "
+                    + incomingMethod
+                    + " "
+                    + incomingUrl));
         }
 
         if (networkCallRecord.getException() != null) {
@@ -109,8 +112,9 @@ public final class PlaybackClient implements HttpClient {
             request.setHeader(X_MS_CLIENT_REQUEST_ID, networkCallRecord.getHeaders().get(X_MS_CLIENT_REQUEST_ID));
         }
         if (request.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256) != null) {
-            networkCallRecord.getResponse().put(X_MS_ENCRYPTION_KEY_SHA256,
-                request.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
+            networkCallRecord
+                .getResponse()
+                .put(X_MS_ENCRYPTION_KEY_SHA256, request.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
         }
 
         int recordStatusCode = Integer.parseInt(networkCallRecord.getResponse().get("StatusCode"));

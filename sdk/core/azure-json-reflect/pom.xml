@@ -47,6 +47,8 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.json.reflect/com.azure.json.reflect=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+
+    <spotless.disabled>false</spotless.disabled>
   </properties>
 
   <developers>

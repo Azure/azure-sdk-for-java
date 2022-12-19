@@ -112,7 +112,8 @@ class ClaimsBasedSecurityChannelTest {
             .thenReturn(Mono.just(accessToken));
 
         // Act
-        StepVerifier.create(cbsChannel.authorize(tokenAudience, scopes))
+        StepVerifier
+            .create(cbsChannel.authorize(tokenAudience, scopes))
             .expectNext(accessToken.getExpiresAt())
             .expectComplete()
             .verify(VERIFY_TIMEOUT);
@@ -144,7 +145,8 @@ class ClaimsBasedSecurityChannelTest {
             .thenReturn(Mono.just(accessToken));
 
         // Act
-        StepVerifier.create(cbsChannel.authorize(tokenAudience, scopes))
+        StepVerifier
+            .create(cbsChannel.authorize(tokenAudience, scopes))
             .expectNext(accessToken.getExpiresAt())
             .expectComplete()
             .verify(VERIFY_TIMEOUT);
@@ -174,12 +176,10 @@ class ClaimsBasedSecurityChannelTest {
         when(requestResponseChannel.sendWithAck(any())).thenReturn(Mono.just(unauthorizedResponse));
 
         // Act
-        StepVerifier.create(cbsChannel.authorize(tokenAudience, scopes))
-            .expectErrorSatisfies(error -> {
-                assertTrue(error instanceof AmqpException);
-                assertEquals(AmqpErrorCondition.UNAUTHORIZED_ACCESS, ((AmqpException) error).getErrorCondition());
-            })
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(cbsChannel.authorize(tokenAudience, scopes)).expectErrorSatisfies(error -> {
+            assertTrue(error instanceof AmqpException);
+            assertEquals(AmqpErrorCondition.UNAUTHORIZED_ACCESS, ((AmqpException) error).getErrorCondition());
+        }).verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -198,12 +198,10 @@ class ClaimsBasedSecurityChannelTest {
         when(requestResponseChannel.sendWithAck(any())).thenReturn(Mono.empty());
 
         // Act
-        StepVerifier.create(cbsChannel.authorize(tokenAudience, scopes))
-            .expectErrorSatisfies(error -> {
-                assertTrue(error instanceof AmqpException);
-                assertTrue(((AmqpException) error).isTransient());
-            })
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(cbsChannel.authorize(tokenAudience, scopes)).expectErrorSatisfies(error -> {
+            assertTrue(error instanceof AmqpException);
+            assertTrue(((AmqpException) error).isTransient());
+        }).verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -212,16 +210,14 @@ class ClaimsBasedSecurityChannelTest {
     @Test
     void closesAsync() {
         // Arrange
-        final ClaimsBasedSecurityChannel cbsChannel = new ClaimsBasedSecurityChannel(
-            Mono.defer(() -> Mono.just(requestResponseChannel)), tokenCredential,
+        final ClaimsBasedSecurityChannel cbsChannel = new ClaimsBasedSecurityChannel(Mono
+            .defer(() -> Mono.just(requestResponseChannel)), tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, options);
 
         when(requestResponseChannel.closeAsync()).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(cbsChannel.closeAsync())
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(cbsChannel.closeAsync()).expectComplete().verify(VERIFY_TIMEOUT);
 
         verify(requestResponseChannel).closeAsync();
     }
@@ -232,8 +228,8 @@ class ClaimsBasedSecurityChannelTest {
     @Test
     void closes() {
         // Arrange
-        final ClaimsBasedSecurityChannel cbsChannel = new ClaimsBasedSecurityChannel(
-            Mono.defer(() -> Mono.just(requestResponseChannel)), tokenCredential,
+        final ClaimsBasedSecurityChannel cbsChannel = new ClaimsBasedSecurityChannel(Mono
+            .defer(() -> Mono.just(requestResponseChannel)), tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, options);
 
         when(requestResponseChannel.closeAsync()).thenReturn(Mono.empty());

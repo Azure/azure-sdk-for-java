@@ -40,7 +40,7 @@ class StrictTlsContextSpi extends SSLContextSpi {
 
     @Override
     protected void engineInit(KeyManager[] keyManagers, TrustManager[] trustManagers, SecureRandom secureRandom)
-        throws KeyManagementException {
+                                                                                                                 throws KeyManagementException {
 
         sslContext.init(keyManagers, trustManagers, secureRandom);
     }
@@ -102,14 +102,13 @@ class StrictTlsContextSpi extends SSLContextSpi {
      * @return Enabled protocols.
      */
     private String[] getAllowedProtocols(String[] protocols) {
-        return Stream.of(protocols)
-            .filter(protocol -> {
-                final boolean isSSLv2Hello = protocol.equalsIgnoreCase(SSL_V2_HELLO);
-                if (isSSLv2Hello) {
-                    LOGGER.info("{} was an enabled protocol. Filtering out.", SSL_V2_HELLO);
-                }
+        return Stream.of(protocols).filter(protocol -> {
+            final boolean isSSLv2Hello = protocol.equalsIgnoreCase(SSL_V2_HELLO);
+            if (isSSLv2Hello) {
+                LOGGER.info("{} was an enabled protocol. Filtering out.", SSL_V2_HELLO);
+            }
 
-                return !isSSLv2Hello;
-            }).toArray(String[]::new);
+            return !isSSLv2Hello;
+        }).toArray(String[]::new);
     }
 }

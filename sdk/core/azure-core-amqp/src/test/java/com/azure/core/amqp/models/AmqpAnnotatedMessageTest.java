@@ -72,7 +72,8 @@ public class AmqpAnnotatedMessageTest {
                 break;
             case VALUE:
             case SEQUENCE:
-                throw logger.logExceptionAsError(new UnsupportedOperationException("type not supported yet :" + actualType));
+                throw logger
+                    .logExceptionAsError(new UnsupportedOperationException("type not supported yet :" + actualType));
             default:
                 throw logger.logExceptionAsError(new IllegalStateException("Invalid type :" + actualType));
         }

@@ -16,27 +16,30 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.util.regex.Pattern.compile;
+
 /**
  * This class used to redact the sensitive information when recording
  */
 public class RecordingRedactor {
     private static final String REDACTED = "REDACTED";
-    private static final String REDACTED_UTF_8 = Base64.getEncoder().encodeToString(REDACTED.getBytes(StandardCharsets.UTF_8));
+    private static final String REDACTED_UTF_8 = Base64
+        .getEncoder()
+        .encodeToString(REDACTED.getBytes(StandardCharsets.UTF_8));
 
-    private static final Pattern DELEGATIONKEY_KEY_PATTERN = Pattern.compile("(?:<Value>)(.*)(?:</Value>)");
-    private static final Pattern DELEGATIONKEY_CLIENTID_PATTERN = Pattern.compile("(?:<SignedOid>)(.*)(?:</SignedOid>)");
-    private static final Pattern DELEGATIONKEY_TENANTID_PATTERN = Pattern.compile("(?:<SignedTid>)(.*)(?:</SignedTid>)");
-    private static final Pattern PASSWORD_KEY_PATTERN = Pattern.compile("(?:Password=)(.*?)(?:;)");
-    private static final Pattern USER_ID_KEY_PATTERN = Pattern.compile("(?:User ID=)(.*?)(?:;)");
-    private static final Pattern PRIMARY_KEY_PATTERN = Pattern.compile("(?:<PrimaryKey>)(.*)(?:</PrimaryKey>)");
-    private static final Pattern SECONDARY_KEY_PATTERN = Pattern.compile("(?:<SecondaryKey>)(.*)(?:</SecondaryKey>)");
+    private static final Pattern DELEGATIONKEY_KEY_PATTERN = compile("(?:<Value>)(.*)(?:</Value>)");
+    private static final Pattern DELEGATIONKEY_CLIENTID_PATTERN = compile("(?:<SignedOid>)(.*)(?:</SignedOid>)");
+    private static final Pattern DELEGATIONKEY_TENANTID_PATTERN = compile("(?:<SignedTid>)(.*)(?:</SignedTid>)");
+    private static final Pattern PASSWORD_KEY_PATTERN = compile("(?:Password=)(.*?)(?:;)");
+    private static final Pattern USER_ID_KEY_PATTERN = compile("(?:User ID=)(.*?)(?:;)");
+    private static final Pattern PRIMARY_KEY_PATTERN = compile("(?:<PrimaryKey>)(.*)(?:</PrimaryKey>)");
+    private static final Pattern SECONDARY_KEY_PATTERN = compile("(?:<SecondaryKey>)(.*)(?:</SecondaryKey>)");
 
     private static final List<Function<String, String>> DEFAULT_RECORDING_REDACTORS = loadRedactor();
 
     private final List<Function<String, String>> recordingRedactors = new ArrayList<>();
 
-    private static final StringJoiner JSON_PROPERTIES_TO_REDACT
-        = new StringJoiner("\":\"|\"", "\"", "\":\"")
+    private static final StringJoiner JSON_PROPERTIES_TO_REDACT = new StringJoiner("\":\"|\"", "\"", "\":\"")
         .add("authHeader")
         .add("accountKey")
         .add("accessToken")
@@ -49,9 +52,8 @@ public class RecordingRedactor {
         .add("password")
         .add("userName");
 
-    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
-        = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
-        Pattern.CASE_INSENSITIVE);
+    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN = compile(String
+        .format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT), Pattern.CASE_INSENSITIVE);
 
     /**
      * Creates an instance of {@link RecordingRedactor} with a default set of redactors.
@@ -97,35 +99,31 @@ public class RecordingRedactor {
     }
 
     private static String redactUsernameKeyPatterns(String content) {
-        content = redactionReplacement(content, USER_ID_KEY_PATTERN.matcher(content), REDACTED);
-        return content;
+        return redactionReplacement(content, USER_ID_KEY_PATTERN.matcher(content), REDACTED);
     }
 
     private static String redactPasswordKeyPatterns(String content) {
-        content = redactionReplacement(content, PASSWORD_KEY_PATTERN.matcher(content), REDACTED);
-        return content;
+        return redactionReplacement(content, PASSWORD_KEY_PATTERN.matcher(content), REDACTED);
     }
 
     private static String redactJsonKeyPatterns(String content) {
-        content = redactionReplacement(content, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(content), REDACTED);
-        return content;
+        return redactionReplacement(content, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(content), REDACTED);
     }
 
     private static String redactPrimaryKeyPatterns(String content) {
-        content = redactionReplacement(content, PRIMARY_KEY_PATTERN.matcher(content), REDACTED);
-        return content;
+        return redactionReplacement(content, PRIMARY_KEY_PATTERN.matcher(content), REDACTED);
     }
 
     private static String redactSecondaryKeyPatterns(String content) {
-        content = redactionReplacement(content, SECONDARY_KEY_PATTERN.matcher(content), REDACTED);
-        return content;
+        return redactionReplacement(content, SECONDARY_KEY_PATTERN.matcher(content), REDACTED);
     }
 
     private static String redactUserDelegationKey(String content) {
         if (content.contains("<UserDelegationKey>")) {
+            String uuid = UUID.randomUUID().toString();
             content = redactionReplacement(content, DELEGATIONKEY_KEY_PATTERN.matcher(content), REDACTED_UTF_8);
-            content = redactionReplacement(content, DELEGATIONKEY_CLIENTID_PATTERN.matcher(content), UUID.randomUUID().toString());
-            content = redactionReplacement(content, DELEGATIONKEY_TENANTID_PATTERN.matcher(content), UUID.randomUUID().toString());
+            content = redactionReplacement(content, DELEGATIONKEY_CLIENTID_PATTERN.matcher(content), uuid);
+            content = redactionReplacement(content, DELEGATIONKEY_TENANTID_PATTERN.matcher(content), uuid);
         }
 
         return content;

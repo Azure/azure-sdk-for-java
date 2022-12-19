@@ -31,8 +31,7 @@ public final class ResourceAuthorIdentityType extends ExpandableStringEnum<Resou
      * @deprecated Use one of the constants or the {@link #fromString(String, Class)} factory method.
      */
     @Deprecated
-    public ResourceAuthorIdentityType() {
-    }
+    public ResourceAuthorIdentityType() {}
 
     /**
      * Creates or finds a ResourceAuthorIdentityType from its string representation.

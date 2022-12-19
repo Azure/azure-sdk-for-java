@@ -41,7 +41,8 @@ public class AccessPolicy implements XmlSerializable<AccessPolicy> {
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        return xmlWriter.writeStartElement("AccessPolicy")
+        return xmlWriter
+            .writeStartElement("AccessPolicy")
             .writeStringElement("Start", startsOn == null ? null : startsOn.toString())
             .writeStringElement("Expiry", expiresOn == null ? null : expiresOn.toString())
             .writeStringElement("Permission", permissions)
@@ -56,14 +57,18 @@ public class AccessPolicy implements XmlSerializable<AccessPolicy> {
 
         if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
             throw new IllegalStateException("Illegal start of XML deserialization. "
-                + "Expected 'XmlToken.START_ELEMENT' but it was: 'XmlToken." + xmlReader.currentToken() + "'.");
+                + "Expected 'XmlToken.START_ELEMENT' but it was: 'XmlToken."
+                + xmlReader.currentToken()
+                + "'.");
         }
 
         QName elementQName = xmlReader.getElementName();
         String elementName = elementQName.toString();
         if (!"AccessPolicy".equals(elementName)) {
             throw new IllegalStateException("Expected XML element to be 'SignedIdentifiers' but it was: "
-                + "'" + elementName + "'.");
+                + "'"
+                + elementName
+                + "'.");
         }
 
         OffsetDateTime startsOn = null;

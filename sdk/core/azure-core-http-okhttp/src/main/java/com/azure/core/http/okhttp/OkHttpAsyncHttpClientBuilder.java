@@ -304,16 +304,16 @@ public class OkHttpAsyncHttpClientBuilder {
             : proxyOptions;
 
         if (buildProxyOptions != null) {
-            httpClientBuilder = httpClientBuilder.proxySelector(new OkHttpProxySelector(
-                buildProxyOptions.getType().toProxyType(),
-                buildProxyOptions::getAddress,
-                buildProxyOptions.getNonProxyHosts()));
+            httpClientBuilder = httpClientBuilder
+                .proxySelector(new OkHttpProxySelector(buildProxyOptions.getType().toProxyType(),
+                    buildProxyOptions::getAddress, buildProxyOptions.getNonProxyHosts()));
 
             if (buildProxyOptions.getUsername() != null) {
                 ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(buildProxyOptions.getUsername(),
                     buildProxyOptions.getPassword());
 
-                httpClientBuilder = httpClientBuilder.proxyAuthenticator(proxyAuthenticator)
+                httpClientBuilder = httpClientBuilder
+                    .proxyAuthenticator(proxyAuthenticator)
                     .addInterceptor(proxyAuthenticator.getProxyAuthenticationInfoInterceptor());
             }
         }
@@ -344,7 +344,7 @@ public class OkHttpAsyncHttpClientBuilder {
         // Return the maximum of the timeout period and the minimum allowed timeout period.
         if (configuredTimeout.compareTo(MINIMUM_TIMEOUT) < 0) {
             return MINIMUM_TIMEOUT;
-        } else  {
+        } else {
             return configuredTimeout;
         }
     }

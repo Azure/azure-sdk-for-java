@@ -93,8 +93,8 @@ public class ReactorReceiverIsolatedTest {
         when(reactor.attachments()).thenReturn(record);
 
         final String entityPath = "test-entity-path";
-        receiverHandler = new ReceiveLinkHandler("test-connection-id", "test-host",
-            "test-receiver-name", entityPath, null);
+        receiverHandler = new ReceiveLinkHandler("test-connection-id", "test-host", "test-receiver-name", entityPath,
+            null);
 
         when(tokenManager.getAuthorizationResults()).thenReturn(authorizationResults.flux());
 
@@ -145,8 +145,8 @@ public class ReactorReceiverIsolatedTest {
         final VirtualTimeScheduler virtualTimeScheduler = VirtualTimeScheduler.create();
 
         try {
-            StepVerifier.withVirtualTime(() -> reactorReceiver.closeAsync(message, condition),
-                    () -> virtualTimeScheduler, 1)
+            StepVerifier
+                .withVirtualTime(() -> reactorReceiver.closeAsync(message, condition), () -> virtualTimeScheduler, 1)
                 // Advance virtual time beyond the default timeout of 60 sec, so endpoint state
                 // completion timeout kicks in.
                 .thenAwait(Duration.ofSeconds(100))
@@ -154,7 +154,8 @@ public class ReactorReceiverIsolatedTest {
                 .verify(VERIFY_TIMEOUT);
 
             // Assert
-            StepVerifier.create(reactorReceiver.getEndpointStates())
+            StepVerifier
+                .create(reactorReceiver.getEndpointStates())
                 // Assert endpoint state completes (via timeout) when there is no broker remote-close ack.
                 .expectComplete()
                 .verify(VERIFY_TIMEOUT);

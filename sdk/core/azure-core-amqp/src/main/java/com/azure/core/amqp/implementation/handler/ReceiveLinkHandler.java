@@ -30,7 +30,6 @@ import static com.azure.core.amqp.implementation.ClientConstants.EMIT_RESULT_KEY
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 
-
 /**
  * Handler that receives events from its corresponding {@link Receiver}. Handlers must be associated to a
  * {@link Receiver} to receive its events.
@@ -59,7 +58,11 @@ public class ReceiveLinkHandler extends LinkHandler {
         this(connectionId, hostname, linkName, entityPath, new AmqpMetricsProvider(null, hostname, entityPath));
     }
 
-    public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath, AmqpMetricsProvider metricsProvider) {
+    public ReceiveLinkHandler(String connectionId,
+                              String hostname,
+                              String linkName,
+                              String entityPath,
+                              AmqpMetricsProvider metricsProvider) {
         super(connectionId, hostname, entityPath, metricsProvider);
         this.linkName = Objects.requireNonNull(linkName, "'linkName' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
@@ -93,7 +96,8 @@ public class ReceiveLinkHandler extends LinkHandler {
     public void onLinkLocalOpen(Event event) {
         final Link link = event.getLink();
         if (link instanceof Receiver) {
-            logger.atVerbose()
+            logger
+                .atVerbose()
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .addKeyValue(LINK_NAME_KEY, link.getName())
                 .addKeyValue("localSource", link.getSource())
@@ -108,7 +112,8 @@ public class ReceiveLinkHandler extends LinkHandler {
             return;
         }
 
-        LoggingEventBuilder logBuilder =  logger.atInfo()
+        LoggingEventBuilder logBuilder = logger
+            .atInfo()
             .addKeyValue(ENTITY_PATH_KEY, entityPath)
             .addKeyValue(LINK_NAME_KEY, link.getName());
 
@@ -119,8 +124,7 @@ public class ReceiveLinkHandler extends LinkHandler {
                 onNext(EndpointState.ACTIVE);
             }
         } else {
-            logBuilder
-                .addKeyValue("action", "waitingForError");
+            logBuilder.addKeyValue("action", "waitingForError");
         }
 
         logBuilder.log("onLinkRemoteOpen");
@@ -154,7 +158,8 @@ public class ReceiveLinkHandler extends LinkHandler {
                         .addKeyValue("delivery.isSettled", delivery.isSettled())
                         .log("onDelivery. Was already settled.");
                 } else {
-                    logger.atWarning()
+                    logger
+                        .atWarning()
                         .addKeyValue(ENTITY_PATH_KEY, entityPath)
                         .addKeyValue("delivery.isSettled", delivery.isSettled())
                         .log("Settled delivery with no link.");
@@ -171,7 +176,8 @@ public class ReceiveLinkHandler extends LinkHandler {
                 } else {
                     queuedDeliveries.add(delivery);
                     deliveries.emitNext(delivery, (signalType, emitResult) -> {
-                        logger.atWarning()
+                        logger
+                            .atWarning()
                             .addKeyValue(ENTITY_PATH_KEY, entityPath)
                             .addKeyValue(LINK_NAME_KEY, linkName)
                             .addKeyValue(EMIT_RESULT_KEY, emitResult)
@@ -179,8 +185,9 @@ public class ReceiveLinkHandler extends LinkHandler {
 
                         if (emitResult == Sinks.EmitResult.FAIL_OVERFLOW
                             && link.getLocalState() != EndpointState.CLOSED) {
-                            link.setCondition(new ErrorCondition(Symbol.getSymbol("delivery-buffer-overflow"),
-                                "Deliveries are not processed fast enough. Closing local link."));
+                            link
+                                .setCondition(new ErrorCondition(Symbol.getSymbol("delivery-buffer-overflow"),
+                                    "Deliveries are not processed fast enough. Closing local link."));
                             link.close();
 
                             return true;
@@ -212,7 +219,8 @@ public class ReceiveLinkHandler extends LinkHandler {
         // Someone called receiver.close() to set the local link state to close. Since the link was never remotely
         // active, we complete getEndpointStates() ourselves.
         if (!isRemoteActive.get()) {
-            logger.atInfo()
+            logger
+                .atInfo()
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .addKeyValue(LINK_NAME_KEY, linkName)
                 .log("Receiver link was never active. Closing endpoint states");
@@ -244,7 +252,8 @@ public class ReceiveLinkHandler extends LinkHandler {
      */
     private void clearAndCompleteDeliveries(String errorMessage) {
         deliveries.emitComplete((signalType, emitResult) -> {
-            logger.atVerbose()
+            logger
+                .atVerbose()
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .addKeyValue(LINK_NAME_KEY, linkName)
                 .log(errorMessage);

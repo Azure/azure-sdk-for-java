@@ -78,28 +78,39 @@ public final class JsonWriteContext {
         if (context == JsonWriteState.ROOT) {
             if (token == JsonToken.END_OBJECT || token == JsonToken.END_ARRAY || token == JsonToken.FIELD_NAME) {
                 throw new IllegalStateException("Writing context is 'ROOT', only 'START_OBJECT', 'START_ARRAY',"
-                    + " 'BOOLEAN', 'NULL', 'NUMBER', or 'STRING' tokens are allowed. Attempted: '" + token + "'.");
+                    + " 'BOOLEAN', 'NULL', 'NUMBER', or 'STRING' tokens are allowed. Attempted: '"
+                    + token
+                    + "'.");
             }
         } else if (context == JsonWriteState.OBJECT) {
-            if (token == JsonToken.START_OBJECT || token == JsonToken.START_ARRAY || token == JsonToken.END_ARRAY
+            if (token == JsonToken.START_OBJECT
+                || token == JsonToken.START_ARRAY
+                || token == JsonToken.END_ARRAY
                 || isSimpleValue(token)) {
                 throw new IllegalStateException("Writing context is 'OBJECT', only 'END_OBJECT' and 'FIELD_NAME'"
-                    + " tokens are allowed. Attempted: '" + token + "'.");
+                    + " tokens are allowed. Attempted: '"
+                    + token
+                    + "'.");
             }
         } else if (context == JsonWriteState.ARRAY) {
             if (token == JsonToken.END_OBJECT || token == JsonToken.FIELD_NAME) {
                 throw new IllegalStateException("Writing context is 'ARRAY', only 'START_OBJECT', 'START_ARRAY',"
                     + ", 'END_ARRAY', 'BOOLEAN', 'NULL', 'NUMBER', or 'STRING' tokens are allowed. Attempted: '"
-                    + token + "'.");
+                    + token
+                    + "'.");
             }
         } else if (context == JsonWriteState.FIELD) {
             if (token == JsonToken.END_OBJECT || token == JsonToken.END_ARRAY || token == JsonToken.FIELD_NAME) {
                 throw new IllegalStateException("Writing context is 'FIELD', only 'START_OBJECT', 'START_ARRAY',"
-                    + " 'BOOLEAN', 'NULL', 'NUMBER', or 'STRING' tokens are allowed. Attempted: '" + token + "'.");
+                    + " 'BOOLEAN', 'NULL', 'NUMBER', or 'STRING' tokens are allowed. Attempted: '"
+                    + token
+                    + "'.");
             }
         } else {
             throw new IllegalStateException("Writing context is 'COMPLETED', no further tokens are allowed. "
-                + "Attempted: '" + token + "'.");
+                + "Attempted: '"
+                + token
+                + "'.");
         }
     }
 

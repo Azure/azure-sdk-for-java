@@ -13,8 +13,7 @@ public final class SerializerFactory {
 
     private static SerializerAdapter serializerAdapter;
 
-    private SerializerFactory() {
-    }
+    private SerializerFactory() {}
 
     /**
      * Gets the singleton instance of the default management serializer adapter.

@@ -67,8 +67,7 @@ public class TracerProviderTest {
 
         // Assert
         for (Tracer t : tracers) {
-            verify(t, times(1))
-                .start(eq(METHOD_NAME), any(), eq(ProcessKind.SEND));
+            verify(t, times(1)).start(eq(METHOD_NAME), any(), eq(ProcessKind.SEND));
         }
     }
 
@@ -87,12 +86,10 @@ public class TracerProviderTest {
         final String parentKey = "parent-key";
         final String parentValue = "parent-value";
         final Context startingContext = Context.NONE;
-        when(tracer.start(METHOD_NAME, startingContext, ProcessKind.SEND)).thenAnswer(
-            invocation -> {
-                Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(parentKey, parentValue);
-            }
-        );
+        when(tracer.start(METHOD_NAME, startingContext, ProcessKind.SEND)).thenAnswer(invocation -> {
+            Context passed = invocation.getArgument(1, Context.class);
+            return passed.addData(parentKey, parentValue);
+        });
 
         // Act
         final Context updatedContext = tracerProvider.startSpan(SERVICE_BASE_NAME, startingContext, ProcessKind.SEND);
@@ -168,8 +165,7 @@ public class TracerProviderTest {
 
         // Assert
         for (Tracer t : tracers) {
-            verify(t, times(1))
-                .end(errorCondition.getErrorCondition(), exception, sendContext);
+            verify(t, times(1)).end(errorCondition.getErrorCondition(), exception, sendContext);
         }
     }
 
@@ -196,12 +192,10 @@ public class TracerProviderTest {
 
         final Context startingContext = Context.NONE;
 
-        when(tracer.getSharedSpanBuilder(anyString(), any())).thenAnswer(
-            invocation -> {
-                Context passed = invocation.getArgument(1, Context.class);
-                return passed.addData(spanBuilderKey, spanBuilderValue);
-            }
-        );
+        when(tracer.getSharedSpanBuilder(anyString(), any())).thenAnswer(invocation -> {
+            Context passed = invocation.getArgument(1, Context.class);
+            return passed.addData(spanBuilderKey, spanBuilderValue);
+        });
 
         // Act
         final Context updatedContext = tracerProvider.getSharedSpanBuilder(SERVICE_BASE_NAME, startingContext);

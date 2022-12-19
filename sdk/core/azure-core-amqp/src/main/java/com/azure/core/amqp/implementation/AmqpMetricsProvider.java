@@ -40,15 +40,16 @@ public class AmqpMetricsProvider {
         .getProperties(AZURE_CORE_AMQP_PROPERTIES_NAME)
         .getOrDefault(AZURE_CORE_AMQP_PROPERTIES_VERSION_KEY, null);
 
-    private static final AutoCloseable NOOP_CLOSEABLE = () -> {
-    };
+    private static final AutoCloseable NOOP_CLOSEABLE = () -> {};
 
     // all delivery state + 1 for `null` - we'll treat it as an error - no delivery was received
     private static final int DELIVERY_STATES_COUNT = DeliveryState.DeliveryStateType.values().length + 1;
 
     // all error codes + 1 for `null` - error, no response was received
     private static final int RESPONSE_CODES_COUNT = AmqpResponseCode.values().length + 1;
-    private static final Meter DEFAULT_METER = MeterProvider.getDefaultProvider().createMeter("azure-core-amqp", AZURE_CORE_VERSION, new MetricsOptions());
+    private static final Meter DEFAULT_METER = MeterProvider
+        .getDefaultProvider()
+        .createMeter("azure-core-amqp", AZURE_CORE_VERSION, new MetricsOptions());
     private static final AmqpMetricsProvider NOOP = new AmqpMetricsProvider();
     private final boolean isEnabled;
     private final Meter meter;
@@ -113,10 +114,10 @@ public class AmqpMetricsProvider {
             if (entityPath != null) {
                 int entityNameEnd = entityPath.indexOf('/');
                 if (entityNameEnd > 0) {
-                    commonAttributesMap.put(ClientConstants.ENTITY_NAME_KEY,  entityPath.substring(0, entityNameEnd));
+                    commonAttributesMap.put(ClientConstants.ENTITY_NAME_KEY, entityPath.substring(0, entityNameEnd));
                     commonAttributesMap.put(ClientConstants.ENTITY_PATH_KEY, entityPath);
                 } else {
-                    commonAttributesMap.put(ClientConstants.ENTITY_NAME_KEY,  entityPath);
+                    commonAttributesMap.put(ClientConstants.ENTITY_NAME_KEY, entityPath);
                 }
             }
 
@@ -124,14 +125,26 @@ public class AmqpMetricsProvider {
             this.requestResponseAttributeCache = new AttributeCache[RESPONSE_CODES_COUNT];
             this.sendAttributeCache = new TelemetryAttributes[DELIVERY_STATES_COUNT];
             this.amqpErrorAttributeCache = new AttributeCache(ClientConstants.ERROR_CONDITION_KEY, commonAttributesMap);
-            this.sendDuration = this.meter.createDoubleHistogram("messaging.az.amqp.producer.send.duration", "Duration of AMQP-level send call.", "ms");
-            this.requestResponseDuration = this.meter.createDoubleHistogram("messaging.az.amqp.management.request.duration", "Duration of AMQP request-response operation.", "ms");
-            this.closedConnections = this.meter.createLongCounter("messaging.az.amqp.client.connections.closed", "Closed connections", "connections");
-            this.sessionErrors = this.meter.createLongCounter("messaging.az.amqp.client.session.errors", "AMQP session errors", "errors");
-            this.linkErrors = this.meter.createLongCounter("messaging.az.amqp.client.link.errors", "AMQP link errors", "errors");
-            this.transportErrors = this.meter.createLongCounter("messaging.az.amqp.client.transport.errors", "AMQP session errors", "errors");
-            this.addCredits = this.meter.createLongCounter("messaging.az.amqp.consumer.credits.requested", "Number of requested credits", "credits");
-            this.prefetchedSequenceNumber = this.meter.createLongGauge("messaging.az.amqp.prefetch.sequence_number", "Last prefetched sequence number", "seqNo");
+            this.sendDuration = this.meter
+                .createDoubleHistogram("messaging.az.amqp.producer.send.duration", "Duration of AMQP-level send call.",
+                    "ms");
+            this.requestResponseDuration = this.meter
+                .createDoubleHistogram("messaging.az.amqp.management.request.duration",
+                    "Duration of AMQP request-response operation.", "ms");
+            this.closedConnections = this.meter
+                .createLongCounter("messaging.az.amqp.client.connections.closed", "Closed connections", "connections");
+            this.sessionErrors = this.meter
+                .createLongCounter("messaging.az.amqp.client.session.errors", "AMQP session errors", "errors");
+            this.linkErrors = this.meter
+                .createLongCounter("messaging.az.amqp.client.link.errors", "AMQP link errors", "errors");
+            this.transportErrors = this.meter
+                .createLongCounter("messaging.az.amqp.client.transport.errors", "AMQP session errors", "errors");
+            this.addCredits = this.meter
+                .createLongCounter("messaging.az.amqp.consumer.credits.requested", "Number of requested credits",
+                    "credits");
+            this.prefetchedSequenceNumber = this.meter
+                .createLongGauge("messaging.az.amqp.prefetch.sequence_number", "Last prefetched sequence number",
+                    "seqNo");
         }
     }
 
@@ -153,7 +166,6 @@ public class AmqpMetricsProvider {
         return isEnabled && sendDuration.isEnabled();
     }
 
-
     /**
      * Checks if prefetched sequence number is enabled (for micro-optimizations).
      */
@@ -161,13 +173,13 @@ public class AmqpMetricsProvider {
         return isEnabled && prefetchedSequenceNumber.isEnabled();
     }
 
-
     /**
      * Records duration of AMQP send call.
      */
     public void recordSend(long start, DeliveryState.DeliveryStateType deliveryState) {
         if (isEnabled && sendDuration.isEnabled()) {
-            sendDuration.record(Instant.now().toEpochMilli() - start, getDeliveryStateAttribute(deliveryState), Context.NONE);
+            sendDuration
+                .record(Instant.now().toEpochMilli() - start, getDeliveryStateAttribute(deliveryState), Context.NONE);
         }
     }
 
@@ -176,9 +188,9 @@ public class AmqpMetricsProvider {
      */
     public void recordRequestResponseDuration(long start, String operationName, AmqpResponseCode responseCode) {
         if (isEnabled && requestResponseDuration.isEnabled()) {
-            requestResponseDuration.record(Instant.now().toEpochMilli() - start,
-                getResponseCodeAttributes(responseCode, operationName),
-                Context.NONE);
+            requestResponseDuration
+                .record(Instant.now().toEpochMilli() - start, getResponseCodeAttributes(responseCode, operationName),
+                    Context.NONE);
         }
     }
 
@@ -240,6 +252,7 @@ public class AmqpMetricsProvider {
             }
         }
     }
+
     private TelemetryAttributes getDeliveryStateAttribute(DeliveryState.DeliveryStateType state) {
         // if there was no response, state is null and indicates a network (probably) error.
         // we don't have an enum for network issues and metric attributes cannot have arbitrary
@@ -273,7 +286,8 @@ public class AmqpMetricsProvider {
         return requestResponseAttributeCache[ind];
     }
 
-    private synchronized TelemetryAttributes createDeliveryStateAttribute(DeliveryState.DeliveryStateType state, int ind) {
+    private synchronized TelemetryAttributes createDeliveryStateAttribute(DeliveryState.DeliveryStateType state,
+                                                                          int ind) {
         Map<String, Object> attrs = new HashMap<>(commonAttributesMap);
         attrs.put(ClientConstants.DELIVERY_STATE_KEY, deliveryStateToLowerCaseString(state));
         sendAttributeCache[ind] = this.meter.createAttributes(attrs);
@@ -414,6 +428,7 @@ public class AmqpMetricsProvider {
         private final Map<String, TelemetryAttributes> attr = new ConcurrentHashMap<>();
         private final Map<String, Object> common;
         private final String dimensionName;
+
         AttributeCache(String dimensionName, Map<String, Object> common) {
             this.dimensionName = dimensionName;
             this.common = common;

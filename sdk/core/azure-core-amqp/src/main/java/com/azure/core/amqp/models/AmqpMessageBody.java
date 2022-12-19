@@ -192,10 +192,11 @@ public final class AmqpMessageBody {
      */
     public IterableStream<byte[]> getData() {
         if (bodyType != AmqpMessageBodyType.DATA) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "This method can only be called if AMQP Message body type is 'DATA'."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException(
+                    "This method can only be called if AMQP Message body type is 'DATA'."));
         }
-        if (dataList ==  null) {
+        if (dataList == null) {
             dataList = Collections.singletonList(data);
         }
         return new IterableStream<>(dataList);
@@ -239,9 +240,10 @@ public final class AmqpMessageBody {
      */
     public byte[] getFirstData() {
         if (bodyType != AmqpMessageBodyType.DATA) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format(Locale.US, "This method can be called if AMQP Message body type is 'DATA'. "
-                    + "The actual type is [%s].", bodyType)));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException(String
+                    .format(Locale.US, "This method can be called if AMQP Message body type is 'DATA'. "
+                        + "The actual type is [%s].", bodyType)));
         }
         return data;
     }
@@ -288,9 +290,10 @@ public final class AmqpMessageBody {
      */
     public List<Object> getSequence() {
         if (bodyType != AmqpMessageBodyType.SEQUENCE) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format(Locale.US, "This method can be called if AMQP Message body type is 'SEQUENCE'. "
-                    + "The actual type is [%s].", bodyType)));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException(String
+                    .format(Locale.US, "This method can be called if AMQP Message body type is 'SEQUENCE'. "
+                        + "The actual type is [%s].", bodyType)));
         }
 
         return Collections.unmodifiableList(sequence);
@@ -336,9 +339,10 @@ public final class AmqpMessageBody {
      */
     public Object getValue() {
         if (bodyType != AmqpMessageBodyType.VALUE) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format(Locale.US, "This method can be called if AMQP Message body type is 'VALUE'. "
-                    + "The actual type is [%s].", bodyType)));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException(String
+                    .format(Locale.US, "This method can be called if AMQP Message body type is 'VALUE'. "
+                        + "The actual type is [%s].", bodyType)));
         }
         return value;
     }

@@ -16,8 +16,8 @@ import java.util.regex.Pattern;
  */
 public final class ExceptionUtil {
     private static final String AMQP_REQUEST_FAILED_ERROR = "status-code: %s, status-description: %s";
-    private static final Pattern ENTITY_NOT_FOUND_PATTERN =
-        Pattern.compile("The messaging entity .* could not be found");
+    private static final Pattern ENTITY_NOT_FOUND_PATTERN = Pattern
+        .compile("The messaging entity .* could not be found");
 
     /**
      * Creates an {@link AmqpException} or Exception based on the {@code errorCondition} from the AMQP request.
@@ -38,8 +38,8 @@ public final class ExceptionUtil {
 
         final AmqpErrorCondition condition = AmqpErrorCondition.fromString(errorCondition);
         if (condition == null) {
-            return new AmqpException(false, String.format("errorCondition[%s]. description[%s]",
-                errorCondition, description), errorContext);
+            return new AmqpException(false, String
+                .format("errorCondition[%s]. description[%s]", errorCondition, description), errorContext);
         }
 
         boolean isTransient;
@@ -77,9 +77,10 @@ public final class ExceptionUtil {
             case NOT_FOUND:
                 return distinguishNotFound(description, errorContext);
             default:
-                return new AmqpException(false, condition, String.format("errorCondition[%s]. description[%s] "
-                        + "Condition could not be mapped to a transient condition.",
-                    errorCondition, description), errorContext);
+                return new AmqpException(false, condition, String
+                    .format("errorCondition[%s]. description[%s] "
+                        + "Condition could not be mapped to a transient condition.", errorCondition, description),
+                    errorContext);
         }
 
         return new AmqpException(isTransient, condition, description, errorContext);
@@ -93,8 +94,9 @@ public final class ExceptionUtil {
      * @param errorContext The context that this error occurred in.
      * @return An exception that maps to that status code.
      */
-    public static Exception amqpResponseCodeToException(int statusCode, String statusDescription,
-        AmqpErrorContext errorContext) {
+    public static Exception amqpResponseCodeToException(int statusCode,
+                                                        String statusDescription,
+                                                        AmqpErrorContext errorContext) {
 
         final AmqpResponseCode amqpResponseCode = AmqpResponseCode.fromValue(statusCode);
         final String message = String.format(AMQP_REQUEST_FAILED_ERROR, statusCode, statusDescription);
@@ -122,9 +124,8 @@ public final class ExceptionUtil {
         if (m.find()) {
             return new AmqpException(false, AmqpErrorCondition.NOT_FOUND, message, errorContext);
         } else {
-            return new AmqpException(true, AmqpErrorCondition.NOT_FOUND,
-                String.format(AMQP_REQUEST_FAILED_ERROR, AmqpResponseCode.NOT_FOUND, message),
-                errorContext);
+            return new AmqpException(true, AmqpErrorCondition.NOT_FOUND, String
+                .format(AMQP_REQUEST_FAILED_ERROR, AmqpResponseCode.NOT_FOUND, message), errorContext);
         }
     }
 }

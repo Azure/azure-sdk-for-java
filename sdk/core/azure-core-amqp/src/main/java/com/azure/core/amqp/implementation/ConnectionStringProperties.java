@@ -32,9 +32,9 @@ public class ConnectionStringProperties {
         + "SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={entityPath}";
     private static final String CONNECTION_STRING_WITH_SAS = "Endpoint={endpoint};SharedAccessSignature="
         + "SharedAccessSignature {sharedAccessSignature};EntityPath={entityPath}";
-    private static final String ERROR_MESSAGE_FORMAT = String.format(Locale.US,
-        "Could not parse 'connectionString'. Expected format: %s or %s.", CONNECTION_STRING_WITH_ACCESS_KEY,
-        CONNECTION_STRING_WITH_SAS);
+    private static final String ERROR_MESSAGE_FORMAT = String
+        .format(Locale.US, "Could not parse 'connectionString'. Expected format: %s or %s.",
+            CONNECTION_STRING_WITH_ACCESS_KEY, CONNECTION_STRING_WITH_SAS);
 
     private final URI endpoint;
     private final String entityPath;
@@ -66,10 +66,8 @@ public class ConnectionStringProperties {
         for (String tokenValuePair : tokenValuePairs) {
             final String[] pair = tokenValuePair.split(TOKEN_VALUE_SEPARATOR, 2);
             if (pair.length != 2) {
-                throw new IllegalArgumentException(String.format(
-                    Locale.US,
-                    "Connection string has invalid key value pair: %s",
-                    tokenValuePair));
+                throw new IllegalArgumentException(String
+                    .format(Locale.US, "Connection string has invalid key value pair: %s", tokenValuePair));
             }
 
             final String key = pair[0].trim();
@@ -80,8 +78,8 @@ public class ConnectionStringProperties {
                 try {
                     endpoint = new URI(endpointUri);
                 } catch (URISyntaxException e) {
-                    throw new IllegalArgumentException(
-                        String.format(Locale.US, "Invalid endpoint: %s", tokenValuePair), e);
+                    throw new IllegalArgumentException(String.format(Locale.US, "Invalid endpoint: %s", tokenValuePair),
+                        e);
                 }
             } else if (key.equalsIgnoreCase(SHARED_ACCESS_KEY_NAME)) {
                 sharedAccessKeyName = value;
@@ -93,8 +91,8 @@ public class ConnectionStringProperties {
                 && value.toLowerCase(Locale.ROOT).startsWith(SAS_VALUE_PREFIX)) {
                 sharedAccessSignature = value;
             } else {
-                throw new IllegalArgumentException(
-                    String.format(Locale.US, "Illegal connection string parameter name: %s", key));
+                throw new IllegalArgumentException(String
+                    .format(Locale.US, "Illegal connection string parameter name: %s", key));
             }
         }
 
@@ -163,8 +161,9 @@ public class ConnectionStringProperties {
     private String validateAndUpdateDefaultScheme(final String endpoint) {
 
         if (CoreUtils.isNullOrEmpty(endpoint)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "'Endpoint' must be provided in 'connectionString'."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException(
+                    "'Endpoint' must be provided in 'connectionString'."));
         }
 
         final String endpointLowerCase = endpoint.trim().toLowerCase(Locale.ROOT);

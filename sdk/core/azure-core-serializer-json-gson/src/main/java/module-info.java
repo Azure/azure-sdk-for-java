@@ -7,8 +7,8 @@ module com.azure.core.serializer.json.gson {
 
     exports com.azure.core.serializer.json.gson;
 
-    provides com.azure.core.util.serializer.MemberNameConverterProvider
-        with com.azure.core.serializer.json.gson.GsonJsonSerializerProvider;
-    provides com.azure.core.util.serializer.JsonSerializerProvider
-        with com.azure.core.serializer.json.gson.GsonJsonSerializerProvider;
+    provides com.azure.core.util.serializer.MemberNameConverterProvider with
+        com.azure.core.serializer.json.gson.GsonJsonSerializerProvider;
+    provides com.azure.core.util.serializer.JsonSerializerProvider with
+        com.azure.core.serializer.json.gson.GsonJsonSerializerProvider;
 }

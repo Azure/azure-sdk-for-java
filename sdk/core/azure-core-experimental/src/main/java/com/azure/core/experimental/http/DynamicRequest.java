@@ -316,7 +316,8 @@ public final class DynamicRequest {
         }
         if (!queries.isEmpty()) {
             url = url + (url.contains("?") ? "&" : "?");
-            url = url + queries.keySet().stream().map(key -> key + "=" + queries.get(key)).collect(Collectors.joining("&"));
+            url = url
+                  + queries.keySet().stream().map(key -> key + "=" + queries.get(key)).collect(Collectors.joining("&"));
         }
         HttpRequest request = new HttpRequest(httpMethod, url);
         if (headers != null) {
@@ -355,8 +356,10 @@ public final class DynamicRequest {
     }
 
     private Mono<DynamicResponse> sendAsync(Context context) {
-        return httpPipeline.send(buildRequest(), context)
-            .flatMap(httpResponse -> BinaryData.fromFlux(httpResponse.getBody())
+        return httpPipeline
+            .send(buildRequest(), context)
+            .flatMap(httpResponse -> BinaryData
+                .fromFlux(httpResponse.getBody())
                 .map(data -> new DynamicResponse(httpResponse, data)));
     }
 }

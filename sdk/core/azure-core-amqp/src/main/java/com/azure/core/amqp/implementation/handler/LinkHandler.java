@@ -71,10 +71,9 @@ abstract class LinkHandler extends Handler {
 
     @Override
     public void onLinkFinal(Event event) {
-        final String linkName = event != null && event.getLink() != null
-            ? event.getLink().getName()
-            : NOT_APPLICABLE;
-        logger.atInfo()
+        final String linkName = event != null && event.getLink() != null ? event.getLink().getName() : NOT_APPLICABLE;
+        logger
+            .atInfo()
             .addKeyValue(LINK_NAME_KEY, linkName)
             .addKeyValue(ENTITY_PATH_KEY, entityPath)
             .log("onLinkFinal");
@@ -105,7 +104,8 @@ abstract class LinkHandler extends Handler {
             .log(eventName);
 
         if (link.getLocalState() != EndpointState.CLOSED) {
-            logger.atInfo()
+            logger
+                .atInfo()
                 .addKeyValue(LINK_NAME_KEY, link.getName())
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .addKeyValue("state", link.getLocalState())
@@ -117,8 +117,8 @@ abstract class LinkHandler extends Handler {
 
         if (condition != null && condition.getCondition() != null) {
             metricsProvider.recordHandlerError(AmqpMetricsProvider.ErrorSource.LINK, condition);
-            final Throwable exception = ExceptionUtil.toException(condition.getCondition().toString(),
-                condition.getDescription(), getErrorContext(link));
+            final Throwable exception = ExceptionUtil
+                .toException(condition.getCondition().toString(), condition.getDescription(), getErrorContext(link));
 
             onError(exception);
         } else {

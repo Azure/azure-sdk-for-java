@@ -167,8 +167,8 @@ public class VertxAsyncHttpClientBuilder {
     public HttpClient build() {
         Vertx configuredVertx = this.vertx;
         if (configuredVertx == null) {
-            ServiceLoader<VertxProvider> vertxProviders = ServiceLoader.load(VertxProvider.class,
-                VertxProvider.class.getClassLoader());
+            ServiceLoader<VertxProvider> vertxProviders = ServiceLoader
+                .load(VertxProvider.class, VertxProvider.class.getClassLoader());
             Iterator<VertxProvider> iterator = vertxProviders.iterator();
             if (iterator.hasNext()) {
                 VertxProvider provider = iterator.next();
@@ -177,8 +177,10 @@ public class VertxAsyncHttpClientBuilder {
 
                 while (iterator.hasNext()) {
                     VertxProvider ignoredProvider = iterator.next();
-                    LOGGER.warning("Multiple VertxProviders were found on the classpath, ignoring {}.",
-                        ignoredProvider.getClass().getName());
+                    LOGGER
+                        .warning("Multiple VertxProviders were found on the classpath, ignoring {}.", ignoredProvider
+                            .getClass()
+                            .getName());
                 }
             } else {
                 configuredVertx = DefaultVertx.DEFAULT_VERTX.getVertx();
@@ -238,8 +240,9 @@ public class VertxAsyncHttpClientBuilder {
                         ProxyType proxyType = ProxyType.valueOf(type.name());
                         vertxProxyOptions.setType(proxyType);
                     } catch (IllegalArgumentException e) {
-                        throw LOGGER.logExceptionAsError(
-                            new IllegalArgumentException("Unknown Vert.x proxy type: " + type.name(), e));
+                        throw LOGGER
+                            .logExceptionAsError(new IllegalArgumentException("Unknown Vert.x proxy type: "
+                                + type.name(), e));
                     }
                 }
 
@@ -267,11 +270,9 @@ public class VertxAsyncHttpClientBuilder {
      * @return String array of desanitized proxy host strings
      */
     private String[] desanitizedNonProxyHosts(String nonProxyHosts) {
-        String desanitzedNonProxyHosts = NON_PROXY_HOST_DESANITIZE.matcher(nonProxyHosts)
-            .replaceAll("");
+        String desanitzedNonProxyHosts = NON_PROXY_HOST_DESANITIZE.matcher(nonProxyHosts).replaceAll("");
 
-        desanitzedNonProxyHosts = NON_PROXY_HOST_DOT_STAR.matcher(desanitzedNonProxyHosts)
-            .replaceAll("*");
+        desanitzedNonProxyHosts = NON_PROXY_HOST_DOT_STAR.matcher(desanitzedNonProxyHosts).replaceAll("*");
 
         return NON_PROXY_HOSTS_SPLIT.split(desanitzedNonProxyHosts);
     }

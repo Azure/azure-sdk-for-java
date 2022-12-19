@@ -15,8 +15,9 @@ import java.util.concurrent.TimeUnit;
  * An {@link HttpClientProvider} that provides an implementation of HttpClient based on OkHttp.
  */
 public final class OkHttpAsyncClientProvider implements HttpClientProvider {
-    private static final boolean AZURE_ENABLE_HTTP_CLIENT_SHARING =
-        Configuration.getGlobalConfiguration().get("AZURE_ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
+    private static final boolean AZURE_ENABLE_HTTP_CLIENT_SHARING = Configuration
+        .getGlobalConfiguration()
+        .get("AZURE_ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
     private final boolean enableHttpClientSharing;
 
     // Enum Singleton Pattern
@@ -61,19 +62,19 @@ public final class OkHttpAsyncClientProvider implements HttpClientProvider {
         }
 
         OkHttpAsyncHttpClientBuilder builder = new OkHttpAsyncHttpClientBuilder();
-        builder = builder.proxy(clientOptions.getProxyOptions())
+        builder = builder
+            .proxy(clientOptions.getProxyOptions())
             .configuration(clientOptions.getConfiguration())
             .connectionTimeout(clientOptions.getConnectTimeout())
             .writeTimeout(clientOptions.getWriteTimeout())
             .readTimeout(clientOptions.getReadTimeout());
 
         Integer poolSize = clientOptions.getMaximumConnectionPoolSize();
-        int maximumConnectionPoolSize = (poolSize != null && poolSize > 0)
-            ? poolSize
-            : 5; // By default, OkHttp uses a maximum idle connection count of 5.
+        int maximumConnectionPoolSize = (poolSize != null && poolSize > 0) ? poolSize : 5; // By default, OkHttp uses a maximum idle connection count of 5.
 
-        ConnectionPool connectionPool = new ConnectionPool(maximumConnectionPoolSize,
-            clientOptions.getConnectionIdleTimeout().toMillis(), TimeUnit.MILLISECONDS);
+        ConnectionPool connectionPool = new ConnectionPool(maximumConnectionPoolSize, clientOptions
+            .getConnectionIdleTimeout()
+            .toMillis(), TimeUnit.MILLISECONDS);
 
         builder = builder.connectionPool(connectionPool);
 

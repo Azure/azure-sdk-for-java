@@ -115,7 +115,8 @@ public class HttpResponseDrainsBufferTests {
 
     @Test
     public void closeHttpResponseWithConsumingPartialWriteAsync() {
-        runScenario(response -> response.writeBodyToAsync(new ThrowingAsynchronousByteChannel())
+        runScenario(response -> response
+            .writeBodyToAsync(new ThrowingAsynchronousByteChannel())
             .onErrorResume(throwable -> Mono.empty()));
     }
 
@@ -124,8 +125,7 @@ public class HttpResponseDrainsBufferTests {
         int writeCount = 0;
 
         @Override
-        public <A> void read(ByteBuffer dst, A attachment, CompletionHandler<Integer, ? super A> handler) {
-        }
+        public <A> void read(ByteBuffer dst, A attachment, CompletionHandler<Integer, ? super A> handler) {}
 
         @Override
         public Future<Integer> read(ByteBuffer dst) {
@@ -221,7 +221,8 @@ public class HttpResponseDrainsBufferTests {
 
             sink.next(callCount);
             return callCount + 1;
-        }).concatMap(ignored -> httpClient.send(new HttpRequest(HttpMethod.GET, url)).flatMap(responseConsumer))
+        })
+            .concatMap(ignored -> httpClient.send(new HttpRequest(HttpMethod.GET, url)).flatMap(responseConsumer))
             .parallel(10)
             .runOn(Schedulers.boundedElastic())
             .then();
@@ -245,7 +246,9 @@ public class HttpResponseDrainsBufferTests {
     @Test
     public void closingHttpResponseIsIdempotent() {
         HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
-        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, url))
+        StepVerifier
+            .create(httpClient
+                .send(new HttpRequest(HttpMethod.GET, url))
                 .flatMap(response -> Mono.fromRunnable(response::close).thenReturn(response))
                 .delayElement(Duration.ofSeconds(1))
                 .flatMap(response -> Mono.fromRunnable(response::close))
@@ -259,8 +262,9 @@ public class HttpResponseDrainsBufferTests {
 
         @Override
         @SuppressWarnings("deprecation") // API is deprecated but abstract
-        public <T> ResourceLeakDetector<T> newResourceLeakDetector(Class<T> resource, int samplingInterval,
-            long maxActive) {
+        public <T> ResourceLeakDetector<T> newResourceLeakDetector(Class<T> resource,
+                                                                   int samplingInterval,
+                                                                   long maxActive) {
             TestResourceLeakDetector<T> leakDetector = new TestResourceLeakDetector<>(resource, samplingInterval,
                 maxActive);
             createdDetectors.add(leakDetector);

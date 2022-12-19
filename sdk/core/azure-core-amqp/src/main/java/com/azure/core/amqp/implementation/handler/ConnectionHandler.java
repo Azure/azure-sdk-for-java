@@ -61,10 +61,11 @@ public class ConnectionHandler extends Handler {
      * @deprecated use {@link ConnectionHandler#ConnectionHandler(String, ConnectionOptions, SslPeerDetails, AmqpMetricsProvider)} instead.
      */
     @Deprecated
-    public ConnectionHandler(final String connectionId, final ConnectionOptions connectionOptions,
+    public ConnectionHandler(final String connectionId,
+                             final ConnectionOptions connectionOptions,
                              SslPeerDetails peerDetails) {
-        this(connectionId, connectionOptions, peerDetails,
-            new AmqpMetricsProvider(null, connectionOptions.getFullyQualifiedNamespace(), null));
+        this(connectionId, connectionOptions, peerDetails, new AmqpMetricsProvider(null, connectionOptions
+            .getFullyQualifiedNamespace(), null));
     }
 
     /**
@@ -73,10 +74,13 @@ public class ConnectionHandler extends Handler {
      * @param connectionId Identifier for this connection.
      * @param connectionOptions Options used when creating the AMQP connection.
      */
-    public ConnectionHandler(final String connectionId, final ConnectionOptions connectionOptions,
-        SslPeerDetails peerDetails, AmqpMetricsProvider metricProvider) {
-        super(connectionId,
-            Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.").getHostname());
+    public ConnectionHandler(final String connectionId,
+                             final ConnectionOptions connectionOptions,
+                             SslPeerDetails peerDetails,
+                             AmqpMetricsProvider metricProvider) {
+        super(connectionId, Objects
+            .requireNonNull(connectionOptions, "'connectionOptions' cannot be null.")
+            .getHostname());
         add(new Handshaker());
 
         this.connectionOptions = connectionOptions;
@@ -90,8 +94,9 @@ public class ConnectionHandler extends Handler {
         final String applicationId = !CoreUtils.isNullOrEmpty(clientOptions.getApplicationId())
             ? clientOptions.getApplicationId()
             : null;
-        final String userAgent = UserAgentUtil.toUserAgentString(applicationId, connectionOptions.getProduct(),
-            connectionOptions.getClientVersion(), null);
+        final String userAgent = UserAgentUtil
+            .toUserAgentString(applicationId, connectionOptions.getProduct(), connectionOptions.getClientVersion(),
+                null);
 
         this.connectionProperties.put(USER_AGENT.toString(), userAgent);
 
@@ -150,7 +155,9 @@ public class ConnectionHandler extends Handler {
             try {
                 defaultSslContext = SSLContext.getDefault();
             } catch (NoSuchAlgorithmException e) {
-                throw logger.logExceptionAsError(new RuntimeException("Default SSL algorithm not found in JRE. Please check your JRE setup.", e));
+                throw logger
+                    .logExceptionAsError(new RuntimeException(
+                        "Default SSL algorithm not found in JRE. Please check your JRE setup.", e));
             }
         }
 
@@ -171,8 +178,8 @@ public class ConnectionHandler extends Handler {
             logger.warning("'{}' is not secure.", verifyMode);
             sslDomain.setPeerAuthentication(SslDomain.VerifyMode.ANONYMOUS_PEER);
         } else {
-            throw logger.logExceptionAsError(new UnsupportedOperationException(
-                "verifyMode is not supported: " + verifyMode));
+            throw logger
+                .logExceptionAsError(new UnsupportedOperationException("verifyMode is not supported: " + verifyMode));
         }
 
         transport.ssl(sslDomain);
@@ -180,7 +187,8 @@ public class ConnectionHandler extends Handler {
 
     @Override
     public void onConnectionInit(Event event) {
-        logger.atInfo()
+        logger
+            .atInfo()
             .addKeyValue(HOSTNAME_KEY, getHostname())
             .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, connectionOptions.getFullyQualifiedNamespace())
             .log("onConnectionInit");
@@ -208,7 +216,8 @@ public class ConnectionHandler extends Handler {
     public void onConnectionBound(Event event) {
         final Transport transport = event.getTransport();
 
-        logger.atInfo()
+        logger
+            .atInfo()
             .addKeyValue(HOSTNAME_KEY, getHostname())
             .addKeyValue("peerDetails", () -> peerDetails.getHostname() + ":" + peerDetails.getPort())
             .log("onConnectionBound");
@@ -224,7 +233,8 @@ public class ConnectionHandler extends Handler {
     @Override
     public void onConnectionUnbound(Event event) {
         final Connection connection = event.getConnection();
-        logger.atInfo()
+        logger
+            .atInfo()
             .addKeyValue(HOSTNAME_KEY, connection.getHostname())
             .addKeyValue("state", connection.getLocalState())
             .addKeyValue("remoteState", connection.getRemoteState())
@@ -284,7 +294,8 @@ public class ConnectionHandler extends Handler {
     public void onConnectionRemoteOpen(Event event) {
         final Connection connection = event.getConnection();
 
-        logger.atInfo()
+        logger
+            .atInfo()
             .addKeyValue(HOSTNAME_KEY, connection.getHostname())
             .addKeyValue("remoteContainer", connection.getRemoteContainer())
             .log("onConnectionRemoteOpen");
@@ -344,19 +355,18 @@ public class ConnectionHandler extends Handler {
         }
 
         if (condition == null) {
-            throw logger.logExceptionAsError(new IllegalStateException("notifyErrorContext does not have an ErrorCondition."));
+            throw logger
+                .logExceptionAsError(new IllegalStateException("notifyErrorContext does not have an ErrorCondition."));
         }
 
         // if the remote-peer abruptly closes the connection without issuing close frame issue one
-        final Throwable exception = ExceptionUtil.toException(condition.getCondition().toString(),
-            condition.getDescription(), getErrorContext());
+        final Throwable exception = ExceptionUtil
+            .toException(condition.getCondition().toString(), condition.getDescription(), getErrorContext());
 
         onError(exception);
     }
 
     private void logErrorCondition(String eventName, Connection connection, ErrorCondition error) {
-        addErrorCondition(logger.atInfo(), error)
-            .addKeyValue(HOSTNAME_KEY, connection.getHostname())
-            .log(eventName);
+        addErrorCondition(logger.atInfo(), error).addKeyValue(HOSTNAME_KEY, connection.getHostname()).log(eventName);
     }
 }

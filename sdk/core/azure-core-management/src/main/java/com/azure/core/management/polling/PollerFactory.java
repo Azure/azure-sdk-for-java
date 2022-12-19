@@ -28,8 +28,7 @@ import java.util.function.Function;
  */
 public final class PollerFactory {
 
-    private PollerFactory() {
-    }
+    private PollerFactory() {}
 
     /**
      * Creates a PollerFlux with default ARM LRO init operation.
@@ -44,13 +43,12 @@ public final class PollerFactory {
      * @param <U> the type of final result
      * @return PollerFlux
      */
-    public static <T, U> PollerFlux<PollResult<T>, U> create(
-        SerializerAdapter serializerAdapter,
-        HttpPipeline pipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Duration defaultPollInterval,
-        Mono<Response<Flux<ByteBuffer>>> lroInitMono) {
+    public static <T, U> PollerFlux<PollResult<T>, U> create(SerializerAdapter serializerAdapter,
+                                                             HttpPipeline pipeline,
+                                                             Type pollResultType,
+                                                             Type finalResultType,
+                                                             Duration defaultPollInterval,
+                                                             Mono<Response<Flux<ByteBuffer>>> lroInitMono) {
         return create(serializerAdapter, pipeline, pollResultType, finalResultType, defaultPollInterval, lroInitMono,
             Context.NONE);
     }
@@ -69,14 +67,13 @@ public final class PollerFactory {
      * @param <U> the type of final result
      * @return PollerFlux
      */
-    public static <T, U> PollerFlux<PollResult<T>, U> create(
-        SerializerAdapter serializerAdapter,
-        HttpPipeline pipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Duration defaultPollInterval,
-        Mono<Response<Flux<ByteBuffer>>> lroInitMono,
-        Context context) {
+    public static <T, U> PollerFlux<PollResult<T>, U> create(SerializerAdapter serializerAdapter,
+                                                             HttpPipeline pipeline,
+                                                             Type pollResultType,
+                                                             Type finalResultType,
+                                                             Duration defaultPollInterval,
+                                                             Mono<Response<Flux<ByteBuffer>>> lroInitMono,
+                                                             Context context) {
         Objects.requireNonNull(serializerAdapter, "'serializerAdapter' cannot be null.");
         Objects.requireNonNull(pipeline, "'pipeline' cannot be null.");
         Objects.requireNonNull(pollResultType, "'pollResultType' cannot be null.");
@@ -85,26 +82,22 @@ public final class PollerFactory {
         Objects.requireNonNull(lroInitMono, "'lroInitMono' cannot be null.");
         Objects.requireNonNull(context, "'context' cannot be null.");
         Function<PollingContext<PollResult<T>>, Mono<PollResponse<PollResult<T>>>> defaultLroInitOperation =
-            pollingContext -> lroInitMono.flatMap(
-                response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
-                    .map(contentBytes -> {
-                        String content = new String(contentBytes, StandardCharsets.UTF_8);
-                        PollingState state = PollingState.create(serializerAdapter,
-                            response.getRequest(),
-                            response.getStatusCode(),
-                            response.getHeaders(),
-                            content);
-                        state.store(pollingContext);
-                        T result = PollOperation.deserialize(serializerAdapter, content, pollResultType);
-                        return new PollResponse<>(state.getOperationStatus(),
-                            new PollResult<>(result),
-                            state.getPollDelay());
-                    }));
-        return PollerFlux.create(defaultPollInterval,
-            defaultLroInitOperation,
-            PollOperation.pollFunction(serializerAdapter, pipeline, pollResultType, context),
-            PollOperation.cancelFunction(context),
-            PollOperation.fetchResultFunction(serializerAdapter, pipeline, finalResultType, context));
+            pollingContext -> lroInitMono
+                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(contentBytes -> {
+                    String content = new String(contentBytes, StandardCharsets.UTF_8);
+                    PollingState state = PollingState
+                        .create(serializerAdapter, response.getRequest(), response.getStatusCode(), response
+                            .getHeaders(), content);
+                    state.store(pollingContext);
+                    T result = PollOperation.deserialize(serializerAdapter, content, pollResultType);
+                    return new PollResponse<>(state.getOperationStatus(), new PollResult<>(result), state
+                        .getPollDelay());
+                }));
+        return PollerFlux
+            .create(defaultPollInterval, defaultLroInitOperation, PollOperation
+                .pollFunction(serializerAdapter, pipeline, pollResultType, context), PollOperation
+                    .cancelFunction(context), PollOperation
+                        .fetchResultFunction(serializerAdapter, pipeline, finalResultType, context));
     }
 
     /**
@@ -120,13 +113,12 @@ public final class PollerFactory {
      * @param <U> the type of final result
      * @return PollerFlux
      */
-    public static <T, U> PollerFlux<PollResult<T>, U> create(
-        SerializerAdapter serializerAdapter,
-        HttpPipeline pipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Duration defaultPollInterval,
-        Function<PollingContext<PollResult<T>>, Mono<PollResult<T>>> lroInitOperation) {
+    public static <T, U> PollerFlux<PollResult<T>, U> create(SerializerAdapter serializerAdapter,
+                                                             HttpPipeline pipeline,
+                                                             Type pollResultType,
+                                                             Type finalResultType,
+                                                             Duration defaultPollInterval,
+                                                             Function<PollingContext<PollResult<T>>, Mono<PollResult<T>>> lroInitOperation) {
         return create(serializerAdapter, pipeline, pollResultType, finalResultType, defaultPollInterval,
             lroInitOperation, Context.NONE);
     }
@@ -145,14 +137,13 @@ public final class PollerFactory {
      * @param <U> the type of final result
      * @return PollerFlux
      */
-    public static <T, U> PollerFlux<PollResult<T>, U> create(
-        SerializerAdapter serializerAdapter,
-        HttpPipeline pipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Duration defaultPollInterval,
-        Function<PollingContext<PollResult<T>>, Mono<PollResult<T>>> lroInitOperation,
-        Context context) {
+    public static <T, U> PollerFlux<PollResult<T>, U> create(SerializerAdapter serializerAdapter,
+                                                             HttpPipeline pipeline,
+                                                             Type pollResultType,
+                                                             Type finalResultType,
+                                                             Duration defaultPollInterval,
+                                                             Function<PollingContext<PollResult<T>>, Mono<PollResult<T>>> lroInitOperation,
+                                                             Context context) {
         Objects.requireNonNull(serializerAdapter, "'serializerAdapter' cannot be null.");
         Objects.requireNonNull(pipeline, "'pipeline' cannot be null.");
         Objects.requireNonNull(pollResultType, "'pollResultType' cannot be null.");
@@ -161,10 +152,8 @@ public final class PollerFactory {
         Objects.requireNonNull(lroInitOperation, "'lroInitOperation' cannot be null.");
         Objects.requireNonNull(context, "'context' cannot be null.");
 
-        return new PollerFlux<>(defaultPollInterval,
-            lroInitOperation,
-            PollOperation.pollFunction(serializerAdapter, pipeline, pollResultType, context),
-            PollOperation.cancelFunction(context),
+        return new PollerFlux<>(defaultPollInterval, lroInitOperation, PollOperation
+            .pollFunction(serializerAdapter, pipeline, pollResultType, context), PollOperation.cancelFunction(context),
             PollOperation.fetchResultFunction(serializerAdapter, pipeline, finalResultType, context));
     }
 
@@ -182,11 +171,11 @@ public final class PollerFactory {
      * @return PollerFlux
      */
     public static <T, U> PollerFlux<PollResult<T>, U> create(SerializerAdapter serializerAdapter,
-        HttpPipeline pipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Duration defaultPollInterval,
-        String pollingStateStr) {
+                                                             HttpPipeline pipeline,
+                                                             Type pollResultType,
+                                                             Type finalResultType,
+                                                             Duration defaultPollInterval,
+                                                             String pollingStateStr) {
         return create(serializerAdapter, pipeline, pollResultType, finalResultType, defaultPollInterval,
             pollingStateStr, Context.NONE);
     }
@@ -206,12 +195,12 @@ public final class PollerFactory {
      * @return PollerFlux
      */
     public static <T, U> PollerFlux<PollResult<T>, U> create(SerializerAdapter serializerAdapter,
-        HttpPipeline pipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Duration defaultPollInterval,
-        String pollingStateStr,
-        Context context) {
+                                                             HttpPipeline pipeline,
+                                                             Type pollResultType,
+                                                             Type finalResultType,
+                                                             Duration defaultPollInterval,
+                                                             String pollingStateStr,
+                                                             Context context) {
         Objects.requireNonNull(serializerAdapter, "'serializerAdapter' cannot be null.");
         Objects.requireNonNull(pipeline, "'pipeline' cannot be null.");
         Objects.requireNonNull(pollResultType, "'pollResultType' cannot be null.");

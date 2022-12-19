@@ -30,7 +30,8 @@ public class SignedIdentifier implements XmlSerializable<SignedIdentifier> {
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        return xmlWriter.writeStartElement("SignedIdentifier")
+        return xmlWriter
+            .writeStartElement("SignedIdentifier")
             .writeStringElement("Id", id)
             .writeXml(accessPolicy)
             .writeEndElement();
@@ -44,14 +45,18 @@ public class SignedIdentifier implements XmlSerializable<SignedIdentifier> {
 
         if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
             throw new IllegalStateException("Illegal start of XML deserialization. "
-                + "Expected 'XmlToken.START_ELEMENT' but it was: 'XmlToken." + xmlReader.currentToken() + "'.");
+                + "Expected 'XmlToken.START_ELEMENT' but it was: 'XmlToken."
+                + xmlReader.currentToken()
+                + "'.");
         }
 
         QName elementQName = xmlReader.getElementName();
         String elementName = elementQName.toString();
         if (!"SignedIdentifier".equals(elementName)) {
             throw new IllegalStateException("Expected XML element to be 'SignedIdentifier' but it was: "
-                + "'" + elementName + "'.");
+                + "'"
+                + elementName
+                + "'.");
         }
 
         String id = null;

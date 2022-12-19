@@ -101,15 +101,15 @@ public class RestProxyJsonSerializableTests {
     @ServiceInterface(name = "JsonSerializable")
     public interface SimpleJsonSerializableProxy {
         @Put("sendJsonSerializable")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         void sendJsonSerializable(@BodyParam("application/json") SimpleJsonSerializable simpleJsonSerializable);
 
         @Get("getJsonSerializable")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         SimpleJsonSerializable getJsonSerializable();
 
         @Get("getInvalidJsonSerializable")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         SimpleJsonSerializable getInvalidJsonSerializable();
     }
 
@@ -118,12 +118,10 @@ public class RestProxyJsonSerializableTests {
         SimpleJsonSerializable jsonSerializable = new SimpleJsonSerializable(true, 10, 10.0, "10");
         String expectedBody = "{\"aBoolean\":true,\"anInt\":10,\"aDecimal\":10.0,\"aString\":\"10\"}";
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(request -> {
-                assertEquals(expectedBody, request.getBodyAsBinaryData().toString());
-                return Mono.just(new MockHttpResponse(request, 200, null, SerializerEncoding.JSON));
-            })
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            assertEquals(expectedBody, request.getBodyAsBinaryData().toString());
+            return Mono.just(new MockHttpResponse(request, 200, null, SerializerEncoding.JSON));
+        }).build();
 
         SimpleJsonSerializableProxy proxy = RestProxy.create(SimpleJsonSerializableProxy.class, pipeline);
         proxy.sendJsonSerializable(jsonSerializable);
@@ -134,8 +132,9 @@ public class RestProxyJsonSerializableTests {
         String response = "{\"aBoolean\":true,\"anInt\":10,\"aDecimal\":10.0,\"aString\":\"10\"}";
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200,
-                response.getBytes(StandardCharsets.UTF_8), SerializerEncoding.JSON)))
+            .httpClient(request -> Mono
+                .just(new MockHttpResponse(request, 200, response.getBytes(StandardCharsets.UTF_8),
+                    SerializerEncoding.JSON)))
             .build();
 
         SimpleJsonSerializableProxy proxy = RestProxy.create(SimpleJsonSerializableProxy.class, pipeline);
@@ -152,8 +151,9 @@ public class RestProxyJsonSerializableTests {
         String response = "{\"aBoolean\":true,\"anInt\":10}";
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200,
-                response.getBytes(StandardCharsets.UTF_8), SerializerEncoding.JSON)))
+            .httpClient(request -> Mono
+                .just(new MockHttpResponse(request, 200, response.getBytes(StandardCharsets.UTF_8),
+                    SerializerEncoding.JSON)))
             .build();
 
         SimpleJsonSerializableProxy proxy = RestProxy.create(SimpleJsonSerializableProxy.class, pipeline);

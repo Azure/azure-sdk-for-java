@@ -106,8 +106,8 @@ public abstract class XmlWriter implements AutoCloseable {
      * @return The updated XmlWriter object.
      * @throws XMLStreamException If the XML element start cannot be written.
      */
-    public abstract XmlWriter writeStartSelfClosingElement(String namespaceUri,
-        String localName) throws XMLStreamException;
+    public abstract XmlWriter writeStartSelfClosingElement(String namespaceUri, String localName)
+                                                                                                  throws XMLStreamException;
 
     /**
      * Ends the current XML element by writing the closing tag ({@code </tag>}).
@@ -150,8 +150,8 @@ public abstract class XmlWriter implements AutoCloseable {
      * @return The updated XmlWriter object.
      * @throws XMLStreamException If the XML attribute cannot be written.
      */
-    public abstract XmlWriter writeStringAttribute(String namespaceUri, String localName,
-        String value) throws XMLStreamException;
+    public abstract XmlWriter writeStringAttribute(String namespaceUri, String localName, String value)
+                                                                                                        throws XMLStreamException;
 
     /**
      * Writes a binary attribute as a base64 string ({@code attribute="value"}).
@@ -178,8 +178,8 @@ public abstract class XmlWriter implements AutoCloseable {
      * @return The updated XmlWriter object.
      * @throws XMLStreamException If the XML attribute cannot be written.
      */
-    public final XmlWriter writeBinaryAttribute(String namespaceUri, String localName,
-        byte[] value) throws XMLStreamException {
+    public final XmlWriter writeBinaryAttribute(String namespaceUri, String localName, byte[] value)
+                                                                                                     throws XMLStreamException {
         if (value == null) {
             return this;
         }
@@ -208,8 +208,8 @@ public abstract class XmlWriter implements AutoCloseable {
      * @return The updated XmlWriter object.
      * @throws XMLStreamException If the XML attribute cannot be written.
      */
-    public final XmlWriter writeBooleanAttribute(String namespaceUri, String localName,
-        boolean value) throws XMLStreamException {
+    public final XmlWriter writeBooleanAttribute(String namespaceUri, String localName, boolean value)
+                                                                                                       throws XMLStreamException {
         return writeStringAttribute(namespaceUri, localName, String.valueOf(value));
     }
 
@@ -238,8 +238,8 @@ public abstract class XmlWriter implements AutoCloseable {
      * @return The updated XmlWriter object.
      * @throws XMLStreamException If the XML attribute cannot be written.
      */
-    public final XmlWriter writeBooleanAttribute(String namespaceUri, String localName,
-        Boolean value) throws XMLStreamException {
+    public final XmlWriter writeBooleanAttribute(String namespaceUri, String localName, Boolean value)
+                                                                                                       throws XMLStreamException {
         if (value == null) {
             return this;
         }
@@ -268,8 +268,8 @@ public abstract class XmlWriter implements AutoCloseable {
      * @return The updated XmlWriter object.
      * @throws XMLStreamException If the XML attribute cannot be written.
      */
-    public final XmlWriter writeDoubleAttribute(String namespaceUri, String localName,
-        double value) throws XMLStreamException {
+    public final XmlWriter writeDoubleAttribute(String namespaceUri, String localName, double value)
+                                                                                                     throws XMLStreamException {
         return writeStringAttribute(namespaceUri, localName, String.valueOf(value));
     }
 
@@ -294,8 +294,8 @@ public abstract class XmlWriter implements AutoCloseable {
      * @return The updated XmlWriter object.
      * @throws XMLStreamException If the XML attribute cannot be written.
      */
-    public final XmlWriter writeFloatAttribute(String namespaceUri, String localName,
-        float value) throws XMLStreamException {
+    public final XmlWriter writeFloatAttribute(String namespaceUri, String localName, float value)
+                                                                                                   throws XMLStreamException {
         return writeStringAttribute(namespaceUri, localName, String.valueOf(value));
     }
 
@@ -320,8 +320,8 @@ public abstract class XmlWriter implements AutoCloseable {
      * @return The updated XmlWriter object.
      * @throws XMLStreamException If the XML attribute cannot be written.
      */
-    public final XmlWriter writeIntAttribute(String namespaceUri, String localName,
-        int value) throws XMLStreamException {
+    public final XmlWriter writeIntAttribute(String namespaceUri, String localName, int value)
+                                                                                               throws XMLStreamException {
         return writeStringAttribute(namespaceUri, localName, String.valueOf(value));
     }
 
@@ -346,8 +346,8 @@ public abstract class XmlWriter implements AutoCloseable {
      * @return The updated XmlWriter object.
      * @throws XMLStreamException If the XML attribute cannot be written.
      */
-    public final XmlWriter writeLongAttribute(String namespaceUri, String localName,
-        long value) throws XMLStreamException {
+    public final XmlWriter writeLongAttribute(String namespaceUri, String localName, long value)
+                                                                                                 throws XMLStreamException {
         return writeStringAttribute(namespaceUri, localName, String.valueOf(value));
     }
 
@@ -372,8 +372,8 @@ public abstract class XmlWriter implements AutoCloseable {
      * @return The updated XmlWriter object.
      * @throws XMLStreamException If the XML attribute cannot be written.
      */
-    public final XmlWriter writeNumberAttribute(String namespaceUri, String localName,
-        Number value) throws XMLStreamException {
+    public final XmlWriter writeNumberAttribute(String namespaceUri, String localName, Number value)
+                                                                                                     throws XMLStreamException {
         if (value == null) {
             return this;
         }
@@ -406,15 +406,13 @@ public abstract class XmlWriter implements AutoCloseable {
      * @return The updated XmlWriter object.
      * @throws XMLStreamException If the XML element and value cannot be written.
      */
-    public final XmlWriter writeBinaryElement(String namespaceUri, String localName,
-        byte[] value) throws XMLStreamException {
+    public final XmlWriter writeBinaryElement(String namespaceUri, String localName, byte[] value)
+                                                                                                   throws XMLStreamException {
         if (value == null) {
             return this;
         }
 
-        return writeStartElement(namespaceUri, localName)
-            .writeBinary(value)
-            .writeEndElement();
+        return writeStartElement(namespaceUri, localName).writeBinary(value).writeEndElement();
     }
 
     /**
@@ -438,11 +436,9 @@ public abstract class XmlWriter implements AutoCloseable {
      * @return The updated XmlWriter object.
      * @throws XMLStreamException If the XML element and value cannot be written.
      */
-    public final XmlWriter writeBooleanElement(String namespaceUri, String localName,
-        boolean value) throws XMLStreamException {
-        return writeStartElement(namespaceUri, localName)
-            .writeBoolean(value)
-            .writeEndElement();
+    public final XmlWriter writeBooleanElement(String namespaceUri, String localName, boolean value)
+                                                                                                     throws XMLStreamException {
+        return writeStartElement(namespaceUri, localName).writeBoolean(value).writeEndElement();
     }
 
     /**
@@ -470,15 +466,13 @@ public abstract class XmlWriter implements AutoCloseable {
      * @return The updated XmlWriter object.
      * @throws XMLStreamException If the XML element and value cannot be written.
      */
-    public final XmlWriter writeBooleanElement(String namespaceUri, String localName,
-        Boolean value) throws XMLStreamException {
+    public final XmlWriter writeBooleanElement(String namespaceUri, String localName, Boolean value)
+                                                                                                     throws XMLStreamException {
         if (value == null) {
             return this;
         }
 
-        return writeStartElement(namespaceUri, localName)
-            .writeBoolean(value.booleanValue())
-            .writeEndElement();
+        return writeStartElement(namespaceUri, localName).writeBoolean(value.booleanValue()).writeEndElement();
     }
 
     /**
@@ -502,11 +496,9 @@ public abstract class XmlWriter implements AutoCloseable {
      * @return The updated XmlWriter object.
      * @throws XMLStreamException If the XML element and value cannot be written.
      */
-    public final XmlWriter writeDoubleElement(String namespaceUri, String localName,
-        double value) throws XMLStreamException {
-        return writeStartElement(namespaceUri, localName)
-            .writeDouble(value)
-            .writeEndElement();
+    public final XmlWriter writeDoubleElement(String namespaceUri, String localName, double value)
+                                                                                                   throws XMLStreamException {
+        return writeStartElement(namespaceUri, localName).writeDouble(value).writeEndElement();
     }
 
     /**
@@ -530,11 +522,9 @@ public abstract class XmlWriter implements AutoCloseable {
      * @return The updated XmlWriter object.
      * @throws XMLStreamException If the XML element and value cannot be written.
      */
-    public final XmlWriter writeFloatElement(String namespaceUri, String localName,
-        float value) throws XMLStreamException {
-        return writeStartElement(namespaceUri, localName)
-            .writeFloat(value)
-            .writeEndElement();
+    public final XmlWriter writeFloatElement(String namespaceUri, String localName, float value)
+                                                                                                 throws XMLStreamException {
+        return writeStartElement(namespaceUri, localName).writeFloat(value).writeEndElement();
     }
 
     /**
@@ -558,11 +548,8 @@ public abstract class XmlWriter implements AutoCloseable {
      * @return The updated XmlWriter object.
      * @throws XMLStreamException If the XML element and value cannot be written.
      */
-    public final XmlWriter writeIntElement(String namespaceUri, String localName,
-        int value) throws XMLStreamException {
-        return writeStartElement(namespaceUri, localName)
-            .writeInt(value)
-            .writeEndElement();
+    public final XmlWriter writeIntElement(String namespaceUri, String localName, int value) throws XMLStreamException {
+        return writeStartElement(namespaceUri, localName).writeInt(value).writeEndElement();
     }
 
     /**
@@ -586,11 +573,9 @@ public abstract class XmlWriter implements AutoCloseable {
      * @return The updated XmlWriter object.
      * @throws XMLStreamException If the XML element and value cannot be written.
      */
-    public final XmlWriter writeLongElement(String namespaceUri, String localName,
-        long value) throws XMLStreamException {
-        return writeStartElement(namespaceUri, localName)
-            .writeLong(value)
-            .writeEndElement();
+    public final XmlWriter writeLongElement(String namespaceUri, String localName, long value)
+                                                                                               throws XMLStreamException {
+        return writeStartElement(namespaceUri, localName).writeLong(value).writeEndElement();
     }
 
     /**
@@ -618,15 +603,13 @@ public abstract class XmlWriter implements AutoCloseable {
      * @return The updated XmlWriter object.
      * @throws XMLStreamException If the XML element and value cannot be written.
      */
-    public final XmlWriter writeNumberElement(String namespaceUri, String localName,
-        Number value) throws XMLStreamException {
+    public final XmlWriter writeNumberElement(String namespaceUri, String localName, Number value)
+                                                                                                   throws XMLStreamException {
         if (value == null) {
             return this;
         }
 
-        return writeStartElement(namespaceUri, localName)
-            .writeNumber(value)
-            .writeEndElement();
+        return writeStartElement(namespaceUri, localName).writeNumber(value).writeEndElement();
     }
 
     /**
@@ -654,15 +637,13 @@ public abstract class XmlWriter implements AutoCloseable {
      * @return The updated XmlWriter object.
      * @throws XMLStreamException If the XML element and value cannot be written.
      */
-    public final XmlWriter writeStringElement(String namespaceUri, String localName,
-        String value) throws XMLStreamException {
+    public final XmlWriter writeStringElement(String namespaceUri, String localName, String value)
+                                                                                                   throws XMLStreamException {
         if (value == null) {
             return this;
         }
 
-        return writeStartElement(namespaceUri, localName)
-            .writeString(value)
-            .writeEndElement();
+        return writeStartElement(namespaceUri, localName).writeString(value).writeEndElement();
     }
 
     /**
@@ -674,7 +655,7 @@ public abstract class XmlWriter implements AutoCloseable {
      * @return The updated XmlWriter object.
      * @throws XMLStreamException If the XML object cannot be written.
      */
-    public final XmlWriter writeXml(XmlSerializable<?> value)  throws XMLStreamException {
+    public final XmlWriter writeXml(XmlSerializable<?> value) throws XMLStreamException {
         return value == null ? this : value.toXml(this);
     }
 

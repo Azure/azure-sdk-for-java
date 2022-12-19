@@ -33,15 +33,10 @@ public final class NettyAsyncHttpClientResponseTransformer extends ResponseTrans
             if (EXPECTED_HEADER.equals(request.getHeader("User-Agent"))) {
                 return response;
             } else {
-                return Response.response()
-                    .status(400)
-                    .build();
+                return Response.response().status(400).build();
             }
         } else if (RETURN_HEADERS_AS_IS_PATH.equalsIgnoreCase(url)) {
-            return Response.response()
-                .status(200)
-                .headers(request.getHeaders())
-                .build();
+            return Response.response().status(200).headers(request.getHeaders()).build();
         }
 
         return response;

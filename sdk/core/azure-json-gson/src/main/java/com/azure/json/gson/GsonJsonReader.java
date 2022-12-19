@@ -42,8 +42,8 @@ public final class GsonJsonReader extends JsonReader {
      */
     static JsonReader fromBytes(byte[] json, JsonOptions options) {
         Objects.requireNonNull(json, "'json' cannot be null.");
-        return new GsonJsonReader(new InputStreamReader(new ByteArrayInputStream(json), StandardCharsets.UTF_8),
-            true, json, null, options);
+        return new GsonJsonReader(new InputStreamReader(new ByteArrayInputStream(json), StandardCharsets.UTF_8), true,
+            json, null, options);
     }
 
     /**
@@ -86,13 +86,19 @@ public final class GsonJsonReader extends JsonReader {
         return new GsonJsonReader(json, json.markSupported(), null, null, options);
     }
 
-    private GsonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString,
-        JsonOptions options) {
+    private GsonJsonReader(Reader reader,
+                           boolean resetSupported,
+                           byte[] jsonBytes,
+                           String jsonString,
+                           JsonOptions options) {
         this(reader, resetSupported, jsonBytes, jsonString, options.isNonNumericNumbersSupported());
     }
 
-    private GsonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString,
-        boolean nonNumericNumbersSupported) {
+    private GsonJsonReader(Reader reader,
+                           boolean resetSupported,
+                           byte[] jsonBytes,
+                           String jsonString,
+                           boolean nonNumericNumbersSupported) {
         this.reader = new com.google.gson.stream.JsonReader(reader);
         this.reader.setLenient(nonNumericNumbersSupported);
         this.resetSupported = resetSupported;
@@ -242,7 +248,8 @@ public final class GsonJsonReader extends JsonReader {
             return new GsonJsonReader(new StringReader(json), true, null, json, nonNumericNumbersSupported);
         } else {
             throw new IllegalStateException("Cannot buffer a JSON object from a non-object, non-field name "
-                + "starting location. Starting location: " + currentToken());
+                + "starting location. Starting location: "
+                + currentToken());
         }
     }
 
@@ -258,9 +265,8 @@ public final class GsonJsonReader extends JsonReader {
         }
 
         if (jsonBytes != null) {
-            return new GsonJsonReader(
-                new InputStreamReader(new ByteArrayInputStream(jsonBytes), StandardCharsets.UTF_8), true, jsonBytes,
-                null, nonNumericNumbersSupported);
+            return new GsonJsonReader(new InputStreamReader(new ByteArrayInputStream(jsonBytes),
+                StandardCharsets.UTF_8), true, jsonBytes, null, nonNumericNumbersSupported);
         } else {
             return new GsonJsonReader(new StringReader(jsonString), true, null, jsonString, nonNumericNumbersSupported);
         }

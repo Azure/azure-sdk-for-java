@@ -93,9 +93,10 @@ public class ManagementChannelTest {
 
         autoCloseable = MockitoAnnotations.openMocks(this);
 
-        final AmqpChannelProcessor<RequestResponseChannel> requestResponseMono =
-            Mono.defer(() -> Mono.just(requestResponseChannel)).subscribeWith(new AmqpChannelProcessor<>(
-                "foo", RequestResponseChannel::getEndpointStates, retryPolicy, new HashMap<>()));
+        final AmqpChannelProcessor<RequestResponseChannel> requestResponseMono = Mono
+            .defer(() -> Mono.just(requestResponseChannel))
+            .subscribeWith(new AmqpChannelProcessor<>("foo", RequestResponseChannel::getEndpointStates, retryPolicy,
+                new HashMap<>()));
 
         when(tokenManager.authorize()).thenReturn(Mono.just(1000L));
         when(tokenManager.getAuthorizationResults()).thenReturn(tokenProviderResults.flux());
@@ -126,7 +127,8 @@ public class ManagementChannelTest {
         when(requestResponseChannel.sendWithAck(any(Message.class))).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(managementChannel.send(annotatedMessage))
+        StepVerifier
+            .create(managementChannel.send(annotatedMessage))
             .then(() -> tokenProviderResults.next(AmqpResponseCode.OK))
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof AmqpException);
@@ -154,7 +156,8 @@ public class ManagementChannelTest {
         responseMessage.setBody(dataBody);
 
         // Act & Assert
-        StepVerifier.create(managementChannel.send(annotatedMessage))
+        StepVerifier
+            .create(managementChannel.send(annotatedMessage))
             .then(() -> tokenProviderResults.next(AmqpResponseCode.OK))
             .assertNext(actual -> {
                 assertNotNull(actual.getApplicationProperties());
@@ -187,7 +190,8 @@ public class ManagementChannelTest {
         responseMessage.setBody(dataBody);
 
         // Act & Assert
-        StepVerifier.create(managementChannel.send(annotatedMessage, outcome))
+        StepVerifier
+            .create(managementChannel.send(annotatedMessage, outcome))
             .then(() -> tokenProviderResults.next(AmqpResponseCode.OK))
             .assertNext(actual -> {
                 assertNotNull(actual.getApplicationProperties());
@@ -213,7 +217,8 @@ public class ManagementChannelTest {
             .thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(managementChannel.send(annotatedMessage, outcome))
+        StepVerifier
+            .create(managementChannel.send(annotatedMessage, outcome))
             .then(() -> tokenProviderResults.next(AmqpResponseCode.OK))
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof AmqpException);
@@ -236,7 +241,8 @@ public class ManagementChannelTest {
             .thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(managementChannel.send(annotatedMessage, outcome))
+        StepVerifier
+            .create(managementChannel.send(annotatedMessage, outcome))
             .then(() -> tokenProviderResults.complete())
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof AmqpException);
@@ -268,7 +274,8 @@ public class ManagementChannelTest {
         responseMessage.setBody(dataBody);
 
         // Act & Assert
-        StepVerifier.create(managementChannel.send(annotatedMessage))
+        StepVerifier
+            .create(managementChannel.send(annotatedMessage))
             .then(() -> tokenProviderResults.next(AmqpResponseCode.OK))
             .assertNext(actual -> {
                 assertNotNull(actual.getApplicationProperties());
@@ -300,7 +307,8 @@ public class ManagementChannelTest {
         responseMessage.setApplicationProperties(new ApplicationProperties(applicationProperties));
 
         // Act & Assert
-        StepVerifier.create(managementChannel.send(annotatedMessage))
+        StepVerifier
+            .create(managementChannel.send(annotatedMessage))
             .then(() -> tokenProviderResults.next(AmqpResponseCode.OK))
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof AmqpException);
@@ -329,7 +337,8 @@ public class ManagementChannelTest {
         final AmqpErrorCondition expected = AmqpErrorCondition.UNAUTHORIZED_ACCESS;
 
         // Act & Assert
-        StepVerifier.create(managementChannel.send(annotatedMessage))
+        StepVerifier
+            .create(managementChannel.send(annotatedMessage))
             .then(() -> tokenProviderResults.next(responseCode))
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof AmqpException);

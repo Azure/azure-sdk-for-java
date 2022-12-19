@@ -30,14 +30,14 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
      * @param fullyQualifiedNamespace Fully-qualified namespace of the message broker.
      * @param activeDirectoryScope Scope used to access AD resources for the Azure service.
      */
-    public AzureTokenManagerProvider(CbsAuthorizationType authorizationType, String fullyQualifiedNamespace,
+    public AzureTokenManagerProvider(CbsAuthorizationType authorizationType,
+                                     String fullyQualifiedNamespace,
                                      String activeDirectoryScope) {
-        this.activeDirectoryScope = Objects.requireNonNull(activeDirectoryScope,
-            "'activeDirectoryScope' cannot be null.");
-        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
-            "'fullyQualifiedNamespace' cannot be null.");
-        this.authorizationType = Objects.requireNonNull(authorizationType,
-            "'authorizationType' cannot be null.");
+        this.activeDirectoryScope = Objects
+            .requireNonNull(activeDirectoryScope, "'activeDirectoryScope' cannot be null.");
+        this.fullyQualifiedNamespace = Objects
+            .requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
+        this.authorizationType = Objects.requireNonNull(authorizationType, "'authorizationType' cannot be null.");
     }
 
     /**
@@ -48,7 +48,8 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
         final String scopes = getScopesFromResource(resource);
         final String tokenAudience = String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, fullyQualifiedNamespace, resource);
 
-        LOGGER.atVerbose()
+        LOGGER
+            .atVerbose()
             .addKeyValue("audience", tokenAudience)
             .addKeyValue("resource", resource)
             .log("Creating new token manager.");
@@ -66,8 +67,10 @@ public class AzureTokenManagerProvider implements TokenManagerProvider {
         } else if (CbsAuthorizationType.SHARED_ACCESS_SIGNATURE.equals(authorizationType)) {
             return String.format(Locale.US, TOKEN_AUDIENCE_FORMAT, fullyQualifiedNamespace, resource);
         } else {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
-                "'%s' is not supported authorization type for token audience.", authorizationType)));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException(String
+                    .format(Locale.US, "'%s' is not supported authorization type for token audience.",
+                        authorizationType)));
         }
     }
 }

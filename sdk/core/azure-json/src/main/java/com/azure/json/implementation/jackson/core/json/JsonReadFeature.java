@@ -9,9 +9,7 @@ import com.azure.json.implementation.jackson.core.*;
  *
  * @since 2.10
  */
-public enum JsonReadFeature
-    implements FormatFeature
-{
+public enum JsonReadFeature implements FormatFeature {
     // // // Support for non-standard data format constructs: comments
 
     /**
@@ -94,7 +92,7 @@ public enum JsonReadFeature
     ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER(false, JsonParser.Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER),
 
     // // // Support for non-standard data format constructs: number representations
-    
+
     /**
      * Feature that determines whether parser will allow
      * JSON integral numbers to start with additional (ignorable) 
@@ -144,7 +142,7 @@ public enum JsonReadFeature
     ALLOW_NON_NUMERIC_NUMBERS(false, JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS),
 
     // // // Support for non-standard data format constructs: array/value separators
-     
+
     /**
      * Feature allows the support for "missing" values in a JSON array: missing
      * value meaning sequence of two commas, without value in-between but only
@@ -182,8 +180,7 @@ public enum JsonReadFeature
      * feature, and as such disabled by default.
      */
     @SuppressWarnings("deprecation")
-    ALLOW_TRAILING_COMMA(false, JsonParser.Feature.ALLOW_TRAILING_COMMA),
-    ;
+    ALLOW_TRAILING_COMMA(false, JsonParser.Feature.ALLOW_TRAILING_COMMA),;
 
     final private boolean _defaultState;
     final private int _mask;
@@ -193,15 +190,14 @@ public enum JsonReadFeature
      * if so, this is the feature to enable/disable.
      */
     final private JsonParser.Feature _mappedFeature;
-    
+
     /**
      * Method that calculates bit set (flags) of all features that
      * are enabled by default.
      *
      * @return Bit mask of all features that are enabled by default
      */
-    public static int collectDefaults()
-    {
+    public static int collectDefaults() {
         int flags = 0;
         for (JsonReadFeature f : values()) {
             if (f.enabledByDefault()) {
@@ -210,20 +206,29 @@ public enum JsonReadFeature
         }
         return flags;
     }
-    
-    private JsonReadFeature(boolean defaultState,
-            JsonParser.Feature  mapTo) {
+
+    private JsonReadFeature(boolean defaultState, JsonParser.Feature mapTo) {
         _defaultState = defaultState;
         _mask = (1 << ordinal());
         _mappedFeature = mapTo;
     }
 
     @Override
-    public boolean enabledByDefault() { return _defaultState; }
-    @Override
-    public int getMask() { return _mask; }
-    @Override
-    public boolean enabledIn(int flags) { return (flags & _mask) != 0; }
+    public boolean enabledByDefault() {
+        return _defaultState;
+    }
 
-    public JsonParser.Feature mappedFeature() { return _mappedFeature; }
+    @Override
+    public int getMask() {
+        return _mask;
+    }
+
+    @Override
+    public boolean enabledIn(int flags) {
+        return (flags & _mask) != 0;
+    }
+
+    public JsonParser.Feature mappedFeature() {
+        return _mappedFeature;
+    }
 }

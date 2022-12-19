@@ -12,8 +12,10 @@ import java.util.UUID;
 
 public final class StringUtil {
     public static String getRandomString(String prefix) {
-        return String.format(Locale.US, "%s_%s_%s", prefix, UUID.randomUUID().toString().substring(0, 6),
-            Instant.now().toEpochMilli());
+        return String
+            .format(Locale.US, "%s_%s_%s", prefix, UUID.randomUUID().toString().substring(0, 6), Instant
+                .now()
+                .toEpochMilli());
     }
 
     public static String toStackTraceString(final Throwable exception, final String customErrorMessage) {

@@ -45,7 +45,7 @@ public class SessionErrorContext extends AmqpErrorContext {
 
     @Override
     public String toString() {
-        return String.join(MESSAGE_PARAMETER_DELIMITER, super.toString(),
-            String.format(Locale.US, "PATH: %s", getEntityPath()));
+        return String
+            .join(MESSAGE_PARAMETER_DELIMITER, super.toString(), String.format(Locale.US, "PATH: %s", getEntityPath()));
     }
 }

@@ -53,8 +53,8 @@ public abstract class JsonReaderContractTests {
 
     @ParameterizedTest
     @MethodSource("basicOperationsSupplier")
-    public <T> void basicOperations(String json, T expectedValue,
-        ReadValueCallback<JsonReader, T> function) throws IOException {
+    public <T> void basicOperations(String json, T expectedValue, ReadValueCallback<JsonReader, T> function)
+                                                                                                             throws IOException {
         try (JsonReader reader = getJsonReader(json)) {
             reader.nextToken(); // Initialize the JsonReader for reading.
 
@@ -65,50 +65,52 @@ public abstract class JsonReaderContractTests {
     }
 
     private static Stream<Arguments> basicOperationsSupplier() {
-        return Stream.of(
-            // Value handling.
+        return Stream
+            .of(
+                // Value handling.
 
-            // Boolean
-            Arguments.of("false", false, createJsonConsumer(JsonReader::getBoolean)),
-            Arguments.of("true", true, createJsonConsumer(JsonReader::getBoolean)),
-            Arguments.of("null", null, createJsonConsumer(reader -> reader.getNullable(JsonReader::getBoolean))),
+                // Boolean
+                Arguments.of("false", false, createJsonConsumer(JsonReader::getBoolean)), Arguments
+                    .of("true", true, createJsonConsumer(JsonReader::getBoolean)), Arguments
+                        .of("null", null, createJsonConsumer(reader -> reader.getNullable(JsonReader::getBoolean))),
 
-            // Double
-            Arguments.of("-42.0", -42D, createJsonConsumer(JsonReader::getDouble)),
-            Arguments.of("-42", -42D, createJsonConsumer(JsonReader::getDouble)),
-            Arguments.of("42.0", 42D, createJsonConsumer(JsonReader::getDouble)),
-            Arguments.of("42", 42D, createJsonConsumer(JsonReader::getDouble)),
-            Arguments.of("null", null, createJsonConsumer(reader -> reader.getNullable(JsonReader::getDouble))),
+                // Double
+                Arguments.of("-42.0", -42D, createJsonConsumer(JsonReader::getDouble)), Arguments
+                    .of("-42", -42D, createJsonConsumer(JsonReader::getDouble)), Arguments
+                        .of("42.0", 42D, createJsonConsumer(JsonReader::getDouble)), Arguments
+                            .of("42", 42D, createJsonConsumer(JsonReader::getDouble)), Arguments
+                                .of("null", null, createJsonConsumer(reader -> reader
+                                    .getNullable(JsonReader::getDouble))),
 
-            // Float
-            Arguments.of("-42.0", -42F, createJsonConsumer(JsonReader::getFloat)),
-            Arguments.of("-42", -42F, createJsonConsumer(JsonReader::getFloat)),
-            Arguments.of("42.0", 42F, createJsonConsumer(JsonReader::getFloat)),
-            Arguments.of("42", 42F, createJsonConsumer(JsonReader::getFloat)),
-            Arguments.of("null", null, createJsonConsumer(reader -> reader.getNullable(JsonReader::getFloat))),
+                // Float
+                Arguments.of("-42.0", -42F, createJsonConsumer(JsonReader::getFloat)), Arguments
+                    .of("-42", -42F, createJsonConsumer(JsonReader::getFloat)), Arguments
+                        .of("42.0", 42F, createJsonConsumer(JsonReader::getFloat)), Arguments
+                            .of("42", 42F, createJsonConsumer(JsonReader::getFloat)), Arguments
+                                .of("null", null, createJsonConsumer(reader -> reader
+                                    .getNullable(JsonReader::getFloat))),
 
-            // Integer
-            Arguments.of("-42", -42, createJsonConsumer(JsonReader::getInt)),
-            Arguments.of("42", 42, createJsonConsumer(JsonReader::getInt)),
-            Arguments.of("null", null, createJsonConsumer(reader -> reader.getNullable(JsonReader::getInt))),
+                // Integer
+                Arguments.of("-42", -42, createJsonConsumer(JsonReader::getInt)), Arguments
+                    .of("42", 42, createJsonConsumer(JsonReader::getInt)), Arguments
+                        .of("null", null, createJsonConsumer(reader -> reader.getNullable(JsonReader::getInt))),
 
-            // Long
-            Arguments.of("-42", -42L, createJsonConsumer(JsonReader::getLong)),
-            Arguments.of("42", 42L, createJsonConsumer(JsonReader::getLong)),
-            Arguments.of("null", null, createJsonConsumer(reader -> reader.getNullable(JsonReader::getLong))),
+                // Long
+                Arguments.of("-42", -42L, createJsonConsumer(JsonReader::getLong)), Arguments
+                    .of("42", 42L, createJsonConsumer(JsonReader::getLong)), Arguments
+                        .of("null", null, createJsonConsumer(reader -> reader.getNullable(JsonReader::getLong))),
 
-            // String
-            Arguments.of("null", null, createJsonConsumer(JsonReader::getString)),
-            Arguments.of("\"\"", "", createJsonConsumer(JsonReader::getString)),
-            Arguments.of("\"hello\"", "hello", createJsonConsumer(JsonReader::getString))
-        );
+                // String
+                Arguments.of("null", null, createJsonConsumer(JsonReader::getString)), Arguments
+                    .of("\"\"", "", createJsonConsumer(JsonReader::getString)), Arguments
+                        .of("\"hello\"", "hello", createJsonConsumer(JsonReader::getString)));
     }
 
     // Byte arrays can't use Object.equals as they'll be compared by memory location instead of value equality.
     @ParameterizedTest
     @MethodSource("binaryOperationsSupplier")
-    public void binaryOperations(String json, byte[] expectedValue,
-        ReadValueCallback<JsonReader, byte[]> function) throws IOException {
+    public void binaryOperations(String json, byte[] expectedValue, ReadValueCallback<JsonReader, byte[]> function)
+                                                                                                                    throws IOException {
         try (JsonReader reader = getJsonReader(json)) {
             reader.nextToken(); // Initialize the JsonReader for reading.
 
@@ -119,13 +121,13 @@ public abstract class JsonReaderContractTests {
     }
 
     private static Stream<Arguments> binaryOperationsSupplier() {
-        return Stream.of(
-            // Binary
-            Arguments.of("null", null, createJsonConsumer(JsonReader::getBinary)),
-            Arguments.of("\"\"", new byte[0], createJsonConsumer(JsonReader::getBinary)),
-            Arguments.of("\"" + Base64.getEncoder().encodeToString("Hello".getBytes(StandardCharsets.UTF_8)) + "\"",
-                "Hello".getBytes(StandardCharsets.UTF_8), createJsonConsumer(JsonReader::getBinary))
-        );
+        return Stream
+            .of(
+                // Binary
+                Arguments.of("null", null, createJsonConsumer(JsonReader::getBinary)), Arguments
+                    .of("\"\"", new byte[0], createJsonConsumer(JsonReader::getBinary)), Arguments
+                        .of("\"" + Base64.getEncoder().encodeToString("Hello".getBytes(StandardCharsets.UTF_8)) + "\"",
+                            "Hello".getBytes(StandardCharsets.UTF_8), createJsonConsumer(JsonReader::getBinary)));
     }
 
     @Test
@@ -156,7 +158,8 @@ public abstract class JsonReaderContractTests {
 
     @Test
     public void simpleObject() throws IOException {
-        String json = "{\"stringProperty\":\"string\",\"nullProperty\":null,\"integerProperty\":10,\"floatProperty\":10.0,\"booleanProperty\":true}";
+        String json =
+            "{\"stringProperty\":\"string\",\"nullProperty\":null,\"integerProperty\":10,\"floatProperty\":10.0,\"booleanProperty\":true}";
         try (JsonReader reader = getJsonReader(json)) {
 
             assertJsonReaderStructInitialization(reader, JsonToken.START_OBJECT);
@@ -268,20 +271,25 @@ public abstract class JsonReaderContractTests {
     }
 
     private static Stream<Arguments> objectWithInnerObjectSupplier() {
-        return Stream.of(
-            Arguments.of(Named.of("objectWithInnerObjectAsFirstProperty",
-                "{\"innerObject\":{\"innerStringProperty\":\"innerString\"},\"stringProperty\":\"string\","
-                    + "\"nullProperty\":null,\"integerProperty\":10,\"floatProperty\":10.0,\"booleanProperty\":true}")),
+        return Stream
+            .of(Arguments
+                .of(Named
+                    .of("objectWithInnerObjectAsFirstProperty",
+                        "{\"innerObject\":{\"innerStringProperty\":\"innerString\"},\"stringProperty\":\"string\","
+                            + "\"nullProperty\":null,\"integerProperty\":10,\"floatProperty\":10.0,\"booleanProperty\":true}")),
 
-            Arguments.of(Named.of("objectWithInnerObjectAsMiddleProperty",
-                "{\"stringProperty\":\"string\",\"nullProperty\":null,\"integerProperty\":10,"
-                    + "\"innerObject\":{\"innerStringProperty\":\"innerString\"},\"floatProperty\":10.0,"
-                    + "\"booleanProperty\":true}")),
+                Arguments
+                    .of(Named
+                        .of("objectWithInnerObjectAsMiddleProperty",
+                            "{\"stringProperty\":\"string\",\"nullProperty\":null,\"integerProperty\":10,"
+                                + "\"innerObject\":{\"innerStringProperty\":\"innerString\"},\"floatProperty\":10.0,"
+                                + "\"booleanProperty\":true}")),
 
-            Arguments.of(Named.of("objectWithInnerObjectAsLastProperty",
-                "{\"stringProperty\":\"string\",\"nullProperty\":null,\"integerProperty\":10,\"floatProperty\":10.0,"
-                    + "\"booleanProperty\":true,\"innerObject\":{\"innerStringProperty\":\"innerString\"}}"))
-        );
+                Arguments
+                    .of(Named
+                        .of("objectWithInnerObjectAsLastProperty",
+                            "{\"stringProperty\":\"string\",\"nullProperty\":null,\"integerProperty\":10,\"floatProperty\":10.0,"
+                                + "\"booleanProperty\":true,\"innerObject\":{\"innerStringProperty\":\"innerString\"}}")));
     }
 
     @ParameterizedTest
@@ -334,19 +342,24 @@ public abstract class JsonReaderContractTests {
     }
 
     private static Stream<Arguments> objectWithInnerArraySupplier() {
-        return Stream.of(
-            Arguments.of(Named.of("objectWithInnerArrayAsFirstProperty",
-                "{\"innerArray\":[\"innerString\"],\"stringProperty\":\"string\",\"nullProperty\":null,"
-                    + "\"integerProperty\":10,\"floatProperty\":10.0,\"booleanProperty\":true}")),
+        return Stream
+            .of(Arguments
+                .of(Named
+                    .of("objectWithInnerArrayAsFirstProperty",
+                        "{\"innerArray\":[\"innerString\"],\"stringProperty\":\"string\",\"nullProperty\":null,"
+                            + "\"integerProperty\":10,\"floatProperty\":10.0,\"booleanProperty\":true}")),
 
-            Arguments.of(Named.of("objectWithInnerArrayAsMiddleProperty",
-                "{\"stringProperty\":\"string\",\"nullProperty\":null,\"integerProperty\":10,"
-                    + "\"innerArray\":[\"innerString\"],\"floatProperty\":10.0,\"booleanProperty\":true}")),
+                Arguments
+                    .of(Named
+                        .of("objectWithInnerArrayAsMiddleProperty",
+                            "{\"stringProperty\":\"string\",\"nullProperty\":null,\"integerProperty\":10,"
+                                + "\"innerArray\":[\"innerString\"],\"floatProperty\":10.0,\"booleanProperty\":true}")),
 
-            Arguments.of(Named.of("objectWithInnerArrayAsLastProperty",
-                "{\"stringProperty\":\"string\",\"nullProperty\":null,\"integerProperty\":10,\"floatProperty\":10.0,"
-                    + "\"booleanProperty\":true,\"innerArray\":[\"innerString\"]}"))
-        );
+                Arguments
+                    .of(Named
+                        .of("objectWithInnerArrayAsLastProperty",
+                            "{\"stringProperty\":\"string\",\"nullProperty\":null,\"integerProperty\":10,\"floatProperty\":10.0,"
+                                + "\"booleanProperty\":true,\"innerArray\":[\"innerString\"]}")));
     }
 
     @ParameterizedTest
@@ -382,16 +395,17 @@ public abstract class JsonReaderContractTests {
     }
 
     private static Stream<Arguments> arrayWithInnerArraySupplier() {
-        return Stream.of(
-            Arguments.of(Named.of("arrayWithInnerArrayAsFirstProperty",
-                "[[\"innerString\"],\"string\",null,10,10.0,true]")),
+        return Stream
+            .of(Arguments
+                .of(Named.of("arrayWithInnerArrayAsFirstProperty", "[[\"innerString\"],\"string\",null,10,10.0,true]")),
 
-            Arguments.of(Named.of("arrayWithInnerArrayAsMiddleProperty",
-                "[\"string\",null,10,[\"innerString\"],10.0,true]")),
+                Arguments
+                    .of(Named
+                        .of("arrayWithInnerArrayAsMiddleProperty", "[\"string\",null,10,[\"innerString\"],10.0,true]")),
 
-            Arguments.of(Named.of("arrayWithInnerArrayAsLastProperty",
-                "[\"string\",null,10,10.0,true,[\"innerString\"]]"))
-        );
+                Arguments
+                    .of(Named
+                        .of("arrayWithInnerArrayAsLastProperty", "[\"string\",null,10,10.0,true,[\"innerString\"]]")));
     }
 
     @ParameterizedTest
@@ -430,16 +444,21 @@ public abstract class JsonReaderContractTests {
     }
 
     private static Stream<Arguments> arrayWithInnerObjectSupplier() {
-        return Stream.of(
-            Arguments.of(Named.of("arrayWithInnerObjectAsFirstProperty",
-                "[{\"innerStringProperty\":\"innerString\"},\"string\",null,10,10.0,true]")),
+        return Stream
+            .of(Arguments
+                .of(Named
+                    .of("arrayWithInnerObjectAsFirstProperty",
+                        "[{\"innerStringProperty\":\"innerString\"},\"string\",null,10,10.0,true]")),
 
-            Arguments.of(Named.of("arrayWithInnerObjectAsMiddleProperty",
-                "[\"string\",null,10,{\"innerStringProperty\":\"innerString\"},10.0,true]")),
+                Arguments
+                    .of(Named
+                        .of("arrayWithInnerObjectAsMiddleProperty",
+                            "[\"string\",null,10,{\"innerStringProperty\":\"innerString\"},10.0,true]")),
 
-            Arguments.of(Named.of("arrayWithInnerObjectAsLastProperty",
-                "[\"string\",null,10,10.0,true,{\"innerStringProperty\":\"innerString\"}]"))
-        );
+                Arguments
+                    .of(Named
+                        .of("arrayWithInnerObjectAsLastProperty",
+                            "[\"string\",null,10,10.0,true,{\"innerStringProperty\":\"innerString\"}]")));
     }
 
     @ParameterizedTest
@@ -457,18 +476,12 @@ public abstract class JsonReaderContractTests {
     }
 
     private static Stream<Arguments> readUntypedSimpleSupplier() {
-        return Stream.of(
-            Arguments.of("null", 1, null),
-            Arguments.of("true", 1, true),
-            Arguments.of("false", 1, false),
-            Arguments.of("3.14", 1, 3.14),
-            Arguments.of("NaN", 1, String.valueOf(Double.NaN)),
-            Arguments.of("-Infinity", 1, String.valueOf(Double.NEGATIVE_INFINITY)),
-            Arguments.of("Infinity", 1, String.valueOf(Double.POSITIVE_INFINITY)),
-            Arguments.of("42", 1, 42),
-            Arguments.of("420000000000", 1, 420000000000L),
-            Arguments.of("\"hello\"", 1, "hello")
-        );
+        return Stream
+            .of(Arguments.of("null", 1, null), Arguments.of("true", 1, true), Arguments.of("false", 1, false), Arguments
+                .of("3.14", 1, 3.14), Arguments.of("NaN", 1, String.valueOf(Double.NaN)), Arguments
+                    .of("-Infinity", 1, String.valueOf(Double.NEGATIVE_INFINITY)), Arguments
+                        .of("Infinity", 1, String.valueOf(Double.POSITIVE_INFINITY)), Arguments.of("42", 1, 42),
+                Arguments.of("420000000000", 1, 420000000000L), Arguments.of("\"hello\"", 1, "hello"));
     }
 
     @SuppressWarnings("unchecked")
@@ -487,10 +500,9 @@ public abstract class JsonReaderContractTests {
     }
 
     private static Stream<Arguments> readUntypedArraySupplier() {
-        return Stream.of(
-            Arguments.of("[]", 1, new ArrayList<>()),
-            Arguments.of("[42,true,\"hello\"]", 1, Arrays.asList(42, true, "hello"))
-        );
+        return Stream
+            .of(Arguments.of("[]", 1, new ArrayList<>()), Arguments
+                .of("[42,true,\"hello\"]", 1, Arrays.asList(42, true, "hello")));
     }
 
     @SuppressWarnings("unchecked")
@@ -517,10 +529,9 @@ public abstract class JsonReaderContractTests {
         complexExpected.put("field2", true);
         complexExpected.put("field3", "hello");
 
-        return Stream.of(
-            Arguments.of("{}", 1, new LinkedHashMap<>()),
-            Arguments.of("{\"field1\":42,\"field2\":true,\"field3\":\"hello\"}", 1, complexExpected)
-        );
+        return Stream
+            .of(Arguments.of("{}", 1, new LinkedHashMap<>()), Arguments
+                .of("{\"field1\":42,\"field2\":true,\"field3\":\"hello\"}", 1, complexExpected));
     }
 
     @ParameterizedTest
@@ -536,11 +547,7 @@ public abstract class JsonReaderContractTests {
     }
 
     private static Stream<Arguments> readUntypedIllegalStartSupplier() {
-        return Stream.of(
-            Arguments.of("{}", 2),
-            Arguments.of("[]", 2),
-            Arguments.of("{\"field\":\"value\"}", 2)
-        );
+        return Stream.of(Arguments.of("{}", 2), Arguments.of("[]", 2), Arguments.of("{\"field\":\"value\"}", 2));
     }
 
     @Test
@@ -581,10 +588,10 @@ public abstract class JsonReaderContractTests {
     }
 
     private static Stream<Arguments> bufferObjectSupplier() {
-        return Stream.of(
-            // Arguments.of("{\"test\":\"test\"}", 1),
-            Arguments.of("{\"outerfield\":{\"test\":\"test\"}}", 2)
-        );
+        return Stream
+            .of(
+                // Arguments.of("{\"test\":\"test\"}", 1),
+                Arguments.of("{\"outerfield\":{\"test\":\"test\"}}", 2));
     }
 
     @ParameterizedTest
@@ -600,29 +607,22 @@ public abstract class JsonReaderContractTests {
     }
 
     private static Stream<Arguments> bufferObjectIllegalStateSupplier() {
-        return Stream.of(
-            Arguments.of("[]", 1),
-            Arguments.of("12", 1),
-            Arguments.of("null", 1),
-            Arguments.of("true", 1),
-            Arguments.of("\"hello\"", 1),
-            Arguments.of("{\"outerfield\": []}", 2),
-            Arguments.of("{\"outerfield\": 12}", 2),
-            Arguments.of("{\"outerfield\": null}", 2),
-            Arguments.of("{\"outerfield\": true}", 2),
-            Arguments.of("{\"outerfield\": \"hello\"}", 2)
-        );
+        return Stream
+            .of(Arguments.of("[]", 1), Arguments.of("12", 1), Arguments.of("null", 1), Arguments.of("true", 1),
+                Arguments.of("\"hello\"", 1), Arguments.of("{\"outerfield\": []}", 2), Arguments
+                    .of("{\"outerfield\": 12}", 2), Arguments.of("{\"outerfield\": null}", 2), Arguments
+                        .of("{\"outerfield\": true}", 2), Arguments.of("{\"outerfield\": \"hello\"}", 2));
     }
 
-    private static void assertJsonReaderStructInitialization(JsonReader reader, JsonToken expectedInitialToken) throws IOException {
+    private static void assertJsonReaderStructInitialization(JsonReader reader, JsonToken expectedInitialToken)
+                                                                                                                throws IOException {
         assertNull(reader.currentToken());
         reader.nextToken();
 
         assertEquals(expectedInitialToken, reader.currentToken());
     }
 
-    private static <T> ReadValueCallback<JsonReader, T> createJsonConsumer(
-        ReadValueCallback<JsonReader, T> func) {
+    private static <T> ReadValueCallback<JsonReader, T> createJsonConsumer(ReadValueCallback<JsonReader, T> func) {
         return func;
     }
 
@@ -640,9 +640,7 @@ public abstract class JsonReaderContractTests {
 
         @Override
         public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            return jsonWriter.writeStartObject()
-                .writeStringField("test", test)
-                .writeEndObject();
+            return jsonWriter.writeStartObject().writeStringField("test", test).writeEndObject();
         }
 
         public static TestData fromJson(JsonReader jsonReader) throws IOException {

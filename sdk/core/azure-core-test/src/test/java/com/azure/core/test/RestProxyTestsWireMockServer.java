@@ -47,7 +47,8 @@ public final class RestProxyTestsWireMockServer {
     private static final Random RANDOM = new Random();
 
     public static WireMockServer getRestProxyTestsServer() {
-        WireMockServer server = new WireMockServer(WireMockConfiguration.options()
+        WireMockServer server = new WireMockServer(WireMockConfiguration
+            .options()
             .extensions(new RestProxyResponseTransformer())
             .dynamicPort()
             .disableRequestJournal()
@@ -77,20 +78,23 @@ public final class RestProxyTestsWireMockServer {
         //
         // This uses a size too large for a byte[], so if the incorrect handling is used an OutOfMemoryError will be
         // thrown.
-        server.stubFor(head(urlPathMatching("/voideagerreadoom")).willReturn(aResponse()
-            .withHeader("Content-Length", "10737418240")));
+        server
+            .stubFor(head(urlPathMatching("/voideagerreadoom"))
+                .willReturn(aResponse().withHeader("Content-Length", "10737418240")));
 
-        server.stubFor(put("/voiderrorreturned").willReturn(aResponse()
-            .withStatus(400)
-            .withBody("void exception body thrown")));
+        server
+            .stubFor(put("/voiderrorreturned")
+                .willReturn(aResponse().withStatus(400).withBody("void exception body thrown")));
 
         return server;
     }
 
     private static final class RestProxyResponseTransformer extends ResponseDefinitionTransformer {
         @Override
-        public ResponseDefinition transform(Request request, ResponseDefinition responseDefinition,
-            FileSource fileSource, Parameters parameters) {
+        public ResponseDefinition transform(Request request,
+                                            ResponseDefinition responseDefinition,
+                                            FileSource fileSource,
+                                            Parameters parameters) {
             try {
                 URL url = new URL(request.getAbsoluteUrl());
 
@@ -105,10 +109,13 @@ public final class RestProxyTestsWireMockServer {
                     } else {
                         return createSimpleHttpBinResponse(request, url);
                     }
-                } else if (urlPath.startsWith("/anything") || urlPath.startsWith("/put")
-                    || urlPath.startsWith("/delete") || urlPath.startsWith("/patch") || urlPath.startsWith("/get")) {
+                } else if (urlPath.startsWith("/anything")
+                    || urlPath.startsWith("/put")
+                    || urlPath.startsWith("/delete")
+                    || urlPath.startsWith("/patch")
+                    || urlPath.startsWith("/get")) {
                     return createSimpleHttpBinResponse(request, url);
-                }  else {
+                } else {
                     return responseDefinition;
                 }
             } catch (IOException e) {
@@ -127,7 +134,8 @@ public final class RestProxyTestsWireMockServer {
 
             rawHeaders.put("ETag", MessageDigestUtils.md5(body));
 
-            return new ResponseDefinitionBuilder().withStatus(200)
+            return new ResponseDefinitionBuilder()
+                .withStatus(200)
                 .withHeaders(toWireMockHeaders(rawHeaders))
                 .withBody(body)
                 .build();
@@ -139,11 +147,16 @@ public final class RestProxyTestsWireMockServer {
             responseBody.data(request.getBodyAsString());
 
             if (request.getHeaders() != null) {
-                responseBody.headers(request.getHeaders().all().stream()
-                    .collect(Collectors.toMap(MultiValue::key, MultiValue::values)));
+                responseBody
+                    .headers(request
+                        .getHeaders()
+                        .all()
+                        .stream()
+                        .collect(Collectors.toMap(MultiValue::key, MultiValue::values)));
             }
 
-            return new ResponseDefinitionBuilder().withStatus(200)
+            return new ResponseDefinitionBuilder()
+                .withStatus(200)
                 .withHeaders(toWireMockHeaders(getBaseHttpHeaders()))
                 .withBody(JACKSON_ADAPTER.serialize(responseBody, SerializerEncoding.JSON))
                 .build();
@@ -193,7 +206,8 @@ public final class RestProxyTestsWireMockServer {
 
         private static String cleanseUrl(URL url) {
             StringBuilder builder = new StringBuilder();
-            builder.append(url.getProtocol())
+            builder
+                .append(url.getProtocol())
                 .append("://")
                 .append(url.getHost())
                 .append(url.getPath().replace("%20", " "));
@@ -217,7 +231,9 @@ public final class RestProxyTestsWireMockServer {
         }
 
         private static HttpHeaders toWireMockHeaders(Map<String, String> rawHeaders) {
-            return new HttpHeaders(rawHeaders.entrySet().stream()
+            return new HttpHeaders(rawHeaders
+                .entrySet()
+                .stream()
                 .map(kvp -> new HttpHeader(kvp.getKey(), kvp.getValue()))
                 .collect(Collectors.toList()));
         }

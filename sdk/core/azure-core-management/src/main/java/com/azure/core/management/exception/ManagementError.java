@@ -16,8 +16,7 @@ public class ManagementError {
     /**
      * Constructs a new {@link ManagementError} object.
      */
-    public ManagementError() {
-    }
+    public ManagementError() {}
 
     /**
      * Constructs a new {@link ManagementError} object.

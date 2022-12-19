@@ -52,8 +52,9 @@ public final class BodyIgnoringSubscriber implements HttpResponse.BodySubscriber
 
     @Override
     public void onNext(List<ByteBuffer> item) {
-        logger.log(LogLevel.WARNING, () -> "Received HTTP response body when one wasn't expected. "
-            + "Response body will be ignored as directed.");
+        logger
+            .log(LogLevel.WARNING, () -> "Received HTTP response body when one wasn't expected. "
+                + "Response body will be ignored as directed.");
     }
 
     @Override

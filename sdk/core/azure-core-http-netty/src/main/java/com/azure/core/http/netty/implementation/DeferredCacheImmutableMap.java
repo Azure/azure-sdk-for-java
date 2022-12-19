@@ -26,8 +26,10 @@ final class DeferredCacheImmutableMap<V> extends AbstractMap<String, V> {
     private final HttpHeaders nettyHeaders;
     private final Function<List<String>, V> getter;
 
-    DeferredCacheImmutableMap(ClientLogger logger, Map<String, V> internalCache, HttpHeaders nettyHeaders,
-        Function<List<String>, V> getter) {
+    DeferredCacheImmutableMap(ClientLogger logger,
+                              Map<String, V> internalCache,
+                              HttpHeaders nettyHeaders,
+                              Function<List<String>, V> getter) {
         this.logger = logger;
         this.internalCache = internalCache;
         this.nettyHeaders = nettyHeaders;
@@ -90,7 +92,9 @@ final class DeferredCacheImmutableMap<V> extends AbstractMap<String, V> {
         return new AbstractSet<Entry<String, V>>() {
             @Override
             public Iterator<Entry<String, V>> iterator() {
-                return nettyHeaders.names().stream()
+                return nettyHeaders
+                    .names()
+                    .stream()
                     .map(name -> (Map.Entry<String, V>) new SimpleImmutableEntry<>(name, get(name)))
                     .iterator();
             }

@@ -37,8 +37,7 @@ final class AzureAsyncOperationData {
     @JsonProperty(value = "finalResult")
     private FinalResult finalResult;
 
-    AzureAsyncOperationData() {
-    }
+    AzureAsyncOperationData() {}
 
     /**
      * Creates AzureAsyncOperationData.
@@ -48,14 +47,9 @@ final class AzureAsyncOperationData {
      * @param pollUrl the value of the Azure-AsyncOperation header
      * @param locationUrl the value of the Location header, if exists
      */
-    AzureAsyncOperationData(HttpMethod lroRequestMethod,
-                                    URL lroOperationUri,
-                                    URL pollUrl,
-                                    URL locationUrl) {
-        this.lroRequestMethod = Objects.requireNonNull(lroRequestMethod,
-            "'lroRequestMethod' cannot be null.");
-        this.lroOperationUri = Objects.requireNonNull(lroOperationUri,
-            "'lroOperationUri' cannot be null.");
+    AzureAsyncOperationData(HttpMethod lroRequestMethod, URL lroOperationUri, URL pollUrl, URL locationUrl) {
+        this.lroRequestMethod = Objects.requireNonNull(lroRequestMethod, "'lroRequestMethod' cannot be null.");
+        this.lroOperationUri = Objects.requireNonNull(lroOperationUri, "'lroOperationUri' cannot be null.");
         this.pollUrl = Objects.requireNonNull(pollUrl, "'pollUrl' cannot be null.");
         this.locationUrl = locationUrl;
         this.provisioningState = ProvisioningState.IN_PROGRESS;
@@ -105,29 +99,22 @@ final class AzureAsyncOperationData {
         if (pollResponseStatusCode != 200 && pollResponseStatusCode != 201 && pollResponseStatusCode != 202) {
             this.provisioningState = ProvisioningState.FAILED;
             this.pollError = new Error("Polling failed with status code:" + pollResponseStatusCode,
-                pollResponseStatusCode,
-                pollResponseHeaders.toMap(),
-                pollResponseBody);
+                pollResponseStatusCode, pollResponseHeaders.toMap(), pollResponseBody);
         } else {
             AsyncOperationResource resource = tryParseAsyncOperationResource(pollResponseBody, adapter);
             if (resource == null || resource.getProvisioningState() == null) {
                 this.provisioningState = ProvisioningState.FAILED;
-                this.pollError = new Error("Polling response does not contain a valid body.",
-                    pollResponseStatusCode,
-                    pollResponseHeaders.toMap(),
-                    pollResponseBody);
+                this.pollError = new Error("Polling response does not contain a valid body.", pollResponseStatusCode,
+                    pollResponseHeaders.toMap(), pollResponseBody);
             } else {
                 this.provisioningState = resource.getProvisioningState();
                 if (ProvisioningState.FAILED.equalsIgnoreCase(this.provisioningState)
                     || ProvisioningState.CANCELED.equalsIgnoreCase(this.provisioningState)) {
-                    this.pollError = new Error("Long running operation is Failed or Cancelled.",
-                        pollResponseStatusCode,
-                        pollResponseHeaders.toMap(),
-                        pollResponseBody);
+                    this.pollError = new Error("Long running operation is Failed or Cancelled.", pollResponseStatusCode,
+                        pollResponseHeaders.toMap(), pollResponseBody);
                 } else {
                     if (ProvisioningState.SUCCEEDED.equalsIgnoreCase(this.provisioningState)) {
-                        if (this.lroRequestMethod == HttpMethod.POST
-                            || this.lroRequestMethod == HttpMethod.DELETE) {
+                        if (this.lroRequestMethod == HttpMethod.POST || this.lroRequestMethod == HttpMethod.DELETE) {
                             if (this.locationUrl != null) {
                                 this.finalResult = new FinalResult(this.locationUrl, null);
                             }
@@ -142,9 +129,7 @@ final class AzureAsyncOperationData {
                             this.provisioningState = ProvisioningState.FAILED;
                             this.pollError = new Error(
                                 "Long running operation contains a malformed Azure-AsyncOperation header.",
-                                pollResponseStatusCode,
-                                pollResponseHeaders.toMap(),
-                                pollResponseBody);
+                                pollResponseStatusCode, pollResponseHeaders.toMap(), pollResponseBody);
                         }
                     }
                 }
@@ -197,4 +182,3 @@ final class AzureAsyncOperationData {
         }
     }
 }
-

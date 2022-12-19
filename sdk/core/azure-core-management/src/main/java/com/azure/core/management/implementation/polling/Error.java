@@ -21,8 +21,7 @@ class Error {
     @JsonProperty(value = "responseHeaders")
     private Map<String, String> responseHeaders;
 
-    Error() {
-    }
+    Error() {}
 
     /**
      * Creates Error.

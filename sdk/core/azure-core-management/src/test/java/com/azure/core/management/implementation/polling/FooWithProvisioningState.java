@@ -9,8 +9,7 @@ public class FooWithProvisioningState {
     @JsonProperty(value = "properties")
     private Properties properties;
 
-    public FooWithProvisioningState() {
-    }
+    public FooWithProvisioningState() {}
 
     FooWithProvisioningState(String state) {
         this.properties = new Properties();
@@ -43,8 +42,7 @@ public class FooWithProvisioningState {
         @JsonProperty(value = "resourceId")
         private String resourceId;
 
-        public Properties() {
-        }
+        public Properties() {}
 
         public String getProvisioningState() {
             return provisioningState;

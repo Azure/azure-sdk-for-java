@@ -63,8 +63,8 @@ public final class DefaultJsonWriter extends JsonWriter {
 
     private DefaultJsonWriter(JsonGenerator generator, JsonOptions options) {
         this.generator = generator;
-        this.generator.configure(JsonWriteFeature.WRITE_NAN_AS_STRINGS.mappedFeature(),
-            options.isNonNumericNumbersSupported());
+        this.generator
+            .configure(JsonWriteFeature.WRITE_NAN_AS_STRINGS.mappedFeature(), options.isNonNumericNumbersSupported());
     }
 
     @Override
@@ -216,7 +216,9 @@ public final class DefaultJsonWriter extends JsonWriter {
     public void close() throws IOException {
         if (context != JsonWriteContext.COMPLETED) {
             throw new IllegalStateException("Writing of the JSON object must be completed before the writer can be "
-                + "closed. Current writing state is '" + context.getWriteState() + "'.");
+                + "closed. Current writing state is '"
+                + context.getWriteState()
+                + "'.");
         }
 
         generator.flush();

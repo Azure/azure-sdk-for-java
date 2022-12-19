@@ -29,8 +29,7 @@ public final class RetryUtil {
     private static final ClientLogger LOGGER = new ClientLogger(RetryUtil.class);
 
     // So this class can't be instantiated.
-    private RetryUtil() {
-    }
+    private RetryUtil() {}
 
     /**
      * Given a set of {@link AmqpRetryOptions options}, creates the appropriate retry policy.
@@ -47,8 +46,8 @@ public final class RetryUtil {
             case EXPONENTIAL:
                 return new ExponentialAmqpRetryPolicy(options);
             default:
-                throw new IllegalArgumentException(
-                    String.format(Locale.ROOT, "Mode is not supported: %s", options.getMode()));
+                throw new IllegalArgumentException(String
+                    .format(Locale.ROOT, "Mode is not supported: %s", options.getMode()));
         }
     }
 
@@ -65,13 +64,14 @@ public final class RetryUtil {
      * @return A publisher that returns the results of the {@link Mono} if any of the retry attempts are successful.
      *     Otherwise, propagates a {@link TimeoutException}.
      */
-    public static <T> Mono<T> withRetry(Mono<T> source, AmqpRetryOptions retryOptions, String errorMessage,
+    public static <T> Mono<T> withRetry(Mono<T> source,
+                                        AmqpRetryOptions retryOptions,
+                                        String errorMessage,
                                         boolean allowsLongOperation) {
         if (!allowsLongOperation) {
             source = source.timeout(retryOptions.getTryTimeout());
         }
-        return source.retryWhen(createRetry(retryOptions))
-            .doOnError(error -> LOGGER.error(errorMessage, error));
+        return source.retryWhen(createRetry(retryOptions)).doOnError(error -> LOGGER.error(errorMessage, error));
     }
 
     /**
@@ -83,7 +83,8 @@ public final class RetryUtil {
      *     Otherwise, propagates a {@link TimeoutException}.
      */
     public static <T> Flux<T> withRetry(Flux<T> source, AmqpRetryOptions retryOptions, String timeoutMessage) {
-        return source.timeout(retryOptions.getTryTimeout())
+        return source
+            .timeout(retryOptions.getTryTimeout())
             .retryWhen(createRetry(retryOptions))
             .doOnError(error -> LOGGER.error(timeoutMessage, error));
     }
@@ -111,12 +112,14 @@ public final class RetryUtil {
                 retrySpec = Retry.backoff(options.getMaxRetries(), delay);
                 break;
             default:
-                LOGGER.warning("Unknown: '{}'. Using exponential delay. Delay: {}. Max Delay: {}. Max Retries: {}.",
-                    options.getMode(), options.getDelay(), options.getMaxDelay(), options.getMaxRetries());
+                LOGGER
+                    .warning("Unknown: '{}'. Using exponential delay. Delay: {}. Max Delay: {}. Max Retries: {}.",
+                        options.getMode(), options.getDelay(), options.getMaxDelay(), options.getMaxRetries());
                 retrySpec = Retry.backoff(options.getMaxRetries(), delay);
                 break;
         }
-        return retrySpec.jitter(JITTER_FACTOR)
+        return retrySpec
+            .jitter(JITTER_FACTOR)
             .maxBackoff(options.getMaxDelay())
             .filter(error -> error instanceof TimeoutException
                 || (error instanceof AmqpException && ((AmqpException) error).isTransient()));

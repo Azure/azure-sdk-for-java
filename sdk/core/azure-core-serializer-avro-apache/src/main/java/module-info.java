@@ -8,6 +8,6 @@ module com.azure.core.serializer.avro.apache {
 
     exports com.azure.core.serializer.avro.apache;
 
-    provides com.azure.core.experimental.serializer.AvroSerializerProvider
-        with com.azure.core.serializer.avro.apache.ApacheAvroSerializerProvider;
+    provides com.azure.core.experimental.serializer.AvroSerializerProvider with
+        com.azure.core.serializer.avro.apache.ApacheAvroSerializerProvider;
 }

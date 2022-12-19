@@ -145,8 +145,9 @@ public abstract class XmlReader implements AutoCloseable {
      * @return The converted text value, or null if the attribute didn't have a value.
      * @throws XMLStreamException If the nullable attribute cannot be read.
      */
-    public final <T> T getNullableAttribute(String namespaceUri, String localName,
-        ReadValueCallback<String, T> converter) throws XMLStreamException {
+    public final <T> T getNullableAttribute(String namespaceUri,
+                                            String localName,
+                                            ReadValueCallback<String, T> converter) throws XMLStreamException {
         String textValue = getStringAttribute(namespaceUri, localName);
 
         if (textValue == null) {
@@ -268,8 +269,8 @@ public abstract class XmlReader implements AutoCloseable {
      * the expected {@code startTagName}
      * @throws XMLStreamException If the object cannot be read.
      */
-    public final <T> T readObject(String localName,
-        ReadValueCallback<XmlReader, T> converter) throws XMLStreamException {
+    public final <T> T readObject(String localName, ReadValueCallback<XmlReader, T> converter)
+                                                                                               throws XMLStreamException {
         return readObject(null, localName, converter);
     }
 
@@ -288,26 +289,30 @@ public abstract class XmlReader implements AutoCloseable {
      * the expected {@code startTagName}
      * @throws XMLStreamException If the object cannot be read.
      */
-    public final <T> T readObject(String namespaceUri, String localName,
-        ReadValueCallback<XmlReader, T> converter) throws XMLStreamException {
+    public final <T> T readObject(String namespaceUri, String localName, ReadValueCallback<XmlReader, T> converter)
+                                                                                                                    throws XMLStreamException {
         return readObject(new QName(namespaceUri, localName), converter);
     }
 
-    private <T> T readObject(QName startTagName,
-        ReadValueCallback<XmlReader, T> converter) throws XMLStreamException {
+    private <T> T readObject(QName startTagName, ReadValueCallback<XmlReader, T> converter) throws XMLStreamException {
         if (currentToken() != XmlToken.START_ELEMENT) {
             nextElement();
         }
 
         if (currentToken() != XmlToken.START_ELEMENT) {
             throw new IllegalStateException("Illegal start of XML deserialization. "
-                + "Expected 'XmlToken.START_ELEMENT' but it was: 'XmlToken." + currentToken() + "'.");
+                + "Expected 'XmlToken.START_ELEMENT' but it was: 'XmlToken."
+                + currentToken()
+                + "'.");
         }
 
         QName tagName = getElementName();
         if (!Objects.equals(startTagName, tagName)) {
-            throw new IllegalStateException("Expected XML element to be '" + startTagName + "' but it was: "
-                + tagName + "'.");
+            throw new IllegalStateException("Expected XML element to be '"
+                + startTagName
+                + "' but it was: "
+                + tagName
+                + "'.");
         }
 
         try {

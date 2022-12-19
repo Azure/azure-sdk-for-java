@@ -22,7 +22,8 @@ public class ResourceNamer {
      * @param name The prefix for generated strings.
      */
     public ResourceNamer(String name) {
-        this.randName = name.toLowerCase(LOCALE) + UUID.randomUUID().toString().replace("-", "").substring(0, 3).toLowerCase(LOCALE);
+        this.randName = name.toLowerCase(LOCALE)
+                        + UUID.randomUUID().toString().replace("-", "").substring(0, 3).toLowerCase(LOCALE);
     }
 
     /**
@@ -65,10 +66,13 @@ public class ResourceNamer {
     private String randomString(int length) {
         StringBuilder str = new StringBuilder();
         while (str.length() < length) {
-            str.append(UUID.randomUUID()
-                .toString()
-                .replace("-", "")
-                .substring(0, Math.min(32, length)).toLowerCase(LOCALE));
+            str
+                .append(UUID
+                    .randomUUID()
+                    .toString()
+                    .replace("-", "")
+                    .substring(0, Math.min(32, length))
+                    .toLowerCase(LOCALE));
         }
         return str.toString();
     }

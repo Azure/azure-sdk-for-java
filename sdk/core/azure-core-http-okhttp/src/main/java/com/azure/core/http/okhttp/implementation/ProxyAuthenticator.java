@@ -88,9 +88,7 @@ public final class ProxyAuthenticator implements Authenticator {
 
         // Pipelining was successful, use the generated authorization header.
         if (!CoreUtils.isNullOrEmpty(authorizationHeader)) {
-            return response.request().newBuilder()
-                .header(PROXY_AUTHORIZATION, authorizationHeader)
-                .build();
+            return response.request().newBuilder().header(PROXY_AUTHORIZATION, authorizationHeader).build();
         }
 
         // If this is a pre-emptive challenge quit now if pipelining doesn't produce anything.
@@ -189,15 +187,17 @@ public final class ProxyAuthenticator implements Authenticator {
      * 'Proxy-Authorization' header. If the values don't match an 'IllegalStateException' will be thrown with a message
      * outlining that the values didn't match.
      */
-    private static void validateProxyAuthenticationInfoValue(String name, Map<String, String> authenticationInfoPieces,
-        Map<String, String> authorizationPieces) {
+    private static void validateProxyAuthenticationInfoValue(String name,
+                                                             Map<String, String> authenticationInfoPieces,
+                                                             Map<String, String> authorizationPieces) {
         if (authenticationInfoPieces.containsKey(name)) {
             String sentValue = authorizationPieces.get(name);
             String receivedValue = authenticationInfoPieces.get(name);
 
             if (!receivedValue.equalsIgnoreCase(sentValue)) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(
-                    String.format(VALIDATION_ERROR_TEMPLATE, name, sentValue, receivedValue)));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalStateException(String
+                        .format(VALIDATION_ERROR_TEMPLATE, name, sentValue, receivedValue)));
             }
         }
     }

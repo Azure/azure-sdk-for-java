@@ -59,8 +59,10 @@ public final class WriteTimeoutHandler extends ChannelOutboundHandlerAdapter {
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
         if (timeoutMillis > 0) {
-            this.writeTimeoutWatcher = ctx.executor().scheduleAtFixedRate(() -> writeTimeoutRunnable(ctx),
-                timeoutMillis, timeoutMillis, TimeUnit.MILLISECONDS);
+            this.writeTimeoutWatcher = ctx
+                .executor()
+                .scheduleAtFixedRate(() -> writeTimeoutRunnable(ctx), timeoutMillis, timeoutMillis,
+                    TimeUnit.MILLISECONDS);
         }
     }
 

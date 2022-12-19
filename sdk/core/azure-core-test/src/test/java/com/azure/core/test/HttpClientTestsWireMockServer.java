@@ -36,16 +36,17 @@ public class HttpClientTestsWireMockServer {
     private static final String BOM_WITH_DIFFERENT_HEADER = "/bomBytesWithDifferentHeader";
     private static final String ECHO_RESPONSE = "/echo";
 
-    private static final byte[] UTF_8_BOM = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
-    private static final byte[] UTF_16BE_BOM = {(byte) 0xFE, (byte) 0xFF};
-    private static final byte[] UTF_16LE_BOM = {(byte) 0xFF, (byte) 0xFE};
-    private static final byte[] UTF_32BE_BOM = {(byte) 0x00, (byte) 0x00, (byte) 0xFE, (byte) 0xFF};
-    private static final byte[] UTF_32LE_BOM = {(byte) 0xFF, (byte) 0xFE, (byte) 0x00, (byte) 0x00};
+    private static final byte[] UTF_8_BOM = { (byte) 0xEF, (byte) 0xBB, (byte) 0xBF };
+    private static final byte[] UTF_16BE_BOM = { (byte) 0xFE, (byte) 0xFF };
+    private static final byte[] UTF_16LE_BOM = { (byte) 0xFF, (byte) 0xFE };
+    private static final byte[] UTF_32BE_BOM = { (byte) 0x00, (byte) 0x00, (byte) 0xFE, (byte) 0xFF };
+    private static final byte[] UTF_32LE_BOM = { (byte) 0xFF, (byte) 0xFE, (byte) 0x00, (byte) 0x00 };
 
     private static final byte[] RETURN_BYTES = "Hello World!".getBytes(StandardCharsets.UTF_8);
 
     public static WireMockServer getHttpClientTestsServer() {
-        WireMockServer server = new WireMockServer(WireMockConfiguration.options()
+        WireMockServer server = new WireMockServer(WireMockConfiguration
+            .options()
             .extensions(new HttpClientResponseTransformer())
             .dynamicPort()
             .dynamicHttpsPort()
@@ -57,12 +58,14 @@ public class HttpClientTestsWireMockServer {
         server.stubFor(get(PLAIN_RESPONSE).willReturn(aResponse().withBody(RETURN_BYTES)));
 
         // Basic bytes with 'Content-Encoding' header.
-        server.stubFor(get(HEADER_RESPONSE).willReturn(aResponse().withBody(RETURN_BYTES)
-            .withHeader("Content-Type", "charset=UTF-16BE")));
+        server
+            .stubFor(get(HEADER_RESPONSE)
+                .willReturn(aResponse().withBody(RETURN_BYTES).withHeader("Content-Type", "charset=UTF-16BE")));
 
         // Basic bytes with invalid 'Content-Encoding' header.
-        server.stubFor(get(INVALID_HEADER_RESPONSE).willReturn(aResponse().withBody(RETURN_BYTES)
-            .withHeader("Content-Type", "charset=invalid")));
+        server
+            .stubFor(get(INVALID_HEADER_RESPONSE)
+                .willReturn(aResponse().withBody(RETURN_BYTES).withHeader("Content-Type", "charset=invalid")));
 
         // Bytes with leading UTF-8 BOM.
         server.stubFor(get(UTF_8_BOM_RESPONSE).willReturn(aResponse().withBody(addBom(UTF_8_BOM))));
@@ -80,17 +83,17 @@ public class HttpClientTestsWireMockServer {
         server.stubFor(get(UTF_32LE_BOM_RESPONSE).willReturn(aResponse().withBody(addBom(UTF_32LE_BOM))));
 
         // Bytes with leading UTF-8 BOM and matching 'Content-Encoding' header.
-        server.stubFor(get(BOM_WITH_SAME_HEADER).willReturn(aResponse()
-            .withBody(addBom(UTF_8_BOM)).withHeader("Content-Type", "charset=UTF-8")));
+        server
+            .stubFor(get(BOM_WITH_SAME_HEADER)
+                .willReturn(aResponse().withBody(addBom(UTF_8_BOM)).withHeader("Content-Type", "charset=UTF-8")));
 
         // Bytes with leading UTF-8 BOM and differing 'Content-Encoding' header.
-        server.stubFor(get(BOM_WITH_DIFFERENT_HEADER).willReturn(aResponse()
-            .withBody(addBom(UTF_8_BOM)).withHeader("Content-Type", "charset=UTF-16")));
+        server
+            .stubFor(get(BOM_WITH_DIFFERENT_HEADER)
+                .willReturn(aResponse().withBody(addBom(UTF_8_BOM)).withHeader("Content-Type", "charset=UTF-16")));
 
         // Echoes request body
-        server.stubFor(put(ECHO_RESPONSE)
-            .willReturn(aResponse()
-                .withTransformers(HttpClientResponseTransformer.NAME)));
+        server.stubFor(put(ECHO_RESPONSE).willReturn(aResponse().withTransformers(HttpClientResponseTransformer.NAME)));
 
         return server;
     }
@@ -109,15 +112,15 @@ public class HttpClientTestsWireMockServer {
         public static final String NAME = "http-client-transformer";
 
         @Override
-        public ResponseDefinition transform(
-            Request request, ResponseDefinition responseDefinition, FileSource fileSource, Parameters parameters) {
+        public ResponseDefinition transform(Request request,
+                                            ResponseDefinition responseDefinition,
+                                            FileSource fileSource,
+                                            Parameters parameters) {
             try {
                 URL requestUrl = new URL(request.getAbsoluteUrl());
                 String path = requestUrl.getPath();
                 if (ECHO_RESPONSE.equals(path)) {
-                    return aResponse()
-                        .withBody(request.getBody())
-                        .build();
+                    return aResponse().withBody(request.getBody()).build();
                 } else {
                     return responseDefinition;
                 }

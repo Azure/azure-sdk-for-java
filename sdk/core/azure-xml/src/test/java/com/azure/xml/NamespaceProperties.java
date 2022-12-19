@@ -178,7 +178,9 @@ public class NamespaceProperties implements XmlSerializable<NamespaceProperties>
 
         if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
             throw new IllegalStateException("Illegal start of XML deserialization. "
-                + "Expected 'XmlToken.START_ELEMENT' but it was: 'XmlToken." + xmlReader.currentToken() + "'.");
+                + "Expected 'XmlToken.START_ELEMENT' but it was: 'XmlToken."
+                + xmlReader.currentToken()
+                + "'.");
         }
 
         String expectedNamespaceUri = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect";
@@ -186,8 +188,14 @@ public class NamespaceProperties implements XmlSerializable<NamespaceProperties>
         QName qName = xmlReader.getElementName();
         if (!"NamespaceInfo".equals(qName.getLocalPart()) || !expectedNamespaceUri.equals(qName.getNamespaceURI())) {
             throw new IllegalStateException("Expected XML element to be 'NamespaceInfo' in namespace "
-                + "'" + expectedNamespaceUri + "' but it was: "
-                + "{'" + qName.getNamespaceURI() + "'}'" + qName.getLocalPart() + "'.");
+                + "'"
+                + expectedNamespaceUri
+                + "' but it was: "
+                + "{'"
+                + qName.getNamespaceURI()
+                + "'}'"
+                + qName.getLocalPart()
+                + "'.");
         }
 
         String alias = null;

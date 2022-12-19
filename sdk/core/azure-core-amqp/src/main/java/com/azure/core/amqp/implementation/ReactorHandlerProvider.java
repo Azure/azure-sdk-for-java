@@ -82,26 +82,30 @@ public class ReactorHandlerProvider {
         }
 
         if (options.getTransportType() != AmqpTransportType.AMQP_WEB_SOCKETS) {
-            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(String.format(Locale.US,
-                "This transport type '%s' is not supported.", options.getTransportType())));
+            throw LOGGER
+                .logExceptionAsWarning(new IllegalArgumentException(String
+                    .format(Locale.US, "This transport type '%s' is not supported.", options.getTransportType())));
         }
 
         final boolean isCustomEndpointConfigured = !options.getFullyQualifiedNamespace().equals(options.getHostname());
         final boolean isUserProxyConfigured = options.getProxyOptions() != null
             && options.getProxyOptions().isProxyAddressConfigured();
-        final boolean isSystemProxyConfigured = WebSocketsProxyConnectionHandler.shouldUseProxy(
-            options.getFullyQualifiedNamespace(), options.getPort());
+        final boolean isSystemProxyConfigured = WebSocketsProxyConnectionHandler
+            .shouldUseProxy(options.getFullyQualifiedNamespace(), options.getPort());
 
         if (isUserProxyConfigured) {
-            LOGGER.info("Using user configured proxy to connect to: '{}:{}'. Proxy: {}",
-                options.getFullyQualifiedNamespace(), options.getPort(), options.getProxyOptions().getProxyAddress());
+            LOGGER
+                .info("Using user configured proxy to connect to: '{}:{}'. Proxy: {}", options
+                    .getFullyQualifiedNamespace(), options.getPort(), options.getProxyOptions().getProxyAddress());
 
             final SslPeerDetails peerDetails = Proton.sslPeerDetails(options.getHostname(), options.getPort());
 
-            return new WebSocketsProxyConnectionHandler(connectionId, options, options.getProxyOptions(), peerDetails, metricsProvider);
+            return new WebSocketsProxyConnectionHandler(connectionId, options, options.getProxyOptions(), peerDetails,
+                metricsProvider);
         } else if (isSystemProxyConfigured) {
-            LOGGER.info("System default proxy configured for hostname:port '{}:{}'. Using proxy.",
-                options.getFullyQualifiedNamespace(), options.getPort());
+            LOGGER
+                .info("System default proxy configured for hostname:port '{}:{}'. Using proxy.", options
+                    .getFullyQualifiedNamespace(), options.getPort());
 
             final SslPeerDetails peerDetails = Proton.sslPeerDetails(options.getHostname(), options.getPort());
 
@@ -125,11 +129,13 @@ public class ReactorHandlerProvider {
      * @param openTimeout Duration to wait for the session to open.
      * @return A new {@link SessionHandler}.
      */
-    public SessionHandler createSessionHandler(String connectionId, String hostname, String sessionName,
-        Duration openTimeout) {
+    public SessionHandler createSessionHandler(String connectionId,
+                                               String hostname,
+                                               String sessionName,
+                                               Duration openTimeout) {
 
-        return new SessionHandler(connectionId, hostname, sessionName, provider.getReactorDispatcher(),
-            openTimeout, getMetricProvider(hostname, sessionName));
+        return new SessionHandler(connectionId, hostname, sessionName, provider.getReactorDispatcher(), openTimeout,
+            getMetricProvider(hostname, sessionName));
     }
 
     /**
@@ -141,9 +147,12 @@ public class ReactorHandlerProvider {
      *
      * @return A new {@link SendLinkHandler}.
      */
-    public SendLinkHandler createSendLinkHandler(String connectionId, String hostname,
-        String senderName, String entityPath) {
-        return new SendLinkHandler(connectionId, hostname, senderName, entityPath, getMetricProvider(hostname, entityPath));
+    public SendLinkHandler createSendLinkHandler(String connectionId,
+                                                 String hostname,
+                                                 String senderName,
+                                                 String entityPath) {
+        return new SendLinkHandler(connectionId, hostname, senderName, entityPath, getMetricProvider(hostname,
+            entityPath));
     }
 
     /**
@@ -154,10 +163,13 @@ public class ReactorHandlerProvider {
      * @param receiverName Name of the send link.
      * @return A new {@link ReceiveLinkHandler}.
      */
-    public ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String hostname,
-        String receiverName, String entityPath) {
+    public ReceiveLinkHandler createReceiveLinkHandler(String connectionId,
+                                                       String hostname,
+                                                       String receiverName,
+                                                       String entityPath) {
 
-        return new ReceiveLinkHandler(connectionId, hostname, receiverName, entityPath, getMetricProvider(hostname, entityPath));
+        return new ReceiveLinkHandler(connectionId, hostname, receiverName, entityPath, getMetricProvider(hostname,
+            entityPath));
     }
 
     /**
@@ -170,8 +182,8 @@ public class ReactorHandlerProvider {
             return AmqpMetricsProvider.noop();
         }
 
-        return metricsCache.computeIfAbsent(
-            namespace + (entityPath == null ? "" : "/" + entityPath),
-            ignored -> new AmqpMetricsProvider(meter, namespace, entityPath));
+        return metricsCache
+            .computeIfAbsent(namespace + (entityPath == null ? "" : "/" + entityPath),
+                ignored -> new AmqpMetricsProvider(meter, namespace, entityPath));
     }
 }

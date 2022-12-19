@@ -46,12 +46,9 @@ public class JacksonMemberNameConverterTests {
         ObjectMapper mapper = new ObjectMapper();
 
         // Configure the mapper with non-private field serialization.
-        mapper.setVisibility(mapper.getVisibilityChecker()
-            .withFieldVisibility(JsonAutoDetect.Visibility.NON_PRIVATE));
+        mapper.setVisibility(mapper.getVisibilityChecker().withFieldVisibility(JsonAutoDetect.Visibility.NON_PRIVATE));
 
-        jacksonJsonSerializer = new JacksonJsonSerializerBuilder()
-            .serializer(mapper)
-            .build();
+        jacksonJsonSerializer = new JacksonJsonSerializerBuilder().serializer(mapper).build();
     }
 
     @Test
@@ -126,6 +123,7 @@ public class JacksonMemberNameConverterTests {
             public String getHotelName() {
                 return hotelName;
             }
+
             public void setHotelName(String hotelName) {
                 this.hotelName = hotelName;
             }
@@ -133,6 +131,7 @@ public class JacksonMemberNameConverterTests {
             public boolean isFlag() {
                 return flag;
             }
+
             public void setFlag(boolean flag) {
                 this.flag = flag;
             }
@@ -196,6 +195,7 @@ public class JacksonMemberNameConverterTests {
         assertEquals("hotelGetId", jacksonJsonSerializer.convertMemberName(getterM2));
         assertNull(jacksonJsonSerializer.convertMemberName(getterM3));
     }
+
     @Test
     public void testPropertyNameOnIgnoredMethodName() throws NoSuchMethodException {
         class LocalHotel {
@@ -224,7 +224,6 @@ public class JacksonMemberNameConverterTests {
         Method m = LocalHotel.class.getDeclaredMethod("getHotelName");
         assertEquals(EXPECT_VALUE_IN_METHOD, jacksonJsonSerializer.convertMemberName(m));
     }
-
 
     @Test
     public void testPropertyNameOnMethodAnnotationWithEmptyValue() throws NoSuchMethodException {
@@ -283,16 +282,18 @@ public class JacksonMemberNameConverterTests {
     }
 
     private static Stream<Arguments> classConversionSupplier() {
-        return Stream.of(
-            Arguments.of(new NoAnnotationsPublicFields(50, "John Doe"), jacksonJsonSerializer,
-                new HashSet<>(Arrays.asList("age", "name"))),
+        return Stream
+            .of(Arguments
+                .of(new NoAnnotationsPublicFields(50, "John Doe"), jacksonJsonSerializer, new HashSet<>(Arrays
+                    .asList("age", "name"))),
 
-            Arguments.of(new NoAnnotationsGetters(50, "John Doe"), jacksonJsonSerializer,
-                new HashSet<>(Arrays.asList("age", "name"))),
+                Arguments
+                    .of(new NoAnnotationsGetters(50, "John Doe"), jacksonJsonSerializer, new HashSet<>(Arrays
+                        .asList("age", "name"))),
 
-            Arguments.of(new GettersWithAnnotations().setAge(50).setName("John Doe"), jacksonJsonSerializer,
-                new HashSet<>(Arrays.asList("_age", "_name")))
-        );
+                Arguments
+                    .of(new GettersWithAnnotations().setAge(50).setName("John Doe"), jacksonJsonSerializer,
+                        new HashSet<>(Arrays.asList("_age", "_name"))));
     }
 
     private static Stream<Member> getAllDeclaredMembers(Class<?> clazz) {
@@ -315,8 +316,7 @@ public class JacksonMemberNameConverterTests {
             this.name = name;
         }
 
-        public void notAGetter() {
-        }
+        public void notAGetter() {}
 
         public int alsoNotAGetter(String parameter) {
             return 0;
@@ -340,8 +340,7 @@ public class JacksonMemberNameConverterTests {
             this.name = name;
         }
 
-        public void notAGetter() {
-        }
+        public void notAGetter() {}
 
         public int alsoNotAGetter(String parameter) {
             return 0;
@@ -372,8 +371,7 @@ public class JacksonMemberNameConverterTests {
             return this;
         }
 
-        public void notAGetter() {
-        }
+        public void notAGetter() {}
 
         public int alsoNotAGetter(String parameter) {
             return 0;

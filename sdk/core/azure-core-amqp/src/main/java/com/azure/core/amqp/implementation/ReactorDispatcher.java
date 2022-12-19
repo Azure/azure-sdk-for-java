@@ -125,19 +125,22 @@ public final class ReactorDispatcher {
 
     private void throwIfSchedulerError() {
         // throw when the scheduler on which Reactor is running is already closed
-        final RejectedExecutionException rejectedException = this.reactor.attachments()
+        final RejectedExecutionException rejectedException = this.reactor
+            .attachments()
             .get(RejectedExecutionException.class, RejectedExecutionException.class);
         if (rejectedException != null) {
-            throw logger.logExceptionAsWarning(new RejectedExecutionException(
-                "Underlying Reactor was already disposed. Should not continue dispatching work to this. "
-                    + rejectedException.getMessage(), rejectedException));
+            throw logger
+                .logExceptionAsWarning(new RejectedExecutionException(
+                    "Underlying Reactor was already disposed. Should not continue dispatching work to this. "
+                        + rejectedException.getMessage(), rejectedException));
         }
 
         // throw when the pipe is in closed state - in which case,
         // signalling the new event-dispatch will fail
         if (!this.ioSignal.sink().isOpen()) {
-            throw logger.logExceptionAsWarning(new RejectedExecutionException(
-                "ReactorDispatcher instance is closed. Should not continue dispatching work to this reactor."));
+            throw logger
+                .logExceptionAsWarning(new RejectedExecutionException(
+                    "ReactorDispatcher instance is closed. Should not continue dispatching work to this reactor."));
         }
     }
 
@@ -151,14 +154,19 @@ public final class ReactorDispatcher {
             if (!isClosed.get()) {
                 logger.warning("signalWorkQueue failed before reactor closed.", ignorePipeClosedDuringReactorShutdown);
                 if (!isIOPipeInterrupted.getAndSet(true)) {
-                    shutdownSignal.emitError(new RuntimeException(String.format(
-                        "connectionId[%s] IO Sink was interrupted before reactor closed.", connectionId),
-                        ignorePipeClosedDuringReactorShutdown), Sinks.EmitFailureHandler.FAIL_FAST);
+                    shutdownSignal
+                        .emitError(new RuntimeException(String
+                            .format("connectionId[%s] IO Sink was interrupted before reactor closed.", connectionId),
+                            ignorePipeClosedDuringReactorShutdown), Sinks.EmitFailureHandler.FAIL_FAST);
                 } else {
-                    logger.verbose("shutdown signal is already emitted. Can be ignored.", ignorePipeClosedDuringReactorShutdown);
+                    logger
+                        .verbose("shutdown signal is already emitted. Can be ignored.",
+                            ignorePipeClosedDuringReactorShutdown);
                 }
             } else {
-                logger.verbose("signalWorkQueue failed with an error after closed. Can be ignored.", ignorePipeClosedDuringReactorShutdown);
+                logger
+                    .verbose("signalWorkQueue failed with an error after closed. Can be ignored.",
+                        ignorePipeClosedDuringReactorShutdown);
             }
         }
     }
@@ -184,18 +192,26 @@ public final class ReactorDispatcher {
                     }
                 } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
                     if (!isClosed.get()) {
-                        logger.warning("WorkScheduler.run() failed before reactor was closed.", ignorePipeClosedDuringReactorShutdown);
-                        shutdownSignal.emitError(new RuntimeException(String.format(
-                            "connectionId[%s] IO Source was interrupted before reactor closed.", connectionId),
-                            ignorePipeClosedDuringReactorShutdown), Sinks.EmitFailureHandler.FAIL_FAST);
+                        logger
+                            .warning("WorkScheduler.run() failed before reactor was closed.",
+                                ignorePipeClosedDuringReactorShutdown);
+                        shutdownSignal
+                            .emitError(new RuntimeException(String
+                                .format("connectionId[%s] IO Source was interrupted before reactor closed.",
+                                    connectionId), ignorePipeClosedDuringReactorShutdown),
+                                Sinks.EmitFailureHandler.FAIL_FAST);
                     } else {
-                        logger.verbose("WorkScheduler.run() failed with an error. Can be ignored.", ignorePipeClosedDuringReactorShutdown);
+                        logger
+                            .verbose("WorkScheduler.run() failed with an error. Can be ignored.",
+                                ignorePipeClosedDuringReactorShutdown);
                     }
 
                     break;
                 } catch (IOException ioException) {
-                    shutdownSignal.emitError(logger.logExceptionAsError(new RuntimeException(
-                        "WorkScheduler.run() failed with an error.", ioException)), Sinks.EmitFailureHandler.FAIL_FAST);
+                    shutdownSignal
+                        .emitError(logger
+                            .logExceptionAsError(new RuntimeException("WorkScheduler.run() failed with an error.",
+                                ioException)), Sinks.EmitFailureHandler.FAIL_FAST);
                     break;
                 }
 
@@ -225,9 +241,10 @@ public final class ReactorDispatcher {
 
             logger.info("Reactor selectable is being disposed.");
 
-            shutdownSignal.emitValue(new AmqpShutdownSignal(false, false,
-                    String.format("connectionId[%s] Reactor selectable is disposed.", connectionId)),
-                Sinks.EmitFailureHandler.FAIL_FAST);
+            shutdownSignal
+                .emitValue(new AmqpShutdownSignal(false, false, String
+                    .format("connectionId[%s] Reactor selectable is disposed.", connectionId)),
+                    Sinks.EmitFailureHandler.FAIL_FAST);
 
             try {
                 if (ioSignal.sink().isOpen()) {

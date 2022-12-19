@@ -108,8 +108,8 @@ public class InterceptorManager implements AutoCloseable {
      * @throws NullPointerException If {@code testName} is {@code null}.
      */
     public InterceptorManager(TestContextManager testContextManager) {
-        this(testContextManager.getTestName(), testContextManager.getTestPlaybackRecordingName(),
-            testContextManager.getTestMode(), testContextManager.doNotRecordTest());
+        this(testContextManager.getTestName(), testContextManager.getTestPlaybackRecordingName(), testContextManager
+            .getTestMode(), testContextManager.doNotRecordTest());
     }
 
     private InterceptorManager(String testName, String playbackRecordName, TestMode testMode, boolean doNotRecord) {
@@ -189,8 +189,10 @@ public class InterceptorManager implements AutoCloseable {
      * deserialized into an instance of {@link RecordedData}.
      * @throws NullPointerException If {@code testName} or {@code textReplacementRules} is {@code null}.
      */
-    public InterceptorManager(String testName, Map<String, String> textReplacementRules, boolean doNotRecord,
-        String playbackRecordName) {
+    public InterceptorManager(String testName,
+                              Map<String, String> textReplacementRules,
+                              boolean doNotRecord,
+                              String playbackRecordName) {
         Objects.requireNonNull(testName, "'testName' cannot be null.");
         Objects.requireNonNull(textReplacementRules, "'textReplacementRules' cannot be null.");
 
@@ -221,7 +223,6 @@ public class InterceptorManager implements AutoCloseable {
     public boolean isLiveMode() {
         return testMode == TestMode.LIVE;
     }
-
 
     /**
      * Gets the recorded data InterceptorManager is keeping track of.
@@ -275,8 +276,8 @@ public class InterceptorManager implements AutoCloseable {
             try (BufferedWriter writer = Files.newBufferedWriter(createRecordFile(playbackRecordName).toPath())) {
                 RECORD_MAPPER.writeValue(writer, recordedData);
             } catch (IOException ex) {
-                throw logger.logExceptionAsError(
-                    new UncheckedIOException("Unable to write data to playback file.", ex));
+                throw logger
+                    .logExceptionAsError(new UncheckedIOException("Unable to write data to playback file.", ex));
             }
         }
     }
@@ -324,9 +325,10 @@ public class InterceptorManager implements AutoCloseable {
         File oldPlaybackFile = new File(recordFolder, testName + ".json");
 
         if (!playbackFile.exists() && !oldPlaybackFile.exists()) {
-            throw logger.logExceptionAsError(new RuntimeException(String.format(
-                "Missing both new and old playback files. Files are %s and %s.", playbackFile.getPath(),
-                oldPlaybackFile.getPath())));
+            throw logger
+                .logExceptionAsError(new RuntimeException(String
+                    .format("Missing both new and old playback files. Files are %s and %s.", playbackFile.getPath(),
+                        oldPlaybackFile.getPath())));
         }
 
         if (playbackFile.exists()) {

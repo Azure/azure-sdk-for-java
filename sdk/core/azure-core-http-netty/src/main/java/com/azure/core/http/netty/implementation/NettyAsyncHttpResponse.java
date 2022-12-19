@@ -31,8 +31,11 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
     private final Connection reactorNettyConnection;
     private final boolean disableBufferCopy;
 
-    public NettyAsyncHttpResponse(HttpClientResponse reactorNettyResponse, Connection reactorNettyConnection,
-        HttpRequest httpRequest, boolean disableBufferCopy, boolean headersEagerlyConverted) {
+    public NettyAsyncHttpResponse(HttpClientResponse reactorNettyResponse,
+                                  Connection reactorNettyConnection,
+                                  HttpRequest httpRequest,
+                                  boolean disableBufferCopy,
+                                  boolean headersEagerlyConverted) {
         super(reactorNettyResponse, httpRequest, headersEagerlyConverted);
         this.reactorNettyConnection = reactorNettyConnection;
         this.disableBufferCopy = disableBufferCopy;
@@ -67,10 +70,11 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
 
     @Override
     public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
-        return bodyIntern().retain()
-            .flatMapSequential(nettyBuffer ->
-                FluxUtil.writeToAsynchronousByteChannel(Flux.just(nettyBuffer.nioBuffer()), channel)
-                    .doFinally(ignored -> nettyBuffer.release()), 1, 1)
+        return bodyIntern()
+            .retain()
+            .flatMapSequential(nettyBuffer -> FluxUtil
+                .writeToAsynchronousByteChannel(Flux.just(nettyBuffer.nioBuffer()), channel)
+                .doFinally(ignored -> nettyBuffer.release()), 1, 1)
             .doFinally(ignored -> close())
             .then();
     }
@@ -92,20 +96,17 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
         // complete. This introduces a previously seen, but in a different flavor, race condition where the write
         // operation gets scheduled on one thread and the ByteBuf release happens on another, leaving the write
         // operation racing to complete before the release happens. With all that said, leave this as subscribeOn.
-        bodyIntern().subscribeOn(Schedulers.boundedElastic())
-            .map(nettyBuffer -> {
-                try {
-                    ByteBuffer nioBuffer = nettyBuffer.nioBuffer();
-                    while (nioBuffer.hasRemaining()) {
-                        channel.write(nioBuffer);
-                    }
-                    return nettyBuffer;
-                } catch (IOException e) {
-                    throw Exceptions.propagate(e);
+        bodyIntern().subscribeOn(Schedulers.boundedElastic()).map(nettyBuffer -> {
+            try {
+                ByteBuffer nioBuffer = nettyBuffer.nioBuffer();
+                while (nioBuffer.hasRemaining()) {
+                    channel.write(nioBuffer);
                 }
-            })
-            .doFinally(ignored -> close())
-            .then().block();
+                return nettyBuffer;
+            } catch (IOException e) {
+                throw Exceptions.propagate(e);
+            }
+        }).doFinally(ignored -> close()).then().block();
     }
 
     @Override

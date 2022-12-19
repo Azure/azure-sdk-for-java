@@ -30,7 +30,9 @@ public class FixedAmqpRetryPolicy extends AmqpRetryPolicy {
      * @return The duration to delay before retrying a request.
      */
     @Override
-    protected Duration calculateRetryDelay(int retryCount, Duration baseDelay, Duration baseJitter,
+    protected Duration calculateRetryDelay(int retryCount,
+                                           Duration baseDelay,
+                                           Duration baseJitter,
                                            ThreadLocalRandom random) {
         final Double jitterNanos = random.nextDouble() * baseJitter.getSeconds() * AmqpRetryPolicy.NANOS_PER_SECOND;
         final Duration jitter = Duration.ofNanos(jitterNanos.longValue());
@@ -55,7 +57,6 @@ public class FixedAmqpRetryPolicy extends AmqpRetryPolicy {
             return true;
         }
 
-        return obj instanceof FixedAmqpRetryPolicy
-            && super.equals(obj);
+        return obj instanceof FixedAmqpRetryPolicy && super.equals(obj);
     }
 }

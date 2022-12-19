@@ -40,8 +40,7 @@ public class HttpTraceUtilTest {
         HttpTraceUtil.setSpanStatus(parentSpan, 1, null);
 
         // Assert
-        verify(parentSpan, times(1))
-            .setStatus(StatusCode.UNSET);
+        verify(parentSpan, times(1)).setStatus(StatusCode.UNSET);
     }
 
     @Test
@@ -51,8 +50,7 @@ public class HttpTraceUtilTest {
         HttpTraceUtil.setSpanStatus(parentSpan, 401, null);
 
         // Assert
-        verify(parentSpan, times(1))
-            .setStatus(StatusCode.ERROR, "Unauthorized");
+        verify(parentSpan, times(1)).setStatus(StatusCode.ERROR, "Unauthorized");
     }
 
     @Test
@@ -61,7 +59,6 @@ public class HttpTraceUtilTest {
         ReadableSpan span2 = (ReadableSpan) HttpTraceUtil.setSpanStatus(parentSpan, 504, null);
 
         // Assert
-        verify(parentSpan, times(1))
-            .setStatus(StatusCode.ERROR, "Gateway Timeout");
+        verify(parentSpan, times(1)).setStatus(StatusCode.ERROR, "Gateway Timeout");
     }
 }

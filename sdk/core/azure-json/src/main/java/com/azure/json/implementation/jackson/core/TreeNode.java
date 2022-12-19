@@ -30,14 +30,13 @@ import java.util.Iterator;
  * 
  * @since 2.2
  */
-public interface TreeNode
-{
+public interface TreeNode {
     /*
     /**********************************************************
     /* Minimal introspection methods
     /**********************************************************
      */
-    
+
     /**
      * Method that can be used for efficient type detection
      * when using stream abstraction for traversing nodes.
@@ -100,7 +99,7 @@ public interface TreeNode
      * @since 2.2
      */
     boolean isContainerNode();
-    
+
     /**
      * Method that returns true for "virtual" nodes which represent
      * missing entries constructed by path accessor methods when
@@ -115,7 +114,7 @@ public interface TreeNode
      * @since 2.2
      */
     boolean isMissingNode();
-    
+
     /**
      * Method that returns true if this node is an Array node, false
      * otherwise.
@@ -227,7 +226,7 @@ public interface TreeNode
      * @since 2.2
      */
     TreeNode path(int index);
-    
+
     /**
      * Method for accessing names of all fields for this node, iff
      * this node is an Object node. Number of field names accessible
@@ -275,7 +274,7 @@ public interface TreeNode
      * @since 2.3
      */
     TreeNode at(String jsonPointerExpression) throws IllegalArgumentException;
-    
+
     /*
     /**********************************************************
     /* Converting to/from Streaming API

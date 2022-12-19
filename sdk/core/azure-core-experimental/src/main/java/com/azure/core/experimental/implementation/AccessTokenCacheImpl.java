@@ -45,7 +45,8 @@ public class AccessTokenCacheImpl {
         Objects.requireNonNull(tokenCredential, "The token credential cannot be null");
         this.wip = new AtomicReference<>();
         this.tokenCredential = tokenCredential;
-        this.shouldRefresh = accessToken -> OffsetDateTime.now()
+        this.shouldRefresh = accessToken -> OffsetDateTime
+            .now()
             .isAfter(accessToken.getExpiresAt().minus(REFRESH_OFFSET));
     }
 
@@ -56,7 +57,8 @@ public class AccessTokenCacheImpl {
      * @return The Publisher that emits an AccessToken
      */
     public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
-        return Mono.defer(retrieveToken(tokenRequestContext))
+        return Mono
+            .defer(retrieveToken(tokenRequestContext))
             // Keep resubscribing as long as Mono.defer [token acquisition] emits empty().
             .repeatWhenEmpty((Flux<Long> longFlux) -> longFlux.concatMap(ignored -> Flux.just(true)));
     }
@@ -70,8 +72,8 @@ public class AccessTokenCacheImpl {
                     Mono<AccessToken> tokenRefresh;
                     Mono<AccessToken> fallback;
 
-                    Supplier<Mono<AccessToken>> tokenSupplier = () ->
-                        tokenCredential.getToken(this.tokenRequestContext);
+                    Supplier<Mono<AccessToken>> tokenSupplier = () -> tokenCredential
+                        .getToken(this.tokenRequestContext);
 
                     boolean forceRefresh = checkIfWeShouldForceRefresh(tokenRequestContext);
 
@@ -90,8 +92,9 @@ public class AccessTokenCacheImpl {
                             tokenRefresh = Mono.defer(tokenSupplier);
                         } else {
                             // wait for timeout, then refresh
-                            tokenRefresh = Mono.defer(tokenSupplier)
-                                               .delaySubscription(Duration.between(now, nextTokenRefresh));
+                            tokenRefresh = Mono
+                                .defer(tokenSupplier)
+                                .delaySubscription(Duration.between(now, nextTokenRefresh));
                         }
                         // cache doesn't exist or expired, no fallback
                         fallback = Mono.empty();
@@ -108,10 +111,10 @@ public class AccessTokenCacheImpl {
                         fallback = Mono.just(cache);
                     }
                     return tokenRefresh
-                       .materialize()
-                       .flatMap(processTokenRefreshResult(sinksOne, now, fallback))
-                       .doOnError(sinksOne::tryEmitError)
-                       .doFinally(ignored -> wip.set(null));
+                        .materialize()
+                        .flatMap(processTokenRefreshResult(sinksOne, now, fallback))
+                        .doOnError(sinksOne::tryEmitError)
+                        .doFinally(ignored -> wip.set(null));
                 } else {
                     return Mono.empty();
                 }
@@ -123,14 +126,17 @@ public class AccessTokenCacheImpl {
 
     private boolean checkIfWeShouldForceRefresh(TokenRequestContext tokenRequestContext) {
         return !(this.tokenRequestContext != null
-            && (this.tokenRequestContext.getClaims() == null ? tokenRequestContext.getClaims() == null
-                : (tokenRequestContext.getClaims() == null ? false
-                        : tokenRequestContext.getClaims().equals(this.tokenRequestContext.getClaims())))
+            && (this.tokenRequestContext.getClaims() == null
+                ? tokenRequestContext.getClaims() == null
+                : (tokenRequestContext.getClaims() == null
+                    ? false
+                    : tokenRequestContext.getClaims().equals(this.tokenRequestContext.getClaims())))
             && this.tokenRequestContext.getScopes().equals(tokenRequestContext.getScopes()));
     }
 
-    private Function<Signal<AccessToken>, Mono<? extends AccessToken>> processTokenRefreshResult(
-        Sinks.One<AccessToken> sinksOne, OffsetDateTime now, Mono<AccessToken> fallback) {
+    private Function<Signal<AccessToken>, Mono<? extends AccessToken>> processTokenRefreshResult(Sinks.One<AccessToken> sinksOne,
+                                                                                                 OffsetDateTime now,
+                                                                                                 Mono<AccessToken> fallback) {
         return signal -> {
             AccessToken accessToken = signal.get();
             Throwable error = signal.getThrowable();
@@ -157,9 +163,15 @@ public class AccessTokenCacheImpl {
             info.append(".");
         } else {
             Duration tte = Duration.between(now, cache.getExpiresAt());
-            info.append(" at ").append(tte.abs().getSeconds()).append(" seconds ")
-                .append(tte.isNegative() ? "after" : "before").append(" expiry. ")
-                .append("Retry may be attempted after ").append(REFRESH_DELAY.getSeconds()).append(" seconds.");
+            info
+                .append(" at ")
+                .append(tte.abs().getSeconds())
+                .append(" seconds ")
+                .append(tte.isNegative() ? "after" : "before")
+                .append(" expiry. ")
+                .append("Retry may be attempted after ")
+                .append(REFRESH_DELAY.getSeconds())
+                .append(" seconds.");
             if (!tte.isNegative()) {
                 info.append(" The token currently cached will be used.");
             }

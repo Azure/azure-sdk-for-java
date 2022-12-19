@@ -46,23 +46,22 @@ public class ApacheAvroSerializerProviderTests {
     }
 
     private static Stream<Arguments> getPrimitiveSchemaHelper(Function<Schema, String> func) {
-        return Stream.of(
-            Arguments.of(null, func.apply(Schema.create(Schema.Type.NULL))),
-            Arguments.of(true, func.apply(Schema.create(Schema.Type.BOOLEAN))),
-            Arguments.of(Boolean.TRUE, func.apply(Schema.create(Schema.Type.BOOLEAN))),
-            Arguments.of(0, func.apply(Schema.create(Schema.Type.INT))),
-            Arguments.of(Integer.valueOf(0), func.apply(Schema.create(Schema.Type.INT))),
-            Arguments.of(0L, func.apply(Schema.create(Schema.Type.LONG))),
-            Arguments.of(Long.valueOf(0L), func.apply(Schema.create(Schema.Type.LONG))),
-            Arguments.of(0F, func.apply(Schema.create(Schema.Type.FLOAT))),
-            Arguments.of(Float.valueOf(0F), func.apply(Schema.create(Schema.Type.FLOAT))),
-            Arguments.of(0D, func.apply(Schema.create(Schema.Type.DOUBLE))),
-            Arguments.of(Double.valueOf(0D), func.apply(Schema.create(Schema.Type.DOUBLE))),
-            Arguments.of("true", func.apply(Schema.create(Schema.Type.STRING))),
-            Arguments.of("true".subSequence(0, 1), func.apply(Schema.create(Schema.Type.STRING))),
-            Arguments.of(new byte[0], func.apply(Schema.create(Schema.Type.BYTES))),
-            Arguments.of(ByteBuffer.allocate(0), func.apply(Schema.create(Schema.Type.BYTES)))
-        );
+        return Stream
+            .of(Arguments.of(null, func.apply(Schema.create(Schema.Type.NULL))), Arguments
+                .of(true, func.apply(Schema.create(Schema.Type.BOOLEAN))), Arguments
+                    .of(Boolean.TRUE, func.apply(Schema.create(Schema.Type.BOOLEAN))), Arguments
+                        .of(0, func.apply(Schema.create(Schema.Type.INT))), Arguments
+                            .of(Integer.valueOf(0), func.apply(Schema.create(Schema.Type.INT))), Arguments
+                                .of(0L, func.apply(Schema.create(Schema.Type.LONG))), Arguments
+                                    .of(Long.valueOf(0L), func.apply(Schema.create(Schema.Type.LONG))), Arguments
+                                        .of(0F, func.apply(Schema.create(Schema.Type.FLOAT))), Arguments
+                                            .of(Float.valueOf(0F), func.apply(Schema.create(Schema.Type.FLOAT))),
+                Arguments.of(0D, func.apply(Schema.create(Schema.Type.DOUBLE))), Arguments
+                    .of(Double.valueOf(0D), func.apply(Schema.create(Schema.Type.DOUBLE))), Arguments
+                        .of("true", func.apply(Schema.create(Schema.Type.STRING))), Arguments
+                            .of("true".subSequence(0, 1), func.apply(Schema.create(Schema.Type.STRING))), Arguments
+                                .of(new byte[0], func.apply(Schema.create(Schema.Type.BYTES))), Arguments
+                                    .of(ByteBuffer.allocate(0), func.apply(Schema.create(Schema.Type.BYTES))));
     }
 
     @ParameterizedTest
@@ -86,12 +85,11 @@ public class ApacheAvroSerializerProviderTests {
     }
 
     private static Stream<Arguments> getComplexSchemaHelper(Function<Schema, String> func) {
-        return Stream.of(
-            Arguments.of(new HandOfCards(), func.apply(HandOfCards.SCHEMA$)),
-            Arguments.of(new LongLinkedList(), func.apply(LongLinkedList.SCHEMA$)),
-            Arguments.of(new PlayingCard(), func.apply(PlayingCard.SCHEMA$)),
-            Arguments.of(PlayingCardSuit.SPADES, func.apply(PlayingCardSuit.SCHEMA$))
-        );
+        return Stream
+            .of(Arguments.of(new HandOfCards(), func.apply(HandOfCards.SCHEMA$)), Arguments
+                .of(new LongLinkedList(), func.apply(LongLinkedList.SCHEMA$)), Arguments
+                    .of(new PlayingCard(), func.apply(PlayingCard.SCHEMA$)), Arguments
+                        .of(PlayingCardSuit.SPADES, func.apply(PlayingCardSuit.SCHEMA$)));
     }
 
     @Test

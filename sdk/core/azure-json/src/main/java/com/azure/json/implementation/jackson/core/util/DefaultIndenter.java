@@ -11,9 +11,7 @@ import com.azure.json.implementation.jackson.core.JsonGenerator;
  * 
  * @since 2.5
  */
-public class DefaultIndenter
-    extends DefaultPrettyPrinter.NopIndenter
-{
+public class DefaultIndenter extends DefaultPrettyPrinter.NopIndenter {
     private static final long serialVersionUID = 1L;
 
     public final static String SYS_LF;
@@ -44,7 +42,7 @@ public class DefaultIndenter
     public DefaultIndenter() {
         this("  ", SYS_LF);
     }
-    
+
     /**
      * Create an indenter which uses the <code>indent</code> string to indent one level
      * and the <code>eol</code> string to separate lines.
@@ -52,30 +50,27 @@ public class DefaultIndenter
      * @param indent Indentation String to prepend for a single level of indentation
      * @param eol End-of-line marker to use after indented line
      */
-    public DefaultIndenter(String indent, String eol)
-    {
+    public DefaultIndenter(String indent, String eol) {
         charsPerLevel = indent.length();
 
         indents = new char[indent.length() * INDENT_LEVELS];
         int offset = 0;
-        for (int i=0; i<INDENT_LEVELS; i++) {
+        for (int i = 0; i < INDENT_LEVELS; i++) {
             indent.getChars(0, indent.length(), indents, offset);
             offset += indent.length();
         }
 
         this.eol = eol;
     }
-    
-    public DefaultIndenter withLinefeed(String lf)
-    {
+
+    public DefaultIndenter withLinefeed(String lf) {
         if (lf.equals(eol)) {
             return this;
         }
         return new DefaultIndenter(getIndent(), lf);
     }
-    
-    public DefaultIndenter withIndent(String indent)
-    {
+
+    public DefaultIndenter withIndent(String indent) {
         if (indent.equals(getIndent())) {
             return this;
         }
@@ -83,26 +78,27 @@ public class DefaultIndenter
     }
 
     @Override
-    public boolean isInline() { return false; }
+    public boolean isInline() {
+        return false;
+    }
 
     @Override
-    public void writeIndentation(JsonGenerator jg, int level) throws IOException
-    {
+    public void writeIndentation(JsonGenerator jg, int level) throws IOException {
         jg.writeRaw(eol);
         if (level > 0) { // should we err on negative values (as there's some flaw?)
             level *= charsPerLevel;
             while (level > indents.length) { // unlike to happen but just in case
-                jg.writeRaw(indents, 0, indents.length); 
+                jg.writeRaw(indents, 0, indents.length);
                 level -= indents.length;
             }
             jg.writeRaw(indents, 0, level);
         }
     }
-    
+
     public String getEol() {
         return eol;
     }
-    
+
     public String getIndent() {
         return new String(indents, 0, charsPerLevel);
     }

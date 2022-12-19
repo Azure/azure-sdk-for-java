@@ -25,7 +25,7 @@ public class InputCoercionException extends StreamReadException {
      * Target type that input value failed to coerce to.
      */
     protected final Class<?> _targetType;
-    
+
     /**
      * Constructor that uses current parsing location as location, and
      * sets processor (accessible via {@link #getProcessor()}) to
@@ -36,8 +36,7 @@ public class InputCoercionException extends StreamReadException {
      * @param inputType Shape of input that failed to coerce
      * @param targetType Target type of failed coercion
      */
-    public InputCoercionException(JsonParser p, String msg,
-            JsonToken inputType, Class<?> targetType) {
+    public InputCoercionException(JsonParser p, String msg, JsonToken inputType, Class<?> targetType) {
         super(p, msg);
         _inputType = inputType;
         _targetType = targetType;

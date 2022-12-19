@@ -359,8 +359,7 @@ public class BlobItemInternal implements XmlSerializable<BlobItemInternal> {
                             deserialized.metadata = new LinkedHashMap<>();
                         }
 
-                        deserialized.metadata.put(reader.getElementName().getLocalPart(),
-                            reader.getStringElement());
+                        deserialized.metadata.put(reader.getElementName().getLocalPart(), reader.getStringElement());
                     }
                 } else if ("Tags".equals(elementName)) {
                     deserialized.blobTags = BlobTags.fromXml(reader);
@@ -370,8 +369,8 @@ public class BlobItemInternal implements XmlSerializable<BlobItemInternal> {
                             deserialized.objectReplicationMetadata = new LinkedHashMap<>();
                         }
 
-                        deserialized.objectReplicationMetadata.put(reader.getElementName().getLocalPart(),
-                            reader.getStringElement());
+                        deserialized.objectReplicationMetadata
+                            .put(reader.getElementName().getLocalPart(), reader.getStringElement());
                     }
                 } else if ("HasVersionsOnly".equals(elementName)) {
                     deserialized.hasVersionsOnly = reader.getBooleanElement();

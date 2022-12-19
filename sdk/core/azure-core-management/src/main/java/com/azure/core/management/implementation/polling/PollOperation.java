@@ -31,8 +31,8 @@ import java.util.function.Function;
  */
 public final class PollOperation {
     private static final ClientLogger LOGGER = new ClientLogger(PollOperation.class);
-    private static final LongRunningOperationStatus LRO_CANCELLED = LongRunningOperationStatus.fromString("Cancelled",
-        true);
+    private static final LongRunningOperationStatus LRO_CANCELLED = LongRunningOperationStatus
+        .fromString("Cancelled", true);
 
     /**
      * Get a Function that polls provisioning state of ARM resource.
@@ -44,22 +44,20 @@ public final class PollOperation {
      * @param <T> the type of poll result type
      * @return the ARM poll function
      */
-    public static <T> Function<PollingContext<PollResult<T>>, Mono<PollResponse<PollResult<T>>>> pollFunction(
-        SerializerAdapter serializerAdapter,
-        HttpPipeline pipeline,
-        Type pollResultType,
-        Context context) {
+    public static <T> Function<PollingContext<PollResult<T>>, Mono<PollResponse<PollResult<T>>>> pollFunction(SerializerAdapter serializerAdapter,
+                                                                                                              HttpPipeline pipeline,
+                                                                                                              Type pollResultType,
+                                                                                                              Context context) {
         return pollingContext -> {
             PollingState pollingState = PollingState.from(serializerAdapter, pollingContext);
             if (pollingState.getOperationStatus().isComplete()) {
                 return pollResponseMonoFromPollingState(serializerAdapter, pollResultType, pollingState);
             } else {
                 // InProgress|NonTerminal-Status
-                return doSinglePoll(pipeline, pollingState, context)
-                    .flatMap(updatedState -> {
-                        updatedState.store(pollingContext);
-                        return pollResponseMonoFromPollingState(serializerAdapter, pollResultType, updatedState);
-                    });
+                return doSinglePoll(pipeline, pollingState, context).flatMap(updatedState -> {
+                    updatedState.store(pollingContext);
+                    return pollResponseMonoFromPollingState(serializerAdapter, pollResultType, updatedState);
+                });
             }
         };
     }
@@ -71,9 +69,7 @@ public final class PollOperation {
      * @param <T> the type of poll result type
      * @return cancel Function
      */
-    public static <T>
-        BiFunction<PollingContext<PollResult<T>>, PollResponse<PollResult<T>>, Mono<PollResult<T>>> cancelFunction(
-            Context context) {
+    public static <T> BiFunction<PollingContext<PollResult<T>>, PollResponse<PollResult<T>>, Mono<PollResult<T>>> cancelFunction(Context context) {
         return (pollingContext, response) -> Mono.empty();
     }
 
@@ -88,11 +84,10 @@ public final class PollOperation {
      * @param <U> the poll result type
      * @return retrieve final LRO result Function
      */
-    public static <T, U> Function<PollingContext<PollResult<T>>, Mono<U>> fetchResultFunction(
-        SerializerAdapter serializerAdapter,
-        HttpPipeline pipeline,
-        Type finalResultType,
-        Context context) {
+    public static <T, U> Function<PollingContext<PollResult<T>>, Mono<U>> fetchResultFunction(SerializerAdapter serializerAdapter,
+                                                                                              HttpPipeline pipeline,
+                                                                                              Type finalResultType,
+                                                                                              Context context) {
         return pollingContext -> {
             PollingState pollingState = PollingState.from(serializerAdapter, pollingContext);
             FinalResult finalResult = pollingState.getFinalResult();
@@ -104,13 +99,15 @@ public final class PollOperation {
                     U result = deserialize(serializerAdapter, value, finalResultType);
                     return result != null ? Mono.just(result) : Mono.empty();
                 } else {
-                    return FluxUtil
-                        .fluxContext(fluxContext -> {
-                            fluxContext = CoreUtils.mergeContexts(fluxContext, context);
+                    return FluxUtil.fluxContext(fluxContext -> {
+                        fluxContext = CoreUtils.mergeContexts(fluxContext, context);
 
-                            return pipeline.send(decorateRequest(new HttpRequest(HttpMethod.GET,
-                                finalResult.getResultUri())), fluxContext).flux();
-                        }).next()
+                        return pipeline
+                            .send(decorateRequest(new HttpRequest(HttpMethod.GET, finalResult.getResultUri())),
+                                fluxContext)
+                            .flux();
+                    })
+                        .next()
                         .flatMap((Function<HttpResponse, Mono<String>>) response -> response.getBodyAsString())
                         .flatMap(body -> {
                             U result = deserialize(serializerAdapter, body, finalResultType);
@@ -131,10 +128,8 @@ public final class PollOperation {
      */
     private static <T> Mono<PollResponse<PollResult<T>>> errorPollResponseMono(LongRunningOperationStatus opStatus,
                                                                                Error error) {
-        PollResult<T> pollResult = new PollResult<>(new PollResult.Error(error.getMessage(),
-            error.getResponseStatusCode(),
-            new HttpHeaders(error.getResponseHeaders()),
-            error.getResponseBody()));
+        PollResult<T> pollResult = new PollResult<>(new PollResult.Error(error.getMessage(), error
+            .getResponseStatusCode(), new HttpHeaders(error.getResponseHeaders()), error.getResponseBody()));
         return Mono.just(new PollResponse<>(opStatus, pollResult));
     }
 
@@ -166,21 +161,24 @@ public final class PollOperation {
      * @return a Mono emitting PollingState updated from the poll operation response
      */
     private static Mono<PollingState> doSinglePoll(HttpPipeline pipeline, PollingState pollingState, Context context) {
-        return FluxUtil
-            .fluxContext(fluxContext -> {
-                fluxContext = CoreUtils.mergeContexts(fluxContext, context);
+        return FluxUtil.fluxContext(fluxContext -> {
+            fluxContext = CoreUtils.mergeContexts(fluxContext, context);
 
-                return pipeline.send(decorateRequest(new HttpRequest(HttpMethod.GET, pollingState.getPollUrl())),
-                    fluxContext).flux();
-            }).next()
-            .flatMap((Function<HttpResponse, Mono<PollingState>>) response -> response.getBodyAsString()
+            return pipeline
+                .send(decorateRequest(new HttpRequest(HttpMethod.GET, pollingState.getPollUrl())), fluxContext)
+                .flux();
+        })
+            .next()
+            .flatMap((Function<HttpResponse, Mono<PollingState>>) response -> response
+                .getBodyAsString()
                 .map(body -> pollingState.update(response.getStatusCode(), response.getHeaders(), body))
-                .switchIfEmpty(Mono.fromSupplier(() -> pollingState.update(response.getStatusCode(),
-                    response.getHeaders(), null))));
+                .switchIfEmpty(Mono
+                    .fromSupplier(() -> pollingState.update(response.getStatusCode(), response.getHeaders(), null))));
     }
 
-    private static <T> Mono<PollResponse<PollResult<T>>> pollResponseMonoFromPollingState(
-        SerializerAdapter serializerAdapter, Type pollResultType, PollingState pollingState) {
+    private static <T> Mono<PollResponse<PollResult<T>>> pollResponseMonoFromPollingState(SerializerAdapter serializerAdapter,
+                                                                                          Type pollResultType,
+                                                                                          PollingState pollingState) {
         if (pollingState.getOperationStatus().isComplete()) {
             if (pollingState.getOperationStatus() == LongRunningOperationStatus.FAILED
                 || pollingState.getOperationStatus() == LRO_CANCELLED) {
@@ -197,19 +195,13 @@ public final class PollOperation {
                     + "be set when OperationStatus is in Failed|Cancelled State.");
             } else {
                 // Succeeded
-                return pollResponseMono(serializerAdapter,
-                    pollingState.getOperationStatus(),
-                    pollingState.getLastResponseBody(),
-                    pollResultType,
-                    pollingState.getPollDelay());
+                return pollResponseMono(serializerAdapter, pollingState.getOperationStatus(), pollingState
+                    .getLastResponseBody(), pollResultType, pollingState.getPollDelay());
             }
         } else {
             // InProgress|NonTerminal-Status
-            return pollResponseMono(serializerAdapter,
-                pollingState.getOperationStatus(),
-                pollingState.getLastResponseBody(),
-                pollResultType,
-                pollingState.getPollDelay());
+            return pollResponseMono(serializerAdapter, pollingState.getOperationStatus(), pollingState
+                .getLastResponseBody(), pollResultType, pollingState.getPollDelay());
         }
     }
 
@@ -241,8 +233,11 @@ public final class PollOperation {
             try {
                 return (U) serializerAdapter.deserialize(value, type, SerializerEncoding.JSON);
             } catch (IOException | RuntimeException ioe) {
-                LOGGER.logExceptionAsWarning(new IllegalArgumentException("Unable to decode '" + value + "' to: "
-                    + type.getTypeName(), ioe));
+                LOGGER
+                    .logExceptionAsWarning(new IllegalArgumentException("Unable to decode '"
+                        + value
+                        + "' to: "
+                        + type.getTypeName(), ioe));
                 return null;
             }
         }

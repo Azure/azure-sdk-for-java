@@ -110,6 +110,7 @@ public class RequestResponseChannel implements AsyncCloseable {
     private final AmqpMetricsProvider metricsProvider;
     private static final String START_SEND_TIME_CONTEXT_KEY = "send-start-time";
     private static final String OPERATION_CONTEXT_KEY = "amqpOperation";
+
     /**
      * Creates a new instance of {@link RequestResponseChannel} to send and receive responses from the {@code
      * entityPath} in the message broker.
@@ -127,11 +128,19 @@ public class RequestResponseChannel implements AsyncCloseable {
      *
      * @throws RuntimeException if the send/receive links could not be locally scheduled to open.
      */
-    protected RequestResponseChannel(AmqpConnection amqpConnection, String connectionId,
-        String fullyQualifiedNamespace, String linkName, String entityPath, Session session,
-        AmqpRetryOptions retryOptions, ReactorHandlerProvider handlerProvider, ReactorProvider provider,
-        MessageSerializer messageSerializer, SenderSettleMode senderSettleMode,
-        ReceiverSettleMode receiverSettleMode, AmqpMetricsProvider metricsProvider) {
+    protected RequestResponseChannel(AmqpConnection amqpConnection,
+                                     String connectionId,
+                                     String fullyQualifiedNamespace,
+                                     String linkName,
+                                     String entityPath,
+                                     Session session,
+                                     AmqpRetryOptions retryOptions,
+                                     ReactorHandlerProvider handlerProvider,
+                                     ReactorProvider provider,
+                                     MessageSerializer messageSerializer,
+                                     SenderSettleMode senderSettleMode,
+                                     ReceiverSettleMode receiverSettleMode,
+                                     AmqpMetricsProvider metricsProvider) {
 
         Map<String, Object> loggingContext = createContextWithConnectionId(connectionId);
         loggingContext.put(LINK_NAME_KEY, linkName);
@@ -140,9 +149,10 @@ public class RequestResponseChannel implements AsyncCloseable {
         this.retryOptions = retryOptions;
         this.provider = provider;
         this.senderSettleMode = senderSettleMode;
-        this.activeEndpointTimeoutMessage = String.format(
-            "RequestResponseChannel connectionId[%s], linkName[%s]: Waiting for send and receive handler to be ACTIVE",
-            connectionId, linkName);
+        this.activeEndpointTimeoutMessage = String
+            .format(
+                "RequestResponseChannel connectionId[%s], linkName[%s]: Waiting for send and receive handler to be ACTIVE",
+                connectionId, linkName);
 
         this.replyTo = entityPath.replace("$", "") + "-client-reply-to";
         this.messageSerializer = messageSerializer;
@@ -155,8 +165,8 @@ public class RequestResponseChannel implements AsyncCloseable {
         this.sendLink.setSource(new Source());
         this.sendLink.setSenderSettleMode(senderSettleMode);
 
-        this.sendLinkHandler = handlerProvider.createSendLinkHandler(connectionId, fullyQualifiedNamespace, linkName,
-            entityPath);
+        this.sendLinkHandler = handlerProvider
+            .createSendLinkHandler(connectionId, fullyQualifiedNamespace, linkName, entityPath);
         BaseHandler.setHandler(sendLink, sendLinkHandler);
 
         // Setup receive (response) link.
@@ -171,8 +181,8 @@ public class RequestResponseChannel implements AsyncCloseable {
         this.receiveLink.setSenderSettleMode(senderSettleMode);
         this.receiveLink.setReceiverSettleMode(receiverSettleMode);
 
-        this.receiveLinkHandler = handlerProvider.createReceiveLinkHandler(connectionId, fullyQualifiedNamespace,
-            linkName, entityPath);
+        this.receiveLinkHandler = handlerProvider
+            .createReceiveLinkHandler(connectionId, fullyQualifiedNamespace, linkName, entityPath);
         BaseHandler.setHandler(receiveLink, receiveLinkHandler);
 
         this.metricsProvider = metricsProvider;
@@ -244,7 +254,8 @@ public class RequestResponseChannel implements AsyncCloseable {
 
     @Override
     public Mono<Void> closeAsync() {
-        final Mono<Void> closeOperationWithTimeout = closeMono.asMono()
+        final Mono<Void> closeOperationWithTimeout = closeMono
+            .asMono()
             .timeout(retryOptions.getTryTimeout())
             .onErrorResume(TimeoutException.class, error -> {
                 return Mono.fromRunnable(() -> {
@@ -323,14 +334,17 @@ public class RequestResponseChannel implements AsyncCloseable {
         message.setMessageId(messageId);
         message.setReplyTo(replyTo);
 
-        final Mono<Void> onActiveEndpoints = Mono.when(
-            sendLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE),
-            receiveLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE));
+        final Mono<Void> onActiveEndpoints = Mono
+            .when(sendLinkHandler.getEndpointStates().takeUntil(x -> x == EndpointState.ACTIVE), receiveLinkHandler
+                .getEndpointStates()
+                .takeUntil(x -> x == EndpointState.ACTIVE));
 
-        return RetryUtil.withRetry(onActiveEndpoints, retryOptions, activeEndpointTimeoutMessage)
+        return RetryUtil
+            .withRetry(onActiveEndpoints, retryOptions, activeEndpointTimeoutMessage)
             .then(captureStartTime(message, Mono.create(sink -> {
                 try {
-                    logger.atVerbose()
+                    logger
+                        .atVerbose()
                         .addKeyValue("messageId", message.getCorrelationId())
                         .log("Scheduling on dispatcher.");
                     unconfirmedSends.putIfAbsent(messageId, sink);
@@ -338,24 +352,23 @@ public class RequestResponseChannel implements AsyncCloseable {
                     // Schedule API calls on proton-j entities on the ReactorThread associated with the connection.
                     provider.getReactorDispatcher().invoke(() -> {
                         if (isDisposed()) {
-                            sink.error(new RequestResponseChannelClosedException(sendLink.getLocalState(),
-                                receiveLink.getLocalState()));
+                            sink
+                                .error(new RequestResponseChannelClosedException(sendLink.getLocalState(), receiveLink
+                                    .getLocalState()));
                             return;
                         }
 
-                        final Delivery delivery = sendLink.delivery(UUID.randomUUID().toString()
-                            .replace("-", "").getBytes(UTF_8));
+                        final Delivery delivery = sendLink
+                            .delivery(UUID.randomUUID().toString().replace("-", "").getBytes(UTF_8));
 
                         if (deliveryState != null) {
-                            logger.atVerbose()
-                                .addKeyValue("state", deliveryState)
-                                .log("Setting delivery state.");
+                            logger.atVerbose().addKeyValue("state", deliveryState).log("Setting delivery state.");
                             delivery.setMessageFormat(DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
                             delivery.disposition(deliveryState);
                         }
 
                         final int payloadSize = messageSerializer.getSize(message)
-                            + ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;
+                                                + ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;
                         final byte[] bytes = new byte[payloadSize];
                         final int encodedSize = message.encode(bytes, 0, payloadSize);
                         receiveLink.flow(1);
@@ -401,9 +414,7 @@ public class RequestResponseChannel implements AsyncCloseable {
         final MonoSink<Message> sink = unconfirmedSends.remove(correlationId);
 
         if (sink == null) {
-            logger.atWarning()
-                .addKeyValue("messageId", id)
-                .log("Received delivery without pending message.");
+            logger.atWarning().addKeyValue("messageId", id).log("Received delivery without pending message.");
             return;
         }
 
@@ -416,12 +427,10 @@ public class RequestResponseChannel implements AsyncCloseable {
             return;
         }
 
-        logger.atWarning()
-            .log("{} Disposing unconfirmed sends.", message, error);
+        logger.atWarning().log("{} Disposing unconfirmed sends.", message, error);
 
         endpointStates.emitError(error, (signalType, emitResult) -> {
-            addSignalTypeAndResult(logger.atWarning(), signalType, emitResult)
-                .log("Could not emit error to sink.");
+            addSignalTypeAndResult(logger.atWarning(), signalType, emitResult).log("Could not emit error to sink.");
 
             return false;
         });
@@ -433,8 +442,7 @@ public class RequestResponseChannel implements AsyncCloseable {
 
     private void onTerminalState(String handlerName) {
         if (pendingLinkTerminations.get() <= 0) {
-            logger.atVerbose()
-                .log("Already disposed send/receive links.");
+            logger.atVerbose().log("Already disposed send/receive links.");
 
             return;
         }
@@ -449,17 +457,18 @@ public class RequestResponseChannel implements AsyncCloseable {
                 "The RequestResponseChannel didn't receive the acknowledgment for the send due receive link termination.",
                 null));
 
-            endpointStates.emitComplete(((signalType, emitResult) -> onEmitSinkFailure(signalType, emitResult,
-                "Could not emit complete signal.")));
+            endpointStates
+                .emitComplete(((signalType, emitResult) -> onEmitSinkFailure(signalType, emitResult,
+                    "Could not emit complete signal.")));
 
-            closeMono.emitEmpty((signalType, emitResult) -> onEmitSinkFailure(signalType, emitResult,
-                handlerName + ". Error closing mono."));
+            closeMono
+                .emitEmpty((signalType, emitResult) -> onEmitSinkFailure(signalType, emitResult, handlerName
+                    + ". Error closing mono."));
         }
     }
 
     private boolean onEmitSinkFailure(SignalType signalType, Sinks.EmitResult emitResult, String message) {
-        addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
-            .log(message);
+        addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult).log(message);
         return false;
     }
 
@@ -472,7 +481,8 @@ public class RequestResponseChannel implements AsyncCloseable {
             this.receiveLinkState = receiveLinkState;
         }
 
-        logger.atVerbose()
+        logger
+            .atVerbose()
             .addKeyValue("sendState", this.sendLinkState)
             .addKeyValue("receiveState", this.receiveLinkState)
             .log("Updating endpoint states.");
@@ -496,8 +506,9 @@ public class RequestResponseChannel implements AsyncCloseable {
         }
 
         // The below log can also help debug if the external code that error() calls into never return.
-        logger.atVerbose()
-            .log("completed the termination of {} unconfirmed sends (reason: {}).",  count, error.getMessage());
+        logger
+            .atVerbose()
+            .log("completed the termination of {} unconfirmed sends (reason: {}).", count, error.getMessage());
     }
 
     /**
@@ -506,7 +517,9 @@ public class RequestResponseChannel implements AsyncCloseable {
     private Mono<Message> captureStartTime(Message toSend, Mono<Message> publisher) {
         if (metricsProvider.isRequestResponseDurationEnabled()) {
             String operationName = "unknown";
-            if (toSend != null && toSend.getApplicationProperties() != null && toSend.getApplicationProperties().getValue() != null) {
+            if (toSend != null
+                && toSend.getApplicationProperties() != null
+                && toSend.getApplicationProperties().getValue() != null) {
                 Map<String, Object> properties = toSend.getApplicationProperties().getValue();
                 Object operationObj = properties.get(MANAGEMENT_OPERATION_KEY);
                 if (operationObj instanceof String) {
@@ -514,8 +527,10 @@ public class RequestResponseChannel implements AsyncCloseable {
                 }
             }
 
-            return publisher.contextWrite(
-                Context.of(START_SEND_TIME_CONTEXT_KEY, Instant.now()).put(OPERATION_CONTEXT_KEY, operationName));
+            return publisher
+                .contextWrite(Context
+                    .of(START_SEND_TIME_CONTEXT_KEY, Instant.now())
+                    .put(OPERATION_CONTEXT_KEY, operationName));
         }
 
         return publisher;
@@ -537,10 +552,9 @@ public class RequestResponseChannel implements AsyncCloseable {
             Object operationName = context.getOrDefault(OPERATION_CONTEXT_KEY, null);
             AmqpResponseCode responseCode = response == null ? null : RequestResponseUtils.getStatusCode(response);
             if (startTimestamp instanceof Instant && operationName instanceof String) {
-                metricsProvider.recordRequestResponseDuration(
-                    ((Instant) startTimestamp).toEpochMilli(),
-                    (String) operationName,
-                    responseCode);
+                metricsProvider
+                    .recordRequestResponseDuration(((Instant) startTimestamp).toEpochMilli(), (String) operationName,
+                        responseCode);
             }
         }
     }

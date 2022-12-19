@@ -39,6 +39,7 @@ class OpenTelemetryAttributes implements TelemetryAttributes {
     }
 
     private final Attributes attributes;
+
     OpenTelemetryAttributes(Map<String, Object> attributeMap) {
         Objects.requireNonNull(attributeMap, "'attributeMap' cannot be null.");
 

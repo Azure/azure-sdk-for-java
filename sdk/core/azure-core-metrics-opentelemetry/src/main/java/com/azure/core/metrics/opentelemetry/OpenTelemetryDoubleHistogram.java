@@ -13,8 +13,7 @@ import com.azure.core.util.metrics.DoubleHistogram;
 class OpenTelemetryDoubleHistogram implements DoubleHistogram {
     static final DoubleHistogram NOOP = new DoubleHistogram() {
         @Override
-        public void record(double value, TelemetryAttributes attributes, Context context) {
-        }
+        public void record(double value, TelemetryAttributes attributes, Context context) {}
 
         @Override
         public boolean isEnabled() {
@@ -23,6 +22,7 @@ class OpenTelemetryDoubleHistogram implements DoubleHistogram {
     };
 
     private final io.opentelemetry.api.metrics.DoubleHistogram histogram;
+
     OpenTelemetryDoubleHistogram(io.opentelemetry.api.metrics.DoubleHistogram histogram) {
         this.histogram = histogram;
     }
@@ -32,7 +32,9 @@ class OpenTelemetryDoubleHistogram implements DoubleHistogram {
      */
     @Override
     public void record(double value, TelemetryAttributes attributes, Context context) {
-        histogram.record(value, OpenTelemetryUtils.getAttributes(attributes), OpenTelemetryUtils.getTraceContextOrCurrent(context));
+        histogram
+            .record(value, OpenTelemetryUtils.getAttributes(attributes), OpenTelemetryUtils
+                .getTraceContextOrCurrent(context));
     }
 
     /**

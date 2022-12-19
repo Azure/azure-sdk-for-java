@@ -11,8 +11,7 @@ import java.io.*;
  * This is similar to {@link java.io.PushbackInputStream}, but here there's
  * only one implicit pushback, when instance is constructed.
  */
-public final class MergedStream extends InputStream
-{
+public final class MergedStream extends InputStream {
     final private IOContext _ctxt;
 
     final private InputStream _in;
@@ -39,21 +38,27 @@ public final class MergedStream extends InputStream
         return _in.available();
     }
 
-    @Override public void close() throws IOException {
+    @Override
+    public void close() throws IOException {
         _free();
         _in.close();
     }
 
-    @Override public synchronized void mark(int readlimit) {
-        if (_b == null) { _in.mark(readlimit); }
+    @Override
+    public synchronized void mark(int readlimit) {
+        if (_b == null) {
+            _in.mark(readlimit);
+        }
     }
-    
-    @Override public boolean markSupported() {
+
+    @Override
+    public boolean markSupported() {
         // Only supports marks past the initial rewindable section...
         return (_b == null) && _in.markSupported();
     }
-    
-    @Override public int read() throws IOException {
+
+    @Override
+    public int read() throws IOException {
         if (_b != null) {
             int c = _b[_ptr++] & 0xFF;
             if (_ptr >= _end) {
@@ -63,8 +68,9 @@ public final class MergedStream extends InputStream
         }
         return _in.read();
     }
-    
-    @Override public int read(byte[] b) throws IOException {
+
+    @Override
+    public int read(byte[] b) throws IOException {
         return read(b, 0, b.length);
     }
 
@@ -87,7 +93,9 @@ public final class MergedStream extends InputStream
 
     @Override
     public synchronized void reset() throws IOException {
-        if (_b == null) { _in.reset(); }
+        if (_b == null) {
+            _in.reset();
+        }
     }
 
     @Override
@@ -106,7 +114,9 @@ public final class MergedStream extends InputStream
             n -= amount;
         }
 
-        if (n > 0) { count += _in.skip(n); }
+        if (n > 0) {
+            count += _in.skip(n);
+        }
         return count;
     }
 

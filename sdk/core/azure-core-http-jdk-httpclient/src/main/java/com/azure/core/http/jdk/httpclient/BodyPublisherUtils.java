@@ -26,8 +26,7 @@ import static java.net.http.HttpRequest.BodyPublishers.ofInputStream;
 import static java.net.http.HttpRequest.BodyPublishers.ofString;
 
 final class BodyPublisherUtils {
-    private BodyPublisherUtils() {
-    }
+    private BodyPublisherUtils() {}
 
     /**
      * Creates BodyPublisher depending on underlying body content type.
@@ -37,7 +36,8 @@ final class BodyPublisherUtils {
      * @param progressReporter optional progress reporter.
      * @return the request BodyPublisher
      */
-    public static HttpRequest.BodyPublisher toBodyPublisher(com.azure.core.http.HttpRequest request, ProgressReporter progressReporter) {
+    public static HttpRequest.BodyPublisher toBodyPublisher(com.azure.core.http.HttpRequest request,
+                                                            ProgressReporter progressReporter) {
         BinaryData body = request.getBodyAsBinaryData();
         if (body == null) {
             return noBody();
@@ -68,7 +68,8 @@ final class BodyPublisherUtils {
      * @param publisher BodyPublisher representing request content that's not aware of content length
      * @return the request BodyPublisher
      */
-    private static HttpRequest.BodyPublisher toBodyPublisherWithLength(HttpRequest.BodyPublisher publisher, String contentLength) {
+    private static HttpRequest.BodyPublisher toBodyPublisherWithLength(HttpRequest.BodyPublisher publisher,
+                                                                       String contentLength) {
         if (CoreUtils.isNullOrEmpty(contentLength)) {
             return publisher;
         } else {
@@ -81,7 +82,8 @@ final class BodyPublisherUtils {
         }
     }
 
-    private static HttpRequest.BodyPublisher getPublisherWithReporter(HttpRequest.BodyPublisher downstream, ProgressReporter progressReporter) {
+    private static HttpRequest.BodyPublisher getPublisherWithReporter(HttpRequest.BodyPublisher downstream,
+                                                                      ProgressReporter progressReporter) {
         return progressReporter == null ? downstream : new CountingPublisher(downstream, progressReporter);
     }
 
@@ -89,6 +91,7 @@ final class BodyPublisherUtils {
 
         private final HttpRequest.BodyPublisher downstream;
         private final ProgressReporter progressReporter;
+
         CountingPublisher(HttpRequest.BodyPublisher downstream, ProgressReporter progressReporter) {
             this.downstream = downstream;
             this.progressReporter = progressReporter;
@@ -108,6 +111,7 @@ final class BodyPublisherUtils {
     private static class CountingSubscriber implements Flow.Subscriber<ByteBuffer> {
         private final Flow.Subscriber<? super ByteBuffer> downstream;
         private final ProgressReporter progressReporter;
+
         CountingSubscriber(Flow.Subscriber<? super ByteBuffer> downstream, ProgressReporter progressReporter) {
             this.downstream = downstream;
             this.progressReporter = progressReporter;

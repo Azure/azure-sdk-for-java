@@ -35,8 +35,10 @@ public class ApacheAvroSerializer implements AvroSerializer {
     private final EncoderFactory encoderFactory;
     private final SpecificData specificData;
 
-    ApacheAvroSerializer(Schema schema, DecoderFactory decoderFactory, EncoderFactory encoderFactory,
-        SpecificData specificData) {
+    ApacheAvroSerializer(Schema schema,
+                         DecoderFactory decoderFactory,
+                         EncoderFactory encoderFactory,
+                         SpecificData specificData) {
         this.schema = schema;
         this.decoderFactory = decoderFactory;
         this.encoderFactory = encoderFactory;

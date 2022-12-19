@@ -13,8 +13,7 @@ package com.azure.json.implementation.jackson.core.async;
  *
  * @since 2.9
  */
-public interface NonBlockingInputFeeder
-{
+public interface NonBlockingInputFeeder {
     /**
      * Method called to check whether it is ok to feed more data: parser returns true
      * if it has no more content to parse (and it is ok to feed more); otherwise false

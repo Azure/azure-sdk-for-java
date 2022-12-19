@@ -36,8 +36,7 @@ public final class ClientConstants {
     static final int MAX_AMQP_HEADER_SIZE_BYTES = 512;
     static final int SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS = 4;
 
-    private ClientConstants() {
-    }
+    private ClientConstants() {}
 
     private static String getOSInformation() {
         return String.join(" ", System.getProperty("os.name"), System.getProperty("os.version"));
@@ -46,8 +45,11 @@ public final class ClientConstants {
     private static String getFrameworkInfo() {
         final Package javaRuntimeClassPkg = Runtime.class.getPackage();
 
-        return "jre:" + javaRuntimeClassPkg.getImplementationVersion()
-            + ";vendor:" + javaRuntimeClassPkg.getImplementationVendor()
-            + ";jvm" + System.getProperty("java.vm.version");
+        return "jre:"
+            + javaRuntimeClassPkg.getImplementationVersion()
+            + ";vendor:"
+            + javaRuntimeClassPkg.getImplementationVendor()
+            + ";jvm"
+            + System.getProperty("java.vm.version");
     }
 }

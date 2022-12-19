@@ -12,9 +12,7 @@ import com.azure.json.implementation.jackson.core.json.JsonWriteFeature;
  *
  * @since 2.10
  */
-public abstract class TSFBuilder<F extends JsonFactory,
-    B extends TSFBuilder<F,B>>
-{
+public abstract class TSFBuilder<F extends JsonFactory, B extends TSFBuilder<F, B>> {
     /*
     /**********************************************************************
     /* Constants
@@ -31,7 +29,7 @@ public abstract class TSFBuilder<F extends JsonFactory,
      * by default.
      */
     protected final static int DEFAULT_PARSER_FEATURE_FLAGS = JsonParser.Feature.collectDefaults();
-    
+
     /**
      * Bitfield (set of flags) of all generator features that are enabled
      * by default.
@@ -77,7 +75,7 @@ public abstract class TSFBuilder<F extends JsonFactory,
      * additional processing on output during content generation.
      */
     protected OutputDecorator _outputDecorator;
-    
+
     /*
     /**********************************************************************
     /* Construction
@@ -92,15 +90,11 @@ public abstract class TSFBuilder<F extends JsonFactory,
         _outputDecorator = null;
     }
 
-    protected TSFBuilder(JsonFactory base)
-    {
-        this(base._factoryFeatures,
-                base._parserFeatures, base._generatorFeatures);
+    protected TSFBuilder(JsonFactory base) {
+        this(base._factoryFeatures, base._parserFeatures, base._generatorFeatures);
     }
 
-    protected TSFBuilder(int factoryFeatures,
-            int parserFeatures, int generatorFeatures)
-    {
+    protected TSFBuilder(int factoryFeatures, int parserFeatures, int generatorFeatures) {
         _factoryFeatures = factoryFeatures;
         _streamReadFeatures = parserFeatures;
         _streamWriteFeatures = generatorFeatures;
@@ -108,12 +102,25 @@ public abstract class TSFBuilder<F extends JsonFactory,
 
     // // // Accessors
 
-    public int factoryFeaturesMask() { return _factoryFeatures; }
-    public int streamReadFeatures() { return _streamReadFeatures; }
-    public int streamWriteFeatures() { return _streamWriteFeatures; }
+    public int factoryFeaturesMask() {
+        return _factoryFeatures;
+    }
 
-    public InputDecorator inputDecorator() { return _inputDecorator; }
-    public OutputDecorator outputDecorator() { return _outputDecorator; }
+    public int streamReadFeatures() {
+        return _streamReadFeatures;
+    }
+
+    public int streamWriteFeatures() {
+        return _streamWriteFeatures;
+    }
+
+    public InputDecorator inputDecorator() {
+        return _inputDecorator;
+    }
+
+    public OutputDecorator outputDecorator() {
+        return _outputDecorator;
+    }
 
     // // // Factory features
 
@@ -182,7 +189,7 @@ public abstract class TSFBuilder<F extends JsonFactory,
         _streamWriteFeatures &= ~f.mappedFeature().getMask();
         return _this();
     }
-    
+
     public B disable(StreamWriteFeature first, StreamWriteFeature... other) {
         _streamWriteFeatures &= ~first.mappedFeature().getMask();
         for (StreamWriteFeature f : other) {
@@ -223,10 +230,13 @@ public abstract class TSFBuilder<F extends JsonFactory,
     public B configure(JsonReadFeature f, boolean state) {
         return _failNonJSON(f);
     }
-    
+
     private B _failNonJSON(Object feature) {
-        throw new IllegalArgumentException("Feature "+feature.getClass().getName()
-                +"#"+feature.toString()+" not supported for non-JSON backend");
+        throw new IllegalArgumentException("Feature "
+            + feature.getClass().getName()
+            + "#"
+            + feature.toString()
+            + " not supported for non-JSON backend");
     }
 
     // // // JSON-specific, writes
@@ -275,7 +285,9 @@ public abstract class TSFBuilder<F extends JsonFactory,
 
     // silly convenience cast method we need
     @SuppressWarnings("unchecked")
-    protected final B _this() { return (B) this; }
+    protected final B _this() {
+        return (B) this;
+    }
 
     // // // Support for subtypes
 
@@ -296,6 +308,7 @@ public abstract class TSFBuilder<F extends JsonFactory,
             _streamWriteFeatures |= f.getMask();
         }
     }
+
     protected void _legacyDisable(JsonGenerator.Feature f) {
         if (f != null) {
             _streamWriteFeatures &= ~f.getMask();

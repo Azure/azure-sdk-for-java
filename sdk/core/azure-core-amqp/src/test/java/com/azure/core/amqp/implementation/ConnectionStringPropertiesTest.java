@@ -73,7 +73,8 @@ public class ConnectionStringPropertiesTest {
             .replace(String.format(Locale.US, "SharedAccessKeyName=%s;", SAS_KEY), "");
 
         // Act & Assert
-        final Exception exception = assertThrows(IllegalArgumentException.class, () -> new ConnectionStringProperties(invalidConnectionString));
+        final Exception exception = assertThrows(IllegalArgumentException.class, () -> new ConnectionStringProperties(
+            invalidConnectionString));
 
         final String actualMessage = exception.getMessage();
 
@@ -91,7 +92,8 @@ public class ConnectionStringPropertiesTest {
             .replace(String.format(Locale.US, "Endpoint=%s;", HOSTNAME_URI), "");
 
         // Act & Assert
-        final Exception exception = assertThrows(IllegalArgumentException.class, () -> new ConnectionStringProperties(invalidConnectionString));
+        final Exception exception = assertThrows(IllegalArgumentException.class, () -> new ConnectionStringProperties(
+            invalidConnectionString));
 
         final String actualMessage = exception.getMessage();
 
@@ -184,8 +186,8 @@ public class ConnectionStringPropertiesTest {
     @ParameterizedTest
     @MethodSource("getSharedAccessSignature")
     public void testInvalidSharedAccessSignature(String sas) {
-        assertThrows(IllegalArgumentException.class, () ->
-            new ConnectionStringProperties(getConnectionString(HOSTNAME_URI, null, null, null, sas)));
+        assertThrows(IllegalArgumentException.class, () -> new ConnectionStringProperties(getConnectionString(
+            HOSTNAME_URI, null, null, null, sas)));
     }
 
     private static Stream<String> getInvalidConnectionString() {
@@ -196,8 +198,9 @@ public class ConnectionStringPropertiesTest {
         String nullHostName = getConnectionString(null, EVENT_HUB, SAS_KEY, SAS_VALUE, SHARED_ACCESS_SIGNATURE);
         String nullHostNameValidSas = getConnectionString(null, EVENT_HUB, null, null, SHARED_ACCESS_SIGNATURE);
         String nullHostNameValidKey = getConnectionString(null, EVENT_HUB, SAS_KEY, SAS_VALUE, null);
-        return Stream.of(keyNameWithSas, keyValueWithSas, keyNameAndValueWithSas, nullHostName, nullHostNameValidSas,
-            nullHostNameValidKey);
+        return Stream
+            .of(keyNameWithSas, keyValueWithSas, keyNameAndValueWithSas, nullHostName, nullHostNameValidSas,
+                nullHostNameValidKey);
     }
 
     private static Stream<String> getSharedAccessSignature() {
@@ -216,13 +219,18 @@ public class ConnectionStringPropertiesTest {
         return Stream.of(nullSas, sasInvalidPrefix, sasWithoutSpace);
     }
 
-    private static String getConnectionString(String hostname, String eventHubName, String sasKeyName,
+    private static String getConnectionString(String hostname,
+                                              String eventHubName,
+                                              String sasKeyName,
                                               String sasKeyValue) {
         return getConnectionString(hostname, eventHubName, sasKeyName, sasKeyValue, null);
     }
 
-    private static String getConnectionString(String hostname, String eventHubName, String sasKeyName,
-                                              String sasKeyValue, String sharedAccessSignature) {
+    private static String getConnectionString(String hostname,
+                                              String eventHubName,
+                                              String sasKeyName,
+                                              String sasKeyValue,
+                                              String sharedAccessSignature) {
         final StringBuilder builder = new StringBuilder();
         if (hostname != null) {
             builder.append(String.format(Locale.US, "Endpoint=%s;", hostname));

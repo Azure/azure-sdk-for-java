@@ -64,8 +64,9 @@ public final class TransactionalDeliveryOutcome extends DeliveryOutcome {
      */
     public TransactionalDeliveryOutcome setOutcome(DeliveryOutcome outcome) {
         if (outcome instanceof TransactionalDeliveryOutcome) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Cannot set the outcome as another nested transaction outcome."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException(
+                    "Cannot set the outcome as another nested transaction outcome."));
         }
 
         this.outcome = outcome;

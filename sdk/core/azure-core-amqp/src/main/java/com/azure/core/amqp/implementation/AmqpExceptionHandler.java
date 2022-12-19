@@ -17,8 +17,7 @@ abstract class AmqpExceptionHandler {
     /**
      * Creates a new instance of the exception handler.
      */
-    AmqpExceptionHandler() {
-    }
+    AmqpExceptionHandler() {}
 
     /**
      * Notifies the exception handler of an exception.

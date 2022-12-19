@@ -61,14 +61,10 @@ public class TestContextManager {
      * @return The playback record name.
      */
     public String getTestPlaybackRecordingName() {
-        StringBuilder builder = new StringBuilder(className)
-            .append(".")
-            .append(testName);
+        StringBuilder builder = new StringBuilder(className).append(".").append(testName);
 
         if (testIteration != null) {
-            builder.append("[")
-                .append(testIteration)
-                .append("]");
+            builder.append("[").append(testIteration).append("]");
         }
 
         return builder.toString();

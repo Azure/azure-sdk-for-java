@@ -38,10 +38,7 @@ public class OkHttpAsyncHttpClientRestProxyWithHttpProxyTests extends RestProxyT
 
     @Override
     protected HttpClient createHttpClient() {
-        ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP,
-                new InetSocketAddress("localhost", 8888));
-        return new OkHttpAsyncHttpClientBuilder()
-                .proxy(proxyOptions)
-                .build();
+        ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888));
+        return new OkHttpAsyncHttpClientBuilder().proxy(proxyOptions).build();
     }
 }

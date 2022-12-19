@@ -162,8 +162,8 @@ public abstract class JsonWriter implements Closeable {
      * @throws NullPointerException If {@code elementWriterFunc} is null.
      * @throws IOException If the JSON array fails to be written, either the start or end array or an element write.
      */
-    public final <T> JsonWriter writeArray(T[] array,
-        WriteValueCallback<JsonWriter, T> elementWriterFunc) throws IOException {
+    public final <T> JsonWriter writeArray(T[] array, WriteValueCallback<JsonWriter, T> elementWriterFunc)
+                                                                                                           throws IOException {
         Objects.requireNonNull(elementWriterFunc, "'elementWriterFunc' cannot be null.");
 
         if (array == null) {
@@ -198,8 +198,8 @@ public abstract class JsonWriter implements Closeable {
      * @throws NullPointerException If {@code elementWriterFunc} is null.
      * @throws IOException If the JSON array fails to be written, either the start or end array or an element write.
      */
-    public final <T> JsonWriter writeArray(Iterable<T> array,
-        WriteValueCallback<JsonWriter, T> elementWriterFunc) throws IOException {
+    public final <T> JsonWriter writeArray(Iterable<T> array, WriteValueCallback<JsonWriter, T> elementWriterFunc)
+                                                                                                                   throws IOException {
         Objects.requireNonNull(elementWriterFunc, "'elementWriterFunc' cannot be null.");
 
         if (array == null) {
@@ -234,8 +234,8 @@ public abstract class JsonWriter implements Closeable {
      * @throws NullPointerException If {@code valueWriterFunc} is null.
      * @throws IOException If the JSON map fails to be written, either the start or end object or a key or value write.
      */
-    public final <T> JsonWriter writeMap(Map<String, T> map,
-        WriteValueCallback<JsonWriter, T> valueWriterFunc) throws IOException {
+    public final <T> JsonWriter writeMap(Map<String, T> map, WriteValueCallback<JsonWriter, T> valueWriterFunc)
+                                                                                                                throws IOException {
         Objects.requireNonNull(valueWriterFunc, "'valueWriterFunc' cannot be null.");
 
         if (map == null) {
@@ -439,8 +439,9 @@ public abstract class JsonWriter implements Closeable {
      * @throws NullPointerException If {@code fieldName} or {@code writerFunc} is null.
      * @throws IOException If the {@code fieldName} or the {@code nullable} fails to be written.
      */
-    public final <T> JsonWriter writeNullableField(String fieldName, T nullable,
-        WriteValueCallback<JsonWriter, T> writerFunc) throws IOException {
+    public final <T> JsonWriter writeNullableField(String fieldName,
+                                                   T nullable,
+                                                   WriteValueCallback<JsonWriter, T> writerFunc) throws IOException {
         Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
         Objects.requireNonNull(writerFunc, "'writerFunc' cannot be null.");
 
@@ -494,8 +495,9 @@ public abstract class JsonWriter implements Closeable {
      * @throws IOException If the {@code fieldName} or the JSON array fails to be written, either JSON start or end
      * array or the element write.
      */
-    public final <T> JsonWriter writeArrayField(String fieldName, T[] array,
-        WriteValueCallback<JsonWriter, T> elementWriterFunc) throws IOException {
+    public final <T> JsonWriter writeArrayField(String fieldName,
+                                                T[] array,
+                                                WriteValueCallback<JsonWriter, T> elementWriterFunc) throws IOException {
         Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
         Objects.requireNonNull(elementWriterFunc, "'elementWriterFunc' cannot be null.");
 
@@ -533,8 +535,9 @@ public abstract class JsonWriter implements Closeable {
      * @throws IOException If the {@code fieldName} or the JSON array fails to be written, either JSON start or end
      * array or the element write.
      */
-    public final <T> JsonWriter writeArrayField(String fieldName, Iterable<T> array,
-        WriteValueCallback<JsonWriter, T> elementWriterFunc) throws IOException {
+    public final <T> JsonWriter writeArrayField(String fieldName,
+                                                Iterable<T> array,
+                                                WriteValueCallback<JsonWriter, T> elementWriterFunc) throws IOException {
         Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
         Objects.requireNonNull(elementWriterFunc, "'elementWriterFunc' cannot be null.");
 
@@ -572,8 +575,9 @@ public abstract class JsonWriter implements Closeable {
      * @throws IOException If the {@code fieldName} or the JSON map fails to be written, either JSON start or end object
      * or the key or value write.
      */
-    public final <T> JsonWriter writeMapField(String fieldName, Map<String, T> map,
-        WriteValueCallback<JsonWriter, T> valueWriterFunc) throws IOException {
+    public final <T> JsonWriter writeMapField(String fieldName,
+                                              Map<String, T> map,
+                                              WriteValueCallback<JsonWriter, T> valueWriterFunc) throws IOException {
         Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
         Objects.requireNonNull(valueWriterFunc, "'valueWriterFunc' cannot be null.");
 

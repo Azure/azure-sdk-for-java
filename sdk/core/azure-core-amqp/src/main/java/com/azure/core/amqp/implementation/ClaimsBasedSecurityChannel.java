@@ -39,8 +39,10 @@ public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
     private final CbsAuthorizationType authorizationType;
     private final AmqpRetryOptions retryOptions;
 
-    public ClaimsBasedSecurityChannel(Mono<RequestResponseChannel> responseChannelMono, TokenCredential tokenCredential,
-        CbsAuthorizationType authorizationType, AmqpRetryOptions retryOptions) {
+    public ClaimsBasedSecurityChannel(Mono<RequestResponseChannel> responseChannelMono,
+                                      TokenCredential tokenCredential,
+                                      CbsAuthorizationType authorizationType,
+                                      AmqpRetryOptions retryOptions) {
 
         this.authorizationType = Objects.requireNonNull(authorizationType, "'authorizationType' cannot be null.");
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
@@ -50,8 +52,9 @@ public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
 
     @Override
     public Mono<OffsetDateTime> authorize(String tokenAudience, String scopes) {
-        return cbsChannelMono.flatMap(channel ->
-            credential.getToken(new TokenRequestContext().addScopes(scopes))
+        return cbsChannelMono
+            .flatMap(channel -> credential
+                .getToken(new TokenRequestContext().addScopes(scopes))
                 .flatMap(accessToken -> {
                     final Message request = Proton.message();
                     final Map<String, Object> properties = new HashMap<>();
@@ -64,22 +67,24 @@ public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
                     request.setApplicationProperties(applicationProperties);
                     request.setBody(new AmqpValue(accessToken.getToken()));
 
-                    return channel.sendWithAck(request)
+                    return channel
+                        .sendWithAck(request)
                         .handle((Message message, SynchronousSink<OffsetDateTime> sink) -> {
                             if (RequestResponseUtils.isSuccessful(message)) {
                                 sink.next(accessToken.getExpiresAt());
                             } else {
                                 final String description = getStatusDescription(message);
                                 final AmqpResponseCode statusCode = getStatusCode(message);
-                                final Exception error = amqpResponseCodeToException(
-                                    statusCode.getValue(), description, channel.getErrorContext());
+                                final Exception error = amqpResponseCodeToException(statusCode.getValue(), description,
+                                    channel.getErrorContext());
 
                                 sink.error(error);
                             }
                         })
-                        .switchIfEmpty(Mono.error(() -> new AmqpException(true, String.format(
-                            "No response received from CBS node. tokenAudience: '%s'. scopes: '%s'",
-                            tokenAudience, scopes), channel.getErrorContext())));
+                        .switchIfEmpty(Mono
+                            .error(() -> new AmqpException(true, String
+                                .format("No response received from CBS node. tokenAudience: '%s'. scopes: '%s'",
+                                    tokenAudience, scopes), channel.getErrorContext())));
                 }));
     }
 

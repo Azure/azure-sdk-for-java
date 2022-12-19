@@ -23,8 +23,9 @@ public abstract class NettyAsyncHttpResponseBase extends HttpResponse {
     //private NettyToAzureCoreHttpHeadersWrapper headers;
     private final HttpHeaders headers;
 
-    NettyAsyncHttpResponseBase(HttpClientResponse reactorNettyResponse, HttpRequest httpRequest,
-        boolean headersEagerlyConverted) {
+    NettyAsyncHttpResponseBase(HttpClientResponse reactorNettyResponse,
+                               HttpRequest httpRequest,
+                               boolean headersEagerlyConverted) {
         super(httpRequest);
         this.reactorNettyResponse = reactorNettyResponse;
 

@@ -30,8 +30,10 @@ public class OkHttpFluxRequestBody extends OkHttpStreamableRequestBody<BinaryDat
     private final AtomicBoolean bodySent = new AtomicBoolean(false);
     private final int callTimeoutMillis;
 
-    public OkHttpFluxRequestBody(
-        BinaryDataContent content, long effectiveContentLength, MediaType mediaType, int callTimeoutMillis) {
+    public OkHttpFluxRequestBody(BinaryDataContent content,
+                                 long effectiveContentLength,
+                                 MediaType mediaType,
+                                 int callTimeoutMillis) {
         super(content, effectiveContentLength, mediaType);
         this.callTimeoutMillis = callTimeoutMillis;
     }
@@ -39,19 +41,18 @@ public class OkHttpFluxRequestBody extends OkHttpStreamableRequestBody<BinaryDat
     @Override
     public void writeTo(BufferedSink bufferedSink) throws IOException {
         if (bodySent.compareAndSet(false, true)) {
-            Mono<Void> requestSendMono = content.toFluxByteBuffer()
-                .flatMapSequential(buffer -> {
-                    if (Schedulers.isInNonBlockingThread()) {
-                        return Mono.just(buffer)
-                            .publishOn(Schedulers.boundedElastic())
-                            .map(b -> writeBuffer(bufferedSink, b))
-                            .then();
-                    } else {
-                        writeBuffer(bufferedSink, buffer);
-                        return Mono.empty();
-                    }
-                }, 1, 1)
-                .then();
+            Mono<Void> requestSendMono = content.toFluxByteBuffer().flatMapSequential(buffer -> {
+                if (Schedulers.isInNonBlockingThread()) {
+                    return Mono
+                        .just(buffer)
+                        .publishOn(Schedulers.boundedElastic())
+                        .map(b -> writeBuffer(bufferedSink, b))
+                        .then();
+                } else {
+                    writeBuffer(bufferedSink, buffer);
+                    return Mono.empty();
+                }
+            }, 1, 1).then();
 
             // The blocking happens on OkHttp thread pool.
             if (callTimeoutMillis > 0) {

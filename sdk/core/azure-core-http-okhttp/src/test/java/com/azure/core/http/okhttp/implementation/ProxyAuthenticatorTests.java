@@ -47,8 +47,8 @@ public class ProxyAuthenticatorTests {
     private static final String PREEMPTIVE_AUTHENTICATE = "Preemptive Authenticate";
     private static final Request DEFAULT_REQUEST = new Request.Builder().get().url("http://localhost:8888/get").build();
     private static final Address DEFAULT_ADDRESS = new Address("localhost", 80, Dns.SYSTEM, SocketFactory.getDefault(),
-        null, null, null, Authenticator.NONE, null, Collections.singletonList(Protocol.HTTP_1_1),
-        Collections.singletonList(ConnectionSpec.MODERN_TLS), ProxySelector.getDefault());
+        null, null, null, Authenticator.NONE, null, Collections.singletonList(Protocol.HTTP_1_1), Collections
+            .singletonList(ConnectionSpec.MODERN_TLS), ProxySelector.getDefault());
 
     private static final String DIGEST_CHALLENGE = "Digest realm=\"test realm\", qop=\"auth\", algorithm=SHA-256, "
         + "nonce=\"7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v\", "
@@ -105,23 +105,21 @@ public class ProxyAuthenticatorTests {
     }
 
     public static Stream<Arguments> authorizationIsAppliedSupplier() {
-        return Stream.of(
-            // ChallengeHolder only containing Basic challenge.
-            Arguments.of(new Headers.Builder()
-                .add("Proxy-Authenticate: Basic")
-                .build(), BASIC_PREDICATE),
+        return Stream
+            .of(
+                // ChallengeHolder only containing Basic challenge.
+                Arguments.of(new Headers.Builder().add("Proxy-Authenticate: Basic").build(), BASIC_PREDICATE),
 
-            // ChallengeHolder only containing Digest challenge.
-            Arguments.of(new Headers.Builder()
-                .add("Proxy-Authenticate: " + DIGEST_CHALLENGE)
-                .build(), DIGEST_PREDICATE),
+                // ChallengeHolder only containing Digest challenge.
+                Arguments
+                    .of(new Headers.Builder().add("Proxy-Authenticate: " + DIGEST_CHALLENGE).build(), DIGEST_PREDICATE),
 
-            // ChallengeHolder containing both Basic and Digest challenge.
-            Arguments.of(new Headers.Builder()
-                .add("Proxy-Authenticate: Basic")
-                .add("Proxy-Authenticate: " + DIGEST_CHALLENGE)
-                .build(), DIGEST_PREDICATE)
-        );
+                // ChallengeHolder containing both Basic and Digest challenge.
+                Arguments
+                    .of(new Headers.Builder()
+                        .add("Proxy-Authenticate: Basic")
+                        .add("Proxy-Authenticate: " + DIGEST_CHALLENGE)
+                        .build(), DIGEST_PREDICATE));
     }
 
     /**
@@ -152,17 +150,15 @@ public class ProxyAuthenticatorTests {
     }
 
     public static Stream<Arguments> authorizationCanBePipelinedSupplier() {
-        return Stream.of(
-            // Pipelined Basic authorization.
-            Arguments.of(new Headers.Builder()
-                .add("Proxy-Authenticate: Basic")
-                .build(), BASIC_PREDICATE),
+        return Stream
+            .of(
+                // Pipelined Basic authorization.
+                Arguments.of(new Headers.Builder().add("Proxy-Authenticate: Basic").build(), BASIC_PREDICATE),
 
-            // Pipelined Digest authorization.
-            Arguments.of(new Headers.Builder()
-                .add("Proxy-Authenticate: " + DIGEST_CHALLENGE)
-                .build(), DIGEST_PREDICATE)
-        );
+                // Pipelined Digest authorization.
+                Arguments
+                    .of(new Headers.Builder().add("Proxy-Authenticate: " + DIGEST_CHALLENGE).build(),
+                        DIGEST_PREDICATE));
     }
 
     /**
@@ -220,8 +216,8 @@ public class ProxyAuthenticatorTests {
         Interceptor interceptor = proxyAuthenticator.getProxyAuthenticationInfoInterceptor();
 
         Interceptor.Chain chain = mock(Interceptor.Chain.class);
-        when(chain.proceed(any())).thenReturn(mockResponse("This is a test",
-            new Headers.Builder()
+        when(chain.proceed(any()))
+            .thenReturn(mockResponse("This is a test", new Headers.Builder()
                 .add("Proxy-Authentication-Info: nc=00000001, cnonce=\"" + cnonce + "\"")
                 .build()));
         when(chain.request()).thenReturn(authenticateRequest);
@@ -256,8 +252,8 @@ public class ProxyAuthenticatorTests {
         Interceptor interceptor = proxyAuthenticator.getProxyAuthenticationInfoInterceptor();
 
         Interceptor.Chain chain = mock(Interceptor.Chain.class);
-        when(chain.proceed(any())).thenReturn(mockResponse("This is a test",
-            new Headers.Builder()
+        when(chain.proceed(any()))
+            .thenReturn(mockResponse("This is a test", new Headers.Builder()
                 .add("Proxy-Authentication-Info: nc=00000001, cnonce=\"incorrectCnonce\"")
                 .build()));
         when(chain.request()).thenReturn(authenticateRequest);
@@ -284,8 +280,8 @@ public class ProxyAuthenticatorTests {
         Interceptor interceptor = proxyAuthenticator.getProxyAuthenticationInfoInterceptor();
 
         Interceptor.Chain chain = mock(Interceptor.Chain.class);
-        when(chain.proceed(any())).thenReturn(mockResponse("This is a test",
-            new Headers.Builder()
+        when(chain.proceed(any()))
+            .thenReturn(mockResponse("This is a test", new Headers.Builder()
                 .add("Proxy-Authentication-Info: nextnonce=\"" + UPDATED_NONCE + "\"")
                 .build()));
         when(chain.request()).thenReturn(authenticateRequest);
@@ -302,8 +298,14 @@ public class ProxyAuthenticatorTests {
     }
 
     private static Response mockResponse(String message, Headers headers) {
-        return new Response.Builder().request(DEFAULT_REQUEST).protocol(Protocol.HTTP_1_1).message(message)
-            .code(407).headers(headers).sentRequestAtMillis(0).receivedResponseAtMillis(1)
+        return new Response.Builder()
+            .request(DEFAULT_REQUEST)
+            .protocol(Protocol.HTTP_1_1)
+            .message(message)
+            .code(407)
+            .headers(headers)
+            .sentRequestAtMillis(0)
+            .receivedResponseAtMillis(1)
             .build();
     }
 }

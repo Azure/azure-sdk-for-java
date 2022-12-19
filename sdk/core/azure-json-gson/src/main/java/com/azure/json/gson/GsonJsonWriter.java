@@ -72,7 +72,9 @@ public final class GsonJsonWriter extends JsonWriter {
     public void close() throws IOException {
         if (context != JsonWriteContext.COMPLETED) {
             throw new IllegalStateException("Writing of the JSON object must be completed before the writer can be "
-                + "closed. Current writing state is '" + context.getWriteState() + "'.");
+                + "closed. Current writing state is '"
+                + context.getWriteState()
+                + "'.");
         }
 
         writer.flush();

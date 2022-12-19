@@ -61,7 +61,6 @@ public class ExceptionUtilTest {
         Assertions.assertTrue(amqpException.getMessage().contains(message));
     }
 
-
     /**
      * Creates correct exception from not found exception.
      */

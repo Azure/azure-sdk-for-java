@@ -112,8 +112,8 @@ class ReactorReceiverTest {
         when(reactor.attachments()).thenReturn(record);
 
         final String entityPath = "test-entity-path";
-        receiverHandler = new ReceiveLinkHandler("test-connection-id", "test-host",
-            "test-receiver-name", entityPath, AmqpMetricsProvider.noop());
+        receiverHandler = new ReceiveLinkHandler("test-connection-id", "test-host", "test-receiver-name", entityPath,
+            AmqpMetricsProvider.noop());
 
         when(tokenManager.getAuthorizationResults()).thenReturn(authorizationResults.flux());
 
@@ -148,9 +148,7 @@ class ReactorReceiverTest {
             return null;
         }).when(reactorDispatcher).invoke(any(Runnable.class));
 
-        StepVerifier.create(reactorReceiver.addCredits(credits))
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(reactorReceiver.addCredits(credits)).expectComplete().verify(VERIFY_TIMEOUT);
 
         // Assert
         verify(receiver).flow(credits);
@@ -169,7 +167,8 @@ class ReactorReceiverTest {
             throw new IOException("Fake exception");
         }).when(reactorDispatcher).invoke(any(Runnable.class));
 
-        StepVerifier.create(reactorReceiver.addCredits(credits))
+        StepVerifier
+            .create(reactorReceiver.addCredits(credits))
             .expectError(RuntimeException.class)
             .verify(VERIFY_TIMEOUT);
 
@@ -190,7 +189,8 @@ class ReactorReceiverTest {
         when(closeReceiver.getLocalState()).thenReturn(EndpointState.ACTIVE);
         when(closeReceiver.getRemoteCondition()).thenReturn(null);
 
-        StepVerifier.create(reactorReceiver.getEndpointStates())
+        StepVerifier
+            .create(reactorReceiver.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
             .then(() -> receiverHandler.onLinkRemoteOpen(event))
             .expectNext(AmqpEndpointState.ACTIVE)
@@ -201,7 +201,6 @@ class ReactorReceiverTest {
             .verify(VERIFY_TIMEOUT);
     }
 
-
     /**
      * Verifies EndpointStates are propagated.
      */
@@ -210,15 +209,16 @@ class ReactorReceiverTest {
         final Event closeEvent = mock(Event.class);
         final Receiver closeReceiver = mock(Receiver.class);
         final AmqpErrorCondition condition = AmqpErrorCondition.CONNECTION_FORCED;
-        final ErrorCondition errorCondition = new ErrorCondition(
-            Symbol.valueOf(condition.getErrorCondition()), "Forced error condition");
+        final ErrorCondition errorCondition = new ErrorCondition(Symbol.valueOf(condition.getErrorCondition()),
+            "Forced error condition");
         when(closeEvent.getLink()).thenReturn(closeReceiver);
         when(closeEvent.getReceiver()).thenReturn(closeReceiver);
 
         when(closeReceiver.getLocalState()).thenReturn(EndpointState.ACTIVE);
         when(closeReceiver.getRemoteCondition()).thenReturn(errorCondition);
 
-        StepVerifier.create(reactorReceiver.getEndpointStates())
+        StepVerifier
+            .create(reactorReceiver.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
             .then(() -> receiverHandler.onLinkRemoteOpen(event))
             .expectNext(AmqpEndpointState.ACTIVE)
@@ -243,8 +243,7 @@ class ReactorReceiverTest {
         // Arrange
         final Link link = mock(Link.class);
         final Session session = mock(Session.class);
-        final Symbol symbol = Symbol.getSymbol(
-            AmqpErrorCondition.UNAUTHORIZED_ACCESS.getErrorCondition());
+        final Symbol symbol = Symbol.getSymbol(AmqpErrorCondition.UNAUTHORIZED_ACCESS.getErrorCondition());
         final String description = "test-symbol-description";
         final ErrorCondition condition = new ErrorCondition(symbol, description);
         final ArgumentCaptor<ErrorCondition> captor = ArgumentCaptor.forClass(ErrorCondition.class);
@@ -256,7 +255,8 @@ class ReactorReceiverTest {
         when(link.getLocalState()).thenReturn(EndpointState.ACTIVE);
 
         // Act
-        StepVerifier.create(reactorReceiver.receive())
+        StepVerifier
+            .create(reactorReceiver.receive())
             .then(() -> receiverHandler.onLinkRemoteClose(event))
             .expectComplete()
             .verify(VERIFY_TIMEOUT);
@@ -274,8 +274,7 @@ class ReactorReceiverTest {
         // Arrange
         final Link link = mock(Link.class);
         final Session session = mock(Session.class);
-        final Symbol symbol = Symbol.getSymbol(
-            AmqpErrorCondition.NOT_IMPLEMENTED.getErrorCondition());
+        final Symbol symbol = Symbol.getSymbol(AmqpErrorCondition.NOT_IMPLEMENTED.getErrorCondition());
         final String description = "test-symbol-not implemented";
         final ErrorCondition condition = new ErrorCondition(symbol, description);
 
@@ -284,7 +283,8 @@ class ReactorReceiverTest {
         when(link.getSession()).thenReturn(session);
 
         // Act & Assert
-        StepVerifier.create(reactorReceiver.receive())
+        StepVerifier
+            .create(reactorReceiver.receive())
             .then(() -> receiverHandler.onLinkRemoteClose(event))
             .expectComplete()
             .verify(VERIFY_TIMEOUT);
@@ -294,11 +294,101 @@ class ReactorReceiverTest {
     void addsMoreCreditsWhenPrefetchIsDone() throws IOException {
         // Arrange
         // This message was copied from one that was received.
-        final byte[] messageBytes = new byte[] { 0, 83, 114, -63, 73, 6, -93, 21, 120, 45, 111, 112, 116, 45, 115, 101,
-            113, 117, 101, 110, 99, 101, 45, 110, 117, 109, 98, 101, 114, 85, 0, -93, 12, 120, 45, 111, 112, 116, 45,
-            111, 102, 102, 115, 101, 116, -95, 1, 48, -93, 19, 120, 45, 111, 112, 116, 45, 101, 110, 113, 117, 101, 117,
-            101, 100, 45, 116, 105, 109, 101, -125, 0, 0, 1, 112, -54, 124, -41, 90, 0, 83, 117, -96, 12, 80, 111, 115,
-            105, 116, 105, 111, 110, 53, 58, 32, 48};
+        final byte[] messageBytes = new byte[] { 0,
+            83,
+            114,
+            -63,
+            73,
+            6,
+            -93,
+            21,
+            120,
+            45,
+            111,
+            112,
+            116,
+            45,
+            115,
+            101,
+            113,
+            117,
+            101,
+            110,
+            99,
+            101,
+            45,
+            110,
+            117,
+            109,
+            98,
+            101,
+            114,
+            85,
+            0,
+            -93,
+            12,
+            120,
+            45,
+            111,
+            112,
+            116,
+            45,
+            111,
+            102,
+            102,
+            115,
+            101,
+            116,
+            -95,
+            1,
+            48,
+            -93,
+            19,
+            120,
+            45,
+            111,
+            112,
+            116,
+            45,
+            101,
+            110,
+            113,
+            117,
+            101,
+            117,
+            101,
+            100,
+            45,
+            116,
+            105,
+            109,
+            101,
+            -125,
+            0,
+            0,
+            1,
+            112,
+            -54,
+            124,
+            -41,
+            90,
+            0,
+            83,
+            117,
+            -96,
+            12,
+            80,
+            111,
+            115,
+            105,
+            116,
+            105,
+            111,
+            110,
+            53,
+            58,
+            32,
+            48 };
         final Link link = mock(Link.class);
         final Delivery delivery = mock(Delivery.class);
 
@@ -335,15 +425,18 @@ class ReactorReceiverTest {
         }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         // Act & Assert
-        StepVerifier.create(reactorReceiver.receive())
+        StepVerifier
+            .create(reactorReceiver.receive())
             .then(() -> receiverHandler.onDelivery(event))
             .assertNext(message -> {
                 Assertions.assertNotNull(message.getMessageAnnotations());
 
                 final Map<Symbol, Object> values = message.getMessageAnnotations().getValue();
                 assertTrue(values.containsKey(Symbol.getSymbol(AmqpMessageConstant.OFFSET_ANNOTATION_NAME.getValue())));
-                assertTrue(values.containsKey(Symbol.getSymbol(AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME.getValue())));
-                assertTrue(values.containsKey(Symbol.getSymbol(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue())));
+                assertTrue(values
+                    .containsKey(Symbol.getSymbol(AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME.getValue())));
+                assertTrue(values
+                    .containsKey(Symbol.getSymbol(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue())));
             })
             .thenCancel()
             .verify(VERIFY_TIMEOUT);
@@ -359,8 +452,7 @@ class ReactorReceiverTest {
     @Test
     void parentDisposesConnection() throws IOException {
         // Arrange
-        final AmqpShutdownSignal shutdownSignal = new AmqpShutdownSignal(false, false,
-            "Test-shutdown-signal");
+        final AmqpShutdownSignal shutdownSignal = new AmqpShutdownSignal(false, false, "Test-shutdown-signal");
         final Event event = mock(Event.class);
         final Link link = mock(Link.class);
 
@@ -418,7 +510,8 @@ class ReactorReceiverTest {
         }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         // Act
-        StepVerifier.create(reactorReceiver.getEndpointStates())
+        StepVerifier
+            .create(reactorReceiver.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
             .then(() -> shutdownSignals.next(shutdownSignal))
             .expectNext(AmqpEndpointState.CLOSED)
@@ -440,8 +533,8 @@ class ReactorReceiverTest {
         final AmqpErrorCondition amqpErrorCondition = AmqpErrorCondition.CONNECTION_FRAMING_ERROR;
         final Event event = mock(Event.class);
         final Link link = mock(Link.class);
-        final ErrorCondition errorCondition = new ErrorCondition(
-            Symbol.getSymbol(amqpErrorCondition.getErrorCondition()), "Test error condition");
+        final ErrorCondition errorCondition = new ErrorCondition(Symbol
+            .getSymbol(amqpErrorCondition.getErrorCondition()), "Test error condition");
 
         when(link.getLocalState()).thenReturn(EndpointState.ACTIVE);
         when(link.getRemoteCondition()).thenReturn(errorCondition);
@@ -449,7 +542,8 @@ class ReactorReceiverTest {
         when(event.getLink()).thenReturn(link);
 
         // Act and Assert
-        StepVerifier.create(reactorReceiver.getEndpointStates())
+        StepVerifier
+            .create(reactorReceiver.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
             .then(() -> receiverHandler.onLinkRemoteClose(event))
             .expectErrorSatisfies(error -> {
@@ -474,14 +568,16 @@ class ReactorReceiverTest {
         when(event.getLink()).thenReturn(link);
 
         // Act and Assert
-        StepVerifier.create(reactorReceiver.getEndpointStates())
+        StepVerifier
+            .create(reactorReceiver.getEndpointStates())
             .expectNext(AmqpEndpointState.UNINITIALIZED)
             .then(() -> receiverHandler.onLinkFinal(event))
             .expectNext(AmqpEndpointState.CLOSED)
             .expectComplete()
             .verify(VERIFY_TIMEOUT);
 
-        StepVerifier.create(reactorReceiver.getEndpointStates())
+        StepVerifier
+            .create(reactorReceiver.getEndpointStates())
             .expectNext(AmqpEndpointState.CLOSED)
             .expectComplete()
             .verify(VERIFY_TIMEOUT);
@@ -507,7 +603,8 @@ class ReactorReceiverTest {
         }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         // Act and Assert
-        StepVerifier.create(reactorReceiver.closeAsync().doOnSubscribe(subscribed -> wasClosed.set(true)))
+        StepVerifier
+            .create(reactorReceiver.closeAsync().doOnSubscribe(subscribed -> wasClosed.set(true)))
             .expectComplete()
             .verify(VERIFY_TIMEOUT);
     }
@@ -543,24 +640,19 @@ class ReactorReceiverTest {
         }).when(receiver).close();
 
         // Act
-        StepVerifier.create(reactorReceiver.closeAsync(message, condition))
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(reactorReceiver.closeAsync(message, condition)).expectComplete().verify(VERIFY_TIMEOUT);
 
         // Expect the same outcome.
-        StepVerifier.create(reactorReceiver.closeAsync("something", null))
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(reactorReceiver.closeAsync("something", null)).expectComplete().verify(VERIFY_TIMEOUT);
 
-        StepVerifier.create(reactorReceiver.closeAsync())
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(reactorReceiver.closeAsync()).expectComplete().verify(VERIFY_TIMEOUT);
 
         // Assert
-        StepVerifier.create(reactorReceiver.getEndpointStates())
-                .expectNext(AmqpEndpointState.CLOSED)
-                .expectComplete()
-                .verify(VERIFY_TIMEOUT);
+        StepVerifier
+            .create(reactorReceiver.getEndpointStates())
+            .expectNext(AmqpEndpointState.CLOSED)
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
 
         assertTrue(reactorReceiver.isDisposed());
 
@@ -591,12 +683,11 @@ class ReactorReceiverTest {
         }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         // Act
-        StepVerifier.create(reactorReceiver.closeAsync(message, condition))
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(reactorReceiver.closeAsync(message, condition)).expectComplete().verify(VERIFY_TIMEOUT);
 
         // Assert
-        StepVerifier.create(reactorReceiver.getEndpointStates())
+        StepVerifier
+            .create(reactorReceiver.getEndpointStates())
             // Assert endpoint state completes if localClose() scheduling was rejected.
             .expectComplete()
             .verify(VERIFY_TIMEOUT);
@@ -646,7 +737,8 @@ class ReactorReceiverTest {
 
         eventLoopScheduler.schedule(() -> {
             // mimicking closeAsync.subscribe() from event-loop single-thread.
-            StepVerifier stepVerifier = StepVerifier.create(reactorReceiver.closeAsync(message, condition))
+            StepVerifier stepVerifier = StepVerifier
+                .create(reactorReceiver.closeAsync(message, condition))
                 .expectComplete()
                 .verifyLater();
 
@@ -660,7 +752,8 @@ class ReactorReceiverTest {
             // Assert
             closeAsyncVerifier.get().verify(VERIFY_TIMEOUT);
 
-            StepVerifier.create(reactorReceiver.getEndpointStates())
+            StepVerifier
+                .create(reactorReceiver.getEndpointStates())
                 .expectNext(AmqpEndpointState.CLOSED)
                 .expectComplete()
                 .verify(VERIFY_TIMEOUT);
@@ -697,9 +790,7 @@ class ReactorReceiverTest {
         reactorReceiver.dispose();
 
         // Assert
-        StepVerifier.create(reactorReceiver.closeAsync())
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(reactorReceiver.closeAsync()).expectComplete().verify(VERIFY_TIMEOUT);
 
         assertTrue(reactorReceiver.isDisposed());
 
@@ -728,7 +819,8 @@ class ReactorReceiverTest {
         }).when(receiver).close();
 
         // Assert and Act
-        StepVerifier.create(reactorReceiver.receive())
+        StepVerifier
+            .create(reactorReceiver.receive())
             .then(() -> authorizationResults.error(error))
             .expectComplete()
             .verify(VERIFY_TIMEOUT);
@@ -755,7 +847,8 @@ class ReactorReceiverTest {
         }).when(receiver).close();
 
         // Assert and Act
-        StepVerifier.create(reactorReceiver.receive())
+        StepVerifier
+            .create(reactorReceiver.receive())
             .then(authorizationResults::complete)
             .expectComplete()
             .verify(VERIFY_TIMEOUT);
@@ -765,11 +858,101 @@ class ReactorReceiverTest {
     void receiveMetricsAreReportedWithMessageIsReceived() throws IOException {
         // Arrange
         // This message was copied from one that was received.
-        final byte[] messageBytes = new byte[] { 0, 83, 114, -63, 73, 6, -93, 21, 120, 45, 111, 112, 116, 45, 115, 101,
-            113, 117, 101, 110, 99, 101, 45, 110, 117, 109, 98, 101, 114, 84, 42, -93, 12, 120, 45, 111, 112, 116, 45,
-            111, 102, 102, 115, 101, 116, -95, 1, 48, -93, 19, 120, 45, 111, 112, 116, 45, 101, 110, 113, 117, 101, 117,
-            101, 100, 45, 116, 105, 109, 101, -125, 0, 0, 1, 112, -54, 124, -41, 90, 0, 83, 117, -96, 12, 80, 111, 115,
-            105, 116, 105, 111, 110, 53, 58, 32, 48};
+        final byte[] messageBytes = new byte[] { 0,
+            83,
+            114,
+            -63,
+            73,
+            6,
+            -93,
+            21,
+            120,
+            45,
+            111,
+            112,
+            116,
+            45,
+            115,
+            101,
+            113,
+            117,
+            101,
+            110,
+            99,
+            101,
+            45,
+            110,
+            117,
+            109,
+            98,
+            101,
+            114,
+            84,
+            42,
+            -93,
+            12,
+            120,
+            45,
+            111,
+            112,
+            116,
+            45,
+            111,
+            102,
+            102,
+            115,
+            101,
+            116,
+            -95,
+            1,
+            48,
+            -93,
+            19,
+            120,
+            45,
+            111,
+            112,
+            116,
+            45,
+            101,
+            110,
+            113,
+            117,
+            101,
+            117,
+            101,
+            100,
+            45,
+            116,
+            105,
+            109,
+            101,
+            -125,
+            0,
+            0,
+            1,
+            112,
+            -54,
+            124,
+            -41,
+            90,
+            0,
+            83,
+            117,
+            -96,
+            12,
+            80,
+            111,
+            115,
+            105,
+            116,
+            105,
+            111,
+            110,
+            53,
+            58,
+            32,
+            48 };
 
         // change if changing message above
         long sequenceNumber = 42;
@@ -804,8 +987,8 @@ class ReactorReceiverTest {
 
         TestMeter meter = new TestMeter();
         AmqpMetricsProvider metricsProvider = new AmqpMetricsProvider(meter, "namespace", "name/and/partition");
-        ReactorReceiver reactorReceiverWithMetrics = new ReactorReceiver(amqpConnection, "name/and/partition", receiver, receiverHandler, tokenManager,
-            reactorDispatcher, retryOptions, metricsProvider);
+        ReactorReceiver reactorReceiverWithMetrics = new ReactorReceiver(amqpConnection, "name/and/partition", receiver,
+            receiverHandler, tokenManager, reactorDispatcher, retryOptions, metricsProvider);
 
         TestGauge sequenceNumberMetric = meter.getGauges().get("messaging.az.amqp.prefetch.sequence_number");
         TestGauge.Subscription subscription = sequenceNumberMetric.getSubscriptions().get(0);
@@ -819,7 +1002,8 @@ class ReactorReceiverTest {
         }).when(reactorDispatcher).invoke(any(Runnable.class));
 
         // Act & Assert
-        StepVerifier.create(reactorReceiverWithMetrics.receive())
+        StepVerifier
+            .create(reactorReceiverWithMetrics.receive())
             .then(() -> receiverHandler.onDelivery(event))
             .thenCancel()
             .verify(VERIFY_TIMEOUT);
@@ -835,7 +1019,10 @@ class ReactorReceiverTest {
         assertEquals("name", measurement.getAttributes().get(ClientConstants.ENTITY_NAME_KEY));
         assertEquals("name/and/partition", measurement.getAttributes().get(ClientConstants.ENTITY_PATH_KEY));
 
-        List<TestMeasurement<Long>> requestedCredits = meter.getCounters().get("messaging.az.amqp.consumer.credits.requested").getMeasurements();
+        List<TestMeasurement<Long>> requestedCredits = meter
+            .getCounters()
+            .get("messaging.az.amqp.consumer.credits.requested")
+            .getMeasurements();
         assertEquals(1, requestedCredits.size());
         TestMeasurement<Long> measurement2 = requestedCredits.get(0);
         assertEquals(creditsToAdd, measurement2.getValue());

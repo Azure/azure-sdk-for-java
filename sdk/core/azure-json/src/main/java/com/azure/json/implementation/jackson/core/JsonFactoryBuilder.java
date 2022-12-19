@@ -17,8 +17,7 @@ import com.azure.json.implementation.jackson.core.json.JsonWriteFeature;
  *
  * @since 2.10
  */
-public class JsonFactoryBuilder extends TSFBuilder<JsonFactory, JsonFactoryBuilder>
-{
+public class JsonFactoryBuilder extends TSFBuilder<JsonFactory, JsonFactoryBuilder> {
     protected CharacterEscapes _characterEscapes;
 
     protected SerializableString _rootValueSeparator;
@@ -130,7 +129,7 @@ public class JsonFactoryBuilder extends TSFBuilder<JsonFactory, JsonFactoryBuild
     }
 
     // // // JSON-specific helper objects, settings
-    
+
     /**
      * Method for defining custom escapes factory uses for {@link JsonGenerator}s
      * it creates.
@@ -223,13 +222,22 @@ public class JsonFactoryBuilder extends TSFBuilder<JsonFactory, JsonFactoryBuild
     }
 
     // // // Accessors for JSON-specific settings
-    
-    public CharacterEscapes characterEscapes() { return _characterEscapes; }
-    public SerializableString rootValueSeparator() { return _rootValueSeparator; }
 
-    public int highestNonEscapedChar() { return _maximumNonEscapedChar; }
+    public CharacterEscapes characterEscapes() {
+        return _characterEscapes;
+    }
 
-    public char quoteChar() { return _quoteChar; }
+    public SerializableString rootValueSeparator() {
+        return _rootValueSeparator;
+    }
+
+    public int highestNonEscapedChar() {
+        return _maximumNonEscapedChar;
+    }
+
+    public char quoteChar() {
+        return _quoteChar;
+    }
 
     @Override
     public JsonFactory build() {

@@ -132,7 +132,8 @@ public class MockHttpClient extends NoOpHttpClient {
                     }
                     response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, result);
                 } else if ("/datetimerfc1123".equals(requestPathLower)) {
-                    final DateTimeRfc1123 now = new DateTimeRfc1123(OffsetDateTime.ofInstant(Instant.ofEpochSecond(0), ZoneOffset.UTC));
+                    final DateTimeRfc1123 now = new DateTimeRfc1123(OffsetDateTime
+                        .ofInstant(Instant.ofEpochSecond(0), ZoneOffset.UTC));
                     final String result = now.toString();
                     response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, result);
                 } else if ("/unixtime".equals(requestPathLower)) {
@@ -184,11 +185,12 @@ public class MockHttpClient extends NoOpHttpClient {
                 } else if (requestPathLower.startsWith("/voideagerreadoom")) {
                     response = new MockHttpResponse(request, 200);
                 } else if (requestPathLower.startsWith("/voiderrorreturned")) {
-                    response = new MockHttpResponse(request, 400,
-                        "void exception body thrown".getBytes(StandardCharsets.UTF_8));
+                    response = new MockHttpResponse(request, 400, "void exception body thrown"
+                        .getBytes(StandardCharsets.UTF_8));
                 }
             } else if ("echo.org".equalsIgnoreCase(requestHost)) {
-                return FluxUtil.collectBytesInByteBufferStream(request.getBody())
+                return FluxUtil
+                    .collectBytesInByteBufferStream(request.getBody())
                     .map(bytes -> new MockHttpResponse(request, 200, new HttpHeaders(request.getHeaders()), bytes));
             }
         } catch (Exception ex) {
@@ -210,7 +212,8 @@ public class MockHttpClient extends NoOpHttpClient {
     private static String bodyToString(HttpRequest request) {
         String body = "";
         if (request.getBody() != null) {
-            Mono<String> asyncString = FluxUtil.collectBytesInByteBufferStream(request.getBody())
+            Mono<String> asyncString = FluxUtil
+                .collectBytesInByteBufferStream(request.getBody())
                 .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
             body = asyncString.block();
         }
@@ -242,10 +245,7 @@ public class MockHttpClient extends NoOpHttpClient {
 
     private static String cleanseUrl(URL url) {
         StringBuilder builder = new StringBuilder();
-        builder.append(url.getProtocol())
-            .append("://")
-            .append(url.getHost())
-            .append(url.getPath().replace("%20", " "));
+        builder.append(url.getProtocol()).append("://").append(url.getHost()).append(url.getPath().replace("%20", " "));
 
         if (url.getQuery() != null) {
             builder.append("?").append(url.getQuery().replace("%20", " "));

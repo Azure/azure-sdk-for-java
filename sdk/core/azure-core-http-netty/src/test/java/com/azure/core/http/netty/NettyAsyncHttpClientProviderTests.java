@@ -81,7 +81,9 @@ public class NettyAsyncHttpClientProviderTests {
         NettyAsyncHttpClient httpClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientProvider()
             .createInstance(clientOptions);
 
-        Integer connectTimeout = (Integer) httpClient.nettyClient.configuration().options()
+        Integer connectTimeout = (Integer) httpClient.nettyClient
+            .configuration()
+            .options()
             .get(ChannelOption.CONNECT_TIMEOUT_MILLIS);
         assertEquals((int) expectedTimeout, connectTimeout.intValue());
         assertEquals(expectedTimeout, httpClient.writeTimeout);
@@ -91,17 +93,16 @@ public class NettyAsyncHttpClientProviderTests {
 
     @Test
     @Disabled("Due to a bug in reactor-netty that doesn't read maxConnections value from implementation."
-            + "Bug fix will be available in reactor-netty version 1.0.15. See https://github.com/reactor/reactor-netty/issues/1941#issuecomment-997846176")
+        + "Bug fix will be available in reactor-netty version 1.0.15. See https://github.com/reactor/reactor-netty/issues/1941#issuecomment-997846176")
     public void testDefaultMaxConnections() {
         NettyAsyncHttpClient httpClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientProvider()
-                .createInstance(null);
+            .createInstance(null);
         int actualMaxConnections = httpClient.nettyClient.configuration().connectionProvider().maxConnections();
         // There's a bug in reactor-netty that doesn't read the `maxConnections from the implementation of
         // ConnectionProvider. It reads from the default implementation in the interface which always returns -1.
         // assertEquals(500, actualMaxConnections);
 
-        httpClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientProvider()
-                .createInstance(new HttpClientOptions());
+        httpClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientProvider().createInstance(new HttpClientOptions());
         actualMaxConnections = httpClient.nettyClient.configuration().connectionProvider().maxConnections();
         // assertEquals(500, actualMaxConnections);
     }

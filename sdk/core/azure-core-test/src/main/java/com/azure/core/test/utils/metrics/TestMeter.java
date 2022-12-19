@@ -70,8 +70,7 @@ public class TestMeter implements Meter {
     }
 
     @Override
-    public void close() {
-    }
+    public void close() {}
 
     /**
      * Gets histograms created with this meter.
@@ -110,4 +109,3 @@ public class TestMeter implements Meter {
     }
 
 }
-

@@ -3,7 +3,6 @@
 
 package com.azure.core.http.okhttp.implementation;
 
-
 import com.azure.core.implementation.util.FileContent;
 import okio.Buffer;
 import okio.BufferedSink;
@@ -29,7 +28,7 @@ public class OkHttpFileRequestBodyTest {
     private static final Random RANDOM = new Random();
 
     @ParameterizedTest
-    @ValueSource(ints = {1, 10, 127, 1024, 1024 + 113, 10 * 1024 * 1024, 10 * 1024 * 1024 + 113})
+    @ValueSource(ints = { 1, 10, 127, 1024, 1024 + 113, 10 * 1024 * 1024, 10 * 1024 * 1024 + 113 })
     public void transferContentTransferAll(int size) throws Exception {
         Path file = Files.createTempFile("OkHttpFileRequestBodyTest", null);
         file.toFile().deleteOnExit();
@@ -37,8 +36,8 @@ public class OkHttpFileRequestBodyTest {
         RANDOM.nextBytes(bytes);
         Files.write(file, bytes);
 
-        OkHttpFileRequestBody fileRequestBody = new OkHttpFileRequestBody(
-            new FileContent(file, 1024, 0L, null), bytes.length, null);
+        OkHttpFileRequestBody fileRequestBody = new OkHttpFileRequestBody(new FileContent(file, 1024, 0L, null),
+            bytes.length, null);
 
         TestSink sink = new TestSink(false);
 
@@ -48,7 +47,7 @@ public class OkHttpFileRequestBodyTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {1, 10, 127, 1024, 1024 + 113, 10 * 1024 * 1024, 10 * 1024 * 1024 + 113})
+    @ValueSource(ints = { 1, 10, 127, 1024, 1024 + 113, 10 * 1024 * 1024, 10 * 1024 * 1024 + 113 })
     public void transferContentWithIncompleteTransferTo(int size) throws Exception {
         Path file = Files.createTempFile("OkHttpFileRequestBodyTest", null);
         file.toFile().deleteOnExit();
@@ -56,8 +55,8 @@ public class OkHttpFileRequestBodyTest {
         RANDOM.nextBytes(bytes);
         Files.write(file, bytes);
 
-        OkHttpFileRequestBody fileRequestBody = new OkHttpFileRequestBody(
-            new FileContent(file, 1024, 0L, null), bytes.length, null);
+        OkHttpFileRequestBody fileRequestBody = new OkHttpFileRequestBody(new FileContent(file, 1024, 0L, null),
+            bytes.length, null);
 
         TestSink sink = new TestSink(true);
 
@@ -67,7 +66,7 @@ public class OkHttpFileRequestBodyTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {1, 10, 127, 1024, 1024 + 113, 10 * 1024 * 1024, 10 * 1024 * 1024 + 113})
+    @ValueSource(ints = { 1, 10, 127, 1024, 1024 + 113, 10 * 1024 * 1024, 10 * 1024 * 1024 + 113 })
     public void transferContentWithIncompleteTransferToWithOversizeContent(int size) throws Exception {
         Path file = Files.createTempFile("OkHttpFileRequestBodyTest", null);
         file.toFile().deleteOnExit();
@@ -75,8 +74,8 @@ public class OkHttpFileRequestBodyTest {
         RANDOM.nextBytes(bytes);
         Files.write(file, bytes);
 
-        OkHttpFileRequestBody fileRequestBody = new OkHttpFileRequestBody(
-            new FileContent(file, 1024, 0L, size + 112L), bytes.length, null);
+        OkHttpFileRequestBody fileRequestBody = new OkHttpFileRequestBody(new FileContent(file, 1024, 0L, size + 112L),
+            bytes.length, null);
 
         TestSink sink = new TestSink(true);
 
@@ -241,7 +240,7 @@ public class OkHttpFileRequestBodyTest {
 
             if (simulateIncompleteRead && src.remaining() > 1) {
                 buf = new byte[src.remaining() - 1];
-            } else  {
+            } else {
                 buf = new byte[src.remaining()];
             }
             src.get(buf);

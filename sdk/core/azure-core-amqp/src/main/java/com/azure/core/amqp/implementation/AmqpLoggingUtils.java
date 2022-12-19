@@ -25,8 +25,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.SIGNAL_TYPE_KEY
  */
 public final class AmqpLoggingUtils {
 
-    private AmqpLoggingUtils() {
-    }
+    private AmqpLoggingUtils() {}
 
     /**
      * Creates logging context with connectionId.
@@ -43,13 +42,13 @@ public final class AmqpLoggingUtils {
     /**
      * Adds {@link SignalType} under {@code signalType} key and {@link reactor.core.publisher.Sinks.EmitResult}
      * under {@code emitResult} key to the {@link LoggingEventBuilder}
-
+    
      * @return updated {@link LoggingEventBuilder} for chaining.
      */
-    public static LoggingEventBuilder addSignalTypeAndResult(LoggingEventBuilder logBuilder, SignalType signalType, Sinks.EmitResult result) {
-        return logBuilder
-            .addKeyValue(SIGNAL_TYPE_KEY, signalType)
-            .addKeyValue(EMIT_RESULT_KEY, result);
+    public static LoggingEventBuilder addSignalTypeAndResult(LoggingEventBuilder logBuilder,
+                                                             SignalType signalType,
+                                                             Sinks.EmitResult result) {
+        return logBuilder.addKeyValue(SIGNAL_TYPE_KEY, signalType).addKeyValue(EMIT_RESULT_KEY, result);
     }
 
     /**
@@ -57,7 +56,7 @@ public final class AmqpLoggingUtils {
      * and {@code getDescription()} under {@code errorDescription} keys.
      *
      * If errorCondition is {@code null} writes {@code n/a}.
-
+    
      * @return updated {@link LoggingEventBuilder} for chaining.
      */
     public static LoggingEventBuilder addErrorCondition(LoggingEventBuilder logBuilder, ErrorCondition errorCondition) {
@@ -69,7 +68,7 @@ public final class AmqpLoggingUtils {
 
         return logBuilder
             .addKeyValue(ERROR_CONDITION_KEY, errorCondition.getCondition())
-            .addKeyValue(ERROR_DESCRIPTION_KEY,  errorCondition.getDescription());
+            .addKeyValue(ERROR_DESCRIPTION_KEY, errorCondition.getDescription());
     }
 
     /**
@@ -81,7 +80,8 @@ public final class AmqpLoggingUtils {
      * </ul>
      * @return updated {@link LoggingEventBuilder} for chaining.
      */
-    public static LoggingEventBuilder addShutdownSignal(LoggingEventBuilder logBuilder, AmqpShutdownSignal shutdownSignal) {
+    public static LoggingEventBuilder addShutdownSignal(LoggingEventBuilder logBuilder,
+                                                        AmqpShutdownSignal shutdownSignal) {
         return logBuilder
             .addKeyValue("isTransient", shutdownSignal.isTransient())
             .addKeyValue("isInitiatedByClient", shutdownSignal.isInitiatedByClient())
@@ -89,4 +89,3 @@ public final class AmqpLoggingUtils {
             .addKeyValue("shutdownMessage", shutdownSignal);
     }
 }
-

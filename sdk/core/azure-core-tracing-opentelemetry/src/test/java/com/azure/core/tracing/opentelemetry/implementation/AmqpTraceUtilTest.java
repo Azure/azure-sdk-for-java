@@ -13,7 +13,6 @@ import org.mockito.MockitoAnnotations;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-
 public class AmqpTraceUtilTest {
 
     @Mock
@@ -37,8 +36,7 @@ public class AmqpTraceUtilTest {
         AmqpTraceUtil.parseStatusMessage(parentSpan, "", null);
 
         // Assert
-        verify(parentSpan, times(1))
-            .setStatus(StatusCode.UNSET, "");
+        verify(parentSpan, times(1)).setStatus(StatusCode.UNSET, "");
 
     }
 
@@ -49,8 +47,7 @@ public class AmqpTraceUtilTest {
         AmqpTraceUtil.parseStatusMessage(parentSpan, "success", null);
 
         // Assert
-        verify(parentSpan, times(1))
-            .setStatus(StatusCode.OK);
+        verify(parentSpan, times(1)).setStatus(StatusCode.OK);
     }
 
     @Test
@@ -61,7 +58,6 @@ public class AmqpTraceUtilTest {
         AmqpTraceUtil.parseStatusMessage(parentSpan, "", error);
 
         // Assert
-        verify(parentSpan, times(1))
-            .recordException(error);
+        verify(parentSpan, times(1)).recordException(error);
     }
 }

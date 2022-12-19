@@ -53,7 +53,8 @@ public class HandlerTest {
     @Test
     public void initialHandlerState() {
         // Act & Assert
-        StepVerifier.create(handler.getEndpointStates())
+        StepVerifier
+            .create(handler.getEndpointStates())
             .expectNext(EndpointState.UNINITIALIZED)
             .then(handler::close)
             .expectNext(EndpointState.CLOSED)
@@ -66,17 +67,15 @@ public class HandlerTest {
     @Test
     public void propagatesDistinctStates() {
         // Act & Assert
-        StepVerifier.create(handler.getEndpointStates())
-            .expectNext(EndpointState.UNINITIALIZED)
-            .then(() -> {
-                // Verify that it only propagates the UNINITIALIZED state once.
-                // In previous incarnation of distinct, it hashed all the previous values and would only push values
-                // that were not seen yet.
-                handler.onNext(EndpointState.ACTIVE);
-                handler.onNext(EndpointState.UNINITIALIZED);
-                handler.onNext(EndpointState.UNINITIALIZED);
-                handler.onNext(EndpointState.CLOSED);
-            })
+        StepVerifier.create(handler.getEndpointStates()).expectNext(EndpointState.UNINITIALIZED).then(() -> {
+            // Verify that it only propagates the UNINITIALIZED state once.
+            // In previous incarnation of distinct, it hashed all the previous values and would only push values
+            // that were not seen yet.
+            handler.onNext(EndpointState.ACTIVE);
+            handler.onNext(EndpointState.UNINITIALIZED);
+            handler.onNext(EndpointState.UNINITIALIZED);
+            handler.onNext(EndpointState.CLOSED);
+        })
             .expectNext(EndpointState.ACTIVE, EndpointState.UNINITIALIZED, EndpointState.CLOSED)
             .then(handler::close)
             .verifyComplete();
@@ -85,17 +84,11 @@ public class HandlerTest {
     @Test
     public void propagatesStates() {
         // Act & Assert
-        StepVerifier.create(handler.getEndpointStates())
-            .expectNext(EndpointState.UNINITIALIZED)
-            .then(() -> {
-                // Verify that it only propagates the active state once.
-                handler.onNext(EndpointState.ACTIVE);
-                handler.onNext(EndpointState.ACTIVE);
-            })
-            .expectNext(EndpointState.ACTIVE)
-            .then(handler::close)
-            .expectNext(EndpointState.CLOSED)
-            .verifyComplete();
+        StepVerifier.create(handler.getEndpointStates()).expectNext(EndpointState.UNINITIALIZED).then(() -> {
+            // Verify that it only propagates the active state once.
+            handler.onNext(EndpointState.ACTIVE);
+            handler.onNext(EndpointState.ACTIVE);
+        }).expectNext(EndpointState.ACTIVE).then(handler::close).expectNext(EndpointState.CLOSED).verifyComplete();
     }
 
     @Test
@@ -105,7 +98,8 @@ public class HandlerTest {
         final Throwable exception = new AmqpException(false, "Some test message.", context);
 
         // Act & Assert
-        StepVerifier.create(handler.getEndpointStates())
+        StepVerifier
+            .create(handler.getEndpointStates())
             .expectNext(EndpointState.UNINITIALIZED)
             .then(() -> handler.onError(exception))
             .expectErrorMatches(e -> e.equals(exception))
@@ -120,16 +114,13 @@ public class HandlerTest {
         final Throwable exception2 = new AmqpException(false, "Some test message2.", context);
 
         // Act & Assert
-        StepVerifier.create(handler.getEndpointStates())
-            .expectNext(EndpointState.UNINITIALIZED)
-            .then(() -> {
-                handler.onError(exception);
-                handler.onError(exception2);
-            })
-            .expectErrorMatches(e -> e.equals(exception))
-            .verify();
+        StepVerifier.create(handler.getEndpointStates()).expectNext(EndpointState.UNINITIALIZED).then(() -> {
+            handler.onError(exception);
+            handler.onError(exception2);
+        }).expectErrorMatches(e -> e.equals(exception)).verify();
 
-        StepVerifier.create(handler.getEndpointStates())
+        StepVerifier
+            .create(handler.getEndpointStates())
             .expectNext(EndpointState.UNINITIALIZED)
             .expectErrorMatches(e -> e.equals(exception))
             .verify();
@@ -138,7 +129,8 @@ public class HandlerTest {
     @Test
     public void completesOnce() {
         // Act & Assert
-        StepVerifier.create(handler.getEndpointStates())
+        StepVerifier
+            .create(handler.getEndpointStates())
             .expectNext(EndpointState.UNINITIALIZED)
             .then(() -> handler.onNext(EndpointState.ACTIVE))
             .expectNext(EndpointState.ACTIVE)
@@ -148,10 +140,7 @@ public class HandlerTest {
             .verify();
 
         // The last state is always replayed before it is closed.
-        StepVerifier.create(handler.getEndpointStates())
-            .expectNext(EndpointState.CLOSED)
-            .expectComplete()
-            .verify();
+        StepVerifier.create(handler.getEndpointStates()).expectNext(EndpointState.CLOSED).expectComplete().verify();
     }
 
     /**
@@ -165,37 +154,32 @@ public class HandlerTest {
         final int parallelism = Runtime.getRuntime().availableProcessors();
         final Disposable subscription = handler.getEndpointStates().subscribe();
 
-        Flux.range(0, 500)
-            .parallel(parallelism)
-            .runOn(Schedulers.parallel())
-            .flatMap(index -> {
-                final EndpointState state;
-                final int current = index % 3;
+        Flux.range(0, 500).parallel(parallelism).runOn(Schedulers.parallel()).flatMap(index -> {
+            final EndpointState state;
+            final int current = index % 3;
 
-                switch (current) {
-                    case 0:
-                        state = EndpointState.ACTIVE;
-                        break;
-                    case 1:
-                        state = EndpointState.CLOSED;
-                        break;
-                    case 2:
-                        state = EndpointState.UNINITIALIZED;
-                        break;
-                    default:
-                        throw new IllegalStateException("This shouldn't have happened. value:" + index);
-                }
+            switch (current) {
+                case 0:
+                    state = EndpointState.ACTIVE;
+                    break;
+                case 1:
+                    state = EndpointState.CLOSED;
+                    break;
+                case 2:
+                    state = EndpointState.UNINITIALIZED;
+                    break;
+                default:
+                    throw new IllegalStateException("This shouldn't have happened. value:" + index);
+            }
 
-                if (index == 500) {
-                    handler.onError(new RuntimeException("Test Error."));
-                } else {
-                    handler.onNext(state);
-                }
+            if (index == 500) {
+                handler.onError(new RuntimeException("Test Error."));
+            } else {
+                handler.onNext(state);
+            }
 
-                return Mono.empty();
-            })
-            .then()
-            .block();
+            return Mono.empty();
+        }).then().block();
 
         subscription.dispose();
     }

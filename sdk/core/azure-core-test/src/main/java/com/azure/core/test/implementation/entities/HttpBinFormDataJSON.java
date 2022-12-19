@@ -44,9 +44,12 @@ public class HttpBinFormDataJSON {
     }
 
     public enum PizzaSize {
-        SMALL("small"), MEDIUM("medium"), LARGE("large");
+        SMALL("small"),
+        MEDIUM("medium"),
+        LARGE("large");
 
         private String value;
+
         PizzaSize(String value) {
             this.value = value;
         }
@@ -109,4 +112,3 @@ public class HttpBinFormDataJSON {
         }
     }
 }
-

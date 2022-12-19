@@ -38,10 +38,7 @@ public class VertxAsyncHttpClientRestProxyWithAsyncHttpProxyTests extends RestPr
 
     @Override
     protected HttpClient createHttpClient() {
-        ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP,
-                new InetSocketAddress("localhost", 8888));
-        return new VertxAsyncHttpClientBuilder()
-                .proxy(proxyOptions)
-                .build();
+        ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888));
+        return new VertxAsyncHttpClientBuilder().proxy(proxyOptions).build();
     }
 }

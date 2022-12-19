@@ -30,8 +30,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Isolated
 public class GlobalOpenTelemetryMetricsTests {
     private static final long SECOND_NANOS = 1_000_000_000;
-    private static final Resource RESOURCE =
-        Resource.create(Attributes.of(stringKey("resource_key"), "resource_value"));
+    private static final Resource RESOURCE = Resource
+        .create(Attributes.of(stringKey("resource_key"), "resource_value"));
 
     private InMemoryMetricReader sdkMeterReader;
     private TestClock testClock;
@@ -42,7 +42,8 @@ public class GlobalOpenTelemetryMetricsTests {
         GlobalOpenTelemetry.resetForTest();
         testClock = TestClock.create();
         sdkMeterReader = InMemoryMetricReader.create();
-        sdkMeterProvider = SdkMeterProvider.builder()
+        sdkMeterProvider = SdkMeterProvider
+            .builder()
             .setClock(testClock)
             .setResource(RESOURCE)
             .registerMetricReader(sdkMeterReader)
@@ -65,27 +66,20 @@ public class GlobalOpenTelemetryMetricsTests {
         histogram.record(1, null, Context.NONE);
         testClock.advance(Duration.ofNanos(SECOND_NANOS));
         assertThat(sdkMeterReader.collectAllMetrics())
-            .satisfiesExactly(
-                metric ->
-                    assertThat(metric)
-                        .hasResource(RESOURCE)
-                        .hasInstrumentationScope(InstrumentationScopeInfo.create("az.sdk-name", null, null))
-                        .hasName("az.sdk.test-histogram")
-                        .hasDescription("important metric")
-                        .hasHistogramSatisfying(
-                            h -> h.isCumulative()
-                                    .hasPointsSatisfying(
-                                        point ->
-                                            point
-                                                .hasStartEpochNanos(testClock.now() - SECOND_NANOS)
-                                                .hasEpochNanos(testClock.now())
-                                                .hasAttributes(Attributes.empty())
-                                                .hasCount(1)
-                                                .hasSum(1)
-                                                .hasBucketBoundaries(
-                                                    5, 10, 25, 50, 75, 100, 250, 500, 750, 1_000, 2_500,
-                                                    5_000, 7_500, 10_000)
-                                                .hasBucketCounts(
-                                                    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))));
+            .satisfiesExactly(metric -> assertThat(metric)
+                .hasResource(RESOURCE)
+                .hasInstrumentationScope(InstrumentationScopeInfo.create("az.sdk-name", null, null))
+                .hasName("az.sdk.test-histogram")
+                .hasDescription("important metric")
+                .hasHistogramSatisfying(h -> h
+                    .isCumulative()
+                    .hasPointsSatisfying(point -> point
+                        .hasStartEpochNanos(testClock.now() - SECOND_NANOS)
+                        .hasEpochNanos(testClock.now())
+                        .hasAttributes(Attributes.empty())
+                        .hasCount(1)
+                        .hasSum(1)
+                        .hasBucketBoundaries(5, 10, 25, 50, 75, 100, 250, 500, 750, 1_000, 2_500, 5_000, 7_500, 10_000)
+                        .hasBucketCounts(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))));
     }
 }

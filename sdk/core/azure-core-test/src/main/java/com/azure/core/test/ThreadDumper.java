@@ -50,12 +50,9 @@ public class ThreadDumper implements BeforeAllCallback {
         });
         Runtime.getRuntime().addShutdownHook(new Thread(service::shutdown));
 
-        service.scheduleAtFixedRate(
-            ThreadDumper::printThreadStacks,
-            INITIAL_DELAY_IN_MINUTES,
-            RATE_IN_MINUTES,
-            TimeUnit.MINUTES
-        );
+        service
+            .scheduleAtFixedRate(ThreadDumper::printThreadStacks, INITIAL_DELAY_IN_MINUTES, RATE_IN_MINUTES,
+                TimeUnit.MINUTES);
 
         return service;
     }

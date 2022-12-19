@@ -33,13 +33,21 @@ public class SessionHandler extends Handler {
      * @deprecated use {@link SessionHandler#SessionHandler(String, String, String, ReactorDispatcher, Duration, AmqpMetricsProvider)} instead.
      */
     @Deprecated
-    public SessionHandler(String connectionId, String hostname, String sessionName, ReactorDispatcher reactorDispatcher,
+    public SessionHandler(String connectionId,
+                          String hostname,
+                          String sessionName,
+                          ReactorDispatcher reactorDispatcher,
                           Duration openTimeout) {
-        this(connectionId, hostname, sessionName, reactorDispatcher, openTimeout, new AmqpMetricsProvider(null, hostname, null));
+        this(connectionId, hostname, sessionName, reactorDispatcher, openTimeout, new AmqpMetricsProvider(null,
+            hostname, null));
     }
 
-    public SessionHandler(String connectionId, String hostname, String sessionName, ReactorDispatcher reactorDispatcher,
-        Duration openTimeout, AmqpMetricsProvider metricProvider) {
+    public SessionHandler(String connectionId,
+                          String hostname,
+                          String sessionName,
+                          ReactorDispatcher reactorDispatcher,
+                          Duration openTimeout,
+                          AmqpMetricsProvider metricProvider) {
         super(connectionId, hostname);
         this.sessionName = sessionName;
         this.openTimeout = openTimeout;
@@ -62,17 +70,18 @@ public class SessionHandler extends Handler {
         try {
             reactorDispatcher.invoke(this::onSessionTimeout, this.openTimeout);
         } catch (IOException | RejectedExecutionException ioException) {
-            logger.atInfo()
+            logger
+                .atInfo()
                 .addKeyValue(SESSION_NAME_KEY, sessionName)
                 .addKeyValue("reactorDispatcherError", ioException.getMessage())
                 .log("onSessionLocalOpen");
 
             session.close();
 
-            final String message =
-                String.format(Locale.US, "onSessionLocalOpen connectionId[%s], entityName[%s], underlying IO of"
-                        + " reactorDispatcher faulted with error: %s",
-                    getConnectionId(), sessionName, ioException.getMessage());
+            final String message = String
+                .format(Locale.US, "onSessionLocalOpen connectionId[%s], entityName[%s], underlying IO of"
+                    + " reactorDispatcher faulted with error: %s", getConnectionId(), sessionName, ioException
+                        .getMessage());
             final Throwable exception = new AmqpException(false, message, ioException, getErrorContext());
 
             onError(exception);
@@ -90,7 +99,8 @@ public class SessionHandler extends Handler {
             logBuilder = logger.atInfo();
         }
 
-        logBuilder.addKeyValue(SESSION_NAME_KEY, sessionName)
+        logBuilder
+            .addKeyValue(SESSION_NAME_KEY, sessionName)
             .addKeyValue("sessionIncCapacity", session.getIncomingCapacity())
             .addKeyValue("sessionOutgoingWindow", session.getOutgoingWindow())
             .log("onSessionRemoteOpen");
@@ -100,9 +110,7 @@ public class SessionHandler extends Handler {
 
     @Override
     public void onSessionLocalClose(Event e) {
-        final ErrorCondition condition = (e != null && e.getSession() != null)
-            ? e.getSession().getCondition()
-            : null;
+        final ErrorCondition condition = (e != null && e.getSession() != null) ? e.getSession().getCondition() : null;
 
         addErrorCondition(logger.atVerbose(), condition)
             .addKeyValue(SESSION_NAME_KEY, sessionName)
@@ -133,9 +141,10 @@ public class SessionHandler extends Handler {
             final String id = getConnectionId();
             final AmqpErrorContext context = getErrorContext();
 
-            final Exception exception = ExceptionUtil.toException(condition.getCondition().toString(),
-                String.format(Locale.US, "onSessionRemoteClose connectionId[%s], entityName[%s] condition[%s]",
-                    id, sessionName, condition), context);
+            final Exception exception = ExceptionUtil
+                .toException(condition.getCondition().toString(), String
+                    .format(Locale.US, "onSessionRemoteClose connectionId[%s], entityName[%s] condition[%s]", id,
+                        sessionName, condition), context);
 
             metricsProvider.recordHandlerError(AmqpMetricsProvider.ErrorSource.SESSION, condition);
             onError(exception);
@@ -147,9 +156,7 @@ public class SessionHandler extends Handler {
         final Session session = e.getSession();
         final ErrorCondition condition = session != null ? session.getCondition() : null;
 
-        addErrorCondition(logger.atInfo(), condition)
-            .addKeyValue(SESSION_NAME_KEY, sessionName)
-            .log("onSessionFinal.");
+        addErrorCondition(logger.atInfo(), condition).addKeyValue(SESSION_NAME_KEY, sessionName).log("onSessionFinal.");
         close();
     }
 

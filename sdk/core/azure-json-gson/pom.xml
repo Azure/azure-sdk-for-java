@@ -49,6 +49,8 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.json.gson/com.azure.json.gson=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+
+    <spotless.disabled>false</spotless.disabled>
   </properties>
 
   <developers>

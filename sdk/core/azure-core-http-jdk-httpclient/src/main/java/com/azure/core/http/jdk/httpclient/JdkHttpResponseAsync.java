@@ -18,10 +18,9 @@ final class JdkHttpResponseAsync extends JdkHttpResponseBase {
     private volatile boolean disposed = false;
 
     JdkHttpResponseAsync(final HttpRequest request,
-        java.net.http.HttpResponse<Flow.Publisher<List<ByteBuffer>>> response) {
+                         java.net.http.HttpResponse<Flow.Publisher<List<ByteBuffer>>> response) {
         super(request, response.statusCode(), fromJdkHttpHeaders(response.headers()));
-        this.contentFlux = JdkFlowAdapter.flowPublisherToFlux(response.body())
-            .flatMapSequential(Flux::fromIterable);
+        this.contentFlux = JdkFlowAdapter.flowPublisherToFlux(response.body()).flatMapSequential(Flux::fromIterable);
     }
 
     @Override
@@ -29,14 +28,11 @@ final class JdkHttpResponseAsync extends JdkHttpResponseBase {
         return this.contentFlux.doFinally(signalType -> disposed = true);
     }
 
-
     @Override
     public void close() {
         if (!this.disposed) {
             this.disposed = true;
-            this.contentFlux
-                .subscribe()
-                .dispose();
+            this.contentFlux.subscribe().dispose();
         }
     }
 }

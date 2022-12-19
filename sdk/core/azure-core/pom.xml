@@ -80,6 +80,8 @@
 
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
+
+    <spotless.disabled>false</spotless.disabled>
   </properties>
 
   <developers>

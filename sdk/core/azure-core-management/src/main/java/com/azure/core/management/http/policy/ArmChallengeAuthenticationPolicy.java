@@ -27,10 +27,10 @@ import java.util.regex.Pattern;
  * authentication scenarios.
  */
 public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationPolicy {
-    private static final Pattern AUTHENTICATION_CHALLENGE_PATTERN =
-        Pattern.compile("(\\w+) ((?:\\w+=\".*?\"(?:, )?)+)(?:, )?");
-    private static final Pattern AUTHENTICATION_CHALLENGE_PARAMS_PATTERN =
-        Pattern.compile("(?:(\\w+)=\"([^\"\"]*)\")+");
+    private static final Pattern AUTHENTICATION_CHALLENGE_PATTERN = Pattern
+        .compile("(\\w+) ((?:\\w+=\".*?\"(?:, )?)+)(?:, )?");
+    private static final Pattern AUTHENTICATION_CHALLENGE_PARAMS_PATTERN = Pattern
+        .compile("(?:(\\w+)=\"([^\"\"]*)\")+");
     private static final String CLAIMS_PARAMETER = "claims";
     private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
     private static final String ARM_SCOPES_KEY = "ARMScopes";
@@ -80,10 +80,11 @@ public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationP
             if (response.getStatusCode() == 401 && authHeader != null) {
                 List<AuthenticationChallenge> challenges = parseChallenges(authHeader);
                 for (AuthenticationChallenge authenticationChallenge : challenges) {
-                    Map<String, String> extractedChallengeParams =
-                        parseChallengeParams(authenticationChallenge.getChallengeParameters());
+                    Map<String, String> extractedChallengeParams = parseChallengeParams(authenticationChallenge
+                        .getChallengeParameters());
                     if (extractedChallengeParams.containsKey(CLAIMS_PARAMETER)) {
-                        String claims = new String(Base64.getUrlDecoder()
+                        String claims = new String(Base64
+                            .getUrlDecoder()
                             .decode(extractedChallengeParams.get(CLAIMS_PARAMETER)), StandardCharsets.UTF_8);
 
                         String[] scopes;
@@ -98,10 +99,9 @@ public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationP
                         // If scopes wasn't configured in On Before logic or at constructor level,
                         // then this method will retrieve it again.
                         scopes = getScopes(context, scopes);
-                        return setAuthorizationHeader(context,
-                            new TokenRequestContext()
-                                .addScopes(scopes).setClaims(claims))
-                            .flatMap(b -> Mono.just(true));
+                        return setAuthorizationHeader(context, new TokenRequestContext()
+                            .addScopes(scopes)
+                            .setClaims(claims)).flatMap(b -> Mono.just(true));
                     }
                 }
             }
@@ -115,10 +115,11 @@ public class ArmChallengeAuthenticationPolicy extends BearerTokenAuthenticationP
         if (response.getStatusCode() == 401 && authHeader != null) {
             List<AuthenticationChallenge> challenges = parseChallenges(authHeader);
             for (AuthenticationChallenge authenticationChallenge : challenges) {
-                Map<String, String> extractedChallengeParams =
-                    parseChallengeParams(authenticationChallenge.getChallengeParameters());
+                Map<String, String> extractedChallengeParams = parseChallengeParams(authenticationChallenge
+                    .getChallengeParameters());
                 if (extractedChallengeParams.containsKey(CLAIMS_PARAMETER)) {
-                    String claims = new String(Base64.getUrlDecoder()
+                    String claims = new String(Base64
+                        .getUrlDecoder()
                         .decode(extractedChallengeParams.get(CLAIMS_PARAMETER)), StandardCharsets.UTF_8);
 
                     String[] scopes;

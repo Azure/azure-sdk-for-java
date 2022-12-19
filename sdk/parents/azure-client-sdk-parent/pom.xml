@@ -219,6 +219,10 @@
     <!-- Used by Java 18 and later to allow the security manager to be set while testing and linting. -->
     <java.security.manager.configuration></java.security.manager.configuration>
 
+    <!-- Disables Spotless linting. -->
+    <!-- Spotless is disabled by default until all libraries are manually updated, after that this setting will be removed. -->
+    <spotless.disabled>true</spotless.disabled>
+
     <!-- Skips Spotless applying code style formatting. -->
     <spotless.apply.skip>false</spotless.apply.skip>
 
@@ -913,6 +917,7 @@
           <artifactId>spotless-maven-plugin</artifactId>
           <version>2.28.0</version> <!-- {x-version-update;com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
           <configuration>
+            <skip>${spotless.disabled}</skip>
             <java>
               <eclipse>
                 <version>4.21.0</version>

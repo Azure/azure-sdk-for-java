@@ -8,13 +8,12 @@ package com.azure.json.implementation.jackson.core.format;
  * "strongest" value: that is, it should start with strongest match
  * criteria, and downgrading if criteria is not fulfilled.
  */
-public enum MatchStrength
-{
+public enum MatchStrength {
     /**
      * Value that indicates that given data can not be in given format.
      */
     NO_MATCH,
-    
+
     /**
      * Value that indicates that detector can not find out whether could
      * be a match or not.
@@ -36,7 +35,7 @@ public enum MatchStrength
      * non-standard JSON usage).
      */
     WEAK_MATCH,
-    
+
     /**
      * Value that indicates that given data conforms to (one of) canonical form(s) of
      * the data format.
@@ -58,6 +57,5 @@ public enum MatchStrength
      * Not all data formats have unique leading identifiers to allow full matches; for example,
      * JSON only has heuristic matches and can have at most {@link #SOLID_MATCH}) match.
      */
-    FULL_MATCH
-    ;
+    FULL_MATCH;
 }

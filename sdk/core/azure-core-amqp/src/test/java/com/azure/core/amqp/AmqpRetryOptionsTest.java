@@ -55,7 +55,8 @@ public class AmqpRetryOptionsTest {
         final AmqpRetryOptions options = new AmqpRetryOptions();
 
         // Act
-        final AmqpRetryOptions actual = options.setMode(retryMode)
+        final AmqpRetryOptions actual = options
+            .setMode(retryMode)
             .setMaxDelay(maxDelay)
             .setDelay(delay)
             .setMaxRetries(retries)
@@ -87,7 +88,8 @@ public class AmqpRetryOptionsTest {
         final int newRetries = 5;
         final AmqpRetryMode newRetryMode = AmqpRetryMode.EXPONENTIAL;
 
-        final AmqpRetryOptions original = new AmqpRetryOptions().setMode(retryMode)
+        final AmqpRetryOptions original = new AmqpRetryOptions()
+            .setMode(retryMode)
             .setMaxDelay(maxDelay)
             .setDelay(delay)
             .setMaxRetries(retries)
@@ -142,10 +144,7 @@ public class AmqpRetryOptionsTest {
     }
 
     public static Stream<Duration> invalidDurations() {
-        return Stream.of(
-            Duration.ZERO,
-            Duration.ofSeconds(-1)
-        );
+        return Stream.of(Duration.ZERO, Duration.ofSeconds(-1));
     }
 
     @MethodSource
@@ -194,8 +193,7 @@ public class AmqpRetryOptionsTest {
     @Test
     public void invalidRetries() {
         final int retry = 5;
-        final AmqpRetryOptions options = new AmqpRetryOptions()
-            .setMaxRetries(retry);
+        final AmqpRetryOptions options = new AmqpRetryOptions().setMaxRetries(retry);
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> options.setMaxRetries(-1));
         Assertions.assertEquals(retry, options.getMaxRetries());

@@ -98,24 +98,20 @@ public class ReactorDispatcherTest {
         final ReactorDispatcher reactorDispatcher = new ReactorDispatcher("foo-bar", reactor, pipe);
 
         // Act & Assert
-        StepVerifier.create(reactorDispatcher.getShutdownSignal())
-            .then(() -> {
-                try {
-                    reactorDispatcher.invoke(work);
-                } catch (IOException e) {
-                    fail("Encountered exception. " + e);
-                }
+        StepVerifier.create(reactorDispatcher.getShutdownSignal()).then(() -> {
+            try {
+                reactorDispatcher.invoke(work);
+            } catch (IOException e) {
+                fail("Encountered exception. " + e);
+            }
 
-                final Selectable.Callback callback = closeScheduler.get();
-                assertNotNull(callback);
-                callback.run(selectable);
-            })
-            .assertNext(signal -> {
-                assertFalse(signal.isInitiatedByClient());
-                assertFalse(signal.isTransient());
-            })
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+            final Selectable.Callback callback = closeScheduler.get();
+            assertNotNull(callback);
+            callback.run(selectable);
+        }).assertNext(signal -> {
+            assertFalse(signal.isInitiatedByClient());
+            assertFalse(signal.isTransient());
+        }).expectComplete().verify(VERIFY_TIMEOUT);
 
         verify(sourceChannel).close();
         verify(sinkChannel).close();
@@ -129,9 +125,7 @@ public class ReactorDispatcherTest {
             .thenReturn(null);
 
         when(sourceChannel.isOpen()).thenReturn(true);
-        when(sourceChannel.read(any(ByteBuffer.class)))
-            .thenReturn(10)
-            .thenThrow(testException);
+        when(sourceChannel.read(any(ByteBuffer.class))).thenReturn(10).thenThrow(testException);
 
         when(sinkChannel.isOpen()).thenReturn(true);
         when(sinkChannel.write(any(ByteBuffer.class))).thenReturn(1);
@@ -139,14 +133,12 @@ public class ReactorDispatcherTest {
         final ReactorDispatcher reactorDispatcher = new ReactorDispatcher("foo-bar", reactor, pipe);
 
         // Act & Assert
-        StepVerifier.create(reactorDispatcher.getShutdownSignal())
-            .then(() -> {
-                final Selectable.Callback callback = workScheduler.get();
-                assertNotNull(callback);
-                callback.run(selectable);
-            })
-            .expectErrorMatches(error -> error instanceof RuntimeException
-                && error.getCause().equals(testException))
+        StepVerifier.create(reactorDispatcher.getShutdownSignal()).then(() -> {
+            final Selectable.Callback callback = workScheduler.get();
+            assertNotNull(callback);
+            callback.run(selectable);
+        })
+            .expectErrorMatches(error -> error instanceof RuntimeException && error.getCause().equals(testException))
             .verify(VERIFY_TIMEOUT);
     }
 }

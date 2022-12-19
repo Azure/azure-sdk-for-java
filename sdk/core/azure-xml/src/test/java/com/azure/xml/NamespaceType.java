@@ -22,15 +22,20 @@ public enum NamespaceType {
         }
 
         switch (type) {
-            case "Messaging": return MESSAGING;
-            case "NotificationHub": return NOTIFICATION_HUB;
-            case "Mixed": return MIXED;
-            case "EventHub": return EVENT_HUB;
-            case "Relay": return RELAY;
-            default: return null;
+            case "Messaging":
+                return MESSAGING;
+            case "NotificationHub":
+                return NOTIFICATION_HUB;
+            case "Mixed":
+                return MIXED;
+            case "EventHub":
+                return EVENT_HUB;
+            case "Relay":
+                return RELAY;
+            default:
+                return null;
         }
     }
-
 
     @Override
     public String toString() {

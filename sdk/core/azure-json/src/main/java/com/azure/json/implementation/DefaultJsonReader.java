@@ -78,13 +78,19 @@ public final class DefaultJsonReader extends JsonReader {
         return new DefaultJsonReader(FACTORY.createParser(reader), reader.markSupported(), null, null, options);
     }
 
-    private DefaultJsonReader(JsonParser parser, boolean resetSupported, byte[] jsonBytes, String jsonString,
-        JsonOptions options) {
+    private DefaultJsonReader(JsonParser parser,
+                              boolean resetSupported,
+                              byte[] jsonBytes,
+                              String jsonString,
+                              JsonOptions options) {
         this(parser, resetSupported, jsonBytes, jsonString, options.isNonNumericNumbersSupported());
     }
 
-    private DefaultJsonReader(JsonParser parser, boolean resetSupported, byte[] jsonBytes, String jsonString,
-        boolean nonNumericNumbersSupported) {
+    private DefaultJsonReader(JsonParser parser,
+                              boolean resetSupported,
+                              byte[] jsonBytes,
+                              String jsonString,
+                              boolean nonNumericNumbersSupported) {
         this.parser = parser;
         this.parser.configure(JsonReadFeature.ALLOW_NON_NUMERIC_NUMBERS.mappedFeature(), nonNumericNumbersSupported);
         this.resetSupported = resetSupported;
@@ -168,7 +174,8 @@ public final class DefaultJsonReader extends JsonReader {
             }
         } else {
             throw new IllegalStateException("Cannot buffer a JSON object from a non-object, non-field name "
-                + "starting location. Starting location: " + currentToken());
+                + "starting location. Starting location: "
+                + currentToken());
         }
     }
 
@@ -208,7 +215,7 @@ public final class DefaultJsonReader extends JsonReader {
      * be returned by specialty implementations that aren't used.
      */
     private static JsonToken mapToken(com.azure.json.implementation.jackson.core.JsonToken nextToken,
-        JsonToken currentToken) {
+                                      JsonToken currentToken) {
         // Special case for when currentToken is called after instantiating the JsonReader.
         if (nextToken == null && currentToken == null) {
             return null;

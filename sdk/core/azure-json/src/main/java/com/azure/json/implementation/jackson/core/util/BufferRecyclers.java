@@ -13,8 +13,7 @@ import com.azure.json.implementation.jackson.core.io.JsonStringEncoder;
  *
  * @since 2.9.2
  */
-public class BufferRecyclers
-{
+public class BufferRecyclers {
     /**
      * System property that is checked to see if recycled buffers (see {@link BufferRecycler})
      * should be tracked, for purpose of forcing release of all such buffers, typically
@@ -22,8 +21,8 @@ public class BufferRecyclers
      *
      * @since 2.9.6
      */
-    public final static String SYSTEM_PROPERTY_TRACK_REUSABLE_BUFFERS
-        = "com.azure.json.implementation.jackson.core.util.BufferRecyclers.trackReusableBuffers";
+    public final static String SYSTEM_PROPERTY_TRACK_REUSABLE_BUFFERS =
+        "com.azure.json.implementation.jackson.core.util.BufferRecyclers.trackReusableBuffers";
 
     /*
     /**********************************************************
@@ -39,7 +38,8 @@ public class BufferRecyclers
         boolean trackReusableBuffers = false;
         try {
             trackReusableBuffers = "true".equals(System.getProperty(SYSTEM_PROPERTY_TRACK_REUSABLE_BUFFERS));
-        } catch (SecurityException e) { }
+        } catch (SecurityException e) {
+        }
 
         _bufferRecyclerTracker = trackReusableBuffers ? ThreadLocalBufferManager.instance() : null;
     }
@@ -55,16 +55,15 @@ public class BufferRecyclers
      * to a {@link BufferRecycler} used to provide a low-cost
      * buffer recycling between reader and writer instances.
      */
-    final protected static ThreadLocal<SoftReference<BufferRecycler>> _recyclerRef
-        = new ThreadLocal<SoftReference<BufferRecycler>>();
+    final protected static ThreadLocal<SoftReference<BufferRecycler>> _recyclerRef =
+        new ThreadLocal<SoftReference<BufferRecycler>>();
 
     /**
      * Main accessor to call for accessing possibly recycled {@link BufferRecycler} instance.
      *
      * @return {@link BufferRecycler} to use
      */
-    public static BufferRecycler getBufferRecycler()
-    {
+    public static BufferRecycler getBufferRecycler() {
         SoftReference<BufferRecycler> ref = _recyclerRef.get();
         BufferRecycler br = (ref == null) ? null : ref.get();
 

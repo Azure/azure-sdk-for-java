@@ -132,16 +132,16 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     @Override
     public Map<String, String> toMap() {
         if (abstractMap == null) {
-            abstractMap = new DeferredCacheImmutableMap<>(LOGGER, new HashMap<>(), nettyHeaders,
-                getAll -> CoreUtils.stringJoin(",", getAll));
+            abstractMap = new DeferredCacheImmutableMap<>(LOGGER, new HashMap<>(), nettyHeaders, getAll -> CoreUtils
+                .stringJoin(",", getAll));
         }
         return abstractMap;
     }
 
     Map<String, String[]> toMultiMap() {
         if (abstractMultiMap == null) {
-            abstractMultiMap = new DeferredCacheImmutableMap<>(LOGGER, new HashMap<>(), nettyHeaders,
-                getAll -> getAll.toArray(new String[0]));
+            abstractMultiMap = new DeferredCacheImmutableMap<>(LOGGER, new HashMap<>(), nettyHeaders, getAll -> getAll
+                .toArray(new String[0]));
         }
         return abstractMultiMap;
     }
@@ -153,8 +153,7 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
 
     @Override
     public Stream<HttpHeader> stream() {
-        return nettyHeaders.names().stream()
-            .map(name -> new NettyHttpHeader(this, name, nettyHeaders.getAll(name)));
+        return nettyHeaders.names().stream().map(name -> new NettyHttpHeader(this, name, nettyHeaders.getAll(name)));
     }
 
     static class NettyHttpHeader extends HttpHeader {
@@ -185,7 +184,6 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
             this.allHeaders = allHeaders;
             this.headerNames = allHeaders.nettyHeaders.names().iterator();
         }
-
 
         @Override
         public boolean hasNext() {

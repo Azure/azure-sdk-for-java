@@ -60,16 +60,13 @@ public class NettyAsyncHttpResponseTests {
 
     @Test
     public void getHeaders() {
-        HttpHeaders headers = new DefaultHttpHeaders()
-            .add("aHeader", "aValue")
-            .add("anotherHeader", "anotherValue");
+        HttpHeaders headers = new DefaultHttpHeaders().add("aHeader", "aValue").add("anotherHeader", "anotherValue");
 
         HttpClientResponse reactorNettyResponse = mock(HttpClientResponse.class);
         when(reactorNettyResponse.responseHeaders()).thenReturn(headers);
 
-        com.azure.core.http.HttpHeaders actualHeaders = new NettyAsyncHttpResponse(
-            reactorNettyResponse, null, REQUEST, false, false)
-            .getHeaders();
+        com.azure.core.http.HttpHeaders actualHeaders = new NettyAsyncHttpResponse(reactorNettyResponse, null, REQUEST,
+            false, false).getHeaders();
 
         assertEquals("aValue", actualHeaders.getValue("aHeader"));
         assertEquals("anotherValue", actualHeaders.getValue("anotherHeader"));
@@ -77,8 +74,8 @@ public class NettyAsyncHttpResponseTests {
 
     @Test
     public void getBody() {
-        ByteBufFlux byteBufFlux = ByteBufFlux.fromString(Mono.just("hello"), StandardCharsets.UTF_8,
-            ByteBufAllocator.DEFAULT);
+        ByteBufFlux byteBufFlux = ByteBufFlux
+            .fromString(Mono.just("hello"), StandardCharsets.UTF_8, ByteBufAllocator.DEFAULT);
 
         NettyInbound nettyInbound = mock(NettyInbound.class);
         when(nettyInbound.receive()).thenReturn(byteBufFlux);
@@ -93,15 +90,16 @@ public class NettyAsyncHttpResponseTests {
         NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(reactorNettyResponse, connection, REQUEST, false,
             false);
 
-        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(response.getBody()))
+        StepVerifier
+            .create(FluxUtil.collectBytesInByteBufferStream(response.getBody()))
             .assertNext(actual -> assertArrayEquals(HELLO_BYTES, actual))
             .verifyComplete();
     }
 
     @Test
     public void getBodyAsByteArray() {
-        ByteBufFlux byteBufFlux = ByteBufFlux.fromString(Mono.just("hello"), StandardCharsets.UTF_8,
-            ByteBufAllocator.DEFAULT);
+        ByteBufFlux byteBufFlux = ByteBufFlux
+            .fromString(Mono.just("hello"), StandardCharsets.UTF_8, ByteBufAllocator.DEFAULT);
 
         NettyInbound nettyInbound = mock(NettyInbound.class);
         when(nettyInbound.receive()).thenReturn(byteBufFlux);
@@ -116,18 +114,17 @@ public class NettyAsyncHttpResponseTests {
         NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(reactorNettyResponse, connection, REQUEST, false,
             false);
 
-        StepVerifier.create(response.getBodyAsByteArray())
+        StepVerifier
+            .create(response.getBodyAsByteArray())
             .assertNext(actual -> assertArrayEquals(HELLO_BYTES, actual))
             .verifyComplete();
     }
 
     @Test
     public void getBodyAsString() {
-        ByteBufFlux byteBufFlux = ByteBufFlux.fromString(Mono.just("hello"), StandardCharsets.UTF_8,
-            ByteBufAllocator.DEFAULT);
-        HttpHeaders headers = new DefaultHttpHeaders()
-            .add("aHeader", "aValue")
-            .add("anotherHeader", "anotherValue");
+        ByteBufFlux byteBufFlux = ByteBufFlux
+            .fromString(Mono.just("hello"), StandardCharsets.UTF_8, ByteBufAllocator.DEFAULT);
+        HttpHeaders headers = new DefaultHttpHeaders().add("aHeader", "aValue").add("anotherHeader", "anotherValue");
 
         HttpClientResponse reactorNettyResponse = mock(HttpClientResponse.class);
         when(reactorNettyResponse.responseHeaders()).thenReturn(headers);
@@ -139,18 +136,19 @@ public class NettyAsyncHttpResponseTests {
         when(connection.inbound()).thenReturn(nettyInbound);
         when(connection.isDisposed()).thenReturn(true);
 
-        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(reactorNettyResponse, connection, REQUEST,
-            false, false);
+        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(reactorNettyResponse, connection, REQUEST, false,
+            false);
 
-        StepVerifier.create(response.getBodyAsString())
+        StepVerifier
+            .create(response.getBodyAsString())
             .assertNext(actual -> assertEquals(HELLO, actual))
             .verifyComplete();
     }
 
     @Test
     public void getBodyAsStringWithCharset() {
-        ByteBufFlux byteBufFlux = ByteBufFlux.fromString(Mono.just("hello"), StandardCharsets.UTF_8,
-            ByteBufAllocator.DEFAULT);
+        ByteBufFlux byteBufFlux = ByteBufFlux
+            .fromString(Mono.just("hello"), StandardCharsets.UTF_8, ByteBufAllocator.DEFAULT);
 
         NettyInbound nettyInbound = mock(NettyInbound.class);
         when(nettyInbound.receive()).thenReturn(byteBufFlux);
@@ -165,7 +163,8 @@ public class NettyAsyncHttpResponseTests {
         NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(reactorNettyResponse, connection, REQUEST, false,
             false);
 
-        StepVerifier.create(response.getBodyAsString(StandardCharsets.UTF_8))
+        StepVerifier
+            .create(response.getBodyAsString(StandardCharsets.UTF_8))
             .assertNext(actual -> assertEquals(HELLO, actual))
             .verifyComplete();
     }
@@ -173,13 +172,13 @@ public class NettyAsyncHttpResponseTests {
     @ParameterizedTest
     @MethodSource("verifyDisposalSupplier")
     public void verifyDisposal(String methodName, Class<?>[] argumentTypes, Object[] argumentValues)
-        throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+                                                                                                     throws NoSuchMethodException,
+                                                                                                     InvocationTargetException,
+                                                                                                     IllegalAccessException {
         Method method = NettyAsyncHttpResponse.class.getMethod(methodName, argumentTypes);
-        ByteBufFlux byteBufFlux = ByteBufFlux.fromString(Mono.just("hello"), StandardCharsets.UTF_8,
-            ByteBufAllocator.DEFAULT);
-        HttpHeaders headers = new DefaultHttpHeaders()
-            .add("aHeader", "aValue")
-            .add("anotherHeader", "anotherValue");
+        ByteBufFlux byteBufFlux = ByteBufFlux
+            .fromString(Mono.just("hello"), StandardCharsets.UTF_8, ByteBufAllocator.DEFAULT);
+        HttpHeaders headers = new DefaultHttpHeaders().add("aHeader", "aValue").add("anotherHeader", "anotherValue");
 
         HttpClientResponse reactorNettyResponse = mock(HttpClientResponse.class);
         when(reactorNettyResponse.responseHeaders()).thenReturn(headers);
@@ -197,8 +196,8 @@ public class NettyAsyncHttpResponseTests {
         when(connection.inbound()).thenReturn(nettyInbound);
         when(connection.channel()).thenReturn(channel);
 
-        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(reactorNettyResponse, connection, REQUEST,
-            false, false);
+        NettyAsyncHttpResponse response = new NettyAsyncHttpResponse(reactorNettyResponse, connection, REQUEST, false,
+            false);
 
         Object object = method.invoke(response, argumentValues);
         if (object instanceof Mono) {
@@ -211,12 +210,10 @@ public class NettyAsyncHttpResponseTests {
     }
 
     private static Stream<Arguments> verifyDisposalSupplier() {
-        return Stream.of(
-            Arguments.of("getBody", null, null),
-            Arguments.of("getBodyAsByteArray", null, null),
-            Arguments.of("getBodyAsString", null, null),
-            Arguments.of("getBodyAsString", new Class<?>[]{Charset.class}, new Object[]{StandardCharsets.UTF_8}),
-            Arguments.of("close", null, null)
-        );
+        return Stream
+            .of(Arguments.of("getBody", null, null), Arguments.of("getBodyAsByteArray", null, null), Arguments
+                .of("getBodyAsString", null, null), Arguments
+                    .of("getBodyAsString", new Class<?>[] { Charset.class }, new Object[] { StandardCharsets.UTF_8 }),
+                Arguments.of("close", null, null));
     }
 }

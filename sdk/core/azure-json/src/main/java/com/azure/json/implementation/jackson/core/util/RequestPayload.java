@@ -11,8 +11,7 @@ import java.io.IOException;
  *
  * @since 2.8
  */
-public class RequestPayload
-    implements java.io.Serializable // just in case, even though likely included as transient
+public class RequestPayload implements java.io.Serializable // just in case, even though likely included as transient
 {
     private static final long serialVersionUID = 1L;
 

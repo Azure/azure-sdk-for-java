@@ -100,8 +100,9 @@ public final class HttpProxyHandler extends ProxyHandler {
     private HttpResponseStatus status;
     private HttpHeaders innerHeaders;
 
-    public HttpProxyHandler(InetSocketAddress proxyAddress, AuthorizationChallengeHandler challengeHandler,
-        AtomicReference<ChallengeHolder> proxyChallengeHolderReference) {
+    public HttpProxyHandler(InetSocketAddress proxyAddress,
+                            AuthorizationChallengeHandler challengeHandler,
+                            AtomicReference<ChallengeHolder> proxyChallengeHolderReference) {
         super(proxyAddress);
 
         this.challengeHandler = challengeHandler;
@@ -175,8 +176,8 @@ public final class HttpProxyHandler extends ProxyHandler {
          * This may fail and result in the server requesting authentication by returning a proxy authentication
          * challenge.
          */
-        String authorizationHeader = challengeHandler.attemptToPipelineAuthorization(PROXY_METHOD, PROXY_URI_PATH,
-            NO_BODY);
+        String authorizationHeader = challengeHandler
+            .attemptToPipelineAuthorization(PROXY_METHOD, PROXY_URI_PATH, NO_BODY);
 
         if (!CoreUtils.isNullOrEmpty(authorizationHeader)) {
             return authorizationHeader;
@@ -194,8 +195,8 @@ public final class HttpProxyHandler extends ProxyHandler {
             // Attempt to apply digest challenges, these are preferred over basic authorization.
             List<Map<String, String>> digestChallenges = proxyChallengeHolder.getDigestChallenges();
             if (!CoreUtils.isNullOrEmpty(digestChallenges)) {
-                authorizationHeader = challengeHandler.handleDigest(PROXY_METHOD, PROXY_URI_PATH, digestChallenges,
-                    NO_BODY);
+                authorizationHeader = challengeHandler
+                    .handleDigest(PROXY_METHOD, PROXY_URI_PATH, digestChallenges, NO_BODY);
             }
 
             // If digest challenges exist or all failed attempt to use basic authorization.
@@ -232,8 +233,10 @@ public final class HttpProxyHandler extends ProxyHandler {
                  * Channel's attributes to compare it against a potential Proxy-Authentication-Info response header.
                  * This header is used by the server to validate to the client that it received the correct request.
                  */
-                validateProxyAuthenticationInfo(response.headers().get(PROXY_AUTHENTICATION_INFO),
-                    ctx.channel().attr(PROXY_AUTHORIZATION_KEY).get());
+                validateProxyAuthenticationInfo(response.headers().get(PROXY_AUTHENTICATION_INFO), ctx
+                    .channel()
+                    .attr(PROXY_AUTHORIZATION_KEY)
+                    .get());
             }
         }
 
@@ -285,8 +288,11 @@ public final class HttpProxyHandler extends ProxyHandler {
                         continue;
                     }
 
-                    digestChallenge.put(challengePiece.substring(0, indexOfEqual).trim(),
-                        challengePiece.substring(indexOfEqual + 1).trim().replace("\"", ""));
+                    digestChallenge
+                        .put(challengePiece.substring(0, indexOfEqual).trim(), challengePiece
+                            .substring(indexOfEqual + 1)
+                            .trim()
+                            .replace("\"", ""));
                 }
 
                 digestChallenges.add(digestChallenge);
@@ -325,15 +331,17 @@ public final class HttpProxyHandler extends ProxyHandler {
      * 'Proxy-Authorization' header. If the values don't match an 'IllegalStateException' will be thrown with a message
      * outlining that the values didn't match.
      */
-    private static void validateProxyAuthenticationInfoValue(String name, Map<String, String> authenticationInfoPieces,
-        Map<String, String> authorizationPieces) {
+    private static void validateProxyAuthenticationInfoValue(String name,
+                                                             Map<String, String> authenticationInfoPieces,
+                                                             Map<String, String> authorizationPieces) {
         if (authenticationInfoPieces.containsKey(name)) {
             String sentValue = authorizationPieces.get(name);
             String receivedValue = authenticationInfoPieces.get(name);
 
             if (!receivedValue.equalsIgnoreCase(sentValue)) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(
-                    String.format(VALIDATION_ERROR_TEMPLATE, name, sentValue, receivedValue)));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalStateException(String
+                        .format(VALIDATION_ERROR_TEMPLATE, name, sentValue, receivedValue)));
             }
         }
     }

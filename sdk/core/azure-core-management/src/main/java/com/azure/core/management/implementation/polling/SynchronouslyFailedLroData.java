@@ -10,8 +10,7 @@ import java.util.Map;
  */
 final class SynchronouslyFailedLroData extends Error {
 
-    SynchronouslyFailedLroData() {
-    }
+    SynchronouslyFailedLroData() {}
 
     /**
      * Creates SynchronouslyFailedLroData.

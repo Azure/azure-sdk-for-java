@@ -34,9 +34,7 @@ public class DynamicRequestTest {
         });
         DynamicRequest dynamicRequest = new DynamicRequest(JsonSerializerProviders.createInstance(true),
             new HttpPipelineBuilder().httpClient(httpClient).build());
-        dynamicRequest.setUrl("https://example.com/testGetRequest")
-            .setHttpMethod(HttpMethod.GET)
-            .send();
+        dynamicRequest.setUrl("https://example.com/testGetRequest").setHttpMethod(HttpMethod.GET).send();
     }
 
     @Test
@@ -46,15 +44,19 @@ public class DynamicRequestTest {
             assertEquals("/testPostRequest", request.getUrl().getPath());
             assertEquals(HttpMethod.POST, request.getHttpMethod());
             assertEquals(2, request.getHeaders().getSize());
-            assertEquals(String.valueOf(jsonRequestBody.getBytes().length),
-                request.getHeaders().get("Content-Length").getValue());
+            assertEquals(String.valueOf(jsonRequestBody.getBytes().length), request
+                .getHeaders()
+                .get("Content-Length")
+                .getValue());
             assertEquals("application/json", request.getHeaders().get("Content-Type").getValue());
-            assertEquals(jsonRequestBody,
-                new String(FluxUtil.collectBytesInByteBufferStream(request.getBody()).block()));
+            assertEquals(jsonRequestBody, new String(FluxUtil
+                .collectBytesInByteBufferStream(request.getBody())
+                .block()));
         });
         DynamicRequest dynamicRequest = new DynamicRequest(JsonSerializerProviders.createInstance(true),
             new HttpPipelineBuilder().httpClient(httpClient).build());
-        dynamicRequest.setUrl("https://example.com/testPostRequest")
+        dynamicRequest
+            .setUrl("https://example.com/testPostRequest")
             .setHttpMethod(HttpMethod.POST)
             .setHeaders(new HttpHeaders().set("Content-Type", "application/json"))
             .setBody(jsonRequestBody)

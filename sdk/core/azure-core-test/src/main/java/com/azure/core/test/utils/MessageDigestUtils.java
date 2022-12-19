@@ -17,8 +17,7 @@ import java.util.Base64;
  */
 public final class MessageDigestUtils {
 
-    private MessageDigestUtils() {
-    }
+    private MessageDigestUtils() {}
 
     /**
      * Returns base64 encoded MD5 of bytes.
