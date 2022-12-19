@@ -222,6 +222,9 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
 
     static Map.Entry<Boolean, Throwable> shouldErrorBeRetried(Throwable error) {
         Throwable unwrappedThrowable = Exceptions.unwrap(error);
+
+        // TODO (alzimmer): Should the causal exception hierarchy be walked until completion?
+        //  Ex. RuntimeException with an IllegalStateException cause with an IOException cause.
         Throwable causalThrowable = unwrappedThrowable.getCause();
 
         boolean retry = unwrappedThrowable instanceof IOException
