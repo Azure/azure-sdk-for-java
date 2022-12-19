@@ -67,8 +67,11 @@ public class ClientTests {
         WebPubSubAsyncClient asyncClient = clientBuilder().buildAsyncClient();
 
         // group data messages
-        asyncClient.receiveGroupMessages().subscribe(message -> {
-            System.out.println("group: " + message.getGroup() + ", data: " + message.getData());
+        asyncClient.receiveGroupMessages().filter(m -> m.getGroup().equals("group1")).subscribe(message -> {
+            System.out.println("group1: " + message.getGroup() + ", data: " + message.getData());
+        });
+        asyncClient.receiveGroupMessages().filter(m -> m.getGroup().equals("group2")).subscribe(message -> {
+            System.out.println("group2: " + message.getGroup() + ", data: " + message.getData());
         });
 
         // connected events
