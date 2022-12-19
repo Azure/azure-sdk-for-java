@@ -42,7 +42,7 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-bus</artifactId>
-            <version>4.0.0</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-bus;external_dependency} -->
+            <version>4.0.0-RC3</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-bus;external_dependency} -->
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -89,7 +89,7 @@
                             <includes>
                                 <include>org.springframework.boot:spring-boot-starter-actuator:[3.0.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
                                 <include>org.springframework.boot:spring-boot-starter-web:[3.0.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
-                                <include>org.springframework.cloud:spring-cloud-bus:[4.0.0]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-bus;external_dependency} -->
+                                <include>org.springframework.cloud:spring-cloud-bus:[4.0.0-RC3]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-bus;external_dependency} -->
                             </includes>
                         </bannedDependencies>
                     </rules>
