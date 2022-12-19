@@ -74,6 +74,115 @@ See [API design][design] for general introduction on design and key concepts on 
 
 ## Examples
 
+### Create a new Azure Load Testing resource
+
+Create an Azure Load Testing resource.
+
+```java
+LoadTestResource resource = manager
+    .loadTests()
+    .define("sample-loadtesting-resource")
+    .withRegion(Region.US_WEST2)
+    .withExistingResourceGroup("sample-rg")
+    .create();
+```
+
+Create an Azure Load Testing resource configured with CMK encryption.
+
+```java
+// map of user-assigned managed identities to be assigned to the loadtest resource
+Map<String, UserAssignedIdentity> map = new HashMap<String, UserAssignedIdentity>();
+map.put("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/sample-rg/providers/microsoft.managedidentity/userassignedidentities/identity1", new UserAssignedIdentity());
+
+// encryption identity must be assigned to the load test resource, before using it
+LoadTestResource resource = manager
+    .loadTests()
+    .define("sample-loadtesting-resource")
+    .withRegion(Region.US_WEST2)
+    .withExistingResourceGroup("sample-rg")
+    .withIdentity(
+        new ManagedServiceIdentity()
+        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+        .withUserAssignedIdentities(map)
+    )
+    .withEncryption(
+        new EncryptionProperties()
+        .withIdentity(
+            new EncryptionPropertiesIdentity()
+            .withResourceId("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/sample-rg/providers/microsoft.managedidentity/userassignedidentities/identity1")
+            .withType(Type.USER_ASSIGNED)
+        )
+        .withKeyUrl("https://sample-kv.vault.azure.net/keys/cmkkey/2d1ccd5c50234ea2a0858fe148b69cde")
+    )
+    .create();
+```
+
+### Get details of an Azure Load Testing resource
+
+```java
+LoadTestResource resource = manager
+    .loadTests()
+    .getByResourceGroup("sample-rg", "sample-loadtesting-resource");
+```
+
+### Update an Azure Load Testing resource
+
+Update an Azure Load Testing resource to configure CMK encryption using system-assigned managed identity.
+
+```java
+LoadTestResource resource = manager
+    .loadTests()
+    .getByResourceGroup("sample-rg", "sample-loadtesting-resource");
+
+LoadTestResource resourcePostUpdate = resource
+    .update()
+    .withIdentity(
+        new ManagedServiceIdentity()
+        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+    )
+    .withEncryption(
+        new EncryptionProperties()
+        .withIdentity(
+            new EncryptionPropertiesIdentity()
+            .withResourceId(null)
+            .withType(Type.SYSTEM_ASSIGNED)
+            // make sure that system-assigned managed identity is enabled on the resource and the identity has been granted required permissions to access the key.
+        )
+        .withKeyUrl("https://sample-kv.vault.azure.net/keys/cmkkey/2d1ccd5c50234ea2a0858fe148b69cde")
+    )
+    .apply();
+```
+
+Update an Azure Load Testing resource to update user-assigned managed identities.
+
+```java
+Map<String, UserAssignedIdentity> map = new HashMap<String, UserAssignedIdentity>();
+// Note: the value of <identity1> set to null, removes the previously assigned managed identity from the load test resource
+map.put("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/sample-rg/providers/microsoft.managedidentity/userassignedidentities/identity1", null);
+map.put("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/sample-rg/providers/microsoft.managedidentity/userassignedidentities/identity2", new UserAssignedIdentity());
+
+LoadTestResource resource = manager
+    .loadTests()
+    .getByResourceGroup("sample-rg", "sample-loadtesting-resource");
+
+LoadTestResource resourcePostUpdate = resource
+    .update()
+    .withIdentity(
+        new ManagedServiceIdentity()
+        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
+        .withUserAssignedIdentities(map)
+    )
+    .apply();
+```
+
+### Delete an Azure Load Testing resource
+
+```java
+manager
+    .loadTests()
+    .deleteByResourceGroup("sample-rg", "sample-loadtesting-resource");
+```
+
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtestservice/azure-resourcemanager-loadtestservice/SAMPLE.md)
 
 
