@@ -22,69 +22,69 @@ In the code example, you can find:
 
 ### <a name="httpconnectionpool"></a>Configure connection pool for the singleton HttpClient:
 By default, HttpClient uses a “fixed” connection pool with 500 as the maximum number of active channels and 1000 as the maximum number of further channel acquisition attempts allowed to be kept in a pending state.
-```java
-NettyAsyncHttpClientBuilder singletonHttpClientBuilder = new NettyAsyncHttpClientBuilder();
-singletonHttpClientBuilder 
-    // Connection pool configuration.  
-	// Official Reactor Netty documentation for defaults: https://projectreactor.io/docs/netty/release/reference/#_connection_pool_2  
-	.connectionProvider(  
-		 ConnectionProvider.builder("connection-pool")  
-         // By default, HttpClient uses a “fixed” connection pool with 500 as the maximum number of active channels  
-		 // and 1000 as the maximum number of further channel acquisition attempts allowed to be kept in a pending state.  
-		.maxConnections(500)  
-         // When the maximum number of channels in the pool is reached, up to specified new attempts to  
-		 // acquire a channel are delayed (pending) until a channel is returned to the pool again, and further attempts are declined with an error.  
-		.pendingAcquireMaxCount(1000)  
-        .maxIdleTime(Duration.ofSeconds(20)) // Configures the maximum time for a connection to stay idle to 20 seconds.  
-		.maxLifeTime(Duration.ofSeconds(60)) // Configures the maximum time for a connection to stay alive to 60 seconds.  
-		.pendingAcquireTimeout(Duration.ofSeconds(60)) // Configures the maximum time for the pending acquire operation to 60 seconds.  
-		.evictInBackground(Duration.ofSeconds(120)) // Every two minutes, the connection pool is regularly checked for connections that are applicable for removal.  
-		.build())
+```java readme-sample-azureClientConnectionPool
+singletonHttpClientBuilder
+    // Connection pool configuration.
+    // Official Reactor Netty documentation for defaults: https://projectreactor.io/docs/netty/release/reference/#_connection_pool_2
+    .connectionProvider(
+        ConnectionProvider.builder("connection-pool")
+            // By default, HttpClient uses a “fixed” connection pool with 500 as the maximum number of active channels
+            // and 1000 as the maximum number of further channel acquisition attempts allowed to be kept in a pending state.
+            .maxConnections(500)
+            // When the maximum number of channels in the pool is reached, up to specified new attempts to
+            // acquire a channel are delayed (pending) until a channel is returned to the pool again, and further attempts are declined with an error.
+            .pendingAcquireMaxCount(1000)
+            .maxIdleTime(Duration.ofSeconds(20)) // Configures the maximum time for a connection to stay idle to 20 seconds.
+            .maxLifeTime(Duration.ofSeconds(60)) // Configures the maximum time for a connection to stay alive to 60 seconds.
+            .pendingAcquireTimeout(Duration.ofSeconds(60)) // Configures the maximum time for the pending acquire operation to 60 seconds.
+            .evictInBackground(Duration.ofSeconds(120)) // Every two minutes, the connection pool is regularly checked for connections that are applicable for removal.
+            .build());
 ```
 
 ### <a name="httpthreadpool"></a>Configure thread pool for the singleton HttpClient:
 By default the TCP client uses an “Event Loop Group”, where the number of the worker threads equals the number of processors available to the runtime on initialization (but with a minimum value of 4). When you need a different configuration, you can use one of the LoopResource#create methods.
-```java
-// Thread pool configuration.  
-// Official Reactor Netty documentation for defaults: https://projectreactor.io/docs/netty/release/reference/#client-tcp-level-configurations-event-loop-group  
-singletonHttpClientBuilder 
-	.eventLoopGroup(LoopResources  
-	    .create(  
-            "client-thread-pool", // thread pool name  
-		    Runtime.getRuntime().availableProcessors() * 2, // thread pool size  
-		    true)  
-         // we use our custom event loop here, disable the native one  
-	    .onClient(false))  
+```java readme-sample-azureClientThreadPool
+// Thread pool configuration.
+// Official Reactor Netty documentation for defaults: https://projectreactor.io/docs/netty/release/reference/#client-tcp-level-configurations-event-loop-group
+singletonHttpClientBuilder
+    .eventLoopGroup(LoopResources
+        .create(
+            "client-thread-pool", // thread pool name
+            Runtime.getRuntime().availableProcessors() * 2, // thread pool size
+            true)
+        // we use our custom event loop here, disable the native one
+        .onClient(false))
     .build();
 ```
 
 ### <a name="azureidentity"></a>Configure Azure Identity client to use the singleton HttpClient (DefaultAzureCredential for example):
 By default, Azure Identity uses `ForkJoinPool.commonPool()` for token acquisition. The pool size equals the number of processors available to the runtime on initialization minus 1 (with a minimum of 1). It's a singleton pool and is shared by default. Default pool configuration should be sufficient for most use cases.
-```java
-HttpClient singletonHttpClient = singletonHttpClientBuilder.build();
+```java readme-sample-azureIdentityThreadpool
 // Use the singleton httpClient for Azure Identity
-final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);  
-final TokenCredential credential = new DefaultAzureCredentialBuilder()  
-    .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())  
-    .executorService(ForkJoinPool.commonPool()) // thread pool for executing token acquisition, usually we leave it default  
+final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+final TokenCredential credential = new DefaultAzureCredentialBuilder()
+    .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
+    .executorService(ForkJoinPool.commonPool()) // thread pool for executing token acquisition, usually we leave it default
     .httpClient(singletonHttpClient)
-  .build();
+    .build();
 ```
 
 ### <a name="azureclient"></a>Configure Azure Clients to use the singleton HttpClient and Azure Identity client:
-```java
+```java readme-sample-azureClientHttpClient
 // Use the singleton httpClient for your Azure client
-AzureResourceManager azureResourceManager = AzureResourceManager  
-	.configure()  
-    .withLogLevel(HttpLogDetailLevel.BASIC)  
+AzureResourceManager azureResourceManager = AzureResourceManager
+    .configure()
+    .withLogLevel(HttpLogDetailLevel.BASIC)
     .withHttpClient(singletonHttpClient)
-    .authenticate(credential, profile)  
+    .authenticate(credential, profile)
     .withSubscription(subscriptionId); // your subscription ID, can be different for different Azure clients
 ```
 
 ### <a name="reactor"></a>Configure Reactor thread pool size:
 By default, Azure Client subscribes on Schedulers.parallel(), which has a thread pool of size equal to available processor count. It is a static pool and is shared in nature.
 You can change the pool size by specifying the variable `reactor.schedulers.defaultPoolSize` in environment variables, whether through command line arguments, or System.setProperty.
-```java
-System.setProperty("reactor.schedulers.defaultPoolSize", NettyRuntime.availableProcessors() + "");
-```
+
+
+## Other JVM thread configurations you might be interested:
+[Compiler threads for JIT compiler](https://docs.oracle.com/en/java/javase/17/docs/specs/man/java.html#advanced-jit-compiler-options-for-java)
+[GC threads](https://docs.oracle.com/en/java/javase/17/docs/specs/man/java.html#advanced-garbage-collection-options-for-java)
