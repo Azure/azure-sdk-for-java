@@ -1,0 +1,124 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "testApplicationId": {
+      "type": "string"
+    },
+    "tenantId": {
+      "defaultValue": "[subscription().tenantId]",
+      "type": "string"
+    },
+    "baseName": {
+      "defaultValue": "[resourceGroup().name]",
+      "type": "String"
+    },
+    "administratorLogin": {
+      "defaultValue": "postgresqladmin",
+      "type": "String"
+    },
+    "administratorLoginPassword": {
+      "defaultValue": "[concat(parameters('baseName'),'1PostgreSqlTestpw&')]",
+      "type": "String"
+    },
+    "serverName": {
+      "type": "string",
+      "defaultValue": "[concat(parameters('baseName'),'-passwordless-postgresql-flexible-it')]",
+      "metadata": {
+        "description": "Server Name for Azure database for MySQL"
+      }
+    },
+    "postgresql_server_username": {
+      "defaultValue": "passwordless-postgresql-test-admin",
+      "type": "String"
+    },
+    "currentEpoch": {
+      "type": "int",
+      "defaultValue": "[dateTimeToEpoch(utcNow())]"
+    }
+  },
+  "variables": {
+    "version": "[string(add(mod(parameters('currentEpoch'),4), 11))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.DBforPostgreSQL/servers",
+      "apiVersion": "2017-12-01",
+      "name": "[parameters('serverName')]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "GP_Gen5_4",
+        "tier": "GeneralPurpose",
+        "family": "Gen5",
+        "capacity": 4
+      },
+      "properties": {
+        "version": "11",
+        "administratorLogin": "[parameters('administratorLogin')]",
+        "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
+        "storageProfile": {
+          "storageMB": 102400,
+          "backupRetentionDays": 7,
+          "geoRedundantBackup": "Disabled",
+          "storageAutogrow": "Enabled"
+        },
+        "sslEnforcement": "Disabled",
+        "minimalTlsVersion": "TLSEnforcementDisabled",
+        "infrastructureEncryption": "Disabled",
+        "publicNetworkAccess": "Enabled"
+      }
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/servers/administrators",
+      "apiVersion": "2017-12-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('serverName'))]"
+      ],
+      "name": "[concat(parameters('serverName'), '/ActiveDirectory')]",
+      "properties": {
+        "administratorType": "ActiveDirectory",
+        "login": "[parameters('postgresql_server_username')]",
+        "sid": "[parameters('testApplicationId')]",
+        "tenantId": "[parameters('tenantId')]"
+      }
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/servers/databases",
+      "apiVersion": "2017-12-01",
+      "name": "[concat(parameters('serverName'), '/db')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('serverName'))]"
+      ],
+      "properties": {
+        "charset": "UTF8",
+        "collation": "en_US.utf8"
+      }
+    },
+    {
+      "type": "Microsoft.DBforPostgreSQL/servers/firewallRules",
+      "apiVersion": "2017-12-01",
+      "name": "[concat(parameters('serverName'), '/AllowAll')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.DBforPostgreSQL/servers', parameters('serverName'))]"
+      ],
+      "properties": {
+        "startIpAddress": "0.0.0.0",
+        "endIpAddress": "255.255.255.255"
+      }
+    }
+  ],
+  "outputs": {
+    "AZURE_POSTGRESQL_FLEXIBLE_SERVER_ENDPOINT": {
+      "type": "string",
+      "value": "[reference(parameters('serverName')).fullyQualifiedDomainName]"
+    },
+    "POSTGRESQL_USERNAME": {
+      "type": "string",
+      "value": "[parameters('postgresql_server_username')]"
+    },
+    "POSTGRESQL_SINGLE_ACCOUNTNAME": {
+      "type": "string",
+      "value": "[parameters('serverName')]"
+    }
+  }
+}

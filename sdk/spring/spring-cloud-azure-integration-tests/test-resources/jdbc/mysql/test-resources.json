@@ -30,7 +30,7 @@
     },
     "administratorLoginPassword": {
       "type": "secureString",
-      "defaultValue": "1MySqlTestpw&",
+      "defaultValue": "[concat(parameters('baseName'),'1MySqlTestpw&')]",
       "minLength": 8,
       "metadata": {
         "description": "Database administrator password"
