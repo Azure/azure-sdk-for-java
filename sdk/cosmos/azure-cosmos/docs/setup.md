@@ -57,18 +57,21 @@ Note: It is strongly recommended to run the analysis locally before submitting a
 ### Setting IntelliJ IDE for Java SDK
 
 Open azure-sdk-for-java/sdk/cosmos/azure-cosmos/pom.xml in IntelliJ IDE as project to import it as a maven project:
-image.png 
+![Screenshot 2022-12-19 at 1 51 17 PM](https://user-images.githubusercontent.com/14034156/208549832-9edf00d6-613a-4efd-a410-eaeb7abe86cd.png)
+
 
 ### Defining Project Structure
 
 Open project structure through project settings for azure-cosmos project and set the SDK and Language Level to JDK 11 under Project tab:
-image.png
+![Screenshot 2022-12-19 at 1 54 08 PM](https://user-images.githubusercontent.com/14034156/208549843-4824a467-9d21-4ffa-bc56-7f14da9d573c.png)
 
 Open Modules tab in the same settings and set the Language level to match project default, which should be JDK 11:
-image.png
+![Screenshot 2022-12-19 at 1 58 27 PM](https://user-images.githubusercontent.com/14034156/208549863-d541c174-c7a3-48d6-b186-e19b78153cff.png)
+
 
 Set target bytecode version for the project azure-cosmos in IntelliJ Preferences for Java Compiler as JDK 11: 
-image.png
+![Screenshot 2022-12-19 at 2 23 22 PM](https://user-images.githubusercontent.com/14034156/208549894-39804c35-9f4c-4b74-b076-aeaf24edd847.png)
+
 
 ### Running Unit Tests
 
