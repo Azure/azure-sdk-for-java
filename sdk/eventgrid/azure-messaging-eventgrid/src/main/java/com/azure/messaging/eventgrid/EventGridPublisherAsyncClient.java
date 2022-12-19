@@ -358,7 +358,7 @@ public final class EventGridPublisherAsyncClient<T> {
         return Flux.fromIterable(events)
             .map(EventGridEvent::toImpl)
             .collectList()
-            .flatMap(list -> this.impl.publishEventsAsync(this.hostname, list,
+            .flatMap(list -> this.impl.publishEventGridEventsAsync(this.hostname, list,
                 finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
     }
 
@@ -370,7 +370,7 @@ public final class EventGridPublisherAsyncClient<T> {
         this.addCloudEventTracePlaceHolder(events);
         return Flux.fromIterable(events)
             .collectList()
-            .flatMap(list -> this.impl.publishCloudEventEventsAsync(this.hostname, list,
+            .flatMap(list -> this.impl.publishCloudEventEventsAsync(this.hostname, list, null,
                 finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
     }
 
@@ -394,7 +394,7 @@ public final class EventGridPublisherAsyncClient<T> {
         return Flux.fromIterable(events)
             .map(EventGridEvent::toImpl)
             .collectList()
-            .flatMap(list -> this.impl.publishEventsWithResponseAsync(this.hostname, list,
+            .flatMap(list -> this.impl.publishEventGridEventsWithResponseAsync(this.hostname, list,
                 finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
     }
 
@@ -406,7 +406,7 @@ public final class EventGridPublisherAsyncClient<T> {
         this.addCloudEventTracePlaceHolder(events);
         return Flux.fromIterable(events)
             .collectList()
-            .flatMap(list -> this.impl.publishCloudEventEventsWithResponseAsync(this.hostname, list,
+            .flatMap(list -> this.impl.publishCloudEventEventsWithResponseAsync(this.hostname, list, null,
                 finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
     }
 
