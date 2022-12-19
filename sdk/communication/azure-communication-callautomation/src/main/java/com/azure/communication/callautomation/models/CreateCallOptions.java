@@ -18,7 +18,7 @@ public class CreateCallOptions {
     /**
      * The source property.
      */
-    private final CommunicationIdentifier source;
+    private final CallSource source;
 
     /**
      * The targets of the call.
@@ -34,12 +34,6 @@ public class CreateCallOptions {
      * The endpoint URL of the Azure Cognitive Services resource attached
      */
     private String azureCognitiveServicesEndpointUrl;
-
-    /**
-     * The source caller Id that's shown to the PSTN participant being invited.
-     * Required only when inviting a PSTN participant.
-     */
-    private String sourceCallerId;
 
     /**
      * A customer set value used to track the answering of a call.
@@ -63,7 +57,7 @@ public class CreateCallOptions {
      * @param targets The targets of the call.
      * @param callbackUrl The call back URI.
      */
-    public CreateCallOptions(CommunicationIdentifier source, List<CommunicationIdentifier> targets, String callbackUrl) {
+    public CreateCallOptions(CallSource source, List<CommunicationIdentifier> targets, String callbackUrl) {
         this.source = source;
         this.targets = targets;
         this.callbackUrl = callbackUrl;
@@ -75,7 +69,7 @@ public class CreateCallOptions {
      *
      * @return the source value.
      */
-    public CommunicationIdentifier getSource() {
+    public CallSource getSource() {
         return source;
     }
 
@@ -117,15 +111,6 @@ public class CreateCallOptions {
     }
 
     /**
-     * Get the source caller Id that's shown to the PSTN participant being invited.
-     *
-     * @return the sourceCallerId value.
-     */
-    public String getSourceCallerId() {
-        return sourceCallerId;
-    }
-
-    /**
      * Get the Media Streaming configuration.
      *
      * @return the mediaStreamingConfiguration.
@@ -151,18 +136,6 @@ public class CreateCallOptions {
      */
     public CreateCallOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
-        return this;
-    }
-
-    /**
-     * Set the sourceCallerId.
-     *
-     * @param sourceCallerId The source caller Id that's shown to the PSTN participant being invited.
-     *                       Required only when inviting a PSTN participant.
-     * @return the CreateCallOptions object itself.
-     */
-    public CreateCallOptions setSourceCallerId(String sourceCallerId) {
-        this.sourceCallerId = sourceCallerId;
         return this;
     }
 

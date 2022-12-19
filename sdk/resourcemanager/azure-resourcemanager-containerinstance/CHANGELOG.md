@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported configuring liveness probes and readiness probes for container instances.
 
 ## 2.21.0 (2022-11-24)
 

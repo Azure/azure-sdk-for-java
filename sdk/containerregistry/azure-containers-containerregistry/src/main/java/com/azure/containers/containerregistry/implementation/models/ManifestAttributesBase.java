@@ -54,9 +54,8 @@ public class ManifestAttributesBase {
     private ArtifactOperatingSystem operatingSystem;
 
     /*
-     * List of artifacts that are referenced by this manifest list, with
-     * information about the platform each supports.  This list will be empty
-     * if this is a leaf manifest and not a manifest list.
+     * List of artifacts that are referenced by this manifest list, with information about the platform each supports.
+     * This list will be empty if this is a leaf manifest and not a manifest list.
      */
     @JsonProperty(value = "references", access = JsonProperty.Access.WRITE_ONLY)
     private List<ArtifactManifestPlatform> relatedArtifacts;
@@ -90,6 +89,9 @@ public class ManifestAttributesBase {
      */
     @JsonProperty(value = "changeableAttributes.readEnabled")
     private Boolean readEnabled;
+
+    /** Creates an instance of ManifestAttributesBase class. */
+    public ManifestAttributesBase() {}
 
     /**
      * Get the digest property: Manifest.
