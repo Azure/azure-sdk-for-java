@@ -118,14 +118,7 @@ private object CosmosTableSchemaInferrer
       SparkUtils.safeOpenConnectionInitCaches(sourceContainer, (msg, e) => logWarning(msg, e))
       val queryOptions = new CosmosQueryRequestOptions()
       queryOptions.setMaxBufferedItemCount(cosmosInferenceConfig.inferSchemaSamplingSize)
-
-      cosmosReadConfig.maxIntegratedCacheStaleness match {
-        case CosmosConstants.invalidDuration =>
-        case _ =>
-          val dedicatedGatewayRequestOptions = new DedicatedGatewayRequestOptions
-          dedicatedGatewayRequestOptions.setMaxIntegratedCacheStaleness(cosmosReadConfig.maxIntegratedCacheStaleness)
-          queryOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions)
-      }
+      queryOptions.setDedicatedGatewayRequestOptions(cosmosReadConfig.dedicatedGatewayRequestOptions)
 
       val queryText = cosmosInferenceConfig.inferSchemaQuery match {
         case None =>

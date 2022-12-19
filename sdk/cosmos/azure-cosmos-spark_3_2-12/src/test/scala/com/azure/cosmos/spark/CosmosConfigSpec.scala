@@ -245,13 +245,13 @@ class CosmosConfigSpec extends UnitSpec {
     config.customQuery shouldBe empty
     config.maxItemCount shouldBe 1000
     config.prefetchBufferSize shouldBe 8
-    config.maxIntegratedCacheStaleness shouldBe CosmosConstants.invalidDuration
+    config.dedicatedGatewayRequestOptions.getMaxIntegratedCacheStaleness shouldBe null
 
     userConfig = Map(
       "spark.cosmos.read.forceEventualConsistency" -> "false",
       "spark.cosmos.read.schemaConversionMode" -> "Strict",
       "spark.cosmos.read.maxItemCount" -> "1000",
-      "spark.cosmos.read.maxIntegratedCacheStaleness.inMilliseconds" -> "1000"
+      "spark.cosmos.read.maxIntegratedCacheStalenessInMS" -> "1000"
     )
 
     config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
@@ -261,14 +261,13 @@ class CosmosConfigSpec extends UnitSpec {
     config.customQuery shouldBe empty
     config.maxItemCount shouldBe 1000
     config.prefetchBufferSize shouldBe 8
-    config.maxIntegratedCacheStaleness shouldBe Duration.ofMillis(1000)
+    config.dedicatedGatewayRequestOptions.getMaxIntegratedCacheStaleness shouldBe Duration.ofMillis(1000)
 
     userConfig = Map(
       "spark.cosmos.read.forceEventualConsistency" -> "false",
       "spark.cosmos.read.schemaConversionMode" -> "Strict",
       "spark.cosmos.read.maxItemCount" -> "1001",
-      "spark.cosmos.read.prefetchBufferSize" -> "16",
-      "spark.cosmos.read.maxIntegratedCacheStaleness.inHours" -> "1000"
+      "spark.cosmos.read.prefetchBufferSize" -> "16"
     )
 
     config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
@@ -278,7 +277,6 @@ class CosmosConfigSpec extends UnitSpec {
     config.customQuery shouldBe empty
     config.maxItemCount shouldBe 1001
     config.prefetchBufferSize shouldBe 16
-    config.maxIntegratedCacheStaleness shouldBe Duration.ofHours(1000)
 
     userConfig = Map(
       "spark.cosmos.read.forceEventualConsistency" -> "false",

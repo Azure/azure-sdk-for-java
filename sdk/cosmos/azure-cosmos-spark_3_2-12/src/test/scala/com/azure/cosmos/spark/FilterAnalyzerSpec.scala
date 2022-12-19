@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.models.CosmosParameterizedQuery
+import com.azure.cosmos.models.{CosmosParameterizedQuery, DedicatedGatewayRequestOptions}
 import org.apache.spark.sql.sources.{AlwaysFalse, AlwaysTrue, EqualTo, Filter, In, IsNotNull, IsNull, StringContains, StringEndsWith, StringStartsWith}
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.InstanceOfAssertFactories.DURATION
@@ -19,7 +19,7 @@ class FilterAnalyzerSpec extends UnitSpec {
 
   private[this] val readConfigWithoutCustomQuery =
     new CosmosReadConfig(
-      true, SchemaConversionModes.Relaxed, 100, Queues.XS_BUFFER_SIZE, Duration.ofMillis(10000), None)
+      true, SchemaConversionModes.Relaxed, 100, Queues.XS_BUFFER_SIZE, new DedicatedGatewayRequestOptions, None)
   private[this] val queryText = "SELECT * FROM c WHERE c.abc='Hello World'"
   private[this] val query = Some(CosmosParameterizedQuery(
     queryText,
@@ -30,7 +30,7 @@ class FilterAnalyzerSpec extends UnitSpec {
     SchemaConversionModes.Relaxed,
     100,
     Queues.XS_BUFFER_SIZE,
-    Duration.ofMillis(10000),
+    new DedicatedGatewayRequestOptions,
     query)
 
   "many filters" should "be translated to cosmos predicates with AND" in {
