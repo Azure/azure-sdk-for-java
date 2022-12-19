@@ -3,14 +3,14 @@
 ### 4.16.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added the `spark.cosmos.read.maxIntegratedCacheStalenessInMS` configuration key
+  to make `MaxIntegratedCacheStaleness` tunable for caching queries. - See [PR 32592](https://github.com/Azure/azure-sdk-for-java/pull/32592)
 
 #### Breaking Changes
 
 #### Bugs Fixed
 
 #### Other Changes
-* Added the `spark.cosmos.read.maxIntegratedCacheStaleness.inMilliseconds` and `spark.cosmos.read.maxIntegratedCacheStaleness.inHours` configuration keys
-to make `MaxIntegratedCacheStaleness` tunable for caching queries. - See [PR 32592](https://github.com/Azure/azure-sdk-for-java/pull/32592)
 
 ### 4.15.0 (2022-11-16)
 
