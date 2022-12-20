@@ -58,6 +58,10 @@ public final class ResourceCertificateAndAadDetails extends ResourceCertificateD
     @JsonProperty(value = "aadAudience")
     private String aadAudience;
 
+    /** Creates an instance of ResourceCertificateAndAadDetails class. */
+    public ResourceCertificateAndAadDetails() {
+    }
+
     /**
      * Get the aadAuthority property: AAD tenant authority.
      *
