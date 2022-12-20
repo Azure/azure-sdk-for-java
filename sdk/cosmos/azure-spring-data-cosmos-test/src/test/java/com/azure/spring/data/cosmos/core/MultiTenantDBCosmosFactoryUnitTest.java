@@ -62,7 +62,7 @@ public class MultiTenantDBCosmosFactoryUnitTest {
     public void testGetDatabaseFunctionality() {
         /// Setup
         CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
-        MultiTenantDBCosmosFactory cosmosFactory = new MultiTenantDBCosmosFactory(client, testDB1);
+        MultiTenantDBCosmosFactory cf = new MultiTenantDBCosmosFactory(client, testDB1);
         final CosmosMappingContext mappingContext = new CosmosMappingContext();
 
         try {
@@ -72,20 +72,20 @@ public class MultiTenantDBCosmosFactoryUnitTest {
         }
 
         final MappingCosmosConverter cosmosConverter = new MappingCosmosConverter(mappingContext, null);
-        CosmosTemplate cosmosTemplate = new CosmosTemplate(cosmosFactory, cosmosConfig, cosmosConverter, null);
+        CosmosTemplate cosmosTemplate = new CosmosTemplate(cf, cosmosConfig, cosmosConverter, null);
         CosmosEntityInformation<Person, String> personInfo = new CosmosEntityInformation<>(Person.class);
 
         // Create DB1 and add TEST_PERSON_1 to it
         cosmosTemplate.createContainerIfNotExists(personInfo);
         cosmosTemplate.deleteAll(personInfo.getContainerName(), Person.class);
-        assertThat(cosmosFactory.getDatabaseName()).isEqualTo(testDB1);
+        assertThat(cf.getDatabaseName()).isEqualTo(testDB1);
         cosmosTemplate.insert(TEST_PERSON_1, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_1)));
 
         // Create DB2 and add TEST_PERSON_2 to it
-        cosmosFactory.manuallySetDatabaseName = testDB2;
+        cf.manuallySetDatabaseName = testDB2;
         cosmosTemplate.createContainerIfNotExists(personInfo);
         cosmosTemplate.deleteAll(personInfo.getContainerName(), Person.class);
-        assertThat(cosmosFactory.getDatabaseName()).isEqualTo(testDB2);
+        assertThat(cf.getDatabaseName()).isEqualTo(testDB2);
         cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
 
         // Check that DB2 has the correct contents
@@ -97,7 +97,7 @@ public class MultiTenantDBCosmosFactoryUnitTest {
         Assert.assertEquals(expectedResultsDB2, resultDB2);
 
         // Check that DB1 has the correct contents
-        cosmosFactory.manuallySetDatabaseName = testDB1;
+        cf.manuallySetDatabaseName = testDB1;
         List<Person> expectedResultsDB1 = new ArrayList<>();
         expectedResultsDB1.add(TEST_PERSON_1);
         Iterable<Person> iterableDB1 = cosmosTemplate.findAll(personInfo.getContainerName(), Person.class);
