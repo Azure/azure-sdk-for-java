@@ -61,7 +61,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureDigitalTwinsMan")
-    private interface PrivateEndpointConnectionsService {
+    public interface PrivateEndpointConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins"
@@ -243,21 +243,6 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      *
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available private link connections for a Digital Twin.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionsResponseInner list(String resourceGroupName, String resourceName) {
-        return listAsync(resourceGroupName, resourceName).block();
-    }
-
-    /**
-     * List private endpoint connection properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
-     * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -268,6 +253,21 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     public Response<PrivateEndpointConnectionsResponseInner> listWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         return listWithResponseAsync(resourceGroupName, resourceName, context).block();
+    }
+
+    /**
+     * List private endpoint connection properties.
+     *
+     * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
+     * @param resourceName The name of the DigitalTwinsInstance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the available private link connections for a Digital Twin.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionsResponseInner list(String resourceGroupName, String resourceName) {
+        return listWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     /**
@@ -407,23 +407,6 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection properties for the given private endpoint.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner get(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
-        return getAsync(resourceGroupName, resourceName, privateEndpointConnectionName).block();
-    }
-
-    /**
-     * Get private endpoint connection properties for the given private endpoint.
-     *
-     * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
-     * @param resourceName The name of the DigitalTwinsInstance.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -434,6 +417,23 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     public Response<PrivateEndpointConnectionInner> getWithResponse(
         String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, privateEndpointConnectionName, context).block();
+    }
+
+    /**
+     * Get private endpoint connection properties for the given private endpoint.
+     *
+     * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
+     * @param resourceName The name of the DigitalTwinsInstance.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return private endpoint connection properties for the given private endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionInner get(
+        String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
+        return getWithResponse(resourceGroupName, resourceName, privateEndpointConnectionName, Context.NONE).getValue();
     }
 
     /**

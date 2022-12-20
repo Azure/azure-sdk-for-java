@@ -24,6 +24,10 @@ public final class PrivateLinkResources {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of PrivateLinkResources class. */
+    public PrivateLinkResources() {
+    }
+
     /**
      * Get the value property: A collection of private link resources.
      *

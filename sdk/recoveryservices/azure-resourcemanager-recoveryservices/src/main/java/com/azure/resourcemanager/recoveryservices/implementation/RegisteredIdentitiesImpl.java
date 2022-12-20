@@ -24,13 +24,13 @@ public final class RegisteredIdentitiesImpl implements RegisteredIdentities {
         this.serviceManager = serviceManager;
     }
 
-    public void delete(String resourceGroupName, String vaultName, String identityName) {
-        this.serviceClient().delete(resourceGroupName, vaultName, identityName);
-    }
-
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String vaultName, String identityName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, vaultName, identityName, context);
+    }
+
+    public void delete(String resourceGroupName, String vaultName, String identityName) {
+        this.serviceClient().delete(resourceGroupName, vaultName, identityName);
     }
 
     private RegisteredIdentitiesClient serviceClient() {
