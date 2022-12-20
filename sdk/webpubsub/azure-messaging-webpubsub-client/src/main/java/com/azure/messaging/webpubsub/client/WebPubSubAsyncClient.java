@@ -154,7 +154,7 @@ public class WebPubSubAsyncClient {
 
         Mono<Void> sendMessageMono = sendMessage(message);
         Mono<WebPubSubResult> responseMono = options.getFireAndForget()
-            ? sendMessageMono.then(Mono.just(new WebPubSubResult()))
+            ? sendMessageMono.then(Mono.just(new WebPubSubResult(null)))
             : sendMessageMono.then(waitForAckMessage(ackId));
         return responseMono;
     }
