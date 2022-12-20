@@ -31,6 +31,10 @@ public final class DigitalTwinsPatchDescription {
     @JsonProperty(value = "properties")
     private DigitalTwinsPatchProperties properties;
 
+    /** Creates an instance of DigitalTwinsPatchDescription class. */
+    public DigitalTwinsPatchDescription() {
+    }
+
     /**
      * Get the tags property: Instance patch properties.
      *

@@ -207,7 +207,7 @@ public final class AzureDigitalTwinsManagementClientImpl implements AzureDigital
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-05-31";
+        this.apiVersion = "2022-10-31";
         this.digitalTwins = new DigitalTwinsClientImpl(this);
         this.digitalTwinsEndpoints = new DigitalTwinsEndpointsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
