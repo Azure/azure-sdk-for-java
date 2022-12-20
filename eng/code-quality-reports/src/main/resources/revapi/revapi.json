@@ -862,6 +862,11 @@
           "old:": "parameter reactor.core.publisher.Mono<com.azure.resourcemanager.sql.models.TransparentDataEncryption> com.azure.resourcemanager.sql.models.TransparentDataEncryption::updateStatusAsync(===com.azure.resourcemanager.sql.models.TransparentDataEncryptionStatus===)",
           "new": "parameter reactor.core.publisher.Mono<com.azure.resourcemanager.sql.models.TransparentDataEncryption> com.azure.resourcemanager.sql.models.TransparentDataEncryption::updateStatusAsync(===com.azure.resourcemanager.sql.models.TransparentDataEncryptionState===)",
           "justification": "Return type has been renamed by backend."
+          "ignore": true,
+          "code": "java.field.constantValueChanged",
+          "old": "field com.azure.messaging.eventgrid.SystemEventNames.SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENER",
+          "new": "field com.azure.messaging.eventgrid.SystemEventNames.SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENER",
+          "justification": "Previous constant value had a typo and was never functional."
         }
       ]
     }

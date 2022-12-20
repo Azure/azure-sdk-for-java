@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <if condition='isDefined("DEBUG_SHARE")'>
+    <then>
+      <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${DEBUG_SHARE}/java-eventhubs-stress-test-${CONTAINER_NAME:-container}.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+          <Pattern>%d %p [%t] %logger{100} %m%n</Pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+          <!-- daily rollover and gzip logs -->
+          <fileNamePattern>${DEBUG_SHARE}/archived/java-eventhubs-stress-test-${CONTAINER_NAME:-container}-%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+
+      </appender>
+
+      <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+          <Pattern>
+            %d %p [%t] %logger{100} %m%n
+          </Pattern>
+        </layout>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+          <level>WARN</level>
+        </filter>
+      </appender>
+
+      <root level="INFO">
+        <appender-ref ref="RollingFile"/>
+        <appender-ref ref="STDOUT"/>
+      </root>
+    </then>
+
+    <!-- If not define DEBUG_SHARE as env variable, will print log to console -->
+    <else>
+      <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+          <Pattern>
+            %black(%d) %highlight(%-5level) [%blue(%t)] %blue(%logger{100}): %msg%n%throwable
+          </Pattern>
+        </layout>
+      </appender>
+
+      <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+      </root>
+    </else>
+  </if>
+</configuration>

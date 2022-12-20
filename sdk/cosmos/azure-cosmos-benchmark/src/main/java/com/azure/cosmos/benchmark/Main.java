@@ -145,7 +145,10 @@ public class Main {
                 case ReadAllItemsOfLogicalPartition:
                     benchmark = new AsyncQueryBenchmark(cfg);
                     break;
-
+                case ReadManyLatency:
+                case ReadManyThroughput:
+                    benchmark = new AsyncReadManyBenchmark(cfg);
+                    break;
                 case Mixed:
                     benchmark = new AsyncMixedBenchmark(cfg);
                     break;

@@ -17,6 +17,9 @@ public final class SearchAlongRouteRequest {
     @JsonProperty(value = "route")
     private GeoJsonLineString route;
 
+    /** Creates an instance of SearchAlongRouteRequest class. */
+    public SearchAlongRouteRequest() {}
+
     /**
      * Get the route property: A valid `GeoJSON LineString` geometry type. Please refer to [RFC
      * 7946](https://tools.ietf.org/html/rfc7946#section-3.1.4) for details.

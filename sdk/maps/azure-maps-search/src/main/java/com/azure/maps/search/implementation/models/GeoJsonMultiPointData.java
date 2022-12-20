@@ -17,6 +17,9 @@ public class GeoJsonMultiPointData {
     @JsonProperty(value = "coordinates", required = true)
     private List<List<Double>> coordinates;
 
+    /** Creates an instance of GeoJsonMultiPointData class. */
+    public GeoJsonMultiPointData() {}
+
     /**
      * Get the coordinates property: Coordinates for the `GeoJson MultiPoint` geometry.
      *

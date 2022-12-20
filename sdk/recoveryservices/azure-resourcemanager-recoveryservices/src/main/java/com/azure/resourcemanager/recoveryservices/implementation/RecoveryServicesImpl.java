@@ -9,10 +9,13 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservices.fluent.RecoveryServicesClient;
+import com.azure.resourcemanager.recoveryservices.fluent.models.CapabilitiesResponseInner;
 import com.azure.resourcemanager.recoveryservices.fluent.models.CheckNameAvailabilityResultInner;
+import com.azure.resourcemanager.recoveryservices.models.CapabilitiesResponse;
 import com.azure.resourcemanager.recoveryservices.models.CheckNameAvailabilityParameters;
 import com.azure.resourcemanager.recoveryservices.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.recoveryservices.models.RecoveryServices;
+import com.azure.resourcemanager.recoveryservices.models.ResourceCapabilities;
 
 public final class RecoveryServicesImpl implements RecoveryServices {
     private static final ClientLogger LOGGER = new ClientLogger(RecoveryServicesImpl.class);
@@ -28,6 +31,21 @@ public final class RecoveryServicesImpl implements RecoveryServices {
         this.serviceManager = serviceManager;
     }
 
+    public Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(
+        String resourceGroupName, String location, CheckNameAvailabilityParameters input, Context context) {
+        Response<CheckNameAvailabilityResultInner> inner =
+            this.serviceClient().checkNameAvailabilityWithResponse(resourceGroupName, location, input, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new CheckNameAvailabilityResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
     public CheckNameAvailabilityResult checkNameAvailability(
         String resourceGroupName, String location, CheckNameAvailabilityParameters input) {
         CheckNameAvailabilityResultInner inner =
@@ -39,16 +57,25 @@ public final class RecoveryServicesImpl implements RecoveryServices {
         }
     }
 
-    public Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(
-        String resourceGroupName, String location, CheckNameAvailabilityParameters input, Context context) {
-        Response<CheckNameAvailabilityResultInner> inner =
-            this.serviceClient().checkNameAvailabilityWithResponse(resourceGroupName, location, input, context);
+    public Response<CapabilitiesResponse> capabilitiesWithResponse(
+        String location, ResourceCapabilities input, Context context) {
+        Response<CapabilitiesResponseInner> inner =
+            this.serviceClient().capabilitiesWithResponse(location, input, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
-                new CheckNameAvailabilityResultImpl(inner.getValue(), this.manager()));
+                new CapabilitiesResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CapabilitiesResponse capabilities(String location, ResourceCapabilities input) {
+        CapabilitiesResponseInner inner = this.serviceClient().capabilities(location, input);
+        if (inner != null) {
+            return new CapabilitiesResponseImpl(inner, this.manager());
         } else {
             return null;
         }

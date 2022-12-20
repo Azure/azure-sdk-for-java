@@ -23,6 +23,10 @@ public final class RawCertificateData {
     @JsonProperty(value = "certificate")
     private byte[] certificate;
 
+    /** Creates an instance of RawCertificateData class. */
+    public RawCertificateData() {
+    }
+
     /**
      * Get the authType property: Specifies the authentication type.
      *

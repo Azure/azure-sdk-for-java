@@ -52,7 +52,7 @@ public final class VaultCertificatesClientImpl implements VaultCertificatesClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesMana")
-    private interface VaultCertificatesService {
+    public interface VaultCertificatesService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
@@ -74,7 +74,7 @@ public final class VaultCertificatesClientImpl implements VaultCertificatesClien
     /**
      * Uploads a certificate for a resource.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param certificateName Certificate friendly name.
      * @param certificateRequest Input parameters for uploading the vault certificate.
@@ -137,7 +137,7 @@ public final class VaultCertificatesClientImpl implements VaultCertificatesClien
     /**
      * Uploads a certificate for a resource.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param certificateName Certificate friendly name.
      * @param certificateRequest Input parameters for uploading the vault certificate.
@@ -202,7 +202,7 @@ public final class VaultCertificatesClientImpl implements VaultCertificatesClien
     /**
      * Uploads a certificate for a resource.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param certificateName Certificate friendly name.
      * @param certificateRequest Input parameters for uploading the vault certificate.
@@ -222,25 +222,7 @@ public final class VaultCertificatesClientImpl implements VaultCertificatesClien
     /**
      * Uploads a certificate for a resource.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param vaultName The name of the recovery services vault.
-     * @param certificateName Certificate friendly name.
-     * @param certificateRequest Input parameters for uploading the vault certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return certificate corresponding to a vault that can be used by clients to register themselves with the vault.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VaultCertificateResponseInner create(
-        String resourceGroupName, String vaultName, String certificateName, CertificateRequest certificateRequest) {
-        return createAsync(resourceGroupName, vaultName, certificateName, certificateRequest).block();
-    }
-
-    /**
-     * Uploads a certificate for a resource.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param certificateName Certificate friendly name.
      * @param certificateRequest Input parameters for uploading the vault certificate.
@@ -260,5 +242,24 @@ public final class VaultCertificatesClientImpl implements VaultCertificatesClien
         Context context) {
         return createWithResponseAsync(resourceGroupName, vaultName, certificateName, certificateRequest, context)
             .block();
+    }
+
+    /**
+     * Uploads a certificate for a resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the recovery services vault.
+     * @param certificateName Certificate friendly name.
+     * @param certificateRequest Input parameters for uploading the vault certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return certificate corresponding to a vault that can be used by clients to register themselves with the vault.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VaultCertificateResponseInner create(
+        String resourceGroupName, String vaultName, String certificateName, CertificateRequest certificateRequest) {
+        return createWithResponse(resourceGroupName, vaultName, certificateName, certificateRequest, Context.NONE)
+            .getValue();
     }
 }

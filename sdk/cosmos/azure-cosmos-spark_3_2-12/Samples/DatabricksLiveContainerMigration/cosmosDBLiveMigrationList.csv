@@ -1,0 +1,5 @@
+﻿cosmosEndpoint,cosmosMasterKey,cosmosSourceDatabaseName,cosmosSourceContainerName,cosmosSourceContainerThroughputControl,cosmosTargetDatabaseName,cosmosTargetContainerName,cosmosRegion,cosmosTargetContainerPartitionKey,cosmosTargetContainerProvisionedThroughput
+https://cosmosdbexample.documents.azure.com:443/,fdukghksjdflas90123klsdf=,sourceDatabase,Container1,0.95,targetDatabase,Container1,West US,/partitionKey1,autoScaleMaxThroughput = '1000'
+https://cosmosdbexample.documents.azure.com:443/,fdukghksjdflas90123klsdf=,sourceDatabase,Container2,0.95,targetDatabase,Container2,West US,/partitionKey2,manualThroughput = '1000'
+https://cosmosdbexample.documents.azure.com:443/,fdukghksjdflas90123klsdf=,sourceDatabase,Container3,0.95,targetDatabase,Container3,West US,/partitionKey3,sharedDBmanualThroughput = '1000'
+https://cosmosdbexample.documents.azure.com:443/,fdukghksjdflas90123klsdf=,sourceDatabase,Container4,0.95,targetDatabase,Container4,West US,/partitionKey4,saredDBautoScaleMaxThroughput = '1000'

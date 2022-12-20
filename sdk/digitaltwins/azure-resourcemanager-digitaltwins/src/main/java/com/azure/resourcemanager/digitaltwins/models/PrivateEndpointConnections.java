@@ -14,18 +14,6 @@ public interface PrivateEndpointConnections {
      *
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available private link connections for a Digital Twin.
-     */
-    PrivateEndpointConnectionsResponse list(String resourceGroupName, String resourceName);
-
-    /**
-     * List private endpoint connection properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
-     * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,17 +24,16 @@ public interface PrivateEndpointConnections {
         String resourceGroupName, String resourceName, Context context);
 
     /**
-     * Get private endpoint connection properties for the given private endpoint.
+     * List private endpoint connection properties.
      *
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection properties for the given private endpoint.
+     * @return the available private link connections for a Digital Twin.
      */
-    PrivateEndpointConnection get(String resourceGroupName, String resourceName, String privateEndpointConnectionName);
+    PrivateEndpointConnectionsResponse list(String resourceGroupName, String resourceName);
 
     /**
      * Get private endpoint connection properties for the given private endpoint.
@@ -62,6 +49,19 @@ public interface PrivateEndpointConnections {
      */
     Response<PrivateEndpointConnection> getWithResponse(
         String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context);
+
+    /**
+     * Get private endpoint connection properties for the given private endpoint.
+     *
+     * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
+     * @param resourceName The name of the DigitalTwinsInstance.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return private endpoint connection properties for the given private endpoint.
+     */
+    PrivateEndpointConnection get(String resourceGroupName, String resourceName, String privateEndpointConnectionName);
 
     /**
      * Delete private endpoint connection with the specified name.
