@@ -169,7 +169,9 @@ public abstract class TestBase implements BeforeEachCallback {
 
     @AfterAll
     public static void teardownClass() {
-        testProxyManager.stopProxy();
+        if (testProxyManager != null) {
+            testProxyManager.stopProxy();
+        }
     }
 
     /**
