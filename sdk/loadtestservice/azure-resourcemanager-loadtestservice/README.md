@@ -55,7 +55,7 @@ In addition, Azure subscription ID can be configured via environment variable `A
 
 With above configuration, `azure` client can be authenticated by following code:
 
-```java
+```java readme-sample-authn
 AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
@@ -78,7 +78,7 @@ See [API design][design] for general introduction on design and key concepts on 
 
 Create an Azure Load Testing resource.
 
-```java
+```java readme-sample-createloadtestresource-basic
 LoadTestResource resource = manager
     .loadTests()
     .define("sample-loadtesting-resource")
@@ -89,7 +89,7 @@ LoadTestResource resource = manager
 
 Create an Azure Load Testing resource configured with CMK encryption.
 
-```java
+```java readme-sample-createloadtestresource-encryption
 // map of user-assigned managed identities to be assigned to the loadtest resource
 Map<String, UserAssignedIdentity> map = new HashMap<String, UserAssignedIdentity>();
 map.put("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/sample-rg/providers/microsoft.managedidentity/userassignedidentities/identity1", new UserAssignedIdentity());
@@ -119,7 +119,7 @@ LoadTestResource resource = manager
 
 ### Get details of an Azure Load Testing resource
 
-```java
+```java readme-sample-getloadtestresource
 LoadTestResource resource = manager
     .loadTests()
     .getByResourceGroup("sample-rg", "sample-loadtesting-resource");
@@ -129,7 +129,7 @@ LoadTestResource resource = manager
 
 Update an Azure Load Testing resource to configure CMK encryption using system-assigned managed identity.
 
-```java
+```java readme-sample-updateloadtestresource-encryption
 LoadTestResource resource = manager
     .loadTests()
     .getByResourceGroup("sample-rg", "sample-loadtesting-resource");
@@ -155,7 +155,7 @@ LoadTestResource resourcePostUpdate = resource
 
 Update an Azure Load Testing resource to update user-assigned managed identities.
 
-```java
+```java readme-sample-updateloadtestresource-mi
 Map<String, UserAssignedIdentity> map = new HashMap<String, UserAssignedIdentity>();
 // Note: the value of <identity1> set to null, removes the previously assigned managed identity from the load test resource
 map.put("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/sample-rg/providers/microsoft.managedidentity/userassignedidentities/identity1", null);
@@ -177,10 +177,58 @@ LoadTestResource resourcePostUpdate = resource
 
 ### Delete an Azure Load Testing resource
 
-```java
+```java readme-sample-deleteloadtestresource
 manager
     .loadTests()
     .deleteByResourceGroup("sample-rg", "sample-loadtesting-resource");
+```
+
+### Quota Operations
+
+Get quota values for all quota buckets.
+
+```java readme-sample-list-all-quota-buckets
+PagedIterable<QuotaResource> resource = manager
+    .quotas()
+    .list("westus2");
+
+for (QuotaResource quotaResource : resource) {
+    // use the quotaResource
+    System.out.println(quotaResource.limit());
+}
+```
+
+Get quota values for a particular quota bucket.
+
+```java readme-sample-get-quota-bucket
+QuotaResource resource = manager
+    .quotas()
+    .get("westus2", "maxConcurrentTestRuns");
+System.out.println(resource.limit());
+```
+
+Check quota availability.
+
+```java readme-sample-check-quota-availability
+QuotaResource resource = manager
+    .quotas()
+    .get("westus2", "maxConcurrentTestRuns");
+
+QuotaBucketRequestPropertiesDimensions dimensions = new QuotaBucketRequestPropertiesDimensions()
+    .withLocation("westus2")
+    .withSubscriptionId(manager.serviceClient().getSubscriptionId());
+
+QuotaBucketRequest request = new QuotaBucketRequest()
+    .withCurrentQuota(resource.limit())
+    .withCurrentUsage(resource.usage())
+    .withNewQuota(resource.limit())
+    .withDimensions(dimensions);
+
+CheckQuotaAvailabilityResponse availability = manager
+    .quotas()
+    .checkAvailability("westus2", "maxConcurrentTestRuns", request);
+
+System.out.println(availability.isAvailable());
 ```
 
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtestservice/azure-resourcemanager-loadtestservice/SAMPLE.md)

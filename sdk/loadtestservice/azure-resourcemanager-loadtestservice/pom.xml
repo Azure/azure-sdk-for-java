@@ -7,6 +7,43 @@
     <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.azure.tools</groupId>
+        <artifactId>codesnippet-maven-plugin</artifactId>
+        <version>1.0.0-beta.8</version>
+        <configuration>
+          <codesnippetGlob>**/src/samples/java/**/*.java</codesnippetGlob>
+          <codesnippetRootDirectory>${project.basedir}/src/samples/java</codesnippetRootDirectory>
+          <sourceGlob>**/src/main/java/**/*.java</sourceGlob>
+          <sourceRootDirectory>${project.basedir}/src/main/java</sourceRootDirectory>
+          <includeSource>true</includeSource>
+          <readmePath>${project.basedir}/README.md</readmePath>
+          <includeReadme>true</includeReadme>
+          <maxLineLength>120</maxLineLength>
+          <skip>false</skip>
+        </configuration>
+        <executions>
+          <execution>
+            <id>update-codesnippet</id>
+            <phase>process-sources</phase>
+            <goals>
+              <goal>update-codesnippet</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>verify-codesnippet</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>verify-codesnippet</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-loadtestservice</artifactId>
   <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-loadtestservice;current} -->
