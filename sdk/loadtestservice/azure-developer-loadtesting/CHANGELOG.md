@@ -1,8 +1,8 @@
 # Release History
 
-## 1.0.0 (2023-01-15)
+## 1.0.0-beta.2 (Unreleased)
 
-- First stable release of Azure Load Testing client library for Java.
+- Second preview release of Azure Load Testing client library for Java.
 
 ### Features Added
 

@@ -40,8 +40,8 @@ public final class HelloWorld {
         LoadTestRunClient testRunClient = builder.buildLoadTestRunClient();
 
         // Constants and parameters
-        final String testId = "11111111-1234-1234-1234-123456789abc";
-        final String testRunId = "22222222-1234-1234-1234-123456789abc";
+        final String testId = "6758667a-a57c-47e5-9cef-9b1f1432daca";
+        final String testRunId = "f758667a-c5ac-269a-dce1-5c1f14f2d142";
         final String testFileName = "test-script.jmx";
         final String testFilePath = "C:/path/to/file/sample-script.jmx";
 

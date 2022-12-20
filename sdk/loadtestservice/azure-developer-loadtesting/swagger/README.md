@@ -5,7 +5,7 @@ require: https://github.com/Azure/azure-rest-api-specs/blob/038922fd638b28f04ad7
 java: true
 data-plane: true
 title: LoadTestingClient
-package-version: 1.0.0
+package-version: 1.0.0-beta.2
 security: AADToken
 security-scopes: https://cnt-prod.loadtesting.azure.com/.default
 artifact-id: azure-developer-loadtesting
