@@ -2,7 +2,10 @@ This document currently details Maven commands for building Azure Cosmos SDK.
 
 ### Fork and clone the repository
 To build and develop locally, it is strongly recommended to fork and clone the repository: https://github.com/Azure/azure-sdk-for-java
-NOTE: All of the below commands need to be run from home directory of azure-sdk-for-java repository.
+
+<u>**NOTE:**</u> If running on Windows please ensure that you have enabled LFS-support in Git - see the installation instructions [here](https://git-lfs.com/).
+
+**<u>NOTE:</u>** All of the below commands need to be run from home directory of azure-sdk-for-java repository.
 
 ### JDK 8 vs JDK 11
 The build system is configured to support JDK, as well as the current long-term support version of the JDK (currently JDK 11). The commands presented below will work on both JDKs.
@@ -72,6 +75,9 @@ Open Modules tab in the same settings and set the Language level to match projec
 Set target bytecode version for the project azure-cosmos in IntelliJ Preferences for Java Compiler as JDK 11: 
 ![Screenshot 2022-12-19 at 2 23 22 PM](https://user-images.githubusercontent.com/14034156/208549894-39804c35-9f4c-4b74-b076-aeaf24edd847.png)
 
+### Installing the Cosmos DB emulator
+
+Setup Azure Cosmos DB Emulator by following [this instruction](https://docs.microsoft.com/azure/cosmos-db/local-emulator). Then please export the emulator's SSL certificates and install them in the JVM trust stores on your development machine following [this instruction](https://learn.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates).
 
 ### Running Unit Tests
 
