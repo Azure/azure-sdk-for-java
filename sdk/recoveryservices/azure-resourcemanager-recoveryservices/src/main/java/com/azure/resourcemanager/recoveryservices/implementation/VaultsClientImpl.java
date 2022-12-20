@@ -64,7 +64,7 @@ public final class VaultsClientImpl implements VaultsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesMana")
-    private interface VaultsService {
+    public interface VaultsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/vaults")
         @ExpectedResponses({200})
@@ -319,7 +319,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Retrieve a list of Vaults.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -371,7 +371,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Retrieve a list of Vaults.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -422,7 +422,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Retrieve a list of Vaults.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -438,7 +438,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Retrieve a list of Vaults.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -455,7 +455,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Retrieve a list of Vaults.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -469,7 +469,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Retrieve a list of Vaults.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -484,7 +484,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Get the Vault details.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -531,7 +531,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Get the Vault details.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -577,7 +577,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Get the Vault details.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -593,22 +593,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Get the Vault details.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param vaultName The name of the recovery services vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Vault details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VaultInner getByResourceGroup(String resourceGroupName, String vaultName) {
-        return getByResourceGroupAsync(resourceGroupName, vaultName).block();
-    }
-
-    /**
-     * Get the Vault details.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -623,9 +608,24 @@ public final class VaultsClientImpl implements VaultsClient {
     }
 
     /**
+     * Get the Vault details.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the recovery services vault.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Vault details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VaultInner getByResourceGroup(String resourceGroupName, String vaultName) {
+        return getByResourceGroupWithResponse(resourceGroupName, vaultName, Context.NONE).getValue();
+    }
+
+    /**
      * Creates or updates a Recovery Services vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -681,7 +681,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Creates or updates a Recovery Services vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @param context The context to associate with this operation.
@@ -735,7 +735,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Creates or updates a Recovery Services vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -756,7 +756,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Creates or updates a Recovery Services vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @param context The context to associate with this operation.
@@ -780,7 +780,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Creates or updates a Recovery Services vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -797,7 +797,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Creates or updates a Recovery Services vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @param context The context to associate with this operation.
@@ -815,7 +815,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Creates or updates a Recovery Services vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -833,7 +833,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Creates or updates a Recovery Services vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @param context The context to associate with this operation.
@@ -853,7 +853,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Creates or updates a Recovery Services vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -869,7 +869,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Creates or updates a Recovery Services vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @param context The context to associate with this operation.
@@ -886,7 +886,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Deletes a vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -933,7 +933,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Deletes a vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -978,7 +978,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Deletes a vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -993,21 +993,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Deletes a vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param vaultName The name of the recovery services vault.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String vaultName) {
-        deleteAsync(resourceGroupName, vaultName).block();
-    }
-
-    /**
-     * Deletes a vault.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1021,9 +1007,23 @@ public final class VaultsClientImpl implements VaultsClient {
     }
 
     /**
+     * Deletes a vault.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the recovery services vault.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String vaultName) {
+        deleteWithResponse(resourceGroupName, vaultName, Context.NONE);
+    }
+
+    /**
      * Updates the vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1079,7 +1079,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Updates the vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @param context The context to associate with this operation.
@@ -1133,7 +1133,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Updates the vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1154,7 +1154,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Updates the vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @param context The context to associate with this operation.
@@ -1177,7 +1177,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Updates the vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1194,7 +1194,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Updates the vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @param context The context to associate with this operation.
@@ -1212,7 +1212,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Updates the vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1230,7 +1230,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Updates the vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @param context The context to associate with this operation.
@@ -1250,7 +1250,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Updates the vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1266,7 +1266,7 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Updates the vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param vault Recovery Services Vault to be created.
      * @param context The context to associate with this operation.
@@ -1283,7 +1283,8 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1320,7 +1321,8 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1357,7 +1359,8 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1394,7 +1397,8 @@ public final class VaultsClientImpl implements VaultsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
