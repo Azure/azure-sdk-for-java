@@ -9,6 +9,7 @@ import com.azure.cosmos.models.{CosmosClientTelemetryConfig, CosmosMicrometerMet
 import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, ThrottlingRetryOptions}
+import com.azure.identity.ClientSecretCredentialBuilder
 import org.apache.spark.scheduler.{SparkListener, SparkListenerApplicationEnd}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.{SparkContext, TaskContext}
@@ -129,14 +130,33 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     cache.get(clientConfigWrapper) match {
       case Some(clientCacheMetadata) => clientCacheMetadata.createCacheItemForReuse(ownerInfo)
       case None =>
-        var builder = new CosmosClientBuilder()
-          .key(cosmosClientConfiguration.key)
-          .endpoint(cosmosClientConfiguration.endpoint)
-          .userAgentSuffix(cosmosClientConfiguration.applicationName)
-          .throttlingRetryOptions(
-            new ThrottlingRetryOptions()
-              .setMaxRetryAttemptsOnThrottledRequests(Int.MaxValue)
-              .setMaxRetryWaitTime(Duration.ofSeconds((Integer.MAX_VALUE/1000) - 1)))
+          var builder: CosmosClientBuilder = null
+          if(cosmosClientConfiguration.key != null && cosmosClientConfiguration.key.trim.nonEmpty) {
+              builder = new CosmosClientBuilder()
+                  .key(cosmosClientConfiguration.key)
+                  .endpoint(cosmosClientConfiguration.endpoint)
+                  .userAgentSuffix(cosmosClientConfiguration.applicationName)
+                  .throttlingRetryOptions(
+                      new ThrottlingRetryOptions()
+                          .setMaxRetryAttemptsOnThrottledRequests(Int.MaxValue)
+                          .setMaxRetryWaitTime(Duration.ofSeconds((Integer.MAX_VALUE / 1000) - 1)))
+          } else {
+              val servicePrincipal = new ClientSecretCredentialBuilder()
+                  .authorityHost(cosmosClientConfiguration.authorityHost)
+                  .tenantId(cosmosClientConfiguration.tenantId)
+                  .clientId(cosmosClientConfiguration.clientId)
+                  .clientSecret(cosmosClientConfiguration.clientSecret)
+                  .build()
+
+              builder = new CosmosClientBuilder()
+                  .credential(servicePrincipal)
+                  .endpoint(cosmosClientConfiguration.endpoint)
+                  .userAgentSuffix(cosmosClientConfiguration.applicationName)
+                  .throttlingRetryOptions(
+                      new ThrottlingRetryOptions()
+                          .setMaxRetryAttemptsOnThrottledRequests(Int.MaxValue)
+                          .setMaxRetryWaitTime(Duration.ofSeconds((Integer.MAX_VALUE/1000) - 1)))
+          }
 
         if (CosmosClientMetrics.meterRegistry.isDefined) {
           val customApplicationNameSuffix = cosmosClientConfiguration.customApplicationNameSuffix
