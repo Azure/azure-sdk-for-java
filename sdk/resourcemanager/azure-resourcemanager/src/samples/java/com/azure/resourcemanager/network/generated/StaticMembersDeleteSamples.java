@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for StaticMembers Delete. */
 public final class StaticMembersDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkManagerStaticMemberDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkManagerStaticMemberDelete.json
      */
     /**
      * Sample code: StaticMembersDelete.

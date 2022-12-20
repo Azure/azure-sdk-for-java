@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ApplicationSecurityGroups Delete. */
 public final class ApplicationSecurityGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ApplicationSecurityGroupDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ApplicationSecurityGroupDelete.json
      */
     /**
      * Sample code: Delete application security group.
