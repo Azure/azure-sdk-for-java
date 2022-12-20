@@ -22,7 +22,7 @@ To build azure-cosmos library using maven command line, run the following comman
 mvn -e -Dgpg.skip -DskipTests -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl com.azure:azure-cosmos -am clean verify
 ```
 
-Tips: if you're using powershell on windows, you may run into this error`[ERROR] Unknown lifecycle phase ".skip". You must specify a valid lifecycle phase or a goal in the format`, this can be fixed by telling powershell to stop parsing this command with [stop-parsing parameter "--%"](https://technet.microsoft.com/en-us/library/hh847892.aspx) 
+Tips: if you're using powershell on windows, you may run into this error`[ERROR] Unknown lifecycle phase ".skip". You must specify a valid lifecycle phase or a goal in the format`, this can be fixed by telling powershell to stop parsing this command with [stop-parsing parameter "--%"](https://technet.microsoft.com/library/hh847892.aspx) 
 
 ```shell
 mvn --% -e -Dgpg.skip -DskipTests -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl com.azure:azure-cosmos -am clean verify
@@ -82,6 +82,12 @@ Unit tests are tests with group "unit" and can be run from IntelliJ directly wit
 Azure Cosmos Java SDK has different Integration tests which can be run with Azure Cosmos Emulator or Azure Cosmos DB production Account. 
 
 Emulator Integration tests are with test group `emulator`, labeled in the code as `groups = { "emulator" }` and can be run from IntelliJ after starting Azure Cosmos DB Emulator on the local development machine. For example, `DocumentCrudTest` is of group emulator.
+
+Latest version of Azure Cosmos DB Emulator can be downloaded and installed from [here](https://learn.microsoft.com/azure/cosmos-db/local-emulator)
+Our CI pipelines start Azure Cosmos DB Emulator with these parameters. It is highly recommended to use these for local development and testing.
+```shell
+/noexplorer /noui /enablepreview /EnableSqlComputeEndpoint /disableratelimiting /enableaadauthentication /partitioncount=50 /consistency=Strong
+```
 
 Other test groups are meant to be tested against Azure Cosmos DB production account, but can also be tested against Emulator. There are multiple different test groups like `groups = {"simple", "long", "direct", "multi-region", "multi-master"}`. For example, `CosmosItemTest` is a simple group test which can be run against Azure Cosmos DB production account, as well as against emulator.
 
