@@ -6,6 +6,7 @@ package com.azure.storage.common.policy;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Mono;
@@ -16,6 +17,18 @@ import reactor.core.publisher.Mono;
  */
 public class ScrubEtagPolicy implements HttpPipelinePolicy {
     private static final String ETAG = "eTag";
+
+    /**
+     * Wraps any potential error responses from the service and applies post-processing of the response's eTag header to
+     * standardize the value.
+     *
+     * @return an updated response with post-processing steps applied.
+     */
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        HttpResponse response = next.processSync();
+        return scrubETagHeader(response);
+    }
 
     /**
      * Wraps any potential error responses from the service and applies post-processing of the response's eTag header to
