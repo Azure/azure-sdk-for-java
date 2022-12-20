@@ -9,6 +9,7 @@ import com.azure.core.util.IterableStream;
 import com.azure.messaging.webpubsub.client.models.ConnectedEvent;
 import com.azure.messaging.webpubsub.client.models.DisconnectedEvent;
 import com.azure.messaging.webpubsub.client.models.GroupMessageEvent;
+import com.azure.messaging.webpubsub.client.models.SendToGroupOptions;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
 
@@ -55,8 +56,8 @@ public class WebPubSubClient implements AutoCloseable {
     }
 
     public WebPubSubResult sendMessageToGroup(String group, BinaryData content, WebPubSubDataType dataType,
-                                              long ackId, boolean noEcho, boolean fireAndForget) {
-        return client.sendMessageToGroup(group, content, dataType, ackId, noEcho, fireAndForget).block();
+                                              SendToGroupOptions options) {
+        return client.sendMessageToGroup(group, content, dataType, options).block();
     }
 
     public IterableStream<GroupMessageEvent> receiveGroupMessageEvents() {

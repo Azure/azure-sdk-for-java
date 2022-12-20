@@ -17,6 +17,7 @@ import com.azure.messaging.webpubsub.client.models.ConnectedEvent;
 import com.azure.messaging.webpubsub.client.models.DisconnectedEvent;
 import com.azure.messaging.webpubsub.client.models.GroupDataMessage;
 import com.azure.messaging.webpubsub.client.models.GroupMessageEvent;
+import com.azure.messaging.webpubsub.client.models.SendToGroupOptions;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
 import com.azure.messaging.webpubsub.client.models.WebPubSubMessage;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
@@ -131,11 +132,13 @@ public class WebPubSubAsyncClient {
     }
 
     public Mono<WebPubSubResult> sendMessageToGroup(String group, BinaryData content, WebPubSubDataType dataType) {
-        return sendMessageToGroup(group, content, dataType, nextAckId(), false, false);
+        return sendMessageToGroup(group, content, dataType, new SendToGroupOptions().setAckId(nextAckId()));
     }
 
     public Mono<WebPubSubResult> sendMessageToGroup(String group, BinaryData content, WebPubSubDataType dataType,
-                                                    long ackId, boolean noEcho, boolean fireAndForget) {
+                                                    SendToGroupOptions options) {
+
+        long ackId = options != null && options.getAckId() != null ? options.getAckId() : nextAckId();
 
         BinaryData data = content;
         if (dataType == WebPubSubDataType.BINARY) {
@@ -147,10 +150,10 @@ public class WebPubSubAsyncClient {
             .setData(data)
             .setDataType(dataType.name().toLowerCase(Locale.ROOT))
             .setAckId(ackId)
-            .setNoEcho(noEcho);
+            .setNoEcho(options.getNoEcho());
 
         Mono<Void> sendMessageMono = sendMessage(message);
-        Mono<WebPubSubResult> responseMono = fireAndForget
+        Mono<WebPubSubResult> responseMono = options.getFireAndForget()
             ? sendMessageMono.then(Mono.just(new WebPubSubResult()))
             : sendMessageMono.then(waitForAckMessage(ackId));
         return responseMono;
