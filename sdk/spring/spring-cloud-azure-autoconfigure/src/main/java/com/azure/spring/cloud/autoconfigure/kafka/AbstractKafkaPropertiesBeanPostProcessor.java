@@ -217,7 +217,7 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
     /**
      * Configure Spring Cloud Azure user-agent for Kafka client. This method is idempotent to avoid configuring UA repeatedly.
      */
-    synchronized void configureKafkaUserAgent() {
+    static synchronized void configureKafkaUserAgent() {
         Method dataMethod = ReflectionUtils.findMethod(ApiVersionsRequest.class, "data");
         if (dataMethod != null) {
             ApiVersionsRequest apiVersionsRequest = new ApiVersionsRequest.Builder().build();

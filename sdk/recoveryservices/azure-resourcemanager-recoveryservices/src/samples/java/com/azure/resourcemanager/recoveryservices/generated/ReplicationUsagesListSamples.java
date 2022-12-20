@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ReplicationUsages List. */
 public final class ReplicationUsagesListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/ListReplicationUsages.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ListReplicationUsages.json
      */
     /**
      * Sample code: Gets Replication usages of vault.

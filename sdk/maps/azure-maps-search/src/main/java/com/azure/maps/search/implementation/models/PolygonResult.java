@@ -18,6 +18,9 @@ public final class PolygonResult {
     @JsonProperty(value = "additionalData", access = JsonProperty.Access.WRITE_ONLY)
     private List<MapsPolygon> polygons;
 
+    /** Creates an instance of PolygonResult class. */
+    public PolygonResult() {}
+
     /**
      * Get the polygons property: Results array.
      *
