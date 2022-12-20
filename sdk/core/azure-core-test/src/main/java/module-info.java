@@ -10,6 +10,9 @@ module com.azure.core.test {
     requires reactor.test;
     requires java.management;
     requires java.net.http;
+    requires reactor.netty.http;
+    requires reactor.netty.core;
+    requires io.netty.codec.http;
 
     exports com.azure.core.test;
     exports com.azure.core.test.annotation;
