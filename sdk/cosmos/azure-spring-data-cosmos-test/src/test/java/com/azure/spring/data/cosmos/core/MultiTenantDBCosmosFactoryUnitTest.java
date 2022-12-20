@@ -8,13 +8,17 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
+import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
+import com.azure.spring.data.cosmos.domain.AuditableEntity;
+import com.azure.spring.data.cosmos.domain.GenIdEntity;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,11 +62,15 @@ public class MultiTenantDBCosmosFactoryUnitTest {
     @Autowired
     private CosmosClientBuilder cosmosClientBuilder;
 
-    @Test
-    public void testGetDatabaseFunctionality() {
+    private MultiTenantDBCosmosFactory cosmosFactory;
+    private CosmosTemplate cosmosTemplate;
+    private CosmosEntityInformation<Person, String> personInfo;
+
+    @Before
+    public void setUp() throws ClassNotFoundException {
         /// Setup
         CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
-        MultiTenantDBCosmosFactory cf = new MultiTenantDBCosmosFactory(client, testDB1);
+        cosmosFactory = new MultiTenantDBCosmosFactory(client, testDB1);
         final CosmosMappingContext mappingContext = new CosmosMappingContext();
 
         try {
@@ -72,20 +80,23 @@ public class MultiTenantDBCosmosFactoryUnitTest {
         }
 
         final MappingCosmosConverter cosmosConverter = new MappingCosmosConverter(mappingContext, null);
-        CosmosTemplate cosmosTemplate = new CosmosTemplate(cf, cosmosConfig, cosmosConverter, null);
-        CosmosEntityInformation<Person, String> personInfo = new CosmosEntityInformation<>(Person.class);
+        cosmosTemplate = new CosmosTemplate(cosmosFactory, cosmosConfig, cosmosConverter, null);
+        personInfo = new CosmosEntityInformation<>(Person.class);
+    }
 
+    @Test
+    public void testGetDatabaseFunctionality() {
         // Create DB1 and add TEST_PERSON_1 to it
         cosmosTemplate.createContainerIfNotExists(personInfo);
         cosmosTemplate.deleteAll(personInfo.getContainerName(), Person.class);
-        assertThat(cf.getDatabaseName()).isEqualTo(testDB1);
+        assertThat(cosmosFactory.getDatabaseName()).isEqualTo(testDB1);
         cosmosTemplate.insert(TEST_PERSON_1, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_1)));
 
         // Create DB2 and add TEST_PERSON_2 to it
-        cf.manuallySetDatabaseName = testDB2;
+        cosmosFactory.manuallySetDatabaseName = testDB2;
         cosmosTemplate.createContainerIfNotExists(personInfo);
         cosmosTemplate.deleteAll(personInfo.getContainerName(), Person.class);
-        assertThat(cf.getDatabaseName()).isEqualTo(testDB2);
+        assertThat(cosmosFactory.getDatabaseName()).isEqualTo(testDB2);
         cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)));
 
         // Check that DB2 has the correct contents
@@ -97,7 +108,7 @@ public class MultiTenantDBCosmosFactoryUnitTest {
         Assert.assertEquals(expectedResultsDB2, resultDB2);
 
         // Check that DB1 has the correct contents
-        cf.manuallySetDatabaseName = testDB1;
+        cosmosFactory.manuallySetDatabaseName = testDB1;
         List<Person> expectedResultsDB1 = new ArrayList<>();
         expectedResultsDB1.add(TEST_PERSON_1);
         Iterable<Person> iterableDB1 = cosmosTemplate.findAll(personInfo.getContainerName(), Person.class);
