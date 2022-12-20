@@ -54,6 +54,7 @@ public abstract class TestBase implements BeforeEachCallback {
         .get(AZURE_TEST_HTTP_CLIENTS);
     private static final boolean DEFAULT_TO_NETTY = CoreUtils.isNullOrEmpty(CONFIGURED_HTTP_CLIENTS_TO_TEST);
     private static final List<String> CONFIGURED_HTTP_CLIENTS;
+    private static boolean enableTestProxy;
 
     static {
         CONFIGURED_HTTP_CLIENTS = new ArrayList<>();
@@ -105,7 +106,7 @@ public abstract class TestBase implements BeforeEachCallback {
     @BeforeAll
     public static void setupClass() {
         testMode = initializeTestMode();
-        if (enableTestProxy() && (testMode == TestMode.PLAYBACK || testMode == TestMode.RECORD)) {
+        if (useTestProxy() && (testMode == TestMode.PLAYBACK || testMode == TestMode.RECORD)) {
             testProxyManager = new TestProxyManager(InterceptorManager.getRecordFolder());
             testProxyManager.startProxy();
         }
@@ -135,7 +136,7 @@ public abstract class TestBase implements BeforeEachCallback {
             Assertions.fail(e);
         }
 
-        if (enableTestProxy()) {
+        if (useTestProxy()) {
             testResourceNamer = new TestResourceNamer(testContextManager,
                 interceptorManager.getProxyVariableConsumer(),
                 interceptorManager.getProxyVariableSupplier());
@@ -269,8 +270,19 @@ public abstract class TestBase implements BeforeEachCallback {
         return TestingHelpers.getTestMode();
     }
 
-    static boolean enableTestProxy() {
-        return TestingHelpers.useTestProxy();
+    /**
+     * Indicates whether the out of process test recording proxy is in use.
+     * @return true if test proxy is to be used.
+     */
+    static boolean useTestProxy() {
+        return enableTestProxy;
+    }
+
+    /**
+     * Enables the out of process test recording proxy.
+     */
+    public static void enableTestProxy() {
+        enableTestProxy = true;
     }
 
     /**

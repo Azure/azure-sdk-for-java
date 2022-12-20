@@ -14,7 +14,6 @@ import java.util.Locale;
  */
 public final class TestingHelpers {
     public static final String AZURE_TEST_MODE = "AZURE_TEST_MODE";
-    public static final String AZURE_TEST_USE_PROXY = "AZURE_TEST_USE_PROXY";
 
     /**
      * Gets the {@link TestMode} being used to run tests.
@@ -36,16 +35,5 @@ public final class TestingHelpers {
 
         logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", AZURE_TEST_MODE);
         return TestMode.PLAYBACK;
-    }
-
-    public static boolean useTestProxy() {
-        final ClientLogger logger = new ClientLogger(TestingHelpers.class);
-        final String azureTestUseProxy = Configuration.getGlobalConfiguration().get(AZURE_TEST_USE_PROXY);
-        if (azureTestUseProxy != null && azureTestUseProxy.toUpperCase(Locale.US).equals("TRUE")) {
-            logger.info("Using TestProxy");
-            return true;
-        }
-        logger.info("Using classic recorder");
-        return false;
     }
 }
