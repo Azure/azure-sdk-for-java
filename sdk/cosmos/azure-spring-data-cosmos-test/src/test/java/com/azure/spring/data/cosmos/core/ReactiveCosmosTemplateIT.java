@@ -298,14 +298,14 @@ public class ReactiveCosmosTemplateIT {
 
     @Test
     public void testPatch() {
-        cosmosTemplate.patch(containerName, insertedPerson, operations);
+        cosmosTemplate.patch(insertedPerson, operations, null);
         Mono<Person> patchedPerson = cosmosTemplate.findById(containerName, insertedPerson.getId(), Person.class);
         assertEquals(insertedPerson.getAge(), patchedPerson.block().getAge());
     }
 
     @Test
     public void testPatchMultiOperations() {
-        cosmosTemplate.patch(containerName, insertedPerson, multiPatchOperations);
+        cosmosTemplate.patch(insertedPerson, multiPatchOperations, null);
         Mono<Person> patchedPerson = cosmosTemplate.findById(containerName, insertedPerson.getId(), Person.class);
         assertEquals(insertedPerson.getAge(), patchedPerson.block().getAge());
         assertEquals(insertedPerson.getHobbies(), patchedPerson.block().getHobbies());
@@ -316,7 +316,7 @@ public class ReactiveCosmosTemplateIT {
     public void testPatchPreConditionFail() {
         try {
             options.setFilterPredicate("FROM person p WHERE p.lastName = 'dummy'");
-            Mono<Person> person = cosmosTemplate.patch(containerName, insertedPerson, operations,options);
+            Mono<Person> person = cosmosTemplate.patch(insertedPerson, operations, options);
             Mono<Person> patchedPerson = cosmosTemplate.findById(containerName, insertedPerson.getId(), Person.class);
             assertEquals(person.block().getAge(), patchedPerson.block().getAge());
             fail();

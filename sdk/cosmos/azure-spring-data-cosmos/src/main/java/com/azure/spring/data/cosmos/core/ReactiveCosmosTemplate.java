@@ -455,51 +455,37 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     }
 
     /**
-     * Inserts item
-     *
-     * applies partial update (patch) to an item
-     *
-     * @param containerName must not be {@literal null}
-     * @param entityToPatch must not be {@literal null}
-     * @param patchOperations must not be {@literal null}
-     * @param <T> entity to be patched
-     * @return the inserted item
-     */
-    public <T> Mono<T> patch(String containerName, T entityToPatch, CosmosPatchOperations patchOperations) {
-        return patch(containerName, entityToPatch, patchOperations, null);
-    }
-
-    /**
      * applies partial update (patch) to an item with CosmosPatchItemRequestOptions
      *
-     * @param containerName must not be {@literal null}
-     * @param entityToPatch must not be {@literal null}
+     * @param entityToPatch must not be {@literal null}, must contain {@link org.springframework.data.annotation.Id}
+     * and {@link com.azure.spring.data.cosmos.core.mapping.PartitionKey} field
      * @param patchOperations must not be {@literal null}
-     * @param options must not be {@literal null}
-     * @param <T> entity to be patched
-     * @return the inserted item
+     * @param options optional CosmosPatchItemRequestOptions, e.g. options.setFilterPredicate("FROM products p WHERE p.used = false");
+     * @param <T> type class of domain type
+     * @return Mono with the patched item
      */
-    public <T> Mono<T> patch(String containerName, T entityToPatch, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options) {
-        Assert.notNull(patchOperations, "patchOperations should not be null, empty or only whitespaces");
+    public <T> Mono<T> patch(T entityToPatch, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options) {
+        Assert.notNull(patchOperations, "expected non-null cosmosPatchOperations");
 
+        final String containerName = getContainerName(entityToPatch.getClass());
         LOGGER.debug("execute patchItem in database {} container {}", this.getDatabaseName(), containerName);
 
         @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) entityToPatch.getClass();
-
-        LOGGER.debug("execute createItem in database {} container {}", this.getDatabaseName(),
-            containerName);
 
         if (options == null) {
             options = new CosmosPatchItemRequestOptions();
         }
 
-        CosmosEntityInformation<T, String> objectToPatchInfo;
-        objectToPatchInfo = new CosmosEntityInformation<>(domainType);
-
+        CosmosEntityInformation<T, String> objectToPatchInfo = new CosmosEntityInformation<>(domainType);
+        //  extract id and partitionKey from the objectToPatchInfo
+        String id = objectToPatchInfo.getId(entityToPatch);
+        Assert.notNull(id, "expected non-null itemId");
+        PartitionKey partitionKey = new PartitionKey(objectToPatchInfo.getPartitionKeyFieldValue(entityToPatch));
+        Assert.notNull(partitionKey, "expected non-null partitionKey for patchItem");
         return this.getCosmosAsyncClient()
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
-            .patchItem(objectToPatchInfo.getId(entityToPatch), new PartitionKey(objectToPatchInfo.getPartitionKeyFieldValue(entityToPatch)), patchOperations, options, JsonNode.class)
+            .patchItem(id, partitionKey, patchOperations, options, JsonNode.class)
             .publishOn(Schedulers.parallel())
             .onErrorResume(throwable ->
                 CosmosExceptionUtils.exceptionHandler("Failed to patch item", throwable,

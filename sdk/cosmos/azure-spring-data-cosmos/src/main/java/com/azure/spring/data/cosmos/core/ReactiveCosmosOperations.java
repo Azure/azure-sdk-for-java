@@ -148,25 +148,15 @@ public interface ReactiveCosmosOperations {
     <T> Mono<T> insert(String containerName, T objectToSave);
 
     /**
-     * patches item
-     * @param containerName must not be {@literal null}
-     * @param entityToPatch must not be {@literal null}
-     * @param patchOperations must not be {@literal null}
-     * @param <T> type class of domain type
-     * @return the patched item
-     */
-    <T> Mono<T> patch(String containerName, T entityToPatch, CosmosPatchOperations patchOperations);
-
-    /**
      * patches item with CosmosPatchItemRequestOptions
-     * @param containerName must not be {@literal null}
-     * @param entityToPatch must not be {@literal null}
+     * @param entityToPatch must not be {@literal null}, must contain {@link org.springframework.data.annotation.Id}
+     *      * and {@link com.azure.spring.data.cosmos.core.mapping.PartitionKey} field
      * @param patchOperations must not be {@literal null}
-     * @param options must not be {@literal null}
+     * @param options Optional CosmosPatchItemRequestOptions, e.g. options.setFilterPredicate("FROM products p WHERE p.used = false");
      * @param <T> entity to be patched
-     * @return the patched item
+     * @return Mono with the patched item
      */
-    <T> Mono<T> patch(String containerName, T entityToPatch, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options);
+    <T> Mono<T> patch(T entityToPatch, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options);
 
     /**
      * Upsert an item with partition key

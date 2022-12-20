@@ -100,19 +100,6 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     }
 
     /**
-     * patch entity
-     * @param entityToPatch entity to be patched
-     * @param p operations to patch
-     * @param <S> type of entity
-     */
-    @Override
-    public <S extends T> S save(S entityToPatch, CosmosPatchOperations p) {
-        Assert.notNull(p, "entity must not be null");
-        // patch items
-        return operation.patch(information.getContainerName(), entityToPatch, p);
-    }
-
-    /**
      * patch entity with CosmosPatchItemRequestOptions
      * @param entityToPatch entity to be patched
      * @param p path operations
@@ -123,7 +110,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     public <S extends T> S save(S entityToPatch, CosmosPatchOperations p, CosmosPatchItemRequestOptions options) {
         Assert.notNull(entityToPatch, "entity must not be null");
         // patch items
-        return operation.patch(information.getContainerName(), entityToPatch, p, options);
+        return operation.patch(entityToPatch, p, options);
     }
 
     /**

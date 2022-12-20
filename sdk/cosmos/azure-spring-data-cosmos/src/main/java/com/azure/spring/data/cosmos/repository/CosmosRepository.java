@@ -39,21 +39,12 @@ public interface CosmosRepository<T, ID extends Serializable> extends PagingAndS
     void deleteById(ID id, PartitionKey partitionKey);
 
     /**
-     * patches an entity by its id and partition key.
-     * @param entityToPatch entity to patch, must not be null.
-     * @param patchOperations patch operations, must not be null.
-     * @param <S> type of entity
-     * @return the patched entity
-     * @throws IllegalArgumentException in case the given {@code id} is {@literal null}.
-     */
-    <S extends T> S save(S entityToPatch, CosmosPatchOperations patchOperations);
-
-    /**
-     * patches an entity by its id and partition key with CosmosPatchItemRequestOptions
+     * Patches an entity by its id and partition key with CosmosPatchItemRequestOptions
      *
-     * @param entityToPatch entity to patch, must not be null.
+     * @param entityToPatch entity to patch, must not be null, must contain {@link org.springframework.data.annotation.Id}
+     * and {@link com.azure.spring.data.cosmos.core.mapping.PartitionKey} field
      * @param patchOperations patch operations, must not be null.
-     * @param options additional CosmosPatchItemRequestOptions options, e.g. options.setFilterPredicate("FROM products p WHERE p.used = false");
+     * @param options Optional CosmosPatchItemRequestOptions, e.g. options.setFilterPredicate("FROM products p WHERE p.used = false");
      * @param <S> type of entity
      * @return the patched entity
      * @throws IllegalArgumentException in case the given {@code id} is {@literal null}.
