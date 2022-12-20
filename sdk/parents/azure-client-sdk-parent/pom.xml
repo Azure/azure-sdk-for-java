@@ -473,6 +473,19 @@
               </artifacts>
             </configuration>
           </execution>
+
+          <execution>
+            <id>add-module-info</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>src/main/module-info</source>
+              </sources>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
 
