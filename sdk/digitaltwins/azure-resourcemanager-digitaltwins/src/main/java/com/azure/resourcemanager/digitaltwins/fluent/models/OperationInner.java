@@ -44,6 +44,10 @@ public final class OperationInner {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> properties;
 
+    /** Creates an instance of OperationInner class. */
+    public OperationInner() {
+    }
+
     /**
      * Get the name property: Operation name: {provider}/{resource}/{read | write | action | delete}.
      *
