@@ -139,7 +139,7 @@ webPubSubServiceClient.sendToAllWithResponse(
 webPubSubServiceClient.sendToAllWithResponse(
     BinaryData.fromString("Hello World - Broadcast test!"),
     new RequestOptions().setHeader("Content-Type", "text/plain")
-        .addQueryParam("filter", "'GroupA' in groups and not({'GroupB'} in groups)"));
+        .addQueryParam("filter", "'GroupA' in groups and not('GroupB' in groups)"));
 ```
 
 ### Broadcast message to a group
