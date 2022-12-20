@@ -7,5 +7,5 @@ public enum WebPubSubDataType {
     BINARY,
     JSON,
     TEXT,
-//    PROTOBUF,
+    PROTOBUF,
 }

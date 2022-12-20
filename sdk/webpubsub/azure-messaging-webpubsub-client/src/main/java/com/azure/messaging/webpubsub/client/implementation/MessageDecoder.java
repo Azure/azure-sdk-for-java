@@ -42,6 +42,7 @@ public class MessageDecoder extends CoderAdapter implements Decoder.Text<WebPubS
                                     break;
 
                                 case BINARY:
+                                case PROTOBUF:
                                     data = BinaryData.fromBytes(Base64.getDecoder().decode(jsonNode.get("data").binaryValue()));
                                     break;
 
