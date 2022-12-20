@@ -83,7 +83,7 @@ public final class WebPubSubServiceAsyncClient {
                     });
         }
         return Mono.defer(() -> {
-            final String audience = endpoint + "client/hubs/" + hub;
+            final String audience = endpoint + (endpoint.endsWith("/") ? "" : "/") + "client/hubs/" + hub;
             final String token = WebPubSubAuthenticationPolicy.getAuthenticationToken(
                     audience, options, keyCredential);
             return Mono.just(WebPubSubUtil.createToken(token, endpoint, hub));
