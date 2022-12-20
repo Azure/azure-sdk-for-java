@@ -125,9 +125,16 @@ public abstract class TestBase implements BeforeEachCallback {
      */
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
-        this.testContextManager = new TestContextManager(testInfo.getTestMethod().get(), testMode, enableTestProxy());
+        TestMode localTestMode = testMode;
+        // for unit tests of playback/recording in azure-core-test, allow for changing the mode per-test.
+        if (testInfo.getTags().contains("Record")) {
+            localTestMode = TestMode.RECORD;
+        } else if (testInfo.getTags().contains("Playback")) {
+            localTestMode = TestMode.PLAYBACK;
+        }
+        this.testContextManager = new TestContextManager(testInfo.getTestMethod().get(), localTestMode, useTestProxy());
         testContextManager.setTestIteration(testIterationContext.getTestIteration());
-        logger.info("Test Mode: {}, Name: {}", testMode, testContextManager.getTestName());
+        logger.info("Test Mode: {}, Name: {}", localTestMode, testContextManager.getTestName());
 
         try {
             interceptorManager = new InterceptorManager(testContextManager);
