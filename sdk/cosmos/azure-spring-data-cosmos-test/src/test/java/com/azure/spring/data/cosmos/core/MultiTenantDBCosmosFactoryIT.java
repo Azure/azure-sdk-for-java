@@ -12,7 +12,7 @@ import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.domain.Person;
-import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
+import com.azure.spring.data.cosmos.repository.MultiTenantTestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import org.junit.Assert;
 import org.junit.Before;
@@ -40,7 +40,7 @@ import static com.azure.spring.data.cosmos.common.TestConstants.PASSPORT_IDS_BY_
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = TestRepositoryConfig.class)
+@ContextConfiguration(classes = MultiTenantTestRepositoryConfig.class)
 public class MultiTenantDBCosmosFactoryIT {
 
     private final String testDB1 = "Database1";
