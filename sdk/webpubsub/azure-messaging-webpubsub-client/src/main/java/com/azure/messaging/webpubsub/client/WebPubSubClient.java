@@ -51,13 +51,13 @@ public class WebPubSubClient implements AutoCloseable {
         return client.leaveGroup(group, ackId).block();
     }
 
-    public WebPubSubResult sendMessageToGroup(String group, BinaryData content, WebPubSubDataType dataType) {
-        return client.sendMessageToGroup(group, content, dataType).block();
+    public WebPubSubResult sendToGroup(String group, BinaryData content, WebPubSubDataType dataType) {
+        return client.sendToGroup(group, content, dataType).block();
     }
 
-    public WebPubSubResult sendMessageToGroup(String group, BinaryData content, WebPubSubDataType dataType,
-                                              SendToGroupOptions options) {
-        return client.sendMessageToGroup(group, content, dataType, options).block();
+    public WebPubSubResult sendToGroup(String group, BinaryData content, WebPubSubDataType dataType,
+                                       SendToGroupOptions options) {
+        return client.sendToGroup(group, content, dataType, options).block();
     }
 
     public IterableStream<GroupMessageEvent> receiveGroupMessageEvents() {

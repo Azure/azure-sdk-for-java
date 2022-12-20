@@ -131,12 +131,12 @@ public class WebPubSubAsyncClient {
             .then(waitForAckMessage(ackId));
     }
 
-    public Mono<WebPubSubResult> sendMessageToGroup(String group, BinaryData content, WebPubSubDataType dataType) {
-        return sendMessageToGroup(group, content, dataType, new SendToGroupOptions().setAckId(nextAckId()));
+    public Mono<WebPubSubResult> sendToGroup(String group, BinaryData content, WebPubSubDataType dataType) {
+        return sendToGroup(group, content, dataType, new SendToGroupOptions().setAckId(nextAckId()));
     }
 
-    public Mono<WebPubSubResult> sendMessageToGroup(String group, BinaryData content, WebPubSubDataType dataType,
-                                                    SendToGroupOptions options) {
+    public Mono<WebPubSubResult> sendToGroup(String group, BinaryData content, WebPubSubDataType dataType,
+                                             SendToGroupOptions options) {
 
         long ackId = options != null && options.getAckId() != null ? options.getAckId() : nextAckId();
 
@@ -173,7 +173,13 @@ public class WebPubSubAsyncClient {
 
     private static final AtomicLong ACK_ID = new AtomicLong(0);
     private long nextAckId() {
-        return ACK_ID.getAndIncrement();
+        return ACK_ID.getAndUpdate(value -> {
+            // keep positive
+            if (++value < 0) {
+                value = 0;
+            }
+            return value;
+        });
     }
 
     private Flux<AckMessage> receiveAckMessages() {

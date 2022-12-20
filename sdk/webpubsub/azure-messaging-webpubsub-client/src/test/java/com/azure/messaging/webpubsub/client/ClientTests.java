@@ -49,11 +49,11 @@ public class ClientTests {
         client.joinGroup("group1");
 
         // send message to group1
-        printResult(client.sendMessageToGroup("group1",
+        printResult(client.sendToGroup("group1",
             BinaryData.fromString("abc"), WebPubSubDataType.TEXT));
 
         // send message to group1
-        printResult(client.sendMessageToGroup("group1",
+        printResult(client.sendToGroup("group1",
             BinaryData.fromObject(Map.of("hello", "world")), WebPubSubDataType.JSON));
 
         client.leaveGroup("group1");
@@ -93,25 +93,25 @@ public class ClientTests {
         printResult(asyncClient.joinGroup("group1"));
 
         // send message to group1
-        printResult(asyncClient.sendMessageToGroup("group1",
+        printResult(asyncClient.sendToGroup("group1",
             BinaryData.fromString("abc"), WebPubSubDataType.TEXT));
 
         // join group2
         printResult(asyncClient.joinGroup("group2"));
 
         // send message to group1
-        printResult(asyncClient.sendMessageToGroup("group1",
+        printResult(asyncClient.sendToGroup("group1",
             BinaryData.fromObject(Map.of("hello", "world")), WebPubSubDataType.JSON));
 
         // send message to group2
-        printResult(asyncClient.sendMessageToGroup("group2",
+        printResult(asyncClient.sendToGroup("group2",
             BinaryData.fromObject(Map.of("hello", "group2")), WebPubSubDataType.JSON));
 
         // leave group1
         printResult(asyncClient.leaveGroup("group1"));
 
         // send message to group2
-        printResult(asyncClient.sendMessageToGroup("group2",
+        printResult(asyncClient.sendToGroup("group2",
             BinaryData.fromString("binary"), WebPubSubDataType.BINARY));
 
         asyncClient.stop().block();
@@ -122,7 +122,7 @@ public class ClientTests {
 
         printResult(asyncClient.joinGroup("group1"));
 
-        printResult(asyncClient.sendMessageToGroup("group1",
+        printResult(asyncClient.sendToGroup("group1",
             BinaryData.fromString("dfg"), WebPubSubDataType.TEXT));
 
 

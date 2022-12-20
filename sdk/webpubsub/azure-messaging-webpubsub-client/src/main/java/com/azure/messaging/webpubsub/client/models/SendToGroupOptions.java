@@ -6,8 +6,8 @@ package com.azure.messaging.webpubsub.client.models;
 public class SendToGroupOptions {
 
     private Long ackId;
-    private Boolean noEcho;
-    private Boolean fireAndForget;
+    private Boolean noEcho = false;
+    private Boolean fireAndForget = false;
 
     public SendToGroupOptions() {
     }
@@ -16,7 +16,7 @@ public class SendToGroupOptions {
         return ackId;
     }
 
-    public SendToGroupOptions setAckId(Long ackId) {
+    public SendToGroupOptions setAckId(long ackId) {
         this.ackId = ackId;
         return this;
     }
@@ -25,7 +25,7 @@ public class SendToGroupOptions {
         return noEcho;
     }
 
-    public SendToGroupOptions setNoEcho(Boolean noEcho) {
+    public SendToGroupOptions setNoEcho(boolean noEcho) {
         this.noEcho = noEcho;
         return this;
     }
@@ -34,7 +34,7 @@ public class SendToGroupOptions {
         return fireAndForget;
     }
 
-    public SendToGroupOptions setFireAndForget(Boolean fireAndForget) {
+    public SendToGroupOptions setFireAndForget(boolean fireAndForget) {
         this.fireAndForget = fireAndForget;
         return this;
     }

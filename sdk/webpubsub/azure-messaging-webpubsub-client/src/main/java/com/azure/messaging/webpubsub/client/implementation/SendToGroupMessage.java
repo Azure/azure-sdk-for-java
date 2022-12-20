@@ -12,9 +12,9 @@ public class SendToGroupMessage extends WebPubSubMessage {
 
     private String group;
 
-    private Long ackId;
+    private long ackId;
 
-    private boolean noEcho = false;
+    private Boolean noEcho = false;
 
     private String dataType;
 
@@ -29,20 +29,20 @@ public class SendToGroupMessage extends WebPubSubMessage {
         return this;
     }
 
-    public Long getAckId() {
+    public long getAckId() {
         return ackId;
     }
 
-    public SendToGroupMessage setAckId(Long ackId) {
+    public SendToGroupMessage setAckId(long ackId) {
         this.ackId = ackId;
         return this;
     }
 
-    public boolean isNoEcho() {
+    public Boolean isNoEcho() {
         return noEcho;
     }
 
-    public SendToGroupMessage setNoEcho(boolean noEcho) {
+    public SendToGroupMessage setNoEcho(Boolean noEcho) {
         this.noEcho = noEcho;
         return this;
     }
