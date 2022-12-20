@@ -7,6 +7,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.messaging.webpubsub.WebPubSubServiceClient;
 import com.azure.messaging.webpubsub.WebPubSubServiceClientBuilder;
+import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
+import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import reactor.core.publisher.Mono;
@@ -31,8 +33,8 @@ public class ClientTests {
         client.start();
 
         Thread receiveThread = new Thread(() -> {
-            client.receiveGroupMessages().stream().forEach(message -> {
-                System.out.println("group: " + message.getGroup() + ", data: " + message.getData());
+            client.receiveGroupMessageEvents().stream().forEach(event -> {
+                System.out.println("group: " + event.getMessage().getGroup() + ", data: " + event.getMessage().getData());
             });
         });
         receiveThread.start();
@@ -67,11 +69,11 @@ public class ClientTests {
         WebPubSubAsyncClient asyncClient = clientBuilder().buildAsyncClient();
 
         // group data messages
-        asyncClient.receiveGroupMessages().filter(m -> m.getGroup().equals("group1")).subscribe(message -> {
-            System.out.println("group1: " + message.getGroup() + ", data: " + message.getData());
+        asyncClient.receiveGroupMessageEvents().filter(event -> event.getMessage().getGroup().equals("group1")).subscribe(event -> {
+            System.out.println("group1: " + event.getMessage().getGroup() + ", data: " + event.getMessage().getData());
         });
-        asyncClient.receiveGroupMessages().filter(m -> m.getGroup().equals("group2")).subscribe(message -> {
-            System.out.println("group2: " + message.getGroup() + ", data: " + message.getData());
+        asyncClient.receiveGroupMessageEvents().filter(event -> event.getMessage().getGroup().equals("group2")).subscribe(event -> {
+            System.out.println("group2: " + event.getMessage().getGroup() + ", data: " + event.getMessage().getData());
         });
 
         // connected events
@@ -81,7 +83,7 @@ public class ClientTests {
 
         // disconnected events
         asyncClient.receiveDisconnectedEvents().subscribe(event -> {
-            System.out.println("disconnected: " + event.getReason());
+            System.out.println("disconnected: " + event.getDisconnectedMessage().getReason());
         });
 
         // start

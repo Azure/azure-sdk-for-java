@@ -3,7 +3,7 @@
 
 package com.azure.messaging.webpubsub.client.implementation;
 
-import com.azure.messaging.webpubsub.client.WebPubSubMessage;
+import com.azure.messaging.webpubsub.client.models.WebPubSubMessage;
 
 public class ConnectedMessage extends WebPubSubMessage {
 

@@ -4,8 +4,10 @@
 package com.azure.messaging.webpubsub.client.implementation;
 
 import com.azure.core.util.BinaryData;
-import com.azure.messaging.webpubsub.client.WebPubSubDataType;
-import com.azure.messaging.webpubsub.client.WebPubSubMessage;
+import com.azure.messaging.webpubsub.client.models.DisconnectedMessage;
+import com.azure.messaging.webpubsub.client.models.GroupDataMessage;
+import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
+import com.azure.messaging.webpubsub.client.models.WebPubSubMessage;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,7 +21,7 @@ import java.util.Locale;
 
 public class MessageDecoder extends CoderAdapter implements Decoder.Text<WebPubSubMessage> {
 
-    private final static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Override
     public WebPubSubMessage decode(String s) throws DecodeException {
@@ -48,14 +50,13 @@ public class MessageDecoder extends CoderAdapter implements Decoder.Text<WebPubS
                                     data = BinaryData.fromObject(jsonNode.get("data"));
                                     break;
                             }
-                            GroupDataMessageImpl groupDataMessage = new GroupDataMessageImpl()
-                                .setGroup(jsonNode.get("group").asText())
-                                .setData(data)
-                                .setDataType(type)
-                                .setFromUserId(jsonNode.get("fromUserId").asText());
-                            if (jsonNode.has("sequenceId")) {
-                                groupDataMessage.setSequenceId(jsonNode.get("sequenceId").asLong());
-                            }
+                            GroupDataMessage groupDataMessage = new GroupDataMessage(
+                                jsonNode.get("group").asText(),
+                                type,
+                                data,
+                                jsonNode.get("fromUserId").asText(),
+                                jsonNode.has("sequenceId") ? jsonNode.get("sequenceId").asLong() : null
+                            );
                             msg = groupDataMessage;
                             break;
                         }
@@ -85,8 +86,7 @@ public class MessageDecoder extends CoderAdapter implements Decoder.Text<WebPubS
                         }
 
                         case "disconnected": {
-                            msg = new DisconnectedMessage()
-                                .setReason(jsonNode.get("reason").asText());
+                            msg = new DisconnectedMessage(jsonNode.get("reason").asText());
                             break;
                         }
                     }

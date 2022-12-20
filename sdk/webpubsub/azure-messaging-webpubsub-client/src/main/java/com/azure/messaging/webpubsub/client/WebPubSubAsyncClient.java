@@ -7,12 +7,19 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.webpubsub.client.implementation.AckMessage;
 import com.azure.messaging.webpubsub.client.implementation.ConnectedMessage;
-import com.azure.messaging.webpubsub.client.implementation.DisconnectedMessage;
+import com.azure.messaging.webpubsub.client.models.DisconnectedMessage;
 import com.azure.messaging.webpubsub.client.implementation.MessageDecoder;
 import com.azure.messaging.webpubsub.client.implementation.MessageEncoder;
 import com.azure.messaging.webpubsub.client.implementation.JoinGroupMessage;
 import com.azure.messaging.webpubsub.client.implementation.LeaveGroupMessage;
 import com.azure.messaging.webpubsub.client.implementation.SendToGroupMessage;
+import com.azure.messaging.webpubsub.client.models.ConnectedEvent;
+import com.azure.messaging.webpubsub.client.models.DisconnectedEvent;
+import com.azure.messaging.webpubsub.client.models.GroupDataMessage;
+import com.azure.messaging.webpubsub.client.models.GroupMessageEvent;
+import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
+import com.azure.messaging.webpubsub.client.models.WebPubSubMessage;
+import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
 import jakarta.websocket.ClientEndpointConfig;
 import jakarta.websocket.CloseReason;
 import jakarta.websocket.Endpoint;
@@ -46,7 +53,7 @@ public class WebPubSubAsyncClient {
 
     private String connectionId;
 
-    Sinks.Many<GroupDataMessage> groupDataMessageSink =
+    Sinks.Many<GroupMessageEvent> groupMessageEventSink =
         Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
     private Sinks.Many<AckMessage> ackMessageSink =
@@ -98,7 +105,7 @@ public class WebPubSubAsyncClient {
 
     public Mono<Void> close() {
         return stop().then(Mono.defer(() -> {
-            groupDataMessageSink.tryEmitComplete();
+            groupMessageEventSink.tryEmitComplete();
             connectedEventSink.tryEmitComplete();
             disconnectedEventSink.tryEmitComplete();
             return Mono.empty();
@@ -149,8 +156,8 @@ public class WebPubSubAsyncClient {
         return responseMono;
     }
 
-    public Flux<GroupDataMessage> receiveGroupMessages() {
-        return groupDataMessageSink.asFlux();
+    public Flux<GroupMessageEvent> receiveGroupMessageEvents() {
+        return groupMessageEventSink.asFlux();
     }
 
     public Flux<ConnectedEvent> receiveConnectedEvents() {
@@ -202,7 +209,7 @@ public class WebPubSubAsyncClient {
                 @Override
                 public void onMessage(WebPubSubMessage webPubSubMessage) {
                     if (webPubSubMessage instanceof GroupDataMessage) {
-                        groupDataMessageSink.tryEmitNext((GroupDataMessage) webPubSubMessage);
+                        groupMessageEventSink.tryEmitNext(new GroupMessageEvent((GroupDataMessage) webPubSubMessage));
                     } else if (webPubSubMessage instanceof AckMessage) {
                         ackMessageSink.tryEmitNext((AckMessage) webPubSubMessage);
                     } else if (webPubSubMessage instanceof ConnectedMessage) {
@@ -213,7 +220,7 @@ public class WebPubSubAsyncClient {
                     } else if (webPubSubMessage instanceof DisconnectedMessage) {
                         disconnectedEventSink.tryEmitNext(new DisconnectedEvent(
                             connectionId,
-                            ((DisconnectedMessage) webPubSubMessage).getReason()));
+                            (DisconnectedMessage) webPubSubMessage));
                     } else {
                         // TODO
                     }
