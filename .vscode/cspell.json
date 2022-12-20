@@ -48,6 +48,7 @@
     "*.crt",
     "*.yml",
     ".vscode/cspell.json",
+    ".vscode/eclipse-format-azure-sdk-for-java.xml",
     "*.parquet",
     "**/sdk/**/src/main/java/**/implementation/**",
     "**/*-perf/**",
