@@ -19,17 +19,16 @@ import java.util.concurrent.ForkJoinPool;
 /**
  * Code samples for the THREAD_POOL_AND_CONNECTION_POOL.md
  */
-public class ThreadPoolSamples {
+public class ThreadPoolGuideSamples {
 
-    public AzureResourceManager azureClientThreadPool(String subscriptionId) {
+    public AzureResourceManager azureClientThreadPoolUsingReactorNetty(String subscriptionId) {
+        // BEGIN: readme-sample-azureClientConnectionPoolReactorNetty
         NettyAsyncHttpClientBuilder singletonHttpClientBuilder = new NettyAsyncHttpClientBuilder();
-        // BEGIN: readme-sample-azureClientConnectionPool
         singletonHttpClientBuilder
             // Connection pool configuration.
-            // Official Reactor Netty documentation for defaults: https://projectreactor.io/docs/netty/release/reference/#_connection_pool_2
             .connectionProvider(
                 ConnectionProvider.builder("connection-pool")
-                    // By default, HttpClient uses a “fixed” connection pool with 500 as the maximum number of active channels
+                    // By default, HttpClient uses a "fixed" connection pool with 500 as the maximum number of active channels
                     // and 1000 as the maximum number of further channel acquisition attempts allowed to be kept in a pending state.
                     .maxConnections(500)
                     // When the maximum number of channels in the pool is reached, up to specified new attempts to
@@ -40,11 +39,10 @@ public class ThreadPoolSamples {
                     .pendingAcquireTimeout(Duration.ofSeconds(60)) // Configures the maximum time for the pending acquire operation to 60 seconds.
                     .evictInBackground(Duration.ofSeconds(120)) // Every two minutes, the connection pool is regularly checked for connections that are applicable for removal.
                     .build());
-        // END: readme-sample-azureClientConnectionPool
+        // END: readme-sample-azureClientConnectionPoolReactorNetty
 
-        // BEGIN: readme-sample-azureClientThreadPool
+        // BEGIN: readme-sample-azureClientThreadPoolReactorNetty
         // Thread pool configuration.
-        // Official Reactor Netty documentation for defaults: https://projectreactor.io/docs/netty/release/reference/#client-tcp-level-configurations-event-loop-group
         singletonHttpClientBuilder
             .eventLoopGroup(LoopResources
                 .create(
@@ -54,7 +52,7 @@ public class ThreadPoolSamples {
                 // we use our custom event loop here, disable the native one
                 .onClient(false))
             .build();
-        // END: readme-sample-azureClientThreadPool
+        // END: readme-sample-azureClientThreadPoolReactorNetty
 
         HttpClient singletonHttpClient = singletonHttpClientBuilder.build();
 
