@@ -9,8 +9,8 @@ import com.azure.core.test.http.TestProxyPlaybackClient;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.models.RecordingRedactor;
-import com.azure.core.test.policy.TestProxyRecordPolicy;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
+import com.azure.core.test.policy.TestProxyRecordPolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -270,7 +270,7 @@ public class InterceptorManager implements AutoCloseable {
      */
     public HttpPipelinePolicy getRecordPolicy() {
         if (enableTestProxy) {
-            return startProxyRecording(Collections.emptyList());
+            return startProxyRecording(Collections.emptyMap());
         }
         return getRecordPolicy(Collections.emptyList());
     }
@@ -286,9 +286,18 @@ public class InterceptorManager implements AutoCloseable {
     public HttpPipelinePolicy getRecordPolicy(List<Function<String, String>> recordingRedactors) {
         if (enableTestProxy) {
             proxyVariableQueue.clear();
-            return startProxyRecording(recordingRedactors);
+            // TODO (use of redactors)
+            return startProxyRecording(Collections.emptyMap());
         }
         return new RecordNetworkCallPolicy(recordedData, recordingRedactors);
+    }
+
+    public HttpPipelinePolicy getRecordPolicy(Map<String, List<String>> sanitizers) {
+        if (enableTestProxy) {
+            proxyVariableQueue.clear();
+            return startProxyRecording(sanitizers);
+        }
+        return new RecordNetworkCallPolicy(recordedData, null);
     }
 
     /**
@@ -367,9 +376,9 @@ public class InterceptorManager implements AutoCloseable {
         }
     }
 
-    private HttpPipelinePolicy startProxyRecording(List<Function<String, String>> recordingRedactors) {
+    private HttpPipelinePolicy startProxyRecording(Map<String, List<String>> sanitizers) {
         this.testProxyRecordPolicy = new TestProxyRecordPolicy();
-        testProxyRecordPolicy.startRecording(playbackRecordName, recordingRedactors);
+        testProxyRecordPolicy.startRecording(playbackRecordName, sanitizers);
         return testProxyRecordPolicy;
     }
 

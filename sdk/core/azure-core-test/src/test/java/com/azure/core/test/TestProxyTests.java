@@ -14,6 +14,10 @@ import org.junit.jupiter.api.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -128,13 +132,27 @@ public class TestProxyTests extends TestBase {
     public void testRecordWithRedaction() {
 
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .policies(interceptorManager.getRecordPolicy()).build();
-        URL url = null;
+        Map<String, List<String>> map = new HashMap<String, List<String>>();
+        List<String> urlSanitizers = new ArrayList<>();
+        urlSanitizers.add("^(?:https?:\\\\/\\\\/)?(?:[^@\\\\/\\\\n]+@)?(?:www\\\\.)?([^:\\\\/?\\\\n]+)");
+
+        List<String> bodySanitizers = new ArrayList<>();
+        bodySanitizers.add("$..modelId");
+
+        map.put("URL", urlSanitizers);
+        map.put("BODY", bodySanitizers);
+
+        HttpPipeline pipeline =
+            new HttpPipelineBuilder().httpClient(client).policies(interceptorManager.getRecordPolicy(map))
+                .build();
+
+        URL url;
         try {
-            url = new UrlBuilder().setHost(ENDPOINT).setPath("/formrecognizer/documentModels")
-                .setQueryParameter("api-version", "2022-08-31").setScheme("https").toUrl();
+            url = new UrlBuilder().setHost(ENDPOINT)
+                .setPath("/formrecognizer/documentModels")
+                .setQueryParameter("api-version", "2022-08-31")
+                .setScheme("https")
+                .toUrl();
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
