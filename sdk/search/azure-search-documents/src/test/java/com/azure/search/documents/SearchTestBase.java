@@ -52,7 +52,7 @@ import static com.azure.search.documents.TestHelpers.BLOB_DATASOURCE_NAME;
 import static com.azure.search.documents.TestHelpers.HOTEL_INDEX_NAME;
 import static com.azure.search.documents.TestHelpers.MAPPER;
 import static com.azure.search.documents.TestHelpers.SQL_DATASOURCE_NAME;
-import static com.azure.search.documents.indexes.DataSourceSyncTests.FAKE_AZURE_SQL_CONNECTION_STRING;
+import static com.azure.search.documents.indexes.DataSourceTests.FAKE_AZURE_SQL_CONNECTION_STRING;
 
 /**
  * Abstract base class for all Search API tests

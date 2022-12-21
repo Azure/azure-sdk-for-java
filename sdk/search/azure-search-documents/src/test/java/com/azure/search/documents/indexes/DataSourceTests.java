@@ -17,6 +17,7 @@ import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
 import com.azure.search.documents.indexes.models.SoftDeleteColumnDeletionDetectionPolicy;
 import com.azure.search.documents.indexes.models.SqlIntegratedChangeTrackingPolicy;
 import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
@@ -25,14 +26,14 @@ import java.util.List;
 
 import static com.azure.search.documents.TestHelpers.BLOB_DATASOURCE_TEST_NAME;
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
+import static com.azure.search.documents.TestHelpers.verifyHttpResponseError;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class DataSourceSyncTests extends SearchTestBase {
+public class DataSourceTests extends SearchTestBase {
     private static final String FAKE_DESCRIPTION = "Some data source";
     private static final String FAKE_STORAGE_CONNECTION_STRING =
         "DefaultEndpointsProtocol=https;AccountName=NotaRealAccount;AccountKey=fake;";
@@ -42,12 +43,16 @@ public class DataSourceSyncTests extends SearchTestBase {
         "Server=tcp:fakeUri,1433;Database=fakeDatabase;User ID=reader;Password=fakePasswordPlaceholder;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
 
     private final List<String> dataSourcesToDelete = new ArrayList<>();
+
+    private SearchIndexerAsyncClient asyncClient;
     private SearchIndexerClient client;
 
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        client = getSearchIndexerClientBuilder().buildClient();
+        SearchIndexerClientBuilder searchIndexerClientBuilder = getSearchIndexerClientBuilder();
+        asyncClient = searchIndexerClientBuilder.buildAsyncClient();
+        client = searchIndexerClientBuilder.buildClient();
     }
 
     @Override
@@ -212,7 +217,7 @@ public class DataSourceSyncTests extends SearchTestBase {
         String originalETag = original.getETag();
 
         SearchIndexerDataSourceConnection updated = client.createOrUpdateDataSourceConnectionWithResponse(original.setDescription("an update"), false,
-            Context.NONE)
+                Context.NONE)
             .getValue();
         String updatedETag = updated.getETag();
 
@@ -230,7 +235,7 @@ public class DataSourceSyncTests extends SearchTestBase {
         String originalETag = original.getETag();
 
         SearchIndexerDataSourceConnection updated = client.createOrUpdateDataSourceConnectionWithResponse(original.setDescription("an update"), false,
-            Context.NONE)
+                Context.NONE)
             .getValue();
         String updatedETag = updated.getETag();
 
@@ -256,7 +261,7 @@ public class DataSourceSyncTests extends SearchTestBase {
         String originalETag = original.getETag();
 
         SearchIndexerDataSourceConnection updated = client.createOrUpdateDataSourceConnectionWithResponse(original.setDescription("an update"), false,
-            Context.NONE)
+                Context.NONE)
             .getValue();
         String updatedETag = updated.getETag();
 
@@ -335,37 +340,60 @@ public class DataSourceSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void getDataSourceThrowsOnNotFound() {
-        assertHttpResponseException(
-            () -> client.getDataSourceConnection("thisdatasourcedoesnotexist"),
+    public void getDataSourceThrowsOnNotFoundSync() {
+        assertHttpResponseException(() -> client.getDataSourceConnection("thisdatasourcedoesnotexist"),
             HttpURLConnection.HTTP_NOT_FOUND,
-            "No data source with the name 'thisdatasourcedoesnotexist' was found in service"
-        );
+            "No data source with the name 'thisdatasourcedoesnotexist' was found in service");
     }
 
     @Test
-    public void canCreateDataSource() {
+    public void getDataSourceThrowsOnNotFoundAsync() {
+        StepVerifier.create(asyncClient.getDataSourceConnection("thisdatasourcedoesnotexist"))
+            .verifyErrorSatisfies(exception -> verifyHttpResponseError(exception, HttpURLConnection.HTTP_NOT_FOUND,
+                "No data source with the name 'thisdatasourcedoesnotexist' was found in service"));
+    }
+
+    @Test
+    public void canCreateDataSourceSync() {
         SearchIndexerDataSourceConnection expectedDataSource = createTestBlobDataSource(null);
         dataSourcesToDelete.add(expectedDataSource.getName());
         SearchIndexerDataSourceConnection actualDataSource = client.createDataSourceConnection(expectedDataSource);
-        assertNotNull(actualDataSource);
-        assertEquals(expectedDataSource.getName(), actualDataSource.getName());
 
-        Iterator<SearchIndexerDataSourceConnection> dataSources = client.listDataSourceConnections().iterator();
-        assertEquals(expectedDataSource.getName(), dataSources.next().getName());
-        assertFalse(dataSources.hasNext());
+        assertEquals(expectedDataSource.getName(), actualDataSource.getName());
     }
 
     @Test
-    public void canCreateDataSourceWithResponse() {
+    public void canCreateDataSourceAsync() {
+        SearchIndexerDataSourceConnection expectedDataSource = createTestBlobDataSource(null);
+        dataSourcesToDelete.add(expectedDataSource.getName());
+
+        StepVerifier.create(asyncClient.createDataSourceConnection(expectedDataSource))
+            .assertNext(actualDataSource -> assertEquals(expectedDataSource.getName(), actualDataSource.getName()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void canCreateDataSourceWithResponseSync() {
         SearchIndexerDataSourceConnection expectedDataSource = createTestBlobDataSource(null);
         dataSourcesToDelete.add(expectedDataSource.getName());
         Response<SearchIndexerDataSourceConnection> response = client
             .createDataSourceConnectionWithResponse(expectedDataSource, null);
-        assertNotNull(response);
-        assertNotNull(response.getValue());
+
         assertEquals(expectedDataSource.getName(), response.getValue().getName());
         assertEquals(HttpURLConnection.HTTP_CREATED, response.getStatusCode());
+    }
+
+    @Test
+    public void canCreateDataSourceWithResponseAsync() {
+        SearchIndexerDataSourceConnection expectedDataSource = createTestBlobDataSource(null);
+        dataSourcesToDelete.add(expectedDataSource.getName());
+
+        StepVerifier.create(asyncClient.createDataSourceConnectionWithResponse(expectedDataSource))
+            .assertNext(response -> {
+                assertEquals(expectedDataSource.getName(), response.getValue().getName());
+                assertEquals(HttpURLConnection.HTTP_CREATED, response.getStatusCode());
+            })
+            .verifyComplete();
     }
 
     @Test
@@ -387,24 +415,24 @@ public class DataSourceSyncTests extends SearchTestBase {
     }
 
     SearchIndexerDataSourceConnection createTestBlobDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy) {
-        return SearchIndexerDataSources.createFromAzureBlobStorage(testResourceNamer.randomName(BLOB_DATASOURCE_TEST_NAME, 32),
-            FAKE_STORAGE_CONNECTION_STRING, "fakecontainer", "/fakefolder/", FAKE_DESCRIPTION, deletionDetectionPolicy);
+        return SearchIndexerDataSources.createFromAzureBlobStorage(
+            testResourceNamer.randomName(BLOB_DATASOURCE_TEST_NAME, 32), FAKE_STORAGE_CONNECTION_STRING,
+            "fakecontainer", "/fakefolder/", FAKE_DESCRIPTION, deletionDetectionPolicy);
     }
 
-    SearchIndexerDataSourceConnection createTestTableStorageDataSource() {
-        return SearchIndexerDataSources.createFromAzureTableStorage("azs-java-test-tablestorage", FAKE_STORAGE_CONNECTION_STRING,
-            "faketable", "fake query", FAKE_DESCRIPTION, null);
+    static SearchIndexerDataSourceConnection createTestTableStorageDataSource() {
+        return SearchIndexerDataSources.createFromAzureTableStorage("azs-java-test-tablestorage",
+            FAKE_STORAGE_CONNECTION_STRING, "faketable", "fake query", FAKE_DESCRIPTION, null);
     }
 
-    SearchIndexerDataSourceConnection createTestCosmosDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy,
+    static SearchIndexerDataSourceConnection createTestCosmosDataSource(DataDeletionDetectionPolicy deletionDetectionPolicy,
         boolean useChangeDetection) {
-
-        return SearchIndexerDataSources.createFromCosmos("azs-java-test-cosmos", FAKE_COSMOS_CONNECTION_STRING, "faketable",
-            "SELECT ... FROM x where x._ts > @HighWaterMark", useChangeDetection, FAKE_DESCRIPTION,
+        return SearchIndexerDataSources.createFromCosmos("azs-java-test-cosmos", FAKE_COSMOS_CONNECTION_STRING,
+            "faketable", "SELECT ... FROM x where x._ts > @HighWaterMark", useChangeDetection, FAKE_DESCRIPTION,
             deletionDetectionPolicy);
     }
 
-    private void assertDataSourceEquals(SearchIndexerDataSourceConnection expect,
+    private static void assertDataSourceEquals(SearchIndexerDataSourceConnection expect,
         SearchIndexerDataSourceConnection actual) {
         assertEquals(expect.getName(), actual.getName());
         assertEquals(expect.getDescription(), actual.getDescription());

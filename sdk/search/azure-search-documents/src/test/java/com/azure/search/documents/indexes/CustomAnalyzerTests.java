@@ -6,6 +6,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.ExpandableStringEnum;
+import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.SearchTestBase;
@@ -75,6 +76,7 @@ import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
 
 import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
@@ -87,16 +89,18 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
+import static com.azure.search.documents.TestHelpers.verifyHttpResponseError;
 import static com.azure.search.documents.TestHelpers.waitForIndexing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class CustomAnalyzerSyncTests extends SearchTestBase {
+public class CustomAnalyzerTests extends SearchTestBase {
     private static final String NAME_PREFIX = "azsmnet";
 
     private static final List<TokenFilterName> TOKEN_FILTER_NAMES = getExpandableEnumValues(TokenFilterName.class);
@@ -107,13 +111,16 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         getExpandableEnumValues(LexicalTokenizerName.class);
     private static final List<RegexFlags> REGEX_FLAGS = getExpandableEnumValues(RegexFlags.class);
 
+    private SearchIndexAsyncClient searchIndexAsyncClient;
     private SearchIndexClient searchIndexClient;
     private final List<String> indexesToCleanup = new ArrayList<>();
 
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        searchIndexClient = getSearchIndexClientBuilder().buildClient();
+        SearchIndexClientBuilder searchIndexClientBuilder = getSearchIndexClientBuilder();
+        searchIndexAsyncClient = searchIndexClientBuilder.buildAsyncClient();
+        searchIndexClient = searchIndexClientBuilder.buildClient();
     }
 
     @Override
@@ -126,17 +133,38 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
 
     @Test
     public void canSearchWithCustomAnalyzer() {
+        SearchClient searchClient = setupSearchIndexForCustomAnalyzerSearch(searchIndexClient::getSearchClient);
+
+        Iterator<SearchResult> iterator = searchClient
+            .search("someone@somewhere.something", new SearchOptions(), Context.NONE)
+            .iterator();
+        SearchResult searchResult = iterator.next();
+
+        Assertions.assertEquals("1", searchResult.getDocument(SearchDocument.class).get("id"));
+        assertFalse(iterator.hasNext());
+    }
+
+    @Test
+    public void canSearchWithCustomAnalyzerAsync() {
+        SearchAsyncClient searchAsyncClient = setupSearchIndexForCustomAnalyzerSearch(
+            searchIndexAsyncClient::getSearchAsyncClient);
+
+        StepVerifier.create(searchAsyncClient.search("someone@somewhere.something", new SearchOptions()))
+            .assertNext(searchResult -> assertEquals("1", searchResult.getDocument(SearchDocument.class).get("id")))
+            .verifyComplete();
+    }
+
+    private <T> T setupSearchIndexForCustomAnalyzerSearch(Function<String, T> clientCreator) {
         final LexicalAnalyzerName customLexicalAnalyzerName = LexicalAnalyzerName.fromString("my_email_analyzer");
         final CharFilterName customCharFilterName = CharFilterName.fromString("my_email_filter");
 
         SearchIndex index = new SearchIndex(randomIndexName("testindex"))
-            .setFields(Arrays.asList(
+            .setFields(
                 new SearchField("id", SearchFieldDataType.STRING)
                     .setKey(true),
                 new SearchField("message", SearchFieldDataType.STRING)
                     .setAnalyzerName(customLexicalAnalyzerName)
-                    .setSearchable(true)
-            ))
+                    .setSearchable(true))
             .setAnalyzers(new CustomAnalyzer(customLexicalAnalyzerName.toString(), LexicalTokenizerName.STANDARD)
                 .setCharFilters(customCharFilterName))
             .setCharFilters(new PatternReplaceCharFilter(customCharFilterName.toString(), "@", "_"));
@@ -151,22 +179,17 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         SearchDocument document2 = new SearchDocument();
         document2.put("id", "2");
         document2.put("message", "His email is someone@nowhere.nothing.");
+
         List<SearchDocument> documents = Arrays.asList(document1, document2);
 
         searchClient.uploadDocuments(documents);
         waitForIndexing();
 
-        Iterator<SearchResult> iterator = searchClient
-            .search("someone@somewhere.something", new SearchOptions(), Context.NONE)
-            .iterator();
-        SearchResult searchResult = iterator.next();
-
-        Assertions.assertEquals("1", searchResult.getDocument(SearchDocument.class).get("id"));
-        assertFalse(iterator.hasNext());
+        return clientCreator.apply(index.getName());
     }
 
     @Test
-    public void canUseAllAnalyzerNamesInIndexDefinition() {
+    public void canUseAllAnalyzerNamesInIndexDefinitionSync() {
         SearchIndex index = prepareIndexWithAllLexicalAnalyzerNames();
         indexesToCleanup.add(index.getName());
         SearchIndex res = searchIndexClient.createIndex(index);
@@ -175,7 +198,17 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canAnalyze() {
+    public void canUseAllAnalyzerNamesInIndexDefinitionAsync() {
+        SearchIndex index = prepareIndexWithAllLexicalAnalyzerNames();
+        indexesToCleanup.add(index.getName());
+
+        StepVerifier.create(searchIndexAsyncClient.createIndex(index))
+            .assertNext(result -> assertObjectEquals(index, result, true, "etag"))
+            .verifyComplete();
+    }
+
+    @Test
+    public void canAnalyzeSync() {
         SearchIndex index = createTestIndex(null);
         searchIndexClient.createIndex(index);
         indexesToCleanup.add(index.getName());
@@ -204,7 +237,29 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canAnalyzeWithAllPossibleNames() {
+    public void canAnalyzeAsync() {
+        SearchIndex index = createTestIndex(null);
+        searchIndexClient.createIndex(index);
+        indexesToCleanup.add(index.getName());
+
+        AnalyzeTextOptions request = new AnalyzeTextOptions("One two", LexicalAnalyzerName.WHITESPACE);
+        StepVerifier.create(searchIndexAsyncClient.analyzeText(index.getName(), request))
+            .assertNext(analyzedTokenInfo -> assertTokenInfoEqual("One", 0, 3, 0, analyzedTokenInfo))
+            .assertNext(analyzedTokenInfo -> assertTokenInfoEqual("two", 4, 7, 1, analyzedTokenInfo))
+            .verifyComplete();
+
+        request = new AnalyzeTextOptions("One's <two/>", LexicalTokenizerName.WHITESPACE)
+            .setTokenFilters(TokenFilterName.APOSTROPHE)
+            .setCharFilters(CharFilterName.HTML_STRIP);
+
+        // End offset is based on the original token, not the one emitted by the filters.
+        StepVerifier.create(searchIndexAsyncClient.analyzeText(index.getName(), request))
+            .assertNext(analyzedTokenInfo -> assertTokenInfoEqual("One", 0, 5, 0, analyzedTokenInfo))
+            .verifyComplete();
+    }
+
+    @Test
+    public void canAnalyzeWithAllPossibleNamesSync() {
         SearchIndex index = createTestIndex(null);
         searchIndexClient.createIndex(index);
         indexesToCleanup.add(index.getName());
@@ -224,22 +279,52 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void addingCustomAnalyzerThrowsHttpExceptionByDefault() {
+    public void canAnalyzeWithAllPossibleNamesAsync() {
+        SearchIndex index = createTestIndex(null);
+        searchIndexClient.createIndex(index);
+        indexesToCleanup.add(index.getName());
+
+        LEXICAL_ANALYZER_NAMES.stream()
+            .map(an -> new AnalyzeTextOptions("One two", an))
+            .forEach(r -> searchIndexAsyncClient.analyzeText(index.getName(), r).blockLast());
+
+        LEXICAL_TOKENIZER_NAMES.stream()
+            .map(tn -> new AnalyzeTextOptions("One two", tn))
+            .forEach(r -> searchIndexAsyncClient.analyzeText(index.getName(), r).blockLast());
+
+        AnalyzeTextOptions request = new AnalyzeTextOptions("One two", LexicalTokenizerName.WHITESPACE)
+            .setTokenFilters(TOKEN_FILTER_NAMES.toArray(new TokenFilterName[0]))
+            .setCharFilters(CHAR_FILTER_NAMES.toArray(new CharFilterName[0]));
+        searchIndexAsyncClient.analyzeText(index.getName(), request).blockLast();
+    }
+
+    @Test
+    public void addingCustomAnalyzerThrowsHttpExceptionByDefaultSync() {
         SearchIndex index = createTestIndex(null).setAnalyzers(new StopAnalyzer("a1"));
         searchIndexClient.createIndex(index);
         indexesToCleanup.add(index.getName());
 
         addAnalyzerToIndex(index, new StopAnalyzer("a2"));
 
-        assertHttpResponseException(
-            () -> searchIndexClient.createOrUpdateIndex(index),
-            HttpURLConnection.HTTP_BAD_REQUEST,
-            "Index update not allowed because it would cause downtime."
-        );
+        assertHttpResponseException(() -> searchIndexClient.createOrUpdateIndex(index),
+            HttpURLConnection.HTTP_BAD_REQUEST, "Index update not allowed because it would cause downtime.");
     }
 
     @Test
-    public void canAddCustomAnalyzerWithIndexDowntime() {
+    public void addingCustomAnalyzerThrowsHttpExceptionByDefaultAsync() {
+        SearchIndex index = createTestIndex(null).setAnalyzers(new StopAnalyzer("a1"));
+        searchIndexClient.createIndex(index);
+        indexesToCleanup.add(index.getName());
+
+        addAnalyzerToIndex(index, new StopAnalyzer("a2"));
+
+        StepVerifier.create(searchIndexAsyncClient.createOrUpdateIndex(index))
+            .verifyErrorSatisfies(exception -> verifyHttpResponseError(exception, HttpURLConnection.HTTP_BAD_REQUEST,
+                "Index update not allowed because it would cause downtime."));
+    }
+
+    @Test
+    public void canAddCustomAnalyzerWithIndexDowntimeSync() {
         SearchIndex index = createTestIndex(null).setAnalyzers(new StopAnalyzer("a1"));
         searchIndexClient.createIndex(index);
         indexesToCleanup.add(index.getName());
@@ -252,33 +337,62 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canCreateAllAnalysisComponents() {
-        SearchIndex index = prepareIndexWithAllAnalysisComponentTypes();
-
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
+    public void canAddCustomAnalyzerWithIndexDowntimeAsync() {
+        SearchIndex index = createTestIndex(null).setAnalyzers(new StopAnalyzer("a1"));
+        searchIndexClient.createIndex(index);
         indexesToCleanup.add(index.getName());
-        assertAnalysisComponentsEqual(index, createdIndex);
+
+        addAnalyzerToIndex(index, new StopAnalyzer("a2"));
+
+        StepVerifier.create(searchIndexAsyncClient.createOrUpdateIndexWithResponse(index, true, false))
+            .assertNext(response -> assertAnalysisComponentsEqual(index, response.getValue()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void canCreateAllAnalysisComponentsSync() {
+        SearchIndex index = prepareIndexWithAllAnalysisComponentTypes();
+        createAndValidateIndexSync(searchIndexClient, index);
         searchIndexClient.deleteIndex(index.getName());
 
         // We have to split up analysis components into two indexes, one where any components with optional properties
         // have defaults that are zero or null, and another where we need to specify the default values we
         // expect to get back from the REST API.
-
         SearchIndex indexWithSpecialDefaults = createIndexWithSpecialDefaults();
         SearchIndex expectedIndexWithSpecialDefaults = createExpectedIndexWithSpecialDefaults(indexWithSpecialDefaults);
 
-        List<SearchIndex> splittedIndexWithSpecialDefaults = splitIndex(indexWithSpecialDefaults);
-        List<SearchIndex> splittedExpectedIndexWithSpecialDefaults = splitIndex(expectedIndexWithSpecialDefaults);
-        for (int j = 0; j < splittedIndexWithSpecialDefaults.size(); j++) {
-            SearchIndex expected = splittedExpectedIndexWithSpecialDefaults.get(j);
-            SearchIndex actual = searchIndexClient.createIndex(expected);
-            assertAnalysisComponentsEqual(expected, actual);
-            searchIndexClient.deleteIndex(actual.getName());
+        List<SearchIndex> splitIndexWithSpecialDefaults = splitIndex(indexWithSpecialDefaults);
+        List<SearchIndex> splitExpectedIndexWithSpecialDefaults = splitIndex(expectedIndexWithSpecialDefaults);
+        for (int j = 0; j < splitIndexWithSpecialDefaults.size(); j++) {
+            index = splitExpectedIndexWithSpecialDefaults.get(j);
+            createAndValidateIndexSync(searchIndexClient, index);
+            searchIndexClient.deleteIndex(index.getName());
         }
     }
 
     @Test
-    public void canUseAllAnalysisComponentNames() {
+    public void canCreateAllAnalysisComponentsAsync() {
+        SearchIndex index = prepareIndexWithAllAnalysisComponentTypes();
+        createAndValidateIndexAsync(searchIndexAsyncClient, index);
+        searchIndexClient.deleteIndex(index.getName());
+
+        // We have to split up analysis components into two indexes, one where any components with optional properties
+        // have defaults that are zero or null, and another where we need to specify the default values we
+        // expect to get back from the REST API.
+        SearchIndex indexWithSpecialDefaults = createIndexWithSpecialDefaults();
+        SearchIndex expectedIndexWithSpecialDefaults = createExpectedIndexWithSpecialDefaults(indexWithSpecialDefaults);
+
+        List<SearchIndex> splitIndexWithSpecialDefaults = splitIndex(indexWithSpecialDefaults);
+        List<SearchIndex> splitExpectedIndexWithSpecialDefaults = splitIndex(expectedIndexWithSpecialDefaults);
+        for (int j = 0; j < splitIndexWithSpecialDefaults.size(); j++) {
+            index = splitExpectedIndexWithSpecialDefaults.get(j);
+            createAndValidateIndexAsync(searchIndexAsyncClient, index);
+            searchIndexClient.deleteIndex(index.getName());
+        }
+    }
+
+    @Test
+    public void canUseAllAnalysisComponentNamesSync() {
         SearchIndex index = prepareIndexWithAllAnalysisComponentNames();
 
         SearchIndex createdIndex = searchIndexClient.createIndex(index);
@@ -287,157 +401,188 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canUseAllRegexFlagsAnalyzer() {
-        SearchIndex index = createTestIndex(null).setAnalyzers(new PatternAnalyzer(generateName())
-            .setStopwords("stop1", "stop2")
-            .setLowerCaseTerms(true)
-            .setPattern(".*")
-            .setFlags(REGEX_FLAGS));
+    public void canUseAllAnalysisComponentNamesAsync() {
+        SearchIndex index = prepareIndexWithAllAnalysisComponentNames();
 
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
-        indexesToCleanup.add(index.getName());
-
-        assertAnalysisComponentsEqual(index, createdIndex);
+        StepVerifier.create(searchIndexAsyncClient.createIndex(index))
+            .assertNext(createdIndex -> {
+                indexesToCleanup.add(index.getName());
+                assertCustomAnalysisComponentsEqual(index, createdIndex);
+            })
+            .verifyComplete();
     }
 
     @Test
-    public void canUseAllRegexFlagsNullAnalyzer() {
-        SearchIndex index = createTestIndex(null)
-            .setAnalyzers((List<LexicalAnalyzer>) null);
-
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
-        indexesToCleanup.add(index.getName());
-
-        assertAnalysisComponentsEqual(index, createdIndex);
+    public void canUseAllRegexFlagsAnalyzerSync() {
+        createAndValidateIndexSync(searchIndexClient, createTestIndex(null)
+            .setAnalyzers(new PatternAnalyzer(generateName()).setStopwords("stop1", "stop2").setLowerCaseTerms(true)
+                .setPattern(".*").setFlags(REGEX_FLAGS)));
     }
 
     @Test
-    public void canUseAllRegexFlagsEmptyAnalyzer() {
-        SearchIndex index = createTestIndex(null)
-            .setAnalyzers(new ArrayList<>());
-
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
-        indexesToCleanup.add(index.getName());
-
-        assertAnalysisComponentsEqual(index, createdIndex);
+    public void canUseAllRegexFlagsAnalyzerAsync() {
+        createAndValidateIndexAsync(searchIndexAsyncClient, createTestIndex(null)
+            .setAnalyzers(new PatternAnalyzer(generateName()).setStopwords("stop1", "stop2").setLowerCaseTerms(true)
+                .setPattern(".*").setFlags(REGEX_FLAGS)));
     }
 
     @Test
-    public void canUseAllRegexFlagsNullNameAnalyzer() {
+    public void canUseAllRegexFlagsNullAnalyzerSync() {
+        createAndValidateIndexSync(searchIndexClient, createTestIndex(null).setAnalyzers((List<LexicalAnalyzer>) null));
+    }
+
+    @Test
+    public void canUseAllRegexFlagsNullAnalyzerAsync() {
+        createAndValidateIndexAsync(searchIndexAsyncClient,
+            createTestIndex(null).setAnalyzers((List<LexicalAnalyzer>) null));
+    }
+
+    @Test
+    public void canUseAllRegexFlagsEmptyAnalyzerSync() {
+        createAndValidateIndexSync(searchIndexClient, createTestIndex(null).setAnalyzers(new ArrayList<>()));
+    }
+
+    @Test
+    public void canUseAllRegexFlagsEmptyAnalyzerAsync() {
+        createAndValidateIndexAsync(searchIndexAsyncClient, createTestIndex(null).setAnalyzers(new ArrayList<>()));
+    }
+
+    @Test
+    public void canUseAllRegexFlagsNullNameAnalyzerSync() {
         SearchIndex index = createTestIndex(null).setAnalyzers(new PatternAnalyzer(null));
 
-        assertThrows(HttpResponseException.class, () ->
-            searchIndexClient.createIndex(index), "Missing required property name in model LexicalAnalyzer");
+        assertThrows(HttpResponseException.class, () -> searchIndexClient.createIndex(index),
+            "Missing required property name in model LexicalAnalyzer");
 
     }
 
     @Test
-    public void canUseAllRegexFlagsEmptyNameAnalyzer() {
+    public void canUseAllRegexFlagsNullNameAnalyzerAsync() {
+        SearchIndex index = createTestIndex(null).setAnalyzers(new PatternAnalyzer(null));
+
+        StepVerifier.create(searchIndexAsyncClient.createIndex(index))
+            .verifyError(HttpResponseException.class);
+    }
+
+    @Test
+    public void canUseAllRegexFlagsEmptyNameAnalyzerSync() {
         SearchIndex index = createTestIndex(null).setAnalyzers(new PatternAnalyzer(""));
 
-        assertHttpResponseException(
-            () -> searchIndexClient.createIndex(index),
-            HttpURLConnection.HTTP_BAD_REQUEST,
-            "The name field is required."
-        );
+        assertHttpResponseException(() -> searchIndexClient.createIndex(index), HttpURLConnection.HTTP_BAD_REQUEST,
+            "The name field is required.");
     }
 
     @Test
-    public void canUseAllRegexFlagsNullLowerCaseAnalyzer() {
-        SearchIndex index = createTestIndex(null)
-            .setAnalyzers(new PatternAnalyzer(generateName()).setLowerCaseTerms(null));
+    public void canUseAllRegexFlagsEmptyNameAnalyzerAsync() {
+        SearchIndex index = createTestIndex(null).setAnalyzers(new PatternAnalyzer(""));
 
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
-        indexesToCleanup.add(index.getName());
-
-        assertAnalysisComponentsEqual(index, createdIndex);
+        StepVerifier.create(searchIndexAsyncClient.createIndex(index))
+            .verifyErrorSatisfies(exception -> verifyHttpResponseError(exception, HttpURLConnection.HTTP_BAD_REQUEST,
+                "The name field is required."));
     }
 
     @Test
-    public void canUseAllRegexFlagsNullPatternAnalyzer() {
-        SearchIndex index = createTestIndex(null)
-            .setAnalyzers(new PatternAnalyzer(generateName()).setPattern(null));
-
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
-        indexesToCleanup.add(index.getName());
-
-        assertAnalysisComponentsEqual(index, createdIndex);
+    public void canUseAllRegexFlagsNullLowerCaseAnalyzerSync() {
+        createAndValidateIndexSync(searchIndexClient, createTestIndex(null)
+            .setAnalyzers(new PatternAnalyzer(generateName()).setLowerCaseTerms(null)));
     }
 
     @Test
-    public void canUseAllRegexFlagsEmptyPatternAnalyzer() {
-        SearchIndex index = createTestIndex(null)
-            .setAnalyzers(new PatternAnalyzer(generateName()).setPattern(""));
-
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
-        indexesToCleanup.add(index.getName());
-
-        assertAnalysisComponentsEqual(index, createdIndex);
+    public void canUseAllRegexFlagsNullLowerCaseAnalyzerAsync() {
+        createAndValidateIndexAsync(searchIndexAsyncClient, createTestIndex(null)
+            .setAnalyzers(new PatternAnalyzer(generateName()).setLowerCaseTerms(null)));
     }
 
     @Test
-    public void canUseAllRegexFlagsEmptyFlagsAnalyzer() {
-        SearchIndex index = createTestIndex(null)
-            .setAnalyzers(new PatternAnalyzer(generateName()).setFlags());
-
-        assertHttpResponseException(
-            () -> searchIndexClient.createIndex(index),
-            HttpURLConnection.HTTP_BAD_REQUEST,
-            "Values of property \\\"flags\\\" must belong to the set of allowed values"
-        );
+    public void canUseAllRegexFlagsNullPatternAnalyzerSync() {
+        createAndValidateIndexSync(searchIndexClient, createTestIndex(null)
+            .setAnalyzers(new PatternAnalyzer(generateName()).setPattern(null)));
     }
 
     @Test
-    public void canUseAllRegexFlagsEmptyStopwordsAnalyzer() {
-        SearchIndex index = createTestIndex(null)
-            .setAnalyzers(new PatternAnalyzer(generateName()).setStopwords());
-
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
-        indexesToCleanup.add(index.getName());
-
-        assertAnalysisComponentsEqual(index, createdIndex);
+    public void canUseAllRegexFlagsNullPatternAnalyzerAsync() {
+        createAndValidateIndexAsync(searchIndexAsyncClient, createTestIndex(null)
+            .setAnalyzers(new PatternAnalyzer(generateName()).setPattern(null)));
     }
 
     @Test
-    public void canUseAllRegexFlagsTokenizer() {
-        SearchIndex index = createTestIndex(null)
-            .setTokenizers(new PatternTokenizer(generateName())
-                .setPattern(".*")
-                .setFlags(REGEX_FLAGS)
-                .setGroup(0));
-
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
-        indexesToCleanup.add(index.getName());
-
-        assertAnalysisComponentsEqual(index, createdIndex);
+    public void canUseAllRegexFlagsEmptyPatternAnalyzerSync() {
+        createAndValidateIndexSync(searchIndexClient, createTestIndex(null)
+            .setAnalyzers(new PatternAnalyzer(generateName()).setPattern("")));
     }
 
     @Test
-    public void canUseAllRegexFlagsNullTokenizer() {
-        SearchIndex index = createTestIndex(null)
-            .setTokenizers((List<LexicalTokenizer>) null);
-
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
-        indexesToCleanup.add(index.getName());
-
-        assertAnalysisComponentsEqual(index, createdIndex);
+    public void canUseAllRegexFlagsEmptyPatternAnalyzerAsync() {
+        createAndValidateIndexAsync(searchIndexAsyncClient, createTestIndex(null)
+            .setAnalyzers(new PatternAnalyzer(generateName()).setPattern("")));
     }
 
     @Test
-    public void canUseAllRegexFlagsEmptyTokenizer() {
-        SearchIndex index = createTestIndex(null)
-            .setTokenizers(new ArrayList<>());
+    public void canUseAllRegexFlagsEmptyFlagsAnalyzerSync() {
+        SearchIndex index = createTestIndex(null).setAnalyzers(new PatternAnalyzer(generateName()).setFlags());
 
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
-        indexesToCleanup.add(index.getName());
-
-        assertAnalysisComponentsEqual(index, createdIndex);
+        assertHttpResponseException(() -> searchIndexClient.createIndex(index), HttpURLConnection.HTTP_BAD_REQUEST,
+            "Values of property \\\"flags\\\" must belong to the set of allowed values");
     }
 
     @Test
-    public void canUseAllRegexFlagsNullNameTokenizer() {
-        SearchIndex index = createTestIndex(null)
-            .setTokenizers(new PatternTokenizer(null));
+    public void canUseAllRegexFlagsEmptyFlagsAnalyzerAsync() {
+        SearchIndex index = createTestIndex(null).setAnalyzers(new PatternAnalyzer(generateName()).setFlags());
+
+        StepVerifier.create(searchIndexAsyncClient.createIndex(index))
+            .verifyErrorSatisfies(exception -> verifyHttpResponseError(exception, HttpURLConnection.HTTP_BAD_REQUEST,
+                "Values of property \\\"flags\\\" must belong to the set of allowed values"));
+    }
+
+    @Test
+    public void canUseAllRegexFlagsEmptyStopwordsAnalyzerSync() {
+        createAndValidateIndexSync(searchIndexClient, createTestIndex(null)
+            .setAnalyzers(new PatternAnalyzer(generateName()).setStopwords()));
+    }
+
+    @Test
+    public void canUseAllRegexFlagsEmptyStopwordsAnalyzerAsync() {
+        createAndValidateIndexAsync(searchIndexAsyncClient, createTestIndex(null)
+            .setAnalyzers(new PatternAnalyzer(generateName()).setStopwords()));
+    }
+
+    @Test
+    public void canUseAllRegexFlagsTokenizerSync() {
+        createAndValidateIndexSync(searchIndexClient, createTestIndex(null)
+            .setTokenizers(new PatternTokenizer(generateName()).setPattern(".*").setFlags(REGEX_FLAGS).setGroup(0)));
+    }
+
+    @Test
+    public void canUseAllRegexFlagsTokenizerAsync() {
+        createAndValidateIndexAsync(searchIndexAsyncClient, createTestIndex(null)
+            .setTokenizers(new PatternTokenizer(generateName()).setPattern(".*").setFlags(REGEX_FLAGS).setGroup(0)));
+    }
+
+    @Test
+    public void canUseAllRegexFlagsNullTokenizerSync() {
+        createAndValidateIndexSync(searchIndexClient,
+            createTestIndex(null).setTokenizers((List<LexicalTokenizer>) null));
+    }
+
+    @Test
+    public void canUseAllRegexFlagsNullTokenizerAsync() {
+        createAndValidateIndexAsync(searchIndexAsyncClient,
+            createTestIndex(null).setTokenizers((List<LexicalTokenizer>) null));
+    }
+
+    @Test
+    public void canUseAllRegexFlagsEmptyTokenizerSync() {
+        createAndValidateIndexSync(searchIndexClient, createTestIndex(null).setTokenizers(new ArrayList<>()));
+    }
+
+    @Test
+    public void canUseAllRegexFlagsEmptyTokenizerAsync() {
+        createAndValidateIndexAsync(searchIndexAsyncClient, createTestIndex(null).setTokenizers(new ArrayList<>()));
+    }
+
+    @Test
+    public void canUseAllRegexFlagsNullNameTokenizerSync() {
+        SearchIndex index = createTestIndex(null).setTokenizers(new PatternTokenizer(null));
 
         assertThrows(HttpResponseException.class, () ->
             searchIndexClient.createIndex(index), "Missing required property name in model SearchIndexer");
@@ -445,82 +590,127 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canUseAllRegexFlagsEmptyNameTokenizer() {
-        SearchIndex index = createTestIndex(null)
-            .setTokenizers(new PatternTokenizer(""));
+    public void canUseAllRegexFlagsNullNameTokenizerAsync() {
+        SearchIndex index = createTestIndex(null).setTokenizers(new PatternTokenizer(null));
 
-        assertHttpResponseException(
-            () -> searchIndexClient.createIndex(index),
-            HttpURLConnection.HTTP_BAD_REQUEST,
-            "The name field is required."
-        );
+        StepVerifier.create(searchIndexAsyncClient.createIndex(index))
+            .verifyError(HttpResponseException.class);
     }
 
     @Test
-    public void canUseAllRegexFlagsNullPatternTokenizer() {
-        SearchIndex index = createTestIndex(null)
-            .setTokenizers(new PatternTokenizer(generateName()).setPattern(null));
+    public void canUseAllRegexFlagsEmptyNameTokenizerSync() {
+        SearchIndex index = createTestIndex(null).setTokenizers(new PatternTokenizer(""));
 
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
-        indexesToCleanup.add(index.getName());
-
-        assertAnalysisComponentsEqual(index, createdIndex);
+        assertHttpResponseException(() -> searchIndexClient.createIndex(index), HttpURLConnection.HTTP_BAD_REQUEST,
+            "The name field is required.");
     }
 
     @Test
-    public void canUseAllRegexFlagsEmptyPatternTokenizer() {
-        SearchIndex index = createTestIndex(null)
-            .setTokenizers(new PatternTokenizer(generateName()).setPattern(""));
+    public void canUseAllRegexFlagsEmptyNameTokenizerAsync() {
+        SearchIndex index = createTestIndex(null).setTokenizers(new PatternTokenizer(""));
 
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
-        indexesToCleanup.add(index.getName());
-
-        assertAnalysisComponentsEqual(index, createdIndex);
+        StepVerifier.create(searchIndexAsyncClient.createIndex(index))
+            .verifyErrorSatisfies(exception -> verifyHttpResponseError(exception, HttpURLConnection.HTTP_BAD_REQUEST,
+                "The name field is required."));
     }
 
     @Test
-    public void canUseAllRegexFlagsEmptyFlagsTokenizer() {
-        SearchIndex index = createTestIndex(null)
-            .setTokenizers(new PatternTokenizer(generateName()).setFlags());
-
-        assertHttpResponseException(
-            () -> searchIndexClient.createIndex(index),
-            HttpURLConnection.HTTP_BAD_REQUEST,
-            "Values of property \\\"flags\\\" must belong to the set of allowed values"
-        );
+    public void canUseAllRegexFlagsNullPatternTokenizerSync() {
+        createAndValidateIndexSync(searchIndexClient,
+            createTestIndex(null).setTokenizers(new PatternTokenizer(generateName()).setPattern(null)));
     }
 
     @Test
-    public void canUseAllRegexFlagsNullGroupTokenizer() {
-        SearchIndex index = createTestIndex(null)
-            .setTokenizers(new PatternTokenizer(generateName()).setGroup(null));
-
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
-        indexesToCleanup.add(index.getName());
-
-        assertAnalysisComponentsEqual(index, createdIndex);
+    public void canUseAllRegexFlagsNullPatternTokenizerAsync() {
+        createAndValidateIndexAsync(searchIndexAsyncClient,
+            createTestIndex(null).setTokenizers(new PatternTokenizer(generateName()).setPattern(null)));
     }
 
     @Test
-    public void canUseAllAnalysisComponentOptions() {
+    public void canUseAllRegexFlagsEmptyPatternTokenizerSync() {
+        createAndValidateIndexSync(searchIndexClient,
+            createTestIndex(null).setTokenizers(new PatternTokenizer(generateName()).setPattern("")));
+    }
+
+    @Test
+    public void canUseAllRegexFlagsEmptyPatternTokenizerAsync() {
+        createAndValidateIndexAsync(searchIndexAsyncClient,
+            createTestIndex(null).setTokenizers(new PatternTokenizer(generateName()).setPattern("")));
+    }
+
+    @Test
+    public void canUseAllRegexFlagsEmptyFlagsTokenizerSync() {
+        SearchIndex index = createTestIndex(null).setTokenizers(new PatternTokenizer(generateName()).setFlags());
+
+        assertHttpResponseException(() -> searchIndexClient.createIndex(index), HttpURLConnection.HTTP_BAD_REQUEST,
+            "Values of property \\\"flags\\\" must belong to the set of allowed values");
+    }
+
+    @Test
+    public void canUseAllRegexFlagsEmptyFlagsTokenizerAsync() {
+        SearchIndex index = createTestIndex(null).setTokenizers(new PatternTokenizer(generateName()).setFlags());
+
+        StepVerifier.create(searchIndexAsyncClient.createIndex(index))
+            .verifyErrorSatisfies(exception -> verifyHttpResponseError(exception, HttpURLConnection.HTTP_BAD_REQUEST,
+                "Values of property \\\"flags\\\" must belong to the set of allowed values"));
+    }
+
+    @Test
+    public void canUseAllRegexFlagsNullGroupTokenizerSync() {
+        createAndValidateIndexSync(searchIndexClient,
+            createTestIndex(null).setTokenizers(new PatternTokenizer(generateName()).setGroup(null)));
+    }
+
+    @Test
+    public void canUseAllRegexFlagsNullGroupTokenizerAsync() {
+        createAndValidateIndexAsync(searchIndexAsyncClient,
+            createTestIndex(null).setTokenizers(new PatternTokenizer(generateName()).setGroup(null)));
+    }
+
+    @Test
+    public void canUseAllAnalysisComponentOptionsSync() {
         List<SearchIndex> indexes = prepareIndexesWithAllAnalysisComponentOptions();
 
         indexes.forEach(expectedIndex -> {
-            SearchIndex createdIndex = searchIndexClient.createIndex(expectedIndex);
-            indexesToCleanup.add(expectedIndex.getName());
-            assertAnalysisComponentsEqual(expectedIndex, createdIndex);
-            searchIndexClient.deleteIndex(createdIndex.getName());
+            createAndValidateIndexSync(searchIndexClient, expectedIndex);
+            searchIndexClient.deleteIndex(expectedIndex.getName());
         });
     }
 
-    void addAnalyzerToIndex(SearchIndex index, LexicalAnalyzer analyzer) {
+    @Test
+    public void canUseAllAnalysisComponentOptionsAsync() {
+        List<SearchIndex> indexes = prepareIndexesWithAllAnalysisComponentOptions();
+
+        indexes.forEach(expectedIndex -> {
+            createAndValidateIndexAsync(searchIndexAsyncClient, expectedIndex);
+            searchIndexClient.deleteIndex(expectedIndex.getName());
+        });
+    }
+
+    private void createAndValidateIndexSync(SearchIndexClient searchIndexClient, SearchIndex index) {
+        SearchIndex createdIndex = searchIndexClient.createIndex(index);
+        indexesToCleanup.add(index.getName());
+
+        assertAnalysisComponentsEqual(index, createdIndex);
+    }
+
+    private void createAndValidateIndexAsync(SearchIndexAsyncClient searchIndexAsyncClient, SearchIndex index) {
+        StepVerifier.create(searchIndexAsyncClient.createIndex(index))
+            .assertNext(createdIndex -> {
+                indexesToCleanup.add(index.getName());
+                assertAnalysisComponentsEqual(index, createdIndex);
+            })
+            .verifyComplete();
+    }
+
+    static void addAnalyzerToIndex(SearchIndex index, LexicalAnalyzer analyzer) {
         List<LexicalAnalyzer> analyzers = new ArrayList<>(index.getAnalyzers());
         analyzers.add(analyzer);
 
         index.setAnalyzers(analyzers);
     }
 
-    void assertAnalysisComponentsEqual(SearchIndex expected, SearchIndex actual) {
+    static void assertAnalysisComponentsEqual(SearchIndex expected, SearchIndex actual) {
         // Compare analysis components directly so that test failures show better comparisons.
         // Analyzers
         assertAnalyzersEqual(expected.getAnalyzers(), actual.getAnalyzers());
@@ -555,7 +745,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         assertCharFiltersEqual(expected.getCharFilters(), actual.getCharFilters());
     }
 
-    private void assertAnalyzersEqual(List<LexicalAnalyzer> expected, List<LexicalAnalyzer> actual) {
+    private static void assertAnalyzersEqual(List<LexicalAnalyzer> expected, List<LexicalAnalyzer> actual) {
         if (expected != null && actual != null) {
             assertEquals(expected.size(), actual.size());
             for (int i = 0; i < expected.size(); i++) {
@@ -564,7 +754,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         }
     }
 
-    private void assertLexicalTokenizersEqual(List<LexicalTokenizer> expected, List<LexicalTokenizer> actual) {
+    private static void assertLexicalTokenizersEqual(List<LexicalTokenizer> expected, List<LexicalTokenizer> actual) {
         if (expected != null && actual != null) {
             assertEquals(expected.size(), actual.size());
             for (int i = 0; i < expected.size(); i++) {
@@ -573,7 +763,7 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         }
     }
 
-    private void assertCharFiltersEqual(List<CharFilter> expected, List<CharFilter> actual) {
+    private static void assertCharFiltersEqual(List<CharFilter> expected, List<CharFilter> actual) {
         if (expected != null && actual != null) {
             assertEquals(expected.size(), actual.size());
             for (int i = 0; i < expected.size(); i++) {

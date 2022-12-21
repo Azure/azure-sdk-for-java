@@ -220,7 +220,7 @@ public final class TestHelpers {
                 "Invalid expression: Could not find a property named 'ThisFieldDoesNotExist' on type 'search.document'."));
     }
 
-    private static void verifyHttpResponseError(Throwable ex, int statusCode, String expectedMessage) {
+    public static void verifyHttpResponseError(Throwable ex, int statusCode, String expectedMessage) {
         if (ex instanceof HttpResponseException) {
             assertEquals(statusCode, ((HttpResponseException) ex).getResponse().getStatusCode());
 
