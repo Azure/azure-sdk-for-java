@@ -12,9 +12,9 @@ import com.azure.core.util.logging.ClientLogger;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.ConnectException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Locale;
 
 /**
  * Manages running the test recording proxy server
@@ -25,6 +25,10 @@ public class TestProxyManager {
     private final File recordingPath;
     private Process proxy;
 
+    /**
+     * Construct a {@link TestProxyManager} for controlling the external test proxy.
+     * @param recordingPath The local path in the file system where recordings are saved.
+     */
     public TestProxyManager(File recordingPath) {
         this.recordingPath = recordingPath;
 
@@ -32,6 +36,11 @@ public class TestProxyManager {
         Runtime.getRuntime().addShutdownHook(new Thread(this::stopProxy));
     }
 
+    /**
+     * Start an instance of the test proxy.
+     * @throws UncheckedIOException There was an issue communicating with the proxy.
+     * @throws RuntimeException There was an issue starting the proxy process.
+     */
     public void startProxy() {
 
         try {
@@ -46,11 +55,10 @@ public class TestProxyManager {
                 HttpResponse response = null;
                 try {
                     response = client.sendSync(request, Context.NONE);
+                    if (response != null && response.getStatusCode() == 200) {
+                        return;
+                    }
                 } catch (Exception ignored) {
-
-                }
-                if (response != null && response.getStatusCode() == 200) {
-                    return;
                 }
                 Thread.sleep(1000);
             }
@@ -63,6 +71,9 @@ public class TestProxyManager {
         }
     }
 
+    /**
+     * Stop the running instance of the test proxy.
+     */
     public void stopProxy() {
         if (proxy.isAlive()) {
             proxy.destroy();
@@ -70,7 +81,7 @@ public class TestProxyManager {
     }
 
     private String getProxyProcessName() {
-        String osName = System.getProperty("os.name").toLowerCase();
+        String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
         if (osName.contains("windows")) {
             return "Azure.Sdk.Tools.TestProxy.exe";
         } else if (osName.contains("linux")) {

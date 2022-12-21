@@ -7,7 +7,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestProxyUtils;
 import com.azure.core.util.Context;
@@ -17,15 +16,28 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Queue;
 import java.util.stream.Collectors;
 
+/**
+ * A {@link HttpClient} that plays back test recordings from the external test proxy.
+ */
 public class TestProxyPlaybackClient implements HttpClient {
 
     private final HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
     private String xRecordingId;
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 
+    /**
+     * Starts playback of a test recording.
+     * @param recordFile The name of the file to read.
+     * @param textReplacementRules Rules for replacing text in the playback.
+     * @return A {@link Queue} representing the variables in the recording.
+     * @throws RuntimeException if an {@link IOException} is thrown.
+     */
     public Queue<String> startPlayback(String recordFile, Map<String, String> textReplacementRules) {
         // TODO: replacement rules
         HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/start", TestProxyUtils.getProxyUrl()))
@@ -39,12 +51,21 @@ public class TestProxyPlaybackClient implements HttpClient {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Stops playback of a test recording.
+     */
     public void stopPlayback() {
         HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/stop", TestProxyUtils.getProxyUrl()))
             .setHeader("x-recording-id", xRecordingId);
         client.sendSync(request, Context.NONE);
     }
 
+    /**
+     * Redirects the request to the test-proxy to retrieve the playback response.
+     * @param request The HTTP request to send.
+     * @return The HTTP response.
+     */
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
         if (xRecordingId == null) {

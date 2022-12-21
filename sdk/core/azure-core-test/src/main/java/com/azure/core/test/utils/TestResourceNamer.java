@@ -22,8 +22,8 @@ import java.util.function.Supplier;
 public class TestResourceNamer extends ResourceNamer {
     private final boolean allowedToReadRecordedValues;
     private final boolean allowedToRecordValues;
-    private Consumer<String> storeVariable;
-    private Supplier<String> getVariable;
+    private final Consumer<String> storeVariable;
+    private final Supplier<String> getVariable;
 
     /**
      * Constructor of TestResourceNamer
@@ -37,7 +37,11 @@ public class TestResourceNamer extends ResourceNamer {
     public TestResourceNamer(String name, TestMode testMode, RecordedData storage) {
         this(name,
             testMode,
-            false);
+            false,
+            null,
+            null,
+            null);
+
     }
 
     /**
@@ -52,34 +56,59 @@ public class TestResourceNamer extends ResourceNamer {
     public TestResourceNamer(TestContextManager testContextManager, RecordedData storage) {
         this(testContextManager.getTestName(),
             testContextManager.getTestMode(),
-            testContextManager.doNotRecordTest()
+            testContextManager.doNotRecordTest(),
+            null,
+            null,
+            storage
         );
         // Only need recordedData if the test is running in playback or record.
         if (testContextManager.getTestMode() != TestMode.LIVE && !testContextManager.doNotRecordTest() && !testContextManager.getEnableTestProxy()) {
             Objects.requireNonNull(storage, "'recordedData' cannot be null.");
-            this.storeVariable = storage::addVariable;
-            this.getVariable = storage::removeVariable;
         }
 
     }
 
+    /**
+     * Constrctor of TestResourceNamer
+     *
+     * @param testContextManager Contextual information about the test being run, such as test name, {@link TestMode},
+     * and others.
+     * @param storeVariable A {@link Consumer} for storing random variables into a recording.
+     * @param getVariable a {@link Supplier} for retrieving random variables from a recording.
+     */
     public TestResourceNamer(TestContextManager testContextManager, Consumer<String> storeVariable, Supplier<String> getVariable) {
         this(testContextManager.getTestName(),
             testContextManager.getTestMode(),
-            testContextManager.doNotRecordTest()
+            testContextManager.doNotRecordTest(),
+            storeVariable,
+            getVariable,
+            null
         );
-        if (testContextManager.getTestMode() != TestMode.LIVE && !testContextManager.doNotRecordTest() && testContextManager.getEnableTestProxy()) {
-            this.storeVariable = Objects.requireNonNull(storeVariable, "'storeVariable' cannot be null.");
-            this.getVariable = Objects.requireNonNull(getVariable, "'getVariable' cannot be null.");
-        }
-
     }
 
-    private TestResourceNamer(String name, TestMode testMode, boolean doNotRecord) {
+    private TestResourceNamer(String name,
+                              TestMode testMode,
+                              boolean doNotRecord,
+                              Consumer<String> storeVariable,
+                              Supplier<String> getVariable,
+                              RecordedData storage) {
         super(name);
 
         this.allowedToReadRecordedValues = (testMode == TestMode.PLAYBACK && !doNotRecord);
         this.allowedToRecordValues = (testMode == TestMode.RECORD && !doNotRecord);
+
+        if (testMode != TestMode.LIVE && !doNotRecord) {
+            if (storage != null) {
+                this.storeVariable = storage::addVariable;
+                this.getVariable = storage::removeVariable;
+            } else {
+                this.storeVariable = storeVariable;
+                this.getVariable = getVariable;
+            }
+        } else {
+            this.storeVariable = null;
+            this.getVariable = null;
+        }
     }
 
     /**

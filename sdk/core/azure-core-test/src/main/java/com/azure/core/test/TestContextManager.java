@@ -91,7 +91,9 @@ public class TestContextManager {
      *
      * @return True if the text proxy is enabled
      */
-    public boolean getEnableTestProxy() { return enableTestProxy; }
+    public boolean getEnableTestProxy() {
+        return enableTestProxy;
+    }
 
     /**
      * Returns whether the test should have its network calls recorded during a {@link TestMode#RECORD record} test

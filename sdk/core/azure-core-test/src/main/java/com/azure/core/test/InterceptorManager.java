@@ -57,7 +57,7 @@ public class InterceptorManager implements AutoCloseable {
     private static final String RECORD_FOLDER = "session-records/";
     private static final ObjectMapper RECORD_MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
-    private static final ClientLogger logger = new ClientLogger(InterceptorManager.class);
+    private static final ClientLogger LOGGER = new ClientLogger(InterceptorManager.class);
     private final Map<String, String> textReplacementRules;
     private final String testName;
     private final String playbackRecordName;
@@ -243,6 +243,10 @@ public class InterceptorManager implements AutoCloseable {
         return recordedData;
     }
 
+    /**
+     * A {@link Supplier} for retrieving a variable from a test proxy recording.
+     * @return The supplier for retrieving a variable.
+     */
     public Supplier<String> getProxyVariableSupplier() {
         return () -> {
             Objects.requireNonNull(this.testProxyPlaybackClient, "Playback must be started to retrieve values");
@@ -250,7 +254,10 @@ public class InterceptorManager implements AutoCloseable {
         };
     }
 
-
+    /**
+     * Get a {@link Consumer} for adding variables used in test proxy tests.
+     * @return The consumer for adding a variable.
+     */
     public Consumer<String> getProxyVariableConsumer() {
         return proxyVariableQueue::add;
     }
@@ -314,7 +321,7 @@ public class InterceptorManager implements AutoCloseable {
                 try (BufferedWriter writer = Files.newBufferedWriter(createRecordFile(playbackRecordName).toPath())) {
                     RECORD_MAPPER.writeValue(writer, recordedData);
                 } catch (IOException ex) {
-                    throw logger.logExceptionAsError(
+                    throw LOGGER.logExceptionAsError(
                         new UncheckedIOException("Unable to write data to playback file.", ex));
                 }
             }
@@ -329,12 +336,14 @@ public class InterceptorManager implements AutoCloseable {
         try (BufferedReader reader = Files.newBufferedReader(recordFile.toPath())) {
             return RECORD_MAPPER.readValue(reader, RecordedData.class);
         } catch (IOException ex) {
-            throw logger.logExceptionAsWarning(new UncheckedIOException(ex));
+            throw LOGGER.logExceptionAsWarning(new UncheckedIOException(ex));
         }
     }
 
-    /*
-     * Creates a File which is the session-records folder.
+    /**
+     * Get the {@link File} pointing to the folder where session records live.
+     * @return The session-records folder.
+     * @throws IllegalStateException if the session-records folder cannot be found.
      */
     public static File getRecordFolder() {
         URL folderUrl = InterceptorManager.class.getClassLoader().getResource(RECORD_FOLDER);
@@ -342,7 +351,7 @@ public class InterceptorManager implements AutoCloseable {
         if (folderUrl != null) {
             // Use toURI as getResource will return a URL encoded file path that can only be cleaned up using the
             // URI-based constructor of File.
-            return new File(toURI(folderUrl, logger));
+            return new File(toURI(folderUrl, LOGGER));
         }
 
         throw new IllegalStateException("Unable to locate session-records folder. Please create a session-records "
@@ -373,16 +382,16 @@ public class InterceptorManager implements AutoCloseable {
         File oldPlaybackFile = new File(recordFolder, testName + ".json");
 
         if (!playbackFile.exists() && !oldPlaybackFile.exists()) {
-            throw logger.logExceptionAsError(new RuntimeException(String.format(
+            throw LOGGER.logExceptionAsError(new RuntimeException(String.format(
                 "Missing both new and old playback files. Files are %s and %s.", playbackFile.getPath(),
                 oldPlaybackFile.getPath())));
         }
 
         if (playbackFile.exists()) {
-            logger.info("==> Playback file path: {}", playbackFile.getPath());
+            LOGGER.info("==> Playback file path: {}", playbackFile.getPath());
             return playbackFile;
         } else {
-            logger.info("==> Playback file path: {}", oldPlaybackFile.getPath());
+            LOGGER.info("==> Playback file path: {}", oldPlaybackFile.getPath());
             return oldPlaybackFile;
         }
     }
@@ -394,16 +403,16 @@ public class InterceptorManager implements AutoCloseable {
         File recordFolder = getRecordFolder();
         if (!recordFolder.exists()) {
             if (recordFolder.mkdir()) {
-                logger.verbose("Created directory: {}", recordFolder.getPath());
+                LOGGER.verbose("Created directory: {}", recordFolder.getPath());
             }
         }
 
         File recordFile = new File(recordFolder, testName + ".json");
         if (recordFile.createNewFile()) {
-            logger.verbose("Created record file: {}", recordFile.getPath());
+            LOGGER.verbose("Created record file: {}", recordFile.getPath());
         }
 
-        logger.info("==> Playback file path: " + recordFile);
+        LOGGER.info("==> Playback file path: " + recordFile);
         return recordFile;
     }
 

@@ -9,20 +9,22 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * An implementation of {@link HttpClient} using the JDK {@link HttpURLConnectionHttpClient} for communicating with
+ * the test proxy.
+ */
 public class HttpURLConnectionHttpClient implements HttpClient {
 
     @Override
@@ -43,18 +45,21 @@ public class HttpURLConnectionHttpClient implements HttpClient {
                 }
             }
             BinaryData body = request.getBodyAsBinaryData();
-            if(body != null) {
+            if (body != null) {
                 connection.setDoOutput(true);
-                BufferedOutputStream stream = new BufferedOutputStream(connection.getOutputStream());
-                stream.write(body.toBytes());
-                stream.flush();
+                try (BufferedOutputStream stream = new BufferedOutputStream(connection.getOutputStream())) {
+                    stream.write(body.toBytes());
+                    stream.flush();
+                }
             }
             connection.connect();
             return Mono.just(createHttpResponse(connection));
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
-            if (connection != null ) { connection.disconnect(); }
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
     }
 
@@ -64,60 +69,85 @@ public class HttpURLConnectionHttpClient implements HttpClient {
             return null;
         }
 
-        ByteBuffer body;
-        try {
-            byte[] bytes = BinaryData.fromStream(connection.getInputStream()).toBytes();
-            body = ByteBuffer.wrap(bytes);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+
+        return new HttpURLResponse(connection);
+    }
+
+    private static class HttpURLResponse extends HttpResponse {
+        private final HttpURLConnection connection;
+        private final ByteBuffer body;
+
+        /**
+         * Creates an instance of {@link HttpResponse}.
+         *
+         * @param request The {@link HttpRequest} that resulted in this {@link HttpResponse}.
+         */
+        protected HttpURLResponse(HttpRequest request) {
+            super(request);
+            this.connection = null;
+            this.body = null;
         }
 
-        return new HttpResponse(null) {
-            @Override
-            public int getStatusCode() {
-                try {
-                    return connection.getResponseCode();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+        /**
+         * Constructor for HttpURLResponse
+         * @param connection The {@link HttpURLConnection} to create a {@link HttpResponse} from.
+         * @throws RuntimeException if a failure occurs reading the body of the response.
+         */
+        HttpURLResponse(HttpURLConnection connection) {
+            super(null);
+            this.connection = connection;
+            try {
+                byte[] bytes = BinaryData.fromStream(connection.getInputStream()).toBytes();
+                this.body = ByteBuffer.wrap(bytes);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+
+        @Override
+        public int getStatusCode() {
+            try {
+                return connection.getResponseCode();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        @Override
+        public String getHeaderValue(String name) {
+            return connection.getHeaderField(name);
+        }
+
+        @Override
+        public HttpHeaders getHeaders() {
+            HttpHeaders ret = new HttpHeaders();
+            for (Map.Entry<String, List<String>> entry : connection.getHeaderFields().entrySet()) {
+                for (String value : entry.getValue()) {
+                    ret.add(entry.getKey(), value);
                 }
             }
+            return ret;
+        }
 
-            @Override
-            public String getHeaderValue(String name) {
-                return connection.getHeaderField(name);
-            }
+        @Override
+        public Flux<ByteBuffer> getBody() {
+            return Flux.just(body);
+        }
 
-            @Override
-            public HttpHeaders getHeaders() {
-                HttpHeaders ret = new HttpHeaders();
-                Map<String, List<String>> headers = connection.getHeaderFields();
-                for (String key : headers.keySet()) {
-                    for (String value : headers.get(key)) {
-                        ret.add(key, value);
-                    }
-                }
-                return ret;
-            }
+        @Override
+        public Mono<byte[]> getBodyAsByteArray() {
+            return Mono.just(body.array());
+        }
 
-            @Override
-            public Flux<ByteBuffer> getBody() {
-                return Flux.just(body);
-            }
+        @Override
+        public Mono<String> getBodyAsString() {
+            return Mono.just(new String(body.array(), StandardCharsets.UTF_8));
+        }
 
-            @Override
-            public Mono<byte[]> getBodyAsByteArray() {
-                return Mono.just(body.array());
-            }
-
-            @Override
-            public Mono<String> getBodyAsString() {
-                return Mono.just(new String(body.array(), StandardCharsets.UTF_8));
-            }
-
-            @Override
-            public Mono<String> getBodyAsString(Charset charset) {
-                return Mono.just(new String(body.array(), charset));
-            }
-        };
-    }
+        @Override
+        public Mono<String> getBodyAsString(Charset charset) {
+            return Mono.just(new String(body.array(), charset));
+        }
+    };
 }

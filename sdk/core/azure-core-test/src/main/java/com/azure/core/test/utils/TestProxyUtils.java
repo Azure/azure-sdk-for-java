@@ -10,35 +10,49 @@ import com.azure.core.util.UrlBuilder;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * Utility functions for interaction with the test proxy.
+ */
 public class TestProxyUtils {
-    private static final String proxyUrlScheme = "http";
-    private static final String proxyUrlHost = "localhost";
-    private static final int proxyUrlPort = 5000;
-    private static final String proxyUrl = String.format("%s://%s:%d", proxyUrlScheme, proxyUrlHost, proxyUrlPort);
+    private static final String PROXY_URL_SCHEME = "http";
+    private static final String PROXY_URL_HOST = "localhost";
+    private static final int PROXY_URL_PORT = 5000;
+    private static final String PROXY_URL = String.format("%s://%s:%d", PROXY_URL_SCHEME, PROXY_URL_HOST, PROXY_URL_PORT);
 
+    /**
+     * Get the proxy URL.
+     * @return A string containing the proxy URL.
+     */
     public static String getProxyUrl() {
-        return proxyUrl;
+        return PROXY_URL;
     }
 
+    /**
+     * Adds headers required for communication with the test proxy.
+     * @param request The request to add headers to.
+     * @param xRecordingId The x-recording-id value for the current session.
+     * @param mode The current test proxy mode.
+     * @throws RuntimeException Construction of one of the URLs failed.
+     */
     public static void changeHeaders(HttpRequest request, String xRecordingId, String mode) {
-        UrlBuilder builder = UrlBuilder.parse(request.getUrl());
-        builder.setScheme(proxyUrlScheme);
-        builder.setHost(proxyUrlHost);
-        builder.setPort(proxyUrlPort);
+        UrlBuilder proxyUrlBuilder = UrlBuilder.parse(request.getUrl());
+        proxyUrlBuilder.setScheme(PROXY_URL_SCHEME);
+        proxyUrlBuilder.setHost(PROXY_URL_HOST);
+        proxyUrlBuilder.setPort(PROXY_URL_PORT);
 
-        UrlBuilder builder2 = UrlBuilder.parse(request.getUrl());
-        builder2.setPath("");
-        builder2.setQuery("");
+        UrlBuilder originalUrlBuilder = UrlBuilder.parse(request.getUrl());
+        originalUrlBuilder.setPath("");
+        originalUrlBuilder.setQuery("");
 
         try {
-            URL originalUrl = builder2.toUrl();
+            URL originalUrl = originalUrlBuilder.toUrl();
 
             HttpHeaders headers = request.getHeaders();
 
             headers.add("x-recording-upstream-base-uri", originalUrl.toString());
             headers.add("x-recording-mode", mode);
             headers.add("x-recording-id", xRecordingId);
-            request.setUrl(builder.toUrl());
+            request.setUrl(proxyUrlBuilder.toUrl());
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }

@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
 import java.util.NoSuchElementException;
-import java.util.Queue;
 
 import static com.azure.core.test.FakeTestClass.DONOTRECORD_FALSE_SKIPINPLAYBACK;
 import static com.azure.core.test.FakeTestClass.METHOD_WITHOUT_DONOTRECORD;
@@ -37,17 +36,17 @@ public class TestResourceNamerTests {
     public void nullRecordedData() {
         // Doesn't throw when TestMode.LIVE.
         assertDoesNotThrow(() ->
-            new TestResourceNamer(new TestContextManager(METHOD_WITHOUT_DONOTRECORD, TestMode.LIVE, false), (RecordedData)null));
+            new TestResourceNamer(new TestContextManager(METHOD_WITHOUT_DONOTRECORD, TestMode.LIVE, false), null));
 
         // Doesn't throw when 'doNotRecord' is true.
         assertDoesNotThrow(() ->
-            new TestResourceNamer(new TestContextManager(DONOTRECORD_FALSE_SKIPINPLAYBACK, TestMode.RECORD, false), (RecordedData)null));
+            new TestResourceNamer(new TestContextManager(DONOTRECORD_FALSE_SKIPINPLAYBACK, TestMode.RECORD, false), null));
 
         // Does throw when TestMode isn't LIVE and doNotRecord = false
         assertThrows(NullPointerException.class, () ->
-            new TestResourceNamer(new TestContextManager(METHOD_WITHOUT_DONOTRECORD, TestMode.RECORD, false), (RecordedData)null));
+            new TestResourceNamer(new TestContextManager(METHOD_WITHOUT_DONOTRECORD, TestMode.RECORD, false), null));
         assertThrows(NullPointerException.class, () ->
-            new TestResourceNamer(new TestContextManager(METHOD_WITHOUT_DONOTRECORD, TestMode.PLAYBACK, false), (RecordedData)null));
+            new TestResourceNamer(new TestContextManager(METHOD_WITHOUT_DONOTRECORD, TestMode.PLAYBACK, false), null));
     }
 
     /**

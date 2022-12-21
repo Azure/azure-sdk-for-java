@@ -11,8 +11,15 @@ import reactor.netty.http.server.HttpServer;
 import java.io.Closeable;
 import java.util.Map;
 
+/**
+ * A simple {@link HttpServer} for unit testing the test proxy infrastructure.
+ */
 public class TestProxyTestServer implements Closeable {
     private final DisposableServer server;
+
+    /**
+     * Constructor for TestProxyTestServer
+     */
     public TestProxyTestServer() {
         server = HttpServer.create()
             .host("localhost")
