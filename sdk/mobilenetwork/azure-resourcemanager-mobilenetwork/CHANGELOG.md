@@ -1,14 +1,185 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.4 (2022-12-21)
 
-### Features Added
+- Azure Resource Manager MobileNetwork client library for Java. This package contains Microsoft Azure SDK for MobileNetwork Management SDK. The resources in this API specification will be used to manage attached data network resources in mobile network attached to a particular packet core instance. Package tag package-2022-11-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+* `models.SimIdListResult` was removed
 
-### Other Changes
+* `models.KeyVaultCertificate` was removed
+
+#### `models.AttachedDataNetwork$DefinitionStages` was modified
+
+* Stage 4 was added
+
+#### `models.PacketCoreControlPlane$DefinitionStages` was modified
+
+* `withMobileNetwork(models.MobileNetworkResourceId)` was removed in stage 3
+* `withControlPlaneAccessInterface(models.InterfaceProperties)` was removed in stage 4
+* `withSku(models.BillingSku)` was removed in stage 5
+* Stage 6, 7 was added
+
+#### `models.PacketCoreControlPlaneVersions` was modified
+
+* `listByResourceGroup()` was removed
+* `listByResourceGroup(com.azure.core.util.Context)` was removed
+
+#### `models.PacketCoreControlPlaneVersion` was modified
+
+* `recommendedVersion()` was removed
+* `versionState()` was removed
+
+#### `models.PacketCoreControlPlane` was modified
+
+* `mobileNetwork()` was removed
+
+#### `models.Sims` was modified
+
+* `listBySimGroup(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `listBySimGroup(java.lang.String,java.lang.String)` was removed
+
+#### `models.Site$Definition` was modified
+
+* `withNetworkFunctions(java.util.List)` was removed
+
+#### `models.LocalDiagnosticsAccessConfiguration` was modified
+
+* `withHttpsServerCertificate(models.KeyVaultCertificate)` was removed
+* `models.KeyVaultCertificate httpsServerCertificate()` -> `models.HttpsServerCertificate httpsServerCertificate()`
+
+#### `models.MobileNetwork` was modified
+
+* `listSimIds(com.azure.core.util.Context)` was removed
+* `listSimIds()` was removed
+
+#### `models.MobileNetworks` was modified
+
+* `listSimIds(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `listSimIds(java.lang.String,java.lang.String)` was removed
+
+#### `models.CoreNetworkType` was modified
+
+* `java.util.Collection values()` -> `models.CoreNetworkType[] values()`
+
+#### `models.PacketCoreControlPlane$Definition` was modified
+
+* `withMobileNetwork(models.MobileNetworkResourceId)` was removed
+
+### Features Added
+
+* `models.CertificateProvisioning` was added
+
+* `models.PacketCoreControlPlaneOperations` was added
+
+* `models.AuthenticationType` was added
+
+* `models.PacketCoreControlPlaneCollectDiagnosticsPackage` was added
+
+* `models.SimUploadList` was added
+
+* `models.SimDeleteList` was added
+
+* `models.SiteProvisioningState` was added
+
+* `models.CertificateProvisioningState` was added
+
+* `models.SimOperations` was added
+
+* `models.HttpsServerCertificate` was added
+
+* `models.AsyncOperationId` was added
+
+* `models.SiteResourceId` was added
+
+* `models.InstallationState` was added
+
+* `models.ObsoleteVersion` was added
+
+* `models.Installation` was added
+
+* `models.Platform` was added
+
+* `models.EncryptedSimUploadList` was added
+
+* `models.CommonSimPropertiesFormat` was added
+
+* `models.SimNameAndEncryptedProperties` was added
+
+* `models.AzureStackHciClusterResourceId` was added
+
+* `models.SimNameAndProperties` was added
+
+* `models.AsyncOperationStatus` was added
+
+#### `models.PacketCoreControlPlaneVersions` was modified
+
+* `list()` was added
+* `list(com.azure.core.util.Context)` was added
+
+#### `models.DataNetworkConfiguration` was modified
+
+* `withMaximumNumberOfBufferedPackets(java.lang.Integer)` was added
+* `maximumNumberOfBufferedPackets()` was added
+
+#### `models.PacketCoreControlPlaneVersion` was modified
+
+* `platforms()` was added
+
+#### `models.PacketCoreControlPlane` was modified
+
+* `ueMtu()` was added
+* `sites()` was added
+* `rollbackVersion()` was added
+* `installation()` was added
+
+#### `models.Sim` was modified
+
+* `vendorKeyFingerprint()` was added
+* `siteProvisioningState()` was added
+* `vendorName()` was added
+* `systemData()` was added
+
+#### `models.Sims` was modified
+
+* `listByGroup(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listByGroup(java.lang.String,java.lang.String)` was added
+
+#### `models.LocalDiagnosticsAccessConfiguration` was modified
+
+* `authenticationType()` was added
+* `withHttpsServerCertificate(models.HttpsServerCertificate)` was added
+* `withAuthenticationType(models.AuthenticationType)` was added
+
+#### `models.SimPolicy` was modified
+
+* `siteProvisioningState()` was added
+
+#### `models.PlatformConfiguration` was modified
+
+* `azureStackHciCluster()` was added
+* `azureStackEdgeDevices()` was added
+* `withAzureStackHciCluster(models.AzureStackHciClusterResourceId)` was added
+
+#### `models.AttachedDataNetwork` was modified
+
+* `systemData()` was added
+
+#### `models.CoreNetworkType` was modified
+
+* `valueOf(java.lang.String)` was added
+* `toString()` was added
+
+#### `MobileNetworkManager` was modified
+
+* `simOperations()` was added
+* `packetCoreControlPlaneOperations()` was added
+
+#### `models.PacketCoreControlPlane$Definition` was modified
+
+* `withUeMtu(java.lang.Integer)` was added
+* `withSites(java.util.List)` was added
 
 ## 1.0.0-beta.3 (2022-07-25)
 

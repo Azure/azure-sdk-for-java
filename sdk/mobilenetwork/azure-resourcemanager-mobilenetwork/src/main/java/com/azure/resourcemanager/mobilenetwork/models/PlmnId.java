@@ -23,6 +23,10 @@ public final class PlmnId {
     @JsonProperty(value = "mnc", required = true)
     private String mnc;
 
+    /** Creates an instance of PlmnId class. */
+    public PlmnId() {
+    }
+
     /**
      * Get the mcc property: Mobile country code (MCC).
      *

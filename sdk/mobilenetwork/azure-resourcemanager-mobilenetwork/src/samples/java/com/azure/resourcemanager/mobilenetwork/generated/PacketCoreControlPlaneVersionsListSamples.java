@@ -6,10 +6,10 @@ package com.azure.resourcemanager.mobilenetwork.generated;
 
 import com.azure.core.util.Context;
 
-/** Samples for PacketCoreControlPlaneVersions ListByResourceGroup. */
-public final class PacketCoreControlPlaneVersionsListByResourceGroupSamples {
+/** Samples for PacketCoreControlPlaneVersions List. */
+public final class PacketCoreControlPlaneVersionsListSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/PacketCoreControlPlaneVersionListByResourceGroup.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreControlPlaneVersionList.json
      */
     /**
      * Sample code: Get supported packet core control plane versions.
@@ -18,6 +18,6 @@ public final class PacketCoreControlPlaneVersionsListByResourceGroupSamples {
      */
     public static void getSupportedPacketCoreControlPlaneVersions(
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.packetCoreControlPlaneVersions().listByResourceGroup(Context.NONE);
+        manager.packetCoreControlPlaneVersions().list(Context.NONE);
     }
 }
