@@ -65,7 +65,7 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MobileNetworkManagem")
-    private interface DataNetworksService {
+    public interface DataNetworksService {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
@@ -549,22 +549,6 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified data network.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataNetworkInner get(String resourceGroupName, String mobileNetworkName, String dataNetworkName) {
-        return getAsync(resourceGroupName, mobileNetworkName, dataNetworkName).block();
-    }
-
-    /**
-     * Gets information about the specified data network.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param dataNetworkName The name of the data network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -578,7 +562,23 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
     }
 
     /**
-     * Creates or updates a data network.
+     * Gets information about the specified data network.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param dataNetworkName The name of the data network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified data network.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DataNetworkInner get(String resourceGroupName, String mobileNetworkName, String dataNetworkName) {
+        return getWithResponse(resourceGroupName, mobileNetworkName, dataNetworkName, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates or updates a data network. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -640,7 +640,7 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
     }
 
     /**
-     * Creates or updates a data network.
+     * Creates or updates a data network. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -704,7 +704,7 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
     }
 
     /**
-     * Creates or updates a data network.
+     * Creates or updates a data network. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -731,7 +731,7 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
     }
 
     /**
-     * Creates or updates a data network.
+     * Creates or updates a data network. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -760,7 +760,7 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
     }
 
     /**
-     * Creates or updates a data network.
+     * Creates or updates a data network. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -779,7 +779,7 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
     }
 
     /**
-     * Creates or updates a data network.
+     * Creates or updates a data network. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -803,7 +803,7 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
     }
 
     /**
-     * Creates or updates a data network.
+     * Creates or updates a data network. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -823,7 +823,7 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
     }
 
     /**
-     * Creates or updates a data network.
+     * Creates or updates a data network. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -848,7 +848,7 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
     }
 
     /**
-     * Creates or updates a data network.
+     * Creates or updates a data network. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -866,7 +866,7 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
     }
 
     /**
-     * Creates or updates a data network.
+     * Creates or updates a data network. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -1040,24 +1040,6 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
      * @param parameters Parameters supplied to update data network tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data network resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataNetworkInner updateTags(
-        String resourceGroupName, String mobileNetworkName, String dataNetworkName, TagsObject parameters) {
-        return updateTagsAsync(resourceGroupName, mobileNetworkName, dataNetworkName, parameters).block();
-    }
-
-    /**
-     * Updates data network tags.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param dataNetworkName The name of the data network.
-     * @param parameters Parameters supplied to update data network tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1073,6 +1055,25 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
         Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, mobileNetworkName, dataNetworkName, parameters, context)
             .block();
+    }
+
+    /**
+     * Updates data network tags.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param dataNetworkName The name of the data network.
+     * @param parameters Parameters supplied to update data network tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data network resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DataNetworkInner updateTags(
+        String resourceGroupName, String mobileNetworkName, String dataNetworkName, TagsObject parameters) {
+        return updateTagsWithResponse(resourceGroupName, mobileNetworkName, dataNetworkName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1262,7 +1263,8 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1299,7 +1301,8 @@ public final class DataNetworksClientImpl implements DataNetworksClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

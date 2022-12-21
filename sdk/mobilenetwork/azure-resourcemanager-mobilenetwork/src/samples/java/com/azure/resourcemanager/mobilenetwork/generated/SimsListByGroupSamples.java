@@ -6,10 +6,10 @@ package com.azure.resourcemanager.mobilenetwork.generated;
 
 import com.azure.core.util.Context;
 
-/** Samples for Sims ListBySimGroup. */
-public final class SimsListBySimGroupSamples {
+/** Samples for Sims ListByGroup. */
+public final class SimsListByGroupSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SimListBySimGroup.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimListBySimGroup.json
      */
     /**
      * Sample code: List SIMs in a SIM group.
@@ -17,6 +17,6 @@ public final class SimsListBySimGroupSamples {
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void listSIMsInASIMGroup(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
-        manager.sims().listBySimGroup("rg1", "testSimGroup", Context.NONE);
+        manager.sims().listByGroup("rg1", "testSimGroup", Context.NONE);
     }
 }

@@ -24,6 +24,10 @@ public final class SimGroupListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SimGroupListResult class. */
+    public SimGroupListResult() {
+    }
+
     /**
      * Get the value property: A list of SIM groups in a resource group.
      *
