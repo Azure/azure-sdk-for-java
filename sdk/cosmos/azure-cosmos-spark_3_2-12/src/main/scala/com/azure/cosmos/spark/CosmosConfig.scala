@@ -3,8 +3,10 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, Strings}
+import com.azure.core.management.AzureEnvironment
+import com.azure.core.management.profile.AzureProfile
 import com.azure.cosmos.implementation.routing.LocationHelper
+import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, CosmosParameterizedQuery, FeedRange}
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
@@ -16,6 +18,8 @@ import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
 import com.azure.cosmos.spark.SerializationDateTimeConversionModes.SerializationDateTimeConversionMode
 import com.azure.cosmos.spark.SerializationInclusionModes.SerializationInclusionMode
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsProvider, FeedDiagnosticsProvider, SimpleDiagnosticsProvider}
+import com.azure.identity.ClientSecretCredentialBuilder
+import com.azure.resourcemanager.cosmos.CosmosManager
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.util.CaseInsensitiveMap
@@ -39,133 +43,150 @@ import scala.collection.JavaConverters._
 // scalastyle:off number.of.types
 
 private[spark] object CosmosConfigNames {
-  val AccountEndpoint = "spark.cosmos.accountEndpoint"
-  val AccountKey = "spark.cosmos.accountKey"
-  val Database = "spark.cosmos.database"
-  val Container = "spark.cosmos.container"
-  val PreferredRegionsList = "spark.cosmos.preferredRegionsList"
-  val PreferredRegions = "spark.cosmos.preferredRegions"
-  val DisableTcpConnectionEndpointRediscovery = "spark.cosmos.disableTcpConnectionEndpointRediscovery"
-  val ApplicationName = "spark.cosmos.applicationName"
-  val UseGatewayMode = "spark.cosmos.useGatewayMode"
-  val AllowInvalidJsonWithDuplicateJsonProperties = "spark.cosmos.read.allowInvalidJsonWithDuplicateJsonProperties"
-  val ReadCustomQuery = "spark.cosmos.read.customQuery"
-  val ReadMaxItemCount = "spark.cosmos.read.maxItemCount"
-  val ReadPrefetchBufferSize = "spark.cosmos.read.prefetchBufferSize"
-  val ReadForceEventualConsistency = "spark.cosmos.read.forceEventualConsistency"
-  val ReadSchemaConversionMode = "spark.cosmos.read.schemaConversionMode"
-  val ReadInferSchemaSamplingSize = "spark.cosmos.read.inferSchema.samplingSize"
-  val ReadInferSchemaEnabled = "spark.cosmos.read.inferSchema.enabled"
-  val ReadInferSchemaIncludeSystemProperties = "spark.cosmos.read.inferSchema.includeSystemProperties"
-  val ReadInferSchemaForceNullableProperties = "spark.cosmos.read.inferSchema.forceNullableProperties"
-  val ReadInferSchemaIncludeTimestamp = "spark.cosmos.read.inferSchema.includeTimestamp"
-  val ReadInferSchemaQuery = "spark.cosmos.read.inferSchema.query"
-  val ReadPartitioningStrategy = "spark.cosmos.read.partitioning.strategy"
-  val ReadPartitioningTargetedCount = "spark.cosmos.partitioning.targetedCount"
-  val ReadPartitioningFeedRangeFilter = "spark.cosmos.partitioning.feedRangeFilter"
-  val ViewsRepositoryPath = "spark.cosmos.views.repositoryPath"
-  val DiagnosticsMode = "spark.cosmos.diagnostics"
-  val ClientTelemetryEnabled = "spark.cosmos.clientTelemetry.enabled"
-  val ClientTelemetryEndpoint = "spark.cosmos.clientTelemetry.endpoint"
-  val WriteBulkEnabled = "spark.cosmos.write.bulk.enabled"
-  val WriteBulkMaxPendingOperations = "spark.cosmos.write.bulk.maxPendingOperations"
-  val WriteBulkMaxConcurrentPartitions = "spark.cosmos.write.bulk.maxConcurrentCosmosPartitions"
-  val WritePointMaxConcurrency = "spark.cosmos.write.point.maxConcurrency"
-  val WritePatchDefaultOperationType = "spark.cosmos.write.patch.defaultOperationType"
-  val WritePatchColumnConfigs = "spark.cosmos.write.patch.columnConfigs"
-  val WritePatchFilterPredicate = "spark.cosmos.write.patch.filter"
-  val WriteStrategy = "spark.cosmos.write.strategy"
-  val WriteMaxRetryCount = "spark.cosmos.write.maxRetryCount"
-  val ChangeFeedStartFrom = "spark.cosmos.changeFeed.startFrom"
-  val ChangeFeedMode = "spark.cosmos.changeFeed.mode"
-  val ChangeFeedItemCountPerTriggerHint = "spark.cosmos.changeFeed.itemCountPerTriggerHint"
-  val ChangeFeedBatchCheckpointLocation = "spark.cosmos.changeFeed.batchCheckpointLocation"
-  val ThroughputControlEnabled = "spark.cosmos.throughputControl.enabled"
-  val ThroughputControlAccountEndpoint = "spark.cosmos.throughputControl.accountEndpoint"
-  val ThroughputControlAccountKey = "spark.cosmos.throughputControl.accountKey"
-  val ThroughputControlPreferredRegionsList = "spark.cosmos.throughputControl.preferredRegionsList"
-  val ThroughputControlDisableTcpConnectionEndpointRediscovery = "spark.cosmos.throughputControl.disableTcpConnectionEndpointRediscovery"
-  val ThroughputControlUseGatewayMode = "spark.cosmos.throughputControl.useGatewayMode"
-  val ThroughputControlName = "spark.cosmos.throughputControl.name"
-  val ThroughputControlTargetThroughput = "spark.cosmos.throughputControl.targetThroughput"
-  val ThroughputControlTargetThroughputThreshold = "spark.cosmos.throughputControl.targetThroughputThreshold"
-  val ThroughputControlGlobalControlDatabase = "spark.cosmos.throughputControl.globalControl.database"
-  val ThroughputControlGlobalControlContainer = "spark.cosmos.throughputControl.globalControl.container"
-  val ThroughputControlGlobalControlRenewalIntervalInMS =
-    "spark.cosmos.throughputControl.globalControl.renewIntervalInMS"
-  val ThroughputControlGlobalControlExpireIntervalInMS =
-    "spark.cosmos.throughputControl.globalControl.expireIntervalInMS"
-  val SerializationInclusionMode =
-    "spark.cosmos.serialization.inclusionMode"
-  val SerializationDateTimeConversionMode =
-    "spark.cosmos.serialization.dateTimeConversionMode"
-  val MetricsEnabledForSlf4j = "spark.cosmos.metrics.slf4j.enabled"
-  val MetricsIntervalInSeconds = "spark.cosmos.metrics.intervalInSeconds"
-  val MetricsAzureMonitorConnectionString = "spark.cosmos.metrics.azureMonitor.connectionString"
+    val AccountEndpoint = "spark.cosmos.accountEndpoint"
+    // ---------- RBAC configuration ------------
+    val AuthorityHost = "spark.cosmos.authorityHost"
+    val TenantId = "spark.cosmos.tenantId"
+    val SubscriptionId = "spark.cosmos.subscriptionId"
+    val ClientId = "spark.cosmos.clientId"
+    val ClientSecret = "spark.cosmos.clientSecret"
+    val CosmosResourceGroupName = "spark.cosmos.resourceGroupName"
+    // -------------------------------------------
+    val AccountKey = "spark.cosmos.accountKey"
+    val Database = "spark.cosmos.database"
+    val Container = "spark.cosmos.container"
+    val PreferredRegionsList = "spark.cosmos.preferredRegionsList"
+    val PreferredRegions = "spark.cosmos.preferredRegions"
+    val DisableTcpConnectionEndpointRediscovery = "spark.cosmos.disableTcpConnectionEndpointRediscovery"
+    val ApplicationName = "spark.cosmos.applicationName"
+    val UseGatewayMode = "spark.cosmos.useGatewayMode"
+    val AllowInvalidJsonWithDuplicateJsonProperties = "spark.cosmos.read.allowInvalidJsonWithDuplicateJsonProperties"
+    val ReadCustomQuery = "spark.cosmos.read.customQuery"
+    val ReadMaxItemCount = "spark.cosmos.read.maxItemCount"
+    val ReadPrefetchBufferSize = "spark.cosmos.read.prefetchBufferSize"
+    val ReadForceEventualConsistency = "spark.cosmos.read.forceEventualConsistency"
+    val ReadSchemaConversionMode = "spark.cosmos.read.schemaConversionMode"
+    val ReadInferSchemaSamplingSize = "spark.cosmos.read.inferSchema.samplingSize"
+    val ReadInferSchemaEnabled = "spark.cosmos.read.inferSchema.enabled"
+    val ReadInferSchemaIncludeSystemProperties = "spark.cosmos.read.inferSchema.includeSystemProperties"
+    val ReadInferSchemaForceNullableProperties = "spark.cosmos.read.inferSchema.forceNullableProperties"
+    val ReadInferSchemaIncludeTimestamp = "spark.cosmos.read.inferSchema.includeTimestamp"
+    val ReadInferSchemaQuery = "spark.cosmos.read.inferSchema.query"
+    val ReadPartitioningStrategy = "spark.cosmos.read.partitioning.strategy"
+    val ReadPartitioningTargetedCount = "spark.cosmos.partitioning.targetedCount"
+    val ReadPartitioningFeedRangeFilter = "spark.cosmos.partitioning.feedRangeFilter"
+    val ViewsRepositoryPath = "spark.cosmos.views.repositoryPath"
+    val DiagnosticsMode = "spark.cosmos.diagnostics"
+    val ClientTelemetryEnabled = "spark.cosmos.clientTelemetry.enabled"
+    val ClientTelemetryEndpoint = "spark.cosmos.clientTelemetry.endpoint"
+    val WriteBulkEnabled = "spark.cosmos.write.bulk.enabled"
+    val WriteBulkMaxPendingOperations = "spark.cosmos.write.bulk.maxPendingOperations"
+    val WriteBulkMaxConcurrentPartitions = "spark.cosmos.write.bulk.maxConcurrentCosmosPartitions"
+    val WritePointMaxConcurrency = "spark.cosmos.write.point.maxConcurrency"
+    val WritePatchDefaultOperationType = "spark.cosmos.write.patch.defaultOperationType"
+    val WritePatchColumnConfigs = "spark.cosmos.write.patch.columnConfigs"
+    val WritePatchFilterPredicate = "spark.cosmos.write.patch.filter"
+    val WriteStrategy = "spark.cosmos.write.strategy"
+    val WriteMaxRetryCount = "spark.cosmos.write.maxRetryCount"
+    val ChangeFeedStartFrom = "spark.cosmos.changeFeed.startFrom"
+    val ChangeFeedMode = "spark.cosmos.changeFeed.mode"
+    val ChangeFeedItemCountPerTriggerHint = "spark.cosmos.changeFeed.itemCountPerTriggerHint"
+    val ChangeFeedBatchCheckpointLocation = "spark.cosmos.changeFeed.batchCheckpointLocation"
+    val ThroughputControlEnabled = "spark.cosmos.throughputControl.enabled"
+    val ThroughputControlAccountEndpoint = "spark.cosmos.throughputControl.accountEndpoint"
+    val ThroughputControlAccountKey = "spark.cosmos.throughputControl.accountKey"
+    val ThroughputControlPreferredRegionsList = "spark.cosmos.throughputControl.preferredRegionsList"
+    val ThroughputControlDisableTcpConnectionEndpointRediscovery = "spark.cosmos.throughputControl.disableTcpConnectionEndpointRediscovery"
+    val ThroughputControlUseGatewayMode = "spark.cosmos.throughputControl.useGatewayMode"
+    val ThroughputControlName = "spark.cosmos.throughputControl.name"
+    val ThroughputControlTargetThroughput = "spark.cosmos.throughputControl.targetThroughput"
+    val ThroughputControlTargetThroughputThreshold = "spark.cosmos.throughputControl.targetThroughputThreshold"
+    val ThroughputControlGlobalControlDatabase = "spark.cosmos.throughputControl.globalControl.database"
+    val ThroughputControlGlobalControlContainer = "spark.cosmos.throughputControl.globalControl.container"
+    val ThroughputControlGlobalControlRenewalIntervalInMS =
+        "spark.cosmos.throughputControl.globalControl.renewIntervalInMS"
+    val ThroughputControlGlobalControlExpireIntervalInMS =
+        "spark.cosmos.throughputControl.globalControl.expireIntervalInMS"
+    val SerializationInclusionMode =
+        "spark.cosmos.serialization.inclusionMode"
+    val SerializationDateTimeConversionMode =
+        "spark.cosmos.serialization.dateTimeConversionMode"
+    val MetricsEnabledForSlf4j = "spark.cosmos.metrics.slf4j.enabled"
+    val MetricsIntervalInSeconds = "spark.cosmos.metrics.intervalInSeconds"
+    val MetricsAzureMonitorConnectionString = "spark.cosmos.metrics.azureMonitor.connectionString"
 
   private val cosmosPrefix = "spark.cosmos."
 
-  private val validConfigNames: Set[String] = HashSet[String](
-    AccountEndpoint,
-    AccountKey,
-    Database,
-    Container,
-    PreferredRegionsList,
-    PreferredRegions,
-    DisableTcpConnectionEndpointRediscovery,
-    ApplicationName,
-    UseGatewayMode,
-    AllowInvalidJsonWithDuplicateJsonProperties,
-    ReadCustomQuery,
-    ReadForceEventualConsistency,
-    ReadSchemaConversionMode,
-    ReadMaxItemCount,
-    ReadPrefetchBufferSize,
-    ReadInferSchemaSamplingSize,
-    ReadInferSchemaEnabled,
-    ReadInferSchemaIncludeSystemProperties,
-    ReadInferSchemaForceNullableProperties,
-    ReadInferSchemaIncludeTimestamp,
-    ReadInferSchemaQuery,
-    ReadPartitioningStrategy,
-    ReadPartitioningTargetedCount,
-    ReadPartitioningFeedRangeFilter,
-    ViewsRepositoryPath,
-    DiagnosticsMode,
-    ClientTelemetryEnabled,
-    ClientTelemetryEndpoint,
-    WriteBulkEnabled,
-    WriteBulkMaxPendingOperations,
-    WriteBulkMaxConcurrentPartitions,
-    WritePointMaxConcurrency,
-    WritePatchDefaultOperationType,
-    WritePatchColumnConfigs,
-    WritePatchFilterPredicate,
-    WriteStrategy,
-    WriteMaxRetryCount,
-    ChangeFeedStartFrom,
-    ChangeFeedMode,
-    ChangeFeedItemCountPerTriggerHint,
-    ChangeFeedBatchCheckpointLocation,
-    ThroughputControlEnabled,
-    ThroughputControlAccountEndpoint,
-    ThroughputControlAccountKey,
-    ThroughputControlPreferredRegionsList,
-    ThroughputControlDisableTcpConnectionEndpointRediscovery,
-    ThroughputControlUseGatewayMode,
-    ThroughputControlName,
-    ThroughputControlTargetThroughput,
-    ThroughputControlTargetThroughputThreshold,
-    ThroughputControlGlobalControlDatabase,
-    ThroughputControlGlobalControlContainer,
-    ThroughputControlGlobalControlRenewalIntervalInMS,
-    ThroughputControlGlobalControlExpireIntervalInMS,
-    SerializationInclusionMode,
-    SerializationDateTimeConversionMode,
-    MetricsEnabledForSlf4j,
-    MetricsIntervalInSeconds,
-    MetricsAzureMonitorConnectionString
-  )
+    private val validConfigNames: Set[String] = HashSet[String](
+        AccountEndpoint,
+        // ---------- RBAC configuration ------------
+        SubscriptionId,
+        CosmosResourceGroupName,
+        AccountKey,
+        AuthorityHost,
+        TenantId,
+        ClientId,
+        ClientSecret,
+        // -------------------------------------------
+        AccountKey,
+        Database,
+        Container,
+        PreferredRegionsList,
+        PreferredRegions,
+        DisableTcpConnectionEndpointRediscovery,
+        ApplicationName,
+        UseGatewayMode,
+        AllowInvalidJsonWithDuplicateJsonProperties,
+        ReadCustomQuery,
+        ReadForceEventualConsistency,
+        ReadSchemaConversionMode,
+        ReadMaxItemCount,
+        ReadPrefetchBufferSize,
+        ReadInferSchemaSamplingSize,
+        ReadInferSchemaEnabled,
+        ReadInferSchemaIncludeSystemProperties,
+        ReadInferSchemaForceNullableProperties,
+        ReadInferSchemaIncludeTimestamp,
+        ReadInferSchemaQuery,
+        ReadPartitioningStrategy,
+        ReadPartitioningTargetedCount,
+        ReadPartitioningFeedRangeFilter,
+        ViewsRepositoryPath,
+        DiagnosticsMode,
+        ClientTelemetryEnabled,
+        ClientTelemetryEndpoint,
+        WriteBulkEnabled,
+        WriteBulkMaxPendingOperations,
+        WriteBulkMaxConcurrentPartitions,
+        WritePointMaxConcurrency,
+        WritePatchDefaultOperationType,
+        WritePatchColumnConfigs,
+        WritePatchFilterPredicate,
+        WriteStrategy,
+        WriteMaxRetryCount,
+        ChangeFeedStartFrom,
+        ChangeFeedMode,
+        ChangeFeedItemCountPerTriggerHint,
+        ChangeFeedBatchCheckpointLocation,
+        ThroughputControlEnabled,
+        ThroughputControlAccountEndpoint,
+        ThroughputControlAccountKey,
+        ThroughputControlPreferredRegionsList,
+        ThroughputControlDisableTcpConnectionEndpointRediscovery,
+        ThroughputControlUseGatewayMode,
+        ThroughputControlName,
+        ThroughputControlTargetThroughput,
+        ThroughputControlTargetThroughputThreshold,
+        ThroughputControlGlobalControlDatabase,
+        ThroughputControlGlobalControlContainer,
+        ThroughputControlGlobalControlRenewalIntervalInMS,
+        ThroughputControlGlobalControlExpireIntervalInMS,
+        SerializationInclusionMode,
+        SerializationDateTimeConversionMode,
+        MetricsEnabledForSlf4j,
+        MetricsIntervalInSeconds,
+        MetricsAzureMonitorConnectionString
+    )
 
   def validateConfigName(name: String): Unit = {
     if (name != null &&
@@ -260,6 +281,12 @@ private object CosmosConfig {
 }
 
 private case class CosmosAccountConfig(endpoint: String,
+                                       // ---------- RBAC configuration ------------
+                                       authorityHost: String,
+                                       tenantId: String,
+                                       clientId: String,
+                                       clientSecret: String,
+                                       // -------------------------------------------
                                        key: String,
                                        accountName: String,
                                        applicationName: Option[String],
@@ -276,23 +303,42 @@ private object CosmosAccountConfig {
     },
     helpMessage = "Cosmos DB Account Endpoint Uri")
 
-  private val CosmosKey = CosmosConfigEntry[String](key = CosmosConfigNames.AccountKey,
-    mandatory = true,
-    parseFromStringFunction = accountKey => accountKey,
-    helpMessage = "Cosmos DB Account Key")
+    private val CosmosKey = CosmosConfigEntry[String](key = CosmosConfigNames.AccountKey,
+        mandatory = false,
+        parseFromStringFunction = accountKey => accountKey,
+        helpMessage = "Cosmos DB Account Key")
 
-  private val CosmosAccountName = CosmosConfigEntry[String](key = CosmosConfigNames.AccountEndpoint,
-    mandatory = true,
-    parseFromStringFunction = accountEndpointUri => {
-      val url = new URL(accountEndpointUri)
-      val separatorIndex = url.getHost.indexOf('.')
-      if (separatorIndex > 0) {
-          url.getHost.substring(0, separatorIndex)
-      } else {
-        url.getHost
-      }
-    },
-    helpMessage = "Cosmos DB Account Name")
+    // ---------- RBAC configuration ------------------------------------------------------------
+    private val AuthorityHost = CosmosConfigEntry[String](key = CosmosConfigNames.AuthorityHost,
+        mandatory = true,
+        parseFromStringFunction = authorityHost => authorityHost,
+        helpMessage = "Cosmos DB authorityHost")
+    private val TenantId = CosmosConfigEntry[String](key = CosmosConfigNames.TenantId,
+        mandatory = true,
+        parseFromStringFunction = tenantId => tenantId,
+        helpMessage = "Cosmos DB tenantId")
+    private val ClientId = CosmosConfigEntry[String](key = CosmosConfigNames.ClientId,
+        mandatory = true,
+        parseFromStringFunction = clientId => clientId,
+        helpMessage = "Cosmos DB clientId")
+    private val ClientSecret = CosmosConfigEntry[String](key = CosmosConfigNames.ClientSecret,
+        mandatory = true,
+        parseFromStringFunction = clientSecret => clientSecret,
+        helpMessage = "Cosmos DB clientSecret")
+    // --------------------------------------------------------------------------------------------
+
+    private val CosmosAccountName = CosmosConfigEntry[String](key = CosmosConfigNames.AccountEndpoint,
+        mandatory = true,
+        parseFromStringFunction = accountEndpointUri => {
+            val url = new URL(accountEndpointUri)
+            val separatorIndex = url.getHost.indexOf('.')
+            if (separatorIndex > 0) {
+                url.getHost.substring(0, separatorIndex)
+            } else {
+                url.getHost
+            }
+        },
+        helpMessage = "Cosmos DB Account Name")
 
   private val AllowInvalidJsonWithDuplicateJsonProperties =
     CosmosConfigEntry[Boolean](key = CosmosConfigNames.AllowInvalidJsonWithDuplicateJsonProperties,
@@ -350,24 +396,49 @@ private object CosmosAccountConfig {
         "rediscovery should only be disabled when using custom domain names with private endpoints"
     )
 
-  def parseCosmosAccountConfig(cfg: Map[String, String]): CosmosAccountConfig = {
-    val endpointOpt = CosmosConfigEntry.parse(cfg, CosmosAccountEndpointUri)
-    val key = CosmosConfigEntry.parse(cfg, CosmosKey)
-    val accountName = CosmosConfigEntry.parse(cfg, CosmosAccountName)
-    val applicationName = CosmosConfigEntry.parse(cfg, ApplicationName)
-    val useGatewayMode = CosmosConfigEntry.parse(cfg, UseGatewayMode)
-    val disableTcpConnectionEndpointRediscovery = CosmosConfigEntry.parse(cfg, DisableTcpConnectionEndpointRediscovery)
-    val preferredRegionsListOpt = CosmosConfigEntry.parse(cfg, PreferredRegionsList)
-    val allowDuplicateJsonPropertiesOverride = CosmosConfigEntry.parse(cfg, AllowInvalidJsonWithDuplicateJsonProperties)
+    def parseCosmosAccountConfig(cfg: Map[String, String]): CosmosAccountConfig = {
+        val endpointOpt = CosmosConfigEntry.parse(cfg, CosmosAccountEndpointUri)
+        val key = CosmosConfigEntry.parse(cfg, CosmosKey)
+
+        // ---------- RBAC configuration -------------------------------
+        var authorityHost: Option[String] = Option.empty
+        var tenantId: Option[String] = Option.empty
+        var clientId: Option[String] = Option.empty
+        var clientSecret: Option[String] = Option.empty
+
+        if (key.isEmpty) {
+            authorityHost = CosmosConfigEntry.parse(cfg, AuthorityHost)
+            tenantId = CosmosConfigEntry.parse(cfg, TenantId)
+            clientId = CosmosConfigEntry.parse(cfg, ClientId)
+            clientSecret = CosmosConfigEntry.parse(cfg, ClientSecret)
+        }
+        // --------------------------------------------------------------
+
+        val accountName = CosmosConfigEntry.parse(cfg, CosmosAccountName)
+        val applicationName = CosmosConfigEntry.parse(cfg, ApplicationName)
+        val useGatewayMode = CosmosConfigEntry.parse(cfg, UseGatewayMode)
+        val disableTcpConnectionEndpointRediscovery = CosmosConfigEntry.parse(cfg, DisableTcpConnectionEndpointRediscovery)
+        val preferredRegionsListOpt = CosmosConfigEntry.parse(cfg, PreferredRegionsList)
+        val allowDuplicateJsonPropertiesOverride = CosmosConfigEntry.parse(cfg, AllowInvalidJsonWithDuplicateJsonProperties)
 
     if (allowDuplicateJsonPropertiesOverride.isDefined && allowDuplicateJsonPropertiesOverride.get) {
       SparkBridgeImplementationInternal.configureSimpleObjectMapper(true)
     }
 
-    // parsing above already validated these assertions
-    assert(endpointOpt.isDefined)
-    assert(key.isDefined)
-    assert(accountName.isDefined)
+        // parsing above already validated these assertions
+        assert(endpointOpt.isDefined)
+
+        if (tenantId.isEmpty && clientId.isEmpty && clientSecret.isEmpty) {
+            assert(key.isDefined)
+        }
+
+        if (key.isEmpty) {
+            assert(tenantId.isDefined)
+            assert(clientId.isDefined)
+            assert(clientSecret.isDefined)
+        }
+
+        assert(accountName.isDefined)
 
     if (preferredRegionsListOpt.isDefined) {
       // scalastyle:off null
@@ -390,15 +461,21 @@ private object CosmosAccountConfig {
       })
     }
 
-    CosmosAccountConfig(
-      endpointOpt.get,
-      key.get,
-      accountName.get,
-      applicationName,
-      useGatewayMode.get,
-      disableTcpConnectionEndpointRediscovery.get,
-      preferredRegionsListOpt)
-  }
+        CosmosAccountConfig(
+            endpointOpt.get,
+            // ---------- RBAC configuration ----------------------------
+            authorityHost.getOrElse("https://login.microsoftonline.com"),
+            if (tenantId.isDefined) tenantId.get else null,
+            if (clientId.isDefined) clientId.get else null,
+            if (clientSecret.isDefined) clientSecret.get else null,
+            if (key.isDefined) key.get else null,
+            // ----------------------------------------------------------
+            accountName.get,
+            applicationName,
+            useGatewayMode.get,
+            disableTcpConnectionEndpointRediscovery.get,
+            preferredRegionsListOpt)
+    }
 }
 
 private case class CosmosReadConfig(forceEventualConsistency: Boolean,
@@ -1211,6 +1288,72 @@ private case class CosmosThroughputControlConfig(cosmosAccountConfig: CosmosAcco
                                                  globalControlExpireInterval: Option[Duration])
 
 private object CosmosThroughputControlConfig {
+    // ---------- RBAC configuration -------------------------------------------------------------
+    private val AuthorityHost = CosmosConfigEntry[String](key = CosmosConfigNames.AuthorityHost,
+        mandatory = false,
+        parseFromStringFunction = authorityHost => authorityHost,
+        helpMessage = "Cosmos DB authorityHost")
+
+    private val TenantId = CosmosConfigEntry[String](key = CosmosConfigNames.TenantId,
+        mandatory = false,
+        parseFromStringFunction = tenantId => tenantId,
+        helpMessage = "Cosmos DB tenantId")
+
+    private val SubscriptionId = CosmosConfigEntry[String](key = CosmosConfigNames.SubscriptionId,
+        mandatory = false,
+        parseFromStringFunction = subscriptionId => subscriptionId,
+        helpMessage = "Cosmos DB subscriptionId")
+
+    private val ClientId = CosmosConfigEntry[String](key = CosmosConfigNames.ClientId,
+        mandatory = false,
+        parseFromStringFunction = clientId => clientId,
+        helpMessage = "Cosmos DB clientId")
+
+    private val ClientSecret = CosmosConfigEntry[String](key = CosmosConfigNames.ClientSecret,
+        mandatory = false,
+        parseFromStringFunction = clientSecret => clientSecret,
+        helpMessage = "Cosmos DB clientSecret")
+
+    private val CosmosResourceGroupName = CosmosConfigEntry[String](key = CosmosConfigNames.CosmosResourceGroupName,
+        mandatory = true,
+        parseFromStringFunction = cosmosResourceGroupName => cosmosResourceGroupName,
+        helpMessage = "Cosmos DB cosmosResourceGroupName")
+
+    private val CosmosAccountName = CosmosConfigEntry[String](key = CosmosConfigNames.AccountEndpoint,
+        mandatory = true,
+        parseFromStringFunction = accountEndpointUri => {
+            val url = new URL(accountEndpointUri)
+            val separatorIndex = url.getHost.indexOf('.')
+            if (separatorIndex > 0) {
+                url.getHost.substring(0, separatorIndex)
+            } else {
+                url.getHost
+            }
+        },
+        helpMessage = "Cosmos DB Account Name")
+
+    private val CosmosAccountEndpointUri = CosmosConfigEntry[String](key = CosmosConfigNames.AccountEndpoint,
+        mandatory = true,
+        parseFromStringFunction = accountEndpointUri => {
+            new URL(accountEndpointUri)
+            accountEndpointUri
+        },
+        helpMessage = "Cosmos DB Account Endpoint Uri")
+
+    private[spark] val DATABASE_NAME_KEY = CosmosConfigNames.Database
+    private[spark] val CONTAINER_NAME_KEY = CosmosConfigNames.Container
+
+    private val databaseNameSupplier = CosmosConfigEntry[String](key = DATABASE_NAME_KEY,
+        mandatory = true,
+        parseFromStringFunction = database => database,
+        helpMessage = "Cosmos DB database name")
+
+    private val containerNameSupplier = CosmosConfigEntry[String](key = CONTAINER_NAME_KEY,
+        mandatory = true,
+        parseFromStringFunction = container => container,
+        helpMessage = "Cosmos DB container name")
+    // ------------------------------------------------------------------------------------------
+
     private val throughputControlEnabledSupplier = CosmosConfigEntry[Boolean](
         key = CosmosConfigNames.ThroughputControlEnabled,
         mandatory = false,
@@ -1293,13 +1436,68 @@ private object CosmosThroughputControlConfig {
                 case None => CosmosAccountConfig.parseCosmosAccountConfig(cfg)
               }
 
+            val authorityHost = CosmosConfigEntry.parse(cfg, AuthorityHost)
+            val tenantId = CosmosConfigEntry.parse(cfg, TenantId)
+            val clientId = CosmosConfigEntry.parse(cfg, ClientId)
+            val clientSecret = CosmosConfigEntry.parse(cfg, ClientSecret)
+
             val groupName = CosmosConfigEntry.parse(cfg, groupNameSupplier)
-            val targetThroughput = CosmosConfigEntry.parse(cfg, targetThroughputSupplier)
+            var targetThroughput = CosmosConfigEntry.parse(cfg, targetThroughputSupplier)
             val targetThroughputThreshold = CosmosConfigEntry.parse(cfg, targetThroughputThresholdSupplier)
             val globalControlDatabase = CosmosConfigEntry.parse(cfg, globalControlDatabaseSupplier)
             val globalControlContainer = CosmosConfigEntry.parse(cfg, globalControlContainerSupplier)
             val globalControlItemRenewInterval = CosmosConfigEntry.parse(cfg, globalControlItemRenewIntervalSupplier)
             val globalControlItemExpireInterval = CosmosConfigEntry.parse(cfg, globalControlItemExpireIntervalSupplier)
+
+            // With RBAC enabled
+            var isRBACEnabledWithTargetThroughputThreshold = false
+
+            if (authorityHost.isDefined && tenantId.isDefined && clientId.isDefined && clientSecret.isDefined && targetThroughputThreshold.isDefined) {
+                /*
+                    In case using RBAC authentication mode, it's required to retrieve the actual maxThroughput set up on the container in order to calculate
+                    the new targetThroughput based on the threshold (This because isn't possible to use RBAC to invoke the GET offers API).
+                 */
+                isRBACEnabledWithTargetThroughputThreshold = true
+
+                val authorityHostArg = authorityHost.get
+                val tenantIdArg = tenantId.get
+                val clientIdArg = clientId.get
+                val clientSecretArg = clientSecret.get
+
+                val credential = new ClientSecretCredentialBuilder()
+                    .authorityHost(authorityHostArg)
+                    .tenantId(tenantIdArg)
+                    .clientId(clientIdArg)
+                    .clientSecret(clientSecretArg)
+                    .build()
+
+                val subscriptionId = CosmosConfigEntry.parse(cfg, SubscriptionId)
+                val cosmosResourceGroupName = CosmosConfigEntry.parse(cfg, CosmosResourceGroupName)
+                val cosmosAccountName = CosmosConfigEntry.parse(cfg, CosmosAccountName)
+                val databaseName = CosmosConfigEntry.parse(cfg, databaseNameSupplier)
+                val containerName = CosmosConfigEntry.parse(cfg, containerNameSupplier)
+
+                assert(subscriptionId.isDefined)
+                assert(cosmosResourceGroupName.isDefined)
+                assert(cosmosAccountName.isDefined)
+                assert(databaseName.isDefined)
+                assert(containerName.isDefined)
+
+                val profile: AzureProfile = new AzureProfile(tenantIdArg, subscriptionId.get, AzureEnvironment.AZURE)
+
+                val manager = CosmosManager.authenticate(credential, profile)
+
+                // Get Actual container Throughput
+                val containerResource = manager.serviceClient().getSqlResources.getSqlContainerThroughput(
+                    cosmosResourceGroupName.get,
+                    cosmosAccountName.get,
+                    databaseName.get,
+                    containerName.get)
+                    .resource()
+
+                // Calculate the new targetThroughput based on the targetThroughputThreshold
+                targetThroughput = Some((containerResource.autoscaleSettings().maxThroughput() * targetThroughputThreshold.get).toInt)
+            }
 
             assert(groupName.isDefined)
             assert(globalControlDatabase.isDefined)
@@ -1309,7 +1507,7 @@ private object CosmosThroughputControlConfig {
                 throughputControlCosmosAccountConfig,
                 groupName.get,
                 targetThroughput,
-                targetThroughputThreshold,
+                if(isRBACEnabledWithTargetThroughputThreshold) Option.empty else targetThroughputThreshold,
                 globalControlDatabase.get,
                 globalControlContainer.get,
                 globalControlItemRenewInterval,

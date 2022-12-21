@@ -41,6 +41,10 @@ class CosmosClientCacheITest
         "StandardCtorWithoutPreferredRegions",
         CosmosClientConfiguration(
         cosmosEndpoint,
+            null,
+            null,
+            null,
+            null,
         cosmosMasterKey,
         Some("SampleApplicationName"),
         "SampleApplicationName",
@@ -55,6 +59,10 @@ class CosmosClientCacheITest
         "StandardCtorWithEmptyPreferredRegions",
         CosmosClientConfiguration(
           cosmosEndpoint,
+            null,
+            null,
+            null,
+            null,
           cosmosMasterKey,
           Some("SampleApplicationName"),
           "SampleApplicationName",
@@ -69,6 +77,10 @@ class CosmosClientCacheITest
         "StandardCtorWithOnePreferredRegion",
         CosmosClientConfiguration(
         cosmosEndpoint,
+            null,
+            null,
+            null,
+            null,
         cosmosMasterKey,
         None,
         "SampleApplicationName",
@@ -83,6 +95,10 @@ class CosmosClientCacheITest
         "StandardCtorWithTwoPreferredRegions",
         CosmosClientConfiguration(
           cosmosEndpoint,
+            null,
+            null,
+            null,
+            null,
           cosmosMasterKey,
           None,
           "SampleApplicationName",
@@ -101,6 +117,10 @@ class CosmosClientCacheITest
       val userConfig = userConfigPair._2
       val userConfigShallowCopy = CosmosClientConfiguration(
         userConfig.endpoint,
+          null,
+          null,
+          null,
+          null,
         userConfig.key,
         userConfig.customApplicationNameSuffix,
         userConfig.applicationName,

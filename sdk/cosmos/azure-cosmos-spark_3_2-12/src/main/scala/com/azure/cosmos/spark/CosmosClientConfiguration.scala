@@ -6,6 +6,12 @@ import java.lang.management.ManagementFactory
 
 private[spark] case class CosmosClientConfiguration (
                                                       endpoint: String,
+                                                      // ---------- RBAC configuration ------------
+                                                      authorityHost: String,
+                                                      tenantId: String,
+                                                      clientId: String,
+                                                      clientSecret: String,
+                                                     // -------------------------------------------
                                                       key: String,
                                                       customApplicationNameSuffix: Option[String],
                                                       applicationName: String,
@@ -45,6 +51,12 @@ private[spark] object CosmosClientConfiguration {
 
     CosmosClientConfiguration(
       cosmosAccountConfig.endpoint,
+      // ---------- RBAC configuration ------------
+      cosmosAccountConfig.authorityHost,
+      cosmosAccountConfig.tenantId,
+      cosmosAccountConfig.clientId,
+      cosmosAccountConfig.clientSecret,
+      // -------------------------------------------
       cosmosAccountConfig.key,
       customApplicationNameSuffix,
       applicationName,

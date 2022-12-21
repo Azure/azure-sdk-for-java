@@ -15,6 +15,10 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
+        null,
+        null,
+        null,
+        null,
       UUID.randomUUID().toString,
       None,
       UUID.randomUUID().toString,
@@ -78,6 +82,10 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
+        null,
+        null,
+        null,
+        null,
       UUID.randomUUID().toString,
       None,
       UUID.randomUUID().toString,
@@ -141,6 +149,10 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
+        null,
+        null,
+        null,
+        null,
       UUID.randomUUID().toString,
       None,
       UUID.randomUUID().toString,
@@ -204,6 +216,10 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
+        null,
+        null,
+        null,
+        null,
       UUID.randomUUID().toString,
       None,
       UUID.randomUUID().toString,
@@ -265,6 +281,10 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
+        null,
+        null,
+        null,
+        null,
       UUID.randomUUID().toString,
       None,
       UUID.randomUUID().toString,
@@ -342,6 +362,10 @@ class CosmosPartitionPlannerSpec extends UnitSpec {
 
     val clientConfig = CosmosClientConfiguration(
       UUID.randomUUID().toString,
+        null,
+        null,
+        null,
+        null,
       UUID.randomUUID().toString,
       None,
       UUID.randomUUID().toString,
