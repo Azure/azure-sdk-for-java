@@ -22,8 +22,7 @@ public final class MicrosoftGraphResourceReference {
     private String id;
 
     /*
-     * A string value that can be used to classify the item, such as
-     * 'microsoft.graph.driveItem'
+     * A string value that can be used to classify the item, such as 'microsoft.graph.driveItem'
      */
     @JsonProperty(value = "type")
     private String type;
@@ -38,6 +37,10 @@ public final class MicrosoftGraphResourceReference {
      * resourceReference
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphResourceReference class. */
+    public MicrosoftGraphResourceReference() {
+    }
 
     /**
      * Get the id property: The item's unique identifier.

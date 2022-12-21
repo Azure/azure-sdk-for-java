@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The additional capabilities for a lab VM. */
 @Fluent
 public final class VirtualMachineAdditionalCapabilities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineAdditionalCapabilities.class);
-
     /*
      * Flag to pre-install dedicated GPU drivers.
      */

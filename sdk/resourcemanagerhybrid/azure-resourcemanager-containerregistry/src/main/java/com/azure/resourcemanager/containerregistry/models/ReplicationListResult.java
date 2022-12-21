@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.fluent.models.ReplicationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The result of a request to list replications for a container registry. */
 @Fluent
 public final class ReplicationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicationListResult.class);
-
     /*
      * The list of replications. Since this list may be incomplete, the
      * nextLink field should be used to request the next list of replications.

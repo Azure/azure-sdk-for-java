@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ManagedIntegrationRuntimeNodeStatus. */
+/** The managed integration runtime node status. */
 public final class ManagedIntegrationRuntimeNodeStatus
     extends ExpandableStringEnum<ManagedIntegrationRuntimeNodeStatus> {
     /** Static value Starting for ManagedIntegrationRuntimeNodeStatus. */

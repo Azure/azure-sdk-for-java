@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for UsagesUnit. */
+/** Unit of the usage. */
 public final class UsagesUnit extends ExpandableStringEnum<UsagesUnit> {
     /** Static value Count for UsagesUnit. */
     public static final UsagesUnit COUNT = fromString("Count");
@@ -39,7 +39,11 @@ public final class UsagesUnit extends ExpandableStringEnum<UsagesUnit> {
         return fromString(name, UsagesUnit.class);
     }
 
-    /** @return known UsagesUnit values. */
+    /**
+     * Gets known UsagesUnit values.
+     *
+     * @return known UsagesUnit values.
+     */
     public static Collection<UsagesUnit> values() {
         return values(UsagesUnit.class);
     }

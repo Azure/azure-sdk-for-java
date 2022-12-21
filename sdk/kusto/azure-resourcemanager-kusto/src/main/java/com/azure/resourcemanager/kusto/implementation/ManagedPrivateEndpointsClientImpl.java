@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.kusto.fluent.ManagedPrivateEndpointsClient;
@@ -45,8 +44,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ManagedPrivateEndpointsClient. */
 public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEndpointsClient {
-    private final ClientLogger logger = new ClientLogger(ManagedPrivateEndpointsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ManagedPrivateEndpointsService service;
 
@@ -298,14 +295,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
     private Mono<CheckNameResultInner> checkNameAvailabilityAsync(
         String resourceGroupName, String clusterName, ManagedPrivateEndpointsCheckNameRequest resourceName) {
         return checkNameAvailabilityWithResponseAsync(resourceGroupName, clusterName, resourceName)
-            .flatMap(
-                (Response<CheckNameResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -639,14 +629,7 @@ public final class ManagedPrivateEndpointsClientImpl implements ManagedPrivateEn
     private Mono<ManagedPrivateEndpointInner> getAsync(
         String resourceGroupName, String clusterName, String managedPrivateEndpointName) {
         return getWithResponseAsync(resourceGroupName, clusterName, managedPrivateEndpointName)
-            .flatMap(
-                (Response<ManagedPrivateEndpointInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

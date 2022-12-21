@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.AlertsSuppressionRulesClient;
 import com.azure.resourcemanager.security.fluent.models.AlertsSuppressionRuleInner;
 import com.azure.resourcemanager.security.models.AlertsSuppressionRulesList;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AlertsSuppressionRulesClient. */
 public final class AlertsSuppressionRulesClientImpl implements AlertsSuppressionRulesClient {
-    private final ClientLogger logger = new ClientLogger(AlertsSuppressionRulesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AlertsSuppressionRulesService service;
 
@@ -62,7 +59,7 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterAlerts")
-    private interface AlertsSuppressionRulesService {
+    public interface AlertsSuppressionRulesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/alertsSuppressionRules")
         @ExpectedResponses({200})
@@ -136,7 +133,8 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return suppression rules list for subscription.
+     * @return suppression rules list for subscription along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AlertsSuppressionRuleInner>> listSinglePageAsync(String alertType) {
@@ -185,7 +183,8 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return suppression rules list for subscription.
+     * @return suppression rules list for subscription along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AlertsSuppressionRuleInner>> listSinglePageAsync(String alertType, Context context) {
@@ -224,7 +223,7 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return suppression rules list for subscription.
+     * @return suppression rules list for subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AlertsSuppressionRuleInner> listAsync(String alertType) {
@@ -236,7 +235,7 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return suppression rules list for subscription.
+     * @return suppression rules list for subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AlertsSuppressionRuleInner> listAsync() {
@@ -252,7 +251,7 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return suppression rules list for subscription.
+     * @return suppression rules list for subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AlertsSuppressionRuleInner> listAsync(String alertType, Context context) {
@@ -265,7 +264,7 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return suppression rules list for subscription.
+     * @return suppression rules list for subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AlertsSuppressionRuleInner> list() {
@@ -281,7 +280,7 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return suppression rules list for subscription.
+     * @return suppression rules list for subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AlertsSuppressionRuleInner> list(String alertType, Context context) {
@@ -295,7 +294,8 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription.
+     * @return dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AlertsSuppressionRuleInner>> getWithResponseAsync(String alertsSuppressionRuleName) {
@@ -341,7 +341,8 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription.
+     * @return dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AlertsSuppressionRuleInner>> getWithResponseAsync(
@@ -384,19 +385,28 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription.
+     * @return dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AlertsSuppressionRuleInner> getAsync(String alertsSuppressionRuleName) {
-        return getWithResponseAsync(alertsSuppressionRuleName)
-            .flatMap(
-                (Response<AlertsSuppressionRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(alertsSuppressionRuleName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription.
+     *
+     * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription along with {@link
+     *     Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AlertsSuppressionRuleInner> getWithResponse(String alertsSuppressionRuleName, Context context) {
+        return getWithResponseAsync(alertsSuppressionRuleName, context).block();
     }
 
     /**
@@ -410,22 +420,7 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AlertsSuppressionRuleInner get(String alertsSuppressionRuleName) {
-        return getAsync(alertsSuppressionRuleName).block();
-    }
-
-    /**
-     * Get dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription.
-     *
-     * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AlertsSuppressionRuleInner> getWithResponse(String alertsSuppressionRuleName, Context context) {
-        return getWithResponseAsync(alertsSuppressionRuleName, context).block();
+        return getWithResponse(alertsSuppressionRuleName, Context.NONE).getValue();
     }
 
     /**
@@ -436,7 +431,7 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the suppression rule.
+     * @return describes the suppression rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AlertsSuppressionRuleInner>> updateWithResponseAsync(
@@ -491,7 +486,7 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the suppression rule.
+     * @return describes the suppression rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AlertsSuppressionRuleInner>> updateWithResponseAsync(
@@ -542,20 +537,30 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the suppression rule.
+     * @return describes the suppression rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AlertsSuppressionRuleInner> updateAsync(
         String alertsSuppressionRuleName, AlertsSuppressionRuleInner alertsSuppressionRule) {
         return updateWithResponseAsync(alertsSuppressionRuleName, alertsSuppressionRule)
-            .flatMap(
-                (Response<AlertsSuppressionRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Update existing rule or create new rule if it doesn't exist.
+     *
+     * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
+     * @param alertsSuppressionRule Suppression rule object.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes the suppression rule along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AlertsSuppressionRuleInner> updateWithResponse(
+        String alertsSuppressionRuleName, AlertsSuppressionRuleInner alertsSuppressionRule, Context context) {
+        return updateWithResponseAsync(alertsSuppressionRuleName, alertsSuppressionRule, context).block();
     }
 
     /**
@@ -571,24 +576,7 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AlertsSuppressionRuleInner update(
         String alertsSuppressionRuleName, AlertsSuppressionRuleInner alertsSuppressionRule) {
-        return updateAsync(alertsSuppressionRuleName, alertsSuppressionRule).block();
-    }
-
-    /**
-     * Update existing rule or create new rule if it doesn't exist.
-     *
-     * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
-     * @param alertsSuppressionRule Suppression rule object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the suppression rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AlertsSuppressionRuleInner> updateWithResponse(
-        String alertsSuppressionRuleName, AlertsSuppressionRuleInner alertsSuppressionRule, Context context) {
-        return updateWithResponseAsync(alertsSuppressionRuleName, alertsSuppressionRule, context).block();
+        return updateWithResponse(alertsSuppressionRuleName, alertsSuppressionRule, Context.NONE).getValue();
     }
 
     /**
@@ -598,7 +586,7 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String alertsSuppressionRuleName) {
@@ -644,7 +632,7 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String alertsSuppressionRuleName, Context context) {
@@ -686,11 +674,26 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String alertsSuppressionRuleName) {
-        return deleteWithResponseAsync(alertsSuppressionRuleName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(alertsSuppressionRuleName).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Delete dismiss alert rule for this subscription.
+     *
+     * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String alertsSuppressionRuleName, Context context) {
+        return deleteWithResponseAsync(alertsSuppressionRuleName, context).block();
     }
 
     /**
@@ -703,32 +706,19 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String alertsSuppressionRuleName) {
-        deleteAsync(alertsSuppressionRuleName).block();
-    }
-
-    /**
-     * Delete dismiss alert rule for this subscription.
-     *
-     * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String alertsSuppressionRuleName, Context context) {
-        return deleteWithResponseAsync(alertsSuppressionRuleName, context).block();
+        deleteWithResponse(alertsSuppressionRuleName, Context.NONE);
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return suppression rules list for subscription.
+     * @return suppression rules list for subscription along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AlertsSuppressionRuleInner>> listNextSinglePageAsync(String nextLink) {
@@ -759,12 +749,14 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return suppression rules list for subscription.
+     * @return suppression rules list for subscription along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AlertsSuppressionRuleInner>> listNextSinglePageAsync(String nextLink, Context context) {

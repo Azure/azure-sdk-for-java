@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TriggerRuntimeState. */
+/** Enumerates possible state of Triggers. */
 public final class TriggerRuntimeState extends ExpandableStringEnum<TriggerRuntimeState> {
     /** Static value Started for TriggerRuntimeState. */
     public static final TriggerRuntimeState STARTED = fromString("Started");

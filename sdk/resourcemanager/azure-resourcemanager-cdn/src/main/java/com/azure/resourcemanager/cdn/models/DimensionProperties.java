@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Type of operation: get, read, delete, etc. */
 @Fluent
 public final class DimensionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DimensionProperties.class);
-
     /*
      * Name of dimension.
      */

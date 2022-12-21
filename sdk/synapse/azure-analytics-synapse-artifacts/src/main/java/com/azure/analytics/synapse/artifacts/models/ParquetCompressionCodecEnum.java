@@ -33,7 +33,11 @@ public final class ParquetCompressionCodecEnum extends ExpandableStringEnum<Parq
         return fromString(name, ParquetCompressionCodecEnum.class);
     }
 
-    /** @return known ParquetCompressionCodecEnum values. */
+    /**
+     * Gets known ParquetCompressionCodecEnum values.
+     *
+     * @return known ParquetCompressionCodecEnum values.
+     */
     public static Collection<ParquetCompressionCodecEnum> values() {
         return values(ParquetCompressionCodecEnum.class);
     }

@@ -6,15 +6,12 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines the parameters for IsDevice match conditions. */
 @Fluent
 public final class IsDeviceMatchConditionParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IsDeviceMatchConditionParameters.class);
-
     /*
      * The typeName property.
      */
@@ -158,10 +155,12 @@ public final class IsDeviceMatchConditionParameters {
      */
     public void validate() {
         if (operator() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property operator in model IsDeviceMatchConditionParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IsDeviceMatchConditionParameters.class);
 }

@@ -27,6 +27,10 @@ public final class ApplicationGatewayPrivateLinkResourceListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ApplicationGatewayPrivateLinkResourceListResult class. */
+    public ApplicationGatewayPrivateLinkResourceListResult() {
+    }
+
     /**
      * Get the value property: List of private link resources of an application gateway.
      *

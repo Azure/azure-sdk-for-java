@@ -314,7 +314,9 @@ public class CryptographyClient {
      * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte -->
      *
      * @param algorithm The algorithm to be used for decryption.
-     * @param ciphertext The content to be decrypted.
+     * @param ciphertext The content to be decrypted. Microsoft recommends you not use CBC without first ensuring the
+     * integrity of the ciphertext using an HMAC, for example.
+     * See https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
      *
      * @return The {@link DecryptResult} whose {@link DecryptResult#getPlainText() plain text} contains the decrypted
      * content.
@@ -364,7 +366,9 @@ public class CryptographyClient {
      * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-Context -->
      *
      * @param algorithm The algorithm to be used for decryption.
-     * @param ciphertext The content to be decrypted.
+     * @param ciphertext The content to be decrypted. Microsoft recommends you not use CBC without first ensuring the
+     * integrity of the ciphertext using an HMAC, for example.
+     * See https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
      * @param context Additional context that is passed through the {@link HttpPipeline} during the service call.
      *
      * @return The {@link DecryptResult} whose {@link DecryptResult#getPlainText() plain text} contains the decrypted
@@ -418,7 +422,9 @@ public class CryptographyClient {
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#DecryptParameters-Context -->
      *
-     * @param decryptParameters The parameters to use in the decryption operation.
+     * @param decryptParameters The parameters to use in the decryption operation. Microsoft recommends you not use CBC
+     * without first ensuring the integrity of the ciphertext using an HMAC, for example.
+     * See https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
      * @param context Additional context that is passed through the {@link HttpPipeline} during the service call.
      *
      * @return The {@link DecryptResult} whose {@link DecryptResult#getPlainText() plain text} contains the decrypted
@@ -439,11 +445,12 @@ public class CryptographyClient {
      *
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to create the
      * signature from the digest. Possible values include:
-     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384},
-     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES246K},
+     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 ES384},
+     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384} and {@link SignatureAlgorithm#RS512 RS512}</p>
+     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
+     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sings the digest. Subscribes to the call asynchronously and prints out the signature details when a response
@@ -485,10 +492,11 @@ public class CryptographyClient {
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to create the
      * signature from the digest. Possible values include:
      * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384},
-     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES246K},
+     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384} and {@link SignatureAlgorithm#RS512 RS512}</p>
+     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
+     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sings the digest. Subscribes to the call asynchronously and prints out the signature details when a response
@@ -531,12 +539,13 @@ public class CryptographyClient {
      * requires the {@code keys/verify} permission for non-local operations.
      *
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to verify the
-     * signature. Possible values include: {@link SignatureAlgorithm#ES256 ES256},
-     * {@link SignatureAlgorithm#ES384 E384}, {@link SignatureAlgorithm#ES512 ES512},
-     * {@link SignatureAlgorithm#ES256K ES246K}, {@link SignatureAlgorithm#PS256 PS256},
-     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512},
-     * {@link SignatureAlgorithm#RS256 RS256}, {@link SignatureAlgorithm#RS384 RS384} and
-     * {@link SignatureAlgorithm#RS512 RS512}</p>
+     * signature. Possible values include:
+     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 ES384},
+     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
+     * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
+     * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
+     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512}
+     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Verifies the signature against the specified digest. Subscribes to the call asynchronously and prints out the
@@ -578,12 +587,13 @@ public class CryptographyClient {
      * requires the {@code keys/verify} permission for non-local operations.
      *
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to verify the
-     * signature. Possible values include: {@link SignatureAlgorithm#ES256 ES256},
-     * {@link SignatureAlgorithm#ES384 E384}, {@link SignatureAlgorithm#ES512 ES512},
-     * {@link SignatureAlgorithm#ES256K ES246K}, {@link SignatureAlgorithm#PS256 PS256},
-     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512},
-     * {@link SignatureAlgorithm#RS256 RS256}, {@link SignatureAlgorithm#RS384 RS384} and
-     * {@link SignatureAlgorithm#RS512 RS512}</p>
+     * signature. Possible values include:
+     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 ES384},
+     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
+     * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
+     * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
+     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
+     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Verifies the signature against the specified digest. Subscribes to the call asynchronously and prints out the
@@ -812,10 +822,11 @@ public class CryptographyClient {
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to sign the digest.
      * Possible values include:
      * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384},
-     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES246K},
+     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384} and {@link SignatureAlgorithm#RS512 RS512}</p>
+     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
+     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Signs the raw data. Subscribes to the call asynchronously and prints out the signature details when a
@@ -854,10 +865,11 @@ public class CryptographyClient {
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to sign the digest.
      * Possible values include:
      * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384},
-     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES246K},
+     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384} and {@link SignatureAlgorithm#RS512 RS512}</p>
+     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
+     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Signs the raw data. Subscribes to the call asynchronously and prints out the signature details when a
@@ -898,10 +910,11 @@ public class CryptographyClient {
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to verify the
      * signature. Possible values include:
      * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384},
-     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES246K},
+     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384} and {@link SignatureAlgorithm#RS512 RS512}</p>
+     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
+     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Verifies the signature against the raw data. Subscribes to the call asynchronously and prints out the
@@ -942,10 +955,11 @@ public class CryptographyClient {
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to verify the
      * signature. Possible values include:
      * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384},
-     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES246K},
+     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384} and {@link SignatureAlgorithm#RS512 RS512}</p>
+     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
+     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Verifies the signature against the raw data. Subscribes to the call asynchronously and prints out the

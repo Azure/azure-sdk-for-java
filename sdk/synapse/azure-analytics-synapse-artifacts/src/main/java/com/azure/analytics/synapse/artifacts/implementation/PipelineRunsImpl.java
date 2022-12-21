@@ -149,14 +149,7 @@ public final class PipelineRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PipelineRunsQueryResponse> queryPipelineRunsByWorkspaceAsync(RunFilterParameters filterParameters) {
         return queryPipelineRunsByWorkspaceWithResponseAsync(filterParameters)
-                .flatMap(
-                        (Response<PipelineRunsQueryResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -173,14 +166,7 @@ public final class PipelineRunsImpl {
     public Mono<PipelineRunsQueryResponse> queryPipelineRunsByWorkspaceAsync(
             RunFilterParameters filterParameters, Context context) {
         return queryPipelineRunsByWorkspaceWithResponseAsync(filterParameters, context)
-                .flatMap(
-                        (Response<PipelineRunsQueryResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -258,15 +244,7 @@ public final class PipelineRunsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PipelineRun> getPipelineRunAsync(String runId) {
-        return getPipelineRunWithResponseAsync(runId)
-                .flatMap(
-                        (Response<PipelineRun> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getPipelineRunWithResponseAsync(runId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -281,15 +259,7 @@ public final class PipelineRunsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PipelineRun> getPipelineRunAsync(String runId, Context context) {
-        return getPipelineRunWithResponseAsync(runId, context)
-                .flatMap(
-                        (Response<PipelineRun> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getPipelineRunWithResponseAsync(runId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -385,14 +355,7 @@ public final class PipelineRunsImpl {
     public Mono<ActivityRunsQueryResponse> queryActivityRunsAsync(
             String pipelineName, String runId, RunFilterParameters filterParameters) {
         return queryActivityRunsWithResponseAsync(pipelineName, runId, filterParameters)
-                .flatMap(
-                        (Response<ActivityRunsQueryResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -411,14 +374,7 @@ public final class PipelineRunsImpl {
     public Mono<ActivityRunsQueryResponse> queryActivityRunsAsync(
             String pipelineName, String runId, RunFilterParameters filterParameters, Context context) {
         return queryActivityRunsWithResponseAsync(pipelineName, runId, filterParameters, context)
-                .flatMap(
-                        (Response<ActivityRunsQueryResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -506,7 +462,7 @@ public final class PipelineRunsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelPipelineRunAsync(String runId, Boolean isRecursive) {
-        return cancelPipelineRunWithResponseAsync(runId, isRecursive).flatMap((Response<Void> res) -> Mono.empty());
+        return cancelPipelineRunWithResponseAsync(runId, isRecursive).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -521,7 +477,7 @@ public final class PipelineRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelPipelineRunAsync(String runId) {
         final Boolean isRecursive = null;
-        return cancelPipelineRunWithResponseAsync(runId, isRecursive).flatMap((Response<Void> res) -> Mono.empty());
+        return cancelPipelineRunWithResponseAsync(runId, isRecursive).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -537,8 +493,7 @@ public final class PipelineRunsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelPipelineRunAsync(String runId, Boolean isRecursive, Context context) {
-        return cancelPipelineRunWithResponseAsync(runId, isRecursive, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+        return cancelPipelineRunWithResponseAsync(runId, isRecursive, context).flatMap(ignored -> Mono.empty());
     }
 
     /**

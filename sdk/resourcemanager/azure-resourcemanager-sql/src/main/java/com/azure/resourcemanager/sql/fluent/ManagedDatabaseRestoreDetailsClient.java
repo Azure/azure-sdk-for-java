@@ -25,7 +25,7 @@ public interface ManagedDatabaseRestoreDetailsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed database restore details.
+     * @return managed database restore details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ManagedDatabaseRestoreDetailsResultInner>> getWithResponseAsync(
@@ -45,7 +45,7 @@ public interface ManagedDatabaseRestoreDetailsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed database restore details.
+     * @return managed database restore details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ManagedDatabaseRestoreDetailsResultInner> getAsync(
@@ -86,7 +86,7 @@ public interface ManagedDatabaseRestoreDetailsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed database restore details.
+     * @return managed database restore details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ManagedDatabaseRestoreDetailsResultInner> getWithResponse(

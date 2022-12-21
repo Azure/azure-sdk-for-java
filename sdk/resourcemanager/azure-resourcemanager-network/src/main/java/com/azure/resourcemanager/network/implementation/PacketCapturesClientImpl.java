@@ -66,7 +66,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface PacketCapturesService {
+    public interface PacketCapturesService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -209,7 +209,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -278,7 +278,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -520,7 +520,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -577,7 +577,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -616,22 +616,6 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param packetCaptureName The name of the packet capture session.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a packet capture session by name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PacketCaptureResultInner get(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
-        return getAsync(resourceGroupName, networkWatcherName, packetCaptureName).block();
-    }
-
-    /**
-     * Gets a packet capture session by name.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param packetCaptureName The name of the packet capture session.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -642,6 +626,22 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
     public Response<PacketCaptureResultInner> getWithResponse(
         String resourceGroupName, String networkWatcherName, String packetCaptureName, Context context) {
         return getWithResponseAsync(resourceGroupName, networkWatcherName, packetCaptureName, context).block();
+    }
+
+    /**
+     * Gets a packet capture session by name.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param packetCaptureName The name of the packet capture session.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a packet capture session by name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PacketCaptureResultInner get(String resourceGroupName, String networkWatcherName, String packetCaptureName) {
+        return getWithResponse(resourceGroupName, networkWatcherName, packetCaptureName, Context.NONE).getValue();
     }
 
     /**
@@ -682,7 +682,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -739,7 +739,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -941,7 +941,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -998,7 +998,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1200,7 +1200,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1257,7 +1257,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1470,7 +1470,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1526,7 +1526,7 @@ public final class PacketCapturesClientImpl implements PacketCapturesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

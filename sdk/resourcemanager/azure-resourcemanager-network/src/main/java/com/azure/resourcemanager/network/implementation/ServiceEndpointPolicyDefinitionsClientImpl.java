@@ -69,7 +69,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface ServiceEndpointPolicyDefinitionsService {
+    public interface ServiceEndpointPolicyDefinitionsService {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -190,7 +190,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -254,7 +254,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -481,7 +481,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -546,7 +546,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -586,23 +586,6 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy name.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified service endpoint policy definitions from service endpoint policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceEndpointPolicyDefinitionInner get(
-        String resourceGroupName, String serviceEndpointPolicyName, String serviceEndpointPolicyDefinitionName) {
-        return getAsync(resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName).block();
-    }
-
-    /**
-     * Get the specified service endpoint policy definitions from service endpoint policy.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceEndpointPolicyName The name of the service endpoint policy name.
-     * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -619,6 +602,25 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
         return getWithResponseAsync(
                 resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName, context)
             .block();
+    }
+
+    /**
+     * Get the specified service endpoint policy definitions from service endpoint policy.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param serviceEndpointPolicyName The name of the service endpoint policy name.
+     * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified service endpoint policy definitions from service endpoint policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ServiceEndpointPolicyDefinitionInner get(
+        String resourceGroupName, String serviceEndpointPolicyName, String serviceEndpointPolicyDefinitionName) {
+        return getWithResponse(
+                resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -676,7 +678,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
         } else {
             serviceEndpointPolicyDefinitions.validate();
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -752,7 +754,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
         } else {
             serviceEndpointPolicyDefinitions.validate();
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1055,7 +1057,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1118,7 +1120,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1218,7 +1220,8 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1256,7 +1259,8 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

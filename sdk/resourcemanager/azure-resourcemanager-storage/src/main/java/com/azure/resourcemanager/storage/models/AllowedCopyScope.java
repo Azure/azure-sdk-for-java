@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AllowedCopyScope. */
+/** Restrict copy to and from Storage Accounts within an AAD tenant or with Private Links to the same VNet. */
 public final class AllowedCopyScope extends ExpandableStringEnum<AllowedCopyScope> {
     /** Static value PrivateLink for AllowedCopyScope. */
     public static final AllowedCopyScope PRIVATE_LINK = fromString("PrivateLink");

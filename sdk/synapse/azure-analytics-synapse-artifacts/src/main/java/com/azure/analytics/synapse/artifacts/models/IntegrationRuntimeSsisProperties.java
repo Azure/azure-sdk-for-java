@@ -29,8 +29,7 @@ public final class IntegrationRuntimeSsisProperties {
     private IntegrationRuntimeLicenseType licenseType;
 
     /*
-     * Custom setup script properties for a managed dedicated integration
-     * runtime.
+     * Custom setup script properties for a managed dedicated integration runtime.
      */
     @JsonProperty(value = "customSetupScriptProperties")
     private IntegrationRuntimeCustomSetupScriptProperties customSetupScriptProperties;

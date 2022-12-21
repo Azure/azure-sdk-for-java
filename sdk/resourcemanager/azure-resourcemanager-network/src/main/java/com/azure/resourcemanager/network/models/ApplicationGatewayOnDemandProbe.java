@@ -24,23 +24,20 @@ public final class ApplicationGatewayOnDemandProbe {
     private String host;
 
     /*
-     * Relative path of probe. Valid path starts from '/'. Probe is sent to
-     * <Protocol>://<host>:<port><path>.
+     * Relative path of probe. Valid path starts from '/'. Probe is sent to <Protocol>://<host>:<port><path>.
      */
     @JsonProperty(value = "path")
     private String path;
 
     /*
-     * The probe timeout in seconds. Probe marked as failed if valid response
-     * is not received with this timeout period. Acceptable values are from 1
-     * second to 86400 seconds.
+     * The probe timeout in seconds. Probe marked as failed if valid response is not received with this timeout period.
+     * Acceptable values are from 1 second to 86400 seconds.
      */
     @JsonProperty(value = "timeout")
     private Integer timeout;
 
     /*
-     * Whether the host header should be picked from the backend http settings.
-     * Default value is false.
+     * Whether the host header should be picked from the backend http settings. Default value is false.
      */
     @JsonProperty(value = "pickHostNameFromBackendHttpSettings")
     private Boolean pickHostnameFromBackendHttpSettings;
@@ -52,18 +49,20 @@ public final class ApplicationGatewayOnDemandProbe {
     private ApplicationGatewayProbeHealthResponseMatch match;
 
     /*
-     * Reference to backend pool of application gateway to which probe request
-     * will be sent.
+     * Reference to backend pool of application gateway to which probe request will be sent.
      */
     @JsonProperty(value = "backendAddressPool")
     private SubResource backendAddressPool;
 
     /*
-     * Reference to backend http setting of application gateway to be used for
-     * test probe.
+     * Reference to backend http setting of application gateway to be used for test probe.
      */
     @JsonProperty(value = "backendHttpSettings")
     private SubResource backendHttpSettings;
+
+    /** Creates an instance of ApplicationGatewayOnDemandProbe class. */
+    public ApplicationGatewayOnDemandProbe() {
+    }
 
     /**
      * Get the protocol property: The protocol used for the probe.

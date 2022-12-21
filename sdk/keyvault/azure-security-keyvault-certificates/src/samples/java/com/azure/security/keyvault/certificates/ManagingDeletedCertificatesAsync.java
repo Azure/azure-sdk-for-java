@@ -25,21 +25,25 @@ public class ManagingDeletedCertificatesAsync {
      * @throws InterruptedException when the thread is interrupted in sleep mode.
      */
     public static void main(String[] args) throws InterruptedException {
+        /* NOTE: To manage deleted certificates, your key vault needs to have soft-delete enabled. Soft-delete allows
+        deleted certificates to be retained for a given retention period (90 days). During this period deleted
+        certificates can be recovered and if a certificates needs to be permanently deleted then it needs to be purged.
+        */
 
-        // NOTE: To manage deleted certificates, your key vault needs to have soft-delete enabled. Soft-delete allows deleted keys
-        // to be retained for a given retention period (90 days). During this period deleted keys can be recovered and if
-        // a key needs to be permanently deleted then it needs to be purged.
+        /* Instantiate a CertificateAsyncClient that will be used to call the service. Notice that the client is using
+        default Azure credentials. For more information on this and other types of credentials, see this document:
+        https://docs.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable.
 
-        // Instantiate an async key client that will be used to call the service. Notice that the client is using default Azure
-        // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
-        // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
+        To get started, you'll need a URL to an Azure Key Vault. See the README
+        (https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-certificates/README.md)
+        for links and instructions. */
         CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
-            .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+            .vaultUrl("<your-key-vault-url>")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
-        // Let's create a self signed certificate valid for 1 year. if the certificate
-        //   already exists in the key vault, then a new version of the certificate is created.
+        // Let's create a self-signed certificate valid for 1 year. If the certificate already exists in the key vault,
+        // then a new version of the certificate is created.
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
             .setSubjectAlternativeNames(new SubjectAlternativeNames().setEmails(Arrays.asList("wow@gmail.com")))
             .setKeyReusable(true)
@@ -58,7 +62,7 @@ public class ManagingDeletedCertificatesAsync {
 
         Thread.sleep(22000);
 
-        // The certificate is  no longer needed, need to delete it from the key vault.
+        // The certificate is no longer needed, need to delete it from the key vault.
         certificateAsyncClient.beginDeleteCertificate("certificateName")
             .subscribe(pollResponse -> {
                 System.out.println("Delete Status: " + pollResponse.getStatus().toString());
@@ -66,7 +70,7 @@ public class ManagingDeletedCertificatesAsync {
                 System.out.println("Certificate Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
             });
 
-        //To ensure certificates is deleted on server side.
+        // To ensure the certificate is deleted server-side.
         Thread.sleep(30000);
 
         // We accidentally deleted the certificate. Let's recover it.
@@ -78,10 +82,10 @@ public class ManagingDeletedCertificatesAsync {
                 System.out.println("Recover Certificate Id: " + pollResponse.getValue().getId());
             });
 
-        //To ensure certificates is recovered on server side.
+        // To ensure the certificate is recovered server-side.
         Thread.sleep(10000);
 
-        // The certificate is longer needed, need to delete them from the key vault.
+        // The certificate is no longer needed, need to delete it from the key vault.
         certificateAsyncClient.beginDeleteCertificate("certificateName")
             .subscribe(pollResponse -> {
                 System.out.println("Delete Status: " + pollResponse.getStatus().toString());
@@ -89,7 +93,7 @@ public class ManagingDeletedCertificatesAsync {
                 System.out.println("Certificate Delete Date: " + pollResponse.getValue().getDeletedOn().toString());
             });
 
-        // To ensure certificate is deleted on server side.
+        // To ensure the certificate is deleted server-side.
         Thread.sleep(30000);
 
         // You can list all the deleted and non-purged certificates, assuming key vault is soft-delete enabled.
@@ -99,12 +103,12 @@ public class ManagingDeletedCertificatesAsync {
 
         Thread.sleep(15000);
 
-        // If the keyvault is soft-delete enabled, then for permanent deletion  deleted certificates need to be purged.
+        // If the keyvault is soft-delete enabled, then deleted certificates need to be purged for permanent deletion.
         certificateAsyncClient.purgeDeletedCertificateWithResponse("certificateName")
             .subscribe(purgeResponse ->
                 System.out.printf("Purge Status response %d %n", purgeResponse.getStatusCode()));
 
-        // To ensure certificates is purged on server side.
+        // To ensure the certificate is purged server-side.
         Thread.sleep(15000);
     }
 }

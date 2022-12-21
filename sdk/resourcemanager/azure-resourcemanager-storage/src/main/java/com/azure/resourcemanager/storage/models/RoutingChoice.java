@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RoutingChoice. */
+/** Routing Choice defines the kind of network routing opted by the user. */
 public final class RoutingChoice extends ExpandableStringEnum<RoutingChoice> {
     /** Static value MicrosoftRouting for RoutingChoice. */
     public static final RoutingChoice MICROSOFT_ROUTING = fromString("MicrosoftRouting");

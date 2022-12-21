@@ -6,14 +6,11 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The EventHub consumer group name. */
 @Fluent
 public final class EventHubConsumerGroupName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventHubConsumerGroupName.class);
-
     /*
      * EventHub consumer group name
      */
@@ -47,9 +44,11 @@ public final class EventHubConsumerGroupName {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model EventHubConsumerGroupName"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubConsumerGroupName.class);
 }

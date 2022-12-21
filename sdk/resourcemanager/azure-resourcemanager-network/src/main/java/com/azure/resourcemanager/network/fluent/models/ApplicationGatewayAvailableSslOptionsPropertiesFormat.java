@@ -22,8 +22,7 @@ public final class ApplicationGatewayAvailableSslOptionsPropertiesFormat {
     private List<SubResource> predefinedPolicies;
 
     /*
-     * Name of the Ssl predefined policy applied by default to application
-     * gateway.
+     * Name of the Ssl predefined policy applied by default to application gateway.
      */
     @JsonProperty(value = "defaultPolicy")
     private ApplicationGatewaySslPolicyName defaultPolicy;
@@ -39,6 +38,10 @@ public final class ApplicationGatewayAvailableSslOptionsPropertiesFormat {
      */
     @JsonProperty(value = "availableProtocols")
     private List<ApplicationGatewaySslProtocol> availableProtocols;
+
+    /** Creates an instance of ApplicationGatewayAvailableSslOptionsPropertiesFormat class. */
+    public ApplicationGatewayAvailableSslOptionsPropertiesFormat() {
+    }
 
     /**
      * Get the predefinedPolicies property: List of available Ssl predefined policy.

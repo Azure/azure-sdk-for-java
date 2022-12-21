@@ -14,6 +14,7 @@ import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
+import io.opentelemetry.sdk.trace.export.SpanExporter;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -35,6 +36,7 @@ public class EventHubsAzureMonitorExporterSample {
 
     /**
      * The main method to run the application.
+     *
      * @param args Ignored args.
      */
     public static void main(String[] args) {
@@ -43,10 +45,11 @@ public class EventHubsAzureMonitorExporterSample {
 
     /**
      * Configure the OpenTelemetry {@link AzureMonitorTraceExporter} to enable tracing.
+     *
      * @return The OpenTelemetry {@link Tracer} instance.
      */
     private static Tracer configureAzureMonitorExporter() {
-        AzureMonitorTraceExporter exporter = new AzureMonitorExporterBuilder()
+        SpanExporter exporter = new AzureMonitorExporterBuilder()
             .connectionString("{connection-string}")
             .buildTraceExporter();
 

@@ -4,6 +4,7 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
 import com.azure.core.util.CoreUtils;
+
 import java.util.Map;
 
 /**
@@ -24,16 +25,20 @@ public final class VersionGenerator {
         artifactName = properties.get("name");
         artifactVersion = properties.get("version");
 
-        sdkVersionString = "java" +
-            getJavaVersion() +
-            ":" +
-            "ot" + getOpenTelemetryApiVersion() +
-            ":" +
-            "ext" + artifactVersion;
+        sdkVersionString =
+            "java"
+                + getJavaVersion()
+                + ":"
+                + "otel"
+                + getOpenTelemetryApiVersion()
+                + ":"
+                + "ext"
+                + artifactVersion;
     }
 
     /**
      * This method returns artifact name.
+     *
      * @return artifactName.
      */
     public static String getArtifactName() {
@@ -42,6 +47,7 @@ public final class VersionGenerator {
 
     /**
      * This method returns artifact version.
+     *
      * @return artifactVersion.
      */
     public static String getArtifactVersion() {
@@ -49,9 +55,9 @@ public final class VersionGenerator {
     }
 
     /**
-     * This method returns sdk version string as per the below format
-     * javaX:otelY:extZ
-     * X = Java version, Y = opentelemetry version, Z = exporter version
+     * This method returns sdk version string as per the below format javaX:otelY:extZ X = Java
+     * version, Y = opentelemetry version, Z = exporter version
+     *
      * @return sdkVersionString.
      */
     public static String getSdkVersion() {

@@ -10,7 +10,7 @@ import java.time.Duration;
 /** Samples for LiveOutputs Create. */
 public final class LiveOutputsCreateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/liveoutput-create.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/liveoutput-create.json
      */
     /**
      * Sample code: Create a LiveOutput.
@@ -25,6 +25,7 @@ public final class LiveOutputsCreateSamples {
             .withDescription("test live output 1")
             .withAssetName("6f3264f5-a189-48b4-a29a-a40f22575212")
             .withArchiveWindowLength(Duration.parse("PT5M"))
+            .withRewindWindowLength(Duration.parse("PT4M"))
             .withManifestName("testmanifest")
             .withHls(new Hls().withFragmentsPerTsSegment(5))
             .create();

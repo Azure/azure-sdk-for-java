@@ -4,19 +4,24 @@
 
 package com.azure.resourcemanager.dashboard.generated;
 
-import com.azure.resourcemanager.dashboard.models.IdentityType;
+import com.azure.resourcemanager.dashboard.models.ApiKey;
+import com.azure.resourcemanager.dashboard.models.AzureMonitorWorkspaceIntegration;
+import com.azure.resourcemanager.dashboard.models.DeterministicOutboundIp;
+import com.azure.resourcemanager.dashboard.models.GrafanaIntegrations;
 import com.azure.resourcemanager.dashboard.models.ManagedGrafanaProperties;
-import com.azure.resourcemanager.dashboard.models.ManagedIdentity;
-import com.azure.resourcemanager.dashboard.models.ProvisioningState;
+import com.azure.resourcemanager.dashboard.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.dashboard.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.dashboard.models.PublicNetworkAccess;
 import com.azure.resourcemanager.dashboard.models.ResourceSku;
 import com.azure.resourcemanager.dashboard.models.ZoneRedundancy;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for Grafana Create. */
 public final class GrafanaCreateSamples {
     /*
-     * x-ms-original-file: specification/dashboard/resource-manager/Microsoft.Dashboard/preview/2021-09-01-preview/examples/Grafana_Create.json
+     * x-ms-original-file: specification/dashboard/resource-manager/Microsoft.Dashboard/stable/2022-08-01/examples/Grafana_Create.json
      */
     /**
      * Sample code: Grafana_Create.
@@ -33,9 +38,19 @@ public final class GrafanaCreateSamples {
             .withSku(new ResourceSku().withName("Standard"))
             .withProperties(
                 new ManagedGrafanaProperties()
-                    .withProvisioningState(ProvisioningState.ACCEPTED)
-                    .withZoneRedundancy(ZoneRedundancy.ENABLED))
-            .withIdentity(new ManagedIdentity().withType(IdentityType.SYSTEM_ASSIGNED))
+                    .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                    .withZoneRedundancy(ZoneRedundancy.ENABLED)
+                    .withApiKey(ApiKey.ENABLED)
+                    .withDeterministicOutboundIp(DeterministicOutboundIp.ENABLED)
+                    .withGrafanaIntegrations(
+                        new GrafanaIntegrations()
+                            .withAzureMonitorWorkspaceIntegrations(
+                                Arrays
+                                    .asList(
+                                        new AzureMonitorWorkspaceIntegration()
+                                            .withAzureMonitorWorkspaceResourceId(
+                                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.monitor/accounts/myAzureMonitorWorkspace")))))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
             .create();
     }
 

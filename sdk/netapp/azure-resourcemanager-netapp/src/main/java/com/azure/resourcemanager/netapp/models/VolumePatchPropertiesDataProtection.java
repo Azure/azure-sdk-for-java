@@ -7,7 +7,11 @@ package com.azure.resourcemanager.netapp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** DataProtection DataProtection type volumes include an object containing details of the replication. */
+/**
+ * DataProtection
+ *
+ * <p>DataProtection type volumes include an object containing details of the replication.
+ */
 @Fluent
 public final class VolumePatchPropertiesDataProtection {
     /*

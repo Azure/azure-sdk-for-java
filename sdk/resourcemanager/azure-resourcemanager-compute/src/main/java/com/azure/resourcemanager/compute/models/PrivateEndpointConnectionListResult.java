@@ -19,11 +19,14 @@ public final class PrivateEndpointConnectionListResult {
     private List<PrivateEndpointConnectionInner> value;
 
     /*
-     * The uri to fetch the next page of snapshots. Call ListNext() with this
-     * to fetch the next page of snapshots.
+     * The uri to fetch the next page of snapshots. Call ListNext() with this to fetch the next page of snapshots.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of PrivateEndpointConnectionListResult class. */
+    public PrivateEndpointConnectionListResult() {
+    }
 
     /**
      * Get the value property: Array of private endpoint connections.

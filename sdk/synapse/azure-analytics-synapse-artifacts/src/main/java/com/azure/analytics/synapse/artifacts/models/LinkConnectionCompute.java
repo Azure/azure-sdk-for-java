@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class LinkConnectionCompute {
     /*
-     * Link connection's compute core count
+     * Compute core count used by the link connection
      */
     @JsonProperty(value = "coreCount")
     private Integer coreCount;
@@ -22,8 +22,14 @@ public final class LinkConnectionCompute {
     @JsonProperty(value = "computeType")
     private String computeType;
 
+    /*
+     * Link connection's data process interval in minutes
+     */
+    @JsonProperty(value = "dataProcessIntervalMinutes")
+    private Integer dataProcessIntervalMinutes;
+
     /**
-     * Get the coreCount property: Link connection's compute core count.
+     * Get the coreCount property: Compute core count used by the link connection.
      *
      * @return the coreCount value.
      */
@@ -32,7 +38,7 @@ public final class LinkConnectionCompute {
     }
 
     /**
-     * Set the coreCount property: Link connection's compute core count.
+     * Set the coreCount property: Compute core count used by the link connection.
      *
      * @param coreCount the coreCount value to set.
      * @return the LinkConnectionCompute object itself.
@@ -59,6 +65,26 @@ public final class LinkConnectionCompute {
      */
     public LinkConnectionCompute setComputeType(String computeType) {
         this.computeType = computeType;
+        return this;
+    }
+
+    /**
+     * Get the dataProcessIntervalMinutes property: Link connection's data process interval in minutes.
+     *
+     * @return the dataProcessIntervalMinutes value.
+     */
+    public Integer getDataProcessIntervalMinutes() {
+        return this.dataProcessIntervalMinutes;
+    }
+
+    /**
+     * Set the dataProcessIntervalMinutes property: Link connection's data process interval in minutes.
+     *
+     * @param dataProcessIntervalMinutes the dataProcessIntervalMinutes value to set.
+     * @return the LinkConnectionCompute object itself.
+     */
+    public LinkConnectionCompute setDataProcessIntervalMinutes(Integer dataProcessIntervalMinutes) {
+        this.dataProcessIntervalMinutes = dataProcessIntervalMinutes;
         return this;
     }
 }

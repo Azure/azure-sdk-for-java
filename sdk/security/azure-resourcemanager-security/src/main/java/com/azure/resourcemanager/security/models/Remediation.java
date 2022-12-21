@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Remediation details. */
 @Fluent
 public final class Remediation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Remediation.class);
-
     /*
      * Remediation description.
      */
@@ -38,6 +34,10 @@ public final class Remediation {
      */
     @JsonProperty(value = "portalLink")
     private String portalLink;
+
+    /** Creates an instance of Remediation class. */
+    public Remediation() {
+    }
 
     /**
      * Get the description property: Remediation description.

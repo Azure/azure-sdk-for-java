@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.models.OriginUpdatePropertiesParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Origin properties needed for origin update. */
 @Fluent
 public final class OriginUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OriginUpdateParameters.class);
-
     /*
      * The JSON object that contains the properties of the origin.
      */

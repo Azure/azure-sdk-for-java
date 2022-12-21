@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Monitors ListMonitoredResources. */
 public final class MonitorsListMonitoredResourcesSamples {
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/preview/2021-09-01-preview/examples/Monitors_ListMonitoredResources_MinimumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_ListMonitoredResources_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListMonitoredResources_MinimumSet_Gen.
@@ -22,7 +22,7 @@ public final class MonitorsListMonitoredResourcesSamples {
     }
 
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/preview/2021-09-01-preview/examples/Monitors_ListMonitoredResources_MaximumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2021-09-01/examples/Monitors_ListMonitoredResources_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListMonitoredResources_MaximumSet_Gen.

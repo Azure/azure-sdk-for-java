@@ -42,20 +42,6 @@ public interface PacketCoreDataPlanes {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified packet core data plane.
-     */
-    PacketCoreDataPlane get(
-        String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName);
-
-    /**
-     * Gets information about the specified packet core data plane.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param packetCoreControlPlaneName The name of the packet core control plane.
-     * @param packetCoreDataPlaneName The name of the packet core data plane.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -66,7 +52,21 @@ public interface PacketCoreDataPlanes {
         String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName, Context context);
 
     /**
-     * Lists all the packetCoreDataPlanes associated with a packetCoreControlPlane.
+     * Gets information about the specified packet core data plane.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param packetCoreControlPlaneName The name of the packet core control plane.
+     * @param packetCoreDataPlaneName The name of the packet core data plane.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified packet core data plane.
+     */
+    PacketCoreDataPlane get(
+        String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName);
+
+    /**
+     * Lists all the packet core data planes associated with a packet core control plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -79,7 +79,7 @@ public interface PacketCoreDataPlanes {
         String resourceGroupName, String packetCoreControlPlaneName);
 
     /**
-     * Lists all the packetCoreDataPlanes associated with a packetCoreControlPlane.
+     * Lists all the packet core data planes associated with a packet core control plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.

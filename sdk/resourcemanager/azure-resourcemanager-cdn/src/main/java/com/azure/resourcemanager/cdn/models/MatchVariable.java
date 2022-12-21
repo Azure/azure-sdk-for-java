@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MatchVariable. */
+/** The name of the condition for the delivery rule. */
 public final class MatchVariable extends ExpandableStringEnum<MatchVariable> {
     /** Static value RemoteAddress for MatchVariable. */
     public static final MatchVariable REMOTE_ADDRESS = fromString("RemoteAddress");
@@ -78,7 +78,11 @@ public final class MatchVariable extends ExpandableStringEnum<MatchVariable> {
         return fromString(name, MatchVariable.class);
     }
 
-    /** @return known MatchVariable values. */
+    /**
+     * Gets known MatchVariable values.
+     *
+     * @return known MatchVariable values.
+     */
     public static Collection<MatchVariable> values() {
         return values(MatchVariable.class);
     }

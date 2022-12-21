@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VaultUpgradeState. */
+/** Status of the vault upgrade operation. */
 public final class VaultUpgradeState extends ExpandableStringEnum<VaultUpgradeState> {
     /** Static value Unknown for VaultUpgradeState. */
     public static final VaultUpgradeState UNKNOWN = fromString("Unknown");
@@ -33,7 +33,11 @@ public final class VaultUpgradeState extends ExpandableStringEnum<VaultUpgradeSt
         return fromString(name, VaultUpgradeState.class);
     }
 
-    /** @return known VaultUpgradeState values. */
+    /**
+     * Gets known VaultUpgradeState values.
+     *
+     * @return known VaultUpgradeState values.
+     */
     public static Collection<VaultUpgradeState> values() {
         return values(VaultUpgradeState.class);
     }

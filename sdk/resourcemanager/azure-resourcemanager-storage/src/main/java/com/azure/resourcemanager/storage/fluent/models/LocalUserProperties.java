@@ -38,22 +38,19 @@ public final class LocalUserProperties {
     private String sid;
 
     /*
-     * Indicates whether shared key exists. Set it to false to remove existing
-     * shared key.
+     * Indicates whether shared key exists. Set it to false to remove existing shared key.
      */
     @JsonProperty(value = "hasSharedKey")
     private Boolean hasSharedKey;
 
     /*
-     * Indicates whether ssh key exists. Set it to false to remove existing SSH
-     * key.
+     * Indicates whether ssh key exists. Set it to false to remove existing SSH key.
      */
     @JsonProperty(value = "hasSshKey")
     private Boolean hasSshKey;
 
     /*
-     * Indicates whether ssh password exists. Set it to false to remove
-     * existing SSH password.
+     * Indicates whether ssh password exists. Set it to false to remove existing SSH password.
      */
     @JsonProperty(value = "hasSshPassword")
     private Boolean hasSshPassword;

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ResourceHealthStatus. */
+/** Resource Health Status. */
 public final class ResourceHealthStatus extends ExpandableStringEnum<ResourceHealthStatus> {
     /** Static value Healthy for ResourceHealthStatus. */
     public static final ResourceHealthStatus HEALTHY = fromString("Healthy");

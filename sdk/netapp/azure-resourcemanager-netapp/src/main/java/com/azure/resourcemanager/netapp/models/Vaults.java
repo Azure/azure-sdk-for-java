@@ -10,7 +10,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of Vaults. */
 public interface Vaults {
     /**
-     * List vaults for a Netapp Account.
+     * List vaults
+     *
+     * <p>List vaults for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -22,7 +24,9 @@ public interface Vaults {
     PagedIterable<Vault> list(String resourceGroupName, String accountName);
 
     /**
-     * List vaults for a Netapp Account.
+     * List vaults
+     *
+     * <p>List vaults for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.

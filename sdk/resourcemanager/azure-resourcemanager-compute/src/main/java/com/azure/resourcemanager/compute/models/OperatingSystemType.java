@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OperatingSystemType. */
+/** Gets the Operating System type. */
 public final class OperatingSystemType extends ExpandableStringEnum<OperatingSystemType> {
     /** Static value Windows for OperatingSystemType. */
     public static final OperatingSystemType WINDOWS = fromString("Windows");

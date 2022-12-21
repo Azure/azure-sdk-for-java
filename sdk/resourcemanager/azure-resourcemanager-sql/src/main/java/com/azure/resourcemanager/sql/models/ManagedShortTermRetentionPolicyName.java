@@ -25,7 +25,11 @@ public final class ManagedShortTermRetentionPolicyName
         return fromString(name, ManagedShortTermRetentionPolicyName.class);
     }
 
-    /** @return known ManagedShortTermRetentionPolicyName values. */
+    /**
+     * Gets known ManagedShortTermRetentionPolicyName values.
+     *
+     * @return known ManagedShortTermRetentionPolicyName values.
+     */
     public static Collection<ManagedShortTermRetentionPolicyName> values() {
         return values(ManagedShortTermRetentionPolicyName.class);
     }

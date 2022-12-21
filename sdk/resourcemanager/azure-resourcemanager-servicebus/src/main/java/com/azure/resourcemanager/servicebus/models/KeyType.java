@@ -7,7 +7,7 @@ package com.azure.resourcemanager.servicebus.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for KeyType. */
+/** The access key to regenerate. */
 public enum KeyType {
     /** Enum value PrimaryKey. */
     PRIMARY_KEY("PrimaryKey"),
@@ -30,6 +30,9 @@ public enum KeyType {
      */
     @JsonCreator
     public static KeyType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         KeyType[] items = KeyType.values();
         for (KeyType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum KeyType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

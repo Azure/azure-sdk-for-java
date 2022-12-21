@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DataConnections Delete. */
 public final class DataConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoDataConnectionsDelete.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoDataConnectionsDelete.json
      */
     /**
      * Sample code: KustoDataConnectionsDelete.

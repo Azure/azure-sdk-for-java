@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DefaultAction. */
+/** The behavior for IP access control in Key Delivery. */
 public final class DefaultAction extends ExpandableStringEnum<DefaultAction> {
     /** Static value Allow for DefaultAction. */
     public static final DefaultAction ALLOW = fromString("Allow");

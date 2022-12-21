@@ -22,6 +22,10 @@ public final class ResourceName {
     @JsonProperty(value = "localizedValue", access = JsonProperty.Access.WRITE_ONLY)
     private String localizedValue;
 
+    /** Creates an instance of ResourceName class. */
+    public ResourceName() {
+    }
+
     /**
      * Get the value property: The name of the resource.
      *

@@ -214,7 +214,12 @@ public class LongIdDomainRepositoryIT {
         final Page<LongIdDomain> page2 = this.repository.findAll(new CosmosPageRequest(1, 1, null));
         final Iterator<LongIdDomain> page2Iterator = page2.iterator();
         Assert.assertTrue(page2Iterator.hasNext());
-        Assert.assertEquals(DOMAIN_1, page2Iterator.next());
+        Assert.assertEquals(DOMAIN_2, page2Iterator.next());
+
+        final Page<LongIdDomain> page3 = this.repository.findAll(new CosmosPageRequest(2, 1, null));
+        final Iterator<LongIdDomain> page3Iterator = page3.iterator();
+        Assert.assertTrue(page3Iterator.hasNext());
+        Assert.assertEquals(other, page3Iterator.next());
     }
 
     private static class InvalidDomain {

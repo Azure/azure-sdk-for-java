@@ -10,14 +10,11 @@ import com.azure.resourcemanager.cdn.models.CustomDomainHttpsParameters;
 import com.azure.resourcemanager.cdn.models.CustomDomainResourceState;
 import com.azure.resourcemanager.cdn.models.CustomHttpsProvisioningState;
 import com.azure.resourcemanager.cdn.models.CustomHttpsProvisioningSubstate;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The JSON object that contains the properties of the custom domain to create. */
 @Fluent
 public final class CustomDomainProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomDomainProperties.class);
-
     /*
      * The host name of the custom domain. Must be a domain name.
      */
@@ -31,14 +28,13 @@ public final class CustomDomainProperties {
     private CustomDomainResourceState resourceState;
 
     /*
-     * Provisioning status of Custom Https of the custom domain.
+     * Provisioning status of the custom domain.
      */
     @JsonProperty(value = "customHttpsProvisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private CustomHttpsProvisioningState customHttpsProvisioningState;
 
     /*
-     * Provisioning substate shows the progress of custom HTTPS
-     * enabling/disabling process step by step.
+     * Provisioning substate shows the progress of custom HTTPS enabling/disabling process step by step.
      */
     @JsonProperty(value = "customHttpsProvisioningSubstate", access = JsonProperty.Access.WRITE_ONLY)
     private CustomHttpsProvisioningSubstate customHttpsProvisioningSubstate;
@@ -50,18 +46,17 @@ public final class CustomDomainProperties {
     private CustomDomainHttpsParameters customHttpsParameters;
 
     /*
-     * Special validation or data may be required when delivering CDN to some
-     * regions due to local compliance reasons. E.g. ICP license number of a
-     * custom domain is required to deliver content in China.
+     * Special validation or data may be required when delivering CDN to some regions due to local compliance reasons.
+     * E.g. ICP license number of a custom domain is required to deliver content in China.
      */
     @JsonProperty(value = "validationData")
     private String validationData;
 
     /*
-     * Provisioning status of the custom domain.
+     * Provisioning status of Custom Https of the custom domain.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private CustomHttpsProvisioningState provisioningState;
 
     /**
      * Get the hostname property: The host name of the custom domain. Must be a domain name.
@@ -93,7 +88,7 @@ public final class CustomDomainProperties {
     }
 
     /**
-     * Get the customHttpsProvisioningState property: Provisioning status of Custom Https of the custom domain.
+     * Get the customHttpsProvisioningState property: Provisioning status of the custom domain.
      *
      * @return the customHttpsProvisioningState value.
      */
@@ -156,11 +151,11 @@ public final class CustomDomainProperties {
     }
 
     /**
-     * Get the provisioningState property: Provisioning status of the custom domain.
+     * Get the provisioningState property: Provisioning status of Custom Https of the custom domain.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public CustomHttpsProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -171,7 +166,7 @@ public final class CustomDomainProperties {
      */
     public void validate() {
         if (hostname() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property hostname in model CustomDomainProperties"));
         }
@@ -179,4 +174,6 @@ public final class CustomDomainProperties {
             customHttpsParameters().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CustomDomainProperties.class);
 }

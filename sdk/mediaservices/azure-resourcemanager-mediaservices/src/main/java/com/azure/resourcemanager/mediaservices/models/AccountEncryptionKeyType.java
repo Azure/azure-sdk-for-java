@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AccountEncryptionKeyType. */
+/** The type of key used to encrypt the Account Key. */
 public final class AccountEncryptionKeyType extends ExpandableStringEnum<AccountEncryptionKeyType> {
     /** Static value SystemKey for AccountEncryptionKeyType. */
     public static final AccountEncryptionKeyType SYSTEM_KEY = fromString("SystemKey");

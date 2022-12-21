@@ -162,7 +162,11 @@ public final class HttpStatusCode extends ExpandableStringEnum<HttpStatusCode> {
         return fromString(name, HttpStatusCode.class);
     }
 
-    /** @return known HttpStatusCode values. */
+    /**
+     * Gets known HttpStatusCode values.
+     *
+     * @return known HttpStatusCode values.
+     */
     public static Collection<HttpStatusCode> values() {
         return values(HttpStatusCode.class);
     }

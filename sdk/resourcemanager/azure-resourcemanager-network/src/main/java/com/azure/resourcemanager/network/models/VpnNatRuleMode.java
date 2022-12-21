@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VpnNatRuleMode. */
+/** The Source NAT direction of a VPN NAT. */
 public final class VpnNatRuleMode extends ExpandableStringEnum<VpnNatRuleMode> {
     /** Static value EgressSnat for VpnNatRuleMode. */
     public static final VpnNatRuleMode EGRESS_SNAT = fromString("EgressSnat");

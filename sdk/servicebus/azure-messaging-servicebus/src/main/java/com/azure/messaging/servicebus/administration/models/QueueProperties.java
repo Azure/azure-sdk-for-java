@@ -7,11 +7,11 @@ package com.azure.messaging.servicebus.administration.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
-import com.azure.messaging.servicebus.implementation.EntityHelper;
-import com.azure.messaging.servicebus.implementation.models.AuthorizationRuleImpl;
-import com.azure.messaging.servicebus.implementation.models.EntityAvailabilityStatus;
-import com.azure.messaging.servicebus.implementation.models.MessageCountDetails;
-import com.azure.messaging.servicebus.implementation.models.QueueDescription;
+import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
+import com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRuleImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.EntityAvailabilityStatus;
+import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetails;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescription;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -51,7 +51,7 @@ public final class QueueProperties {
     private final MessageCountDetails messageCountDetails;
     private boolean requiresDuplicateDetection;
     private boolean requiresSession;
-    private final int sizeInBytes;
+    private final long sizeInBytes;
     private EntityStatus status;
     private final Boolean supportOrdering;
     private final OffsetDateTime updatedAt;
@@ -538,7 +538,7 @@ public final class QueueProperties {
      *
      * @return the sizeInBytes value.
      */
-    Integer getSizeInBytes() {
+    Long getSizeInBytes() {
         return this.sizeInBytes;
     }
 

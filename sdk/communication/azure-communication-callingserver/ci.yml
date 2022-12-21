@@ -11,7 +11,7 @@ trigger:
       - sdk/communication/azure-communication-callingserver
     exclude:
       - sdk/communication/azure-communication-callingserver/pom.xml
-
+  
 pr:
   branches:
     include:
@@ -29,7 +29,6 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: communication
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-communication-callingserver
         groupId: com.azure

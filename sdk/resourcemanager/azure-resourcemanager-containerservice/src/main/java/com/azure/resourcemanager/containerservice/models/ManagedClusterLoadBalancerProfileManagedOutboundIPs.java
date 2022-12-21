@@ -11,21 +11,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs {
     /*
-     * The desired number of IPv4 outbound IPs created/managed by Azure for the
-     * cluster load balancer. Allowed values must be in the range of 1 to 100
-     * (inclusive). The default value is 1.
+     * The desired number of IPv4 outbound IPs created/managed by Azure for the cluster load balancer. Allowed values
+     * must be in the range of 1 to 100 (inclusive). The default value is 1.
      */
     @JsonProperty(value = "count")
     private Integer count;
 
     /*
-     * The desired number of IPv6 outbound IPs created/managed by Azure for the
-     * cluster load balancer. Allowed values must be in the range of 1 to 100
-     * (inclusive). The default value is 0 for single-stack and 1 for
-     * dual-stack.
+     * The desired number of IPv6 outbound IPs created/managed by Azure for the cluster load balancer. Allowed values
+     * must be in the range of 1 to 100 (inclusive). The default value is 0 for single-stack and 1 for dual-stack.
      */
     @JsonProperty(value = "countIPv6")
     private Integer countIPv6;
+
+    /** Creates an instance of ManagedClusterLoadBalancerProfileManagedOutboundIPs class. */
+    public ManagedClusterLoadBalancerProfileManagedOutboundIPs() {
+    }
 
     /**
      * Get the count property: The desired number of IPv4 outbound IPs created/managed by Azure for the cluster load

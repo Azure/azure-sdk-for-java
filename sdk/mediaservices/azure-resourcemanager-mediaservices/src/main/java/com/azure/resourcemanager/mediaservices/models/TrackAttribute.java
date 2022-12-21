@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TrackAttribute. */
+/** The TrackAttribute to filter the tracks by. */
 public final class TrackAttribute extends ExpandableStringEnum<TrackAttribute> {
     /** Static value Bitrate for TrackAttribute. */
     public static final TrackAttribute BITRATE = fromString("Bitrate");

@@ -279,7 +279,7 @@ public final class DomainPatchResource extends ProxyOnlyResource {
      *
      * @return the domainNotRenewableReasons value.
      */
-    public List<DomainPatchResourcePropertiesDomainNotRenewableReasonsItem> domainNotRenewableReasons() {
+    public List<ResourceNotRenewableReason> domainNotRenewableReasons() {
         return this.innerProperties() == null ? null : this.innerProperties().domainNotRenewableReasons();
     }
 

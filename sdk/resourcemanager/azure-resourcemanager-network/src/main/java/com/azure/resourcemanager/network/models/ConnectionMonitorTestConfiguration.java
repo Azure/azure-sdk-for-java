@@ -30,9 +30,8 @@ public final class ConnectionMonitorTestConfiguration {
     private ConnectionMonitorTestConfigurationProtocol protocol;
 
     /*
-     * The preferred IP version to use in test evaluation. The connection
-     * monitor may choose to use a different version depending on other
-     * parameters.
+     * The preferred IP version to use in test evaluation. The connection monitor may choose to use a different version
+     * depending on other parameters.
      */
     @JsonProperty(value = "preferredIPVersion")
     private PreferredIpVersion preferredIpVersion;
@@ -60,6 +59,10 @@ public final class ConnectionMonitorTestConfiguration {
      */
     @JsonProperty(value = "successThreshold")
     private ConnectionMonitorSuccessThreshold successThreshold;
+
+    /** Creates an instance of ConnectionMonitorTestConfiguration class. */
+    public ConnectionMonitorTestConfiguration() {
+    }
 
     /**
      * Get the name property: The name of the connection monitor test configuration.

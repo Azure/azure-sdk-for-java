@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ContentKeyPolicies List. */
 public final class ContentKeyPoliciesListSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/content-key-policies-list-all.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/content-key-policies-list-all.json
      */
     /**
      * Sample code: Lists all Content Key Policies.
@@ -22,7 +22,7 @@ public final class ContentKeyPoliciesListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/content-key-policies-list-in-date-range.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/content-key-policies-list-in-date-range.json
      */
     /**
      * Sample code: Lists Content Key Policies with created and last modified filters.
@@ -43,7 +43,7 @@ public final class ContentKeyPoliciesListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/content-key-policies-list-by-lastModified.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/content-key-policies-list-by-lastModified.json
      */
     /**
      * Sample code: Lists Content Key Policies ordered by last modified.

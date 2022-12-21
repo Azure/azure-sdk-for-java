@@ -159,14 +159,14 @@ public final class TriggerResourceImpl implements TriggerResource, TriggerResour
         return serviceManager.triggers().subscribeToEvents(resourceGroupName, factoryName, triggerName, context);
     }
 
-    public TriggerSubscriptionOperationStatus getEventSubscriptionStatus() {
-        return serviceManager.triggers().getEventSubscriptionStatus(resourceGroupName, factoryName, triggerName);
-    }
-
     public Response<TriggerSubscriptionOperationStatus> getEventSubscriptionStatusWithResponse(Context context) {
         return serviceManager
             .triggers()
             .getEventSubscriptionStatusWithResponse(resourceGroupName, factoryName, triggerName, context);
+    }
+
+    public TriggerSubscriptionOperationStatus getEventSubscriptionStatus() {
+        return serviceManager.triggers().getEventSubscriptionStatus(resourceGroupName, factoryName, triggerName);
     }
 
     public TriggerSubscriptionOperationStatus unsubscribeFromEvents() {

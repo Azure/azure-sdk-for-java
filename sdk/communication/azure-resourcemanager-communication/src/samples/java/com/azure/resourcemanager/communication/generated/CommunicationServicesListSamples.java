@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CommunicationServices List. */
 public final class CommunicationServicesListSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2021-10-01-preview/examples/communicationServices/listBySubscription.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/communicationServices/listBySubscription.json
      */
     /**
      * Sample code: List by subscription.

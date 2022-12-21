@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DataConnectors Disconnect. */
 public final class DataConnectorsDisconnectSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/DisconnectAPIPolling.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/DisconnectAPIPolling.json
      */
     /**
      * Sample code: Disconnect an APIPolling data connector.

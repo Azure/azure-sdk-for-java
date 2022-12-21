@@ -15,6 +15,7 @@ import com.nimbusds.jose.util.ResourceRetriever;
 import com.nimbusds.jwt.proc.BadJWTException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -56,10 +57,12 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
      * @param aadAuthenticationProperties the AAD authentication properties
      * @param endpoints the AAD authorization server endpoints
      * @param resourceRetriever the resource retriever
+     * @param restTemplateBuilder the restTemplateBuilder
      */
     public AadAuthenticationFilter(AadAuthenticationProperties aadAuthenticationProperties,
                                    AadAuthorizationServerEndpoints endpoints,
-                                   ResourceRetriever resourceRetriever) {
+                                   ResourceRetriever resourceRetriever,
+                                   RestTemplateBuilder restTemplateBuilder) {
         this(
             aadAuthenticationProperties,
             endpoints,
@@ -68,7 +71,8 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
                 aadAuthenticationProperties,
                 resourceRetriever,
                 false
-            )
+            ),
+            restTemplateBuilder
         );
     }
 
@@ -78,12 +82,14 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
      * @param aadAuthenticationProperties the AAD authentication properties
      * @param endpoints the AAD authorization server endpoints
      * @param resourceRetriever the resource retriever
+     * @param restTemplateBuilder the RestTemplateBuilder
      * @param jwkSetCache the JWK set cache
      */
     public AadAuthenticationFilter(AadAuthenticationProperties aadAuthenticationProperties,
                                    AadAuthorizationServerEndpoints endpoints,
                                    ResourceRetriever resourceRetriever,
-                                   JWKSetCache jwkSetCache) {
+                                   JWKSetCache jwkSetCache,
+                                   RestTemplateBuilder restTemplateBuilder) {
         this(
             aadAuthenticationProperties,
             endpoints,
@@ -93,7 +99,8 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
                 resourceRetriever,
                 false,
                 jwkSetCache
-            )
+            ),
+            restTemplateBuilder
         );
     }
 
@@ -103,16 +110,19 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
      * @param aadAuthenticationProperties the AAD authentication properties
      * @param endpoints the AAD authorization server endpoints
      * @param userPrincipalManager the user principal manager
+     * @param restTemplateBuilder the restTemplateBuilder
      */
     public AadAuthenticationFilter(AadAuthenticationProperties aadAuthenticationProperties,
                                    AadAuthorizationServerEndpoints endpoints,
-                                   UserPrincipalManager userPrincipalManager) {
+                                   UserPrincipalManager userPrincipalManager,
+                                   RestTemplateBuilder restTemplateBuilder) {
         this.userPrincipalManager = userPrincipalManager;
         this.aadGraphClient = new AadGraphClient(
             aadAuthenticationProperties.getCredential().getClientId(),
             aadAuthenticationProperties.getCredential().getClientSecret(),
             aadAuthenticationProperties,
-            endpoints
+            endpoints,
+            restTemplateBuilder
         );
     }
 

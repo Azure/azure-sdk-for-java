@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Sku. */
+/** Device Update Sku. */
 public final class Sku extends ExpandableStringEnum<Sku> {
     /** Static value Free for Sku. */
     public static final Sku FREE = fromString("Free");

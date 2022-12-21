@@ -17,7 +17,7 @@ public interface RegulatoryComplianceControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of regulatory compliance controls response.
+     * @return list of regulatory compliance controls response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RegulatoryComplianceControl> list(String regulatoryComplianceStandardName);
 
@@ -30,10 +30,24 @@ public interface RegulatoryComplianceControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of regulatory compliance controls response.
+     * @return list of regulatory compliance controls response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RegulatoryComplianceControl> list(
         String regulatoryComplianceStandardName, String filter, Context context);
+
+    /**
+     * Selected regulatory compliance control details and state.
+     *
+     * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
+     * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return regulatory compliance control details and state along with {@link Response}.
+     */
+    Response<RegulatoryComplianceControl> getWithResponse(
+        String regulatoryComplianceStandardName, String regulatoryComplianceControlName, Context context);
 
     /**
      * Selected regulatory compliance control details and state.
@@ -46,18 +60,4 @@ public interface RegulatoryComplianceControls {
      * @return regulatory compliance control details and state.
      */
     RegulatoryComplianceControl get(String regulatoryComplianceStandardName, String regulatoryComplianceControlName);
-
-    /**
-     * Selected regulatory compliance control details and state.
-     *
-     * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
-     * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return regulatory compliance control details and state.
-     */
-    Response<RegulatoryComplianceControl> getWithResponse(
-        String regulatoryComplianceStandardName, String regulatoryComplianceControlName, Context context);
 }

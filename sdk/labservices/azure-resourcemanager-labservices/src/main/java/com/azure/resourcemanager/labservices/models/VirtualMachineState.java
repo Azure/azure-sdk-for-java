@@ -7,7 +7,7 @@ package com.azure.resourcemanager.labservices.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for VirtualMachineState. */
+/** The state of a virtual machine. */
 public enum VirtualMachineState {
     /** Enum value Stopped. */
     STOPPED("Stopped"),
@@ -45,6 +45,9 @@ public enum VirtualMachineState {
      */
     @JsonCreator
     public static VirtualMachineState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         VirtualMachineState[] items = VirtualMachineState.values();
         for (VirtualMachineState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -54,6 +57,7 @@ public enum VirtualMachineState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

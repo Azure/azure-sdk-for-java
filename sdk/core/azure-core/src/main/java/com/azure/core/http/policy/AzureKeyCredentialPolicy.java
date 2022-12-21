@@ -4,6 +4,7 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
@@ -22,7 +23,7 @@ import java.util.Objects;
 public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
     // AzureKeyCredentialPolicy can be a commonly used policy, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(AzureKeyCredentialPolicy.class);
-    private final String name;
+    private final HttpHeaderName name;
     private final AzureKeyCredential credential;
 
     private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
@@ -52,7 +53,7 @@ public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty."));
         }
 
-        this.name = name;
+        this.name = HttpHeaderName.fromString(name);
         this.credential = credential;
     }
 

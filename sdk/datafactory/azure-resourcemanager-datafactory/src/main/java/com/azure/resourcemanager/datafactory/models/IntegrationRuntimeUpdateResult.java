@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IntegrationRuntimeUpdateResult. */
+/** The result of the last integration runtime node update. */
 public final class IntegrationRuntimeUpdateResult extends ExpandableStringEnum<IntegrationRuntimeUpdateResult> {
     /** Static value None for IntegrationRuntimeUpdateResult. */
     public static final IntegrationRuntimeUpdateResult NONE = fromString("None");

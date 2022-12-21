@@ -67,7 +67,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface CapacityReservationsService {
+    public interface CapacityReservationsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
@@ -217,7 +217,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -290,7 +290,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -575,7 +575,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -647,7 +647,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -914,7 +914,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -979,7 +979,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1223,7 +1223,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1292,7 +1292,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1314,30 +1314,6 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
-     * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves a snapshot of the runtime
-     *     properties of the capacity reservation that is managed by the platform and can change outside of control
-     *     plane operations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CapacityReservationInner> getAsync(
-        String resourceGroupName,
-        String capacityReservationGroupName,
-        String capacityReservationName,
-        CapacityReservationInstanceViewTypes expand) {
-        return getWithResponseAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * The operation that retrieves information about the capacity reservation.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1349,24 +1325,6 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         final CapacityReservationInstanceViewTypes expand = null;
         return getWithResponseAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName, expand)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * The operation that retrieves information about the capacity reservation.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CapacityReservationInner get(
-        String resourceGroupName, String capacityReservationGroupName, String capacityReservationName) {
-        final CapacityReservationInstanceViewTypes expand = null;
-        return getAsync(resourceGroupName, capacityReservationGroupName, capacityReservationName, expand).block();
     }
 
     /**
@@ -1394,6 +1352,26 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
         return getWithResponseAsync(
                 resourceGroupName, capacityReservationGroupName, capacityReservationName, expand, context)
             .block();
+    }
+
+    /**
+     * The operation that retrieves information about the capacity reservation.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param capacityReservationGroupName The name of the capacity reservation group.
+     * @param capacityReservationName The name of the capacity reservation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the capacity reservation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CapacityReservationInner get(
+        String resourceGroupName, String capacityReservationGroupName, String capacityReservationName) {
+        final CapacityReservationInstanceViewTypes expand = null;
+        return getWithResponse(
+                resourceGroupName, capacityReservationGroupName, capacityReservationName, expand, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1433,7 +1411,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1497,7 +1475,7 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-03-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1600,7 +1578,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1639,7 +1618,8 @@ public final class CapacityReservationsClientImpl implements CapacityReservation
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

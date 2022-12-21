@@ -30,6 +30,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
@@ -77,6 +78,9 @@ class RxGatewayStoreModel implements RxStoreModel {
                 "no-cache");
         this.defaultHeaders.put(HttpConstants.HttpHeaders.VERSION,
                 HttpConstants.Versions.CURRENT_VERSION);
+        this.defaultHeaders.put(
+            HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
+            HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES);
 
         if (apiType != null){
             this.defaultHeaders.put(HttpConstants.HttpHeaders.API_TYPE, apiType.toString());
@@ -429,7 +433,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                     ? status.reasonPhrase().replace(" ", "")
                     : "";
 
-            String body = bodyAsBytes != null ? new String(bodyAsBytes) : null;
+            String body = bodyAsBytes != null ? new String(bodyAsBytes, StandardCharsets.UTF_8) : null;
             CosmosError cosmosError;
             cosmosError = (StringUtils.isNotEmpty(body)) ? new CosmosError(body) : new CosmosError();
             cosmosError = new CosmosError(statusCodeString,
@@ -523,21 +527,6 @@ class RxGatewayStoreModel implements RxStoreModel {
     @Override
     public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
         return Flux.empty();
-    }
-
-    public void prepareRequestForAuth(RxDocumentServiceRequest request, String resourceName) {
-        int documentIdPrefixPosition = -1;
-        boolean needToChangeIdEncoding = request.getResourceType() == ResourceType.Document &&
-            (documentIdPrefixPosition = resourceName.indexOf("/docs/")) > 0;
-
-        if (needToChangeIdEncoding) {
-            String encodedResourceName = resourceName.substring(0, documentIdPrefixPosition + 6) +
-                Strings.encodeURIComponent(resourceName.substring(documentIdPrefixPosition + 6));
-
-            if (!resourceName.equals(encodedResourceName)) {
-                request.setResourceAddress(encodedResourceName);
-            }
-        }
     }
 
     private void captureSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {

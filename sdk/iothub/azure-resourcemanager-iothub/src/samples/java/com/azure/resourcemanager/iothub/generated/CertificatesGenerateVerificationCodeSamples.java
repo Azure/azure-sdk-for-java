@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Certificates GenerateVerificationCode. */
 public final class CertificatesGenerateVerificationCodeSamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_generateverificationcode.json
+     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-04-30-preview/examples/iothub_generateverificationcode.json
      */
     /**
      * Sample code: Certificates_GenerateVerificationCode.

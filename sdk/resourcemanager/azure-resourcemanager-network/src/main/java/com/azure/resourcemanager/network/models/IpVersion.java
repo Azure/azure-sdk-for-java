@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IpVersion. */
+/** IP address version. */
 public final class IpVersion extends ExpandableStringEnum<IpVersion> {
     /** Static value IPv4 for IpVersion. */
     public static final IpVersion IPV4 = fromString("IPv4");

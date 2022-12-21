@@ -5,36 +5,39 @@
 package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.Resource;
+import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mobilenetwork.models.MobileNetworkResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.SimPolicyResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.SimState;
 import com.azure.resourcemanager.mobilenetwork.models.SimStaticIpProperties;
+import com.azure.resourcemanager.mobilenetwork.models.SiteProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Sim resource. */
+/** SIM resource. */
 @Fluent
-public final class SimInner extends Resource {
+public final class SimInner extends ProxyResource {
     /*
-     * Sim Properties.
+     * SIM Properties.
      */
     @JsonProperty(value = "properties", required = true)
     private SimPropertiesFormat innerProperties = new SimPropertiesFormat();
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of SimInner class. */
+    public SimInner() {
+    }
+
     /**
-     * Get the innerProperties property: Sim Properties.
+     * Get the innerProperties property: SIM Properties.
      *
      * @return the innerProperties value.
      */
@@ -51,88 +54,8 @@ public final class SimInner extends Resource {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public SimInner withLocation(String location) {
-        super.withLocation(location);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public SimInner withTags(Map<String, String> tags) {
-        super.withTags(tags);
-        return this;
-    }
-
     /**
-     * Get the provisioningState property: The provisioning state of the sim resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
-     * Get the simState property: The state of the sim resource.
-     *
-     * @return the simState value.
-     */
-    public SimState simState() {
-        return this.innerProperties() == null ? null : this.innerProperties().simState();
-    }
-
-    /**
-     * Get the internationalMobileSubscriberIdentity property: The International Mobile Subscriber Identity (IMSI) for
-     * the sim.
-     *
-     * @return the internationalMobileSubscriberIdentity value.
-     */
-    public String internationalMobileSubscriberIdentity() {
-        return this.innerProperties() == null ? null : this.innerProperties().internationalMobileSubscriberIdentity();
-    }
-
-    /**
-     * Set the internationalMobileSubscriberIdentity property: The International Mobile Subscriber Identity (IMSI) for
-     * the sim.
-     *
-     * @param internationalMobileSubscriberIdentity the internationalMobileSubscriberIdentity value to set.
-     * @return the SimInner object itself.
-     */
-    public SimInner withInternationalMobileSubscriberIdentity(String internationalMobileSubscriberIdentity) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SimPropertiesFormat();
-        }
-        this.innerProperties().withInternationalMobileSubscriberIdentity(internationalMobileSubscriberIdentity);
-        return this;
-    }
-
-    /**
-     * Get the integratedCircuitCardIdentifier property: The Integrated Circuit Card ID (ICC Id) for the sim.
-     *
-     * @return the integratedCircuitCardIdentifier value.
-     */
-    public String integratedCircuitCardIdentifier() {
-        return this.innerProperties() == null ? null : this.innerProperties().integratedCircuitCardIdentifier();
-    }
-
-    /**
-     * Set the integratedCircuitCardIdentifier property: The Integrated Circuit Card ID (ICC Id) for the sim.
-     *
-     * @param integratedCircuitCardIdentifier the integratedCircuitCardIdentifier value to set.
-     * @return the SimInner object itself.
-     */
-    public SimInner withIntegratedCircuitCardIdentifier(String integratedCircuitCardIdentifier) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SimPropertiesFormat();
-        }
-        this.innerProperties().withIntegratedCircuitCardIdentifier(integratedCircuitCardIdentifier);
-        return this;
-    }
-
-    /**
-     * Get the authenticationKey property: The ki value for the sim.
+     * Get the authenticationKey property: The Ki value for the SIM.
      *
      * @return the authenticationKey value.
      */
@@ -141,7 +64,7 @@ public final class SimInner extends Resource {
     }
 
     /**
-     * Set the authenticationKey property: The ki value for the sim.
+     * Set the authenticationKey property: The Ki value for the SIM.
      *
      * @param authenticationKey the authenticationKey value to set.
      * @return the SimInner object itself.
@@ -155,7 +78,7 @@ public final class SimInner extends Resource {
     }
 
     /**
-     * Get the operatorKeyCode property: The Opc value for the sim.
+     * Get the operatorKeyCode property: The Opc value for the SIM.
      *
      * @return the operatorKeyCode value.
      */
@@ -164,7 +87,7 @@ public final class SimInner extends Resource {
     }
 
     /**
-     * Set the operatorKeyCode property: The Opc value for the sim.
+     * Set the operatorKeyCode property: The Opc value for the SIM.
      *
      * @param operatorKeyCode the operatorKeyCode value to set.
      * @return the SimInner object itself.
@@ -178,31 +101,83 @@ public final class SimInner extends Resource {
     }
 
     /**
-     * Get the mobileNetwork property: Mobile network that this sim belongs to.
+     * Get the provisioningState property: The provisioning state of the SIM resource.
      *
-     * @return the mobileNetwork value.
+     * @return the provisioningState value.
      */
-    public MobileNetworkResourceId mobileNetwork() {
-        return this.innerProperties() == null ? null : this.innerProperties().mobileNetwork();
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
-     * Set the mobileNetwork property: Mobile network that this sim belongs to.
+     * Get the simState property: The state of the SIM resource.
      *
-     * @param mobileNetwork the mobileNetwork value to set.
+     * @return the simState value.
+     */
+    public SimState simState() {
+        return this.innerProperties() == null ? null : this.innerProperties().simState();
+    }
+
+    /**
+     * Get the siteProvisioningState property: A dictionary of sites to the provisioning state of this SIM on that site.
+     *
+     * @return the siteProvisioningState value.
+     */
+    public Map<String, SiteProvisioningState> siteProvisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().siteProvisioningState();
+    }
+
+    /**
+     * Get the internationalMobileSubscriberIdentity property: The international mobile subscriber identity (IMSI) for
+     * the SIM.
+     *
+     * @return the internationalMobileSubscriberIdentity value.
+     */
+    public String internationalMobileSubscriberIdentity() {
+        return this.innerProperties() == null ? null : this.innerProperties().internationalMobileSubscriberIdentity();
+    }
+
+    /**
+     * Set the internationalMobileSubscriberIdentity property: The international mobile subscriber identity (IMSI) for
+     * the SIM.
+     *
+     * @param internationalMobileSubscriberIdentity the internationalMobileSubscriberIdentity value to set.
      * @return the SimInner object itself.
      */
-    public SimInner withMobileNetwork(MobileNetworkResourceId mobileNetwork) {
+    public SimInner withInternationalMobileSubscriberIdentity(String internationalMobileSubscriberIdentity) {
         if (this.innerProperties() == null) {
             this.innerProperties = new SimPropertiesFormat();
         }
-        this.innerProperties().withMobileNetwork(mobileNetwork);
+        this.innerProperties().withInternationalMobileSubscriberIdentity(internationalMobileSubscriberIdentity);
         return this;
     }
 
     /**
-     * Get the deviceType property: An optional free-form text field that can be used to record the device type this sim
-     * is associated with, for example 'Video camera'. The Azure portal allows Sims to be grouped and filtered based on
+     * Get the integratedCircuitCardIdentifier property: The integrated circuit card ID (ICCID) for the SIM.
+     *
+     * @return the integratedCircuitCardIdentifier value.
+     */
+    public String integratedCircuitCardIdentifier() {
+        return this.innerProperties() == null ? null : this.innerProperties().integratedCircuitCardIdentifier();
+    }
+
+    /**
+     * Set the integratedCircuitCardIdentifier property: The integrated circuit card ID (ICCID) for the SIM.
+     *
+     * @param integratedCircuitCardIdentifier the integratedCircuitCardIdentifier value to set.
+     * @return the SimInner object itself.
+     */
+    public SimInner withIntegratedCircuitCardIdentifier(String integratedCircuitCardIdentifier) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SimPropertiesFormat();
+        }
+        this.innerProperties().withIntegratedCircuitCardIdentifier(integratedCircuitCardIdentifier);
+        return this;
+    }
+
+    /**
+     * Get the deviceType property: An optional free-form text field that can be used to record the device type this SIM
+     * is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered based on
      * this value.
      *
      * @return the deviceType value.
@@ -212,8 +187,8 @@ public final class SimInner extends Resource {
     }
 
     /**
-     * Set the deviceType property: An optional free-form text field that can be used to record the device type this sim
-     * is associated with, for example 'Video camera'. The Azure portal allows Sims to be grouped and filtered based on
+     * Set the deviceType property: An optional free-form text field that can be used to record the device type this SIM
+     * is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered based on
      * this value.
      *
      * @param deviceType the deviceType value to set.
@@ -228,7 +203,8 @@ public final class SimInner extends Resource {
     }
 
     /**
-     * Get the simPolicy property: The simPolicy used by this sim.
+     * Get the simPolicy property: The SIM policy used by this SIM. The SIM policy must be in the same location as the
+     * SIM.
      *
      * @return the simPolicy value.
      */
@@ -237,7 +213,8 @@ public final class SimInner extends Resource {
     }
 
     /**
-     * Set the simPolicy property: The simPolicy used by this sim.
+     * Set the simPolicy property: The SIM policy used by this SIM. The SIM policy must be in the same location as the
+     * SIM.
      *
      * @param simPolicy the simPolicy value to set.
      * @return the SimInner object itself.
@@ -251,7 +228,7 @@ public final class SimInner extends Resource {
     }
 
     /**
-     * Get the staticIpConfiguration property: A list of static IP addresses assigned to this sim. Each address is
+     * Get the staticIpConfiguration property: A list of static IP addresses assigned to this SIM. Each address is
      * assigned at a defined network scope, made up of {attached data network, slice}.
      *
      * @return the staticIpConfiguration value.
@@ -261,7 +238,7 @@ public final class SimInner extends Resource {
     }
 
     /**
-     * Set the staticIpConfiguration property: A list of static IP addresses assigned to this sim. Each address is
+     * Set the staticIpConfiguration property: A list of static IP addresses assigned to this SIM. Each address is
      * assigned at a defined network scope, made up of {attached data network, slice}.
      *
      * @param staticIpConfiguration the staticIpConfiguration value to set.
@@ -273,6 +250,25 @@ public final class SimInner extends Resource {
         }
         this.innerProperties().withStaticIpConfiguration(staticIpConfiguration);
         return this;
+    }
+
+    /**
+     * Get the vendorName property: The name of the SIM vendor who provided this SIM, if any.
+     *
+     * @return the vendorName value.
+     */
+    public String vendorName() {
+        return this.innerProperties() == null ? null : this.innerProperties().vendorName();
+    }
+
+    /**
+     * Get the vendorKeyFingerprint property: The public key fingerprint of the SIM vendor who provided this SIM, if
+     * any.
+     *
+     * @return the vendorKeyFingerprint value.
+     */
+    public String vendorKeyFingerprint() {
+        return this.innerProperties() == null ? null : this.innerProperties().vendorKeyFingerprint();
     }
 
     /**

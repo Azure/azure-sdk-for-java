@@ -228,7 +228,12 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="ParenPad"/>
     <module name="TypecastParenPad"/>
     <module name="WhitespaceAfter"/>
-    <module name="WhitespaceAround"/>
+    <module name="WhitespaceAround">
+      <!-- Common for Autorest to generate empty constructors, methods, and types. -->
+      <property name="allowEmptyConstructors" value="true"/>
+      <property name="allowEmptyMethods" value="true"/>
+      <property name="allowEmptyTypes" value="true"/>
+    </module>
 
     <!-- Modifier Checks                                    -->
     <!-- See http://checkstyle.sf.net/config_modifiers.html -->
@@ -331,9 +336,10 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <module name="com.azure.tools.checkstyle.checks.ServiceInterfaceCheck"/>
 
     <!-- CUSTOM CHECKS -->
-    <!-- The @Immutable class should have the following rules:
-    1) All fields must be final -->
-    <module name="com.azure.tools.checkstyle.checks.OnlyFinalFieldsForImmutableClassCheck"/>
+    <!-- The @Immutable class should have the following rules: -->
+    <!-- 1) All public and protected fields must be final -->
+    <!-- 2) No public or protected setters -->
+    <module name="com.azure.tools.checkstyle.checks.ImmutableClassCheck"/>
 
     <!-- CUSTOM CHECKS -->
     <!-- Verify the whenever a field is assigned just once in constructor to be final -->
@@ -387,8 +393,8 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <!-- 2. methodName -->
     <!-- 3. variableName -->
     <!-- 4. longerVariableOrMethodName -->
-    <module name="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck">
-      <property name="blacklistedWords" value="URL, HTTP, XML, JSON, SAS, CPK, API" />
+    <module name="com.azure.tools.checkstyle.checks.DenyListedWordsCheck">
+      <property name="denyListedWords" value="URL, HTTP, XML, JSON, SAS, CPK, API" />
     </module>
 
     <!-- CUSTOM CHECKS -->

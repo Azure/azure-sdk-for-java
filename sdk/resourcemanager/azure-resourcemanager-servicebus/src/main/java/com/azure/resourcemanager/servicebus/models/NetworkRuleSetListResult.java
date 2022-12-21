@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicebus.fluent.models.NetworkRuleSetInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response of the List NetworkRuleSet operation. */
 @Fluent
 public final class NetworkRuleSetListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkRuleSetListResult.class);
-
     /*
      * Result of the List NetworkRuleSet operation.
      */
@@ -23,8 +19,7 @@ public final class NetworkRuleSetListResult {
     private List<NetworkRuleSetInner> value;
 
     /*
-     * Link to the next set of results. Not empty if Value contains incomplete
-     * list of NetworkRuleSet.
+     * Link to the next set of results. Not empty if Value contains incomplete list of NetworkRuleSet.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;

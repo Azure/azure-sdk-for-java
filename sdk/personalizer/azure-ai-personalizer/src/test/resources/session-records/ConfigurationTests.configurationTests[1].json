@@ -1,0 +1,126 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/configurations/service",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-personalizer/1.0.0-beta.1 (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "58a5016d-202f-4d2a-8f01-963b59780123",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "400",
+      "x-envoy-upstream-service-time" : "256",
+      "apim-request-id" : "7edc236a-bb54-4291-aa38-2aaeff713d17",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "Date" : "Thu, 25 Aug 2022 23:32:37 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "x-content-type-options" : "nosniff",
+      "Expires" : "0",
+      "timing-allow-origin" : "*",
+      "Body" : "{\n  \"rewardWaitTime\": \"PT4H\",\n  \"defaultReward\": 1.0,\n  \"rewardAggregation\": \"average\",\n  \"explorationPercentage\": 0.2,\n  \"modelExportFrequency\": \"PT3H\",\n  \"logRetentionDays\": 2147483647,\n  \"lastConfigurationEditDate\": \"2022-08-25T23:30:25\",\n  \"learningMode\": \"Online\",\n  \"isAutoOptimizationEnabled\": true,\n  \"autoOptimizationFrequency\": \"P28D\",\n  \"autoOptimizationStartDate\": \"2022-09-01T21:02:42\"\n}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/configurations/service",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-personalizer/1.0.0-beta.1 (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "64bd82cc-8e8c-43d2-b223-5a3881ef16bf"
+    },
+    "Response" : {
+      "content-length" : "400",
+      "x-envoy-upstream-service-time" : "25",
+      "apim-request-id" : "91a42792-728f-4684-8f9c-e231aac8153c",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "Date" : "Thu, 25 Aug 2022 23:32:37 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "x-content-type-options" : "nosniff",
+      "Expires" : "0",
+      "timing-allow-origin" : "*",
+      "Body" : "{\n  \"rewardWaitTime\": \"PT4H\",\n  \"defaultReward\": 1.0,\n  \"rewardAggregation\": \"average\",\n  \"explorationPercentage\": 0.2,\n  \"modelExportFrequency\": \"PT3H\",\n  \"logRetentionDays\": 2147483647,\n  \"lastConfigurationEditDate\": \"2022-08-25T23:30:25\",\n  \"learningMode\": \"Online\",\n  \"isAutoOptimizationEnabled\": true,\n  \"autoOptimizationFrequency\": \"P28D\",\n  \"autoOptimizationStartDate\": \"2022-09-01T21:02:42\"\n}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/configurations/policy",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-personalizer/1.0.0-beta.1 (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "25e64b73-7dd2-427d-b4c6-e19e56a7370c",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "257",
+      "x-envoy-upstream-service-time" : "105",
+      "apim-request-id" : "939e66a0-0ee3-4639-b990-c0d73545db89",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "Date" : "Thu, 25 Aug 2022 23:32:37 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "x-content-type-options" : "nosniff",
+      "Expires" : "0",
+      "timing-allow-origin" : "*",
+      "Body" : "{\n  \"name\": \"dccb7cec1bc54695b64a0ea223b02533\",\n  \"arguments\": \"--cb_explore_adf --quadratic GT --quadratic MR --quadratic GR --quadratic ME --quadratic OT --quadratic OE --quadratic OR --quadratic MS --quadratic GX --ignore A --cb_type ips --epsilon 0.2\"\n}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/configurations/policy",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-personalizer/1.0.0-beta.1 (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "99634b47-396a-4134-985b-ea92d0133b31"
+    },
+    "Response" : {
+      "content-length" : "257",
+      "x-envoy-upstream-service-time" : "8",
+      "apim-request-id" : "bcd50282-2a51-48af-9d89-4534c443e706",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "Date" : "Thu, 25 Aug 2022 23:32:37 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "x-content-type-options" : "nosniff",
+      "Expires" : "0",
+      "timing-allow-origin" : "*",
+      "Body" : "{\n  \"name\": \"dccb7cec1bc54695b64a0ea223b02533\",\n  \"arguments\": \"--cb_explore_adf --quadratic GT --quadratic MR --quadratic GR --quadratic ME --quadratic OT --quadratic OE --quadratic OR --quadratic MS --quadratic GX --ignore A --cb_type ips --epsilon 0.2\"\n}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/personalizer/v1.1-preview.3/configurations/policy",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-personalizer/1.0.0-beta.1 (18.0.1.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "a01f100b-f3bc-44c1-8721-f4cac32085b9"
+    },
+    "Response" : {
+      "content-length" : "138",
+      "x-envoy-upstream-service-time" : "87",
+      "apim-request-id" : "bca466f3-1410-4bcc-865e-aef4cfbd19f2",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "Date" : "Thu, 25 Aug 2022 23:32:36 GMT",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "Cache-Control" : "no-cache, no-store, must-revalidate",
+      "x-content-type-options" : "nosniff",
+      "Expires" : "0",
+      "timing-allow-origin" : "*",
+      "Body" : "{\n  \"name\": \"dccb7cec1bc54695b64a0ea223b02533\",\n  \"arguments\": \"--cb_explore_adf --epsilon 0.2 --power_t 0 -l 0.001 --cb_type mtr -q ::\"\n}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

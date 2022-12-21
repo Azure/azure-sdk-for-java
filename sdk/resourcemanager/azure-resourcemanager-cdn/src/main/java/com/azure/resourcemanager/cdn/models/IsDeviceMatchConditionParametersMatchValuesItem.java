@@ -28,7 +28,11 @@ public final class IsDeviceMatchConditionParametersMatchValuesItem
         return fromString(name, IsDeviceMatchConditionParametersMatchValuesItem.class);
     }
 
-    /** @return known IsDeviceMatchConditionParametersMatchValuesItem values. */
+    /**
+     * Gets known IsDeviceMatchConditionParametersMatchValuesItem values.
+     *
+     * @return known IsDeviceMatchConditionParametersMatchValuesItem values.
+     */
     public static Collection<IsDeviceMatchConditionParametersMatchValuesItem> values() {
         return values(IsDeviceMatchConditionParametersMatchValuesItem.class);
     }

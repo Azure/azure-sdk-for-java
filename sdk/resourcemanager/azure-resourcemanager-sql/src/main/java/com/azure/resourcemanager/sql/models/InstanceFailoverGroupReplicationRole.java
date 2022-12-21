@@ -28,7 +28,11 @@ public final class InstanceFailoverGroupReplicationRole
         return fromString(name, InstanceFailoverGroupReplicationRole.class);
     }
 
-    /** @return known InstanceFailoverGroupReplicationRole values. */
+    /**
+     * Gets known InstanceFailoverGroupReplicationRole values.
+     *
+     * @return known InstanceFailoverGroupReplicationRole values.
+     */
     public static Collection<InstanceFailoverGroupReplicationRole> values() {
         return values(InstanceFailoverGroupReplicationRole.class);
     }

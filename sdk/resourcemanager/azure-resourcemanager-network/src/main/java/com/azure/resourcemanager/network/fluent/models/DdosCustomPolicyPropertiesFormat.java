@@ -4,20 +4,16 @@
 
 package com.azure.resourcemanager.network.fluent.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.management.SubResource;
-import com.azure.resourcemanager.network.models.ProtocolCustomSettingsFormat;
+import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** DDoS custom policy properties. */
-@Fluent
+@Immutable
 public final class DdosCustomPolicyPropertiesFormat {
     /*
-     * The resource GUID property of the DDoS custom policy resource. It
-     * uniquely identifies the resource, even if the user changes its name or
-     * migrate the resource across subscriptions or resource groups.
+     * The resource GUID property of the DDoS custom policy resource. It uniquely identifies the resource, even if the
+     * user changes its name or migrate the resource across subscriptions or resource groups.
      */
     @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
@@ -28,18 +24,9 @@ public final class DdosCustomPolicyPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /*
-     * The list of public IPs associated with the DDoS custom policy resource.
-     * This list is read-only.
-     */
-    @JsonProperty(value = "publicIPAddresses", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SubResource> publicIpAddresses;
-
-    /*
-     * The protocol-specific DDoS policy customization parameters.
-     */
-    @JsonProperty(value = "protocolCustomSettings")
-    private List<ProtocolCustomSettingsFormat> protocolCustomSettings;
+    /** Creates an instance of DdosCustomPolicyPropertiesFormat class. */
+    public DdosCustomPolicyPropertiesFormat() {
+    }
 
     /**
      * Get the resourceGuid property: The resource GUID property of the DDoS custom policy resource. It uniquely
@@ -62,44 +49,10 @@ public final class DdosCustomPolicyPropertiesFormat {
     }
 
     /**
-     * Get the publicIpAddresses property: The list of public IPs associated with the DDoS custom policy resource. This
-     * list is read-only.
-     *
-     * @return the publicIpAddresses value.
-     */
-    public List<SubResource> publicIpAddresses() {
-        return this.publicIpAddresses;
-    }
-
-    /**
-     * Get the protocolCustomSettings property: The protocol-specific DDoS policy customization parameters.
-     *
-     * @return the protocolCustomSettings value.
-     */
-    public List<ProtocolCustomSettingsFormat> protocolCustomSettings() {
-        return this.protocolCustomSettings;
-    }
-
-    /**
-     * Set the protocolCustomSettings property: The protocol-specific DDoS policy customization parameters.
-     *
-     * @param protocolCustomSettings the protocolCustomSettings value to set.
-     * @return the DdosCustomPolicyPropertiesFormat object itself.
-     */
-    public DdosCustomPolicyPropertiesFormat withProtocolCustomSettings(
-        List<ProtocolCustomSettingsFormat> protocolCustomSettings) {
-        this.protocolCustomSettings = protocolCustomSettings;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (protocolCustomSettings() != null) {
-            protocolCustomSettings().forEach(e -> e.validate());
-        }
     }
 }

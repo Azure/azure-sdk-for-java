@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Goal. */
+/** Defines supported metric goals for hyperparameter tuning. */
 public final class Goal extends ExpandableStringEnum<Goal> {
     /** Static value Minimize for Goal. */
     public static final Goal MINIMIZE = fromString("Minimize");

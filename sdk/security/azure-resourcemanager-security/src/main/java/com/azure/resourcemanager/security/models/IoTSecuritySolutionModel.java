@@ -49,6 +49,13 @@ public interface IoTSecuritySolutionModel {
     SystemData systemData();
 
     /**
+     * Gets the tags property: Resource tags.
+     *
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
      * Gets the workspace property: Workspace resource ID.
      *
      * @return the workspace value.
@@ -128,13 +135,6 @@ public interface IoTSecuritySolutionModel {
     List<AdditionalWorkspacesProperties> additionalWorkspaces();
 
     /**
-     * Gets the tags property: Resource tags.
-     *
-     * @return the tags value.
-     */
-    Map<String, String> tags();
-
-    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -147,6 +147,13 @@ public interface IoTSecuritySolutionModel {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.IoTSecuritySolutionModelInner object.

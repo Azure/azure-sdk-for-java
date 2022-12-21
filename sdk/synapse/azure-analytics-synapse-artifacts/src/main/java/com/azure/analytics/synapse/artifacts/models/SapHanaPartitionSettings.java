@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SapHanaPartitionSettings {
     /*
-     * The name of the column that will be used for proceeding range
-     * partitioning. Type: string (or Expression with resultType string).
+     * The name of the column that will be used for proceeding range partitioning. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "partitionColumnName")
     private Object partitionColumnName;

@@ -10,7 +10,7 @@ import java.time.Duration;
 /** The interface for RecoveryServicesManagementClient class. */
 public interface RecoveryServicesManagementClient {
     /**
-     * Gets The subscription Id.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -99,6 +99,13 @@ public interface RecoveryServicesManagementClient {
      * @return the VaultExtendedInfoesClient object.
      */
     VaultExtendedInfoesClient getVaultExtendedInfoes();
+
+    /**
+     * Gets the ResourceProvidersClient object to access its operations.
+     *
+     * @return the ResourceProvidersClient object.
+     */
+    ResourceProvidersClient getResourceProviders();
 
     /**
      * Gets the UsagesClient object to access its operations.

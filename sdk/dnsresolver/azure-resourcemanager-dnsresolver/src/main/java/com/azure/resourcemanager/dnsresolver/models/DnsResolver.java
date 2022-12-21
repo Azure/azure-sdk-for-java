@@ -107,6 +107,13 @@ public interface DnsResolver {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.dnsresolver.fluent.models.DnsResolverInner object.
      *
      * @return the inner object.
@@ -118,6 +125,7 @@ public interface DnsResolver {
         extends DefinitionStages.Blank,
             DefinitionStages.WithLocation,
             DefinitionStages.WithResourceGroup,
+            DefinitionStages.WithVirtualNetwork,
             DefinitionStages.WithCreate {
     }
     /** The DnsResolver definition stages. */
@@ -151,17 +159,25 @@ public interface DnsResolver {
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
-            WithCreate withExistingResourceGroup(String resourceGroupName);
+            WithVirtualNetwork withExistingResourceGroup(String resourceGroupName);
+        }
+        /** The stage of the DnsResolver definition allowing to specify virtualNetwork. */
+        interface WithVirtualNetwork {
+            /**
+             * Specifies the virtualNetwork property: The reference to the virtual network. This cannot be changed after
+             * creation..
+             *
+             * @param virtualNetwork The reference to the virtual network. This cannot be changed after creation.
+             * @return the next definition stage.
+             */
+            WithCreate withVirtualNetwork(SubResource virtualNetwork);
         }
         /**
          * The stage of the DnsResolver definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithVirtualNetwork,
-                DefinitionStages.WithIfMatch,
-                DefinitionStages.WithIfNoneMatch {
+            extends DefinitionStages.WithTags, DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              *
@@ -186,17 +202,6 @@ public interface DnsResolver {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
-        }
-        /** The stage of the DnsResolver definition allowing to specify virtualNetwork. */
-        interface WithVirtualNetwork {
-            /**
-             * Specifies the virtualNetwork property: The reference to the virtual network. This cannot be changed after
-             * creation..
-             *
-             * @param virtualNetwork The reference to the virtual network. This cannot be changed after creation.
-             * @return the next definition stage.
-             */
-            WithCreate withVirtualNetwork(SubResource virtualNetwork);
         }
         /** The stage of the DnsResolver definition allowing to specify ifMatch. */
         interface WithIfMatch {

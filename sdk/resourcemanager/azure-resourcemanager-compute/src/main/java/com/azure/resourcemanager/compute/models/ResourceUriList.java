@@ -13,18 +13,21 @@ import java.util.List;
 @Fluent
 public final class ResourceUriList {
     /*
-     * A list of IDs or Owner IDs of resources which are encrypted with the
-     * disk encryption set.
+     * A list of IDs or Owner IDs of resources which are encrypted with the disk encryption set.
      */
     @JsonProperty(value = "value", required = true)
     private List<String> value;
 
     /*
-     * The uri to fetch the next page of encrypted resources. Call ListNext()
-     * with this to fetch the next page of encrypted resources.
+     * The uri to fetch the next page of encrypted resources. Call ListNext() with this to fetch the next page of
+     * encrypted resources.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of ResourceUriList class. */
+    public ResourceUriList() {
+    }
 
     /**
      * Get the value property: A list of IDs or Owner IDs of resources which are encrypted with the disk encryption set.

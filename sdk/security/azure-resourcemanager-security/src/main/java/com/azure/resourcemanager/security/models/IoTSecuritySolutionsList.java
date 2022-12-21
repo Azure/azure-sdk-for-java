@@ -7,15 +7,12 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.models.IoTSecuritySolutionModelInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of IoT Security solutions. */
 @Fluent
 public final class IoTSecuritySolutionsList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IoTSecuritySolutionsList.class);
-
     /*
      * List of IoT Security solutions
      */
@@ -27,6 +24,10 @@ public final class IoTSecuritySolutionsList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of IoTSecuritySolutionsList class. */
+    public IoTSecuritySolutionsList() {
+    }
 
     /**
      * Get the value property: List of IoT Security solutions.
@@ -64,11 +65,13 @@ public final class IoTSecuritySolutionsList {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model IoTSecuritySolutionsList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IoTSecuritySolutionsList.class);
 }

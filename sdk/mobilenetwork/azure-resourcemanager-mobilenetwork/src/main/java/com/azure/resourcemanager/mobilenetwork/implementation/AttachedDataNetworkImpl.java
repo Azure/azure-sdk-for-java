@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.mobilenetwork.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.AttachedDataNetworkInner;
 import com.azure.resourcemanager.mobilenetwork.models.AttachedDataNetwork;
@@ -47,12 +48,25 @@ public final class AttachedDataNetworkImpl
         }
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 
     public InterfaceProperties userPlaneDataInterface() {
         return this.innerModel().userPlaneDataInterface();
+    }
+
+    public List<String> dnsAddresses() {
+        List<String> inner = this.innerModel().dnsAddresses();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public NaptConfiguration naptConfiguration() {
@@ -83,6 +97,10 @@ public final class AttachedDataNetworkImpl
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public AttachedDataNetworkInner innerModel() {
@@ -237,6 +255,11 @@ public final class AttachedDataNetworkImpl
 
     public AttachedDataNetworkImpl withUserPlaneDataInterface(InterfaceProperties userPlaneDataInterface) {
         this.innerModel().withUserPlaneDataInterface(userPlaneDataInterface);
+        return this;
+    }
+
+    public AttachedDataNetworkImpl withDnsAddresses(List<String> dnsAddresses) {
+        this.innerModel().withDnsAddresses(dnsAddresses);
         return this;
     }
 

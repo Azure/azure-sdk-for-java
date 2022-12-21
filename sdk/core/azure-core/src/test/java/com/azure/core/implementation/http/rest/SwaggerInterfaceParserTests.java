@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 public class SwaggerInterfaceParserTests {
 
     interface TestInterface1 {
-        String testMethod1();
     }
 
     @Host("https://management.azure.com")
@@ -33,17 +32,19 @@ public class SwaggerInterfaceParserTests {
 
     @Test
     public void hostWithNoHostAnnotation() {
-        assertThrows(MissingRequiredAnnotationException.class, () -> new SwaggerInterfaceParser(TestInterface1.class, null));
+        assertThrows(MissingRequiredAnnotationException.class,
+            () -> SwaggerInterfaceParser.getInstance(TestInterface1.class));
     }
 
     @Test
     public void hostWithNoServiceNameAnnotation() {
-        assertThrows(MissingRequiredAnnotationException.class, () -> new SwaggerInterfaceParser(TestInterface2.class, null));
+        assertThrows(MissingRequiredAnnotationException.class,
+            () -> SwaggerInterfaceParser.getInstance(TestInterface2.class));
     }
 
     @Test
     public void hostWithHostAnnotation() {
-        final SwaggerInterfaceParser interfaceParser = new SwaggerInterfaceParser(TestInterface3.class, null);
+        final SwaggerInterfaceParser interfaceParser = SwaggerInterfaceParser.getInstance(TestInterface3.class);
         assertEquals("https://management.azure.com", interfaceParser.getHost());
         assertEquals("myService", interfaceParser.getServiceName());
     }
@@ -57,16 +58,17 @@ public class SwaggerInterfaceParserTests {
     }
 
     @Test
-    public void methodParser() {
-        final SwaggerInterfaceParser interfaceParser = new SwaggerInterfaceParser(TestInterface4.class, null);
-        final Method testMethod3 = TestInterface4.class.getDeclaredMethods()[0];
-        assertEquals("testMethod4", testMethod3.getName());
+    public void methodParser() throws NoSuchMethodException {
+        final SwaggerInterfaceParser interfaceParser = SwaggerInterfaceParser.getInstance(TestInterface4.class);
+        final Method testMethod4 = TestInterface4.class.getDeclaredMethod("testMethod4");
+        assertEquals("testMethod4", testMethod4.getName());
 
-        final SwaggerMethodParser methodParser = interfaceParser.getMethodParser(testMethod3);
+        final SwaggerMethodParser methodParser = interfaceParser.getMethodParser(testMethod4);
         assertNotNull(methodParser);
-        assertEquals("com.azure.core.implementation.http.rest.SwaggerInterfaceParserTests$TestInterface4.testMethod4", methodParser.getFullyQualifiedMethodName());
+        assertEquals("com.azure.core.implementation.http.rest.SwaggerInterfaceParserTests$TestInterface4.testMethod4",
+            methodParser.getFullyQualifiedMethodName());
 
-        final SwaggerMethodParser methodDetails2 = interfaceParser.getMethodParser(testMethod3);
+        final SwaggerMethodParser methodDetails2 = interfaceParser.getMethodParser(testMethod4);
         assertSame(methodParser, methodDetails2);
     }
 }

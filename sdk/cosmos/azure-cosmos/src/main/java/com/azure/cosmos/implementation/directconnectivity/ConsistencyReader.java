@@ -212,12 +212,7 @@ public class ConsistencyReader {
                 return this.readPrimaryAsync(entity, useSessionToken.v);
 
             case Strong:
-                entity.requestContext.performLocalRefreshOnGoneException = true;
-                return this.quorumReader.readStrongAsync(this.diagnosticsClientContext, entity, readQuorumValue, desiredReadMode);
-
             case BoundedStaleness:
-                entity.requestContext.performLocalRefreshOnGoneException = true;
-
                 // for bounded staleness, we are defaulting to read strong for local region reads.
                 // this can be done since we are always running with majority quorum w = 3 (or 2 during quorum downshift).
                 // This means that the primary will always be part of the write quorum, and
@@ -228,6 +223,8 @@ public class ConsistencyReader {
                 // we always contact two secondary replicas and exclude primary.
                 // However, this model significantly reduces availability and available throughput for serving reads for bounded staleness during reconfiguration.
                 // Therefore, to ensure monotonic read guarantee from any replica set we will just use regular quorum read(R=2) since our write quorum is always majority(W=3)
+
+                entity.requestContext.performLocalRefreshOnGoneException = true;
                 return this.quorumReader.readStrongAsync(this.diagnosticsClientContext, entity, readQuorumValue, desiredReadMode);
 
             case Any:

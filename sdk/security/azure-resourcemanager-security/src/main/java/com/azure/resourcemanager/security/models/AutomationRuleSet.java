@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,13 +14,15 @@ import java.util.List;
  */
 @Fluent
 public final class AutomationRuleSet {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomationRuleSet.class);
-
     /*
      * The rules property.
      */
     @JsonProperty(value = "rules")
     private List<AutomationTriggeringRule> rules;
+
+    /** Creates an instance of AutomationRuleSet class. */
+    public AutomationRuleSet() {
+    }
 
     /**
      * Get the rules property: The rules property.

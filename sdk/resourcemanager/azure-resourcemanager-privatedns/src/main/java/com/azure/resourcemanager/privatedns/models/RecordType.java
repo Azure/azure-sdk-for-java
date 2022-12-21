@@ -48,6 +48,9 @@ public enum RecordType {
      */
     @JsonCreator
     public static RecordType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         RecordType[] items = RecordType.values();
         for (RecordType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -57,6 +60,7 @@ public enum RecordType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AfdProvisioningState. */
+/** Provisioning status. */
 public final class AfdProvisioningState extends ExpandableStringEnum<AfdProvisioningState> {
     /** Static value Succeeded for AfdProvisioningState. */
     public static final AfdProvisioningState SUCCEEDED = fromString("Succeeded");
@@ -36,7 +36,11 @@ public final class AfdProvisioningState extends ExpandableStringEnum<AfdProvisio
         return fromString(name, AfdProvisioningState.class);
     }
 
-    /** @return known AfdProvisioningState values. */
+    /**
+     * Gets known AfdProvisioningState values.
+     *
+     * @return known AfdProvisioningState values.
+     */
     public static Collection<AfdProvisioningState> values() {
         return values(AfdProvisioningState.class);
     }

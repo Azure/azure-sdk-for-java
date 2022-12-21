@@ -21,8 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class VirtualMachineScaleSetVMPropertiesInner {
     /*
-     * Specifies whether the latest model has been applied to the virtual
-     * machine.
+     * Specifies whether the latest model has been applied to the virtual machine.
      */
     @JsonProperty(value = "latestModelApplied", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean latestModelApplied;
@@ -52,10 +51,9 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
     private StorageProfile storageProfile;
 
     /*
-     * Specifies additional capabilities enabled or disabled on the virtual
-     * machine in the scale set. For instance: whether the virtual machine has
-     * the capability to support attaching managed data disks with UltraSSD_LRS
-     * storage account type.
+     * Specifies additional capabilities enabled or disabled on the virtual machine in the scale set. For instance:
+     * whether the virtual machine has the capability to support attaching managed data disks with UltraSSD_LRS storage
+     * account type.
      */
     @JsonProperty(value = "additionalCapabilities")
     private AdditionalCapabilities additionalCapabilities;
@@ -85,24 +83,19 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
     private VirtualMachineScaleSetVMNetworkProfileConfiguration networkProfileConfiguration;
 
     /*
-     * Specifies the boot diagnostic settings state. <br><br>Minimum
-     * api-version: 2015-06-15.
+     * Specifies the boot diagnostic settings state. <br><br>Minimum api-version: 2015-06-15.
      */
     @JsonProperty(value = "diagnosticsProfile")
     private DiagnosticsProfile diagnosticsProfile;
 
     /*
-     * Specifies information about the availability set that the virtual
-     * machine should be assigned to. Virtual machines specified in the same
-     * availability set are allocated to different nodes to maximize
-     * availability. For more information about availability sets, see
-     * [Availability sets
-     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview).
-     * <br><br> For more information on Azure planned maintenance, see
-     * [Maintenance and updates for Virtual Machines in
-     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates)
-     * <br><br> Currently, a VM can only be added to availability set at
-     * creation time. An existing VM cannot be added to an availability set.
+     * Specifies information about the availability set that the virtual machine should be assigned to. Virtual
+     * machines specified in the same availability set are allocated to different nodes to maximize availability. For
+     * more information about availability sets, see [Availability sets
+     * overview](https://docs.microsoft.com/azure/virtual-machines/availability-set-overview). <br><br> For more
+     * information on Azure planned maintenance, see [Maintenance and updates for Virtual Machines in
+     * Azure](https://docs.microsoft.com/azure/virtual-machines/maintenance-and-updates) <br><br> Currently, a VM can
+     * only be added to availability set at creation time. An existing VM cannot be added to an availability set.
      */
     @JsonProperty(value = "availabilitySet")
     private SubResource availabilitySet;
@@ -114,24 +107,21 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
     private String provisioningState;
 
     /*
-     * Specifies that the image or disk that is being used was licensed
-     * on-premises. <br><br> Possible values for Windows Server operating
-     * system are: <br><br> Windows_Client <br><br> Windows_Server <br><br>
-     * Possible values for Linux Server operating system are: <br><br>
-     * RHEL_BYOS (for RHEL) <br><br> SLES_BYOS (for SUSE) <br><br> For more
-     * information, see [Azure Hybrid Use Benefit for Windows
-     * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing)
-     * <br><br> [Azure Hybrid Use Benefit for Linux
-     * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux)
-     * <br><br> Minimum api-version: 2015-06-15
+     * Specifies that the image or disk that is being used was licensed on-premises. <br><br> Possible values for
+     * Windows Server operating system are: <br><br> Windows_Client <br><br> Windows_Server <br><br> Possible values
+     * for Linux Server operating system are: <br><br> RHEL_BYOS (for RHEL) <br><br> SLES_BYOS (for SUSE) <br><br> For
+     * more information, see [Azure Hybrid Use Benefit for Windows
+     * Server](https://docs.microsoft.com/azure/virtual-machines/windows/hybrid-use-benefit-licensing) <br><br> [Azure
+     * Hybrid Use Benefit for Linux
+     * Server](https://docs.microsoft.com/azure/virtual-machines/linux/azure-hybrid-benefit-linux) <br><br> Minimum
+     * api-version: 2015-06-15
      */
     @JsonProperty(value = "licenseType")
     private String licenseType;
 
     /*
-     * Specifies whether the model applied to the virtual machine is the model
-     * of the virtual machine scale set or the customized model for the virtual
-     * machine.
+     * Specifies whether the model applied to the virtual machine is the model of the virtual machine scale set or the
+     * customized model for the virtual machine.
      */
     @JsonProperty(value = "modelDefinitionApplied", access = JsonProperty.Access.WRITE_ONLY)
     private String modelDefinitionApplied;
@@ -143,11 +133,15 @@ public final class VirtualMachineScaleSetVMPropertiesInner {
     private VirtualMachineScaleSetVMProtectionPolicy protectionPolicy;
 
     /*
-     * UserData for the VM, which must be base-64 encoded. Customer should not
-     * pass any secrets in here. <br><br>Minimum api-version: 2021-03-01
+     * UserData for the VM, which must be base-64 encoded. Customer should not pass any secrets in here.
+     * <br><br>Minimum api-version: 2021-03-01
      */
     @JsonProperty(value = "userData")
     private String userData;
+
+    /** Creates an instance of VirtualMachineScaleSetVMPropertiesInner class. */
+    public VirtualMachineScaleSetVMPropertiesInner() {
+    }
 
     /**
      * Get the latestModelApplied property: Specifies whether the latest model has been applied to the virtual machine.

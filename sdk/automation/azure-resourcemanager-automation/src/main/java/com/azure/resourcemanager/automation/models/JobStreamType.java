@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for JobStreamType. */
+/** Gets or sets the stream type. */
 public final class JobStreamType extends ExpandableStringEnum<JobStreamType> {
     /** Static value Progress for JobStreamType. */
     public static final JobStreamType PROGRESS = fromString("Progress");
@@ -42,7 +42,11 @@ public final class JobStreamType extends ExpandableStringEnum<JobStreamType> {
         return fromString(name, JobStreamType.class);
     }
 
-    /** @return known JobStreamType values. */
+    /**
+     * Gets known JobStreamType values.
+     *
+     * @return known JobStreamType values.
+     */
     public static Collection<JobStreamType> values() {
         return values(JobStreamType.class);
     }

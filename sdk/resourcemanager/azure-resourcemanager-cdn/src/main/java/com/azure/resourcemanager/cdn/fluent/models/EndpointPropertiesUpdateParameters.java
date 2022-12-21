@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.EndpointPropertiesUpdateParametersDeliveryPolicy;
 import com.azure.resourcemanager.cdn.models.EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink;
 import com.azure.resourcemanager.cdn.models.GeoFilter;
@@ -13,94 +12,81 @@ import com.azure.resourcemanager.cdn.models.OptimizationType;
 import com.azure.resourcemanager.cdn.models.QueryStringCachingBehavior;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.azure.resourcemanager.cdn.models.UrlSigningKey;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The JSON object containing endpoint update parameters. */
 @Fluent
 public class EndpointPropertiesUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointPropertiesUpdateParameters.class);
-
     /*
-     * A directory path on the origin that CDN can use to retrieve content
-     * from, e.g. contoso.cloudapp.net/originpath.
+     * A directory path on the origin that CDN can use to retrieve content from, e.g. contoso.cloudapp.net/originpath.
      */
     @JsonProperty(value = "originPath")
     private String originPath;
 
     /*
-     * List of content types on which compression applies. The value should be
-     * a valid MIME type.
+     * List of content types on which compression applies. The value should be a valid MIME type.
      */
     @JsonProperty(value = "contentTypesToCompress")
     private List<String> contentTypesToCompress;
 
     /*
-     * The host header value sent to the origin with each request. This
-     * property at Endpoint is only allowed when endpoint uses single origin
-     * and can be overridden by the same property specified at origin.If you
-     * leave this blank, the request hostname determines this value. Azure CDN
-     * origins, such as Web Apps, Blob Storage, and Cloud Services require this
-     * host header value to match the origin hostname by default.
+     * The host header value sent to the origin with each request. This property at Endpoint is only allowed when
+     * endpoint uses single origin and can be overridden by the same property specified at origin.If you leave this
+     * blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud
+     * Services require this host header value to match the origin hostname by default.
      */
     @JsonProperty(value = "originHostHeader")
     private String originHostHeader;
 
     /*
-     * Indicates whether content compression is enabled on CDN. Default value
-     * is false. If compression is enabled, content will be served as
-     * compressed if user requests for a compressed version. Content won't be
-     * compressed on CDN when requested content is smaller than 1 byte or
-     * larger than 1 MB.
+     * Indicates whether content compression is enabled on CDN. Default value is false. If compression is enabled,
+     * content will be served as compressed if user requests for a compressed version. Content won't be compressed on
+     * CDN when requested content is smaller than 1 byte or larger than 1 MB.
      */
     @JsonProperty(value = "isCompressionEnabled")
     private Boolean isCompressionEnabled;
 
     /*
-     * Indicates whether HTTP traffic is allowed on the endpoint. Default value
-     * is true. At least one protocol (HTTP or HTTPS) must be allowed.
+     * Indicates whether HTTP traffic is allowed on the endpoint. Default value is true. At least one protocol (HTTP or
+     * HTTPS) must be allowed.
      */
     @JsonProperty(value = "isHttpAllowed")
     private Boolean isHttpAllowed;
 
     /*
-     * Indicates whether HTTPS traffic is allowed on the endpoint. Default
-     * value is true. At least one protocol (HTTP or HTTPS) must be allowed.
+     * Indicates whether HTTPS traffic is allowed on the endpoint. Default value is true. At least one protocol (HTTP
+     * or HTTPS) must be allowed.
      */
     @JsonProperty(value = "isHttpsAllowed")
     private Boolean isHttpsAllowed;
 
     /*
-     * Defines how CDN caches requests that include query strings. You can
-     * ignore any query strings when caching, bypass caching to prevent
-     * requests that contain query strings from being cached, or cache every
-     * request with a unique URL.
+     * Defines how CDN caches requests that include query strings. You can ignore any query strings when caching,
+     * bypass caching to prevent requests that contain query strings from being cached, or cache every request with a
+     * unique URL.
      */
     @JsonProperty(value = "queryStringCachingBehavior")
     private QueryStringCachingBehavior queryStringCachingBehavior;
 
     /*
-     * Specifies what scenario the customer wants this CDN endpoint to optimize
-     * for, e.g. Download, Media services. With this information, CDN can apply
-     * scenario driven optimization.
+     * Specifies what scenario the customer wants this CDN endpoint to optimize for, e.g. Download, Media services.
+     * With this information, CDN can apply scenario driven optimization.
      */
     @JsonProperty(value = "optimizationType")
     private OptimizationType optimizationType;
 
     /*
-     * Path to a file hosted on the origin which helps accelerate delivery of
-     * the dynamic content and calculate the most optimal routes for the CDN.
-     * This is relative to the origin path. This property is only relevant when
-     * using a single origin.
+     * Path to a file hosted on the origin which helps accelerate delivery of the dynamic content and calculate the
+     * most optimal routes for the CDN. This is relative to the origin path. This property is only relevant when using
+     * a single origin.
      */
     @JsonProperty(value = "probePath")
     private String probePath;
 
     /*
-     * List of rules defining the user's geo access within a CDN endpoint. Each
-     * geo filter defines an access rule to a specified path or content, e.g.
-     * block APAC for path /pictures/
+     * List of rules defining the user's geo access within a CDN endpoint. Each geo filter defines an access rule to a
+     * specified path or content, e.g. block APAC for path /pictures/
      */
     @JsonProperty(value = "geoFilters")
     private List<GeoFilter> geoFilters;
@@ -124,8 +110,7 @@ public class EndpointPropertiesUpdateParameters {
     private EndpointPropertiesUpdateParametersDeliveryPolicy deliveryPolicy;
 
     /*
-     * Defines the Web Application Firewall policy for the endpoint (if
-     * applicable)
+     * Defines the Web Application Firewall policy for the endpoint (if applicable)
      */
     @JsonProperty(value = "webApplicationFirewallPolicyLink")
     private EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink;

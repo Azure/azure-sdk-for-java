@@ -8,7 +8,12 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LinuxPatchAssessmentMode. */
+/**
+ * Specifies the mode of VM Guest Patch Assessment for the IaaS virtual machine.&lt;br /&gt;&lt;br /&gt; Possible values
+ * are:&lt;br /&gt;&lt;br /&gt; **ImageDefault** - You control the timing of patch assessments on a virtual machine.
+ * &lt;br /&gt;&lt;br /&gt; **AutomaticByPlatform** - The platform will trigger periodic patch assessments. The property
+ * provisionVMAgent must be true.
+ */
 public final class LinuxPatchAssessmentMode extends ExpandableStringEnum<LinuxPatchAssessmentMode> {
     /** Static value ImageDefault for LinuxPatchAssessmentMode. */
     public static final LinuxPatchAssessmentMode IMAGE_DEFAULT = fromString("ImageDefault");

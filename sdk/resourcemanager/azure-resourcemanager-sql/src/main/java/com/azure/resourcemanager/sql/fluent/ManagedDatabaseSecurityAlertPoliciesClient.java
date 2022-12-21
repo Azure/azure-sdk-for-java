@@ -30,7 +30,8 @@ public interface ManagedDatabaseSecurityAlertPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's security alert policy.
+     * @return a managed database's security alert policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ManagedDatabaseSecurityAlertPolicyInner>> getWithResponseAsync(
@@ -50,7 +51,7 @@ public interface ManagedDatabaseSecurityAlertPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's security alert policy.
+     * @return a managed database's security alert policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ManagedDatabaseSecurityAlertPolicyInner> getAsync(
@@ -91,7 +92,7 @@ public interface ManagedDatabaseSecurityAlertPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's security alert policy.
+     * @return a managed database's security alert policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ManagedDatabaseSecurityAlertPolicyInner> getWithResponse(
@@ -109,11 +110,12 @@ public interface ManagedDatabaseSecurityAlertPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the managed database for which the security alert policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters A managed database security alert policy.
+     * @param parameters The database security alert policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database security alert policy.
+     * @return a managed database security alert policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ManagedDatabaseSecurityAlertPolicyInner>> createOrUpdateWithResponseAsync(
@@ -131,11 +133,11 @@ public interface ManagedDatabaseSecurityAlertPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the managed database for which the security alert policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters A managed database security alert policy.
+     * @param parameters The database security alert policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database security alert policy.
+     * @return a managed database security alert policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ManagedDatabaseSecurityAlertPolicyInner> createOrUpdateAsync(
@@ -153,7 +155,7 @@ public interface ManagedDatabaseSecurityAlertPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the managed database for which the security alert policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters A managed database security alert policy.
+     * @param parameters The database security alert policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -175,12 +177,12 @@ public interface ManagedDatabaseSecurityAlertPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the managed database for which the security alert policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters A managed database security alert policy.
+     * @param parameters The database security alert policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database security alert policy.
+     * @return a managed database security alert policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ManagedDatabaseSecurityAlertPolicyInner> createOrUpdateWithResponse(
@@ -201,7 +203,7 @@ public interface ManagedDatabaseSecurityAlertPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed database's security alert policies.
+     * @return a list of managed database's security alert policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ManagedDatabaseSecurityAlertPolicyInner> listByDatabaseAsync(
@@ -217,7 +219,7 @@ public interface ManagedDatabaseSecurityAlertPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed database's security alert policies.
+     * @return a list of managed database's security alert policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedDatabaseSecurityAlertPolicyInner> listByDatabase(
@@ -234,7 +236,7 @@ public interface ManagedDatabaseSecurityAlertPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed database's security alert policies.
+     * @return a list of managed database's security alert policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedDatabaseSecurityAlertPolicyInner> listByDatabase(

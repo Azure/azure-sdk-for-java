@@ -30,7 +30,11 @@ public final class WafMetricsResponseGranularity extends ExpandableStringEnum<Wa
         return fromString(name, WafMetricsResponseGranularity.class);
     }
 
-    /** @return known WafMetricsResponseGranularity values. */
+    /**
+     * Gets known WafMetricsResponseGranularity values.
+     *
+     * @return known WafMetricsResponseGranularity values.
+     */
     public static Collection<WafMetricsResponseGranularity> values() {
         return values(WafMetricsResponseGranularity.class);
     }

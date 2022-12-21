@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PolicySettingsDefaultCustomBlockResponseStatusCode. */
+/** If the action type is block, this field defines the default customer overridable http response status code. */
 public final class PolicySettingsDefaultCustomBlockResponseStatusCode
     extends ExpandableStringEnum<PolicySettingsDefaultCustomBlockResponseStatusCode> {
     /** Static value 200 for PolicySettingsDefaultCustomBlockResponseStatusCode. */
@@ -37,7 +37,11 @@ public final class PolicySettingsDefaultCustomBlockResponseStatusCode
         return fromString(String.valueOf(name), PolicySettingsDefaultCustomBlockResponseStatusCode.class);
     }
 
-    /** @return known PolicySettingsDefaultCustomBlockResponseStatusCode values. */
+    /**
+     * Gets known PolicySettingsDefaultCustomBlockResponseStatusCode values.
+     *
+     * @return known PolicySettingsDefaultCustomBlockResponseStatusCode values.
+     */
     public static Collection<PolicySettingsDefaultCustomBlockResponseStatusCode> values() {
         return values(PolicySettingsDefaultCustomBlockResponseStatusCode.class);
     }

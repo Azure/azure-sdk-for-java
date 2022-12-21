@@ -82,6 +82,7 @@ public class ServiceBusReactorSessionTest {
     private static final String ENTITY_PATH = "entityPath";
     private static final String VIA_ENTITY_PATH = "viaEntityPath";
     private static final String VIA_ENTITY_PATH_SENDER_LINK_NAME = "VIA-" + VIA_ENTITY_PATH;
+    private static final String CLIENT_IDENTIFIER = "clientIdentifier";
 
     @Mock
     private Reactor reactor;
@@ -220,7 +221,7 @@ public class ServiceBusReactorSessionTest {
 
         // Act
         serviceBusReactorSession.createProducer(VIA_ENTITY_PATH_SENDER_LINK_NAME, VIA_ENTITY_PATH,
-            retryOptions.getTryTimeout(), retryPolicy, ENTITY_PATH)
+            retryOptions.getTryTimeout(), retryPolicy, ENTITY_PATH, CLIENT_IDENTIFIER)
             .subscribe();
 
         // Assert
@@ -250,7 +251,7 @@ public class ServiceBusReactorSessionTest {
 
         // Act
         StepVerifier.create(serviceBusReactorSession.createProducer(VIA_ENTITY_PATH_SENDER_LINK_NAME, VIA_ENTITY_PATH,
-            retryOptions.getTryTimeout(), retryPolicy, ENTITY_PATH))
+            retryOptions.getTryTimeout(), retryPolicy, ENTITY_PATH, CLIENT_IDENTIFIER))
             .verifyError(RuntimeException.class);
 
         // Assert

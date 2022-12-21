@@ -102,7 +102,13 @@ public final class AzureEnvironment {
 
     /**
      * Provides the settings for authentication with Azure Germany.
+     * <p>
+     * Microsoft no longer be accepting new customers or deploying any new services from Microsoft Cloud Germany.
+     *
+     * @deprecated Use {@link Region#GERMANY_WEST_CENTRAL} or {@link Region#GERMANY_NORTH}
+     * with {@link AzureEnvironment#AZURE}.
      */
+    @Deprecated
     public static final AzureEnvironment AZURE_GERMANY = new AzureEnvironment(new HashMap<String, String>() {{
             put("portalUrl", "https://portal.microsoftazure.de");
             put("publishingProfileUrl", "https://manage.microsoftazure.de/publishsettings/index");
@@ -136,7 +142,7 @@ public final class AzureEnvironment {
      * @return the list of known environments to Azure SDK.
      */
     public static List<AzureEnvironment> knownEnvironments() {
-        return Arrays.asList(AZURE, AZURE_CHINA, AZURE_GERMANY, AZURE_US_GOVERNMENT);
+        return Arrays.asList(AZURE, AZURE_CHINA, AZURE_US_GOVERNMENT);
     }
 
     /**

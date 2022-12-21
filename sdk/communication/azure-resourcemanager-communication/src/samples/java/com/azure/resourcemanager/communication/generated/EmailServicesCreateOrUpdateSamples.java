@@ -7,7 +7,7 @@ package com.azure.resourcemanager.communication.generated;
 /** Samples for EmailServices CreateOrUpdate. */
 public final class EmailServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2021-10-01-preview/examples/emailServices/createOrUpdate.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/emailServices/createOrUpdate.json
      */
     /**
      * Sample code: Create or update EmailService resource.

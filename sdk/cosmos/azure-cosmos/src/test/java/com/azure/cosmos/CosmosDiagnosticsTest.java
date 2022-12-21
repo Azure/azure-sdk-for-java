@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseForTest;
+import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IndexUtilizationInfo;
@@ -28,8 +29,12 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.routing.LocationCache;
+import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.CosmosBatchRequestOptions;
+import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -39,6 +44,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -304,6 +310,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             );
             assertThat(diagnostics).containsPattern("(?s).*?\"activityId\":\"[^\\s\"]+\".*");
             assertThat(diagnostics).contains("\"backendLatencyInMs\"");
+            assertThat(diagnostics).contains("\"retryAfterInMs\"");
             // TODO: Add this check back when enable the channelAcquisitionContext again
             // assertThat(diagnostics).contains("\"transportRequestChannelAcquisitionContext\"");
             assertThat(createResponse.getDiagnostics().getContactedRegionNames()).isNotEmpty();
@@ -319,6 +326,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             } catch (CosmosException e) {
                 diagnostics = e.getDiagnostics().toString();
                 assertThat(diagnostics).contains("\"backendLatencyInMs\"");
+                assertThat(diagnostics).contains("\"retryAfterInMs\"");
                 assertThat(diagnostics).contains("\"exceptionMessage\":\"[\\\"Resource with specified id or name already exists.\\\"]\"");
                 assertThat(diagnostics).contains("\"exceptionResponseHeaders\"");
                 assertThat(diagnostics).doesNotContain("\"exceptionResponseHeaders\": \"{}\"");
@@ -327,6 +335,113 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         } finally {
             if (testDirectClient != null) {
                 testDirectClient.close();
+            }
+        }
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void requestSessionTokenDiagnostics() {
+        CosmosClient testSessionTokenClient = null;
+        try {
+            testSessionTokenClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .consistencyLevel(ConsistencyLevel.SESSION)
+                .contentResponseOnWriteEnabled(true)
+                .directMode()
+                .buildClient();
+            CosmosContainer cosmosContainer =
+                testSessionTokenClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+            InternalObjectNode internalObjectNode = getInternalObjectNode();
+            CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer.createItem(internalObjectNode);
+            String diagnostics = createResponse.getDiagnostics().toString();
+
+            // assert that request session token was not sent to backend (null)
+            assertThat(diagnostics).contains("\"requestSessionToken\":null");
+
+            // read item to validate response and request session tokens are equal
+            String sessionToken = createResponse.getSessionToken();
+            CosmosItemResponse<InternalObjectNode> readResponse =
+                cosmosContainer.readItem(BridgeInternal.getProperties(createResponse).getId(),
+                    new PartitionKey(BridgeInternal.getProperties(createResponse).getId()),
+                    InternalObjectNode.class);
+            diagnostics = readResponse.getDiagnostics().toString();
+            assertThat(diagnostics).contains(String.format("\"requestSessionToken\":\"%s\"", sessionToken));
+
+            // use batch operation to check that user-set session token is being passed in
+            // need to use batch since we only pass session token on multiple region write or batch operation
+            CosmosBatch batch = CosmosBatch.createCosmosBatch(new PartitionKey(
+                BridgeInternal.getProperties(createResponse).getId()));
+            internalObjectNode = getInternalObjectNode();
+            batch.createItemOperation(internalObjectNode);
+            CosmosBatchResponse batchResponse = cosmosContainer.executeCosmosBatch(batch,
+                new CosmosBatchRequestOptions().setSessionToken(readResponse.getSessionToken()));
+            diagnostics = batchResponse.getDiagnostics().toString();
+            assertThat(diagnostics).contains(String.format("\"requestSessionToken\":\"%s\"",
+                readResponse.getSessionToken()));
+
+        } finally {
+            if (testSessionTokenClient != null) {
+                testSessionTokenClient.close();
+            }
+        }
+    }
+
+    @Test(groups = {"simple"})
+    public void databaseAccountToClients() {
+        CosmosClient testClient = null;
+        try {
+            testClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .directMode()
+                .buildClient();
+            CosmosContainer cosmosContainer =
+                testClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+            InternalObjectNode internalObjectNode = getInternalObjectNode();
+            CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer.createItem(internalObjectNode);
+            String diagnostics = createResponse.getDiagnostics().toString();
+
+            // assert diagnostics shows the correct format for tracking client instances
+            assertThat(diagnostics).contains(String.format("\"clientEndpoints\"" +
+                    ":{\"%s\"", TestConfigurations.HOST));
+            // track number of clients currently mapped to account
+            int clientsIndex = diagnostics.indexOf("\"clientEndpoints\":");
+            // we do end at +120 to ensure we grab the bracket even if the account is very long or if
+            // we have hundreds of clients (triple digit ints) running at once in the pipelines
+            String[] substrings = diagnostics.substring(clientsIndex, clientsIndex + 120)
+                .split("}")[0].split(":");
+            String intString = substrings[substrings.length-1];
+            int intValue = Integer.parseInt(intString);
+
+
+            CosmosClient testClient2 = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .directMode()
+                .buildClient();
+
+            internalObjectNode = getInternalObjectNode();
+            createResponse = cosmosContainer.createItem(internalObjectNode);
+            diagnostics = createResponse.getDiagnostics().toString();
+            // assert diagnostics shows the correct format for tracking client instances
+            assertThat(diagnostics).contains(String.format("\"clientEndpoints\"" +
+                ":{\"%s\"", TestConfigurations.HOST));
+            // grab new value and assert one additional client is mapped to the same account used previously
+            clientsIndex = diagnostics.indexOf("\"clientEndpoints\":");
+            substrings = diagnostics.substring(clientsIndex, clientsIndex + 120)
+                .split("}")[0].split(":");
+            intString = substrings[substrings.length-1];
+            assertThat(Integer.parseInt(intString)).isEqualTo(intValue+1);
+
+            //close second client
+            testClient2.close();
+
+        } finally {
+            if (testClient != null) {
+                testClient.close();
             }
         }
     }
@@ -384,6 +499,27 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 feedResponseCounter++;
             }
         }
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void readManyDiagnostics() {
+        String pkValue = UUID.randomUUID().toString();
+        PartitionKey partitionKey = new PartitionKey(pkValue);
+        CosmosContainer cosmosContainer = directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+        List<CosmosItemIdentity> itemIdList = new ArrayList<>();
+        for(int i = 0; i< 100; i++) {
+            InternalObjectNode internalObjectNode = getInternalObjectNode(pkValue);
+            CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer.createItem(internalObjectNode);
+            if(i%20 == 0) {
+                itemIdList.add(new CosmosItemIdentity(partitionKey, internalObjectNode.getId()));
+            }
+        }
+
+        FeedResponse<InternalObjectNode> response = cosmosContainer.readMany(itemIdList, InternalObjectNode.class);
+        FeedResponseDiagnostics diagnostics = response.getCosmosDiagnostics().getFeedResponseDiagnostics();
+
+        assertThat(diagnostics.getClientSideRequestStatisticsList().size()).isEqualTo(itemIdList.size());
+        assertThat(diagnostics.getQueryMetricsMap().values().iterator().next().getRetrievedDocumentCount()).isEqualTo(itemIdList.size());
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
@@ -675,6 +811,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(exception.getDiagnostics().getContactedRegionNames()).isNotEmpty();
             assertThat(exception.getDiagnostics().getDuration()).isNotNull();
             assertThat(diagnostics).contains("\"backendLatencyInMs\"");
+            assertThat(diagnostics).contains("\"retryAfterInMs\"");
             assertThat(diagnostics).containsPattern("(?s).*?\"activityId\":\"[^\\s\"]+\".*");
             assertThat(diagnostics).contains("\"exceptionMessage\":\"[\\\"Resource Not Found.");
             assertThat(diagnostics).contains("\"exceptionResponseHeaders\"");
@@ -682,6 +819,17 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             isValidJSON(diagnostics);
             validateTransportRequestTimelineDirect(diagnostics);
             validateRegionContacted(createResponse.getDiagnostics(), client.asyncClient());
+
+            // TODO: add better store result diagnostic validation on exception
+            ObjectNode diagnosticsNode = (ObjectNode) OBJECT_MAPPER.readTree(diagnostics);
+            JsonNode responseStatisticsList = diagnosticsNode.get("responseStatisticsList");
+            assertThat(responseStatisticsList.isArray()).isTrue();
+            assertThat(responseStatisticsList.size()).isGreaterThan(0);
+            JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
+            assertThat(storeResult).isNotNull();
+            JsonNode replicaStatusList = storeResult.get("replicaStatusList");
+            assertThat(replicaStatusList.isArray()).isTrue();
+            assertThat(replicaStatusList.size()).isGreaterThan(0);
         } finally {
             if (client != null) {
                 client.close();
@@ -766,7 +914,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(Instant.now().toEpochMilli() - instant.toEpochMilli()).isLessThan(5000);
             assertThat(node.get("requestResponseTimeUTC")).isNotNull();
             assertThat(node.get("requestOperationType")).isNotNull();
-            assertThat(node.get("requestOperationType")).isNotNull();
+            assertThat(node.get("requestSessionToken")).isNotNull();
         }
     }
 
@@ -931,6 +1079,9 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
         assertThat(storeResult.get("channelTaskQueueSize").asInt(-1)).isGreaterThanOrEqualTo(0);
         assertThat(storeResult.get("pendingRequestsCount").asInt(-1)).isGreaterThanOrEqualTo(0);
+        JsonNode replicaStatusList = storeResult.get("replicaStatusList");
+        assertThat(replicaStatusList.isArray()).isTrue();
+        assertThat(replicaStatusList.size()).isGreaterThan(0);
 
         JsonNode serviceEndpointStatistics = storeResult.get("serviceEndpointStatistics");
         assertThat(serviceEndpointStatistics).isNotNull();
@@ -1129,7 +1280,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     public void isValidJSON(final String json) {
         try {
-            final JsonParser parser = new ObjectMapper().createParser(json);
+            final JsonParser parser = new JsonFactory().createParser(json);
             while (parser.nextToken() != null) {
             }
         } catch (IOException ex) {

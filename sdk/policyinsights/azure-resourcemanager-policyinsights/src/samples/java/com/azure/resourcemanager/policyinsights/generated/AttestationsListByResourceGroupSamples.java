@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Attestations ListByResourceGroup. */
 public final class AttestationsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_ListResourceGroupScope_WithQuery.json
+     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/Attestations_ListResourceGroupScope_WithQuery.json
      */
     /**
      * Sample code: List attestations at resource group scope with query parameters.
@@ -30,7 +30,7 @@ public final class AttestationsListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_ListResourceGroupScope.json
+     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/Attestations_ListResourceGroupScope.json
      */
     /**
      * Sample code: List attestations at resource group scope.

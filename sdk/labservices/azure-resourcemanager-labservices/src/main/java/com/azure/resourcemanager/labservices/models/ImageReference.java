@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Image reference information. Used in the virtual machine profile. */
 @Fluent
 public final class ImageReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageReference.class);
-
     /*
      * Image resource ID
      */

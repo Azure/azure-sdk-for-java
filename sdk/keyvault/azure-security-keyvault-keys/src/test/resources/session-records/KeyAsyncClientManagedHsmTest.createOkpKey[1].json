@@ -1,0 +1,28 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/javakeytemp616987f/create?api-version=7.4-preview.1",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "448",
+      "x-frame-options" : "SAMEORIGIN",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-server-latency" : "280",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "content-security-policy" : "default-src 'self'",
+      "x-content-type-options" : "nosniff",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=Ipv4;",
+      "x-ms-keyvault-region" : "northus",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "48742372-6216-11ed-a658-0022488d29c2",
+      "Body" : "{\"attributes\":{\"created\":1668208336,\"enabled\":true,\"exp\":2527113600,\"exportable\":false,\"nbf\":949237199,\"recoverableDays\":7,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"updated\":1668208336},\"key\":{\"crv\":\"Ed25519\",\"key_ops\":[\"verify\",\"sign\"],\"kid\":\"https://vicolinakeyvaulthsm.managedhsm.azure.net/keys/javakeytemp616987f/3a572dc0fefc05073a87526cabf3030a\",\"kty\":\"OKP-HSM\",\"x\":\"XwAWd_FQRGZkBSuCQjHLgpNrs42j_pDj3ueppv3KUcA\"},\"tags\":{\"foo\":\"baz\"}}"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "javakeytemp616987f" ]
+}

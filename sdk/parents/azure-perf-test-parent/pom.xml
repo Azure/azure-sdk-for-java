@@ -70,10 +70,6 @@
                 <manifest>
                   <mainClass>${perf.test.mainClass}</mainClass>
                 </manifest>
-                <!-- Add a manifest entry to indicate that the JAR with dependencies is a multi-release JAR since azure-core contains multi-release functionality. -->
-                <manifestEntries>
-                  <Multi-Release>true</Multi-Release>
-                </manifestEntries>
               </archive>
               <descriptorRefs>
                 <descriptorRef>jar-with-dependencies</descriptorRef>

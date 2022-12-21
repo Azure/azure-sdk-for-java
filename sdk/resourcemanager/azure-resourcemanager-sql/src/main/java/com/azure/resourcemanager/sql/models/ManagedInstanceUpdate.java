@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.sql.fluent.models.ManagedInstanceProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** An update request for an Azure SQL Database managed instance. */
-@JsonFlatten
 @Fluent
-public class ManagedInstanceUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedInstanceUpdate.class);
-
+public final class ManagedInstanceUpdate {
     /*
      * Managed instance sku
      */
@@ -25,149 +21,17 @@ public class ManagedInstanceUpdate {
     private Sku sku;
 
     /*
+     * Resource properties.
+     */
+    @JsonProperty(value = "properties")
+    private ManagedInstanceProperties innerProperties;
+
+    /*
      * Resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
-
-    /*
-     * Specifies the mode of database creation.
-     *
-     * Default: Regular instance creation.
-     *
-     * Restore: Creates an instance by restoring a set of backups to specific
-     * point in time. RestorePointInTime and SourceManagedInstanceId must be
-     * specified.
-     */
-    @JsonProperty(value = "properties.managedInstanceCreateMode")
-    private ManagedServerCreateMode managedInstanceCreateMode;
-
-    /*
-     * The fully qualified domain name of the managed instance.
-     */
-    @JsonProperty(value = "properties.fullyQualifiedDomainName", access = JsonProperty.Access.WRITE_ONLY)
-    private String fullyQualifiedDomainName;
-
-    /*
-     * Administrator username for the managed instance. Can only be specified
-     * when the managed instance is being created (and is required for
-     * creation).
-     */
-    @JsonProperty(value = "properties.administratorLogin")
-    private String administratorLogin;
-
-    /*
-     * The administrator login password (required for managed instance
-     * creation).
-     */
-    @JsonProperty(value = "properties.administratorLoginPassword")
-    private String administratorLoginPassword;
-
-    /*
-     * Subnet resource ID for the managed instance.
-     */
-    @JsonProperty(value = "properties.subnetId")
-    private String subnetId;
-
-    /*
-     * The state of the managed instance.
-     */
-    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private String state;
-
-    /*
-     * The license type. Possible values are 'LicenseIncluded' (regular price
-     * inclusive of a new SQL license) and 'BasePrice' (discounted AHB price
-     * for bringing your own SQL licenses).
-     */
-    @JsonProperty(value = "properties.licenseType")
-    private ManagedInstanceLicenseType licenseType;
-
-    /*
-     * The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.
-     */
-    @JsonProperty(value = "properties.vCores")
-    private Integer vCores;
-
-    /*
-     * Storage size in GB. Minimum value: 32. Maximum value: 8192. Increments
-     * of 32 GB allowed only.
-     */
-    @JsonProperty(value = "properties.storageSizeInGB")
-    private Integer storageSizeInGB;
-
-    /*
-     * Collation of the managed instance.
-     */
-    @JsonProperty(value = "properties.collation")
-    private String collation;
-
-    /*
-     * The Dns Zone that the managed instance is in.
-     */
-    @JsonProperty(value = "properties.dnsZone", access = JsonProperty.Access.WRITE_ONLY)
-    private String dnsZone;
-
-    /*
-     * The resource id of another managed instance whose DNS zone this managed
-     * instance will share after creation.
-     */
-    @JsonProperty(value = "properties.dnsZonePartner")
-    private String dnsZonePartner;
-
-    /*
-     * Whether or not the public data endpoint is enabled.
-     */
-    @JsonProperty(value = "properties.publicDataEndpointEnabled")
-    private Boolean publicDataEndpointEnabled;
-
-    /*
-     * The resource identifier of the source managed instance associated with
-     * create operation of this instance.
-     */
-    @JsonProperty(value = "properties.sourceManagedInstanceId")
-    private String sourceManagedInstanceId;
-
-    /*
-     * Specifies the point in time (ISO8601 format) of the source database that
-     * will be restored to create the new database.
-     */
-    @JsonProperty(value = "properties.restorePointInTime")
-    private OffsetDateTime restorePointInTime;
-
-    /*
-     * Connection type used for connecting to the instance.
-     */
-    @JsonProperty(value = "properties.proxyOverride")
-    private ManagedInstanceProxyOverride proxyOverride;
-
-    /*
-     * Id of the timezone. Allowed values are timezones supported by Windows.
-     * Windows keeps details on supported timezones, including the id, in
-     * registry under
-     * KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time
-     * Zones.
-     * You can get those registry values via SQL Server by querying SELECT name
-     * AS timezone_id FROM sys.time_zone_info.
-     * List of Ids can also be obtained by executing
-     * [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell.
-     * An example of valid timezone id is "Pacific Standard Time" or "W. Europe
-     * Standard Time".
-     */
-    @JsonProperty(value = "properties.timezoneId")
-    private String timezoneId;
-
-    /*
-     * The Id of the instance pool this managed server belongs to.
-     */
-    @JsonProperty(value = "properties.instancePoolId")
-    private String instancePoolId;
-
-    /*
-     * Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'
-     */
-    @JsonProperty(value = "properties.minimalTlsVersion")
-    private String minimalTlsVersion;
 
     /**
      * Get the sku property: Managed instance sku.
@@ -187,6 +51,15 @@ public class ManagedInstanceUpdate {
     public ManagedInstanceUpdate withSku(Sku sku) {
         this.sku = sku;
         return this;
+    }
+
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private ManagedInstanceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -220,7 +93,7 @@ public class ManagedInstanceUpdate {
      * @return the managedInstanceCreateMode value.
      */
     public ManagedServerCreateMode managedInstanceCreateMode() {
-        return this.managedInstanceCreateMode;
+        return this.innerProperties() == null ? null : this.innerProperties().managedInstanceCreateMode();
     }
 
     /**
@@ -235,7 +108,10 @@ public class ManagedInstanceUpdate {
      * @return the ManagedInstanceUpdate object itself.
      */
     public ManagedInstanceUpdate withManagedInstanceCreateMode(ManagedServerCreateMode managedInstanceCreateMode) {
-        this.managedInstanceCreateMode = managedInstanceCreateMode;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withManagedInstanceCreateMode(managedInstanceCreateMode);
         return this;
     }
 
@@ -245,7 +121,7 @@ public class ManagedInstanceUpdate {
      * @return the fullyQualifiedDomainName value.
      */
     public String fullyQualifiedDomainName() {
-        return this.fullyQualifiedDomainName;
+        return this.innerProperties() == null ? null : this.innerProperties().fullyQualifiedDomainName();
     }
 
     /**
@@ -255,7 +131,7 @@ public class ManagedInstanceUpdate {
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
-        return this.administratorLogin;
+        return this.innerProperties() == null ? null : this.innerProperties().administratorLogin();
     }
 
     /**
@@ -266,7 +142,10 @@ public class ManagedInstanceUpdate {
      * @return the ManagedInstanceUpdate object itself.
      */
     public ManagedInstanceUpdate withAdministratorLogin(String administratorLogin) {
-        this.administratorLogin = administratorLogin;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withAdministratorLogin(administratorLogin);
         return this;
     }
 
@@ -277,7 +156,7 @@ public class ManagedInstanceUpdate {
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
-        return this.administratorLoginPassword;
+        return this.innerProperties() == null ? null : this.innerProperties().administratorLoginPassword();
     }
 
     /**
@@ -288,7 +167,10 @@ public class ManagedInstanceUpdate {
      * @return the ManagedInstanceUpdate object itself.
      */
     public ManagedInstanceUpdate withAdministratorLoginPassword(String administratorLoginPassword) {
-        this.administratorLoginPassword = administratorLoginPassword;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withAdministratorLoginPassword(administratorLoginPassword);
         return this;
     }
 
@@ -298,7 +180,7 @@ public class ManagedInstanceUpdate {
      * @return the subnetId value.
      */
     public String subnetId() {
-        return this.subnetId;
+        return this.innerProperties() == null ? null : this.innerProperties().subnetId();
     }
 
     /**
@@ -308,7 +190,10 @@ public class ManagedInstanceUpdate {
      * @return the ManagedInstanceUpdate object itself.
      */
     public ManagedInstanceUpdate withSubnetId(String subnetId) {
-        this.subnetId = subnetId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withSubnetId(subnetId);
         return this;
     }
 
@@ -318,7 +203,7 @@ public class ManagedInstanceUpdate {
      * @return the state value.
      */
     public String state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -328,7 +213,7 @@ public class ManagedInstanceUpdate {
      * @return the licenseType value.
      */
     public ManagedInstanceLicenseType licenseType() {
-        return this.licenseType;
+        return this.innerProperties() == null ? null : this.innerProperties().licenseType();
     }
 
     /**
@@ -339,7 +224,10 @@ public class ManagedInstanceUpdate {
      * @return the ManagedInstanceUpdate object itself.
      */
     public ManagedInstanceUpdate withLicenseType(ManagedInstanceLicenseType licenseType) {
-        this.licenseType = licenseType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withLicenseType(licenseType);
         return this;
     }
 
@@ -349,7 +237,7 @@ public class ManagedInstanceUpdate {
      * @return the vCores value.
      */
     public Integer vCores() {
-        return this.vCores;
+        return this.innerProperties() == null ? null : this.innerProperties().vCores();
     }
 
     /**
@@ -359,7 +247,10 @@ public class ManagedInstanceUpdate {
      * @return the ManagedInstanceUpdate object itself.
      */
     public ManagedInstanceUpdate withVCores(Integer vCores) {
-        this.vCores = vCores;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withVCores(vCores);
         return this;
     }
 
@@ -370,7 +261,7 @@ public class ManagedInstanceUpdate {
      * @return the storageSizeInGB value.
      */
     public Integer storageSizeInGB() {
-        return this.storageSizeInGB;
+        return this.innerProperties() == null ? null : this.innerProperties().storageSizeInGB();
     }
 
     /**
@@ -381,7 +272,10 @@ public class ManagedInstanceUpdate {
      * @return the ManagedInstanceUpdate object itself.
      */
     public ManagedInstanceUpdate withStorageSizeInGB(Integer storageSizeInGB) {
-        this.storageSizeInGB = storageSizeInGB;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withStorageSizeInGB(storageSizeInGB);
         return this;
     }
 
@@ -391,7 +285,7 @@ public class ManagedInstanceUpdate {
      * @return the collation value.
      */
     public String collation() {
-        return this.collation;
+        return this.innerProperties() == null ? null : this.innerProperties().collation();
     }
 
     /**
@@ -401,7 +295,10 @@ public class ManagedInstanceUpdate {
      * @return the ManagedInstanceUpdate object itself.
      */
     public ManagedInstanceUpdate withCollation(String collation) {
-        this.collation = collation;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withCollation(collation);
         return this;
     }
 
@@ -411,7 +308,7 @@ public class ManagedInstanceUpdate {
      * @return the dnsZone value.
      */
     public String dnsZone() {
-        return this.dnsZone;
+        return this.innerProperties() == null ? null : this.innerProperties().dnsZone();
     }
 
     /**
@@ -421,7 +318,7 @@ public class ManagedInstanceUpdate {
      * @return the dnsZonePartner value.
      */
     public String dnsZonePartner() {
-        return this.dnsZonePartner;
+        return this.innerProperties() == null ? null : this.innerProperties().dnsZonePartner();
     }
 
     /**
@@ -432,7 +329,10 @@ public class ManagedInstanceUpdate {
      * @return the ManagedInstanceUpdate object itself.
      */
     public ManagedInstanceUpdate withDnsZonePartner(String dnsZonePartner) {
-        this.dnsZonePartner = dnsZonePartner;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withDnsZonePartner(dnsZonePartner);
         return this;
     }
 
@@ -442,7 +342,7 @@ public class ManagedInstanceUpdate {
      * @return the publicDataEndpointEnabled value.
      */
     public Boolean publicDataEndpointEnabled() {
-        return this.publicDataEndpointEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().publicDataEndpointEnabled();
     }
 
     /**
@@ -452,7 +352,10 @@ public class ManagedInstanceUpdate {
      * @return the ManagedInstanceUpdate object itself.
      */
     public ManagedInstanceUpdate withPublicDataEndpointEnabled(Boolean publicDataEndpointEnabled) {
-        this.publicDataEndpointEnabled = publicDataEndpointEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withPublicDataEndpointEnabled(publicDataEndpointEnabled);
         return this;
     }
 
@@ -463,7 +366,7 @@ public class ManagedInstanceUpdate {
      * @return the sourceManagedInstanceId value.
      */
     public String sourceManagedInstanceId() {
-        return this.sourceManagedInstanceId;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceManagedInstanceId();
     }
 
     /**
@@ -474,7 +377,10 @@ public class ManagedInstanceUpdate {
      * @return the ManagedInstanceUpdate object itself.
      */
     public ManagedInstanceUpdate withSourceManagedInstanceId(String sourceManagedInstanceId) {
-        this.sourceManagedInstanceId = sourceManagedInstanceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withSourceManagedInstanceId(sourceManagedInstanceId);
         return this;
     }
 
@@ -485,7 +391,7 @@ public class ManagedInstanceUpdate {
      * @return the restorePointInTime value.
      */
     public OffsetDateTime restorePointInTime() {
-        return this.restorePointInTime;
+        return this.innerProperties() == null ? null : this.innerProperties().restorePointInTime();
     }
 
     /**
@@ -496,7 +402,10 @@ public class ManagedInstanceUpdate {
      * @return the ManagedInstanceUpdate object itself.
      */
     public ManagedInstanceUpdate withRestorePointInTime(OffsetDateTime restorePointInTime) {
-        this.restorePointInTime = restorePointInTime;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withRestorePointInTime(restorePointInTime);
         return this;
     }
 
@@ -506,7 +415,7 @@ public class ManagedInstanceUpdate {
      * @return the proxyOverride value.
      */
     public ManagedInstanceProxyOverride proxyOverride() {
-        return this.proxyOverride;
+        return this.innerProperties() == null ? null : this.innerProperties().proxyOverride();
     }
 
     /**
@@ -516,7 +425,10 @@ public class ManagedInstanceUpdate {
      * @return the ManagedInstanceUpdate object itself.
      */
     public ManagedInstanceUpdate withProxyOverride(ManagedInstanceProxyOverride proxyOverride) {
-        this.proxyOverride = proxyOverride;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withProxyOverride(proxyOverride);
         return this;
     }
 
@@ -531,7 +443,7 @@ public class ManagedInstanceUpdate {
      * @return the timezoneId value.
      */
     public String timezoneId() {
-        return this.timezoneId;
+        return this.innerProperties() == null ? null : this.innerProperties().timezoneId();
     }
 
     /**
@@ -546,7 +458,10 @@ public class ManagedInstanceUpdate {
      * @return the ManagedInstanceUpdate object itself.
      */
     public ManagedInstanceUpdate withTimezoneId(String timezoneId) {
-        this.timezoneId = timezoneId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withTimezoneId(timezoneId);
         return this;
     }
 
@@ -556,7 +471,7 @@ public class ManagedInstanceUpdate {
      * @return the instancePoolId value.
      */
     public String instancePoolId() {
-        return this.instancePoolId;
+        return this.innerProperties() == null ? null : this.innerProperties().instancePoolId();
     }
 
     /**
@@ -566,7 +481,10 @@ public class ManagedInstanceUpdate {
      * @return the ManagedInstanceUpdate object itself.
      */
     public ManagedInstanceUpdate withInstancePoolId(String instancePoolId) {
-        this.instancePoolId = instancePoolId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withInstancePoolId(instancePoolId);
         return this;
     }
 
@@ -576,7 +494,7 @@ public class ManagedInstanceUpdate {
      * @return the minimalTlsVersion value.
      */
     public String minimalTlsVersion() {
-        return this.minimalTlsVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().minimalTlsVersion();
     }
 
     /**
@@ -586,7 +504,10 @@ public class ManagedInstanceUpdate {
      * @return the ManagedInstanceUpdate object itself.
      */
     public ManagedInstanceUpdate withMinimalTlsVersion(String minimalTlsVersion) {
-        this.minimalTlsVersion = minimalTlsVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedInstanceProperties();
+        }
+        this.innerProperties().withMinimalTlsVersion(minimalTlsVersion);
         return this;
     }
 
@@ -598,6 +519,9 @@ public class ManagedInstanceUpdate {
     public void validate() {
         if (sku() != null) {
             sku().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

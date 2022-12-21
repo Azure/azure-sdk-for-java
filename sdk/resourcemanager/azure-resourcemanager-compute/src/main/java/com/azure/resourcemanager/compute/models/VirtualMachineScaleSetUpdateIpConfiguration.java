@@ -23,11 +23,14 @@ public final class VirtualMachineScaleSetUpdateIpConfiguration extends SubResour
     private String name;
 
     /*
-     * Describes a virtual machine scale set network profile's IP configuration
-     * properties.
+     * Describes a virtual machine scale set network profile's IP configuration properties.
      */
     @JsonProperty(value = "properties")
     private VirtualMachineScaleSetUpdateIpConfigurationProperties innerProperties;
+
+    /** Creates an instance of VirtualMachineScaleSetUpdateIpConfiguration class. */
+    public VirtualMachineScaleSetUpdateIpConfiguration() {
+    }
 
     /**
      * Get the name property: The IP configuration name.

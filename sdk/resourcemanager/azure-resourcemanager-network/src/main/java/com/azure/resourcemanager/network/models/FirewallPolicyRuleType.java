@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FirewallPolicyRuleType. */
+/** Rule Type. */
 public final class FirewallPolicyRuleType extends ExpandableStringEnum<FirewallPolicyRuleType> {
     /** Static value ApplicationRule for FirewallPolicyRuleType. */
     public static final FirewallPolicyRuleType APPLICATION_RULE = fromString("ApplicationRule");

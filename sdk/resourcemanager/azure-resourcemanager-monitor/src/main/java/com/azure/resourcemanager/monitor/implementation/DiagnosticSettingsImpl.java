@@ -4,26 +4,24 @@ package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.monitor.MonitorManager;
+import com.azure.resourcemanager.monitor.fluent.DiagnosticSettingsOperationsClient;
+import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsCategoryResourceInner;
+import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsResourceInner;
 import com.azure.resourcemanager.monitor.models.DiagnosticSetting;
 import com.azure.resourcemanager.monitor.models.DiagnosticSettings;
 import com.azure.resourcemanager.monitor.models.DiagnosticSettingsCategory;
-import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsCategoryResourceCollectionInner;
-import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsCategoryResourceInner;
-import com.azure.resourcemanager.monitor.fluent.DiagnosticSettingsClient;
-import com.azure.resourcemanager.monitor.fluent.models.DiagnosticSettingsResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.BatchDeletionImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /** Implementation for DiagnosticSettings. */
 public class DiagnosticSettingsImpl
@@ -65,17 +63,17 @@ public class DiagnosticSettingsImpl
         return this.manager;
     }
 
-    public DiagnosticSettingsClient inner() {
-        return this.manager().serviceClient().getDiagnosticSettings();
+    public DiagnosticSettingsOperationsClient inner() {
+        return this.manager().serviceClient().getDiagnosticSettingsOperations();
     }
 
     @Override
     public List<DiagnosticSettingsCategory> listCategoriesByResource(String resourceId) {
         List<DiagnosticSettingsCategory> categories = new ArrayList<>();
-        DiagnosticSettingsCategoryResourceCollectionInner collection =
+        PagedIterable<DiagnosticSettingsCategoryResourceInner> collection =
             this.manager().serviceClient().getDiagnosticSettingsCategories().list(resourceId);
         if (collection != null) {
-            for (DiagnosticSettingsCategoryResourceInner category : collection.value()) {
+            for (DiagnosticSettingsCategoryResourceInner category : collection) {
                 categories.add(new DiagnosticSettingsCategoryImpl(category));
             }
         }
@@ -84,15 +82,11 @@ public class DiagnosticSettingsImpl
 
     @Override
     public PagedFlux<DiagnosticSettingsCategory> listCategoriesByResourceAsync(String resourceId) {
-        return PagedConverter.mapPage(PagedConverter
-            .convertListToPagedFlux(
-                this
-                    .manager
-                    .serviceClient()
-                    .getDiagnosticSettingsCategories()
-                    .listWithResponseAsync(resourceId)
-                    .map(r -> new SimpleResponse<>(r.getRequest(), r.getStatusCode(), r.getHeaders(),
-                        r.getValue().value() == null ? Collections.emptyList() : r.getValue().value()))),
+        return PagedConverter.mapPage(this
+                .manager
+                .serviceClient()
+                .getDiagnosticSettingsCategories()
+                .listAsync(resourceId),
             DiagnosticSettingsCategoryImpl::new);
     }
 
@@ -119,36 +113,33 @@ public class DiagnosticSettingsImpl
 
     @Override
     public PagedFlux<DiagnosticSetting> listByResourceAsync(String resourceId) {
-        return PagedConverter.mapPage(PagedConverter
-            .convertListToPagedFlux(
-                this
-                    .manager()
-                    .serviceClient()
-                    .getDiagnosticSettings()
-                    .listWithResponseAsync(resourceId)
-                    .map(r -> new SimpleResponse<>(r.getRequest(), r.getStatusCode(), r.getHeaders(),
-                        r.getValue().value() == null ? Collections.emptyList() : r.getValue().value()))),
-            inner -> new DiagnosticSettingImpl(inner.name(), inner, this.manager()));
+        return PagedConverter.mapPage(
+            this
+                .manager()
+                .serviceClient()
+                .getDiagnosticSettingsOperations()
+                .listAsync(resourceId),
+            inner -> new DiagnosticSettingImpl(inner.name(), inner, manager));
     }
 
     @Override
     public void delete(String resourceId, String name) {
-        this.manager().serviceClient().getDiagnosticSettings().delete(resourceId, name);
+        this.manager().serviceClient().getDiagnosticSettingsOperations().delete(resourceId, name);
     }
 
     @Override
     public Mono<Void> deleteAsync(String resourceId, String name) {
-        return this.manager().serviceClient().getDiagnosticSettings().deleteAsync(resourceId, name);
+        return this.manager().serviceClient().getDiagnosticSettingsOperations().deleteAsync(resourceId, name);
     }
 
     @Override
     public DiagnosticSetting get(String resourceId, String name) {
-        return wrapModel(this.manager().serviceClient().getDiagnosticSettings().get(resourceId, name));
+        return wrapModel(this.manager().serviceClient().getDiagnosticSettingsOperations().get(resourceId, name));
     }
 
     @Override
     public Mono<DiagnosticSetting> getAsync(String resourceId, String name) {
-        return this.manager().serviceClient().getDiagnosticSettings().getAsync(resourceId, name).map(this::wrapModel);
+        return this.manager().serviceClient().getDiagnosticSettingsOperations().getAsync(resourceId, name).map(this::wrapModel);
     }
 
     @Override
@@ -156,7 +147,7 @@ public class DiagnosticSettingsImpl
         return this
             .manager()
             .serviceClient()
-            .getDiagnosticSettings()
+            .getDiagnosticSettingsOperations()
             .deleteAsync(getResourceIdFromSettingsId(id), getNameFromSettingsId(id));
     }
 

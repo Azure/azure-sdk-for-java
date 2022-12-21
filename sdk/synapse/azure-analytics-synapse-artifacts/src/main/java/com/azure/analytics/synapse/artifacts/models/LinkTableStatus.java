@@ -6,12 +6,13 @@ package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 
 /** The LinkTableStatus model. */
 @Fluent
 public final class LinkTableStatus {
     /*
-     * Link table id
+     * ID provided by the client
      */
     @JsonProperty(value = "id")
     private String id;
@@ -40,8 +41,32 @@ public final class LinkTableStatus {
     @JsonProperty(value = "stopTime")
     private Object stopTime;
 
+    /*
+     * Link table ID
+     */
+    @JsonProperty(value = "linkTableId")
+    private String linkTableId;
+
+    /*
+     * Link table error code
+     */
+    @JsonProperty(value = "errorCode")
+    private String errorCode;
+
+    /*
+     * Link table last processed data time
+     */
+    @JsonProperty(value = "lastProcessedData")
+    private OffsetDateTime lastProcessedData;
+
+    /*
+     * Link table last transaction commit time
+     */
+    @JsonProperty(value = "lastTransactionCommitTime")
+    private OffsetDateTime lastTransactionCommitTime;
+
     /**
-     * Get the id property: Link table id.
+     * Get the id property: ID provided by the client.
      *
      * @return the id value.
      */
@@ -50,7 +75,7 @@ public final class LinkTableStatus {
     }
 
     /**
-     * Set the id property: Link table id.
+     * Set the id property: ID provided by the client.
      *
      * @param id the id value to set.
      * @return the LinkTableStatus object itself.
@@ -137,6 +162,86 @@ public final class LinkTableStatus {
      */
     public LinkTableStatus setStopTime(Object stopTime) {
         this.stopTime = stopTime;
+        return this;
+    }
+
+    /**
+     * Get the linkTableId property: Link table ID.
+     *
+     * @return the linkTableId value.
+     */
+    public String getLinkTableId() {
+        return this.linkTableId;
+    }
+
+    /**
+     * Set the linkTableId property: Link table ID.
+     *
+     * @param linkTableId the linkTableId value to set.
+     * @return the LinkTableStatus object itself.
+     */
+    public LinkTableStatus setLinkTableId(String linkTableId) {
+        this.linkTableId = linkTableId;
+        return this;
+    }
+
+    /**
+     * Get the errorCode property: Link table error code.
+     *
+     * @return the errorCode value.
+     */
+    public String getErrorCode() {
+        return this.errorCode;
+    }
+
+    /**
+     * Set the errorCode property: Link table error code.
+     *
+     * @param errorCode the errorCode value to set.
+     * @return the LinkTableStatus object itself.
+     */
+    public LinkTableStatus setErrorCode(String errorCode) {
+        this.errorCode = errorCode;
+        return this;
+    }
+
+    /**
+     * Get the lastProcessedData property: Link table last processed data time.
+     *
+     * @return the lastProcessedData value.
+     */
+    public OffsetDateTime getLastProcessedData() {
+        return this.lastProcessedData;
+    }
+
+    /**
+     * Set the lastProcessedData property: Link table last processed data time.
+     *
+     * @param lastProcessedData the lastProcessedData value to set.
+     * @return the LinkTableStatus object itself.
+     */
+    public LinkTableStatus setLastProcessedData(OffsetDateTime lastProcessedData) {
+        this.lastProcessedData = lastProcessedData;
+        return this;
+    }
+
+    /**
+     * Get the lastTransactionCommitTime property: Link table last transaction commit time.
+     *
+     * @return the lastTransactionCommitTime value.
+     */
+    public OffsetDateTime getLastTransactionCommitTime() {
+        return this.lastTransactionCommitTime;
+    }
+
+    /**
+     * Set the lastTransactionCommitTime property: Link table last transaction commit time.
+     *
+     * @param lastTransactionCommitTime the lastTransactionCommitTime value to set.
+     * @return the LinkTableStatus object itself.
+     */
+    public LinkTableStatus setLastTransactionCommitTime(OffsetDateTime lastTransactionCommitTime) {
+        this.lastTransactionCommitTime = lastTransactionCommitTime;
         return this;
     }
 }

@@ -63,7 +63,7 @@ public final class LoadBalancerFrontendIpConfigurationsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface LoadBalancerFrontendIpConfigurationsService {
+    public interface LoadBalancerFrontendIpConfigurationsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -140,7 +140,7 @@ public final class LoadBalancerFrontendIpConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -201,7 +201,7 @@ public final class LoadBalancerFrontendIpConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -333,7 +333,7 @@ public final class LoadBalancerFrontendIpConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -393,7 +393,7 @@ public final class LoadBalancerFrontendIpConfigurationsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -432,23 +432,6 @@ public final class LoadBalancerFrontendIpConfigurationsClientImpl
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param frontendIpConfigurationName The name of the frontend IP configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return load balancer frontend IP configuration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FrontendIpConfigurationInner get(
-        String resourceGroupName, String loadBalancerName, String frontendIpConfigurationName) {
-        return getAsync(resourceGroupName, loadBalancerName, frontendIpConfigurationName).block();
-    }
-
-    /**
-     * Gets load balancer frontend IP configuration.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param frontendIpConfigurationName The name of the frontend IP configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -462,9 +445,28 @@ public final class LoadBalancerFrontendIpConfigurationsClientImpl
     }
 
     /**
+     * Gets load balancer frontend IP configuration.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param frontendIpConfigurationName The name of the frontend IP configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return load balancer frontend IP configuration.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public FrontendIpConfigurationInner get(
+        String resourceGroupName, String loadBalancerName, String frontendIpConfigurationName) {
+        return getWithResponse(resourceGroupName, loadBalancerName, frontendIpConfigurationName, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -500,7 +502,8 @@ public final class LoadBalancerFrontendIpConfigurationsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

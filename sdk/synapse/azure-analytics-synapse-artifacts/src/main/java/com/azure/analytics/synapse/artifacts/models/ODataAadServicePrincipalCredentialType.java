@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ODataAadServicePrincipalCredentialType. */
+/** Specify the credential type (key or cert) is used for service principal. */
 public final class ODataAadServicePrincipalCredentialType
         extends ExpandableStringEnum<ODataAadServicePrincipalCredentialType> {
     /** Static value ServicePrincipalKey for ODataAadServicePrincipalCredentialType. */
@@ -30,7 +30,11 @@ public final class ODataAadServicePrincipalCredentialType
         return fromString(name, ODataAadServicePrincipalCredentialType.class);
     }
 
-    /** @return known ODataAadServicePrincipalCredentialType values. */
+    /**
+     * Gets known ODataAadServicePrincipalCredentialType values.
+     *
+     * @return known ODataAadServicePrincipalCredentialType values.
+     */
     public static Collection<ODataAadServicePrincipalCredentialType> values() {
         return values(ODataAadServicePrincipalCredentialType.class);
     }

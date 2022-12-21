@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LoadBalancerOutboundRuleProtocol. */
+/** The protocol for the outbound rule in load balancer. */
 public final class LoadBalancerOutboundRuleProtocol extends ExpandableStringEnum<LoadBalancerOutboundRuleProtocol> {
     /** Static value Tcp for LoadBalancerOutboundRuleProtocol. */
     public static final LoadBalancerOutboundRuleProtocol TCP = fromString("Tcp");

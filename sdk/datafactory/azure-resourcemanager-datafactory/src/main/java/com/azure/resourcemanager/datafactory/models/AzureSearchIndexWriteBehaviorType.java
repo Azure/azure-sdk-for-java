@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AzureSearchIndexWriteBehaviorType. */
+/** Specify the write behavior when upserting documents into Azure Search Index. */
 public final class AzureSearchIndexWriteBehaviorType extends ExpandableStringEnum<AzureSearchIndexWriteBehaviorType> {
     /** Static value Merge for AzureSearchIndexWriteBehaviorType. */
     public static final AzureSearchIndexWriteBehaviorType MERGE = fromString("Merge");

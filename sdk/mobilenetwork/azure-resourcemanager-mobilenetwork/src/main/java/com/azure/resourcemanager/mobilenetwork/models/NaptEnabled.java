@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NaptEnabled. */
+/** Whether network address and port translation is enabled. */
 public final class NaptEnabled extends ExpandableStringEnum<NaptEnabled> {
     /** Static value Enabled for NaptEnabled. */
     public static final NaptEnabled ENABLED = fromString("Enabled");
@@ -27,7 +27,11 @@ public final class NaptEnabled extends ExpandableStringEnum<NaptEnabled> {
         return fromString(name, NaptEnabled.class);
     }
 
-    /** @return known NaptEnabled values. */
+    /**
+     * Gets known NaptEnabled values.
+     *
+     * @return known NaptEnabled values.
+     */
     public static Collection<NaptEnabled> values() {
         return values(NaptEnabled.class);
     }

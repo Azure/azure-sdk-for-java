@@ -20,11 +20,9 @@ public final class MobileNetworkPropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * The unique public land mobile network identifier for the network. This
-     * is made up of the Mobile Country Code and Mobile Network Code, as
-     * defined in https://www.itu.int/rec/T-REC-E.212. The values 001-01 and
-     * 001-001 can be used for testing and the values 999-99 and 999-999 can be
-     * used on internal private networks.
+     * The unique public land mobile network identifier for the network. This is made up of the mobile country code and
+     * mobile network code, as defined in https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be
+     * used for testing and the values 999-99 and 999-999 can be used on internal private networks.
      */
     @JsonProperty(value = "publicLandMobileNetworkIdentifier", required = true)
     private PlmnId publicLandMobileNetworkIdentifier;
@@ -34,6 +32,10 @@ public final class MobileNetworkPropertiesFormat {
      */
     @JsonProperty(value = "serviceKey", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceKey;
+
+    /** Creates an instance of MobileNetworkPropertiesFormat class. */
+    public MobileNetworkPropertiesFormat() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the mobile network resource.
@@ -46,7 +48,7 @@ public final class MobileNetworkPropertiesFormat {
 
     /**
      * Get the publicLandMobileNetworkIdentifier property: The unique public land mobile network identifier for the
-     * network. This is made up of the Mobile Country Code and Mobile Network Code, as defined in
+     * network. This is made up of the mobile country code and mobile network code, as defined in
      * https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be used for testing and the values 999-99
      * and 999-999 can be used on internal private networks.
      *
@@ -58,7 +60,7 @@ public final class MobileNetworkPropertiesFormat {
 
     /**
      * Set the publicLandMobileNetworkIdentifier property: The unique public land mobile network identifier for the
-     * network. This is made up of the Mobile Country Code and Mobile Network Code, as defined in
+     * network. This is made up of the mobile country code and mobile network code, as defined in
      * https://www.itu.int/rec/T-REC-E.212. The values 001-01 and 001-001 can be used for testing and the values 999-99
      * and 999-999 can be used on internal private networks.
      *

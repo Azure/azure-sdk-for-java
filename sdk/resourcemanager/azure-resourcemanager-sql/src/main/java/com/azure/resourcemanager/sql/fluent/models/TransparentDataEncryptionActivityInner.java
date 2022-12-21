@@ -4,20 +4,14 @@
 
 package com.azure.resourcemanager.sql.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionActivityStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a database transparent data encryption Scan. */
-@JsonFlatten
-@Immutable
-public class TransparentDataEncryptionActivityInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TransparentDataEncryptionActivityInner.class);
-
+@Fluent
+public final class TransparentDataEncryptionActivityInner extends ProxyResource {
     /*
      * Resource location.
      */
@@ -25,17 +19,10 @@ public class TransparentDataEncryptionActivityInner extends ProxyResource {
     private String location;
 
     /*
-     * The status of the database.
+     * Represents the properties of the resource.
      */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private TransparentDataEncryptionActivityStatus status;
-
-    /*
-     * The percent complete of the transparent data encryption scan for a
-     * database.
-     */
-    @JsonProperty(value = "properties.percentComplete", access = JsonProperty.Access.WRITE_ONLY)
-    private Float percentComplete;
+    @JsonProperty(value = "properties")
+    private TransparentDataEncryptionActivityProperties innerProperties;
 
     /**
      * Get the location property: Resource location.
@@ -47,12 +34,21 @@ public class TransparentDataEncryptionActivityInner extends ProxyResource {
     }
 
     /**
+     * Get the innerProperties property: Represents the properties of the resource.
+     *
+     * @return the innerProperties value.
+     */
+    private TransparentDataEncryptionActivityProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the status property: The status of the database.
      *
      * @return the status value.
      */
     public TransparentDataEncryptionActivityStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -61,7 +57,7 @@ public class TransparentDataEncryptionActivityInner extends ProxyResource {
      * @return the percentComplete value.
      */
     public Float percentComplete() {
-        return this.percentComplete;
+        return this.innerProperties() == null ? null : this.innerProperties().percentComplete();
     }
 
     /**
@@ -70,5 +66,8 @@ public class TransparentDataEncryptionActivityInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

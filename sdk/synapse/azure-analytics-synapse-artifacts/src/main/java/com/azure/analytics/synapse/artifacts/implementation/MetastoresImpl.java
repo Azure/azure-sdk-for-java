@@ -152,15 +152,7 @@ public final class MetastoresImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MetastoreRegistrationResponse> registerAsync(String id, MetastoreRegisterObject registerBody) {
-        return registerWithResponseAsync(id, registerBody)
-                .flatMap(
-                        (Response<MetastoreRegistrationResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return registerWithResponseAsync(id, registerBody).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -178,15 +170,7 @@ public final class MetastoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MetastoreRegistrationResponse> registerAsync(
             String id, MetastoreRegisterObject registerBody, Context context) {
-        return registerWithResponseAsync(id, registerBody, context)
-                .flatMap(
-                        (Response<MetastoreRegistrationResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return registerWithResponseAsync(id, registerBody, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -269,15 +253,7 @@ public final class MetastoresImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MetastoreRequestSuccessResponse> getDatabaseOperationsAsync(String id) {
-        return getDatabaseOperationsWithResponseAsync(id)
-                .flatMap(
-                        (Response<MetastoreRequestSuccessResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getDatabaseOperationsWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -292,15 +268,7 @@ public final class MetastoresImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MetastoreRequestSuccessResponse> getDatabaseOperationsAsync(String id, Context context) {
-        return getDatabaseOperationsWithResponseAsync(id, context)
-                .flatMap(
-                        (Response<MetastoreRequestSuccessResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getDatabaseOperationsWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -382,15 +350,7 @@ public final class MetastoresImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MetastoreUpdationResponse> updateAsync(String id, MetastoreUpdateObject updateBody) {
-        return updateWithResponseAsync(id, updateBody)
-                .flatMap(
-                        (Response<MetastoreUpdationResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return updateWithResponseAsync(id, updateBody).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -406,15 +366,7 @@ public final class MetastoresImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MetastoreUpdationResponse> updateAsync(String id, MetastoreUpdateObject updateBody, Context context) {
-        return updateWithResponseAsync(id, updateBody, context)
-                .flatMap(
-                        (Response<MetastoreUpdationResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return updateWithResponseAsync(id, updateBody, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -494,7 +446,7 @@ public final class MetastoresImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String id) {
-        return deleteWithResponseAsync(id).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(id).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -509,7 +461,7 @@ public final class MetastoresImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String id, Context context) {
-        return deleteWithResponseAsync(id, context).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(id, context).flatMap(ignored -> Mono.empty());
     }
 
     /**

@@ -16,6 +16,10 @@ import java.util.Map;
 @JsonTypeName("AzureWorkloadSAPHanaPointInTimeRecoveryPoint")
 @Fluent
 public final class AzureWorkloadSapHanaPointInTimeRecoveryPoint extends AzureWorkloadPointInTimeRecoveryPoint {
+    /** Creates an instance of AzureWorkloadSapHanaPointInTimeRecoveryPoint class. */
+    public AzureWorkloadSapHanaPointInTimeRecoveryPoint() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public AzureWorkloadSapHanaPointInTimeRecoveryPoint withTimeRanges(List<PointInTimeRange> timeRanges) {

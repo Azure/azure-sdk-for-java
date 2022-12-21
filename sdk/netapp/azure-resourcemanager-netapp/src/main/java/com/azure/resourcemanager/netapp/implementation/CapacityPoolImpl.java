@@ -241,8 +241,13 @@ public final class CapacityPoolImpl implements CapacityPool, CapacityPool.Defini
     }
 
     public CapacityPoolImpl withCoolAccess(Boolean coolAccess) {
-        this.innerModel().withCoolAccess(coolAccess);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withCoolAccess(coolAccess);
+            return this;
+        } else {
+            this.updateBody.withCoolAccess(coolAccess);
+            return this;
+        }
     }
 
     public CapacityPoolImpl withEncryptionType(EncryptionType encryptionType) {

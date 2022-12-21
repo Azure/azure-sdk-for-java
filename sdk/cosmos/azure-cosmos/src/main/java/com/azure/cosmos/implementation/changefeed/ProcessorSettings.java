@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation.changefeed;
 
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 
 import java.time.Duration;
 

@@ -23,7 +23,6 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.implementation.UnixTime;
 import com.azure.core.test.http.MockHttpClient;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
@@ -86,7 +85,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         OffsetDateTime getDateTimeRfc1123();
 
         @Get("UnixTime")
-        @ReturnValueWireType(UnixTime.class)
+        @ReturnValueWireType(OffsetDateTime.class)
         OffsetDateTime getDateTimeUnix();
     }
 

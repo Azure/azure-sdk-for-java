@@ -19,7 +19,8 @@ public interface AllowedConnectionsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of all possible traffic between resources for the subscription.
+     * @return the list of all possible traffic between resources for the subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AllowedConnectionsResourceInner> list();
@@ -31,7 +32,8 @@ public interface AllowedConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of all possible traffic between resources for the subscription.
+     * @return the list of all possible traffic between resources for the subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AllowedConnectionsResourceInner> list(Context context);
@@ -44,7 +46,8 @@ public interface AllowedConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of all possible traffic between resources for the subscription and location.
+     * @return the list of all possible traffic between resources for the subscription and location as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AllowedConnectionsResourceInner> listByHomeRegion(String ascLocation);
@@ -58,10 +61,31 @@ public interface AllowedConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of all possible traffic between resources for the subscription and location.
+     * @return the list of all possible traffic between resources for the subscription and location as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AllowedConnectionsResourceInner> listByHomeRegion(String ascLocation, Context context);
+
+    /**
+     * Gets the list of all possible traffic between resources for the subscription and location, based on connection
+     * type.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param connectionType The type of allowed connections (Internal, External).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of all possible traffic between resources for the subscription and location, based on connection
+     *     type along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<AllowedConnectionsResourceInner> getWithResponse(
+        String resourceGroupName, String ascLocation, ConnectionType connectionType, Context context);
 
     /**
      * Gets the list of all possible traffic between resources for the subscription and location, based on connection
@@ -80,24 +104,4 @@ public interface AllowedConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AllowedConnectionsResourceInner get(String resourceGroupName, String ascLocation, ConnectionType connectionType);
-
-    /**
-     * Gets the list of all possible traffic between resources for the subscription and location, based on connection
-     * type.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param connectionType The type of allowed connections (Internal, External).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of all possible traffic between resources for the subscription and location, based on connection
-     *     type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AllowedConnectionsResourceInner> getWithResponse(
-        String resourceGroupName, String ascLocation, ConnectionType connectionType, Context context);
 }

@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PartitionKind. */
+/**
+ * Indicates the kind of algorithm used for partitioning. For MultiHash, multiple partition keys (upto three maximum)
+ * are supported for container create.
+ */
 public final class PartitionKind extends ExpandableStringEnum<PartitionKind> {
     /** Static value Hash for PartitionKind. */
     public static final PartitionKind HASH = fromString("Hash");

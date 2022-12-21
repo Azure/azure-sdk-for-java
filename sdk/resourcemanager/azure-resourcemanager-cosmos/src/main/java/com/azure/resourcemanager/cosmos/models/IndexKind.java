@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IndexKind. */
+/** Indicates the type of index. */
 public final class IndexKind extends ExpandableStringEnum<IndexKind> {
     /** Static value Hash for IndexKind. */
     public static final IndexKind HASH = fromString("Hash");

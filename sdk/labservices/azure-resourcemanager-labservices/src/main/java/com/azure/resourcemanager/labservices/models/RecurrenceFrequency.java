@@ -7,7 +7,7 @@ package com.azure.resourcemanager.labservices.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for RecurrenceFrequency. */
+/** Schedule recurrence frequencies. */
 public enum RecurrenceFrequency {
     /** Enum value Daily. */
     DAILY("Daily"),
@@ -30,6 +30,9 @@ public enum RecurrenceFrequency {
      */
     @JsonCreator
     public static RecurrenceFrequency fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         RecurrenceFrequency[] items = RecurrenceFrequency.values();
         for (RecurrenceFrequency item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum RecurrenceFrequency {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

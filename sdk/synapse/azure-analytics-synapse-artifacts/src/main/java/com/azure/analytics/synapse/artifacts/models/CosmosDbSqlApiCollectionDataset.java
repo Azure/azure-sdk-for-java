@@ -19,8 +19,7 @@ import java.util.Map;
 @Fluent
 public class CosmosDbSqlApiCollectionDataset extends Dataset {
     /*
-     * CosmosDB (SQL API) collection name. Type: string (or Expression with
-     * resultType string).
+     * CosmosDB (SQL API) collection name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.collectionName", required = true)
     private Object collectionName;

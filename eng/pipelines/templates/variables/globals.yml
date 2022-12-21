@@ -1,9 +1,11 @@
 variables:
-  DocWardenVersion: '0.7.1'
+  DocWardenVersion: '0.7.2'
   # This is the default Java build version. It's the version used to build the shipping libraries, Spotbugs etc.
   JavaBuildVersion: '1.17'
   # This is the default Java test version. It's the version used when running tests.
   JavaTestVersion: '1.17'
+  # This is the version of Python used by various tools in the Java build/release processes
+  PythonVersion: '3.9'
 
   # True if 'Enable system diagnostics' is checked when running a pipeline manually
   IsDebug: $[coalesce(variables['System.Debug'], 'false')]
@@ -36,7 +38,6 @@ variables:
   # "$(TestFromSource)" instead of true/false. It'll be overwritten when the test
   # matrix has been processed
   TestFromSource: false
-  AdditionalBuildOptions: ''
 
   skipComponentGovernanceDetection: true
   DisableDockerDetector: true

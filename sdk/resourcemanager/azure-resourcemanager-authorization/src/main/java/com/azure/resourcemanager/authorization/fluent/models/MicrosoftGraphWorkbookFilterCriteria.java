@@ -70,6 +70,10 @@ public final class MicrosoftGraphWorkbookFilterCriteria {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWorkbookFilterCriteria class. */
+    public MicrosoftGraphWorkbookFilterCriteria() {
+    }
+
     /**
      * Get the color property: The color property.
      *

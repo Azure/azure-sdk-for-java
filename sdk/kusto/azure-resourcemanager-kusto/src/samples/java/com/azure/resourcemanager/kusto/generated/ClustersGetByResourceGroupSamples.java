@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Clusters GetByResourceGroup. */
 public final class ClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClustersGet.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoClustersGet.json
      */
     /**
      * Sample code: KustoClustersGet.

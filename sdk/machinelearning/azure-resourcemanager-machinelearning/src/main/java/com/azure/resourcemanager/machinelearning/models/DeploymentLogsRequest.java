@@ -22,6 +22,10 @@ public final class DeploymentLogsRequest {
     @JsonProperty(value = "tail")
     private Integer tail;
 
+    /** Creates an instance of DeploymentLogsRequest class. */
+    public DeploymentLogsRequest() {
+    }
+
     /**
      * Get the containerType property: The type of container to retrieve logs from.
      *

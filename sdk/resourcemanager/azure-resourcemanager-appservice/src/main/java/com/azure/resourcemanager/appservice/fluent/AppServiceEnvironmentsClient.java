@@ -14,10 +14,12 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appservice.fluent.models.AddressResponseInner;
+import com.azure.resourcemanager.appservice.fluent.models.AppServiceEnvironmentPatchResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.AppServiceEnvironmentResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.AppServicePlanInner;
 import com.azure.resourcemanager.appservice.fluent.models.AseV3NetworkingConfigurationInner;
 import com.azure.resourcemanager.appservice.fluent.models.CsmUsageQuotaInner;
+import com.azure.resourcemanager.appservice.fluent.models.CustomDnsSuffixConfigurationInner;
 import com.azure.resourcemanager.appservice.fluent.models.HostingEnvironmentDiagnosticsInner;
 import com.azure.resourcemanager.appservice.fluent.models.InboundEnvironmentEndpointInner;
 import com.azure.resourcemanager.appservice.fluent.models.OperationInner;
@@ -30,7 +32,6 @@ import com.azure.resourcemanager.appservice.fluent.models.SkuInfoInner;
 import com.azure.resourcemanager.appservice.fluent.models.StampCapacityInner;
 import com.azure.resourcemanager.appservice.fluent.models.UsageInner;
 import com.azure.resourcemanager.appservice.fluent.models.WorkerPoolResourceInner;
-import com.azure.resourcemanager.appservice.models.AppServiceEnvironmentPatchResource;
 import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionApprovalRequestResource;
 import com.azure.resourcemanager.appservice.models.VirtualNetworkProfile;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -459,7 +460,7 @@ public interface AppServiceEnvironmentsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<AppServiceEnvironmentResourceInner>> updateWithResponseAsync(
-        String resourceGroupName, String name, AppServiceEnvironmentPatchResource hostingEnvironmentEnvelope);
+        String resourceGroupName, String name, AppServiceEnvironmentPatchResourceInner hostingEnvironmentEnvelope);
 
     /**
      * Description for Create or update an App Service Environment.
@@ -475,7 +476,7 @@ public interface AppServiceEnvironmentsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AppServiceEnvironmentResourceInner> updateAsync(
-        String resourceGroupName, String name, AppServiceEnvironmentPatchResource hostingEnvironmentEnvelope);
+        String resourceGroupName, String name, AppServiceEnvironmentPatchResourceInner hostingEnvironmentEnvelope);
 
     /**
      * Description for Create or update an App Service Environment.
@@ -491,7 +492,7 @@ public interface AppServiceEnvironmentsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AppServiceEnvironmentResourceInner update(
-        String resourceGroupName, String name, AppServiceEnvironmentPatchResource hostingEnvironmentEnvelope);
+        String resourceGroupName, String name, AppServiceEnvironmentPatchResourceInner hostingEnvironmentEnvelope);
 
     /**
      * Description for Create or update an App Service Environment.
@@ -510,7 +511,7 @@ public interface AppServiceEnvironmentsClient
     Response<AppServiceEnvironmentResourceInner> updateWithResponse(
         String resourceGroupName,
         String name,
-        AppServiceEnvironmentPatchResource hostingEnvironmentEnvelope,
+        AppServiceEnvironmentPatchResourceInner hostingEnvironmentEnvelope,
         Context context);
 
     /**
@@ -660,6 +661,195 @@ public interface AppServiceEnvironmentsClient
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SiteInner> changeVnet(
         String resourceGroupName, String name, VirtualNetworkProfile vnetInfo, Context context);
+
+    /**
+     * Get Custom Dns Suffix configuration of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom Dns Suffix configuration of an App Service Environment along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<CustomDnsSuffixConfigurationInner>> getAseCustomDnsSuffixConfigurationWithResponseAsync(
+        String resourceGroupName, String name);
+
+    /**
+     * Get Custom Dns Suffix configuration of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom Dns Suffix configuration of an App Service Environment on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<CustomDnsSuffixConfigurationInner> getAseCustomDnsSuffixConfigurationAsync(
+        String resourceGroupName, String name);
+
+    /**
+     * Get Custom Dns Suffix configuration of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom Dns Suffix configuration of an App Service Environment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CustomDnsSuffixConfigurationInner getAseCustomDnsSuffixConfiguration(String resourceGroupName, String name);
+
+    /**
+     * Get Custom Dns Suffix configuration of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom Dns Suffix configuration of an App Service Environment along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CustomDnsSuffixConfigurationInner> getAseCustomDnsSuffixConfigurationWithResponse(
+        String resourceGroupName, String name, Context context);
+
+    /**
+     * Update Custom Dns Suffix configuration of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param customDnsSuffixConfiguration Full view of the custom domain suffix configuration for ASEv3.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return full view of the custom domain suffix configuration for ASEv3 along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<CustomDnsSuffixConfigurationInner>> updateAseCustomDnsSuffixConfigurationWithResponseAsync(
+        String resourceGroupName, String name, CustomDnsSuffixConfigurationInner customDnsSuffixConfiguration);
+
+    /**
+     * Update Custom Dns Suffix configuration of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param customDnsSuffixConfiguration Full view of the custom domain suffix configuration for ASEv3.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return full view of the custom domain suffix configuration for ASEv3 on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<CustomDnsSuffixConfigurationInner> updateAseCustomDnsSuffixConfigurationAsync(
+        String resourceGroupName, String name, CustomDnsSuffixConfigurationInner customDnsSuffixConfiguration);
+
+    /**
+     * Update Custom Dns Suffix configuration of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param customDnsSuffixConfiguration Full view of the custom domain suffix configuration for ASEv3.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return full view of the custom domain suffix configuration for ASEv3.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CustomDnsSuffixConfigurationInner updateAseCustomDnsSuffixConfiguration(
+        String resourceGroupName, String name, CustomDnsSuffixConfigurationInner customDnsSuffixConfiguration);
+
+    /**
+     * Update Custom Dns Suffix configuration of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param customDnsSuffixConfiguration Full view of the custom domain suffix configuration for ASEv3.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return full view of the custom domain suffix configuration for ASEv3 along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CustomDnsSuffixConfigurationInner> updateAseCustomDnsSuffixConfigurationWithResponse(
+        String resourceGroupName,
+        String name,
+        CustomDnsSuffixConfigurationInner customDnsSuffixConfiguration,
+        Context context);
+
+    /**
+     * Delete Custom Dns Suffix configuration of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Object>> deleteAseCustomDnsSuffixConfigurationWithResponseAsync(
+        String resourceGroupName, String name);
+
+    /**
+     * Delete Custom Dns Suffix configuration of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Object> deleteAseCustomDnsSuffixConfigurationAsync(String resourceGroupName, String name);
+
+    /**
+     * Delete Custom Dns Suffix configuration of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Object deleteAseCustomDnsSuffixConfiguration(String resourceGroupName, String name);
+
+    /**
+     * Delete Custom Dns Suffix configuration of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Object> deleteAseCustomDnsSuffixConfigurationWithResponse(
+        String resourceGroupName, String name, Context context);
 
     /**
      * Description for Get networking configuration of an App Service Environment.
@@ -1383,6 +1573,160 @@ public interface AppServiceEnvironmentsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SkuInfoInner> listMultiRolePoolSkus(String resourceGroupName, String name, Context context);
+
+    /**
+     * Send a test notification that an upgrade is available for this App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> testUpgradeAvailableNotificationWithResponseAsync(String resourceGroupName, String name);
+
+    /**
+     * Send a test notification that an upgrade is available for this App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> testUpgradeAvailableNotificationAsync(String resourceGroupName, String name);
+
+    /**
+     * Send a test notification that an upgrade is available for this App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void testUpgradeAvailableNotification(String resourceGroupName, String name);
+
+    /**
+     * Send a test notification that an upgrade is available for this App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> testUpgradeAvailableNotificationWithResponse(String resourceGroupName, String name, Context context);
+
+    /**
+     * Description for Initiate an upgrade of an App Service Environment if one is available.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(String resourceGroupName, String name);
+
+    /**
+     * Description for Initiate an upgrade of an App Service Environment if one is available.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginUpgradeAsync(String resourceGroupName, String name);
+
+    /**
+     * Description for Initiate an upgrade of an App Service Environment if one is available.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginUpgrade(String resourceGroupName, String name);
+
+    /**
+     * Description for Initiate an upgrade of an App Service Environment if one is available.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginUpgrade(String resourceGroupName, String name, Context context);
+
+    /**
+     * Description for Initiate an upgrade of an App Service Environment if one is available.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> upgradeAsync(String resourceGroupName, String name);
+
+    /**
+     * Description for Initiate an upgrade of an App Service Environment if one is available.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void upgrade(String resourceGroupName, String name);
+
+    /**
+     * Description for Initiate an upgrade of an App Service Environment if one is available.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void upgrade(String resourceGroupName, String name, Context context);
 
     /**
      * Description for Get usage metrics for a multi-role pool of an App Service Environment.

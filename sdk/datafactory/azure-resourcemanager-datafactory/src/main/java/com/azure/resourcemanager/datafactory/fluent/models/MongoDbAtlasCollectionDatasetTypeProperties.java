@@ -12,11 +12,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class MongoDbAtlasCollectionDatasetTypeProperties {
     /*
-     * The collection name of the MongoDB Atlas database. Type: string (or
-     * Expression with resultType string).
+     * The collection name of the MongoDB Atlas database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "collection", required = true)
     private Object collection;
+
+    /** Creates an instance of MongoDbAtlasCollectionDatasetTypeProperties class. */
+    public MongoDbAtlasCollectionDatasetTypeProperties() {
+    }
 
     /**
      * Get the collection property: The collection name of the MongoDB Atlas database. Type: string (or Expression with

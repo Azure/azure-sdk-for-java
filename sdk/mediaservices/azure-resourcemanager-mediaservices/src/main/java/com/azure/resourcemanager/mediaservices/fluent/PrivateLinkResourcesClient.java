@@ -14,7 +14,9 @@ import com.azure.resourcemanager.mediaservices.fluent.models.PrivateLinkResource
 /** An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient. */
 public interface PrivateLinkResourcesClient {
     /**
-     * List supported group IDs.
+     * Get list of group IDs.
+     *
+     * <p>List supported group IDs.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -27,7 +29,9 @@ public interface PrivateLinkResourcesClient {
     PrivateLinkResourceListResultInner list(String resourceGroupName, String accountName);
 
     /**
-     * List supported group IDs.
+     * Get list of group IDs.
+     *
+     * <p>List supported group IDs.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -42,7 +46,9 @@ public interface PrivateLinkResourcesClient {
         String resourceGroupName, String accountName, Context context);
 
     /**
-     * Get details of a group ID.
+     * Get group ID.
+     *
+     * <p>Get details of a group ID.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -56,7 +62,9 @@ public interface PrivateLinkResourcesClient {
     PrivateLinkResourceInner get(String resourceGroupName, String accountName, String name);
 
     /**
-     * Get details of a group ID.
+     * Get group ID.
+     *
+     * <p>Get details of a group ID.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.

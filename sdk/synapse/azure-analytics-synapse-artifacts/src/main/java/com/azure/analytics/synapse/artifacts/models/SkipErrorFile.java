@@ -11,15 +11,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SkipErrorFile {
     /*
-     * Skip if file is deleted by other client during copy. Default is true.
-     * Type: boolean (or Expression with resultType boolean).
+     * Skip if file is deleted by other client during copy. Default is true. Type: boolean (or Expression with
+     * resultType boolean).
      */
     @JsonProperty(value = "fileMissing")
     private Object fileMissing;
 
     /*
-     * Skip if source/sink file changed by other concurrent write. Default is
-     * false. Type: boolean (or Expression with resultType boolean).
+     * Skip if source/sink file changed by other concurrent write. Default is false. Type: boolean (or Expression with
+     * resultType boolean).
      */
     @JsonProperty(value = "dataInconsistency")
     private Object dataInconsistency;

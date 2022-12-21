@@ -31,8 +31,7 @@ public final class ContentKeyPolicyOption {
     private ContentKeyPolicyConfiguration configuration;
 
     /*
-     * The requirements that must be met to deliver keys with this
-     * configuration
+     * The requirements that must be met to deliver keys with this configuration
      */
     @JsonProperty(value = "restriction", required = true)
     private ContentKeyPolicyRestriction restriction;

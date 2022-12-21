@@ -21,13 +21,11 @@ import java.security.PrivilegedExceptionAction;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
-import java.util.regex.Pattern;
 
 /**
  * Implementation of {@link SerializerAdapter} for Jackson.
  */
 public class JacksonAdapter implements SerializerAdapter {
-    private static final Pattern PATTERN = Pattern.compile("^\"*|\"*$");
     private static final ClientLogger LOGGER = new ClientLogger(JacksonAdapter.class);
 
     private static boolean useAccessHelper;
@@ -37,13 +35,39 @@ public class JacksonAdapter implements SerializerAdapter {
             .get("AZURE_JACKSON_ADAPTER_USE_ACCESS_HELPER"));
     }
 
+    // Enum Singleton Pattern
+    private enum GlobalXmlMapper {
+        XML_MAPPER(ObjectMapperShim.createXmlMapper());
+
+        private final ObjectMapperShim xmlMapper;
+
+        GlobalXmlMapper(ObjectMapperShim xmlMapper) {
+            this.xmlMapper = xmlMapper;
+        }
+
+        private ObjectMapperShim getXmlMapper() {
+            return xmlMapper;
+        }
+    }
+
+    private enum GlobalSerializerAdapter {
+        SERIALIZER_ADAPTER(new JacksonAdapter());
+
+        private final SerializerAdapter serializerAdapter;
+
+        GlobalSerializerAdapter(SerializerAdapter serializerAdapter) {
+            this.serializerAdapter = serializerAdapter;
+        }
+
+        private SerializerAdapter getSerializerAdapter() {
+            return serializerAdapter;
+        }
+    }
+
     /**
      * An instance of {@link ObjectMapperShim} to serialize/deserialize objects.
      */
     private final ObjectMapperShim mapper;
-
-    private final ObjectMapperShim xmlMapper;
-
     private final ObjectMapperShim headerMapper;
 
     /**
@@ -63,11 +87,11 @@ public class JacksonAdapter implements SerializerAdapter {
     /**
      * Creates a new JacksonAdapter instance with Azure Core mapper settings and applies additional configuration
      * through {@code configureSerialization} callback.
-     *
+     * <p>
      * {@code configureSerialization} callback provides outer and inner instances of {@link ObjectMapper}. Both of them
      * are pre-configured for Azure serialization needs, but only outer mapper capable of flattening and populating
      * additionalProperties. Outer mapper is used by {@code JacksonAdapter} for all serialization needs.
-     *
+     * <p>
      * Register modules on the outer instance to add custom (de)serializers similar to {@code new JacksonAdapter((outer,
      * inner) -> outer.registerModule(new MyModule()))}
      *
@@ -79,7 +103,6 @@ public class JacksonAdapter implements SerializerAdapter {
     public JacksonAdapter(BiConsumer<ObjectMapper, ObjectMapper> configureSerialization) {
         Objects.requireNonNull(configureSerialization, "'configureSerialization' cannot be null.");
         this.headerMapper = ObjectMapperShim.createHeaderMapper();
-        this.xmlMapper = ObjectMapperShim.createXmlMapper();
         this.mapper = ObjectMapperShim.createJsonMapper(ObjectMapperShim.createSimpleMapper(),
             (outerMapper, innerMapper) -> captureRawMappersAndConfigure(outerMapper, innerMapper, configureSerialization));
     }
@@ -88,7 +111,8 @@ public class JacksonAdapter implements SerializerAdapter {
      * Temporary way to capture raw ObjectMapper instances, allows to support deprecated simpleMapper() and
      * serializer()
      */
-    private void captureRawMappersAndConfigure(ObjectMapper outerMapper, ObjectMapper innerMapper, BiConsumer<ObjectMapper, ObjectMapper> configure) {
+    private void captureRawMappersAndConfigure(ObjectMapper outerMapper, ObjectMapper innerMapper,
+        BiConsumer<ObjectMapper, ObjectMapper> configure) {
         this.rawOuterMapper = outerMapper;
         this.rawInnerMapper = innerMapper;
 
@@ -107,20 +131,13 @@ public class JacksonAdapter implements SerializerAdapter {
         return rawInnerMapper;
     }
 
-    private static final class SerializerAdapterHolder {
-        /*
-         * The lazily-created serializer for this ServiceClient.
-         */
-        private static final SerializerAdapter SERIALIZER_ADAPTER = new JacksonAdapter();
-    }
-
     /**
      * maintain singleton instance of the default serializer adapter.
      *
      * @return the default serializer
      */
     public static SerializerAdapter createDefaultSerializerAdapter() {
-        return SerializerAdapterHolder.SERIALIZER_ADAPTER;
+        return GlobalSerializerAdapter.SERIALIZER_ADAPTER.getSerializerAdapter();
     }
 
     /**
@@ -140,7 +157,7 @@ public class JacksonAdapter implements SerializerAdapter {
         }
 
         return (String) useAccessHelper(() -> (encoding == SerializerEncoding.XML)
-            ? xmlMapper.writeValueAsString(object)
+            ? getXmlMapper().writeValueAsString(object)
             : mapper.writeValueAsString(object));
     }
 
@@ -151,7 +168,7 @@ public class JacksonAdapter implements SerializerAdapter {
         }
 
         return (byte[]) useAccessHelper(() -> (encoding == SerializerEncoding.XML)
-            ? xmlMapper.writeValueAsBytes(object)
+            ? getXmlMapper().writeValueAsBytes(object)
             : mapper.writeValueAsBytes(object));
     }
 
@@ -163,7 +180,7 @@ public class JacksonAdapter implements SerializerAdapter {
 
         useAccessHelper(() -> {
             if (encoding == SerializerEncoding.XML) {
-                xmlMapper.writeValue(outputStream, object);
+                getXmlMapper().writeValue(outputStream, object);
             } else {
                 mapper.writeValue(outputStream, object);
             }
@@ -181,7 +198,7 @@ public class JacksonAdapter implements SerializerAdapter {
         try {
             return (String) useAccessHelper(() -> {
                 try {
-                    return PATTERN.matcher(serialize(object, SerializerEncoding.JSON)).replaceAll("");
+                    return removeLeadingAndTrailingQuotes(serialize(object, SerializerEncoding.JSON));
                 } catch (IOException ex) {
                     LOGGER.warning("Failed to serialize {} to JSON.", object.getClass(), ex);
                     return null;
@@ -190,6 +207,42 @@ public class JacksonAdapter implements SerializerAdapter {
         } catch (IOException ex) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
         }
+    }
+
+    /*
+     * Used by 'serializeRaw' to removal all leading and trailing quotes (").
+     */
+    static String removeLeadingAndTrailingQuotes(String str) {
+        int strLength = str.length();
+
+        // Continue incrementing the start offset until a non-quote character is found.
+        int startOffset = 0;
+        while (startOffset < strLength) {
+            if (str.charAt(startOffset) != '"') {
+                break;
+            }
+
+            startOffset++;
+        }
+
+        // All characters were quotes, early out return an empty string.
+        if (startOffset == strLength) {
+            return "";
+        }
+
+        // Continue decrementing the end offset until a non-quote character is found.
+        int endOffset = strLength - 1;
+        while (endOffset >= 0) {
+            if (str.charAt(endOffset) != '"') {
+                break;
+            }
+
+            endOffset--;
+        }
+
+        // Return the substring range.
+        // Remember to add one to the end offset as it's exclusive.
+        return str.substring(startOffset, endOffset + 1);
     }
 
     @Override
@@ -209,7 +262,7 @@ public class JacksonAdapter implements SerializerAdapter {
         }
 
         return (T) useAccessHelper(() -> (encoding == SerializerEncoding.XML)
-            ? xmlMapper.readValue(value, type)
+            ? getXmlMapper().readValue(value, type)
             : mapper.readValue(value, type));
     }
 
@@ -221,7 +274,7 @@ public class JacksonAdapter implements SerializerAdapter {
         }
 
         return (T) useAccessHelper(() -> (encoding == SerializerEncoding.XML)
-            ? xmlMapper.readValue(bytes, type)
+            ? getXmlMapper().readValue(bytes, type)
             : mapper.readValue(bytes, type));
     }
 
@@ -234,7 +287,7 @@ public class JacksonAdapter implements SerializerAdapter {
         }
 
         return (T) useAccessHelper(() -> (encoding == SerializerEncoding.XML)
-            ? xmlMapper.readValue(inputStream, type)
+            ? getXmlMapper().readValue(inputStream, type)
             : mapper.readValue(inputStream, type));
     }
 
@@ -248,6 +301,10 @@ public class JacksonAdapter implements SerializerAdapter {
     @Override
     public <T> T deserializeHeader(Header header, Type type) throws IOException {
         return (T) useAccessHelper(() -> headerMapper.readValue(header.getValue(), type));
+    }
+
+    private ObjectMapperShim getXmlMapper() {
+        return GlobalXmlMapper.XML_MAPPER.getXmlMapper();
     }
 
     @SuppressWarnings("removal")

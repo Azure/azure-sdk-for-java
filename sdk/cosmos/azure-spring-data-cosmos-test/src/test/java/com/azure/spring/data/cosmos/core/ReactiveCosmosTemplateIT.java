@@ -249,7 +249,7 @@ public class ReactiveCosmosTemplateIT {
     @Test
     public void testInsertShouldFailIfColumnNotAnnotatedWithAutoGenerate() {
         final Person person = new Person(null, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
-        Mono<GenIdEntity> entityMono = cosmosTemplate.insert(Person.class.getSimpleName(),
+        Mono<Person> entityMono = cosmosTemplate.insert(Person.class.getSimpleName(),
             person, new PartitionKey(person.getLastName()));
         StepVerifier.create(entityMono).verifyError(CosmosAccessException.class);
 
@@ -593,6 +593,48 @@ public class ReactiveCosmosTemplateIT {
 
         StepVerifier.create(flux).expectNextCount(1).verifyComplete();
         assertEquals((int) ReflectionTestUtils.getField(maxDegreeOfParallelismCosmosTemplate, "maxDegreeOfParallelism"), 20);
+    }
+
+    @Test
+    public void queryWithMaxBufferedItemCount() throws ClassNotFoundException {
+        final CosmosConfig config = CosmosConfig.builder()
+            .maxBufferedItemCount(500)
+            .build();
+        final ReactiveCosmosTemplate maxBufferedItemCountCosmosTemplate = createReactiveCosmosTemplate(config, TestConstants.DB_NAME);
+
+        final AuditableEntity entity = new AuditableEntity();
+        entity.setId(UUID.randomUUID().toString());
+
+        auditableRepository.save(entity);
+
+        Criteria equals = Criteria.getInstance(CriteriaType.IS_EQUAL, "id", Collections.singletonList(entity.getId()), Part.IgnoreCaseType.NEVER);
+        final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(equals));
+        final Flux<AuditableEntity> flux = maxBufferedItemCountCosmosTemplate.runQuery(sqlQuerySpec, AuditableEntity.class, AuditableEntity.class);
+
+        StepVerifier.create(flux).expectNextCount(1).verifyComplete();
+        assertEquals((int) ReflectionTestUtils.getField(maxBufferedItemCountCosmosTemplate, "maxBufferedItemCount"), 500);
+    }
+
+    @Test
+    public void queryWithResponseContinuationTokenLimitInKb() throws ClassNotFoundException {
+        final CosmosConfig config = CosmosConfig.builder()
+            .responseContinuationTokenLimitInKb(2000)
+            .build();
+        final ReactiveCosmosTemplate responseContinuationTokenLimitInKbCosmosTemplate =
+            createReactiveCosmosTemplate(config, TestConstants.DB_NAME);
+
+        final AuditableEntity entity = new AuditableEntity();
+        entity.setId(UUID.randomUUID().toString());
+
+        auditableRepository.save(entity);
+
+        Criteria equals = Criteria.getInstance(CriteriaType.IS_EQUAL, "id", Collections.singletonList(entity.getId()), Part.IgnoreCaseType.NEVER);
+        final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(equals));
+        final Flux<AuditableEntity> flux = responseContinuationTokenLimitInKbCosmosTemplate.runQuery(sqlQuerySpec, AuditableEntity.class, AuditableEntity.class);
+
+        StepVerifier.create(flux).expectNextCount(1).verifyComplete();
+        assertEquals((int) ReflectionTestUtils.getField(responseContinuationTokenLimitInKbCosmosTemplate,
+            "responseContinuationTokenLimitInKb"), 2000);
     }
 
     @Test

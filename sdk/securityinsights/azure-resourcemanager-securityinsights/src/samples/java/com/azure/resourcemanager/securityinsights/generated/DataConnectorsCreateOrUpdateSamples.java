@@ -60,7 +60,7 @@ import java.util.Arrays;
 /** Samples for DataConnectors CreateOrUpdate. */
 public final class DataConnectorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/CreateOfficeDataConnetor.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/CreateOfficeDataConnetor.json
      */
     /**
      * Sample code: Creates or updates an Office365 data connector.
@@ -88,7 +88,7 @@ public final class DataConnectorsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/CreateOfficePowerBIDataConnector.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/CreateOfficePowerBIDataConnector.json
      */
     /**
      * Sample code: Creates or updates an Office PowerBI data connector.
@@ -113,7 +113,7 @@ public final class DataConnectorsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/CreateThreatIntelligenceTaxiiDataConnector.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/CreateThreatIntelligenceTaxiiDataConnector.json
      */
     /**
      * Sample code: Creates or updates a Threat Intelligence Taxii data connector.
@@ -147,7 +147,7 @@ public final class DataConnectorsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/CreateThreatIntelligenceDataConnector.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/CreateThreatIntelligenceDataConnector.json
      */
     /**
      * Sample code: Creates or updates an Threat Intelligence Platform data connector.
@@ -172,7 +172,7 @@ public final class DataConnectorsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/CreateDynamics365DataConnetor.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/CreateDynamics365DataConnetor.json
      */
     /**
      * Sample code: Creates or updates a Dynamics365 data connector.
@@ -199,7 +199,7 @@ public final class DataConnectorsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/CreateGenericUI.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/CreateGenericUI.json
      */
     /**
      * Sample code: Creates or updates a GenericUI data connector.
@@ -519,7 +519,7 @@ public final class DataConnectorsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/CreateOffice365ProjectDataConnetor.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/CreateOffice365ProjectDataConnetor.json
      */
     /**
      * Sample code: Creates or updates an Office365 Project data connector.
@@ -544,7 +544,7 @@ public final class DataConnectorsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/dataConnectors/CreateAPIPolling.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/dataConnectors/CreateAPIPolling.json
      */
     /**
      * Sample code: Creates or updates a APIPolling data connector.

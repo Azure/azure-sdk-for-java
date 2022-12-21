@@ -29,13 +29,7 @@ public final class BlobDownloadHeaders {
     private final BlobsDownloadHeaders internalHeaders;
 
     static {
-        BlobDownloadHeadersConstructorProxy.setAccessor(
-            new BlobDownloadHeadersConstructorProxy.BlobDownloadHeadersConstructorAccessor() {
-                @Override
-                public BlobDownloadHeaders create(BlobsDownloadHeaders internalHeaders) {
-                    return new BlobDownloadHeaders(internalHeaders);
-                }
-            });
+        BlobDownloadHeadersConstructorProxy.setAccessor(BlobDownloadHeaders::new);
     }
 
     private BlobDownloadHeaders(BlobsDownloadHeaders internalHeaders) {
@@ -732,7 +726,7 @@ public final class BlobDownloadHeaders {
      * @return the dateProperty value.
      */
     public OffsetDateTime getDateProperty() {
-        return internalHeaders.getDateProperty();
+        return internalHeaders.getDate();
     }
 
     /**
@@ -743,7 +737,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setDateProperty(OffsetDateTime dateProperty) {
-        internalHeaders.setDateProperty(dateProperty);
+        internalHeaders.setDate(dateProperty);
         return this;
     }
 

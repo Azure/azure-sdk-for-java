@@ -13,10 +13,9 @@ import com.azure.resourcemanager.automation.fluent.JobStreamsClient;
 import com.azure.resourcemanager.automation.fluent.models.JobStreamInner;
 import com.azure.resourcemanager.automation.models.JobStream;
 import com.azure.resourcemanager.automation.models.JobStreams;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class JobStreamsImpl implements JobStreams {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobStreamsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JobStreamsImpl.class);
 
     private final JobStreamsClient innerClient;
 

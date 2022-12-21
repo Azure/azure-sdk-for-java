@@ -15,10 +15,9 @@ import com.azure.resourcemanager.automation.fluent.models.JobInner;
 import com.azure.resourcemanager.automation.models.Job;
 import com.azure.resourcemanager.automation.models.JobCollectionItem;
 import com.azure.resourcemanager.automation.models.Jobs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class JobsImpl implements Jobs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JobsImpl.class);
 
     private final JobsClient innerClient;
 
@@ -157,7 +156,7 @@ public final class JobsImpl implements Jobs {
     public Job getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -165,7 +164,7 @@ public final class JobsImpl implements Jobs {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -174,7 +173,7 @@ public final class JobsImpl implements Jobs {
         }
         String jobName = Utils.getValueFromIdByName(id, "jobs");
         if (jobName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
@@ -188,7 +187,7 @@ public final class JobsImpl implements Jobs {
     public Response<Job> getByIdWithResponse(String id, String clientRequestId, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -196,7 +195,7 @@ public final class JobsImpl implements Jobs {
         }
         String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -205,7 +204,7 @@ public final class JobsImpl implements Jobs {
         }
         String jobName = Utils.getValueFromIdByName(id, "jobs");
         if (jobName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ClassificationModels. */
+/** Enum for all classification models supported by AutoML. */
 public final class ClassificationModels extends ExpandableStringEnum<ClassificationModels> {
     /** Static value LogisticRegression for ClassificationModels. */
     public static final ClassificationModels LOGISTIC_REGRESSION = fromString("LogisticRegression");

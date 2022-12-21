@@ -3,10 +3,9 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.core.annotation.Immutable;
-
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.file.datalake.implementation.util.AccessorUtility;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -14,7 +13,6 @@ import java.util.Map;
 /**
  * This class contains the response information returned from the service when getting path properties.
  */
-@Immutable
 public class PathProperties {
     private final OffsetDateTime creationTime;
     private final OffsetDateTime lastModified;
@@ -44,6 +42,14 @@ public class PathProperties {
     private final Map<String, String> metadata;
     private final Boolean isDirectory;
     private final OffsetDateTime expiresOn;
+    private String encryptionScope;
+
+    static {
+        AccessorUtility.setPathPropertiesAccessor((properties, encryptionScope) -> {
+            properties.encryptionScope = encryptionScope;
+            return properties;
+        });
+    }
 
     /**
      * Constructs a {@link PathProperties}.
@@ -166,6 +172,7 @@ public class PathProperties {
         }
         this.expiresOn = expiresOn;
     }
+
     /**
      * @return the time when the path was created
      */
@@ -367,5 +374,12 @@ public class PathProperties {
      */
     public OffsetDateTime getExpiresOn() {
         return expiresOn;
+    }
+
+    /**
+     * @return the path's encryption scope.
+     */
+    public String getEncryptionScope() {
+        return encryptionScope;
     }
 }

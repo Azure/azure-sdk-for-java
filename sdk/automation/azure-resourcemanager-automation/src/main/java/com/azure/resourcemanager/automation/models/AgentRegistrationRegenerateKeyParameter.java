@@ -6,14 +6,11 @@ package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters supplied to the regenerate keys operation. */
 @Fluent
 public final class AgentRegistrationRegenerateKeyParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentRegistrationRegenerateKeyParameter.class);
-
     /*
      * Gets or sets the agent registration key name - primary or secondary.
      */
@@ -47,10 +44,12 @@ public final class AgentRegistrationRegenerateKeyParameter {
      */
     public void validate() {
         if (keyName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property keyName in model AgentRegistrationRegenerateKeyParameter"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AgentRegistrationRegenerateKeyParameter.class);
 }

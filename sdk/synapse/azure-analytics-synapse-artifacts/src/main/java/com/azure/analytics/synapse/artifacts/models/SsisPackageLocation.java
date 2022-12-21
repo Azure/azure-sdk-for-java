@@ -14,8 +14,7 @@ import java.util.List;
 @Fluent
 public class SsisPackageLocation {
     /*
-     * The SSIS package path. Type: string (or Expression with resultType
-     * string).
+     * The SSIS package path. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "packagePath")
     private Object packagePath;
@@ -39,8 +38,7 @@ public class SsisPackageLocation {
     private SsisAccessCredential accessCredential;
 
     /*
-     * The configuration file of the package execution. Type: string (or
-     * Expression with resultType string).
+     * The configuration file of the package execution. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.configurationPath")
     private Object configurationPath;
@@ -58,8 +56,7 @@ public class SsisPackageLocation {
     private String packageName;
 
     /*
-     * The embedded package content. Type: string (or Expression with
-     * resultType string).
+     * The embedded package content. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.packageContent")
     private Object packageContent;

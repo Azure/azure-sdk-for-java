@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OSType. */
+/** OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux. */
 public final class OSType extends ExpandableStringEnum<OSType> {
     /** Static value Linux for OSType. */
     public static final OSType LINUX = fromString("Linux");

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.OperationDisplay;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Possible operation in the REST API of Microsoft.Security. */
 @Fluent
 public final class OperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
-
     /*
      * Name of the operation
      */
@@ -32,6 +28,10 @@ public final class OperationInner {
      */
     @JsonProperty(value = "display")
     private OperationDisplay display;
+
+    /** Creates an instance of OperationInner class. */
+    public OperationInner() {
+    }
 
     /**
      * Get the name property: Name of the operation.

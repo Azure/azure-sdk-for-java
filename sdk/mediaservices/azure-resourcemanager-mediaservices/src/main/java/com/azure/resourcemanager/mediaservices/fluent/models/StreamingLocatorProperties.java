@@ -46,13 +46,10 @@ public final class StreamingLocatorProperties {
     private UUID streamingLocatorId;
 
     /*
-     * Name of the Streaming Policy used by this Streaming Locator. Either
-     * specify the name of Streaming Policy you created or use one of the
-     * predefined Streaming Policies. The predefined Streaming Policies
-     * available are: 'Predefined_DownloadOnly',
-     * 'Predefined_ClearStreamingOnly', 'Predefined_DownloadAndClearStreaming',
-     * 'Predefined_ClearKey', 'Predefined_MultiDrmCencStreaming' and
-     * 'Predefined_MultiDrmStreaming'
+     * Name of the Streaming Policy used by this Streaming Locator. Either specify the name of Streaming Policy you
+     * created or use one of the predefined Streaming Policies. The predefined Streaming Policies available are:
+     * 'Predefined_DownloadOnly', 'Predefined_ClearStreamingOnly', 'Predefined_DownloadAndClearStreaming',
+     * 'Predefined_ClearKey', 'Predefined_MultiDrmCencStreaming' and 'Predefined_MultiDrmStreaming'
      */
     @JsonProperty(value = "streamingPolicyName", required = true)
     private String streamingPolicyName;

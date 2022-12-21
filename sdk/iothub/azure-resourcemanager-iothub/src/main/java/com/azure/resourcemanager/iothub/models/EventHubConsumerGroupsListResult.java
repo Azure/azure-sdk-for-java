@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iothub.fluent.models.EventHubConsumerGroupInfoInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The JSON-serialized array of Event Hub-compatible consumer group names with a next link. */
 @Fluent
 public final class EventHubConsumerGroupsListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventHubConsumerGroupsListResult.class);
-
     /*
      * List of consumer groups objects
      */

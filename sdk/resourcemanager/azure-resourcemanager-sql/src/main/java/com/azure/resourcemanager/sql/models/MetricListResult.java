@@ -7,15 +7,12 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.models.MetricInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response to a list database metrics request. */
 @Fluent
 public final class MetricListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricListResult.class);
-
     /*
      * The list of metrics for the database.
      */
@@ -49,11 +46,13 @@ public final class MetricListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model MetricListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MetricListResult.class);
 }

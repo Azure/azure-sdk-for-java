@@ -10,9 +10,9 @@ import com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingCo
 import com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.properties.core.retry.RetryConfigurationProperties;
-import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.properties.client.HeaderProperties;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
@@ -44,7 +44,7 @@ public class AzureGlobalProperties implements AzureProperties, RetryOptionsProvi
     private final TokenCredentialConfigurationProperties credential = new TokenCredentialConfigurationProperties();
 
     @NestedConfigurationProperty
-    private final AzureProfileConfigurationProperties profile = new AzureProfileConfigurationProperties();
+    private final GlobalProfileConfigurationProperties profile = new GlobalProfileConfigurationProperties();
 
     @Override
     public GlobalClientConfigurationProperties getClient() {
@@ -422,4 +422,19 @@ public class AzureGlobalProperties implements AzureProperties, RetryOptionsProvi
             this.transportType = transportType;
         }
     }
+
+    /**
+     * Global profile properties. This global profile properties will have a default cloud type of Azure.
+     */
+    public static class GlobalProfileConfigurationProperties extends AzureProfileConfigurationProperties {
+
+        /**
+         * Construct a default {@link GlobalProfileConfigurationProperties} with default cloud type Azure.
+         */
+        public GlobalProfileConfigurationProperties() {
+            setCloudType(CloudType.AZURE);
+        }
+
+    }
+
 }

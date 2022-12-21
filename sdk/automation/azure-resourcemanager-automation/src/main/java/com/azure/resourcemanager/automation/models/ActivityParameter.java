@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Definition of the activity parameter. */
 @Fluent
 public final class ActivityParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActivityParameter.class);
-
     /*
      * Gets or sets the name of the activity parameter.
      */
@@ -28,15 +24,14 @@ public final class ActivityParameter {
     private String type;
 
     /*
-     * Gets or sets a Boolean value that indicates true if the parameter is
-     * required. If the value is false, the parameter is optional.
+     * Gets or sets a Boolean value that indicates true if the parameter is required. If the value is false, the
+     * parameter is optional.
      */
     @JsonProperty(value = "isMandatory")
     private Boolean isMandatory;
 
     /*
-     * Gets or sets a Boolean value that indicates true if the parameter is
-     * dynamic.
+     * Gets or sets a Boolean value that indicates true if the parameter is dynamic.
      */
     @JsonProperty(value = "isDynamic")
     private Boolean isDynamic;
@@ -48,28 +43,25 @@ public final class ActivityParameter {
     private Long position;
 
     /*
-     * Gets or sets a Boolean value that indicates true if the parameter can
-     * take values from the incoming pipeline objects. This setting is used if
-     * the cmdlet must access the complete input object. false indicates that
-     * the parameter cannot take values from the complete input object.
+     * Gets or sets a Boolean value that indicates true if the parameter can take values from the incoming pipeline
+     * objects. This setting is used if the cmdlet must access the complete input object. false indicates that the
+     * parameter cannot take values from the complete input object.
      */
     @JsonProperty(value = "valueFromPipeline")
     private Boolean valueFromPipeline;
 
     /*
-     * Gets or sets a Boolean value that indicates true if the parameter can be
-     * filled from a property of the incoming pipeline object that has the same
-     * name as this parameter. false indicates that the parameter cannot be
-     * filled from the incoming pipeline object property with the same name.
+     * Gets or sets a Boolean value that indicates true if the parameter can be filled from a property of the incoming
+     * pipeline object that has the same name as this parameter. false indicates that the parameter cannot be filled
+     * from the incoming pipeline object property with the same name.
      */
     @JsonProperty(value = "valueFromPipelineByPropertyName")
     private Boolean valueFromPipelineByPropertyName;
 
     /*
-     * Gets or sets a Boolean value that indicates true if the cmdlet parameter
-     * accepts all the remaining command-line arguments that are associated
-     * with this parameter in the form of an array. false if the cmdlet
-     * parameter does not accept all the remaining argument values.
+     * Gets or sets a Boolean value that indicates true if the cmdlet parameter accepts all the remaining command-line
+     * arguments that are associated with this parameter in the form of an array. false if the cmdlet parameter does
+     * not accept all the remaining argument values.
      */
     @JsonProperty(value = "valueFromRemainingArguments")
     private Boolean valueFromRemainingArguments;

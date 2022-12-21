@@ -5,7 +5,9 @@ import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
+import com.azure.core.http.policy.ExponentialBackoffOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.http.policy.RetryOptions
 import com.azure.core.http.rest.Response
 import com.azure.core.util.Context
 import com.azure.core.util.HttpClientOptions
@@ -13,11 +15,18 @@ import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.common.Utility
+import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.sas.AccountSasPermission
+import com.azure.storage.common.sas.AccountSasResourceType
+import com.azure.storage.common.sas.AccountSasService
+import com.azure.storage.common.sas.AccountSasSignatureValues
+import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.datalake.models.*
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions
 import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptions
+import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions
@@ -26,6 +35,7 @@ import com.azure.storage.file.datalake.sas.FileSystemSasPermission
 import com.azure.storage.file.datalake.sas.PathSasPermission
 import reactor.core.publisher.Mono
 import spock.lang.IgnoreIf
+import spock.lang.Retry
 import spock.lang.Unroll
 
 import java.time.Duration
@@ -261,6 +271,118 @@ class DirectoryAPITest extends APISpec {
 
         expect:
         dc.createWithResponse(permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
+    }
+
+    def "Create encryption scope"() {
+        setup:
+        def encryptionScope = new FileSystemEncryptionScopeOptions()
+            .setDefaultEncryptionScope(encryptionScopeString)
+            .setEncryptionScopeOverridePrevented(true)
+
+        def dirName = generatePathName()
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+        def client = getFileSystemClientBuilder(fsc.getFileSystemUrl())
+            .credential(environment.dataLakeAccount.credential)
+            .fileSystemEncryptionScopeOptions(encryptionScope)
+            .buildClient()
+
+        client.create()
+
+        def directoryClient = client.getDirectoryClient(dirName)
+
+        when:
+        directoryClient.create()
+        def properties = directoryClient.getProperties()
+
+        then:
+        properties.getEncryptionScope() == encryptionScopeString
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
+    def "create encryption scope sas"() {
+        def permissions = new PathSasPermission()
+            .setReadPermission(true)
+            .setMovePermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setAddPermission(true)
+            .setDeletePermission(true)
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setEncryptionScope(encryptionScopeString)
+        def sas = fsc.generateSas(sasValues)
+
+        def client = getDirectoryClient(sas, fsc.getFileSystemUrl(), generatePathName())
+
+        when:
+        client.create()
+        def properties = client.getProperties()
+
+        then:
+        properties.getEncryptionScope() == encryptionScopeString
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
+    def "create encryption scope account sas"() {
+        setup:
+        def service = new AccountSasService()
+            .setBlobAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+
+        def sas = getServiceClientBuilder(environment.dataLakeAccount.credential, environment.dataLakeAccount.dataLakeEndpoint)
+            .encryptionScope(encryptionScopeString)
+            .buildClient()
+            .generateAccountSas(sasValues)
+
+        def client = getDirectoryClient(sas, fsc.getFileSystemUrl(), generatePathName())
+
+        when:
+        client.create()
+        def properties = client.getProperties()
+
+        then:
+        properties.getEncryptionScope() == encryptionScopeString
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
+    def "create encryption scope identity sas"() {
+        def key = getOAuthServiceClient().getUserDelegationKey(null, namer.getUtcNow().plusHours(1))
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
+        key.setSignedObjectId(keyOid)
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
+        key.setSignedTenantId(keyTid)
+
+        def permissions = new PathSasPermission()
+            .setReadPermission(true)
+            .setMovePermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setAddPermission(true)
+            .setDeletePermission(true)
+
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setEncryptionScope(encryptionScopeString)
+
+        def sas = fsc.generateUserDelegationSas(sasValues.setAgentObjectId(owner), key)
+
+        def client = getDirectoryClient(sas, fsc.getFileSystemUrl(), generatePathName())
+
+        when:
+        client.create()
+        def properties = client.getProperties()
+
+        then:
+        properties.getEncryptionScope() == encryptionScopeString
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
@@ -3921,6 +4043,7 @@ class DirectoryAPITest extends APISpec {
         renamedDir.getProperties().getETag() == renamedDir.setAccessControlList(pathAccessControlEntries, group, owner).getETag()
     }
 
+    @Retry(count = 5, delay = 1000)
     def "create file system with small timeouts fail for service client"() {
         setup:
         def clientOptions = new HttpClientOptions()
@@ -3933,6 +4056,7 @@ class DirectoryAPITest extends APISpec {
         def clientBuilder = new DataLakeServiceClientBuilder()
             .endpoint(environment.primaryAccount.blobEndpoint)
             .credential(environment.primaryAccount.credential)
+            .retryOptions(new RequestRetryOptions(null, 1, null, null, null, null))
             .clientOptions(clientOptions)
 
         def serviceClient = clientBuilder.buildClient()

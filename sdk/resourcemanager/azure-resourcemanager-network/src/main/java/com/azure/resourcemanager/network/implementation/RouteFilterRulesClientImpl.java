@@ -63,7 +63,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface RouteFilterRulesService {
+    public interface RouteFilterRulesService {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -176,7 +176,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -232,7 +232,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -432,7 +432,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -489,7 +489,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -527,22 +527,6 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param ruleName The name of the rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified rule from a route filter.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouteFilterRuleInner get(String resourceGroupName, String routeFilterName, String ruleName) {
-        return getAsync(resourceGroupName, routeFilterName, ruleName).block();
-    }
-
-    /**
-     * Gets the specified rule from a route filter.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param routeFilterName The name of the route filter.
-     * @param ruleName The name of the rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -553,6 +537,22 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
     public Response<RouteFilterRuleInner> getWithResponse(
         String resourceGroupName, String routeFilterName, String ruleName, Context context) {
         return getWithResponseAsync(resourceGroupName, routeFilterName, ruleName, context).block();
+    }
+
+    /**
+     * Gets the specified rule from a route filter.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeFilterName The name of the route filter.
+     * @param ruleName The name of the rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified rule from a route filter.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RouteFilterRuleInner get(String resourceGroupName, String routeFilterName, String ruleName) {
+        return getWithResponse(resourceGroupName, routeFilterName, ruleName, Context.NONE).getValue();
     }
 
     /**
@@ -604,7 +604,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
         } else {
             routeFilterRuleParameters.validate();
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -674,7 +674,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
         } else {
             routeFilterRuleParameters.validate();
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -925,7 +925,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -986,7 +986,7 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1080,7 +1080,8 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1116,7 +1117,8 @@ public final class RouteFilterRulesClientImpl implements RouteFilterRulesClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

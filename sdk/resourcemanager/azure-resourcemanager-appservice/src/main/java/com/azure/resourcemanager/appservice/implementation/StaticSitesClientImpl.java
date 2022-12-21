@@ -39,6 +39,7 @@ import com.azure.resourcemanager.appservice.fluent.models.StaticSiteArmResourceI
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteBuildArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteCustomDomainOverviewArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteFunctionOverviewArmResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSiteLinkedBackendArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserInvitationResponseResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserProvidedFunctionAppArmResourceInner;
@@ -53,6 +54,7 @@ import com.azure.resourcemanager.appservice.models.StaticSiteCollection;
 import com.azure.resourcemanager.appservice.models.StaticSiteCustomDomainOverviewCollection;
 import com.azure.resourcemanager.appservice.models.StaticSiteCustomDomainRequestPropertiesArmResource;
 import com.azure.resourcemanager.appservice.models.StaticSiteFunctionOverviewCollection;
+import com.azure.resourcemanager.appservice.models.StaticSiteLinkedBackendsCollection;
 import com.azure.resourcemanager.appservice.models.StaticSitePatchResource;
 import com.azure.resourcemanager.appservice.models.StaticSiteResetPropertiesArmResource;
 import com.azure.resourcemanager.appservice.models.StaticSiteUserCollection;
@@ -864,6 +866,175 @@ public final class StaticSitesClientImpl
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/linkedBackends/{linkedBackendName}/validate")
+        @ExpectedResponses({202, 204})
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<Flux<ByteBuffer>>> validateBackend(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name,
+            @PathParam("linkedBackendName") String linkedBackendName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/builds/{environmentName}/linkedBackends/{linkedBackendName}/validate")
+        @ExpectedResponses({202, 204})
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<Flux<ByteBuffer>>> validateBackendForBuild(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name,
+            @PathParam("environmentName") String environmentName,
+            @PathParam("linkedBackendName") String linkedBackendName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/linkedBackends")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<StaticSiteLinkedBackendsCollection>> getLinkedBackends(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/builds/{environmentName}/linkedBackends")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<StaticSiteLinkedBackendsCollection>> getLinkedBackendsForBuild(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name,
+            @PathParam("environmentName") String environmentName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/linkedBackends/{linkedBackendName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<StaticSiteLinkedBackendArmResourceInner>> getLinkedBackend(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name,
+            @PathParam("linkedBackendName") String linkedBackendName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/linkedBackends/{linkedBackendName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<Flux<ByteBuffer>>> linkBackend(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name,
+            @PathParam("linkedBackendName") String linkedBackendName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/linkedBackends/{linkedBackendName}")
+        @ExpectedResponses({200, 204})
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<Void>> unlinkBackend(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name,
+            @PathParam("linkedBackendName") String linkedBackendName,
+            @QueryParam("isCleaningAuthConfig") Boolean isCleaningAuthConfig,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/builds/{environmentName}/linkedBackends/{linkedBackendName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<StaticSiteLinkedBackendArmResourceInner>> getLinkedBackendForBuild(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name,
+            @PathParam("environmentName") String environmentName,
+            @PathParam("linkedBackendName") String linkedBackendName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/builds/{environmentName}/linkedBackends/{linkedBackendName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<Flux<ByteBuffer>>> linkBackendToBuild(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name,
+            @PathParam("environmentName") String environmentName,
+            @PathParam("linkedBackendName") String linkedBackendName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites"
+                + "/{name}/builds/{environmentName}/linkedBackends/{linkedBackendName}")
+        @ExpectedResponses({200, 204})
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<Void>> unlinkBackendFromBuild(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name,
+            @PathParam("environmentName") String environmentName,
+            @PathParam("linkedBackendName") String linkedBackendName,
+            @QueryParam("isCleaningAuthConfig") Boolean isCleaningAuthConfig,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -958,6 +1129,26 @@ public final class StaticSitesClientImpl
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<StaticSiteUserProvidedFunctionAppsCollection>> getUserProvidedFunctionAppsForStaticSiteNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<StaticSiteLinkedBackendsCollection>> getLinkedBackendsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Mono<Response<StaticSiteLinkedBackendsCollection>> getLinkedBackendsForBuildNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
@@ -11287,6 +11478,2572 @@ public final class StaticSitesClientImpl
     }
 
     /**
+     * Validates that a backend can be linked to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> validateBackendWithResponseAsync(
+        String resourceGroupName,
+        String name,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (linkedBackendName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (staticSiteLinkedBackendEnvelope == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter staticSiteLinkedBackendEnvelope is required and cannot be null."));
+        } else {
+            staticSiteLinkedBackendEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .validateBackend(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            name,
+                            linkedBackendName,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            staticSiteLinkedBackendEnvelope,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Validates that a backend can be linked to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> validateBackendWithResponseAsync(
+        String resourceGroupName,
+        String name,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (linkedBackendName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (staticSiteLinkedBackendEnvelope == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter staticSiteLinkedBackendEnvelope is required and cannot be null."));
+        } else {
+            staticSiteLinkedBackendEnvelope.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .validateBackend(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                name,
+                linkedBackendName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                staticSiteLinkedBackendEnvelope,
+                accept,
+                context);
+    }
+
+    /**
+     * Validates that a backend can be linked to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginValidateBackendAsync(
+        String resourceGroupName,
+        String name,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            validateBackendWithResponseAsync(
+                resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Validates that a backend can be linked to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginValidateBackendAsync(
+        String resourceGroupName,
+        String name,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            validateBackendWithResponseAsync(
+                resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Validates that a backend can be linked to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginValidateBackend(
+        String resourceGroupName,
+        String name,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
+        return beginValidateBackendAsync(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope)
+            .getSyncPoller();
+    }
+
+    /**
+     * Validates that a backend can be linked to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginValidateBackend(
+        String resourceGroupName,
+        String name,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+        Context context) {
+        return beginValidateBackendAsync(
+                resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Validates that a backend can be linked to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> validateBackendAsync(
+        String resourceGroupName,
+        String name,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
+        return beginValidateBackendAsync(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Validates that a backend can be linked to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> validateBackendAsync(
+        String resourceGroupName,
+        String name,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+        Context context) {
+        return beginValidateBackendAsync(
+                resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Validates that a backend can be linked to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void validateBackend(
+        String resourceGroupName,
+        String name,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
+        validateBackendAsync(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope).block();
+    }
+
+    /**
+     * Validates that a backend can be linked to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void validateBackend(
+        String resourceGroupName,
+        String name,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+        Context context) {
+        validateBackendAsync(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope, context)
+            .block();
+    }
+
+    /**
+     * Validates that a backend can be linked to a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> validateBackendForBuildWithResponseAsync(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (linkedBackendName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (staticSiteLinkedBackendEnvelope == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter staticSiteLinkedBackendEnvelope is required and cannot be null."));
+        } else {
+            staticSiteLinkedBackendEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .validateBackendForBuild(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            name,
+                            environmentName,
+                            linkedBackendName,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            staticSiteLinkedBackendEnvelope,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Validates that a backend can be linked to a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> validateBackendForBuildWithResponseAsync(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (linkedBackendName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (staticSiteLinkedBackendEnvelope == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter staticSiteLinkedBackendEnvelope is required and cannot be null."));
+        } else {
+            staticSiteLinkedBackendEnvelope.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .validateBackendForBuild(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                name,
+                environmentName,
+                linkedBackendName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                staticSiteLinkedBackendEnvelope,
+                accept,
+                context);
+    }
+
+    /**
+     * Validates that a backend can be linked to a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginValidateBackendForBuildAsync(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            validateBackendForBuildWithResponseAsync(
+                resourceGroupName, name, environmentName, linkedBackendName, staticSiteLinkedBackendEnvelope);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Validates that a backend can be linked to a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginValidateBackendForBuildAsync(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            validateBackendForBuildWithResponseAsync(
+                resourceGroupName, name, environmentName, linkedBackendName, staticSiteLinkedBackendEnvelope, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Validates that a backend can be linked to a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginValidateBackendForBuild(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
+        return beginValidateBackendForBuildAsync(
+                resourceGroupName, name, environmentName, linkedBackendName, staticSiteLinkedBackendEnvelope)
+            .getSyncPoller();
+    }
+
+    /**
+     * Validates that a backend can be linked to a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginValidateBackendForBuild(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+        Context context) {
+        return beginValidateBackendForBuildAsync(
+                resourceGroupName, name, environmentName, linkedBackendName, staticSiteLinkedBackendEnvelope, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Validates that a backend can be linked to a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> validateBackendForBuildAsync(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
+        return beginValidateBackendForBuildAsync(
+                resourceGroupName, name, environmentName, linkedBackendName, staticSiteLinkedBackendEnvelope)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Validates that a backend can be linked to a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> validateBackendForBuildAsync(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+        Context context) {
+        return beginValidateBackendForBuildAsync(
+                resourceGroupName, name, environmentName, linkedBackendName, staticSiteLinkedBackendEnvelope, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Validates that a backend can be linked to a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void validateBackendForBuild(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
+        validateBackendForBuildAsync(
+                resourceGroupName, name, environmentName, linkedBackendName, staticSiteLinkedBackendEnvelope)
+            .block();
+    }
+
+    /**
+     * Validates that a backend can be linked to a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void validateBackendForBuild(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+        Context context) {
+        validateBackendForBuildAsync(
+                resourceGroupName, name, environmentName, linkedBackendName, staticSiteLinkedBackendEnvelope, context)
+            .block();
+    }
+
+    /**
+     * Returns details of all backends linked to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site linked backends along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<StaticSiteLinkedBackendArmResourceInner>> getLinkedBackendsSinglePageAsync(
+        String resourceGroupName, String name) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getLinkedBackends(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            name,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .<PagedResponse<StaticSiteLinkedBackendArmResourceInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Returns details of all backends linked to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site linked backends along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<StaticSiteLinkedBackendArmResourceInner>> getLinkedBackendsSinglePageAsync(
+        String resourceGroupName, String name, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .getLinkedBackends(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                name,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Returns details of all backends linked to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site linked backends as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendsAsync(
+        String resourceGroupName, String name) {
+        return new PagedFlux<>(
+            () -> getLinkedBackendsSinglePageAsync(resourceGroupName, name),
+            nextLink -> getLinkedBackendsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Returns details of all backends linked to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site linked backends as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendsAsync(
+        String resourceGroupName, String name, Context context) {
+        return new PagedFlux<>(
+            () -> getLinkedBackendsSinglePageAsync(resourceGroupName, name, context),
+            nextLink -> getLinkedBackendsNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Returns details of all backends linked to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site linked backends as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<StaticSiteLinkedBackendArmResourceInner> getLinkedBackends(
+        String resourceGroupName, String name) {
+        return new PagedIterable<>(getLinkedBackendsAsync(resourceGroupName, name));
+    }
+
+    /**
+     * Returns details of all backends linked to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site linked backends as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<StaticSiteLinkedBackendArmResourceInner> getLinkedBackends(
+        String resourceGroupName, String name, Context context) {
+        return new PagedIterable<>(getLinkedBackendsAsync(resourceGroupName, name, context));
+    }
+
+    /**
+     * Returns details of all backends linked to a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site linked backends along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<StaticSiteLinkedBackendArmResourceInner>> getLinkedBackendsForBuildSinglePageAsync(
+        String resourceGroupName, String name, String environmentName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getLinkedBackendsForBuild(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            name,
+                            environmentName,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .<PagedResponse<StaticSiteLinkedBackendArmResourceInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Returns details of all backends linked to a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site linked backends along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<StaticSiteLinkedBackendArmResourceInner>> getLinkedBackendsForBuildSinglePageAsync(
+        String resourceGroupName, String name, String environmentName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .getLinkedBackendsForBuild(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                name,
+                environmentName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Returns details of all backends linked to a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site linked backends as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendsForBuildAsync(
+        String resourceGroupName, String name, String environmentName) {
+        return new PagedFlux<>(
+            () -> getLinkedBackendsForBuildSinglePageAsync(resourceGroupName, name, environmentName),
+            nextLink -> getLinkedBackendsForBuildNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Returns details of all backends linked to a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site linked backends as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendsForBuildAsync(
+        String resourceGroupName, String name, String environmentName, Context context) {
+        return new PagedFlux<>(
+            () -> getLinkedBackendsForBuildSinglePageAsync(resourceGroupName, name, environmentName, context),
+            nextLink -> getLinkedBackendsForBuildNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Returns details of all backends linked to a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site linked backends as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendsForBuild(
+        String resourceGroupName, String name, String environmentName) {
+        return new PagedIterable<>(getLinkedBackendsForBuildAsync(resourceGroupName, name, environmentName));
+    }
+
+    /**
+     * Returns details of all backends linked to a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site linked backends as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendsForBuild(
+        String resourceGroupName, String name, String environmentName, Context context) {
+        return new PagedIterable<>(getLinkedBackendsForBuildAsync(resourceGroupName, name, environmentName, context));
+    }
+
+    /**
+     * Returns the details of a linked backend linked to a static site by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Linked Backend ARM resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<StaticSiteLinkedBackendArmResourceInner>> getLinkedBackendWithResponseAsync(
+        String resourceGroupName, String name, String linkedBackendName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (linkedBackendName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getLinkedBackend(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            name,
+                            linkedBackendName,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Returns the details of a linked backend linked to a static site by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Linked Backend ARM resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<StaticSiteLinkedBackendArmResourceInner>> getLinkedBackendWithResponseAsync(
+        String resourceGroupName, String name, String linkedBackendName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (linkedBackendName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .getLinkedBackend(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                name,
+                linkedBackendName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Returns the details of a linked backend linked to a static site by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Linked Backend ARM resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendAsync(
+        String resourceGroupName, String name, String linkedBackendName) {
+        return getLinkedBackendWithResponseAsync(resourceGroupName, name, linkedBackendName)
+            .flatMap(
+                (Response<StaticSiteLinkedBackendArmResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Returns the details of a linked backend linked to a static site by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Linked Backend ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StaticSiteLinkedBackendArmResourceInner getLinkedBackend(
+        String resourceGroupName, String name, String linkedBackendName) {
+        return getLinkedBackendAsync(resourceGroupName, name, linkedBackendName).block();
+    }
+
+    /**
+     * Returns the details of a linked backend linked to a static site by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Linked Backend ARM resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendWithResponse(
+        String resourceGroupName, String name, String linkedBackendName, Context context) {
+        return getLinkedBackendWithResponseAsync(resourceGroupName, name, linkedBackendName, context).block();
+    }
+
+    /**
+     * Link backend to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the backend to link to the static site.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Linked Backend ARM resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> linkBackendWithResponseAsync(
+        String resourceGroupName,
+        String name,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (linkedBackendName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (staticSiteLinkedBackendEnvelope == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter staticSiteLinkedBackendEnvelope is required and cannot be null."));
+        } else {
+            staticSiteLinkedBackendEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .linkBackend(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            name,
+                            linkedBackendName,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            staticSiteLinkedBackendEnvelope,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Link backend to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the backend to link to the static site.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Linked Backend ARM resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> linkBackendWithResponseAsync(
+        String resourceGroupName,
+        String name,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (linkedBackendName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (staticSiteLinkedBackendEnvelope == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter staticSiteLinkedBackendEnvelope is required and cannot be null."));
+        } else {
+            staticSiteLinkedBackendEnvelope.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .linkBackend(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                name,
+                linkedBackendName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                staticSiteLinkedBackendEnvelope,
+                accept,
+                context);
+    }
+
+    /**
+     * Link backend to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the backend to link to the static site.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of static Site Linked Backend ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
+        beginLinkBackendAsync(
+            String resourceGroupName,
+            String name,
+            String linkedBackendName,
+            StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            linkBackendWithResponseAsync(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope);
+        return this
+            .client
+            .<StaticSiteLinkedBackendArmResourceInner, StaticSiteLinkedBackendArmResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                StaticSiteLinkedBackendArmResourceInner.class,
+                StaticSiteLinkedBackendArmResourceInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Link backend to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the backend to link to the static site.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of static Site Linked Backend ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
+        beginLinkBackendAsync(
+            String resourceGroupName,
+            String name,
+            String linkedBackendName,
+            StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            linkBackendWithResponseAsync(
+                resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope, context);
+        return this
+            .client
+            .<StaticSiteLinkedBackendArmResourceInner, StaticSiteLinkedBackendArmResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                StaticSiteLinkedBackendArmResourceInner.class,
+                StaticSiteLinkedBackendArmResourceInner.class,
+                context);
+    }
+
+    /**
+     * Link backend to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the backend to link to the static site.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of static Site Linked Backend ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
+        beginLinkBackend(
+            String resourceGroupName,
+            String name,
+            String linkedBackendName,
+            StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
+        return beginLinkBackendAsync(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope)
+            .getSyncPoller();
+    }
+
+    /**
+     * Link backend to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the backend to link to the static site.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of static Site Linked Backend ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
+        beginLinkBackend(
+            String resourceGroupName,
+            String name,
+            String linkedBackendName,
+            StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+            Context context) {
+        return beginLinkBackendAsync(
+                resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Link backend to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the backend to link to the static site.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Linked Backend ARM resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StaticSiteLinkedBackendArmResourceInner> linkBackendAsync(
+        String resourceGroupName,
+        String name,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
+        return beginLinkBackendAsync(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Link backend to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the backend to link to the static site.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Linked Backend ARM resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<StaticSiteLinkedBackendArmResourceInner> linkBackendAsync(
+        String resourceGroupName,
+        String name,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+        Context context) {
+        return beginLinkBackendAsync(
+                resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Link backend to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the backend to link to the static site.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Linked Backend ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StaticSiteLinkedBackendArmResourceInner linkBackend(
+        String resourceGroupName,
+        String name,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
+        return linkBackendAsync(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope).block();
+    }
+
+    /**
+     * Link backend to a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the backend to link to the static site.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Linked Backend ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StaticSiteLinkedBackendArmResourceInner linkBackend(
+        String resourceGroupName,
+        String name,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+        Context context) {
+        return linkBackendAsync(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope, context)
+            .block();
+    }
+
+    /**
+     * Unlink a backend from a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the backend linked to the static site.
+     * @param isCleaningAuthConfig Decides if Easy Auth configuration will be removed from backend configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> unlinkBackendWithResponseAsync(
+        String resourceGroupName, String name, String linkedBackendName, Boolean isCleaningAuthConfig) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (linkedBackendName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .unlinkBackend(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            name,
+                            linkedBackendName,
+                            isCleaningAuthConfig,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Unlink a backend from a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the backend linked to the static site.
+     * @param isCleaningAuthConfig Decides if Easy Auth configuration will be removed from backend configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> unlinkBackendWithResponseAsync(
+        String resourceGroupName,
+        String name,
+        String linkedBackendName,
+        Boolean isCleaningAuthConfig,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (linkedBackendName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .unlinkBackend(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                name,
+                linkedBackendName,
+                isCleaningAuthConfig,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Unlink a backend from a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the backend linked to the static site.
+     * @param isCleaningAuthConfig Decides if Easy Auth configuration will be removed from backend configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> unlinkBackendAsync(
+        String resourceGroupName, String name, String linkedBackendName, Boolean isCleaningAuthConfig) {
+        return unlinkBackendWithResponseAsync(resourceGroupName, name, linkedBackendName, isCleaningAuthConfig)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Unlink a backend from a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the backend linked to the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> unlinkBackendAsync(String resourceGroupName, String name, String linkedBackendName) {
+        final Boolean isCleaningAuthConfig = null;
+        return unlinkBackendWithResponseAsync(resourceGroupName, name, linkedBackendName, isCleaningAuthConfig)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Unlink a backend from a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the backend linked to the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void unlinkBackend(String resourceGroupName, String name, String linkedBackendName) {
+        final Boolean isCleaningAuthConfig = null;
+        unlinkBackendAsync(resourceGroupName, name, linkedBackendName, isCleaningAuthConfig).block();
+    }
+
+    /**
+     * Unlink a backend from a static site.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the backend linked to the static site.
+     * @param isCleaningAuthConfig Decides if Easy Auth configuration will be removed from backend configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> unlinkBackendWithResponse(
+        String resourceGroupName,
+        String name,
+        String linkedBackendName,
+        Boolean isCleaningAuthConfig,
+        Context context) {
+        return unlinkBackendWithResponseAsync(resourceGroupName, name, linkedBackendName, isCleaningAuthConfig, context)
+            .block();
+    }
+
+    /**
+     * Returns the details of a linked backend linked to a static site build by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Linked Backend ARM resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<StaticSiteLinkedBackendArmResourceInner>> getLinkedBackendForBuildWithResponseAsync(
+        String resourceGroupName, String name, String environmentName, String linkedBackendName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (linkedBackendName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getLinkedBackendForBuild(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            name,
+                            environmentName,
+                            linkedBackendName,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Returns the details of a linked backend linked to a static site build by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Linked Backend ARM resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<StaticSiteLinkedBackendArmResourceInner>> getLinkedBackendForBuildWithResponseAsync(
+        String resourceGroupName, String name, String environmentName, String linkedBackendName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (linkedBackendName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .getLinkedBackendForBuild(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                name,
+                environmentName,
+                linkedBackendName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Returns the details of a linked backend linked to a static site build by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Linked Backend ARM resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendForBuildAsync(
+        String resourceGroupName, String name, String environmentName, String linkedBackendName) {
+        return getLinkedBackendForBuildWithResponseAsync(resourceGroupName, name, environmentName, linkedBackendName)
+            .flatMap(
+                (Response<StaticSiteLinkedBackendArmResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Returns the details of a linked backend linked to a static site build by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Linked Backend ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StaticSiteLinkedBackendArmResourceInner getLinkedBackendForBuild(
+        String resourceGroupName, String name, String environmentName, String linkedBackendName) {
+        return getLinkedBackendForBuildAsync(resourceGroupName, name, environmentName, linkedBackendName).block();
+    }
+
+    /**
+     * Returns the details of a linked backend linked to a static site build by name.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Linked Backend ARM resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendForBuildWithResponse(
+        String resourceGroupName, String name, String environmentName, String linkedBackendName, Context context) {
+        return getLinkedBackendForBuildWithResponseAsync(
+                resourceGroupName, name, environmentName, linkedBackendName, context)
+            .block();
+    }
+
+    /**
+     * Link backend to a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the backend to link to the static site.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Linked Backend ARM resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> linkBackendToBuildWithResponseAsync(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (linkedBackendName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (staticSiteLinkedBackendEnvelope == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter staticSiteLinkedBackendEnvelope is required and cannot be null."));
+        } else {
+            staticSiteLinkedBackendEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .linkBackendToBuild(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            name,
+                            environmentName,
+                            linkedBackendName,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            staticSiteLinkedBackendEnvelope,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Link backend to a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the backend to link to the static site.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Linked Backend ARM resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> linkBackendToBuildWithResponseAsync(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (linkedBackendName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (staticSiteLinkedBackendEnvelope == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter staticSiteLinkedBackendEnvelope is required and cannot be null."));
+        } else {
+            staticSiteLinkedBackendEnvelope.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .linkBackendToBuild(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                name,
+                environmentName,
+                linkedBackendName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                staticSiteLinkedBackendEnvelope,
+                accept,
+                context);
+    }
+
+    /**
+     * Link backend to a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the backend to link to the static site.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of static Site Linked Backend ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
+        beginLinkBackendToBuildAsync(
+            String resourceGroupName,
+            String name,
+            String environmentName,
+            String linkedBackendName,
+            StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            linkBackendToBuildWithResponseAsync(
+                resourceGroupName, name, environmentName, linkedBackendName, staticSiteLinkedBackendEnvelope);
+        return this
+            .client
+            .<StaticSiteLinkedBackendArmResourceInner, StaticSiteLinkedBackendArmResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                StaticSiteLinkedBackendArmResourceInner.class,
+                StaticSiteLinkedBackendArmResourceInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Link backend to a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the backend to link to the static site.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of static Site Linked Backend ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
+        beginLinkBackendToBuildAsync(
+            String resourceGroupName,
+            String name,
+            String environmentName,
+            String linkedBackendName,
+            StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            linkBackendToBuildWithResponseAsync(
+                resourceGroupName, name, environmentName, linkedBackendName, staticSiteLinkedBackendEnvelope, context);
+        return this
+            .client
+            .<StaticSiteLinkedBackendArmResourceInner, StaticSiteLinkedBackendArmResourceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                StaticSiteLinkedBackendArmResourceInner.class,
+                StaticSiteLinkedBackendArmResourceInner.class,
+                context);
+    }
+
+    /**
+     * Link backend to a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the backend to link to the static site.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of static Site Linked Backend ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
+        beginLinkBackendToBuild(
+            String resourceGroupName,
+            String name,
+            String environmentName,
+            String linkedBackendName,
+            StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
+        return beginLinkBackendToBuildAsync(
+                resourceGroupName, name, environmentName, linkedBackendName, staticSiteLinkedBackendEnvelope)
+            .getSyncPoller();
+    }
+
+    /**
+     * Link backend to a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the backend to link to the static site.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of static Site Linked Backend ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
+        beginLinkBackendToBuild(
+            String resourceGroupName,
+            String name,
+            String environmentName,
+            String linkedBackendName,
+            StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+            Context context) {
+        return beginLinkBackendToBuildAsync(
+                resourceGroupName, name, environmentName, linkedBackendName, staticSiteLinkedBackendEnvelope, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Link backend to a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the backend to link to the static site.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Linked Backend ARM resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StaticSiteLinkedBackendArmResourceInner> linkBackendToBuildAsync(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
+        return beginLinkBackendToBuildAsync(
+                resourceGroupName, name, environmentName, linkedBackendName, staticSiteLinkedBackendEnvelope)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Link backend to a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the backend to link to the static site.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Linked Backend ARM resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<StaticSiteLinkedBackendArmResourceInner> linkBackendToBuildAsync(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+        Context context) {
+        return beginLinkBackendToBuildAsync(
+                resourceGroupName, name, environmentName, linkedBackendName, staticSiteLinkedBackendEnvelope, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Link backend to a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the backend to link to the static site.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Linked Backend ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StaticSiteLinkedBackendArmResourceInner linkBackendToBuild(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
+        return linkBackendToBuildAsync(
+                resourceGroupName, name, environmentName, linkedBackendName, staticSiteLinkedBackendEnvelope)
+            .block();
+    }
+
+    /**
+     * Link backend to a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the backend to link to the static site.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Linked Backend ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StaticSiteLinkedBackendArmResourceInner linkBackendToBuild(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+        Context context) {
+        return linkBackendToBuildAsync(
+                resourceGroupName, name, environmentName, linkedBackendName, staticSiteLinkedBackendEnvelope, context)
+            .block();
+    }
+
+    /**
+     * Unlink a backend from a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the backend linked to the static site.
+     * @param isCleaningAuthConfig Decides if auth will be removed from backend configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> unlinkBackendFromBuildWithResponseAsync(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String linkedBackendName,
+        Boolean isCleaningAuthConfig) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (linkedBackendName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .unlinkBackendFromBuild(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            name,
+                            environmentName,
+                            linkedBackendName,
+                            isCleaningAuthConfig,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Unlink a backend from a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the backend linked to the static site.
+     * @param isCleaningAuthConfig Decides if auth will be removed from backend configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> unlinkBackendFromBuildWithResponseAsync(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String linkedBackendName,
+        Boolean isCleaningAuthConfig,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (linkedBackendName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .unlinkBackendFromBuild(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                name,
+                environmentName,
+                linkedBackendName,
+                isCleaningAuthConfig,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Unlink a backend from a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the backend linked to the static site.
+     * @param isCleaningAuthConfig Decides if auth will be removed from backend configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> unlinkBackendFromBuildAsync(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String linkedBackendName,
+        Boolean isCleaningAuthConfig) {
+        return unlinkBackendFromBuildWithResponseAsync(
+                resourceGroupName, name, environmentName, linkedBackendName, isCleaningAuthConfig)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Unlink a backend from a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the backend linked to the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> unlinkBackendFromBuildAsync(
+        String resourceGroupName, String name, String environmentName, String linkedBackendName) {
+        final Boolean isCleaningAuthConfig = null;
+        return unlinkBackendFromBuildWithResponseAsync(
+                resourceGroupName, name, environmentName, linkedBackendName, isCleaningAuthConfig)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Unlink a backend from a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the backend linked to the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void unlinkBackendFromBuild(
+        String resourceGroupName, String name, String environmentName, String linkedBackendName) {
+        final Boolean isCleaningAuthConfig = null;
+        unlinkBackendFromBuildAsync(resourceGroupName, name, environmentName, linkedBackendName, isCleaningAuthConfig)
+            .block();
+    }
+
+    /**
+     * Unlink a backend from a static site build.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the backend linked to the static site.
+     * @param isCleaningAuthConfig Decides if auth will be removed from backend configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> unlinkBackendFromBuildWithResponse(
+        String resourceGroupName,
+        String name,
+        String environmentName,
+        String linkedBackendName,
+        Boolean isCleaningAuthConfig,
+        Context context) {
+        return unlinkBackendFromBuildWithResponseAsync(
+                resourceGroupName, name, environmentName, linkedBackendName, isCleaningAuthConfig, context)
+            .block();
+    }
+
+    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
@@ -12036,6 +14793,157 @@ public final class StaticSitesClientImpl
         context = this.client.mergeContext(context);
         return service
             .getUserProvidedFunctionAppsForStaticSiteNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site linked backends along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<StaticSiteLinkedBackendArmResourceInner>> getLinkedBackendsNextSinglePageAsync(
+        String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getLinkedBackendsNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<StaticSiteLinkedBackendArmResourceInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site linked backends along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<StaticSiteLinkedBackendArmResourceInner>> getLinkedBackendsNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .getLinkedBackendsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site linked backends along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<StaticSiteLinkedBackendArmResourceInner>> getLinkedBackendsForBuildNextSinglePageAsync(
+        String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.getLinkedBackendsForBuildNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<StaticSiteLinkedBackendArmResourceInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site linked backends along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<StaticSiteLinkedBackendArmResourceInner>> getLinkedBackendsForBuildNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .getLinkedBackendsForBuildNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

@@ -15,22 +15,20 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class AzureBlobFSSource extends CopySource {
     /*
-     * Treat empty as null. Type: boolean (or Expression with resultType
-     * boolean).
+     * Treat empty as null. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "treatEmptyAsNull")
     private Object treatEmptyAsNull;
 
     /*
-     * Number of header lines to skip from each blob. Type: integer (or
-     * Expression with resultType integer).
+     * Number of header lines to skip from each blob. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "skipHeaderLineCount")
     private Object skipHeaderLineCount;
 
     /*
-     * If true, files under the folder path will be read recursively. Default
-     * is true. Type: boolean (or Expression with resultType boolean).
+     * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression
+     * with resultType boolean).
      */
     @JsonProperty(value = "recursive")
     private Object recursive;

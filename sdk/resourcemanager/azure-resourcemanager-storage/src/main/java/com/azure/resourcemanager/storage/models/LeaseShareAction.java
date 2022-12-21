@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LeaseShareAction. */
+/** Specifies the lease action. Can be one of the available actions. */
 public final class LeaseShareAction extends ExpandableStringEnum<LeaseShareAction> {
     /** Static value Acquire for LeaseShareAction. */
     public static final LeaseShareAction ACQUIRE = fromString("Acquire");

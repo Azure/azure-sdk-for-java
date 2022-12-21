@@ -11,7 +11,7 @@ import com.azure.resourcemanager.mediaservices.models.TextTrack;
 /** Samples for Tracks Update. */
 public final class TracksUpdateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/asset-tracks-update.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/asset-tracks-update.json
      */
     /**
      * Sample code: Update a Track.

@@ -4,7 +4,7 @@ This troubleshooting guide contains instructions to diagnose frequently encounte
 
 ## General Troubleshooting
 
-Container registry service methods throw a [HttpResponseException][https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java] or its subclass on failure.
+Container registry service methods throw a [HttpResponseException](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java) or its subclass on failure.
 
 Here's the example of how to catch it with synchronous client
 

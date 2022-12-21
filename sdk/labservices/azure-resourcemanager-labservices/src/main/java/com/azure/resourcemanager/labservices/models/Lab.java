@@ -152,6 +152,13 @@ public interface Lab {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.labservices.fluent.models.LabInner object.
      *
      * @return the inner object.
@@ -489,7 +496,9 @@ public interface Lab {
     Lab refresh(Context context);
 
     /**
-     * Publish or re-publish a lab. This will create or update all lab resources, such as virtual machines.
+     * Publish or re-publish a lab.
+     *
+     * <p>Publish or re-publish a lab. This will create or update all lab resources, such as virtual machines.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -497,7 +506,9 @@ public interface Lab {
     void publish();
 
     /**
-     * Publish or re-publish a lab. This will create or update all lab resources, such as virtual machines.
+     * Publish or re-publish a lab.
+     *
+     * <p>Publish or re-publish a lab. This will create or update all lab resources, such as virtual machines.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -507,7 +518,9 @@ public interface Lab {
     void publish(Context context);
 
     /**
-     * Action used to manually kick off an AAD group sync job.
+     * Manually sync the lab group.
+     *
+     * <p>Action used to manually kick off an AAD group sync job.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -515,7 +528,9 @@ public interface Lab {
     void syncGroup();
 
     /**
-     * Action used to manually kick off an AAD group sync job.
+     * Manually sync the lab group.
+     *
+     * <p>Action used to manually kick off an AAD group sync job.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

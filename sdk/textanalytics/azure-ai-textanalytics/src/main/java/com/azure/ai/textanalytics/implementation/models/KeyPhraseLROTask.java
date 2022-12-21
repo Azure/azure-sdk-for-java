@@ -39,4 +39,11 @@ public final class KeyPhraseLROTask extends AnalyzeTextLROTask {
         this.parameters = parameters;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public KeyPhraseLROTask setTaskName(String taskName) {
+        super.setTaskName(taskName);
+        return this;
+    }
 }

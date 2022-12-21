@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EventSubscriptionStatus. */
+/** Event Subscription Status. */
 public final class EventSubscriptionStatus extends ExpandableStringEnum<EventSubscriptionStatus> {
     /** Static value Enabled for EventSubscriptionStatus. */
     public static final EventSubscriptionStatus ENABLED = fromString("Enabled");

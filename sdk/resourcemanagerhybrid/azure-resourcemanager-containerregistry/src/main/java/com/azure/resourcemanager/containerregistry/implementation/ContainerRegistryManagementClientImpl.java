@@ -7,7 +7,6 @@ package com.azure.resourcemanager.containerregistry.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.containerregistry.fluent.ContainerRegistryManagementClient;
 import com.azure.resourcemanager.containerregistry.fluent.OperationsClient;
@@ -23,8 +22,6 @@ import java.time.Duration;
 @ServiceClient(builder = ContainerRegistryManagementClientBuilder.class)
 public final class ContainerRegistryManagementClientImpl extends AzureServiceClient
     implements ContainerRegistryManagementClient {
-    private final ClientLogger logger = new ClientLogger(ContainerRegistryManagementClientImpl.class);
-
     /** The Microsoft Azure subscription ID. */
     private final String subscriptionId;
 

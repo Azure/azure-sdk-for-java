@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SignalR List. */
 public final class SignalRListSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2022-02-01/examples/SignalR_ListBySubscription.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/SignalR_ListBySubscription.json
      */
     /**
      * Sample code: SignalR_ListBySubscription.

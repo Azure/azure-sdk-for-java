@@ -31,8 +31,7 @@ public class ExecutePipelineActivity extends ControlActivity {
     private Map<String, Object> parameters;
 
     /*
-     * Defines whether activity execution will wait for the dependent pipeline
-     * execution to finish. Default is false.
+     * Defines whether activity execution will wait for the dependent pipeline execution to finish. Default is false.
      */
     @JsonProperty(value = "typeProperties.waitOnCompletion")
     private Boolean waitOnCompletion;

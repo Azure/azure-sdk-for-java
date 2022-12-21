@@ -1,12 +1,59 @@
 ## Release History
 
-### 4.13.0-beta.1 (Unreleased)
+### 4.16.0-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
 
 #### Bugs Fixed
+
+#### Other Changes
+
+### 4.15.0 (2022-11-16)
+
+#### Other Changes
+* Fixed shading instructions to correct dependency issues in Azure Synapse with version 4.14.0 and 4.14.1. - See [PR 31980](https://github.com/Azure/azure-sdk-for-java/pull/31980)
+* Reduced the logging noise level on CancellationExceptions from `RntbdReporter.reportIssue`. - See [PR 32175](https://github.com/Azure/azure-sdk-for-java/pull/32175)
+
+### 4.14.1 (2022-10-07)
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 4.14.1 and above.
+#### Bugs Fixed
+* Fixed incorrect RU metric reporting in micrometer metrics. - See [PR 31307](https://github.com/Azure/azure-sdk-for-java/pull/31307)
+
+### 4.14.0 (2022-09-30)
+
+#### Features Added
+* Added new config options for Change Feed Modes, Incremental as `LatestVersion` and Full Fidelity as `AllVersionsAndDeletes` changes - See [PR 30399](https://github.com/Azure/azure-sdk-for-java/pull/30399)
+* Added option to emit client-side metrics via micrometer.io MeterRegistry. - See [PR 30065](https://github.com/Azure/azure-sdk-for-java/pull/30065) 
+
+### 4.13.1 (2022-09-22)
+
+#### Bugs Fixed
+* Fixed a race condition that could result in a memory/thread leak for `BulkExecutor` instances (and their corresponding `cosmos-daemon-BulkExecutor-*` thread). This issue could occur when ingesting data into Cosmos DB via structured streaming jobs. - See [PR 31082](https://github.com/Azure/azure-sdk-for-java/pull/31082)
+
+### 4.13.0 (2022-09-15)
+
+#### Breaking Changes
+* Known issue introduced with Java SDK [PR 30161](https://github.com/Azure/azure-sdk-for-java/pull/30161) for incremental change feed schema when schema inference is disabled, possibly causing schema mismatch errors due to new `_lsn` column. Mitigation would be to drop that column from the dataframe: `spark.readStream.format("cosmos.oltp.changeFeed").options(**changeFeedCfg).load().drop("_lsn")`
+
+#### Other Changes
+* Added support to allow overriding json parsing behavior when a json document contains duplicated properties. Config entry `spark.cosmos.read.allowInvalidJsonWithDuplicateJsonProperties` can be used to not raise a hard error and use the last property instead. - See [PR 30916](https://github.com/Azure/azure-sdk-for-java/pull/30916)
+
+### 4.12.2 (2022-08-04)
+
+#### Bugs Fixed
+* Fixed the SerializationDateTimeConversionMode `AlwaysEpochMillisecdsWithSystemDefaultTimezone` where ZoneOffset calculation could be wrong especially for dates in the 19xx years. - See [PR 30266](https://github.com/Azure/azure-sdk-for-java/pull/30266)
+
+#### Other Changes
+* Added support to allow config different account for throughput control - See [PR 30127](https://github.com/Azure/azure-sdk-for-java/pull/30127)
+
+### 4.12.1 (2022-07-22)
+
+#### Bugs Fixed
+* Fixed `NotFoundException` for changeFeed after split - See [PR 29982](https://github.com/Azure/azure-sdk-for-java/pull/29982)
+* Fixed `IllegalArgumentException` when trying to update targetThroughput(Threshold) without process restart. - See [PR 30049](https://github.com/Azure/azure-sdk-for-java/pull/30049)
 
 #### Other Changes
 * Added a new `spark.cosmos.serialization.dateTimeConversionMode` mode called `AlwaysEpochMillisecondsWithSystemDefaultTimezone` that will assume SystemDefault time zone instead of UTC when a Date/time to be parsed has no explicit time zone. - See [PR 30001](https://github.com/Azure/azure-sdk-for-java/pull/30001)

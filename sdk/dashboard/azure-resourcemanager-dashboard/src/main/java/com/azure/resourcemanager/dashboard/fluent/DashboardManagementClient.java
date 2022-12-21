@@ -10,8 +10,7 @@ import java.time.Duration;
 /** The interface for DashboardManagementClient class. */
 public interface DashboardManagementClient {
     /**
-     * Gets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-     * forms part of the URI for every service call.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -58,4 +57,18 @@ public interface DashboardManagementClient {
      * @return the GrafanasClient object.
      */
     GrafanasClient getGrafanas();
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    PrivateLinkResourcesClient getPrivateLinkResources();
 }

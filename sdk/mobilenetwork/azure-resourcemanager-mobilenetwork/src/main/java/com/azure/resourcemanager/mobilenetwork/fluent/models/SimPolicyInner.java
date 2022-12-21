@@ -10,30 +10,34 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.models.Ambr;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
+import com.azure.resourcemanager.mobilenetwork.models.SiteProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.SliceConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.SliceResourceId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Sim policy resource. */
+/** SIM policy resource. */
 @Fluent
 public final class SimPolicyInner extends Resource {
     /*
-     * Sim policy Properties.
+     * SIM policy Properties.
      */
     @JsonProperty(value = "properties", required = true)
     private SimPolicyPropertiesFormat innerProperties = new SimPolicyPropertiesFormat();
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of SimPolicyInner class. */
+    public SimPolicyInner() {
+    }
+
     /**
-     * Get the innerProperties property: Sim policy Properties.
+     * Get the innerProperties property: SIM policy Properties.
      *
      * @return the innerProperties value.
      */
@@ -65,12 +69,22 @@ public final class SimPolicyInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the sim policy resource.
+     * Get the provisioningState property: The provisioning state of the SIM policy resource.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the siteProvisioningState property: A dictionary of sites to the provisioning state of this SIM policy on
+     * that site.
+     *
+     * @return the siteProvisioningState value.
+     */
+    public Map<String, SiteProvisioningState> siteProvisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().siteProvisioningState();
     }
 
     /**
@@ -100,7 +114,7 @@ public final class SimPolicyInner extends Resource {
 
     /**
      * Get the defaultSlice property: The default slice to use if the UE does not explicitly specify it. This slice must
-     * exist in the `sliceConfigurations` map.
+     * exist in the `sliceConfigurations` map. The slice must be in the same location as the SIM policy.
      *
      * @return the defaultSlice value.
      */
@@ -110,7 +124,7 @@ public final class SimPolicyInner extends Resource {
 
     /**
      * Set the defaultSlice property: The default slice to use if the UE does not explicitly specify it. This slice must
-     * exist in the `sliceConfigurations` map.
+     * exist in the `sliceConfigurations` map. The slice must be in the same location as the SIM policy.
      *
      * @param defaultSlice the defaultSlice value to set.
      * @return the SimPolicyInner object itself.

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservices.fluent.ReplicationUsagesClient;
 import com.azure.resourcemanager.recoveryservices.fluent.models.ReplicationUsageInner;
 import com.azure.resourcemanager.recoveryservices.models.ReplicationUsageList;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ReplicationUsagesClient. */
 public final class ReplicationUsagesClientImpl implements ReplicationUsagesClient {
-    private final ClientLogger logger = new ClientLogger(ReplicationUsagesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ReplicationUsagesService service;
 
@@ -58,7 +55,7 @@ public final class ReplicationUsagesClientImpl implements ReplicationUsagesClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesMana")
-    private interface ReplicationUsagesService {
+    public interface ReplicationUsagesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
@@ -78,12 +75,12 @@ public final class ReplicationUsagesClientImpl implements ReplicationUsagesClien
     /**
      * Fetches the replication usages of the vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication usages for vault.
+     * @return replication usages for vault along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReplicationUsageInner>> listSinglePageAsync(String resourceGroupName, String vaultName) {
@@ -123,19 +120,19 @@ public final class ReplicationUsagesClientImpl implements ReplicationUsagesClien
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Fetches the replication usages of the vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication usages for vault.
+     * @return replication usages for vault along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReplicationUsageInner>> listSinglePageAsync(
@@ -179,12 +176,12 @@ public final class ReplicationUsagesClientImpl implements ReplicationUsagesClien
     /**
      * Fetches the replication usages of the vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication usages for vault.
+     * @return replication usages for vault as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReplicationUsageInner> listAsync(String resourceGroupName, String vaultName) {
@@ -194,13 +191,13 @@ public final class ReplicationUsagesClientImpl implements ReplicationUsagesClien
     /**
      * Fetches the replication usages of the vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication usages for vault.
+     * @return replication usages for vault as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReplicationUsageInner> listAsync(String resourceGroupName, String vaultName, Context context) {
@@ -210,12 +207,12 @@ public final class ReplicationUsagesClientImpl implements ReplicationUsagesClien
     /**
      * Fetches the replication usages of the vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication usages for vault.
+     * @return replication usages for vault as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationUsageInner> list(String resourceGroupName, String vaultName) {
@@ -225,13 +222,13 @@ public final class ReplicationUsagesClientImpl implements ReplicationUsagesClien
     /**
      * Fetches the replication usages of the vault.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return replication usages for vault.
+     * @return replication usages for vault as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReplicationUsageInner> list(String resourceGroupName, String vaultName, Context context) {

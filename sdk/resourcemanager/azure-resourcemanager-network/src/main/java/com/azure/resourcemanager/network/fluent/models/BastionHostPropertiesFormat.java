@@ -67,6 +67,10 @@ public final class BastionHostPropertiesFormat {
     @JsonProperty(value = "enableTunneling")
     private Boolean enableTunneling;
 
+    /** Creates an instance of BastionHostPropertiesFormat class. */
+    public BastionHostPropertiesFormat() {
+    }
+
     /**
      * Get the ipConfigurations property: IP configuration of the Bastion Host resource.
      *

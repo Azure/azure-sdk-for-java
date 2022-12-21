@@ -55,9 +55,10 @@
         <module>spring-cloud-azure-stream-binder-eventhubs</module>
         <module>spring-cloud-azure-stream-binder-servicebus-core</module>
         <module>spring-cloud-azure-stream-binder-servicebus</module>
-        <module>spring-cloud-azure-test-eventhubs-binder</module>
-        <module>spring-cloud-azure-test-servicebus-binder</module>
         <module>spring-cloud-azure-trace-sleuth</module>
+        <module>spring-cloud-azure-starter-jdbc-mysql</module>
+        <module>spring-cloud-azure-starter-jdbc-postgresql</module>
+        <module>spring-cloud-azure-integration-tests</module>
       </modules>
     </profile>
 
@@ -107,6 +108,8 @@
         <module>spring-cloud-azure-starter-stream-eventhubs</module>
         <module>spring-cloud-azure-starter-stream-servicebus</module>
         <module>spring-cloud-azure-trace-sleuth</module>
+        <module>spring-cloud-azure-starter-jdbc-mysql</module>
+        <module>spring-cloud-azure-starter-jdbc-postgresql</module>
       </modules>
     </profile>
   </profiles>

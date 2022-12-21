@@ -18,15 +18,13 @@ import java.util.List;
 @Fluent
 public class SqlServerStoredProcedureActivity extends ExecutionActivity {
     /*
-     * Stored procedure name. Type: string (or Expression with resultType
-     * string).
+     * Stored procedure name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.storedProcedureName", required = true)
     private Object storedProcedureName;
 
     /*
-     * Value and type setting for stored procedure parameters. Example:
-     * "{Parameter1: {value: "1", type: "int"}}".
+     * Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
      */
     @JsonProperty(value = "typeProperties.storedProcedureParameters")
     private Object storedProcedureParameters;

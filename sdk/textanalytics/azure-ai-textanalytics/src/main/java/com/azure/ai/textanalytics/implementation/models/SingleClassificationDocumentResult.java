@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** The SingleClassificationDocumentResult model. */
 @Fluent
@@ -33,6 +34,27 @@ public class SingleClassificationDocumentResult extends DocumentResult {
      */
     public SingleClassificationDocumentResult setClassProperty(ClassificationResult classProperty) {
         this.classProperty = classProperty;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SingleClassificationDocumentResult setId(String id) {
+        super.setId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SingleClassificationDocumentResult setWarnings(List<DocumentWarning> warnings) {
+        super.setWarnings(warnings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SingleClassificationDocumentResult setStatistics(DocumentStatistics statistics) {
+        super.setStatistics(statistics);
         return this;
     }
 }

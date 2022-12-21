@@ -12,7 +12,7 @@ import com.azure.resourcemanager.mediaservices.models.PresentationTimeRange;
 /** Samples for AssetFilters Update. */
 public final class AssetFiltersUpdateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/assetFilters-update.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/assetFilters-update.json
      */
     /**
      * Sample code: Update an Asset Filter.

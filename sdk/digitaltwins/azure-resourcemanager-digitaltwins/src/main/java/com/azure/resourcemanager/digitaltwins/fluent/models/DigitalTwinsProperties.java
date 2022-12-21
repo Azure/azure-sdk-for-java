@@ -50,6 +50,10 @@ public final class DigitalTwinsProperties {
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
+    /** Creates an instance of DigitalTwinsProperties class. */
+    public DigitalTwinsProperties() {
+    }
+
     /**
      * Get the createdTime property: Time when DigitalTwinsInstance was created.
      *

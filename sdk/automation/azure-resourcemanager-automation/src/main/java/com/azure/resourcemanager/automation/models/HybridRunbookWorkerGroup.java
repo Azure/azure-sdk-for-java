@@ -4,38 +4,39 @@
 
 package com.azure.resourcemanager.automation.models;
 
+import com.azure.core.management.SystemData;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.fluent.models.HybridRunbookWorkerGroupInner;
-import java.util.List;
 
 /** An immutable client-side representation of HybridRunbookWorkerGroup. */
 public interface HybridRunbookWorkerGroup {
     /**
-     * Gets the id property: Gets or sets the id of the resource.
+     * Gets the id property: Fully qualified resource Id for the resource.
      *
      * @return the id value.
      */
     String id();
 
     /**
-     * Gets the name property: Gets or sets the name of the group.
+     * Gets the name property: The name of the resource.
      *
      * @return the name value.
      */
     String name();
 
     /**
-     * Gets the hybridRunbookWorkers property: Gets or sets the list of hybrid runbook workers.
+     * Gets the type property: The type of the resource.
      *
-     * @return the hybridRunbookWorkers value.
+     * @return the type value.
      */
-    List<HybridRunbookWorker> hybridRunbookWorkers();
+    String type();
 
     /**
-     * Gets the credential property: Sets the credential of a worker group.
+     * Gets the systemData property: Resource system metadata.
      *
-     * @return the credential value.
+     * @return the systemData value.
      */
-    RunAsCredentialAssociationProperty credential();
+    SystemData systemData();
 
     /**
      * Gets the groupType property: Type of the HybridWorkerGroup.
@@ -45,9 +46,146 @@ public interface HybridRunbookWorkerGroup {
     GroupTypeEnum groupType();
 
     /**
+     * Gets the credential property: Sets the credential of a worker group.
+     *
+     * @return the credential value.
+     */
+    RunAsCredentialAssociationProperty credential();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.automation.fluent.models.HybridRunbookWorkerGroupInner object.
      *
      * @return the inner object.
      */
     HybridRunbookWorkerGroupInner innerModel();
+
+    /** The entirety of the HybridRunbookWorkerGroup definition. */
+    interface Definition
+        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
+    }
+    /** The HybridRunbookWorkerGroup definition stages. */
+    interface DefinitionStages {
+        /** The first stage of the HybridRunbookWorkerGroup definition. */
+        interface Blank extends WithParentResource {
+        }
+        /** The stage of the HybridRunbookWorkerGroup definition allowing to specify parent resource. */
+        interface WithParentResource {
+            /**
+             * Specifies resourceGroupName, automationAccountName.
+             *
+             * @param resourceGroupName Name of an Azure Resource group.
+             * @param automationAccountName The name of the automation account.
+             * @return the next definition stage.
+             */
+            WithCreate withExistingAutomationAccount(String resourceGroupName, String automationAccountName);
+        }
+        /**
+         * The stage of the HybridRunbookWorkerGroup definition which contains all the minimum required properties for
+         * the resource to be created, but also allows for any other optional properties to be specified.
+         */
+        interface WithCreate extends DefinitionStages.WithName, DefinitionStages.WithCredential {
+            /**
+             * Executes the create request.
+             *
+             * @return the created resource.
+             */
+            HybridRunbookWorkerGroup create();
+
+            /**
+             * Executes the create request.
+             *
+             * @param context The context to associate with this operation.
+             * @return the created resource.
+             */
+            HybridRunbookWorkerGroup create(Context context);
+        }
+        /** The stage of the HybridRunbookWorkerGroup definition allowing to specify name. */
+        interface WithName {
+            /**
+             * Specifies the name property: Gets or sets the name of the resource..
+             *
+             * @param name Gets or sets the name of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withName(String name);
+        }
+        /** The stage of the HybridRunbookWorkerGroup definition allowing to specify credential. */
+        interface WithCredential {
+            /**
+             * Specifies the credential property: Sets the credential of a worker group..
+             *
+             * @param credential Sets the credential of a worker group.
+             * @return the next definition stage.
+             */
+            WithCreate withCredential(RunAsCredentialAssociationProperty credential);
+        }
+    }
+    /**
+     * Begins update for the HybridRunbookWorkerGroup resource.
+     *
+     * @return the stage of resource update.
+     */
+    HybridRunbookWorkerGroup.Update update();
+
+    /** The template for HybridRunbookWorkerGroup update. */
+    interface Update extends UpdateStages.WithName, UpdateStages.WithCredential {
+        /**
+         * Executes the update request.
+         *
+         * @return the updated resource.
+         */
+        HybridRunbookWorkerGroup apply();
+
+        /**
+         * Executes the update request.
+         *
+         * @param context The context to associate with this operation.
+         * @return the updated resource.
+         */
+        HybridRunbookWorkerGroup apply(Context context);
+    }
+    /** The HybridRunbookWorkerGroup update stages. */
+    interface UpdateStages {
+        /** The stage of the HybridRunbookWorkerGroup update allowing to specify name. */
+        interface WithName {
+            /**
+             * Specifies the name property: Gets or sets the name of the resource..
+             *
+             * @param name Gets or sets the name of the resource.
+             * @return the next definition stage.
+             */
+            Update withName(String name);
+        }
+        /** The stage of the HybridRunbookWorkerGroup update allowing to specify credential. */
+        interface WithCredential {
+            /**
+             * Specifies the credential property: Sets the credential of a worker group..
+             *
+             * @param credential Sets the credential of a worker group.
+             * @return the next definition stage.
+             */
+            Update withCredential(RunAsCredentialAssociationProperty credential);
+        }
+    }
+    /**
+     * Refreshes the resource to sync with Azure.
+     *
+     * @return the refreshed resource.
+     */
+    HybridRunbookWorkerGroup refresh();
+
+    /**
+     * Refreshes the resource to sync with Azure.
+     *
+     * @param context The context to associate with this operation.
+     * @return the refreshed resource.
+     */
+    HybridRunbookWorkerGroup refresh(Context context);
 }

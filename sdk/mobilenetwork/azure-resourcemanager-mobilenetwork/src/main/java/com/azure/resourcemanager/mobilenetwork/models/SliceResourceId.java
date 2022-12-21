@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Reference to a Slice resource. */
+/** Reference to a slice resource. */
 @Fluent
 public final class SliceResourceId {
     /*
@@ -16,6 +16,10 @@ public final class SliceResourceId {
      */
     @JsonProperty(value = "id", required = true)
     private String id;
+
+    /** Creates an instance of SliceResourceId class. */
+    public SliceResourceId() {
+    }
 
     /**
      * Get the id property: Slice resource ID.

@@ -7,7 +7,7 @@ package com.azure.storage.blob.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for QueryFormatType. */
+/** The quick query format type. */
 public enum QueryFormatType {
     /** Enum value delimited. */
     DELIMITED("delimited"),
@@ -36,6 +36,9 @@ public enum QueryFormatType {
      */
     @JsonCreator
     public static QueryFormatType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         QueryFormatType[] items = QueryFormatType.values();
         for (QueryFormatType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,6 +48,7 @@ public enum QueryFormatType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

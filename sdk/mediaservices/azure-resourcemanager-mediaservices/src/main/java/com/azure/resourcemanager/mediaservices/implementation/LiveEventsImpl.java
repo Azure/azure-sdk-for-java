@@ -10,7 +10,9 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.fluent.LiveEventsClient;
+import com.azure.resourcemanager.mediaservices.fluent.models.AsyncOperationResultInner;
 import com.azure.resourcemanager.mediaservices.fluent.models.LiveEventInner;
+import com.azure.resourcemanager.mediaservices.models.AsyncOperationResult;
 import com.azure.resourcemanager.mediaservices.models.LiveEvent;
 import com.azure.resourcemanager.mediaservices.models.LiveEventActionInput;
 import com.azure.resourcemanager.mediaservices.models.LiveEvents;
@@ -106,6 +108,59 @@ public final class LiveEventsImpl implements LiveEvents {
 
     public void reset(String resourceGroupName, String accountName, String liveEventName, Context context) {
         this.serviceClient().reset(resourceGroupName, accountName, liveEventName, context);
+    }
+
+    public AsyncOperationResult asyncOperation(String resourceGroupName, String accountName, String operationId) {
+        AsyncOperationResultInner inner =
+            this.serviceClient().asyncOperation(resourceGroupName, accountName, operationId);
+        if (inner != null) {
+            return new AsyncOperationResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<AsyncOperationResult> asyncOperationWithResponse(
+        String resourceGroupName, String accountName, String operationId, Context context) {
+        Response<AsyncOperationResultInner> inner =
+            this.serviceClient().asyncOperationWithResponse(resourceGroupName, accountName, operationId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new AsyncOperationResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public LiveEvent operationLocation(
+        String resourceGroupName, String accountName, String liveEventName, String operationId) {
+        LiveEventInner inner =
+            this.serviceClient().operationLocation(resourceGroupName, accountName, liveEventName, operationId);
+        if (inner != null) {
+            return new LiveEventImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<LiveEvent> operationLocationWithResponse(
+        String resourceGroupName, String accountName, String liveEventName, String operationId, Context context) {
+        Response<LiveEventInner> inner =
+            this
+                .serviceClient()
+                .operationLocationWithResponse(resourceGroupName, accountName, liveEventName, operationId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new LiveEventImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public LiveEvent getById(String id) {

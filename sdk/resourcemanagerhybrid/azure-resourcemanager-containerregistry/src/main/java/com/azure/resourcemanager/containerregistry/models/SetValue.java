@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a overridable value that can be passed to a task template. */
 @Fluent
 public final class SetValue {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SetValue.class);
-
     /*
      * The name of the overridable value.
      */
@@ -99,12 +96,14 @@ public final class SetValue {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model SetValue"));
         }
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property value in model SetValue"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SetValue.class);
 }

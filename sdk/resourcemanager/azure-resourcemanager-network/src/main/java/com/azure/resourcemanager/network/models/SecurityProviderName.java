@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SecurityProviderName. */
+/** The Security Providers. */
 public final class SecurityProviderName extends ExpandableStringEnum<SecurityProviderName> {
     /** Static value ZScaler for SecurityProviderName. */
     public static final SecurityProviderName ZSCALER = fromString("ZScaler");

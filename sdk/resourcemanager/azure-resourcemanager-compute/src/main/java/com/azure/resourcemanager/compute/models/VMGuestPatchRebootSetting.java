@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VMGuestPatchRebootSetting. */
+/** Defines when it is acceptable to reboot a VM during a software update operation. */
 public final class VMGuestPatchRebootSetting extends ExpandableStringEnum<VMGuestPatchRebootSetting> {
     /** Static value IfRequired for VMGuestPatchRebootSetting. */
     public static final VMGuestPatchRebootSetting IF_REQUIRED = fromString("IfRequired");

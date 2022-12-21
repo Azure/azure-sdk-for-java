@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for StaticSites DeleteStaticSiteUser. */
 public final class StaticSitesDeleteStaticSiteUserSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/DeleteStaticSiteUser.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/DeleteStaticSiteUser.json
      */
     /**
      * Sample code: Delete a user for a static site.

@@ -20,6 +20,12 @@ public final class ContentKeyPolicyPlayReadyLicense {
     private boolean allowTestDevices;
 
     /*
+     * The security level.
+     */
+    @JsonProperty(value = "securityLevel")
+    private SecurityLevel securityLevel;
+
+    /*
      * The begin date of license
      */
     @JsonProperty(value = "beginDate")
@@ -90,6 +96,26 @@ public final class ContentKeyPolicyPlayReadyLicense {
      */
     public ContentKeyPolicyPlayReadyLicense withAllowTestDevices(boolean allowTestDevices) {
         this.allowTestDevices = allowTestDevices;
+        return this;
+    }
+
+    /**
+     * Get the securityLevel property: The security level.
+     *
+     * @return the securityLevel value.
+     */
+    public SecurityLevel securityLevel() {
+        return this.securityLevel;
+    }
+
+    /**
+     * Set the securityLevel property: The security level.
+     *
+     * @param securityLevel the securityLevel value to set.
+     * @return the ContentKeyPolicyPlayReadyLicense object itself.
+     */
+    public ContentKeyPolicyPlayReadyLicense withSecurityLevel(SecurityLevel securityLevel) {
+        this.securityLevel = securityLevel;
         return this;
     }
 

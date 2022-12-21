@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Service resource. */
+/** Service resource. Must be created in the same location as its parent mobile network. */
 @Fluent
 public final class ServiceInner extends Resource {
     /*
@@ -25,11 +25,14 @@ public final class ServiceInner extends Resource {
     private ServicePropertiesFormat innerProperties = new ServicePropertiesFormat();
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of ServiceInner class. */
+    public ServiceInner() {
+    }
 
     /**
      * Get the innerProperties property: Service Properties.
@@ -74,8 +77,8 @@ public final class ServiceInner extends Resource {
 
     /**
      * Get the servicePrecedence property: A precedence value that is used to decide between services when identifying
-     * the QoS values to use for a particular Sim. A lower value means a higher priority. This value should be unique
-     * among all services configured in the Mobile Network.
+     * the QoS values to use for a particular SIM. A lower value means a higher priority. This value should be unique
+     * among all services configured in the mobile network.
      *
      * @return the servicePrecedence value.
      */
@@ -85,8 +88,8 @@ public final class ServiceInner extends Resource {
 
     /**
      * Set the servicePrecedence property: A precedence value that is used to decide between services when identifying
-     * the QoS values to use for a particular Sim. A lower value means a higher priority. This value should be unique
-     * among all services configured in the Mobile Network.
+     * the QoS values to use for a particular SIM. A lower value means a higher priority. This value should be unique
+     * among all services configured in the mobile network.
      *
      * @param servicePrecedence the servicePrecedence value to set.
      * @return the ServiceInner object itself.
@@ -102,7 +105,7 @@ public final class ServiceInner extends Resource {
     /**
      * Get the serviceQosPolicy property: The QoS policy to use for packets matching this service. This can be
      * overridden for particular flows using the ruleQosPolicy field in a PccRuleConfiguration. If this field is null
-     * then the UE's simPolicy will define the QoS settings.
+     * then the UE's SIM policy will define the QoS settings.
      *
      * @return the serviceQosPolicy value.
      */
@@ -113,7 +116,7 @@ public final class ServiceInner extends Resource {
     /**
      * Set the serviceQosPolicy property: The QoS policy to use for packets matching this service. This can be
      * overridden for particular flows using the ruleQosPolicy field in a PccRuleConfiguration. If this field is null
-     * then the UE's simPolicy will define the QoS settings.
+     * then the UE's SIM policy will define the QoS settings.
      *
      * @param serviceQosPolicy the serviceQosPolicy value to set.
      * @return the ServiceInner object itself.
@@ -127,7 +130,7 @@ public final class ServiceInner extends Resource {
     }
 
     /**
-     * Get the pccRules property: The set of PCC Rules that make up this service.
+     * Get the pccRules property: The set of data flow policy rules that make up this service.
      *
      * @return the pccRules value.
      */
@@ -136,7 +139,7 @@ public final class ServiceInner extends Resource {
     }
 
     /**
-     * Set the pccRules property: The set of PCC Rules that make up this service.
+     * Set the pccRules property: The set of data flow policy rules that make up this service.
      *
      * @param pccRules the pccRules value to set.
      * @return the ServiceInner object itself.

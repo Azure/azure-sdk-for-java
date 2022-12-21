@@ -54,8 +54,7 @@ public final class TriggerRun {
     private String message;
 
     /*
-     * List of property name and value related to trigger run. Name, value pair
-     * depends on type of trigger.
+     * List of property name and value related to trigger run. Name, value pair depends on type of trigger.
      */
     @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -86,6 +85,10 @@ public final class TriggerRun {
      * Trigger runs.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of TriggerRun class. */
+    public TriggerRun() {
+    }
 
     /**
      * Get the triggerRunId property: Trigger run id.

@@ -11,18 +11,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ConnectionMonitorOutput {
     /*
-     * Connection monitor output destination type. Currently, only "Workspace"
-     * is supported.
+     * Connection monitor output destination type. Currently, only "Workspace" is supported.
      */
     @JsonProperty(value = "type")
     private OutputType type;
 
     /*
-     * Describes the settings for producing output into a log analytics
-     * workspace.
+     * Describes the settings for producing output into a log analytics workspace.
      */
     @JsonProperty(value = "workspaceSettings")
     private ConnectionMonitorWorkspaceSettings workspaceSettings;
+
+    /** Creates an instance of ConnectionMonitorOutput class. */
+    public ConnectionMonitorOutput() {
+    }
 
     /**
      * Get the type property: Connection monitor output destination type. Currently, only "Workspace" is supported.

@@ -26,17 +26,14 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.TasksClient;
 import com.azure.resourcemanager.security.fluent.models.SecurityTaskInner;
 import com.azure.resourcemanager.security.models.SecurityTaskList;
-import com.azure.resourcemanager.security.models.TasksTaskUpdateActionType;
+import com.azure.resourcemanager.security.models.TaskUpdateActionType;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in TasksClient. */
 public final class TasksClientImpl implements TasksClient {
-    private final ClientLogger logger = new ClientLogger(TasksClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final TasksService service;
 
@@ -59,7 +56,7 @@ public final class TasksClientImpl implements TasksClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterTasks")
-    private interface TasksService {
+    public interface TasksService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/tasks")
         @ExpectedResponses({200})
@@ -110,7 +107,7 @@ public final class TasksClientImpl implements TasksClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("ascLocation") String ascLocation,
             @PathParam("taskName") String taskName,
-            @PathParam("taskUpdateActionType") TasksTaskUpdateActionType taskUpdateActionType,
+            @PathParam("taskUpdateActionType") TaskUpdateActionType taskUpdateActionType,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -159,7 +156,7 @@ public final class TasksClientImpl implements TasksClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("ascLocation") String ascLocation,
             @PathParam("taskName") String taskName,
-            @PathParam("taskUpdateActionType") TasksTaskUpdateActionType taskUpdateActionType,
+            @PathParam("taskUpdateActionType") TaskUpdateActionType taskUpdateActionType,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -201,7 +198,8 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityTaskInner>> listSinglePageAsync(String filter) {
@@ -250,7 +248,8 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityTaskInner>> listSinglePageAsync(String filter, Context context) {
@@ -289,7 +288,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecurityTaskInner> listAsync(String filter) {
@@ -301,7 +300,7 @@ public final class TasksClientImpl implements TasksClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecurityTaskInner> listAsync() {
@@ -317,7 +316,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecurityTaskInner> listAsync(String filter, Context context) {
@@ -330,7 +329,7 @@ public final class TasksClientImpl implements TasksClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityTaskInner> list() {
@@ -346,7 +345,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityTaskInner> list(String filter, Context context) {
@@ -362,7 +361,8 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityTaskInner>> listByHomeRegionSinglePageAsync(String ascLocation, String filter) {
@@ -417,7 +417,8 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityTaskInner>> listByHomeRegionSinglePageAsync(
@@ -469,7 +470,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecurityTaskInner> listByHomeRegionAsync(String ascLocation, String filter) {
@@ -486,7 +487,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecurityTaskInner> listByHomeRegionAsync(String ascLocation) {
@@ -506,7 +507,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecurityTaskInner> listByHomeRegionAsync(String ascLocation, String filter, Context context) {
@@ -523,7 +524,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityTaskInner> listByHomeRegion(String ascLocation) {
@@ -541,7 +542,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityTaskInner> listByHomeRegion(String ascLocation, String filter, Context context) {
@@ -557,7 +558,8 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security task that we recommend to do in order to strengthen security.
+     * @return security task that we recommend to do in order to strengthen security along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SecurityTaskInner>> getSubscriptionLevelTaskWithResponseAsync(
@@ -607,7 +609,8 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security task that we recommend to do in order to strengthen security.
+     * @return security task that we recommend to do in order to strengthen security along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SecurityTaskInner>> getSubscriptionLevelTaskWithResponseAsync(
@@ -653,19 +656,31 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security task that we recommend to do in order to strengthen security.
+     * @return security task that we recommend to do in order to strengthen security on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SecurityTaskInner> getSubscriptionLevelTaskAsync(String ascLocation, String taskName) {
         return getSubscriptionLevelTaskWithResponseAsync(ascLocation, taskName)
-            .flatMap(
-                (Response<SecurityTaskInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Recommended tasks that will help improve the security of the subscription proactively.
+     *
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param taskName Name of the task object, will be a GUID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return security task that we recommend to do in order to strengthen security along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SecurityTaskInner> getSubscriptionLevelTaskWithResponse(
+        String ascLocation, String taskName, Context context) {
+        return getSubscriptionLevelTaskWithResponseAsync(ascLocation, taskName, context).block();
     }
 
     /**
@@ -681,25 +696,7 @@ public final class TasksClientImpl implements TasksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityTaskInner getSubscriptionLevelTask(String ascLocation, String taskName) {
-        return getSubscriptionLevelTaskAsync(ascLocation, taskName).block();
-    }
-
-    /**
-     * Recommended tasks that will help improve the security of the subscription proactively.
-     *
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param taskName Name of the task object, will be a GUID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security task that we recommend to do in order to strengthen security.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SecurityTaskInner> getSubscriptionLevelTaskWithResponse(
-        String ascLocation, String taskName, Context context) {
-        return getSubscriptionLevelTaskWithResponseAsync(ascLocation, taskName, context).block();
+        return getSubscriptionLevelTaskWithResponse(ascLocation, taskName, Context.NONE).getValue();
     }
 
     /**
@@ -712,11 +709,11 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> updateSubscriptionLevelTaskStateWithResponseAsync(
-        String ascLocation, String taskName, TasksTaskUpdateActionType taskUpdateActionType) {
+        String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -768,11 +765,11 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> updateSubscriptionLevelTaskStateWithResponseAsync(
-        String ascLocation, String taskName, TasksTaskUpdateActionType taskUpdateActionType, Context context) {
+        String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -820,13 +817,33 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> updateSubscriptionLevelTaskStateAsync(
-        String ascLocation, String taskName, TasksTaskUpdateActionType taskUpdateActionType) {
+        String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType) {
         return updateSubscriptionLevelTaskStateWithResponseAsync(ascLocation, taskName, taskUpdateActionType)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Recommended tasks that will help improve the security of the subscription proactively.
+     *
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param taskName Name of the task object, will be a GUID.
+     * @param taskUpdateActionType Type of the action to do on the task.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> updateSubscriptionLevelTaskStateWithResponse(
+        String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType, Context context) {
+        return updateSubscriptionLevelTaskStateWithResponseAsync(ascLocation, taskName, taskUpdateActionType, context)
+            .block();
     }
 
     /**
@@ -842,28 +859,8 @@ public final class TasksClientImpl implements TasksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateSubscriptionLevelTaskState(
-        String ascLocation, String taskName, TasksTaskUpdateActionType taskUpdateActionType) {
-        updateSubscriptionLevelTaskStateAsync(ascLocation, taskName, taskUpdateActionType).block();
-    }
-
-    /**
-     * Recommended tasks that will help improve the security of the subscription proactively.
-     *
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param taskName Name of the task object, will be a GUID.
-     * @param taskUpdateActionType Type of the action to do on the task.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateSubscriptionLevelTaskStateWithResponse(
-        String ascLocation, String taskName, TasksTaskUpdateActionType taskUpdateActionType, Context context) {
-        return updateSubscriptionLevelTaskStateWithResponseAsync(ascLocation, taskName, taskUpdateActionType, context)
-            .block();
+        String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType) {
+        updateSubscriptionLevelTaskStateWithResponse(ascLocation, taskName, taskUpdateActionType, Context.NONE);
     }
 
     /**
@@ -877,7 +874,8 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityTaskInner>> listByResourceGroupSinglePageAsync(
@@ -940,7 +938,8 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityTaskInner>> listByResourceGroupSinglePageAsync(
@@ -999,7 +998,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecurityTaskInner> listByResourceGroupAsync(
@@ -1019,7 +1018,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecurityTaskInner> listByResourceGroupAsync(String resourceGroupName, String ascLocation) {
@@ -1041,7 +1040,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecurityTaskInner> listByResourceGroupAsync(
@@ -1061,7 +1060,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityTaskInner> listByResourceGroup(String resourceGroupName, String ascLocation) {
@@ -1081,7 +1080,7 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityTaskInner> listByResourceGroup(
@@ -1100,7 +1099,8 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security task that we recommend to do in order to strengthen security.
+     * @return security task that we recommend to do in order to strengthen security along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SecurityTaskInner>> getResourceGroupLevelTaskWithResponseAsync(
@@ -1157,7 +1157,8 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security task that we recommend to do in order to strengthen security.
+     * @return security task that we recommend to do in order to strengthen security along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SecurityTaskInner>> getResourceGroupLevelTaskWithResponseAsync(
@@ -1210,20 +1211,34 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security task that we recommend to do in order to strengthen security.
+     * @return security task that we recommend to do in order to strengthen security on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SecurityTaskInner> getResourceGroupLevelTaskAsync(
         String resourceGroupName, String ascLocation, String taskName) {
         return getResourceGroupLevelTaskWithResponseAsync(resourceGroupName, ascLocation, taskName)
-            .flatMap(
-                (Response<SecurityTaskInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Recommended tasks that will help improve the security of the subscription proactively.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param taskName Name of the task object, will be a GUID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return security task that we recommend to do in order to strengthen security along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SecurityTaskInner> getResourceGroupLevelTaskWithResponse(
+        String resourceGroupName, String ascLocation, String taskName, Context context) {
+        return getResourceGroupLevelTaskWithResponseAsync(resourceGroupName, ascLocation, taskName, context).block();
     }
 
     /**
@@ -1241,27 +1256,7 @@ public final class TasksClientImpl implements TasksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityTaskInner getResourceGroupLevelTask(String resourceGroupName, String ascLocation, String taskName) {
-        return getResourceGroupLevelTaskAsync(resourceGroupName, ascLocation, taskName).block();
-    }
-
-    /**
-     * Recommended tasks that will help improve the security of the subscription proactively.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param taskName Name of the task object, will be a GUID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security task that we recommend to do in order to strengthen security.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SecurityTaskInner> getResourceGroupLevelTaskWithResponse(
-        String resourceGroupName, String ascLocation, String taskName, Context context) {
-        return getResourceGroupLevelTaskWithResponseAsync(resourceGroupName, ascLocation, taskName, context).block();
+        return getResourceGroupLevelTaskWithResponse(resourceGroupName, ascLocation, taskName, Context.NONE).getValue();
     }
 
     /**
@@ -1276,11 +1271,11 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> updateResourceGroupLevelTaskStateWithResponseAsync(
-        String resourceGroupName, String ascLocation, String taskName, TasksTaskUpdateActionType taskUpdateActionType) {
+        String resourceGroupName, String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1339,14 +1334,14 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> updateResourceGroupLevelTaskStateWithResponseAsync(
         String resourceGroupName,
         String ascLocation,
         String taskName,
-        TasksTaskUpdateActionType taskUpdateActionType,
+        TaskUpdateActionType taskUpdateActionType,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1402,14 +1397,41 @@ public final class TasksClientImpl implements TasksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> updateResourceGroupLevelTaskStateAsync(
-        String resourceGroupName, String ascLocation, String taskName, TasksTaskUpdateActionType taskUpdateActionType) {
+        String resourceGroupName, String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType) {
         return updateResourceGroupLevelTaskStateWithResponseAsync(
                 resourceGroupName, ascLocation, taskName, taskUpdateActionType)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Recommended tasks that will help improve the security of the subscription proactively.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param taskName Name of the task object, will be a GUID.
+     * @param taskUpdateActionType Type of the action to do on the task.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> updateResourceGroupLevelTaskStateWithResponse(
+        String resourceGroupName,
+        String ascLocation,
+        String taskName,
+        TaskUpdateActionType taskUpdateActionType,
+        Context context) {
+        return updateResourceGroupLevelTaskStateWithResponseAsync(
+                resourceGroupName, ascLocation, taskName, taskUpdateActionType, context)
+            .block();
     }
 
     /**
@@ -1427,45 +1449,21 @@ public final class TasksClientImpl implements TasksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateResourceGroupLevelTaskState(
-        String resourceGroupName, String ascLocation, String taskName, TasksTaskUpdateActionType taskUpdateActionType) {
-        updateResourceGroupLevelTaskStateAsync(resourceGroupName, ascLocation, taskName, taskUpdateActionType).block();
-    }
-
-    /**
-     * Recommended tasks that will help improve the security of the subscription proactively.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
-     * @param taskName Name of the task object, will be a GUID.
-     * @param taskUpdateActionType Type of the action to do on the task.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateResourceGroupLevelTaskStateWithResponse(
-        String resourceGroupName,
-        String ascLocation,
-        String taskName,
-        TasksTaskUpdateActionType taskUpdateActionType,
-        Context context) {
-        return updateResourceGroupLevelTaskStateWithResponseAsync(
-                resourceGroupName, ascLocation, taskName, taskUpdateActionType, context)
-            .block();
+        String resourceGroupName, String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType) {
+        updateResourceGroupLevelTaskStateWithResponse(
+            resourceGroupName, ascLocation, taskName, taskUpdateActionType, Context.NONE);
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityTaskInner>> listNextSinglePageAsync(String nextLink) {
@@ -1496,12 +1494,14 @@ public final class TasksClientImpl implements TasksClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityTaskInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1532,11 +1532,13 @@ public final class TasksClientImpl implements TasksClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityTaskInner>> listByHomeRegionNextSinglePageAsync(String nextLink) {
@@ -1567,12 +1569,14 @@ public final class TasksClientImpl implements TasksClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityTaskInner>> listByHomeRegionNextSinglePageAsync(
@@ -1604,11 +1608,13 @@ public final class TasksClientImpl implements TasksClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityTaskInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1640,12 +1646,14 @@ public final class TasksClientImpl implements TasksClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityTaskInner>> listByResourceGroupNextSinglePageAsync(

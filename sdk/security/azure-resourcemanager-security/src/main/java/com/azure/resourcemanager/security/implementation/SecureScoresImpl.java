@@ -13,10 +13,9 @@ import com.azure.resourcemanager.security.fluent.SecureScoresClient;
 import com.azure.resourcemanager.security.fluent.models.SecureScoreItemInner;
 import com.azure.resourcemanager.security.models.SecureScoreItem;
 import com.azure.resourcemanager.security.models.SecureScores;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SecureScoresImpl implements SecureScores {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecureScoresImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SecureScoresImpl.class);
 
     private final SecureScoresClient innerClient;
 
@@ -38,15 +37,6 @@ public final class SecureScoresImpl implements SecureScores {
         return Utils.mapPage(inner, inner1 -> new SecureScoreItemImpl(inner1, this.manager()));
     }
 
-    public SecureScoreItem get(String secureScoreName) {
-        SecureScoreItemInner inner = this.serviceClient().get(secureScoreName);
-        if (inner != null) {
-            return new SecureScoreItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SecureScoreItem> getWithResponse(String secureScoreName, Context context) {
         Response<SecureScoreItemInner> inner = this.serviceClient().getWithResponse(secureScoreName, context);
         if (inner != null) {
@@ -55,6 +45,15 @@ public final class SecureScoresImpl implements SecureScores {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SecureScoreItemImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SecureScoreItem get(String secureScoreName) {
+        SecureScoreItemInner inner = this.serviceClient().get(secureScoreName);
+        if (inner != null) {
+            return new SecureScoreItemImpl(inner, this.manager());
         } else {
             return null;
         }

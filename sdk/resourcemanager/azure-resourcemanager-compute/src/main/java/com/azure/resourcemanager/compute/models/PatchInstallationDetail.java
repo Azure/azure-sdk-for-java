@@ -24,8 +24,7 @@ public final class PatchInstallationDetail {
     private String name;
 
     /*
-     * The version string of the package. It may conform to Semantic
-     * Versioning. Only applies to Linux.
+     * The version string of the package. It may conform to Semantic Versioning. Only applies to Linux.
      */
     @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
@@ -47,6 +46,10 @@ public final class PatchInstallationDetail {
      */
     @JsonProperty(value = "installationState", access = JsonProperty.Access.WRITE_ONLY)
     private PatchInstallationState installationState;
+
+    /** Creates an instance of PatchInstallationDetail class. */
+    public PatchInstallationDetail() {
+    }
 
     /**
      * Get the patchId property: A unique identifier for the patch.

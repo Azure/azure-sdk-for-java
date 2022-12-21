@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Private endpoint which the connection belongs to. */
 @Immutable
 public final class PrivateEndpointProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointProperty.class);
-
     /*
      * Resource id of the private endpoint.
      */

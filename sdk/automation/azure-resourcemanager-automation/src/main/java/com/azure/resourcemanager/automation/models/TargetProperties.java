@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Group specific to the update configuration. */
 @Fluent
 public final class TargetProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TargetProperties.class);
-
     /*
      * List of Azure queries in the software update configuration.
      */

@@ -19,15 +19,13 @@ import java.util.Map;
 @Fluent
 public class AzureBlobFSDataset extends Dataset {
     /*
-     * The path of the Azure Data Lake Storage Gen2 storage. Type: string (or
-     * Expression with resultType string).
+     * The path of the Azure Data Lake Storage Gen2 storage. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.folderPath")
     private Object folderPath;
 
     /*
-     * The name of the Azure Data Lake Storage Gen2. Type: string (or
-     * Expression with resultType string).
+     * The name of the Azure Data Lake Storage Gen2. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.fileName")
     private Object fileName;

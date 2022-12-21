@@ -19,8 +19,7 @@ public final class ResourceNavigationLink extends SubResource {
     private ResourceNavigationLinkFormat innerProperties;
 
     /*
-     * Name of the resource that is unique within a resource group. This name
-     * can be used to access the resource.
+     * Name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -36,6 +35,10 @@ public final class ResourceNavigationLink extends SubResource {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of ResourceNavigationLink class. */
+    public ResourceNavigationLink() {
+    }
 
     /**
      * Get the innerProperties property: Resource navigation link properties format.

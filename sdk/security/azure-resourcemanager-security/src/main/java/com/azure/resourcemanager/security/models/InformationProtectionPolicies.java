@@ -16,13 +16,14 @@ public interface InformationProtectionPolicies {
      * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
      *     management group (/providers/Microsoft.Management/managementGroups/mgName).
      * @param informationProtectionPolicyName Name of the information protection policy.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policy.
+     * @return information protection policy along with {@link Response}.
      */
-    InformationProtectionPolicy get(
-        String scope, InformationProtectionPoliciesInformationProtectionPolicyName informationProtectionPolicyName);
+    Response<InformationProtectionPolicy> getWithResponse(
+        String scope, InformationProtectionPolicyName informationProtectionPolicyName, Context context);
 
     /**
      * Details of the information protection policy.
@@ -30,16 +31,12 @@ public interface InformationProtectionPolicies {
      * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
      *     management group (/providers/Microsoft.Management/managementGroups/mgName).
      * @param informationProtectionPolicyName Name of the information protection policy.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information protection policy.
      */
-    Response<InformationProtectionPolicy> getWithResponse(
-        String scope,
-        InformationProtectionPoliciesInformationProtectionPolicyName informationProtectionPolicyName,
-        Context context);
+    InformationProtectionPolicy get(String scope, InformationProtectionPolicyName informationProtectionPolicyName);
 
     /**
      * Information protection policies of a specific management group.
@@ -49,7 +46,7 @@ public interface InformationProtectionPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policies response.
+     * @return information protection policies response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<InformationProtectionPolicy> list(String scope);
 
@@ -62,7 +59,7 @@ public interface InformationProtectionPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policies response.
+     * @return information protection policies response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<InformationProtectionPolicy> list(String scope, Context context);
 
@@ -73,7 +70,7 @@ public interface InformationProtectionPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policy.
+     * @return information protection policy along with {@link Response}.
      */
     InformationProtectionPolicy getById(String id);
 
@@ -85,7 +82,7 @@ public interface InformationProtectionPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policy.
+     * @return information protection policy along with {@link Response}.
      */
     Response<InformationProtectionPolicy> getByIdWithResponse(String id, Context context);
 
@@ -95,6 +92,5 @@ public interface InformationProtectionPolicies {
      * @param name resource name.
      * @return the first stage of the new InformationProtectionPolicy definition.
      */
-    InformationProtectionPolicy.DefinitionStages.Blank define(
-        InformationProtectionPoliciesInformationProtectionPolicyName name);
+    InformationProtectionPolicy.DefinitionStages.Blank define(InformationProtectionPolicyName name);
 }

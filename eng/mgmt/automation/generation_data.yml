@@ -33,7 +33,7 @@ steps:
 - bash: |
     export PATH=$JAVA_HOME_11_X64/bin:$PATH
     java -version
-    ./eng/mgmt/automation/generate_data.py --readme="$(README)" --input-file="$(INPUT_FILE)" --service="$(SERVICE)" --module="$(MODULE)" --security="$(SECURITY)" --security-scopes="$(SECURITY_SCOPES)" --title="$(TITLE)"
+    ./eng/mgmt/automation/generate_data.py --readme="$(README)" --spec-readme="$(SPEC_README)" --input-file="$(INPUT_FILE)" --service="$(SERVICE)" --module="$(MODULE)" --security="$(SECURITY)" --security-scopes="$(SECURITY_SCOPES)" --title="$(TITLE)"
   displayName: Generation
 
 - template: /eng/common/pipelines/templates/steps/create-pull-request.yml

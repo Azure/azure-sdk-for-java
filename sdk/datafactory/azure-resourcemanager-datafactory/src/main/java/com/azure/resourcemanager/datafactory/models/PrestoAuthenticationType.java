@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PrestoAuthenticationType. */
+/** The authentication mechanism used to connect to the Presto server. */
 public final class PrestoAuthenticationType extends ExpandableStringEnum<PrestoAuthenticationType> {
     /** Static value Anonymous for PrestoAuthenticationType. */
     public static final PrestoAuthenticationType ANONYMOUS = fromString("Anonymous");

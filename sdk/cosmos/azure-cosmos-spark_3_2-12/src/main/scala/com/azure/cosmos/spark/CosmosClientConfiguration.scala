@@ -7,6 +7,7 @@ import java.lang.management.ManagementFactory
 private[spark] case class CosmosClientConfiguration (
                                                       endpoint: String,
                                                       key: String,
+                                                      customApplicationNameSuffix: Option[String],
                                                       applicationName: String,
                                                       useGatewayMode: Boolean,
                                                       useEventualConsistency: Boolean,
@@ -19,22 +20,33 @@ private[spark] object CosmosClientConfiguration {
   def apply(
              config: Map[String, String],
              useEventualConsistency: Boolean): CosmosClientConfiguration = {
+
     val cosmosAccountConfig = CosmosAccountConfig.parseCosmosAccountConfig(config)
+    val diagnosticsConfig = DiagnosticsConfig.parseDiagnosticsConfig(config)
+
+    apply(cosmosAccountConfig, diagnosticsConfig, useEventualConsistency)
+  }
+
+  def apply(
+            cosmosAccountConfig: CosmosAccountConfig,
+            diagnosticsConfig: DiagnosticsConfig,
+            useEventualConsistency: Boolean): CosmosClientConfiguration = {
+
     var applicationName = CosmosConstants.userAgentSuffix
+    val customApplicationNameSuffix = cosmosAccountConfig.applicationName
     val runtimeInfo = runtimeInformation()
     if (runtimeInfo.isDefined) {
       applicationName = s"$applicationName ${runtimeInfo.get}"
     }
 
-    if (cosmosAccountConfig.applicationName.isDefined){
-      applicationName = s"$applicationName ${cosmosAccountConfig.applicationName.get}"
+    if (customApplicationNameSuffix.isDefined){
+      applicationName = s"$applicationName ${customApplicationNameSuffix.get}"
     }
-
-    val diagnosticsConfig = DiagnosticsConfig.parseDiagnosticsConfig(config)
 
     CosmosClientConfiguration(
       cosmosAccountConfig.endpoint,
       cosmosAccountConfig.key,
+      customApplicationNameSuffix,
       applicationName,
       cosmosAccountConfig.useGatewayMode,
       useEventualConsistency,

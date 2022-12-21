@@ -191,6 +191,10 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this.innerModel().mlFlowTrackingUri();
     }
 
+    public Boolean v1LegacyMode() {
+        return this.innerModel().v1LegacyMode();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -297,10 +301,6 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this;
     }
 
-    public DiagnoseResponseResult diagnose(DiagnoseWorkspaceParameters parameters) {
-        return serviceManager.workspaces().diagnose(resourceGroupName, workspaceName, parameters);
-    }
-
     public DiagnoseResponseResult diagnose() {
         return serviceManager.workspaces().diagnose(resourceGroupName, workspaceName);
     }
@@ -309,12 +309,12 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return serviceManager.workspaces().diagnose(resourceGroupName, workspaceName, parameters, context);
     }
 
-    public ListWorkspaceKeysResult listKeys() {
-        return serviceManager.workspaces().listKeys(resourceGroupName, workspaceName);
-    }
-
     public Response<ListWorkspaceKeysResult> listKeysWithResponse(Context context) {
         return serviceManager.workspaces().listKeysWithResponse(resourceGroupName, workspaceName, context);
+    }
+
+    public ListWorkspaceKeysResult listKeys() {
+        return serviceManager.workspaces().listKeys(resourceGroupName, workspaceName);
     }
 
     public void resyncKeys() {
@@ -325,14 +325,14 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         serviceManager.workspaces().resyncKeys(resourceGroupName, workspaceName, context);
     }
 
-    public NotebookAccessTokenResult listNotebookAccessToken() {
-        return serviceManager.workspaces().listNotebookAccessToken(resourceGroupName, workspaceName);
-    }
-
     public Response<NotebookAccessTokenResult> listNotebookAccessTokenWithResponse(Context context) {
         return serviceManager
             .workspaces()
             .listNotebookAccessTokenWithResponse(resourceGroupName, workspaceName, context);
+    }
+
+    public NotebookAccessTokenResult listNotebookAccessToken() {
+        return serviceManager.workspaces().listNotebookAccessToken(resourceGroupName, workspaceName);
     }
 
     public NotebookResourceInfo prepareNotebook() {
@@ -343,22 +343,22 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return serviceManager.workspaces().prepareNotebook(resourceGroupName, workspaceName, context);
     }
 
-    public ListStorageAccountKeysResult listStorageAccountKeys() {
-        return serviceManager.workspaces().listStorageAccountKeys(resourceGroupName, workspaceName);
-    }
-
     public Response<ListStorageAccountKeysResult> listStorageAccountKeysWithResponse(Context context) {
         return serviceManager
             .workspaces()
             .listStorageAccountKeysWithResponse(resourceGroupName, workspaceName, context);
     }
 
-    public ListNotebookKeysResult listNotebookKeys() {
-        return serviceManager.workspaces().listNotebookKeys(resourceGroupName, workspaceName);
+    public ListStorageAccountKeysResult listStorageAccountKeys() {
+        return serviceManager.workspaces().listStorageAccountKeys(resourceGroupName, workspaceName);
     }
 
     public Response<ListNotebookKeysResult> listNotebookKeysWithResponse(Context context) {
         return serviceManager.workspaces().listNotebookKeysWithResponse(resourceGroupName, workspaceName, context);
+    }
+
+    public ListNotebookKeysResult listNotebookKeys() {
+        return serviceManager.workspaces().listNotebookKeys(resourceGroupName, workspaceName);
     }
 
     public WorkspaceImpl withRegion(Region location) {
@@ -515,6 +515,11 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
             this.updateParameters.withPrimaryUserAssignedIdentity(primaryUserAssignedIdentity);
             return this;
         }
+    }
+
+    public WorkspaceImpl withV1LegacyMode(Boolean v1LegacyMode) {
+        this.innerModel().withV1LegacyMode(v1LegacyMode);
+        return this;
     }
 
     private boolean isInCreateMode() {

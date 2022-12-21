@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VirtualNetworkGatewayConnectionStatus. */
+/** Virtual Network Gateway connection status. */
 public final class VirtualNetworkGatewayConnectionStatus
     extends ExpandableStringEnum<VirtualNetworkGatewayConnectionStatus> {
     /** Static value Unknown for VirtualNetworkGatewayConnectionStatus. */

@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The MLFlowModelJobInput model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobInputType")
-@JsonTypeName("MLFlowModel")
+@JsonTypeName("mlflow_model")
 @Fluent
 public final class MLFlowModelJobInput extends JobInput {
     /*
@@ -26,6 +26,10 @@ public final class MLFlowModelJobInput extends JobInput {
      */
     @JsonProperty(value = "uri", required = true)
     private String uri;
+
+    /** Creates an instance of MLFlowModelJobInput class. */
+    public MLFlowModelJobInput() {
+    }
 
     /**
      * Get the mode property: Input Asset Delivery Mode.

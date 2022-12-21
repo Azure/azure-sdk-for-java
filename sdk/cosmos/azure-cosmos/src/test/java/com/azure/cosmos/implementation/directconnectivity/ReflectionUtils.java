@@ -11,10 +11,10 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
-import com.azure.cosmos.implementation.ClientTelemetryConfig;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.IRetryPolicyFactory;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
@@ -22,10 +22,15 @@ import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClientChannelHealthChecker;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.implementation.caches.AsyncCache;
+import com.azure.cosmos.implementation.caches.AsyncCacheNonBlocking;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.clienttelemetry.AzureVMMetadata;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
@@ -47,9 +52,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  *
@@ -182,8 +189,8 @@ public class ReflectionUtils {
         return get(ConnectionPolicy.class, cosmosClientBuilder, "connectionPolicy");
     }
 
-    public static ClientTelemetryConfig getClientTelemetryConfig(CosmosClientBuilder cosmosClientBuilder){
-        return get(ClientTelemetryConfig.class, cosmosClientBuilder, "clientTelemetryConfig");
+    public static CosmosClientTelemetryConfig getClientTelemetryConfig(CosmosClientBuilder cosmosClientBuilder){
+        return get(CosmosClientTelemetryConfig.class, cosmosClientBuilder, "clientTelemetryConfig");
     }
 
     public static void buildConnectionPolicy(CosmosClientBuilder cosmosClientBuilder) {
@@ -228,6 +235,18 @@ public class ReflectionUtils {
 
     public static void setGatewayHttpClient(RxStoreModel client, HttpClient httpClient) {
         set(client, httpClient, "httpClient");
+    }
+
+    public static void setCollectionCache(RxDocumentClientImpl client, RxClientCollectionCache collectionCache) {
+        set(client, collectionCache, "collectionCache");
+    }
+
+    public static void setPartitionKeyRangeCache(RxDocumentClientImpl client, RxPartitionKeyRangeCache partitionKeyRangeCache) {
+        set(client, partitionKeyRangeCache, "partitionKeyRangeCache");
+    }
+
+    public static void setResetSessionTokenRetryPolicy(RxDocumentClientImpl client, IRetryPolicyFactory retryPolicyFactory) {
+        set(client, retryPolicyFactory, "resetSessionTokenRetryPolicy");
     }
 
     public static HttpHeaders getHttpHeaders(HttpRequest httpRequest) {
@@ -317,7 +336,17 @@ public class ReflectionUtils {
     }
 
     @SuppressWarnings("unchecked")
+    public static AsyncCacheNonBlocking<String, CollectionRoutingMap> getRoutingMapAsyncCacheNonBlocking(RxPartitionKeyRangeCache partitionKeyRangeCache) {
+        return get(AsyncCacheNonBlocking.class, partitionKeyRangeCache, "routingMapCache");
+    }
+
+    @SuppressWarnings("unchecked")
     public static <T> ConcurrentHashMap<String, ?> getValueMap(AsyncCache<String, T> asyncCache) {
+        return get(ConcurrentHashMap.class, asyncCache, "values");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> ConcurrentHashMap<String, ?> getValueMapNonBlockingCache(AsyncCacheNonBlocking<String, T> asyncCache) {
         return get(ConcurrentHashMap.class, asyncCache, "values");
     }
 
@@ -351,8 +380,7 @@ public class ReflectionUtils {
         try {
             Field field = GatewayAddressCache.class.getDeclaredField(fieldName);
             field.setAccessible(true);
-            FieldUtils.removeFinalModifier(field, true);
-            FieldUtils.writeField(field, (Object)null, newDuration, true);
+            FieldUtils.writeStaticField(field, newDuration, true);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -360,5 +388,36 @@ public class ReflectionUtils {
 
     public static LocationCache getLocationCache(GlobalEndpointManager globalEndpointManager) {
         return get(LocationCache.class, globalEndpointManager, "locationCache");
+    }
+
+    public static HttpClient getClientTelemetryHttpClint(ClientTelemetry clientTelemetry) {
+        return get(HttpClient.class, clientTelemetry, "httpClient");
+    }
+
+    public static HttpClient getClientTelemetryMetadataHttpClient(ClientTelemetry clientTelemetry) {
+        return get(HttpClient.class, clientTelemetry, "metadataHttpClient");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static AtomicReference<AzureVMMetadata> getAzureVMMetadata(ClientTelemetry clientTelemetry) {
+        return get(AtomicReference.class, clientTelemetry, "azureVmMetaDataSingleton");
+    }
+
+    public static void setClientTelemetryMetadataHttpClient(ClientTelemetry clientTelemetry, HttpClient HttpClient) {
+        set(clientTelemetry, HttpClient, "metadataHttpClient");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static AtomicReference<Uri.HealthStatus> getHealthStatus(Uri uri) {
+        return get(AtomicReference.class, uri, "healthStatus");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Set<Uri.HealthStatus> getReplicaValidationScopes(GatewayAddressCache gatewayAddressCache) {
+        return get(Set.class, gatewayAddressCache, "replicaValidationScopes");
+    }
+
+    public static RntbdClientChannelHealthChecker.Timestamps getTimestamps(RntbdRequestManager rntbdRequestManager) {
+        return get(RntbdClientChannelHealthChecker.Timestamps.class, rntbdRequestManager, "timestamps");
     }
 }

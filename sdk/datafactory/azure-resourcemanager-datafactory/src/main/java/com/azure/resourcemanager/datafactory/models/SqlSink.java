@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.Map;
 
 /** A copy activity SQL sink. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,22 +15,19 @@ import java.util.Map;
 @Fluent
 public final class SqlSink extends CopySink {
     /*
-     * SQL writer stored procedure name. Type: string (or Expression with
-     * resultType string).
+     * SQL writer stored procedure name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "sqlWriterStoredProcedureName")
     private Object sqlWriterStoredProcedureName;
 
     /*
-     * SQL writer table type. Type: string (or Expression with resultType
-     * string).
+     * SQL writer table type. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "sqlWriterTableType")
     private Object sqlWriterTableType;
 
     /*
-     * SQL pre-copy script. Type: string (or Expression with resultType
-     * string).
+     * SQL pre-copy script. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "preCopyScript")
     private Object preCopyScript;
@@ -41,34 +36,30 @@ public final class SqlSink extends CopySink {
      * SQL stored procedure parameters.
      */
     @JsonProperty(value = "storedProcedureParameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, StoredProcedureParameter> storedProcedureParameters;
+    private Object storedProcedureParameters;
 
     /*
-     * The stored procedure parameter name of the table type. Type: string (or
-     * Expression with resultType string).
+     * The stored procedure parameter name of the table type. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "storedProcedureTableTypeParameterName")
     private Object storedProcedureTableTypeParameterName;
 
     /*
-     * The option to handle sink table, such as autoCreate. For now only
-     * 'autoCreate' value is supported. Type: string (or Expression with
-     * resultType string).
+     * The option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string
+     * (or Expression with resultType string).
      */
     @JsonProperty(value = "tableOption")
     private Object tableOption;
 
     /*
-     * Whether to use table lock during bulk copy. Type: boolean (or Expression
-     * with resultType boolean).
+     * Whether to use table lock during bulk copy. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "sqlWriterUseTableLock")
     private Object sqlWriterUseTableLock;
 
     /*
-     * Write behavior when copying data into sql. Type: SqlWriteBehaviorEnum
-     * (or Expression with resultType SqlWriteBehaviorEnum)
+     * Write behavior when copying data into sql. Type: SqlWriteBehaviorEnum (or Expression with resultType
+     * SqlWriteBehaviorEnum)
      */
     @JsonProperty(value = "writeBehavior")
     private Object writeBehavior;
@@ -78,6 +69,10 @@ public final class SqlSink extends CopySink {
      */
     @JsonProperty(value = "upsertSettings")
     private SqlUpsertSettings upsertSettings;
+
+    /** Creates an instance of SqlSink class. */
+    public SqlSink() {
+    }
 
     /**
      * Get the sqlWriterStoredProcedureName property: SQL writer stored procedure name. Type: string (or Expression with
@@ -146,7 +141,7 @@ public final class SqlSink extends CopySink {
      *
      * @return the storedProcedureParameters value.
      */
-    public Map<String, StoredProcedureParameter> storedProcedureParameters() {
+    public Object storedProcedureParameters() {
         return this.storedProcedureParameters;
     }
 
@@ -156,7 +151,7 @@ public final class SqlSink extends CopySink {
      * @param storedProcedureParameters the storedProcedureParameters value to set.
      * @return the SqlSink object itself.
      */
-    public SqlSink withStoredProcedureParameters(Map<String, StoredProcedureParameter> storedProcedureParameters) {
+    public SqlSink withStoredProcedureParameters(Object storedProcedureParameters) {
         this.storedProcedureParameters = storedProcedureParameters;
         return this;
     }
@@ -319,16 +314,6 @@ public final class SqlSink extends CopySink {
     @Override
     public void validate() {
         super.validate();
-        if (storedProcedureParameters() != null) {
-            storedProcedureParameters()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
-        }
         if (upsertSettings() != null) {
             upsertSettings().validate();
         }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.netapp.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ProvisioningState. */
+/** Gets the status of the VolumeQuotaRule at the time the operation was called. */
 public enum ProvisioningState {
     /** Enum value Accepted. */
     ACCEPTED("Accepted"),
@@ -45,6 +45,9 @@ public enum ProvisioningState {
      */
     @JsonCreator
     public static ProvisioningState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ProvisioningState[] items = ProvisioningState.values();
         for (ProvisioningState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -54,6 +57,7 @@ public enum ProvisioningState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

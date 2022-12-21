@@ -4,7 +4,6 @@ package com.azure.spring.cloud.autoconfigure.kafka;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.cloud.stream.binder.kafka.KafkaMessageChannelBinder;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +20,7 @@ import org.springframework.context.annotation.Import;
 @Configuration(proxyBeanMethods = false)
 @Import(AzureGlobalPropertiesAutoConfiguration.class)
 public class AzureKafkaSpringCloudStreamConfiguration {
+
     @Bean
     static KafkaBinderConfigurationPropertiesBeanPostProcessor kafkaBinderConfigurationPropertiesBeanPostProcessor(
             AzureGlobalProperties azureGlobalProperties) {

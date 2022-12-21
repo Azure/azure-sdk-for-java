@@ -10,6 +10,42 @@
 
 ### Other Changes
 
+## 1.0.10 (2022-11-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.33.0` to version `1.34.0`.
+- Upgraded `azure-core-http-netty` from `1.12.6` to version `1.12.7`.
+
+## 1.0.9 (2022-10-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
+
+## 1.0.8 (2022-09-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.31.0` to version `1.32.0`.
+- Upgraded `azure-core-http-netty` from `1.12.4` to version `1.12.5`.
+
+## 1.0.7 (2022-08-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.30.0` to version `1.31.0`.
+- Upgraded `azure-core-http-netty` from `1.12.3` to version `1.12.4`.
+
 ## 1.1.0-beta.1 (2022-04-08)
 
 ### Features Added

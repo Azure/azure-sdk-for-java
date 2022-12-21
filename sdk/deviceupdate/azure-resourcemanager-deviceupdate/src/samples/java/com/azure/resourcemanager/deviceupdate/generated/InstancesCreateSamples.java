@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for Instances Create. */
 public final class InstancesCreateSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/Instances/Instances_Create.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/Instances/Instances_Create.json
      */
     /**
      * Sample code: Creates or updates Instance.

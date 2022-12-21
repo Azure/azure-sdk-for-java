@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NetworkMode. */
+/**
+ * The network mode Azure CNI is configured with.
+ *
+ * <p>This cannot be specified if networkPlugin is anything other than 'azure'.
+ */
 public final class NetworkMode extends ExpandableStringEnum<NetworkMode> {
     /** Static value transparent for NetworkMode. */
     public static final NetworkMode TRANSPARENT = fromString("transparent");

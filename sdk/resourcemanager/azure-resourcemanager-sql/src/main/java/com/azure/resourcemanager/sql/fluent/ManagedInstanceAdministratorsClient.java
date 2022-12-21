@@ -30,7 +30,7 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance administrators.
+     * @return a list of managed instance administrators as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ManagedInstanceAdministratorInner> listByInstanceAsync(
@@ -45,7 +45,7 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance administrators.
+     * @return a list of managed instance administrators as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedInstanceAdministratorInner> listByInstance(
@@ -61,7 +61,7 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance administrators.
+     * @return a list of managed instance administrators as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedInstanceAdministratorInner> listByInstance(
@@ -76,7 +76,7 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance administrator.
+     * @return a managed instance administrator along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ManagedInstanceAdministratorInner>> getWithResponseAsync(
@@ -91,7 +91,7 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance administrator.
+     * @return a managed instance administrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ManagedInstanceAdministratorInner> getAsync(String resourceGroupName, String managedInstanceName);
@@ -120,7 +120,7 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance administrator.
+     * @return a managed instance administrator along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ManagedInstanceAdministratorInner> getWithResponse(
@@ -132,11 +132,12 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters An Azure SQL managed instance administrator.
+     * @param parameters The requested administrator parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance administrator.
+     * @return an Azure SQL managed instance administrator along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -148,13 +149,13 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters An Azure SQL managed instance administrator.
+     * @param parameters The requested administrator parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance administrator.
+     * @return the {@link PollerFlux} for polling of an Azure SQL managed instance administrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ManagedInstanceAdministratorInner>, ManagedInstanceAdministratorInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName, String managedInstanceName, ManagedInstanceAdministratorInner parameters);
@@ -165,13 +166,13 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters An Azure SQL managed instance administrator.
+     * @param parameters The requested administrator parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance administrator.
+     * @return the {@link SyncPoller} for polling of an Azure SQL managed instance administrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedInstanceAdministratorInner>, ManagedInstanceAdministratorInner> beginCreateOrUpdate(
         String resourceGroupName, String managedInstanceName, ManagedInstanceAdministratorInner parameters);
 
@@ -181,14 +182,14 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters An Azure SQL managed instance administrator.
+     * @param parameters The requested administrator parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance administrator.
+     * @return the {@link SyncPoller} for polling of an Azure SQL managed instance administrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedInstanceAdministratorInner>, ManagedInstanceAdministratorInner> beginCreateOrUpdate(
         String resourceGroupName,
         String managedInstanceName,
@@ -201,11 +202,11 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters An Azure SQL managed instance administrator.
+     * @param parameters The requested administrator parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL managed instance administrator.
+     * @return an Azure SQL managed instance administrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ManagedInstanceAdministratorInner> createOrUpdateAsync(
@@ -217,7 +218,7 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters An Azure SQL managed instance administrator.
+     * @param parameters The requested administrator parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -233,7 +234,7 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters An Azure SQL managed instance administrator.
+     * @param parameters The requested administrator parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -256,7 +257,7 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String managedInstanceName);
@@ -270,9 +271,9 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String managedInstanceName);
 
     /**
@@ -284,9 +285,9 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String managedInstanceName);
 
     /**
@@ -299,9 +300,9 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String managedInstanceName, Context context);
 
@@ -314,7 +315,7 @@ public interface ManagedInstanceAdministratorsClient extends InnerSupportsDelete
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String managedInstanceName);

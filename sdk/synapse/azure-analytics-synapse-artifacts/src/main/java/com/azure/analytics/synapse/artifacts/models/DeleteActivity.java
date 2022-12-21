@@ -18,9 +18,8 @@ import java.util.List;
 @Fluent
 public class DeleteActivity extends ExecutionActivity {
     /*
-     * If true, files or sub-folders under current folder path will be deleted
-     * recursively. Default is false. Type: boolean (or Expression with
-     * resultType boolean).
+     * If true, files or sub-folders under current folder path will be deleted recursively. Default is false. Type:
+     * boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "typeProperties.recursive")
     private Object recursive;
@@ -32,15 +31,14 @@ public class DeleteActivity extends ExecutionActivity {
     private Integer maxConcurrentConnections;
 
     /*
-     * Whether to record detailed logs of delete-activity execution. Default
-     * value is false. Type: boolean (or Expression with resultType boolean).
+     * Whether to record detailed logs of delete-activity execution. Default value is false. Type: boolean (or
+     * Expression with resultType boolean).
      */
     @JsonProperty(value = "typeProperties.enableLogging")
     private Object enableLogging;
 
     /*
-     * Log storage settings customer need to provide when enableLogging is
-     * true.
+     * Log storage settings customer need to provide when enableLogging is true.
      */
     @JsonProperty(value = "typeProperties.logStorageSettings")
     private LogStorageSettings logStorageSettings;

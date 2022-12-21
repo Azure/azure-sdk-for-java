@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The authorization properties for accessing the source code repository. */
 @Fluent
 public final class AuthInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AuthInfo.class);
-
     /*
      * The type of Auth token.
      */
@@ -151,13 +148,15 @@ public final class AuthInfo {
      */
     public void validate() {
         if (tokenType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property tokenType in model AuthInfo"));
         }
         if (token() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property token in model AuthInfo"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AuthInfo.class);
 }

@@ -27,6 +27,10 @@ public final class CustomDomainInner extends ProxyResource {
     @JsonProperty(value = "properties", required = true)
     private CustomDomainProperties innerProperties = new CustomDomainProperties();
 
+    /** Creates an instance of CustomDomainInner class. */
+    public CustomDomainInner() {
+    }
+
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
      *

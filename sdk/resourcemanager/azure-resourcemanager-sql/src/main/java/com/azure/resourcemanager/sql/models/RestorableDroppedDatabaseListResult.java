@@ -7,15 +7,12 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.models.RestorableDroppedDatabaseInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response to a list restorable dropped databases request. */
 @Fluent
 public final class RestorableDroppedDatabaseListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableDroppedDatabaseListResult.class);
-
     /*
      * A list of restorable dropped databases
      */
@@ -49,7 +46,7 @@ public final class RestorableDroppedDatabaseListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model RestorableDroppedDatabaseListResult"));
@@ -57,4 +54,6 @@ public final class RestorableDroppedDatabaseListResult {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RestorableDroppedDatabaseListResult.class);
 }

@@ -33,7 +33,11 @@ public final class SyncGroupLogType extends ExpandableStringEnum<SyncGroupLogTyp
         return fromString(name, SyncGroupLogType.class);
     }
 
-    /** @return known SyncGroupLogType values. */
+    /**
+     * Gets known SyncGroupLogType values.
+     *
+     * @return known SyncGroupLogType values.
+     */
     public static Collection<SyncGroupLogType> values() {
         return values(SyncGroupLogType.class);
     }

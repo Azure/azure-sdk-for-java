@@ -38,18 +38,6 @@ public interface PacketCoreControlPlanes {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified packet core control plane.
-     */
-    PacketCoreControlPlane getByResourceGroup(String resourceGroupName, String packetCoreControlPlaneName);
-
-    /**
-     * Gets information about the specified packet core control plane.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -60,7 +48,19 @@ public interface PacketCoreControlPlanes {
         String resourceGroupName, String packetCoreControlPlaneName, Context context);
 
     /**
-     * Lists all the packetCoreControlPlanes in a subscription.
+     * Gets information about the specified packet core control plane.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param packetCoreControlPlaneName The name of the packet core control plane.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified packet core control plane.
+     */
+    PacketCoreControlPlane getByResourceGroup(String resourceGroupName, String packetCoreControlPlaneName);
+
+    /**
+     * Lists all the packet core control planes in a subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -70,7 +70,7 @@ public interface PacketCoreControlPlanes {
     PagedIterable<PacketCoreControlPlane> list();
 
     /**
-     * Lists all the packetCoreControlPlanes in a subscription.
+     * Lists all the packet core control planes in a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -82,7 +82,7 @@ public interface PacketCoreControlPlanes {
     PagedIterable<PacketCoreControlPlane> list(Context context);
 
     /**
-     * Lists all the packetCoreControlPlanes in a resource group.
+     * Lists all the packet core control planes in a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -94,7 +94,7 @@ public interface PacketCoreControlPlanes {
     PagedIterable<PacketCoreControlPlane> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Lists all the packetCoreControlPlanes in a resource group.
+     * Lists all the packet core control planes in a resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.

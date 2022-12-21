@@ -79,6 +79,14 @@ public final class AccountsImpl implements Accounts {
         this.serviceClient().delete(resourceGroupName, accountName, context);
     }
 
+    public void renewCredentials(String resourceGroupName, String accountName) {
+        this.serviceClient().renewCredentials(resourceGroupName, accountName);
+    }
+
+    public void renewCredentials(String resourceGroupName, String accountName, Context context) {
+        this.serviceClient().renewCredentials(resourceGroupName, accountName, context);
+    }
+
     public NetAppAccount getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {

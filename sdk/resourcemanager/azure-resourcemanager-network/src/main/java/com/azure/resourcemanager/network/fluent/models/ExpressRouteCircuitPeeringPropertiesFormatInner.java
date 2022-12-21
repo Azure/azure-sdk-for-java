@@ -127,18 +127,20 @@ public final class ExpressRouteCircuitPeeringPropertiesFormatInner {
     private ExpressRouteConnectionId expressRouteConnection;
 
     /*
-     * The list of circuit connections associated with Azure Private Peering
-     * for this circuit.
+     * The list of circuit connections associated with Azure Private Peering for this circuit.
      */
     @JsonProperty(value = "connections")
     private List<ExpressRouteCircuitConnectionInner> connections;
 
     /*
-     * The list of peered circuit connections associated with Azure Private
-     * Peering for this circuit.
+     * The list of peered circuit connections associated with Azure Private Peering for this circuit.
      */
     @JsonProperty(value = "peeredConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PeerExpressRouteCircuitConnectionInner> peeredConnections;
+
+    /** Creates an instance of ExpressRouteCircuitPeeringPropertiesFormatInner class. */
+    public ExpressRouteCircuitPeeringPropertiesFormatInner() {
+    }
 
     /**
      * Get the peeringType property: The peering type.

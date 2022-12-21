@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ConfigurationPolicyGroups Delete. */
 public final class ConfigurationPolicyGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ConfigurationPolicyGroupDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ConfigurationPolicyGroupDelete.json
      */
     /**
      * Sample code: ConfigurationPolicyGroupDelete.

@@ -25,7 +25,7 @@ public interface ServiceObjectivesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database service objective.
+     * @return a database service objective along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ServiceObjectiveInner>> getWithResponseAsync(
@@ -41,7 +41,7 @@ public interface ServiceObjectivesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database service objective.
+     * @return a database service objective on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ServiceObjectiveInner> getAsync(String resourceGroupName, String serverName, String serviceObjectiveName);
@@ -72,7 +72,7 @@ public interface ServiceObjectivesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database service objective.
+     * @return a database service objective along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ServiceObjectiveInner> getWithResponse(
@@ -87,7 +87,8 @@ public interface ServiceObjectivesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a get database service objectives request.
+     * @return represents the response to a get database service objectives request as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ServiceObjectiveInner> listByServerAsync(String resourceGroupName, String serverName);
@@ -101,7 +102,8 @@ public interface ServiceObjectivesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a get database service objectives request.
+     * @return represents the response to a get database service objectives request as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServiceObjectiveInner> listByServer(String resourceGroupName, String serverName);
@@ -116,7 +118,8 @@ public interface ServiceObjectivesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a get database service objectives request.
+     * @return represents the response to a get database service objectives request as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServiceObjectiveInner> listByServer(String resourceGroupName, String serverName, Context context);

@@ -6,16 +6,12 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.DateTimeRfc1123;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The description of an X509 CA Certificate. */
 @Fluent
 public final class CertificateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateProperties.class);
-
     /*
      * The certificate's subject name.
      */

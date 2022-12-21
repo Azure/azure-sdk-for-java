@@ -7,12 +7,10 @@ package com.azure.resourcemanager.cdn.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.CustomDomainHttpsParameters;
 import com.azure.resourcemanager.cdn.models.CustomDomainResourceState;
 import com.azure.resourcemanager.cdn.models.CustomHttpsProvisioningState;
 import com.azure.resourcemanager.cdn.models.CustomHttpsProvisioningSubstate;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -21,11 +19,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class CustomDomainInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomDomainInner.class);
-
     /*
-     * The JSON object that contains the properties of the custom domain to
-     * create.
+     * The JSON object that contains the properties of the custom domain to create.
      */
     @JsonProperty(value = "properties")
     private CustomDomainProperties innerProperties;
@@ -87,7 +82,7 @@ public final class CustomDomainInner extends ProxyResource {
     }
 
     /**
-     * Get the customHttpsProvisioningState property: Provisioning status of Custom Https of the custom domain.
+     * Get the customHttpsProvisioningState property: Provisioning status of the custom domain.
      *
      * @return the customHttpsProvisioningState value.
      */
@@ -156,11 +151,11 @@ public final class CustomDomainInner extends ProxyResource {
     }
 
     /**
-     * Get the provisioningState property: Provisioning status of the custom domain.
+     * Get the provisioningState property: Provisioning status of Custom Https of the custom domain.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public CustomHttpsProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

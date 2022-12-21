@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TeamDeskAuthenticationType. */
+/** The authentication type to use. */
 public final class TeamDeskAuthenticationType extends ExpandableStringEnum<TeamDeskAuthenticationType> {
     /** Static value Basic for TeamDeskAuthenticationType. */
     public static final TeamDeskAuthenticationType BASIC = fromString("Basic");

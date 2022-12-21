@@ -52,7 +52,7 @@ import java.util.Map;
 /** Samples for ApplicationGateways CreateOrUpdate. */
 public final class ApplicationGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ApplicationGatewayCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ApplicationGatewayCreate.json
      */
     /**
      * Sample code: Create Application Gateway.
@@ -97,7 +97,7 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
                                 new ApplicationGatewayTrustedRootCertificate().withName("rootcert").withData("****"),
                                 new ApplicationGatewayTrustedRootCertificate()
                                     .withName("rootcert1")
-                                    .withKeyVaultSecretId("https://kv/secret")))
+                                    .withKeyVaultSecretId("fakeTokenPlaceholder")))
                     .withTrustedClientCertificates(
                         Arrays
                             .asList(
@@ -110,10 +110,10 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
                                 new ApplicationGatewaySslCertificateInner()
                                     .withName("sslcert")
                                     .withData("****")
-                                    .withPassword("****"),
+                                    .withPassword("fakeTokenPlaceholder"),
                                 new ApplicationGatewaySslCertificateInner()
                                     .withName("sslcert2")
-                                    .withKeyVaultSecretId("https://kv/secret")))
+                                    .withKeyVaultSecretId("fakeTokenPlaceholder")))
                     .withFrontendIpConfigurations(
                         Arrays
                             .asList(
@@ -145,8 +145,8 @@ public final class ApplicationGatewaysCreateOrUpdateSamples {
                                     .withBackendAddresses(
                                         Arrays
                                             .asList(
-                                                new ApplicationGatewayBackendAddress().withIpAddress("10.0.0.1"),
-                                                new ApplicationGatewayBackendAddress().withIpAddress("10.0.0.2")))))
+                                                new ApplicationGatewayBackendAddress(),
+                                                new ApplicationGatewayBackendAddress()))))
                     .withBackendHttpSettingsCollection(
                         Arrays
                             .asList(

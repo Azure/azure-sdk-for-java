@@ -11,18 +11,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CassandraTableDatasetTypeProperties {
     /*
-     * The table name of the Cassandra database. Type: string (or Expression
-     * with resultType string).
+     * The table name of the Cassandra database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "tableName")
     private Object tableName;
 
     /*
-     * The keyspace of the Cassandra database. Type: string (or Expression with
-     * resultType string).
+     * The keyspace of the Cassandra database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "keyspace")
     private Object keyspace;
+
+    /** Creates an instance of CassandraTableDatasetTypeProperties class. */
+    public CassandraTableDatasetTypeProperties() {
+    }
 
     /**
      * Get the tableName property: The table name of the Cassandra database. Type: string (or Expression with resultType

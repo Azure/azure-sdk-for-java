@@ -19,8 +19,7 @@ public final class PrivateEndpointConnectionPropertiesInner {
     private PrivateEndpointInner privateEndpoint;
 
     /*
-     * A collection of information about the state of the connection between
-     * service consumer and provider.
+     * A collection of information about the state of the connection between service consumer and provider.
      */
     @JsonProperty(value = "privateLinkServiceConnectionState")
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
@@ -36,6 +35,10 @@ public final class PrivateEndpointConnectionPropertiesInner {
      */
     @JsonProperty(value = "linkIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String linkIdentifier;
+
+    /** Creates an instance of PrivateEndpointConnectionPropertiesInner class. */
+    public PrivateEndpointConnectionPropertiesInner() {
+    }
 
     /**
      * Get the privateEndpoint property: The resource of private end point.

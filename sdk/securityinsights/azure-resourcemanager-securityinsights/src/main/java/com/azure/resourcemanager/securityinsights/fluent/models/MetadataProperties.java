@@ -20,26 +20,22 @@ import java.util.List;
 @Fluent
 public final class MetadataProperties {
     /*
-     * Static ID for the content.  Used to identify dependencies and content
-     * from solutions or community.  Hard-coded/static for out of the box
-     * content and solutions. Dynamic for user-created.  This is the resource
-     * name
+     * Static ID for the content.  Used to identify dependencies and content from solutions or community.
+     * Hard-coded/static for out of the box content and solutions. Dynamic for user-created.  This is the resource name
      */
     @JsonProperty(value = "contentId")
     private String contentId;
 
     /*
-     * Full parent resource ID of the content item the metadata is for.  This
-     * is the full resource ID including the scope (subscription and resource
-     * group)
+     * Full parent resource ID of the content item the metadata is for.  This is the full resource ID including the
+     * scope (subscription and resource group)
      */
     @JsonProperty(value = "parentId", required = true)
     private String parentId;
 
     /*
-     * Version of the content.  Default and recommended format is numeric (e.g.
-     * 1, 1.0, 1.0.0, 1.0.0.0), following ARM template best practices.  Can
-     * also be any string, but then we cannot guarantee any version checks
+     * Version of the content.  Default and recommended format is numeric (e.g. 1, 1.0, 1.0.0, 1.0.0.0), following ARM
+     * template best practices.  Can also be any string, but then we cannot guarantee any version checks
      */
     @JsonProperty(value = "version")
     private String version;
@@ -69,10 +65,9 @@ public final class MetadataProperties {
     private MetadataSupport support;
 
     /*
-     * Dependencies for the content item, what other content items it requires
-     * to work.  Can describe more complex dependencies using a
-     * recursive/nested structure. For a single dependency an id/kind/version
-     * can be supplied or operator/criteria for complex formats.
+     * Dependencies for the content item, what other content items it requires to work.  Can describe more complex
+     * dependencies using a recursive/nested structure. For a single dependency an id/kind/version can be supplied or
+     * operator/criteria for complex formats.
      */
     @JsonProperty(value = "dependencies")
     private MetadataDependencies dependencies;
@@ -108,15 +103,13 @@ public final class MetadataProperties {
     private String customVersion;
 
     /*
-     * Schema version of the content. Can be used to distinguish between
-     * different flow based on the schema version
+     * Schema version of the content. Can be used to distinguish between different flow based on the schema version
      */
     @JsonProperty(value = "contentSchemaVersion")
     private String contentSchemaVersion;
 
     /*
-     * the icon identifier. this id can later be fetched from the solution
-     * template
+     * the icon identifier. this id can later be fetched from the solution template
      */
     @JsonProperty(value = "icon")
     private String icon;
@@ -128,22 +121,19 @@ public final class MetadataProperties {
     private List<String> threatAnalysisTactics;
 
     /*
-     * the techniques the resource covers, these have to be aligned with the
-     * tactics being used
+     * the techniques the resource covers, these have to be aligned with the tactics being used
      */
     @JsonProperty(value = "threatAnalysisTechniques")
     private List<String> threatAnalysisTechniques;
 
     /*
-     * preview image file names. These will be taken from the solution
-     * artifacts
+     * preview image file names. These will be taken from the solution artifacts
      */
     @JsonProperty(value = "previewImages")
     private List<String> previewImages;
 
     /*
-     * preview image file names. These will be taken from the solution
-     * artifacts. used for dark theme support
+     * preview image file names. These will be taken from the solution artifacts. used for dark theme support
      */
     @JsonProperty(value = "previewImagesDark")
     private List<String> previewImagesDark;

@@ -526,7 +526,7 @@ public interface AfdOriginGroupsClient {
     void delete(String resourceGroupName, String profileName, String originGroupName, Context context);
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of the given AzureFrontDoor origin group under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
@@ -541,7 +541,7 @@ public interface AfdOriginGroupsClient {
     PagedFlux<UsageInner> listResourceUsageAsync(String resourceGroupName, String profileName, String originGroupName);
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of the given AzureFrontDoor origin group under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
@@ -556,7 +556,7 @@ public interface AfdOriginGroupsClient {
     PagedIterable<UsageInner> listResourceUsage(String resourceGroupName, String profileName, String originGroupName);
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of the given AzureFrontDoor origin group under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique

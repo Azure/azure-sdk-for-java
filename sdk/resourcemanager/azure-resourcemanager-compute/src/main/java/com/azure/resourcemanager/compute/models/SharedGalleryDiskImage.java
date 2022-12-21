@@ -17,11 +17,14 @@ public class SharedGalleryDiskImage {
     private Integer diskSizeGB;
 
     /*
-     * The host caching of the disk. Valid values are 'None', 'ReadOnly', and
-     * 'ReadWrite'
+     * The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'
      */
     @JsonProperty(value = "hostCaching")
     private SharedGalleryHostCaching hostCaching;
+
+    /** Creates an instance of SharedGalleryDiskImage class. */
+    public SharedGalleryDiskImage() {
+    }
 
     /**
      * Get the diskSizeGB property: This property indicates the size of the VHD to be created.

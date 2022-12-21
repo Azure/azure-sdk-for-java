@@ -173,7 +173,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
 
     def "set immutability policy min"() {
         setup:
-        def expiryTime = getNamer().getUtcNow().plusSeconds(2)
+        def expiryTime = getNamer().getUtcNow().plusDays(2)
         def immutabilityPolicy = new BlobImmutabilityPolicy()
             .setExpiryTime(expiryTime)
             .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED)
@@ -192,7 +192,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
     @Unroll
     def "set immutability policy"() {
         setup:
-        def expiryTime = getNamer().getUtcNow().plusSeconds(2)
+        def expiryTime = getNamer().getUtcNow().plusDays(2)
         def immutabilityPolicy = new BlobImmutabilityPolicy()
             .setExpiryTime(expiryTime)
             .setPolicyMode(policyMode)
@@ -236,7 +236,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         setup:
         def bac = new BlobRequestConditions()
             .setIfUnmodifiedSince(unmodified)
-        def expiryTime = getNamer().getUtcNow().plusSeconds(2)
+        def expiryTime = getNamer().getUtcNow().plusDays(2)
         def immutabilityPolicy = new BlobImmutabilityPolicy()
             .setExpiryTime(expiryTime)
             .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED)
@@ -257,7 +257,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         setup:
         def bac = new BlobRequestConditions()
             .setIfUnmodifiedSince(oldDate)
-        def expiryTime = getNamer().getUtcNow().plusSeconds(2)
+        def expiryTime = getNamer().getUtcNow().plusDays(2)
         def immutabilityPolicy = new BlobImmutabilityPolicy()
             .setExpiryTime(expiryTime)
             .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED)
@@ -279,7 +279,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
             .setIfMatch(ifMatch)
             .setIfNoneMatch(ifNoneMatch)
             .setIfModifiedSince(ifModifiedSince)
-        def expiryTime = getNamer().getUtcNow().plusSeconds(2)
+        def expiryTime = getNamer().getUtcNow().plusDays(2)
         def immutabilityPolicy = new BlobImmutabilityPolicy()
             .setExpiryTime(expiryTime)
             .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED)
@@ -304,7 +304,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
     def "set immutability policy error"() {
         setup:
         def blob = vlwContainer.getBlobClient(generateBlobName())
-        def expiryTime = getNamer().getUtcNow().plusSeconds(2)
+        def expiryTime = getNamer().getUtcNow().plusDays(2)
         def immutabilityPolicy = new BlobImmutabilityPolicy()
             .setExpiryTime(expiryTime)
             .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED)
@@ -319,7 +319,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
 
     def "set immutability policy IA"() {
         setup:
-        def expiryTime = getNamer().getUtcNow().plusSeconds(2)
+        def expiryTime = getNamer().getUtcNow().plusDays(2)
         def immutabilityPolicy = new BlobImmutabilityPolicy()
             .setExpiryTime(expiryTime)
             .setPolicyMode(BlobImmutabilityPolicyMode.MUTABLE)
@@ -334,7 +334,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
 
     def "delete immutability policy min"() {
         setup:
-        def expiryTime = getNamer().getUtcNow().plusSeconds(2)
+        def expiryTime = getNamer().getUtcNow().plusDays(2)
         def immutabilityPolicy = new BlobImmutabilityPolicy()
             .setExpiryTime(expiryTime)
             .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED)
@@ -351,7 +351,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
 
     def "delete immutability policy"() {
         setup:
-        def expiryTime = getNamer().getUtcNow().plusSeconds(2)
+        def expiryTime = getNamer().getUtcNow().plusDays(2)
         def immutabilityPolicy = new BlobImmutabilityPolicy()
             .setExpiryTime(expiryTime)
             .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED)
@@ -453,7 +453,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
     def "append blob create"() {
         setup:
         def appendBlob = vlwContainer.getBlobClient(generateBlobName()).getAppendBlobClient()
-        def expiryTime = getNamer().getUtcNow().plusSeconds(2)
+        def expiryTime = getNamer().getUtcNow().plusDays(2)
         // The service rounds Immutability Policy Expiry to the nearest second.
         def expectedImmutabilityPolicyExpiry = expiryTime.truncatedTo(ChronoUnit.SECONDS)
         def immutabilityPolicy = new BlobImmutabilityPolicy()
@@ -475,7 +475,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
     def "page blob create"() {
         setup:
         def pageBlob = vlwContainer.getBlobClient(generateBlobName()).getPageBlobClient()
-        def expiryTime = getNamer().getUtcNow().plusSeconds(2)
+        def expiryTime = getNamer().getUtcNow().plusDays(2)
         // The service rounds Immutability Policy Expiry to the nearest second.
         def expectedImmutabilityPolicyExpiry = expiryTime.truncatedTo(ChronoUnit.SECONDS)
         def immutabilityPolicy = new BlobImmutabilityPolicy()
@@ -497,7 +497,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
     def "block blob commit block list"() {
         setup:
         def blockBlob = vlwBlob.getBlockBlobClient()
-        def expiryTime = getNamer().getUtcNow().plusSeconds(2)
+        def expiryTime = getNamer().getUtcNow().plusDays(2)
         // The service rounds Immutability Policy Expiry to the nearest second.
         def expectedImmutabilityPolicyExpiry = expiryTime.truncatedTo(ChronoUnit.SECONDS)
         def immutabilityPolicy = new BlobImmutabilityPolicy()
@@ -519,7 +519,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
     def "block blob upload"() {
         setup:
         def blockBlob = vlwBlob.getBlockBlobClient()
-        def expiryTime = getNamer().getUtcNow().plusSeconds(2)
+        def expiryTime = getNamer().getUtcNow().plusDays(2)
         // The service rounds Immutability Policy Expiry to the nearest second.
         def expectedImmutabilityPolicyExpiry = expiryTime.truncatedTo(ChronoUnit.SECONDS)
         def immutabilityPolicy = new BlobImmutabilityPolicy()
@@ -542,7 +542,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
     @LiveOnly
     def "blob upload"() {
         setup:
-        def expiryTime = getNamer().getUtcNow().plusSeconds(2)
+        def expiryTime = getNamer().getUtcNow().plusDays(2)
         // The service rounds Immutability Policy Expiry to the nearest second.
         def expectedImmutabilityPolicyExpiry = expiryTime.truncatedTo(ChronoUnit.SECONDS)
         def immutabilityPolicy = new BlobImmutabilityPolicy()
@@ -570,8 +570,9 @@ class ImmutableStorageWithVersioningTest extends APISpec {
     def "sync copy"() {
         setup:
         vlwContainer.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        sleepIfRecord(30000) // Give time for the policy to take effect
         def destination = vlwContainer.getBlobClient(generateBlobName()).getBlockBlobClient()
-        def expiryTime = getNamer().getUtcNow().plusSeconds(2)
+        def expiryTime = getNamer().getUtcNow().plusDays(2)
         // The service rounds Immutability Policy Expiry to the nearest second.
         def expectedImmutabilityPolicyExpiry = expiryTime.truncatedTo(ChronoUnit.SECONDS)
         def immutabilityPolicy = new BlobImmutabilityPolicy()
@@ -596,7 +597,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
     def "copy"() {
         setup:
         def destination = vlwContainer.getBlobClient(generateBlobName()).getBlockBlobClient()
-        def expiryTime = getNamer().getUtcNow().plusSeconds(2)
+        def expiryTime = getNamer().getUtcNow().plusDays(2)
         // The service rounds Immutability Policy Expiry to the nearest second.
         def expectedImmutabilityPolicyExpiry = expiryTime.truncatedTo(ChronoUnit.SECONDS)
         def immutabilityPolicy = new BlobImmutabilityPolicy()
@@ -624,7 +625,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         def service = new AccountSasService().setBlobAccess(true)
         def resource = new AccountSasResourceType().setObject(true).setContainer(true)
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resource)
-        expiryTime = getNamer().getUtcNow().plusSeconds(2)
+        expiryTime = getNamer().getUtcNow().plusDays(2)
         // The service rounds Immutability Policy Expiry to the nearest second.
         def expectedImmutabilityPolicyExpiry = expiryTime.truncatedTo(ChronoUnit.SECONDS)
         def immutabilityPolicy = new BlobImmutabilityPolicy()
@@ -652,7 +653,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         def expiryTime = namer.getUtcNow().plusDays(1)
         def permissions = BlobContainerSasPermission.parse("racwdxltmei")
         def sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
-        expiryTime = getNamer().getUtcNow().plusSeconds(2)
+        expiryTime = getNamer().getUtcNow().plusDays(2)
         // The service rounds Immutability Policy Expiry to the nearest second.
         def expectedImmutabilityPolicyExpiry = expiryTime.truncatedTo(ChronoUnit.SECONDS)
         def immutabilityPolicy = new BlobImmutabilityPolicy()
@@ -680,7 +681,7 @@ class ImmutableStorageWithVersioningTest extends APISpec {
         def expiryTime = namer.getUtcNow().plusDays(1)
         def permissions = BlobSasPermission.parse("racwdxtlmei")
         def sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions)
-        expiryTime = getNamer().getUtcNow().plusSeconds(2)
+        expiryTime = getNamer().getUtcNow().plusDays(2)
         // The service rounds Immutability Policy Expiry to the nearest second.
         def expectedImmutabilityPolicyExpiry = expiryTime.truncatedTo(ChronoUnit.SECONDS)
         def immutabilityPolicy = new BlobImmutabilityPolicy()

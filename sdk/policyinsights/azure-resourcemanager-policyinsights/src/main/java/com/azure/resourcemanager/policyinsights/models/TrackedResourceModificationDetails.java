@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The details of the policy triggered deployment that created or modified the tracked resource. */
 @Immutable
 public final class TrackedResourceModificationDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TrackedResourceModificationDetails.class);
-
     /*
      * The details of the policy that created or modified the tracked resource.
      */
@@ -28,11 +24,14 @@ public final class TrackedResourceModificationDetails {
     private String deploymentId;
 
     /*
-     * Timestamp of the deployment that created or modified the tracked
-     * resource.
+     * Timestamp of the deployment that created or modified the tracked resource.
      */
     @JsonProperty(value = "deploymentTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime deploymentTime;
+
+    /** Creates an instance of TrackedResourceModificationDetails class. */
+    public TrackedResourceModificationDetails() {
+    }
 
     /**
      * Get the policyDetails property: The details of the policy that created or modified the tracked resource.

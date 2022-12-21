@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Instances ListByAccount. */
 public final class InstancesListByAccountSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/Instances/Instances_ListByAccount.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/Instances/Instances_ListByAccount.json
      */
     /**
      * Sample code: Gets list of Instances by Account.

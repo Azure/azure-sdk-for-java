@@ -24,6 +24,10 @@ public final class AzureWorkloadSqlRecoveryPointExtendedInfo {
     @JsonProperty(value = "dataDirectoryPaths")
     private List<SqlDataDirectory> dataDirectoryPaths;
 
+    /** Creates an instance of AzureWorkloadSqlRecoveryPointExtendedInfo class. */
+    public AzureWorkloadSqlRecoveryPointExtendedInfo() {
+    }
+
     /**
      * Get the dataDirectoryTimeInUtc property: UTC time at which data directory info was captured.
      *

@@ -18,6 +18,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import com.azure.resourcemanager.sql.fluent.models.CheckNameAvailabilityResponseInner;
 import com.azure.resourcemanager.sql.fluent.models.ServerInner;
+import com.azure.resourcemanager.sql.models.CheckNameAvailabilityRequest;
 import com.azure.resourcemanager.sql.models.ServerUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -34,7 +35,7 @@ public interface ServersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of servers in a resource groups.
+     * @return a list of servers in a resource groups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ServerInner> listByResourceGroupAsync(String resourceGroupName);
@@ -47,7 +48,7 @@ public interface ServersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of servers in a resource groups.
+     * @return a list of servers in a resource groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServerInner> listByResourceGroup(String resourceGroupName);
@@ -61,7 +62,7 @@ public interface ServersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of servers in a resource groups.
+     * @return a list of servers in a resource groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServerInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -75,7 +76,7 @@ public interface ServersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server.
+     * @return a server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ServerInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String serverName);
@@ -89,7 +90,7 @@ public interface ServersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server.
+     * @return a server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ServerInner> getByResourceGroupAsync(String resourceGroupName, String serverName);
@@ -118,7 +119,7 @@ public interface ServersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a server.
+     * @return a server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ServerInner> getByResourceGroupWithResponse(String resourceGroupName, String serverName, Context context);
@@ -129,11 +130,11 @@ public interface ServersClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters An Azure SQL Database server.
+     * @param parameters The requested server resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database server.
+     * @return an Azure SQL Database server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -145,13 +146,13 @@ public interface ServersClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters An Azure SQL Database server.
+     * @param parameters The requested server resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database server.
+     * @return the {@link PollerFlux} for polling of an Azure SQL Database server.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ServerInner>, ServerInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serverName, ServerInner parameters);
 
@@ -161,13 +162,13 @@ public interface ServersClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters An Azure SQL Database server.
+     * @param parameters The requested server resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database server.
+     * @return the {@link SyncPoller} for polling of an Azure SQL Database server.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerInner>, ServerInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, ServerInner parameters);
 
@@ -177,14 +178,14 @@ public interface ServersClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters An Azure SQL Database server.
+     * @param parameters The requested server resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database server.
+     * @return the {@link SyncPoller} for polling of an Azure SQL Database server.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerInner>, ServerInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, ServerInner parameters, Context context);
 
@@ -194,11 +195,11 @@ public interface ServersClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters An Azure SQL Database server.
+     * @param parameters The requested server resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database server.
+     * @return an Azure SQL Database server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ServerInner> createOrUpdateAsync(String resourceGroupName, String serverName, ServerInner parameters);
@@ -209,7 +210,7 @@ public interface ServersClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters An Azure SQL Database server.
+     * @param parameters The requested server resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -224,7 +225,7 @@ public interface ServersClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters An Azure SQL Database server.
+     * @param parameters The requested server resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -243,7 +244,7 @@ public interface ServersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName);
@@ -257,9 +258,9 @@ public interface ServersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName);
 
     /**
@@ -271,9 +272,9 @@ public interface ServersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName);
 
     /**
@@ -286,9 +287,9 @@ public interface ServersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName, Context context);
 
     /**
@@ -300,7 +301,7 @@ public interface ServersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String serverName);
@@ -338,11 +339,11 @@ public interface ServersClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters An update request for an Azure SQL Database server.
+     * @param parameters The requested server resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database server.
+     * @return an Azure SQL Database server along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -354,13 +355,13 @@ public interface ServersClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters An update request for an Azure SQL Database server.
+     * @param parameters The requested server resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database server.
+     * @return the {@link PollerFlux} for polling of an Azure SQL Database server.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ServerInner>, ServerInner> beginUpdateAsync(
         String resourceGroupName, String serverName, ServerUpdate parameters);
 
@@ -370,13 +371,13 @@ public interface ServersClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters An update request for an Azure SQL Database server.
+     * @param parameters The requested server resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database server.
+     * @return the {@link SyncPoller} for polling of an Azure SQL Database server.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerInner>, ServerInner> beginUpdate(
         String resourceGroupName, String serverName, ServerUpdate parameters);
 
@@ -386,14 +387,14 @@ public interface ServersClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters An update request for an Azure SQL Database server.
+     * @param parameters The requested server resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database server.
+     * @return the {@link SyncPoller} for polling of an Azure SQL Database server.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerInner>, ServerInner> beginUpdate(
         String resourceGroupName, String serverName, ServerUpdate parameters, Context context);
 
@@ -403,11 +404,11 @@ public interface ServersClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters An update request for an Azure SQL Database server.
+     * @param parameters The requested server resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure SQL Database server.
+     * @return an Azure SQL Database server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ServerInner> updateAsync(String resourceGroupName, String serverName, ServerUpdate parameters);
@@ -418,7 +419,7 @@ public interface ServersClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters An update request for an Azure SQL Database server.
+     * @param parameters The requested server resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -433,7 +434,7 @@ public interface ServersClient
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param parameters An update request for an Azure SQL Database server.
+     * @param parameters The requested server resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -448,7 +449,7 @@ public interface ServersClient
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all servers in the subscription.
+     * @return a list of all servers in the subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ServerInner> listAsync();
@@ -458,7 +459,7 @@ public interface ServersClient
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all servers in the subscription.
+     * @return a list of all servers in the subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServerInner> list();
@@ -470,7 +471,7 @@ public interface ServersClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all servers in the subscription.
+     * @return a list of all servers in the subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServerInner> list(Context context);
@@ -478,49 +479,52 @@ public interface ServersClient
     /**
      * Determines whether a resource can be created with the specified name.
      *
-     * @param name The name parameter.
+     * @param parameters The name availability request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a name availability check along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(
+        CheckNameAvailabilityRequest parameters);
+
+    /**
+     * Determines whether a resource can be created with the specified name.
+     *
+     * @param parameters The name availability request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a name availability check on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<CheckNameAvailabilityResponseInner> checkNameAvailabilityAsync(CheckNameAvailabilityRequest parameters);
+
+    /**
+     * Determines whether a resource can be created with the specified name.
+     *
+     * @param parameters The name availability request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a name availability check.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CheckNameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(String name);
+    CheckNameAvailabilityResponseInner checkNameAvailability(CheckNameAvailabilityRequest parameters);
 
     /**
      * Determines whether a resource can be created with the specified name.
      *
-     * @param name The name parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a name availability check.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CheckNameAvailabilityResponseInner> checkNameAvailabilityAsync(String name);
-
-    /**
-     * Determines whether a resource can be created with the specified name.
-     *
-     * @param name The name parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a name availability check.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameAvailabilityResponseInner checkNameAvailability(String name);
-
-    /**
-     * Determines whether a resource can be created with the specified name.
-     *
-     * @param name The name parameter.
+     * @param parameters The name availability request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a name availability check.
+     * @return the result of a name availability check along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(String name, Context context);
+    Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(
+        CheckNameAvailabilityRequest parameters, Context context);
 }

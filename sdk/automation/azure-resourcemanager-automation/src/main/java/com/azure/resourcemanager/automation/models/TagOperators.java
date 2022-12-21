@@ -7,7 +7,7 @@ package com.azure.resourcemanager.automation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for TagOperators. */
+/** Filter VMs by Any or All specified tags. */
 public enum TagOperators {
     /** Enum value All. */
     ALL("All"),
@@ -30,6 +30,9 @@ public enum TagOperators {
      */
     @JsonCreator
     public static TagOperators fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         TagOperators[] items = TagOperators.values();
         for (TagOperators item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum TagOperators {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

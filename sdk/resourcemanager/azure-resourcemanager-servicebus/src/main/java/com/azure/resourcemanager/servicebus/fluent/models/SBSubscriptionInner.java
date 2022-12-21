@@ -5,138 +5,62 @@
 package com.azure.resourcemanager.servicebus.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.servicebus.implementation.DurationSerializer;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.servicebus.models.EntityStatus;
 import com.azure.resourcemanager.servicebus.models.MessageCountDetails;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.servicebus.models.SBClientAffineProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /** Description of subscription resource. */
-@JsonFlatten
 @Fluent
-public class SBSubscriptionInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SBSubscriptionInner.class);
+public final class SBSubscriptionInner extends Resource {
+    /*
+     * Properties of subscriptions resource.
+     */
+    @JsonProperty(value = "properties")
+    private SBSubscriptionProperties innerProperties;
 
     /*
-     * Number of messages.
+     * The system meta data relating to this resource.
      */
-    @JsonProperty(value = "properties.messageCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Long messageCount;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
-     * Exact time the message was created.
+     * The geo-location where the resource lives
      */
-    @JsonProperty(value = "properties.createdAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdAt;
+    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
+    private String location;
 
-    /*
-     * Last time there was a receive request to this subscription.
+    /**
+     * Get the innerProperties property: Properties of subscriptions resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.accessedAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime accessedAt;
+    private SBSubscriptionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * The exact time the message was updated.
+    /**
+     * Get the systemData property: The system meta data relating to this resource.
+     *
+     * @return the systemData value.
      */
-    @JsonProperty(value = "properties.updatedAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime updatedAt;
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
-    /*
-     * Message count details
+    /**
+     * Get the location property: The geo-location where the resource lives.
+     *
+     * @return the location value.
      */
-    @JsonProperty(value = "properties.countDetails", access = JsonProperty.Access.WRITE_ONLY)
-    private MessageCountDetails countDetails;
-
-    /*
-     * ISO 8061 lock duration timespan for the subscription. The default value
-     * is 1 minute.
-     */
-    @JsonProperty(value = "properties.lockDuration")
-    @JsonSerialize(using = DurationSerializer.class)
-    private Duration lockDuration;
-
-    /*
-     * Value indicating if a subscription supports the concept of sessions.
-     */
-    @JsonProperty(value = "properties.requiresSession")
-    private Boolean requiresSession;
-
-    /*
-     * ISO 8061 Default message timespan to live value. This is the duration
-     * after which the message expires, starting from when the message is sent
-     * to Service Bus. This is the default value used when TimeToLive is not
-     * set on a message itself.
-     */
-    @JsonProperty(value = "properties.defaultMessageTimeToLive")
-    @JsonSerialize(using = DurationSerializer.class)
-    private Duration defaultMessageTimeToLive;
-
-    /*
-     * Value that indicates whether a subscription has dead letter support on
-     * filter evaluation exceptions.
-     */
-    @JsonProperty(value = "properties.deadLetteringOnFilterEvaluationExceptions")
-    private Boolean deadLetteringOnFilterEvaluationExceptions;
-
-    /*
-     * Value that indicates whether a subscription has dead letter support when
-     * a message expires.
-     */
-    @JsonProperty(value = "properties.deadLetteringOnMessageExpiration")
-    private Boolean deadLetteringOnMessageExpiration;
-
-    /*
-     * ISO 8601 timeSpan structure that defines the duration of the duplicate
-     * detection history. The default value is 10 minutes.
-     */
-    @JsonProperty(value = "properties.duplicateDetectionHistoryTimeWindow")
-    @JsonSerialize(using = DurationSerializer.class)
-    private Duration duplicateDetectionHistoryTimeWindow;
-
-    /*
-     * Number of maximum deliveries.
-     */
-    @JsonProperty(value = "properties.maxDeliveryCount")
-    private Integer maxDeliveryCount;
-
-    /*
-     * Enumerates the possible values for the status of a messaging entity.
-     */
-    @JsonProperty(value = "properties.status")
-    private EntityStatus status;
-
-    /*
-     * Value that indicates whether server-side batched operations are enabled.
-     */
-    @JsonProperty(value = "properties.enableBatchedOperations")
-    private Boolean enableBatchedOperations;
-
-    /*
-     * ISO 8061 timeSpan idle interval after which the topic is automatically
-     * deleted. The minimum duration is 5 minutes.
-     */
-    @JsonProperty(value = "properties.autoDeleteOnIdle")
-    @JsonSerialize(using = DurationSerializer.class)
-    private Duration autoDeleteOnIdle;
-
-    /*
-     * Queue/Topic name to forward the messages
-     */
-    @JsonProperty(value = "properties.forwardTo")
-    private String forwardTo;
-
-    /*
-     * Queue/Topic name to forward the Dead Letter message
-     */
-    @JsonProperty(value = "properties.forwardDeadLetteredMessagesTo")
-    private String forwardDeadLetteredMessagesTo;
+    public String location() {
+        return this.location;
+    }
 
     /**
      * Get the messageCount property: Number of messages.
@@ -144,7 +68,7 @@ public class SBSubscriptionInner extends Resource {
      * @return the messageCount value.
      */
     public Long messageCount() {
-        return this.messageCount;
+        return this.innerProperties() == null ? null : this.innerProperties().messageCount();
     }
 
     /**
@@ -153,7 +77,7 @@ public class SBSubscriptionInner extends Resource {
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
-        return this.createdAt;
+        return this.innerProperties() == null ? null : this.innerProperties().createdAt();
     }
 
     /**
@@ -162,7 +86,7 @@ public class SBSubscriptionInner extends Resource {
      * @return the accessedAt value.
      */
     public OffsetDateTime accessedAt() {
-        return this.accessedAt;
+        return this.innerProperties() == null ? null : this.innerProperties().accessedAt();
     }
 
     /**
@@ -171,7 +95,7 @@ public class SBSubscriptionInner extends Resource {
      * @return the updatedAt value.
      */
     public OffsetDateTime updatedAt() {
-        return this.updatedAt;
+        return this.innerProperties() == null ? null : this.innerProperties().updatedAt();
     }
 
     /**
@@ -180,7 +104,7 @@ public class SBSubscriptionInner extends Resource {
      * @return the countDetails value.
      */
     public MessageCountDetails countDetails() {
-        return this.countDetails;
+        return this.innerProperties() == null ? null : this.innerProperties().countDetails();
     }
 
     /**
@@ -190,7 +114,7 @@ public class SBSubscriptionInner extends Resource {
      * @return the lockDuration value.
      */
     public Duration lockDuration() {
-        return this.lockDuration;
+        return this.innerProperties() == null ? null : this.innerProperties().lockDuration();
     }
 
     /**
@@ -201,7 +125,10 @@ public class SBSubscriptionInner extends Resource {
      * @return the SBSubscriptionInner object itself.
      */
     public SBSubscriptionInner withLockDuration(Duration lockDuration) {
-        this.lockDuration = lockDuration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBSubscriptionProperties();
+        }
+        this.innerProperties().withLockDuration(lockDuration);
         return this;
     }
 
@@ -211,7 +138,7 @@ public class SBSubscriptionInner extends Resource {
      * @return the requiresSession value.
      */
     public Boolean requiresSession() {
-        return this.requiresSession;
+        return this.innerProperties() == null ? null : this.innerProperties().requiresSession();
     }
 
     /**
@@ -221,7 +148,10 @@ public class SBSubscriptionInner extends Resource {
      * @return the SBSubscriptionInner object itself.
      */
     public SBSubscriptionInner withRequiresSession(Boolean requiresSession) {
-        this.requiresSession = requiresSession;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBSubscriptionProperties();
+        }
+        this.innerProperties().withRequiresSession(requiresSession);
         return this;
     }
 
@@ -233,7 +163,7 @@ public class SBSubscriptionInner extends Resource {
      * @return the defaultMessageTimeToLive value.
      */
     public Duration defaultMessageTimeToLive() {
-        return this.defaultMessageTimeToLive;
+        return this.innerProperties() == null ? null : this.innerProperties().defaultMessageTimeToLive();
     }
 
     /**
@@ -245,7 +175,10 @@ public class SBSubscriptionInner extends Resource {
      * @return the SBSubscriptionInner object itself.
      */
     public SBSubscriptionInner withDefaultMessageTimeToLive(Duration defaultMessageTimeToLive) {
-        this.defaultMessageTimeToLive = defaultMessageTimeToLive;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBSubscriptionProperties();
+        }
+        this.innerProperties().withDefaultMessageTimeToLive(defaultMessageTimeToLive);
         return this;
     }
 
@@ -256,7 +189,9 @@ public class SBSubscriptionInner extends Resource {
      * @return the deadLetteringOnFilterEvaluationExceptions value.
      */
     public Boolean deadLetteringOnFilterEvaluationExceptions() {
-        return this.deadLetteringOnFilterEvaluationExceptions;
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().deadLetteringOnFilterEvaluationExceptions();
     }
 
     /**
@@ -268,7 +203,10 @@ public class SBSubscriptionInner extends Resource {
      */
     public SBSubscriptionInner withDeadLetteringOnFilterEvaluationExceptions(
         Boolean deadLetteringOnFilterEvaluationExceptions) {
-        this.deadLetteringOnFilterEvaluationExceptions = deadLetteringOnFilterEvaluationExceptions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBSubscriptionProperties();
+        }
+        this.innerProperties().withDeadLetteringOnFilterEvaluationExceptions(deadLetteringOnFilterEvaluationExceptions);
         return this;
     }
 
@@ -279,7 +217,7 @@ public class SBSubscriptionInner extends Resource {
      * @return the deadLetteringOnMessageExpiration value.
      */
     public Boolean deadLetteringOnMessageExpiration() {
-        return this.deadLetteringOnMessageExpiration;
+        return this.innerProperties() == null ? null : this.innerProperties().deadLetteringOnMessageExpiration();
     }
 
     /**
@@ -290,7 +228,10 @@ public class SBSubscriptionInner extends Resource {
      * @return the SBSubscriptionInner object itself.
      */
     public SBSubscriptionInner withDeadLetteringOnMessageExpiration(Boolean deadLetteringOnMessageExpiration) {
-        this.deadLetteringOnMessageExpiration = deadLetteringOnMessageExpiration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBSubscriptionProperties();
+        }
+        this.innerProperties().withDeadLetteringOnMessageExpiration(deadLetteringOnMessageExpiration);
         return this;
     }
 
@@ -301,7 +242,7 @@ public class SBSubscriptionInner extends Resource {
      * @return the duplicateDetectionHistoryTimeWindow value.
      */
     public Duration duplicateDetectionHistoryTimeWindow() {
-        return this.duplicateDetectionHistoryTimeWindow;
+        return this.innerProperties() == null ? null : this.innerProperties().duplicateDetectionHistoryTimeWindow();
     }
 
     /**
@@ -312,7 +253,10 @@ public class SBSubscriptionInner extends Resource {
      * @return the SBSubscriptionInner object itself.
      */
     public SBSubscriptionInner withDuplicateDetectionHistoryTimeWindow(Duration duplicateDetectionHistoryTimeWindow) {
-        this.duplicateDetectionHistoryTimeWindow = duplicateDetectionHistoryTimeWindow;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBSubscriptionProperties();
+        }
+        this.innerProperties().withDuplicateDetectionHistoryTimeWindow(duplicateDetectionHistoryTimeWindow);
         return this;
     }
 
@@ -322,7 +266,7 @@ public class SBSubscriptionInner extends Resource {
      * @return the maxDeliveryCount value.
      */
     public Integer maxDeliveryCount() {
-        return this.maxDeliveryCount;
+        return this.innerProperties() == null ? null : this.innerProperties().maxDeliveryCount();
     }
 
     /**
@@ -332,7 +276,10 @@ public class SBSubscriptionInner extends Resource {
      * @return the SBSubscriptionInner object itself.
      */
     public SBSubscriptionInner withMaxDeliveryCount(Integer maxDeliveryCount) {
-        this.maxDeliveryCount = maxDeliveryCount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBSubscriptionProperties();
+        }
+        this.innerProperties().withMaxDeliveryCount(maxDeliveryCount);
         return this;
     }
 
@@ -342,7 +289,7 @@ public class SBSubscriptionInner extends Resource {
      * @return the status value.
      */
     public EntityStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -352,7 +299,10 @@ public class SBSubscriptionInner extends Resource {
      * @return the SBSubscriptionInner object itself.
      */
     public SBSubscriptionInner withStatus(EntityStatus status) {
-        this.status = status;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBSubscriptionProperties();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 
@@ -363,7 +313,7 @@ public class SBSubscriptionInner extends Resource {
      * @return the enableBatchedOperations value.
      */
     public Boolean enableBatchedOperations() {
-        return this.enableBatchedOperations;
+        return this.innerProperties() == null ? null : this.innerProperties().enableBatchedOperations();
     }
 
     /**
@@ -374,7 +324,10 @@ public class SBSubscriptionInner extends Resource {
      * @return the SBSubscriptionInner object itself.
      */
     public SBSubscriptionInner withEnableBatchedOperations(Boolean enableBatchedOperations) {
-        this.enableBatchedOperations = enableBatchedOperations;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBSubscriptionProperties();
+        }
+        this.innerProperties().withEnableBatchedOperations(enableBatchedOperations);
         return this;
     }
 
@@ -385,7 +338,7 @@ public class SBSubscriptionInner extends Resource {
      * @return the autoDeleteOnIdle value.
      */
     public Duration autoDeleteOnIdle() {
-        return this.autoDeleteOnIdle;
+        return this.innerProperties() == null ? null : this.innerProperties().autoDeleteOnIdle();
     }
 
     /**
@@ -396,7 +349,10 @@ public class SBSubscriptionInner extends Resource {
      * @return the SBSubscriptionInner object itself.
      */
     public SBSubscriptionInner withAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
-        this.autoDeleteOnIdle = autoDeleteOnIdle;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBSubscriptionProperties();
+        }
+        this.innerProperties().withAutoDeleteOnIdle(autoDeleteOnIdle);
         return this;
     }
 
@@ -406,7 +362,7 @@ public class SBSubscriptionInner extends Resource {
      * @return the forwardTo value.
      */
     public String forwardTo() {
-        return this.forwardTo;
+        return this.innerProperties() == null ? null : this.innerProperties().forwardTo();
     }
 
     /**
@@ -416,7 +372,10 @@ public class SBSubscriptionInner extends Resource {
      * @return the SBSubscriptionInner object itself.
      */
     public SBSubscriptionInner withForwardTo(String forwardTo) {
-        this.forwardTo = forwardTo;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBSubscriptionProperties();
+        }
+        this.innerProperties().withForwardTo(forwardTo);
         return this;
     }
 
@@ -426,7 +385,7 @@ public class SBSubscriptionInner extends Resource {
      * @return the forwardDeadLetteredMessagesTo value.
      */
     public String forwardDeadLetteredMessagesTo() {
-        return this.forwardDeadLetteredMessagesTo;
+        return this.innerProperties() == null ? null : this.innerProperties().forwardDeadLetteredMessagesTo();
     }
 
     /**
@@ -436,7 +395,56 @@ public class SBSubscriptionInner extends Resource {
      * @return the SBSubscriptionInner object itself.
      */
     public SBSubscriptionInner withForwardDeadLetteredMessagesTo(String forwardDeadLetteredMessagesTo) {
-        this.forwardDeadLetteredMessagesTo = forwardDeadLetteredMessagesTo;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBSubscriptionProperties();
+        }
+        this.innerProperties().withForwardDeadLetteredMessagesTo(forwardDeadLetteredMessagesTo);
+        return this;
+    }
+
+    /**
+     * Get the isClientAffine property: Value that indicates whether the subscription has an affinity to the client id.
+     *
+     * @return the isClientAffine value.
+     */
+    public Boolean isClientAffine() {
+        return this.innerProperties() == null ? null : this.innerProperties().isClientAffine();
+    }
+
+    /**
+     * Set the isClientAffine property: Value that indicates whether the subscription has an affinity to the client id.
+     *
+     * @param isClientAffine the isClientAffine value to set.
+     * @return the SBSubscriptionInner object itself.
+     */
+    public SBSubscriptionInner withIsClientAffine(Boolean isClientAffine) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBSubscriptionProperties();
+        }
+        this.innerProperties().withIsClientAffine(isClientAffine);
+        return this;
+    }
+
+    /**
+     * Get the clientAffineProperties property: Properties specific to client affine subscriptions.
+     *
+     * @return the clientAffineProperties value.
+     */
+    public SBClientAffineProperties clientAffineProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().clientAffineProperties();
+    }
+
+    /**
+     * Set the clientAffineProperties property: Properties specific to client affine subscriptions.
+     *
+     * @param clientAffineProperties the clientAffineProperties value to set.
+     * @return the SBSubscriptionInner object itself.
+     */
+    public SBSubscriptionInner withClientAffineProperties(SBClientAffineProperties clientAffineProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SBSubscriptionProperties();
+        }
+        this.innerProperties().withClientAffineProperties(clientAffineProperties);
         return this;
     }
 
@@ -446,8 +454,8 @@ public class SBSubscriptionInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (countDetails() != null) {
-            countDetails().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

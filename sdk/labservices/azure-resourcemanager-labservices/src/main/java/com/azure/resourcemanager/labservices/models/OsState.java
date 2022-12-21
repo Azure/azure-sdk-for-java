@@ -7,7 +7,7 @@ package com.azure.resourcemanager.labservices.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for OsState. */
+/** The operating system state. */
 public enum OsState {
     /** Enum value Generalized. */
     GENERALIZED("Generalized"),
@@ -30,6 +30,9 @@ public enum OsState {
      */
     @JsonCreator
     public static OsState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         OsState[] items = OsState.values();
         for (OsState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum OsState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

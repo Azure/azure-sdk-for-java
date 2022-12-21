@@ -6,37 +6,38 @@ package com.azure.resourcemanager.dashboard.models;
 
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.UUID;
 
-/** The UserAssignedIdentity model. */
+/** User assigned identity properties. */
 @Immutable
 public class UserAssignedIdentity {
     /*
-     * The principal id of user assigned identity.
+     * The principal ID of the assigned identity.
      */
     @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
-    private String principalId;
+    private UUID principalId;
 
     /*
-     * The client id of user assigned identity.
+     * The client ID of the assigned identity.
      */
     @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
-    private String clientId;
+    private UUID clientId;
 
     /**
-     * Get the principalId property: The principal id of user assigned identity.
+     * Get the principalId property: The principal ID of the assigned identity.
      *
      * @return the principalId value.
      */
-    public String principalId() {
+    public UUID principalId() {
         return this.principalId;
     }
 
     /**
-     * Get the clientId property: The client id of user assigned identity.
+     * Get the clientId property: The client ID of the assigned identity.
      *
      * @return the clientId value.
      */
-    public String clientId() {
+    public UUID clientId() {
         return this.clientId;
     }
 

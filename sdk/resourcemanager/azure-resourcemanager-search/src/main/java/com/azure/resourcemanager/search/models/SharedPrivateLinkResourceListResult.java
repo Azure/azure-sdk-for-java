@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.search.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.search.fluent.models.SharedPrivateLinkResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response containing a list of Shared Private Link Resources. */
 @Fluent
 public final class SharedPrivateLinkResourceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedPrivateLinkResourceListResult.class);
-
     /*
      * The list of Shared Private Link Resources.
      */

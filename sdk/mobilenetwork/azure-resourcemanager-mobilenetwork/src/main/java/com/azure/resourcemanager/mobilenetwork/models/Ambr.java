@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Aggregate Maximum Bit Rate. */
+/** Aggregate maximum bit rate. */
 @Fluent
 public final class Ambr {
     /*
@@ -22,6 +22,10 @@ public final class Ambr {
      */
     @JsonProperty(value = "downlink", required = true)
     private String downlink;
+
+    /** Creates an instance of Ambr class. */
+    public Ambr() {
+    }
 
     /**
      * Get the uplink property: Uplink bit rate.

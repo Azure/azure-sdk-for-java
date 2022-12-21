@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class VirtualNetworkTapPropertiesFormatInner {
     /*
-     * Specifies the list of resource IDs for the network interface IP
-     * configuration that needs to be tapped.
+     * Specifies the list of resource IDs for the network interface IP configuration that needs to be tapped.
      */
     @JsonProperty(value = "networkInterfaceTapConfigurations", access = JsonProperty.Access.WRITE_ONLY)
     private List<NetworkInterfaceTapConfigurationInner> networkInterfaceTapConfigurations;
@@ -32,15 +31,13 @@ public final class VirtualNetworkTapPropertiesFormatInner {
     private ProvisioningState provisioningState;
 
     /*
-     * The reference to the private IP Address of the collector nic that will
-     * receive the tap.
+     * The reference to the private IP Address of the collector nic that will receive the tap.
      */
     @JsonProperty(value = "destinationNetworkInterfaceIPConfiguration")
     private NetworkInterfaceIpConfigurationInner destinationNetworkInterfaceIpConfiguration;
 
     /*
-     * The reference to the private IP address on the internal Load Balancer
-     * that will receive the tap.
+     * The reference to the private IP address on the internal Load Balancer that will receive the tap.
      */
     @JsonProperty(value = "destinationLoadBalancerFrontEndIPConfiguration")
     private FrontendIpConfigurationInner destinationLoadBalancerFrontEndIpConfiguration;
@@ -50,6 +47,10 @@ public final class VirtualNetworkTapPropertiesFormatInner {
      */
     @JsonProperty(value = "destinationPort")
     private Integer destinationPort;
+
+    /** Creates an instance of VirtualNetworkTapPropertiesFormatInner class. */
+    public VirtualNetworkTapPropertiesFormatInner() {
+    }
 
     /**
      * Get the networkInterfaceTapConfigurations property: Specifies the list of resource IDs for the network interface

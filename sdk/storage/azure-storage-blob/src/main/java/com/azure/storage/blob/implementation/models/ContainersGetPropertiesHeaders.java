@@ -7,6 +7,7 @@ package com.azure.storage.blob.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.models.LeaseDurationType;
@@ -69,7 +70,7 @@ public final class ContainersGetPropertiesHeaders {
      * The Date property.
      */
     @JsonProperty(value = "Date")
-    private DateTimeRfc1123 dateProperty;
+    private DateTimeRfc1123 date;
 
     /*
      * The x-ms-has-legal-hold property.
@@ -119,6 +120,32 @@ public final class ContainersGetPropertiesHeaders {
     @JsonProperty(value = "x-ms-client-request-id")
     private String xMsClientRequestId;
 
+    private static final HttpHeaderName X_MS_LEASE_STATUS = HttpHeaderName.fromString("x-ms-lease-status");
+
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_IMMUTABLE_STORAGE_WITH_VERSIONING_ENABLED =
+            HttpHeaderName.fromString("x-ms-immutable-storage-with-versioning-enabled");
+
+    private static final HttpHeaderName X_MS_LEASE_STATE = HttpHeaderName.fromString("x-ms-lease-state");
+
+    private static final HttpHeaderName X_MS_DENY_ENCRYPTION_SCOPE_OVERRIDE =
+            HttpHeaderName.fromString("x-ms-deny-encryption-scope-override");
+
+    private static final HttpHeaderName X_MS_HAS_LEGAL_HOLD = HttpHeaderName.fromString("x-ms-has-legal-hold");
+
+    private static final HttpHeaderName X_MS_DEFAULT_ENCRYPTION_SCOPE =
+            HttpHeaderName.fromString("x-ms-default-encryption-scope");
+
+    private static final HttpHeaderName X_MS_HAS_IMMUTABILITY_POLICY =
+            HttpHeaderName.fromString("x-ms-has-immutability-policy");
+
+    private static final HttpHeaderName X_MS_LEASE_DURATION = HttpHeaderName.fromString("x-ms-lease-duration");
+
+    private static final HttpHeaderName X_MS_BLOB_PUBLIC_ACCESS = HttpHeaderName.fromString("x-ms-blob-public-access");
+
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of ContainersGetPropertiesHeaders class.
@@ -126,52 +153,63 @@ public final class ContainersGetPropertiesHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ContainersGetPropertiesHeaders(HttpHeaders rawHeaders) {
-        if (rawHeaders.getValue("x-ms-lease-status") != null) {
-            this.xMsLeaseStatus = LeaseStatusType.fromString(rawHeaders.getValue("x-ms-lease-status"));
+        String xMsLeaseStatus = rawHeaders.getValue(X_MS_LEASE_STATUS);
+        if (xMsLeaseStatus != null) {
+            this.xMsLeaseStatus = LeaseStatusType.fromString(xMsLeaseStatus);
         }
-        this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        if (rawHeaders.getValue("x-ms-immutable-storage-with-versioning-enabled") != null) {
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        String xMsImmutableStorageWithVersioningEnabled =
+                rawHeaders.getValue(X_MS_IMMUTABLE_STORAGE_WITH_VERSIONING_ENABLED);
+        if (xMsImmutableStorageWithVersioningEnabled != null) {
             this.xMsImmutableStorageWithVersioningEnabled =
-                    Boolean.parseBoolean(rawHeaders.getValue("x-ms-immutable-storage-with-versioning-enabled"));
+                    Boolean.parseBoolean(xMsImmutableStorageWithVersioningEnabled);
         }
-        if (rawHeaders.getValue("x-ms-lease-state") != null) {
-            this.xMsLeaseState = LeaseStateType.fromString(rawHeaders.getValue("x-ms-lease-state"));
+        String xMsLeaseState = rawHeaders.getValue(X_MS_LEASE_STATE);
+        if (xMsLeaseState != null) {
+            this.xMsLeaseState = LeaseStateType.fromString(xMsLeaseState);
         }
-        if (rawHeaders.getValue("x-ms-deny-encryption-scope-override") != null) {
-            this.xMsDenyEncryptionScopeOverride =
-                    Boolean.parseBoolean(rawHeaders.getValue("x-ms-deny-encryption-scope-override"));
+        String xMsDenyEncryptionScopeOverride = rawHeaders.getValue(X_MS_DENY_ENCRYPTION_SCOPE_OVERRIDE);
+        if (xMsDenyEncryptionScopeOverride != null) {
+            this.xMsDenyEncryptionScopeOverride = Boolean.parseBoolean(xMsDenyEncryptionScopeOverride);
         }
-        if (rawHeaders.getValue("Last-Modified") != null) {
-            this.lastModified = new DateTimeRfc1123(rawHeaders.getValue("Last-Modified"));
+        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
+        if (lastModified != null) {
+            this.lastModified = new DateTimeRfc1123(lastModified);
         }
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
+        }
+        String xMsHasLegalHold = rawHeaders.getValue(X_MS_HAS_LEGAL_HOLD);
+        if (xMsHasLegalHold != null) {
+            this.xMsHasLegalHold = Boolean.parseBoolean(xMsHasLegalHold);
+        }
+        this.xMsDefaultEncryptionScope = rawHeaders.getValue(X_MS_DEFAULT_ENCRYPTION_SCOPE);
+        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        String xMsHasImmutabilityPolicy = rawHeaders.getValue(X_MS_HAS_IMMUTABILITY_POLICY);
+        if (xMsHasImmutabilityPolicy != null) {
+            this.xMsHasImmutabilityPolicy = Boolean.parseBoolean(xMsHasImmutabilityPolicy);
+        }
+        String xMsLeaseDuration = rawHeaders.getValue(X_MS_LEASE_DURATION);
+        if (xMsLeaseDuration != null) {
+            this.xMsLeaseDuration = LeaseDurationType.fromString(xMsLeaseDuration);
+        }
+        String xMsBlobPublicAccess = rawHeaders.getValue(X_MS_BLOB_PUBLIC_ACCESS);
+        if (xMsBlobPublicAccess != null) {
+            this.xMsBlobPublicAccess = PublicAccessType.fromString(xMsBlobPublicAccess);
+        }
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         Map<String, String> xMsMetaHeaderCollection = new HashMap<>();
 
         for (HttpHeader header : rawHeaders) {
-            if (!header.getName().startsWith("x-ms-meta-")) {
-                continue;
+            String headerName = header.getName();
+            if (headerName.startsWith("x-ms-meta-")) {
+                xMsMetaHeaderCollection.put(headerName.substring(10), header.getValue());
             }
-            xMsMetaHeaderCollection.put(header.getName().substring(10), header.getValue());
         }
+
         this.xMsMeta = xMsMetaHeaderCollection;
-        if (rawHeaders.getValue("Date") != null) {
-            this.dateProperty = new DateTimeRfc1123(rawHeaders.getValue("Date"));
-        }
-        if (rawHeaders.getValue("x-ms-has-legal-hold") != null) {
-            this.xMsHasLegalHold = Boolean.parseBoolean(rawHeaders.getValue("x-ms-has-legal-hold"));
-        }
-        this.xMsDefaultEncryptionScope = rawHeaders.getValue("x-ms-default-encryption-scope");
-        this.eTag = rawHeaders.getValue("ETag");
-        if (rawHeaders.getValue("x-ms-has-immutability-policy") != null) {
-            this.xMsHasImmutabilityPolicy = Boolean.parseBoolean(rawHeaders.getValue("x-ms-has-immutability-policy"));
-        }
-        if (rawHeaders.getValue("x-ms-lease-duration") != null) {
-            this.xMsLeaseDuration = LeaseDurationType.fromString(rawHeaders.getValue("x-ms-lease-duration"));
-        }
-        if (rawHeaders.getValue("x-ms-blob-public-access") != null) {
-            this.xMsBlobPublicAccess = PublicAccessType.fromString(rawHeaders.getValue("x-ms-blob-public-access"));
-        }
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
     }
 
     /**
@@ -325,28 +363,28 @@ public final class ContainersGetPropertiesHeaders {
     }
 
     /**
-     * Get the dateProperty property: The Date property.
+     * Get the date property: The Date property.
      *
-     * @return the dateProperty value.
+     * @return the date value.
      */
-    public OffsetDateTime getDateProperty() {
-        if (this.dateProperty == null) {
+    public OffsetDateTime getDate() {
+        if (this.date == null) {
             return null;
         }
-        return this.dateProperty.getDateTime();
+        return this.date.getDateTime();
     }
 
     /**
-     * Set the dateProperty property: The Date property.
+     * Set the date property: The Date property.
      *
-     * @param dateProperty the dateProperty value to set.
+     * @param date the date value to set.
      * @return the ContainersGetPropertiesHeaders object itself.
      */
-    public ContainersGetPropertiesHeaders setDateProperty(OffsetDateTime dateProperty) {
-        if (dateProperty == null) {
-            this.dateProperty = null;
+    public ContainersGetPropertiesHeaders setDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
         } else {
-            this.dateProperty = new DateTimeRfc1123(dateProperty);
+            this.date = new DateTimeRfc1123(date);
         }
         return this;
     }

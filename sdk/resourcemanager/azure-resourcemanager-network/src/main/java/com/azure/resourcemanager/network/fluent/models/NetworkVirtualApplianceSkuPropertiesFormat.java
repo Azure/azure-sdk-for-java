@@ -9,7 +9,11 @@ import com.azure.resourcemanager.network.models.NetworkVirtualApplianceSkuInstan
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Network Virtual Appliance Sku Properties Properties specific to NetworkVirtualApplianceSkus. */
+/**
+ * Network Virtual Appliance Sku Properties
+ *
+ * <p>Properties specific to NetworkVirtualApplianceSkus.
+ */
 @Fluent
 public final class NetworkVirtualApplianceSkuPropertiesFormat {
     /*
@@ -29,6 +33,10 @@ public final class NetworkVirtualApplianceSkuPropertiesFormat {
      */
     @JsonProperty(value = "availableScaleUnits")
     private List<NetworkVirtualApplianceSkuInstances> availableScaleUnits;
+
+    /** Creates an instance of NetworkVirtualApplianceSkuPropertiesFormat class. */
+    public NetworkVirtualApplianceSkuPropertiesFormat() {
+    }
 
     /**
      * Get the vendor property: Network Virtual Appliance Sku vendor.

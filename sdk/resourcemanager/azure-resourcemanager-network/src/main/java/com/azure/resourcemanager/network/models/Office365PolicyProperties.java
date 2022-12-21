@@ -16,6 +16,10 @@ public final class Office365PolicyProperties {
     @JsonProperty(value = "breakOutCategories")
     private BreakOutCategoryPolicies breakOutCategories;
 
+    /** Creates an instance of Office365PolicyProperties class. */
+    public Office365PolicyProperties() {
+    }
+
     /**
      * Get the breakOutCategories property: Office 365 breakout categories.
      *

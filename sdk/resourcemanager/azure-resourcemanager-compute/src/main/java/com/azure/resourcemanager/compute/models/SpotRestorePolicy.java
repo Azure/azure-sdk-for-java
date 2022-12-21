@@ -15,19 +15,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SpotRestorePolicy {
     /*
-     * Enables the Spot-Try-Restore feature where evicted VMSS SPOT instances
-     * will be tried to be restored opportunistically based on capacity
-     * availability and pricing constraints
+     * Enables the Spot-Try-Restore feature where evicted VMSS SPOT instances will be tried to be restored
+     * opportunistically based on capacity availability and pricing constraints
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
-     * Timeout value expressed as an ISO 8601 time duration after which the
-     * platform will not try to restore the VMSS SPOT instances
+     * Timeout value expressed as an ISO 8601 time duration after which the platform will not try to restore the VMSS
+     * SPOT instances
      */
     @JsonProperty(value = "restoreTimeout")
     private String restoreTimeout;
+
+    /** Creates an instance of SpotRestorePolicy class. */
+    public SpotRestorePolicy() {
+    }
 
     /**
      * Get the enabled property: Enables the Spot-Try-Restore feature where evicted VMSS SPOT instances will be tried to

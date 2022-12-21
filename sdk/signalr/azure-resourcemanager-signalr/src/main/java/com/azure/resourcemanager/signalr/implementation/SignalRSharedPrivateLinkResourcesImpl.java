@@ -41,17 +41,6 @@ public final class SignalRSharedPrivateLinkResourcesImpl implements SignalRShare
         return Utils.mapPage(inner, inner1 -> new SharedPrivateLinkResourceImpl(inner1, this.manager()));
     }
 
-    public SharedPrivateLinkResource get(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName) {
-        SharedPrivateLinkResourceInner inner =
-            this.serviceClient().get(sharedPrivateLinkResourceName, resourceGroupName, resourceName);
-        if (inner != null) {
-            return new SharedPrivateLinkResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SharedPrivateLinkResource> getWithResponse(
         String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName, Context context) {
         Response<SharedPrivateLinkResourceInner> inner =
@@ -64,6 +53,17 @@ public final class SignalRSharedPrivateLinkResourcesImpl implements SignalRShare
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SharedPrivateLinkResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SharedPrivateLinkResource get(
+        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName) {
+        SharedPrivateLinkResourceInner inner =
+            this.serviceClient().get(sharedPrivateLinkResourceName, resourceGroupName, resourceName);
+        if (inner != null) {
+            return new SharedPrivateLinkResourceImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A short term retention policy. */
-@JsonFlatten
 @Fluent
-public class BackupShortTermRetentionPolicyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupShortTermRetentionPolicyInner.class);
-
+public final class BackupShortTermRetentionPolicyInner extends ProxyResource {
     /*
-     * The backup retention period in days. This is how many days Point-in-Time
-     * Restore will be supported.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.retentionDays")
-    private Integer retentionDays;
+    @JsonProperty(value = "properties")
+    private BackupShortTermRetentionPolicyProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private BackupShortTermRetentionPolicyProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the retentionDays property: The backup retention period in days. This is how many days Point-in-Time Restore
@@ -31,7 +33,7 @@ public class BackupShortTermRetentionPolicyInner extends ProxyResource {
      * @return the retentionDays value.
      */
     public Integer retentionDays() {
-        return this.retentionDays;
+        return this.innerProperties() == null ? null : this.innerProperties().retentionDays();
     }
 
     /**
@@ -42,7 +44,10 @@ public class BackupShortTermRetentionPolicyInner extends ProxyResource {
      * @return the BackupShortTermRetentionPolicyInner object itself.
      */
     public BackupShortTermRetentionPolicyInner withRetentionDays(Integer retentionDays) {
-        this.retentionDays = retentionDays;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackupShortTermRetentionPolicyProperties();
+        }
+        this.innerProperties().withRetentionDays(retentionDays);
         return this;
     }
 
@@ -52,5 +57,8 @@ public class BackupShortTermRetentionPolicyInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

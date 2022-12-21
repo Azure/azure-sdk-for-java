@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConnectionMonitorEndpointFilterItemType. */
+/** The type of item included in the filter. Currently only 'AgentAddress' is supported. */
 public final class ConnectionMonitorEndpointFilterItemType
     extends ExpandableStringEnum<ConnectionMonitorEndpointFilterItemType> {
     /** Static value AgentAddress for ConnectionMonitorEndpointFilterItemType. */

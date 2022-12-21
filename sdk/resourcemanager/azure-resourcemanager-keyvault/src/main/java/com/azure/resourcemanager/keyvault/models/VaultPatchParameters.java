@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** Parameters for creating or updating a vault. */
 @Fluent
 public final class VaultPatchParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultPatchParameters.class);
-
     /*
      * The tags that will be assigned to the key vault.
      */

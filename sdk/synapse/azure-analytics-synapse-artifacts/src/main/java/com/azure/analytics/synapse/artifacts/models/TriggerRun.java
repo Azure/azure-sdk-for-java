@@ -53,8 +53,7 @@ public final class TriggerRun {
     private String message;
 
     /*
-     * List of property name and value related to trigger run. Name, value pair
-     * depends on type of trigger.
+     * List of property name and value related to trigger run. Name, value pair depends on type of trigger.
      */
     @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private Map<String, String> properties;

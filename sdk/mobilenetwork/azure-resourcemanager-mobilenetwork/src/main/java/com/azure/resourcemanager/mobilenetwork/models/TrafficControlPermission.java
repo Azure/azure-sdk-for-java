@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TrafficControlPermission. */
+/** Traffic control permission. */
 public final class TrafficControlPermission extends ExpandableStringEnum<TrafficControlPermission> {
     /** Static value Enabled for TrafficControlPermission. */
     public static final TrafficControlPermission ENABLED = fromString("Enabled");
@@ -27,7 +27,11 @@ public final class TrafficControlPermission extends ExpandableStringEnum<Traffic
         return fromString(name, TrafficControlPermission.class);
     }
 
-    /** @return known TrafficControlPermission values. */
+    /**
+     * Gets known TrafficControlPermission values.
+     *
+     * @return known TrafficControlPermission values.
+     */
     public static Collection<TrafficControlPermission> values() {
         return values(TrafficControlPermission.class);
     }

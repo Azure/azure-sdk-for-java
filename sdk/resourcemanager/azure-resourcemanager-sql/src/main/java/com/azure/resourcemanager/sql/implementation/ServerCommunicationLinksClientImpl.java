@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -28,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.ServerCommunicationLinksClient;
@@ -40,8 +40,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ServerCommunicationLinksClient. */
 public final class ServerCommunicationLinksClientImpl implements ServerCommunicationLinksClient {
-    private final ClientLogger logger = new ClientLogger(ServerCommunicationLinksClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ServerCommunicationLinksService service;
 
@@ -82,7 +80,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
             @PathParam("communicationLinkName") String communicationLinkName,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/communicationLinks/{communicationLinkName}")
@@ -95,9 +93,10 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
             @PathParam("communicationLinkName") String communicationLinkName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/communicationLinks/{communicationLinkName}")
@@ -111,9 +110,10 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
             @PathParam("serverName") String serverName,
             @PathParam("communicationLinkName") String communicationLinkName,
             @BodyParam("application/json") ServerCommunicationLinkInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/communicationLinks")
@@ -125,6 +125,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -138,7 +139,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
@@ -179,7 +180,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
                             serverName,
                             communicationLinkName,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -193,7 +194,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -244,12 +245,12 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String communicationLinkName) {
         return deleteWithResponseAsync(resourceGroupName, serverName, communicationLinkName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -279,7 +280,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -297,7 +298,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server communication link.
+     * @return server communication link along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServerCommunicationLinkInner>> getWithResponseAsync(
@@ -326,6 +327,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
                 .error(new IllegalArgumentException("Parameter communicationLinkName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -337,8 +339,9 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
                             resourceGroupName,
                             serverName,
                             communicationLinkName,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -352,7 +355,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server communication link.
+     * @return server communication link along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServerCommunicationLinkInner>> getWithResponseAsync(
@@ -381,6 +384,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
                 .error(new IllegalArgumentException("Parameter communicationLinkName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -390,6 +394,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
                 resourceGroupName,
                 serverName,
                 communicationLinkName,
+                accept,
                 context);
     }
 
@@ -403,20 +408,13 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server communication link.
+     * @return server communication link on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServerCommunicationLinkInner> getAsync(
         String resourceGroupName, String serverName, String communicationLinkName) {
         return getWithResponseAsync(resourceGroupName, serverName, communicationLinkName)
-            .flatMap(
-                (Response<ServerCommunicationLinkInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -447,7 +445,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server communication link.
+     * @return server communication link along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServerCommunicationLinkInner> getWithResponse(
@@ -462,15 +460,18 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param communicationLinkName The name of the server communication link.
-     * @param partnerServer The name of the partner server.
+     * @param parameters The required parameters for creating a server communication link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server communication link.
+     * @return server communication link along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serverName, String communicationLinkName, String partnerServer) {
+        String resourceGroupName,
+        String serverName,
+        String communicationLinkName,
+        ServerCommunicationLinkInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -494,9 +495,13 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
             return Mono
                 .error(new IllegalArgumentException("Parameter communicationLinkName is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2014-04-01";
-        ServerCommunicationLinkInner parameters = new ServerCommunicationLinkInner();
-        parameters.withPartnerServer(partnerServer);
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -509,8 +514,9 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
                             serverName,
                             communicationLinkName,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -520,19 +526,19 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param communicationLinkName The name of the server communication link.
-     * @param partnerServer The name of the partner server.
+     * @param parameters The required parameters for creating a server communication link.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server communication link.
+     * @return server communication link along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String serverName,
         String communicationLinkName,
-        String partnerServer,
+        ServerCommunicationLinkInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -557,9 +563,13 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
             return Mono
                 .error(new IllegalArgumentException("Parameter communicationLinkName is required and cannot be null."));
         }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2014-04-01";
-        ServerCommunicationLinkInner parameters = new ServerCommunicationLinkInner();
-        parameters.withPartnerServer(partnerServer);
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -570,6 +580,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
                 serverName,
                 communicationLinkName,
                 parameters,
+                accept,
                 context);
     }
 
@@ -580,17 +591,20 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param communicationLinkName The name of the server communication link.
-     * @param partnerServer The name of the partner server.
+     * @param parameters The required parameters for creating a server communication link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server communication link.
+     * @return the {@link PollerFlux} for polling of server communication link.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ServerCommunicationLinkInner>, ServerCommunicationLinkInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String serverName, String communicationLinkName, String partnerServer) {
+        String resourceGroupName,
+        String serverName,
+        String communicationLinkName,
+        ServerCommunicationLinkInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, communicationLinkName, partnerServer);
+            createOrUpdateWithResponseAsync(resourceGroupName, serverName, communicationLinkName, parameters);
         return this
             .client
             .<ServerCommunicationLinkInner, ServerCommunicationLinkInner>getLroResult(
@@ -608,24 +622,23 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param communicationLinkName The name of the server communication link.
-     * @param partnerServer The name of the partner server.
+     * @param parameters The required parameters for creating a server communication link.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server communication link.
+     * @return the {@link PollerFlux} for polling of server communication link.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServerCommunicationLinkInner>, ServerCommunicationLinkInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String serverName,
         String communicationLinkName,
-        String partnerServer,
+        ServerCommunicationLinkInner parameters,
         Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, serverName, communicationLinkName, partnerServer, context);
+            createOrUpdateWithResponseAsync(resourceGroupName, serverName, communicationLinkName, parameters, context);
         return this
             .client
             .<ServerCommunicationLinkInner, ServerCommunicationLinkInner>getLroResult(
@@ -643,41 +656,19 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param communicationLinkName The name of the server communication link.
-     * @param partnerServer The name of the partner server.
+     * @param parameters The required parameters for creating a server communication link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server communication link.
+     * @return the {@link SyncPoller} for polling of server communication link.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ServerCommunicationLinkInner>, ServerCommunicationLinkInner> beginCreateOrUpdate(
-        String resourceGroupName, String serverName, String communicationLinkName, String partnerServer) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, communicationLinkName, partnerServer)
-            .getSyncPoller();
-    }
-
-    /**
-     * Creates a server communication link.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param communicationLinkName The name of the server communication link.
-     * @param partnerServer The name of the partner server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server communication link.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServerCommunicationLinkInner>, ServerCommunicationLinkInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serverName,
         String communicationLinkName,
-        String partnerServer,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, communicationLinkName, partnerServer, context)
+        ServerCommunicationLinkInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, communicationLinkName, parameters)
             .getSyncPoller();
     }
 
@@ -688,16 +679,44 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param communicationLinkName The name of the server communication link.
-     * @param partnerServer The name of the partner server.
+     * @param parameters The required parameters for creating a server communication link.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server communication link.
+     * @return the {@link SyncPoller} for polling of server communication link.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ServerCommunicationLinkInner>, ServerCommunicationLinkInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String serverName,
+        String communicationLinkName,
+        ServerCommunicationLinkInner parameters,
+        Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, communicationLinkName, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates a server communication link.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param communicationLinkName The name of the server communication link.
+     * @param parameters The required parameters for creating a server communication link.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return server communication link on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServerCommunicationLinkInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, String communicationLinkName, String partnerServer) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, communicationLinkName, partnerServer)
+        String resourceGroupName,
+        String serverName,
+        String communicationLinkName,
+        ServerCommunicationLinkInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, communicationLinkName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -709,21 +728,21 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param communicationLinkName The name of the server communication link.
-     * @param partnerServer The name of the partner server.
+     * @param parameters The required parameters for creating a server communication link.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server communication link.
+     * @return server communication link on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServerCommunicationLinkInner> createOrUpdateAsync(
         String resourceGroupName,
         String serverName,
         String communicationLinkName,
-        String partnerServer,
+        ServerCommunicationLinkInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, communicationLinkName, partnerServer, context)
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, communicationLinkName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -735,28 +754,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param communicationLinkName The name of the server communication link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server communication link.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServerCommunicationLinkInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, String communicationLinkName) {
-        final String partnerServer = null;
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, communicationLinkName, partnerServer)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates a server communication link.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param communicationLinkName The name of the server communication link.
-     * @param partnerServer The name of the partner server.
+     * @param parameters The required parameters for creating a server communication link.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -764,8 +762,11 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServerCommunicationLinkInner createOrUpdate(
-        String resourceGroupName, String serverName, String communicationLinkName, String partnerServer) {
-        return createOrUpdateAsync(resourceGroupName, serverName, communicationLinkName, partnerServer).block();
+        String resourceGroupName,
+        String serverName,
+        String communicationLinkName,
+        ServerCommunicationLinkInner parameters) {
+        return createOrUpdateAsync(resourceGroupName, serverName, communicationLinkName, parameters).block();
     }
 
     /**
@@ -775,7 +776,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param communicationLinkName The name of the server communication link.
-     * @param partnerServer The name of the partner server.
+     * @param parameters The required parameters for creating a server communication link.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -787,29 +788,9 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
         String resourceGroupName,
         String serverName,
         String communicationLinkName,
-        String partnerServer,
+        ServerCommunicationLinkInner parameters,
         Context context) {
-        return createOrUpdateAsync(resourceGroupName, serverName, communicationLinkName, partnerServer, context)
-            .block();
-    }
-
-    /**
-     * Creates a server communication link.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param communicationLinkName The name of the server communication link.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server communication link.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerCommunicationLinkInner createOrUpdate(
-        String resourceGroupName, String serverName, String communicationLinkName) {
-        final String partnerServer = null;
-        return createOrUpdateAsync(resourceGroupName, serverName, communicationLinkName, partnerServer).block();
+        return createOrUpdateAsync(resourceGroupName, serverName, communicationLinkName, parameters, context).block();
     }
 
     /**
@@ -821,7 +802,8 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server communication links.
+     * @return a list of server communication links along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerCommunicationLinkInner>> listByServerSinglePageAsync(
@@ -846,6 +828,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -856,12 +839,13 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             serverName,
+                            accept,
                             context))
             .<PagedResponse<ServerCommunicationLinkInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -874,7 +858,8 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server communication links.
+     * @return a list of server communication links along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerCommunicationLinkInner>> listByServerSinglePageAsync(
@@ -899,6 +884,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByServer(
@@ -907,6 +893,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 serverName,
+                accept,
                 context)
             .map(
                 res ->
@@ -923,7 +910,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server communication links.
+     * @return a list of server communication links as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServerCommunicationLinkInner> listByServerAsync(String resourceGroupName, String serverName) {
@@ -940,7 +927,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server communication links.
+     * @return a list of server communication links as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ServerCommunicationLinkInner> listByServerAsync(
@@ -957,7 +944,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server communication links.
+     * @return a list of server communication links as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerCommunicationLinkInner> listByServer(String resourceGroupName, String serverName) {
@@ -974,7 +961,7 @@ public final class ServerCommunicationLinksClientImpl implements ServerCommunica
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server communication links.
+     * @return a list of server communication links as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServerCommunicationLinkInner> listByServer(

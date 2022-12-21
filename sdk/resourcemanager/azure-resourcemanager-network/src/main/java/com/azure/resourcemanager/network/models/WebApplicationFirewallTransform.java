@@ -8,8 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WebApplicationFirewallTransform. */
+/** Transforms applied before matching. */
 public final class WebApplicationFirewallTransform extends ExpandableStringEnum<WebApplicationFirewallTransform> {
+    /** Static value Uppercase for WebApplicationFirewallTransform. */
+    public static final WebApplicationFirewallTransform UPPERCASE = fromString("Uppercase");
+
     /** Static value Lowercase for WebApplicationFirewallTransform. */
     public static final WebApplicationFirewallTransform LOWERCASE = fromString("Lowercase");
 

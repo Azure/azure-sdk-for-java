@@ -124,6 +124,36 @@ class SasClientTests extends APISpec {
         validateSasProperties(properties)
     }
 
+    def "can use connection string with sas and question mark"() {
+        setup:
+        def permissions = new BlobSasPermission()
+            .setReadPermission(true)
+
+        def sasValues = generateValues(permissions)
+
+        when:
+        def sas = sasClient.generateSas(sasValues)
+
+        def connectionString = String.format("BlobEndpoint=%s;SharedAccessSignature=%s;",
+            environment.primaryAccount.blobEndpoint,
+            "?" + sas)
+
+        def client = instrument(new BlobClientBuilder())
+            .connectionString(connectionString)
+            .containerName(sasClient.getContainerName())
+            .blobName(sasClient.getBlobName())
+            .buildClient()
+
+        def os = new ByteArrayOutputStream()
+        client.downloadStream(os)
+        def properties = client.getProperties()
+
+        then:
+        notThrown(BlobStorageException)
+        os.toString() == data.defaultText
+        validateSasProperties(properties)
+    }
+
     def "container sas identifier and permissions"() {
         setup:
         def identifier = new BlobSignedIdentifier()

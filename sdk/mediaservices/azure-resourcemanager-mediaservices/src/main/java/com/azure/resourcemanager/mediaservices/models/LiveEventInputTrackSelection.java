@@ -14,22 +14,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class LiveEventInputTrackSelection {
     /*
-     * Property name to select. This property is reserved for future use, any
-     * value set on this property will be ignored.
+     * Property name to select. This property is reserved for future use, any value set on this property will be
+     * ignored.
      */
     @JsonProperty(value = "property")
     private String property;
 
     /*
-     * Comparing operation. This property is reserved for future use, any value
-     * set on this property will be ignored.
+     * Comparing operation. This property is reserved for future use, any value set on this property will be ignored.
      */
     @JsonProperty(value = "operation")
     private String operation;
 
     /*
-     * Property value to select. This property is reserved for future use, any
-     * value set on this property will be ignored.
+     * Property value to select. This property is reserved for future use, any value set on this property will be
+     * ignored.
      */
     @JsonProperty(value = "value")
     private String value;

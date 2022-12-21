@@ -19,22 +19,19 @@ import java.util.Map;
 @Fluent
 public class AmazonRedshiftTableDataset extends Dataset {
     /*
-     * This property will be retired. Please consider using schema + table
-     * properties instead.
+     * This property will be retired. Please consider using schema + table properties instead.
      */
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
     /*
-     * The Amazon Redshift table name. Type: string (or Expression with
-     * resultType string).
+     * The Amazon Redshift table name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.table")
     private Object table;
 
     /*
-     * The Amazon Redshift schema name. Type: string (or Expression with
-     * resultType string).
+     * The Amazon Redshift schema name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.schema")
     private Object schemaTypePropertiesSchema;

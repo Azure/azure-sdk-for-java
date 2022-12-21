@@ -26,25 +26,26 @@ public final class PrivateLinkServiceConnectionProperties {
     private String privateLinkServiceId;
 
     /*
-     * The ID(s) of the group(s) obtained from the remote resource that this
-     * private endpoint should connect to.
+     * The ID(s) of the group(s) obtained from the remote resource that this private endpoint should connect to.
      */
     @JsonProperty(value = "groupIds")
     private List<String> groupIds;
 
     /*
-     * A message passed to the owner of the remote resource with this
-     * connection request. Restricted to 140 chars.
+     * A message passed to the owner of the remote resource with this connection request. Restricted to 140 chars.
      */
     @JsonProperty(value = "requestMessage")
     private String requestMessage;
 
     /*
-     * A collection of read-only information about the state of the connection
-     * to the remote resource.
+     * A collection of read-only information about the state of the connection to the remote resource.
      */
     @JsonProperty(value = "privateLinkServiceConnectionState")
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
+
+    /** Creates an instance of PrivateLinkServiceConnectionProperties class. */
+    public PrivateLinkServiceConnectionProperties() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the private link service connection resource.

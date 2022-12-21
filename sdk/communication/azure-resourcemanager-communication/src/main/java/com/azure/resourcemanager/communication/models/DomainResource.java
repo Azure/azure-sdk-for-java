@@ -333,7 +333,9 @@ public interface DomainResource {
     DomainResource refresh(Context context);
 
     /**
-     * Initiate verification of DNS record.
+     * Initiate Verification
+     *
+     * <p>Initiate verification of DNS record.
      *
      * @param parameters Type of verification to be initiated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -343,7 +345,9 @@ public interface DomainResource {
     void initiateVerification(VerificationParameter parameters);
 
     /**
-     * Initiate verification of DNS record.
+     * Initiate Verification
+     *
+     * <p>Initiate verification of DNS record.
      *
      * @param parameters Type of verification to be initiated.
      * @param context The context to associate with this operation.
@@ -354,7 +358,9 @@ public interface DomainResource {
     void initiateVerification(VerificationParameter parameters, Context context);
 
     /**
-     * Cancel verification of DNS record.
+     * Cancel Verification
+     *
+     * <p>Cancel verification of DNS record.
      *
      * @param parameters Type of verification to be canceled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -364,7 +370,9 @@ public interface DomainResource {
     void cancelVerification(VerificationParameter parameters);
 
     /**
-     * Cancel verification of DNS record.
+     * Cancel Verification
+     *
+     * <p>Cancel verification of DNS record.
      *
      * @param parameters Type of verification to be canceled.
      * @param context The context to associate with this operation.

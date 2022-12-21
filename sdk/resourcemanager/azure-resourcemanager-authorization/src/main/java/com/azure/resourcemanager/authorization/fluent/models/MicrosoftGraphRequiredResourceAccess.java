@@ -17,16 +17,14 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphRequiredResourceAccess {
     /*
-     * The list of OAuth2.0 permission scopes and app roles that the
-     * application requires from the specified resource.
+     * The list of OAuth2.0 permission scopes and app roles that the application requires from the specified resource.
      */
     @JsonProperty(value = "resourceAccess")
     private List<MicrosoftGraphResourceAccess> resourceAccess;
 
     /*
-     * The unique identifier for the resource that the application requires
-     * access to.  This should be equal to the appId declared on the target
-     * resource application.
+     * The unique identifier for the resource that the application requires access to.  This should be equal to the
+     * appId declared on the target resource application.
      */
     @JsonProperty(value = "resourceAppId")
     private String resourceAppId;
@@ -35,6 +33,10 @@ public final class MicrosoftGraphRequiredResourceAccess {
      * requiredResourceAccess
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphRequiredResourceAccess class. */
+    public MicrosoftGraphRequiredResourceAccess() {
+    }
 
     /**
      * Get the resourceAccess property: The list of OAuth2.0 permission scopes and app roles that the application

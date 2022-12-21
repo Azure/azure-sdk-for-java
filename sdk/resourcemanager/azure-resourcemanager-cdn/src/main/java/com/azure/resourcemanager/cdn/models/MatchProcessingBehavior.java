@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MatchProcessingBehavior. */
+/**
+ * If this rule is a match should the rules engine continue running the remaining rules or stop. If not present,
+ * defaults to Continue.
+ */
 public final class MatchProcessingBehavior extends ExpandableStringEnum<MatchProcessingBehavior> {
     /** Static value Continue for MatchProcessingBehavior. */
     public static final MatchProcessingBehavior CONTINUE = fromString("Continue");
@@ -27,7 +30,11 @@ public final class MatchProcessingBehavior extends ExpandableStringEnum<MatchPro
         return fromString(name, MatchProcessingBehavior.class);
     }
 
-    /** @return known MatchProcessingBehavior values. */
+    /**
+     * Gets known MatchProcessingBehavior values.
+     *
+     * @return known MatchProcessingBehavior values.
+     */
     public static Collection<MatchProcessingBehavior> values() {
         return values(MatchProcessingBehavior.class);
     }

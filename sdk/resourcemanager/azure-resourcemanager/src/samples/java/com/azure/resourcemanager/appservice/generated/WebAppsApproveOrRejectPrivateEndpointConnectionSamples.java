@@ -11,7 +11,7 @@ import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionState;
 /** Samples for WebApps ApproveOrRejectPrivateEndpointConnection. */
 public final class WebAppsApproveOrRejectPrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/ApproveRejectSitePrivateEndpointConnection.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ApproveRejectSitePrivateEndpointConnection.json
      */
     /**
      * Sample code: Approves or rejects a private endpoint connection for a site.

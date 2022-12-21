@@ -20,7 +20,7 @@ public interface DeviceSecurityGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of device security groups.
+     * @return list of device security groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeviceSecurityGroupInner> list(String resourceId);
@@ -33,10 +33,26 @@ public interface DeviceSecurityGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of device security groups.
+     * @return list of device security groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeviceSecurityGroupInner> list(String resourceId, Context context);
+
+    /**
+     * Use this method to get the device security group for the specified IoT Hub resource.
+     *
+     * @param resourceId The identifier of the resource.
+     * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
+     *     group is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the device security group resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DeviceSecurityGroupInner> getWithResponse(
+        String resourceId, String deviceSecurityGroupName, Context context);
 
     /**
      * Use this method to get the device security group for the specified IoT Hub resource.
@@ -53,20 +69,24 @@ public interface DeviceSecurityGroupsClient {
     DeviceSecurityGroupInner get(String resourceId, String deviceSecurityGroupName);
 
     /**
-     * Use this method to get the device security group for the specified IoT Hub resource.
+     * Use this method to creates or updates the device security group on a specified IoT Hub resource.
      *
      * @param resourceId The identifier of the resource.
      * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
      *     group is case insensitive.
+     * @param deviceSecurityGroup Security group object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the device security group resource.
+     * @return the device security group resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeviceSecurityGroupInner> getWithResponse(
-        String resourceId, String deviceSecurityGroupName, Context context);
+    Response<DeviceSecurityGroupInner> createOrUpdateWithResponse(
+        String resourceId,
+        String deviceSecurityGroupName,
+        DeviceSecurityGroupInner deviceSecurityGroup,
+        Context context);
 
     /**
      * Use this method to creates or updates the device security group on a specified IoT Hub resource.
@@ -85,24 +105,19 @@ public interface DeviceSecurityGroupsClient {
         String resourceId, String deviceSecurityGroupName, DeviceSecurityGroupInner deviceSecurityGroup);
 
     /**
-     * Use this method to creates or updates the device security group on a specified IoT Hub resource.
+     * User this method to deletes the device security group.
      *
      * @param resourceId The identifier of the resource.
      * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
      *     group is case insensitive.
-     * @param deviceSecurityGroup Security group object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the device security group resource.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeviceSecurityGroupInner> createOrUpdateWithResponse(
-        String resourceId,
-        String deviceSecurityGroupName,
-        DeviceSecurityGroupInner deviceSecurityGroup,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceId, String deviceSecurityGroupName, Context context);
 
     /**
      * User this method to deletes the device security group.
@@ -116,19 +131,4 @@ public interface DeviceSecurityGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceId, String deviceSecurityGroupName);
-
-    /**
-     * User this method to deletes the device security group.
-     *
-     * @param resourceId The identifier of the resource.
-     * @param deviceSecurityGroupName The name of the device security group. Note that the name of the device security
-     *     group is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceId, String deviceSecurityGroupName, Context context);
 }

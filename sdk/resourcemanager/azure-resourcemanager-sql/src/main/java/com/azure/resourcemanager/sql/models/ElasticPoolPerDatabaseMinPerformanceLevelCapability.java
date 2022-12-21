@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The minimum per-database performance level capability. */
 @Fluent
 public final class ElasticPoolPerDatabaseMinPerformanceLevelCapability {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ElasticPoolPerDatabaseMinPerformanceLevelCapability.class);
-
     /*
      * The minimum performance level per database.
      */

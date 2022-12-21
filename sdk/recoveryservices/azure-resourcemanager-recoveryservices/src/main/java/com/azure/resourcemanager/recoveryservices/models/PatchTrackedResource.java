@@ -6,16 +6,13 @@ package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Tracked resource with location. */
 @Fluent
 public class PatchTrackedResource extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PatchTrackedResource.class);
-
     /*
      * Resource location.
      */
@@ -26,13 +23,18 @@ public class PatchTrackedResource extends ProxyResource {
      * Resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Optional ETag.
      */
-    @JsonProperty(value = "eTag")
+    @JsonProperty(value = "etag")
     private String etag;
+
+    /** Creates an instance of PatchTrackedResource class. */
+    public PatchTrackedResource() {
+    }
 
     /**
      * Get the location property: Resource location.

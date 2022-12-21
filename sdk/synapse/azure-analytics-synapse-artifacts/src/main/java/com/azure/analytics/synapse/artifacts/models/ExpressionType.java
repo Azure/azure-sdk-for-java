@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExpressionType. */
+/** Expression type. */
 public final class ExpressionType extends ExpandableStringEnum<ExpressionType> {
     /** Static value Expression for ExpressionType. */
     public static final ExpressionType EXPRESSION = fromString("Expression");
@@ -24,7 +24,11 @@ public final class ExpressionType extends ExpandableStringEnum<ExpressionType> {
         return fromString(name, ExpressionType.class);
     }
 
-    /** @return known ExpressionType values. */
+    /**
+     * Gets known ExpressionType values.
+     *
+     * @return known ExpressionType values.
+     */
     public static Collection<ExpressionType> values() {
         return values(ExpressionType.class);
     }

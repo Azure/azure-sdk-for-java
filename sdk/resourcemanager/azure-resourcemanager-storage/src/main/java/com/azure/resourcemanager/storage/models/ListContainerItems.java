@@ -22,8 +22,8 @@ public final class ListContainerItems {
     private List<ListContainerItemInner> value;
 
     /*
-     * Request URL that can be used to query next page of containers. Returned
-     * when total number of requested containers exceed maximum page size.
+     * Request URL that can be used to query next page of containers. Returned when total number of requested
+     * containers exceed maximum page size.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;

@@ -24,7 +24,11 @@ public final class KnownSyslogDataSourceStreams extends ExpandableStringEnum<Kno
         return fromString(name, KnownSyslogDataSourceStreams.class);
     }
 
-    /** @return known KnownSyslogDataSourceStreams values. */
+    /**
+     * Gets known KnownSyslogDataSourceStreams values.
+     *
+     * @return known KnownSyslogDataSourceStreams values.
+     */
     public static Collection<KnownSyslogDataSourceStreams> values() {
         return values(KnownSyslogDataSourceStreams.class);
     }

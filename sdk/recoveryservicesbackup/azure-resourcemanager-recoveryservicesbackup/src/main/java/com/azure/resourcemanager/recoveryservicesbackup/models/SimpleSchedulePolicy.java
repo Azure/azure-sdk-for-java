@@ -46,6 +46,10 @@ public final class SimpleSchedulePolicy extends SchedulePolicy {
     @JsonProperty(value = "scheduleWeeklyFrequency")
     private Integer scheduleWeeklyFrequency;
 
+    /** Creates an instance of SimpleSchedulePolicy class. */
+    public SimpleSchedulePolicy() {
+    }
+
     /**
      * Get the scheduleRunFrequency property: Frequency of the schedule operation of this policy.
      *

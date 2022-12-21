@@ -101,8 +101,14 @@ public class EventHubsTemplate implements SendOperation {
         EventHubProducerAsyncClient producer = producerFactory.createProducer(destination);
         CreateBatchOptions options = buildCreateBatchOptions(partitionSupplier);
 
-        AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
-            producer.createBatch(options).block());
+        EventDataBatch eventDataBatch = null;
+        try {
+            eventDataBatch = producer.createBatch(options).block();
+        } catch (Exception e) {
+            LOGGER.error("EventDataBatch create error.", e);
+            return Mono.error(e);
+        }
+        AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(eventDataBatch);
 
         Flux.fromIterable(events).flatMap(event -> {
             final EventDataBatch batch = currentBatch.get();
@@ -125,8 +131,7 @@ public class EventHubsTemplate implements SendOperation {
                     // Add the event that did not fit in the previous batch.
                     try {
                         if (!newBatch.tryAdd(event)) {
-                            LOGGER.error(
-                                "Event was too large to fit in an empty batch. Max size:{} ",
+                            LOGGER.error("Event was too large to fit in an empty batch. Max size:{} ",
                                 newBatch.getMaxSizeInBytes());
                         }
                     } catch (AmqpException e) {

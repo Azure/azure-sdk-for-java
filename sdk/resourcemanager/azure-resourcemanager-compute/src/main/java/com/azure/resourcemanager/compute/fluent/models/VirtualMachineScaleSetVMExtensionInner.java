@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.compute.models.KeyVaultSecretReference;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionInstanceView;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -29,6 +30,10 @@ public final class VirtualMachineScaleSetVMExtensionInner extends SubResourceRea
      */
     @JsonProperty(value = "properties")
     private VirtualMachineExtensionProperties innerProperties;
+
+    /** Creates an instance of VirtualMachineScaleSetVMExtensionInner class. */
+    public VirtualMachineScaleSetVMExtensionInner() {
+    }
 
     /**
      * Get the name property: The name of the extension.
@@ -316,7 +321,7 @@ public final class VirtualMachineScaleSetVMExtensionInner extends SubResourceRea
      *
      * @return the protectedSettingsFromKeyVault value.
      */
-    public Object protectedSettingsFromKeyVault() {
+    public KeyVaultSecretReference protectedSettingsFromKeyVault() {
         return this.innerProperties() == null ? null : this.innerProperties().protectedSettingsFromKeyVault();
     }
 
@@ -328,7 +333,7 @@ public final class VirtualMachineScaleSetVMExtensionInner extends SubResourceRea
      * @return the VirtualMachineScaleSetVMExtensionInner object itself.
      */
     public VirtualMachineScaleSetVMExtensionInner withProtectedSettingsFromKeyVault(
-        Object protectedSettingsFromKeyVault) {
+        KeyVaultSecretReference protectedSettingsFromKeyVault) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineExtensionProperties();
         }

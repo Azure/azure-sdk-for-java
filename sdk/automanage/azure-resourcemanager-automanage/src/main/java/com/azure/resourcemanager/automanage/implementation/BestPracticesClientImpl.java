@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automanage.fluent.BestPracticesClient;
 import com.azure.resourcemanager.automanage.fluent.models.BestPracticeInner;
 import com.azure.resourcemanager.automanage.models.BestPracticeList;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in BestPracticesClient. */
 public final class BestPracticesClientImpl implements BestPracticesClient {
-    private final ClientLogger logger = new ClientLogger(BestPracticesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BestPracticesService service;
 
@@ -88,7 +85,8 @@ public final class BestPracticesClientImpl implements BestPracticesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a Automanage best practice.
+     * @return information about a Automanage best practice along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BestPracticeInner>> getWithResponseAsync(String bestPracticeName) {
@@ -119,7 +117,8 @@ public final class BestPracticesClientImpl implements BestPracticesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a Automanage best practice.
+     * @return information about a Automanage best practice along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BestPracticeInner>> getWithResponseAsync(String bestPracticeName, Context context) {
@@ -145,19 +144,11 @@ public final class BestPracticesClientImpl implements BestPracticesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a Automanage best practice.
+     * @return information about a Automanage best practice on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BestPracticeInner> getAsync(String bestPracticeName) {
-        return getWithResponseAsync(bestPracticeName)
-            .flatMap(
-                (Response<BestPracticeInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(bestPracticeName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -182,7 +173,7 @@ public final class BestPracticesClientImpl implements BestPracticesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a Automanage best practice.
+     * @return information about a Automanage best practice along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BestPracticeInner> getWithResponse(String bestPracticeName, Context context) {
@@ -194,7 +185,8 @@ public final class BestPracticesClientImpl implements BestPracticesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list best practice operation.
+     * @return the response of the list best practice operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BestPracticeInner>> listByTenantSinglePageAsync() {
@@ -223,7 +215,8 @@ public final class BestPracticesClientImpl implements BestPracticesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list best practice operation.
+     * @return the response of the list best practice operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BestPracticeInner>> listByTenantSinglePageAsync(Context context) {
@@ -248,7 +241,7 @@ public final class BestPracticesClientImpl implements BestPracticesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list best practice operation.
+     * @return the response of the list best practice operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BestPracticeInner> listByTenantAsync() {
@@ -262,7 +255,7 @@ public final class BestPracticesClientImpl implements BestPracticesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list best practice operation.
+     * @return the response of the list best practice operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<BestPracticeInner> listByTenantAsync(Context context) {
@@ -274,7 +267,7 @@ public final class BestPracticesClientImpl implements BestPracticesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list best practice operation.
+     * @return the response of the list best practice operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BestPracticeInner> listByTenant() {
@@ -288,7 +281,7 @@ public final class BestPracticesClientImpl implements BestPracticesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list best practice operation.
+     * @return the response of the list best practice operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BestPracticeInner> listByTenant(Context context) {

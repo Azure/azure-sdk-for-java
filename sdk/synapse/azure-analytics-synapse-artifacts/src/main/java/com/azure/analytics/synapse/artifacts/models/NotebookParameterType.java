@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NotebookParameterType. */
+/** Notebook parameter type. */
 public final class NotebookParameterType extends ExpandableStringEnum<NotebookParameterType> {
     /** Static value string for NotebookParameterType. */
     public static final NotebookParameterType STRING = fromString("string");
@@ -33,7 +33,11 @@ public final class NotebookParameterType extends ExpandableStringEnum<NotebookPa
         return fromString(name, NotebookParameterType.class);
     }
 
-    /** @return known NotebookParameterType values. */
+    /**
+     * Gets known NotebookParameterType values.
+     *
+     * @return known NotebookParameterType values.
+     */
     public static Collection<NotebookParameterType> values() {
         return values(NotebookParameterType.class);
     }

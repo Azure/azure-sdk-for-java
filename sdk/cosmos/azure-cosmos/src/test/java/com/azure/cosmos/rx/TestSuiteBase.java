@@ -33,6 +33,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import com.azure.cosmos.implementation.guava25.base.CaseFormat;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -76,6 +77,7 @@ import reactor.core.scheduler.Schedulers;
 import java.io.ByteArrayOutputStream;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -197,7 +199,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @BeforeSuite(groups = {"simple", "long", "direct", "multi-region", "multi-master", "emulator", "non-emulator"}, timeOut = SUITE_SETUP_TIMEOUT)
+    @BeforeSuite(groups = {"simple", "long", "direct", "multi-region", "multi-master", "emulator"}, timeOut = SUITE_SETUP_TIMEOUT)
     public static void beforeSuite() {
 
         logger.info("beforeSuite Started");
@@ -213,7 +215,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @AfterSuite(groups = {"simple", "long", "direct", "multi-region", "multi-master", "emulator", "non-emulator"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
+    @AfterSuite(groups = {"simple", "long", "direct", "multi-region", "multi-master", "emulator"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public static void afterSuite() {
 
         logger.info("afterSuite Started");
@@ -515,6 +517,12 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     private static CosmosAsyncContainer safeCreateCollection(CosmosAsyncClient client, String databaseId, CosmosContainerProperties collection, CosmosContainerRequestOptions options) {
         deleteCollectionIfExists(client, databaseId, collection.getId());
         return createCollection(client.getDatabase(databaseId), collection, options);
+    }
+
+    static protected CosmosContainerProperties getCollectionDefinitionWithFullFidelity() {
+        CosmosContainerProperties cosmosContainerProperties = getCollectionDefinition(UUID.randomUUID().toString());
+        cosmosContainerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(5)));
+        return cosmosContainerProperties;
     }
 
     static protected CosmosContainerProperties getCollectionDefinition() {
@@ -1101,6 +1109,30 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     @DataProvider
+    public static Object[][] clientBuildersWithDirectSessionIncludeComputeGateway() {
+        Object[][] originalProviders = clientBuildersWithDirectSession(
+            true,
+            true,
+            toArray(protocols));
+        List<Object[]> providers = new ArrayList<>(Arrays.asList(originalProviders));
+        Object[] injectedProviderParameters = new Object[1];
+        CosmosClientBuilder builder = createGatewayRxDocumentClient(
+            TestConfigurations.HOST.replace(ROUTING_GATEWAY_EMULATOR_PORT, COMPUTE_GATEWAY_EMULATOR_PORT),
+            ConsistencyLevel.SESSION,
+            false,
+            null,
+            true,
+            true);
+        injectedProviderParameters[0] = builder;
+
+        providers.add(injectedProviderParameters);
+
+        Object[][] array = new Object[providers.size()][];
+
+        return providers.toArray(array);
+    }
+
+    @DataProvider
     public static Object[][] clientBuildersWithDirectTcpSession() {
         return clientBuildersWithDirectSession(true, true, Protocol.TCP);
     }
@@ -1222,8 +1254,25 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         boolean contentResponseOnWriteEnabled,
         boolean retryOnThrottledRequests) {
 
+        return createGatewayRxDocumentClient(
+            TestConfigurations.HOST,
+            consistencyLevel,
+            multiMasterEnabled,
+            preferredRegions,
+            contentResponseOnWriteEnabled,
+            retryOnThrottledRequests);
+    }
+
+    static protected CosmosClientBuilder createGatewayRxDocumentClient(
+        String endpoint,
+        ConsistencyLevel consistencyLevel,
+        boolean multiMasterEnabled,
+        List<String> preferredRegions,
+        boolean contentResponseOnWriteEnabled,
+        boolean retryOnThrottledRequests) {
+
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-        CosmosClientBuilder builder = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
+        CosmosClientBuilder builder = new CosmosClientBuilder().endpoint(endpoint)
             .credential(credential)
             .gatewayMode(gatewayConnectionConfig)
             .multipleWriteRegionsEnabled(multiMasterEnabled)

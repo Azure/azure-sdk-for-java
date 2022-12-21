@@ -24,6 +24,10 @@ public final class ListApplicationPackagesResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ListApplicationPackagesResult class. */
+    public ListApplicationPackagesResult() {
+    }
+
     /**
      * Get the value property: The list of application packages.
      *

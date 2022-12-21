@@ -13,10 +13,9 @@ import com.azure.resourcemanager.security.fluent.CompliancesClient;
 import com.azure.resourcemanager.security.fluent.models.ComplianceInner;
 import com.azure.resourcemanager.security.models.Compliance;
 import com.azure.resourcemanager.security.models.Compliances;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CompliancesImpl implements Compliances {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CompliancesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CompliancesImpl.class);
 
     private final CompliancesClient innerClient;
 
@@ -38,15 +37,6 @@ public final class CompliancesImpl implements Compliances {
         return Utils.mapPage(inner, inner1 -> new ComplianceImpl(inner1, this.manager()));
     }
 
-    public Compliance get(String scope, String complianceName) {
-        ComplianceInner inner = this.serviceClient().get(scope, complianceName);
-        if (inner != null) {
-            return new ComplianceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Compliance> getWithResponse(String scope, String complianceName, Context context) {
         Response<ComplianceInner> inner = this.serviceClient().getWithResponse(scope, complianceName, context);
         if (inner != null) {
@@ -55,6 +45,15 @@ public final class CompliancesImpl implements Compliances {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ComplianceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Compliance get(String scope, String complianceName) {
+        ComplianceInner inner = this.serviceClient().get(scope, complianceName);
+        if (inner != null) {
+            return new ComplianceImpl(inner, this.manager());
         } else {
             return null;
         }

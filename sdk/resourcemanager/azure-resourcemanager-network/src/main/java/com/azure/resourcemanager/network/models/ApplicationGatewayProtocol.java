@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ApplicationGatewayProtocol. */
+/** Application Gateway protocol. */
 public final class ApplicationGatewayProtocol extends ExpandableStringEnum<ApplicationGatewayProtocol> {
     /** Static value Http for ApplicationGatewayProtocol. */
     public static final ApplicationGatewayProtocol HTTP = fromString("Http");

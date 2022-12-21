@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition of the linked workspace. */
 @Immutable
 public final class LinkedWorkspaceInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinkedWorkspaceInner.class);
-
     /*
      * Gets the id of the linked workspace.
      */

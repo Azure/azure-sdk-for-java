@@ -31,8 +31,8 @@ public final class RegistryValueEntityProperties extends EntityCommonProperties 
     private String valueName;
 
     /*
-     * Specifies the data types to use when storing values in the registry, or
-     * identifies the data type of a value in the registry.
+     * Specifies the data types to use when storing values in the registry, or identifies the data type of a value in
+     * the registry.
      */
     @JsonProperty(value = "valueType", access = JsonProperty.Access.WRITE_ONLY)
     private RegistryValueKind valueType;

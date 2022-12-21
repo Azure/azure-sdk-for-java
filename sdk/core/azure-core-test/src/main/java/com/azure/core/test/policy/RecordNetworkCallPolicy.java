@@ -134,10 +134,13 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
     }
 
     private static void redactedAccountName(UrlBuilder urlBuilder) {
-        String[] hostParts = urlBuilder.getHost().split("\\.");
-        hostParts[0] = "REDACTED";
-
-        urlBuilder.setHost(String.join(".", hostParts));
+        String originalHost = urlBuilder.getHost();
+        int indexOf = originalHost.indexOf(".");
+        if (indexOf == -1) {
+            urlBuilder.setHost("REDACTED");
+        } else {
+            urlBuilder.setHost("REDACTED" + originalHost.substring(indexOf));
+        }
     }
 
     private static void captureRequestHeaders(HttpHeaders requestHeaders, Map<String, String> captureHeaders,

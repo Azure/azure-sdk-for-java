@@ -18,17 +18,15 @@ import java.util.List;
 @Fluent
 public class CustomEventsTrigger extends MultiplePipelineTrigger {
     /*
-     * The event subject must begin with the pattern provided for trigger to
-     * fire. At least one of these must be provided: subjectBeginsWith,
-     * subjectEndsWith.
+     * The event subject must begin with the pattern provided for trigger to fire. At least one of these must be
+     * provided: subjectBeginsWith, subjectEndsWith.
      */
     @JsonProperty(value = "typeProperties.subjectBeginsWith")
     private String subjectBeginsWith;
 
     /*
-     * The event subject must end with the pattern provided for trigger to
-     * fire. At least one of these must be provided: subjectBeginsWith,
-     * subjectEndsWith.
+     * The event subject must end with the pattern provided for trigger to fire. At least one of these must be
+     * provided: subjectBeginsWith, subjectEndsWith.
      */
     @JsonProperty(value = "typeProperties.subjectEndsWith")
     private String subjectEndsWith;

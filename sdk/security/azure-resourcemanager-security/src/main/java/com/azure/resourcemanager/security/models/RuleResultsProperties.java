@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Rule results properties. */
 @Fluent
 public final class RuleResultsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuleResultsProperties.class);
-
     /*
      * Expected results in the baseline.
      */
     @JsonProperty(value = "results")
     private List<List<String>> results;
+
+    /** Creates an instance of RuleResultsProperties class. */
+    public RuleResultsProperties() {
+    }
 
     /**
      * Get the results property: Expected results in the baseline.

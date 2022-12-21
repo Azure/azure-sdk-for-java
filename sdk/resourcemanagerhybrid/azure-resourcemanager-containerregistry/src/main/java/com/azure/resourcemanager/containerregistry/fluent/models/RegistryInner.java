@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.NetworkRuleSet;
@@ -14,16 +13,13 @@ import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.Sku;
 import com.azure.resourcemanager.containerregistry.models.Status;
 import com.azure.resourcemanager.containerregistry.models.StorageAccountProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /** An object that represents a container registry. */
-@JsonFlatten
 @Fluent
-public class RegistryInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistryInner.class);
-
+public final class RegistryInner extends Resource {
     /*
      * The SKU of the container registry.
      */
@@ -31,55 +27,10 @@ public class RegistryInner extends Resource {
     private Sku sku;
 
     /*
-     * The URL that can be used to log into the container registry.
+     * The properties of the container registry.
      */
-    @JsonProperty(value = "properties.loginServer", access = JsonProperty.Access.WRITE_ONLY)
-    private String loginServer;
-
-    /*
-     * The creation date of the container registry in ISO8601 format.
-     */
-    @JsonProperty(value = "properties.creationDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationDate;
-
-    /*
-     * The provisioning state of the container registry at the time the
-     * operation was called.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The status of the container registry at the time the operation was
-     * called.
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private Status status;
-
-    /*
-     * The value that indicates whether the admin user is enabled.
-     */
-    @JsonProperty(value = "properties.adminUserEnabled")
-    private Boolean adminUserEnabled;
-
-    /*
-     * The properties of the storage account for the container registry. Only
-     * applicable to Classic SKU.
-     */
-    @JsonProperty(value = "properties.storageAccount")
-    private StorageAccountProperties storageAccount;
-
-    /*
-     * The network rule set for a container registry.
-     */
-    @JsonProperty(value = "properties.networkRuleSet")
-    private NetworkRuleSet networkRuleSet;
-
-    /*
-     * The policies for a container registry.
-     */
-    @JsonProperty(value = "properties.policies")
-    private Policies policies;
+    @JsonProperty(value = "properties")
+    private RegistryProperties innerProperties;
 
     /**
      * Get the sku property: The SKU of the container registry.
@@ -102,12 +53,35 @@ public class RegistryInner extends Resource {
     }
 
     /**
+     * Get the innerProperties property: The properties of the container registry.
+     *
+     * @return the innerProperties value.
+     */
+    private RegistryProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RegistryInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RegistryInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
      * Get the loginServer property: The URL that can be used to log into the container registry.
      *
      * @return the loginServer value.
      */
     public String loginServer() {
-        return this.loginServer;
+        return this.innerProperties() == null ? null : this.innerProperties().loginServer();
     }
 
     /**
@@ -116,7 +90,7 @@ public class RegistryInner extends Resource {
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
-        return this.creationDate;
+        return this.innerProperties() == null ? null : this.innerProperties().creationDate();
     }
 
     /**
@@ -126,7 +100,7 @@ public class RegistryInner extends Resource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -135,7 +109,7 @@ public class RegistryInner extends Resource {
      * @return the status value.
      */
     public Status status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -144,7 +118,7 @@ public class RegistryInner extends Resource {
      * @return the adminUserEnabled value.
      */
     public Boolean adminUserEnabled() {
-        return this.adminUserEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().adminUserEnabled();
     }
 
     /**
@@ -154,7 +128,10 @@ public class RegistryInner extends Resource {
      * @return the RegistryInner object itself.
      */
     public RegistryInner withAdminUserEnabled(Boolean adminUserEnabled) {
-        this.adminUserEnabled = adminUserEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryProperties();
+        }
+        this.innerProperties().withAdminUserEnabled(adminUserEnabled);
         return this;
     }
 
@@ -165,7 +142,7 @@ public class RegistryInner extends Resource {
      * @return the storageAccount value.
      */
     public StorageAccountProperties storageAccount() {
-        return this.storageAccount;
+        return this.innerProperties() == null ? null : this.innerProperties().storageAccount();
     }
 
     /**
@@ -176,7 +153,10 @@ public class RegistryInner extends Resource {
      * @return the RegistryInner object itself.
      */
     public RegistryInner withStorageAccount(StorageAccountProperties storageAccount) {
-        this.storageAccount = storageAccount;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryProperties();
+        }
+        this.innerProperties().withStorageAccount(storageAccount);
         return this;
     }
 
@@ -186,7 +166,7 @@ public class RegistryInner extends Resource {
      * @return the networkRuleSet value.
      */
     public NetworkRuleSet networkRuleSet() {
-        return this.networkRuleSet;
+        return this.innerProperties() == null ? null : this.innerProperties().networkRuleSet();
     }
 
     /**
@@ -196,7 +176,10 @@ public class RegistryInner extends Resource {
      * @return the RegistryInner object itself.
      */
     public RegistryInner withNetworkRuleSet(NetworkRuleSet networkRuleSet) {
-        this.networkRuleSet = networkRuleSet;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryProperties();
+        }
+        this.innerProperties().withNetworkRuleSet(networkRuleSet);
         return this;
     }
 
@@ -206,7 +189,7 @@ public class RegistryInner extends Resource {
      * @return the policies value.
      */
     public Policies policies() {
-        return this.policies;
+        return this.innerProperties() == null ? null : this.innerProperties().policies();
     }
 
     /**
@@ -216,7 +199,10 @@ public class RegistryInner extends Resource {
      * @return the RegistryInner object itself.
      */
     public RegistryInner withPolicies(Policies policies) {
-        this.policies = policies;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryProperties();
+        }
+        this.innerProperties().withPolicies(policies);
         return this;
     }
 
@@ -227,23 +213,16 @@ public class RegistryInner extends Resource {
      */
     public void validate() {
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sku in model RegistryInner"));
         } else {
             sku().validate();
         }
-        if (status() != null) {
-            status().validate();
-        }
-        if (storageAccount() != null) {
-            storageAccount().validate();
-        }
-        if (networkRuleSet() != null) {
-            networkRuleSet().validate();
-        }
-        if (policies() != null) {
-            policies().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RegistryInner.class);
 }

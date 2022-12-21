@@ -15,7 +15,7 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.0'
+use: '@autorest/java@4.1.10'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/storage/data-plane/Microsoft.FileStorage/preview/2021-06-08/file.json
 java: true
 output-folder: ../
@@ -24,7 +24,6 @@ enable-xml: true
 generate-client-as-impl: true
 generate-client-interfaces: false
 service-interface-as-public: true
-sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 context-client-method-parameter: true
 default-http-exception-type: com.azure.storage.file.share.models.ShareStorageException
@@ -32,8 +31,9 @@ models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: HandleItem,ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier,ShareRootSquash,ShareRetentionPolicy,ShareProtocolSettings,ShareSmbSettings,SmbMultichannel,FileLastWrittenMode
 customization-class: src/main/java/ShareStorageCustomization.java
-custom-strongly-typed-header-deserialization: true
 generic-response-type: true
+use-input-stream-for-binary: true
+no-custom-headers: true
 ```
 
 ### Query Parameters

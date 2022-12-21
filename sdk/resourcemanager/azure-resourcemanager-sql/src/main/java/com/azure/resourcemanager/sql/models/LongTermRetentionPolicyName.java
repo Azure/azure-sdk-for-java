@@ -24,7 +24,11 @@ public final class LongTermRetentionPolicyName extends ExpandableStringEnum<Long
         return fromString(name, LongTermRetentionPolicyName.class);
     }
 
-    /** @return known LongTermRetentionPolicyName values. */
+    /**
+     * Gets known LongTermRetentionPolicyName values.
+     *
+     * @return known LongTermRetentionPolicyName values.
+     */
     public static Collection<LongTermRetentionPolicyName> values() {
         return values(LongTermRetentionPolicyName.class);
     }

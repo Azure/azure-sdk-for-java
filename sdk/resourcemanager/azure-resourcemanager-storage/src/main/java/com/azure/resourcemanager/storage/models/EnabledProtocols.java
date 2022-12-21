@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EnabledProtocols. */
+/** The authentication protocol that is used for the file share. Can only be specified when creating a share. */
 public final class EnabledProtocols extends ExpandableStringEnum<EnabledProtocols> {
     /** Static value SMB for EnabledProtocols. */
     public static final EnabledProtocols SMB = fromString("SMB");

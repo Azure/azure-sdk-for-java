@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.models.ManagedBackupShortTermRetentionPolicyInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of short term retention policies. */
 @Immutable
 public final class ManagedBackupShortTermRetentionPolicyListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ManagedBackupShortTermRetentionPolicyListResult.class);
-
     /*
      * Array of results.
      */

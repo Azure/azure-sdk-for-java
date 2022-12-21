@@ -11,17 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class KeyVaultProperties {
     /*
-     * The URL of the Key Vault key used to encrypt the account. The key may
-     * either be versioned (for example https://vault/keys/mykey/version1) or
-     * reference a key without a version (for example
-     * https://vault/keys/mykey).
+     * The URL of the Key Vault key used to encrypt the account. The key may either be versioned (for example
+     * https://vault/keys/mykey/version1) or reference a key without a version (for example https://vault/keys/mykey).
      */
     @JsonProperty(value = "keyIdentifier")
     private String keyIdentifier;
 
     /*
-     * The current key used to encrypt the Media Services account, including
-     * the key version.
+     * The current key used to encrypt the Media Services account, including the key version.
      */
     @JsonProperty(value = "currentKeyIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String currentKeyIdentifier;

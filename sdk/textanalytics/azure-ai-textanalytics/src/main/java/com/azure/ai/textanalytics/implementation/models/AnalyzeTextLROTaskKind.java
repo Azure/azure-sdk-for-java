@@ -42,6 +42,9 @@ public final class AnalyzeTextLROTaskKind extends ExpandableStringEnum<AnalyzeTe
     public static final AnalyzeTextLROTaskKind CUSTOM_MULTI_LABEL_CLASSIFICATION =
             fromString("CustomMultiLabelClassification");
 
+    /** Static value AbstractiveSummarization for AnalyzeTextLROTaskKind. */
+    public static final AnalyzeTextLROTaskKind ABSTRACTIVE_SUMMARIZATION = fromString("AbstractiveSummarization");
+
     /**
      * Creates or finds a AnalyzeTextLROTaskKind from its string representation.
      *
@@ -53,7 +56,11 @@ public final class AnalyzeTextLROTaskKind extends ExpandableStringEnum<AnalyzeTe
         return fromString(name, AnalyzeTextLROTaskKind.class);
     }
 
-    /** @return known AnalyzeTextLROTaskKind values. */
+    /**
+     * Gets known AnalyzeTextLROTaskKind values.
+     *
+     * @return known AnalyzeTextLROTaskKind values.
+     */
     public static Collection<AnalyzeTextLROTaskKind> values() {
         return values(AnalyzeTextLROTaskKind.class);
     }

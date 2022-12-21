@@ -7,7 +7,7 @@ package com.azure.resourcemanager.storage.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for Action. */
+/** The action of virtual network rule. */
 public enum Action {
     /** Enum value Allow. */
     ALLOW("Allow");
@@ -27,6 +27,9 @@ public enum Action {
      */
     @JsonCreator
     public static Action fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         Action[] items = Action.values();
         for (Action item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -36,6 +39,7 @@ public enum Action {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

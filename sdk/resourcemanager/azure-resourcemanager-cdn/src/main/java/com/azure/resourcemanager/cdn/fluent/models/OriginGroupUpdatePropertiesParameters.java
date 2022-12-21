@@ -5,44 +5,37 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.HealthProbeParameters;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.azure.resourcemanager.cdn.models.ResponseBasedOriginErrorDetectionParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The JSON object that contains the properties of the origin group. */
 @Fluent
 public class OriginGroupUpdatePropertiesParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OriginGroupUpdatePropertiesParameters.class);
-
     /*
-     * Health probe settings to the origin that is used to determine the health
-     * of the origin.
+     * Health probe settings to the origin that is used to determine the health of the origin.
      */
     @JsonProperty(value = "healthProbeSettings")
     private HealthProbeParameters healthProbeSettings;
 
     /*
-     * The source of the content being delivered via CDN within given origin
-     * group.
+     * The source of the content being delivered via CDN within given origin group.
      */
     @JsonProperty(value = "origins")
     private List<ResourceReference> origins;
 
     /*
-     * Time in minutes to shift the traffic to the endpoint gradually when an
-     * unhealthy endpoint comes healthy or a new endpoint is added. Default is
-     * 10 mins. This property is currently not supported.
+     * Time in minutes to shift the traffic to the endpoint gradually when an unhealthy endpoint comes healthy or a new
+     * endpoint is added. Default is 10 mins. This property is currently not supported.
      */
     @JsonProperty(value = "trafficRestorationTimeToHealedOrNewEndpointsInMinutes")
     private Integer trafficRestorationTimeToHealedOrNewEndpointsInMinutes;
 
     /*
-     * The JSON object that contains the properties to determine origin health
-     * using real requests/responses. This property is currently not supported.
+     * The JSON object that contains the properties to determine origin health using real requests/responses. This
+     * property is currently not supported.
      */
     @JsonProperty(value = "responseBasedOriginErrorDetectionSettings")
     private ResponseBasedOriginErrorDetectionParameters responseBasedOriginErrorDetectionSettings;

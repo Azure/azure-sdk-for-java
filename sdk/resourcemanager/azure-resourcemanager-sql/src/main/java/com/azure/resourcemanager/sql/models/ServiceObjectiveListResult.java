@@ -7,15 +7,12 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.models.ServiceObjectiveInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents the response to a get database service objectives request. */
 @Fluent
 public final class ServiceObjectiveListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceObjectiveListResult.class);
-
     /*
      * The list of database service objectives.
      */
@@ -49,7 +46,7 @@ public final class ServiceObjectiveListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model ServiceObjectiveListResult"));
@@ -57,4 +54,6 @@ public final class ServiceObjectiveListResult {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceObjectiveListResult.class);
 }

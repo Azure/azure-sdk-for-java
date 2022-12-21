@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.AttachedDataNetworkInner;
 import java.util.List;
@@ -48,6 +49,13 @@ public interface AttachedDataNetwork {
     Map<String, String> tags();
 
     /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the provisioningState property: The provisioning state of the attached data network resource.
      *
      * @return the provisioningState value.
@@ -55,37 +63,46 @@ public interface AttachedDataNetwork {
     ProvisioningState provisioningState();
 
     /**
-     * Gets the userPlaneDataInterface property: The user plane interface on the data network. In 5G networks this is
-     * called as N6 interface whereas in 4G networks this is called as SGi interface.
+     * Gets the userPlaneDataInterface property: The user plane interface on the data network. For 5G networks, this is
+     * the N6 interface. For 4G networks, this is the SGi interface.
      *
      * @return the userPlaneDataInterface value.
      */
     InterfaceProperties userPlaneDataInterface();
 
     /**
-     * Gets the naptConfiguration property: The Network Address and Port Translation configuration. If not specified the
-     * attached data network uses a default NAPT configuration with NAPT enabled.
+     * Gets the dnsAddresses property: The DNS servers to signal to UEs to use for this attached data network. This
+     * configuration is mandatory - if you don't want DNS servers, you must provide an empty array.
+     *
+     * @return the dnsAddresses value.
+     */
+    List<String> dnsAddresses();
+
+    /**
+     * Gets the naptConfiguration property: The network address and port translation (NAPT) configuration. If this is
+     * not specified, the attached data network will use a default NAPT configuration with NAPT enabled.
      *
      * @return the naptConfiguration value.
      */
     NaptConfiguration naptConfiguration();
 
     /**
-     * Gets the userEquipmentAddressPoolPrefix property: The user equipment address pool prefixes for the attached data
-     * network that are dynamically assigned by the core to UEs when they set up a PDU session. At least one of
-     * userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix must be defined. If both are defined then
-     * they must be the same size.
+     * Gets the userEquipmentAddressPoolPrefix property: The user equipment (UE) address pool prefixes for the attached
+     * data network from which the packet core instance will dynamically assign IP addresses to UEs. The packet core
+     * instance assigns an IP address to a UE when the UE sets up a PDU session. You must define at least one of
+     * userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix. If you define both, they must be of the
+     * same size.
      *
      * @return the userEquipmentAddressPoolPrefix value.
      */
     List<String> userEquipmentAddressPoolPrefix();
 
     /**
-     * Gets the userEquipmentStaticAddressPoolPrefix property: The user equipment address pool prefixes for the attached
-     * data network that are statically assigned by the core to UEs when they set up a PDU session. The mapping of
-     * static IP to sim is configured in staticIpConfiguration on the sim resource. At least one of
-     * userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix must be defined. If both are defined then
-     * they must be the same size.
+     * Gets the userEquipmentStaticAddressPoolPrefix property: The user equipment (UE) address pool prefixes for the
+     * attached data network from which the packet core instance will assign static IP addresses to UEs. The packet core
+     * instance assigns an IP address to a UE when the UE sets up a PDU session. The static IP address for a specific UE
+     * is set in StaticIPConfiguration on the corresponding SIM resource. At least one of userEquipmentAddressPoolPrefix
+     * and userEquipmentStaticAddressPoolPrefix must be defined. If both are defined, they must be of the same size.
      *
      * @return the userEquipmentStaticAddressPoolPrefix value.
      */
@@ -106,6 +123,13 @@ public interface AttachedDataNetwork {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.mobilenetwork.fluent.models.AttachedDataNetworkInner object.
      *
      * @return the inner object.
@@ -118,6 +142,7 @@ public interface AttachedDataNetwork {
             DefinitionStages.WithLocation,
             DefinitionStages.WithParentResource,
             DefinitionStages.WithUserPlaneDataInterface,
+            DefinitionStages.WithDnsAddresses,
             DefinitionStages.WithCreate {
     }
     /** The AttachedDataNetwork definition stages. */
@@ -159,14 +184,27 @@ public interface AttachedDataNetwork {
         /** The stage of the AttachedDataNetwork definition allowing to specify userPlaneDataInterface. */
         interface WithUserPlaneDataInterface {
             /**
-             * Specifies the userPlaneDataInterface property: The user plane interface on the data network. In 5G
-             * networks this is called as N6 interface whereas in 4G networks this is called as SGi interface..
+             * Specifies the userPlaneDataInterface property: The user plane interface on the data network. For 5G
+             * networks, this is the N6 interface. For 4G networks, this is the SGi interface..
              *
-             * @param userPlaneDataInterface The user plane interface on the data network. In 5G networks this is called
-             *     as N6 interface whereas in 4G networks this is called as SGi interface.
+             * @param userPlaneDataInterface The user plane interface on the data network. For 5G networks, this is the
+             *     N6 interface. For 4G networks, this is the SGi interface.
              * @return the next definition stage.
              */
-            WithCreate withUserPlaneDataInterface(InterfaceProperties userPlaneDataInterface);
+            WithDnsAddresses withUserPlaneDataInterface(InterfaceProperties userPlaneDataInterface);
+        }
+        /** The stage of the AttachedDataNetwork definition allowing to specify dnsAddresses. */
+        interface WithDnsAddresses {
+            /**
+             * Specifies the dnsAddresses property: The DNS servers to signal to UEs to use for this attached data
+             * network. This configuration is mandatory - if you don't want DNS servers, you must provide an empty
+             * array..
+             *
+             * @param dnsAddresses The DNS servers to signal to UEs to use for this attached data network. This
+             *     configuration is mandatory - if you don't want DNS servers, you must provide an empty array.
+             * @return the next definition stage.
+             */
+            WithCreate withDnsAddresses(List<String> dnsAddresses);
         }
         /**
          * The stage of the AttachedDataNetwork definition which contains all the minimum required properties for the
@@ -205,11 +243,12 @@ public interface AttachedDataNetwork {
         /** The stage of the AttachedDataNetwork definition allowing to specify naptConfiguration. */
         interface WithNaptConfiguration {
             /**
-             * Specifies the naptConfiguration property: The Network Address and Port Translation configuration. If not
-             * specified the attached data network uses a default NAPT configuration with NAPT enabled..
+             * Specifies the naptConfiguration property: The network address and port translation (NAPT) configuration.
+             * If this is not specified, the attached data network will use a default NAPT configuration with NAPT
+             * enabled..
              *
-             * @param naptConfiguration The Network Address and Port Translation configuration. If not specified the
-             *     attached data network uses a default NAPT configuration with NAPT enabled.
+             * @param naptConfiguration The network address and port translation (NAPT) configuration. If this is not
+             *     specified, the attached data network will use a default NAPT configuration with NAPT enabled.
              * @return the next definition stage.
              */
             WithCreate withNaptConfiguration(NaptConfiguration naptConfiguration);
@@ -217,15 +256,17 @@ public interface AttachedDataNetwork {
         /** The stage of the AttachedDataNetwork definition allowing to specify userEquipmentAddressPoolPrefix. */
         interface WithUserEquipmentAddressPoolPrefix {
             /**
-             * Specifies the userEquipmentAddressPoolPrefix property: The user equipment address pool prefixes for the
-             * attached data network that are dynamically assigned by the core to UEs when they set up a PDU session. At
-             * least one of userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix must be defined. If
-             * both are defined then they must be the same size..
+             * Specifies the userEquipmentAddressPoolPrefix property: The user equipment (UE) address pool prefixes for
+             * the attached data network from which the packet core instance will dynamically assign IP addresses to
+             * UEs. The packet core instance assigns an IP address to a UE when the UE sets up a PDU session. You must
+             * define at least one of userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix. If you
+             * define both, they must be of the same size..
              *
-             * @param userEquipmentAddressPoolPrefix The user equipment address pool prefixes for the attached data
-             *     network that are dynamically assigned by the core to UEs when they set up a PDU session. At least one
-             *     of userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix must be defined. If both
-             *     are defined then they must be the same size.
+             * @param userEquipmentAddressPoolPrefix The user equipment (UE) address pool prefixes for the attached data
+             *     network from which the packet core instance will dynamically assign IP addresses to UEs. The packet
+             *     core instance assigns an IP address to a UE when the UE sets up a PDU session. You must define at
+             *     least one of userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix. If you define
+             *     both, they must be of the same size.
              * @return the next definition stage.
              */
             WithCreate withUserEquipmentAddressPoolPrefix(List<String> userEquipmentAddressPoolPrefix);
@@ -233,17 +274,19 @@ public interface AttachedDataNetwork {
         /** The stage of the AttachedDataNetwork definition allowing to specify userEquipmentStaticAddressPoolPrefix. */
         interface WithUserEquipmentStaticAddressPoolPrefix {
             /**
-             * Specifies the userEquipmentStaticAddressPoolPrefix property: The user equipment address pool prefixes for
-             * the attached data network that are statically assigned by the core to UEs when they set up a PDU session.
-             * The mapping of static IP to sim is configured in staticIpConfiguration on the sim resource. At least one
-             * of userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix must be defined. If both are
-             * defined then they must be the same size..
+             * Specifies the userEquipmentStaticAddressPoolPrefix property: The user equipment (UE) address pool
+             * prefixes for the attached data network from which the packet core instance will assign static IP
+             * addresses to UEs. The packet core instance assigns an IP address to a UE when the UE sets up a PDU
+             * session. The static IP address for a specific UE is set in StaticIPConfiguration on the corresponding SIM
+             * resource. At least one of userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix must be
+             * defined. If both are defined, they must be of the same size..
              *
-             * @param userEquipmentStaticAddressPoolPrefix The user equipment address pool prefixes for the attached
-             *     data network that are statically assigned by the core to UEs when they set up a PDU session. The
-             *     mapping of static IP to sim is configured in staticIpConfiguration on the sim resource. At least one
-             *     of userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix must be defined. If both
-             *     are defined then they must be the same size.
+             * @param userEquipmentStaticAddressPoolPrefix The user equipment (UE) address pool prefixes for the
+             *     attached data network from which the packet core instance will assign static IP addresses to UEs. The
+             *     packet core instance assigns an IP address to a UE when the UE sets up a PDU session. The static IP
+             *     address for a specific UE is set in StaticIPConfiguration on the corresponding SIM resource. At least
+             *     one of userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix must be defined. If
+             *     both are defined, they must be of the same size.
              * @return the next definition stage.
              */
             WithCreate withUserEquipmentStaticAddressPoolPrefix(List<String> userEquipmentStaticAddressPoolPrefix);

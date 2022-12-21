@@ -19,10 +19,11 @@ public final class TextAnalyticsActions {
     private Iterable<AnalyzeHealthcareEntitiesAction> analyzeHealthcareEntitiesActions;
     private Iterable<ExtractKeyPhrasesAction> extractKeyPhrasesActions;
     private Iterable<AnalyzeSentimentAction> analyzeSentimentActions;
-    private Iterable<ExtractSummaryAction> extractSummaryActions;
     private Iterable<RecognizeCustomEntitiesAction> recognizeCustomEntitiesActions;
-    private Iterable<SingleCategoryClassifyAction> singleCategoryClassifyActions;
-    private Iterable<MultiCategoryClassifyAction> multiCategoryClassifyActions;
+    private Iterable<SingleLabelClassifyAction> singleLabelClassifyActions;
+    private Iterable<MultiLabelClassifyAction> multiLabelClassifyActions;
+    private Iterable<AbstractSummaryAction> abstractSummaryActions;
+    private Iterable<ExtractSummaryAction> extractSummaryActions;
 
     /**
      * Gets the custom name for the actions.
@@ -180,27 +181,6 @@ public final class TextAnalyticsActions {
     }
 
     /**
-     * Gets the list of {@link ExtractSummaryAction} to be executed.
-     *
-     * @return the list of {@link ExtractSummaryAction} to be executed.
-     */
-    public Iterable<ExtractSummaryAction> getExtractSummaryActions() {
-        return extractSummaryActions;
-    }
-
-    /**
-     * Sets the list of {@link ExtractSummaryAction} to be executed.
-     *
-     * @param extractSummaryActions The list of {@link ExtractSummaryAction} to be executed.
-     *
-     * @return The {@link TextAnalyticsActions} object itself.
-     */
-    public TextAnalyticsActions setExtractSummaryActions(ExtractSummaryAction... extractSummaryActions) {
-        this.extractSummaryActions = extractSummaryActions == null ? null : Arrays.asList(extractSummaryActions);
-        return this;
-    }
-
-    /**
      * Gets the list of {@link RecognizeCustomEntitiesAction} to be executed.
      *
      * See the service documentation for regional support of custom entities recognition:
@@ -230,62 +210,102 @@ public final class TextAnalyticsActions {
     }
 
     /**
-     * Gets the list of {@link SingleCategoryClassifyAction} to be executed.
+     * Gets the list of {@link SingleLabelClassifyAction} to be executed.
      *
      * See the service documentation for regional support of custom single classification:
      * https://aka.ms/azsdk/textanalytics/customfunctionalities
      *
-     * @return the list of {@link SingleCategoryClassifyAction} to be executed.
+     * @return the list of {@link SingleLabelClassifyAction} to be executed.
      */
-    public Iterable<SingleCategoryClassifyAction> getSingleCategoryClassifyActions() {
-        return singleCategoryClassifyActions;
+    public Iterable<SingleLabelClassifyAction> getSingleLabelClassifyActions() {
+        return singleLabelClassifyActions;
     }
 
     /**
-     * Sets the list of {@link SingleCategoryClassifyAction} to be executed.
+     * Sets the list of {@link SingleLabelClassifyAction} to be executed.
      *
      * See the service documentation for regional support of custom single classification:
      * https://aka.ms/azsdk/textanalytics/customfunctionalities
      *
-     * @param singleCategoryClassifyActions The list of
-     * {@link SingleCategoryClassifyAction} to be executed.
+     * @param singleLabelClassifyActions The list of
+     * {@link SingleLabelClassifyAction} to be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
      */
-    public TextAnalyticsActions setSingleCategoryClassifyActions(
-        SingleCategoryClassifyAction... singleCategoryClassifyActions) {
-        this.singleCategoryClassifyActions = singleCategoryClassifyActions == null
-                                                 ? null : Arrays.asList(singleCategoryClassifyActions);
+    public TextAnalyticsActions setSingleLabelClassifyActions(SingleLabelClassifyAction... singleLabelClassifyActions) {
+        this.singleLabelClassifyActions = singleLabelClassifyActions == null
+                                                 ? null : Arrays.asList(singleLabelClassifyActions);
         return this;
     }
 
     /**
-     * Gets the list of {@link MultiCategoryClassifyAction} to be executed.
+     * Gets the list of {@link MultiLabelClassifyAction} to be executed.
      *
      * See the service documentation for regional support of custom multi classification:
      * https://aka.ms/azsdk/textanalytics/customfunctionalities
      *
-     * @return the list of {@link MultiCategoryClassifyAction} to be executed.
+     * @return the list of {@link MultiLabelClassifyAction} to be executed.
      */
-    public Iterable<MultiCategoryClassifyAction> getMultiCategoryClassifyActions() {
-        return multiCategoryClassifyActions;
+    public Iterable<MultiLabelClassifyAction> getMultiLabelClassifyActions() {
+        return multiLabelClassifyActions;
     }
 
     /**
-     * Sets the list of {@link MultiCategoryClassifyAction} to be executed.
+     * Sets the list of {@link MultiLabelClassifyAction} to be executed.
      *
      * See the service documentation for regional support of custom multi classification:
      * https://aka.ms/azsdk/textanalytics/customfunctionalities
      *
-     * @param multiCategoryClassifyActions The list of {@link MultiCategoryClassifyAction} to
+     * @param multiLabelClassifyActions The list of {@link MultiLabelClassifyAction} to
      * be executed.
      *
      * @return The {@link TextAnalyticsActions} object itself.
      */
-    public TextAnalyticsActions setMultiCategoryClassifyActions(
-        MultiCategoryClassifyAction... multiCategoryClassifyActions) {
-        this.multiCategoryClassifyActions = multiCategoryClassifyActions == null
-                                                ? null : Arrays.asList(multiCategoryClassifyActions);
+    public TextAnalyticsActions setMultiLabelClassifyActions(MultiLabelClassifyAction... multiLabelClassifyActions) {
+        this.multiLabelClassifyActions = multiLabelClassifyActions == null
+                                                ? null : Arrays.asList(multiLabelClassifyActions);
+        return this;
+    }
+
+    /**
+     * Gets the list of {@link AbstractSummaryAction} to be executed.
+     *
+     * @return the list of {@link AbstractSummaryAction} to be executed.
+     */
+    public Iterable<AbstractSummaryAction> getAbstractSummaryActions() {
+        return abstractSummaryActions;
+    }
+
+    /**
+     * Sets the list of {@link AbstractSummaryAction} to be executed.
+     *
+     * @param abstractSummaryActions The list of {@link AbstractSummaryAction} to be executed.
+     *
+     * @return The {@link TextAnalyticsActions} object itself.
+     */
+    public TextAnalyticsActions setAbstractSummaryActions(AbstractSummaryAction... abstractSummaryActions) {
+        this.abstractSummaryActions = abstractSummaryActions == null ? null : Arrays.asList(abstractSummaryActions);
+        return this;
+    }
+
+    /**
+     * Gets the list of {@link ExtractSummaryAction} to be executed.
+     *
+     * @return the list of {@link ExtractSummaryAction} to be executed.
+     */
+    public Iterable<ExtractSummaryAction> getExtractSummaryActions() {
+        return extractSummaryActions;
+    }
+
+    /**
+     * Sets the list of {@link ExtractSummaryAction} to be executed.
+     *
+     * @param extractSummaryActions The list of {@link ExtractSummaryAction} to be executed.
+     *
+     * @return The {@link TextAnalyticsActions} object itself.
+     */
+    public TextAnalyticsActions setExtractSummaryActions(ExtractSummaryAction... extractSummaryActions) {
+        this.extractSummaryActions = extractSummaryActions == null ? null : Arrays.asList(extractSummaryActions);
         return this;
     }
 }

@@ -13,7 +13,20 @@ public interface VaultExtendedInfoes {
     /**
      * Get the vault extended info.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the recovery services vault.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the vault extended info along with {@link Response}.
+     */
+    Response<VaultExtendedInfoResource> getWithResponse(String resourceGroupName, String vaultName, Context context);
+
+    /**
+     * Get the vault extended info.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -23,22 +36,27 @@ public interface VaultExtendedInfoes {
     VaultExtendedInfoResource get(String resourceGroupName, String vaultName);
 
     /**
-     * Get the vault extended info.
+     * Create vault extended info.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
+     * @param resourceExtendedInfoDetails Details of ResourceExtendedInfo.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the vault extended info.
+     * @return vault extended information along with {@link Response}.
      */
-    Response<VaultExtendedInfoResource> getWithResponse(String resourceGroupName, String vaultName, Context context);
+    Response<VaultExtendedInfoResource> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String vaultName,
+        VaultExtendedInfoResourceInner resourceExtendedInfoDetails,
+        Context context);
 
     /**
      * Create vault extended info.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param resourceExtendedInfoDetails Details of ResourceExtendedInfo.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -50,18 +68,18 @@ public interface VaultExtendedInfoes {
         String resourceGroupName, String vaultName, VaultExtendedInfoResourceInner resourceExtendedInfoDetails);
 
     /**
-     * Create vault extended info.
+     * Update vault extended info.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param resourceExtendedInfoDetails Details of ResourceExtendedInfo.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vault extended information.
+     * @return vault extended information along with {@link Response}.
      */
-    Response<VaultExtendedInfoResource> createOrUpdateWithResponse(
+    Response<VaultExtendedInfoResource> updateWithResponse(
         String resourceGroupName,
         String vaultName,
         VaultExtendedInfoResourceInner resourceExtendedInfoDetails,
@@ -70,7 +88,7 @@ public interface VaultExtendedInfoes {
     /**
      * Update vault extended info.
      *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param resourceExtendedInfoDetails Details of ResourceExtendedInfo.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -80,22 +98,4 @@ public interface VaultExtendedInfoes {
      */
     VaultExtendedInfoResource update(
         String resourceGroupName, String vaultName, VaultExtendedInfoResourceInner resourceExtendedInfoDetails);
-
-    /**
-     * Update vault extended info.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceExtendedInfoDetails Details of ResourceExtendedInfo.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vault extended information.
-     */
-    Response<VaultExtendedInfoResource> updateWithResponse(
-        String resourceGroupName,
-        String vaultName,
-        VaultExtendedInfoResourceInner resourceExtendedInfoDetails,
-        Context context);
 }

@@ -12,6 +12,7 @@ import com.azure.resourcemanager.sql.fluent.ServersClient;
 import com.azure.resourcemanager.sql.fluent.models.LocationCapabilitiesInner;
 import com.azure.resourcemanager.sql.fluent.models.ServerInner;
 import com.azure.resourcemanager.sql.fluent.models.SubscriptionUsageInner;
+import com.azure.resourcemanager.sql.models.CheckNameAvailabilityRequest;
 import com.azure.resourcemanager.sql.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.sql.models.RegionCapabilities;
 import com.azure.resourcemanager.sql.models.SqlDatabaseOperations;
@@ -176,12 +177,14 @@ public class SqlServersImpl
 
     @Override
     public CheckNameAvailabilityResult checkNameAvailability(String name) {
-        return new CheckNameAvailabilityResultImpl(this.inner().checkNameAvailability(name));
+        return new CheckNameAvailabilityResultImpl(this.inner().checkNameAvailability(
+            new CheckNameAvailabilityRequest().withName(name)));
     }
 
     @Override
     public Mono<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name) {
-        return this.inner().checkNameAvailabilityAsync(name).map(CheckNameAvailabilityResultImpl::new);
+        return this.inner().checkNameAvailabilityAsync(new CheckNameAvailabilityRequest().withName(name))
+            .map(CheckNameAvailabilityResultImpl::new);
     }
 
     @Override

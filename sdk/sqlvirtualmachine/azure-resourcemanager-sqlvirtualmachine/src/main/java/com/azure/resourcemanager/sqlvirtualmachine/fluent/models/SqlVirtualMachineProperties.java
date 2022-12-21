@@ -5,28 +5,24 @@
 package com.azure.resourcemanager.sqlvirtualmachine.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AssessmentSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AutoBackupSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AutoPatchingSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.KeyVaultCredentialSettings;
+import com.azure.resourcemanager.sqlvirtualmachine.models.LeastPrivilegeMode;
 import com.azure.resourcemanager.sqlvirtualmachine.models.ServerConfigurationsManagementSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlImageSku;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlManagementMode;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlServerLicenseType;
 import com.azure.resourcemanager.sqlvirtualmachine.models.StorageConfigurationSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.WsfcDomainCredentials;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SQL virtual machine properties. */
 @Fluent
 public final class SqlVirtualMachineProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlVirtualMachineProperties.class);
-
     /*
-     * ARM Resource id of underlying virtual machine created from SQL
-     * marketplace image.
+     * ARM Resource id of underlying virtual machine created from SQL marketplace image.
      */
     @JsonProperty(value = "virtualMachineResourceId")
     private String virtualMachineResourceId;
@@ -56,28 +52,37 @@ public final class SqlVirtualMachineProperties {
     private SqlManagementMode sqlManagement;
 
     /*
+     * SQL IaaS Agent least privilege mode.
+     */
+    @JsonProperty(value = "leastPrivilegeMode")
+    private LeastPrivilegeMode leastPrivilegeMode;
+
+    /*
      * SQL Server edition type.
      */
     @JsonProperty(value = "sqlImageSku")
     private SqlImageSku sqlImageSku;
 
     /*
-     * ARM resource id of the SQL virtual machine group this SQL virtual
-     * machine is or will be part of.
+     * ARM resource id of the SQL virtual machine group this SQL virtual machine is or will be part of.
      */
     @JsonProperty(value = "sqlVirtualMachineGroupResourceId")
     private String sqlVirtualMachineGroupResourceId;
 
     /*
-     * Domain credentials for setting up Windows Server Failover Cluster for
-     * SQL availability group.
+     * Domain credentials for setting up Windows Server Failover Cluster for SQL availability group.
      */
     @JsonProperty(value = "wsfcDomainCredentials")
     private WsfcDomainCredentials wsfcDomainCredentials;
 
     /*
-     * Auto patching settings for applying critical security updates to SQL
-     * virtual machine.
+     * Domain credentials for setting up Windows Server Failover Cluster for SQL availability group.
+     */
+    @JsonProperty(value = "wsfcStaticIp")
+    private String wsfcStaticIp;
+
+    /*
+     * Auto patching settings for applying critical security updates to SQL virtual machine.
      */
     @JsonProperty(value = "autoPatchingSettings")
     private AutoPatchingSettings autoPatchingSettings;
@@ -111,6 +116,12 @@ public final class SqlVirtualMachineProperties {
      */
     @JsonProperty(value = "assessmentSettings")
     private AssessmentSettings assessmentSettings;
+
+    /*
+     * Enable automatic upgrade of Sql IaaS extension Agent.
+     */
+    @JsonProperty(value = "enableAutomaticUpgrade")
+    private Boolean enableAutomaticUpgrade;
 
     /**
      * Get the virtualMachineResourceId property: ARM Resource id of underlying virtual machine created from SQL
@@ -204,6 +215,26 @@ public final class SqlVirtualMachineProperties {
     }
 
     /**
+     * Get the leastPrivilegeMode property: SQL IaaS Agent least privilege mode.
+     *
+     * @return the leastPrivilegeMode value.
+     */
+    public LeastPrivilegeMode leastPrivilegeMode() {
+        return this.leastPrivilegeMode;
+    }
+
+    /**
+     * Set the leastPrivilegeMode property: SQL IaaS Agent least privilege mode.
+     *
+     * @param leastPrivilegeMode the leastPrivilegeMode value to set.
+     * @return the SqlVirtualMachineProperties object itself.
+     */
+    public SqlVirtualMachineProperties withLeastPrivilegeMode(LeastPrivilegeMode leastPrivilegeMode) {
+        this.leastPrivilegeMode = leastPrivilegeMode;
+        return this;
+    }
+
+    /**
      * Get the sqlImageSku property: SQL Server edition type.
      *
      * @return the sqlImageSku value.
@@ -264,6 +295,28 @@ public final class SqlVirtualMachineProperties {
      */
     public SqlVirtualMachineProperties withWsfcDomainCredentials(WsfcDomainCredentials wsfcDomainCredentials) {
         this.wsfcDomainCredentials = wsfcDomainCredentials;
+        return this;
+    }
+
+    /**
+     * Get the wsfcStaticIp property: Domain credentials for setting up Windows Server Failover Cluster for SQL
+     * availability group.
+     *
+     * @return the wsfcStaticIp value.
+     */
+    public String wsfcStaticIp() {
+        return this.wsfcStaticIp;
+    }
+
+    /**
+     * Set the wsfcStaticIp property: Domain credentials for setting up Windows Server Failover Cluster for SQL
+     * availability group.
+     *
+     * @param wsfcStaticIp the wsfcStaticIp value to set.
+     * @return the SqlVirtualMachineProperties object itself.
+     */
+    public SqlVirtualMachineProperties withWsfcStaticIp(String wsfcStaticIp) {
+        this.wsfcStaticIp = wsfcStaticIp;
         return this;
     }
 
@@ -389,6 +442,26 @@ public final class SqlVirtualMachineProperties {
      */
     public SqlVirtualMachineProperties withAssessmentSettings(AssessmentSettings assessmentSettings) {
         this.assessmentSettings = assessmentSettings;
+        return this;
+    }
+
+    /**
+     * Get the enableAutomaticUpgrade property: Enable automatic upgrade of Sql IaaS extension Agent.
+     *
+     * @return the enableAutomaticUpgrade value.
+     */
+    public Boolean enableAutomaticUpgrade() {
+        return this.enableAutomaticUpgrade;
+    }
+
+    /**
+     * Set the enableAutomaticUpgrade property: Enable automatic upgrade of Sql IaaS extension Agent.
+     *
+     * @param enableAutomaticUpgrade the enableAutomaticUpgrade value to set.
+     * @return the SqlVirtualMachineProperties object itself.
+     */
+    public SqlVirtualMachineProperties withEnableAutomaticUpgrade(Boolean enableAutomaticUpgrade) {
+        this.enableAutomaticUpgrade = enableAutomaticUpgrade;
         return this;
     }
 

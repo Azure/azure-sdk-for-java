@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BackupScheduleType. */
+/** Backup schedule type. */
 public final class BackupScheduleType extends ExpandableStringEnum<BackupScheduleType> {
     /** Static value Manual for BackupScheduleType. */
     public static final BackupScheduleType MANUAL = fromString("Manual");
@@ -27,7 +27,11 @@ public final class BackupScheduleType extends ExpandableStringEnum<BackupSchedul
         return fromString(name, BackupScheduleType.class);
     }
 
-    /** @return known BackupScheduleType values. */
+    /**
+     * Gets known BackupScheduleType values.
+     *
+     * @return known BackupScheduleType values.
+     */
     public static Collection<BackupScheduleType> values() {
         return values(BackupScheduleType.class);
     }

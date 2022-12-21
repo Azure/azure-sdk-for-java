@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservices.fluent.models.VaultInner;
 import java.util.Map;
@@ -68,6 +69,20 @@ public interface Vault {
     Sku sku();
 
     /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the etag property: Optional ETag.
+     *
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -80,6 +95,13 @@ public interface Vault {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.recoveryservices.fluent.models.VaultInner object.
@@ -123,7 +145,7 @@ public interface Vault {
             /**
              * Specifies resourceGroupName.
              *
-             * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
@@ -136,7 +158,8 @@ public interface Vault {
             extends DefinitionStages.WithTags,
                 DefinitionStages.WithIdentity,
                 DefinitionStages.WithProperties,
-                DefinitionStages.WithSku {
+                DefinitionStages.WithSku,
+                DefinitionStages.WithEtag {
             /**
              * Executes the create request.
              *
@@ -191,6 +214,16 @@ public interface Vault {
              * @return the next definition stage.
              */
             WithCreate withSku(Sku sku);
+        }
+        /** The stage of the Vault definition allowing to specify etag. */
+        interface WithEtag {
+            /**
+             * Specifies the etag property: Optional ETag..
+             *
+             * @param etag Optional ETag.
+             * @return the next definition stage.
+             */
+            WithCreate withEtag(String etag);
         }
     }
     /**

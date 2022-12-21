@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class RestorePointCollectionProperties {
     /*
-     * The properties of the source resource that this restore point collection
-     * is created from.
+     * The properties of the source resource that this restore point collection is created from.
      */
     @JsonProperty(value = "source")
     private RestorePointCollectionSourceProperties source;
@@ -32,11 +31,14 @@ public final class RestorePointCollectionProperties {
     private String restorePointCollectionId;
 
     /*
-     * A list containing all restore points created under this restore point
-     * collection.
+     * A list containing all restore points created under this restore point collection.
      */
     @JsonProperty(value = "restorePoints", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorePointInner> restorePoints;
+
+    /** Creates an instance of RestorePointCollectionProperties class. */
+    public RestorePointCollectionProperties() {
+    }
 
     /**
      * Get the source property: The properties of the source resource that this restore point collection is created

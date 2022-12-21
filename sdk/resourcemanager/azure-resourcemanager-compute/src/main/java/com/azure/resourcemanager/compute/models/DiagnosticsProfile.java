@@ -11,15 +11,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class DiagnosticsProfile {
     /*
-     * Boot Diagnostics is a debugging feature which allows you to view Console
-     * Output and Screenshot to diagnose VM status. <br>**NOTE**: If storageUri
-     * is being specified then ensure that the storage account is in the same
-     * region and subscription as the VM. <br><br> You can easily view the
-     * output of your console log. <br><br> Azure also enables you to see a
-     * screenshot of the VM from the hypervisor.
+     * Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM
+     * status. <br>**NOTE**: If storageUri is being specified then ensure that the storage account is in the same
+     * region and subscription as the VM. <br><br> You can easily view the output of your console log. <br><br> Azure
+     * also enables you to see a screenshot of the VM from the hypervisor.
      */
     @JsonProperty(value = "bootDiagnostics")
     private BootDiagnostics bootDiagnostics;
+
+    /** Creates an instance of DiagnosticsProfile class. */
+    public DiagnosticsProfile() {
+    }
 
     /**
      * Get the bootDiagnostics property: Boot Diagnostics is a debugging feature which allows you to view Console Output

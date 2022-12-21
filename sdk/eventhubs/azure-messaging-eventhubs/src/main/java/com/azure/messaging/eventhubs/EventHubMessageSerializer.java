@@ -9,6 +9,7 @@ import com.azure.core.exception.AzureException;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.ManagementChannel;
+import com.azure.messaging.eventhubs.implementation.MessageUtils;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -17,6 +18,11 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.DeliveryAnnotations;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
+import org.apache.qpid.proton.codec.AMQPType;
+import org.apache.qpid.proton.codec.DecoderImpl;
+import org.apache.qpid.proton.codec.Encoder;
+import org.apache.qpid.proton.codec.EncoderImpl;
+import org.apache.qpid.proton.codec.TypeEncoding;
 import org.apache.qpid.proton.message.Message;
 
 import java.time.Instant;
@@ -40,6 +46,7 @@ import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MAN
  * Utility class for converting {@link EventData} to {@link Message}.
  */
 class EventHubMessageSerializer implements MessageSerializer {
+    private static final Encoder ENCODER = new EncoderImpl(new DecoderImpl());
     private static final ClientLogger LOGGER = new ClientLogger(EventHubMessageSerializer.class);
     private static final Symbol LAST_ENQUEUED_SEQUENCE_NUMBER =
         Symbol.getSymbol(MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER);
@@ -210,17 +217,7 @@ class EventHubMessageSerializer implements MessageSerializer {
                 "enqueuedTime: %s should always be in map.", SEQUENCE_NUMBER_ANNOTATION_NAME.getValue())));
         }
 
-        final Object enqueuedTimeObject = messageAnnotations.get(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
-        final Instant enqueuedTime;
-        if (enqueuedTimeObject instanceof Date) {
-            enqueuedTime = ((Date) enqueuedTimeObject).toInstant();
-        } else if (enqueuedTimeObject instanceof Instant) {
-            enqueuedTime = (Instant) enqueuedTimeObject;
-        } else {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(new IllegalStateException(
-                String.format(Locale.US, "enqueuedTime is not a known type. Value: %s. Type: %s",
-                    enqueuedTimeObject, enqueuedTimeObject.getClass()))));
-        }
+        final Instant enqueuedTime = MessageUtils.getEnqueuedTime(messageAnnotations, ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
 
         final String partitionKey = (String) messageAnnotations.get(PARTITION_KEY_ANNOTATION_NAME.getValue());
         final long offset = getAsLong(messageAnnotations, OFFSET_ANNOTATION_NAME.getValue());
@@ -357,44 +354,24 @@ class EventHubMessageSerializer implements MessageSerializer {
         return 0;
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     private static int sizeof(Object obj) {
-        if (obj instanceof String) {
-            return obj.toString().length() << 1;
+        if (obj == null) {
+            return 0;
         }
 
-        if (obj instanceof Symbol) {
-            return ((Symbol) obj).length() << 1;
+        final AMQPType amqpType = ENCODER.getType(obj);
+        if (amqpType == null) {
+            throw new IllegalArgumentException(String.format(Messages.ENCODING_TYPE_NOT_SUPPORTED,
+                obj.getClass()));
         }
 
-        if (obj instanceof Integer) {
-            return Integer.BYTES;
+        final TypeEncoding encoding = amqpType.getEncoding(obj);
+        if (encoding == null) {
+            throw new IllegalArgumentException(String.format(
+                Messages.ENCODING_TYPE_NOT_SUPPORTED_ENCODER, obj.getClass()));
         }
 
-        if (obj instanceof Long) {
-            return Long.BYTES;
-        }
-
-        if (obj instanceof Short) {
-            return Short.BYTES;
-        }
-
-        if (obj instanceof Character) {
-            return Character.BYTES;
-        }
-
-        if (obj instanceof Float) {
-            return Float.BYTES;
-        }
-
-        if (obj instanceof Double) {
-            return Double.BYTES;
-        }
-
-        if (obj instanceof Date) {
-            return 32;
-        }
-
-        throw new IllegalArgumentException(String.format(Messages.ENCODING_TYPE_NOT_SUPPORTED,
-            obj.getClass()));
+        return encoding.getValueSize(obj);
     }
 }

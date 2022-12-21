@@ -29,8 +29,8 @@ public final class ResourceSkuInner {
     private String name;
 
     /*
-     * Specifies the tier of virtual machines in a scale set.<br /><br />
-     * Possible Values:<br /><br /> **Standard**<br /><br /> **Basic**
+     * Specifies the tier of virtual machines in a scale set.<br /><br /> Possible Values:<br /><br /> **Standard**<br
+     * /><br /> **Basic**
      */
     @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private String tier;
@@ -66,8 +66,7 @@ public final class ResourceSkuInner {
     private List<String> locations;
 
     /*
-     * A list of locations and availability zones in those locations where the
-     * SKU is available.
+     * A list of locations and availability zones in those locations where the SKU is available.
      */
     @JsonProperty(value = "locationInfo", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceSkuLocationInfo> locationInfo;
@@ -91,11 +90,14 @@ public final class ResourceSkuInner {
     private List<ResourceSkuCapabilities> capabilities;
 
     /*
-     * The restrictions because of which SKU cannot be used. This is empty if
-     * there are no restrictions.
+     * The restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
      */
     @JsonProperty(value = "restrictions", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceSkuRestrictions> restrictions;
+
+    /** Creates an instance of ResourceSkuInner class. */
+    public ResourceSkuInner() {
+    }
 
     /**
      * Get the resourceType property: The type of resource the SKU applies to.

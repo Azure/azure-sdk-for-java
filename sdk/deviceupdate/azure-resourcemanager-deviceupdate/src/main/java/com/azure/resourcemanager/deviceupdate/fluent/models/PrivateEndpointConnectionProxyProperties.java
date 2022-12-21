@@ -12,8 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class PrivateEndpointConnectionProxyProperties {
     /*
-     * The provisioning state of the private endpoint connection proxy
-     * resource.
+     * The provisioning state of the private endpoint connection proxy resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateEndpointConnectionProxyProvisioningState provisioningState;

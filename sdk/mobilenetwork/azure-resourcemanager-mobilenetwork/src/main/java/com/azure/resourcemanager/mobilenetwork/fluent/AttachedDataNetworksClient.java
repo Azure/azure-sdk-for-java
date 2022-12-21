@@ -101,25 +101,6 @@ public interface AttachedDataNetworksClient {
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCoreDataPlaneName The name of the packet core data plane.
      * @param attachedDataNetworkName The name of the attached data network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified attached data network.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AttachedDataNetworkInner get(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName);
-
-    /**
-     * Gets information about the specified attached data network.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param packetCoreControlPlaneName The name of the packet core control plane.
-     * @param packetCoreDataPlaneName The name of the packet core data plane.
-     * @param attachedDataNetworkName The name of the attached data network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -135,7 +116,27 @@ public interface AttachedDataNetworksClient {
         Context context);
 
     /**
-     * Creates or updates an attached data network.
+     * Gets information about the specified attached data network.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param packetCoreControlPlaneName The name of the packet core control plane.
+     * @param packetCoreDataPlaneName The name of the packet core data plane.
+     * @param attachedDataNetworkName The name of the attached data network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified attached data network.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AttachedDataNetworkInner get(
+        String resourceGroupName,
+        String packetCoreControlPlaneName,
+        String packetCoreDataPlaneName,
+        String attachedDataNetworkName);
+
+    /**
+     * Creates or updates an attached data network. Must be created in the same location as its parent packet core data
+     * plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -156,7 +157,8 @@ public interface AttachedDataNetworksClient {
         AttachedDataNetworkInner parameters);
 
     /**
-     * Creates or updates an attached data network.
+     * Creates or updates an attached data network. Must be created in the same location as its parent packet core data
+     * plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -179,7 +181,8 @@ public interface AttachedDataNetworksClient {
         Context context);
 
     /**
-     * Creates or updates an attached data network.
+     * Creates or updates an attached data network. Must be created in the same location as its parent packet core data
+     * plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -200,7 +203,8 @@ public interface AttachedDataNetworksClient {
         AttachedDataNetworkInner parameters);
 
     /**
-     * Creates or updates an attached data network.
+     * Creates or updates an attached data network. Must be created in the same location as its parent packet core data
+     * plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -223,28 +227,7 @@ public interface AttachedDataNetworksClient {
         Context context);
 
     /**
-     * Updates an attached data network update tags.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param packetCoreControlPlaneName The name of the packet core control plane.
-     * @param packetCoreDataPlaneName The name of the packet core data plane.
-     * @param attachedDataNetworkName The name of the attached data network.
-     * @param parameters Parameters supplied to update attached data network tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return attached data network resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AttachedDataNetworkInner updateTags(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName,
-        TagsObject parameters);
-
-    /**
-     * Updates an attached data network update tags.
+     * Updates an attached data network tags.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -267,7 +250,28 @@ public interface AttachedDataNetworksClient {
         Context context);
 
     /**
-     * Gets all the data networks associated with a packet core data plane.
+     * Updates an attached data network tags.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param packetCoreControlPlaneName The name of the packet core control plane.
+     * @param packetCoreDataPlaneName The name of the packet core data plane.
+     * @param attachedDataNetworkName The name of the attached data network.
+     * @param parameters Parameters supplied to update attached data network tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return attached data network resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AttachedDataNetworkInner updateTags(
+        String resourceGroupName,
+        String packetCoreControlPlaneName,
+        String packetCoreDataPlaneName,
+        String attachedDataNetworkName,
+        TagsObject parameters);
+
+    /**
+     * Gets all the attached data networks associated with a packet core data plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -275,7 +279,7 @@ public interface AttachedDataNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the data networks associated with a packet core data plane as paginated response with {@link
+     * @return all the attached data networks associated with a packet core data plane as paginated response with {@link
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -283,7 +287,7 @@ public interface AttachedDataNetworksClient {
         String resourceGroupName, String packetCoreControlPlaneName, String packetCoreDataPlaneName);
 
     /**
-     * Gets all the data networks associated with a packet core data plane.
+     * Gets all the attached data networks associated with a packet core data plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
@@ -292,7 +296,7 @@ public interface AttachedDataNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the data networks associated with a packet core data plane as paginated response with {@link
+     * @return all the attached data networks associated with a packet core data plane as paginated response with {@link
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)

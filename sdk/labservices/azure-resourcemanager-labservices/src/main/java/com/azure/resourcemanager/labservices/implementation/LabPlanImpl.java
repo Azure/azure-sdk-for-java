@@ -10,6 +10,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.labservices.fluent.models.LabPlanInner;
 import com.azure.resourcemanager.labservices.models.AutoShutdownProfile;
 import com.azure.resourcemanager.labservices.models.ConnectionProfile;
+import com.azure.resourcemanager.labservices.models.Identity;
 import com.azure.resourcemanager.labservices.models.LabPlan;
 import com.azure.resourcemanager.labservices.models.LabPlanNetworkProfile;
 import com.azure.resourcemanager.labservices.models.LabPlanUpdate;
@@ -52,6 +53,10 @@ public final class LabPlanImpl implements LabPlan, LabPlan.Definition, LabPlan.U
 
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public Identity identity() {
+        return this.innerModel().identity();
     }
 
     public ProvisioningState provisioningState() {
@@ -97,6 +102,10 @@ public final class LabPlanImpl implements LabPlan, LabPlan.Definition, LabPlan.U
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public LabPlanInner innerModel() {
@@ -210,6 +219,16 @@ public final class LabPlanImpl implements LabPlan, LabPlan.Definition, LabPlan.U
     public LabPlanImpl withTags(Map<String, String> tags) {
         this.innerModel().withTags(tags);
         return this;
+    }
+
+    public LabPlanImpl withIdentity(Identity identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateBody.withIdentity(identity);
+            return this;
+        }
     }
 
     public LabPlanImpl withDefaultConnectionProfile(ConnectionProfile defaultConnectionProfile) {

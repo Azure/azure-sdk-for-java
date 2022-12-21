@@ -22,7 +22,7 @@ public interface NodeReportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list dsc nodes operation.
+     * @return the response model for the list dsc nodes operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DscNodeReportInner> listByNode(String resourceGroupName, String automationAccountName, String nodeId);
@@ -38,7 +38,7 @@ public interface NodeReportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list dsc nodes operation.
+     * @return the response model for the list dsc nodes operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DscNodeReportInner> listByNode(
@@ -70,7 +70,7 @@ public interface NodeReportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the dsc node report type.
+     * @return definition of the dsc node report type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DscNodeReportInner> getWithResponse(
@@ -102,7 +102,7 @@ public interface NodeReportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return any object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Object> getContentWithResponse(

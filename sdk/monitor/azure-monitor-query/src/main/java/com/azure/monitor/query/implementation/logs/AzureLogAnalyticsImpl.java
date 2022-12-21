@@ -50,25 +50,25 @@ public final class AzureLogAnalyticsImpl {
         return this.serializerAdapter;
     }
 
-    /** The QueriesImpl object to access its operations. */
+    /** The Queries object to access its operations. */
     private final QueriesImpl queries;
 
     /**
-     * Gets the QueriesImpl object to access its operations.
+     * Gets the Queries object to access its operations.
      *
-     * @return the QueriesImpl object.
+     * @return the Queries object.
      */
     public QueriesImpl getQueries() {
         return this.queries;
     }
 
-    /** The MetadatasImpl object to access its operations. */
+    /** The Metadatas object to access its operations. */
     private final MetadatasImpl metadatas;
 
     /**
-     * Gets the MetadatasImpl object to access its operations.
+     * Gets the Metadatas object to access its operations.
      *
-     * @return the MetadatasImpl object.
+     * @return the Metadatas object.
      */
     public MetadatasImpl getMetadatas() {
         return this.metadatas;

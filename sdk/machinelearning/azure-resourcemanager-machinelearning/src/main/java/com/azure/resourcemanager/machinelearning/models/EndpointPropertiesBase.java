@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.resourcemanager.machinelearning.fluent.models.EndpointPropertiesBaseInner;
+import java.net.URL;
 import java.util.Map;
 
 /** An immutable client-side representation of EndpointPropertiesBase. */
@@ -44,14 +45,14 @@ public interface EndpointPropertiesBase {
      *
      * @return the scoringUri value.
      */
-    String scoringUri();
+    URL scoringUri();
 
     /**
      * Gets the swaggerUri property: Endpoint Swagger URI.
      *
      * @return the swaggerUri value.
      */
-    String swaggerUri();
+    URL swaggerUri();
 
     /**
      * Gets the inner com.azure.resourcemanager.machinelearning.fluent.models.EndpointPropertiesBaseInner object.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DiskCreateOptionTypes. */
+/** Specifies how the virtual machine should be created. */
 public final class DiskCreateOptionTypes extends ExpandableStringEnum<DiskCreateOptionTypes> {
     /** Static value Unknown for DiskCreateOptionTypes. */
     public static final DiskCreateOptionTypes UNKNOWN = fromString("Unknown");
@@ -27,7 +27,11 @@ public final class DiskCreateOptionTypes extends ExpandableStringEnum<DiskCreate
         return fromString(name, DiskCreateOptionTypes.class);
     }
 
-    /** @return known DiskCreateOptionTypes values. */
+    /**
+     * Gets known DiskCreateOptionTypes values.
+     *
+     * @return known DiskCreateOptionTypes values.
+     */
     public static Collection<DiskCreateOptionTypes> values() {
         return values(DiskCreateOptionTypes.class);
     }

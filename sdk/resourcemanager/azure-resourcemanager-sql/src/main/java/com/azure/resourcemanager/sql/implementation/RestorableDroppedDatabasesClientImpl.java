@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -24,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.RestorableDroppedDatabasesClient;
 import com.azure.resourcemanager.sql.fluent.models.RestorableDroppedDatabaseInner;
 import com.azure.resourcemanager.sql.models.RestorableDroppedDatabaseListResult;
@@ -32,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RestorableDroppedDatabasesClient. */
 public final class RestorableDroppedDatabasesClientImpl implements RestorableDroppedDatabasesClient {
-    private final ClientLogger logger = new ClientLogger(RestorableDroppedDatabasesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RestorableDroppedDatabasesService service;
 
@@ -60,7 +58,7 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientR")
     private interface RestorableDroppedDatabasesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/restorableDroppedDatabases/{restorableDroppededDatabaseId}")
@@ -73,9 +71,10 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
             @PathParam("restorableDroppededDatabaseId") String restorableDroppededDatabaseId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/restorableDroppedDatabases")
@@ -87,6 +86,7 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -101,7 +101,8 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted database that can be restored.
+     * @return a deleted database that can be restored along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RestorableDroppedDatabaseInner>> getWithResponseAsync(
@@ -132,6 +133,7 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
                         "Parameter restorableDroppededDatabaseId is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -143,8 +145,9 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
                             resourceGroupName,
                             serverName,
                             restorableDroppededDatabaseId,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -159,7 +162,8 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted database that can be restored.
+     * @return a deleted database that can be restored along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RestorableDroppedDatabaseInner>> getWithResponseAsync(
@@ -190,6 +194,7 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
                         "Parameter restorableDroppededDatabaseId is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -199,6 +204,7 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
                 resourceGroupName,
                 serverName,
                 restorableDroppededDatabaseId,
+                accept,
                 context);
     }
 
@@ -213,20 +219,13 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted database that can be restored.
+     * @return a deleted database that can be restored on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RestorableDroppedDatabaseInner> getAsync(
         String resourceGroupName, String serverName, String restorableDroppededDatabaseId) {
         return getWithResponseAsync(resourceGroupName, serverName, restorableDroppededDatabaseId)
-            .flatMap(
-                (Response<RestorableDroppedDatabaseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -260,7 +259,7 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted database that can be restored.
+     * @return a deleted database that can be restored along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RestorableDroppedDatabaseInner> getWithResponse(
@@ -277,7 +276,8 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of deleted databases that can be restored.
+     * @return a list of deleted databases that can be restored along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorableDroppedDatabaseInner>> listByServerSinglePageAsync(
@@ -302,6 +302,7 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -312,12 +313,13 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             serverName,
+                            accept,
                             context))
             .<PagedResponse<RestorableDroppedDatabaseInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -330,7 +332,8 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of deleted databases that can be restored.
+     * @return a list of deleted databases that can be restored along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorableDroppedDatabaseInner>> listByServerSinglePageAsync(
@@ -355,6 +358,7 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
         final String apiVersion = "2014-04-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByServer(
@@ -363,6 +367,7 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 serverName,
+                accept,
                 context)
             .map(
                 res ->
@@ -379,7 +384,7 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of deleted databases that can be restored.
+     * @return a list of deleted databases that can be restored as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RestorableDroppedDatabaseInner> listByServerAsync(String resourceGroupName, String serverName) {
@@ -396,7 +401,7 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of deleted databases that can be restored.
+     * @return a list of deleted databases that can be restored as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RestorableDroppedDatabaseInner> listByServerAsync(
@@ -413,7 +418,7 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of deleted databases that can be restored.
+     * @return a list of deleted databases that can be restored as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorableDroppedDatabaseInner> listByServer(String resourceGroupName, String serverName) {
@@ -430,7 +435,7 @@ public final class RestorableDroppedDatabasesClientImpl implements RestorableDro
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of deleted databases that can be restored.
+     * @return a list of deleted databases that can be restored as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorableDroppedDatabaseInner> listByServer(

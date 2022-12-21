@@ -28,11 +28,15 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
+import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
+import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
+import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -84,6 +88,7 @@ public class DataLakeServiceClientBuilder implements
     private ClientOptions clientOptions = new ClientOptions();
     private Configuration configuration;
     private DataLakeServiceVersion version;
+    private FileSystemEncryptionScopeOptions fileSystemEncryptionScopeOptions;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link DataLakeServiceClient
@@ -235,6 +240,37 @@ public class DataLakeServiceClientBuilder implements
             "'credential' cannot be null.");
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
+        return this;
+    }
+
+    /**
+     * Sets the connection string to connect to the service.
+     *
+     * @param connectionString Connection string of the storage account.
+     * @return the updated DataLakeServiceClientBuilder
+     * @throws IllegalArgumentException If {@code connectionString} in invalid.
+     * @throws NullPointerException If {@code connectionString} is {@code null}.
+     */
+    public DataLakeServiceClientBuilder connectionString(String connectionString) {
+        StorageConnectionString storageConnectionString
+            = StorageConnectionString.create(connectionString, LOGGER);
+        StorageEndpoint endpoint = storageConnectionString.getBlobEndpoint();
+        if (endpoint == null || endpoint.getPrimaryUri() == null) {
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException(
+                    "connectionString missing required settings to derive service endpoint."));
+        }
+        this.endpoint(endpoint.getPrimaryUri());
+        if (storageConnectionString.getAccountName() != null) {
+            this.accountName = storageConnectionString.getAccountName();
+        }
+        StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
+        if (authSettings.getType() == StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY) {
+            this.credential(new StorageSharedKeyCredential(authSettings.getAccount().getName(),
+                authSettings.getAccount().getAccessKey()));
+        } else if (authSettings.getType() == StorageAuthenticationSettings.Type.SAS_TOKEN) {
+            this.sasToken(authSettings.getSasToken());
+        }
         return this;
     }
 
@@ -453,6 +489,31 @@ public class DataLakeServiceClientBuilder implements
             blobServiceClientBuilder.customerProvidedKey(Transforms.toBlobCustomerProvidedKey(customerProvidedKey));
         }
 
+        return this;
+    }
+
+    /**
+     * Sets the {@link FileSystemEncryptionScopeOptions encryption scope} that is used to determine how path contents are
+     * encrypted on the server.
+     *
+     * @param fileSystemEncryptionScopeOptions Encryption scope containing the encryption key information.
+     * @return the updated DataLakeServiceClientBuilder object
+     */
+    public DataLakeServiceClientBuilder fileSystemEncryptionScopeOptions(FileSystemEncryptionScopeOptions fileSystemEncryptionScopeOptions) {
+        this.fileSystemEncryptionScopeOptions = fileSystemEncryptionScopeOptions;
+        blobServiceClientBuilder
+            .blobContainerEncryptionScope(Transforms.toBlobContainerEncryptionScope(fileSystemEncryptionScopeOptions));
+        return this;
+    }
+
+    /**
+     * Sets the encryption scope that is used to encrypt path contents on the server.
+     *
+     * @param encryptionScope Encryption scope containing the encryption key information.
+     * @return the updated DataLakeServiceClientBuilder object
+     */
+    public DataLakeServiceClientBuilder encryptionScope(String encryptionScope) {
+        blobServiceClientBuilder.encryptionScope(encryptionScope);
         return this;
     }
 }

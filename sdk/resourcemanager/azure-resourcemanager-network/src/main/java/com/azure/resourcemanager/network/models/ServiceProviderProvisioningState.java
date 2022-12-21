@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ServiceProviderProvisioningState. */
+/** The ServiceProviderProvisioningState state of the resource. */
 public final class ServiceProviderProvisioningState extends ExpandableStringEnum<ServiceProviderProvisioningState> {
     /** Static value NotProvisioned for ServiceProviderProvisioningState. */
     public static final ServiceProviderProvisioningState NOT_PROVISIONED = fromString("NotProvisioned");

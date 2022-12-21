@@ -16,7 +16,7 @@ import java.util.Arrays;
 /** Samples for Clusters CreateOrUpdate. */
 public final class ClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-02-01/examples/KustoClustersCreateOrUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoClustersCreateOrUpdate.json
      */
     /**
      * Sample code: KustoClustersCreateOrUpdate.

@@ -30,7 +30,11 @@ public final class SyncDirection extends ExpandableStringEnum<SyncDirection> {
         return fromString(name, SyncDirection.class);
     }
 
-    /** @return known SyncDirection values. */
+    /**
+     * Gets known SyncDirection values.
+     *
+     * @return known SyncDirection values.
+     */
     public static Collection<SyncDirection> values() {
         return values(SyncDirection.class);
     }

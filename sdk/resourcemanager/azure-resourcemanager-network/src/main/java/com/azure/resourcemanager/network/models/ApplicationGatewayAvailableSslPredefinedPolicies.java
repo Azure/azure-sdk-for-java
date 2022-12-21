@@ -24,6 +24,10 @@ public final class ApplicationGatewayAvailableSslPredefinedPolicies {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ApplicationGatewayAvailableSslPredefinedPolicies class. */
+    public ApplicationGatewayAvailableSslPredefinedPolicies() {
+    }
+
     /**
      * Get the value property: List of available Ssl predefined policy.
      *

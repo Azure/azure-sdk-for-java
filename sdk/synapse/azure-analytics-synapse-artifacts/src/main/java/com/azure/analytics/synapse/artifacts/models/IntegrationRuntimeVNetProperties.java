@@ -29,8 +29,7 @@ public final class IntegrationRuntimeVNetProperties {
     private String subnet;
 
     /*
-     * Resource IDs of the public IP addresses that this integration runtime
-     * will use.
+     * Resource IDs of the public IP addresses that this integration runtime will use.
      */
     @JsonProperty(value = "publicIPs")
     private List<String> publicIPs;

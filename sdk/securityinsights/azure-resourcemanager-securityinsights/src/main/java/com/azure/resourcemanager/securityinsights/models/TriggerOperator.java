@@ -7,7 +7,7 @@ package com.azure.resourcemanager.securityinsights.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for TriggerOperator. */
+/** The operation against the threshold that triggers alert rule. */
 public enum TriggerOperator {
     /** Enum value GreaterThan. */
     GREATER_THAN("GreaterThan"),
@@ -36,6 +36,9 @@ public enum TriggerOperator {
      */
     @JsonCreator
     public static TriggerOperator fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         TriggerOperator[] items = TriggerOperator.values();
         for (TriggerOperator item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,6 +48,7 @@ public enum TriggerOperator {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

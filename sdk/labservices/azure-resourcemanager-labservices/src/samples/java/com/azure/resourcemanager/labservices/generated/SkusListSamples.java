@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Skus List. */
 public final class SkusListSamples {
     /*
-     * x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/preview/2021-11-15-preview/examples/Skus/listSkus.json
+     * x-ms-original-file: specification/labservices/resource-manager/Microsoft.LabServices/stable/2022-08-01/examples/Skus/listSkus.json
      */
     /**
      * Sample code: listSkus.

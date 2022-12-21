@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProcessorArchitecture. */
+/** VPN client Processor Architecture. */
 public final class ProcessorArchitecture extends ExpandableStringEnum<ProcessorArchitecture> {
     /** Static value Amd64 for ProcessorArchitecture. */
     public static final ProcessorArchitecture AMD64 = fromString("Amd64");

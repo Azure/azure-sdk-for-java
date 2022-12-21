@@ -13,14 +13,18 @@ import java.util.Map;
 
 /** MLTable data definition. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataType")
-@JsonTypeName("MLTable")
+@JsonTypeName("mltable")
 @Fluent
-public final class MLTableData extends DataVersionBaseDetails {
+public final class MLTableData extends DataVersionBaseProperties {
     /*
      * Uris referenced in the MLTable definition (required for lineage)
      */
     @JsonProperty(value = "referencedUris")
     private List<String> referencedUris;
+
+    /** Creates an instance of MLTableData class. */
+    public MLTableData() {
+    }
 
     /**
      * Get the referencedUris property: Uris referenced in the MLTable definition (required for lineage).

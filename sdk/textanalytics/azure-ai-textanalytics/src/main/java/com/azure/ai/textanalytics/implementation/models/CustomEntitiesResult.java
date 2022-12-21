@@ -36,4 +36,32 @@ public final class CustomEntitiesResult extends CustomResult {
         this.documents = documents;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomEntitiesResult setErrors(List<DocumentError> errors) {
+        super.setErrors(errors);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomEntitiesResult setStatistics(RequestStatistics statistics) {
+        super.setStatistics(statistics);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomEntitiesResult setProjectName(String projectName) {
+        super.setProjectName(projectName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CustomEntitiesResult setDeploymentName(String deploymentName) {
+        super.setDeploymentName(deploymentName);
+        return this;
+    }
 }

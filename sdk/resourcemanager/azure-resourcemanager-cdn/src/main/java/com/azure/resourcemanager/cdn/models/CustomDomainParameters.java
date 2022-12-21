@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.models.CustomDomainPropertiesParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The customDomain JSON object required for custom domain creation or update. */
 @Fluent
 public final class CustomDomainParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomDomainParameters.class);
-
     /*
-     * The JSON object that contains the properties of the custom domain to
-     * create.
+     * The JSON object that contains the properties of the custom domain to create.
      */
     @JsonProperty(value = "properties")
     private CustomDomainPropertiesParameters innerProperties;

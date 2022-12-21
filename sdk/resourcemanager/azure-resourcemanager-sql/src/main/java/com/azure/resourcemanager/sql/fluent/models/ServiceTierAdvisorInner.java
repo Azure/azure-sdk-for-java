@@ -5,160 +5,30 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.SloUsageMetric;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
 /** Represents a Service Tier Advisor. */
-@JsonFlatten
 @Immutable
-public class ServiceTierAdvisorInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceTierAdvisorInner.class);
-
+public final class ServiceTierAdvisorInner extends ProxyResource {
     /*
-     * The observation period start (ISO8601 format).
+     * The properties representing the resource.
      */
-    @JsonProperty(value = "properties.observationPeriodStart", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime observationPeriodStart;
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private ServiceTierAdvisorProperties innerProperties;
 
-    /*
-     * The observation period start (ISO8601 format).
+    /**
+     * Get the innerProperties property: The properties representing the resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.observationPeriodEnd", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime observationPeriodEnd;
-
-    /*
-     * The activeTimeRatio for service tier advisor.
-     */
-    @JsonProperty(value = "properties.activeTimeRatio", access = JsonProperty.Access.WRITE_ONLY)
-    private Double activeTimeRatio;
-
-    /*
-     * Gets or sets minDtu for service tier advisor.
-     */
-    @JsonProperty(value = "properties.minDtu", access = JsonProperty.Access.WRITE_ONLY)
-    private Double minDtu;
-
-    /*
-     * Gets or sets avgDtu for service tier advisor.
-     */
-    @JsonProperty(value = "properties.avgDtu", access = JsonProperty.Access.WRITE_ONLY)
-    private Double avgDtu;
-
-    /*
-     * Gets or sets maxDtu for service tier advisor.
-     */
-    @JsonProperty(value = "properties.maxDtu", access = JsonProperty.Access.WRITE_ONLY)
-    private Double maxDtu;
-
-    /*
-     * Gets or sets maxSizeInGB for service tier advisor.
-     */
-    @JsonProperty(value = "properties.maxSizeInGB", access = JsonProperty.Access.WRITE_ONLY)
-    private Double maxSizeInGB;
-
-    /*
-     * Gets or sets serviceLevelObjectiveUsageMetrics for the service tier
-     * advisor.
-     */
-    @JsonProperty(value = "properties.serviceLevelObjectiveUsageMetrics", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SloUsageMetric> serviceLevelObjectiveUsageMetrics;
-
-    /*
-     * Gets or sets currentServiceLevelObjective for service tier advisor.
-     */
-    @JsonProperty(value = "properties.currentServiceLevelObjective", access = JsonProperty.Access.WRITE_ONLY)
-    private String currentServiceLevelObjective;
-
-    /*
-     * Gets or sets currentServiceLevelObjectiveId for service tier advisor.
-     */
-    @JsonProperty(value = "properties.currentServiceLevelObjectiveId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID currentServiceLevelObjectiveId;
-
-    /*
-     * Gets or sets usageBasedRecommendationServiceLevelObjective for service
-     * tier advisor.
-     */
-    @JsonProperty(
-        value = "properties.usageBasedRecommendationServiceLevelObjective",
-        access = JsonProperty.Access.WRITE_ONLY)
-    private String usageBasedRecommendationServiceLevelObjective;
-
-    /*
-     * Gets or sets usageBasedRecommendationServiceLevelObjectiveId for service
-     * tier advisor.
-     */
-    @JsonProperty(
-        value = "properties.usageBasedRecommendationServiceLevelObjectiveId",
-        access = JsonProperty.Access.WRITE_ONLY)
-    private UUID usageBasedRecommendationServiceLevelObjectiveId;
-
-    /*
-     * Gets or sets databaseSizeBasedRecommendationServiceLevelObjective for
-     * service tier advisor.
-     */
-    @JsonProperty(
-        value = "properties.databaseSizeBasedRecommendationServiceLevelObjective",
-        access = JsonProperty.Access.WRITE_ONLY)
-    private String databaseSizeBasedRecommendationServiceLevelObjective;
-
-    /*
-     * Gets or sets databaseSizeBasedRecommendationServiceLevelObjectiveId for
-     * service tier advisor.
-     */
-    @JsonProperty(
-        value = "properties.databaseSizeBasedRecommendationServiceLevelObjectiveId",
-        access = JsonProperty.Access.WRITE_ONLY)
-    private UUID databaseSizeBasedRecommendationServiceLevelObjectiveId;
-
-    /*
-     * Gets or sets disasterPlanBasedRecommendationServiceLevelObjective for
-     * service tier advisor.
-     */
-    @JsonProperty(
-        value = "properties.disasterPlanBasedRecommendationServiceLevelObjective",
-        access = JsonProperty.Access.WRITE_ONLY)
-    private String disasterPlanBasedRecommendationServiceLevelObjective;
-
-    /*
-     * Gets or sets disasterPlanBasedRecommendationServiceLevelObjectiveId for
-     * service tier advisor.
-     */
-    @JsonProperty(
-        value = "properties.disasterPlanBasedRecommendationServiceLevelObjectiveId",
-        access = JsonProperty.Access.WRITE_ONLY)
-    private UUID disasterPlanBasedRecommendationServiceLevelObjectiveId;
-
-    /*
-     * Gets or sets overallRecommendationServiceLevelObjective for service tier
-     * advisor.
-     */
-    @JsonProperty(
-        value = "properties.overallRecommendationServiceLevelObjective",
-        access = JsonProperty.Access.WRITE_ONLY)
-    private String overallRecommendationServiceLevelObjective;
-
-    /*
-     * Gets or sets overallRecommendationServiceLevelObjectiveId for service
-     * tier advisor.
-     */
-    @JsonProperty(
-        value = "properties.overallRecommendationServiceLevelObjectiveId",
-        access = JsonProperty.Access.WRITE_ONLY)
-    private UUID overallRecommendationServiceLevelObjectiveId;
-
-    /*
-     * Gets or sets confidence for service tier advisor.
-     */
-    @JsonProperty(value = "properties.confidence", access = JsonProperty.Access.WRITE_ONLY)
-    private Double confidence;
+    private ServiceTierAdvisorProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the observationPeriodStart property: The observation period start (ISO8601 format).
@@ -166,7 +36,7 @@ public class ServiceTierAdvisorInner extends ProxyResource {
      * @return the observationPeriodStart value.
      */
     public OffsetDateTime observationPeriodStart() {
-        return this.observationPeriodStart;
+        return this.innerProperties() == null ? null : this.innerProperties().observationPeriodStart();
     }
 
     /**
@@ -175,7 +45,7 @@ public class ServiceTierAdvisorInner extends ProxyResource {
      * @return the observationPeriodEnd value.
      */
     public OffsetDateTime observationPeriodEnd() {
-        return this.observationPeriodEnd;
+        return this.innerProperties() == null ? null : this.innerProperties().observationPeriodEnd();
     }
 
     /**
@@ -184,7 +54,7 @@ public class ServiceTierAdvisorInner extends ProxyResource {
      * @return the activeTimeRatio value.
      */
     public Double activeTimeRatio() {
-        return this.activeTimeRatio;
+        return this.innerProperties() == null ? null : this.innerProperties().activeTimeRatio();
     }
 
     /**
@@ -193,7 +63,7 @@ public class ServiceTierAdvisorInner extends ProxyResource {
      * @return the minDtu value.
      */
     public Double minDtu() {
-        return this.minDtu;
+        return this.innerProperties() == null ? null : this.innerProperties().minDtu();
     }
 
     /**
@@ -202,7 +72,7 @@ public class ServiceTierAdvisorInner extends ProxyResource {
      * @return the avgDtu value.
      */
     public Double avgDtu() {
-        return this.avgDtu;
+        return this.innerProperties() == null ? null : this.innerProperties().avgDtu();
     }
 
     /**
@@ -211,7 +81,7 @@ public class ServiceTierAdvisorInner extends ProxyResource {
      * @return the maxDtu value.
      */
     public Double maxDtu() {
-        return this.maxDtu;
+        return this.innerProperties() == null ? null : this.innerProperties().maxDtu();
     }
 
     /**
@@ -220,7 +90,7 @@ public class ServiceTierAdvisorInner extends ProxyResource {
      * @return the maxSizeInGB value.
      */
     public Double maxSizeInGB() {
-        return this.maxSizeInGB;
+        return this.innerProperties() == null ? null : this.innerProperties().maxSizeInGB();
     }
 
     /**
@@ -230,7 +100,7 @@ public class ServiceTierAdvisorInner extends ProxyResource {
      * @return the serviceLevelObjectiveUsageMetrics value.
      */
     public List<SloUsageMetric> serviceLevelObjectiveUsageMetrics() {
-        return this.serviceLevelObjectiveUsageMetrics;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceLevelObjectiveUsageMetrics();
     }
 
     /**
@@ -240,7 +110,7 @@ public class ServiceTierAdvisorInner extends ProxyResource {
      * @return the currentServiceLevelObjective value.
      */
     public String currentServiceLevelObjective() {
-        return this.currentServiceLevelObjective;
+        return this.innerProperties() == null ? null : this.innerProperties().currentServiceLevelObjective();
     }
 
     /**
@@ -250,7 +120,7 @@ public class ServiceTierAdvisorInner extends ProxyResource {
      * @return the currentServiceLevelObjectiveId value.
      */
     public UUID currentServiceLevelObjectiveId() {
-        return this.currentServiceLevelObjectiveId;
+        return this.innerProperties() == null ? null : this.innerProperties().currentServiceLevelObjectiveId();
     }
 
     /**
@@ -260,7 +130,9 @@ public class ServiceTierAdvisorInner extends ProxyResource {
      * @return the usageBasedRecommendationServiceLevelObjective value.
      */
     public String usageBasedRecommendationServiceLevelObjective() {
-        return this.usageBasedRecommendationServiceLevelObjective;
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().usageBasedRecommendationServiceLevelObjective();
     }
 
     /**
@@ -270,7 +142,9 @@ public class ServiceTierAdvisorInner extends ProxyResource {
      * @return the usageBasedRecommendationServiceLevelObjectiveId value.
      */
     public UUID usageBasedRecommendationServiceLevelObjectiveId() {
-        return this.usageBasedRecommendationServiceLevelObjectiveId;
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().usageBasedRecommendationServiceLevelObjectiveId();
     }
 
     /**
@@ -280,7 +154,9 @@ public class ServiceTierAdvisorInner extends ProxyResource {
      * @return the databaseSizeBasedRecommendationServiceLevelObjective value.
      */
     public String databaseSizeBasedRecommendationServiceLevelObjective() {
-        return this.databaseSizeBasedRecommendationServiceLevelObjective;
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().databaseSizeBasedRecommendationServiceLevelObjective();
     }
 
     /**
@@ -290,7 +166,9 @@ public class ServiceTierAdvisorInner extends ProxyResource {
      * @return the databaseSizeBasedRecommendationServiceLevelObjectiveId value.
      */
     public UUID databaseSizeBasedRecommendationServiceLevelObjectiveId() {
-        return this.databaseSizeBasedRecommendationServiceLevelObjectiveId;
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().databaseSizeBasedRecommendationServiceLevelObjectiveId();
     }
 
     /**
@@ -300,7 +178,9 @@ public class ServiceTierAdvisorInner extends ProxyResource {
      * @return the disasterPlanBasedRecommendationServiceLevelObjective value.
      */
     public String disasterPlanBasedRecommendationServiceLevelObjective() {
-        return this.disasterPlanBasedRecommendationServiceLevelObjective;
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().disasterPlanBasedRecommendationServiceLevelObjective();
     }
 
     /**
@@ -310,7 +190,9 @@ public class ServiceTierAdvisorInner extends ProxyResource {
      * @return the disasterPlanBasedRecommendationServiceLevelObjectiveId value.
      */
     public UUID disasterPlanBasedRecommendationServiceLevelObjectiveId() {
-        return this.disasterPlanBasedRecommendationServiceLevelObjectiveId;
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().disasterPlanBasedRecommendationServiceLevelObjectiveId();
     }
 
     /**
@@ -320,7 +202,9 @@ public class ServiceTierAdvisorInner extends ProxyResource {
      * @return the overallRecommendationServiceLevelObjective value.
      */
     public String overallRecommendationServiceLevelObjective() {
-        return this.overallRecommendationServiceLevelObjective;
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().overallRecommendationServiceLevelObjective();
     }
 
     /**
@@ -330,7 +214,9 @@ public class ServiceTierAdvisorInner extends ProxyResource {
      * @return the overallRecommendationServiceLevelObjectiveId value.
      */
     public UUID overallRecommendationServiceLevelObjectiveId() {
-        return this.overallRecommendationServiceLevelObjectiveId;
+        return this.innerProperties() == null
+            ? null
+            : this.innerProperties().overallRecommendationServiceLevelObjectiveId();
     }
 
     /**
@@ -339,7 +225,7 @@ public class ServiceTierAdvisorInner extends ProxyResource {
      * @return the confidence value.
      */
     public Double confidence() {
-        return this.confidence;
+        return this.innerProperties() == null ? null : this.innerProperties().confidence();
     }
 
     /**
@@ -348,8 +234,8 @@ public class ServiceTierAdvisorInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (serviceLevelObjectiveUsageMetrics() != null) {
-            serviceLevelObjectiveUsageMetrics().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

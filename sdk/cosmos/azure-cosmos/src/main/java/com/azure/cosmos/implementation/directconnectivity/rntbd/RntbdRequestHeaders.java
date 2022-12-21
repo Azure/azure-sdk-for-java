@@ -119,6 +119,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.addIsClientEncrypted(headers);
         this.addIntendedCollectionRid(headers);
         this.addCorrelatedActivityId(headers);
+        this.addSDKSupportedCapabilities(headers);
 
         // Normal headers (Strings, Ints, Longs, etc.)
 
@@ -161,6 +162,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.fillTokenFromHeader(headers, this::shouldBatchContinueOnError, HttpHeaders.SHOULD_BATCH_CONTINUE_ON_ERROR);
         this.fillTokenFromHeader(headers, this::isBatchOrdered, HttpHeaders.IS_BATCH_ORDERED);
         this.fillTokenFromHeader(headers, this::getCorrelatedActivityId, HttpHeaders.CORRELATED_ACTIVITY_ID);
+        this.fillTokenFromHeader(headers, this::getSDKSupportedCapabilities, HttpHeaders.SDK_SUPPORTED_CAPABILITIES);
 
         // Will be null in case of direct, which is fine - BE will use the value slice the connection context this.
         // When this is used in Gateway, the header value will be populated with the proxied HTTP request's header,
@@ -601,6 +603,10 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
     private RntbdToken isBatchOrdered() {
         return this.get(RntbdRequestHeader.IsBatchOrdered);
+    }
+
+    private RntbdToken getSDKSupportedCapabilities() {
+        return this.get(RntbdRequestHeader.SDKSupportedCapabilities);
     }
 
     private void addAimHeader(final Map<String, String> headers) {
@@ -1106,6 +1112,10 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
                     case Paths.USER_DEFINED_TYPES_PATH_SEGMENT:
                         this.getUserDefinedTypeName().setValue(fragments[3]);
                         break;
+                    default:
+                        final String reason = String.format(Locale.ROOT, RMResources.InvalidResourceAddress,
+                            value, address);
+                        throw new IllegalStateException(reason);
                 }
             }
 
@@ -1135,6 +1145,10 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
                     case Paths.SCHEMAS_PATH_SEGMENT:
                         this.getSchemaName().setValue(fragments[5]);
                         break;
+                    default:
+                        final String reason = String.format(Locale.ROOT, RMResources.InvalidResourceAddress,
+                            value, address);
+                        throw new IllegalStateException(reason);
                 }
             }
 
@@ -1143,6 +1157,10 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
                     case Paths.ATTACHMENTS_PATH_SEGMENT:
                         this.getAttachmentName().setValue(fragments[7]);
                         break;
+                    default:
+                        final String reason = String.format(Locale.ROOT, RMResources.InvalidResourceAddress,
+                            value, address);
+                        throw new IllegalStateException(reason);
                 }
             }
         }
@@ -1240,6 +1258,13 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         final String value = headers.get(HttpHeaders.PREFER);
         if (StringUtils.isNotEmpty(value) && value.contains(HeaderValues.PREFER_RETURN_MINIMAL)) {
             this.getReturnPreference().setValue(true);
+        }
+    }
+
+    private void addSDKSupportedCapabilities(final Map<String, String> headers) {
+        final String value = headers.get(HttpHeaders.SDK_SUPPORTED_CAPABILITIES);
+        if (StringUtils.isNotEmpty(value)) {
+            this.getSDKSupportedCapabilities().setValue(Long.valueOf(value));
         }
     }
 

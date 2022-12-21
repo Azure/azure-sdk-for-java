@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Log specification of operation. */
 @Fluent
 public final class LogSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogSpecification.class);
-
     /*
      * Name of log specification.
      */

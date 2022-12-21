@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TriggerType. */
+/** The way the vault upgrade was triggered. */
 public final class TriggerType extends ExpandableStringEnum<TriggerType> {
     /** Static value UserTriggered for TriggerType. */
     public static final TriggerType USER_TRIGGERED = fromString("UserTriggered");
@@ -27,7 +27,11 @@ public final class TriggerType extends ExpandableStringEnum<TriggerType> {
         return fromString(name, TriggerType.class);
     }
 
-    /** @return known TriggerType values. */
+    /**
+     * Gets known TriggerType values.
+     *
+     * @return known TriggerType values.
+     */
     public static Collection<TriggerType> values() {
         return values(TriggerType.class);
     }

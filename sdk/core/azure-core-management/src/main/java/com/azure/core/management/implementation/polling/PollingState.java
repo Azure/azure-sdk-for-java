@@ -78,7 +78,7 @@ public final class PollingState {
             && httpMethod != HttpMethod.POST
             && httpMethod != HttpMethod.DELETE) {
             throw new IllegalArgumentException("Long-running-operation supported only"
-                + "for PUT, PATCH, POST or DELETE verb.");
+                + " for PUT, PATCH, POST or DELETE verb.");
         }
         PollingState pollingState = new PollingState(serializerAdapter,
             lroHttpRequest.getHttpMethod(),

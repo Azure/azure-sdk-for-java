@@ -7,12 +7,11 @@ package com.azure.resourcemanager.cdn.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.cdn.models.SharedPrivateLinkResourceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -21,8 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class AfdOriginInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AfdOriginInner.class);
-
     /*
      * The JSON object that contains the properties of the origin.
      */
@@ -258,7 +255,7 @@ public final class AfdOriginInner extends ProxyResource {
      *
      * @return the sharedPrivateLinkResource value.
      */
-    public Object sharedPrivateLinkResource() {
+    public SharedPrivateLinkResourceProperties sharedPrivateLinkResource() {
         return this.innerProperties() == null ? null : this.innerProperties().sharedPrivateLinkResource();
     }
 
@@ -268,7 +265,7 @@ public final class AfdOriginInner extends ProxyResource {
      * @param sharedPrivateLinkResource the sharedPrivateLinkResource value to set.
      * @return the AfdOriginInner object itself.
      */
-    public AfdOriginInner withSharedPrivateLinkResource(Object sharedPrivateLinkResource) {
+    public AfdOriginInner withSharedPrivateLinkResource(SharedPrivateLinkResourceProperties sharedPrivateLinkResource) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AfdOriginProperties();
         }

@@ -20,11 +20,14 @@ public final class ManagedClusterAccessProfileInner extends Resource {
     private AccessProfile innerProperties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of ManagedClusterAccessProfileInner class. */
+    public ManagedClusterAccessProfileInner() {
+    }
 
     /**
      * Get the innerProperties property: AccessProfile of a managed cluster.

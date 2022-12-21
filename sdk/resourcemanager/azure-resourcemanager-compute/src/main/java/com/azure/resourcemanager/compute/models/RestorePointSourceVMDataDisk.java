@@ -29,8 +29,7 @@ public final class RestorePointSourceVMDataDisk {
     private CachingTypes caching;
 
     /*
-     * Gets the initial disk size in GB for blank data disks, and the new
-     * desired size for existing OS and Data disks.
+     * Gets the initial disk size in GB for blank data disks, and the new desired size for existing OS and Data disks.
      */
     @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
@@ -46,6 +45,10 @@ public final class RestorePointSourceVMDataDisk {
      */
     @JsonProperty(value = "diskRestorePoint")
     private ApiEntityReference diskRestorePoint;
+
+    /** Creates an instance of RestorePointSourceVMDataDisk class. */
+    public RestorePointSourceVMDataDisk() {
+    }
 
     /**
      * Get the lun property: Gets the logical unit number.

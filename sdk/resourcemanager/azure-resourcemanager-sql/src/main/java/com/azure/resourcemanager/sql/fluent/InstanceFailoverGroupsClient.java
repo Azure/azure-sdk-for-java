@@ -30,7 +30,7 @@ public interface InstanceFailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
+     * @return a failover group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<InstanceFailoverGroupInner>> getWithResponseAsync(
@@ -46,7 +46,7 @@ public interface InstanceFailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
+     * @return a failover group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<InstanceFailoverGroupInner> getAsync(String resourceGroupName, String locationName, String failoverGroupName);
@@ -77,7 +77,7 @@ public interface InstanceFailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a failover group.
+     * @return a failover group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<InstanceFailoverGroupInner> getWithResponse(
@@ -90,11 +90,11 @@ public interface InstanceFailoverGroupsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param locationName The name of the region where the resource is located.
      * @param failoverGroupName The name of the failover group.
-     * @param parameters An instance failover group.
+     * @param parameters The failover group parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance failover group.
+     * @return an instance failover group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -107,13 +107,13 @@ public interface InstanceFailoverGroupsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param locationName The name of the region where the resource is located.
      * @param failoverGroupName The name of the failover group.
-     * @param parameters An instance failover group.
+     * @param parameters The failover group parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance failover group.
+     * @return the {@link PollerFlux} for polling of an instance failover group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<InstanceFailoverGroupInner>, InstanceFailoverGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String locationName, String failoverGroupName, InstanceFailoverGroupInner parameters);
 
@@ -124,13 +124,13 @@ public interface InstanceFailoverGroupsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param locationName The name of the region where the resource is located.
      * @param failoverGroupName The name of the failover group.
-     * @param parameters An instance failover group.
+     * @param parameters The failover group parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance failover group.
+     * @return the {@link SyncPoller} for polling of an instance failover group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<InstanceFailoverGroupInner>, InstanceFailoverGroupInner> beginCreateOrUpdate(
         String resourceGroupName, String locationName, String failoverGroupName, InstanceFailoverGroupInner parameters);
 
@@ -141,14 +141,14 @@ public interface InstanceFailoverGroupsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param locationName The name of the region where the resource is located.
      * @param failoverGroupName The name of the failover group.
-     * @param parameters An instance failover group.
+     * @param parameters The failover group parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance failover group.
+     * @return the {@link SyncPoller} for polling of an instance failover group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<InstanceFailoverGroupInner>, InstanceFailoverGroupInner> beginCreateOrUpdate(
         String resourceGroupName,
         String locationName,
@@ -163,11 +163,11 @@ public interface InstanceFailoverGroupsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param locationName The name of the region where the resource is located.
      * @param failoverGroupName The name of the failover group.
-     * @param parameters An instance failover group.
+     * @param parameters The failover group parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance failover group.
+     * @return an instance failover group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<InstanceFailoverGroupInner> createOrUpdateAsync(
@@ -180,7 +180,7 @@ public interface InstanceFailoverGroupsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param locationName The name of the region where the resource is located.
      * @param failoverGroupName The name of the failover group.
-     * @param parameters An instance failover group.
+     * @param parameters The failover group parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -197,7 +197,7 @@ public interface InstanceFailoverGroupsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param locationName The name of the region where the resource is located.
      * @param failoverGroupName The name of the failover group.
-     * @param parameters An instance failover group.
+     * @param parameters The failover group parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -222,7 +222,7 @@ public interface InstanceFailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -238,9 +238,9 @@ public interface InstanceFailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String locationName, String failoverGroupName);
 
@@ -254,9 +254,9 @@ public interface InstanceFailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String locationName, String failoverGroupName);
 
@@ -271,9 +271,9 @@ public interface InstanceFailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String locationName, String failoverGroupName, Context context);
 
@@ -287,7 +287,7 @@ public interface InstanceFailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String locationName, String failoverGroupName);
@@ -330,7 +330,7 @@ public interface InstanceFailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of instance failover groups.
+     * @return a list of instance failover groups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<InstanceFailoverGroupInner> listByLocationAsync(String resourceGroupName, String locationName);
@@ -344,7 +344,7 @@ public interface InstanceFailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of instance failover groups.
+     * @return a list of instance failover groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<InstanceFailoverGroupInner> listByLocation(String resourceGroupName, String locationName);
@@ -359,7 +359,7 @@ public interface InstanceFailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of instance failover groups.
+     * @return a list of instance failover groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<InstanceFailoverGroupInner> listByLocation(
@@ -375,7 +375,7 @@ public interface InstanceFailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance failover group.
+     * @return an instance failover group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(
@@ -391,9 +391,9 @@ public interface InstanceFailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance failover group.
+     * @return the {@link PollerFlux} for polling of an instance failover group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<InstanceFailoverGroupInner>, InstanceFailoverGroupInner> beginFailoverAsync(
         String resourceGroupName, String locationName, String failoverGroupName);
 
@@ -407,9 +407,9 @@ public interface InstanceFailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance failover group.
+     * @return the {@link SyncPoller} for polling of an instance failover group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<InstanceFailoverGroupInner>, InstanceFailoverGroupInner> beginFailover(
         String resourceGroupName, String locationName, String failoverGroupName);
 
@@ -424,9 +424,9 @@ public interface InstanceFailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance failover group.
+     * @return the {@link SyncPoller} for polling of an instance failover group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<InstanceFailoverGroupInner>, InstanceFailoverGroupInner> beginFailover(
         String resourceGroupName, String locationName, String failoverGroupName, Context context);
 
@@ -440,7 +440,7 @@ public interface InstanceFailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance failover group.
+     * @return an instance failover group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<InstanceFailoverGroupInner> failoverAsync(
@@ -489,7 +489,7 @@ public interface InstanceFailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance failover group.
+     * @return an instance failover group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> forceFailoverAllowDataLossWithResponseAsync(
@@ -506,9 +506,9 @@ public interface InstanceFailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance failover group.
+     * @return the {@link PollerFlux} for polling of an instance failover group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<InstanceFailoverGroupInner>, InstanceFailoverGroupInner> beginForceFailoverAllowDataLossAsync(
         String resourceGroupName, String locationName, String failoverGroupName);
 
@@ -523,9 +523,9 @@ public interface InstanceFailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance failover group.
+     * @return the {@link SyncPoller} for polling of an instance failover group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<InstanceFailoverGroupInner>, InstanceFailoverGroupInner> beginForceFailoverAllowDataLoss(
         String resourceGroupName, String locationName, String failoverGroupName);
 
@@ -541,9 +541,9 @@ public interface InstanceFailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance failover group.
+     * @return the {@link SyncPoller} for polling of an instance failover group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<InstanceFailoverGroupInner>, InstanceFailoverGroupInner> beginForceFailoverAllowDataLoss(
         String resourceGroupName, String locationName, String failoverGroupName, Context context);
 
@@ -558,7 +558,7 @@ public interface InstanceFailoverGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instance failover group.
+     * @return an instance failover group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<InstanceFailoverGroupInner> forceFailoverAllowDataLossAsync(

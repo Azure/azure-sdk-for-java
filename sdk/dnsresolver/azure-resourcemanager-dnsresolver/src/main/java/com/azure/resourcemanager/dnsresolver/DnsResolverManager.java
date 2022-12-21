@@ -10,11 +10,13 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
@@ -84,6 +86,19 @@ public final class DnsResolverManager {
     }
 
     /**
+     * Creates an instance of DnsResolver service API entry point.
+     *
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the DnsResolver service API instance.
+     */
+    public static DnsResolverManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new DnsResolverManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create DnsResolverManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
@@ -94,13 +109,14 @@ public final class DnsResolverManager {
 
     /** The Configurable allowing configurations to be set. */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
         private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -162,15 +178,30 @@ public final class DnsResolverManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         *
+         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval =
+                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -192,7 +223,7 @@ public final class DnsResolverManager {
                 .append("-")
                 .append("com.azure.resourcemanager.dnsresolver")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -210,10 +241,15 @@ public final class DnsResolverManager {
                 scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
             }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
             policies
                 .addAll(
@@ -244,7 +280,11 @@ public final class DnsResolverManager {
         }
     }
 
-    /** @return Resource collection API of DnsResolvers. */
+    /**
+     * Gets the resource collection API of DnsResolvers. It manages DnsResolver.
+     *
+     * @return Resource collection API of DnsResolvers.
+     */
     public DnsResolvers dnsResolvers() {
         if (this.dnsResolvers == null) {
             this.dnsResolvers = new DnsResolversImpl(clientObject.getDnsResolvers(), this);
@@ -252,7 +292,11 @@ public final class DnsResolverManager {
         return dnsResolvers;
     }
 
-    /** @return Resource collection API of InboundEndpoints. */
+    /**
+     * Gets the resource collection API of InboundEndpoints. It manages InboundEndpoint.
+     *
+     * @return Resource collection API of InboundEndpoints.
+     */
     public InboundEndpoints inboundEndpoints() {
         if (this.inboundEndpoints == null) {
             this.inboundEndpoints = new InboundEndpointsImpl(clientObject.getInboundEndpoints(), this);
@@ -260,7 +304,11 @@ public final class DnsResolverManager {
         return inboundEndpoints;
     }
 
-    /** @return Resource collection API of OutboundEndpoints. */
+    /**
+     * Gets the resource collection API of OutboundEndpoints. It manages OutboundEndpoint.
+     *
+     * @return Resource collection API of OutboundEndpoints.
+     */
     public OutboundEndpoints outboundEndpoints() {
         if (this.outboundEndpoints == null) {
             this.outboundEndpoints = new OutboundEndpointsImpl(clientObject.getOutboundEndpoints(), this);
@@ -268,7 +316,11 @@ public final class DnsResolverManager {
         return outboundEndpoints;
     }
 
-    /** @return Resource collection API of DnsForwardingRulesets. */
+    /**
+     * Gets the resource collection API of DnsForwardingRulesets. It manages DnsForwardingRuleset.
+     *
+     * @return Resource collection API of DnsForwardingRulesets.
+     */
     public DnsForwardingRulesets dnsForwardingRulesets() {
         if (this.dnsForwardingRulesets == null) {
             this.dnsForwardingRulesets = new DnsForwardingRulesetsImpl(clientObject.getDnsForwardingRulesets(), this);
@@ -276,7 +328,11 @@ public final class DnsResolverManager {
         return dnsForwardingRulesets;
     }
 
-    /** @return Resource collection API of ForwardingRules. */
+    /**
+     * Gets the resource collection API of ForwardingRules. It manages ForwardingRule.
+     *
+     * @return Resource collection API of ForwardingRules.
+     */
     public ForwardingRules forwardingRules() {
         if (this.forwardingRules == null) {
             this.forwardingRules = new ForwardingRulesImpl(clientObject.getForwardingRules(), this);
@@ -284,7 +340,11 @@ public final class DnsResolverManager {
         return forwardingRules;
     }
 
-    /** @return Resource collection API of VirtualNetworkLinks. */
+    /**
+     * Gets the resource collection API of VirtualNetworkLinks. It manages VirtualNetworkLink.
+     *
+     * @return Resource collection API of VirtualNetworkLinks.
+     */
     public VirtualNetworkLinks virtualNetworkLinks() {
         if (this.virtualNetworkLinks == null) {
             this.virtualNetworkLinks = new VirtualNetworkLinksImpl(clientObject.getVirtualNetworkLinks(), this);

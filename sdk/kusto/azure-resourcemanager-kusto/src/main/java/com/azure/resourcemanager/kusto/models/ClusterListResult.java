@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.models.ClusterInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list Kusto clusters operation response. */
 @Fluent
 public final class ClusterListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterListResult.class);
-
     /*
      * The list of Kusto clusters.
      */

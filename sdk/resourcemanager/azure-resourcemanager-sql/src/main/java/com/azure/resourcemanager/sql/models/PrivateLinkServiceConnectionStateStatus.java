@@ -34,7 +34,11 @@ public final class PrivateLinkServiceConnectionStateStatus
         return fromString(name, PrivateLinkServiceConnectionStateStatus.class);
     }
 
-    /** @return known PrivateLinkServiceConnectionStateStatus values. */
+    /**
+     * Gets known PrivateLinkServiceConnectionStateStatus values.
+     *
+     * @return known PrivateLinkServiceConnectionStateStatus values.
+     */
     public static Collection<PrivateLinkServiceConnectionStateStatus> values() {
         return values(PrivateLinkServiceConnectionStateStatus.class);
     }

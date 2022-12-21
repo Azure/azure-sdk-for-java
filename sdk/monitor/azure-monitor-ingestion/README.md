@@ -21,9 +21,10 @@ that you create in Log Analytics workspace. You can even extend the schema of bu
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-monitor-ingestion</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
 
 ### Create the client
 
@@ -38,9 +39,11 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.5.2</version>
+    <version>1.5.4</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
+
 Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
 #### Synchronous Logs Ingestion client
@@ -94,6 +97,11 @@ workspace. The target table must exist before you can send data to it. The follo
 - [Syslog](https://docs.microsoft.com/azure/azure-monitor/reference/tables/syslog)
 - [WindowsEvents](https://docs.microsoft.com/azure/azure-monitor/reference/tables/windowsevent)
 
+### Logs retrieval
+The logs that were uploaded using this library can be queried using the 
+[Azure Monitor Query](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-query#readme) 
+client library.
+
 ## Examples
 
 - [Upload custom logs](#upload-custom-logs)
@@ -136,6 +144,18 @@ UploadLogsResult result = client.upload("<data-collection-rule-id>", "<stream-na
 System.out.println("Logs upload result status " + result.getStatus());
 ```
 
+### Handle logs ingestion response
+
+The `upload` API returns `UploadLogsResult`. The hierarchy of the response is:
+```
+UploadLogsResult
+|--- status (UploadLogsStatus enum with values - success, partial failure or failure)
+|--- errors (list of `UploadLogsError` objects)
+    |--- responseError (ResponseError)
+        |--- code 
+        |--- message
+    |--- failedLogs (list of logs objects - the logs that failed to upload)
+```
 ## Troubleshooting
 
 ### Enabling Logging

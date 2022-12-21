@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.AfdStateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The JSON object that contains the properties of the Rule Set to create. */
 @Immutable
 public final class RuleSetProperties extends AfdStateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuleSetProperties.class);
-
     /*
      * The name of the profile which holds the rule set.
      */

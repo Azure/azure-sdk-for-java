@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Monitor Metrics destination. */
 @Fluent
 public class AzureMonitorMetricsDestination {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureMonitorMetricsDestination.class);
-
     /*
      * A friendly name for the destination.
-     * This name should be unique across all destinations (regardless of type)
-     * within the data collection rule.
+     * This name should be unique across all destinations (regardless of type) within the data collection rule.
      */
     @JsonProperty(value = "name")
     private String name;

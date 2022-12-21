@@ -24,7 +24,11 @@ public final class FhirVersion extends ExpandableStringEnum<FhirVersion> {
         return fromString(name, FhirVersion.class);
     }
 
-    /** @return known FhirVersion values. */
+    /**
+     * Gets known FhirVersion values.
+     *
+     * @return known FhirVersion values.
+     */
     public static Collection<FhirVersion> values() {
         return values(FhirVersion.class);
     }

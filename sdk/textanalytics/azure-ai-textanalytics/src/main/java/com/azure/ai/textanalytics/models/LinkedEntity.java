@@ -45,7 +45,7 @@ public final class LinkedEntity {
     /*
      * Bing Entity Search unique identifier of the recognized entity. Use in conjunction with
      * the Bing Entity Search API to fetch additional relevant information. Only available for API version
-     * v3.1 and up.
+     * v3.1 and newer.
      */
     private String bingEntitySearchApiId;
 
@@ -131,7 +131,7 @@ public final class LinkedEntity {
     /**
      * Gets the bingEntitySearchApiId property: Bing Entity Search unique identifier of the recognized entity.
      * Use in conjunction with the Bing Entity Search SDK to fetch additional relevant information. Only available
-     * for API version v3.1 and up.
+     * for API version v3.1 and newer.
      *
      * @return The bingEntitySearchApiId value.
      */

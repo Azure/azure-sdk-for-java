@@ -8,7 +8,13 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Expander. */
+/**
+ * The expander to use when scaling up
+ *
+ * <p>If not specified, the default is 'random'. See
+ * [expanders](https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-expanders) for
+ * more information.
+ */
 public final class Expander extends ExpandableStringEnum<Expander> {
     /** Static value least-waste for Expander. */
     public static final Expander LEAST_WASTE = fromString("least-waste");

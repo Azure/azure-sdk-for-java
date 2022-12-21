@@ -37,7 +37,7 @@ public interface DscNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
@@ -67,7 +67,7 @@ public interface DscNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of a DscNode.
+     * @return definition of a DscNode along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DscNodeInner> getWithResponse(
@@ -103,7 +103,7 @@ public interface DscNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of a DscNode.
+     * @return definition of a DscNode along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DscNodeInner> updateWithResponse(
@@ -121,7 +121,7 @@ public interface DscNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list dsc nodes operation.
+     * @return the response model for the list dsc nodes operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DscNodeInner> listByAutomationAccount(String resourceGroupName, String automationAccountName);
@@ -139,7 +139,7 @@ public interface DscNodesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list dsc nodes operation.
+     * @return the response model for the list dsc nodes operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DscNodeInner> listByAutomationAccount(

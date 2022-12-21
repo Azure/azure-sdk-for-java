@@ -5,75 +5,31 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.JobStatus;
 import com.azure.resourcemanager.automation.models.RunbookAssociationProperty;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 /** Job collection item properties. */
-@JsonFlatten
 @Fluent
-public class JobCollectionItemInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobCollectionItemInner.class);
-
+public final class JobCollectionItemInner extends ProxyResource {
     /*
-     * The runbook association.
+     * Job properties.
      */
-    @JsonProperty(value = "properties.runbook", access = JsonProperty.Access.WRITE_ONLY)
-    private RunbookAssociationProperty runbook;
+    @JsonProperty(value = "properties", required = true)
+    private JobCollectionItemProperties innerProperties = new JobCollectionItemProperties();
 
-    /*
-     * The id of the job.
+    /**
+     * Get the innerProperties property: Job properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.jobId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID jobId;
-
-    /*
-     * The creation time of the job.
-     */
-    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationTime;
-
-    /*
-     * The status of the job.
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private JobStatus status;
-
-    /*
-     * The start time of the job.
-     */
-    @JsonProperty(value = "properties.startTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime startTime;
-
-    /*
-     * The end time of the job.
-     */
-    @JsonProperty(value = "properties.endTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime endTime;
-
-    /*
-     * The last modified time of the job.
-     */
-    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModifiedTime;
-
-    /*
-     * The provisioning state of a resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * Specifies the runOn group name where the job was executed.
-     */
-    @JsonProperty(value = "properties.runOn")
-    private String runOn;
+    private JobCollectionItemProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the runbook property: The runbook association.
@@ -81,7 +37,7 @@ public class JobCollectionItemInner extends ProxyResource {
      * @return the runbook value.
      */
     public RunbookAssociationProperty runbook() {
-        return this.runbook;
+        return this.innerProperties() == null ? null : this.innerProperties().runbook();
     }
 
     /**
@@ -90,7 +46,7 @@ public class JobCollectionItemInner extends ProxyResource {
      * @return the jobId value.
      */
     public UUID jobId() {
-        return this.jobId;
+        return this.innerProperties() == null ? null : this.innerProperties().jobId();
     }
 
     /**
@@ -99,7 +55,7 @@ public class JobCollectionItemInner extends ProxyResource {
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
-        return this.creationTime;
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
     }
 
     /**
@@ -108,7 +64,7 @@ public class JobCollectionItemInner extends ProxyResource {
      * @return the status value.
      */
     public JobStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -117,7 +73,7 @@ public class JobCollectionItemInner extends ProxyResource {
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
-        return this.startTime;
+        return this.innerProperties() == null ? null : this.innerProperties().startTime();
     }
 
     /**
@@ -126,7 +82,7 @@ public class JobCollectionItemInner extends ProxyResource {
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
-        return this.endTime;
+        return this.innerProperties() == null ? null : this.innerProperties().endTime();
     }
 
     /**
@@ -135,7 +91,7 @@ public class JobCollectionItemInner extends ProxyResource {
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
     }
 
     /**
@@ -144,7 +100,7 @@ public class JobCollectionItemInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -153,7 +109,7 @@ public class JobCollectionItemInner extends ProxyResource {
      * @return the runOn value.
      */
     public String runOn() {
-        return this.runOn;
+        return this.innerProperties() == null ? null : this.innerProperties().runOn();
     }
 
     /**
@@ -163,7 +119,10 @@ public class JobCollectionItemInner extends ProxyResource {
      * @return the JobCollectionItemInner object itself.
      */
     public JobCollectionItemInner withRunOn(String runOn) {
-        this.runOn = runOn;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobCollectionItemProperties();
+        }
+        this.innerProperties().withRunOn(runOn);
         return this;
     }
 
@@ -173,8 +132,15 @@ public class JobCollectionItemInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (runbook() != null) {
-            runbook().validate();
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model JobCollectionItemInner"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(JobCollectionItemInner.class);
 }

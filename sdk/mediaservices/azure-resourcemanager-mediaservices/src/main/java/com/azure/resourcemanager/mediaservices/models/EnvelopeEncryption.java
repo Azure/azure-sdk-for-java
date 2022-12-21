@@ -24,20 +24,17 @@ public final class EnvelopeEncryption {
     private List<TrackSelection> clearTracks;
 
     /*
-     * Representing default content key for each encryption scheme and separate
-     * content keys for specific tracks
+     * Representing default content key for each encryption scheme and separate content keys for specific tracks
      */
     @JsonProperty(value = "contentKeys")
     private StreamingPolicyContentKeys contentKeys;
 
     /*
-     * Template for the URL of the custom service delivering keys to end user
-     * players.  Not required when using Azure Media Services for issuing keys.
-     * The template supports replaceable tokens that the service will update at
-     * runtime with the value specific to the request.  The currently supported
-     * token values are {AlternativeMediaId}, which is replaced with the value
-     * of StreamingLocatorId.AlternativeMediaId, and {ContentKeyId}, which is
-     * replaced with the value of identifier of the key being requested.
+     * Template for the URL of the custom service delivering keys to end user players.  Not required when using Azure
+     * Media Services for issuing keys.  The template supports replaceable tokens that the service will update at
+     * runtime with the value specific to the request.  The currently supported token values are {AlternativeMediaId},
+     * which is replaced with the value of StreamingLocatorId.AlternativeMediaId, and {ContentKeyId}, which is replaced
+     * with the value of identifier of the key being requested.
      */
     @JsonProperty(value = "customKeyAcquisitionUrlTemplate")
     private String customKeyAcquisitionUrlTemplate;

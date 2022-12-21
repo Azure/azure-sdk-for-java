@@ -6,6 +6,7 @@ module com.azure.core.http.okhttp {
 
     requires okhttp3;
     requires okio;
+    requires kotlin.stdlib;
 
     exports com.azure.core.http.okhttp;
 

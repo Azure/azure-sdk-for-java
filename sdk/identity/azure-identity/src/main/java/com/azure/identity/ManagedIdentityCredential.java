@@ -11,6 +11,8 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.ManagedIdentityParameters;
+import com.azure.identity.implementation.ManagedIdentityType;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
@@ -48,7 +50,6 @@ public final class ManagedIdentityCredential implements TokenCredential {
         Configuration configuration = identityClientOptions.getConfiguration() == null
             ? Configuration.getGlobalConfiguration().clone() : identityClientOptions.getConfiguration();
 
-
         /*
          * Choose credential based on available environment variables in this order:
          *
@@ -62,18 +63,33 @@ public final class ManagedIdentityCredential implements TokenCredential {
          */
 
         if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
-            managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, clientBuilder.build());
+            managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, clientBuilder
+                .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.APP_SERVICE,
+                    identityClientOptions, configuration))
+                .build());
         } else if (configuration.contains(Configuration.PROPERTY_IDENTITY_ENDPOINT)) {
             if (configuration.contains(Configuration.PROPERTY_IDENTITY_HEADER)) {
                 if (configuration.get(PROPERTY_IDENTITY_SERVER_THUMBPRINT) != null) {
-                    managedIdentityServiceCredential = new ServiceFabricMsiCredential(clientId, clientBuilder.build());
+                    managedIdentityServiceCredential = new ServiceFabricMsiCredential(clientId, clientBuilder
+                        .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.SERVICE_FABRIC,
+                            identityClientOptions, configuration))
+                        .build());
                 } else {
-                    managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, clientBuilder.build());
+                    managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, clientBuilder
+                        .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.APP_SERVICE,
+                            identityClientOptions, configuration))
+                        .build());
                 }
             } else if (configuration.get(PROPERTY_IMDS_ENDPOINT) != null) {
-                managedIdentityServiceCredential = new ArcIdentityCredential(clientId, clientBuilder.build());
+                managedIdentityServiceCredential = new ArcIdentityCredential(clientId, clientBuilder
+                    .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.ARC,
+                        identityClientOptions, configuration))
+                    .build());
             } else {
-                managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, clientBuilder.build());
+                managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, clientBuilder
+                    .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.VM,
+                        identityClientOptions, configuration))
+                    .build());
             }
         } else if (configuration.contains(Configuration.PROPERTY_AZURE_TENANT_ID)
                 && configuration.get(AZURE_FEDERATED_TOKEN_FILE) != null) {
@@ -83,11 +99,49 @@ public final class ManagedIdentityCredential implements TokenCredential {
             clientBuilder.tenantId(configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID));
             clientBuilder.clientAssertionPath(configuration.get(AZURE_FEDERATED_TOKEN_FILE));
             clientBuilder.clientAssertionTimeout(Duration.ofMinutes(5));
-            managedIdentityServiceCredential = new AksExchangeTokenCredential(clientIdentifier, clientBuilder.build());
+            managedIdentityServiceCredential = new AksExchangeTokenCredential(clientIdentifier, clientBuilder
+                .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.AKS,
+                    identityClientOptions, configuration))
+                .build());
         } else {
-            managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, clientBuilder.build());
+            managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, clientBuilder
+                .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.VM,
+                    identityClientOptions, configuration))
+                .build());
         }
         LoggingUtil.logAvailableEnvironmentVariables(LOGGER, configuration);
+    }
+
+    private IdentityClientOptions updateIdentityClientOptions(ManagedIdentityType managedIdentityType,
+                                             IdentityClientOptions clientOptions, Configuration configuration) {
+        switch (managedIdentityType) {
+            case APP_SERVICE:
+                return clientOptions
+                    .setManagedIdentityType(ManagedIdentityType.APP_SERVICE)
+                    .setManagedIdentityParameters(new ManagedIdentityParameters()
+                        .setMsiEndpoint(configuration.get(Configuration.PROPERTY_MSI_ENDPOINT))
+                        .setMsiSecret(configuration.get(Configuration.PROPERTY_MSI_SECRET))
+                        .setIdentityEndpoint(configuration.get(Configuration.PROPERTY_IDENTITY_ENDPOINT))
+                        .setIdentityHeader(configuration.get(Configuration.PROPERTY_IDENTITY_HEADER)));
+            case SERVICE_FABRIC:
+                return clientOptions
+                    .setManagedIdentityType(ManagedIdentityType.SERVICE_FABRIC)
+                    .setManagedIdentityParameters(new ManagedIdentityParameters()
+                        .setIdentityServerThumbprint(configuration.get(PROPERTY_IDENTITY_SERVER_THUMBPRINT))
+                        .setIdentityEndpoint(configuration.get(Configuration.PROPERTY_IDENTITY_ENDPOINT))
+                        .setIdentityHeader(configuration.get(Configuration.PROPERTY_IDENTITY_HEADER)));
+            case ARC:
+                return clientOptions
+                    .setManagedIdentityType(ManagedIdentityType.ARC)
+                    .setManagedIdentityParameters(new ManagedIdentityParameters()
+                        .setIdentityEndpoint(configuration.get(Configuration.PROPERTY_IDENTITY_ENDPOINT)));
+            case VM:
+                return clientOptions.setManagedIdentityType(ManagedIdentityType.VM);
+            case AKS:
+                return clientOptions.setManagedIdentityType(ManagedIdentityType.AKS);
+            default:
+                return clientOptions;
+        }
     }
 
     /**

@@ -6,19 +6,15 @@ package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.models.DefaultPrincipalsModificationKind;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
 import com.azure.resourcemanager.kusto.models.TableLevelSharingProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Class representing an attached database configuration. */
 @Fluent
 public final class AttachedDatabaseConfigurationInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AttachedDatabaseConfigurationInner.class);
-
     /*
      * Resource location.
      */
@@ -174,6 +170,56 @@ public final class AttachedDatabaseConfigurationInner extends ProxyResource {
             this.innerProperties = new AttachedDatabaseConfigurationProperties();
         }
         this.innerProperties().withTableLevelSharingProperties(tableLevelSharingProperties);
+        return this;
+    }
+
+    /**
+     * Get the databaseNameOverride property: Overrides the original database name. Relevant only when attaching to a
+     * specific database.
+     *
+     * @return the databaseNameOverride value.
+     */
+    public String databaseNameOverride() {
+        return this.innerProperties() == null ? null : this.innerProperties().databaseNameOverride();
+    }
+
+    /**
+     * Set the databaseNameOverride property: Overrides the original database name. Relevant only when attaching to a
+     * specific database.
+     *
+     * @param databaseNameOverride the databaseNameOverride value to set.
+     * @return the AttachedDatabaseConfigurationInner object itself.
+     */
+    public AttachedDatabaseConfigurationInner withDatabaseNameOverride(String databaseNameOverride) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AttachedDatabaseConfigurationProperties();
+        }
+        this.innerProperties().withDatabaseNameOverride(databaseNameOverride);
+        return this;
+    }
+
+    /**
+     * Get the databaseNamePrefix property: Adds a prefix to the attached databases name. When following an entire
+     * cluster, that prefix would be added to all of the databases original names from leader cluster.
+     *
+     * @return the databaseNamePrefix value.
+     */
+    public String databaseNamePrefix() {
+        return this.innerProperties() == null ? null : this.innerProperties().databaseNamePrefix();
+    }
+
+    /**
+     * Set the databaseNamePrefix property: Adds a prefix to the attached databases name. When following an entire
+     * cluster, that prefix would be added to all of the databases original names from leader cluster.
+     *
+     * @param databaseNamePrefix the databaseNamePrefix value to set.
+     * @return the AttachedDatabaseConfigurationInner object itself.
+     */
+    public AttachedDatabaseConfigurationInner withDatabaseNamePrefix(String databaseNamePrefix) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AttachedDatabaseConfigurationProperties();
+        }
+        this.innerProperties().withDatabaseNamePrefix(databaseNamePrefix);
         return this;
     }
 

@@ -3,8 +3,10 @@
 
 package com.azure.resourcemanager.samples;
 
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.kubernetescluster.samples.DeployImageFromContainerRegistryToKubernetes;
 import com.azure.resourcemanager.kubernetescluster.samples.ManageKubernetesCluster;
+import com.azure.resourcemanager.kubernetescluster.samples.ManageKubernetesClusterWithCustomerManagedKey;
 import com.azure.resourcemanager.kubernetescluster.samples.ManagedKubernetesClusterWithAdvancedNetworking;
 import com.jcraft.jsch.JSchException;
 import org.junit.jupiter.api.Assertions;
@@ -28,5 +30,11 @@ public class KubernetesClusterTests extends SamplesTestBase {
         if (!isPlaybackMode()) {
             Assertions.assertTrue(DeployImageFromContainerRegistryToKubernetes.runSample(azureResourceManager, "", ""));
         }
+    }
+
+    @Test
+    @DoNotRecord(skipInPlayback = true)
+    public void testManagedKubernetesClusterWithCustomerManagedKey() {
+        Assertions.assertTrue(ManageKubernetesClusterWithCustomerManagedKey.runSample(azureResourceManager, clientIdFromFile()));
     }
 }

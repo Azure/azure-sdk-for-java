@@ -279,7 +279,7 @@ class CdnEndpointImpl
 
     @Override
     public String provisioningState() {
-        return this.innerModel().provisioningState();
+        return this.innerModel().provisioningState() == null ? null : this.innerModel().provisioningState().toString();
     }
 
     @Override

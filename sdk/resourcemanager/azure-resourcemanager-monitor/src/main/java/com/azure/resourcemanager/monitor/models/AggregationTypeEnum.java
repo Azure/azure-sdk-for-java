@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AggregationTypeEnum. */
+/** the criteria time aggregation types. */
 public final class AggregationTypeEnum extends ExpandableStringEnum<AggregationTypeEnum> {
     /** Static value Average for AggregationTypeEnum. */
     public static final AggregationTypeEnum AVERAGE = fromString("Average");
@@ -36,7 +36,11 @@ public final class AggregationTypeEnum extends ExpandableStringEnum<AggregationT
         return fromString(name, AggregationTypeEnum.class);
     }
 
-    /** @return known AggregationTypeEnum values. */
+    /**
+     * Gets known AggregationTypeEnum values.
+     *
+     * @return known AggregationTypeEnum values.
+     */
     public static Collection<AggregationTypeEnum> values() {
         return values(AggregationTypeEnum.class);
     }

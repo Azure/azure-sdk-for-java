@@ -10,8 +10,8 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearning.fluent.JobsClient;
-import com.azure.resourcemanager.machinelearning.fluent.models.JobBaseDataInner;
-import com.azure.resourcemanager.machinelearning.models.JobBaseData;
+import com.azure.resourcemanager.machinelearning.fluent.models.JobBaseInner;
+import com.azure.resourcemanager.machinelearning.models.JobBase;
 import com.azure.resourcemanager.machinelearning.models.Jobs;
 import com.azure.resourcemanager.machinelearning.models.ListViewType;
 
@@ -28,27 +28,22 @@ public final class JobsImpl implements Jobs {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<JobBaseData> list(String resourceGroupName, String workspaceName) {
-        PagedIterable<JobBaseDataInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new JobBaseDataImpl(inner1, this.manager()));
+    public PagedIterable<JobBase> list(String resourceGroupName, String workspaceName) {
+        PagedIterable<JobBaseInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
+        return Utils.mapPage(inner, inner1 -> new JobBaseImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<JobBaseData> list(
+    public PagedIterable<JobBase> list(
         String resourceGroupName,
         String workspaceName,
         String skip,
         String jobType,
         String tag,
         ListViewType listViewType,
-        Boolean scheduled,
-        String scheduleId,
         Context context) {
-        PagedIterable<JobBaseDataInner> inner =
-            this
-                .serviceClient()
-                .list(
-                    resourceGroupName, workspaceName, skip, jobType, tag, listViewType, scheduled, scheduleId, context);
-        return Utils.mapPage(inner, inner1 -> new JobBaseDataImpl(inner1, this.manager()));
+        PagedIterable<JobBaseInner> inner =
+            this.serviceClient().list(resourceGroupName, workspaceName, skip, jobType, tag, listViewType, context);
+        return Utils.mapPage(inner, inner1 -> new JobBaseImpl(inner1, this.manager()));
     }
 
     public void delete(String resourceGroupName, String workspaceName, String id) {
@@ -59,25 +54,25 @@ public final class JobsImpl implements Jobs {
         this.serviceClient().delete(resourceGroupName, workspaceName, id, context);
     }
 
-    public JobBaseData get(String resourceGroupName, String workspaceName, String id) {
-        JobBaseDataInner inner = this.serviceClient().get(resourceGroupName, workspaceName, id);
-        if (inner != null) {
-            return new JobBaseDataImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<JobBaseData> getWithResponse(
+    public Response<JobBase> getWithResponse(
         String resourceGroupName, String workspaceName, String id, Context context) {
-        Response<JobBaseDataInner> inner =
+        Response<JobBaseInner> inner =
             this.serviceClient().getWithResponse(resourceGroupName, workspaceName, id, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
                 inner.getStatusCode(),
                 inner.getHeaders(),
-                new JobBaseDataImpl(inner.getValue(), this.manager()));
+                new JobBaseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public JobBase get(String resourceGroupName, String workspaceName, String id) {
+        JobBaseInner inner = this.serviceClient().get(resourceGroupName, workspaceName, id);
+        if (inner != null) {
+            return new JobBaseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -87,12 +82,11 @@ public final class JobsImpl implements Jobs {
         this.serviceClient().cancel(resourceGroupName, workspaceName, id);
     }
 
-    public Response<Void> cancelWithResponse(
-        String resourceGroupName, String workspaceName, String id, Context context) {
-        return this.serviceClient().cancelWithResponse(resourceGroupName, workspaceName, id, context);
+    public void cancel(String resourceGroupName, String workspaceName, String id, Context context) {
+        this.serviceClient().cancel(resourceGroupName, workspaceName, id, context);
     }
 
-    public JobBaseData getById(String id) {
+    public JobBase getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -118,7 +112,7 @@ public final class JobsImpl implements Jobs {
         return this.getWithResponse(resourceGroupName, workspaceName, varId, Context.NONE).getValue();
     }
 
-    public Response<JobBaseData> getByIdWithResponse(String id, Context context) {
+    public Response<JobBase> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -204,7 +198,7 @@ public final class JobsImpl implements Jobs {
         return this.serviceManager;
     }
 
-    public JobBaseDataImpl define(String name) {
-        return new JobBaseDataImpl(name, this.manager());
+    public JobBaseImpl define(String name) {
+        return new JobBaseImpl(name, this.manager());
     }
 }

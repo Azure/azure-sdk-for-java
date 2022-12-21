@@ -27,8 +27,7 @@ public final class RestorableDatabaseAccountProperties {
     private OffsetDateTime creationTime;
 
     /*
-     * The time at which the restorable database account has been deleted
-     * (ISO-8601 format).
+     * The time at which the restorable database account has been deleted (ISO-8601 format).
      */
     @JsonProperty(value = "deletionTime")
     private OffsetDateTime deletionTime;

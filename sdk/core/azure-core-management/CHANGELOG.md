@@ -1,6 +1,6 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
+## 1.10.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,46 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+- Deprecated `AzureEnvironment.AZURE_GERMANY`. Removed it from response of `AzureEnvironment.knownEnvironments`.
+
+## 1.9.0 (2022-11-04)
+
+### Other Changes
+
+- Deprecated empty argument constructor in `ExpandableStringEnum` subtypes.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.33.0` to `1.34.0`.
+
+## 1.8.1 (2022-10-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.32.0` to `1.33.0`.
+
+## 1.8.0 (2022-09-01)
+
+### Features Added
+
+- Added new Azure region `Region.QATAR_CENTRAL`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.31.0` to `1.32.0`.
+
+## 1.7.1 (2022-08-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.30.0` to `1.31.0`.
 
 ## 1.7.0 (2022-06-30)
 

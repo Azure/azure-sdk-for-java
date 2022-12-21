@@ -36,4 +36,25 @@ public class LinkedEntitiesDocumentResult extends DocumentResult {
         this.entities = entities;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public LinkedEntitiesDocumentResult setId(String id) {
+        super.setId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LinkedEntitiesDocumentResult setWarnings(List<DocumentWarning> warnings) {
+        super.setWarnings(warnings);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public LinkedEntitiesDocumentResult setStatistics(DocumentStatistics statistics) {
+        super.setStatistics(statistics);
+        return this;
+    }
 }

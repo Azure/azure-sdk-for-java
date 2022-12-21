@@ -9,7 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.machinelearning.fluent.models.CodeContainerDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.CodeContainerInner;
 
 /** An instance of this class provides access to all the operations defined in CodeContainersClient. */
 public interface CodeContainersClient {
@@ -24,7 +24,7 @@ public interface CodeContainersClient {
      * @return a paginated list of CodeContainer entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CodeContainerDataInner> list(String resourceGroupName, String workspaceName);
+    PagedIterable<CodeContainerInner> list(String resourceGroupName, String workspaceName);
 
     /**
      * List containers.
@@ -39,21 +39,8 @@ public interface CodeContainersClient {
      * @return a paginated list of CodeContainer entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CodeContainerDataInner> list(
+    PagedIterable<CodeContainerInner> list(
         String resourceGroupName, String workspaceName, String skip, Context context);
-
-    /**
-     * Delete container.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Container name. This is case-sensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String workspaceName, String name);
 
     /**
      * Delete container.
@@ -71,7 +58,7 @@ public interface CodeContainersClient {
     Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String name, Context context);
 
     /**
-     * Get container.
+     * Delete container.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
@@ -79,10 +66,9 @@ public interface CodeContainersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CodeContainerDataInner get(String resourceGroupName, String workspaceName, String name);
+    void delete(String resourceGroupName, String workspaceName, String name);
 
     /**
      * Get container.
@@ -97,24 +83,22 @@ public interface CodeContainersClient {
      * @return container along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CodeContainerDataInner> getWithResponse(
+    Response<CodeContainerInner> getWithResponse(
         String resourceGroupName, String workspaceName, String name, Context context);
 
     /**
-     * Create or update container.
+     * Get container.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
-     * @param body Container entity to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope.
+     * @return container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CodeContainerDataInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String name, CodeContainerDataInner body);
+    CodeContainerInner get(String resourceGroupName, String workspaceName, String name);
 
     /**
      * Create or update container.
@@ -130,6 +114,22 @@ public interface CodeContainersClient {
      * @return azure Resource Manager resource envelope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CodeContainerDataInner> createOrUpdateWithResponse(
-        String resourceGroupName, String workspaceName, String name, CodeContainerDataInner body, Context context);
+    Response<CodeContainerInner> createOrUpdateWithResponse(
+        String resourceGroupName, String workspaceName, String name, CodeContainerInner body, Context context);
+
+    /**
+     * Create or update container.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name. This is case-sensitive.
+     * @param body Container entity to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Resource Manager resource envelope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CodeContainerInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String name, CodeContainerInner body);
 }

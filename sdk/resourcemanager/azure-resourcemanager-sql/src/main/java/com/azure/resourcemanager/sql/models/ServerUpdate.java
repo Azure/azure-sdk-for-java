@@ -5,74 +5,36 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.sql.fluent.models.ServerProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** An update request for an Azure SQL Database server. */
-@JsonFlatten
 @Fluent
-public class ServerUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerUpdate.class);
+public final class ServerUpdate {
+    /*
+     * Resource properties.
+     */
+    @JsonProperty(value = "properties")
+    private ServerProperties innerProperties;
 
     /*
      * Resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /*
-     * Administrator username for the server. Once created it cannot be
-     * changed.
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.administratorLogin")
-    private String administratorLogin;
-
-    /*
-     * The administrator login password (required for server creation).
-     */
-    @JsonProperty(value = "properties.administratorLoginPassword")
-    private String administratorLoginPassword;
-
-    /*
-     * The version of the server.
-     */
-    @JsonProperty(value = "properties.version")
-    private String version;
-
-    /*
-     * The state of the server.
-     */
-    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private String state;
-
-    /*
-     * The fully qualified domain name of the server.
-     */
-    @JsonProperty(value = "properties.fullyQualifiedDomainName", access = JsonProperty.Access.WRITE_ONLY)
-    private String fullyQualifiedDomainName;
-
-    /*
-     * List of private endpoint connections on a server
-     */
-    @JsonProperty(value = "properties.privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ServerPrivateEndpointConnection> privateEndpointConnections;
-
-    /*
-     * Minimal TLS version. Allowed values: '1.0', '1.1', '1.2'
-     */
-    @JsonProperty(value = "properties.minimalTlsVersion")
-    private String minimalTlsVersion;
-
-    /*
-     * Whether or not public endpoint access is allowed for this server.  Value
-     * is optional but if passed in, must be 'Enabled' or 'Disabled'
-     */
-    @JsonProperty(value = "properties.publicNetworkAccess")
-    private ServerPublicNetworkAccess publicNetworkAccess;
+    private ServerProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the tags property: Resource tags.
@@ -100,7 +62,7 @@ public class ServerUpdate {
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
-        return this.administratorLogin;
+        return this.innerProperties() == null ? null : this.innerProperties().administratorLogin();
     }
 
     /**
@@ -110,7 +72,10 @@ public class ServerUpdate {
      * @return the ServerUpdate object itself.
      */
     public ServerUpdate withAdministratorLogin(String administratorLogin) {
-        this.administratorLogin = administratorLogin;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerProperties();
+        }
+        this.innerProperties().withAdministratorLogin(administratorLogin);
         return this;
     }
 
@@ -120,7 +85,7 @@ public class ServerUpdate {
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
-        return this.administratorLoginPassword;
+        return this.innerProperties() == null ? null : this.innerProperties().administratorLoginPassword();
     }
 
     /**
@@ -130,7 +95,10 @@ public class ServerUpdate {
      * @return the ServerUpdate object itself.
      */
     public ServerUpdate withAdministratorLoginPassword(String administratorLoginPassword) {
-        this.administratorLoginPassword = administratorLoginPassword;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerProperties();
+        }
+        this.innerProperties().withAdministratorLoginPassword(administratorLoginPassword);
         return this;
     }
 
@@ -140,7 +108,7 @@ public class ServerUpdate {
      * @return the version value.
      */
     public String version() {
-        return this.version;
+        return this.innerProperties() == null ? null : this.innerProperties().version();
     }
 
     /**
@@ -150,7 +118,10 @@ public class ServerUpdate {
      * @return the ServerUpdate object itself.
      */
     public ServerUpdate withVersion(String version) {
-        this.version = version;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerProperties();
+        }
+        this.innerProperties().withVersion(version);
         return this;
     }
 
@@ -160,7 +131,7 @@ public class ServerUpdate {
      * @return the state value.
      */
     public String state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -169,7 +140,7 @@ public class ServerUpdate {
      * @return the fullyQualifiedDomainName value.
      */
     public String fullyQualifiedDomainName() {
-        return this.fullyQualifiedDomainName;
+        return this.innerProperties() == null ? null : this.innerProperties().fullyQualifiedDomainName();
     }
 
     /**
@@ -178,7 +149,7 @@ public class ServerUpdate {
      * @return the privateEndpointConnections value.
      */
     public List<ServerPrivateEndpointConnection> privateEndpointConnections() {
-        return this.privateEndpointConnections;
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
     }
 
     /**
@@ -187,7 +158,7 @@ public class ServerUpdate {
      * @return the minimalTlsVersion value.
      */
     public String minimalTlsVersion() {
-        return this.minimalTlsVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().minimalTlsVersion();
     }
 
     /**
@@ -197,7 +168,10 @@ public class ServerUpdate {
      * @return the ServerUpdate object itself.
      */
     public ServerUpdate withMinimalTlsVersion(String minimalTlsVersion) {
-        this.minimalTlsVersion = minimalTlsVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerProperties();
+        }
+        this.innerProperties().withMinimalTlsVersion(minimalTlsVersion);
         return this;
     }
 
@@ -208,7 +182,7 @@ public class ServerUpdate {
      * @return the publicNetworkAccess value.
      */
     public ServerPublicNetworkAccess publicNetworkAccess() {
-        return this.publicNetworkAccess;
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
     }
 
     /**
@@ -219,7 +193,10 @@ public class ServerUpdate {
      * @return the ServerUpdate object itself.
      */
     public ServerUpdate withPublicNetworkAccess(ServerPublicNetworkAccess publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
@@ -229,8 +206,8 @@ public class ServerUpdate {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (privateEndpointConnections() != null) {
-            privateEndpointConnections().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

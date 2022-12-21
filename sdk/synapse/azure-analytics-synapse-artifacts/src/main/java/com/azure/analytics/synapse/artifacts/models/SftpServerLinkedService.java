@@ -19,16 +19,14 @@ import java.util.Map;
 @Fluent
 public class SftpServerLinkedService extends LinkedService {
     /*
-     * The SFTP server host name. Type: string (or Expression with resultType
-     * string).
+     * The SFTP server host name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.host", required = true)
     private Object host;
 
     /*
-     * The TCP port number that the SFTP server uses to listen for client
-     * connections. Default value is 22. Type: integer (or Expression with
-     * resultType integer), minimum: 0.
+     * The TCP port number that the SFTP server uses to listen for client connections. Default value is 22. Type:
+     * integer (or Expression with resultType integer), minimum: 0.
      */
     @JsonProperty(value = "typeProperties.port")
     private Object port;
@@ -40,8 +38,7 @@ public class SftpServerLinkedService extends LinkedService {
     private SftpAuthenticationType authenticationType;
 
     /*
-     * The username used to log on to the SFTP server. Type: string (or
-     * Expression with resultType string).
+     * The username used to log on to the SFTP server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.userName")
     private Object userName;
@@ -53,50 +50,44 @@ public class SftpServerLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
     /*
-     * The SSH private key file path for SshPublicKey authentication. Only
-     * valid for on-premises copy. For on-premises copy with SshPublicKey
-     * authentication, either PrivateKeyPath or PrivateKeyContent should be
-     * specified. SSH private key should be OpenSSH format. Type: string (or
-     * Expression with resultType string).
+     * The SSH private key file path for SshPublicKey authentication. Only valid for on-premises copy. For on-premises
+     * copy with SshPublicKey authentication, either PrivateKeyPath or PrivateKeyContent should be specified. SSH
+     * private key should be OpenSSH format. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.privateKeyPath")
     private Object privateKeyPath;
 
     /*
-     * Base64 encoded SSH private key content for SshPublicKey authentication.
-     * For on-premises copy with SshPublicKey authentication, either
-     * PrivateKeyPath or PrivateKeyContent should be specified. SSH private key
-     * should be OpenSSH format.
+     * Base64 encoded SSH private key content for SshPublicKey authentication. For on-premises copy with SshPublicKey
+     * authentication, either PrivateKeyPath or PrivateKeyContent should be specified. SSH private key should be
+     * OpenSSH format.
      */
     @JsonProperty(value = "typeProperties.privateKeyContent")
     private SecretBase privateKeyContent;
 
     /*
-     * The password to decrypt the SSH private key if the SSH private key is
-     * encrypted.
+     * The password to decrypt the SSH private key if the SSH private key is encrypted.
      */
     @JsonProperty(value = "typeProperties.passPhrase")
     private SecretBase passPhrase;
 
     /*
-     * If true, skip the SSH host key validation. Default value is false. Type:
-     * boolean (or Expression with resultType boolean).
+     * If true, skip the SSH host key validation. Default value is false. Type: boolean (or Expression with resultType
+     * boolean).
      */
     @JsonProperty(value = "typeProperties.skipHostKeyValidation")
     private Object skipHostKeyValidation;
 
     /*
-     * The host key finger-print of the SFTP server. When SkipHostKeyValidation
-     * is false, HostKeyFingerprint should be specified. Type: string (or
-     * Expression with resultType string).
+     * The host key finger-print of the SFTP server. When SkipHostKeyValidation is false, HostKeyFingerprint should be
+     * specified. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.hostKeyFingerprint")
     private Object hostKeyFingerprint;

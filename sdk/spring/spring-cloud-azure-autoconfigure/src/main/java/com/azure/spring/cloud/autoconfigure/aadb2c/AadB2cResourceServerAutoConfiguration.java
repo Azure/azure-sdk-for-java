@@ -5,11 +5,13 @@ package com.azure.spring.cloud.autoconfigure.aadb2c;
 import com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadJwtClaimNames;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AadIssuerJwsKeySelector;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.RestOperationsResourceRetriever;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.validator.AadJwtIssuerValidator;
 import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cPropertiesConfiguration;
 import com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties;
 import com.nimbusds.jose.proc.SecurityContext;
+import com.nimbusds.jose.util.ResourceRetriever;
 import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
@@ -18,6 +20,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -46,14 +49,17 @@ import java.util.List;
 public class AadB2cResourceServerAutoConfiguration {
 
     private final AadB2cProperties properties;
+    private final RestTemplateBuilder restTemplateBuilder;
 
     /**
      * Creates a new instance of {@link AadB2cResourceServerAutoConfiguration}.
      *
      * @param properties the Azure AD B2C properties
+     * @param restTemplateBuilder the restTemplateBuilder
      */
-    public AadB2cResourceServerAutoConfiguration(AadB2cProperties properties) {
+    public AadB2cResourceServerAutoConfiguration(AadB2cProperties properties, RestTemplateBuilder restTemplateBuilder) {
         this.properties = properties;
+        this.restTemplateBuilder = restTemplateBuilder;
     }
 
     /**
@@ -68,20 +74,32 @@ public class AadB2cResourceServerAutoConfiguration {
     }
 
     /**
+     * Declare JWT ResourceRetriever bean.
+     *
+     * @return JWT ResourceRetriever bean
+     */
+    @Bean
+    @ConditionalOnMissingBean(ResourceRetriever.class)
+    public ResourceRetriever jwtResourceRetriever() {
+        return new RestOperationsResourceRetriever(restTemplateBuilder);
+    }
+
+    /**
      * Declare JWTClaimsSetAwareJWSKeySelector bean.
      *
      * @param aadTrustedIssuerRepository the AAD trusted issuer repository
+     * @param resourceRetriever the resource retriever
      * @return JWTClaimsSetAwareJWSKeySelector bean
      */
     @Bean
     @ConditionalOnMissingBean
     public JWTClaimsSetAwareJWSKeySelector<SecurityContext> aadIssuerJwsKeySelector(
-        AadTrustedIssuerRepository aadTrustedIssuerRepository) {
+        AadTrustedIssuerRepository aadTrustedIssuerRepository,
+        ResourceRetriever resourceRetriever) {
         return new AadIssuerJwsKeySelector(
+            restTemplateBuilder,
             aadTrustedIssuerRepository,
-            (int) properties.getJwtConnectTimeout().toMillis(),
-            (int) properties.getJwtReadTimeout().toMillis(),
-            properties.getJwtSizeLimit());
+            resourceRetriever);
     }
 
     /**

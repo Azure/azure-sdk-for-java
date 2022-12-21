@@ -39,6 +39,7 @@ import com.azure.resourcemanager.appservice.fluent.models.ResourceNameAvailabili
 import com.azure.resourcemanager.appservice.fluent.models.SkuInfosInner;
 import com.azure.resourcemanager.appservice.fluent.models.SourceControlInner;
 import com.azure.resourcemanager.appservice.fluent.models.UserInner;
+import com.azure.resourcemanager.appservice.fluent.models.ValidateRequestInner;
 import com.azure.resourcemanager.appservice.fluent.models.ValidateResponseInner;
 import com.azure.resourcemanager.appservice.fluent.models.VnetValidationFailureDetailsInner;
 import com.azure.resourcemanager.appservice.models.BillingMeterCollection;
@@ -51,7 +52,6 @@ import com.azure.resourcemanager.appservice.models.PremierAddOnOfferCollection;
 import com.azure.resourcemanager.appservice.models.ResourceNameAvailabilityRequest;
 import com.azure.resourcemanager.appservice.models.SkuName;
 import com.azure.resourcemanager.appservice.models.SourceControlCollection;
-import com.azure.resourcemanager.appservice.models.ValidateRequest;
 import com.azure.resourcemanager.appservice.models.VnetParameters;
 import reactor.core.publisher.Mono;
 
@@ -167,6 +167,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         Mono<Response<CustomHostnameSitesCollection>> listCustomHostnameSites(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("hostname") String hostname,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
@@ -265,7 +266,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ValidateRequest validateRequest,
+            @BodyParam("application/json") ValidateRequestInner validateRequest,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -1242,13 +1243,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Get custom hostnames under this subscription.
      *
+     * @param hostname Specific hostname.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom hostnames under this subscription along with {@link PagedResponse} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CustomHostnameSitesInner>> listCustomHostnameSitesSinglePageAsync() {
+    private Mono<PagedResponse<CustomHostnameSitesInner>> listCustomHostnameSitesSinglePageAsync(String hostname) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1269,6 +1272,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
                         .listCustomHostnameSites(
                             this.client.getEndpoint(),
                             this.client.getSubscriptionId(),
+                            hostname,
                             this.client.getApiVersion(),
                             accept,
                             context))
@@ -1287,6 +1291,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Get custom hostnames under this subscription.
      *
+     * @param hostname Specific hostname.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1295,7 +1300,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CustomHostnameSitesInner>> listCustomHostnameSitesSinglePageAsync(Context context) {
+    private Mono<PagedResponse<CustomHostnameSitesInner>> listCustomHostnameSitesSinglePageAsync(
+        String hostname, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1314,6 +1320,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             .listCustomHostnameSites(
                 this.client.getEndpoint(),
                 this.client.getSubscriptionId(),
+                hostname,
                 this.client.getApiVersion(),
                 accept,
                 context)
@@ -1331,20 +1338,38 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     /**
      * Get custom hostnames under this subscription.
      *
+     * @param hostname Specific hostname.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom hostnames under this subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CustomHostnameSitesInner> listCustomHostnameSitesAsync() {
+    public PagedFlux<CustomHostnameSitesInner> listCustomHostnameSitesAsync(String hostname) {
         return new PagedFlux<>(
-            () -> listCustomHostnameSitesSinglePageAsync(),
+            () -> listCustomHostnameSitesSinglePageAsync(hostname),
             nextLink -> listCustomHostnameSitesNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get custom hostnames under this subscription.
      *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom hostnames under this subscription as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<CustomHostnameSitesInner> listCustomHostnameSitesAsync() {
+        final String hostname = null;
+        return new PagedFlux<>(
+            () -> listCustomHostnameSitesSinglePageAsync(hostname),
+            nextLink -> listCustomHostnameSitesNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Get custom hostnames under this subscription.
+     *
+     * @param hostname Specific hostname.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1352,9 +1377,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return custom hostnames under this subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CustomHostnameSitesInner> listCustomHostnameSitesAsync(Context context) {
+    private PagedFlux<CustomHostnameSitesInner> listCustomHostnameSitesAsync(String hostname, Context context) {
         return new PagedFlux<>(
-            () -> listCustomHostnameSitesSinglePageAsync(context),
+            () -> listCustomHostnameSitesSinglePageAsync(hostname, context),
             nextLink -> listCustomHostnameSitesNextSinglePageAsync(nextLink, context));
     }
 
@@ -1367,12 +1392,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomHostnameSitesInner> listCustomHostnameSites() {
-        return new PagedIterable<>(listCustomHostnameSitesAsync());
+        final String hostname = null;
+        return new PagedIterable<>(listCustomHostnameSitesAsync(hostname));
     }
 
     /**
      * Get custom hostnames under this subscription.
      *
+     * @param hostname Specific hostname.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1380,8 +1407,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return custom hostnames under this subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CustomHostnameSitesInner> listCustomHostnameSites(Context context) {
-        return new PagedIterable<>(listCustomHostnameSitesAsync(context));
+    public PagedIterable<CustomHostnameSitesInner> listCustomHostnameSites(String hostname, Context context) {
+        return new PagedIterable<>(listCustomHostnameSitesAsync(hostname, context));
     }
 
     /**
@@ -2475,7 +2502,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ValidateResponseInner>> validateWithResponseAsync(
-        String resourceGroupName, ValidateRequest validateRequest) {
+        String resourceGroupName, ValidateRequestInner validateRequest) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2528,7 +2555,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ValidateResponseInner>> validateWithResponseAsync(
-        String resourceGroupName, ValidateRequest validateRequest, Context context) {
+        String resourceGroupName, ValidateRequestInner validateRequest, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2575,7 +2602,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return describes the result of resource validation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ValidateResponseInner> validateAsync(String resourceGroupName, ValidateRequest validateRequest) {
+    public Mono<ValidateResponseInner> validateAsync(String resourceGroupName, ValidateRequestInner validateRequest) {
         return validateWithResponseAsync(resourceGroupName, validateRequest)
             .flatMap(
                 (Response<ValidateResponseInner> res) -> {
@@ -2598,7 +2625,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return describes the result of resource validation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateResponseInner validate(String resourceGroupName, ValidateRequest validateRequest) {
+    public ValidateResponseInner validate(String resourceGroupName, ValidateRequestInner validateRequest) {
         return validateAsync(resourceGroupName, validateRequest).block();
     }
 
@@ -2615,7 +2642,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ValidateResponseInner> validateWithResponse(
-        String resourceGroupName, ValidateRequest validateRequest, Context context) {
+        String resourceGroupName, ValidateRequestInner validateRequest, Context context) {
         return validateWithResponseAsync(resourceGroupName, validateRequest, context).block();
     }
 

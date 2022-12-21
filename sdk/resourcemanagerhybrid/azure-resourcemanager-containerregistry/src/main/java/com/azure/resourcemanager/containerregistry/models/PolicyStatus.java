@@ -27,7 +27,11 @@ public final class PolicyStatus extends ExpandableStringEnum<PolicyStatus> {
         return fromString(name, PolicyStatus.class);
     }
 
-    /** @return known PolicyStatus values. */
+    /**
+     * Gets known PolicyStatus values.
+     *
+     * @return known PolicyStatus values.
+     */
     public static Collection<PolicyStatus> values() {
         return values(PolicyStatus.class);
     }

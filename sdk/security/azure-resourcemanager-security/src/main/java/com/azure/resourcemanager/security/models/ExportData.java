@@ -24,7 +24,11 @@ public final class ExportData extends ExpandableStringEnum<ExportData> {
         return fromString(name, ExportData.class);
     }
 
-    /** @return known ExportData values. */
+    /**
+     * Gets known ExportData values.
+     *
+     * @return known ExportData values.
+     */
     public static Collection<ExportData> values() {
         return values(ExportData.class);
     }

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CommitmentPlans Delete. */
 public final class CommitmentPlansDeleteSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/DeleteCommitmentPlan.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/DeleteCommitmentPlan.json
      */
     /**
      * Sample code: DeleteCommitmentPlan.

@@ -12,31 +12,41 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class MountTargetProperties {
     /*
-     * mountTargetId UUID v4 used to identify the MountTarget
+     * mountTargetId
+     *
+     * UUID v4 used to identify the MountTarget
      */
     @JsonProperty(value = "mountTargetId", access = JsonProperty.Access.WRITE_ONLY)
     private String mountTargetId;
 
     /*
-     * fileSystemId UUID v4 used to identify the MountTarget
+     * fileSystemId
+     *
+     * UUID v4 used to identify the MountTarget
      */
     @JsonProperty(value = "fileSystemId", required = true)
     private String fileSystemId;
 
     /*
-     * ipAddress The mount target's IPv4 address
+     * ipAddress
+     *
+     * The mount target's IPv4 address
      */
     @JsonProperty(value = "ipAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String ipAddress;
 
     /*
-     * smbServerFQDN The SMB server's Fully Qualified Domain Name, FQDN
+     * smbServerFQDN
+     *
+     * The SMB server's Fully Qualified Domain Name, FQDN
      */
     @JsonProperty(value = "smbServerFqdn")
     private String smbServerFqdn;
 
     /**
-     * Get the mountTargetId property: mountTargetId UUID v4 used to identify the MountTarget.
+     * Get the mountTargetId property: mountTargetId
+     *
+     * <p>UUID v4 used to identify the MountTarget.
      *
      * @return the mountTargetId value.
      */
@@ -45,7 +55,9 @@ public final class MountTargetProperties {
     }
 
     /**
-     * Get the fileSystemId property: fileSystemId UUID v4 used to identify the MountTarget.
+     * Get the fileSystemId property: fileSystemId
+     *
+     * <p>UUID v4 used to identify the MountTarget.
      *
      * @return the fileSystemId value.
      */
@@ -54,7 +66,9 @@ public final class MountTargetProperties {
     }
 
     /**
-     * Set the fileSystemId property: fileSystemId UUID v4 used to identify the MountTarget.
+     * Set the fileSystemId property: fileSystemId
+     *
+     * <p>UUID v4 used to identify the MountTarget.
      *
      * @param fileSystemId the fileSystemId value to set.
      * @return the MountTargetProperties object itself.
@@ -65,7 +79,9 @@ public final class MountTargetProperties {
     }
 
     /**
-     * Get the ipAddress property: ipAddress The mount target's IPv4 address.
+     * Get the ipAddress property: ipAddress
+     *
+     * <p>The mount target's IPv4 address.
      *
      * @return the ipAddress value.
      */
@@ -74,7 +90,9 @@ public final class MountTargetProperties {
     }
 
     /**
-     * Get the smbServerFqdn property: smbServerFQDN The SMB server's Fully Qualified Domain Name, FQDN.
+     * Get the smbServerFqdn property: smbServerFQDN
+     *
+     * <p>The SMB server's Fully Qualified Domain Name, FQDN.
      *
      * @return the smbServerFqdn value.
      */
@@ -83,7 +101,9 @@ public final class MountTargetProperties {
     }
 
     /**
-     * Set the smbServerFqdn property: smbServerFQDN The SMB server's Fully Qualified Domain Name, FQDN.
+     * Set the smbServerFqdn property: smbServerFQDN
+     *
+     * <p>The SMB server's Fully Qualified Domain Name, FQDN.
      *
      * @param smbServerFqdn the smbServerFqdn value to set.
      * @return the MountTargetProperties object itself.

@@ -22,11 +22,15 @@ public class Exceptions {
         return isStatusCode(e, HttpConstants.StatusCodes.GONE);
     }
 
+    public static boolean isConflict(CosmosException e) {
+        return isStatusCode(e, HttpConstants.StatusCodes.CONFLICT);
+    }
+
     public static boolean isNotFound(CosmosException e) {
         return isStatusCode(e, HttpConstants.StatusCodes.NOTFOUND);
     }
 
-    public static boolean isPartitionSplit(CosmosException e) {
+    public static boolean isPartitionSplitOrMerge(CosmosException e) {
         return isStatusCode(e, HttpConstants.StatusCodes.GONE)
                 && isSubStatusCode(e, HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE);
     }
@@ -43,7 +47,7 @@ public class Exceptions {
 
     public static boolean isPartitionCompletingSplittingException(CosmosException cosmosException) {
         return Exceptions.isStatusCode(cosmosException, HttpConstants.StatusCodes.GONE) &&
-            Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.COMPLETING_SPLIT);
+            Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.COMPLETING_SPLIT_OR_MERGE);
     }
 
     public static boolean isPartitionKeyMismatchException(CosmosException cosmosException) {

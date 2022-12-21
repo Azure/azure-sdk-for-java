@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs;
 
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AbstractAzureServiceConfigurationTests;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
@@ -114,6 +115,7 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
                 assertThat(properties.getCredential().getClientSecret()).isEqualTo("azure-client-secret");
                 assertThat(properties.getRetry().getExponential().getBaseDelay()).isEqualTo(Duration.ofMinutes(2));
                 assertThat(properties.getRetry().getFixed().getDelay()).isEqualTo(Duration.ofSeconds(3));
+                assertThat(properties.getClient().getTransportType()).isEqualTo(AmqpTransportType.AMQP);
                 assertThat(properties.getConnectionString()).isEqualTo(CONNECTION_STRING);
 
                 assertThat(azureProperties.getCredential().getClientId()).isEqualTo("azure-client-id");
@@ -146,7 +148,7 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.credential.client-id=eventhubs-client-id",
-                
+
                 "spring.cloud.azure.eventhubs.shared-connection=true",
                 "spring.cloud.azure.eventhubs.domain-name=fake-domain",
                 "spring.cloud.azure.eventhubs.namespace=fake-namespace",
@@ -191,7 +193,7 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
                 AzureEventHubsProperties properties = context.getBean(AzureEventHubsProperties.class);
-                
+
                 assertTrue(properties.getSharedConnection());
                 assertEquals("fake-domain", properties.getDomainName());
                 assertEquals("fake-namespace", properties.getNamespace());

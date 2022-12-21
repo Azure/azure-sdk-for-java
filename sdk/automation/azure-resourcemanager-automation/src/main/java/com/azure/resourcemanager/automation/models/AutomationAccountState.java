@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AutomationAccountState. */
+/** Gets status of account. */
 public final class AutomationAccountState extends ExpandableStringEnum<AutomationAccountState> {
     /** Static value Ok for AutomationAccountState. */
     public static final AutomationAccountState OK = fromString("Ok");
@@ -30,7 +30,11 @@ public final class AutomationAccountState extends ExpandableStringEnum<Automatio
         return fromString(name, AutomationAccountState.class);
     }
 
-    /** @return known AutomationAccountState values. */
+    /**
+     * Gets known AutomationAccountState values.
+     *
+     * @return known AutomationAccountState values.
+     */
     public static Collection<AutomationAccountState> values() {
         return values(AutomationAccountState.class);
     }

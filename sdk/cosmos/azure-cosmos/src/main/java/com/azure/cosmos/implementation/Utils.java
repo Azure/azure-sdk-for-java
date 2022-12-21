@@ -16,6 +16,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import io.netty.buffer.ByteBuf;
 import org.slf4j.Logger;
@@ -59,6 +60,7 @@ public class Utils {
 
     private final static Logger logger = LoggerFactory.getLogger(Utils.class);
 
+    private static final int JAVA_VERSION = getJavaVersion();
     private static final int ONE_KB = 1024;
     private static final ZoneId GMT_ZONE_ID = ZoneId.of("GMT");
     public static final Base64.Encoder Base64Encoder = Base64.getEncoder();
@@ -66,7 +68,12 @@ public class Utils {
     public static final Base64.Encoder Base64UrlEncoder = Base64.getUrlEncoder();
     public static final Base64.Decoder Base64UrlDecoder = Base64.getUrlDecoder();
 
-    private static final ObjectMapper simpleObjectMapper = new ObjectMapper();
+    private static final ObjectMapper simpleObjectMapperAllowingDuplicatedProperties =
+        createAndInitializeObjectMapper(true);
+    private static final ObjectMapper simpleObjectMapperDisallowingDuplicatedProperties =
+        createAndInitializeObjectMapper(false);
+
+    private static ObjectMapper simpleObjectMapper = simpleObjectMapperDisallowingDuplicatedProperties;
     private static final TimeBasedGenerator TIME_BASED_GENERATOR =
             Generators.timeBasedGenerator(EthernetAddress.constructMulticastAddress());
     private static final Pattern SPACE_PATTERN = Pattern.compile("\\s");
@@ -78,19 +85,26 @@ public class Utils {
     // Therefore, we need a custom date time formatter.
     private static final DateTimeFormatter RFC_1123_DATE_TIME = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
 
-    static {
-        Utils.simpleObjectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        Utils.simpleObjectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
-        Utils.simpleObjectMapper.configure(JsonParser.Feature.ALLOW_TRAILING_COMMA, true);
-        Utils.simpleObjectMapper.configure(JsonParser.Feature.STRICT_DUPLICATE_DETECTION, true);
-        Utils.simpleObjectMapper.configure(DeserializationFeature.ACCEPT_FLOAT_AS_INT, false);
+    private static ObjectMapper createAndInitializeObjectMapper(boolean allowDuplicateProperties) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+        objectMapper.configure(JsonParser.Feature.ALLOW_TRAILING_COMMA, true);
+        if (!allowDuplicateProperties) {
+            objectMapper.configure(JsonParser.Feature.STRICT_DUPLICATE_DETECTION, true);
+        }
+        objectMapper.configure(DeserializationFeature.ACCEPT_FLOAT_AS_INT, false);
 
-        int javaVersion = getJavaVersion();
+
         // We will not register after burner for java 16+, due to its breaking changes
         // https://github.com/Azure/azure-sdk-for-java/issues/23005
-        if (javaVersion != -1 && javaVersion < 16) {
-            Utils.simpleObjectMapper.registerModule(new AfterburnerModule());
+        if (JAVA_VERSION != -1 && JAVA_VERSION < 16) {
+            objectMapper.registerModule(new AfterburnerModule());
         }
+
+        objectMapper.registerModule(new JavaTimeModule());
+
+        return objectMapper;
     }
 
     private static int getJavaVersion() {
@@ -165,6 +179,14 @@ public class Utils {
             encodedString = encodedString.substring(0, encodedString.length() - 2);
         }
         return encodedString;
+    }
+
+    public static void configureSimpleObjectMapper(boolean allowDuplicateProperties) {
+        if (allowDuplicateProperties) {
+            Utils.simpleObjectMapper = Utils.simpleObjectMapperAllowingDuplicatedProperties;
+        } else {
+            Utils.simpleObjectMapper = Utils.simpleObjectMapperDisallowingDuplicatedProperties;
+        }
     }
 
     /**

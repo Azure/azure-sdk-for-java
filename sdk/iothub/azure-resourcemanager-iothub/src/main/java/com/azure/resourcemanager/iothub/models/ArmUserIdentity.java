@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ArmUserIdentity model. */
 @Immutable
 public class ArmUserIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArmUserIdentity.class);
-
     /*
      * The principalId property.
      */

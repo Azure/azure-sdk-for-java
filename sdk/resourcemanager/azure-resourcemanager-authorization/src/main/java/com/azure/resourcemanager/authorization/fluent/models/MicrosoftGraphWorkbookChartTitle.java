@@ -16,8 +16,7 @@ import java.util.Map;
 @Fluent
 public final class MicrosoftGraphWorkbookChartTitle extends MicrosoftGraphEntity {
     /*
-     * Boolean value representing if the chart title will overlay the chart or
-     * not.
+     * Boolean value representing if the chart title will overlay the chart or not.
      */
     @JsonProperty(value = "overlay")
     private Boolean overlay;
@@ -44,6 +43,10 @@ public final class MicrosoftGraphWorkbookChartTitle extends MicrosoftGraphEntity
      * workbookChartTitle
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphWorkbookChartTitle class. */
+    public MicrosoftGraphWorkbookChartTitle() {
+    }
 
     /**
      * Get the overlay property: Boolean value representing if the chart title will overlay the chart or not.

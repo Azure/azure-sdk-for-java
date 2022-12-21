@@ -7,7 +7,7 @@ package com.azure.resourcemanager.deviceupdate.generated;
 /** Samples for Accounts Create. */
 public final class AccountsCreateSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/preview/2022-04-01-preview/examples/Accounts/Accounts_Create.json
+     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/Accounts/Accounts_Create.json
      */
     /**
      * Sample code: Creates or updates Account.

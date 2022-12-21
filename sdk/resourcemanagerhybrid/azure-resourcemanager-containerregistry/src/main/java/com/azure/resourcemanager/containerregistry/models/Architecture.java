@@ -30,7 +30,11 @@ public final class Architecture extends ExpandableStringEnum<Architecture> {
         return fromString(name, Architecture.class);
     }
 
-    /** @return known Architecture values. */
+    /**
+     * Gets known Architecture values.
+     *
+     * @return known Architecture values.
+     */
     public static Collection<Architecture> values() {
         return values(Architecture.class);
     }

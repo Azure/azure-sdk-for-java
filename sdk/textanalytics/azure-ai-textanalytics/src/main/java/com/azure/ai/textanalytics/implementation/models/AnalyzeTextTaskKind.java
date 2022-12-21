@@ -28,6 +28,9 @@ public final class AnalyzeTextTaskKind extends ExpandableStringEnum<AnalyzeTextT
     /** Static value EntityLinking for AnalyzeTextTaskKind. */
     public static final AnalyzeTextTaskKind ENTITY_LINKING = fromString("EntityLinking");
 
+    /** Static value DynamicClassification for AnalyzeTextTaskKind. */
+    public static final AnalyzeTextTaskKind DYNAMIC_CLASSIFICATION = fromString("DynamicClassification");
+
     /**
      * Creates or finds a AnalyzeTextTaskKind from its string representation.
      *
@@ -39,7 +42,11 @@ public final class AnalyzeTextTaskKind extends ExpandableStringEnum<AnalyzeTextT
         return fromString(name, AnalyzeTextTaskKind.class);
     }
 
-    /** @return known AnalyzeTextTaskKind values. */
+    /**
+     * Gets known AnalyzeTextTaskKind values.
+     *
+     * @return known AnalyzeTextTaskKind values.
+     */
     public static Collection<AnalyzeTextTaskKind> values() {
         return values(AnalyzeTextTaskKind.class);
     }

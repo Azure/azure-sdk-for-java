@@ -35,17 +35,14 @@ public final class SnapshotInner extends Resource {
     private String managedBy;
 
     /*
-     * The snapshots sku name. Can be Standard_LRS, Premium_LRS, or
-     * Standard_ZRS. This is an optional parameter for incremental snapshot and
-     * the default behavior is the SKU will be set to the same sku as the
-     * previous snapshot
+     * The snapshots sku name. Can be Standard_LRS, Premium_LRS, or Standard_ZRS. This is an optional parameter for
+     * incremental snapshot and the default behavior is the SKU will be set to the same sku as the previous snapshot
      */
     @JsonProperty(value = "sku")
     private SnapshotSku sku;
 
     /*
-     * The extended location where the snapshot will be created. Extended
-     * location cannot be changed.
+     * The extended location where the snapshot will be created. Extended location cannot be changed.
      */
     @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
@@ -55,6 +52,10 @@ public final class SnapshotInner extends Resource {
      */
     @JsonProperty(value = "properties")
     private SnapshotProperties innerProperties;
+
+    /** Creates an instance of SnapshotInner class. */
+    public SnapshotInner() {
+    }
 
     /**
      * Get the managedBy property: Unused. Always Null.
@@ -377,6 +378,16 @@ public final class SnapshotInner extends Resource {
         }
         this.innerProperties().withIncremental(incremental);
         return this;
+    }
+
+    /**
+     * Get the incrementalSnapshotFamilyId property: Incremental snapshots for a disk share an incremental snapshot
+     * family id. The Get Page Range Diff API can only be called on incremental snapshots with the same family id.
+     *
+     * @return the incrementalSnapshotFamilyId value.
+     */
+    public String incrementalSnapshotFamilyId() {
+        return this.innerProperties() == null ? null : this.innerProperties().incrementalSnapshotFamilyId();
     }
 
     /**

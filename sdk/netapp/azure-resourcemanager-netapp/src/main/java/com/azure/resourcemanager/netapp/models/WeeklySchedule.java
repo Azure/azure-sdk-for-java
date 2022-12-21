@@ -17,8 +17,7 @@ public final class WeeklySchedule {
     private Integer snapshotsToKeep;
 
     /*
-     * Indicates which weekdays snapshot should be taken, accepts a comma
-     * separated list of week day names in english
+     * Indicates which weekdays snapshot should be taken, accepts a comma separated list of week day names in english
      */
     @JsonProperty(value = "day")
     private String day;

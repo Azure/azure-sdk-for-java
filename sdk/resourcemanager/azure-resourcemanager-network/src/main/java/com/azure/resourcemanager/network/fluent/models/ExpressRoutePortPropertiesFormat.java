@@ -6,17 +6,21 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.resourcemanager.network.models.ExpressRoutePortsBillingType;
 import com.azure.resourcemanager.network.models.ExpressRoutePortsEncapsulation;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** ExpressRoutePort Properties Properties specific to ExpressRoutePort resources. */
+/**
+ * ExpressRoutePort Properties
+ *
+ * <p>Properties specific to ExpressRoutePort resources.
+ */
 @Fluent
 public final class ExpressRoutePortPropertiesFormat {
     /*
-     * The name of the peering location that the ExpressRoutePort is mapped to
-     * physically.
+     * The name of the peering location that the ExpressRoutePort is mapped to physically.
      */
     @JsonProperty(value = "peeringLocation")
     private String peeringLocation;
@@ -52,22 +56,21 @@ public final class ExpressRoutePortPropertiesFormat {
     private String etherType;
 
     /*
-     * Date of the physical port allocation to be used in Letter of
-     * Authorization.
+     * Date of the physical port allocation to be used in Letter of Authorization.
      */
     @JsonProperty(value = "allocationDate", access = JsonProperty.Access.WRITE_ONLY)
     private String allocationDate;
 
     /*
-     * ExpressRouteLink Sub-Resources The set of physical links of the
-     * ExpressRoutePort resource.
+     * ExpressRouteLink Sub-Resources
+     *
+     * The set of physical links of the ExpressRoutePort resource.
      */
     @JsonProperty(value = "links")
     private List<ExpressRouteLinkInner> links;
 
     /*
-     * Reference the ExpressRoute circuit(s) that are provisioned on this
-     * ExpressRoutePort resource.
+     * Reference the ExpressRoute circuit(s) that are provisioned on this ExpressRoutePort resource.
      */
     @JsonProperty(value = "circuits", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> circuits;
@@ -83,6 +86,16 @@ public final class ExpressRoutePortPropertiesFormat {
      */
     @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
+
+    /*
+     * The billing type of the ExpressRoutePort resource.
+     */
+    @JsonProperty(value = "billingType")
+    private ExpressRoutePortsBillingType billingType;
+
+    /** Creates an instance of ExpressRoutePortPropertiesFormat class. */
+    public ExpressRoutePortPropertiesFormat() {
+    }
 
     /**
      * Get the peeringLocation property: The name of the peering location that the ExpressRoutePort is mapped to
@@ -183,8 +196,9 @@ public final class ExpressRoutePortPropertiesFormat {
     }
 
     /**
-     * Get the links property: ExpressRouteLink Sub-Resources The set of physical links of the ExpressRoutePort
-     * resource.
+     * Get the links property: ExpressRouteLink Sub-Resources
+     *
+     * <p>The set of physical links of the ExpressRoutePort resource.
      *
      * @return the links value.
      */
@@ -193,8 +207,9 @@ public final class ExpressRoutePortPropertiesFormat {
     }
 
     /**
-     * Set the links property: ExpressRouteLink Sub-Resources The set of physical links of the ExpressRoutePort
-     * resource.
+     * Set the links property: ExpressRouteLink Sub-Resources
+     *
+     * <p>The set of physical links of the ExpressRoutePort resource.
      *
      * @param links the links value to set.
      * @return the ExpressRoutePortPropertiesFormat object itself.
@@ -230,6 +245,26 @@ public final class ExpressRoutePortPropertiesFormat {
      */
     public String resourceGuid() {
         return this.resourceGuid;
+    }
+
+    /**
+     * Get the billingType property: The billing type of the ExpressRoutePort resource.
+     *
+     * @return the billingType value.
+     */
+    public ExpressRoutePortsBillingType billingType() {
+        return this.billingType;
+    }
+
+    /**
+     * Set the billingType property: The billing type of the ExpressRoutePort resource.
+     *
+     * @param billingType the billingType value to set.
+     * @return the ExpressRoutePortPropertiesFormat object itself.
+     */
+    public ExpressRoutePortPropertiesFormat withBillingType(ExpressRoutePortsBillingType billingType) {
+        this.billingType = billingType;
+        return this;
     }
 
     /**

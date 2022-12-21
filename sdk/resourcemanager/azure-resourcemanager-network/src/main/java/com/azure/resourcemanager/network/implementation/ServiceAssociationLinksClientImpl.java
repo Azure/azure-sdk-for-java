@@ -51,7 +51,7 @@ public final class ServiceAssociationLinksClientImpl implements ServiceAssociati
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface ServiceAssociationLinksService {
+    public interface ServiceAssociationLinksService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
@@ -107,7 +107,7 @@ public final class ServiceAssociationLinksClientImpl implements ServiceAssociati
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -164,7 +164,7 @@ public final class ServiceAssociationLinksClientImpl implements ServiceAssociati
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-08-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -203,23 +203,6 @@ public final class ServiceAssociationLinksClientImpl implements ServiceAssociati
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service association links for a subnet.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceAssociationLinksListResultInner list(
-        String resourceGroupName, String virtualNetworkName, String subnetName) {
-        return listAsync(resourceGroupName, virtualNetworkName, subnetName).block();
-    }
-
-    /**
-     * Gets a list of service association links for a subnet.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -230,5 +213,22 @@ public final class ServiceAssociationLinksClientImpl implements ServiceAssociati
     public Response<ServiceAssociationLinksListResultInner> listWithResponse(
         String resourceGroupName, String virtualNetworkName, String subnetName, Context context) {
         return listWithResponseAsync(resourceGroupName, virtualNetworkName, subnetName, context).block();
+    }
+
+    /**
+     * Gets a list of service association links for a subnet.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param subnetName The name of the subnet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of service association links for a subnet.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ServiceAssociationLinksListResultInner list(
+        String resourceGroupName, String virtualNetworkName, String subnetName) {
+        return listWithResponse(resourceGroupName, virtualNetworkName, subnetName, Context.NONE).getValue();
     }
 }

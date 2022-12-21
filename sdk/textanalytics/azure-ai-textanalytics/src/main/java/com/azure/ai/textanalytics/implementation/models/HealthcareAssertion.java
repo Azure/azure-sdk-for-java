@@ -23,8 +23,7 @@ public final class HealthcareAssertion {
     private Certainty certainty;
 
     /*
-     * Describes if the entity is the subject of the text or if it describes
-     * someone else.
+     * Describes if the entity is the subject of the text or if it describes someone else.
      */
     @JsonProperty(value = "association")
     private Association association;

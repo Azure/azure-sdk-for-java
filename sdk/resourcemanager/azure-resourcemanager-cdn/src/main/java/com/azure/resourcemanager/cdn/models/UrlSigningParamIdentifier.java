@@ -6,14 +6,11 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines how to identify a parameter for a specific purpose e.g. expires. */
 @Fluent
 public final class UrlSigningParamIdentifier {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UrlSigningParamIdentifier.class);
-
     /*
      * Indicates the purpose of the parameter
      */
@@ -73,16 +70,18 @@ public final class UrlSigningParamIdentifier {
      */
     public void validate() {
         if (paramIndicator() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property paramIndicator in model UrlSigningParamIdentifier"));
         }
         if (paramName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property paramName in model UrlSigningParamIdentifier"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UrlSigningParamIdentifier.class);
 }

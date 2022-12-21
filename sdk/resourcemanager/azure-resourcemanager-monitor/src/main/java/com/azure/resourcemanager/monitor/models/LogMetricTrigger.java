@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A log metrics trigger descriptor. */
 @Fluent
 public final class LogMetricTrigger {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogMetricTrigger.class);
-
     /*
      * Evaluation operation for Metric -'GreaterThan' or 'LessThan' or 'Equal'.
      */

@@ -18,11 +18,14 @@ public final class AzureReachabilityReportLatencyInfo {
     private OffsetDateTime timestamp;
 
     /*
-     * The relative latency score between 1 and 100, higher values indicating a
-     * faster connection.
+     * The relative latency score between 1 and 100, higher values indicating a faster connection.
      */
     @JsonProperty(value = "score")
     private Integer score;
+
+    /** Creates an instance of AzureReachabilityReportLatencyInfo class. */
+    public AzureReachabilityReportLatencyInfo() {
+    }
 
     /**
      * Get the timestamp property: The time stamp.

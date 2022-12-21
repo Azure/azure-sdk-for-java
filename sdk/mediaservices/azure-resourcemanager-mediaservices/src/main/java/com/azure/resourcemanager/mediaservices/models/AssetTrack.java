@@ -163,10 +163,12 @@ public interface AssetTrack {
     AssetTrack refresh(Context context);
 
     /**
-     * Update the track data. Call this API after any changes are made to the track data stored in the asset container.
-     * For example, you have modified the WebVTT captions file in the Azure blob storage container for the asset,
-     * viewers will not see the new version of the captions unless this API is called. Note, the changes may not be
-     * reflected immediately. CDN cache may also need to be purged if applicable.
+     * Update the track data
+     *
+     * <p>Update the track data. Call this API after any changes are made to the track data stored in the asset
+     * container. For example, you have modified the WebVTT captions file in the Azure blob storage container for the
+     * asset, viewers will not see the new version of the captions unless this API is called. Note, the changes may not
+     * be reflected immediately. CDN cache may also need to be purged if applicable.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -174,10 +176,12 @@ public interface AssetTrack {
     void updateTrackData();
 
     /**
-     * Update the track data. Call this API after any changes are made to the track data stored in the asset container.
-     * For example, you have modified the WebVTT captions file in the Azure blob storage container for the asset,
-     * viewers will not see the new version of the captions unless this API is called. Note, the changes may not be
-     * reflected immediately. CDN cache may also need to be purged if applicable.
+     * Update the track data
+     *
+     * <p>Update the track data. Call this API after any changes are made to the track data stored in the asset
+     * container. For example, you have modified the WebVTT captions file in the Azure blob storage container for the
+     * asset, viewers will not see the new version of the captions unless this API is called. Note, the changes may not
+     * be reflected immediately. CDN cache may also need to be purged if applicable.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

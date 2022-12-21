@@ -12,9 +12,8 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class ProtectedAppendWritesHistory {
     /*
-     * When enabled, new blocks can be written to both 'Append and Bock Blobs'
-     * while maintaining legal hold protection and compliance. Only new blocks
-     * can be added and any existing blocks cannot be modified or deleted.
+     * When enabled, new blocks can be written to both 'Append and Bock Blobs' while maintaining legal hold protection
+     * and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted.
      */
     @JsonProperty(value = "allowProtectedAppendWritesAll")
     private Boolean allowProtectedAppendWritesAll;

@@ -39,11 +39,25 @@ public interface ConfigurationProfileAssignment {
     ConfigurationProfileAssignmentProperties properties();
 
     /**
+     * Gets the managedBy property: Azure resource id. Indicates if this resource is managed by another Azure resource.
+     *
+     * @return the managedBy value.
+     */
+    String managedBy();
+
+    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
     SystemData systemData();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.automanage.fluent.models.ConfigurationProfileAssignmentInner object.

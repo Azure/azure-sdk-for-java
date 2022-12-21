@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Set the server/instance-level settings for SQL Server. */
 @Fluent
 public final class SqlInstanceSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlInstanceSettings.class);
-
     /*
      * SQL Server Collation.
      */
@@ -43,6 +39,18 @@ public final class SqlInstanceSettings {
      */
     @JsonProperty(value = "maxServerMemoryMB")
     private Integer maxServerMemoryMB;
+
+    /*
+     * SQL Server LPIM.
+     */
+    @JsonProperty(value = "isLpimEnabled")
+    private Boolean isLpimEnabled;
+
+    /*
+     * SQL Server IFI.
+     */
+    @JsonProperty(value = "isIfiEnabled")
+    private Boolean isIfiEnabled;
 
     /**
      * Get the collation property: SQL Server Collation.
@@ -141,6 +149,46 @@ public final class SqlInstanceSettings {
      */
     public SqlInstanceSettings withMaxServerMemoryMB(Integer maxServerMemoryMB) {
         this.maxServerMemoryMB = maxServerMemoryMB;
+        return this;
+    }
+
+    /**
+     * Get the isLpimEnabled property: SQL Server LPIM.
+     *
+     * @return the isLpimEnabled value.
+     */
+    public Boolean isLpimEnabled() {
+        return this.isLpimEnabled;
+    }
+
+    /**
+     * Set the isLpimEnabled property: SQL Server LPIM.
+     *
+     * @param isLpimEnabled the isLpimEnabled value to set.
+     * @return the SqlInstanceSettings object itself.
+     */
+    public SqlInstanceSettings withIsLpimEnabled(Boolean isLpimEnabled) {
+        this.isLpimEnabled = isLpimEnabled;
+        return this;
+    }
+
+    /**
+     * Get the isIfiEnabled property: SQL Server IFI.
+     *
+     * @return the isIfiEnabled value.
+     */
+    public Boolean isIfiEnabled() {
+        return this.isIfiEnabled;
+    }
+
+    /**
+     * Set the isIfiEnabled property: SQL Server IFI.
+     *
+     * @param isIfiEnabled the isIfiEnabled value to set.
+     * @return the SqlInstanceSettings object itself.
+     */
+    public SqlInstanceSettings withIsIfiEnabled(Boolean isIfiEnabled) {
+        this.isIfiEnabled = isIfiEnabled;
         return this;
     }
 

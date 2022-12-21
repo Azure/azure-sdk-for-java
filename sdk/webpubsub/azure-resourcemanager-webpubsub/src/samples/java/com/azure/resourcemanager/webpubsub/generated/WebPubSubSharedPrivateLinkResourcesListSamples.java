@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WebPubSubSharedPrivateLinkResources List. */
 public final class WebPubSubSharedPrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2021-10-01/examples/WebPubSubSharedPrivateLinkResources_List.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/WebPubSubSharedPrivateLinkResources_List.json
      */
     /**
      * Sample code: WebPubSubSharedPrivateLinkResources_List.

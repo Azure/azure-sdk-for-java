@@ -1,10 +1,10 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-04-01-preview&showStats=false",
+    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.2.0-beta.3 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "732a7916-764e-49cb-95d2-29acbe98a10d",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5900b19f-a2b3-4487-a53e-0ddc6e09fc2d",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -12,11 +12,11 @@
       "x-envoy-upstream-service-time" : "7",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "fe2ef13a-b783-43f8-b201-a963ff356867",
+      "apim-request-id" : "9d31b7e5-b8b2-4480-924b-4b8d59236583",
       "retry-after" : "0",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Invalid Document in request.\",\"innererror\":{\"code\":\"InvalidDocumentBatch\",\"message\":\"Batch request contains too many records. Max 10 records are permitted.\"}}}",
-      "Date" : "Fri, 06 May 2022 17:51:18 GMT",
+      "Date" : "Tue, 11 Oct 2022 18:59:02 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

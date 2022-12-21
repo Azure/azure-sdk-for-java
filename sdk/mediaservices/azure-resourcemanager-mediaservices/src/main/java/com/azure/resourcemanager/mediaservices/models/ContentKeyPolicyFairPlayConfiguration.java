@@ -29,8 +29,7 @@ public final class ContentKeyPolicyFairPlayConfiguration extends ContentKeyPolic
     private String fairPlayPfxPassword;
 
     /*
-     * The Base64 representation of FairPlay certificate in PKCS 12 (pfx)
-     * format (including private key).
+     * The Base64 representation of FairPlay certificate in PKCS 12 (pfx) format (including private key).
      */
     @JsonProperty(value = "fairPlayPfx", required = true)
     private String fairPlayPfx;

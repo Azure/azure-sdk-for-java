@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicebus.fluent.models.MigrationConfigPropertiesInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The result of the List migrationConfigurations operation. */
 @Fluent
 public final class MigrationConfigListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrationConfigListResult.class);
-
     /*
      * List of Migration Configs
      */
@@ -23,8 +19,7 @@ public final class MigrationConfigListResult {
     private List<MigrationConfigPropertiesInner> value;
 
     /*
-     * Link to the next set of results. Not empty if Value contains incomplete
-     * list of migrationConfigurations
+     * Link to the next set of results. Not empty if Value contains incomplete list of migrationConfigurations
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;

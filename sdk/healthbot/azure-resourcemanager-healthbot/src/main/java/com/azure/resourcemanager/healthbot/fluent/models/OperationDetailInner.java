@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.healthbot.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.healthbot.models.OperationDisplay;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Operation detail payload. */
 @Fluent
 public final class OperationDetailInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDetailInner.class);
-
     /*
      * Name of the operation
      */

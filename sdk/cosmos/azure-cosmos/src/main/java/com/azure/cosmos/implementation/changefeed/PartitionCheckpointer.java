@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed;
 
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import reactor.core.publisher.Mono;
 
 /**

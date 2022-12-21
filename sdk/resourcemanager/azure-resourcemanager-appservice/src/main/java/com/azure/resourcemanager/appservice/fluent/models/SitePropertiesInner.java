@@ -107,6 +107,25 @@ public final class SitePropertiesInner {
     private OffsetDateTime lastModifiedTimeUtc;
 
     /*
+     * Virtual Network Route All enabled. This causes all outbound traffic to
+     * have Virtual Network Security Groups and User Defined Routes applied.
+     */
+    @JsonProperty(value = "vnetRouteAllEnabled")
+    private Boolean vnetRouteAllEnabled;
+
+    /*
+     * To enable pulling image over Virtual Network
+     */
+    @JsonProperty(value = "vnetImagePullEnabled")
+    private Boolean vnetImagePullEnabled;
+
+    /*
+     * To enable accessing content over virtual network
+     */
+    @JsonProperty(value = "vnetContentShareEnabled")
+    private Boolean vnetContentShareEnabled;
+
+    /*
      * Configuration of the app.
      */
     @JsonProperty(value = "siteConfig")
@@ -278,6 +297,13 @@ public final class SitePropertiesInner {
      */
     @JsonProperty(value = "inProgressOperationId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID inProgressOperationId;
+
+    /*
+     * Property to allow or block all public traffic. Allowed Values:
+     * 'Enabled', 'Disabled' or an empty string.
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private String publicNetworkAccess;
 
     /*
      * Checks if Customer provided storage account is required
@@ -488,6 +514,68 @@ public final class SitePropertiesInner {
      */
     public OffsetDateTime lastModifiedTimeUtc() {
         return this.lastModifiedTimeUtc;
+    }
+
+    /**
+     * Get the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
+     * Virtual Network Security Groups and User Defined Routes applied.
+     *
+     * @return the vnetRouteAllEnabled value.
+     */
+    public Boolean vnetRouteAllEnabled() {
+        return this.vnetRouteAllEnabled;
+    }
+
+    /**
+     * Set the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
+     * Virtual Network Security Groups and User Defined Routes applied.
+     *
+     * @param vnetRouteAllEnabled the vnetRouteAllEnabled value to set.
+     * @return the SitePropertiesInner object itself.
+     */
+    public SitePropertiesInner withVnetRouteAllEnabled(Boolean vnetRouteAllEnabled) {
+        this.vnetRouteAllEnabled = vnetRouteAllEnabled;
+        return this;
+    }
+
+    /**
+     * Get the vnetImagePullEnabled property: To enable pulling image over Virtual Network.
+     *
+     * @return the vnetImagePullEnabled value.
+     */
+    public Boolean vnetImagePullEnabled() {
+        return this.vnetImagePullEnabled;
+    }
+
+    /**
+     * Set the vnetImagePullEnabled property: To enable pulling image over Virtual Network.
+     *
+     * @param vnetImagePullEnabled the vnetImagePullEnabled value to set.
+     * @return the SitePropertiesInner object itself.
+     */
+    public SitePropertiesInner withVnetImagePullEnabled(Boolean vnetImagePullEnabled) {
+        this.vnetImagePullEnabled = vnetImagePullEnabled;
+        return this;
+    }
+
+    /**
+     * Get the vnetContentShareEnabled property: To enable accessing content over virtual network.
+     *
+     * @return the vnetContentShareEnabled value.
+     */
+    public Boolean vnetContentShareEnabled() {
+        return this.vnetContentShareEnabled;
+    }
+
+    /**
+     * Set the vnetContentShareEnabled property: To enable accessing content over virtual network.
+     *
+     * @param vnetContentShareEnabled the vnetContentShareEnabled value to set.
+     * @return the SitePropertiesInner object itself.
+     */
+    public SitePropertiesInner withVnetContentShareEnabled(Boolean vnetContentShareEnabled) {
+        this.vnetContentShareEnabled = vnetContentShareEnabled;
+        return this;
     }
 
     /**
@@ -892,6 +980,28 @@ public final class SitePropertiesInner {
      */
     public UUID inProgressOperationId() {
         return this.inProgressOperationId;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Property to allow or block all public traffic. Allowed Values: 'Enabled',
+     * 'Disabled' or an empty string.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public String publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Property to allow or block all public traffic. Allowed Values: 'Enabled',
+     * 'Disabled' or an empty string.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the SitePropertiesInner object itself.
+     */
+    public SitePropertiesInner withPublicNetworkAccess(String publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
     }
 
     /**

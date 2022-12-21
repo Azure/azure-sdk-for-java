@@ -17,16 +17,15 @@ import java.util.List;
 @Immutable
 public final class VirtualMachineInstallPatchesResultInner {
     /*
-     * The overall success or failure status of the operation. It remains
-     * "InProgress" until the operation completes. At that point it will become
-     * "Failed", "Succeeded", "Unknown" or "CompletedWithWarnings."
+     * The overall success or failure status of the operation. It remains "InProgress" until the operation completes.
+     * At that point it will become "Failed", "Succeeded", "Unknown" or "CompletedWithWarnings."
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private PatchOperationStatus status;
 
     /*
-     * The activity ID of the operation that produced this result. It is used
-     * to correlate across CRP and extension logs.
+     * The activity ID of the operation that produced this result. It is used to correlate across CRP and extension
+     * logs.
      */
     @JsonProperty(value = "installationActivityId", access = JsonProperty.Access.WRITE_ONLY)
     private String installationActivityId;
@@ -38,30 +37,26 @@ public final class VirtualMachineInstallPatchesResultInner {
     private VMGuestPatchRebootStatus rebootStatus;
 
     /*
-     * Whether the operation ran out of time before it completed all its
-     * intended actions.
+     * Whether the operation ran out of time before it completed all its intended actions.
      */
     @JsonProperty(value = "maintenanceWindowExceeded", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean maintenanceWindowExceeded;
 
     /*
-     * The number of patches that were not installed due to the user blocking
-     * their installation.
+     * The number of patches that were not installed due to the user blocking their installation.
      */
     @JsonProperty(value = "excludedPatchCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer excludedPatchCount;
 
     /*
-     * The number of patches that were detected as available for install, but
-     * did not meet the operation's criteria.
+     * The number of patches that were detected as available for install, but did not meet the operation's criteria.
      */
     @JsonProperty(value = "notSelectedPatchCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer notSelectedPatchCount;
 
     /*
-     * The number of patches that were identified as meeting the installation
-     * criteria, but were not able to be installed. Typically this happens when
-     * maintenanceWindowExceeded == true.
+     * The number of patches that were identified as meeting the installation criteria, but were not able to be
+     * installed. Typically this happens when maintenanceWindowExceeded == true.
      */
     @JsonProperty(value = "pendingPatchCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer pendingPatchCount;
@@ -73,8 +68,7 @@ public final class VirtualMachineInstallPatchesResultInner {
     private Integer installedPatchCount;
 
     /*
-     * The number of patches that could not be installed due to some issue. See
-     * errors for details.
+     * The number of patches that could not be installed due to some issue. See errors for details.
      */
     @JsonProperty(value = "failedPatchCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer failedPatchCount;
@@ -92,11 +86,14 @@ public final class VirtualMachineInstallPatchesResultInner {
     private OffsetDateTime startDateTime;
 
     /*
-     * The errors that were encountered during execution of the operation. The
-     * details array contains the list of them.
+     * The errors that were encountered during execution of the operation. The details array contains the list of them.
      */
     @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ApiError error;
+
+    /** Creates an instance of VirtualMachineInstallPatchesResultInner class. */
+    public VirtualMachineInstallPatchesResultInner() {
+    }
 
     /**
      * Get the status property: The overall success or failure status of the operation. It remains "InProgress" until

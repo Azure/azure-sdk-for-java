@@ -18,8 +18,7 @@ import java.util.List;
 @Fluent
 public final class OpenShiftManagedClusterProperties {
     /*
-     * The current deployment or provisioning state, which only appears in the
-     * response.
+     * The current deployment or provisioning state, which only appears in the response.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
@@ -43,8 +42,7 @@ public final class OpenShiftManagedClusterProperties {
     private String publicHostname;
 
     /*
-     * Service generated FQDN for OpenShift API server loadbalancer internal
-     * hostname.
+     * Service generated FQDN for OpenShift API server loadbalancer internal hostname.
      */
     @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdn;
@@ -78,6 +76,10 @@ public final class OpenShiftManagedClusterProperties {
      */
     @JsonProperty(value = "authProfile")
     private OpenShiftManagedClusterAuthProfile authProfile;
+
+    /** Creates an instance of OpenShiftManagedClusterProperties class. */
+    public OpenShiftManagedClusterProperties() {
+    }
 
     /**
      * Get the provisioningState property: The current deployment or provisioning state, which only appears in the

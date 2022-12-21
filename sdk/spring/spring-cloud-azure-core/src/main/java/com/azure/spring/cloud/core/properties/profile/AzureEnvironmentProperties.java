@@ -91,7 +91,7 @@ public class AzureEnvironmentProperties implements AzureProfileOptionsProvider.A
      * Create an {@link AzureEnvironmentProperties} instance with default value.
      */
     public AzureEnvironmentProperties() {
-
+        this(null);
     }
 
     /**

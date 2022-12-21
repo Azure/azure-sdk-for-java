@@ -11,18 +11,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class DedicatedHostGroupPropertiesAdditionalCapabilities {
     /*
-     * The flag that enables or disables a capability to have UltraSSD Enabled
-     * Virtual Machines on Dedicated Hosts of the Dedicated Host Group. For the
-     * Virtual Machines to be UltraSSD Enabled, UltraSSDEnabled flag for the
-     * resource needs to be set true as well. The value is defaulted to 'false'
-     * when not provided. Please refer to
-     * https://docs.microsoft.com/en-us/azure/virtual-machines/disks-enable-ultra-ssd
-     * for more details on Ultra SSD feature. <br><br>NOTE: The ultraSSDEnabled
-     * setting can only be enabled for Host Groups that are created as zonal.
-     * <br><br>Minimum api-version: 2022-03-01.
+     * The flag that enables or disables a capability to have UltraSSD Enabled Virtual Machines on Dedicated Hosts of
+     * the Dedicated Host Group. For the Virtual Machines to be UltraSSD Enabled, UltraSSDEnabled flag for the resource
+     * needs to be set true as well. The value is defaulted to 'false' when not provided. Please refer to
+     * https://docs.microsoft.com/en-us/azure/virtual-machines/disks-enable-ultra-ssd for more details on Ultra SSD
+     * feature. <br><br>NOTE: The ultraSSDEnabled setting can only be enabled for Host Groups that are created as
+     * zonal. <br><br>Minimum api-version: 2022-03-01.
      */
     @JsonProperty(value = "ultraSSDEnabled")
     private Boolean ultraSsdEnabled;
+
+    /** Creates an instance of DedicatedHostGroupPropertiesAdditionalCapabilities class. */
+    public DedicatedHostGroupPropertiesAdditionalCapabilities() {
+    }
 
     /**
      * Get the ultraSsdEnabled property: The flag that enables or disables a capability to have UltraSSD Enabled Virtual

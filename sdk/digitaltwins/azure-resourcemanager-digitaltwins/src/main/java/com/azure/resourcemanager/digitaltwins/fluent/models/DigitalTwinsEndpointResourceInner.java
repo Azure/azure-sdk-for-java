@@ -19,6 +19,10 @@ public final class DigitalTwinsEndpointResourceInner extends ExternalResource {
     @JsonProperty(value = "properties", required = true)
     private DigitalTwinsEndpointResourceProperties properties;
 
+    /** Creates an instance of DigitalTwinsEndpointResourceInner class. */
+    public DigitalTwinsEndpointResourceInner() {
+    }
+
     /**
      * Get the properties property: DigitalTwinsInstance endpoint resource properties.
      *

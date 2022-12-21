@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MonitoringType. */
+/** The monitoring mode of OneAgent. */
 public final class MonitoringType extends ExpandableStringEnum<MonitoringType> {
     /** Static value CLOUD_INFRASTRUCTURE for MonitoringType. */
     public static final MonitoringType CLOUD_INFRASTRUCTURE = fromString("CLOUD_INFRASTRUCTURE");

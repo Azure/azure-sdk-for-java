@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/copyAuthorization",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/4.0.0-beta.7 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8a6a3cc2-b804-4e89-ab11-d98353b9a02a"
+    },
+    "Response" : {
+      "content-length" : "140",
+      "x-envoy-upstream-service-time" : "2560",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "09e444bf-9d7a-4963-acf9-c123c4b8f646",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "Body" : "{\"modelId\":\"0dcf7589-93f9-485a-b9ab-b218e2f38a6f\",\"accessToken\":\"REDACTED\",\"expirationDateTimeTicks\":1661538325}",
+      "Date" : "Thu, 25 Aug 2022 18:25:27 GMT",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/0dcf7589-93f9-485a-b9ab-b218e2f38a6f"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

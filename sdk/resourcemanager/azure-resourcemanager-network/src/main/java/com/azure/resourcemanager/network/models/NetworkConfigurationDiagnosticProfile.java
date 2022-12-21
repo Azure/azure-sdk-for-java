@@ -30,18 +30,20 @@ public final class NetworkConfigurationDiagnosticProfile {
     private String source;
 
     /*
-     * Traffic destination. Accepted values are: '*', IP Address/CIDR, Service
-     * Tag.
+     * Traffic destination. Accepted values are: '*', IP Address/CIDR, Service Tag.
      */
     @JsonProperty(value = "destination", required = true)
     private String destination;
 
     /*
-     * Traffic destination port. Accepted values are '*' and a single port in
-     * the range (0 - 65535).
+     * Traffic destination port. Accepted values are '*' and a single port in the range (0 - 65535).
      */
     @JsonProperty(value = "destinationPort", required = true)
     private String destinationPort;
+
+    /** Creates an instance of NetworkConfigurationDiagnosticProfile class. */
+    public NetworkConfigurationDiagnosticProfile() {
+    }
 
     /**
      * Get the direction property: The direction of the traffic.

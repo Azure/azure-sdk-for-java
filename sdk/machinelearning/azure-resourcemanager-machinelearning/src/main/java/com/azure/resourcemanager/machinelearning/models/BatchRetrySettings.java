@@ -23,6 +23,10 @@ public final class BatchRetrySettings {
     @JsonProperty(value = "timeout")
     private Duration timeout;
 
+    /** Creates an instance of BatchRetrySettings class. */
+    public BatchRetrySettings() {
+    }
+
     /**
      * Get the maxRetries property: Maximum retry count for a mini-batch.
      *

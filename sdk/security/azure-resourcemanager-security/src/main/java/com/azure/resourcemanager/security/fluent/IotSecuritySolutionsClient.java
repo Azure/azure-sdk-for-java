@@ -19,7 +19,7 @@ public interface IotSecuritySolutionsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solutions.
+     * @return list of IoT Security solutions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IoTSecuritySolutionModelInner> list();
@@ -32,7 +32,7 @@ public interface IotSecuritySolutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solutions.
+     * @return list of IoT Security solutions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IoTSecuritySolutionModelInner> list(String filter, Context context);
@@ -45,7 +45,7 @@ public interface IotSecuritySolutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solutions.
+     * @return list of IoT Security solutions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IoTSecuritySolutionModelInner> listByResourceGroup(String resourceGroupName);
@@ -60,11 +60,27 @@ public interface IotSecuritySolutionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solutions.
+     * @return list of IoT Security solutions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<IoTSecuritySolutionModelInner> listByResourceGroup(
         String resourceGroupName, String filter, Context context);
+
+    /**
+     * User this method to get details of a specific IoT Security solution based on solution name.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param solutionName The name of the IoT Security solution.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ioT Security solution configuration and resource information along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<IoTSecuritySolutionModelInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String solutionName, Context context);
 
     /**
      * User this method to get details of a specific IoT Security solution based on solution name.
@@ -81,20 +97,24 @@ public interface IotSecuritySolutionsClient {
     IoTSecuritySolutionModelInner getByResourceGroup(String resourceGroupName, String solutionName);
 
     /**
-     * User this method to get details of a specific IoT Security solution based on solution name.
+     * Use this method to create or update yours IoT Security solution.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param solutionName The name of the IoT Security solution.
+     * @param iotSecuritySolutionData The security solution data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution configuration and resource information.
+     * @return ioT Security solution configuration and resource information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IoTSecuritySolutionModelInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String solutionName, Context context);
+    Response<IoTSecuritySolutionModelInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String solutionName,
+        IoTSecuritySolutionModelInner iotSecuritySolutionData,
+        Context context);
 
     /**
      * Use this method to create or update yours IoT Security solution.
@@ -113,23 +133,24 @@ public interface IotSecuritySolutionsClient {
         String resourceGroupName, String solutionName, IoTSecuritySolutionModelInner iotSecuritySolutionData);
 
     /**
-     * Use this method to create or update yours IoT Security solution.
+     * Use this method to update existing IoT Security solution tags or user defined resources. To update other fields
+     * use the CreateOrUpdate method.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param solutionName The name of the IoT Security solution.
-     * @param iotSecuritySolutionData The security solution data.
+     * @param updateIotSecuritySolutionData The security solution data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution configuration and resource information.
+     * @return ioT Security solution configuration and resource information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IoTSecuritySolutionModelInner> createOrUpdateWithResponse(
+    Response<IoTSecuritySolutionModelInner> updateWithResponse(
         String resourceGroupName,
         String solutionName,
-        IoTSecuritySolutionModelInner iotSecuritySolutionData,
+        UpdateIotSecuritySolutionData updateIotSecuritySolutionData,
         Context context);
 
     /**
@@ -150,25 +171,19 @@ public interface IotSecuritySolutionsClient {
         String resourceGroupName, String solutionName, UpdateIotSecuritySolutionData updateIotSecuritySolutionData);
 
     /**
-     * Use this method to update existing IoT Security solution tags or user defined resources. To update other fields
-     * use the CreateOrUpdate method.
+     * Use this method to delete yours IoT Security solution.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param solutionName The name of the IoT Security solution.
-     * @param updateIotSecuritySolutionData The security solution data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution configuration and resource information.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IoTSecuritySolutionModelInner> updateWithResponse(
-        String resourceGroupName,
-        String solutionName,
-        UpdateIotSecuritySolutionData updateIotSecuritySolutionData,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String solutionName, Context context);
 
     /**
      * Use this method to delete yours IoT Security solution.
@@ -182,19 +197,4 @@ public interface IotSecuritySolutionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String solutionName);
-
-    /**
-     * Use this method to delete yours IoT Security solution.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
-     * @param solutionName The name of the IoT Security solution.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String solutionName, Context context);
 }

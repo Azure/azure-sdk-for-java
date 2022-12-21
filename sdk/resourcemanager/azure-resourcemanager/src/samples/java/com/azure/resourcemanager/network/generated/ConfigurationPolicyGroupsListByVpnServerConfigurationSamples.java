@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ConfigurationPolicyGroups ListByVpnServerConfiguration. */
 public final class ConfigurationPolicyGroupsListByVpnServerConfigurationSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2021-08-01/examples/ConfigurationPolicyGroupListByVpnServerConfiguration.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ConfigurationPolicyGroupListByVpnServerConfiguration.json
      */
     /**
      * Sample code: ConfigurationPolicyGroupListByVpnServerConfiguration.

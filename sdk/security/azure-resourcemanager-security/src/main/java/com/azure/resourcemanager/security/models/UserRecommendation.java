@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a user that is recommended to be allowed for a certain rule. */
 @Fluent
 public final class UserRecommendation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserRecommendation.class);
-
     /*
      * Represents a user that is recommended to be allowed for a certain rule
      */
@@ -25,6 +21,10 @@ public final class UserRecommendation {
      */
     @JsonProperty(value = "recommendationAction")
     private RecommendationAction recommendationAction;
+
+    /** Creates an instance of UserRecommendation class. */
+    public UserRecommendation() {
+    }
 
     /**
      * Get the username property: Represents a user that is recommended to be allowed for a certain rule.

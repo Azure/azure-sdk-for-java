@@ -6,14 +6,11 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Input of the secret to be validated. */
 @Fluent
 public final class ValidateSecretInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ValidateSecretInput.class);
-
     /*
      * The secret type.
      */
@@ -21,8 +18,7 @@ public final class ValidateSecretInput {
     private SecretType secretType;
 
     /*
-     * Resource reference to the Azure Key Vault secret. Expected to be in
-     * format of
+     * Resource reference to the Azure Key Vault secret. Expected to be in format of
      * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
      */
     @JsonProperty(value = "secretSource", required = true)
@@ -103,12 +99,12 @@ public final class ValidateSecretInput {
      */
     public void validate() {
         if (secretType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property secretType in model ValidateSecretInput"));
         }
         if (secretSource() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property secretSource in model ValidateSecretInput"));
@@ -116,4 +112,6 @@ public final class ValidateSecretInput {
             secretSource().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ValidateSecretInput.class);
 }

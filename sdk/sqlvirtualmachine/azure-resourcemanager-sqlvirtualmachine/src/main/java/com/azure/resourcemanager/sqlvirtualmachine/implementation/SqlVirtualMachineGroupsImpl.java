@@ -13,10 +13,9 @@ import com.azure.resourcemanager.sqlvirtualmachine.fluent.SqlVirtualMachineGroup
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.models.SqlVirtualMachineGroupInner;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVirtualMachineGroup;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVirtualMachineGroups;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlVirtualMachineGroupsImpl implements SqlVirtualMachineGroups {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlVirtualMachineGroupsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlVirtualMachineGroupsImpl.class);
 
     private final SqlVirtualMachineGroupsClient innerClient;
 
@@ -86,7 +85,7 @@ public final class SqlVirtualMachineGroupsImpl implements SqlVirtualMachineGroup
     public SqlVirtualMachineGroup getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -94,7 +93,7 @@ public final class SqlVirtualMachineGroupsImpl implements SqlVirtualMachineGroup
         }
         String sqlVirtualMachineGroupName = Utils.getValueFromIdByName(id, "sqlVirtualMachineGroups");
         if (sqlVirtualMachineGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -110,7 +109,7 @@ public final class SqlVirtualMachineGroupsImpl implements SqlVirtualMachineGroup
     public Response<SqlVirtualMachineGroup> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -118,7 +117,7 @@ public final class SqlVirtualMachineGroupsImpl implements SqlVirtualMachineGroup
         }
         String sqlVirtualMachineGroupName = Utils.getValueFromIdByName(id, "sqlVirtualMachineGroups");
         if (sqlVirtualMachineGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -132,7 +131,7 @@ public final class SqlVirtualMachineGroupsImpl implements SqlVirtualMachineGroup
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -140,7 +139,7 @@ public final class SqlVirtualMachineGroupsImpl implements SqlVirtualMachineGroup
         }
         String sqlVirtualMachineGroupName = Utils.getValueFromIdByName(id, "sqlVirtualMachineGroups");
         if (sqlVirtualMachineGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -154,7 +153,7 @@ public final class SqlVirtualMachineGroupsImpl implements SqlVirtualMachineGroup
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -162,7 +161,7 @@ public final class SqlVirtualMachineGroupsImpl implements SqlVirtualMachineGroup
         }
         String sqlVirtualMachineGroupName = Utils.getValueFromIdByName(id, "sqlVirtualMachineGroups");
         if (sqlVirtualMachineGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

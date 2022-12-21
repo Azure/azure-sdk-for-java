@@ -15,9 +15,9 @@ public interface AssessmentsMetadatas {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata information on all assessment types.
+     * @return metadata information on all assessment types as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SecurityAssessmentMetadata> list();
+    PagedIterable<SecurityAssessmentMetadataResponse> list();
 
     /**
      * Get metadata information on all assessment types.
@@ -26,9 +26,21 @@ public interface AssessmentsMetadatas {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata information on all assessment types.
+     * @return metadata information on all assessment types as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SecurityAssessmentMetadata> list(Context context);
+    PagedIterable<SecurityAssessmentMetadataResponse> list(Context context);
+
+    /**
+     * Get metadata information on an assessment type.
+     *
+     * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metadata information on an assessment type along with {@link Response}.
+     */
+    Response<SecurityAssessmentMetadataResponse> getWithResponse(String assessmentMetadataName, Context context);
 
     /**
      * Get metadata information on an assessment type.
@@ -39,39 +51,42 @@ public interface AssessmentsMetadatas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return metadata information on an assessment type.
      */
-    SecurityAssessmentMetadata get(String assessmentMetadataName);
+    SecurityAssessmentMetadataResponse get(String assessmentMetadataName);
 
     /**
-     * Get metadata information on an assessment type.
+     * Get metadata information on all assessment types in a specific subscription.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metadata information on all assessment types in a specific subscription as paginated response with {@link
+     *     PagedIterable}.
+     */
+    PagedIterable<SecurityAssessmentMetadataResponse> listBySubscription();
+
+    /**
+     * Get metadata information on all assessment types in a specific subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return metadata information on all assessment types in a specific subscription as paginated response with {@link
+     *     PagedIterable}.
+     */
+    PagedIterable<SecurityAssessmentMetadataResponse> listBySubscription(Context context);
+
+    /**
+     * Get metadata information on an assessment type in a specific subscription.
      *
      * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata information on an assessment type.
+     * @return metadata information on an assessment type in a specific subscription along with {@link Response}.
      */
-    Response<SecurityAssessmentMetadata> getWithResponse(String assessmentMetadataName, Context context);
-
-    /**
-     * Get metadata information on all assessment types in a specific subscription.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata information on all assessment types in a specific subscription.
-     */
-    PagedIterable<SecurityAssessmentMetadata> listBySubscription();
-
-    /**
-     * Get metadata information on all assessment types in a specific subscription.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata information on all assessment types in a specific subscription.
-     */
-    PagedIterable<SecurityAssessmentMetadata> listBySubscription(Context context);
+    Response<SecurityAssessmentMetadataResponse> getInSubscriptionWithResponse(
+        String assessmentMetadataName, Context context);
 
     /**
      * Get metadata information on an assessment type in a specific subscription.
@@ -82,19 +97,20 @@ public interface AssessmentsMetadatas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return metadata information on an assessment type in a specific subscription.
      */
-    SecurityAssessmentMetadata getInSubscription(String assessmentMetadataName);
+    SecurityAssessmentMetadataResponse getInSubscription(String assessmentMetadataName);
 
     /**
-     * Get metadata information on an assessment type in a specific subscription.
+     * Delete metadata information on an assessment type in a specific subscription, will cause the deletion of all the
+     * assessments of that type in that subscription.
      *
      * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata information on an assessment type in a specific subscription.
+     * @return the {@link Response}.
      */
-    Response<SecurityAssessmentMetadata> getInSubscriptionWithResponse(String assessmentMetadataName, Context context);
+    Response<Void> deleteInSubscriptionWithResponse(String assessmentMetadataName, Context context);
 
     /**
      * Delete metadata information on an assessment type in a specific subscription, will cause the deletion of all the
@@ -108,28 +124,15 @@ public interface AssessmentsMetadatas {
     void deleteInSubscription(String assessmentMetadataName);
 
     /**
-     * Delete metadata information on an assessment type in a specific subscription, will cause the deletion of all the
-     * assessments of that type in that subscription.
-     *
-     * @param assessmentMetadataName The Assessment Key - Unique key for the assessment type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> deleteInSubscriptionWithResponse(String assessmentMetadataName, Context context);
-
-    /**
      * Get metadata information on an assessment type in a specific subscription.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata information on an assessment type in a specific subscription.
+     * @return metadata information on an assessment type in a specific subscription along with {@link Response}.
      */
-    SecurityAssessmentMetadata getInSubscriptionById(String id);
+    SecurityAssessmentMetadataResponse getInSubscriptionById(String id);
 
     /**
      * Get metadata information on an assessment type in a specific subscription.
@@ -139,9 +142,9 @@ public interface AssessmentsMetadatas {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return metadata information on an assessment type in a specific subscription.
+     * @return metadata information on an assessment type in a specific subscription along with {@link Response}.
      */
-    Response<SecurityAssessmentMetadata> getInSubscriptionByIdWithResponse(String id, Context context);
+    Response<SecurityAssessmentMetadataResponse> getInSubscriptionByIdWithResponse(String id, Context context);
 
     /**
      * Delete metadata information on an assessment type in a specific subscription, will cause the deletion of all the
@@ -163,15 +166,15 @@ public interface AssessmentsMetadatas {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteInSubscriptionByIdWithResponse(String id, Context context);
 
     /**
-     * Begins definition for a new SecurityAssessmentMetadata resource.
+     * Begins definition for a new SecurityAssessmentMetadataResponse resource.
      *
      * @param name resource name.
-     * @return the first stage of the new SecurityAssessmentMetadata definition.
+     * @return the first stage of the new SecurityAssessmentMetadataResponse definition.
      */
-    SecurityAssessmentMetadata.DefinitionStages.Blank define(String name);
+    SecurityAssessmentMetadataResponse.DefinitionStages.Blank define(String name);
 }

@@ -6,15 +6,11 @@ package com.azure.resourcemanager.dnsresolver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Reference to DNS forwarding ruleset and associated virtual network link. */
 @Fluent
 public final class VirtualNetworkDnsForwardingRulesetInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkDnsForwardingRulesetInner.class);
-
     /*
      * DNS Forwarding Ruleset Resource ID.
      */

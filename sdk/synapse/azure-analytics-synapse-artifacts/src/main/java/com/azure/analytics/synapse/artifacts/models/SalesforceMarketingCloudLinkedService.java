@@ -19,55 +19,50 @@ import java.util.Map;
 @Fluent
 public class SalesforceMarketingCloudLinkedService extends LinkedService {
     /*
-     * Properties used to connect to Salesforce Marketing Cloud. It is mutually
-     * exclusive with any other properties in the linked service. Type: object.
+     * Properties used to connect to Salesforce Marketing Cloud. It is mutually exclusive with any other properties in
+     * the linked service. Type: object.
      */
     @JsonProperty(value = "typeProperties.connectionProperties")
     private Object connectionProperties;
 
     /*
-     * The client ID associated with the Salesforce Marketing Cloud
-     * application. Type: string (or Expression with resultType string).
+     * The client ID associated with the Salesforce Marketing Cloud application. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.clientId", required = true)
     private Object clientId;
 
     /*
-     * The client secret associated with the Salesforce Marketing Cloud
-     * application. Type: string (or Expression with resultType string).
+     * The client secret associated with the Salesforce Marketing Cloud application. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.clientSecret")
     private SecretBase clientSecret;
 
     /*
-     * Specifies whether the data source endpoints are encrypted using HTTPS.
-     * The default value is true. Type: boolean (or Expression with resultType
-     * boolean).
+     * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true. Type: boolean
+     * (or Expression with resultType boolean).
      */
     @JsonProperty(value = "typeProperties.useEncryptedEndpoints")
     private Object useEncryptedEndpoints;
 
     /*
-     * Specifies whether to require the host name in the server's certificate
-     * to match the host name of the server when connecting over SSL. The
-     * default value is true. Type: boolean (or Expression with resultType
-     * boolean).
+     * Specifies whether to require the host name in the server's certificate to match the host name of the server when
+     * connecting over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "typeProperties.useHostVerification")
     private Object useHostVerification;
 
     /*
-     * Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true. Type: boolean (or Expression with
-     * resultType boolean).
+     * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
+     * Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "typeProperties.usePeerVerification")
     private Object usePeerVerification;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;

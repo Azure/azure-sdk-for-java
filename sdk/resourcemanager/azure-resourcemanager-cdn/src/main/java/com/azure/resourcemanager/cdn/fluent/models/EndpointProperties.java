@@ -6,28 +6,26 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.cdn.models.DeepCreatedCustomDomain;
 import com.azure.resourcemanager.cdn.models.DeepCreatedOrigin;
 import com.azure.resourcemanager.cdn.models.DeepCreatedOriginGroup;
 import com.azure.resourcemanager.cdn.models.EndpointPropertiesUpdateParametersDeliveryPolicy;
 import com.azure.resourcemanager.cdn.models.EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink;
+import com.azure.resourcemanager.cdn.models.EndpointProvisioningState;
 import com.azure.resourcemanager.cdn.models.EndpointResourceState;
 import com.azure.resourcemanager.cdn.models.GeoFilter;
 import com.azure.resourcemanager.cdn.models.OptimizationType;
 import com.azure.resourcemanager.cdn.models.QueryStringCachingBehavior;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.azure.resourcemanager.cdn.models.UrlSigningKey;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The JSON object that contains the properties required to create an endpoint. */
 @Fluent
 public final class EndpointProperties extends EndpointPropertiesUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointProperties.class);
-
     /*
-     * The host name of the endpoint structured as {endpointName}.{DNSZone},
-     * e.g. contoso.azureedge.net
+     * The host name of the endpoint structured as {endpointName}.{DNSZone}, e.g. contoso.azureedge.net
      */
     @JsonProperty(value = "hostName", access = JsonProperty.Access.WRITE_ONLY)
     private String hostname;
@@ -39,8 +37,7 @@ public final class EndpointProperties extends EndpointPropertiesUpdateParameters
     private List<DeepCreatedOrigin> origins;
 
     /*
-     * The origin groups comprising of origins that are used for load balancing
-     * the traffic based on availability.
+     * The origin groups comprising of origins that are used for load balancing the traffic based on availability.
      */
     @JsonProperty(value = "originGroups")
     private List<DeepCreatedOriginGroup> originGroups;
@@ -49,7 +46,7 @@ public final class EndpointProperties extends EndpointPropertiesUpdateParameters
      * The custom domains under the endpoint.
      */
     @JsonProperty(value = "customDomains", access = JsonProperty.Access.WRITE_ONLY)
-    private List<CustomDomainInner> customDomains;
+    private List<DeepCreatedCustomDomain> customDomains;
 
     /*
      * Resource status of the endpoint.
@@ -61,7 +58,7 @@ public final class EndpointProperties extends EndpointPropertiesUpdateParameters
      * Provisioning status of the endpoint.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private EndpointProvisioningState provisioningState;
 
     /**
      * Get the hostname property: The host name of the endpoint structured as {endpointName}.{DNSZone}, e.g.
@@ -120,7 +117,7 @@ public final class EndpointProperties extends EndpointPropertiesUpdateParameters
      *
      * @return the customDomains value.
      */
-    public List<CustomDomainInner> customDomains() {
+    public List<DeepCreatedCustomDomain> customDomains() {
         return this.customDomains;
     }
 
@@ -138,7 +135,7 @@ public final class EndpointProperties extends EndpointPropertiesUpdateParameters
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public EndpointProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -250,7 +247,7 @@ public final class EndpointProperties extends EndpointPropertiesUpdateParameters
     public void validate() {
         super.validate();
         if (origins() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property origins in model EndpointProperties"));
         } else {
@@ -263,4 +260,6 @@ public final class EndpointProperties extends EndpointPropertiesUpdateParameters
             customDomains().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EndpointProperties.class);
 }

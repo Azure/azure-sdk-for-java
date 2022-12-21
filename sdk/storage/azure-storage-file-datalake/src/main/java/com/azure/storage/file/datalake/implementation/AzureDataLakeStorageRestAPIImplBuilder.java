@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /** A builder for creating a new instance of the AzureDataLakeStorageRestAPI type. */
@@ -46,7 +47,7 @@ public final class AzureDataLakeStorageRestAPIImplBuilder
 
     @Generated private static final String SDK_VERSION = "version";
 
-    @Generated private final Map<String, String> properties = new HashMap<>();
+    @Generated private static final Map<String, String> PROPERTIES = new HashMap<>();
 
     @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
 
@@ -96,8 +97,7 @@ public final class AzureDataLakeStorageRestAPIImplBuilder
     }
 
     /*
-     * The client options such as application ID and custom headers to set on a
-     * request.
+     * The client options such as application ID and custom headers to set on a request.
      */
     @Generated private ClientOptions clientOptions;
 
@@ -126,13 +126,13 @@ public final class AzureDataLakeStorageRestAPIImplBuilder
     @Generated
     @Override
     public AzureDataLakeStorageRestAPIImplBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+        Objects.requireNonNull(customPolicy, "'customPolicy' cannot be null.");
         pipelinePolicies.add(customPolicy);
         return this;
     }
 
     /*
-     * The configuration store that is used during construction of the service
-     * client.
+     * The configuration store that is used during construction of the service client.
      */
     @Generated private Configuration configuration;
 
@@ -145,8 +145,7 @@ public final class AzureDataLakeStorageRestAPIImplBuilder
     }
 
     /*
-     * The URL of the service account, container, or blob that is the target of
-     * the desired operation.
+     * The URL of the service account, container, or blob that is the target of the desired operation.
      */
     @Generated private String url;
 
@@ -197,9 +196,8 @@ public final class AzureDataLakeStorageRestAPIImplBuilder
     }
 
     /*
-     * The lease duration is required to acquire a lease, and specifies the
-     * duration of the lease in seconds.  The lease duration must be between 15
-     * and 60 seconds or -1 for infinite lease.
+     * The lease duration is required to acquire a lease, and specifies the duration of the lease in seconds.  The
+     * lease duration must be between 15 and 60 seconds or -1 for infinite lease.
      */
     @Generated private int xMsLeaseDuration;
 
@@ -268,8 +266,7 @@ public final class AzureDataLakeStorageRestAPIImplBuilder
     }
 
     /*
-     * The retry policy that will attempt to retry failed requests, if
-     * applicable.
+     * The retry policy that will attempt to retry failed requests, if applicable.
      */
     @Generated private RetryPolicy retryPolicy;
 
@@ -292,21 +289,21 @@ public final class AzureDataLakeStorageRestAPIImplBuilder
      */
     @Generated
     public AzureDataLakeStorageRestAPIImpl buildClient() {
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
-        }
-        if (resource == null) {
-            this.resource = "filesystem";
-        }
-        if (version == null) {
-            this.version = "2021-06-08";
-        }
-        if (serializerAdapter == null) {
-            this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        }
+        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
+        String localResource = (resource != null) ? resource : "filesystem";
+        String localVersion = (version != null) ? version : "2021-06-08";
+        SerializerAdapter localSerializerAdapter =
+                (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         AzureDataLakeStorageRestAPIImpl client =
                 new AzureDataLakeStorageRestAPIImpl(
-                        pipeline, serializerAdapter, url, resource, version, xMsLeaseDuration, fileSystem, path);
+                        localPipeline,
+                        localSerializerAdapter,
+                        url,
+                        localResource,
+                        localVersion,
+                        xMsLeaseDuration,
+                        fileSystem,
+                        path);
         return client;
     }
 
@@ -314,21 +311,17 @@ public final class AzureDataLakeStorageRestAPIImplBuilder
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration =
                 (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-        if (httpLogOptions == null) {
-            httpLogOptions = new HttpLogOptions();
-        }
-        if (clientOptions == null) {
-            clientOptions = new ClientOptions();
-        }
+        HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
+        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        String applicationId = CoreUtils.getApplicationId(localClientOptions, localHttpLogOptions);
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         HttpHeaders headers = new HttpHeaders();
-        clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        localClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
@@ -350,7 +343,7 @@ public final class AzureDataLakeStorageRestAPIImplBuilder
                 new HttpPipelineBuilder()
                         .policies(policies.toArray(new HttpPipelinePolicy[0]))
                         .httpClient(httpClient)
-                        .clientOptions(clientOptions)
+                        .clientOptions(localClientOptions)
                         .build();
         return httpPipeline;
     }

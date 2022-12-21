@@ -7,15 +7,12 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.models.RecoverableDatabaseInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response to a list recoverable databases request. */
 @Fluent
 public final class RecoverableDatabaseListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoverableDatabaseListResult.class);
-
     /*
      * A list of recoverable databases
      */
@@ -49,7 +46,7 @@ public final class RecoverableDatabaseListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model RecoverableDatabaseListResult"));
@@ -57,4 +54,6 @@ public final class RecoverableDatabaseListResult {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RecoverableDatabaseListResult.class);
 }

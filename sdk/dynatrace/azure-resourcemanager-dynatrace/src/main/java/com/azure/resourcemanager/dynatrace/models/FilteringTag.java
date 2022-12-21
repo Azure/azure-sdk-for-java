@@ -26,8 +26,7 @@ public final class FilteringTag {
     private String value;
 
     /*
-     * Valid actions for a filtering tag. Exclusion takes priority over
-     * inclusion.
+     * Valid actions for a filtering tag. Exclusion takes priority over inclusion.
      */
     @JsonProperty(value = "action")
     private TagAction action;

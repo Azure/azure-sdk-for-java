@@ -56,7 +56,7 @@ public final class RoleEligibilitySchedulesClientImpl implements RoleEligibility
      */
     @Host("{$host}")
     @ServiceInterface(name = "AuthorizationManagem")
-    private interface RoleEligibilitySchedulesService {
+    public interface RoleEligibilitySchedulesService {
         @Headers({"Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.Authorization/roleEligibilitySchedules/{roleEligibilityScheduleName}")
         @ExpectedResponses({200})
@@ -181,29 +181,7 @@ public final class RoleEligibilitySchedulesClientImpl implements RoleEligibility
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleEligibilityScheduleInner> getAsync(String scope, String roleEligibilityScheduleName) {
         return getWithResponseAsync(scope, roleEligibilityScheduleName)
-            .flatMap(
-                (Response<RoleEligibilityScheduleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get the specified role eligibility schedule for a resource scope.
-     *
-     * @param scope The scope of the role eligibility schedule.
-     * @param roleEligibilityScheduleName The name (guid) of the role eligibility schedule to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified role eligibility schedule for a resource scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleEligibilityScheduleInner get(String scope, String roleEligibilityScheduleName) {
-        return getAsync(scope, roleEligibilityScheduleName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -221,6 +199,21 @@ public final class RoleEligibilitySchedulesClientImpl implements RoleEligibility
     public Response<RoleEligibilityScheduleInner> getWithResponse(
         String scope, String roleEligibilityScheduleName, Context context) {
         return getWithResponseAsync(scope, roleEligibilityScheduleName, context).block();
+    }
+
+    /**
+     * Get the specified role eligibility schedule for a resource scope.
+     *
+     * @param scope The scope of the role eligibility schedule.
+     * @param roleEligibilityScheduleName The name (guid) of the role eligibility schedule to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified role eligibility schedule for a resource scope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RoleEligibilityScheduleInner get(String scope, String roleEligibilityScheduleName) {
+        return getWithResponse(scope, roleEligibilityScheduleName, Context.NONE).getValue();
     }
 
     /**
@@ -406,7 +399,8 @@ public final class RoleEligibilitySchedulesClientImpl implements RoleEligibility
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -442,7 +436,8 @@ public final class RoleEligibilitySchedulesClientImpl implements RoleEligibility
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a receiver that should be resubscribed. */
 @Fluent
 public final class EnableRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnableRequest.class);
-
     /*
      * The name of the receiver to resubscribe.
      */
@@ -47,9 +44,11 @@ public final class EnableRequest {
      */
     public void validate() {
         if (receiverName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property receiverName in model EnableRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EnableRequest.class);
 }

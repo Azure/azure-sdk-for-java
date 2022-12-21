@@ -64,8 +64,8 @@ final class MemberNameConverterImpl implements MemberNameConverter {
                 MethodType.methodType(String.class, AnnotatedMethod.class, String.class));
             useReflectionForMemberName = true;
         } catch (LinkageError | ReflectiveOperationException ex) {
-            LOGGER.verbose("Failed to retrieve MethodHandles used to get naming strategy. Falling back to BeanUtils.",
-                ex);
+            LOGGER.verbose("Failed to retrieve MethodHandles used to get naming strategy. Falling back to BeanUtils. "
+                + "Please consider updating your Jackson dependencies to at least version 2.12", ex);
         }
 
         GET_ACCESSOR_NAMING = getAccessorNaming;

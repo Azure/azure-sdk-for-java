@@ -23,6 +23,10 @@ public final class SybaseTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private SybaseTableDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of SybaseTableDataset class. */
+    public SybaseTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Sybase table dataset properties.
      *

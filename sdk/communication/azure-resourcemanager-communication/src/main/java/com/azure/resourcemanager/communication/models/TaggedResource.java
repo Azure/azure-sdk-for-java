@@ -13,8 +13,7 @@ import java.util.Map;
 @Fluent
 public class TaggedResource {
     /*
-     * Tags of the service which is a list of key value pairs that describe the
-     * resource.
+     * Tags of the service which is a list of key value pairs that describe the resource.
      */
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)

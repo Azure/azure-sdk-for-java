@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -31,8 +29,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class DeliveryRuleAction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeliveryRuleAction.class);
-
     /**
      * Validates the instance.
      *

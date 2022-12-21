@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ManagedClusterSkuName. */
+/** The name of a managed cluster SKU. */
 public final class ManagedClusterSkuName extends ExpandableStringEnum<ManagedClusterSkuName> {
     /** Static value Basic for ManagedClusterSkuName. */
     public static final ManagedClusterSkuName BASIC = fromString("Basic");

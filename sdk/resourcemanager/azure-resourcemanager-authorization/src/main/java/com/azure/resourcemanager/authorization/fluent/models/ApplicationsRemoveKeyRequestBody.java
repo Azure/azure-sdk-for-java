@@ -33,6 +33,10 @@ public final class ApplicationsRemoveKeyRequestBody {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of ApplicationsRemoveKeyRequestBody class. */
+    public ApplicationsRemoveKeyRequestBody() {
+    }
+
     /**
      * Get the keyId property: The keyId property.
      *

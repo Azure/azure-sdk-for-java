@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for CertificateOrdersDiagnostics ListAppServiceCertificateOrderDetectorResponse. */
 public final class CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2021-03-01/examples/Diagnostics_ListAppServiceCertificateOrderDetectorResponse.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-03-01/examples/Diagnostics_ListAppServiceCertificateOrderDetectorResponse.json
      */
     /**
      * Sample code: List app service certificate detector response.

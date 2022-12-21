@@ -18,6 +18,9 @@ public final class QueueMessage {
     @JsonProperty(value = "MessageText", required = true)
     private String messageText;
 
+    /** Creates an instance of QueueMessage class. */
+    public QueueMessage() {}
+
     /**
      * Get the messageText property: The content of the message.
      *

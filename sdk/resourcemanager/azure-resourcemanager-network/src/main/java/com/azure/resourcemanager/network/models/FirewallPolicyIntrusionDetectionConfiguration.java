@@ -24,13 +24,16 @@ public final class FirewallPolicyIntrusionDetectionConfiguration {
     private List<FirewallPolicyIntrusionDetectionBypassTrafficSpecifications> bypassTrafficSettings;
 
     /*
-     * IDPS Private IP address ranges are used to identify traffic direction
-     * (i.e. inbound, outbound, etc.). By default, only ranges defined by IANA
-     * RFC 1918 are considered private IP addresses. To modify default ranges,
+     * IDPS Private IP address ranges are used to identify traffic direction (i.e. inbound, outbound, etc.). By
+     * default, only ranges defined by IANA RFC 1918 are considered private IP addresses. To modify default ranges,
      * specify your Private IP address ranges with this property
      */
     @JsonProperty(value = "privateRanges")
     private List<String> privateRanges;
+
+    /** Creates an instance of FirewallPolicyIntrusionDetectionConfiguration class. */
+    public FirewallPolicyIntrusionDetectionConfiguration() {
+    }
 
     /**
      * Get the signatureOverrides property: List of specific signatures states.

@@ -27,9 +27,8 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
     private ApplicationGatewayProtocol protocol;
 
     /*
-     * Connection timeout in seconds. Application Gateway will fail the request
-     * if response is not received within ConnectionTimeout. Acceptable values
-     * are from 1 second to 86400 seconds.
+     * Connection timeout in seconds. Application Gateway will fail the request if response is not received within
+     * ConnectionTimeout. Acceptable values are from 1 second to 86400 seconds.
      */
     @JsonProperty(value = "timeout")
     private Integer timeout;
@@ -47,15 +46,14 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
     private List<SubResource> trustedRootCertificates;
 
     /*
-     * Server name indication to be sent to the backend servers for Tls
-     * protocol.
+     * Server name indication to be sent to the backend servers for Tls protocol.
      */
     @JsonProperty(value = "hostName")
     private String hostname;
 
     /*
-     * Whether to pick server name indication from the host name of the backend
-     * server for Tls protocol. Default value is false.
+     * Whether to pick server name indication from the host name of the backend server for Tls protocol. Default value
+     * is false.
      */
     @JsonProperty(value = "pickHostNameFromBackendAddress")
     private Boolean pickHostnameFromBackendAddress;
@@ -65,6 +63,10 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of ApplicationGatewayBackendSettingsPropertiesFormat class. */
+    public ApplicationGatewayBackendSettingsPropertiesFormat() {
+    }
 
     /**
      * Get the port property: The destination port on the backend.

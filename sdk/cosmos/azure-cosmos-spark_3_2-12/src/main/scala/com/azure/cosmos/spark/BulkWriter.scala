@@ -521,7 +521,15 @@ class BulkWriter(container: CosmosAsyncContainer,
 
           log.logInfo(s"invoking bulkInputEmitter.onComplete(), Context: ${operationContext.toString} ${getThreadInfo}")
           semaphore.release(activeTasks.get())
-          bulkInputEmitter.tryEmitComplete()
+          val completeEmitResult = bulkInputEmitter.tryEmitComplete()
+          if (completeEmitResult eq Sinks.EmitResult.OK) {
+            log.logDebug(s"bulkInputEmitter sink completed, Context: ${operationContext.toString} ${getThreadInfo}")
+          }
+          else {
+            log.logInfo(
+              s"bulkInputEmitter sink completion failed. EmitResult: $completeEmitResult  +" +
+                s"Context: ${operationContext.toString} ${getThreadInfo}")
+          }
 
           throwIfCapturedExceptionExists()
 

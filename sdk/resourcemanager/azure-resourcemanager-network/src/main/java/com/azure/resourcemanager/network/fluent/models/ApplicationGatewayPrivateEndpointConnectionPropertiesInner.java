@@ -19,15 +19,13 @@ public final class ApplicationGatewayPrivateEndpointConnectionPropertiesInner {
     private PrivateEndpointInner privateEndpoint;
 
     /*
-     * A collection of information about the state of the connection between
-     * service consumer and provider.
+     * A collection of information about the state of the connection between service consumer and provider.
      */
     @JsonProperty(value = "privateLinkServiceConnectionState")
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
 
     /*
-     * The provisioning state of the application gateway private endpoint
-     * connection resource.
+     * The provisioning state of the application gateway private endpoint connection resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -37,6 +35,10 @@ public final class ApplicationGatewayPrivateEndpointConnectionPropertiesInner {
      */
     @JsonProperty(value = "linkIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String linkIdentifier;
+
+    /** Creates an instance of ApplicationGatewayPrivateEndpointConnectionPropertiesInner class. */
+    public ApplicationGatewayPrivateEndpointConnectionPropertiesInner() {
+    }
 
     /**
      * Get the privateEndpoint property: The resource of private end point.

@@ -55,6 +55,10 @@ public final class ScriptImpl implements Script, Script.Definition, Script.Updat
         return this.innerModel().provisioningState();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ScriptInner innerModel() {
         return this.innerObject;
     }

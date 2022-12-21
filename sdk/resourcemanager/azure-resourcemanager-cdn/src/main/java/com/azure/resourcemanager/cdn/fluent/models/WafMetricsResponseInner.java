@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.WafMetricsResponseGranularity;
 import com.azure.resourcemanager.cdn.models.WafMetricsResponseSeriesItem;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.List;
 /** Waf Metrics Response. */
 @Fluent
 public final class WafMetricsResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WafMetricsResponseInner.class);
-
     /*
      * The dateTimeBegin property.
      */

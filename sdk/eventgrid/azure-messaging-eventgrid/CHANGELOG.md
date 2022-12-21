@@ -1,6 +1,6 @@
 # Release History
 
-## 4.13.0-beta.1 (Unreleased)
+## 4.14.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,45 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.13.0 (2022-11-16)
+
+### Features Added
+
+- Added new System Events:
+
+    - `Microsoft.HealthcareApis.DicomImageCreated`
+    - `Microsoft.HealthcareApis.DicomImageDeleted`
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.34.0`.
+- Updated `azure-core-http-netty` to `1.12.7`.
+
+## 4.12.3 (2022-10-13)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.33.0`.
+- Updated `azure-core-http-netty` to `1.12.6`.
+
+## 4.12.2 (2022-09-14)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.32.0`.
+- Updated `azure-core-http-netty` to `1.12.5`.
+
+## 4.12.1 (2022-08-15)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.31.0`.
+- Updated `azure-core-http-netty` to `1.12.4`.
 
 ## 4.12.0 (2022-07-08)
 

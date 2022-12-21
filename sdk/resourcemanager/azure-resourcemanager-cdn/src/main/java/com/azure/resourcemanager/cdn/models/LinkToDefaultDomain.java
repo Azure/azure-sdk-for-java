@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LinkToDefaultDomain. */
+/** whether this route will be linked to the default endpoint domain. */
 public final class LinkToDefaultDomain extends ExpandableStringEnum<LinkToDefaultDomain> {
     /** Static value Enabled for LinkToDefaultDomain. */
     public static final LinkToDefaultDomain ENABLED = fromString("Enabled");
@@ -27,7 +27,11 @@ public final class LinkToDefaultDomain extends ExpandableStringEnum<LinkToDefaul
         return fromString(name, LinkToDefaultDomain.class);
     }
 
-    /** @return known LinkToDefaultDomain values. */
+    /**
+     * Gets known LinkToDefaultDomain values.
+     *
+     * @return known LinkToDefaultDomain values.
+     */
     public static Collection<LinkToDefaultDomain> values() {
         return values(LinkToDefaultDomain.class);
     }

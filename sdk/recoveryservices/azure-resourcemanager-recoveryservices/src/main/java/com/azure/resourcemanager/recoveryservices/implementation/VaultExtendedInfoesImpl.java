@@ -8,32 +8,23 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.fluent.VaultExtendedInfoesClient;
 import com.azure.resourcemanager.recoveryservices.fluent.models.VaultExtendedInfoResourceInner;
 import com.azure.resourcemanager.recoveryservices.models.VaultExtendedInfoResource;
 import com.azure.resourcemanager.recoveryservices.models.VaultExtendedInfoes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class VaultExtendedInfoesImpl implements VaultExtendedInfoes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultExtendedInfoesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VaultExtendedInfoesImpl.class);
 
     private final VaultExtendedInfoesClient innerClient;
 
-    private final RecoveryServicesManager serviceManager;
+    private final com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager;
 
-    public VaultExtendedInfoesImpl(VaultExtendedInfoesClient innerClient, RecoveryServicesManager serviceManager) {
+    public VaultExtendedInfoesImpl(
+        VaultExtendedInfoesClient innerClient,
+        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public VaultExtendedInfoResource get(String resourceGroupName, String vaultName) {
-        VaultExtendedInfoResourceInner inner = this.serviceClient().get(resourceGroupName, vaultName);
-        if (inner != null) {
-            return new VaultExtendedInfoResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<VaultExtendedInfoResource> getWithResponse(
@@ -51,10 +42,8 @@ public final class VaultExtendedInfoesImpl implements VaultExtendedInfoes {
         }
     }
 
-    public VaultExtendedInfoResource createOrUpdate(
-        String resourceGroupName, String vaultName, VaultExtendedInfoResourceInner resourceExtendedInfoDetails) {
-        VaultExtendedInfoResourceInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, vaultName, resourceExtendedInfoDetails);
+    public VaultExtendedInfoResource get(String resourceGroupName, String vaultName) {
+        VaultExtendedInfoResourceInner inner = this.serviceClient().get(resourceGroupName, vaultName);
         if (inner != null) {
             return new VaultExtendedInfoResourceImpl(inner, this.manager());
         } else {
@@ -82,10 +71,10 @@ public final class VaultExtendedInfoesImpl implements VaultExtendedInfoes {
         }
     }
 
-    public VaultExtendedInfoResource update(
+    public VaultExtendedInfoResource createOrUpdate(
         String resourceGroupName, String vaultName, VaultExtendedInfoResourceInner resourceExtendedInfoDetails) {
         VaultExtendedInfoResourceInner inner =
-            this.serviceClient().update(resourceGroupName, vaultName, resourceExtendedInfoDetails);
+            this.serviceClient().createOrUpdate(resourceGroupName, vaultName, resourceExtendedInfoDetails);
         if (inner != null) {
             return new VaultExtendedInfoResourceImpl(inner, this.manager());
         } else {
@@ -111,11 +100,22 @@ public final class VaultExtendedInfoesImpl implements VaultExtendedInfoes {
         }
     }
 
+    public VaultExtendedInfoResource update(
+        String resourceGroupName, String vaultName, VaultExtendedInfoResourceInner resourceExtendedInfoDetails) {
+        VaultExtendedInfoResourceInner inner =
+            this.serviceClient().update(resourceGroupName, vaultName, resourceExtendedInfoDetails);
+        if (inner != null) {
+            return new VaultExtendedInfoResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     private VaultExtendedInfoesClient serviceClient() {
         return this.innerClient;
     }
 
-    private RecoveryServicesManager manager() {
+    private com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager() {
         return this.serviceManager;
     }
 }

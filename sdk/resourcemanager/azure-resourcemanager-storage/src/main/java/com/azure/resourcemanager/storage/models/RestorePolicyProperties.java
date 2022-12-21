@@ -18,8 +18,7 @@ public final class RestorePolicyProperties {
     private boolean enabled;
 
     /*
-     * how long this blob can be restored. It should be great than zero and
-     * less than DeleteRetentionPolicy.days.
+     * how long this blob can be restored. It should be great than zero and less than DeleteRetentionPolicy.days.
      */
     @JsonProperty(value = "days")
     private Integer days;

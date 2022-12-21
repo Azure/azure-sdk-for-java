@@ -1051,38 +1051,13 @@ public final class BlobContainerClient {
         return blockWithOptionalTimeout(response, timeout);
     }
 
-//    /**
-//     * Renames an existing blob container.
-//     *
-//     * <p><strong>Code Samples</strong></p>
-//     *
-//     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.rename#String -->
-//     * <!-- end com.azure.storage.blob.BlobContainerClient.rename#String -->
-//     *
-//     * @param destinationContainerName The new name of the container.
-//     * @return A {@link BlobContainerClient} used to interact with the renamed container.
-//     */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
+    // TODO: Reintroduce this API once service starts supporting it.
 //    BlobContainerClient rename(String destinationContainerName) {
 //        return renameWithResponse(new BlobContainerRenameOptions(destinationContainerName
 //        ), null, Context.NONE).getValue();
 //    }
-//
-//    /**
-//     * Renames an existing blob container.
-//     *
-//     * <p><strong>Code Samples</strong></p>
-//     *
-//     * <!-- src_embed com.azure.storage.blob.BlobContainerClient.renameWithResponse#BlobContainerRenameOptions-Duration-Context -->
-//     * <!-- end com.azure.storage.blob.BlobContainerClient.renameWithResponse#BlobContainerRenameOptions-Duration-Context -->
-//     *
-//     * @param options {@link BlobContainerRenameOptions}
-//     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-//     * @param context Additional context that is passed through the Http pipeline during the service call.
-//     * @return A {@link Response} whose {@link Response#getValue() value} contains a
-//     * {@link BlobContainerClient} used to interact with the renamed container.
-//     */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
+
+    // TODO: Reintroduce this API once service starts supporting it.
 //    Response<BlobContainerClient> renameWithResponse(BlobContainerRenameOptions options, Duration timeout,
 //        Context context) {
 //        Mono<Response<BlobContainerClient>> response = this.client.renameWithResponse(options, context)

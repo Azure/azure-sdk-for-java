@@ -7,6 +7,7 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.BuildStatus;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
+import com.azure.resourcemanager.appservice.models.StaticSiteLinkedBackend;
 import com.azure.resourcemanager.appservice.models.StaticSiteUserProvidedFunctionApp;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -107,6 +108,15 @@ public final class StaticSiteBuildArmResourceInner extends ProxyOnlyResource {
      */
     public List<StaticSiteUserProvidedFunctionApp> userProvidedFunctionApps() {
         return this.innerProperties() == null ? null : this.innerProperties().userProvidedFunctionApps();
+    }
+
+    /**
+     * Get the linkedBackends property: Backends linked to the static side build.
+     *
+     * @return the linkedBackends value.
+     */
+    public List<StaticSiteLinkedBackend> linkedBackends() {
+        return this.innerProperties() == null ? null : this.innerProperties().linkedBackends();
     }
 
     /**

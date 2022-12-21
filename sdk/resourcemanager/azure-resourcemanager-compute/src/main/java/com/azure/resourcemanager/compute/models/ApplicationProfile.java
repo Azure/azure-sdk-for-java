@@ -12,11 +12,14 @@ import java.util.List;
 @Fluent
 public final class ApplicationProfile {
     /*
-     * Specifies the gallery applications that should be made available to the
-     * VM/VMSS
+     * Specifies the gallery applications that should be made available to the VM/VMSS
      */
     @JsonProperty(value = "galleryApplications")
     private List<VMGalleryApplication> galleryApplications;
+
+    /** Creates an instance of ApplicationProfile class. */
+    public ApplicationProfile() {
+    }
 
     /**
      * Get the galleryApplications property: Specifies the gallery applications that should be made available to the

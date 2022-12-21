@@ -40,6 +40,14 @@ public class ThroughputControlGroupConfigConfigurationTests extends TestSuiteBas
                 .build();
         container.enableLocalThroughputControlGroup(groupConfig);
 
+        ThroughputControlGroupConfig groupConfigSameIdDifferentTargetThroughput =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName("group-1")
+                .targetThroughput(8)
+                .defaultControlGroup(true)
+                .build();
+        container.enableLocalThroughputControlGroup(groupConfigSameIdDifferentTargetThroughput);
+
         ThroughputControlGroupConfig groupConfig2 =
             new ThroughputControlGroupConfigBuilder()
                 .groupName("group-2")

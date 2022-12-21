@@ -11,18 +11,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AmazonRdsForOracleTableDatasetTypeProperties {
     /*
-     * The schema name of the AmazonRdsForOracle database. Type: string (or
-     * Expression with resultType string).
+     * The schema name of the AmazonRdsForOracle database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "schema")
     private Object schema;
 
     /*
-     * The table name of the AmazonRdsForOracle database. Type: string (or
-     * Expression with resultType string).
+     * The table name of the AmazonRdsForOracle database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "table")
     private Object table;
+
+    /** Creates an instance of AmazonRdsForOracleTableDatasetTypeProperties class. */
+    public AmazonRdsForOracleTableDatasetTypeProperties() {
+    }
 
     /**
      * Get the schema property: The schema name of the AmazonRdsForOracle database. Type: string (or Expression with

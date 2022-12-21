@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.dnsresolver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.management.SubResource;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** Describes a DNS forwarding ruleset PATCH operation. */
 @Fluent
 public final class DnsForwardingRulesetPatch {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DnsForwardingRulesetPatch.class);
+    /*
+     * The reference to the DNS resolver outbound endpoints that are used to route DNS queries matching the forwarding
+     * rules in the ruleset to the target DNS servers.
+     */
+    @JsonProperty(value = "dnsResolverOutboundEndpoints")
+    private List<SubResource> dnsResolverOutboundEndpoints;
 
     /*
      * Tags for DNS Resolver.
@@ -22,6 +27,28 @@ public final class DnsForwardingRulesetPatch {
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /**
+     * Get the dnsResolverOutboundEndpoints property: The reference to the DNS resolver outbound endpoints that are used
+     * to route DNS queries matching the forwarding rules in the ruleset to the target DNS servers.
+     *
+     * @return the dnsResolverOutboundEndpoints value.
+     */
+    public List<SubResource> dnsResolverOutboundEndpoints() {
+        return this.dnsResolverOutboundEndpoints;
+    }
+
+    /**
+     * Set the dnsResolverOutboundEndpoints property: The reference to the DNS resolver outbound endpoints that are used
+     * to route DNS queries matching the forwarding rules in the ruleset to the target DNS servers.
+     *
+     * @param dnsResolverOutboundEndpoints the dnsResolverOutboundEndpoints value to set.
+     * @return the DnsForwardingRulesetPatch object itself.
+     */
+    public DnsForwardingRulesetPatch withDnsResolverOutboundEndpoints(List<SubResource> dnsResolverOutboundEndpoints) {
+        this.dnsResolverOutboundEndpoints = dnsResolverOutboundEndpoints;
+        return this;
+    }
 
     /**
      * Get the tags property: Tags for DNS Resolver.

@@ -120,6 +120,37 @@ public final class LiveOutputInner extends ProxyResource {
     }
 
     /**
+     * Get the rewindWindowLength property: ISO 8601 time between 1 minute to the duration of archiveWindowLength to
+     * control seek-able window length during Live. The service won't use this property once LiveOutput stops. The
+     * archived VOD will have full content with original ArchiveWindowLength. For example, use PT1H30M to indicate 1
+     * hour and 30 minutes of rewind window length. Service will use implicit default value 30m only if Live Event
+     * enables LL.
+     *
+     * @return the rewindWindowLength value.
+     */
+    public Duration rewindWindowLength() {
+        return this.innerProperties() == null ? null : this.innerProperties().rewindWindowLength();
+    }
+
+    /**
+     * Set the rewindWindowLength property: ISO 8601 time between 1 minute to the duration of archiveWindowLength to
+     * control seek-able window length during Live. The service won't use this property once LiveOutput stops. The
+     * archived VOD will have full content with original ArchiveWindowLength. For example, use PT1H30M to indicate 1
+     * hour and 30 minutes of rewind window length. Service will use implicit default value 30m only if Live Event
+     * enables LL.
+     *
+     * @param rewindWindowLength the rewindWindowLength value to set.
+     * @return the LiveOutputInner object itself.
+     */
+    public LiveOutputInner withRewindWindowLength(Duration rewindWindowLength) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LiveOutputProperties();
+        }
+        this.innerProperties().withRewindWindowLength(rewindWindowLength);
+        return this;
+    }
+
+    /**
      * Get the manifestName property: The manifest file name. If not provided, the service will generate one
      * automatically.
      *

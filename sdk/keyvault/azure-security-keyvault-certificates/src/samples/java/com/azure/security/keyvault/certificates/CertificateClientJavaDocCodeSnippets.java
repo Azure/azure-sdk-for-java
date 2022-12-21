@@ -35,11 +35,10 @@ import java.util.Map;
  * This class contains code samples for generating javadocs through doclets for {@link CertificateClient}
  */
 public final class CertificateClientJavaDocCodeSnippets {
-
-    private String key1 = "key1";
-    private String key2 = "key2";
-    private String value1 = "val1";
-    private String value2 = "val2";
+    private final String key1 = "key1";
+    private final String key2 = "key2";
+    private final String value1 = "val1";
+    private final String value2 = "val2";
 
     /**
      * Implementation for.CertificateClient
@@ -50,7 +49,7 @@ public final class CertificateClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.instantiation
         CertificateClient certificateClient = new CertificateClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
-            .vaultUrl("https://myvault.vault.azure.net/")
+            .vaultUrl("<your-key-vault-url>")
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildClient();
         // END: com.azure.security.keyvault.certificates.CertificateClient.instantiation

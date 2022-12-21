@@ -16,40 +16,39 @@ import java.util.Map;
 @Fluent
 public class EncryptionSetIdentity {
     /*
-     * The type of Managed Identity used by the DiskEncryptionSet. Only
-     * SystemAssigned is supported for new creations. Disk Encryption Sets can
-     * be updated with Identity type None during migration of subscription to a
-     * new Azure Active Directory tenant; it will cause the encrypted resources
-     * to lose access to the keys.
+     * The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is supported for new creations.
+     * Disk Encryption Sets can be updated with Identity type None during migration of subscription to a new Azure
+     * Active Directory tenant; it will cause the encrypted resources to lose access to the keys.
      */
     @JsonProperty(value = "type")
     private DiskEncryptionSetIdentityType type;
 
     /*
-     * The object id of the Managed Identity Resource. This will be sent to the
-     * RP from ARM via the x-ms-identity-principal-id header in the PUT request
-     * if the resource has a systemAssigned(implicit) identity
+     * The object id of the Managed Identity Resource. This will be sent to the RP from ARM via the
+     * x-ms-identity-principal-id header in the PUT request if the resource has a systemAssigned(implicit) identity
      */
     @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
-     * The tenant id of the Managed Identity Resource. This will be sent to the
-     * RP from ARM via the x-ms-client-tenant-id header in the PUT request if
-     * the resource has a systemAssigned(implicit) identity
+     * The tenant id of the Managed Identity Resource. This will be sent to the RP from ARM via the
+     * x-ms-client-tenant-id header in the PUT request if the resource has a systemAssigned(implicit) identity
      */
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
-     * The list of user identities associated with the disk encryption set. The
-     * user identity dictionary key references will be ARM resource ids in the
-     * form:
+     * The list of user identities associated with the disk encryption set. The user identity dictionary key references
+     * will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      */
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, VirtualMachineIdentityUserAssignedIdentities> userAssignedIdentities;
+
+    /** Creates an instance of EncryptionSetIdentity class. */
+    public EncryptionSetIdentity() {
+    }
 
     /**
      * Get the type property: The type of Managed Identity used by the DiskEncryptionSet. Only SystemAssigned is

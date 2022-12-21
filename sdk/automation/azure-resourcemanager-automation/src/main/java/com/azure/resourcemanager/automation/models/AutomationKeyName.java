@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AutomationKeyName. */
+/** Automation key name. */
 public final class AutomationKeyName extends ExpandableStringEnum<AutomationKeyName> {
     /** Static value Primary for AutomationKeyName. */
     public static final AutomationKeyName PRIMARY = fromString("Primary");
@@ -27,7 +27,11 @@ public final class AutomationKeyName extends ExpandableStringEnum<AutomationKeyN
         return fromString(name, AutomationKeyName.class);
     }
 
-    /** @return known AutomationKeyName values. */
+    /**
+     * Gets known AutomationKeyName values.
+     *
+     * @return known AutomationKeyName values.
+     */
     public static Collection<AutomationKeyName> values() {
         return values(AutomationKeyName.class);
     }

@@ -10,6 +10,10 @@ import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.*;
+import com.azure.messaging.servicebus.administration.models.CorrelationRuleFilter;
+import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
+import com.azure.messaging.servicebus.administration.models.SqlRuleFilter;
+import com.azure.messaging.servicebus.administration.models.TrueRuleFilter;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.Proton;
@@ -91,6 +95,28 @@ class ManagementChannelTests {
     private AmqpResponseCode authorizationResponseCode;
 
     private ManagementChannel managementChannel;
+
+    // Get rules message with a default rule and two customized rules, one is correlation rule, the another one is sql
+    // rule.
+    private static final byte[] THREE_RULE_MESSAGE = new byte[] {
+        0, 83, 115, -64, 15, 13, 64, 64, 64, 64, 64, 83, 1, 64, 64, 64, 64, 64, 64, 64, 0, 83, 116, -63, 83, 8, -95, 10,
+        115, 116, 97, 116, 117, 115, 67, 111, 100, 101, 113, 0, 0, 0, -56, -95, 14, 101, 114, 114, 111, 114, 67, 111,
+        110, 100, 105, 116, 105, 111, 110, 64, -95, 17, 115, 116, 97, 116, 117, 115, 68, 101, 115, 99, 114, 105, 112,
+        116, 105, 111, 110, 64, -95, 25, 99, 111, 109, 46, 109, 105, 99, 114, 111, 115, 111, 102, 116, 58, 116, 114, 97,
+        99, 107, 105, 110, 103, 45, 105, 100, 64, 0, 83, 119, -47, 0, 0, 1, 48, 0, 0, 0, 2, -95, 5, 114, 117, 108, 101,
+        115, -48, 0, 0, 1, 32, 0, 0, 0, 3, -63, 73, 2, -95, 16, 114, 117, 108, 101, 45, 100, 101, 115, 99, 114, 105,
+        112, 116, 105, 111, 110, 0, -128, 0, 0, 1, 55, 0, 0, 0, 4, -64, 42, 4, 0, -128, 0, 0, 0, 19, 112, 0, 0, 7, 69,
+        0, -128, 0, 0, 1, 55, 0, 0, 0, 5, 69, -95, 8, 36, 68, 101, 102, 97, 117, 108, 116, -125, 0, 0, 1, -126, -112,
+        -66, -80, 119, -63, 117, 2, -95, 16, 114, 117, 108, 101, 45, 100, 101, 115, 99, 114, 105, 112, 116, 105, 111,
+        110, 0, -128, 0, 0, 1, 55, 0, 0, 0, 4, -64, 86, 4, 0, -128, 0, 0, 0, 19, 112, 0, 0, 9, -64, 29, 9, 64, 64, 64,
+        -95, 3, 102, 111, 111, 64, 64, 64, 64, -63, 14, 2, -95, 3, 98, 97, 114, -95, 6, 114, 97, 110, 100, 111, 109, 0,
+        -128, 0, 0, 1, 55, 0, 0, 0, 5, 69, -95, 22, 110, 101, 119, 45, 99, 111, 114, 114, 101, 108, 97, 116, 105, 111,
+        110, 45, 102, 105, 108, 116, 101, 114, -125, 0, 0, 1, -126, -111, 22, 53, -99, -63, 88, 2, -95, 16, 114, 117,
+        108, 101, 45, 100, 101, 115, 99, 114, 105, 112, 116, 105, 111, 110, 0, -128, 0, 0, 1, 55, 0, 0, 0, 4, -64, 57,
+        4, 0, -128, 0, 0, 0, 19, 112, 0, 0, 6, -64, 8, 2, -95, 3, 49, 61, 49, 84, 20, 0, -128, 0, 0, 1, 55, 0, 0, 0, 5,
+        69, -95, 14, 110, 101, 119, 45, 115, 113, 108, 45, 102, 105, 108, 116, 101, 114, -125, 0, 0, 1, -126, -111, 23,
+        29, 49
+    };
 
     @Mock
     private TokenManager tokenManager;
@@ -522,6 +548,95 @@ class ManagementChannelTests {
         // Arrange, act, assert
         StepVerifier.create(managementChannel.cancelScheduledMessages(new ArrayList<>(), null))
                 .verifyComplete();
+    }
+
+    @Test
+    void createRule() {
+        // Arrange
+        final String ruleName = "foo-bar";
+        CreateRuleOptions options = new CreateRuleOptions();
+
+        // Act & Assert
+        StepVerifier.create(managementChannel.createRule(ruleName, options))
+            .verifyComplete();
+
+        verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
+
+        // Assert message body
+        final Message message = messageCaptor.getValue();
+        assertTrue(message.getBody() instanceof AmqpValue);
+        final AmqpValue amqpValue = (AmqpValue) message.getBody();
+
+        // Assert request body value.
+        @SuppressWarnings("unchecked") final Map<String, Object> hashMap = (Map<String, Object>) amqpValue.getValue();
+        assertEquals(ruleName, hashMap.get(ManagementConstants.RULE_NAME));
+
+        @SuppressWarnings("unchecked") final Map<String, Object> ruleHashMap = (Map<String, Object>) hashMap.get(ManagementConstants.RULE_DESCRIPTION);
+        assertEquals(ruleName, ruleHashMap.get(ManagementConstants.RULE_NAME));
+
+        @SuppressWarnings("unchecked") final Map<String, Object> ruleFilterMap = (Map<String, Object>) ruleHashMap.get(ManagementConstants.SQL_RULE_FILTER);
+        assertEquals(ruleFilterMap.get(ManagementConstants.EXPRESSION), ((SqlRuleFilter) options.getFilter()).getSqlExpression());
+    }
+
+    @Test
+    void getRules() {
+        // Arrange, act, assert
+        final  Message message = Proton.message();
+        message.decode(THREE_RULE_MESSAGE, 0, THREE_RULE_MESSAGE.length);
+        responseMessage.setBody(message.getBody());
+
+        // Assert response message content.
+        StepVerifier.create(managementChannel.listRules())
+            .assertNext(ruleProperties -> {
+                assertEquals("$Default", ruleProperties.getName());
+                assertEquals(ruleProperties.getFilter(), new TrueRuleFilter());
+            })
+            .assertNext(ruleProperties -> {
+                assertEquals("new-correlation-filter", ruleProperties.getName());
+                assertTrue(ruleProperties.getFilter() instanceof CorrelationRuleFilter);
+                CorrelationRuleFilter filter = (CorrelationRuleFilter) ruleProperties.getFilter();
+                assertEquals(filter.getReplyTo(), "foo");
+                assertEquals(filter.getProperties().get("bar"), "random");
+            })
+            .assertNext(ruleProperties -> {
+                assertEquals("new-sql-filter", ruleProperties.getName());
+                assertEquals(ruleProperties.getFilter(), new TrueRuleFilter());
+            })
+            .verifyComplete();
+
+        verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
+
+        // Assert message body
+        final Message sentMessage = messageCaptor.getValue();
+        assertTrue(sentMessage.getBody() instanceof AmqpValue);
+        final AmqpValue amqpValue = (AmqpValue) sentMessage.getBody();
+
+        // Assert request body value.
+        @SuppressWarnings("unchecked") final Map<String, Object> hashMap = (Map<String, Object>) amqpValue.getValue();
+        assertEquals(hashMap.get(ManagementConstants.SKIP), 0);
+        assertEquals(hashMap.get(ManagementConstants.TOP), Integer.MAX_VALUE);
+    }
+
+    @Test
+    void deleteRule() {
+        // Arrange
+        String ruleName = "exist-rule";
+
+        // Act & Assert
+        StepVerifier.create(managementChannel.deleteRule(ruleName))
+            .verifyComplete();
+
+        verify(requestResponseChannel).sendWithAck(messageCaptor.capture(), isNull());
+
+        // Assert message body
+        final Message message = messageCaptor.getValue();
+        assertTrue(message.getBody() instanceof AmqpValue);
+        final AmqpValue amqpValue = (AmqpValue) message.getBody();
+
+        // Assert request body value.
+        @SuppressWarnings("unchecked") final Map<String, Object> hashMap = (Map<String, Object>) amqpValue.getValue();
+        assertEquals(ruleName, hashMap.get(ManagementConstants.RULE_NAME));
+
     }
 
     private static Stream<Arguments> updateDisposition() {

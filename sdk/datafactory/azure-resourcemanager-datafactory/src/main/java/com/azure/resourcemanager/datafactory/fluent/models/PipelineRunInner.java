@@ -43,8 +43,7 @@ public final class PipelineRunInner {
     private String pipelineName;
 
     /*
-     * The full or partial list of parameter name, value pair used in the
-     * pipeline run.
+     * The full or partial list of parameter name, value pair used in the pipeline run.
      */
     @JsonProperty(value = "parameters", access = JsonProperty.Access.WRITE_ONLY)
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -88,8 +87,7 @@ public final class PipelineRunInner {
     private Integer durationInMs;
 
     /*
-     * The status of a pipeline run. Possible values: Queued, InProgress,
-     * Succeeded, Failed, Canceling, Cancelled
+     * The status of a pipeline run. Possible values: Queued, InProgress, Succeeded, Failed, Canceling, Cancelled
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
@@ -104,6 +102,10 @@ public final class PipelineRunInner {
      * Information about a pipeline run.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of PipelineRunInner class. */
+    public PipelineRunInner() {
+    }
 
     /**
      * Get the runId property: Identifier of a run.

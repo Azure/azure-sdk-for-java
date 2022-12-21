@@ -12,27 +12,37 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class UserAccountCredentials {
     /*
-     * User name. Name of the administrator user account which can be used to
-     * SSH to nodes.
+     * User name.
+     *
+     * Name of the administrator user account which can be used to SSH to nodes.
      */
     @JsonProperty(value = "adminUserName", required = true)
     private String adminUsername;
 
     /*
-     * SSH public key. SSH public key of the administrator user account.
+     * SSH public key.
+     *
+     * SSH public key of the administrator user account.
      */
     @JsonProperty(value = "adminUserSshPublicKey")
     private String adminUserSshPublicKey;
 
     /*
-     * Password. Password of the administrator user account.
+     * Password.
+     *
+     * Password of the administrator user account.
      */
     @JsonProperty(value = "adminUserPassword")
     private String adminUserPassword;
 
+    /** Creates an instance of UserAccountCredentials class. */
+    public UserAccountCredentials() {
+    }
+
     /**
-     * Get the adminUsername property: User name. Name of the administrator user account which can be used to SSH to
-     * nodes.
+     * Get the adminUsername property: User name.
+     *
+     * <p>Name of the administrator user account which can be used to SSH to nodes.
      *
      * @return the adminUsername value.
      */
@@ -41,8 +51,9 @@ public final class UserAccountCredentials {
     }
 
     /**
-     * Set the adminUsername property: User name. Name of the administrator user account which can be used to SSH to
-     * nodes.
+     * Set the adminUsername property: User name.
+     *
+     * <p>Name of the administrator user account which can be used to SSH to nodes.
      *
      * @param adminUsername the adminUsername value to set.
      * @return the UserAccountCredentials object itself.
@@ -53,7 +64,9 @@ public final class UserAccountCredentials {
     }
 
     /**
-     * Get the adminUserSshPublicKey property: SSH public key. SSH public key of the administrator user account.
+     * Get the adminUserSshPublicKey property: SSH public key.
+     *
+     * <p>SSH public key of the administrator user account.
      *
      * @return the adminUserSshPublicKey value.
      */
@@ -62,7 +75,9 @@ public final class UserAccountCredentials {
     }
 
     /**
-     * Set the adminUserSshPublicKey property: SSH public key. SSH public key of the administrator user account.
+     * Set the adminUserSshPublicKey property: SSH public key.
+     *
+     * <p>SSH public key of the administrator user account.
      *
      * @param adminUserSshPublicKey the adminUserSshPublicKey value to set.
      * @return the UserAccountCredentials object itself.
@@ -73,7 +88,9 @@ public final class UserAccountCredentials {
     }
 
     /**
-     * Get the adminUserPassword property: Password. Password of the administrator user account.
+     * Get the adminUserPassword property: Password.
+     *
+     * <p>Password of the administrator user account.
      *
      * @return the adminUserPassword value.
      */
@@ -82,7 +99,9 @@ public final class UserAccountCredentials {
     }
 
     /**
-     * Set the adminUserPassword property: Password. Password of the administrator user account.
+     * Set the adminUserPassword property: Password.
+     *
+     * <p>Password of the administrator user account.
      *
      * @param adminUserPassword the adminUserPassword value to set.
      * @return the UserAccountCredentials object itself.

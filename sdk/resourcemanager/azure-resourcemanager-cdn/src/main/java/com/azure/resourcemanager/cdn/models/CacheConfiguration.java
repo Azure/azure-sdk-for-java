@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Caching settings for a caching-type route. To disable caching, do not provide a cacheConfiguration object. */
 @Fluent
 public final class CacheConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CacheConfiguration.class);
-
     /*
-     * Defines how Frontdoor caches requests that include query strings. You
-     * can ignore any query strings when caching, ignore specific query
-     * strings, cache every request with a unique URL, or cache specific query
-     * strings.
+     * Defines how Frontdoor caches requests that include query strings. You can ignore any query strings when caching,
+     * ignore specific query strings, cache every request with a unique URL, or cache specific query strings.
      */
     @JsonProperty(value = "queryStringCachingBehavior")
     private RuleQueryStringCachingBehavior queryStringCachingBehavior;
@@ -30,9 +24,8 @@ public final class CacheConfiguration {
     private String queryParameters;
 
     /*
-     * Indicates whether content compression is enabled. If compression is
-     * enabled, content will be served as compressed if user requests for a
-     * compressed version. Content won't be compressed on AzureFrontDoor when
+     * Indicates whether content compression is enabled. If compression is enabled, content will be served as
+     * compressed if user requests for a compressed version. Content won't be compressed on AzureFrontDoor when
      * requested content is smaller than 1 byte or larger than 1 MB.
      */
     @JsonProperty(value = "isCompressionEnabled")
@@ -45,8 +38,7 @@ public final class CacheConfiguration {
     private RuleCacheBehavior cacheBehavior;
 
     /*
-     * The duration for which the content needs to be cached. Allowed format is
-     * [d.]hh:mm:ss
+     * The duration for which the content needs to be cached. Allowed format is [d.]hh:mm:ss
      */
     @JsonProperty(value = "cacheDuration")
     private String cacheDuration;

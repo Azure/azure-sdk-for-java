@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cdn.fluent.CustomDomainsClient;
@@ -44,8 +43,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CustomDomainsClient. */
 public final class CustomDomainsClientImpl implements CustomDomainsClient {
-    private final ClientLogger logger = new ClientLogger(CustomDomainsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final CustomDomainsService service;
 
@@ -144,7 +141,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                 + "/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}/disableCustomHttps")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CustomDomainInner>> disableCustomHttps(
+        Mono<Response<Flux<ByteBuffer>>> disableCustomHttps(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("profileName") String profileName,
@@ -161,7 +158,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                 + "/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}/enableCustomHttps")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CustomDomainInner>> enableCustomHttps(
+        Mono<Response<Flux<ByteBuffer>>> enableCustomHttps(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("profileName") String profileName,
@@ -516,14 +513,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
     public Mono<CustomDomainInner> getAsync(
         String resourceGroupName, String profileName, String endpointName, String customDomainName) {
         return getWithResponseAsync(resourceGroupName, profileName, endpointName, customDomainName)
-            .flatMap(
-                (Response<CustomDomainInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1230,10 +1220,11 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
+     *     e.g along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CustomDomainInner>> disableCustomHttpsWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> disableCustomHttpsWithResponseAsync(
         String resourceGroupName, String profileName, String endpointName, String customDomainName) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1290,10 +1281,11 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
+     *     e.g along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CustomDomainInner>> disableCustomHttpsWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> disableCustomHttpsWithResponseAsync(
         String resourceGroupName, String profileName, String endpointName, String customDomainName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1346,20 +1338,49 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of friendly domain name mapping to the endpoint hostname that the
+     *     customer provides for branding purposes, e.g.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CustomDomainInner> disableCustomHttpsAsync(
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<CustomDomainInner>, CustomDomainInner> beginDisableCustomHttpsAsync(
         String resourceGroupName, String profileName, String endpointName, String customDomainName) {
-        return disableCustomHttpsWithResponseAsync(resourceGroupName, profileName, endpointName, customDomainName)
-            .flatMap(
-                (Response<CustomDomainInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            disableCustomHttpsWithResponseAsync(resourceGroupName, profileName, endpointName, customDomainName);
+        return this
+            .client
+            .<CustomDomainInner, CustomDomainInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CustomDomainInner.class,
+                CustomDomainInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Disable https delivery of the custom domain.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of friendly domain name mapping to the endpoint hostname that the
+     *     customer provides for branding purposes, e.g.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<CustomDomainInner>, CustomDomainInner> beginDisableCustomHttpsAsync(
+        String resourceGroupName, String profileName, String endpointName, String customDomainName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            disableCustomHttpsWithResponseAsync(
+                resourceGroupName, profileName, endpointName, customDomainName, context);
+        return this
+            .client
+            .<CustomDomainInner, CustomDomainInner>getLroResult(
+                mono, this.client.getHttpPipeline(), CustomDomainInner.class, CustomDomainInner.class, context);
     }
 
     /**
@@ -1372,7 +1393,92 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of friendly domain name mapping to the endpoint hostname that the
+     *     customer provides for branding purposes, e.g.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginDisableCustomHttps(
+        String resourceGroupName, String profileName, String endpointName, String customDomainName) {
+        return beginDisableCustomHttpsAsync(resourceGroupName, profileName, endpointName, customDomainName)
+            .getSyncPoller();
+    }
+
+    /**
+     * Disable https delivery of the custom domain.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of friendly domain name mapping to the endpoint hostname that the
+     *     customer provides for branding purposes, e.g.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginDisableCustomHttps(
+        String resourceGroupName, String profileName, String endpointName, String customDomainName, Context context) {
+        return beginDisableCustomHttpsAsync(resourceGroupName, profileName, endpointName, customDomainName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Disable https delivery of the custom domain.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
+     *     e.g on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CustomDomainInner> disableCustomHttpsAsync(
+        String resourceGroupName, String profileName, String endpointName, String customDomainName) {
+        return beginDisableCustomHttpsAsync(resourceGroupName, profileName, endpointName, customDomainName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Disable https delivery of the custom domain.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
+     *     e.g on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CustomDomainInner> disableCustomHttpsAsync(
+        String resourceGroupName, String profileName, String endpointName, String customDomainName, Context context) {
+        return beginDisableCustomHttpsAsync(resourceGroupName, profileName, endpointName, customDomainName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Disable https delivery of the custom domain.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
+     *     e.g.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomDomainInner disableCustomHttps(
@@ -1391,14 +1497,13 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
+     *     e.g.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CustomDomainInner> disableCustomHttpsWithResponse(
+    public CustomDomainInner disableCustomHttps(
         String resourceGroupName, String profileName, String endpointName, String customDomainName, Context context) {
-        return disableCustomHttpsWithResponseAsync(
-                resourceGroupName, profileName, endpointName, customDomainName, context)
-            .block();
+        return disableCustomHttpsAsync(resourceGroupName, profileName, endpointName, customDomainName, context).block();
     }
 
     /**
@@ -1414,10 +1519,11 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
+     *     e.g along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CustomDomainInner>> enableCustomHttpsWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> enableCustomHttpsWithResponseAsync(
         String resourceGroupName,
         String profileName,
         String endpointName,
@@ -1485,10 +1591,11 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
+     *     e.g along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CustomDomainInner>> enableCustomHttpsWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> enableCustomHttpsWithResponseAsync(
         String resourceGroupName,
         String profileName,
         String endpointName,
@@ -1553,7 +1660,137 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of friendly domain name mapping to the endpoint hostname that the
+     *     customer provides for branding purposes, e.g.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<CustomDomainInner>, CustomDomainInner> beginEnableCustomHttpsAsync(
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        String customDomainName,
+        CustomDomainHttpsParameters customDomainHttpsParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            enableCustomHttpsWithResponseAsync(
+                resourceGroupName, profileName, endpointName, customDomainName, customDomainHttpsParameters);
+        return this
+            .client
+            .<CustomDomainInner, CustomDomainInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                CustomDomainInner.class,
+                CustomDomainInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Enable https delivery of the custom domain.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
+     *     CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed
+     *     certificate by default.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of friendly domain name mapping to the endpoint hostname that the
+     *     customer provides for branding purposes, e.g.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<CustomDomainInner>, CustomDomainInner> beginEnableCustomHttpsAsync(
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        String customDomainName,
+        CustomDomainHttpsParameters customDomainHttpsParameters,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            enableCustomHttpsWithResponseAsync(
+                resourceGroupName, profileName, endpointName, customDomainName, customDomainHttpsParameters, context);
+        return this
+            .client
+            .<CustomDomainInner, CustomDomainInner>getLroResult(
+                mono, this.client.getHttpPipeline(), CustomDomainInner.class, CustomDomainInner.class, context);
+    }
+
+    /**
+     * Enable https delivery of the custom domain.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
+     *     CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed
+     *     certificate by default.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of friendly domain name mapping to the endpoint hostname that the
+     *     customer provides for branding purposes, e.g.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginEnableCustomHttps(
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        String customDomainName,
+        CustomDomainHttpsParameters customDomainHttpsParameters) {
+        return beginEnableCustomHttpsAsync(
+                resourceGroupName, profileName, endpointName, customDomainName, customDomainHttpsParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Enable https delivery of the custom domain.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
+     *     CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed
+     *     certificate by default.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of friendly domain name mapping to the endpoint hostname that the
+     *     customer provides for branding purposes, e.g.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginEnableCustomHttps(
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        String customDomainName,
+        CustomDomainHttpsParameters customDomainHttpsParameters,
+        Context context) {
+        return beginEnableCustomHttpsAsync(
+                resourceGroupName, profileName, endpointName, customDomainName, customDomainHttpsParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Enable https delivery of the custom domain.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
+     *     CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed
+     *     certificate by default.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
+     *     e.g on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomDomainInner> enableCustomHttpsAsync(
@@ -1562,16 +1799,10 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         String endpointName,
         String customDomainName,
         CustomDomainHttpsParameters customDomainHttpsParameters) {
-        return enableCustomHttpsWithResponseAsync(
+        return beginEnableCustomHttpsAsync(
                 resourceGroupName, profileName, endpointName, customDomainName, customDomainHttpsParameters)
-            .flatMap(
-                (Response<CustomDomainInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1584,22 +1815,76 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
+     *     e.g on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomDomainInner> enableCustomHttpsAsync(
         String resourceGroupName, String profileName, String endpointName, String customDomainName) {
         final CustomDomainHttpsParameters customDomainHttpsParameters = null;
-        return enableCustomHttpsWithResponseAsync(
+        return beginEnableCustomHttpsAsync(
                 resourceGroupName, profileName, endpointName, customDomainName, customDomainHttpsParameters)
-            .flatMap(
-                (Response<CustomDomainInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Enable https delivery of the custom domain.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
+     *     CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed
+     *     certificate by default.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
+     *     e.g on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CustomDomainInner> enableCustomHttpsAsync(
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        String customDomainName,
+        CustomDomainHttpsParameters customDomainHttpsParameters,
+        Context context) {
+        return beginEnableCustomHttpsAsync(
+                resourceGroupName, profileName, endpointName, customDomainName, customDomainHttpsParameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Enable https delivery of the custom domain.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using
+     *     CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed
+     *     certificate by default.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
+     *     e.g.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CustomDomainInner enableCustomHttps(
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        String customDomainName,
+        CustomDomainHttpsParameters customDomainHttpsParameters) {
+        return enableCustomHttpsAsync(
+                resourceGroupName, profileName, endpointName, customDomainName, customDomainHttpsParameters)
+            .block();
     }
 
     /**
@@ -1612,7 +1897,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
+     *     e.g.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomDomainInner enableCustomHttps(
@@ -1637,17 +1923,18 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
+     *     e.g.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CustomDomainInner> enableCustomHttpsWithResponse(
+    public CustomDomainInner enableCustomHttps(
         String resourceGroupName,
         String profileName,
         String endpointName,
         String customDomainName,
         CustomDomainHttpsParameters customDomainHttpsParameters,
         Context context) {
-        return enableCustomHttpsWithResponseAsync(
+        return enableCustomHttpsAsync(
                 resourceGroupName, profileName, endpointName, customDomainName, customDomainHttpsParameters, context)
             .block();
     }
@@ -1655,7 +1942,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1691,7 +1979,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

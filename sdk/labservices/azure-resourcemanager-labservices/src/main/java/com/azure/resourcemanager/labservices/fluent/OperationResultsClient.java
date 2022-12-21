@@ -13,7 +13,9 @@ import com.azure.resourcemanager.labservices.fluent.models.OperationResultInner;
 /** An instance of this class provides access to all the operations defined in OperationResultsClient. */
 public interface OperationResultsClient {
     /**
-     * Returns an azure operation result.
+     * Get an azure operation result.
+     *
+     * <p>Returns an azure operation result.
      *
      * @param operationResultId The operation result ID / name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -25,7 +27,9 @@ public interface OperationResultsClient {
     OperationResultInner get(String operationResultId);
 
     /**
-     * Returns an azure operation result.
+     * Get an azure operation result.
+     *
+     * <p>Returns an azure operation result.
      *
      * @param operationResultId The operation result ID / name.
      * @param context The context to associate with this operation.

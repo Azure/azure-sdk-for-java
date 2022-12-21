@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for LiveEvents Reset. */
 public final class LiveEventsResetSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2021-11-01/examples/liveevent-reset.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/liveevent-reset.json
      */
     /**
      * Sample code: Reset a LiveEvent.

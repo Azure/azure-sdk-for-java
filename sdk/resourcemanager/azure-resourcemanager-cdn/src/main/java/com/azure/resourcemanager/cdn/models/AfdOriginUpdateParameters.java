@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.models.AfdOriginUpdatePropertiesParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** AFDOrigin properties needed for origin update. */
 @Fluent
 public final class AfdOriginUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AfdOriginUpdateParameters.class);
-
     /*
      * The JSON object that contains the properties of the origin.
      */
@@ -217,7 +213,7 @@ public final class AfdOriginUpdateParameters {
      *
      * @return the sharedPrivateLinkResource value.
      */
-    public Object sharedPrivateLinkResource() {
+    public SharedPrivateLinkResourceProperties sharedPrivateLinkResource() {
         return this.innerProperties() == null ? null : this.innerProperties().sharedPrivateLinkResource();
     }
 
@@ -227,7 +223,8 @@ public final class AfdOriginUpdateParameters {
      * @param sharedPrivateLinkResource the sharedPrivateLinkResource value to set.
      * @return the AfdOriginUpdateParameters object itself.
      */
-    public AfdOriginUpdateParameters withSharedPrivateLinkResource(Object sharedPrivateLinkResource) {
+    public AfdOriginUpdateParameters withSharedPrivateLinkResource(
+        SharedPrivateLinkResourceProperties sharedPrivateLinkResource) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AfdOriginUpdatePropertiesParameters();
         }

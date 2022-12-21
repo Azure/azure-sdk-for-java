@@ -11,7 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of LiveEvents. */
 public interface LiveEvents {
     /**
-     * Lists all the live events in the account.
+     * List live events
+     *
+     * <p>Lists all the live events in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -23,7 +25,9 @@ public interface LiveEvents {
     PagedIterable<LiveEvent> list(String resourceGroupName, String accountName);
 
     /**
-     * Lists all the live events in the account.
+     * List live events
+     *
+     * <p>Lists all the live events in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -36,7 +40,9 @@ public interface LiveEvents {
     PagedIterable<LiveEvent> list(String resourceGroupName, String accountName, Context context);
 
     /**
-     * Gets properties of a live event.
+     * Get Live Event
+     *
+     * <p>Gets properties of a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -49,7 +55,9 @@ public interface LiveEvents {
     LiveEvent get(String resourceGroupName, String accountName, String liveEventName);
 
     /**
-     * Gets properties of a live event.
+     * Get Live Event
+     *
+     * <p>Gets properties of a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -64,7 +72,9 @@ public interface LiveEvents {
         String resourceGroupName, String accountName, String liveEventName, Context context);
 
     /**
-     * Deletes a live event.
+     * Delete Live Event
+     *
+     * <p>Deletes a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -76,7 +86,9 @@ public interface LiveEvents {
     void delete(String resourceGroupName, String accountName, String liveEventName);
 
     /**
-     * Deletes a live event.
+     * Delete Live Event
+     *
+     * <p>Deletes a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -89,7 +101,9 @@ public interface LiveEvents {
     void delete(String resourceGroupName, String accountName, String liveEventName, Context context);
 
     /**
-     * A live event is in StandBy state after allocation completes, and is ready to start.
+     * Allocate resources for a live event
+     *
+     * <p>A live event is in StandBy state after allocation completes, and is ready to start.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -101,7 +115,9 @@ public interface LiveEvents {
     void allocate(String resourceGroupName, String accountName, String liveEventName);
 
     /**
-     * A live event is in StandBy state after allocation completes, and is ready to start.
+     * Allocate resources for a live event
+     *
+     * <p>A live event is in StandBy state after allocation completes, and is ready to start.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -114,7 +130,9 @@ public interface LiveEvents {
     void allocate(String resourceGroupName, String accountName, String liveEventName, Context context);
 
     /**
-     * A live event in Stopped or StandBy state will be in Running state after the start operation completes.
+     * Start Live Event
+     *
+     * <p>A live event in Stopped or StandBy state will be in Running state after the start operation completes.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -126,7 +144,9 @@ public interface LiveEvents {
     void start(String resourceGroupName, String accountName, String liveEventName);
 
     /**
-     * A live event in Stopped or StandBy state will be in Running state after the start operation completes.
+     * Start Live Event
+     *
+     * <p>A live event in Stopped or StandBy state will be in Running state after the start operation completes.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -139,7 +159,9 @@ public interface LiveEvents {
     void start(String resourceGroupName, String accountName, String liveEventName, Context context);
 
     /**
-     * Stops a running live event.
+     * Stop Live Event
+     *
+     * <p>Stops a running live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -152,7 +174,9 @@ public interface LiveEvents {
     void stop(String resourceGroupName, String accountName, String liveEventName, LiveEventActionInput parameters);
 
     /**
-     * Stops a running live event.
+     * Stop Live Event
+     *
+     * <p>Stops a running live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -171,8 +195,10 @@ public interface LiveEvents {
         Context context);
 
     /**
-     * Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
-     * will be started again. All assets used by the live outputs and streaming locators created on these assets are
+     * Reset Live Event
+     *
+     * <p>Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped
+     * and will be started again. All assets used by the live outputs and streaming locators created on these assets are
      * unaffected.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
@@ -185,8 +211,10 @@ public interface LiveEvents {
     void reset(String resourceGroupName, String accountName, String liveEventName);
 
     /**
-     * Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
-     * will be started again. All assets used by the live outputs and streaming locators created on these assets are
+     * Reset Live Event
+     *
+     * <p>Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped
+     * and will be started again. All assets used by the live outputs and streaming locators created on these assets are
      * unaffected.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
@@ -200,7 +228,75 @@ public interface LiveEvents {
     void reset(String resourceGroupName, String accountName, String liveEventName, Context context);
 
     /**
-     * Gets properties of a live event.
+     * Get operation status.
+     *
+     * <p>Get a live event operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a live event operation status.
+     */
+    AsyncOperationResult asyncOperation(String resourceGroupName, String accountName, String operationId);
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a live event operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param operationId The ID of an ongoing async operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a live event operation status along with {@link Response}.
+     */
+    Response<AsyncOperationResult> asyncOperationWithResponse(
+        String resourceGroupName, String accountName, String operationId, Context context);
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a live event operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a live event operation status.
+     */
+    LiveEvent operationLocation(String resourceGroupName, String accountName, String liveEventName, String operationId);
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a live event operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param operationId The ID of an ongoing async operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a live event operation status along with {@link Response}.
+     */
+    Response<LiveEvent> operationLocationWithResponse(
+        String resourceGroupName, String accountName, String liveEventName, String operationId, Context context);
+
+    /**
+     * Get Live Event
+     *
+     * <p>Gets properties of a live event.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -211,7 +307,9 @@ public interface LiveEvents {
     LiveEvent getById(String id);
 
     /**
-     * Gets properties of a live event.
+     * Get Live Event
+     *
+     * <p>Gets properties of a live event.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -223,7 +321,9 @@ public interface LiveEvents {
     Response<LiveEvent> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes a live event.
+     * Delete Live Event
+     *
+     * <p>Deletes a live event.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -233,7 +333,9 @@ public interface LiveEvents {
     void deleteById(String id);
 
     /**
-     * Deletes a live event.
+     * Delete Live Event
+     *
+     * <p>Deletes a live event.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

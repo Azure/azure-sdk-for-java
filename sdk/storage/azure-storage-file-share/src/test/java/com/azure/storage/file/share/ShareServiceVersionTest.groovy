@@ -7,7 +7,7 @@ import com.azure.storage.common.test.shared.ServiceVersionSpec
 
 class ShareServiceVersionTest extends ServiceVersionSpec {
     @Override
-    protected Class getServiceVersionClass() {
+    protected Class<?> getServiceVersionClass() {
         return ShareServiceVersion.class
     }
 }

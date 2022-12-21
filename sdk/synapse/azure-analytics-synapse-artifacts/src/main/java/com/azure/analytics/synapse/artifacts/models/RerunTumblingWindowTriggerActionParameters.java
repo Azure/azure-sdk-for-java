@@ -12,22 +12,19 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class RerunTumblingWindowTriggerActionParameters {
     /*
-     * The start time for the time period for which restatement is initiated.
-     * Only UTC time is currently supported.
+     * The start time for the time period for which restatement is initiated. Only UTC time is currently supported.
      */
     @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
-     * The end time for the time period for which restatement is initiated.
-     * Only UTC time is currently supported.
+     * The end time for the time period for which restatement is initiated. Only UTC time is currently supported.
      */
     @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
 
     /*
-     * The max number of parallel time windows (ready for execution) for which
-     * a rerun is triggered.
+     * The max number of parallel time windows (ready for execution) for which a rerun is triggered.
      */
     @JsonProperty(value = "maxConcurrency", required = true)
     private int maxConcurrency;

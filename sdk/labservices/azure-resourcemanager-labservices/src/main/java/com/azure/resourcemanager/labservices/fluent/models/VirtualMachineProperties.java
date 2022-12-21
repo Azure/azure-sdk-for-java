@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.labservices.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.models.ProvisioningState;
 import com.azure.resourcemanager.labservices.models.VirtualMachineConnectionProfile;
 import com.azure.resourcemanager.labservices.models.VirtualMachineState;
 import com.azure.resourcemanager.labservices.models.VirtualMachineType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Virtual machine resource properties. */
 @Immutable
 public final class VirtualMachineProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineProperties.class);
-
     /*
      * Current provisioning state of the virtual machine.
      */

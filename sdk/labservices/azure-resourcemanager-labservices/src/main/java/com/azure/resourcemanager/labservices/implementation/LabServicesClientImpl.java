@@ -15,6 +15,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -38,15 +39,12 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the LabServicesClientImpl type. */
 @ServiceClient(builder = LabServicesClientBuilder.class)
 public final class LabServicesClientImpl implements LabServicesClient {
-    private final ClientLogger logger = new ClientLogger(LabServicesClientImpl.class);
-
     /** The ID of the target subscription. */
     private final String subscriptionId;
 
@@ -191,6 +189,30 @@ public final class LabServicesClientImpl implements LabServicesClient {
         return this.schedules;
     }
 
+    /** The SkusClient object to access its operations. */
+    private final SkusClient skus;
+
+    /**
+     * Gets the SkusClient object to access its operations.
+     *
+     * @return the SkusClient object.
+     */
+    public SkusClient getSkus() {
+        return this.skus;
+    }
+
+    /** The UsagesClient object to access its operations. */
+    private final UsagesClient usages;
+
+    /**
+     * Gets the UsagesClient object to access its operations.
+     *
+     * @return the UsagesClient object.
+     */
+    public UsagesClient getUsages() {
+        return this.usages;
+    }
+
     /** The UsersClient object to access its operations. */
     private final UsersClient users;
 
@@ -215,30 +237,6 @@ public final class LabServicesClientImpl implements LabServicesClient {
         return this.virtualMachines;
     }
 
-    /** The UsagesClient object to access its operations. */
-    private final UsagesClient usages;
-
-    /**
-     * Gets the UsagesClient object to access its operations.
-     *
-     * @return the UsagesClient object.
-     */
-    public UsagesClient getUsages() {
-        return this.usages;
-    }
-
-    /** The SkusClient object to access its operations. */
-    private final SkusClient skus;
-
-    /**
-     * Gets the SkusClient object to access its operations.
-     *
-     * @return the SkusClient object.
-     */
-    public SkusClient getSkus() {
-        return this.skus;
-    }
-
     /**
      * Initializes an instance of LabServicesClient client.
      *
@@ -261,17 +259,17 @@ public final class LabServicesClientImpl implements LabServicesClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-11-15-preview";
+        this.apiVersion = "2022-08-01";
         this.images = new ImagesClientImpl(this);
         this.labPlans = new LabPlansClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.labs = new LabsClientImpl(this);
         this.operationResults = new OperationResultsClientImpl(this);
         this.schedules = new SchedulesClientImpl(this);
+        this.skus = new SkusClientImpl(this);
+        this.usages = new UsagesClientImpl(this);
         this.users = new UsersClientImpl(this);
         this.virtualMachines = new VirtualMachinesClientImpl(this);
-        this.usages = new UsagesClientImpl(this);
-        this.skus = new SkusClientImpl(this);
     }
 
     /**
@@ -290,10 +288,7 @@ public final class LabServicesClientImpl implements LabServicesClient {
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -357,7 +352,7 @@ public final class LabServicesClientImpl implements LabServicesClient {
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -416,4 +411,6 @@ public final class LabServicesClientImpl implements LabServicesClient {
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LabServicesClientImpl.class);
 }

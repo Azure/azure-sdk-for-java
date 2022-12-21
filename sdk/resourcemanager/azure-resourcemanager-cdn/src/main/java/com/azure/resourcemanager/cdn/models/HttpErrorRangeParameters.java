@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The JSON object that represents the range for http status codes. */
 @Fluent
 public final class HttpErrorRangeParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpErrorRangeParameters.class);
-
     /*
      * The inclusive start of the http status code range.
      */
