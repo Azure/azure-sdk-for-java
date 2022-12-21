@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/availablePhoneNumbers/countries?api-version=2022-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "0b9811fb-2eed-4a49-be9d-4c353cbb344a"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2022-12-01",
+      "X-Processing-Time" : "2632ms",
+      "MS-CV" : "TJnJK9WVAEONz1KinrGHCQ.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0SJCjYwAAAAC/PLKFSbHYRY9S02JdcIAhTUVYMzFFREdFMDQxMAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "200",
+      "Body" : "{\"countries\":[{\"localizedName\":\"Canada\",\"countryCode\":\"CA\"},{\"localizedName\":\"Denmark\",\"countryCode\":\"DK\"},{\"localizedName\":\"Ireland\",\"countryCode\":\"IE\"},{\"localizedName\":\"Italy\",\"countryCode\":\"IT\"},{\"localizedName\":\"Puerto Rico\",\"countryCode\":\"PR\"},{\"localizedName\":\"Sweden\",\"countryCode\":\"SE\"},{\"localizedName\":\"United Kingdom\",\"countryCode\":\"GB\"},{\"localizedName\":\"United States\",\"countryCode\":\"US\"}],\"nextLink\":null}",
+      "Date" : "Wed, 21 Dec 2022 23:01:30 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

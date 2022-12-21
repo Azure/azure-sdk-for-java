@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/availablePhoneNumbers/countries/US/localities?administrativeDivision=WA&api-version=2022-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "a2a66969-16ba-4732-8300-7c03784db710"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2022-12-01",
+      "X-Processing-Time" : "538ms",
+      "MS-CV" : "L5gPLYtdykebb5IV6be9/g.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0MpCjYwAAAAC4MC7UjnEoQoKdMNVKzgKbTUVYMzFFREdFMDQxMAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "200",
+      "Body" : "{\"phoneNumberLocalities\":[{\"localizedName\":\"Tacoma\",\"administrativeDivision\":{\"localizedName\":\"WA\",\"abbreviatedName\":\"WA\"}}],\"nextLink\":null}",
+      "Date" : "Wed, 21 Dec 2022 23:01:06 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
