@@ -171,6 +171,18 @@
         },
         {
           "regex": true,
+          "code": "java\\.method\\.addedToInterface",
+          "new": "interface com\\.azure\\.spring\\.data\\.cosmos\\.core\\.(CosmosOperations|ReactiveCosmosOperations)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.addedToInterface",
+          "new": "interface com\\.azure\\.spring\\.data\\.cosmos\\.repository\\.(CosmosRepository|ReactiveCosmosRepository)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "regex": true,
           "code": "java\\.class\\.externalClassExposedInAPI",
           "new": "(class|interface|enum) com\\.azure\\.perf\\.test\\.core\\..*",
           "justification": "perf-test classes are allowed to be exposed."
