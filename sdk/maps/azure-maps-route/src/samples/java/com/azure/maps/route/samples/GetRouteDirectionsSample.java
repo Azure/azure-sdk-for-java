@@ -16,8 +16,6 @@ import com.azure.core.models.GeoPoint;
 import com.azure.core.models.GeoPolygon;
 import com.azure.core.models.GeoPolygonCollection;
 import com.azure.core.models.GeoPosition;
-import com.azure.identity.DefaultAzureCredential;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.maps.route.MapsRouteAsyncClient;
 import com.azure.maps.route.MapsRouteClient;
 import com.azure.maps.route.MapsRouteClientBuilder;

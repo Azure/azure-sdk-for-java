@@ -12,8 +12,6 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.identity.DefaultAzureCredential;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.maps.route.MapsRouteAsyncClient;
 import com.azure.maps.route.MapsRouteClient;
 import com.azure.maps.route.MapsRouteClientBuilder;
