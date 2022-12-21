@@ -100,11 +100,12 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * @throws NullPointerException If {@code retryOptions} is null.
      */
     public RetryPolicy(RetryOptions retryOptions) {
-        this(getRetryStrategyFromOptions(Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.")), null,
-            null);
+        this(getRetryStrategyFromOptions(retryOptions), null, null);
     }
 
     private static RetryStrategy getRetryStrategyFromOptions(RetryOptions retryOptions) {
+        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+
         if (retryOptions.getExponentialBackoffOptions() != null) {
             return new ExponentialBackoff(retryOptions.getExponentialBackoffOptions());
         } else if (retryOptions.getFixedDelayOptions() != null) {
@@ -226,15 +227,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
         }
 
         // Unwrap the throwable.
-        Throwable unwrappedThrowable = Exceptions.unwrap(throwable);
-
-        // Check if the unwrapped throwable should be retried.
-        if (retryStrategy.shouldRetryException(unwrappedThrowable)) {
-            return true;
-        }
-
-        // Check if the cause for the throwable should be retried.
-        Throwable causalThrowable = unwrappedThrowable.getCause();
+        Throwable causalThrowable = Exceptions.unwrap(throwable);
 
         // Check all causal exceptions in the exception chain.
         while (causalThrowable != null) {
