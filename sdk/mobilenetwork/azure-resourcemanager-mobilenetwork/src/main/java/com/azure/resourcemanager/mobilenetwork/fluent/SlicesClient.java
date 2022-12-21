@@ -80,20 +80,6 @@ public interface SlicesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified network slice.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SliceInner get(String resourceGroupName, String mobileNetworkName, String sliceName);
-
-    /**
-     * Gets information about the specified network slice.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param sliceName The name of the network slice.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -105,7 +91,21 @@ public interface SlicesClient {
         String resourceGroupName, String mobileNetworkName, String sliceName, Context context);
 
     /**
-     * Creates or updates a network slice.
+     * Gets information about the specified network slice.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param sliceName The name of the network slice.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified network slice.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SliceInner get(String resourceGroupName, String mobileNetworkName, String sliceName);
+
+    /**
+     * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -121,7 +121,7 @@ public interface SlicesClient {
         String resourceGroupName, String mobileNetworkName, String sliceName, SliceInner parameters);
 
     /**
-     * Creates or updates a network slice.
+     * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -138,7 +138,7 @@ public interface SlicesClient {
         String resourceGroupName, String mobileNetworkName, String sliceName, SliceInner parameters, Context context);
 
     /**
-     * Creates or updates a network slice.
+     * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -154,7 +154,7 @@ public interface SlicesClient {
         String resourceGroupName, String mobileNetworkName, String sliceName, SliceInner parameters);
 
     /**
-     * Creates or updates a network slice.
+     * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -169,21 +169,6 @@ public interface SlicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     SliceInner createOrUpdate(
         String resourceGroupName, String mobileNetworkName, String sliceName, SliceInner parameters, Context context);
-
-    /**
-     * Updates slice tags.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param sliceName The name of the network slice.
-     * @param parameters Parameters supplied to update network slice tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network slice resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SliceInner updateTags(String resourceGroupName, String mobileNetworkName, String sliceName, TagsObject parameters);
 
     /**
      * Updates slice tags.
@@ -201,6 +186,21 @@ public interface SlicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<SliceInner> updateTagsWithResponse(
         String resourceGroupName, String mobileNetworkName, String sliceName, TagsObject parameters, Context context);
+
+    /**
+     * Updates slice tags.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param sliceName The name of the network slice.
+     * @param parameters Parameters supplied to update network slice tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network slice resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SliceInner updateTags(String resourceGroupName, String mobileNetworkName, String sliceName, TagsObject parameters);
 
     /**
      * Lists all slices in the mobile network.

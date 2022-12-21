@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.jms;
 
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
+import com.azure.spring.cloud.core.implementation.connectionstring.ServiceBusConnectionString;
 import org.apache.qpid.jms.policy.JmsDefaultPrefetchPolicy;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -18,6 +19,8 @@ import java.util.List;
 public class ServiceBusJmsConnectionFactoryFactory {
     private final AzureServiceBusJmsProperties properties;
     private final List<ServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers;
+
+    private static final String AMQP_URI_FORMAT = "amqps://%s?amqp.idleTimeout=%d";
 
     ServiceBusJmsConnectionFactoryFactory(AzureServiceBusJmsProperties properties,
                                           List<ServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
@@ -54,9 +57,12 @@ public class ServiceBusJmsConnectionFactoryFactory {
     private <T extends ServiceBusJmsConnectionFactory> T createConnectionFactoryInstance(Class<T> factoryClass) {
         try {
             T factory;
-            String remoteUrl = this.properties.getRemoteUrl();
-            String username = this.properties.getUsername();
-            String password = this.properties.getPassword();
+            ServiceBusConnectionString serviceBusConnectionString = new ServiceBusConnectionString(properties.getConnectionString());
+            String host = serviceBusConnectionString.getEndpointUri().getHost();
+
+            String remoteUrl = String.format(AMQP_URI_FORMAT, host, properties.getIdleTimeout().toMillis());
+            String username = serviceBusConnectionString.getSharedAccessKeyName();
+            String password = serviceBusConnectionString.getSharedAccessKey();
 
             if (StringUtils.hasLength(username) && StringUtils.hasLength(password)) {
                 factory = factoryClass.getConstructor(String.class, String.class, String.class)
