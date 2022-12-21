@@ -22,6 +22,10 @@ public final class CheckNameAvailabilityParameters {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of CheckNameAvailabilityParameters class. */
+    public CheckNameAvailabilityParameters() {
+    }
+
     /**
      * Get the type property: Describes the Resource type: Microsoft.RecoveryServices/Vaults.
      *

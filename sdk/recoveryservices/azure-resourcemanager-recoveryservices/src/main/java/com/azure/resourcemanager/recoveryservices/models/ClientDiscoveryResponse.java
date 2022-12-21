@@ -24,6 +24,10 @@ public final class ClientDiscoveryResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ClientDiscoveryResponse class. */
+    public ClientDiscoveryResponse() {
+    }
+
     /**
      * Get the value property: List of available operations.
      *

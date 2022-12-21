@@ -18,11 +18,14 @@ public final class TimeSeriesElement {
     private List<MetadataValue> metadatavalues;
 
     /*
-     * An array of data points representing the metric values.  This is only
-     * returned if a result type of data is specified.
+     * An array of data points representing the metric values.  This is only returned if a result type of data is
+     * specified.
      */
     @JsonProperty(value = "data")
     private List<MetricValue> data;
+
+    /** Creates an instance of TimeSeriesElement class. */
+    public TimeSeriesElement() {}
 
     /**
      * Get the metadatavalues property: the metadata values returned if $filter was specified in the call.

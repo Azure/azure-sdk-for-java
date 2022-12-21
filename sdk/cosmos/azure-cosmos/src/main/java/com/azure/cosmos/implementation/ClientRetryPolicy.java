@@ -125,8 +125,16 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             } else if (clientException != null &&
                 WebExceptionUtility.isReadTimeoutException(clientException) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT)) {
-                // if operationType is QueryPlan / AddressRefresh then just retry
-                if (this.request.getOperationType() == OperationType.QueryPlan || this.request.isAddressRefresh()) {
+
+                boolean canFailoverOnTimeout = canGatewayRequestFailoverOnTimeout(request, clientException);
+
+                //if operation is data plane read, metadata read, or query plan it can be retried on a different endpoint.
+                if(canFailoverOnTimeout) {
+                    return shouldRetryOnEndpointFailureAsync(this.isReadRequest, true, true);
+                }
+
+                // if operationType AddressRefresh then just retry
+                if (this.request.isAddressRefresh()) {
                     return shouldRetryQueryPlanAndAddress();
                 }
             } else {
@@ -150,6 +158,32 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         }
 
         return this.throttlingRetry.shouldRetry(e);
+    }
+
+      private boolean canGatewayRequestFailoverOnTimeout(RxDocumentServiceRequest request, CosmosException clientException) {
+        //Query Plan requests
+        if(request.getOperationType() == OperationType.QueryPlan) {
+            return true;
+        }
+
+        //Meta data request check
+        boolean isMetaDataRequest = (request.getOperationType() != OperationType.ExecuteJavaScript
+            && request.getResourceType() == ResourceType.StoredProcedure)
+            || request.getResourceType() != ResourceType.Document;
+
+        //Meta Data Read
+        if(isMetaDataRequest && request.isReadOnly()) {
+              return true;
+        }
+
+        //Data Plane Read
+        if(!isMetaDataRequest
+            && !request.isAddressRefresh()
+            && request.isReadOnly()) {
+            return true;
+        }
+
+        return false;
     }
 
     private Mono<ShouldRetryResult> shouldRetryQueryPlanAndAddress() {

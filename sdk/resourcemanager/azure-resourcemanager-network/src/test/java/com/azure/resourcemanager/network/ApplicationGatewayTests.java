@@ -11,6 +11,7 @@ import com.azure.resourcemanager.keyvault.models.Secret;
 import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
+import com.azure.resourcemanager.network.models.ApplicationGatewayBackend;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallDisabledRuleGroup;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallExclusion;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallMode;
@@ -37,6 +38,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -441,6 +443,66 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
             .parent()
             .apply();
         Assertions.assertEquals(2, appGateway.requestRoutingRules().get("rule3").priority());
+    }
+
+    @Test
+    public void testAddRemoveIpAddressFromWafV2WithExclusionsEqualsAny() {
+        String appGatewayName = generateRandomResourceName("agwaf", 15);
+        String appPublicIp = generateRandomResourceName("pip", 15);
+
+        PublicIpAddress pip =
+            networkManager
+                .publicIpAddresses()
+                .define(appPublicIp)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withSku(PublicIPSkuType.STANDARD)
+                .withStaticIP()
+                .create();
+
+        ApplicationGateway appGateway =
+            networkManager
+                .applicationGateways()
+                .define(appGatewayName)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .defineRequestRoutingRule("rule1")
+                .fromPublicFrontend()
+                .fromFrontendHttpPort(80)
+                .toBackendHttpPort(8080)
+                .toBackendIPAddress("11.1.1.1")
+                .attach()
+                .withExistingPublicIpAddress(pip)
+                .withTier(ApplicationGatewayTier.WAF_V2)
+                .withSize(ApplicationGatewaySkuName.WAF_V2)
+                .withAutoScale(2, 5)
+                .withWebApplicationFirewall(
+                    new ApplicationGatewayWebApplicationFirewallConfiguration()
+                        .withEnabled(true)
+                        .withFirewallMode(ApplicationGatewayFirewallMode.PREVENTION)
+                        .withRuleSetType("OWASP")
+                        .withRuleSetVersion("3.0")
+                        .withExclusions(Collections.singletonList(
+                            new ApplicationGatewayFirewallExclusion()
+                                .withMatchVariable("RequestHeaderNames")
+                                .withSelectorMatchOperator(null) // Equals any
+                                .withSelector(null) // *
+                        ))
+                )
+                .create();
+
+        Assertions.assertEquals("RequestHeaderNames", appGateway.webApplicationFirewallConfiguration().exclusions().iterator().next().matchVariable());
+        Assertions.assertNull(appGateway.webApplicationFirewallConfiguration().exclusions().iterator().next().selectorMatchOperator());
+
+        Map<String, ApplicationGatewayBackend> backends = appGateway.backends();
+
+        backends.forEach((name, backend) ->
+            backend.addresses().forEach(addr ->
+                appGateway.update()
+                    .updateBackend(name)
+                    .withoutIPAddress(addr.ipAddress())
+                    .parent()
+                    .apply()));
     }
 
     private String createKeyVaultCertificate(String servicePrincipal, String identityPrincipal) {

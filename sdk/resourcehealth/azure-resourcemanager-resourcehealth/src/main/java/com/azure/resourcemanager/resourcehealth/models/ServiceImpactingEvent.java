@@ -41,6 +41,10 @@ public final class ServiceImpactingEvent {
     @JsonProperty(value = "incidentProperties")
     private ServiceImpactingEventIncidentProperties incidentProperties;
 
+    /** Creates an instance of ServiceImpactingEvent class. */
+    public ServiceImpactingEvent() {
+    }
+
     /**
      * Get the eventStartTime property: Timestamp for when the event started.
      *

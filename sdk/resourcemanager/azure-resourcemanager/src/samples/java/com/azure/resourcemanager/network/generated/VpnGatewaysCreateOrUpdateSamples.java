@@ -23,7 +23,7 @@ import java.util.Map;
 /** Samples for VpnGateways CreateOrUpdate. */
 public final class VpnGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VpnGatewayPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VpnGatewayPut.json
      */
     /**
      * Sample code: VpnGatewayPut.
@@ -67,7 +67,7 @@ public final class VpnGatewaysCreateOrUpdateSamples {
                                                     .withVpnConnectionProtocolType(
                                                         VirtualNetworkGatewayConnectionProtocol.IKEV2)
                                                     .withConnectionBandwidth(200)
-                                                    .withSharedKey("key")
+                                                    .withSharedKey("fakeTokenPlaceholder")
                                                     .withEgressNatRules(
                                                         Arrays
                                                             .asList(

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ScopeConnections Delete. */
 public final class ScopeConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkManagerScopeConnectionDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkManagerScopeConnectionDelete.json
      */
     /**
      * Sample code: Delete Network Manager Scope Connection.

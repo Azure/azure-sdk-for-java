@@ -29,15 +29,6 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
         this.serviceManager = serviceManager;
     }
 
-    public GroupIdInformationResponse list(String resourceGroupName, String resourceName) {
-        GroupIdInformationResponseInner inner = this.serviceClient().list(resourceGroupName, resourceName);
-        if (inner != null) {
-            return new GroupIdInformationResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<GroupIdInformationResponse> listWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         Response<GroupIdInformationResponseInner> inner =
@@ -53,10 +44,10 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
         }
     }
 
-    public GroupIdInformation get(String resourceGroupName, String resourceName, String resourceId) {
-        GroupIdInformationInner inner = this.serviceClient().get(resourceGroupName, resourceName, resourceId);
+    public GroupIdInformationResponse list(String resourceGroupName, String resourceName) {
+        GroupIdInformationResponseInner inner = this.serviceClient().list(resourceGroupName, resourceName);
         if (inner != null) {
-            return new GroupIdInformationImpl(inner, this.manager());
+            return new GroupIdInformationResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -72,6 +63,15 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new GroupIdInformationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public GroupIdInformation get(String resourceGroupName, String resourceName, String resourceId) {
+        GroupIdInformationInner inner = this.serviceClient().get(resourceGroupName, resourceName, resourceId);
+        if (inner != null) {
+            return new GroupIdInformationImpl(inner, this.manager());
         } else {
             return null;
         }

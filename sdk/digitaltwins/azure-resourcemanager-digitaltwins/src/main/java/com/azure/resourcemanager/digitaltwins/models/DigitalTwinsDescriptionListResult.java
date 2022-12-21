@@ -24,6 +24,10 @@ public final class DigitalTwinsDescriptionListResult {
     @JsonProperty(value = "value")
     private List<DigitalTwinsDescriptionInner> value;
 
+    /** Creates an instance of DigitalTwinsDescriptionListResult class. */
+    public DigitalTwinsDescriptionListResult() {
+    }
+
     /**
      * Get the nextLink property: The link used to get the next page of DigitalTwins description objects.
      *

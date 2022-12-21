@@ -29,7 +29,7 @@ public final class DdosProtectionPlanPropertiesFormat {
     /*
      * The list of public IPs associated with the DDoS protection plan resource. This list is read-only.
      */
-    @JsonProperty(value = "publicIpAddresses", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "publicIPAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> publicIpAddresses;
 
     /*
