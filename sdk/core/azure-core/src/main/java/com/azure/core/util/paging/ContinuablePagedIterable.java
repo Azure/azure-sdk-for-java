@@ -109,7 +109,7 @@ public class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> ext
 
     /**
      * Retrieve the {@link Stream}, one page at a time, with each page containing {@code preferredPageSize} items.
-     *
+     * <p>
      * It will provide same {@link Stream} of T values from starting if called multiple times.
      *
      * @param preferredPageSize the preferred page size, service may or may not honor the page size preference hence
@@ -165,7 +165,7 @@ public class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> ext
 
     /**
      * Retrieve the {@link Iterable}, one page at a time, with each page containing {@code preferredPageSize} items.
-     *
+     * <p>
      * It will provide same {@link Iterable} of T values from starting if called multiple times.
      *
      * @param preferredPageSize the preferred page size, service may or may not honor the page size preference hence

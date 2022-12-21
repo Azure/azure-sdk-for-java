@@ -513,17 +513,17 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     public void deleteContainer(@NonNull String containerName) {
         Assert.hasText(containerName, "containerName should have text.");
         this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
-            .getContainer(containerName)
-            .delete()
-            .publishOn(Schedulers.parallel())
-            .doOnNext(response -> {
-                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                    response.getDiagnostics(), null);
-            })
-            .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to delete container", throwable,
-                    this.responseDiagnosticsProcessor))
-            .block();
+                         .getContainer(containerName)
+                         .delete()
+                         .publishOn(Schedulers.parallel())
+                         .doOnNext(response -> {
+                             CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                                 response.getDiagnostics(), null);
+                         })
+                         .onErrorResume(throwable ->
+                             CosmosExceptionUtils.exceptionHandler("Failed to delete container", throwable,
+                                 this.responseDiagnosticsProcessor))
+                         .block();
     }
 
     @Override
@@ -658,16 +658,16 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         }
 
         this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
-            .getContainer(containerName)
-            .deleteItem(idToDelete, partitionKey, options)
-            .publishOn(Schedulers.parallel())
-            .doOnNext(response ->
-                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                    response.getDiagnostics(), null))
-            .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to delete item",
-                    throwable, this.responseDiagnosticsProcessor))
-            .block();
+                         .getContainer(containerName)
+                         .deleteItem(idToDelete, partitionKey, options)
+                         .publishOn(Schedulers.parallel())
+                         .doOnNext(response ->
+                             CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                                 response.getDiagnostics(), null))
+                         .onErrorResume(throwable ->
+                             CosmosExceptionUtils.exceptionHandler("Failed to delete item",
+                                 throwable, this.responseDiagnosticsProcessor))
+                         .block();
     }
 
     @Override
@@ -970,9 +970,9 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                                                       String containerName,
                                                       CosmosQueryRequestOptions options) {
         return this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
-            .getContainer(containerName)
-            .queryItems(sqlQuerySpec, options, JsonNode.class)
-            .byPage();
+                                .getContainer(containerName)
+                                .queryItems(sqlQuerySpec, options, JsonNode.class)
+                                .byPage();
     }
 
     private <T> Flux<JsonNode> findItemsAsFlux(@NonNull CosmosQuery query,
@@ -1016,20 +1016,20 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         cosmosQueryRequestOptions.setResponseContinuationTokenLimitInKb(this.responseContinuationTokenLimitInKb);
 
         return this.getCosmosAsyncClient()
-            .getDatabase(this.getDatabaseName())
-            .getContainer(containerName)
-            .queryItems(sqlQuerySpec, cosmosQueryRequestOptions, JsonNode.class)
-            .byPage()
-            .publishOn(Schedulers.parallel())
-            .flatMap(cosmosItemFeedResponse -> {
-                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                    cosmosItemFeedResponse.getCosmosDiagnostics(),
-                    cosmosItemFeedResponse);
-                return Flux.fromIterable(cosmosItemFeedResponse.getResults());
-            })
-            .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable,
-                    this.responseDiagnosticsProcessor));
+                   .getDatabase(this.getDatabaseName())
+                   .getContainer(containerName)
+                   .queryItems(sqlQuerySpec, cosmosQueryRequestOptions, JsonNode.class)
+                   .byPage()
+                   .publishOn(Schedulers.parallel())
+                   .flatMap(cosmosItemFeedResponse -> {
+                       CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                                                                     cosmosItemFeedResponse.getCosmosDiagnostics(),
+                                                                     cosmosItemFeedResponse);
+                       return Flux.fromIterable(cosmosItemFeedResponse.getResults());
+                   })
+                   .onErrorResume(throwable ->
+                                      CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable,
+                                          this.responseDiagnosticsProcessor));
     }
 
     private <T> Iterable<T> findItems(@NonNull CosmosQuery query,

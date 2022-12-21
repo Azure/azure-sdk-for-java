@@ -28,18 +28,19 @@ public final class AddressRanges {
     private String rangeRight;
 
     /*
-     * A location represented as a latitude and longitude using short names
-     * 'lat' & 'lon'.
+     * A location represented as a latitude and longitude using short names 'lat' & 'lon'.
      */
     @JsonProperty(value = "from")
     private LatLongPairAbbreviated from;
 
     /*
-     * A location represented as a latitude and longitude using short names
-     * 'lat' & 'lon'.
+     * A location represented as a latitude and longitude using short names 'lat' & 'lon'.
      */
     @JsonProperty(value = "to")
     private LatLongPairAbbreviated to;
+
+    /** Creates an instance of AddressRanges class. */
+    public AddressRanges() {}
 
     /**
      * Get the rangeLeft property: Address range on the left side of the street.

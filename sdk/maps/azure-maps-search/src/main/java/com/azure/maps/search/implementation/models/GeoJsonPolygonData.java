@@ -17,6 +17,9 @@ public class GeoJsonPolygonData {
     @JsonProperty(value = "coordinates", required = true)
     private List<List<List<Double>>> coordinates;
 
+    /** Creates an instance of GeoJsonPolygonData class. */
+    public GeoJsonPolygonData() {}
+
     /**
      * Get the coordinates property: Coordinates for the `GeoJson Polygon` geometry type.
      *

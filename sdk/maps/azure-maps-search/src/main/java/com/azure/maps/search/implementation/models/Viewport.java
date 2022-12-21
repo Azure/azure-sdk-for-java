@@ -11,18 +11,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class Viewport {
     /*
-     * A location represented as a latitude and longitude using short names
-     * 'lat' & 'lon'.
+     * A location represented as a latitude and longitude using short names 'lat' & 'lon'.
      */
     @JsonProperty(value = "topLeftPoint")
     private LatLongPairAbbreviated topLeftPoint;
 
     /*
-     * A location represented as a latitude and longitude using short names
-     * 'lat' & 'lon'.
+     * A location represented as a latitude and longitude using short names 'lat' & 'lon'.
      */
     @JsonProperty(value = "btmRightPoint")
     private LatLongPairAbbreviated btmRightPoint;
+
+    /** Creates an instance of Viewport class. */
+    public Viewport() {}
 
     /**
      * Get the topLeftPoint property: A location represented as a latitude and longitude using short names 'lat' &amp;

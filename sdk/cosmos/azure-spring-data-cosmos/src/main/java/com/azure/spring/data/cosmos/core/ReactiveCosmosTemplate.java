@@ -234,7 +234,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
 
     @Override
     public Mono<CosmosContainerProperties> replaceContainerProperties(String containerName,
-                                                                      CosmosContainerProperties properties) {
+                                                                CosmosContainerProperties properties) {
         return this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
             .getContainer(containerName)
             .replace(properties)
@@ -334,24 +334,24 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         options.setResponseContinuationTokenLimitInKb(this.responseContinuationTokenLimitInKb);
 
         return this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
-            .getContainer(containerName)
-            .queryItems(sqlQuerySpec, options, JsonNode.class)
-            .byPage()
-            .publishOn(Schedulers.parallel())
-            .flatMap(cosmosItemFeedResponse -> {
-                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                    cosmosItemFeedResponse.getCosmosDiagnostics(),
-                    cosmosItemFeedResponse);
-                return Mono.justOrEmpty(cosmosItemFeedResponse
-                    .getResults()
-                    .stream()
-                    .map(cosmosItem -> emitOnLoadEventAndConvertToDomainObject(domainType, cosmosItem))
-                    .findFirst());
-            })
-            .onErrorResume(throwable ->
-                CosmosExceptionUtils.findAPIExceptionHandler("Failed to find item", throwable,
-                    this.responseDiagnosticsProcessor))
-            .next();
+                                .getContainer(containerName)
+                                .queryItems(sqlQuerySpec, options, JsonNode.class)
+                                .byPage()
+                                .publishOn(Schedulers.parallel())
+                                .flatMap(cosmosItemFeedResponse -> {
+                                    CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                                        cosmosItemFeedResponse.getCosmosDiagnostics(),
+                                        cosmosItemFeedResponse);
+                                    return Mono.justOrEmpty(cosmosItemFeedResponse
+                                        .getResults()
+                                        .stream()
+                                        .map(cosmosItem -> emitOnLoadEventAndConvertToDomainObject(domainType, cosmosItem))
+                                        .findFirst());
+                                })
+                                .onErrorResume(throwable ->
+                                    CosmosExceptionUtils.findAPIExceptionHandler("Failed to find item", throwable,
+                                        this.responseDiagnosticsProcessor))
+                                .next();
     }
 
     /**
@@ -369,18 +369,18 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
 
         final String containerName = getContainerName(domainType);
         return this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
-            .getContainer(containerName)
-            .readItem(idToFind, partitionKey, JsonNode.class)
-            .publishOn(Schedulers.parallel())
-            .flatMap(cosmosItemResponse -> {
-                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                    cosmosItemResponse.getDiagnostics(), null);
-                return Mono.justOrEmpty(emitOnLoadEventAndConvertToDomainObject(domainType,
-                    cosmosItemResponse.getItem()));
-            })
-            .onErrorResume(throwable ->
-                CosmosExceptionUtils.findAPIExceptionHandler("Failed to find item", throwable,
-                    this.responseDiagnosticsProcessor));
+                                .getContainer(containerName)
+                                .readItem(idToFind, partitionKey, JsonNode.class)
+                                .publishOn(Schedulers.parallel())
+                                .flatMap(cosmosItemResponse -> {
+                                    CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                                        cosmosItemResponse.getDiagnostics(), null);
+                                    return Mono.justOrEmpty(emitOnLoadEventAndConvertToDomainObject(domainType,
+                                        cosmosItemResponse.getItem()));
+                                })
+                                .onErrorResume(throwable ->
+                                    CosmosExceptionUtils.findAPIExceptionHandler("Failed to find item", throwable,
+                                        this.responseDiagnosticsProcessor));
     }
 
     /**
@@ -534,18 +534,18 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         applyVersioning(object.getClass(), originalItem, options);
 
         return this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
-            .getContainer(containerName)
-            .upsertItem(originalItem, options)
-            .publishOn(Schedulers.parallel())
-            .flatMap(cosmosItemResponse -> {
-                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                    cosmosItemResponse.getDiagnostics(), null);
-                return Mono.just(toDomainObject(domainType,
-                    cosmosItemResponse.getItem()));
-            })
-            .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to upsert item", throwable,
-                    this.responseDiagnosticsProcessor));
+                                .getContainer(containerName)
+                                .upsertItem(originalItem, options)
+                                .publishOn(Schedulers.parallel())
+                                .flatMap(cosmosItemResponse -> {
+                                    CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                                        cosmosItemResponse.getDiagnostics(), null);
+                                    return Mono.just(toDomainObject(domainType,
+                                        cosmosItemResponse.getItem()));
+                                })
+                                .onErrorResume(throwable ->
+                                    CosmosExceptionUtils.exceptionHandler("Failed to upsert item", throwable,
+                                        this.responseDiagnosticsProcessor));
     }
 
     /**
@@ -570,16 +570,16 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         }
 
         return this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
-            .getContainer(containerName)
-            .deleteItem(idToDelete, partitionKey, cosmosItemRequestOptions)
-            .publishOn(Schedulers.parallel())
-            .doOnNext(cosmosItemResponse ->
-                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                    cosmosItemResponse.getDiagnostics(), null))
-            .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to delete item", throwable,
-                    this.responseDiagnosticsProcessor))
-            .then();
+                                .getContainer(containerName)
+                                .deleteItem(idToDelete, partitionKey, cosmosItemRequestOptions)
+                                .publishOn(Schedulers.parallel())
+                                .doOnNext(cosmosItemResponse ->
+                                    CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                                        cosmosItemResponse.getDiagnostics(), null))
+                                .onErrorResume(throwable ->
+                                    CosmosExceptionUtils.exceptionHandler("Failed to delete item", throwable,
+                                        this.responseDiagnosticsProcessor))
+                                .then();
     }
 
     /**
@@ -736,20 +736,20 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         options.setMaxBufferedItemCount(this.maxBufferedItemCount);
         options.setResponseContinuationTokenLimitInKb(this.responseContinuationTokenLimitInKb);
         return this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
-            .getContainer(containerName)
-            .queryItems(querySpec, options, JsonNode.class)
-            .byPage()
-            .publishOn(Schedulers.parallel())
-            .flatMap(cosmosItemFeedResponse -> {
-                CosmosUtils
-                    .fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                        cosmosItemFeedResponse.getCosmosDiagnostics(),
-                        cosmosItemFeedResponse);
-                return Flux.fromIterable(cosmosItemFeedResponse.getResults());
-            })
-            .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable,
-                    this.responseDiagnosticsProcessor));
+                   .getContainer(containerName)
+                   .queryItems(querySpec, options, JsonNode.class)
+                   .byPage()
+                   .publishOn(Schedulers.parallel())
+                   .flatMap(cosmosItemFeedResponse -> {
+                       CosmosUtils
+                           .fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                                                              cosmosItemFeedResponse.getCosmosDiagnostics(),
+                                                              cosmosItemFeedResponse);
+                       return Flux.fromIterable(cosmosItemFeedResponse.getResults());
+                   })
+                   .onErrorResume(throwable ->
+                                      CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable,
+                                          this.responseDiagnosticsProcessor));
     }
 
     private Mono<Long> getCountValue(SqlQuerySpec querySpec, String containerName) {
@@ -774,12 +774,12 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                                       CosmosQueryRequestOptions options) {
 
         return this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
-            .getContainer(containerName)
-            .queryItems(sqlQuerySpec, options, JsonNode.class)
-            .byPage()
-            .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to execute query", throwable,
-                    this.responseDiagnosticsProcessor));
+                                .getContainer(containerName)
+                                .queryItems(sqlQuerySpec, options, JsonNode.class)
+                                .byPage()
+                                .onErrorResume(throwable ->
+                                    CosmosExceptionUtils.exceptionHandler("Failed to execute query", throwable,
+                                        this.responseDiagnosticsProcessor));
     }
 
     /**
@@ -791,15 +791,15 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     public void deleteContainer(@NonNull String containerName) {
         Assert.hasText(containerName, "containerName should have text.");
         this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
-            .getContainer(containerName)
-            .delete()
-            .doOnNext(cosmosContainerResponse ->
-                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                    cosmosContainerResponse.getDiagnostics(), null))
-            .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to delete container",
-                    throwable, this.responseDiagnosticsProcessor))
-            .block();
+                         .getContainer(containerName)
+                         .delete()
+                         .doOnNext(cosmosContainerResponse ->
+                             CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                                 cosmosContainerResponse.getDiagnostics(), null))
+                         .onErrorResume(throwable ->
+                             CosmosExceptionUtils.exceptionHandler("Failed to delete container",
+                                 throwable, this.responseDiagnosticsProcessor))
+                         .block();
     }
 
     /**
@@ -857,18 +857,18 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         applyVersioning(domainType, jsonNode, options);
 
         return this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
-            .getContainer(containerName)
-            .deleteItem(jsonNode, options)
-            .publishOn(Schedulers.parallel())
-            .map(cosmosItemResponse -> {
-                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
-                    cosmosItemResponse.getDiagnostics(), null);
-                return cosmosItemResponse;
-            })
-            .flatMap(objectCosmosItemResponse -> Mono.just(toDomainObject(domainType, jsonNode)))
-            .onErrorResume(throwable ->
-                CosmosExceptionUtils.exceptionHandler("Failed to delete item", throwable,
-                    this.responseDiagnosticsProcessor));
+                                .getContainer(containerName)
+                                .deleteItem(jsonNode, options)
+                                .publishOn(Schedulers.parallel())
+                                .map(cosmosItemResponse -> {
+                                    CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                                        cosmosItemResponse.getDiagnostics(), null);
+                                    return cosmosItemResponse;
+                                })
+                                .flatMap(objectCosmosItemResponse -> Mono.just(toDomainObject(domainType, jsonNode)))
+                                .onErrorResume(throwable ->
+                                    CosmosExceptionUtils.exceptionHandler("Failed to delete item", throwable,
+                                        this.responseDiagnosticsProcessor));
     }
 
     private <T> T emitOnLoadEventAndConvertToDomainObject(@NonNull Class<T> domainType, JsonNode responseJsonNode) {

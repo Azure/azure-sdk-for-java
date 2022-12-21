@@ -371,6 +371,36 @@
           "justification": "SDK classes are allowed to be exposed by dependencies using them."
         },
         {
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::getPassword()",
+          "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::getRemoteUrl()",
+          "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method java.lang.String com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::getUsername()",
+          "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method void com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::setPassword(java.lang.String)",
+          "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method void com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::setRemoteUrl(java.lang.String)",
+          "justification": "Remove some meaningless jms properties"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method void com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties::setUsername(java.lang.String)",
+          "justification": "Remove some meaningless jms properties"
+        },
+        {
           "regex": true,
           "code": "java.method.numberOfParametersChanged",
           "old": "method void com\\.azure\\.spring\\.cloud\\.config\\.stores\\..*",
@@ -596,6 +626,13 @@
           "new": "parameter com.azure.resourcemanager.compute.models.GalleryOSDiskImage com.azure.resourcemanager.compute.models.GalleryOSDiskImage::withSource(===com.azure.resourcemanager.compute.models.GalleryDiskImageSource===)",
           "parameterIndex": "0",
           "justification": "Type of property changed to its subclass by backend. User will not access the setter in convenience API."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.constantValueChanged",
+          "old": "field com.azure.messaging.eventgrid.SystemEventNames.SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENER",
+          "new": "field com.azure.messaging.eventgrid.SystemEventNames.SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENER",
+          "justification": "Previous constant value had a typo and was never functional."
         }
       ]
     }

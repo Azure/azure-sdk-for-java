@@ -37,7 +37,6 @@ import java.util.stream.Collectors;
 public final class CoreUtils {
     // CoreUtils is a commonly used utility, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(CoreUtils.class);
-    private static final String COMMA = ",";
     private static final Charset UTF_32BE = Charset.forName("UTF-32BE");
     private static final Charset UTF_32LE = Charset.forName("UTF-32LE");
     private static final byte ZERO = (byte) 0x00;
@@ -150,7 +149,7 @@ public final class CoreUtils {
             return null;
         }
 
-        return Arrays.stream(array).map(mapper).collect(Collectors.joining(COMMA));
+        return Arrays.stream(array).map(mapper).collect(Collectors.joining(","));
     }
 
     /**
@@ -203,8 +202,7 @@ public final class CoreUtils {
      * @return an immutable {@link Map}.
      */
     public static Map<String, String> getProperties(String propertiesFileName) {
-        try (InputStream inputStream = CoreUtils.class.getClassLoader()
-            .getResourceAsStream(propertiesFileName)) {
+        try (InputStream inputStream = CoreUtils.class.getClassLoader().getResourceAsStream(propertiesFileName)) {
             if (inputStream != null) {
                 Properties properties = new Properties();
                 properties.load(inputStream);
@@ -349,7 +347,7 @@ public final class CoreUtils {
             if (timeoutMillis < 0) {
                 logger.atVerbose()
                     .addKeyValue(timeoutPropertyName, timeoutMillis)
-                    .log("Negative timeout values are not allowed. Using 'Duration.ZERO' to indicate no timeout..");
+                    .log("Negative timeout values are not allowed. Using 'Duration.ZERO' to indicate no timeout.");
                 return Duration.ZERO;
             }
 
