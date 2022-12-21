@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SimState. */
+/** The state of the SIM resource. */
 public final class SimState extends ExpandableStringEnum<SimState> {
     /** Static value Disabled for SimState. */
     public static final SimState DISABLED = fromString("Disabled");

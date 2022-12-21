@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PacketCoreControlPlanes ListByResourceGroup. */
 public final class PacketCoreControlPlanesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/PacketCoreControlPlaneListByResourceGroup.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/PacketCoreControlPlaneListByResourceGroup.json
      */
     /**
      * Sample code: List packet core control planes in resource group.
