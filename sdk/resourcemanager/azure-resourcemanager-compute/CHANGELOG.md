@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported `withHibernationSupport` method in `Disk` to support hibernation for the OS on the disk.
 
 ## 2.21.0 (2022-11-24)
 
