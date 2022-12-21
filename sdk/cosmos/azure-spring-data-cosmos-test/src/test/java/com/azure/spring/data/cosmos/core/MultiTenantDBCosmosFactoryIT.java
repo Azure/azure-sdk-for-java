@@ -4,7 +4,9 @@
 package com.azure.spring.data.cosmos.core;
 
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
@@ -38,6 +40,7 @@ import static com.azure.spring.data.cosmos.common.TestConstants.ID_2;
 import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.PASSPORT_IDS_BY_COUNTRY;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = MultiTenantTestRepositoryConfig.class)
@@ -61,12 +64,13 @@ public class MultiTenantDBCosmosFactoryIT {
 
     private MultiTenantDBCosmosFactory cosmosFactory;
     private CosmosTemplate cosmosTemplate;
+    private CosmosAsyncClient client;
     private CosmosEntityInformation<Person, String> personInfo;
 
     @Before
     public void setUp() throws ClassNotFoundException {
         /// Setup
-        CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
+        client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
         cosmosFactory = new MultiTenantDBCosmosFactory(client, testDB1);
         final CosmosMappingContext mappingContext = new CosmosMappingContext();
 
@@ -112,5 +116,18 @@ public class MultiTenantDBCosmosFactoryIT {
         List<Person> resultDB1 = new ArrayList<>();
         iterableDB1.forEach(resultDB1::add);
         Assert.assertEquals(expectedResultsDB1, resultDB1);
+
+        //Cleanup
+        deleteDatabaseIfExists(testDB1);
+        deleteDatabaseIfExists(testDB2);
+    }
+
+    private void deleteDatabaseIfExists(String dbName) {
+        CosmosAsyncDatabase database = client.getDatabase(dbName);
+        try {
+            database.delete().block();
+        } catch (CosmosException ex) {
+            assertEquals(ex.getStatusCode(), 404);
+        }
     }
 }
