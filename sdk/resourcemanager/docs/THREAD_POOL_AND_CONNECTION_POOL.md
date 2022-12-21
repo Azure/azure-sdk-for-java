@@ -4,7 +4,7 @@ There are four types of pools used by Azure client:
 1. Http connection pool (used by `HttpClient`)
 2. Http thread pool (used by `HttpClient`)
 3. Azure Identity thread pool (used by Azure Identity client for token acquisition)
-4. Reactor thread pool (default thread pool to subscribe on)
+4. Reactor thread pool (if you are using [azure-core-http-netty](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core-http-netty) as the `HttpClient` implementation)
 
 The `HttpClient` is a generic interface for sending HTTP requests and getting responses.
   * [azure-core-http-netty](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core-http-netty) provides a Netty derived HTTP client.
@@ -98,7 +98,8 @@ AzureResourceManager azureResourceManager = AzureResourceManager
 Reference: [Azure Resource Manager](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/resourcemanager#include-the-recommended-packages)
 
 ### Configure Reactor thread pool size:
-By default, Azure client subscribes on Schedulers.parallel(), which has a thread pool of size equal to available processor count. It is a static pool and is shared in nature.
+If you are using [azure-core-http-netty](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core-http-netty) as the `HttpClient` implementation, which this guide is,
+the reactive stream will be subscribed on Schedulers.parallel() by default, which has a thread pool of size equal to available processor count. It is a static pool and is shared in nature.
 You can change the pool size by specifying the environment variable `reactor.schedulers.defaultPoolSize`.
 
 Reference: 
