@@ -79,6 +79,7 @@
 ### 4.34.0 (2022-08-05)
 #### Features Added
 * GA of `DedicatedGatewayRequestOptions` API. See [PR 30142](https://github.com/Azure/azure-sdk-for-java/pull/30142)
+* Added changes for `ChangeFeedPullModel` for handling all versions and deletes changes. See [PR 30161](https://github.com/Azure/azure-sdk-for-java/pull/30161)
 
 #### Other Changes
 * Added `requestSessionToken` to `CosmosDiagnostics` - See [PR 29516](https://github.com/Azure/azure-sdk-for-java/pull/29516)

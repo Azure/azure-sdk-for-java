@@ -34,6 +34,8 @@
 * Fixed a race condition that could result in a memory/thread leak for `BulkExecutor` instances (and their corresponding `cosmos-daemon-BulkExecutor-*` thread). This issue could occur when ingesting data into Cosmos DB via structured streaming jobs. - See [PR 31082](https://github.com/Azure/azure-sdk-for-java/pull/31082)
 
 ### 4.13.0 (2022-09-15)
+#### Breaking Changes
+* Known issue introduced with Java SDK [PR 30161](https://github.com/Azure/azure-sdk-for-java/pull/30161) for incremental change feed schema.
 
 #### Other Changes
 * Added support to allow overriding json parsing behavior when a json document contains duplicated properties. Config entry `spark.cosmos.read.allowInvalidJsonWithDuplicateJsonProperties` can be used to not raise a hard error and use the last property instead. - See [PR 30916](https://github.com/Azure/azure-sdk-for-java/pull/30916)
