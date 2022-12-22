@@ -17,7 +17,6 @@ import org.springframework.context.annotation.Configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AzureStorageQueueMessagingAutoConfigurationTests {
 
@@ -41,7 +40,7 @@ public class AzureStorageQueueMessagingAutoConfigurationTests {
             .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .withUserConfiguration(AzureStorageQueuePropertiesTestConfiguration.class)
             .run(context -> {
-                assertNotNull(context.getBean("defaultStorageQueueMessageConverter"));
+                assertThat(context).hasBean("defaultStorageQueueMessageConverter");
                 assertThat(context).hasSingleBean(StorageQueueMessageConverter.class);
                 assertThat(context).doesNotHaveBean("storageQueueMessageConverter");
             });
@@ -55,7 +54,7 @@ public class AzureStorageQueueMessagingAutoConfigurationTests {
             .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .withUserConfiguration(AzureStorageQueuePropertiesTestConfiguration.class)
             .run(context -> {
-                assertNotNull(context.getBean("storageQueueMessageConverter"));
+                assertThat(context).hasBean("storageQueueMessageConverter");
                 assertThat(context).hasSingleBean(StorageQueueMessageConverter.class);
                 assertThat(context).doesNotHaveBean("defaultStorageQueueMessageConverter");
             });
@@ -68,21 +67,12 @@ public class AzureStorageQueueMessagingAutoConfigurationTests {
                 "spring.cloud.azure.message-converter.isolated-object-mapper=false")
             .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .withUserConfiguration(AzureStorageQueuePropertiesTestConfiguration.class)
-            .withUserConfiguration(UserCustomizeObjectMapperConfiguration.class)
+            .withBean("userObjectMapper",ObjectMapper.class,() -> new ObjectMapper())
             .run(context -> {
-                assertNotNull(context.getBean("userObjectMapper"));
+                assertThat(context).hasBean("userObjectMapper");
                 assertThat(context).hasSingleBean(ObjectMapper.class);
                 assertThat(context).hasSingleBean(StorageQueueMessageConverter.class);
             });
-    }
-
-    @Configuration
-    static class UserCustomizeObjectMapperConfiguration {
-
-        @Bean
-        ObjectMapper userObjectMapper() {
-            return new ObjectMapper();
-        }
     }
 
     @Configuration
