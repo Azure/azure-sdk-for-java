@@ -3,14 +3,21 @@
 
 package com.azure.core.test;
 
-import com.azure.core.http.*;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.TestProxyTestServer;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
-import org.junit.jupiter.api.*;
-
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -113,7 +120,6 @@ public class TestProxyTests extends TestBase {
 
         HttpClient client = interceptorManager.getPlaybackClient();
 
-
         URL url = null;
         try {
             url = new UrlBuilder().setHost("localhost").setPort(3000).setPath("first/path").setScheme("http").toUrl();
@@ -130,7 +136,6 @@ public class TestProxyTests extends TestBase {
     @Test
     @Tag("RECORD")
     public void testRecordWithRedaction() {
-
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
         Map<String, List<String>> map = new HashMap<String, List<String>>();
         List<String> urlSanitizers = new ArrayList<>();
@@ -142,16 +147,16 @@ public class TestProxyTests extends TestBase {
         map.put("URL", urlSanitizers);
         map.put("BODY", bodySanitizers);
 
-        HttpPipeline pipeline =
-            new HttpPipelineBuilder().httpClient(client).policies(interceptorManager.getRecordPolicy(map))
-                .build();
-
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .policies(interceptorManager.getRecordPolicy(map)).build();
         URL url;
         try {
-            url = new UrlBuilder().setHost(ENDPOINT)
+            url = new UrlBuilder()
+                .setHost(ENDPOINT)
                 .setPath("/formrecognizer/documentModels")
-                .setQueryParameter("api-version", "2022-08-31")
                 .setScheme("https")
+                .setQueryParameter("api-version", "2022-08-31")
                 .toUrl();
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
@@ -161,9 +166,11 @@ public class TestProxyTests extends TestBase {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         request.setHeader("Ocp-Apim-Subscription-Key", API_KEY);
         request.setHeader("Content-Type", "application/json");
+
         HttpResponse response = pipeline.sendSync(request, Context.NONE);
 
         assertEquals(response.getStatusCode(), 200);
     }
+
 }
 

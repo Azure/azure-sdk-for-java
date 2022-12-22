@@ -29,7 +29,6 @@ public class HttpURLConnectionHttpClient implements HttpClient {
         HttpURLConnection connection = null;
 
         try {
-
             connection = (HttpURLConnection) request.getUrl().openConnection();
             connection.setRequestMethod(request.getHttpMethod().name());
 
