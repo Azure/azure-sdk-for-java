@@ -98,14 +98,18 @@ AzureResourceManager azureResourceManager = AzureResourceManager
 Reference: [Azure Resource Manager](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/resourcemanager#include-the-recommended-packages)
 
 ### Configure Reactor thread pool size:
-If you are using [azure-core-http-netty](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core-http-netty) as the `HttpClient` implementation, which this guide is,
-the reactive stream will be subscribed on Schedulers.parallel() by default, which has a thread pool of size equal to available processor count. It is a static pool and is shared in nature.
+The reactive stream will be subscribed on `Schedulers.parallel()` if:
+* You are using [azure-core-http-netty](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core-http-netty) as the `HttpClient` implementation, which this guide is
+* You are calling long-running operations such as `create()`
+* You are using operators such as `Flux::delayElements` on the stream that will introduce `Schedulers.parallel()`
+
+`Schedulers.parallel()` is a static thread pool and is shared in nature. By default, the pool size is equal to available processor count.
 You can change the pool size by specifying the environment variable `reactor.schedulers.defaultPoolSize`.
 
 Reference: 
+* [Replacing default Schedulers](https://projectreactor.io/docs/core/release/reference/#scheduler-factory)
 * [Javadocs for Schedulers.parallel()](https://projectreactor.io/docs/core/release/api/reactor/core/scheduler/Schedulers.html#parallel--)
 * [DEFAULT_POOL_SIZE for Schedulers.parallel()](https://github.com/reactor/reactor-core/blob/3.4.x/reactor-core/src/main/java/reactor/core/scheduler/Schedulers.java#L72-L81)
-* [Replacing default Schedulers](https://projectreactor.io/docs/core/release/reference/#scheduler-factory)
 
 ## Other JVM thread configurations you might be interested:
 * [Compiler threads for JIT compiler](https://docs.oracle.com/en/java/javase/17/docs/specs/man/java.html#advanced-jit-compiler-options-for-java)
