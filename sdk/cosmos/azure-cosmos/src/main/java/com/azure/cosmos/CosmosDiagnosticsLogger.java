@@ -4,15 +4,17 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.models.CosmosDiagnosticsContext;
 import com.azure.cosmos.models.CosmosDiagnosticsLoggerConfig;
-import com.fasterxml.jackson.dataformat.xml.util.CaseInsensitiveNameSet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
+import java.util.Set;
 
 public final class CosmosDiagnosticsLogger  implements CosmosDiagnosticsHandler{
+    private final static Logger logger = LoggerFactory.getLogger(CosmosDiagnosticsLogger.class);
 
     private final CosmosDiagnosticsLoggerConfig config;
-    private final CaseInsensitiveNameSet pointOperationTypes = CaseInsensitiveNameSet.construct(
-        new HashSet<String>() {{
+    private final Set<String> pointOperationTypes = new HashSet<String>() {{
             add("Read");
             add("Create");
             add("Upsert");
@@ -20,8 +22,7 @@ public final class CosmosDiagnosticsLogger  implements CosmosDiagnosticsHandler{
             add("Patch");
 
             // TODO fix / complete
-        }}
-    );
+        }};
 
     public CosmosDiagnosticsLogger(CosmosDiagnosticsLoggerConfig config) {
         this.config = config;
@@ -85,5 +86,24 @@ public final class CosmosDiagnosticsLogger  implements CosmosDiagnosticsHandler{
         int subStatusCode) {
 
         // TODO implement and log to log4j
+        if (this.shouldLog(statusCode, subStatusCode)) {
+            logger.warn(
+                "Account: {} -> DB: {}, Col:{}, StatusCode: {}:{} Diagnostics: {}",
+                diagnosticsContext.getAccountName(),
+                diagnosticsContext.getDatabaseName(),
+                diagnosticsContext.getCollectionName(),
+                statusCode,
+                subStatusCode,
+                diagnostics.toString());
+        } else {
+            logger.info(
+                "Account: {} -> DB: {}, Col:{}, StatusCode: {}:{} Diagnostics: {}",
+                diagnosticsContext.getAccountName(),
+                diagnosticsContext.getDatabaseName(),
+                diagnosticsContext.getCollectionName(),
+                statusCode,
+                subStatusCode,
+                diagnostics.toString());
+        }
     }
 }

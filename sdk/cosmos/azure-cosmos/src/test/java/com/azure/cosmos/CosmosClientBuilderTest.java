@@ -8,15 +8,22 @@ import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosDiagnosticsContext;
+import com.azure.cosmos.models.CosmosDiagnosticsLoggerConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CosmosClientBuilderTest {
+
+    private final static Logger logger = LoggerFactory.getLogger(CosmosClientBuilderTest.class);
 
     String hostName = "https://sample-account.documents.azure.com:443/";
 
@@ -184,5 +191,48 @@ public class CosmosClientBuilderTest {
         RxDocumentClientImpl documentClient =
             (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(cosmosClientBuilder.buildAsyncClient());
         assertThat(ReflectionUtils.getApiType(documentClient)).isEqualTo(apiType);
+    }
+
+    class MyDiagnosticsHandler implements CosmosDiagnosticsHandler {
+
+        @Override
+        public void handleDiagnostics(CosmosDiagnosticsContext diagnosticsContext, CosmosDiagnostics diagnostics,
+                                      CosmosException error, int statusCode, int subStatusCode) {
+            logger.debug(
+                "Account: {} -> DB: {}, Col:{}, StatusCode: {}:{} Diagnostics: {}",
+                diagnosticsContext.getAccountName(),
+                diagnosticsContext.getDatabaseName(),
+                diagnosticsContext.getCollectionName(),
+                statusCode,
+                subStatusCode,
+                diagnostics.toString());
+        }
+    }
+
+    @Test(groups = "unit")
+    public void enableLogging() {
+        try {
+            CosmosAsyncClient client = new CosmosClientBuilder()
+                .key(TestConfigurations.MASTER_KEY)
+                .endpoint(hostName)
+                .preferredRegions(Arrays.asList("westus1,eastus1"))
+                .clientTelemetryConfig(
+                    new CosmosClientTelemetryConfig()
+                        .enableDiagnosticLogs() // default logger to log4j, only logging for point operations > 1 second or feed operation > 3 seconds or > 1000 RU
+                        .enableDiagnosticLogs( // change config on which diagnostics to log
+                            new CosmosDiagnosticsLoggerConfig()
+                                .setPointOperationLatencyThreshold(Duration.ofMillis(500))
+                                .setFeedOperationLatencyThreshold(Duration.ofSeconds(10))
+                                .setRequestChargeThreshold(100)
+                        )
+                        .diagnosticsHandler(new MyDiagnosticsHandler()) // using a custom diagnostics handler
+                )
+                .buildAsyncClient();
+            client.close();
+        } catch (Exception e) {
+            assertThat(e).isInstanceOf(RuntimeException.class);
+            assertThat(e).hasCauseExactlyInstanceOf(URISyntaxException.class);
+            assertThat(e.getMessage()).isEqualTo("invalid location [westus1,eastus1] or serviceEndpoint [https://sample-account.documents.azure.com:443/]");
+        }
     }
 }
