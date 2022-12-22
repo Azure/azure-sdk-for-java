@@ -32,25 +32,25 @@ import reactor.core.publisher.Mono;
 
 public class PhoneNumbersIntegrationTestBase extends TestBase {
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-            .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
-    protected static final String COUNTRY_CODE = 
-        Configuration.getGlobalConfiguration().get("COUNTRY_CODE", "US");
-    protected static final String AREA_CODE = 
-        Configuration.getGlobalConfiguration().get("AREA_CODE", "833");
-    protected static final String MS_USERAGENT_OVERRIDE = Configuration.getGlobalConfiguration().get("AZURE_USERAGENT_OVERRIDE", "");
+            .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING",
+                    "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
+    protected static final String COUNTRY_CODE = Configuration.getGlobalConfiguration().get("COUNTRY_CODE", "US");
+    protected static final String AREA_CODE = Configuration.getGlobalConfiguration().get("AREA_CODE", "833");
+    protected static final String MS_USERAGENT_OVERRIDE = Configuration.getGlobalConfiguration()
+            .get("AZURE_USERAGENT_OVERRIDE", "");
 
-    private static final StringJoiner JSON_PROPERTIES_TO_REDACT = 
-        new StringJoiner("\":\"|\"", "\"", "\":\"")
+    private static final StringJoiner JSON_PROPERTIES_TO_REDACT = new StringJoiner("\":\"|\"", "\"", "\":\"")
             .add("id")
             .add("phoneNumber");
 
-    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN = 
-        Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()), Pattern.CASE_INSENSITIVE);
+    private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN = Pattern.compile(
+            String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()), Pattern.CASE_INSENSITIVE);
 
     private static final String URI_PHONE_NUMBERS_REPLACER_REGEX = "/phoneNumbers/([\\+]?[0-9]{11,15})";
 
     protected PhoneNumbersClientBuilder getClientBuilder(HttpClient httpClient) {
-        CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(CONNECTION_STRING);
+        CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(
+                CONNECTION_STRING);
         String communicationEndpoint = communicationConnectionString.getEndpoint();
         String communicationAccessKey = communicationConnectionString.getAccessKey();
 
@@ -75,7 +75,6 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
                 .addPolicy(getOverrideMSUserAgentPolicy())
                 .connectionString(CONNECTION_STRING);
 
-
         if (shouldRecord()) {
             builder.addPolicy(getRecordPolicy());
         }
@@ -84,7 +83,7 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
     }
 
     protected PhoneNumbersClientBuilder getClientBuilderUsingManagedIdentity(HttpClient httpClient) {
-        
+
         PhoneNumbersClientBuilder builder = new PhoneNumbersClientBuilder();
         builder
                 .httpClient(getHttpClient(httpClient))
@@ -107,7 +106,7 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
     private HttpClient getHttpClient(HttpClient httpClient) {
         if (httpClient == null || getTestMode() == TestMode.PLAYBACK) {
             return interceptorManager.getPlaybackClient();
-        }     
+        }
         return httpClient;
     }
 
@@ -148,7 +147,7 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         if (!MS_USERAGENT_OVERRIDE.isEmpty()) {
             headers.add("x-ms-useragent", MS_USERAGENT_OVERRIDE);
         }
-        
+
         return new AddHeadersPolicy(headers);
     }
 
@@ -193,7 +192,8 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
                     "AZURE_TEST_AGENT value is required to run update capabilities live tests.");
         }
 
-        String phoneNumber = Configuration.getGlobalConfiguration().get(String.format("AZURE_PHONE_NUMBER_%s", testAgent));
+        String phoneNumber = Configuration.getGlobalConfiguration()
+                .get(String.format("AZURE_PHONE_NUMBER_%s", testAgent));
         if (phoneNumber == null) {
             throw new IllegalStateException(
                     "A phone number specific to the current test agent is required to run update capabilities live tests.");
@@ -213,9 +213,10 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
 
     private List<NetworkCallRecord> collectNetworkCallsWithPhoneNumberUri() {
         List<NetworkCallRecord> networkCallRecords = new ArrayList<>();
-        NetworkCallRecord networkCallRecord = interceptorManager.getRecordedData().findFirstAndRemoveNetworkCall(record -> {
-            return Pattern.compile(URI_PHONE_NUMBERS_REPLACER_REGEX).matcher(record.getUri()).find();
-        });
+        NetworkCallRecord networkCallRecord = interceptorManager.getRecordedData()
+                .findFirstAndRemoveNetworkCall(record -> {
+                    return Pattern.compile(URI_PHONE_NUMBERS_REPLACER_REGEX).matcher(record.getUri()).find();
+                });
         do {
             if (networkCallRecord != null) {
                 networkCallRecords.add(networkCallRecord);
@@ -228,8 +229,9 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
     }
 
     private void sanitizePhoneNumerInUri(List<NetworkCallRecord> networkCallRecords) {
-        for (NetworkCallRecord networkCallRecord: networkCallRecords) {
-            String sanitizedUri = networkCallRecord.getUri().replaceAll(URI_PHONE_NUMBERS_REPLACER_REGEX, "/phoneNumbers/+REDACTED");
+        for (NetworkCallRecord networkCallRecord : networkCallRecords) {
+            String sanitizedUri = networkCallRecord.getUri().replaceAll(URI_PHONE_NUMBERS_REPLACER_REGEX,
+                    "/phoneNumbers/+REDACTED");
             networkCallRecord.setUri(sanitizedUri);
             interceptorManager.getRecordedData().addNetworkCall(networkCallRecord);
         }
