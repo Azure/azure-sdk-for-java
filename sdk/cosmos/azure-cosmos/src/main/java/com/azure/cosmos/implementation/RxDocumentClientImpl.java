@@ -81,6 +81,7 @@ import java.lang.management.ManagementFactory;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -95,6 +96,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -2278,6 +2280,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             options,
                             klass);
 
+
+
                         // create the executable query
                         Flux<FeedResponse<Document>> queries = createReadManyQuery(
                             resourceLink,
@@ -2287,6 +2291,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             ResourceType.Document,
                             collection,
                             Collections.unmodifiableMap(rangeQueryMap));
+
+                        AtomicReference<Instant> startTime = new AtomicReference<>();
 
                         // merge results from point reads and queries
                         return Flux.merge(pointReads, queries)
@@ -2326,7 +2332,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                         false,
                                         aggregatedDiagnostics);
                                 return frp;
-                            });
+                            })
+                                .doOnSubscribe(s -> startTime.set(Instant.now()))
+                                .doOnSuccess(feedResponse -> {
+                                    Duration feedResponseCreationLatency = Duration.between(startTime.get(), Instant.now());
+                                    ImplementationBridgeHelpers
+                                            .CosmosDiagnosticsHelper
+                                            .getCosmosDiagnosticsAccessor()
+                                            .getFeedResponseDiagnostics(feedResponse.getCosmosDiagnostics())
+                                            .setFeedResponseDiagnosticsContext(new FeedResponseDiagnostics.FeedResponseDiagnosticsContext(feedResponseCreationLatency));
+                                });
                     });
                 }
             );

@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -89,8 +90,11 @@ public final class CosmosDiagnostics {
      * @return request completion duration
      */
     public Duration getDuration() {
+
         if (this.feedResponseDiagnostics != null) {
-            return null;
+            return this.feedResponseDiagnostics
+                    .getFeedResponseDiagnosticsContext()
+                    .getFeedResponseCreationLatency();
         }
 
         return this.clientSideRequestStatistics.getDuration();

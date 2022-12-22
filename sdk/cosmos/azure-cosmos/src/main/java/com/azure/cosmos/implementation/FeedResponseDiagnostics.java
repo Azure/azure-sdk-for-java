@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +31,8 @@ public class FeedResponseDiagnostics {
     private Map<String, QueryMetrics> queryMetricsMap;
     private QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext;
     private final List<ClientSideRequestStatistics> clientSideRequestStatisticsList;
+
+    private FeedResponseDiagnosticsContext feedResponseDiagnosticsContext;
 
     public FeedResponseDiagnostics(Map<String, QueryMetrics> queryMetricsMap) {
         this.queryMetricsMap = queryMetricsMap;
@@ -129,6 +132,26 @@ public class FeedResponseDiagnostics {
 
     public void addClientSideRequestStatistics(List<ClientSideRequestStatistics> requestStatistics) {
         clientSideRequestStatisticsList.addAll(requestStatistics);
+    }
+
+    public void setFeedResponseDiagnosticsContext(FeedResponseDiagnosticsContext feedResponseDiagnosticsContext) {
+        this.feedResponseDiagnosticsContext = feedResponseDiagnosticsContext;
+    }
+
+    public FeedResponseDiagnosticsContext getFeedResponseDiagnosticsContext() {
+        return feedResponseDiagnosticsContext;
+    }
+
+    public static final class FeedResponseDiagnosticsContext {
+        private Duration feedResponseCreationLatency;
+
+        public FeedResponseDiagnosticsContext(Duration feedResponseCreationLatency) {
+            this.feedResponseCreationLatency = feedResponseCreationLatency;
+        }
+
+        public Duration getFeedResponseCreationLatency() {
+            return feedResponseCreationLatency;
+        }
     }
 
 }
