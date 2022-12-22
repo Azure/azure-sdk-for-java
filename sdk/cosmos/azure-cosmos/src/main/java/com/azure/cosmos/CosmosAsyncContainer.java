@@ -491,6 +491,11 @@ public class CosmosAsyncContainer {
         }
     }
 
+    public Mono<Void> openConnectionsAndInitCaches(List<String> regions) {
+        // TODO implement to trigger opening connections to multiple regions
+        return Mono.empty();
+    }
+
     /***
      * Internal implementation to try to initialize the container by warming up the caches and connections for the current read region.
      *

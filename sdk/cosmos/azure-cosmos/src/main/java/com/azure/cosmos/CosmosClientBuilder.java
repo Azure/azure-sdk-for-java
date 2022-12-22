@@ -871,14 +871,15 @@ public class CosmosClientBuilder implements
     // immediately be lower because warm-up is async.
     // Needs more discussion - we could also provide a new async method to build a CosmosClient/CosmosAsyncClient
     // and only allow building clients when this config is set via the async methods.
+    // TODO Use proper type instead of String of format "<DatabaseName>/<ContainerName>" for database and container name
     public CosmosClientBuilder openConnectionsAndInitCaches(
-        List<Pair<String, String>> containers) {
+        List<String> containers) {
 
         return this.openConnectionsAndInitCaches(containers, null);
     }
 
     public CosmosClientBuilder openConnectionsAndInitCaches(
-        List<Pair<String, String>> containers,
+        List<String> containers,
         List<String> regions) {
 
         // TODO - more decisions neeeded
