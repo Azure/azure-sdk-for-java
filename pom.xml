@@ -173,6 +173,7 @@
     <module>sdk/translation</module>
     <module>sdk/videoanalyzer</module>
     <module>sdk/vmwarecloudsimple</module>
+    <module>sdk/voiceservices</module>
     <module>sdk/webpubsub</module>
     <module>sdk/workloads</module>
   </modules>
