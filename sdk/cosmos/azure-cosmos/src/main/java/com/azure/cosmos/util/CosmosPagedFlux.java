@@ -312,20 +312,21 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                         CosmosDiagnostics diagnostics = feedResponse != null ?
                             feedResponse.getCosmosDiagnostics() : null;
 
+                        Duration effectiveLatency = Duration.between(startTime.get(), Instant.now()).minus(
+                                Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
+
+                        ImplementationBridgeHelpers
+                                .CosmosDiagnosticsHelper
+                                .getCosmosDiagnosticsAccessor()
+                                .getFeedResponseDiagnostics(feedResponse.getCosmosDiagnostics())
+                                .setFeedResponseCreationLatency(effectiveLatency);
+
                         if (clientTelemetryEnabled || clientMetricsEnabled) {
                             if (diagnosticsCapturedInPagedFluxByTracer || this.cosmosDiagnosticsAccessor
                                     .isDiagnosticsCapturedInPagedFlux(diagnostics)
                                     .compareAndSet(false, true)) {
 
                                 float requestCharge = (float) feedResponse.getRequestCharge();
-                                Duration effectiveLatency = Duration.between(startTime.get(), Instant.now()).minus(
-                                    Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
-
-                                ImplementationBridgeHelpers
-                                        .CosmosDiagnosticsHelper
-                                        .getCosmosDiagnosticsAccessor()
-                                        .getFeedResponseDiagnostics(feedResponse.getCosmosDiagnostics())
-                                        .setFeedResponseDiagnosticsContext(new FeedResponseDiagnostics.FeedResponseDiagnosticsContext(effectiveLatency));
 
                                 if (clientTelemetryEnabled) {
                                     fillClientTelemetry(

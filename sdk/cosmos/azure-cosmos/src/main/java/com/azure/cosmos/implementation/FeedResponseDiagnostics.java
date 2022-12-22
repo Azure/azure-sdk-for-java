@@ -31,8 +31,7 @@ public class FeedResponseDiagnostics {
     private Map<String, QueryMetrics> queryMetricsMap;
     private QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext;
     private final List<ClientSideRequestStatistics> clientSideRequestStatisticsList;
-
-    private FeedResponseDiagnosticsContext feedResponseDiagnosticsContext;
+    private Duration feedResponseCreationLatency;
 
     public FeedResponseDiagnostics(Map<String, QueryMetrics> queryMetricsMap) {
         this.queryMetricsMap = queryMetricsMap;
@@ -134,24 +133,32 @@ public class FeedResponseDiagnostics {
         clientSideRequestStatisticsList.addAll(requestStatistics);
     }
 
-    public void setFeedResponseDiagnosticsContext(FeedResponseDiagnosticsContext feedResponseDiagnosticsContext) {
-        this.feedResponseDiagnosticsContext = feedResponseDiagnosticsContext;
+    public Duration getFeedResponseCreationLatency() {
+        return feedResponseCreationLatency;
     }
 
-    public FeedResponseDiagnosticsContext getFeedResponseDiagnosticsContext() {
-        return feedResponseDiagnosticsContext;
+    public void setFeedResponseCreationLatency(Duration feedResponseCreationLatency) {
+        this.feedResponseCreationLatency = feedResponseCreationLatency;
     }
 
-    public static final class FeedResponseDiagnosticsContext {
-        private Duration feedResponseCreationLatency;
-
-        public FeedResponseDiagnosticsContext(Duration feedResponseCreationLatency) {
-            this.feedResponseCreationLatency = feedResponseCreationLatency;
-        }
-
-        public Duration getFeedResponseCreationLatency() {
-            return feedResponseCreationLatency;
-        }
-    }
+//    public void setFeedResponseDiagnosticsContext(FeedResponseDiagnosticsContext feedResponseDiagnosticsContext) {
+//        this.feedResponseDiagnosticsContext = feedResponseDiagnosticsContext;
+//    }
+//
+//    public FeedResponseDiagnosticsContext getFeedResponseDiagnosticsContext() {
+//        return feedResponseDiagnosticsContext;
+//    }
+//
+//    public static final class FeedResponseDiagnosticsContext {
+//        private Duration feedResponseCreationLatency;
+//
+//        public FeedResponseDiagnosticsContext(Duration feedResponseCreationLatency) {
+//            this.feedResponseCreationLatency = feedResponseCreationLatency;
+//        }
+//
+//        public Duration getFeedResponseCreationLatency() {
+//            return feedResponseCreationLatency;
+//        }
+//    }
 
 }

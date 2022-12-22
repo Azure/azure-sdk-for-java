@@ -2340,7 +2340,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                             .CosmosDiagnosticsHelper
                                             .getCosmosDiagnosticsAccessor()
                                             .getFeedResponseDiagnostics(feedResponse.getCosmosDiagnostics())
-                                            .setFeedResponseDiagnosticsContext(new FeedResponseDiagnostics.FeedResponseDiagnosticsContext(feedResponseCreationLatency));
+                                            .setFeedResponseCreationLatency(feedResponseCreationLatency);
                                 });
                     });
                 }
