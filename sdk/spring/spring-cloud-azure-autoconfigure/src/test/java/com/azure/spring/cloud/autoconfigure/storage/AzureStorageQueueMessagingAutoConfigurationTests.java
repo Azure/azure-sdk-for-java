@@ -67,7 +67,7 @@ public class AzureStorageQueueMessagingAutoConfigurationTests {
                 "spring.cloud.azure.message-converter.isolated-object-mapper=false")
             .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .withUserConfiguration(AzureStorageQueuePropertiesTestConfiguration.class)
-            .withBean("userObjectMapper",ObjectMapper.class,() -> new ObjectMapper())
+            .withBean("userObjectMapper", ObjectMapper.class, () -> new ObjectMapper())
             .run(context -> {
                 assertThat(context).hasBean("userObjectMapper");
                 assertThat(context).hasSingleBean(ObjectMapper.class);

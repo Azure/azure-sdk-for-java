@@ -107,7 +107,7 @@ class AzureServiceBusMessagingAutoConfigurationTests {
             .withPropertyValues("spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
                 "spring.cloud.azure.message-converter.isolated-object-mapper=false")
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
-            .withBean("userObjectMapper",ObjectMapper.class,() -> new ObjectMapper())
+            .withBean("userObjectMapper", ObjectMapper.class, () -> new ObjectMapper())
             .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .run(context -> {
                 assertThat(context).hasBean("userObjectMapper");

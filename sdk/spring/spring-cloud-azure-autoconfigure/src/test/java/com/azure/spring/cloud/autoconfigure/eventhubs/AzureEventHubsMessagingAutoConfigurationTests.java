@@ -120,7 +120,7 @@ class AzureEventHubsMessagingAutoConfigurationTests {
             .withPropertyValues("spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
                 "spring.cloud.azure.message-converter.isolated-object-mapper=false")
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
-            .withBean("userObjectMapper",ObjectMapper.class,() -> new ObjectMapper())
+            .withBean("userObjectMapper", ObjectMapper.class, () -> new ObjectMapper())
             .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .run(context -> {
                 assertThat(context).hasBean("userObjectMapper");
