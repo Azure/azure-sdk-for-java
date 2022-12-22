@@ -70,6 +70,17 @@ public final class CosmosDiagnostics {
     }
 
     /**
+     * Returns a correlationId identifying the operation this diagnostics record was captured for -
+     * for example the transactionId
+     * @return Returns a correlationId identifying the operation this diagnostics record was captured for -
+     * for example the transactionId
+     */
+    public String getCorrelationId() {
+        // TODO implement
+        return null;
+    }
+
+    /**
      * Retrieves Response Diagnostic String
      *
      * @return Response Diagnostic String

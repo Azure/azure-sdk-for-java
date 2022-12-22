@@ -452,4 +452,12 @@ public class RequestOptions {
     public void setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
         this.thresholdForDiagnosticsOnTracer = thresholdForDiagnosticsOnTracer;
     }
+
+    public void addSuppressedRegion(String region) {
+        // TODO implement
+        // any of the suppressed regions would be skipped in routing
+        // this allows caller to make sure a retry doesn't also start int he local region but
+        // instead in one of the remote regions
+    }
+
 }

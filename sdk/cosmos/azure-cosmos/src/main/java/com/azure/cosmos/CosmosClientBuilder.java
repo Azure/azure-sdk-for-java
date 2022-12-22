@@ -14,12 +14,15 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.models.CosmosPermissionProperties;
+import com.azure.cosmos.models.CosmosRetriableWritePolicyConfig;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -121,6 +124,10 @@ public class CosmosClientBuilder implements
     private CosmosClientTelemetryConfig clientTelemetryConfig;
     private ApiType apiType = null;
     private Boolean clientTelemetryEnabledOverride = null;
+    private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig =
+        CosmosEndToEndOperationLatencyPolicyConfig.DISABLED;
+    private CosmosRetriableWritePolicyConfig retriableWritePolicyConfig = CosmosRetriableWritePolicyConfig.DISABLED;
+    private List<String>  eagerConnectionManagementRegions;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -820,6 +827,69 @@ public class CosmosClientBuilder implements
 
         this.clientTelemetryConfig = telemetryConfig;
 
+        return this;
+    }
+
+    public CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicy() {
+        return this.endToEndOperationLatencyPolicyConfig;
+    }
+
+    public CosmosClientBuilder endToEndOperationLatencyPolicy() {
+        return this.endToEndOperationLatencyPolicy(CosmosEndToEndOperationLatencyPolicyConfig.DEFAULT);
+    }
+
+    public CosmosClientBuilder endToEndOperationLatencyPolicy(CosmosEndToEndOperationLatencyPolicyConfig policyConfig) {
+        ifThrowIllegalArgException(policyConfig == null, "parameter 'policyConfig' must not be null.");
+
+        this.endToEndOperationLatencyPolicyConfig = policyConfig;
+
+        return this;
+    }
+
+    public CosmosClientBuilder retriableWritePolicy() {
+        return this.retriableWritePolicy(CosmosRetriableWritePolicyConfig.DEFAULT);
+    }
+
+    public CosmosClientBuilder retriableWritePolicy(CosmosRetriableWritePolicyConfig policyConfig) {
+        ifThrowIllegalArgException(policyConfig == null, "parameter 'policyConfig' must not be null.");
+
+        this.retriableWritePolicyConfig = policyConfig;
+
+        return this;
+    }
+
+    // TODO - openConnectionsAndInitCaches is currently only available
+    // as API on teh CosmosContainer or CosmosAsyncContainer - given the ask for being
+    // able to inject default behavior on CosmosClientBuilder level
+    // we probably need this API here as well. during CosmosClientBuilder.build()/buildAsync() this
+    // would call openConnectionsAndInitCaches one ach of the containers listed in
+    // openConnectionsAndInitCaches synchronously - by blocking on the Mono
+    // this means when a container has a high number of Partitions it could delay building a client very significantly
+    // definitely not ideal - alternative could be to just trigger openConnectionsAndInitCaches on containers without
+    // blocking on the Mono - I don't like that because App-developers might neither understand why building
+    // as CosmosClient could start a bunch of async I/O operations nor understand the fact that latency would
+    // immediately be lower because warm-up is async.
+    // Needs more discussion - we could also provide a new async method to build a CosmosClient/CosmosAsyncClient
+    // and only allow building clients when this config is set via the async methods.
+    public CosmosClientBuilder openConnectionsAndInitCaches(
+        List<Pair<String, String>> containers) {
+
+        return this.openConnectionsAndInitCaches(containers, null);
+    }
+
+    public CosmosClientBuilder openConnectionsAndInitCaches(
+        List<Pair<String, String>> containers,
+        List<String> regions) {
+
+        // TODO - more decisions neeeded
+        // regions == null needs to be discussed
+        // i guess decision would be little more complicated
+        // if endToEndLatencyPolicy is defined, use up to first two preferredRegions
+        // if disabled just use first preferred region
+        // if no preferred region defined my preference would be to throw - but we might want to come-up with some
+        // workaround
+
+        this.eagerConnectionManagementRegions = regions;
         return this;
     }
 

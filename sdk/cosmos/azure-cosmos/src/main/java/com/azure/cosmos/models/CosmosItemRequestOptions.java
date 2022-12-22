@@ -3,6 +3,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -32,6 +33,9 @@ public class CosmosItemRequestOptions {
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
     private Duration thresholdForDiagnosticsOnTracer;
     private Map<String, String> customOptions;
+    private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
+    private CosmosRetriableWritePolicyConfig retriableWritePolicyConfig;
+    private CosmosDiagnosticsHandler diagnosticsHandler;
 
     /**
      * copy constructor
@@ -366,6 +370,45 @@ public class CosmosItemRequestOptions {
      */
     public CosmosItemRequestOptions setThresholdForDiagnosticsOnTracer(Duration thresholdForDiagnosticsOnTracer) {
         this.thresholdForDiagnosticsOnTracer = thresholdForDiagnosticsOnTracer;
+        return this;
+    }
+
+    // TODO comments
+    // null - use default config from CosmosClientBuilder
+    public CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig() {
+        return this.endToEndOperationLatencyPolicyConfig;
+    }
+
+    public CosmosItemRequestOptions setEndToEndOperationLatencyPolicyConfig(
+        CosmosEndToEndOperationLatencyPolicyConfig config) {
+        // TODO - throw for null
+        this.endToEndOperationLatencyPolicyConfig = config;
+        return this;
+    }
+
+    // TODO comments
+    // null - use default config from CosmosClientBuilder
+    public CosmosRetriableWritePolicyConfig getRetriableWritePolicyConfig() {
+        return this.retriableWritePolicyConfig;
+    }
+
+    public CosmosItemRequestOptions setRetriableWritePolicyConfig(
+        CosmosRetriableWritePolicyConfig config) {
+        // TODO - throw for null
+        this.retriableWritePolicyConfig = config;
+        return this;
+    }
+
+    // TODO comments
+    // null - use default handler from CosmosClientBuilder
+    public CosmosDiagnosticsHandler getCosmosDiagnosticsHandler() {
+        return this.diagnosticsHandler;
+    }
+
+    public CosmosItemRequestOptions setCosmosDiagnosticsHandler(
+        CosmosDiagnosticsHandler handler) {
+        // TODO - throw for null
+        this.diagnosticsHandler = handler;
         return this;
     }
 

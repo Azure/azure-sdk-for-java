@@ -7,6 +7,7 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.MetricsOptions;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Strings;
@@ -59,6 +60,7 @@ public final class CosmosClientTelemetryConfig {
     private EnumSet<TagName> metricTagNames = DEFAULT_TAGS;
     private MeterRegistry clientMetricRegistry = null;
     private boolean isClientMetricsEnabled = false;
+    private CosmosDiagnosticsHandler diagnosticsHandler = null;
 
     CosmosClientTelemetryConfig(CosmosClientTelemetryConfig toBeCopied, boolean effectiveIsClientTelemetryEnabled) {
         this.httpNetworkRequestTimeout = toBeCopied.httpNetworkRequestTimeout;
@@ -262,6 +264,21 @@ public final class CosmosClientTelemetryConfig {
             }
         }
 
+        return null;
+    }
+
+    public CosmosClientTelemetryConfig enableDiagnosticLogs() {
+        // TODO implement
+        return null;
+    }
+
+    public CosmosClientTelemetryConfig enableDiagnosticLogs(CosmosDiagnosticsLoggerConfig loggerConfig) {
+        // TODO implement
+        return null;
+    }
+
+    public CosmosClientTelemetryConfig diagnosticsHandler(CosmosDiagnosticsHandler handler) {
+        // TODO implement
         return null;
     }
 

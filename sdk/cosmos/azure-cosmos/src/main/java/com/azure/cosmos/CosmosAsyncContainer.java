@@ -17,6 +17,7 @@ import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.Utils;
@@ -40,6 +41,7 @@ import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -58,9 +60,12 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -951,8 +956,103 @@ public class CosmosAsyncContainer {
 
         ModelBridgeInternal.setPartitionKey(options, partitionKey);
         RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
-        return withContext(context -> readItemInternal(itemId, requestOptions, itemType, context));
+
+        CosmosEndToEndOperationLatencyPolicyConfig effectiveEndToEndLatencyPolicyConfig =
+            options.getEndToEndOperationLatencyPolicyConfig();
+
+        if (effectiveEndToEndLatencyPolicyConfig == null) {
+            effectiveEndToEndLatencyPolicyConfig = this.database.getClient().getEndToEndOperationLatencyPolicyConfig();
+        }
+
+        if (!effectiveEndToEndLatencyPolicyConfig.isEnabled()) {
+            return withContext(context -> readItemInternal(itemId, requestOptions, itemType, context));
+        } else {
+            return readItemWithEndToEndLatencyPolicy(
+                itemId, partitionKey, requestOptions, effectiveEndToEndLatencyPolicyConfig, itemType);
+        }
     }
+
+    private <T> Mono<CosmosItemResponse<T>> readItemWithEndToEndLatencyPolicy(
+        String itemId,
+        PartitionKey partitionKey,
+        RequestOptions requestOptions,
+        CosmosEndToEndOperationLatencyPolicyConfig effectiveEndToEndLatencyPolicyConfig,
+        Class<T> itemType) {
+
+        // Execute the readItem with transformation to return the json payload
+        // asynchronously with a "soft timeout" - meaning when the "soft timeout"
+        // elapses a default/fallback response is returned but the original async call is not
+        // cancelled, but allowed to complete. This makes it possible to still emit diagnostics
+        // or process the eventually successful call
+        AtomicBoolean timeoutElapsed = new AtomicBoolean(false);
+        Mono<CosmosItemResponse<T>> source = withContext(context -> readItemInternal(itemId, requestOptions, itemType, context));
+
+        // TODO - naive approach of taking half teh allowed latency for initial attempt and other half
+        //  for attempt in remote region
+        // This will need to be tuned automatically instead and more sophisticated
+
+        Duration currentAttemptTimeout = effectiveEndToEndLatencyPolicyConfig
+            .getEndToEndOperationTimeout()
+            .dividedBy(2);
+
+        return Mono
+            .<CosmosItemResponse<T>>create(sink -> {
+                withContext(context -> readItemInternal(itemId, requestOptions, itemType, context))
+                    .subscribeOn(Schedulers.boundedElastic())
+                    .subscribe(
+                        response -> {
+                            if (timeoutElapsed.get()) {
+                                logger.warn(
+                                    "COMPLETED SUCCESSFULLY after timeout elapsed. Diagnostics: {}",
+                                    response.getDiagnostics().toString());
+
+                                // TODO -  capture diagnostics and keep track of statistics from diagnostics context here
+                                // did any retries happen locally
+                                // if so what were the failure conditions etc. - whatever helps tuning the dynamic
+                                // logic when to trigger retries and/or speculative processing
+                            } else {
+                                logger.info("COMPLETED SUCCESSFULLY");
+                            }
+
+                            sink.success(response);
+                        },
+                        error -> {
+                            final Throwable unwrappedException = Exceptions.unwrap(error);
+                            if (unwrappedException instanceof CosmosException) {
+                                final CosmosException cosmosException = (CosmosException) unwrappedException;
+
+                                logger.error(
+                                    "COMPLETED WITH COSMOS FAILURE. Diagnostics: {}",
+                                    cosmosException.getDiagnostics() != null ?
+                                        cosmosException.getDiagnostics().toString() : "n/a",
+                                    cosmosException);
+                            } else {
+                                logger.error("COMPLETED WITH GENERIC FAILURE", error);
+                            }
+
+                            if (timeoutElapsed.get()) {
+                                // retry started already - don't emit unobserved error
+                                sink.success();
+                            } else {
+                                sink.error(error);
+                            }
+                        }
+                    );
+            })
+            .timeout(currentAttemptTimeout)
+            .onErrorResume(error -> {
+                // TODO signal CancellationToken for initial attempt
+                timeoutElapsed.set(true);
+
+                // TODO capture this dynamically form the context of teh first attempt - like suppress all regions
+                //  which were attempted before
+                // this requires several changes (adding/wiring-up CancellationToken - identifying which regions to skip
+                // capturing Diagnostics/Telemetry/Metrics across attempts etc. That is the area where the most changes
+                // in internal implementation package are necessary
+                requestOptions.addSuppressedRegion("East US");
+                return withContext(context -> readItemInternal(itemId, requestOptions, itemType, context));
+            });
+     }
 
     /**
      * Reads many documents.

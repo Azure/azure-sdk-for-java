@@ -27,6 +27,7 @@ import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -86,6 +87,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final boolean clientMetricsEnabled;
     private final boolean isSendClientTelemetryToServiceEnabled;
     private final MeterRegistry clientMetricRegistrySnapshot;
+    private final CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
 
     static {
         ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
@@ -134,6 +136,7 @@ public final class CosmosAsyncClient implements Closeable {
             .getClientCorrelationId(effectiveTelemetryConfig);
         this.metricTagNames = telemetryConfigAccessor
             .getMetricTagNames(effectiveTelemetryConfig);
+        this.endToEndOperationLatencyPolicyConfig = builder.getEndToEndOperationLatencyPolicy();
 
         List<Permission> permissionList = new ArrayList<>();
         if (this.permissions != null) {
@@ -305,6 +308,10 @@ public final class CosmosAsyncClient implements Closeable {
      */
     CosmosClientTelemetryConfig getClientTelemetryConfig() {
         return this.clientTelemetryConfig;
+    }
+
+    CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig() {
+        return this.endToEndOperationLatencyPolicyConfig;
     }
 
     /**
