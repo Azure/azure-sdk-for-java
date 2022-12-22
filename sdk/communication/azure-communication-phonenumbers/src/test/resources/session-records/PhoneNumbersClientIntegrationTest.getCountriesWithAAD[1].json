@@ -4,20 +4,20 @@
     "Uri" : "https://REDACTED.communication.azure.com/availablePhoneNumbers/countries?api-version=2022-12-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "60dfcee8-beb1-4907-84cd-6584f0107ea2"
+      "x-ms-client-request-id" : "1b33df74-9b71-400d-a0da-bf2f37deb94a"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
       "Strict-Transport-Security" : "max-age=2592000",
       "api-supported-versions" : "2022-12-01",
-      "X-Processing-Time" : "3101ms",
-      "MS-CV" : "7CL5goQt70OqQlOsrIT7Ew.0",
+      "X-Processing-Time" : "2793ms",
+      "MS-CV" : "GFqfU3CReE283tmlX/DTgw.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0ypCjYwAAAABJeoFqx77AQ4OV771Yn3m6TUVYMzFFREdFMDQxNwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Azure-Ref" : "0daSkYwAAAAAwLGiiMQjnQoHtjdnVyEghTUVYMzFFREdFMDMyMgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "200",
       "Body" : "{\"countries\":[{\"localizedName\":\"Canada\",\"countryCode\":\"CA\"},{\"localizedName\":\"Denmark\",\"countryCode\":\"DK\"},{\"localizedName\":\"Ireland\",\"countryCode\":\"IE\"},{\"localizedName\":\"Italy\",\"countryCode\":\"IT\"},{\"localizedName\":\"Puerto Rico\",\"countryCode\":\"PR\"},{\"localizedName\":\"Sweden\",\"countryCode\":\"SE\"},{\"localizedName\":\"United Kingdom\",\"countryCode\":\"GB\"},{\"localizedName\":\"United States\",\"countryCode\":\"US\"}],\"nextLink\":null}",
-      "Date" : "Wed, 21 Dec 2022 23:03:42 GMT",
+      "Date" : "Thu, 22 Dec 2022 18:39:52 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

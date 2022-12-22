@@ -23,6 +23,7 @@ import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -45,6 +46,8 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
 
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN = 
         Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()), Pattern.CASE_INSENSITIVE);
+
+    private static final String URI_PHONE_NUMBERS_REPLACER_REGEX = "/phoneNumbers/([\\+]?[0-9]{11,15})";
 
     protected PhoneNumbersClientBuilder getClientBuilder(HttpClient httpClient) {
         CommunicationConnectionString communicationConnectionString = new CommunicationConnectionString(CONNECTION_STRING);
@@ -197,5 +200,38 @@ public class PhoneNumbersIntegrationTestBase extends TestBase {
         }
 
         return phoneNumber;
+    }
+
+    @Override
+    protected void afterTest() {
+        super.afterTest();
+        if (getTestMode() == TestMode.RECORD) {
+            List<NetworkCallRecord> networkCallRecords = collectNetworkCallsWithPhoneNumberUri();
+            sanitizePhoneNumerInUri(networkCallRecords);
+        }
+    }
+
+    private List<NetworkCallRecord> collectNetworkCallsWithPhoneNumberUri() {
+        List<NetworkCallRecord> networkCallRecords = new ArrayList<>();
+        NetworkCallRecord networkCallRecord = interceptorManager.getRecordedData().findFirstAndRemoveNetworkCall(record -> {
+            return Pattern.compile(URI_PHONE_NUMBERS_REPLACER_REGEX).matcher(record.getUri()).find();
+        });
+        do {
+            if (networkCallRecord != null) {
+                networkCallRecords.add(networkCallRecord);
+            }
+            networkCallRecord = interceptorManager.getRecordedData().findFirstAndRemoveNetworkCall(record -> {
+                return Pattern.compile(URI_PHONE_NUMBERS_REPLACER_REGEX).matcher(record.getUri()).find();
+            });
+        } while (networkCallRecord != null);
+        return networkCallRecords;
+    }
+
+    private void sanitizePhoneNumerInUri(List<NetworkCallRecord> networkCallRecords) {
+        for (NetworkCallRecord networkCallRecord: networkCallRecords) {
+            String sanitizedUri = networkCallRecord.getUri().replaceAll(URI_PHONE_NUMBERS_REPLACER_REGEX, "/phoneNumbers/+REDACTED");
+            networkCallRecord.setUri(sanitizedUri);
+            interceptorManager.getRecordedData().addNetworkCall(networkCallRecord);
+        }
     }
 }
