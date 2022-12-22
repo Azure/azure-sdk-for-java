@@ -24,7 +24,7 @@ import java.net.URL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StorageSharedKeyCredentialPolicyTest {
-    private static final HttpResponse mockResponse = new MockHttpResponse(null, 200, new HttpHeaders());
+    private static final HttpResponse MOCK_HTTP_RESPONSE = new MockHttpResponse(null, 200, new HttpHeaders());
     private static final String AUTH_VALUE = "SharedKey testAccountName:Y9lrhsriyJJkgV0NIdadqakc8++4nW0mwzg5Mrbq9Iw=";
 
     @SyncAsyncTest
@@ -34,14 +34,14 @@ public class StorageSharedKeyCredentialPolicyTest {
             .httpClient(new NoOpHttpClient() {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
-                    return Mono.just(mockResponse);
+                    return Mono.just(MOCK_HTTP_RESPONSE);
                 }
             })
             .policies(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential),
                 (context, next) -> {
-                assertEquals(AUTH_VALUE, context.getHttpRequest().getHeaders().get(HttpHeaderName.AUTHORIZATION).getValue());
-                return next.process();
-            })
+                    assertEquals(AUTH_VALUE, context.getHttpRequest().getHeaders().get(HttpHeaderName.AUTHORIZATION).getValue());
+                    return next.process();
+                })
             .build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost/"));
