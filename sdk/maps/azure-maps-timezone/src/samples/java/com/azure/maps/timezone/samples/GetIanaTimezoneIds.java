@@ -4,8 +4,6 @@
 package com.azure.maps.timezone.samples;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.identity.DefaultAzureCredential;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.maps.timezone.TimeZoneAsyncClient;
 import com.azure.maps.timezone.TimeZoneClient;
 import com.azure.maps.timezone.TimeZoneClientBuilder;
