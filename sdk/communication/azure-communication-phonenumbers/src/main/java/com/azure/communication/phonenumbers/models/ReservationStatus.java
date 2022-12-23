@@ -9,6 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for ReservationStatus. */
+/**
+ * @deprecated
+ */
 @Deprecated
 public final class ReservationStatus extends ExpandableStringEnum<ReservationStatus> {
     /** Static value Pending for ReservationStatus. */

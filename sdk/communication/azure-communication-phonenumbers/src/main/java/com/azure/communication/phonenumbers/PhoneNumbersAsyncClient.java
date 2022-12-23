@@ -225,11 +225,11 @@ public final class PhoneNumbersAsyncClient {
      * <!-- end
      * com.azure.communication.phonenumbers.asyncclient.beginSearchAvailable -->
      *
-     * @param countryCode     The ISO 3166-2 country code.
+     * @param countryCode The ISO 3166-2 country code.
      * @param phoneNumberType {@link PhoneNumberType} The phone number type.
-     * @param assignmentType  {@link PhoneNumberAssignmentType} The phone number
+     * @param assignmentType {@link PhoneNumberAssignmentType} The phone number
      *                        assignment type.
-     * @param capabilities    {@link PhoneNumberCapabilities} The phone number
+     * @param capabilities {@link PhoneNumberCapabilities} The phone number
      *                        capabilities.
      * @return A {@link PollerFlux} object with the reservation result.
      * @throws NullPointerException if {@code countryCode} or {@code searchRequest}
@@ -277,17 +277,17 @@ public final class PhoneNumbersAsyncClient {
      * com.azure.communication.phonenumbers.asyncclient.beginSearchAvailableWithOptions
      * -->
      *
-     * @param countryCode     The ISO 3166-2 country code.
+     * @param countryCode The ISO 3166-2 country code.
      * @param phoneNumberType {@link PhoneNumberType} The phone number type.
-     * @param assignmentType  {@link PhoneNumberAssignmentType} The phone number
+     * @param assignmentType {@link PhoneNumberAssignmentType} The phone number
      *                        assignment type.
-     * @param capabilities    {@link PhoneNumberCapabilities} The phone number
+     * @param capabilities {@link PhoneNumberCapabilities} The phone number
      *                        capabilities.
-     * @param searchOptions   The phone number search options.
+     * @param searchOptions The phone number search options.
      * @return A {@link PollerFlux} object with the reservation result.
      * @throws NullPointerException if {@code countryCode} or {@code searchRequest}
      *                              is null.
-     * @throws RuntimeException     if search operation fails.
+     * @throws RuntimeException if search operation fails.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
@@ -418,7 +418,7 @@ public final class PhoneNumbersAsyncClient {
      * @param searchId ID of the search.
      * @return A {@link PollerFlux} object.
      * @throws NullPointerException if {@code searchId} is null.
-     * @throws RuntimeException     if purchase operation fails.
+     * @throws RuntimeException if purchase operation fails.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId) {
@@ -486,7 +486,7 @@ public final class PhoneNumbersAsyncClient {
      *                    as %2B.
      * @return A {@link PollerFlux} object.
      * @throws NullPointerException if {@code phoneNumber} is null.
-     * @throws RuntimeException     if release operation fails.
+     * @throws RuntimeException if release operation fails.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PhoneNumberOperation, ReleasePhoneNumberResult> beginReleasePhoneNumber(String phoneNumber) {
@@ -555,14 +555,14 @@ public final class PhoneNumbersAsyncClient {
      * <!-- end
      * com.azure.communication.phonenumbers.asyncclient.beginUpdateCapabilities -->
      *
-     * @param phoneNumber  The phone number id in E.164 format. The leading plus can
+     * @param phoneNumber The phone number id in E.164 format. The leading plus can
      *                     be either + or encoded
      *                     as %2B.
      * @param capabilities Update capabilities of a purchased phone number.
      * @return A {@link PollerFlux} object.
      * @throws NullPointerException if {@code phoneNumber} or {@code capabilities}
      *                              is null.
-     * @throws RuntimeException     if update capabilities operation fails.
+     * @throws RuntimeException if update capabilities operation fails.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PhoneNumberOperation, PurchasedPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber,
@@ -632,7 +632,7 @@ public final class PhoneNumbersAsyncClient {
     /**
      * Gets the list of the available localities. I.e. cities, towns.
      *
-     * @param countryCode            The ISO 3166-2 country code.
+     * @param countryCode The ISO 3166-2 country code.
      * @param administrativeDivision An optional parameter. The name or short name
      *                               of the state/province within which to list the
      *                               localities.
@@ -651,7 +651,7 @@ public final class PhoneNumbersAsyncClient {
     /**
      * Gets the list of the available Toll-Free area codes for a given country.
      *
-     * @param countryCode    The ISO 3166-2 country code.
+     * @param countryCode The ISO 3166-2 country code.
      * @param assignmentType {@link PhoneNumberAssignmentType} The phone number
      *                       assignment type.
      * @return A {@link PagedFlux} of {@link PhoneNumberAreaCode} instances
@@ -672,10 +672,10 @@ public final class PhoneNumbersAsyncClient {
      * Gets the list of the available Geographic area codes for a given country and
      * locality.
      *
-     * @param countryCode            The ISO 3166-2 country code.
-     * @param assignmentType         {@link PhoneNumberAssignmentType} The phone
+     * @param countryCode The ISO 3166-2 country code.
+     * @param assignmentType {@link PhoneNumberAssignmentType} The phone
      *                               number assignment type.
-     * @param locality               The name of the locality (e.g. city or town
+     * @param locality The name of the locality (e.g. city or town
      *                               name) in which to fetch area codes.
      * @param administrativeDivision An optional parameter. The name of the
      *                               administrative division (e.g. state or
@@ -697,10 +697,10 @@ public final class PhoneNumbersAsyncClient {
     /**
      * Gets the list of the available phone number offerings for the given country.
      *
-     * @param countryCode     The ISO 3166-2 country code.
+     * @param countryCode The ISO 3166-2 country code.
      * @param phoneNumberType {@link PhoneNumberType} Optional parameter. Restrict
      *                        the offerings to the phone number type.
-     * @param assignmentType  {@link PhoneNumberAssignmentType} Optional parameter.
+     * @param assignmentType {@link PhoneNumberAssignmentType} Optional parameter.
      *                        Restrict the offerings to the assignment type.
      * @return A {@link PagedFlux} of {@link PurchasedPhoneNumber} instances
      *         representing purchased telephone numbers.

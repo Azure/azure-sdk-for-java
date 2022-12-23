@@ -123,7 +123,7 @@ public final class PhoneNumbersClient {
      * @param phoneNumber The phone number id in E.164 format. The leading plus can
      *                    be either + or encoded
      *                    as %2B.
-     * @param context     A {@link Context} representing the request context.
+     * @param context A {@link Context} representing the request context.
      * @return {@link PurchasedPhoneNumber} representing the purchased telephone
      *         number.
      * @throws NullPointerException if {@code phoneNumber} is null.
@@ -227,11 +227,11 @@ public final class PhoneNumbersClient {
      * 
      * <!-- end com.azure.communication.phonenumbers.client.beginSearchAvailable -->
      *
-     * @param countryCode     The ISO 3166-2 country code.
+     * @param countryCode The ISO 3166-2 country code.
      * @param phoneNumberType {@link PhoneNumberType} The phone number type.
-     * @param assignmentType  {@link PhoneNumberAssignmentType} The phone number
+     * @param assignmentType {@link PhoneNumberAssignmentType} The phone number
      *                        assignment type.
-     * @param capabilities    {@link PhoneNumberCapabilities} The phone number
+     * @param capabilities {@link PhoneNumberCapabilities} The phone number
      *                        capabilities.
      * @return A {@link SyncPoller} object with the reservation result.
      * @throws NullPointerException if {@code countryCode} or {@code searchRequest}
@@ -285,14 +285,14 @@ public final class PhoneNumbersClient {
      * com.azure.communication.phonenumbers.client.beginSearchAvailableWithOptions
      * -->
      *
-     * @param countryCode     The ISO 3166-2 country code.
+     * @param countryCode The ISO 3166-2 country code.
      * @param phoneNumberType {@link PhoneNumberType} The phone number type.
-     * @param assignmentType  {@link PhoneNumberAssignmentType} The phone number
+     * @param assignmentType {@link PhoneNumberAssignmentType} The phone number
      *                        assignment type.
-     * @param capabilities    {@link PhoneNumberCapabilities} The phone number
+     * @param capabilities {@link PhoneNumberCapabilities} The phone number
      *                        capabilities.
-     * @param searchOptions   The phone number search options.
-     * @param context         A {@link Context} representing the request context.
+     * @param searchOptions The phone number search options.
+     * @param context A {@link Context} representing the request context.
      * @return A {@link SyncPoller} object with the reservation result.
      * @throws NullPointerException if {@code countryCode} or {@code searchRequest}
      *                              is null.
@@ -361,7 +361,7 @@ public final class PhoneNumbersClient {
      * -->
      *
      * @param searchId ID of the search
-     * @param context  A {@link Context} representing the request context.
+     * @param context A {@link Context} representing the request context.
      * @return A {@link SyncPoller} object with PurchasePhoneNumbersResult.
      * @throws NullPointerException if {@code searchId} is null.
      */
@@ -429,7 +429,7 @@ public final class PhoneNumbersClient {
      * @param phoneNumber The phone number id in E.164 format. The leading plus can
      *                    be either + or encoded
      *                    as %2B.
-     * @param context     A {@link Context} representing the request context.
+     * @param context A {@link Context} representing the request context.
      * @return A {@link SyncPoller} object with ReleasePhoneNumberResult.
      * @throws NullPointerException if {@code phoneNumber} is null.
      */
@@ -473,7 +473,7 @@ public final class PhoneNumbersClient {
      * <!-- end com.azure.communication.phonenumbers.client.beginUpdateCapabilities
      * -->
      *
-     * @param phoneNumber  The phone number id in E.164 format. The leading plus can
+     * @param phoneNumber The phone number id in E.164 format. The leading plus can
      *                     be either + or encoded
      *                     as %2B.
      * @param capabilities Update capabilities of a purchased phone number.
@@ -523,11 +523,11 @@ public final class PhoneNumbersClient {
      * com.azure.communication.phonenumbers.client.beginUpdateCapabilitiesWithContext
      * -->
      *
-     * @param phoneNumber  The phone number id in E.164 format. The leading plus can
+     * @param phoneNumber The phone number id in E.164 format. The leading plus can
      *                     be either + or encoded
      *                     as %2B.
      * @param capabilities Update capabilities of a purchased phone number.
-     * @param context      A {@link Context} representing the request context.
+     * @param context A {@link Context} representing the request context.
      * @return A {@link SyncPoller} object with purchased phone number.
      * @throws NullPointerException if {@code phoneNumber} or {@code capabilities}
      *                              is null.
@@ -565,7 +565,7 @@ public final class PhoneNumbersClient {
     /**
      * Gets the list of the available localities. I.e. cities, towns.
      *
-     * @param countryCode            The ISO 3166-2 country code.
+     * @param countryCode The ISO 3166-2 country code.
      * @param administrativeDivision An optional parameter. The name or short name
      *                               of the state/province within which to list the
      *                               localities.
@@ -581,11 +581,11 @@ public final class PhoneNumbersClient {
     /**
      * Gets the list of the available localities. I.e. cities, towns.
      *
-     * @param countryCode            The ISO 3166-2 country code.
+     * @param countryCode The ISO 3166-2 country code.
      * @param administrativeDivision An optional parameter. The name or short name
      *                               of the state/province within which to list the
      *                               localities.
-     * @param context                A {@link Context} representing the request
+     * @param context A {@link Context} representing the request
      *                               context.
      * @return A {@link PagedIterable} of {@link PhoneNumberLocality} instances
      *         representing available localities with phone numbers.
@@ -613,7 +613,7 @@ public final class PhoneNumbersClient {
      * Gets the list of the available Toll-Free area codes for a given country.
      *
      * @param countryCode The ISO 3166-2 country code.
-     * @param context     A {@link Context} representing the request context.
+     * @param context A {@link Context} representing the request context.
      * @return A {@link PagedIterable} of {@link PhoneNumberAreaCode} instances
      *         representing available area codes.
      */
@@ -627,10 +627,10 @@ public final class PhoneNumbersClient {
      * Gets the list of the available Geographic area codes for a given country and
      * locality.
      *
-     * @param countryCode            The ISO 3166-2 country code.
-     * @param assignmentType         {@link PhoneNumberAssignmentType} The phone
+     * @param countryCode The ISO 3166-2 country code.
+     * @param assignmentType {@link PhoneNumberAssignmentType} The phone
      *                               number assignment type.
-     * @param locality               The name of the locality (e.g. city or town
+     * @param locality The name of the locality (e.g. city or town
      *                               name) in which to fetch area codes.
      * @param administrativeDivision An optional parameter. The name of the
      *                               administrative division (e.g. state or
@@ -649,15 +649,15 @@ public final class PhoneNumbersClient {
      * Gets the list of the available Geographic area codes for a given country and
      * locality.
      *
-     * @param countryCode            The ISO 3166-2 country code.
-     * @param assignmentType         {@link PhoneNumberAssignmentType} The phone
+     * @param countryCode The ISO 3166-2 country code.
+     * @param assignmentType {@link PhoneNumberAssignmentType} The phone
      *                               number assignment type.
-     * @param locality               The name of the locality (e.g. city or town
+     * @param locality The name of the locality (e.g. city or town
      *                               name) in which to fetch area codes.
      * @param administrativeDivision An optional parameter. The name of the
      *                               administrative division (e.g. state or
      *                               province) of the locality.
-     * @param context                A {@link Context} representing the request
+     * @param context A {@link Context} representing the request
      *                               context.
      * @return A {@link PagedIterable} of {@link PhoneNumberAreaCode} instances
      *         representing purchased telephone numbers.
@@ -673,10 +673,10 @@ public final class PhoneNumbersClient {
     /**
      * Gets the list of the available phone number offerings for the given country.
      *
-     * @param countryCode     The ISO 3166-2 country code.
+     * @param countryCode The ISO 3166-2 country code.
      * @param phoneNumberType {@link PhoneNumberType} Optional parameter. Restrict
      *                        the offerings to the phone number type.
-     * @param assignmentType  {@link PhoneNumberAssignmentType} Optional parameter.
+     * @param assignmentType {@link PhoneNumberAssignmentType} Optional parameter.
      *                        Restrict the offerings to the assignment type.
      * @return A {@link PagedIterable} of {@link PurchasedPhoneNumber} instances
      *         representing purchased telephone numbers.
@@ -690,12 +690,12 @@ public final class PhoneNumbersClient {
     /**
      * Gets the list of the available phone number offerings for the given country.
      *
-     * @param countryCode     The ISO 3166-2 country code.
+     * @param countryCode The ISO 3166-2 country code.
      * @param phoneNumberType {@link PhoneNumberType} Optional parameter. Restrict
      *                        the offerings to the phone number type.
-     * @param assignmentType  {@link PhoneNumberAssignmentType} Optional parameter.
+     * @param assignmentType {@link PhoneNumberAssignmentType} Optional parameter.
      *                        Restrict the offerings to the assignment type.
-     * @param context         A {@link Context} representing the request context.
+     * @param context A {@link Context} representing the request context.
      * @return A {@link PagedIterable} of {@link PurchasedPhoneNumber} instances
      *         representing purchased telephone numbers.
      */
