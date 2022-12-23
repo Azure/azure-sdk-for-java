@@ -117,7 +117,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     }
 
     private void addUrlRegexSanitizer(String regexValue) {
-        String requestBody = String.format("{\"value\":\"REDACTED\",\"regex\":\"%s\"}", regexValue);
+        String requestBody = String.format("{\"value\":\"https://REDACTED.cognitiveservices.azure.com\",\"regex\":\"%s\"}", regexValue);
         HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/AddSanitizer", TestProxyUtils.getProxyUrl()))
                 .setBody(requestBody);
         request.setHeader("x-abstraction-identifier", "UriRegexSanitizer");

@@ -44,6 +44,9 @@ public class TestProxyPlaybackClient implements HttpClient {
             .setBody(String.format("{\"x-recording-file\": \"%s\"}", recordFile));
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             xRecordingId = response.getHeaderValue("x-recording-id");
+
+            addUrlRegexSanitizer("^(?:https?:\\\\/\\\\/)?(?:[^@\\\\/\\\\n]+@)?(?:www\\\\.)?([^:\\\\/?\\\\n]+)");
+            addBodySanitizer("$..modelId");
             String body = response.getBodyAsString().block();
             // The test proxy stores variables in a map with no guaranteed order.
             // The Java implementation of recording did not use a map, but relied on the order
@@ -80,4 +83,24 @@ public class TestProxyPlaybackClient implements HttpClient {
         TestProxyUtils.changeHeaders(request, xRecordingId, "playback");
         return client.send(request);
     }
+
+    private void addUrlRegexSanitizer(String regexValue) {
+        String requestBody = String.format("{\"value\":\"https://REDACTED.cognitiveservices.azure.com\",\"regex\":\"%s\"}", regexValue);
+        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/AddSanitizer", TestProxyUtils.getProxyUrl()))
+            .setBody(requestBody);
+        request.setHeader("x-abstraction-identifier", "UriRegexSanitizer");
+        request.setHeader("x-recording-id", xRecordingId);
+        client.sendSync(request, Context.NONE);
+    }
+
+    private void addBodySanitizer(String regexValue) {
+        String requestBody = String.format("{\"value\":\"REDACTED\",\"jsonPath\":\"%s\"}", regexValue);
+
+        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/AddSanitizer", TestProxyUtils.getProxyUrl()))
+            .setBody(requestBody);
+        request.setHeader("x-abstraction-identifier", "BodyKeySanitizer");
+        request.setHeader("x-recording-id", xRecordingId);
+        client.sendSync(request, Context.NONE);
+    }
+
 }
