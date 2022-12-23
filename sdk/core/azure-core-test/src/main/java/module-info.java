@@ -13,6 +13,7 @@ module com.azure.core.test {
     requires reactor.netty.http;
     requires reactor.netty.core;
     requires io.netty.codec.http;
+    requires org.apache.commons.compress;
 
     exports com.azure.core.test;
     exports com.azure.core.test.annotation;
