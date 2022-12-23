@@ -34,6 +34,7 @@ public class TestProxyManager {
 
         // This is necessary to stop the proxy when the debugger is stopped.
         Runtime.getRuntime().addShutdownHook(new Thread(this::stopProxy));
+        TestProxyDownloader.installTestProxy();
     }
 
     /**
@@ -44,13 +45,15 @@ public class TestProxyManager {
     public void startProxy() {
 
         try {
-            ProcessBuilder builder = new ProcessBuilder(Paths.get(PROXYPATH.toString(), getProxyProcessName()).toString(), "--storage-location", recordingPath.getPath())
+            ProcessBuilder builder = new ProcessBuilder(Paths.get(TestProxyDownloader.getProxyDirectory().toString(),
+                getProxyProcessName()).toString(), "--storage-location", recordingPath.getPath())
                 .inheritIO()
                 .redirectErrorStream(true)
-                .directory(PROXYPATH.toFile());
+                .directory(TestProxyDownloader.getProxyDirectory().toFile());
             proxy = builder.start();
             HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
-            HttpRequest request = new HttpRequest(HttpMethod.GET, String.format("%s/admin/isalive", TestProxyUtils.getProxyUrl()));
+            HttpRequest request = new HttpRequest(HttpMethod.GET,
+                String.format("%s/admin/isalive", TestProxyUtils.getProxyUrl()));
             for (int i = 0; i < 10; i++) {
                 HttpResponse response = null;
                 try {
@@ -83,7 +86,7 @@ public class TestProxyManager {
     private String getProxyProcessName() {
         String osName = System.getProperty("os.name").toLowerCase(Locale.ROOT);
         if (osName.contains("windows")) {
-            return "Azure.Sdk.Tools.TestProxy.exe";
+            return "test-proxy.exe";
         } else if (osName.contains("linux")) {
             throw new UnsupportedOperationException();
         } else {
