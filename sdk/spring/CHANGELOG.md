@@ -6,6 +6,9 @@ Upgrade Spring Boot dependencies version to 3.0.0 and Spring Cloud dependencies 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
+#### Features Added
+- Enhance the Event Hubs/Service Bus/Storage Queue message converter to support Spring autoconfiguration-pattern. [#30741](https://github.com/Azure/azure-sdk-for-java/issues/30741)
+
 #### Breaking Changes
  - Remove the `public` access modifier from bean methods [#32514](https://github.com/Azure/azure-sdk-for-java/pull/32514). 
  - Move Cloud Foundry classes to the implementation package [#32549](https://github.com/Azure/azure-sdk-for-java/pull/32549).
