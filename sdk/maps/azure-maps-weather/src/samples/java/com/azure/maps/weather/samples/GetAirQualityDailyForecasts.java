@@ -25,7 +25,7 @@ public class GetAirQualityDailyForecasts {
             .weatherClientId(System.getenv("MAPS_CLIENT_ID"))
             .buildClient();
 
-        // Get Air Quality Daily Forecasts -
+        // Get Air Quality Daily Forecasts - 
         // https://docs.microsoft.com/en-us/rest/api/maps/weather/get-air-quality-daily-forecasts
         // Get detailed information about the concentration of pollutants and overall status of forecasted daily air quality.
         // The service can provide forecasted daily air quality information for the upcoming 1 to 7 days.
