@@ -1,4 +1,6 @@
 // Databricks notebook source
+import org.apache.spark.sql.functions.{split}
+
 val cosmosEndpoint = "<cosmos-endpoint>"
 val cosmosMasterKey = "<cosmos-master-key>"
 val cosmosDatabaseName = "ContosoHospital"
@@ -17,7 +19,7 @@ val cosmosContainerName = "Patient"
 
 //-----filtering examples-with-schema-inference-disabled---------------------
 
-val TargetContainerName = "CopyContainer"
+val targetContainerName = "CopyContainer"
 val checkpointLocation = "/tmp/streaming_checkpoint"
 
 val changeFeedCfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
@@ -27,15 +29,34 @@ val changeFeedCfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
   "spark.cosmos.read.inferSchema.enabled" -> "false",   
   "spark.cosmos.changeFeed.startFrom" -> "Beginning",
   "spark.cosmos.changeFeed.mode" -> "Incremental",
-  "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "10000"
+  "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "100000"
+  //optional configuration for throughput control
+  // "spark.cosmos.throughputControl.enabled" -> "true",
+  // "spark.cosmos.throughputControl.name" -> "SourceContainerThroughputControl",
+  // "spark.cosmos.throughputControl.targetThroughputThreshold" -> "0.30", 
+  // "spark.cosmos.throughputControl.globalControl.database" -> "database-v4", 
+  // "spark.cosmos.throughputControl.globalControl.container" -> "ThroughputControl"
 )
 
 val writeCfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
   "spark.cosmos.accountKey" -> cosmosMasterKey,
   "spark.cosmos.database" -> cosmosDatabaseName,
-  "spark.cosmos.container" -> TargetContainerName,
+  "spark.cosmos.container" -> targetContainerName,
   "checkpointLocation" -> checkpointLocation
 )
+
+//optional configuration for creating throughput control metadata container
+
+// spark.conf.set(s"spark.sql.catalog.cosmosCatalog", "com.azure.cosmos.spark.CosmosCatalog")
+// spark.conf.set(s"spark.sql.catalog.cosmosCatalog.spark.cosmos.accountEndpoint", cosmosEndpoint)
+// spark.conf.set(s"spark.sql.catalog.cosmosCatalog.spark.cosmos.accountKey", cosmosMasterKey)
+
+
+// create an Azure Cosmos DB container using catalog api
+// spark.sql("CREATE DATABASE IF NOT EXISTS cosmosCatalog.`database-v4`")
+// spark.sql(s"CREATE TABLE IF NOT EXISTS cosmosCatalog.`database-v4`.`ThroughputControl` using cosmos.oltp TBLPROPERTIES(partitionKeyPath = '/groupId', autoScaleMaxThroughput  = '4000')")
+
+
 
 // ----- EXAMPLE 1 -----
 
@@ -44,10 +65,6 @@ val changeFeedDF = spark.readStream.format("cosmos.oltp.changeFeed")
       .options(changeFeedCfg)  
       .load
 
-println("Streaming DataFrame : " + changeFeedDF.isStreaming)
-
-
-import org.apache.spark.sql.functions.{split}
 // Here is an example of splitting the id column by "-" and creating a new column with only the second item
 // e.g. Id = XXXXX-SubIdWeAreInterestedIn-XXXXX
 val splitByDash = changeFeedDF.select($"*", split($"id","-").alias("idSplit"))
@@ -68,52 +85,18 @@ df_withAuditFields
   .awaitTermination()
 
 
-
 // ----- EXAMPLE 2 -----
-// The following example uses spark.read.json, but uses a non streaming datasource to do so. Streaming sources do not support joins
-
-val changeFeedDF = spark.read.format("cosmos.oltp")
-      .options(changeFeedCfg)  
-      .load
-// parse the ids of records with a given doctorId value we are interested in to a new df
-val ids = spark.read.json(changeFeedDF.select("_rawBody").as[String]).filter("doctorId=='5b15f027-74d1-4ab8-9ad3-cca848837f66'").select("id")
-
-// join these two dfs together on id to isolate only the records we are interested in
-val df_withAuditFields = changeFeedDF.join(ids, "id").withColumnRenamed("_rawbody", "_origin_rawBody")
-
-df_withAuditFields
-  .write
-  .format("cosmos.oltp")
-  .options(writeCfg)
-  .mode("append")
-  .save()
-
-
-// ----- EXAMPLE 3 -----
-// The following example uses split by logic to parse out rows where json property values match a given value, without the need for the spark.read.json feature or any joins
-
-import org.apache.spark.sql.functions.{split}
+// The following example uses filter and string matching to parse out rows where doctorId values match a given value, without the need for the spark.read.json feature or any joins
 
 val changeFeedDF = spark.readStream.format("cosmos.oltp.changeFeed")
       .options(changeFeedCfg)  
       .load
 
-// First split by an example patientId we are interested in, splitting on the text 'patientId": ' and create a new column with all text following patientId": , 
-val splitByPatientId = changeFeedDF.select($"*", split($"_rawBody","patientId\":").alias("json"))
+// Filter by an example patientId we are interested in from raw document into a new df
+val filteredDf = changeFeedDF.filter(col("_rawBody").contains("\"doctorId\":\"9c9a1156-e936-40f3-a442-e9528b55a2fb\""))
 
-// Create a new column with the remaining text after the expression we split by
-val withJsonAfterPatientId = splitByPatientId.withColumn("jsonAfterPatientId", $"json".getItem(1))
-
-
-// Then split by "," and create a new column with all text preceding "," to get a column with only the values of the patientId we are interested in
-val splitByComma = withJsonAfterPatientId.select($"*", split($"jsonAfterPatientId",",").alias("jsonSplitByComma"))
-
-val withValueColumn = splitByComma.withColumn("newColumn", $"jsonSplitByComma".getItem(0))
-
-// Filter by items matching a given patientId's value to get only the columns we want to migrate, and drop helper columns
-val filteredByPatientIdValue = withValueColumn.filter($"newColumn" === "\"9c9a1156-e936-40f3-a442-e9528b55a2fb\"").drop("json").drop("jsonAfterPatientId").drop("jsonSplitByComma").drop("newColumn")
-
-val df_withAuditFields = filteredByPatientIdValue.withColumnRenamed("_rawbody", "_origin_rawBody")
+// preserve system properties like _ts, _etag by renaming the original column
+val df_withAuditFields = filteredDf.withColumnRenamed("_rawbody", "_origin_rawBody")
 
 // write streaming dataframe to the target container
 df_withAuditFields
@@ -124,10 +107,11 @@ df_withAuditFields
   .awaitTermination()
 
 
-// ----- EXAMPLE 4 ----- 
+// ----- EXAMPLE 3 ----- 
 //In this example we will write data into a container with different partition key from source container
 
-val TargetContainerName = "CopyWithDoctorId"
+val targetContainerName = "CopyWithDoctorId"
+val checkpointLocation = "/tmp/pk_doctorId_checkpoint"
 
 // Configure Catalog Api to be used
 spark.conf.set(s"spark.sql.catalog.cosmosCatalog", "com.azure.cosmos.spark.CosmosCatalog")
@@ -136,12 +120,12 @@ spark.conf.set(s"spark.sql.catalog.cosmosCatalog.spark.cosmos.accountKey", cosmo
 
 
 // create an Azure Cosmos DB container using catalog api
-spark.sql(s"CREATE TABLE IF NOT EXISTS cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerName} using cosmos.oltp TBLPROPERTIES(partitionKeyPath = '/id', manualThroughput = '1100')")
+spark.sql(s"CREATE TABLE IF NOT EXISTS cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerName} using cosmos.oltp TBLPROPERTIES(partitionKeyPath = '/doctorId', manualThroughput = '1100')")
 
 val writeCfgWithNewPK = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
   "spark.cosmos.accountKey" -> cosmosMasterKey,
   "spark.cosmos.database" -> cosmosDatabaseName,
-  "spark.cosmos.container" -> TargetContainerName,
+  "spark.cosmos.container" -> targetContainerName,
   "checkpointLocation" -> checkpointLocation
 )
 
