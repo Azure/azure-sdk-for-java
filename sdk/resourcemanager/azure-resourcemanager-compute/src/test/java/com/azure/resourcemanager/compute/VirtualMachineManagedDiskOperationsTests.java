@@ -616,7 +616,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withLinuxFromDisk(diskWithOSImage)
             .withHibernationSupport()
             .create();
-        Assertions.assertTrue(osDisk.supportsHibernation());
+        Assertions.assertTrue(osDisk.isHibernationSupported());
 
         VirtualMachine vmWithHibernation = computeManager.virtualMachines()
             .define(vmName)
@@ -639,7 +639,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withoutHibernationSupport()
             .apply();
 
-        Assertions.assertFalse(osDisk.supportsHibernation());
+        Assertions.assertFalse(osDisk.isHibernationSupported());
     }
 
     private String prepareLinuxDiskWithOSImage() {

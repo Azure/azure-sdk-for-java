@@ -138,7 +138,7 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
     }
 
     @Override
-    public boolean supportsHibernation() {
+    public boolean isHibernationSupported() {
         return ResourceManagerUtils.toPrimitiveBoolean(innerModel().supportsHibernation());
     }
 

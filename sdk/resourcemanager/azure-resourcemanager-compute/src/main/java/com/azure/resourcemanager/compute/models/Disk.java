@@ -84,7 +84,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
     Mono<Void> revokeAccessAsync();
 
     /** @return whether the OS on a disk supports hibernation. */
-    boolean supportsHibernation();
+    boolean isHibernationSupported();
 
     /** The entirety of the managed disk definition. */
     interface Definition
