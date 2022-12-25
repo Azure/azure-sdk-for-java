@@ -11,12 +11,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * The type Feed response diagnostics.
@@ -26,16 +26,18 @@ public class FeedResponseDiagnostics {
     private final static String EQUALS = "=";
     private final static String QUERY_PLAN = "QueryPlan";
     private final static String SPACE = " ";
+    private final static String FEED_RESPONSE_CREATION_LATENCY = "FeedResponseCreationLatency";
     private static final ObjectMapper mapper = new ObjectMapper();
     private static final Logger LOGGER = LoggerFactory.getLogger(FeedResponseDiagnostics.class);
     private Map<String, QueryMetrics> queryMetricsMap;
     private QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext;
     private final List<ClientSideRequestStatistics> clientSideRequestStatisticsList;
-    private Duration feedResponseCreationLatency;
+    private AtomicReference<Duration> feedResponseCreationLatency;
 
     public FeedResponseDiagnostics(Map<String, QueryMetrics> queryMetricsMap) {
         this.queryMetricsMap = queryMetricsMap;
         this.clientSideRequestStatisticsList = Collections.synchronizedList(new ArrayList<>());
+        this.feedResponseCreationLatency = new AtomicReference<>(Duration.ZERO);
     }
 
     public FeedResponseDiagnostics(FeedResponseDiagnostics toBeCloned) {
@@ -52,6 +54,10 @@ public class FeedResponseDiagnostics {
                 toBeCloned.diagnosticsContext.getEndTimeUTC(),
                 toBeCloned.diagnosticsContext.getRequestTimeline()
             );
+        }
+
+        if (toBeCloned.feedResponseCreationLatency != null) {
+            this.feedResponseCreationLatency = toBeCloned.feedResponseCreationLatency;
         }
     }
 
@@ -94,6 +100,12 @@ public class FeedResponseDiagnostics {
                     }
                 }
             }
+
+            if (feedResponseCreationLatency != null) {
+                stringBuilder.append(FEED_RESPONSE_CREATION_LATENCY)
+                        .append(EQUALS)
+                        .append(feedResponseCreationLatency);
+            }
         }
 
         if (queryMetricsMap != null && !queryMetricsMap.isEmpty()) {
@@ -134,31 +146,16 @@ public class FeedResponseDiagnostics {
     }
 
     public Duration getFeedResponseCreationLatency() {
-        return feedResponseCreationLatency;
+        return feedResponseCreationLatency.get();
     }
 
-    public void setFeedResponseCreationLatency(Duration feedResponseCreationLatency) {
-        this.feedResponseCreationLatency = feedResponseCreationLatency;
-    }
+    public void recordFeedResponseCreationLatency(Duration feedResponseCreationLatency) {
 
-//    public void setFeedResponseDiagnosticsContext(FeedResponseDiagnosticsContext feedResponseDiagnosticsContext) {
-//        this.feedResponseDiagnosticsContext = feedResponseDiagnosticsContext;
-//    }
-//
-//    public FeedResponseDiagnosticsContext getFeedResponseDiagnosticsContext() {
-//        return feedResponseDiagnosticsContext;
-//    }
-//
-//    public static final class FeedResponseDiagnosticsContext {
-//        private Duration feedResponseCreationLatency;
-//
-//        public FeedResponseDiagnosticsContext(Duration feedResponseCreationLatency) {
-//            this.feedResponseCreationLatency = feedResponseCreationLatency;
-//        }
-//
-//        public Duration getFeedResponseCreationLatency() {
-//            return feedResponseCreationLatency;
-//        }
-//    }
+        if (this.feedResponseCreationLatency.get() != Duration.ZERO) {
+            throw new IllegalArgumentException("The feedResponseCreationLatency has already been recorded.");
+        }
+
+        this.feedResponseCreationLatency.compareAndSet(Duration.ZERO, feedResponseCreationLatency);
+    }
 
 }

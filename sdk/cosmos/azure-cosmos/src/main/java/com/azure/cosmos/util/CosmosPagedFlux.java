@@ -319,7 +319,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                                 .CosmosDiagnosticsHelper
                                 .getCosmosDiagnosticsAccessor()
                                 .getFeedResponseDiagnostics(feedResponse.getCosmosDiagnostics())
-                                .setFeedResponseCreationLatency(effectiveLatency);
+                                .recordFeedResponseCreationLatency(effectiveLatency);
 
                         if (clientTelemetryEnabled || clientMetricsEnabled) {
                             if (diagnosticsCapturedInPagedFluxByTracer || this.cosmosDiagnosticsAccessor

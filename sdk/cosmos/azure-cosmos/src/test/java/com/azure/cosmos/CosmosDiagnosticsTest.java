@@ -520,6 +520,9 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
         assertThat(diagnostics.getClientSideRequestStatisticsList().size()).isEqualTo(itemIdList.size());
         assertThat(diagnostics.getQueryMetricsMap().values().iterator().next().getRetrievedDocumentCount()).isEqualTo(itemIdList.size());
+        assertThat(diagnostics.getFeedResponseCreationLatency()).isNotNull();
+        assertThat(response.getCosmosDiagnostics().getDuration()).isNotNull();
+        assertThat(response.getCosmosDiagnostics().getDuration()).isNotSameAs(Duration.ZERO);
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
