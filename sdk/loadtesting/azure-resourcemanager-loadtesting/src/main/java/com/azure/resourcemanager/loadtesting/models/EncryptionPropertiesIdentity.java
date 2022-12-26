@@ -26,7 +26,7 @@ public class EncryptionPropertiesIdentity {
      * group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId
      */
     @JsonProperty(value = "resourceId")
-    @JsonInclude(JsonInclude.Include.ALWAYS)
+    @JsonInclude(value = JsonInclude.Include.ALWAYS)
     private String resourceId;
 
     /** Creates an instance of EncryptionPropertiesIdentity class. */
