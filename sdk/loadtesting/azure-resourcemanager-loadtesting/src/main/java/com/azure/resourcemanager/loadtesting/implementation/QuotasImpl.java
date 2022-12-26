@@ -24,8 +24,7 @@ public final class QuotasImpl implements Quotas {
 
     private final com.azure.resourcemanager.loadtesting.LoadTestManager serviceManager;
 
-    public QuotasImpl(
-        QuotasClient innerClient, com.azure.resourcemanager.loadtesting.LoadTestManager serviceManager) {
+    public QuotasImpl(QuotasClient innerClient, com.azure.resourcemanager.loadtesting.LoadTestManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }

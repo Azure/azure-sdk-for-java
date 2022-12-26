@@ -48,7 +48,7 @@ public interface Operation {
     ActionType actionType();
 
     /**
-     * Gets the inner com.azure.resourcemanager.loadtestservice.fluent.models.OperationInner object.
+     * Gets the inner com.azure.resourcemanager.loadtesting.fluent.models.OperationInner object.
      *
      * @return the inner object.
      */

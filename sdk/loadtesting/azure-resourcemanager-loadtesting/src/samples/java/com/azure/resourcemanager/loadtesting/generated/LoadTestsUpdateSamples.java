@@ -4,9 +4,7 @@
 
 package com.azure.resourcemanager.loadtesting.generated;
 
-import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.Context;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.loadtesting.models.EncryptionProperties;
 import com.azure.resourcemanager.loadtesting.models.EncryptionPropertiesIdentity;
 import com.azure.resourcemanager.loadtesting.models.LoadTestResource;
@@ -14,7 +12,6 @@ import com.azure.resourcemanager.loadtesting.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.loadtesting.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.loadtesting.models.Type;
 import com.azure.resourcemanager.loadtesting.models.UserAssignedIdentity;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,16 +25,12 @@ public final class LoadTestsUpdateSamples {
      *
      * @param manager Entry point to LoadTestManager.
      */
-    public static void loadTestsUpdate(com.azure.resourcemanager.loadtesting.LoadTestManager manager)
-        throws IOException {
+    public static void loadTestsUpdate(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
         LoadTestResource resource =
             manager.loadTests().getByResourceGroupWithResponse("dummyrg", "myLoadTest", Context.NONE).getValue();
         resource
             .update()
-            .withTags(
-                SerializerFactory
-                    .createDefaultManagementSerializerAdapter()
-                    .deserialize("{\"Division\":\"LT\",\"Team\":\"Dev Exp\"}", Object.class, SerializerEncoding.JSON))
+            .withTags(mapOf("Division", "LT", "Team", "Dev Exp"))
             .withIdentity(
                 new ManagedServiceIdentity()
                     .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
@@ -49,7 +42,7 @@ public final class LoadTestsUpdateSamples {
             .withEncryption(
                 new EncryptionProperties()
                     .withIdentity(new EncryptionPropertiesIdentity().withType(Type.SYSTEM_ASSIGNED))
-                    .withKeyUrl("https://dummy.vault.azure.net/keys/dummykey1"))
+                    .withKeyUrl("fakeTokenPlaceholder"))
             .apply();
     }
 

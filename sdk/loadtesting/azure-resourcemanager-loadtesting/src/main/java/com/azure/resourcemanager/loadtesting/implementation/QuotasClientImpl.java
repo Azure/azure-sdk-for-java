@@ -58,7 +58,7 @@ public final class QuotasClientImpl implements QuotasClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "LoadTestClientQuotas")
-    private interface QuotasService {
+    public interface QuotasService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.LoadTestService/locations/{location}/quotas")
         @ExpectedResponses({200})

@@ -111,7 +111,7 @@ public interface LoadTestResource {
     String resourceGroupName();
 
     /**
-     * Gets the inner com.azure.resourcemanager.loadtestservice.fluent.models.LoadTestResourceInner object.
+     * Gets the inner com.azure.resourcemanager.loadtesting.fluent.models.LoadTestResourceInner object.
      *
      * @return the inner object.
      */
@@ -260,7 +260,7 @@ public interface LoadTestResource {
              * @param tags Resource tags.
              * @return the next definition stage.
              */
-            Update withTags(Object tags);
+            Update withTags(Map<String, String> tags);
         }
         /** The stage of the LoadTestResource update allowing to specify identity. */
         interface WithIdentity {

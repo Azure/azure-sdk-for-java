@@ -45,7 +45,7 @@ public final class LoadTestsCreateOrUpdateSamples {
                             .withType(Type.USER_ASSIGNED)
                             .withResourceId(
                                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1"))
-                    .withKeyUrl("https://dummy.vault.azure.net/keys/dummykey1"))
+                    .withKeyUrl("fakeTokenPlaceholder"))
             .create();
     }
 

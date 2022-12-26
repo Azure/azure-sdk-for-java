@@ -6,7 +6,9 @@ package com.azure.resourcemanager.loadtesting.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.loadtesting.fluent.models.LoadTestResourcePatchRequestBodyProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** LoadTest resource patch request body. */
 @Fluent
@@ -15,7 +17,8 @@ public final class LoadTestResourcePatchRequestBody {
      * Resource tags.
      */
     @JsonProperty(value = "tags")
-    private Object tags;
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> tags;
 
     /*
      * The type of identity used for the resource.
@@ -38,7 +41,7 @@ public final class LoadTestResourcePatchRequestBody {
      *
      * @return the tags value.
      */
-    public Object tags() {
+    public Map<String, String> tags() {
         return this.tags;
     }
 
@@ -48,7 +51,7 @@ public final class LoadTestResourcePatchRequestBody {
      * @param tags the tags value to set.
      * @return the LoadTestResourcePatchRequestBody object itself.
      */
-    public LoadTestResourcePatchRequestBody withTags(Object tags) {
+    public LoadTestResourcePatchRequestBody withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }

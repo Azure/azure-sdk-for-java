@@ -29,7 +29,6 @@ import com.azure.resourcemanager.loadtesting.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.loadtesting.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.loadtesting.models.Type;
 import com.azure.resourcemanager.loadtesting.models.UserAssignedIdentity;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +37,6 @@ public final class LoadTestsCreateOrUpdateSamples {
     /*
      * x-ms-original-file: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/stable/2022-12-01/examples/LoadTests_CreateOrUpdate.json
      */
-
     /**
      * Sample code: LoadTests_CreateOrUpdate.
      *
@@ -46,28 +44,28 @@ public final class LoadTestsCreateOrUpdateSamples {
      */
     public static void loadTestsCreateOrUpdate(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
         manager
-                .loadTests()
-                .define("myLoadTest")
-                .withRegion("westus")
-                .withExistingResourceGroup("dummyrg")
-                .withTags(mapOf("Team", "Dev Exp"))
-                .withIdentity(
-                        new ManagedServiceIdentity()
-                                .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                                .withUserAssignedIdentities(
-                                        mapOf(
-                                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1",
-                                                new UserAssignedIdentity())))
-                .withDescription("This is new load test resource")
-                .withEncryption(
-                        new EncryptionProperties()
-                                .withIdentity(
-                                        new EncryptionPropertiesIdentity()
-                                                .withType(Type.USER_ASSIGNED)
-                                                .withResourceId(
-                                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1"))
-                                .withKeyUrl("https://dummy.vault.azure.net/keys/dummykey1"))
-                .create();
+            .loadTests()
+            .define("myLoadTest")
+            .withRegion("westus")
+            .withExistingResourceGroup("dummyrg")
+            .withTags(mapOf("Team", "Dev Exp"))
+            .withIdentity(
+                new ManagedServiceIdentity()
+                    .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(
+                        mapOf(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1",
+                            new UserAssignedIdentity())))
+            .withDescription("This is new load test resource")
+            .withEncryption(
+                new EncryptionProperties()
+                    .withIdentity(
+                        new EncryptionPropertiesIdentity()
+                            .withType(Type.USER_ASSIGNED)
+                            .withResourceId(
+                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1"))
+                    .withKeyUrl("fakeTokenPlaceholder"))
+            .create();
     }
 
     @SuppressWarnings("unchecked")
@@ -93,7 +91,6 @@ public final class LoadTestsDeleteSamples {
     /*
      * x-ms-original-file: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/stable/2022-12-01/examples/LoadTests_Delete.json
      */
-
     /**
      * Sample code: LoadTests_Delete.
      *
@@ -115,7 +112,6 @@ public final class LoadTestsGetByResourceGroupSamples {
     /*
      * x-ms-original-file: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/stable/2022-12-01/examples/LoadTests_Get.json
      */
-
     /**
      * Sample code: LoadTests_Get.
      *
@@ -137,7 +133,6 @@ public final class LoadTestsListSamples {
     /*
      * x-ms-original-file: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/stable/2022-12-01/examples/LoadTests_ListBySubscription.json
      */
-
     /**
      * Sample code: LoadTests_ListBySubscription.
      *
@@ -159,7 +154,6 @@ public final class LoadTestsListByResourceGroupSamples {
     /*
      * x-ms-original-file: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/stable/2022-12-01/examples/LoadTests_ListByResourceGroup.json
      */
-
     /**
      * Sample code: LoadTests_ListByResourceGroup.
      *
@@ -181,18 +175,16 @@ public final class LoadTestsListOutboundNetworkDependenciesEndpointsSamples {
     /*
      * x-ms-original-file: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/stable/2022-12-01/examples/LoadTests_ListOutboundNetworkDependenciesEndpoints.json
      */
-
     /**
      * Sample code: ListOutboundNetworkDependencies.
      *
      * @param manager Entry point to LoadTestManager.
      */
-    public static void listOutboundNetworkDependencies(
-            com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
+    public static void listOutboundNetworkDependencies(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
         manager
-                .loadTests()
-                .listOutboundNetworkDependenciesEndpoints(
-                        "default-azureloadtest-japaneast", "sampleloadtest", Context.NONE);
+            .loadTests()
+            .listOutboundNetworkDependenciesEndpoints(
+                "default-azureloadtest-japaneast", "sampleloadtest", Context.NONE);
     }
 }
 ```
@@ -200,9 +192,7 @@ public final class LoadTestsListOutboundNetworkDependenciesEndpointsSamples {
 ### LoadTests_Update
 
 ```java
-import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.Context;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.loadtesting.models.EncryptionProperties;
 import com.azure.resourcemanager.loadtesting.models.EncryptionPropertiesIdentity;
 import com.azure.resourcemanager.loadtesting.models.LoadTestResource;
@@ -210,8 +200,6 @@ import com.azure.resourcemanager.loadtesting.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.loadtesting.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.loadtesting.models.Type;
 import com.azure.resourcemanager.loadtesting.models.UserAssignedIdentity;
-
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -220,35 +208,30 @@ public final class LoadTestsUpdateSamples {
     /*
      * x-ms-original-file: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/stable/2022-12-01/examples/LoadTests_Update.json
      */
-
     /**
      * Sample code: LoadTests_Update.
      *
      * @param manager Entry point to LoadTestManager.
      */
-    public static void loadTestsUpdate(com.azure.resourcemanager.loadtesting.LoadTestManager manager)
-            throws IOException {
+    public static void loadTestsUpdate(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
         LoadTestResource resource =
-                manager.loadTests().getByResourceGroupWithResponse("dummyrg", "myLoadTest", Context.NONE).getValue();
+            manager.loadTests().getByResourceGroupWithResponse("dummyrg", "myLoadTest", Context.NONE).getValue();
         resource
-                .update()
-                .withTags(
-                        SerializerFactory
-                                .createDefaultManagementSerializerAdapter()
-                                .deserialize("{\"Division\":\"LT\",\"Team\":\"Dev Exp\"}", Object.class, SerializerEncoding.JSON))
-                .withIdentity(
-                        new ManagedServiceIdentity()
-                                .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                                .withUserAssignedIdentities(
-                                        mapOf(
-                                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1",
-                                                new UserAssignedIdentity())))
-                .withDescription("This is new load test resource")
-                .withEncryption(
-                        new EncryptionProperties()
-                                .withIdentity(new EncryptionPropertiesIdentity().withType(Type.SYSTEM_ASSIGNED))
-                                .withKeyUrl("https://dummy.vault.azure.net/keys/dummykey1"))
-                .apply();
+            .update()
+            .withTags(mapOf("Division", "LT", "Team", "Dev Exp"))
+            .withIdentity(
+                new ManagedServiceIdentity()
+                    .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(
+                        mapOf(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1",
+                            new UserAssignedIdentity())))
+            .withDescription("This is new load test resource")
+            .withEncryption(
+                new EncryptionProperties()
+                    .withIdentity(new EncryptionPropertiesIdentity().withType(Type.SYSTEM_ASSIGNED))
+                    .withKeyUrl("fakeTokenPlaceholder"))
+            .apply();
     }
 
     @SuppressWarnings("unchecked")
@@ -274,7 +257,6 @@ public final class OperationsListSamples {
     /*
      * x-ms-original-file: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/stable/2022-12-01/examples/Operations_List.json
      */
-
     /**
      * Sample code: Operations_List.
      *
@@ -298,7 +280,6 @@ public final class QuotasCheckAvailabilitySamples {
     /*
      * x-ms-original-file: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/stable/2022-12-01/examples/Quotas_CheckAvailability.json
      */
-
     /**
      * Sample code: Quotas_CheckAvailability.
      *
@@ -306,19 +287,19 @@ public final class QuotasCheckAvailabilitySamples {
      */
     public static void quotasCheckAvailability(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
         manager
-                .quotas()
-                .checkAvailabilityWithResponse(
-                        "westus",
-                        "testQuotaBucket",
-                        new QuotaBucketRequest()
-                                .withCurrentUsage(20)
-                                .withCurrentQuota(40)
-                                .withNewQuota(50)
-                                .withDimensions(
-                                        new QuotaBucketRequestPropertiesDimensions()
-                                                .withSubscriptionId("testsubscriptionId")
-                                                .withLocation("westus")),
-                        Context.NONE);
+            .quotas()
+            .checkAvailabilityWithResponse(
+                "westus",
+                "testQuotaBucket",
+                new QuotaBucketRequest()
+                    .withCurrentUsage(20)
+                    .withCurrentQuota(40)
+                    .withNewQuota(50)
+                    .withDimensions(
+                        new QuotaBucketRequestPropertiesDimensions()
+                            .withSubscriptionId("testsubscriptionId")
+                            .withLocation("westus")),
+                Context.NONE);
     }
 }
 ```
@@ -333,7 +314,6 @@ public final class QuotasGetSamples {
     /*
      * x-ms-original-file: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/stable/2022-12-01/examples/Quotas_Get.json
      */
-
     /**
      * Sample code: Quotas_Get.
      *
@@ -355,7 +335,6 @@ public final class QuotasListSamples {
     /*
      * x-ms-original-file: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/stable/2022-12-01/examples/Quotas_List.json
      */
-
     /**
      * Sample code: Quotas_List.
      *

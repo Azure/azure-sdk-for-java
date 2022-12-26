@@ -67,7 +67,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "LoadTestClientLoadTe")
-    private interface LoadTestsService {
+    public interface LoadTestsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.LoadTestService/loadTests")
         @ExpectedResponses({200})

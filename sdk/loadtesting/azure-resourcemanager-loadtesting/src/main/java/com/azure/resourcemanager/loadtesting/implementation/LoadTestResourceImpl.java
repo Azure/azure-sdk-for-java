@@ -188,8 +188,13 @@ public final class LoadTestResourceImpl
     }
 
     public LoadTestResourceImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateLoadTestResourcePatchRequestBody.withTags(tags);
+            return this;
+        }
     }
 
     public LoadTestResourceImpl withIdentity(ManagedServiceIdentity identity) {
@@ -220,11 +225,6 @@ public final class LoadTestResourceImpl
             this.updateLoadTestResourcePatchRequestBody.withEncryption(encryption);
             return this;
         }
-    }
-
-    public LoadTestResourceImpl withTags(Object tags) {
-        this.updateLoadTestResourcePatchRequestBody.withTags(tags);
-        return this;
     }
 
     private boolean isInCreateMode() {

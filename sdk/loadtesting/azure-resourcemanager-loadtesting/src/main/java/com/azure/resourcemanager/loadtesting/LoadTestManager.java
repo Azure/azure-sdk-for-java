@@ -209,9 +209,9 @@ public final class LoadTestManager {
             userAgentBuilder
                 .append("azsdk-java")
                 .append("-")
-                .append("com.azure.resourcemanager.loadtestservice")
+                .append("com.azure.resourcemanager.loadtesting")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")

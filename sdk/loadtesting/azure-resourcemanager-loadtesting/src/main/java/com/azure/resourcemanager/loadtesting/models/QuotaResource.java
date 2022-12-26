@@ -59,7 +59,7 @@ public interface QuotaResource {
     ResourceState provisioningState();
 
     /**
-     * Gets the inner com.azure.resourcemanager.loadtestservice.fluent.models.QuotaResourceInner object.
+     * Gets the inner com.azure.resourcemanager.loadtesting.fluent.models.QuotaResourceInner object.
      *
      * @return the inner object.
      */

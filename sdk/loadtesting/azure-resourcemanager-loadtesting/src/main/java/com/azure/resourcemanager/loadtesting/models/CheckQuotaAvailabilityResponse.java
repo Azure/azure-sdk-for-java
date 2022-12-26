@@ -52,8 +52,7 @@ public interface CheckQuotaAvailabilityResponse {
     String availabilityStatus();
 
     /**
-     * Gets the inner com.azure.resourcemanager.loadtestservice.fluent.models.CheckQuotaAvailabilityResponseInner
-     * object.
+     * Gets the inner com.azure.resourcemanager.loadtesting.fluent.models.CheckQuotaAvailabilityResponseInner object.
      *
      * @return the inner object.
      */
