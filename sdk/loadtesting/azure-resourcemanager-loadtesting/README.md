@@ -231,7 +231,7 @@ CheckQuotaAvailabilityResponse availability = manager
 System.out.println(availability.isAvailable());
 ```
 
-[Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtestservice/azure-resourcemanager-loadtestservice/SAMPLE.md)
+[Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtesting/azure-resourcemanager-loadtesting/SAMPLE.md)
 
 
 ## Troubleshooting
