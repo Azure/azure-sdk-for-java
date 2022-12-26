@@ -866,7 +866,18 @@ public final class BulkExecutor<TContext> implements Disposable {
         if (completeEmitResult == Sinks.EmitResult.OK) {
             logger.debug("Main sink completed, Context: {}", this.operationContextText);
         } else {
-            logger.info("Main sink completion failed. EmitResult: {}, Context: {}", completeEmitResult, this.operationContextText);
+            if (completeEmitResult == Sinks.EmitResult.FAIL_CANCELLED ||
+                completeEmitResult == Sinks.EmitResult.FAIL_TERMINATED) {
+
+                logger.debug("Main sink already completed, EmitResult: {}, Context: {}",
+                    completeEmitResult,
+                    this.operationContextText);
+            } else {
+                logger.warn(
+                    "Main sink completion failed. EmitResult: {}, Context: {}",
+                    completeEmitResult,
+                    this.operationContextText);
+            }
         }
 
         this.shutdown();

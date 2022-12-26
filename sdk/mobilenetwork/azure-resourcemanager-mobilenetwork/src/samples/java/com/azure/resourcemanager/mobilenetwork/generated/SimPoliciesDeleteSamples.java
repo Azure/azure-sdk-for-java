@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SimPolicies Delete. */
 public final class SimPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SimPolicyDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimPolicyDelete.json
      */
     /**
      * Sample code: Delete SIM policy.

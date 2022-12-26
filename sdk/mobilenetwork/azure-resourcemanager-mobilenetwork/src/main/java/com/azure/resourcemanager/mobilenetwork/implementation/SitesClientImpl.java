@@ -64,7 +64,7 @@ public final class SitesClientImpl implements SitesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MobileNetworkManagem")
-    private interface SitesService {
+    public interface SitesService {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
@@ -158,7 +158,8 @@ public final class SitesClientImpl implements SitesClient {
     }
 
     /**
-     * Deletes the specified mobile network site.
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -212,7 +213,8 @@ public final class SitesClientImpl implements SitesClient {
     }
 
     /**
-     * Deletes the specified mobile network site.
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -264,7 +266,8 @@ public final class SitesClientImpl implements SitesClient {
     }
 
     /**
-     * Deletes the specified mobile network site.
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -285,7 +288,8 @@ public final class SitesClientImpl implements SitesClient {
     }
 
     /**
-     * Deletes the specified mobile network site.
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -308,7 +312,8 @@ public final class SitesClientImpl implements SitesClient {
     }
 
     /**
-     * Deletes the specified mobile network site.
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -325,7 +330,8 @@ public final class SitesClientImpl implements SitesClient {
     }
 
     /**
-     * Deletes the specified mobile network site.
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -343,7 +349,8 @@ public final class SitesClientImpl implements SitesClient {
     }
 
     /**
-     * Deletes the specified mobile network site.
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -361,7 +368,8 @@ public final class SitesClientImpl implements SitesClient {
     }
 
     /**
-     * Deletes the specified mobile network site.
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -381,7 +389,8 @@ public final class SitesClientImpl implements SitesClient {
     }
 
     /**
-     * Deletes the specified mobile network site.
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -396,7 +405,8 @@ public final class SitesClientImpl implements SitesClient {
     }
 
     /**
-     * Deletes the specified mobile network site.
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -542,22 +552,6 @@ public final class SitesClientImpl implements SitesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified mobile network site.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SiteInner get(String resourceGroupName, String mobileNetworkName, String siteName) {
-        return getAsync(resourceGroupName, mobileNetworkName, siteName).block();
-    }
-
-    /**
-     * Gets information about the specified mobile network site.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param siteName The name of the mobile network site.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -571,7 +565,23 @@ public final class SitesClientImpl implements SitesClient {
     }
 
     /**
-     * Creates or updates a mobile network site.
+     * Gets information about the specified mobile network site.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified mobile network site.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SiteInner get(String resourceGroupName, String mobileNetworkName, String siteName) {
+        return getWithResponse(resourceGroupName, mobileNetworkName, siteName, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -632,7 +642,7 @@ public final class SitesClientImpl implements SitesClient {
     }
 
     /**
-     * Creates or updates a mobile network site.
+     * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -691,7 +701,7 @@ public final class SitesClientImpl implements SitesClient {
     }
 
     /**
-     * Creates or updates a mobile network site.
+     * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -714,7 +724,7 @@ public final class SitesClientImpl implements SitesClient {
     }
 
     /**
-     * Creates or updates a mobile network site.
+     * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -739,7 +749,7 @@ public final class SitesClientImpl implements SitesClient {
     }
 
     /**
-     * Creates or updates a mobile network site.
+     * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -757,7 +767,7 @@ public final class SitesClientImpl implements SitesClient {
     }
 
     /**
-     * Creates or updates a mobile network site.
+     * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -777,7 +787,7 @@ public final class SitesClientImpl implements SitesClient {
     }
 
     /**
-     * Creates or updates a mobile network site.
+     * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -797,7 +807,7 @@ public final class SitesClientImpl implements SitesClient {
     }
 
     /**
-     * Creates or updates a mobile network site.
+     * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -818,7 +828,7 @@ public final class SitesClientImpl implements SitesClient {
     }
 
     /**
-     * Creates or updates a mobile network site.
+     * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -836,7 +846,7 @@ public final class SitesClientImpl implements SitesClient {
     }
 
     /**
-     * Creates or updates a mobile network site.
+     * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -1000,24 +1010,6 @@ public final class SitesClientImpl implements SitesClient {
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
      * @param parameters Parameters supplied to update network site tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SiteInner updateTags(
-        String resourceGroupName, String mobileNetworkName, String siteName, TagsObject parameters) {
-        return updateTagsAsync(resourceGroupName, mobileNetworkName, siteName, parameters).block();
-    }
-
-    /**
-     * Updates site tags.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param siteName The name of the mobile network site.
-     * @param parameters Parameters supplied to update network site tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1028,6 +1020,25 @@ public final class SitesClientImpl implements SitesClient {
     public Response<SiteInner> updateTagsWithResponse(
         String resourceGroupName, String mobileNetworkName, String siteName, TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, mobileNetworkName, siteName, parameters, context).block();
+    }
+
+    /**
+     * Updates site tags.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to update network site tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return site resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SiteInner updateTags(
+        String resourceGroupName, String mobileNetworkName, String siteName, TagsObject parameters) {
+        return updateTagsWithResponse(resourceGroupName, mobileNetworkName, siteName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1217,7 +1228,8 @@ public final class SitesClientImpl implements SitesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1254,7 +1266,8 @@ public final class SitesClientImpl implements SitesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

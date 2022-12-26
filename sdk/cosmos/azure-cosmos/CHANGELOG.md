@@ -10,6 +10,7 @@
 
 #### Other Changes
 * Fixed issue on noisy `CancellationException` log - See [PR 31882](https://github.com/Azure/azure-sdk-for-java/pull/31882)
+* Reduced log noisiness when bulk ingestion completes and sink is already terminated or cancelled. - See [PR 32601](https://github.com/Azure/azure-sdk-for-java/pull/32601)  
 * Added `retyrAfterInMs` to `StoreResult` in `CosmosDiagnostics` - See [31219](https://github.com/Azure/azure-sdk-for-java/pull/31219)
 * Optimized the `readMany` API to make use of point reads when a single item is requested for a given physical partition - See [PR 31723](https://github.com/Azure/azure-sdk-for-java/pull/31723)
 * Added cross region retries for data plane, query plan and metadata requests failed with http timeouts - See [32450](https://github.com/Azure/azure-sdk-for-java/pull/32450)
@@ -82,6 +83,7 @@
 #### Other Changes
 * Added `requestSessionToken` to `CosmosDiagnostics` - See [PR 29516](https://github.com/Azure/azure-sdk-for-java/pull/29516)
 * Reverted changes of [PR 29944](https://github.com/Azure/azure-sdk-for-java/pull/29944) to avoid possible regression when customers use id with special characters and their account is on ComputeGateway already. - See [PR 30283](https://github.com/Azure/azure-sdk-for-java/pull/30283)
+* Added changes for `changeFeed` APIs for handling all versions and deletes changes. See [PR 30161](https://github.com/Azure/azure-sdk-for-java/pull/30161)
 
 ### 4.33.1 (2022-07-22)
 #### Bugs Fixed

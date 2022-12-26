@@ -24,6 +24,10 @@ public final class AttachedDataNetworkListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of AttachedDataNetworkListResult class. */
+    public AttachedDataNetworkListResult() {
+    }
+
     /**
      * Get the value property: A list of data networks in a resource group.
      *

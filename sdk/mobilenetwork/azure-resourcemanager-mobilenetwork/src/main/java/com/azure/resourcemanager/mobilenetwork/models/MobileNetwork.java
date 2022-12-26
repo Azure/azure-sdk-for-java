@@ -245,24 +245,4 @@ public interface MobileNetwork {
      * @return the refreshed resource.
      */
     MobileNetwork refresh(Context context);
-
-    /**
-     * Lists the IDs of all provisioned SIMs in a mobile network.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list SIM IDs API service call.
-     */
-    SimIdListResult listSimIds();
-
-    /**
-     * Lists the IDs of all provisioned SIMs in a mobile network.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list SIM IDs API service call.
-     */
-    SimIdListResult listSimIds(Context context);
 }

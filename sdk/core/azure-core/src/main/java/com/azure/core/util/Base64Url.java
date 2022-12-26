@@ -52,7 +52,7 @@ public final class Base64Url {
     }
 
     private static String unquote(String string) {
-        if (string != null && !string.isEmpty()) {
+        if (!CoreUtils.isNullOrEmpty(string)) {
             final char firstCharacter = string.charAt(0);
             if (firstCharacter == '\"' || firstCharacter == '\'') {
                 final int base64UrlStringLength = string.length();
@@ -113,15 +113,14 @@ public final class Base64Url {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
+        if (obj == this) {
+            return true;
         }
 
         if (!(obj instanceof Base64Url)) {
             return false;
         }
 
-        Base64Url rhs = (Base64Url) obj;
-        return Arrays.equals(this.bytes, rhs.encodedBytes());
+        return Arrays.equals(this.bytes, ((Base64Url) obj).encodedBytes());
     }
 }

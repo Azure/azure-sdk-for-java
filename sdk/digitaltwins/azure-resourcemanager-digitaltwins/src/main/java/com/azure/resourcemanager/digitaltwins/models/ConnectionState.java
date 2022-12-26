@@ -29,6 +29,10 @@ public class ConnectionState {
     @JsonProperty(value = "actionsRequired")
     private String actionsRequired;
 
+    /** Creates an instance of ConnectionState class. */
+    public ConnectionState() {
+    }
+
     /**
      * Get the status property: The status of a private endpoint connection.
      *
