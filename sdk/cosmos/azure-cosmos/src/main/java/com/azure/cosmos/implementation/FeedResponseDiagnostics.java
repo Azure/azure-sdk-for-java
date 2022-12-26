@@ -100,12 +100,13 @@ public class FeedResponseDiagnostics {
                     }
                 }
             }
+        }
 
-            if (feedResponseCreationLatency != null) {
-                stringBuilder.append(FEED_RESPONSE_CREATION_LATENCY)
-                        .append(EQUALS)
-                        .append(feedResponseCreationLatency);
-            }
+        if (feedResponseCreationLatency != null) {
+            stringBuilder.append(FEED_RESPONSE_CREATION_LATENCY)
+                    .append(EQUALS)
+                    .append(feedResponseCreationLatency)
+                    .append(System.lineSeparator());
         }
 
         if (queryMetricsMap != null && !queryMetricsMap.isEmpty()) {
