@@ -17,7 +17,7 @@ import argparse
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-m', '--spring_boot_major_version', type = str, default='2')
+    parser.add_argument('-m', '--spring-boot-major-version', type = str, default='2')
     return parser.parse_args()
 
 
