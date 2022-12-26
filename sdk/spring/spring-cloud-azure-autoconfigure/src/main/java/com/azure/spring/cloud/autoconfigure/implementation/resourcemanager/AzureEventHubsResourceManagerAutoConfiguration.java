@@ -8,7 +8,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.condition.Conditional
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.resourcemanager.implementation.connectionstring.EventHubsArmConnectionStringProvider;
 import com.azure.spring.cloud.resourcemanager.implementation.provisioning.DefaultEventHubsProvisioner;
-import com.azure.spring.cloud.resourcemanager.provisioning.EventHubsProvisioner;
+import com.azure.spring.cloud.resourcemanager.implementation.provisioning.EventHubsProvisioner;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;

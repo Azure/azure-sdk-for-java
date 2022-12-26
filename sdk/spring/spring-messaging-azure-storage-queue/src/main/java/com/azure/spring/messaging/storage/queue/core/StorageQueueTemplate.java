@@ -4,7 +4,7 @@
 package com.azure.spring.messaging.storage.queue.core;
 
 import com.azure.spring.messaging.AzureHeaders;
-import com.azure.spring.messaging.checkpoint.AzureCheckpointer;
+import com.azure.spring.messaging.implementation.checkpoint.AzureCheckpointer;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
 import com.azure.spring.messaging.core.SendOperation;
 import com.azure.spring.messaging.storage.queue.core.factory.StorageQueueClientFactory;
