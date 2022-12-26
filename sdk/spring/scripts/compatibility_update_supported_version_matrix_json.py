@@ -36,7 +36,7 @@ def get_supported_spring_boot_version(filepath):
         data = json.load(file)
     for entry in data:
         for key in entry:
-            if entry[key] == "SUPPORTED":
+            if entry[key] == "SUPPORTED3.0":
                 supported_version_list.append(entry["spring-boot-version"])
     return supported_version_list
 
