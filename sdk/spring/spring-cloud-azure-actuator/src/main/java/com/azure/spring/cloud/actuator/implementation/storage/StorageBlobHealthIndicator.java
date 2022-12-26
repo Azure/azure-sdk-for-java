@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.actuator.storage;
+package com.azure.spring.cloud.actuator.implementation.storage;
 
 import com.azure.core.http.rest.Response;
 import com.azure.storage.blob.BlobContainerAsyncClient;
@@ -12,9 +12,9 @@ import org.springframework.boot.actuate.health.Health;
 import java.time.Duration;
 
 import static com.azure.spring.cloud.actuator.implementation.util.ActuateConstants.DEFAULT_HEALTH_CHECK_TIMEOUT;
-import static com.azure.spring.cloud.actuator.storage.StorageHealthConstants.NOT_CONFIGURED_STATUS;
-import static com.azure.spring.cloud.actuator.storage.StorageHealthConstants.NOT_EXISTING_CONTAINER;
-import static com.azure.spring.cloud.actuator.storage.StorageHealthConstants.URL_FIELD;
+import static com.azure.spring.cloud.actuator.implementation.storage.StorageHealthConstants.NOT_CONFIGURED_STATUS;
+import static com.azure.spring.cloud.actuator.implementation.storage.StorageHealthConstants.NOT_EXISTING_CONTAINER;
+import static com.azure.spring.cloud.actuator.implementation.storage.StorageHealthConstants.URL_FIELD;
 
 /**
  * Health indicator for blob storage.

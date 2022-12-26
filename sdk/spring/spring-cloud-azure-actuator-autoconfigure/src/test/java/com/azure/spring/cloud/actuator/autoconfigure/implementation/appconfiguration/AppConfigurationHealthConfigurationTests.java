@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.actuator.autoconfigure.implementation.appconfiguration;
 
-import com.azure.spring.cloud.actuator.appconfiguration.AppConfigurationHealthIndicator;
+import com.azure.spring.cloud.actuator.implementation.appconfiguration.AppConfigurationHealthIndicator;
 import com.azure.spring.cloud.autoconfigure.implementation.appconfiguration.AzureAppConfigurationAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import org.junit.jupiter.api.Test;

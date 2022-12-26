@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.actuator.storage;
+package com.azure.spring.cloud.actuator.implementation.storage;
 
 import com.azure.core.http.rest.Response;
 import com.azure.storage.queue.QueueServiceAsyncClient;

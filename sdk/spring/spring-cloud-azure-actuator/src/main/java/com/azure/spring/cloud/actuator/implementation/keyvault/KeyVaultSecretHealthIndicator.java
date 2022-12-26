@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.actuator.appconfiguration;
+package com.azure.spring.cloud.actuator.implementation.keyvault;
 
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.data.appconfiguration.ConfigurationAsyncClient;
+import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 
@@ -13,25 +13,25 @@ import java.time.Duration;
 import static com.azure.spring.cloud.actuator.implementation.util.ActuateConstants.DEFAULT_HEALTH_CHECK_TIMEOUT;
 
 /**
- * Indicator class of App Configuration
+ * Indicator class of Key Vault Secret Health
  */
-public class AppConfigurationHealthIndicator extends AbstractHealthIndicator {
+public class KeyVaultSecretHealthIndicator extends AbstractHealthIndicator {
 
+    private final SecretAsyncClient secretAsyncClient;
     private Duration timeout = DEFAULT_HEALTH_CHECK_TIMEOUT;
-    private final ConfigurationAsyncClient configurationAsyncClient;
 
     /**
-     * Creates a new instance of {@link AppConfigurationHealthIndicator}.
-     * @param configurationAsyncClient the configuration client
+     * Creates a new instance of {@link KeyVaultSecretHealthIndicator}.
+     * @param secretAsyncClient the secret async client
      */
-    public AppConfigurationHealthIndicator(ConfigurationAsyncClient configurationAsyncClient) {
-        this.configurationAsyncClient = configurationAsyncClient;
+    public KeyVaultSecretHealthIndicator(SecretAsyncClient secretAsyncClient) {
+        this.secretAsyncClient = secretAsyncClient;
     }
 
     @Override
     protected void doHealthCheck(Health.Builder builder) {
         try {
-            this.configurationAsyncClient.getConfigurationSetting("spring-cloud-azure-not-existing-setting", null)
+            this.secretAsyncClient.getSecretWithResponse("spring-cloud-azure-not-existing-secret", "")
                 .block(timeout);
             builder.up();
         } catch (Exception e) {

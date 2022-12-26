@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.actuator.keyvault;
+package com.azure.spring.cloud.actuator.implementation.keyvault;
 
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.security.keyvault.secrets.SecretAsyncClient;
+import com.azure.security.keyvault.certificates.CertificateAsyncClient;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 
@@ -13,33 +13,29 @@ import java.time.Duration;
 import static com.azure.spring.cloud.actuator.implementation.util.ActuateConstants.DEFAULT_HEALTH_CHECK_TIMEOUT;
 
 /**
- * Indicator class of Key Vault Secret Health
+ * Indicator class of Key Vault Certificate Health
  */
-public class KeyVaultSecretHealthIndicator extends AbstractHealthIndicator {
+public class KeyVaultCertificateHealthIndicator extends AbstractHealthIndicator {
 
-    private final SecretAsyncClient secretAsyncClient;
+    private final CertificateAsyncClient certificateAsyncClient;
     private Duration timeout = DEFAULT_HEALTH_CHECK_TIMEOUT;
 
     /**
-     * Creates a new instance of {@link KeyVaultSecretHealthIndicator}.
-     * @param secretAsyncClient the secret async client
+     * Creates a new instance of {@link KeyVaultCertificateHealthIndicator}.
+     * @param certificateAsyncClient the certificate async client
      */
-    public KeyVaultSecretHealthIndicator(SecretAsyncClient secretAsyncClient) {
-        this.secretAsyncClient = secretAsyncClient;
+    public KeyVaultCertificateHealthIndicator(CertificateAsyncClient certificateAsyncClient) {
+        this.certificateAsyncClient = certificateAsyncClient;
     }
 
     @Override
     protected void doHealthCheck(Health.Builder builder) {
         try {
-            this.secretAsyncClient.getSecretWithResponse("spring-cloud-azure-not-existing-secret", "")
+            this.certificateAsyncClient.getCertificateWithResponse("spring-cloud-azure-not-existing-certificate")
                 .block(timeout);
             builder.up();
-        } catch (Exception e) {
-            if (e instanceof ResourceNotFoundException) {
-                builder.up();
-            } else {
-                throw e;
-            }
+        } catch (ResourceNotFoundException e) {
+            builder.up();
         }
     }
 

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.actuator.cosmos;
+package com.azure.spring.cloud.actuator.implementation.cosmos;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
@@ -15,7 +15,7 @@ import org.springframework.util.Assert;
 
 import java.time.Duration;
 
-import static com.azure.spring.cloud.actuator.cosmos.CosmosHealthConstants.DATA_BASE_FIELD;
+import static com.azure.spring.cloud.actuator.implementation.cosmos.CosmosHealthConstants.DATA_BASE_FIELD;
 import static com.azure.spring.cloud.actuator.implementation.util.ActuateConstants.DEFAULT_HEALTH_CHECK_TIMEOUT;
 
 /**
