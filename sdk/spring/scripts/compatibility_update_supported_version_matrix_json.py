@@ -45,7 +45,7 @@ def get_supported_spring_boot_version(filepath):
     for entry in data:
         for key in entry:
             if entry[key] == "SUPPORTED":
-                if entry["spring-boot-version"].startswith(get_args().spring_boot_major_version):
+                if entry["spring-boot-version"].startswith(get_args().spring_boot_major_version + "."):
                     supported_version_list.append(entry["spring-boot-version"])
     return supported_version_list
 
