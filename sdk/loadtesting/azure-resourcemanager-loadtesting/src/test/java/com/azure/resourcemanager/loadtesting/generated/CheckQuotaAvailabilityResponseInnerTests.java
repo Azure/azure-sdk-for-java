@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 public final class CheckQuotaAvailabilityResponseInnerTests {
     @Test
-    public void testDeserialize() {
+    public void testDeserialize() throws Exception {
         CheckQuotaAvailabilityResponseInner model =
             BinaryData
                 .fromString(
@@ -22,7 +22,7 @@ public final class CheckQuotaAvailabilityResponseInnerTests {
     }
 
     @Test
-    public void testSerialize() {
+    public void testSerialize() throws Exception {
         CheckQuotaAvailabilityResponseInner model =
             new CheckQuotaAvailabilityResponseInner().withIsAvailable(true).withAvailabilityStatus("jpslwejd");
         model = BinaryData.fromObject(model).toObject(CheckQuotaAvailabilityResponseInner.class);

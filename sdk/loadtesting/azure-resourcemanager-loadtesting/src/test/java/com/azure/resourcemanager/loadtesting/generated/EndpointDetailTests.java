@@ -10,12 +10,12 @@ import org.junit.jupiter.api.Test;
 
 public final class EndpointDetailTests {
     @Test
-    public void testDeserialize() {
+    public void testDeserialize() throws Exception {
         EndpointDetail model = BinaryData.fromString("{\"port\":1629637737}").toObject(EndpointDetail.class);
     }
 
     @Test
-    public void testSerialize() {
+    public void testSerialize() throws Exception {
         EndpointDetail model = new EndpointDetail();
         model = BinaryData.fromObject(model).toObject(EndpointDetail.class);
     }

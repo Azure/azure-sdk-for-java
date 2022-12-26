@@ -15,17 +15,17 @@ import org.junit.jupiter.api.Test;
 
 public final class ManagedServiceIdentityTests {
     @Test
-    public void testDeserialize() {
+    public void testDeserialize() throws Exception {
         ManagedServiceIdentity model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"145cc7cc-486c-4542-ba43-d87b7d0f383a\",\"tenantId\":\"692d54e5-edef-470e-8f84-37e01572573a\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"kzsmodm\":{\"principalId\":\"29744297-782e-41c9-9b94-09ac1f7a0883\",\"clientId\":\"356ae6e9-1b2a-42fd-88bf-9eda360f854c\"},\"ugpbkw\":{\"principalId\":\"62c982a7-52c7-4121-8e76-00d52f8bc180\",\"clientId\":\"84df7b77-1471-49b6-ba65-ce25a481b57e\"},\"tduqktapspwgcuer\":{\"principalId\":\"6a6fbc42-918b-420d-93b7-be2bc0f3209c\",\"clientId\":\"002cad23-895b-4c21-a339-218ceedd2095\"}}}")
+                    "{\"principalId\":\"21bfc49c-93a9-4ce4-8e65-f3ad192fd0b7\",\"tenantId\":\"91a226df-aabc-40f2-8069-145b874ae426\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"kzsmodm\":{\"principalId\":\"a1e7264a-907c-437b-bef7-6a14d8bacdb1\",\"clientId\":\"1512b7ad-0c07-4ffb-a8ac-2e46fcebda38\"},\"ugpbkw\":{\"principalId\":\"7dd8800f-1a7c-4608-ab97-b68f9a2a988b\",\"clientId\":\"c116280a-4b22-4458-b9db-4fe9c2f8457e\"},\"tduqktapspwgcuer\":{\"principalId\":\"c33f551a-430c-4fa3-81c5-bced086e4780\",\"clientId\":\"01cfd135-6f98-48fc-812c-a7d705e99e1a\"}}}")
                 .toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     @Test
-    public void testSerialize() {
+    public void testSerialize() throws Exception {
         ManagedServiceIdentity model =
             new ManagedServiceIdentity()
                 .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)

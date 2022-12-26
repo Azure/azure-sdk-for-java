@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 public final class QuotaBucketRequestPropertiesTests {
     @Test
-    public void testDeserialize() {
+    public void testDeserialize() throws Exception {
         QuotaBucketRequestProperties model =
             BinaryData
                 .fromString(
@@ -26,7 +26,7 @@ public final class QuotaBucketRequestPropertiesTests {
     }
 
     @Test
-    public void testSerialize() {
+    public void testSerialize() throws Exception {
         QuotaBucketRequestProperties model =
             new QuotaBucketRequestProperties()
                 .withCurrentUsage(1708707643)

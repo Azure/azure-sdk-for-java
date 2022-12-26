@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 public final class QuotaResourcePropertiesTests {
     @Test
-    public void testDeserialize() {
+    public void testDeserialize() throws Exception {
         QuotaResourceProperties model =
             BinaryData
                 .fromString("{\"limit\":1833864756,\"usage\":1656493513,\"provisioningState\":\"Canceled\"}")
@@ -21,7 +21,7 @@ public final class QuotaResourcePropertiesTests {
     }
 
     @Test
-    public void testSerialize() {
+    public void testSerialize() throws Exception {
         QuotaResourceProperties model = new QuotaResourceProperties().withLimit(1833864756).withUsage(1656493513);
         model = BinaryData.fromObject(model).toObject(QuotaResourceProperties.class);
         Assertions.assertEquals(1833864756, model.limit());

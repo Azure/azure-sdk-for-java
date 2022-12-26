@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 public final class QuotaResourceListTests {
     @Test
-    public void testDeserialize() {
+    public void testDeserialize() throws Exception {
         QuotaResourceList model =
             BinaryData
                 .fromString(
@@ -19,7 +19,7 @@ public final class QuotaResourceListTests {
     }
 
     @Test
-    public void testSerialize() {
+    public void testSerialize() throws Exception {
         QuotaResourceList model = new QuotaResourceList();
         model = BinaryData.fromObject(model).toObject(QuotaResourceList.class);
     }

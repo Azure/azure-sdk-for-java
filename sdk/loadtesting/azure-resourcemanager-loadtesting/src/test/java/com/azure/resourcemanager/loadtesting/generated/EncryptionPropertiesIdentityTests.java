@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 public final class EncryptionPropertiesIdentityTests {
     @Test
-    public void testDeserialize() {
+    public void testDeserialize() throws Exception {
         EncryptionPropertiesIdentity model =
             BinaryData
                 .fromString("{\"type\":\"SystemAssigned\",\"resourceId\":\"qytbciq\"}")
@@ -22,7 +22,7 @@ public final class EncryptionPropertiesIdentityTests {
     }
 
     @Test
-    public void testSerialize() {
+    public void testSerialize() throws Exception {
         EncryptionPropertiesIdentity model =
             new EncryptionPropertiesIdentity().withType(Type.SYSTEM_ASSIGNED).withResourceId("qytbciq");
         model = BinaryData.fromObject(model).toObject(EncryptionPropertiesIdentity.class);

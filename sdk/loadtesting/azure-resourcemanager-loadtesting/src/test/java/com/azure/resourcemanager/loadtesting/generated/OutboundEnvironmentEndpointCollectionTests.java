@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 public final class OutboundEnvironmentEndpointCollectionTests {
     @Test
-    public void testDeserialize() {
+    public void testDeserialize() throws Exception {
         OutboundEnvironmentEndpointCollection model =
             BinaryData
                 .fromString("{\"value\":[{\"category\":\"pymzidnsezcxtbzs\",\"endpoints\":[]}],\"nextLink\":\"cs\"}")
@@ -20,7 +20,7 @@ public final class OutboundEnvironmentEndpointCollectionTests {
     }
 
     @Test
-    public void testSerialize() {
+    public void testSerialize() throws Exception {
         OutboundEnvironmentEndpointCollection model = new OutboundEnvironmentEndpointCollection().withNextLink("cs");
         model = BinaryData.fromObject(model).toObject(OutboundEnvironmentEndpointCollection.class);
         Assertions.assertEquals("cs", model.nextLink());

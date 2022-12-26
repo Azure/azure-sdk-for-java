@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 public final class OperationDisplayTests {
     @Test
-    public void testDeserialize() {
+    public void testDeserialize() throws Exception {
         OperationDisplay model =
             BinaryData
                 .fromString(
@@ -19,7 +19,7 @@ public final class OperationDisplayTests {
     }
 
     @Test
-    public void testSerialize() {
+    public void testSerialize() throws Exception {
         OperationDisplay model = new OperationDisplay();
         model = BinaryData.fromObject(model).toObject(OperationDisplay.class);
     }

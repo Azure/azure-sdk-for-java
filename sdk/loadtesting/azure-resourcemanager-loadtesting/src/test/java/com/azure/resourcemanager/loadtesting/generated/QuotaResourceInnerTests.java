@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 public final class QuotaResourceInnerTests {
     @Test
-    public void testDeserialize() {
+    public void testDeserialize() throws Exception {
         QuotaResourceInner model =
             BinaryData
                 .fromString(
@@ -22,7 +22,7 @@ public final class QuotaResourceInnerTests {
     }
 
     @Test
-    public void testSerialize() {
+    public void testSerialize() throws Exception {
         QuotaResourceInner model = new QuotaResourceInner().withLimit(143848779).withUsage(519347031);
         model = BinaryData.fromObject(model).toObject(QuotaResourceInner.class);
         Assertions.assertEquals(143848779, model.limit());

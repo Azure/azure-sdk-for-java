@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 public final class QuotaBucketRequestPropertiesDimensionsTests {
     @Test
-    public void testDeserialize() {
+    public void testDeserialize() throws Exception {
         QuotaBucketRequestPropertiesDimensions model =
             BinaryData
                 .fromString("{\"subscriptionId\":\"mdvpjhulsu\",\"location\":\"mkjozkrwf\"}")
@@ -21,7 +21,7 @@ public final class QuotaBucketRequestPropertiesDimensionsTests {
     }
 
     @Test
-    public void testSerialize() {
+    public void testSerialize() throws Exception {
         QuotaBucketRequestPropertiesDimensions model =
             new QuotaBucketRequestPropertiesDimensions().withSubscriptionId("mdvpjhulsu").withLocation("mkjozkrwf");
         model = BinaryData.fromObject(model).toObject(QuotaBucketRequestPropertiesDimensions.class);

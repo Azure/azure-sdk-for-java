@@ -17,11 +17,11 @@ import org.junit.jupiter.api.Test;
 
 public final class LoadTestResourcePageListTests {
     @Test
-    public void testDeserialize() {
+    public void testDeserialize() throws Exception {
         LoadTestResourcePageList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"ojakhmsbzjhcrze\",\"provisioningState\":\"Failed\",\"dataPlaneURI\":\"lxaolthqtrgqjbp\"},\"identity\":{\"principalId\":\"c3517be6-628d-499d-82aa-049d6f4d02c1\",\"tenantId\":\"64fd0348-3757-4ef0-bcc5-643d769f61b8\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"location\":\"v\",\"tags\":{\"it\":\"rwzoxxjtfelluwf\",\"qfpjk\":\"np\"},\"id\":\"lxofpdvhpfxxypin\",\"name\":\"nmayhuybb\",\"type\":\"podepoo\"},{\"properties\":{\"description\":\"uvamiheognarxzxt\",\"provisioningState\":\"Succeeded\",\"dataPlaneURI\":\"usivye\"},\"identity\":{\"principalId\":\"217c35c3-3f3e-4bcc-822d-234c956c225f\",\"tenantId\":\"9b5e21c7-a98c-457d-a9a1-0b327cbb5909\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"location\":\"hungbwjzrnf\",\"tags\":{\"ofx\":\"gispemvtzfkufubl\",\"jbasvmsmjqulngs\":\"eofjaeqjh\",\"bkzgcwrwclx\":\"tnb\",\"vkocrcjdkwtn\":\"wrljdouskc\"},\"id\":\"xbnjbiksq\",\"name\":\"gls\",\"type\":\"ainqpjwnzlljfm\"},{\"properties\":{\"description\":\"ebvmgxsabkyqd\",\"provisioningState\":\"Canceled\",\"dataPlaneURI\":\"tcj\"},\"identity\":{\"principalId\":\"3f1f4131-8097-4399-a587-bbbeeb1c6146\",\"tenantId\":\"03be0763-d164-45a1-9c38-e3d0e29310aa\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"hkr\",\"tags\":{\"bdkvwrwjf\":\"appd\"},\"id\":\"usnhutje\",\"name\":\"tmrldhugjzzdatq\",\"type\":\"hocdgeab\"}],\"nextLink\":\"phut\"}")
+                    "{\"value\":[{\"properties\":{\"description\":\"ojakhmsbzjhcrze\",\"provisioningState\":\"Failed\",\"dataPlaneURI\":\"lxaolthqtrgqjbp\"},\"identity\":{\"principalId\":\"d8355447-72f1-44d8-b9d9-424330cd5118\",\"tenantId\":\"4544623b-f738-43d8-9988-aa3a9561b4c4\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"location\":\"v\",\"tags\":{\"it\":\"rwzoxxjtfelluwf\",\"qfpjk\":\"np\"},\"id\":\"lxofpdvhpfxxypin\",\"name\":\"nmayhuybb\",\"type\":\"podepoo\"},{\"properties\":{\"description\":\"uvamiheognarxzxt\",\"provisioningState\":\"Succeeded\",\"dataPlaneURI\":\"usivye\"},\"identity\":{\"principalId\":\"e70183de-d8ad-4b0a-af38-1fb93774b6cc\",\"tenantId\":\"6e455a2c-2c73-4178-b928-137b9fa6b1c0\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"location\":\"hungbwjzrnf\",\"tags\":{\"ofx\":\"gispemvtzfkufubl\",\"jbasvmsmjqulngs\":\"eofjaeqjh\",\"bkzgcwrwclx\":\"tnb\",\"vkocrcjdkwtn\":\"wrljdouskc\"},\"id\":\"xbnjbiksq\",\"name\":\"gls\",\"type\":\"ainqpjwnzlljfm\"},{\"properties\":{\"description\":\"ebvmgxsabkyqd\",\"provisioningState\":\"Canceled\",\"dataPlaneURI\":\"tcj\"},\"identity\":{\"principalId\":\"61d43b42-c9e8-4183-b0cd-98df81e99923\",\"tenantId\":\"69ff926e-648b-425a-a414-9462a20a386f\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"hkr\",\"tags\":{\"bdkvwrwjf\":\"appd\"},\"id\":\"usnhutje\",\"name\":\"tmrldhugjzzdatq\",\"type\":\"hocdgeab\"}],\"nextLink\":\"phut\"}")
                 .toObject(LoadTestResourcePageList.class);
         Assertions.assertEquals("v", model.value().get(0).location());
         Assertions.assertEquals("rwzoxxjtfelluwf", model.value().get(0).tags().get("it"));
@@ -31,7 +31,7 @@ public final class LoadTestResourcePageListTests {
     }
 
     @Test
-    public void testSerialize() {
+    public void testSerialize() throws Exception {
         LoadTestResourcePageList model =
             new LoadTestResourcePageList()
                 .withValue(

@@ -10,16 +10,16 @@ import org.junit.jupiter.api.Test;
 
 public final class UserAssignedIdentityTests {
     @Test
-    public void testDeserialize() {
+    public void testDeserialize() throws Exception {
         UserAssignedIdentity model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"bfdbb553-b9fb-45dc-81cf-e5524340c032\",\"clientId\":\"a4430fa9-fcfd-400c-9698-1ffe1f7f62be\"}")
+                    "{\"principalId\":\"7f6b70cb-eae3-4ed3-8692-0bc4b2559fbc\",\"clientId\":\"5e9f85fd-01b0-4f54-a44b-0d25d9c5cd11\"}")
                 .toObject(UserAssignedIdentity.class);
     }
 
     @Test
-    public void testSerialize() {
+    public void testSerialize() throws Exception {
         UserAssignedIdentity model = new UserAssignedIdentity();
         model = BinaryData.fromObject(model).toObject(UserAssignedIdentity.class);
     }
