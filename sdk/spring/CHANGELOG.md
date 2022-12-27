@@ -8,6 +8,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Features Added
 - Enhance the Event Hubs/Service Bus/Storage Queue message converter to support Spring autoconfiguration-pattern. [#30741](https://github.com/Azure/azure-sdk-for-java/issues/30741)
+- Support the PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD property. [#30252](https://github.com/Azure/azure-sdk-for-java/issues/30252)
 
 #### Breaking Changes
  - Remove the `public` access modifier from bean methods [#32514](https://github.com/Azure/azure-sdk-for-java/pull/32514). 
