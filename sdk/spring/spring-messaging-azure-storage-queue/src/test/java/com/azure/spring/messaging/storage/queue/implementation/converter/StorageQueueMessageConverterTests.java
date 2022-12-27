@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging.storage.queue.support.converter;
+package com.azure.spring.messaging.storage.queue.implementation.converter;
 
 import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.converter.UnaryAzureMessageConverterTests;
+import com.azure.spring.messaging.storage.queue.implementation.support.converter.StorageQueueMessageConverter;
 import com.azure.storage.queue.models.QueueMessageItem;
 import org.springframework.messaging.Message;
 

@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging.storage.queue.support.converter;
+package com.azure.spring.messaging.storage.queue.implementation.support.converter;
 
 import com.azure.core.util.BinaryData;
-import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
+import com.azure.spring.messaging.implementation.converter.AbstractJacksonAzureMessageConverter;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -15,7 +15,7 @@ import static com.azure.spring.messaging.implementation.converter.ObjectMapperHo
 /**
  * A converter to turn a {@link org.springframework.messaging.Message} to {@link QueueMessageItem} and vice versa.
  */
-public class StorageQueueMessageConverter extends AbstractAzureMessageConverter<QueueMessageItem, QueueMessageItem> {
+public class StorageQueueMessageConverter extends AbstractJacksonAzureMessageConverter<QueueMessageItem, QueueMessageItem> {
 
     private final ObjectMapper objectMapper;
 

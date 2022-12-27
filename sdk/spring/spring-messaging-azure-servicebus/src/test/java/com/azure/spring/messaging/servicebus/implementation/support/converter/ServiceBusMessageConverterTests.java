@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging.servicebus.support.converter;
+package com.azure.spring.messaging.servicebus.implementation.support.converter;
 
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.servicebus.ServiceBusMessage;
@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-public class ServiceBusMessageConverterTests {
+class ServiceBusMessageConverterTests {
 
     private static final String PAYLOAD = "payload";
     private static final String APPLICATION_JSON = "application/json";
@@ -77,10 +77,8 @@ public class ServiceBusMessageConverterTests {
     public void close() throws Exception {
         closeable.close();
     }
-
-
     @Test
-    public void fromPayloadAsByte() {
+    void fromPayloadAsByte() {
         final Message<byte[]> message = MessageBuilder.withPayload(PAYLOAD.getBytes(StandardCharsets.UTF_8)).build();
         final ServiceBusMessage serviceBusMessage = this.messageConverter.fromMessage(message, ServiceBusMessage.class);
 
@@ -89,7 +87,7 @@ public class ServiceBusMessageConverterTests {
     }
 
     @Test
-    public void fromPayloadAsString() {
+    void fromPayloadAsString() {
         final Message<String> message = MessageBuilder.withPayload(PAYLOAD).build();
         final ServiceBusMessage serviceBusMessage = this.messageConverter.fromMessage(message, ServiceBusMessage.class);
 
@@ -98,7 +96,7 @@ public class ServiceBusMessageConverterTests {
     }
 
     @Test
-    public void fromPayloadAsUserClass() {
+    void fromPayloadAsUserClass() {
         final User user = new User(PAYLOAD);
         final Message<User> message = MessageBuilder.withPayload(user).build();
         final ServiceBusMessage serviceBusMessage = this.messageConverter.fromMessage(message, ServiceBusMessage.class);
@@ -108,7 +106,7 @@ public class ServiceBusMessageConverterTests {
     }
 
     @Test
-    public void toPayloadAsByte() {
+    void toPayloadAsByte() {
         Message<byte[]> message = this.messageConverter.toMessage(receivedMessage, byte[].class);
 
         assertNotNull(message);
@@ -116,7 +114,7 @@ public class ServiceBusMessageConverterTests {
     }
 
     @Test
-    public void toPayloadAsString() {
+    void toPayloadAsString() {
         Message<String> message = this.messageConverter.toMessage(receivedMessage, String.class);
 
         assertNotNull(message);
@@ -124,7 +122,7 @@ public class ServiceBusMessageConverterTests {
     }
 
     @Test
-    public void toPayloadAsUserClass() {
+    void toPayloadAsUserClass() {
         final User user = new User(PAYLOAD);
         when(this.receivedMessage.getBody()).thenReturn(BinaryData.fromObject(user));
 
@@ -135,7 +133,7 @@ public class ServiceBusMessageConverterTests {
     }
 
     @Test
-    public void testScheduledEnqueueTimeHeader() {
+    void testScheduledEnqueueTimeHeader() {
         Message<String> springMessage = MessageBuilder.withPayload(PAYLOAD)
             .build();
         ServiceBusMessage servicebusMessage = this.messageConverter.fromMessage(springMessage, ServiceBusMessage.class);
@@ -158,7 +156,7 @@ public class ServiceBusMessageConverterTests {
     }
 
     @Test
-    public void testConvertSpringNativeMessageHeaders() {
+    void testConvertSpringNativeMessageHeaders() {
         Message<String> springMessage = MessageBuilder.withPayload(PAYLOAD)
             .setHeader(MessageHeaders.CONTENT_TYPE, APPLICATION_JSON)
             .setHeader(MessageHeaders.REPLY_CHANNEL, REPLY_TO)
@@ -206,7 +204,7 @@ public class ServiceBusMessageConverterTests {
     }
 
     @Test
-    public void testServiceBusMessageHeadersSet() {
+    void testServiceBusMessageHeadersSet() {
 
         String customHeader = "custom-header";
         String customHeaderValue = "custom-header-value";
@@ -223,7 +221,7 @@ public class ServiceBusMessageConverterTests {
     }
 
     @Test
-    public void testServiceBusHeaderAndSessionIdPriority() {
+    void testServiceBusHeaderAndSessionIdPriority() {
         // When session id set, the partition key equals to session id.
         // If they are different, the original partition key will be overwritten with session id.
         Message<String> springMessage = springMessageBuilder().setHeader(ServiceBusMessageHeaders.SESSION_ID, SERVICE_BUS_SESSION_ID).build();
@@ -233,7 +231,7 @@ public class ServiceBusMessageConverterTests {
     }
 
     @Test
-    public void testAzureHeaderAndServiceBusHeaderAndSessionIdSetSameTime() {
+    void testAzureHeaderAndServiceBusHeaderAndSessionIdSetSameTime() {
         Message<String> springMessage = MessageBuilder.withPayload(PAYLOAD)
             .setHeader(ServiceBusMessageHeaders.PARTITION_KEY,
                 SERVICE_BUS_PARTITION_KEY)
@@ -247,7 +245,7 @@ public class ServiceBusMessageConverterTests {
     }
 
     @Test
-    public void testAzureHeaderAndServiceBusHeaderPriority() {
+    void testAzureHeaderAndServiceBusHeaderPriority() {
         Message<String> springMessage = MessageBuilder.withPayload(PAYLOAD)
             .setHeader(ServiceBusMessageHeaders.PARTITION_KEY,
                 SERVICE_BUS_PARTITION_KEY)
@@ -260,7 +258,7 @@ public class ServiceBusMessageConverterTests {
     }
 
     @Test
-    public void testAzureHeaderAndSessionIdPriority() {
+    void testAzureHeaderAndSessionIdPriority() {
         Message<String> springMessage = MessageBuilder.withPayload(PAYLOAD)
             .setHeader(AzureHeaders.PARTITION_KEY, AZURE_HEADER_PARTITION_KEY)
             .setHeader(ServiceBusMessageHeaders.SESSION_ID, SERVICE_BUS_SESSION_ID)
@@ -271,7 +269,7 @@ public class ServiceBusMessageConverterTests {
     }
 
     @Test
-    public void testServiceBusMessageHeadersRead() {
+    void testServiceBusMessageHeadersRead() {
         when(this.receivedMessage.getMessageId()).thenReturn(SERVICE_BUS_MESSAGE_ID);
         when(this.receivedMessage.getTimeToLive()).thenReturn(SERVICE_BUS_TTL);
         when(this.receivedMessage.getScheduledEnqueueTime()).thenReturn(SERVICE_BUS_SCHEDULED_ENQUEUE_TIME);

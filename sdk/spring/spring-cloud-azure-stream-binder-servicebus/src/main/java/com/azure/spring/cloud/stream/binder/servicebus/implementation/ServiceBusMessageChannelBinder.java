@@ -3,6 +3,8 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus.implementation;
 
+import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
 import com.azure.spring.cloud.stream.binder.servicebus.config.ServiceBusProcessorFactoryCustomizer;
@@ -20,6 +22,7 @@ import com.azure.spring.integration.core.instrumentation.InstrumentationManager;
 import com.azure.spring.integration.servicebus.implementation.health.ServiceBusProcessorInstrumentation;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
 import com.azure.spring.messaging.PropertiesSupplier;
+import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
 import com.azure.spring.messaging.servicebus.core.listener.ServiceBusMessageListenerContainer;
@@ -30,7 +33,7 @@ import com.azure.spring.messaging.servicebus.core.DefaultServiceBusNamespaceProc
 import com.azure.spring.messaging.servicebus.core.DefaultServiceBusNamespaceProducerFactory;
 import com.azure.spring.messaging.servicebus.implementation.properties.merger.ProcessorPropertiesMerger;
 import com.azure.spring.messaging.servicebus.support.ServiceBusMessageHeaders;
-import com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter;
+import com.azure.spring.messaging.servicebus.implementation.support.converter.ServiceBusMessageConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
@@ -79,7 +82,7 @@ public class ServiceBusMessageChannelBinder extends
     private NamespaceProperties namespaceProperties;
     private ServiceBusTemplate serviceBusTemplate;
     private ServiceBusProcessorFactory processorFactory;
-    private ServiceBusMessageConverter messageConverter = new ServiceBusMessageConverter();
+    private AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> messageConverter = new ServiceBusMessageConverter();
     private final List<ServiceBusMessageListenerContainer> serviceBusMessageListenerContainers = new ArrayList<>();
     private final InstrumentationManager instrumentationManager = new DefaultInstrumentationManager();
     private final Map<String, ExtendedProducerProperties<ServiceBusProducerProperties>>
@@ -330,7 +333,7 @@ public class ServiceBusMessageChannelBinder extends
      *
      * @param messageConverter the message converter
      */
-    public void setMessageConverter(ServiceBusMessageConverter messageConverter) {
+    public void setMessageConverter(AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> messageConverter) {
         this.messageConverter = messageConverter;
     }
 

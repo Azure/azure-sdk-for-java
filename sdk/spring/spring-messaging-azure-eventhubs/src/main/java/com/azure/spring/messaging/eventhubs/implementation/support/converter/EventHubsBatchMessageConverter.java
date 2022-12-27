@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.messaging.eventhubs.support.converter;
+package com.azure.spring.messaging.eventhubs.implementation.support.converter;
 
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.spring.messaging.AzureHeaders;
-import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
+import com.azure.spring.messaging.implementation.converter.AbstractJacksonAzureMessageConverter;
 import com.azure.spring.messaging.eventhubs.support.EventHubsHeaders;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.messaging.Message;
@@ -25,7 +25,7 @@ import static com.azure.spring.messaging.implementation.converter.ObjectMapperHo
  * A converter to turn a {@link com.azure.messaging.eventhubs.models.EventBatchContext} to
  * {@link Message} and vice versa.
  */
-public class EventHubsBatchMessageConverter extends AbstractAzureMessageConverter<EventBatchContext, EventData> {
+public class EventHubsBatchMessageConverter extends AbstractJacksonAzureMessageConverter<EventBatchContext, EventData> {
 
     private final ObjectMapper objectMapper;
 
