@@ -75,16 +75,16 @@ public final class LoadTestingClientImpl {
         return this.loadTestAdministrations;
     }
 
-    /** The TestRunsImpl object to access its operations. */
-    private final TestRunsImpl testRuns;
+    /** The LoadTestRunsImpl object to access its operations. */
+    private final LoadTestRunsImpl loadTestRuns;
 
     /**
-     * Gets the TestRunsImpl object to access its operations.
+     * Gets the LoadTestRunsImpl object to access its operations.
      *
-     * @return the TestRunsImpl object.
+     * @return the LoadTestRunsImpl object.
      */
-    public TestRunsImpl getTestRuns() {
-        return this.testRuns;
+    public LoadTestRunsImpl getLoadTestRuns() {
+        return this.loadTestRuns;
     }
 
     /**
@@ -132,6 +132,6 @@ public final class LoadTestingClientImpl {
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
         this.loadTestAdministrations = new LoadTestAdministrationsImpl(this);
-        this.testRuns = new TestRunsImpl(this);
+        this.loadTestRuns = new LoadTestRunsImpl(this);
     }
 }

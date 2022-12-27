@@ -8,8 +8,8 @@ import com.azure.core.util.ServiceVersion;
 
 /** Service version of LoadTestingClient. */
 public enum LoadTestingServiceVersion implements ServiceVersion {
-    /** Enum value 2022-06-01-preview. */
-    V2022_06_01_PREVIEW("2022-06-01-preview");
+    /** Enum value 2022-11-01. */
+    V2022_11_01("2022-11-01");
 
     private final String version;
 
@@ -28,6 +28,6 @@ public enum LoadTestingServiceVersion implements ServiceVersion {
      * @return The latest {@link LoadTestingServiceVersion}.
      */
     public static LoadTestingServiceVersion getLatest() {
-        return V2022_06_01_PREVIEW;
+        return V2022_11_01;
     }
 }
