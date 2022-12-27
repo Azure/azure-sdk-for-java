@@ -12,8 +12,8 @@
   <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-developer-loadtesting;current} -->
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure SDK for LoadTestingClient Management</name>
-  <description>This package contains Microsoft Azure LoadTestingClient client library.</description>
+  <name>Microsoft Azure SDK for Load Testing</name>
+  <description>This package contains Microsoft Azure Load Testing client library.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -38,7 +38,7 @@
   </developers>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jacoco.skip>true</jacoco.skip>
+    <jacoco.skip>false</jacoco.skip>
   </properties>
   <dependencies>
     <dependency>
