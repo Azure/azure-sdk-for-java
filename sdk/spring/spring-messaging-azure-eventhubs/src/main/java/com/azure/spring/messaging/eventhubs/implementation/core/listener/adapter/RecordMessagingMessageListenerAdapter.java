@@ -8,7 +8,7 @@ import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsRecordMessageListener;
 import com.azure.spring.messaging.AzureHeaders;
-import com.azure.spring.messaging.implementation.converter.AbstractJacksonAzureMessageConverter;
+import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.eventhubs.support.EventHubsHeaders;
 import com.azure.spring.messaging.eventhubs.implementation.support.converter.EventHubsMessageConverter;
 import com.azure.spring.messaging.implementation.listener.adapter.MessagingMessageListenerAdapter;
@@ -48,9 +48,8 @@ public class RecordMessagingMessageListenerAdapter extends MessagingMessageListe
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public AbstractJacksonAzureMessageConverter<EventData, EventData> getMessageConverter() {
-        return (AbstractJacksonAzureMessageConverter<EventData, EventData>) super.getMessageConverter();
+    public AzureMessageConverter<EventData, EventData> getMessageConverter() {
+        return (AzureMessageConverter<EventData, EventData>) super.getMessageConverter();
     }
 
 }
