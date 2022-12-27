@@ -18,6 +18,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.stream.Collectors;
@@ -30,6 +31,12 @@ public class TestProxyPlaybackClient implements HttpClient {
     private final HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
     private String xRecordingId;
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
+
+    private final Map<String, List<String>> sanitizers;
+
+    public TestProxyPlaybackClient(Map<String, List<String>> recordSanitizers) {
+        this.sanitizers = recordSanitizers;
+    }
 
     /**
      * Starts playback of a test recording.
@@ -45,8 +52,9 @@ public class TestProxyPlaybackClient implements HttpClient {
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             xRecordingId = response.getHeaderValue("x-recording-id");
 
-            addUrlRegexSanitizer("^(?:https?:\\\\/\\\\/)?(?:[^@\\\\/\\\\n]+@)?(?:www\\\\.)?([^:\\\\/?\\\\n]+)");
-            addBodySanitizer("$..modelId");
+            // addUrlRegexSanitizer("^(?:https?:\\\\/\\\\/)?(?:[^@\\\\/\\\\n]+@)?(?:www\\\\.)?([^:\\\\/?\\\\n]+)");
+            // addBodySanitizer("$..modelId");
+            addProxySanitization();
             String body = response.getBodyAsString().block();
             // The test proxy stores variables in a map with no guaranteed order.
             // The Java implementation of recording did not use a map, but relied on the order
@@ -103,4 +111,29 @@ public class TestProxyPlaybackClient implements HttpClient {
         client.sendSync(request, Context.NONE);
     }
 
+    private void addHeaderSanitizer(String regexValue) {
+        String requestBody = String.format("{\"value\":\"REDACTED\",\"key\":\"%s\"}", regexValue);
+
+        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/AddSanitizer", TestProxyUtils.getProxyUrl()))
+            .setBody(requestBody);
+        request.setHeader("x-abstraction-identifier", "HeaderRegexSanitizer");
+        request.setHeader("x-recording-id", xRecordingId);
+        client.sendSync(request, Context.NONE);
+    }
+
+    private void addProxySanitization() {
+        // TODO (sanitizer type enum?)
+        this.sanitizers.forEach((sanitizerType, sanitizerRegex)  -> {
+            switch (sanitizerType) {
+                case "URL":
+                    sanitizerRegex.forEach(regexValue -> addUrlRegexSanitizer(regexValue));
+                    break;
+                case "BODY":
+                    sanitizerRegex.forEach(regexValue -> addBodySanitizer(regexValue));
+                case "HEADER":
+                    sanitizerRegex.forEach(regexValue -> addHeaderSanitizer(regexValue));
+            }
+
+        });
+    }
 }

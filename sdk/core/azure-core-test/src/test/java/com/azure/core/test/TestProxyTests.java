@@ -144,12 +144,18 @@ public class TestProxyTests extends TestBase {
         List<String> bodySanitizers = new ArrayList<>();
         bodySanitizers.add("$..modelId");
 
+        List<String> headerSanitizer = new ArrayList<>();
+        headerSanitizer.add("Ocp-Apim-Subscription-Key");
+
         map.put("URL", urlSanitizers);
         map.put("BODY", bodySanitizers);
+        map.put("HEADER", headerSanitizer);
+
+        interceptorManager.addRecordSanitizer(map);
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
-            .policies(interceptorManager.getRecordPolicy(map)).build();
+            .policies(interceptorManager.getRecordPolicy()).build();
         URL url;
         try {
             url = new UrlBuilder()
@@ -175,6 +181,22 @@ public class TestProxyTests extends TestBase {
     @Test
     @Tag("Playback")
     public void testPlaybackWithRedaction() {
+        Map<String, List<String>> map = new HashMap<String, List<String>>();
+        List<String> urlSanitizers = new ArrayList<>();
+        urlSanitizers.add("^(?:https?:\\\\/\\\\/)?(?:[^@\\\\/\\\\n]+@)?(?:www\\\\.)?([^:\\\\/?\\\\n]+)");
+
+        List<String> bodySanitizers = new ArrayList<>();
+        bodySanitizers.add("$..modelId");
+
+        List<String> headerSanitizer = new ArrayList<>();
+        headerSanitizer.add("Ocp-Apim-Subscription-Key");
+
+        map.put("URL", urlSanitizers);
+        map.put("BODY", bodySanitizers);
+        map.put("HEADER", headerSanitizer);
+
+        interceptorManager.addRecordSanitizer(map);
+
         HttpClient client = interceptorManager.getPlaybackClient();
         URL url;
         try {

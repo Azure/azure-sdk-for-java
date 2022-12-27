@@ -72,6 +72,7 @@ public class InterceptorManager implements AutoCloseable {
     private TestProxyRecordPolicy testProxyRecordPolicy;
     private TestProxyPlaybackClient testProxyPlaybackClient;
     private final Queue<String> proxyVariableQueue = new LinkedList<>();
+    private Map<String, List<String>> recordSanitizers;
 
     /**
      * Creates a new InterceptorManager that either replays test-session records or saves them.
@@ -140,6 +141,7 @@ public class InterceptorManager implements AutoCloseable {
         } else {
             this.recordedData = null;
         }
+        this.recordSanitizers = new HashMap<>();
     }
 
     /**
@@ -270,7 +272,7 @@ public class InterceptorManager implements AutoCloseable {
      */
     public HttpPipelinePolicy getRecordPolicy() {
         if (enableTestProxy) {
-            return startProxyRecording(Collections.emptyMap());
+            return startProxyRecording(this.recordSanitizers);
         }
         return getRecordPolicy(Collections.emptyList());
     }
@@ -307,7 +309,7 @@ public class InterceptorManager implements AutoCloseable {
      */
     public HttpClient getPlaybackClient() {
         if (enableTestProxy) {
-            testProxyPlaybackClient = new TestProxyPlaybackClient();
+            testProxyPlaybackClient = new TestProxyPlaybackClient(this.recordSanitizers);
             proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(playbackRecordName, null));
             return testProxyPlaybackClient;
         } else {
@@ -378,7 +380,7 @@ public class InterceptorManager implements AutoCloseable {
 
     private HttpPipelinePolicy startProxyRecording(Map<String, List<String>> sanitizers) {
         this.testProxyRecordPolicy = new TestProxyRecordPolicy();
-        testProxyRecordPolicy.startRecording(playbackRecordName, sanitizers);
+        testProxyRecordPolicy.startRecording(playbackRecordName, this.recordSanitizers);
         return testProxyRecordPolicy;
     }
 
@@ -434,5 +436,9 @@ public class InterceptorManager implements AutoCloseable {
      */
     public void addTextReplacementRule(String regex, String replacement) {
         textReplacementRules.put(regex, replacement);
+    }
+
+    public void addRecordSanitizer(Map<String, List<String>> map) {
+        this.recordSanitizers = map;
     }
 }

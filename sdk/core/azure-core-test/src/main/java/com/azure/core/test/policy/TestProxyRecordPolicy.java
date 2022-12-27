@@ -102,7 +102,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
 
     private void addProxySanitization() {
         // TODO (sanitizer type enum?)
-        sanitizers.forEach((sanitizerType, sanitizerRegex)  -> {
+        this.sanitizers.forEach((sanitizerType, sanitizerRegex)  -> {
             switch (sanitizerType) {
                 case "URL":
                     sanitizerRegex.forEach(regexValue -> addUrlRegexSanitizer(regexValue));
@@ -136,7 +136,13 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     }
 
     private void addHeaderSanitizer(String regexValue) {
-        // TODO
+        String requestBody = String.format("{\"value\":\"REDACTED\",\"key\":\"%s\"}", regexValue);
+
+        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/AddSanitizer", TestProxyUtils.getProxyUrl()))
+            .setBody(requestBody);
+        request.setHeader("x-abstraction-identifier", "HeaderRegexSanitizer");
+        request.setHeader("x-recording-id", xRecordingId);
+        client.sendSync(request, Context.NONE);
     }
 
     // private static String redactionReplacement(String content, Matcher matcher, String replacement) {
