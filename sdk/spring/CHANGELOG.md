@@ -13,7 +13,8 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Breaking Changes
  - Remove the `public` access modifier from bean methods [#32514](https://github.com/Azure/azure-sdk-for-java/pull/32514). 
  - Move Cloud Foundry classes to the implementation package [#32549](https://github.com/Azure/azure-sdk-for-java/pull/32549).
- - Update some classes package path, and reduce the number of public APIs [#32552](https://github.com/Azure/azure-sdk-for-java/pull/32552), [#32582](https://github.com/Azure/azure-sdk-for-java/pull/32582), [#32597](https://github.com/Azure/azure-sdk-for-java/pull/32597), [#32616](https://github.com/Azure/azure-sdk-for-java/pull/32616), [#32616](https://github.com/Azure/azure-sdk-for-java/pull/32616), [#32712](https://github.com/Azure/azure-sdk-for-java/pull/32712).
+ - Update some classes package path, and reduce the number of public APIs [#32552](https://github.com/Azure/azure-sdk-for-java/pull/32552), [#32582](https://github.com/Azure/azure-sdk-for-java/pull/32582), [#32597](https://github.com/Azure/azure-sdk-for-java/pull/32597), [#32616](https://github.com/Azure/azure-sdk-for-java/pull/32616), [#32616](https://github.com/Azure/azure-sdk-for-java/pull/32616), [#32712](https://github.com/Azure/azure-sdk-for-java/pull/32712), [#32716](https://github.com/Azure/azure-sdk-for-java/pull/32716).
+ - Rename class `AbstractAzureMessageConverter` to `AbstractJacksonAzureMessageConverter` [#32716](https://github.com/Azure/azure-sdk-for-java/pull/32716).
 
 #### Bugs Fixed
 - Remove unused class `RestTemplateProxyCustomizerConfiguration` [#32616](https://github.com/Azure/azure-sdk-for-java/pull/32616)

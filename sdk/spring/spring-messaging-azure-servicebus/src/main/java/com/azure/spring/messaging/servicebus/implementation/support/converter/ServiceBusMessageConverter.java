@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging.servicebus.support.converter;
+package com.azure.spring.messaging.servicebus.implementation.support.converter;
 
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.messaging.AzureHeaders;
-import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
+import com.azure.spring.messaging.implementation.converter.AbstractJacksonAzureMessageConverter;
 import com.azure.spring.messaging.servicebus.support.ServiceBusMessageHeaders;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -34,7 +34,7 @@ import static com.azure.spring.messaging.implementation.converter.ObjectMapperHo
  *
  */
 public class ServiceBusMessageConverter
-    extends AbstractAzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> {
+    extends AbstractJacksonAzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusMessageConverter.class);
     private final ObjectMapper objectMapper;

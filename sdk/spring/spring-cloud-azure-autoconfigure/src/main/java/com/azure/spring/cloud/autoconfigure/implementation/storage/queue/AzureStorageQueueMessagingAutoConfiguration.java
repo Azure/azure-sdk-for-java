@@ -9,7 +9,7 @@ import com.azure.spring.messaging.storage.queue.core.StorageQueueTemplate;
 import com.azure.spring.messaging.storage.queue.core.factory.StorageQueueClientFactory;
 import com.azure.spring.messaging.storage.queue.core.properties.StorageQueueProperties;
 import com.azure.spring.messaging.storage.queue.implementation.factory.DefaultStorageQueueClientFactory;
-import com.azure.spring.messaging.storage.queue.support.converter.StorageQueueMessageConverter;
+import com.azure.spring.messaging.storage.queue.implementation.support.converter.StorageQueueMessageConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;

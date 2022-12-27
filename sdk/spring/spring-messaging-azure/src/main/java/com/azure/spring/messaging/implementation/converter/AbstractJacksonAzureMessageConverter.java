@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.messaging.converter;
+package com.azure.spring.messaging.implementation.converter;
 
+import com.azure.spring.messaging.converter.AzureMessageConverter;
+import com.azure.spring.messaging.converter.ConversionException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.lang.NonNull;
@@ -21,7 +23,7 @@ import java.util.Map;
  * Abstract class handles common conversion logic between &lt;T&gt; and {@link Message}
  *
  */
-public abstract class AbstractAzureMessageConverter<I, O> implements AzureMessageConverter<I, O> {
+public abstract class AbstractJacksonAzureMessageConverter<I, O> implements AzureMessageConverter<I, O> {
 
     /**
      * Get the object mapper.

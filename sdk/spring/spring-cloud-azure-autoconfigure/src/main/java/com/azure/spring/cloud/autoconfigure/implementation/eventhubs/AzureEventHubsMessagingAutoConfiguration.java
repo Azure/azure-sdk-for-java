@@ -18,7 +18,7 @@ import com.azure.spring.messaging.eventhubs.core.EventHubsTemplate;
 import com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.ProducerProperties;
-import com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter;
+import com.azure.spring.messaging.eventhubs.implementation.support.converter.EventHubsMessageConverter;
 import com.azure.spring.messaging.implementation.converter.ObjectMapperHolder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;

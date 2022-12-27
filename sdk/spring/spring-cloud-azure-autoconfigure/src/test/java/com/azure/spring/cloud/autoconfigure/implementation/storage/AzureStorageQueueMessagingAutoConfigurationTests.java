@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.storage;
 
 import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.AzureStorageQueueMessagingAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties.AzureStorageQueueProperties;
-import com.azure.spring.messaging.storage.queue.support.converter.StorageQueueMessageConverter;
+import com.azure.spring.messaging.storage.queue.implementation.support.converter.StorageQueueMessageConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;

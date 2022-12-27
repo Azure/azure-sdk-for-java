@@ -26,7 +26,7 @@ import com.azure.spring.messaging.servicebus.core.DefaultServiceBusNamespaceProd
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProducerFactory;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
-import com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter;
+import com.azure.spring.messaging.servicebus.implementation.support.converter.ServiceBusMessageConverter;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;

@@ -18,7 +18,7 @@ import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ProducerProperties;
-import com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter;
+import com.azure.spring.messaging.servicebus.implementation.support.converter.ServiceBusMessageConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
