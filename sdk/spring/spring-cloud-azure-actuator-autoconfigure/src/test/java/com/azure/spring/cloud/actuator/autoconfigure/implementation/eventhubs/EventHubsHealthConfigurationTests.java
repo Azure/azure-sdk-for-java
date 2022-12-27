@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.actuator.autoconfigure.implementation.eventhubs;
 
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
-import com.azure.spring.cloud.actuator.eventhubs.EventHubsHealthIndicator;
+import com.azure.spring.cloud.actuator.implementation.eventhubs.EventHubsHealthIndicator;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.AzureEventHubsAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import org.junit.jupiter.api.Test;

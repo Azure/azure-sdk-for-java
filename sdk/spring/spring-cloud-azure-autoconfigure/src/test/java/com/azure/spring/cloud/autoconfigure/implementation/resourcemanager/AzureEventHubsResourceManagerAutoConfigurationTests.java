@@ -8,7 +8,7 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.resourcemanager.implementation.connectionstring.EventHubsArmConnectionStringProvider;
-import com.azure.spring.cloud.resourcemanager.provisioning.EventHubsProvisioner;
+import com.azure.spring.cloud.resourcemanager.implementation.provisioning.EventHubsProvisioner;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
