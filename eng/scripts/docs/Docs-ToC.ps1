@@ -53,10 +53,7 @@ function Get-java-PackageLevelReadme($packageMetadata) {
 
 function Get-java-DocsMsTocData($packageMetadata, $docRepoLocation) {
     $packageLevelReadmeName = GetPackageReadmeName -packageMetadata $packageMetadata
-    $packageTocHeader = $packageMetadata.Package
-    if ($packageMetadata.DisplayName) {
-        $packageTocHeader = $packageMetadata.DisplayName
-    }
+    $packageTocHeader = GetDocsTocDisplayName -pkg $packageMetadata
 
     $children = @()
     # Children here combine namespaces in both preview and GA.
