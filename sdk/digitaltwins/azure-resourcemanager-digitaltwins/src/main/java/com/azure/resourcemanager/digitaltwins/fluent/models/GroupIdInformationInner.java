@@ -36,6 +36,10 @@ public final class GroupIdInformationInner {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of GroupIdInformationInner class. */
+    public GroupIdInformationInner() {
+    }
+
     /**
      * Get the properties property: The group information properties.
      *

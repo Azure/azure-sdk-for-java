@@ -12,9 +12,8 @@ import java.util.List;
 @Immutable
 public final class PointOfInterestCategory {
     /*
-     * Unique ID for the category. ID can be used to restrict search results to
-     * specific categories through other Search Service APIs, like [Get Search
-     * POI](https://docs.microsoft.com/rest/api/maps/search/getsearchpoi).
+     * Unique ID for the category. ID can be used to restrict search results to specific categories through other
+     * Search Service APIs, like [Get Search POI](https://docs.microsoft.com/rest/api/maps/search/getsearchpoi).
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private Integer id;
@@ -36,6 +35,9 @@ public final class PointOfInterestCategory {
      */
     @JsonProperty(value = "synonyms", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> synonyms;
+
+    /** Creates an instance of PointOfInterestCategory class. */
+    public PointOfInterestCategory() {}
 
     /**
      * Get the id property: Unique ID for the category. ID can be used to restrict search results to specific categories

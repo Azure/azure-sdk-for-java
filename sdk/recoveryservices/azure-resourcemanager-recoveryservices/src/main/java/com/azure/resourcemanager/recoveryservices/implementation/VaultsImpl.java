@@ -47,15 +47,6 @@ public final class VaultsImpl implements Vaults {
         return Utils.mapPage(inner, inner1 -> new VaultImpl(inner1, this.manager()));
     }
 
-    public Vault getByResourceGroup(String resourceGroupName, String vaultName) {
-        VaultInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, vaultName);
-        if (inner != null) {
-            return new VaultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Vault> getByResourceGroupWithResponse(String resourceGroupName, String vaultName, Context context) {
         Response<VaultInner> inner =
             this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, vaultName, context);
@@ -70,12 +61,22 @@ public final class VaultsImpl implements Vaults {
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String vaultName) {
-        this.serviceClient().delete(resourceGroupName, vaultName);
+    public Vault getByResourceGroup(String resourceGroupName, String vaultName) {
+        VaultInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, vaultName);
+        if (inner != null) {
+            return new VaultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String vaultName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(
+        String resourceGroupName, String vaultName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, vaultName, context);
+    }
+
+    public void deleteByResourceGroup(String resourceGroupName, String vaultName) {
+        this.serviceClient().delete(resourceGroupName, vaultName);
     }
 
     public Vault getById(String id) {
@@ -132,7 +133,7 @@ public final class VaultsImpl implements Vaults {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, vaultName, Context.NONE);
+        this.deleteByResourceGroupWithResponse(resourceGroupName, vaultName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
@@ -151,7 +152,7 @@ public final class VaultsImpl implements Vaults {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, vaultName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, vaultName, context);
     }
 
     private VaultsClient serviceClient() {

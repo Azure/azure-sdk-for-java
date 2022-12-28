@@ -11,6 +11,7 @@ import com.azure.resourcemanager.mobilenetwork.fluent.models.SimPolicyInner;
 import com.azure.resourcemanager.mobilenetwork.models.Ambr;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.SimPolicy;
+import com.azure.resourcemanager.mobilenetwork.models.SiteProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.SliceConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.SliceResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
@@ -54,6 +55,15 @@ public final class SimPolicyImpl implements SimPolicy, SimPolicy.Definition, Sim
 
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public Map<String, SiteProvisioningState> siteProvisioningState() {
+        Map<String, SiteProvisioningState> inner = this.innerModel().siteProvisioningState();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
     public Ambr ueAmbr() {

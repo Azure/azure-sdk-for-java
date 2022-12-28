@@ -10,8 +10,6 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.models.GeoPosition;
-import com.azure.identity.DefaultAzureCredential;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.maps.route.MapsRouteAsyncClient;
 import com.azure.maps.route.MapsRouteClient;
 import com.azure.maps.route.MapsRouteClientBuilder;
@@ -34,7 +32,7 @@ public class GetRouteRangeSample {
 
         // use the next 2 lines for Azure AD authentication
         // builder.credential(tokenCredential);
-        // builder.mapsClientId(System.getenv("MAPS_CLIENT_ID"));
+        builder.mapsClientId(System.getenv("MAPS_CLIENT_ID"));
 
         builder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         MapsRouteClient client = builder.buildClient();
@@ -42,21 +40,21 @@ public class GetRouteRangeSample {
         // Get Route Range
         // BEGIN: com.azure.maps.search.sync.route_range
         System.out.println("Get route range");
-        RouteRangeOptions rangeOptions = new RouteRangeOptions(new GeoPosition(5.86605, 50.97452), Duration.ofSeconds(6000));
+        RouteRangeOptions rangeOptions = new RouteRangeOptions(new GeoPosition(50.97452, 5.86605), Duration.ofSeconds(6000));
         client.getRouteRange(rangeOptions);
         // END: com.azure.maps.search.sync.route_range
-        
+
         MapsRouteClientBuilder asyncClientbuilder = new MapsRouteClientBuilder();
 
         // Authenticates using subscription key
-        // AzureKeyCredential keyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
-        // builder.credential(keyCredential);
+        AzureKeyCredential asyncClientKeyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
+        asyncClientbuilder.credential(asyncClientKeyCredential);
 
         // Authenticates using Azure AD building a default credential
         // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
-        DefaultAzureCredential asyncClientTokenCredential = new DefaultAzureCredentialBuilder().build();
+        // DefaultAzureCredential asyncClientTokenCredential = new DefaultAzureCredentialBuilder().build();
+        // asyncClientbuilder.credential(asyncClientTokenCredential);
 
-        asyncClientbuilder.credential(asyncClientTokenCredential);
         asyncClientbuilder.mapsClientId(System.getenv("MAPS_CLIENT_ID"));
         asyncClientbuilder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         MapsRouteAsyncClient asyncClient = asyncClientbuilder.buildAsyncClient();
@@ -64,7 +62,7 @@ public class GetRouteRangeSample {
         // Get Route Range
         // BEGIN: com.azure.maps.search.async.route_range
         System.out.println("Get route range");
-        RouteRangeOptions rangeOptions2 = new RouteRangeOptions(new GeoPosition(5.86605, 50.97452), Duration.ofSeconds(6000));
+        RouteRangeOptions rangeOptions2 = new RouteRangeOptions(new GeoPosition(50.97452, 5.86605), Duration.ofSeconds(6000));
         asyncClient.getRouteRange(rangeOptions2).block();
         // END: com.azure.maps.search.async.route_range
     }

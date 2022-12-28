@@ -23,19 +23,6 @@ public interface DigitalTwinsClient {
      *
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return digitalTwinsInstances resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DigitalTwinsDescriptionInner getByResourceGroup(String resourceGroupName, String resourceName);
-
-    /**
-     * Get DigitalTwinsInstances resource.
-     *
-     * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
-     * @param resourceName The name of the DigitalTwinsInstance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -45,6 +32,19 @@ public interface DigitalTwinsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DigitalTwinsDescriptionInner> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Get DigitalTwinsInstances resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
+     * @param resourceName The name of the DigitalTwinsInstance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return digitalTwinsInstances resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DigitalTwinsDescriptionInner getByResourceGroup(String resourceGroupName, String resourceName);
 
     /**
      * Create or update the metadata of a DigitalTwinsInstance. The usual pattern to modify a property is to retrieve
@@ -299,20 +299,6 @@ public interface DigitalTwinsClient {
      * @param location Location of DigitalTwinsInstance.
      * @param digitalTwinsInstanceCheckName Set the name parameter in the DigitalTwinsInstanceCheckName structure to the
      *     name of the DigitalTwinsInstance to check.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameResultInner checkNameAvailability(String location, CheckNameRequest digitalTwinsInstanceCheckName);
-
-    /**
-     * Check if a DigitalTwinsInstance name is available.
-     *
-     * @param location Location of DigitalTwinsInstance.
-     * @param digitalTwinsInstanceCheckName Set the name parameter in the DigitalTwinsInstanceCheckName structure to the
-     *     name of the DigitalTwinsInstance to check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -322,4 +308,18 @@ public interface DigitalTwinsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
         String location, CheckNameRequest digitalTwinsInstanceCheckName, Context context);
+
+    /**
+     * Check if a DigitalTwinsInstance name is available.
+     *
+     * @param location Location of DigitalTwinsInstance.
+     * @param digitalTwinsInstanceCheckName Set the name parameter in the DigitalTwinsInstanceCheckName structure to the
+     *     name of the DigitalTwinsInstance to check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result returned from a check name availability request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CheckNameResultInner checkNameAvailability(String location, CheckNameRequest digitalTwinsInstanceCheckName);
 }

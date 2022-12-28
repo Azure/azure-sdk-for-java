@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder(alphabetic = true)
 public class PerfStressOptions {
     @Parameter(names = { "-d", "--duration" }, description = "duration of test in seconds")
-    private int duration = 10;
+    private int duration = 15;
 
     @Parameter(names = { "--insecure" }, description = "Allow untrusted SSL server certs")
     private boolean insecure = false;
@@ -35,7 +35,7 @@ public class PerfStressOptions {
     private int parallel = 1;
 
     @Parameter(names = { "-w", "--warmup" }, description = "duration of warmup in seconds")
-    private int warmup = 10;
+    private int warmup = 15;
 
     @Parameter(names = { "--sync" }, description = "Runs sync version of test")
     private boolean sync = false;

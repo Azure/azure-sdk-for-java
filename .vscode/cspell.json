@@ -250,7 +250,8 @@
     "sdk/search/.idea/**",
     "sdk/spring/spring-cloud-azure-starter-jdbc-postgresql/**",
     "sdk/spring/spring-cloud-azure-starter-jdbc-mysql/**",
-    "sdk/devcenter/azure-developer-devcenter/**"
+    "sdk/devcenter/azure-developer-devcenter/**",
+    "sdk/loadtesting/azure-developer-loadtesting/**"
   ],
   "words": [
     "adal",
@@ -716,7 +717,8 @@
       "filename": "sdk/spring/CHANGELOG.md",
       "words": [
         "AADB",
-        "JPMS"
+        "JPMS",
+        "nimbusds"
       ]
     },
     {
