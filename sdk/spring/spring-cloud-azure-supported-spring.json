@@ -1,3 +1,5 @@
+// See [Automated test spring boot and spring cloud compatibility](https://github.com/Azure/spring-cloud-azure-tools#automated-test-spring-boot-and-spring-cloud-compatibility) for more information.
+
 [
   {
     "current" : false,
