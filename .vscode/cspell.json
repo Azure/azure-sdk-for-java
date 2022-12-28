@@ -244,15 +244,14 @@
     "sdk/textanalytics/azure-ai-textanalytics/**",
     "sdk/storage/azure-storage-file-datalake/**",
     "sdk/eventhubs/azure-messaging-eventhubs-stress/**",
-    "sdk/jdbc/azure-identity-providers-jdbc-mysql/**",
-    "sdk/jdbc/azure-identity-providers-jdbc-postgresql/**",
     "sdk/maps/azure-maps-elevation/**",
     "sdk/maps/azure-maps-geolocation/**",
     "sdk/maps/azure-maps-timezone/**",
     "sdk/search/.idea/**",
     "sdk/spring/spring-cloud-azure-starter-jdbc-postgresql/**",
     "sdk/spring/spring-cloud-azure-starter-jdbc-mysql/**",
-    "sdk/devcenter/azure-developer-devcenter/**"
+    "sdk/devcenter/azure-developer-devcenter/**",
+    "sdk/loadtesting/azure-developer-loadtesting/**"
   ],
   "words": [
     "adal",
@@ -359,6 +358,7 @@
     "onboarded",
     "onenote",
     "pwsh",
+    "PSQL",
     "racdw",
     "reimage",
     "reimaging",
@@ -658,6 +658,14 @@
       ]
     },
     {
+      "filename": "**/**-stress/**",
+      "words": [
+        "Djarmode",
+        "Dreactor",
+        "nindent"
+      ]
+    },
+    {
       "filename": "**/sdk/cosmos/azure-cosmos/src/main/java/com/azure/cosmos/implementation/guava*/**/*.java",
       "words": [
         "Bourrillion",
@@ -709,7 +717,8 @@
       "filename": "sdk/spring/CHANGELOG.md",
       "words": [
         "AADB",
-        "JPMS"
+        "JPMS",
+        "nimbusds"
       ]
     },
     {

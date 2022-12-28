@@ -302,6 +302,9 @@ extends:
             - name: azure-core-tracing-opentelemetry
               groupId: com.azure
               safeName: azurecoretracingopentelemetry
+            - name: azure-core-tracing-opentelemetry-samples
+              groupId: com.azure
+              safeName: azurecoretracingopentelemetrysamples
             - name: azure-json
               groupId: com.azure
               safeName: azurejson

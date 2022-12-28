@@ -28,6 +28,10 @@ public final class JobsSummary {
     @JsonProperty(value = "inProgressJobs")
     private Integer inProgressJobs;
 
+    /** Creates an instance of JobsSummary class. */
+    public JobsSummary() {
+    }
+
     /**
      * Get the failedJobs property: Count of failed jobs.
      *

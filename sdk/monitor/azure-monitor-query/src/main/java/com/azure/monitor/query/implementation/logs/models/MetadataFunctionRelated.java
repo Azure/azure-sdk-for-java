@@ -41,6 +41,9 @@ public final class MetadataFunctionRelated {
     @JsonProperty(value = "workspaces")
     private List<String> workspaces;
 
+    /** Creates an instance of MetadataFunctionRelated class. */
+    public MetadataFunctionRelated() {}
+
     /**
      * Get the tables property: The related tables for the function.
      *

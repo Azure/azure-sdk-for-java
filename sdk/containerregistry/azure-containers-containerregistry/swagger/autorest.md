@@ -24,7 +24,7 @@ There is one swagger for Container Registry APIs.
 
 ```ps
 cd <swagger-folder>
-autorest --java --use:@autorest/java@4.0.46
+autorest --java --use:@autorest/java@4.1.7 --use:@autorest/modelerfour@4.23.7
 ```
 
 ### Code generation settings
@@ -43,6 +43,7 @@ service-interface-as-public: true
 models-subpackage: implementation.models
 custom-types: ArtifactTagOrder,ArtifactManifestOrder,ArtifactArchitecture,ArtifactOperatingSystem,ArtifactManifestPlatform,RepositoryProperties,ContainerRepositoryProperties,OciManifest,OciBlobDescriptor,OciAnnotations
 custom-types-subpackage: models
+enable-sync-stack: true
 ```
 
 ### Set modelAsString flag for the enum values of ArtifactTagOrderBy

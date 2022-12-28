@@ -16,6 +16,10 @@ public final class ClientDiscoveryForProperties {
     @JsonProperty(value = "serviceSpecification")
     private ClientDiscoveryForServiceSpecification serviceSpecification;
 
+    /** Creates an instance of ClientDiscoveryForProperties class. */
+    public ClientDiscoveryForProperties() {
+    }
+
     /**
      * Get the serviceSpecification property: Operation properties.
      *

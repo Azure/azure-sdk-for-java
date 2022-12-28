@@ -449,8 +449,18 @@ public class RetryPolicyTests {
             );
             fail("Should throw");
         } catch (Exception e) {
-            assertTrue(Stream.of(e.getSuppressed()).anyMatch(ex -> ex.getMessage().contains("Attempt 1")));
-            assertTrue(Stream.of(e.getSuppressed()).anyMatch(ex -> ex.getMessage().contains("Attempt 2")));
+            boolean hasAttempt1 = false;
+            boolean hasAttempt2 = false;
+            for (Throwable suppressed : e.getSuppressed()) {
+                if (suppressed.getMessage().contains("Attempt 1")) {
+                    hasAttempt1 = true;
+                } else if (suppressed.getMessage().contains("Attempt 2")) {
+                    hasAttempt2 = true;
+                }
+            }
+
+            assertTrue(hasAttempt1, "Did not find suppressed with 'Attempt 1' in message.");
+            assertTrue(hasAttempt2, "Did not find suppressed with 'Attempt 2' in message.");
         }
     }
 

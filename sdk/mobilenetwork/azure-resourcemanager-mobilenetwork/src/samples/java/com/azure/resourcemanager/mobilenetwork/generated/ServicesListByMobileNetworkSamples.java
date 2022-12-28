@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Services ListByMobileNetwork. */
 public final class ServicesListByMobileNetworkSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/ServiceListByMobileNetwork.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/ServiceListByMobileNetwork.json
      */
     /**
      * Sample code: List services in a mobile network.

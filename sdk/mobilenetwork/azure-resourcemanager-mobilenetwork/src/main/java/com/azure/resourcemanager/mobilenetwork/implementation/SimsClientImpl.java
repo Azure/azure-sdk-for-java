@@ -62,7 +62,7 @@ public final class SimsClientImpl implements SimsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MobileNetworkManagem")
-    private interface SimsService {
+    public interface SimsService {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
@@ -118,7 +118,7 @@ public final class SimsClientImpl implements SimsClient {
                 + "/simGroups/{simGroupName}/sims")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SimListResult>> listBySimGroup(
+        Mono<Response<SimListResult>> listByGroup(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
@@ -131,7 +131,7 @@ public final class SimsClientImpl implements SimsClient {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SimListResult>> listBySimGroupNext(
+        Mono<Response<SimListResult>> listByGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
@@ -516,22 +516,6 @@ public final class SimsClientImpl implements SimsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
      * @param simName The name of the SIM.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified SIM.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SimInner get(String resourceGroupName, String simGroupName, String simName) {
-        return getAsync(resourceGroupName, simGroupName, simName).block();
-    }
-
-    /**
-     * Gets information about the specified SIM.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param simGroupName The name of the SIM Group.
-     * @param simName The name of the SIM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -542,6 +526,22 @@ public final class SimsClientImpl implements SimsClient {
     public Response<SimInner> getWithResponse(
         String resourceGroupName, String simGroupName, String simName, Context context) {
         return getWithResponseAsync(resourceGroupName, simGroupName, simName, context).block();
+    }
+
+    /**
+     * Gets information about the specified SIM.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param simName The name of the SIM.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified SIM.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SimInner get(String resourceGroupName, String simGroupName, String simName) {
+        return getWithResponse(resourceGroupName, simGroupName, simName, Context.NONE).getValue();
     }
 
     /**
@@ -835,7 +835,7 @@ public final class SimsClientImpl implements SimsClient {
      * @return all the SIMs in a SIM group along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SimInner>> listBySimGroupSinglePageAsync(String resourceGroupName, String simGroupName) {
+    private Mono<PagedResponse<SimInner>> listByGroupSinglePageAsync(String resourceGroupName, String simGroupName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -860,7 +860,7 @@ public final class SimsClientImpl implements SimsClient {
             .withContext(
                 context ->
                     service
-                        .listBySimGroup(
+                        .listByGroup(
                             this.client.getEndpoint(),
                             resourceGroupName,
                             this.client.getApiVersion(),
@@ -892,7 +892,7 @@ public final class SimsClientImpl implements SimsClient {
      * @return all the SIMs in a SIM group along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SimInner>> listBySimGroupSinglePageAsync(
+    private Mono<PagedResponse<SimInner>> listByGroupSinglePageAsync(
         String resourceGroupName, String simGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -916,7 +916,7 @@ public final class SimsClientImpl implements SimsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBySimGroup(
+            .listByGroup(
                 this.client.getEndpoint(),
                 resourceGroupName,
                 this.client.getApiVersion(),
@@ -946,10 +946,10 @@ public final class SimsClientImpl implements SimsClient {
      * @return all the SIMs in a SIM group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SimInner> listBySimGroupAsync(String resourceGroupName, String simGroupName) {
+    private PagedFlux<SimInner> listByGroupAsync(String resourceGroupName, String simGroupName) {
         return new PagedFlux<>(
-            () -> listBySimGroupSinglePageAsync(resourceGroupName, simGroupName),
-            nextLink -> listBySimGroupNextSinglePageAsync(nextLink));
+            () -> listByGroupSinglePageAsync(resourceGroupName, simGroupName),
+            nextLink -> listByGroupNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -964,10 +964,10 @@ public final class SimsClientImpl implements SimsClient {
      * @return all the SIMs in a SIM group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SimInner> listBySimGroupAsync(String resourceGroupName, String simGroupName, Context context) {
+    private PagedFlux<SimInner> listByGroupAsync(String resourceGroupName, String simGroupName, Context context) {
         return new PagedFlux<>(
-            () -> listBySimGroupSinglePageAsync(resourceGroupName, simGroupName, context),
-            nextLink -> listBySimGroupNextSinglePageAsync(nextLink, context));
+            () -> listByGroupSinglePageAsync(resourceGroupName, simGroupName, context),
+            nextLink -> listByGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -981,8 +981,8 @@ public final class SimsClientImpl implements SimsClient {
      * @return all the SIMs in a SIM group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SimInner> listBySimGroup(String resourceGroupName, String simGroupName) {
-        return new PagedIterable<>(listBySimGroupAsync(resourceGroupName, simGroupName));
+    public PagedIterable<SimInner> listByGroup(String resourceGroupName, String simGroupName) {
+        return new PagedIterable<>(listByGroupAsync(resourceGroupName, simGroupName));
     }
 
     /**
@@ -997,14 +997,15 @@ public final class SimsClientImpl implements SimsClient {
      * @return all the SIMs in a SIM group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SimInner> listBySimGroup(String resourceGroupName, String simGroupName, Context context) {
-        return new PagedIterable<>(listBySimGroupAsync(resourceGroupName, simGroupName, context));
+    public PagedIterable<SimInner> listByGroup(String resourceGroupName, String simGroupName, Context context) {
+        return new PagedIterable<>(listByGroupAsync(resourceGroupName, simGroupName, context));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1012,7 +1013,7 @@ public final class SimsClientImpl implements SimsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SimInner>> listBySimGroupNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<SimInner>> listByGroupNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1024,7 +1025,7 @@ public final class SimsClientImpl implements SimsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listBySimGroupNext(nextLink, this.client.getEndpoint(), accept, context))
+            .withContext(context -> service.listByGroupNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<SimInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1040,7 +1041,8 @@ public final class SimsClientImpl implements SimsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1049,7 +1051,7 @@ public final class SimsClientImpl implements SimsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SimInner>> listBySimGroupNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<SimInner>> listByGroupNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1062,7 +1064,7 @@ public final class SimsClientImpl implements SimsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBySimGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .listByGroupNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

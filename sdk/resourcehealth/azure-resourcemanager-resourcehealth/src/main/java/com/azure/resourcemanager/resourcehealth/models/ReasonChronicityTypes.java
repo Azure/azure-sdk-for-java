@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ReasonChronicityTypes. */
+/** Chronicity of the availability transition. */
 public final class ReasonChronicityTypes extends ExpandableStringEnum<ReasonChronicityTypes> {
     /** Static value Transient for ReasonChronicityTypes. */
     public static final ReasonChronicityTypes TRANSIENT = fromString("Transient");
@@ -27,7 +27,11 @@ public final class ReasonChronicityTypes extends ExpandableStringEnum<ReasonChro
         return fromString(name, ReasonChronicityTypes.class);
     }
 
-    /** @return known ReasonChronicityTypes values. */
+    /**
+     * Gets known ReasonChronicityTypes values.
+     *
+     * @return known ReasonChronicityTypes values.
+     */
     public static Collection<ReasonChronicityTypes> values() {
         return values(ReasonChronicityTypes.class);
     }
