@@ -57,6 +57,8 @@ public class Context {
     private final Object value;
     private final int contextCount;
 
+    private Map<Object, Object> valuesMap;
+
     /**
      * Constructs a new {@link Context} object.
      *
@@ -265,6 +267,15 @@ public class Context {
      * @return A map containing all values of the context linked-list.
      */
     public Map<Object, Object> getValues() {
+        if (valuesMap != null) {
+            return valuesMap;
+        }
+
+        if (contextCount == 1) {
+            this.valuesMap = Collections.singletonMap(key, value);
+            return this.valuesMap;
+        }
+
         Map<Object, Object> map = new HashMap<>((int) Math.ceil(contextCount / 0.75F));
 
         for (Context pointer = this; pointer != null; pointer = pointer.parent) {
@@ -279,7 +290,8 @@ public class Context {
             }
         }
 
-        return map;
+        this.valuesMap = Collections.unmodifiableMap(map);
+        return this.valuesMap;
     }
 
     /**
