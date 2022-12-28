@@ -17,6 +17,8 @@ import java.util.Map;
 public class TestProxyTestServer implements Closeable {
     private final DisposableServer server;
 
+    private static final String TEST_RESPONSE_BODY = "{\"modelId\":\"REDACTED\",\"createdDateTime\":\"2022-08-31T00:00:00Z\",\"apiVersion\":\"2022-08-31\"}";
+
     /**
      * Constructor for TestProxyTestServer
      */
@@ -32,6 +34,12 @@ public class TestProxyTestServer implements Closeable {
                         res.addHeader(requestHeader.getKey(), requestHeader.getValue());
                     }
                     return res.status(HttpResponseStatus.OK).sendString(Mono.just("echoheaders"));
+                })
+                .get("/fr/models", (req, res) -> {
+                    for (Map.Entry<String, String> requestHeader : req.requestHeaders()) {
+                        res.addHeader(requestHeader.getKey(), requestHeader.getValue());
+                    }
+                    return res.status(HttpResponseStatus.OK).sendString(Mono.just(TEST_RESPONSE_BODY));
                 }))
             .bindNow();
     }

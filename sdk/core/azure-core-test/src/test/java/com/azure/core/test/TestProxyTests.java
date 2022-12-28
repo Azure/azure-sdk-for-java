@@ -15,9 +15,10 @@ import com.azure.core.test.models.HeaderRegexSanitizer;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.UrlRegexSanitizer;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
@@ -27,6 +28,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -34,8 +36,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SuppressWarnings("deprecation")
 public class TestProxyTests extends TestBase {
     static TestProxyTestServer server;
-    private String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_ENDPOINT");
-    private String API_KEY = Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_API_KEY");
 
     private static List<TestProxySanitizer> recordSanitizers;
 
@@ -146,7 +146,7 @@ public class TestProxyTests extends TestBase {
 
     @Test
     @Tag("Record")
-    public void testRecordWithRedaction() {
+    public void testRecordWithRedaction() throws JsonProcessingException {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
 
         interceptorManager.addRecordSanitizer(recordSanitizers);
@@ -157,10 +157,10 @@ public class TestProxyTests extends TestBase {
         URL url;
         try {
             url = new UrlBuilder()
-                .setHost(ENDPOINT)
-                .setPath("/formrecognizer/documentModels")
-                .setScheme("https")
-                .setQueryParameter("api-version", "2022-08-31")
+                .setHost("localhost")
+                .setPath("/fr/models")
+                .setPort(3000)
+                .setScheme("http")
                 .toUrl();
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
@@ -168,28 +168,31 @@ public class TestProxyTests extends TestBase {
         testResourceNamer.randomName("test", 10);
         testResourceNamer.now();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader("Ocp-Apim-Subscription-Key", API_KEY);
+        request.setHeader("Ocp-Apim-Subscription-Key", "TEST_API_KEY");
         request.setHeader("Content-Type", "application/json");
 
         HttpResponse response = pipeline.sendSync(request, Context.NONE);
-
+        String responseData = response.getBodyAsBinaryData().toString();
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map jsonMap = objectMapper.readValue(responseData, Map.class);
         assertEquals(response.getStatusCode(), 200);
+        String actualValue = jsonMap.get("modelId").toString();
+        assertEquals("REDACTED", actualValue);
     }
 
     @Test
     @Tag("Playback")
     public void testPlaybackWithRedaction() {
-
         interceptorManager.addRecordSanitizer(recordSanitizers);
-
         HttpClient client = interceptorManager.getPlaybackClient();
         URL url;
+
         try {
             url = new UrlBuilder()
-                .setHost(ENDPOINT)
-                .setPath("/formrecognizer/documentModels")
-                .setScheme("https")
-                .setQueryParameter("api-version", "2022-08-31")
+                .setHost("localhost")
+                .setPort(3000)
+                .setPath("/fr/models")
+                .setScheme("http")
                 .toUrl();
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
@@ -197,7 +200,7 @@ public class TestProxyTests extends TestBase {
         testResourceNamer.randomName("test", 10);
         testResourceNamer.now();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader("Ocp-Apim-Subscription-Key", API_KEY);
+        request.setHeader("Ocp-Apim-Subscription-Key", "TEST_API_KEY");
         request.setHeader("Content-Type", "application/json");
 
         HttpResponse response = client.sendSync(request, Context.NONE);

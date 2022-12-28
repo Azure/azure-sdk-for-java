@@ -431,6 +431,10 @@ public class InterceptorManager implements AutoCloseable {
         textReplacementRules.put(regex, replacement);
     }
 
+    /**
+     * Add text replacement rule (regex as key, the replacement text as value) into {@code recordSanitizers}
+     * @param recordSanitizers the list of replacement regex and rules.
+     */
     public void addRecordSanitizer(List<TestProxySanitizer> recordSanitizers) {
         this.recordSanitizers = recordSanitizers;
     }
