@@ -480,12 +480,32 @@ function Update-java-DocsMsPackages($DocsRepoLocation, $DocsMetadata, $DocValida
     $DocValidationImageId
 }
 
+function Update-java-DeprecatedDocsMsPackages($DocsRepoLocation, $DocsMetadata, $DocValidationImageId) {
+  Write-Host "Excluded packages:"
+  foreach ($excludedPackage in $PackageExclusions.Keys) {
+    Write-Host "  $excludedPackage - $($PackageExclusions[$excludedPackage])"
+  }
+
+  # Also exclude 'spring' packages
+  # https://github.com/Azure/azure-sdk-for-java/issues/23087
+  $FilteredMetadata = $DocsMetadata.Where({ !($PackageExclusions.ContainsKey($_.Package) -or $_.Type -eq 'spring') })
+
+  UpdateDocsMsPackages `
+      (Join-Path $DocsRepoLocation 'package.json') `
+      'legacy' `
+      $FilteredMetadata `
+      $DocValidationImageId
+}
+
 function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata, $DocValidationImageId) {
   $packageConfig = Get-Content $DocConfigFile -Raw | ConvertFrom-Json
 
   $packageOutputPath = 'docs-ref-autogen'
   if ($Mode -eq 'preview') {
     $packageOutputPath = 'preview/docs-ref-autogen'
+  }
+  elseif ($Mode -eq 'legacy') {
+    $packageOutputPath = 'legacy/docs-ref-autogen'
   }
   $targetPackageList = $packageConfig.Where({ $_.output_path -eq $packageOutputPath})
   if ($targetPackageList.Length -eq 0) {
@@ -497,6 +517,11 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata, $DocValidati
   }
 
   $targetPackageList = $targetPackageList[0]
+
+  # Sync with csv every time update.
+  if ($Mode -eq 'legacy') {
+    $targetPackageList.packages = $()
+  }
 
   $outputPackages = @()
   foreach ($package in $targetPackageList.packages) {
@@ -547,13 +572,13 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata, $DocValidati
     # If upgrading the package, run basic sanity checks against the package
     if ($package.packageVersion -ne $packageVersion) {
       Write-Host "Validating new version detected for $packageName ($packageVersion)"
-      $validatePackageResult = ValidatePackage $package.packageGroupId $package.packageArtifactId $packageVersion $DocValidationImageId
+      # $validatePackageResult = ValidatePackage $package.packageGroupId $package.packageArtifactId $packageVersion $DocValidationImageId
 
-      if (!$validatePackageResult) {
-        LogWarning "Package is not valid: $packageName. Keeping old version."
-        $outputPackages += $package
-        continue
-      }
+      # if (!$validatePackageResult) {
+      #   LogWarning "Package is not valid: $packageName. Keeping old version."
+      #   $outputPackages += $package
+      #   continue
+      # }
 
       $package.packageVersion = $packageVersion
     }
@@ -567,14 +592,16 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata, $DocValidati
     $outputPackagesHash["$($package.packageGroupId):$($package.packageArtifactId)"] = $true
   }
 
-  $remainingPackages = @()
+  $remainingPackages = $DocsMetadata.Where({
+    !$outputPackagesHash.ContainsKey("$($_.GroupId):$($_.Package)")
+  })
   if ($Mode -eq 'preview') {
     $remainingPackages = $DocsMetadata.Where({
-      ![string]::IsNullOrWhiteSpace($_.VersionPreview) -and !$outputPackagesHash.ContainsKey("$($_.GroupId):$($_.Package)")
+      ![string]::IsNullOrWhiteSpace($_.VersionPreview)
     })
-  } else {
+  } elseif ($Mode -eq 'latest') {
     $remainingPackages = $DocsMetadata.Where({
-      ![string]::IsNullOrWhiteSpace($_.VersionGA) -and !$outputPackagesHash.ContainsKey("$($_.GroupId):$($_.Package)")
+      ![string]::IsNullOrWhiteSpace($_.VersionGA)
     })
   }
 
@@ -583,16 +610,16 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata, $DocValidati
     $packageName = $package.Package
     $packageGroupId = $package.GroupId
     $packageVersion = $package.VersionGA
-    if ($Mode -eq 'preview') {
+    if ($Mode -ne 'latest') {
       $packageVersion = $package.VersionPreview
     }
 
-    Write-Host "Validating new package $($packageGroupId):$($packageName):$($packageVersion)"
-    $validatePackageResult = ValidatePackage $packageGroupId $packageName $packageVersion $DocValidationImageId
-    if (!$validatePackageResult) {
-      LogWarning "Package is not valid: ${packageGroupId}:$packageName. Cannot onboard."
-      continue
-    }
+    # Write-Host "Validating new package $($packageGroupId):$($packageName):$($packageVersion)"
+    # $validatePackageResult = ValidatePackage $packageGroupId $packageName $packageVersion $DocValidationImageId
+    # if (!$validatePackageResult) {
+    #   LogWarning "Package is not valid: ${packageGroupId}:$packageName. Cannot onboard."
+    #   continue
+    # }
 
     Write-Host "Add new package from metadata: ${packageGroupId}:$packageName"
     $package = [ordered]@{
@@ -733,9 +760,9 @@ function Validate-java-DocMsPackages ($PackageInfo, $PackageInfos, $DocValidatio
     $PackageInfos = @($PackageInfo)
   }
 
-  if (!(ValidatePackages $PackageInfos $DocValidationImageId)) {
-    Write-Error "Package validation failed" -ErrorAction Continue
-  }
+  # if (!(ValidatePackages $PackageInfos $DocValidationImageId)) {
+  #   Write-Error "Package validation failed" -ErrorAction Continue
+  # }
 
   return
 }

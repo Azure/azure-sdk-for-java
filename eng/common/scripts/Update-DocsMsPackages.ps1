@@ -139,8 +139,10 @@ function GetDocsMetadata() {
 if ($UpdateDocsMsPackagesFn -and (Test-Path "Function:$UpdateDocsMsPackagesFn")) {
 
   try {
-    $docsMetadata = GetDocsMetadata
+    $docsMetadata = GetDocsMetadata 
     &$UpdateDocsMsPackagesFn -DocsRepoLocation $DocRepoLocation -DocsMetadata $docsMetadata -PackageSourceOverride $PackageSourceOverride -DocValidationImageId $ImageId
+    $deprecatedMetadata = (Get-CSVMetadata).Where({ ($_.New -eq 'true' -or $_.MSDocService -ne '') -and $_.Hide -ne 'true' -and $_.Support -eq 'deprecated'})
+    &$UpdateDeprecatedDocsMsPackagesFn -DocsRepoLocation $DocRepoLocation -DocsMetadata $deprecatedMetadata -DocValidationImageId $ImageId
   } catch { 
     LogError "Exception while updating docs.ms packages"
     LogError $_ 
