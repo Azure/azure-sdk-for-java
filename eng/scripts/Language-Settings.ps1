@@ -572,13 +572,13 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata, $DocValidati
     # If upgrading the package, run basic sanity checks against the package
     if ($package.packageVersion -ne $packageVersion) {
       Write-Host "Validating new version detected for $packageName ($packageVersion)"
-      # $validatePackageResult = ValidatePackage $package.packageGroupId $package.packageArtifactId $packageVersion $DocValidationImageId
+      $validatePackageResult = ValidatePackage $package.packageGroupId $package.packageArtifactId $packageVersion $DocValidationImageId
 
-      # if (!$validatePackageResult) {
-      #   LogWarning "Package is not valid: $packageName. Keeping old version."
-      #   $outputPackages += $package
-      #   continue
-      # }
+      if (!$validatePackageResult) {
+        LogWarning "Package is not valid: $packageName. Keeping old version."
+        $outputPackages += $package
+        continue
+      }
 
       $package.packageVersion = $packageVersion
     }
@@ -615,11 +615,11 @@ function UpdateDocsMsPackages($DocConfigFile, $Mode, $DocsMetadata, $DocValidati
     }
 
     # Write-Host "Validating new package $($packageGroupId):$($packageName):$($packageVersion)"
-    # $validatePackageResult = ValidatePackage $packageGroupId $packageName $packageVersion $DocValidationImageId
-    # if (!$validatePackageResult) {
-    #   LogWarning "Package is not valid: ${packageGroupId}:$packageName. Cannot onboard."
-    #   continue
-    # }
+    $validatePackageResult = ValidatePackage $packageGroupId $packageName $packageVersion $DocValidationImageId
+    if (!$validatePackageResult) {
+      LogWarning "Package is not valid: ${packageGroupId}:$packageName. Cannot onboard."
+      continue
+    }
 
     Write-Host "Add new package from metadata: ${packageGroupId}:$packageName"
     $package = [ordered]@{
@@ -760,9 +760,9 @@ function Validate-java-DocMsPackages ($PackageInfo, $PackageInfos, $DocValidatio
     $PackageInfos = @($PackageInfo)
   }
 
-  # if (!(ValidatePackages $PackageInfos $DocValidationImageId)) {
-  #   Write-Error "Package validation failed" -ErrorAction Continue
-  # }
+  if (!(ValidatePackages $PackageInfos $DocValidationImageId)) {
+    Write-Error "Package validation failed" -ErrorAction Continue
+  }
 
   return
 }
