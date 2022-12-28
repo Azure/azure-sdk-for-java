@@ -10,12 +10,10 @@ import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.test.models.RecordingRedactor;
+import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestProxyUtils;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -26,8 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -37,21 +33,24 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
     private final HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
     private String xRecordingId;
-    private Map<String, List<String>> sanitizers;
+    private final List<TestProxySanitizer> sanitizers;
+
+    public TestProxyRecordPolicy(List<TestProxySanitizer> recordSanitizers) {
+        this.sanitizers = recordSanitizers;
+    }
 
     /**
      * Starts a recording of test traffic.
+     *
      * @param recordFile The name of the file to save the recording to.
-     * @param sanitizers The map of sanitizer to send to the test proxy.
      */
-    public void startRecording(String recordFile, Map<String, List<String>> sanitizers) {
+    public void startRecording(String recordFile) {
         HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/record/start", TestProxyUtils.getProxyUrl()))
             .setBody(String.format("{\"x-recording-file\": \"%s\"}", recordFile));
 
         HttpResponse response = client.sendSync(request, Context.NONE);
 
         this.xRecordingId = response.getHeaderValue("x-recording-id");
-        this.sanitizers = sanitizers;
         addProxySanitization();
     }
 
@@ -101,23 +100,25 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     }
 
     private void addProxySanitization() {
-        // TODO (sanitizer type enum?)
-        this.sanitizers.forEach((sanitizerType, sanitizerRegex)  -> {
-            switch (sanitizerType) {
-                case "URL":
-                    sanitizerRegex.forEach(regexValue -> addUrlRegexSanitizer(regexValue));
+        this.sanitizers.forEach(testProxySanitizer  -> {
+            switch (testProxySanitizer.getType()) {
+                case URL:
+                    addUrlRegexSanitizer(testProxySanitizer.getRegex(), testProxySanitizer.getRedactedValue());
                     break;
-                case "BODY":
-                    sanitizerRegex.forEach(regexValue -> addBodySanitizer(regexValue));
-                case "HEADER":
-                    sanitizerRegex.forEach(regexValue -> addHeaderSanitizer(regexValue));
+                case BODY:
+                    addBodySanitizer(testProxySanitizer.getRegex(), testProxySanitizer.getRedactedValue());
+                    break;
+                case HEADER:
+                    addHeaderSanitizer(testProxySanitizer.getRegex(), testProxySanitizer.getRedactedValue());
+                    break;
+                default:
+                    System.out.println("Sanitizer type not supported");
             }
-
         });
     }
 
-    private void addUrlRegexSanitizer(String regexValue) {
-        String requestBody = String.format("{\"value\":\"https://REDACTED.cognitiveservices.azure.com\",\"regex\":\"%s\"}", regexValue);
+    private void addUrlRegexSanitizer(String regexValue, String redactedValue) {
+        String requestBody = String.format("{\"value\":\"%s\",\"regex\":\"%s\"}", redactedValue, regexValue);
         HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/AddSanitizer", TestProxyUtils.getProxyUrl()))
                 .setBody(requestBody);
         request.setHeader("x-abstraction-identifier", "UriRegexSanitizer");
@@ -125,8 +126,8 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
         client.sendSync(request, Context.NONE);
     }
 
-    private void addBodySanitizer(String regexValue) {
-        String requestBody = String.format("{\"value\":\"REDACTED\",\"jsonPath\":\"%s\"}", regexValue);
+    private void addBodySanitizer(String regexValue, String redactedValue) {
+        String requestBody = String.format("{\"value\":\"%s\",\"jsonPath\":\"%s\"}", redactedValue, regexValue);
 
         HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/AddSanitizer", TestProxyUtils.getProxyUrl()))
             .setBody(requestBody);
@@ -135,8 +136,8 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
         client.sendSync(request, Context.NONE);
     }
 
-    private void addHeaderSanitizer(String regexValue) {
-        String requestBody = String.format("{\"value\":\"REDACTED\",\"key\":\"%s\"}", regexValue);
+    private void addHeaderSanitizer(String regexValue, String redactedValue) {
+        String requestBody = String.format("{\"value\":\"%s\",\"key\":\"%s\"}", redactedValue, regexValue);
 
         HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/AddSanitizer", TestProxyUtils.getProxyUrl()))
             .setBody(requestBody);
@@ -144,22 +145,5 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
         request.setHeader("x-recording-id", xRecordingId);
         client.sendSync(request, Context.NONE);
     }
-
-    // private static String redactionReplacement(String content, Matcher matcher, String replacement) {
-    //     while (matcher.find()) {
-    //         String captureGroup = matcher.group(2);
-    //         if (!CoreUtils.isNullOrEmpty(captureGroup)) {
-    //             content = content.replace(matcher.group(2), replacement);
-    //         }
-    //     }
-    //
-    //     return content;
-    // }
-
-    // private static String redactModelId(String content) {
-    //     Pattern pattern = Pattern.compile("(.*\"modelId\":)(\"(.+?)\")");
-    //     content = redactionReplacement(content, pattern.matcher(content.replaceAll(" *\" *", "\"")), "REDACTED");
-    //     return content;
-    // }
 }
 

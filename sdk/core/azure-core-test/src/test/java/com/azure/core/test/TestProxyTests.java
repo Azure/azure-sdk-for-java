@@ -10,6 +10,10 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.TestProxyTestServer;
+import com.azure.core.test.models.BodyRegexSanitizer;
+import com.azure.core.test.models.HeaderRegexSanitizer;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.UrlRegexSanitizer;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
@@ -22,9 +26,7 @@ import org.junit.jupiter.api.Test;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -34,6 +36,15 @@ public class TestProxyTests extends TestBase {
     static TestProxyTestServer server;
     private String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_ENDPOINT");
     private String API_KEY = Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_API_KEY");
+
+    private static List<TestProxySanitizer> recordSanitizers;
+
+    static {
+        recordSanitizers = new ArrayList<>();
+        recordSanitizers.add(new UrlRegexSanitizer("^(?:https?:\\\\/\\\\/)?(?:[^@\\\\/\\\\n]+@)?(?:www\\\\.)?([^:\\\\/?\\\\n]+)", "https://REDACTED.cognitiveservices.azure.com"));
+        recordSanitizers.add(new BodyRegexSanitizer("$..modelId", "REDACTED"));
+        recordSanitizers.add(new HeaderRegexSanitizer("Ocp-Apim-Subscription-Key", "REDACTED"));
+    }
 
     @BeforeAll
     public static void setupClass() {
@@ -134,24 +145,11 @@ public class TestProxyTests extends TestBase {
     }
 
     @Test
-    @Tag("RECORD")
+    @Tag("Record")
     public void testRecordWithRedaction() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
-        Map<String, List<String>> map = new HashMap<String, List<String>>();
-        List<String> urlSanitizers = new ArrayList<>();
-        urlSanitizers.add("^(?:https?:\\\\/\\\\/)?(?:[^@\\\\/\\\\n]+@)?(?:www\\\\.)?([^:\\\\/?\\\\n]+)");
 
-        List<String> bodySanitizers = new ArrayList<>();
-        bodySanitizers.add("$..modelId");
-
-        List<String> headerSanitizer = new ArrayList<>();
-        headerSanitizer.add("Ocp-Apim-Subscription-Key");
-
-        map.put("URL", urlSanitizers);
-        map.put("BODY", bodySanitizers);
-        map.put("HEADER", headerSanitizer);
-
-        interceptorManager.addRecordSanitizer(map);
+        interceptorManager.addRecordSanitizer(recordSanitizers);
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
@@ -181,21 +179,21 @@ public class TestProxyTests extends TestBase {
     @Test
     @Tag("Playback")
     public void testPlaybackWithRedaction() {
-        Map<String, List<String>> map = new HashMap<String, List<String>>();
-        List<String> urlSanitizers = new ArrayList<>();
-        urlSanitizers.add("^(?:https?:\\\\/\\\\/)?(?:[^@\\\\/\\\\n]+@)?(?:www\\\\.)?([^:\\\\/?\\\\n]+)");
+        // Map<String, List<String>> map = new HashMap<String, List<String>>();
+        // List<String> urlSanitizers = new ArrayList<>();
+        // urlSanitizers.add("^(?:https?:\\\\/\\\\/)?(?:[^@\\\\/\\\\n]+@)?(?:www\\\\.)?([^:\\\\/?\\\\n]+)");
+        //
+        // List<String> bodySanitizers = new ArrayList<>();
+        // bodySanitizers.add("$..modelId");
+        //
+        // List<String> headerSanitizer = new ArrayList<>();
+        // headerSanitizer.add("Ocp-Apim-Subscription-Key");
+        //
+        // map.put("URL", urlSanitizers);
+        // map.put("BODY", bodySanitizers);
+        // map.put("HEADER", headerSanitizer);
 
-        List<String> bodySanitizers = new ArrayList<>();
-        bodySanitizers.add("$..modelId");
-
-        List<String> headerSanitizer = new ArrayList<>();
-        headerSanitizer.add("Ocp-Apim-Subscription-Key");
-
-        map.put("URL", urlSanitizers);
-        map.put("BODY", bodySanitizers);
-        map.put("HEADER", headerSanitizer);
-
-        interceptorManager.addRecordSanitizer(map);
+        interceptorManager.addRecordSanitizer(recordSanitizers);
 
         HttpClient client = interceptorManager.getPlaybackClient();
         URL url;

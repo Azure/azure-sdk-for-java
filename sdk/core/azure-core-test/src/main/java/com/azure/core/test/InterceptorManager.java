@@ -9,6 +9,7 @@ import com.azure.core.test.http.TestProxyPlaybackClient;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.models.RecordingRedactor;
+import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
 import com.azure.core.test.policy.TestProxyRecordPolicy;
 import com.azure.core.util.CoreUtils;
@@ -25,6 +26,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -72,7 +74,7 @@ public class InterceptorManager implements AutoCloseable {
     private TestProxyRecordPolicy testProxyRecordPolicy;
     private TestProxyPlaybackClient testProxyPlaybackClient;
     private final Queue<String> proxyVariableQueue = new LinkedList<>();
-    private Map<String, List<String>> recordSanitizers;
+    private List<TestProxySanitizer> recordSanitizers;
 
     /**
      * Creates a new InterceptorManager that either replays test-session records or saves them.
@@ -141,7 +143,7 @@ public class InterceptorManager implements AutoCloseable {
         } else {
             this.recordedData = null;
         }
-        this.recordSanitizers = new HashMap<>();
+        this.recordSanitizers = new ArrayList<>();
     }
 
     /**
@@ -272,7 +274,7 @@ public class InterceptorManager implements AutoCloseable {
      */
     public HttpPipelinePolicy getRecordPolicy() {
         if (enableTestProxy) {
-            return startProxyRecording(this.recordSanitizers);
+            return startProxyRecording();
         }
         return getRecordPolicy(Collections.emptyList());
     }
@@ -288,18 +290,9 @@ public class InterceptorManager implements AutoCloseable {
     public HttpPipelinePolicy getRecordPolicy(List<Function<String, String>> recordingRedactors) {
         if (enableTestProxy) {
             proxyVariableQueue.clear();
-            // TODO (use of redactors)
-            return startProxyRecording(Collections.emptyMap());
+            return startProxyRecording();
         }
         return new RecordNetworkCallPolicy(recordedData, recordingRedactors);
-    }
-
-    public HttpPipelinePolicy getRecordPolicy(Map<String, List<String>> sanitizers) {
-        if (enableTestProxy) {
-            proxyVariableQueue.clear();
-            return startProxyRecording(sanitizers);
-        }
-        return new RecordNetworkCallPolicy(recordedData, null);
     }
 
     /**
@@ -310,7 +303,7 @@ public class InterceptorManager implements AutoCloseable {
     public HttpClient getPlaybackClient() {
         if (enableTestProxy) {
             testProxyPlaybackClient = new TestProxyPlaybackClient(this.recordSanitizers);
-            proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(playbackRecordName, null));
+            proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(playbackRecordName));
             return testProxyPlaybackClient;
         } else {
             return new PlaybackClient(recordedData, textReplacementRules);
@@ -378,9 +371,9 @@ public class InterceptorManager implements AutoCloseable {
         }
     }
 
-    private HttpPipelinePolicy startProxyRecording(Map<String, List<String>> sanitizers) {
-        this.testProxyRecordPolicy = new TestProxyRecordPolicy();
-        testProxyRecordPolicy.startRecording(playbackRecordName, this.recordSanitizers);
+    private HttpPipelinePolicy startProxyRecording() {
+        this.testProxyRecordPolicy = new TestProxyRecordPolicy(this.recordSanitizers);
+        testProxyRecordPolicy.startRecording(playbackRecordName);
         return testProxyRecordPolicy;
     }
 
@@ -438,7 +431,7 @@ public class InterceptorManager implements AutoCloseable {
         textReplacementRules.put(regex, replacement);
     }
 
-    public void addRecordSanitizer(Map<String, List<String>> map) {
-        this.recordSanitizers = map;
+    public void addRecordSanitizer(List<TestProxySanitizer> recordSanitizers) {
+        this.recordSanitizers = recordSanitizers;
     }
 }

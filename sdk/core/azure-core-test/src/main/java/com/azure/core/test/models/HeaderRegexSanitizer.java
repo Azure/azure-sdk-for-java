@@ -4,25 +4,25 @@
 package com.azure.core.test.models;
 
 /**
- * This class used to redact the sensitive information from URL when recording
+ * This class used to redact the sensitive information from headers when recording
  */
-public class UrlRegexSanitizer implements TestProxySanitizer {
+public class HeaderRegexSanitizer implements TestProxySanitizer {
     private final String regex;
     private final String redactedValue;
 
     /**
-     * Initializes a new instance of UrlRegexSanitizer.
+     * Initializes a new instance of HeaderRegexSanitizer.
      * @param regex the regex value for the finding the sensitive content
      * @param redactedValue the replacement value for the matched content
      */
-    public UrlRegexSanitizer(String regex, String redactedValue) {
+    public HeaderRegexSanitizer(String regex, String redactedValue) {
         this.regex = regex;
         this.redactedValue = redactedValue;
     }
 
     @Override
     public TestProxySanitizerType getType() {
-        return TestProxySanitizerType.URL;
+        return TestProxySanitizerType.HEADER;
     }
 
     @Override
