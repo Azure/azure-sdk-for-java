@@ -29,12 +29,12 @@ public class SimpleTokenCache {
     private static final String NO_CACHE_ACQUIRED = "Acquired a new access token.";
     private static final String NO_CACHE_FAILED = "Failed to acquire a new access token.";
 
-    private static final String NEGATIVE_TTE =
-        " seconds after expiry. Retry may be attempted after " + REFRESH_DELAY_STRING + " seconds.";
-    private static final String POSITIVE_TTE =
-        " seconds before expiry. Retry may be attempted after " + REFRESH_DELAY_STRING + " seconds.";
+    private static final String NEGATIVE_TTE = " seconds after expiry. Retry may be attempted after "
+        + REFRESH_DELAY_STRING + " seconds.";
+    private static final String POSITIVE_TTE = " seconds before expiry. Retry may be attempted after "
+        + REFRESH_DELAY_STRING + " seconds. The token currently cached will be used.";
 
-    private final AtomicReference<Sinks.One<AccessToken>> wip;
+    final AtomicReference<Sinks.One<AccessToken>> wip;
     private volatile AccessToken cache;
     private volatile OffsetDateTime nextTokenRefresh = OffsetDateTime.now();
     private final Supplier<Mono<AccessToken>> tokenSupplier;
@@ -143,17 +143,6 @@ public class SimpleTokenCache {
 
         Duration tte = Duration.between(now, cache.getExpiresAt());
 
-        // Use a StringBuilder large enough where it won't need to be resized.
-        StringBuilder info = new StringBuilder(log.length() + 128).append(log);
-
-        info.append(" at ").append(tte.abs().getSeconds())
-            // Reduce the number of appends by using static Strings.
-            .append(tte.isNegative() ? NEGATIVE_TTE : POSITIVE_TTE);
-
-        if (!tte.isNegative()) {
-            info.append(" The token currently cached will be used.");
-        }
-
-        return info.toString();
+        return log + " at " + tte.abs().getSeconds() + (tte.isNegative() ? NEGATIVE_TTE : POSITIVE_TTE);
     }
 }
