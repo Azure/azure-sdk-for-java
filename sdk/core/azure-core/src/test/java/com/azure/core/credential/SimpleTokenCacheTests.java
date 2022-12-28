@@ -23,12 +23,12 @@ public class SimpleTokenCacheTests {
                 .delayElement(Duration.ofMinutes(1)));
 
         StepVerifier.create(simpleTokenCache.getToken()
-                .doOnRequest(ignored -> assertNotNull(simpleTokenCache.wip.get())))
+                .doOnRequest(ignored -> assertNotNull(simpleTokenCache.getWipValue())))
             .expectSubscription()
             .expectNoEvent(Duration.ofSeconds(2))
             .thenCancel()
             .verify();
 
-        assertNull(simpleTokenCache.wip.get());
+        assertNull(simpleTokenCache.getWipValue());
     }
 }

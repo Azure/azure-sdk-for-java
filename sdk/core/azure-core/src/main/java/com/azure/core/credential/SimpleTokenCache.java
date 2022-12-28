@@ -34,7 +34,7 @@ public class SimpleTokenCache {
     private static final String POSITIVE_TTE = " seconds before expiry. Retry may be attempted after "
         + REFRESH_DELAY_STRING + " seconds. The token currently cached will be used.";
 
-    final AtomicReference<Sinks.One<AccessToken>> wip;
+    private final AtomicReference<Sinks.One<AccessToken>> wip;
     private volatile AccessToken cache;
     private volatile OffsetDateTime nextTokenRefresh = OffsetDateTime.now();
     private final Supplier<Mono<AccessToken>> tokenSupplier;
@@ -134,6 +134,10 @@ public class SimpleTokenCache {
                 return Mono.error(t);
             }
         });
+    }
+
+    Sinks.One<AccessToken> getWipValue() {
+        return wip.get();
     }
 
     private static String refreshLog(AccessToken cache, OffsetDateTime now, String log, boolean acquired) {
