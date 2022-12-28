@@ -4,7 +4,6 @@
 
 package com.azure.messaging.webpubsub;
 
-import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -386,7 +385,6 @@ public final class WebPubSubServiceAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeConnectionFromAllGroupsWithResponse(
         String hub, String connectionId, RequestOptions requestOptions) {
