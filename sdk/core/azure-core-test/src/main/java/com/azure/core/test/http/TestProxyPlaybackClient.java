@@ -52,9 +52,6 @@ public class TestProxyPlaybackClient implements HttpClient {
             .setBody(String.format("{\"x-recording-file\": \"%s\"}", recordFile));
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             xRecordingId = response.getHeaderValue("x-recording-id");
-
-            // addUrlRegexSanitizer("^(?:https?:\\\\/\\\\/)?(?:[^@\\\\/\\\\n]+@)?(?:www\\\\.)?([^:\\\\/?\\\\n]+)");
-            // addBodySanitizer("$..modelId");
             addProxySanitization();
             String body = response.getBodyAsString().block();
             // The test proxy stores variables in a map with no guaranteed order.

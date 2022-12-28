@@ -1,0 +1,804 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED.cognitiveservices.azure.com/formrecognizer/documentModels?api-version=2022-08-31",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+        "Connection": "keep-alive",
+        "Content-Type": "application/json",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "Java/17.0.1"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "337cf8e1-1f9c-44a7-871f-19dcff9fd3ab",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 28 Dec 2022 00:30:39 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "3130",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2022-08-31T00:00:00Z",
+            "apiVersion": "2022-08-31",
+            "description": "Extract key information from business cards."
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2022-08-31T00:00:00Z",
+            "apiVersion": "2022-08-31",
+            "description": "Extract text, layout, entities, and general key-value pairs from documents."
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2022-08-31T00:00:00Z",
+            "apiVersion": "2022-08-31",
+            "description": "Extract key information from US health insurance cards."
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2022-08-31T00:00:00Z",
+            "apiVersion": "2022-08-31",
+            "description": "Extract key information from passports and ID cards."
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2022-08-31T00:00:00Z",
+            "apiVersion": "2022-08-31",
+            "description": "Extract key information from invoices."
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2022-08-31T00:00:00Z",
+            "apiVersion": "2022-08-31",
+            "description": "Extract text and layout information from documents."
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2022-08-31T00:00:00Z",
+            "apiVersion": "2022-08-31",
+            "description": "Extract text from documents."
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2022-08-31T00:00:00Z",
+            "apiVersion": "2022-08-31",
+            "description": "Extract key information from receipts."
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2022-08-31T00:00:00Z",
+            "apiVersion": "2022-08-31",
+            "description": "Extract key information from IRS US W2 tax forms (year 2018-2021)."
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2022-08-31T00:00:00Z",
+            "apiVersion": "2022-08-31",
+            "description": "Extract key information from US Covid-19 CDC vaccination cards."
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-08-20T21:17:23Z",
+            "apiVersion": "v2.0"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-09-16T00:54:27Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-04-14T18:47:38Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-10-07T14:35:13Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-03-22T11:29:56Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-04-06T20:02:36Z",
+            "apiVersion": "v2.0"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-06-03T19:26:47Z",
+            "apiVersion": "v2.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-03-22T11:39:44Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-07-07T06:27:54Z",
+            "apiVersion": "v2.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-09-10T18:07:34Z",
+            "apiVersion": "v2.0"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-03-16T15:10:24Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-10-06T21:00:04Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-09-24T23:45:04Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-06-03T19:25:48Z",
+            "apiVersion": "v2.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-02-10T22:40:11Z",
+            "apiVersion": "v2.1-preview.2"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-11-18T17:57:54Z",
+            "apiVersion": "v2.1-preview.1",
+            "description": "model1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-02-10T22:37:07Z",
+            "apiVersion": "v2.1-preview.2"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-09-10T17:54:21Z",
+            "apiVersion": "v2.0"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-09-10T20:33:19Z",
+            "apiVersion": "v2.0"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2022-08-25T18:16:34Z",
+            "apiVersion": "v2.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-04-14T18:47:28Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-10-21T17:24:26Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-09-24T23:44:48Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-02-10T22:43:26Z",
+            "apiVersion": "v2.1-preview.2"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-03-16T17:15:21Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-11-18T01:46:16Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-02-10T22:36:40Z",
+            "apiVersion": "v2.1-preview.2"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-02-23T06:39:53Z",
+            "apiVersion": "v2.1-preview.2"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-09-10T18:35:36Z",
+            "apiVersion": "v2.0"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-10-05T20:45:20Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-10-07T14:15:42Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-02-10T05:53:06Z",
+            "apiVersion": "v2.0"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-03-16T15:13:19Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-09-10T18:36:22Z",
+            "apiVersion": "v2.0"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-02-17T23:37:03Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-03-16T17:12:26Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-04-14T18:37:03Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-02-04T01:47:43Z",
+            "apiVersion": "v2.1-preview.2"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-03-26T13:48:08Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-06-03T18:43:36Z",
+            "apiVersion": "v2.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-11-03T05:58:41Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-02-23T06:34:42Z",
+            "apiVersion": "v2.1-preview.2"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-09-24T23:56:34Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-09-24T23:45:44Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2022-08-25T18:25:11Z",
+            "apiVersion": "v2.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-10-06T20:41:56Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-03-16T16:59:55Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-09-25T00:08:18Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-10-14T20:55:40Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-11-03T06:00:28Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-10-14T21:34:24Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-09-10T17:54:04Z",
+            "apiVersion": "v2.0"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-04-06T20:07:36Z",
+            "apiVersion": "v2.0"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-02-04T01:45:57Z",
+            "apiVersion": "v2.1-preview.2"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-08-19T22:54:29Z",
+            "apiVersion": "v2.0"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-05-25T18:57:21Z",
+            "apiVersion": "v2.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-10-14T21:07:42Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-10-21T17:40:28Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-06-03T18:46:19Z",
+            "apiVersion": "v2.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-02-10T05:53:19Z",
+            "apiVersion": "v2.0"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-06-23T17:41:20Z",
+            "apiVersion": "v2.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-09-23T21:27:21Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-03-16T16:54:38Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-10-26T20:15:17Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-03-16T15:12:05Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-03-26T13:48:02Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-02-17T23:32:21Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-11-18T17:58:29Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-10-15T22:28:28Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-10-07T14:33:24Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2022-01-24T21:33:17Z",
+            "apiVersion": "2021-09-30-preview"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-09-10T18:41:55Z",
+            "apiVersion": "v2.0"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-02-23T06:40:22Z",
+            "apiVersion": "v2.1-preview.2"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-03-22T11:36:08Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-10-22T18:42:23Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-03-22T11:25:39Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-02-23T06:40:42Z",
+            "apiVersion": "v2.1-preview.2"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-06-03T19:28:21Z",
+            "apiVersion": "v2.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-09-16T00:52:45Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-09-10T17:55:34Z",
+            "apiVersion": "v2.0"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-05-25T19:14:38Z",
+            "apiVersion": "v2.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-04-06T20:07:30Z",
+            "apiVersion": "v2.0"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-10-14T20:38:01Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-11-03T04:43:35Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-02-04T01:49:32Z",
+            "apiVersion": "v2.1-preview.2"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-10-11T16:58:56Z",
+            "apiVersion": "v2.1-preview.1",
+            "description": "modelDisplayName"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-03-22T11:30:07Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-04-06T20:03:37Z",
+            "apiVersion": "v2.0"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-06-08T20:28:43Z",
+            "apiVersion": "v2.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-03-16T15:14:05Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-05-25T19:04:55Z",
+            "apiVersion": "v2.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-03-26T13:48:28Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-03-22T11:38:53Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-03-16T17:13:15Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-08-19T23:12:09Z",
+            "apiVersion": "v2.0"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-09-23T21:12:10Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-03-16T17:14:37Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-03-16T20:08:45Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-09-10T18:01:08Z",
+            "apiVersion": "v2.0"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-03-22T11:40:04Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-02-10T05:55:17Z",
+            "apiVersion": "v2.0"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-09-16T00:52:55Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-10-22T18:26:13Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-02-04T01:39:02Z",
+            "apiVersion": "v2.1-preview.2"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-10-06T20:49:35Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-10-11T17:38:40Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-11-18T17:56:51Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-06-03T18:42:55Z",
+            "apiVersion": "v2.1",
+            "description": "model trained with labels"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-02-10T22:41:04Z",
+            "apiVersion": "v2.1-preview.2"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-11-17T17:44:04Z",
+            "apiVersion": "2021-07-30-preview"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-10-14T21:06:30Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-10-14T21:26:34Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-04-14T18:47:35Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-10-07T14:41:56Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-03-16T15:14:11Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-05-25T23:15:05Z",
+            "apiVersion": "v2.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-10-07T17:52:14Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-06-03T18:45:06Z",
+            "apiVersion": "v2.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2022-08-25T18:25:19Z",
+            "apiVersion": "v2.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-05-25T19:19:36Z",
+            "apiVersion": "v2.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-02-17T23:31:54Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-09-16T00:53:01Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-02-17T23:31:42Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-09-16T00:51:25Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-02-23T06:35:13Z",
+            "apiVersion": "v2.1-preview.2"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-02-04T01:44:10Z",
+            "apiVersion": "v2.1-preview.2"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-06-03T19:24:15Z",
+            "apiVersion": "v2.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-02-17T23:36:48Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-02-23T06:40:01Z",
+            "apiVersion": "v2.1-preview.2"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-11-03T04:42:11Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-03-22T11:26:16Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-03-16T17:09:09Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-09-24T23:54:01Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-06-03T19:30:36Z",
+            "apiVersion": "v2.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-04-06T20:04:13Z",
+            "apiVersion": "v2.0"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-01-14T22:02:13Z",
+            "apiVersion": "v2.0"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2020-09-25T00:05:08Z",
+            "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-02-04T01:45:53Z",
+            "apiVersion": "v2.1-preview.2"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-03-16T16:56:39Z",
+            "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2021-06-03T19:30:47Z",
+            "apiVersion": "v2.1"
+          },
+          {
+            "modelId": "REDACTED",
+            "createdDateTime": "2022-06-17T20:50:55Z",
+            "apiVersion": "2022-06-30-preview"
+          }
+        ],
+        "nextLink": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels?api-version=2022-08-31\u0026nextLink=2!232!MDAwMTMwIXN1YnNjcmlwdGlvbnMvZWM5YzAyMDVhYWI2NDBkMjlhM2ViYjk3NWU3YjEyMzAvbW9kZWxzLzBjMTAwYjQ1LTE0MmItNGFiYi1hNjBhLTdlN2UxYjEwYTAwNi8wYzEwMGI0NS0xNDJiLTRhYmItYTYwYS03ZTdlMWIxMGEwMDYuZ3ohMDAwMDI4ITk5OTktMTItMzFUMjM6NTk6NTkuOTk5OTk5OVoh"
+      }
+    }
+  ],
+  "Variables": {
+    "0": "test03020",
+    "1": "2022-12-28T00:30:35.998377400Z"
+  }
+}

@@ -179,19 +179,6 @@ public class TestProxyTests extends TestBase {
     @Test
     @Tag("Playback")
     public void testPlaybackWithRedaction() {
-        // Map<String, List<String>> map = new HashMap<String, List<String>>();
-        // List<String> urlSanitizers = new ArrayList<>();
-        // urlSanitizers.add("^(?:https?:\\\\/\\\\/)?(?:[^@\\\\/\\\\n]+@)?(?:www\\\\.)?([^:\\\\/?\\\\n]+)");
-        //
-        // List<String> bodySanitizers = new ArrayList<>();
-        // bodySanitizers.add("$..modelId");
-        //
-        // List<String> headerSanitizer = new ArrayList<>();
-        // headerSanitizer.add("Ocp-Apim-Subscription-Key");
-        //
-        // map.put("URL", urlSanitizers);
-        // map.put("BODY", bodySanitizers);
-        // map.put("HEADER", headerSanitizer);
 
         interceptorManager.addRecordSanitizer(recordSanitizers);
 
