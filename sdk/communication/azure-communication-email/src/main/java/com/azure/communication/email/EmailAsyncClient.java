@@ -4,9 +4,7 @@
 
 package com.azure.communication.email;
 
-import com.azure.communication.email.models.SendEmailResult;
-import com.azure.communication.email.models.SendStatusResult;
-import com.azure.communication.email.models.EmailMessage;
+import com.azure.communication.email.models.*;
 import com.azure.communication.email.implementation.EmailsImpl;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -16,6 +14,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
+import java.util.ArrayList;
 
 /** Initializes a new instance of the asynchronous EmailAsyncClient type. */
 @ServiceClient(builder = EmailClientBuilder.class, isAsync = true)
@@ -59,6 +58,56 @@ public final class EmailAsyncClient {
                     response.getValue().toObject(SendStatusResult.class)
                 ));
             });
+    }
+
+    /**
+     * Queues an email message to be sent to one recipient
+     * @param senderEmail The sender email address from a verified domain.
+     * @param toRecipient The to email recipient address.
+     * @param subject The email subject.
+     * @param html The html version of the email message.
+     * @return the SendEmailResult
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SendEmailResult> send(String senderEmail, String toRecipient, String subject, String html) {
+        EmailContent emailContent = new EmailContent(subject)
+            .setHtml(html);
+
+        ArrayList<EmailAddress> toAddressList = new ArrayList<>();
+        toAddressList.add(new EmailAddress(toRecipient));
+
+        EmailRecipients emailRecipients = new EmailRecipients()
+            .setTo(toAddressList);
+
+        EmailMessage emailMessage = new EmailMessage(senderEmail, emailContent, emailRecipients);
+
+        return send(emailMessage);
+    }
+
+    /**
+     * Queues an email message to be sent to one recipient
+     * @param senderEmail The sender email address from a verified domain.
+     * @param toRecipient The to email recipient address.
+     * @param subject The email subject.
+     * @param html The html version of the email message.
+     * @param plainText The plain text version of the email message.
+     * @return the SendEmailResult
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SendEmailResult> send(String senderEmail, String toRecipient, String subject, String html, String plainText) {
+        EmailContent emailContent = new EmailContent(subject)
+            .setHtml(html)
+            .setPlainText(plainText);
+
+        ArrayList<EmailAddress> toAddressList = new ArrayList<>();
+        toAddressList.add(new EmailAddress(toRecipient));
+
+        EmailRecipients emailRecipients = new EmailRecipients()
+            .setTo(toAddressList);
+
+        EmailMessage emailMessage = new EmailMessage(senderEmail, emailContent, emailRecipients);
+
+        return send(emailMessage);
     }
 
     /**

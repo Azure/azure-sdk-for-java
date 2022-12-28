@@ -49,6 +49,33 @@ public final class EmailClient {
     }
 
     /**
+     * Queues an email message to be sent to one recipient
+     * @param senderEmail The sender email address from a verified domain.
+     * @param toRecipient The to email recipient address.
+     * @param subject The email subject.
+     * @param html The html version of the email message.
+     * @return the SendEmailResult
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SendEmailResult send(String senderEmail, String toRecipient, String subject, String html) {
+        return this.client.send(senderEmail, toRecipient, subject, html).block();
+    }
+
+    /**
+     * Queues an email message to be sent to one recipient
+     * @param senderEmail The sender email address from a verified domain.
+     * @param toRecipient The to email recipient address.
+     * @param subject The email subject.
+     * @param html The html version of the email message.
+     * @param plainText The plain text version of the email message.
+     * @return the SendEmailResult
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SendEmailResult send(String senderEmail, String toRecipient, String subject, String html, String plainText) {
+        return this.client.send(senderEmail, toRecipient, subject, html, plainText).block();
+    }
+
+    /**
      * Queues an email message to be sent to one or more recipients
      * @param emailMessage Message payload for sending an email.
      * @return the result of the email sent

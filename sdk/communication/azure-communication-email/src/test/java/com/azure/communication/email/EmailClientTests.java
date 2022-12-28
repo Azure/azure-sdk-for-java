@@ -26,20 +26,13 @@ public class EmailClientTests extends EmailTestBase {
     public void sendEmailToSingleRecipient(HttpClient httpClient) {
         emailClient = getEmailClient(httpClient);
 
-        EmailAddress emailAddress = new EmailAddress(RECIPIENT_ADDRESS);
+        SendEmailResult response = emailClient.send(
+            SENDER_ADDRESS,
+            RECIPIENT_ADDRESS,
+            "test subject",
+            "<h1>test message</h1>"
+        );
 
-        ArrayList<EmailAddress> addressList = new ArrayList<>();
-        addressList.add(emailAddress);
-
-        EmailRecipients emailRecipients = new EmailRecipients()
-            .setTo(addressList);
-
-        EmailContent content = new EmailContent("test subject")
-            .setPlainText("test message");
-
-        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients);
-
-        SendEmailResult response = emailClient.send(emailMessage);
         assertNotNull(response.getMessageId());
     }
 
@@ -112,20 +105,13 @@ public class EmailClientTests extends EmailTestBase {
     public void getMessageStatus(HttpClient httpClient) {
         emailClient = getEmailClient(httpClient);
 
-        EmailAddress emailAddress = new EmailAddress(RECIPIENT_ADDRESS);
+        SendEmailResult sendEmailResult = emailClient.send(
+            SENDER_ADDRESS,
+            RECIPIENT_ADDRESS,
+            "test subject",
+            "<h1>test message</h1>"
+        );
 
-        ArrayList<EmailAddress> addressList = new ArrayList<>();
-        addressList.add(emailAddress);
-
-        EmailRecipients emailRecipients = new EmailRecipients()
-            .setTo(addressList);
-
-        EmailContent content = new EmailContent("test subject")
-            .setPlainText("test message");
-
-        EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients);
-
-        SendEmailResult sendEmailResult = emailClient.send(emailMessage);
         SendStatusResult sendStatusResult = emailClient.getSendStatus(sendEmailResult.getMessageId());
         assertNotNull(sendStatusResult.getStatus());
     }

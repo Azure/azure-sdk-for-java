@@ -62,6 +62,21 @@ public class ReadmeSamples {
         return emailClient;
     }
 
+    public void sendEmailSimple() {
+        EmailClient emailClient = createEmailClientWithConnectionString();
+
+        // BEGIN: readme-sample-sendEmailSimple
+        SendEmailResult response = emailClient.send(
+            "<sender-email-address>",
+            "recipient-email-address",
+            "test subject",
+            "<h1>test message</h1>"
+        );
+
+        System.out.println("Message Id: " + response.getMessageId());
+        // END: readme-sample-sendEmailSimple
+    }
+
     public void sendEmailToSingleRecipient() {
         EmailClient emailClient = createEmailClientWithConnectionString();
 

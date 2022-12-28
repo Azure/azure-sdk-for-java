@@ -105,7 +105,20 @@ EmailClient emailClient = new EmailClientBuilder()
 
 ### Send an Email Message
 
-To send an email message, call the `send` function from the `EmailClient`.
+To send an email message, call the `send` function from the `EmailClient`. To send a simple email, you can pass the email parameters into the `send` method directly.
+
+```java readme-sample-sendEmailSimple
+SendEmailResult response = emailClient.send(
+    "<sender-email-address>",
+    "recipient-email-address",
+    "test subject",
+    "<h1>test message</h1>"
+);
+
+System.out.println("Message Id: " + response.getMessageId());
+```
+
+To customize the email message further, you can instantiate the `EmailMessage` object and pass that into the `send` method.
 
 ```java readme-sample-sendEmailToSingleRecipient
 EmailAddress emailAddress = new EmailAddress("<recipient-email-address>");
