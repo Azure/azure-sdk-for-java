@@ -467,7 +467,7 @@ public class ClientRetryPolicyTest {
         ThrottlingRetryOptions retryOptions = new ThrottlingRetryOptions();
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
         Mockito.doReturn(new URI("http://localhost")).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
-        Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
+        Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(true));
         Mockito.doReturn(2).when(endpointManager).getPreferredLocationCount();
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(mockDiagnosticsClientContext(), endpointManager, true, retryOptions, null);
 
@@ -486,20 +486,13 @@ public class ClientRetryPolicyTest {
         for (int i = 0; i < 10; i++) {
             Mono<ShouldRetryResult> shouldRetry = clientRetryPolicy.shouldRetry(cosmosException);
 
-            if (i < 3) {
-                validateSuccess(shouldRetry, ShouldRetryValidator.builder()
-                                                 .nullException()
-                                                 .shouldRetry(true)
-                                                 .backOfTime(Duration.ofMillis(0))
-                                                 .build());
-            } else {
-                validateSuccess(shouldRetry, ShouldRetryValidator.builder()
-                                                 .nullException()
-                                                 .shouldRetry(false)
-                                                 .build());
-            }
+            validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+                .nullException()
+                .shouldRetry(true)
+                .backOfTime(Duration.ofMillis(1000))
+                .build());
 
-            Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForRead(Mockito.any());
+            Mockito.verify(endpointManager, Mockito.times(i+1)).markEndpointUnavailableForRead(Mockito.any());
             Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForWrite(Mockito.any());
         }
     }
