@@ -45,6 +45,12 @@ public class TestProxyPlaybackClient implements HttpClient {
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             xRecordingId = response.getHeaderValue("x-recording-id");
             String body = response.getBodyAsString().block();
+            // The test proxy stores variables in a map with no guaranteed order.
+            // The Java implementation of recording did not use a map, but relied on the order
+            // of the variables as they were stored. Our scheme instead sets an increasing integer
+            // the key. See TestProxyRecordPolicy.serializeVariables.
+            // This deserializes the map returned from the test proxy and creates an ordered list
+            // based on the key.
             return SERIALIZER.<Map<String, String>>deserialize(body, Map.class, SerializerEncoding.JSON).entrySet().stream().sorted(Comparator.comparingInt(e -> Integer.parseInt(e.getKey()))).map(Map.Entry::getValue).collect(Collectors.toCollection(LinkedList::new));
 
         } catch (IOException e) {

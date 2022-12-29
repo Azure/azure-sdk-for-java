@@ -183,7 +183,7 @@ public final class TestProxyDownloader {
             } else if (arch.contains("arm64")) {
                 architecture = "arm64";
             } else {
-                throw new RuntimeException("Unsupported platform x86");
+                throw new RuntimeException("Unsupported platform " + arch);
             }
         }
 
