@@ -315,12 +315,6 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                         Duration effectiveLatency = Duration.between(startTime.get(), Instant.now()).minus(
                                 Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
 
-                        ImplementationBridgeHelpers
-                                .CosmosDiagnosticsHelper
-                                .getCosmosDiagnosticsAccessor()
-                                .getFeedResponseDiagnostics(feedResponse.getCosmosDiagnostics())
-                                .recordFeedResponseCreationLatency(effectiveLatency);
-
                         if (clientTelemetryEnabled || clientMetricsEnabled) {
                             if (diagnosticsCapturedInPagedFluxByTracer || this.cosmosDiagnosticsAccessor
                                     .isDiagnosticsCapturedInPagedFlux(diagnostics)
@@ -366,6 +360,12 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                                 feedResponseConsumerLatencyInNanos.set(0);
                             }
                         }
+
+                        ImplementationBridgeHelpers
+                                .CosmosDiagnosticsHelper
+                                .getCosmosDiagnosticsAccessor()
+                                .getFeedResponseDiagnostics(feedResponse.getCosmosDiagnostics())
+                                .recordFeedResponseCreationLatency(effectiveLatency);
                         break;
                     default:
                         break;
