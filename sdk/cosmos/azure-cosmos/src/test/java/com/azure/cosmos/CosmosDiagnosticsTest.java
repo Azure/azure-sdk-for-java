@@ -522,7 +522,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics.getQueryMetricsMap().values().iterator().next().getRetrievedDocumentCount()).isEqualTo(itemIdList.size());
         assertThat(diagnostics.getFeedResponseCreationLatency()).isNotNull();
         assertThat(response.getCosmosDiagnostics().getDuration()).isNotNull();
-        assertThat(response.getCosmosDiagnostics().getDuration()).isNotSameAs(Duration.ZERO);
+        assertThat(response.getCosmosDiagnostics().getDuration()).isGreaterThan(Duration.ZERO);
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
@@ -584,6 +584,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             FeedResponse<InternalObjectNode> feedResponse = iterator.next();
             String queryDiagnostics = feedResponse.getCosmosDiagnostics().toString();
             assertThat(feedResponse.getResults().size()).isEqualTo(0);
+            assertThat(feedResponse.getCosmosDiagnostics().getDuration()).isGreaterThan(Duration.ZERO);
             if (!query.contains("group by") || qroupByFirstResponse) { // TODO https://github
                 validateQueryDiagnostics(queryDiagnostics, qmEnabled, true);
                 validateDirectModeQueryDiagnostics(queryDiagnostics);
@@ -612,6 +613,9 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         Set<String> pkRids = new HashSet<>();
         cosmosPagedFlux.byPage().flatMap(feedResponse -> {
             String cosmosDiagnosticsString = feedResponse.getCosmosDiagnostics().toString();
+            assertThat(feedResponse.getCosmosDiagnostics()).isNotNull();
+            assertThat(feedResponse.getCosmosDiagnostics().getDuration()).isGreaterThan(Duration.ZERO);
+
             //  find all partition key range ids in cosmos diagnostics
             Pattern pattern = Pattern.compile("(\"partitionKeyRangeId\":\")(\\d)");
             Matcher matcher = pattern.matcher(cosmosDiagnosticsString);
@@ -691,6 +695,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             FeedResponse<InternalObjectNode> feedResponse = iterator.next();
             String queryDiagnostics = feedResponse.getCosmosDiagnostics().toString();
             assertThat(feedResponse.getResults().size()).isEqualTo(0);
+            assertThat(feedResponse.getCosmosDiagnostics().getDuration()).isGreaterThan(Duration.ZERO);
             if (!query.contains("group by") || qroupByFirstResponse) {
                 validateQueryDiagnostics(queryDiagnostics, qmEnabled, true);
                 validateGatewayModeQueryDiagnostics(queryDiagnostics);

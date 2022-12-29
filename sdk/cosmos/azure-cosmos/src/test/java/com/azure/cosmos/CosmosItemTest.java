@@ -187,6 +187,8 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(feedResponse.getResults().size()).isEqualTo(numDocuments);
         assertThat(BridgeInternal.getClientSideRequestStatisticsList(feedResponse.getCosmosDiagnostics())).isNotNull();
         assertThat(BridgeInternal.getClientSideRequestStatisticsList(feedResponse.getCosmosDiagnostics()).size()).isGreaterThan(1);
+        assertThat(feedResponse.getCosmosDiagnostics()).isNotNull();
+        assertThat(feedResponse.getCosmosDiagnostics().getDuration()).isGreaterThan(Duration.ZERO);
 
         for (int i = 0; i < feedResponse.getResults().size(); i++) {
             InternalObjectNode fetchedResult = feedResponse.getResults().get(i);
@@ -221,7 +223,8 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(feedResponse.getResults().size()).isEqualTo(numDocuments);
         assertThat(BridgeInternal.getClientSideRequestStatisticsList(feedResponse.getCosmosDiagnostics())).isNotNull();
         assertThat(BridgeInternal.getClientSideRequestStatisticsList(feedResponse.getCosmosDiagnostics()).size()).isGreaterThan(1);
-
+        assertThat(feedResponse.getCosmosDiagnostics()).isNotNull();
+        assertThat(feedResponse.getCosmosDiagnostics().getDuration()).isGreaterThan(Duration.ZERO);
 
         for (int i = 0; i < feedResponse.getResults().size(); i++) {
             InternalObjectNode fetchedResult = feedResponse.getResults().get(i);
@@ -254,6 +257,8 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(feedResponse.getResults().size()).isEqualTo(numDocuments);
         assertThat(BridgeInternal.getClientSideRequestStatisticsList(feedResponse.getCosmosDiagnostics())).isNotNull();
         assertThat(BridgeInternal.getClientSideRequestStatisticsList(feedResponse.getCosmosDiagnostics()).size()).isGreaterThan(1);
+        assertThat(feedResponse.getCosmosDiagnostics()).isNotNull();
+        assertThat(feedResponse.getCosmosDiagnostics().getDuration()).isGreaterThan(Duration.ZERO);
 
         for (int i = 0; i < feedResponse.getResults().size(); i++) {
             SampleType fetchedResult = feedResponse.getResults().get(i);
@@ -277,6 +282,8 @@ public class CosmosItemTest extends TestSuiteBase {
 
         assertThat(feedResponse.getResults()).isNotNull();
         assertThat(feedResponse.getResults().size()).isEqualTo(1);
+        assertThat(feedResponse.getCosmosDiagnostics()).isNotNull();
+        assertThat(feedResponse.getCosmosDiagnostics().getDuration()).isGreaterThan(Duration.ZERO);
         SampleType fetchedDocument = feedResponse.getResults().get(0);
 
         assertThat(document.getId()).isEqualTo(fetchedDocument.getId());
@@ -310,6 +317,8 @@ public class CosmosItemTest extends TestSuiteBase {
             assertThat(feedResponse.getResults()).isNotNull();
             assertThat(feedResponse.getResults().size()).isEqualTo(1);
             assertThat(idSet.contains(feedResponse.getResults().get(0).getId())).isTrue();
+            assertThat(feedResponse.getCosmosDiagnostics()).isNotNull();
+            assertThat(feedResponse.getCosmosDiagnostics().getDuration()).isGreaterThan(Duration.ZERO);
         }
     }
 
@@ -329,6 +338,8 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(queryResult.stream().count()).isEqualTo(1L);
         assertThat(readManyResult).isNotNull();
         assertThat(readManyResult.getRequestCharge()).isGreaterThan(0D);
+        assertThat(readManyResult.getCosmosDiagnostics()).isNotNull();
+        assertThat(readManyResult.getCosmosDiagnostics().getDuration()).isGreaterThan(Duration.ZERO);
 
         queryResult
                 .iterableByPage(1)
@@ -617,6 +628,8 @@ public class CosmosItemTest extends TestSuiteBase {
                     .withFailMessage("response.getCorrelationActivityId");
                 assertThat(response.getCosmosDiagnostics().toString().contains(correlationId.toString()))
                     .withFailMessage("response.getCosmosDiagnostics");
+                assertThat(response.getCosmosDiagnostics()).isNotNull();
+                assertThat(response.getCosmosDiagnostics().getDuration()).isGreaterThan(Duration.ZERO);
             });
     }
 
@@ -754,6 +767,8 @@ public class CosmosItemTest extends TestSuiteBase {
                 assertThat(resultSize).isEqualTo(pageSize);
                 finalDocumentCount += fr.getResults().size();
                 continuationToken = fr.getContinuationToken();
+                assertThat(fr.getCosmosDiagnostics()).isNotNull();
+                assertThat(fr.getCosmosDiagnostics().getDuration()).isGreaterThan(Duration.ZERO);
             }
         } while(continuationToken != null);
 
