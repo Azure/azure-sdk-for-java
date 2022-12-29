@@ -173,9 +173,11 @@ public final class TestProxyDownloader {
             } else if (osName.contains("linux")) {
                 platform = "linux";
                 extension = "tar.gz";
-            } else {
+            } else if (osName.contains("mac os x")) {
                 platform = "osx";
                 extension = "zip";
+            } else {
+                throw new RuntimeException("unexpected osName " + osName);
             }
             String arch = System.getProperty("os.arch").toLowerCase(Locale.ROOT);
             if (arch.contains("amd64")) {
