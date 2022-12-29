@@ -4,6 +4,7 @@
 package com.azure.storage.common.policy;
 
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
@@ -27,7 +28,9 @@ public class ScrubEtagPolicy implements HttpPipelinePolicy {
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         HttpResponse response = next.processSync();
-        return scrubETagHeader(response);
+        HttpResponse p = scrubETagHeader(response);
+        System.out.println("In process sync" + p.getHeaders().get(HttpHeaderName.ETAG));
+        return p;
     }
 
     /**
@@ -67,7 +70,6 @@ public class ScrubEtagPolicy implements HttpPipelinePolicy {
         } else if (endsWithQuote) {
             unprocessedResponse.getHeaders().set(eTagHeader.getName(), etag.substring(0, etag.length() - 1));
         }
-
         return unprocessedResponse;
     }
 }
