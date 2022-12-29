@@ -5,10 +5,8 @@ package com.azure.cosmos.implementation.http;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.codec.http.HttpMethod;
@@ -39,13 +37,9 @@ import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 
-import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssue;
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 import static com.azure.cosmos.implementation.http.HttpClientConfig.REACTOR_NETWORK_LOG_CATEGORY;
 
 /**

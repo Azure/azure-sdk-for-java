@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Wired `hasSendingRequestStarted` flag for gateway mode. See [32735](https://github.com/Azure/azure-sdk-for-java/pull/32735)
 * Fixed issue on noisy `CancellationException` log - See [PR 31882](https://github.com/Azure/azure-sdk-for-java/pull/31882)
 * Added `retyrAfterInMs` to `StoreResult` in `CosmosDiagnostics` - See [31219](https://github.com/Azure/azure-sdk-for-java/pull/31219)
 * Optimized the `readMany` API to make use of point reads when a single item is requested for a given physical partition - See [PR 31723](https://github.com/Azure/azure-sdk-for-java/pull/31723)
