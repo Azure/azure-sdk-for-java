@@ -40,6 +40,7 @@ import com.azure.storage.queue.models.UpdateMessageResult;
 import com.azure.storage.queue.sas.QueueServiceSasSignatureValues;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -1166,7 +1167,8 @@ public final class QueueAsyncClient {
                                 } catch (RuntimeException re) {
                                     return FluxUtil.<QueueMessageItem>monoError(LOGGER, re);
                                 }
-                            });
+                            })
+                            .subscribeOn(Schedulers.boundedElastic());
                     } else {
                         return FluxUtil.monoError(LOGGER, e);
                     }
@@ -1326,7 +1328,8 @@ public final class QueueAsyncClient {
                                     } catch (RuntimeException re) {
                                         return FluxUtil.<PeekedMessageItem>monoError(LOGGER, re);
                                     }
-                                });
+                                })
+                                .subscribeOn(Schedulers.boundedElastic());
                         } else {
                             return FluxUtil.monoError(LOGGER, e);
                         }
