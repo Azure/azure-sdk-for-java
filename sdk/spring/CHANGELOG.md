@@ -3,21 +3,28 @@
 ## 6.0.0-beta.5 (Unreleased)
 Upgrade Spring Boot dependencies version to 3.0.0 and Spring Cloud dependencies version to 2022.0.0.
 
+### Breaking Changes
+- Update some classes package path, and reduce the number of public APIs [#32552](https://github.com/Azure/azure-sdk-for-java/pull/32552), [#32582](https://github.com/Azure/azure-sdk-for-java/pull/32582), [#32597](https://github.com/Azure/azure-sdk-for-java/pull/32597), [#32616](https://github.com/Azure/azure-sdk-for-java/pull/32616), [#32712](https://github.com/Azure/azure-sdk-for-java/pull/32712), [#32716](https://github.com/Azure/azure-sdk-for-java/pull/32716).
+
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Features Added
-- Enhance the Event Hubs/Service Bus/Storage Queue message converter to support Spring autoconfiguration-pattern. [#30741](https://github.com/Azure/azure-sdk-for-java/issues/30741)
-- Support the PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD property. [#30252](https://github.com/Azure/azure-sdk-for-java/issues/30252)
+- Enhance the Event Hubs/Service Bus/Storage Queue message converter to support Spring autoconfiguration-pattern [#30741](https://github.com/Azure/azure-sdk-for-java/issues/30741).
+- Support the PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD property [#32720](https://github.com/Azure/azure-sdk-for-java/pull/32720).
 
 #### Breaking Changes
- - Remove the `public` access modifier from bean methods [#32514](https://github.com/Azure/azure-sdk-for-java/pull/32514). 
- - Move Cloud Foundry classes to the implementation package [#32549](https://github.com/Azure/azure-sdk-for-java/pull/32549).
- - Update some classes package path, and reduce the number of public APIs [#32552](https://github.com/Azure/azure-sdk-for-java/pull/32552), [#32582](https://github.com/Azure/azure-sdk-for-java/pull/32582), [#32597](https://github.com/Azure/azure-sdk-for-java/pull/32597), [#32616](https://github.com/Azure/azure-sdk-for-java/pull/32616), [#32616](https://github.com/Azure/azure-sdk-for-java/pull/32616), [#32712](https://github.com/Azure/azure-sdk-for-java/pull/32712), [#32716](https://github.com/Azure/azure-sdk-for-java/pull/32716).
- - Rename class `AbstractAzureMessageConverter` to `AbstractJacksonAzureMessageConverter` [#32716](https://github.com/Azure/azure-sdk-for-java/pull/32716).
+- Remove the `public` access modifier from bean methods [#32514](https://github.com/Azure/azure-sdk-for-java/pull/32514).
+- Remove Cloud Foundry support [#32616](https://github.com/Azure/azure-sdk-for-java/pull/32616).
 
 #### Bugs Fixed
 - Remove unused class `RestTemplateProxyCustomizerConfiguration` [#32616](https://github.com/Azure/azure-sdk-for-java/pull/32616)
+
+### Spring Messaging Azure
+This section includes changes in `spring-messaging-azure` module.
+
+#### Breaking Changes
+- Rename class `AbstractAzureMessageConverter` to `AbstractJacksonAzureMessageConverter` [#32716](https://github.com/Azure/azure-sdk-for-java/pull/32716).
 
 ## 6.0.0-beta.4 (2022-12-07)
 Upgrade Spring Boot dependencies version to 3.0.0-RC2 and Spring Cloud dependencies version to 2022.0.0-RC2.
