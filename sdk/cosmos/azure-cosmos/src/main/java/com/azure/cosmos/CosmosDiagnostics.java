@@ -83,11 +83,9 @@ public final class CosmosDiagnostics {
     }
 
     /**
-     * Retrieves duration related to the completion of the request.
-     * This represents end to end duration of an operation including all the retries.
-     * This is meant for point operation only, for query please use toString() to get full query diagnostics.
+     * This represents the end to end duration of an operation including all the retries.
      *
-     * @return request completion duration
+     * @return operation completion duration
      */
     public Duration getDuration() {
 

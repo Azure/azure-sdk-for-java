@@ -153,7 +153,7 @@ public class FeedResponseDiagnostics {
     public void recordFeedResponseCreationLatency(Duration feedResponseCreationLatency) {
 
         if (this.feedResponseCreationLatency.get() != Duration.ZERO) {
-            throw new IllegalArgumentException("The feedResponseCreationLatency has already been recorded.");
+            throw new IllegalStateException("The feedResponseCreationLatency has already been recorded.");
         }
 
         this.feedResponseCreationLatency.compareAndSet(Duration.ZERO, feedResponseCreationLatency);
