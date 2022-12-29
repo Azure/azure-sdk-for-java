@@ -2,7 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.http;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.codec.http.HttpMethod;
@@ -33,9 +39,13 @@ import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 
+import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssue;
+import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 import static com.azure.cosmos.implementation.http.HttpClientConfig.REACTOR_NETWORK_LOG_CATEGORY;
 
 /**
@@ -187,7 +197,32 @@ public class ReactorNettyClient implements HttpClient {
                 if (reactorNettyHttpResponse != null) {
                     reactorNettyHttpResponse.releaseOnNotSubscribedResponse(ReactorNettyResponseState.ERROR);
                 }
-                return throwable;
+
+                Throwable unwrappedException = reactor.core.Exceptions.unwrap(throwable);
+
+                Exception exception = (Exception) unwrappedException;
+                CosmosException dce;
+                if (!(unwrappedException instanceof CosmosException)) {
+                    logger.error("Network failure", exception);
+
+                    int statusCode = 0;
+                    if (WebExceptionUtility.isNetworkFailure(exception)) {
+                        if (WebExceptionUtility.isReadTimeoutException(exception)) {
+                            statusCode = HttpConstants.StatusCodes.REQUEST_TIMEOUT;
+                        } else {
+                            statusCode = HttpConstants.StatusCodes.SERVICE_UNAVAILABLE;
+                        }
+                    }
+
+                    dce = BridgeInternal.createCosmosException(request.uri().toString(), statusCode, exception);
+                    BridgeInternal.setRequestHeaders(dce, request.headers().toMap());
+                    BridgeInternal.setSendingRequestStarted(dce, true);
+                }
+                else {
+                    dce = (CosmosException) exception;
+                }
+
+                return dce;
             })
             .single();
     }

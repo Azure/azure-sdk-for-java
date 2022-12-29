@@ -176,10 +176,10 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
               return true;
         }
 
-        //Data Plane Read
+        //Data Plane Read and Writes
         if(!isMetaDataRequest
             && !request.isAddressRefresh()
-            && request.isReadOnly()) {
+            && (request.isReadOnly()) || !BridgeInternal.hasSendingRequestStarted(clientException)) {
             return true;
         }
 

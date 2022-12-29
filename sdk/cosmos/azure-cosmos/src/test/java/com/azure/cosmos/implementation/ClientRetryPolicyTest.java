@@ -68,6 +68,7 @@ public class ClientRetryPolicyTest {
 
         Exception exception = ReadTimeoutException.INSTANCE;
         CosmosException cosmosException = BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.REQUEST_TIMEOUT, exception);
+        BridgeInternal.setSendingRequestStarted(cosmosException, true);
         BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
 
         RxDocumentServiceRequest dsr;
@@ -85,6 +86,33 @@ public class ClientRetryPolicyTest {
             .shouldRetry(true)
             .backOfTime(Duration.ofMillis(1000))
             .build());
+
+        //Data Plane Write - Sending request has started
+        dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
+            OperationType.Create, "/dbs/db/colls/col/docs/doc", ResourceType.Document);
+
+        clientRetryPolicy.onBeforeSendRequest(dsr);
+        shouldRetry = clientRetryPolicy.shouldRetry(cosmosException);
+
+        validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+            .nullException()
+            .shouldRetry(false)
+            .build());
+
+        //Data Plane Write - Sending Request has started
+        BridgeInternal.setSendingRequestStarted(cosmosException, true);
+
+        dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
+            OperationType.Create, "/dbs/db/colls/col/docs/doc", ResourceType.Document);
+
+        clientRetryPolicy.onBeforeSendRequest(dsr);
+        shouldRetry = clientRetryPolicy.shouldRetry(cosmosException);
+
+        validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+            .nullException()
+            .shouldRetry(false)
+            .build());
+
 
         //Metadata Read
         dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
@@ -112,18 +140,6 @@ public class ClientRetryPolicyTest {
             .nullException()
             .shouldRetry(true)
             .backOfTime(Duration.ofMillis(1000))
-            .build());
-
-        //Data Plane Write - Should not retry
-        dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
-            OperationType.Create, "/dbs/db/colls/col/docs/doc", ResourceType.Document);
-
-        clientRetryPolicy.onBeforeSendRequest(dsr);
-        shouldRetry = clientRetryPolicy.shouldRetry(cosmosException);
-
-        validateSuccess(shouldRetry, ShouldRetryValidator.builder()
-            .nullException()
-            .shouldRetry(false)
             .build());
 
         //Metadata Write - Should not Retry
