@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed the `getDuration` API for feed responses in `CosmosDiagnostics` - See [PR 32733](https://github.com/Azure/azure-sdk-for-java/pull/32733)
 
 #### Other Changes
 * Fixed issue on noisy `CancellationException` log - See [PR 31882](https://github.com/Azure/azure-sdk-for-java/pull/31882)
