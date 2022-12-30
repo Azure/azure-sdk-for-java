@@ -22,8 +22,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ServiceResponseException;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -37,7 +39,7 @@ import reactor.core.publisher.Mono;
 import java.nio.ByteBuffer;
 import java.util.Objects;
 
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.deleteResponseToSuccess;
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.trimNextLink;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -151,7 +153,7 @@ public class ContainerRegistryBlobAsyncClient {
         return withContext(context -> this.uploadManifestWithResponse(options, context));
     }
 
-    Mono<Response<UploadManifestResult>> uploadManifestWithResponse(UploadManifestOptions options, Context context) {
+    private Mono<Response<UploadManifestResult>> uploadManifestWithResponse(UploadManifestOptions options, Context context) {
         if (options == null) {
             return monoError(logger, new NullPointerException("'options' can't be null."));
         }
@@ -213,7 +215,7 @@ public class ContainerRegistryBlobAsyncClient {
         return withContext(context -> this.uploadBlobWithResponse(data.toByteBuffer(), context));
     }
 
-    Mono<Response<UploadBlobResult>> uploadBlobWithResponse(ByteBuffer data, Context context) {
+    private Mono<Response<UploadBlobResult>> uploadBlobWithResponse(ByteBuffer data, Context context) {
         if (data == null) {
             return monoError(logger, new NullPointerException("'data' can't be null."));
         }
@@ -221,7 +223,7 @@ public class ContainerRegistryBlobAsyncClient {
         String digest = UtilsImpl.computeDigest(data);
         return this.blobsImpl.startUploadWithResponseAsync(repositoryName, context)
             .flatMap(startUploadResponse -> this.blobsImpl.uploadChunkWithResponseAsync(trimNextLink(startUploadResponse.getDeserializedHeaders().getLocation()), Flux.just(data), data.remaining(), context))
-            .flatMap(uploadChunkResponse -> this.blobsImpl.completeUploadWithResponseAsync(digest, trimNextLink(uploadChunkResponse.getDeserializedHeaders().getLocation()), null, 0L, context))
+            .flatMap(uploadChunkResponse -> this.blobsImpl.completeUploadWithResponseAsync(digest, trimNextLink(uploadChunkResponse.getDeserializedHeaders().getLocation()), (Flux<ByteBuffer>) null, 0L, context))
             .flatMap(completeUploadResponse -> {
                 Response<UploadBlobResult> res = new ResponseBase<ContainerRegistryBlobsCompleteUploadHeaders, UploadBlobResult>(completeUploadResponse.getRequest(),
                     completeUploadResponse.getStatusCode(),
@@ -232,17 +234,6 @@ public class ContainerRegistryBlobAsyncClient {
                 return Mono.just(res);
             }).onErrorMap(UtilsImpl::mapException);
     }
-
-    private String trimNextLink(String locationHeader) {
-        // The location header returned in the nextLink for upload chunk operations starts with a '/'
-        // which the service expects us to remove before calling it.
-        if (locationHeader.startsWith("/")) {
-            return locationHeader.substring(1);
-        }
-
-        return locationHeader;
-    }
-
     /**
      * Download the manifest associated with the given tag or digest.
      * We currently only support downloading OCI manifests.
@@ -275,7 +266,7 @@ public class ContainerRegistryBlobAsyncClient {
         return withContext(context -> this.downloadManifestWithResponse(options, context));
     }
 
-    Mono<Response<DownloadManifestResult>> downloadManifestWithResponse(DownloadManifestOptions options, Context context) {
+    private Mono<Response<DownloadManifestResult>> downloadManifestWithResponse(DownloadManifestOptions options, Context context) {
         if (options == null) {
             return monoError(logger, new NullPointerException("'options' can't be null."));
         }
@@ -335,7 +326,7 @@ public class ContainerRegistryBlobAsyncClient {
         return withContext(context -> this.downloadBlobWithResponse(digest, context));
     }
 
-    Mono<Response<DownloadBlobResult>> downloadBlobWithResponse(String digest, Context context) {
+    private Mono<Response<DownloadBlobResult>> downloadBlobWithResponse(String digest, Context context) {
         if (digest == null) {
             return monoError(logger, new NullPointerException("'digest' can't be null."));
         }
@@ -343,28 +334,21 @@ public class ContainerRegistryBlobAsyncClient {
         return this.blobsImpl.getBlobWithResponseAsync(repositoryName, digest, context).flatMap(streamResponse -> {
             String resDigest = UtilsImpl.getDigestFromHeader(streamResponse.getHeaders());
 
-            return BinaryData.fromFlux(streamResponse.getValue())
-                .flatMap(binaryData -> {
-                    // The service wants us to validate the digest here since a lot of customers forget to do it before consuming
-                    // the contents returned by the service.
-                    if (Objects.equals(resDigest, digest)) {
-                        Response<DownloadBlobResult> response = new SimpleResponse<>(
-                            streamResponse.getRequest(),
-                            streamResponse.getStatusCode(),
-                            streamResponse.getHeaders(),
-                            new DownloadBlobResult(resDigest, binaryData));
+            BinaryData binaryData = streamResponse.getValue();
 
-                        return Mono.just(response);
-                    } else {
-                        return monoError(logger, new ServiceResponseException("The digest in the response does not match the expected digest."));
-                    }
-                }).doFinally(ignored -> {
-                    try {
-                        streamResponse.close();
-                    } catch (Exception e) {
-                        logger.logThrowableAsError(e);
-                    }
-                });
+            // The service wants us to validate the digest here since a lot of customers forget to do it before consuming
+            // the contents returned by the service.
+            if (Objects.equals(resDigest, digest)) {
+                Response<DownloadBlobResult> response = new SimpleResponse<>(
+                    streamResponse.getRequest(),
+                    streamResponse.getStatusCode(),
+                    streamResponse.getHeaders(),
+                    new DownloadBlobResult(resDigest, binaryData));
+
+                return Mono.just(response);
+            } else {
+                return monoError(logger, new ServiceResponseException("The digest in the response does not match the expected digest."));
+            }
         }).onErrorMap(UtilsImpl::mapException);
     }
 
@@ -394,18 +378,21 @@ public class ContainerRegistryBlobAsyncClient {
         return withContext(context -> deleteBlobWithResponse(digest, context));
     }
 
-    Mono<Response<Void>> deleteBlobWithResponse(String digest, Context context) {
+    private Mono<Response<Void>> deleteBlobWithResponse(String digest, Context context) {
         if (digest == null) {
             return monoError(logger, new NullPointerException("'digest' can't be null."));
         }
 
         return this.blobsImpl.deleteBlobWithResponseAsync(repositoryName, digest, context)
-            .flatMap(streamResponse -> {
-                Mono<Response<Void>> res = deleteResponseToSuccess(streamResponse);
-                // Since we are not passing the streamResponse back to the user, we need to close this.
-                streamResponse.close();
-                return res;
-            })
+            .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
+            .onErrorResume(
+                ex -> ex instanceof HttpResponseException && ((HttpResponseException) ex).getResponse().getStatusCode() == 404,
+                ex -> {
+                    HttpResponse response = ((HttpResponseException) ex).getResponse();
+                    // In case of 404, we still convert it to success i.e. no-op.
+                    return Mono.just(new SimpleResponse<Void>(response.getRequest(), 202,
+                        response.getHeaders(), null));
+                })
             .onErrorMap(UtilsImpl::mapException);
     }
 
@@ -441,9 +428,9 @@ public class ContainerRegistryBlobAsyncClient {
         return withContext(context -> deleteManifestWithResponse(digest, context));
     }
 
-    Mono<Response<Void>> deleteManifestWithResponse(String digest, Context context) {
+    private Mono<Response<Void>> deleteManifestWithResponse(String digest, Context context) {
         return this.registriesImpl.deleteManifestWithResponseAsync(repositoryName, digest, context)
-            .flatMap(UtilsImpl::deleteResponseToSuccess)
+            .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
             .onErrorMap(UtilsImpl::mapException);
     }
 }

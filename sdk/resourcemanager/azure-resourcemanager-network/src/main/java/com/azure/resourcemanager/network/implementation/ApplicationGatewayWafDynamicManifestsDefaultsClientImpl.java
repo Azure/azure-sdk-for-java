@@ -58,7 +58,7 @@ public final class ApplicationGatewayWafDynamicManifestsDefaultsClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface ApplicationGatewayWafDynamicManifestsDefaultsService {
+    public interface ApplicationGatewayWafDynamicManifestsDefaultsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}"
@@ -101,7 +101,7 @@ public final class ApplicationGatewayWafDynamicManifestsDefaultsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -146,7 +146,7 @@ public final class ApplicationGatewayWafDynamicManifestsDefaultsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

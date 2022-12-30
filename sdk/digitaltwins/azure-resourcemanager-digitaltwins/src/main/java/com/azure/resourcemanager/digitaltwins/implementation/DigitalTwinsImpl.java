@@ -31,15 +31,6 @@ public final class DigitalTwinsImpl implements DigitalTwins {
         this.serviceManager = serviceManager;
     }
 
-    public DigitalTwinsDescription getByResourceGroup(String resourceGroupName, String resourceName) {
-        DigitalTwinsDescriptionInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, resourceName);
-        if (inner != null) {
-            return new DigitalTwinsDescriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DigitalTwinsDescription> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         Response<DigitalTwinsDescriptionInner> inner =
@@ -50,6 +41,15 @@ public final class DigitalTwinsImpl implements DigitalTwins {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DigitalTwinsDescriptionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DigitalTwinsDescription getByResourceGroup(String resourceGroupName, String resourceName) {
+        DigitalTwinsDescriptionInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, resourceName);
+        if (inner != null) {
+            return new DigitalTwinsDescriptionImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -94,16 +94,6 @@ public final class DigitalTwinsImpl implements DigitalTwins {
         return Utils.mapPage(inner, inner1 -> new DigitalTwinsDescriptionImpl(inner1, this.manager()));
     }
 
-    public CheckNameResult checkNameAvailability(String location, CheckNameRequest digitalTwinsInstanceCheckName) {
-        CheckNameResultInner inner =
-            this.serviceClient().checkNameAvailability(location, digitalTwinsInstanceCheckName);
-        if (inner != null) {
-            return new CheckNameResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CheckNameResult> checkNameAvailabilityWithResponse(
         String location, CheckNameRequest digitalTwinsInstanceCheckName, Context context) {
         Response<CheckNameResultInner> inner =
@@ -114,6 +104,16 @@ public final class DigitalTwinsImpl implements DigitalTwins {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CheckNameResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CheckNameResult checkNameAvailability(String location, CheckNameRequest digitalTwinsInstanceCheckName) {
+        CheckNameResultInner inner =
+            this.serviceClient().checkNameAvailability(location, digitalTwinsInstanceCheckName);
+        if (inner != null) {
+            return new CheckNameResultImpl(inner, this.manager());
         } else {
             return null;
         }

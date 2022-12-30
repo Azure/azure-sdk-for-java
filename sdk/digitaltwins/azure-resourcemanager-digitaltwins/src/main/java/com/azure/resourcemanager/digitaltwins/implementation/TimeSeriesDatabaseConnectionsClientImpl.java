@@ -67,7 +67,7 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureDigitalTwinsMan")
-    private interface TimeSeriesDatabaseConnectionsService {
+    public interface TimeSeriesDatabaseConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins"
@@ -467,23 +467,6 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param timeSeriesDatabaseConnectionName Name of time series database connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the description of an existing time series database connection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TimeSeriesDatabaseConnectionInner get(
-        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName) {
-        return getAsync(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName).block();
-    }
-
-    /**
-     * Get the description of an existing time series database connection.
-     *
-     * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
-     * @param resourceName The name of the DigitalTwinsInstance.
-     * @param timeSeriesDatabaseConnectionName Name of time series database connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -494,6 +477,24 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
     public Response<TimeSeriesDatabaseConnectionInner> getWithResponse(
         String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, context).block();
+    }
+
+    /**
+     * Get the description of an existing time series database connection.
+     *
+     * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
+     * @param resourceName The name of the DigitalTwinsInstance.
+     * @param timeSeriesDatabaseConnectionName Name of time series database connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the description of an existing time series database connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TimeSeriesDatabaseConnectionInner get(
+        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName) {
+        return getWithResponse(resourceGroupName, resourceName, timeSeriesDatabaseConnectionName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1158,7 +1159,8 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1194,7 +1196,8 @@ public final class TimeSeriesDatabaseConnectionsClientImpl implements TimeSeries
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

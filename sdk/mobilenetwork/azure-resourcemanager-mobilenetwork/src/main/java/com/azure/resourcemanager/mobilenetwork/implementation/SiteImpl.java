@@ -194,11 +194,6 @@ public final class SiteImpl implements Site, Site.Definition, Site.Update {
         }
     }
 
-    public SiteImpl withNetworkFunctions(List<SubResource> networkFunctions) {
-        this.innerModel().withNetworkFunctions(networkFunctions);
-        return this;
-    }
-
     private boolean isInCreateMode() {
         return this.innerModel().id() == null;
     }

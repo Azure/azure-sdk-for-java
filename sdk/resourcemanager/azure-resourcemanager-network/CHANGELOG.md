@@ -1,14 +1,14 @@
 # Release History
 
-## 2.22.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.22.0 (2022-12-23)
 
 ### Other Changes
+
+- Remove validation for properties `selector` and `selectorMatchOperator` from `ApplicationGatewayFirewallExclusion` to support `Equals any` operator.
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-07-01`.
 
 ## 2.21.0 (2022-11-24)
 

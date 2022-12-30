@@ -169,10 +169,12 @@ public final class IOUtils {
                     return Mono.error(exception);
                 }
 
+                LOGGER.atInfo().addKeyValue(LoggingKeys.TRY_COUNT_KEY, retryCount)
+                    .log(() -> String.format("Using retry attempt %d of %d.", updatedRetryCount, maxRetries),
+                        exception);
                 return onErrorResume.apply(exception, targetChannel.getBytesWritten())
                     .flatMap(newResponse -> transferStreamResponseToAsynchronousByteChannelHelper(
-                        targetChannel, newResponse,
-                        onErrorResume, maxRetries, updatedRetryCount));
+                        targetChannel, newResponse, onErrorResume, maxRetries, updatedRetryCount));
             });
     }
 
