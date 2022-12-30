@@ -218,7 +218,6 @@
     "sdk/spring/spring-integration-azure-storage-queue/**",
     "sdk/spring/spring-messaging-azure/**",
     "sdk/spring/spring-messaging-azure-storage-queue/**",
-    "sdk/spring-experimental/spring-cloud-azure-native-configuration/**",
     "sdk/spring/spring-messaging-azure-servicebus/**",
     "sdk/spring/spring-messaging-azure-eventhubs/**",
     "sdk/spring/spring-cloud-azure-resourcemanager/**",
