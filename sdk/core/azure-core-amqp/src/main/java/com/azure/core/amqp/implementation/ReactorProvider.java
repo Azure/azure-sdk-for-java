@@ -3,15 +3,20 @@
 
 package com.azure.core.amqp.implementation;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.handler.ReactorHandler;
 import com.azure.core.amqp.implementation.handler.TransportHandler;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.ReactorOptions;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.nio.channels.Pipe;
+import java.time.Duration;
+import java.util.Objects;
 
 public class ReactorProvider {
     private static final ClientLogger LOGGER = new ClientLogger(ReactorProvider.class);
@@ -32,7 +37,7 @@ public class ReactorProvider {
     }
 
     /**
-     * Creates a reactor and replaces the existing instance of it.
+     * Creates a QPID Reactor.
      *
      * @param connectionId Identifier for Reactor.
      * @return The newly created reactor instance.
@@ -66,5 +71,29 @@ public class ReactorProvider {
         }
 
         return this.reactor;
+    }
+
+    public ReactorExecutor createExecutorForReactor(String connectionId,
+                                                    String fullyQualifiedNamespace,
+                                                    ReactorConnection.ReactorExceptionHandler reactorExceptionHandler,
+                                                    AmqpRetryOptions retryOptions) {
+        synchronized (lock) {
+            Objects.requireNonNull(this.reactor, "'createReactor' should be called before 'createReactorExecutor'");
+
+            final Duration timeoutDivided = retryOptions.getTryTimeout().dividedBy(2);
+            final Duration pendingTasksDuration = ClientConstants.SERVER_BUSY_WAIT_TIME.compareTo(timeoutDivided) < 0
+                ? ClientConstants.SERVER_BUSY_WAIT_TIME
+                : timeoutDivided;
+            // Use a new single-threaded scheduler to run QPID's Reactor's work as Reactor is not thread-safe.
+            // Using Schedulers.single() will use the same thread for all connections in this process which
+            // limits the scalability of the no. of concurrent connections a single process can have.
+            // This could be a long timeout depending on the user's operation timeout. It's probable that the
+            // connection's long disposed.
+            final Scheduler scheduler = Schedulers.newSingle("reactor-executor");
+
+            return new ReactorExecutor(this.reactor, scheduler, connectionId,
+                reactorExceptionHandler, pendingTasksDuration,
+                fullyQualifiedNamespace);
+        }
     }
 }
