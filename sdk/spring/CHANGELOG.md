@@ -1,7 +1,7 @@
 # Release History
 
 ## 6.0.0-beta.5 (Unreleased)
-Upgrade Spring Boot dependencies version to 3.0.0 and Spring Cloud dependencies version to 2022.0.0.
+Upgrade Spring Boot dependencies version to 3.0.1 and Spring Cloud dependencies version to 2022.0.0.
 
 ### Breaking Changes
 - Update some classes package path, and reduce the number of public APIs [#32552](https://github.com/Azure/azure-sdk-for-java/pull/32552), [#32582](https://github.com/Azure/azure-sdk-for-java/pull/32582), [#32597](https://github.com/Azure/azure-sdk-for-java/pull/32597), [#32616](https://github.com/Azure/azure-sdk-for-java/pull/32616), [#32712](https://github.com/Azure/azure-sdk-for-java/pull/32712), [#32716](https://github.com/Azure/azure-sdk-for-java/pull/32716).
