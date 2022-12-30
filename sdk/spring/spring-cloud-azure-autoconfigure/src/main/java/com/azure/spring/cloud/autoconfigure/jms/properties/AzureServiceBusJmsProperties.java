@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.jms.properties;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.jms.JmsPoolConnectionFactoryProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.jms.support.QosSettings;
 import org.springframework.util.StringUtils;
@@ -37,9 +38,12 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
      */
     private String topicClientId;
     /**
-     * Connection idle timeout duration.
+     * Connection idle timeout duration that how long the client expects Service Bus to keep a connection alive when no messages delivered.
+     * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#doc-doc-idle-time-out">AMQP specification
+     *  </a>
+     * @see <a href="https://learn.microsoft.com/azure/service-bus-messaging/service-bus-amqp-troubleshoot#link-is-not-created">Service Bus AMQP Errors</a>
      */
-    private Duration idleTimeout = Duration.ofMinutes(30);
+    private Duration idleTimeout = Duration.ofMinutes(2);
     /**
      * Pricing tier for a Service Bus namespace.
      */
@@ -111,7 +115,10 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
     /**
      * Get the pricing tier for a Service Bus namespace.
      * @return the pricing tier for a Service Bus namespace.
+     * @deprecated since 4.6.0
      */
+    @Deprecated
+    @DeprecatedConfigurationProperty
     public String getPricingTier() {
         return this.pricingTier;
     }
@@ -119,7 +126,9 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
     /**
      * Set the pricing tier for a Service Bus namespace.
      * @param pricingTier the pricing tier for a Service Bus namespace.
+     * @deprecated since 4.6.0
      */
+    @Deprecated
     public void setPricingTier(String pricingTier) {
         this.pricingTier = pricingTier;
     }
@@ -165,10 +174,6 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
     public void afterPropertiesSet() throws Exception {
         if (!StringUtils.hasText(connectionString)) {
             throw new IllegalArgumentException("'spring.jms.servicebus.connection-string' should be provided");
-        }
-
-        if (null == pricingTier || !pricingTier.matches("(?i)premium|standard|basic")) {
-            throw new IllegalArgumentException("'spring.jms.servicebus.pricing-tier' is not valid");
         }
     }
 
