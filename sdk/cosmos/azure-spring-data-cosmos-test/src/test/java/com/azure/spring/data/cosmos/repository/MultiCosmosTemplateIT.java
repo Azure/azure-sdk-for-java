@@ -4,6 +4,7 @@ package com.azure.spring.data.cosmos.repository;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
@@ -80,10 +81,12 @@ public class MultiCosmosTemplateIT {
 
     @Test
     public void testSingleCosmosClientForMultipleCosmosTemplate() throws IllegalAccessException {
-        final Field cosmosAsyncClient = FieldUtils.getDeclaredField(ReactiveCosmosTemplate.class,
-            "cosmosAsyncClient", true);
-        CosmosAsyncClient client1 = (CosmosAsyncClient) cosmosAsyncClient.get(secondaryReactiveCosmosTemplate);
-        CosmosAsyncClient client2 = (CosmosAsyncClient) cosmosAsyncClient.get(secondaryDiffDatabaseReactiveCosmosTemplate);
+        final Field cosmosFactory = FieldUtils.getDeclaredField(ReactiveCosmosTemplate.class,
+            "cosmosFactory", true);
+        CosmosFactory cosmosFactory1 = (CosmosFactory) cosmosFactory.get(secondaryReactiveCosmosTemplate);
+        CosmosAsyncClient client1 = cosmosFactory1.getCosmosAsyncClient();
+        CosmosFactory cosmosFactory2 = (CosmosFactory) cosmosFactory.get(secondaryDiffDatabaseReactiveCosmosTemplate);
+        CosmosAsyncClient client2 = cosmosFactory2.getCosmosAsyncClient();
         Assertions.assertThat(client1).isEqualTo(client2);
     }
 }

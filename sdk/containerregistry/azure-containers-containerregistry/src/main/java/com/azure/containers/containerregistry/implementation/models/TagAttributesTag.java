@@ -16,6 +16,9 @@ public final class TagAttributesTag {
     @JsonProperty(value = "signatureRecord")
     private String signatureRecord;
 
+    /** Creates an instance of TagAttributesTag class. */
+    public TagAttributesTag() {}
+
     /**
      * Get the signatureRecord property: SignatureRecord value.
      *

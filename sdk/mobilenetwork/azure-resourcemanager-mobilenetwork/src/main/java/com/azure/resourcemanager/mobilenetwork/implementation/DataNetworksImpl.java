@@ -35,15 +35,6 @@ public final class DataNetworksImpl implements DataNetworks {
         this.serviceClient().delete(resourceGroupName, mobileNetworkName, dataNetworkName, context);
     }
 
-    public DataNetwork get(String resourceGroupName, String mobileNetworkName, String dataNetworkName) {
-        DataNetworkInner inner = this.serviceClient().get(resourceGroupName, mobileNetworkName, dataNetworkName);
-        if (inner != null) {
-            return new DataNetworkImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DataNetwork> getWithResponse(
         String resourceGroupName, String mobileNetworkName, String dataNetworkName, Context context) {
         Response<DataNetworkInner> inner =
@@ -54,6 +45,15 @@ public final class DataNetworksImpl implements DataNetworks {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DataNetworkImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DataNetwork get(String resourceGroupName, String mobileNetworkName, String dataNetworkName) {
+        DataNetworkInner inner = this.serviceClient().get(resourceGroupName, mobileNetworkName, dataNetworkName);
+        if (inner != null) {
+            return new DataNetworkImpl(inner, this.manager());
         } else {
             return null;
         }

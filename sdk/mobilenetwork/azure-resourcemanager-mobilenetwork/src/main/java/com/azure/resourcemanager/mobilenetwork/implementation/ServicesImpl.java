@@ -35,15 +35,6 @@ public final class ServicesImpl implements Services {
         this.serviceClient().delete(resourceGroupName, mobileNetworkName, serviceName, context);
     }
 
-    public Service get(String resourceGroupName, String mobileNetworkName, String serviceName) {
-        ServiceInner inner = this.serviceClient().get(resourceGroupName, mobileNetworkName, serviceName);
-        if (inner != null) {
-            return new ServiceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Service> getWithResponse(
         String resourceGroupName, String mobileNetworkName, String serviceName, Context context) {
         Response<ServiceInner> inner =
@@ -54,6 +45,15 @@ public final class ServicesImpl implements Services {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ServiceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Service get(String resourceGroupName, String mobileNetworkName, String serviceName) {
+        ServiceInner inner = this.serviceClient().get(resourceGroupName, mobileNetworkName, serviceName);
+        if (inner != null) {
+            return new ServiceImpl(inner, this.manager());
         } else {
             return null;
         }

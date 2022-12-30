@@ -28,6 +28,9 @@ public final class AcrErrorInfo {
     @JsonProperty(value = "detail")
     private Object detail;
 
+    /** Creates an instance of AcrErrorInfo class. */
+    public AcrErrorInfo() {}
+
     /**
      * Get the code property: Error code.
      *

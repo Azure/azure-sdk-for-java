@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PublicIpAddresses DdosProtectionStatus. */
 public final class PublicIpAddressesDdosProtectionStatusSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/PublicIpAddressGetDdosProtectionStatus.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/PublicIpAddressGetDdosProtectionStatus.json
      */
     /**
      * Sample code: Get Ddos Protection Status of a Public IP Address.

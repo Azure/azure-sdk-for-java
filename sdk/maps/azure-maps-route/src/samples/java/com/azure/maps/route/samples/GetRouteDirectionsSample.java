@@ -16,8 +16,6 @@ import com.azure.core.models.GeoPoint;
 import com.azure.core.models.GeoPolygon;
 import com.azure.core.models.GeoPolygonCollection;
 import com.azure.core.models.GeoPosition;
-import com.azure.identity.DefaultAzureCredential;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.maps.route.MapsRouteAsyncClient;
 import com.azure.maps.route.MapsRouteClient;
 import com.azure.maps.route.MapsRouteClientBuilder;
@@ -102,14 +100,14 @@ public class GetRouteDirectionsSample {
         MapsRouteClientBuilder asyncClientbuilder = new MapsRouteClientBuilder();
 
         // Authenticates using subscription key
-        // AzureKeyCredential keyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
-        // builder.credential(keyCredential);
+        AzureKeyCredential asyncClientKeyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
+        asyncClientbuilder.credential(asyncClientKeyCredential);
 
         // Authenticates using Azure AD building a default credential
         // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
-        DefaultAzureCredential asyncClientTokenCredential = new DefaultAzureCredentialBuilder().build();
+        // DefaultAzureCredential asyncClientTokenCredential = new DefaultAzureCredentialBuilder().build();
+        // asyncClientbuilder.credential(asyncClientTokenCredential);
 
-        asyncClientbuilder.credential(asyncClientTokenCredential);
         asyncClientbuilder.mapsClientId(System.getenv("MAPS_CLIENT_ID"));
         asyncClientbuilder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         MapsRouteAsyncClient asyncClient = asyncClientbuilder.buildAsyncClient();
