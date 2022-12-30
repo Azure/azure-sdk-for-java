@@ -65,7 +65,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-tx</artifactId>
-      <version>6.0.2</version> <!-- {x-version-update;org.springframework:spring-tx;external_dependency} -->
+      <version>6.0.3</version> <!-- {x-version-update;org.springframework:spring-tx;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -103,7 +103,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>6.0.2</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
+      <version>6.0.3</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -121,7 +121,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.5.0</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.5.1</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -158,7 +158,7 @@
             <bannedDependencies>
               <includes>
                 <include>io.micrometer:micrometer-core:[1.10.2]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
-                <include>org.springframework:spring-tx:[6.0.2]</include> <!-- {x-include-update;org.springframework:spring-tx;external_dependency} -->
+                <include>org.springframework:spring-tx:[6.0.3]</include> <!-- {x-include-update;org.springframework:spring-tx;external_dependency} -->
                 <include>org.springframework.retry:spring-retry:[2.0.0]</include> <!-- {x-include-update;org.springframework.retry:spring-retry;external_dependency} -->
                 <include>org.springframework.data:spring-data-commons:[3.0.0]</include> <!-- {x-include-update;org.springframework.data:spring-data-commons;external_dependency} -->
               </includes>
