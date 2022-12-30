@@ -32,6 +32,10 @@ public class PatchTrackedResource extends ProxyResource {
     @JsonProperty(value = "etag")
     private String etag;
 
+    /** Creates an instance of PatchTrackedResource class. */
+    public PatchTrackedResource() {
+    }
+
     /**
      * Get the location property: Resource location.
      *

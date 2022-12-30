@@ -586,7 +586,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
                         .setParallelTransferOptions(options.getParallelTransferOptions()).setHeaders(options.getHeaders())
                         .setMetadata(options.getMetadata()).setTags(options.getTags()).setTier(options.getTier())
                         .setRequestConditions(options.getRequestConditions()))
-                    .doOnTerminate(() -> {
+                    .doFinally(ignored -> {
                         try {
                             channel.close();
                         } catch (IOException e) {

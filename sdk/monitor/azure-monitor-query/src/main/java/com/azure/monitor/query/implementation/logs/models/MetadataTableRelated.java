@@ -47,6 +47,9 @@ public final class MetadataTableRelated {
     @JsonProperty(value = "queries")
     private List<String> queries;
 
+    /** Creates an instance of MetadataTableRelated class. */
+    public MetadataTableRelated() {}
+
     /**
      * Get the categories property: The related categories for the table.
      *

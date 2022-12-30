@@ -8,41 +8,44 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The VariableState model. */
+/** Variable Status. */
 @Fluent
 public final class VariableState {
     /*
-     * Variable name.
+     * Variable name in variable states.
      */
     @JsonProperty(value = "variable")
     private String variable;
 
     /*
-     * Proportion of NaN values filled of the variable.
+     * Proportion of missing values that need to be filled by fillNAMethod.
      */
     @JsonProperty(value = "filledNARatio")
-    private Float filledNARatio;
+    private Double filledNARatio;
 
     /*
-     * Number of effective points counted.
+     * Number of effective data points before applying fillNAMethod.
      */
     @JsonProperty(value = "effectiveCount")
     private Integer effectiveCount;
 
     /*
-     * Start time of the variable.
+     * First valid timestamp with value of input data.
      */
-    @JsonProperty(value = "startTime")
-    private OffsetDateTime startTime;
+    @JsonProperty(value = "firstTimestamp")
+    private OffsetDateTime firstTimestamp;
 
     /*
-     * End time of the variable.
+     * Last valid timestamp with value of input data.
      */
-    @JsonProperty(value = "endTime")
-    private OffsetDateTime endTime;
+    @JsonProperty(value = "lastTimestamp")
+    private OffsetDateTime lastTimestamp;
+
+    /** Creates an instance of VariableState class. */
+    public VariableState() {}
 
     /**
-     * Get the variable property: Variable name.
+     * Get the variable property: Variable name in variable states.
      *
      * @return the variable value.
      */
@@ -51,7 +54,7 @@ public final class VariableState {
     }
 
     /**
-     * Set the variable property: Variable name.
+     * Set the variable property: Variable name in variable states.
      *
      * @param variable the variable value to set.
      * @return the VariableState object itself.
@@ -62,27 +65,27 @@ public final class VariableState {
     }
 
     /**
-     * Get the filledNARatio property: Proportion of NaN values filled of the variable.
+     * Get the filledNARatio property: Proportion of missing values that need to be filled by fillNAMethod.
      *
      * @return the filledNARatio value.
      */
-    public Float getFilledNARatio() {
+    public Double getFilledNARatio() {
         return this.filledNARatio;
     }
 
     /**
-     * Set the filledNARatio property: Proportion of NaN values filled of the variable.
+     * Set the filledNARatio property: Proportion of missing values that need to be filled by fillNAMethod.
      *
      * @param filledNARatio the filledNARatio value to set.
      * @return the VariableState object itself.
      */
-    public VariableState setFilledNARatio(Float filledNARatio) {
+    public VariableState setFilledNARatio(Double filledNARatio) {
         this.filledNARatio = filledNARatio;
         return this;
     }
 
     /**
-     * Get the effectiveCount property: Number of effective points counted.
+     * Get the effectiveCount property: Number of effective data points before applying fillNAMethod.
      *
      * @return the effectiveCount value.
      */
@@ -91,7 +94,7 @@ public final class VariableState {
     }
 
     /**
-     * Set the effectiveCount property: Number of effective points counted.
+     * Set the effectiveCount property: Number of effective data points before applying fillNAMethod.
      *
      * @param effectiveCount the effectiveCount value to set.
      * @return the VariableState object itself.
@@ -102,42 +105,42 @@ public final class VariableState {
     }
 
     /**
-     * Get the startTime property: Start time of the variable.
+     * Get the firstTimestamp property: First valid timestamp with value of input data.
      *
-     * @return the startTime value.
+     * @return the firstTimestamp value.
      */
-    public OffsetDateTime getStartTime() {
-        return this.startTime;
+    public OffsetDateTime getFirstTimestamp() {
+        return this.firstTimestamp;
     }
 
     /**
-     * Set the startTime property: Start time of the variable.
+     * Set the firstTimestamp property: First valid timestamp with value of input data.
      *
-     * @param startTime the startTime value to set.
+     * @param firstTimestamp the firstTimestamp value to set.
      * @return the VariableState object itself.
      */
-    public VariableState setStartTime(OffsetDateTime startTime) {
-        this.startTime = startTime;
+    public VariableState setFirstTimestamp(OffsetDateTime firstTimestamp) {
+        this.firstTimestamp = firstTimestamp;
         return this;
     }
 
     /**
-     * Get the endTime property: End time of the variable.
+     * Get the lastTimestamp property: Last valid timestamp with value of input data.
      *
-     * @return the endTime value.
+     * @return the lastTimestamp value.
      */
-    public OffsetDateTime getEndTime() {
-        return this.endTime;
+    public OffsetDateTime getLastTimestamp() {
+        return this.lastTimestamp;
     }
 
     /**
-     * Set the endTime property: End time of the variable.
+     * Set the lastTimestamp property: Last valid timestamp with value of input data.
      *
-     * @param endTime the endTime value to set.
+     * @param lastTimestamp the lastTimestamp value to set.
      * @return the VariableState object itself.
      */
-    public VariableState setEndTime(OffsetDateTime endTime) {
-        this.endTime = endTime;
+    public VariableState setLastTimestamp(OffsetDateTime lastTimestamp) {
+        this.lastTimestamp = lastTimestamp;
         return this;
     }
 }

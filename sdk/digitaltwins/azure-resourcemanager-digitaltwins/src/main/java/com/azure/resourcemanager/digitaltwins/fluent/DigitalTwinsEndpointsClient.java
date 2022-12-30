@@ -49,20 +49,6 @@ public interface DigitalTwinsEndpointsClient {
      * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
      * @param resourceName The name of the DigitalTwinsInstance.
      * @param endpointName Name of Endpoint Resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return digitalTwinsInstances Endpoint.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DigitalTwinsEndpointResourceInner get(String resourceGroupName, String resourceName, String endpointName);
-
-    /**
-     * Get DigitalTwinsInstances Endpoint.
-     *
-     * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
-     * @param resourceName The name of the DigitalTwinsInstance.
-     * @param endpointName Name of Endpoint Resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -72,6 +58,20 @@ public interface DigitalTwinsEndpointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DigitalTwinsEndpointResourceInner> getWithResponse(
         String resourceGroupName, String resourceName, String endpointName, Context context);
+
+    /**
+     * Get DigitalTwinsInstances Endpoint.
+     *
+     * @param resourceGroupName The name of the resource group that contains the DigitalTwinsInstance.
+     * @param resourceName The name of the DigitalTwinsInstance.
+     * @param endpointName Name of Endpoint Resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return digitalTwinsInstances Endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DigitalTwinsEndpointResourceInner get(String resourceGroupName, String resourceName, String endpointName);
 
     /**
      * Create or update DigitalTwinsInstance endpoint.

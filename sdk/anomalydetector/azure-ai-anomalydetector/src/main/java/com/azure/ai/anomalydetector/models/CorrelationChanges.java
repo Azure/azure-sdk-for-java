@@ -4,62 +4,28 @@
 
 package com.azure.ai.anomalydetector.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CorrelationChanges model. */
-@Fluent
+/** Correlation changes among the anomalous variables. */
+@Immutable
 public final class CorrelationChanges {
     /*
-     * correlated variables
+     * The correlated variables that have correlation changes under an anomaly.
      */
     @JsonProperty(value = "changedVariables")
     private List<String> changedVariables;
 
-    /*
-     * changes in correlation
-     */
-    @JsonProperty(value = "changedValues")
-    private List<Float> changedValues;
+    /** Creates an instance of CorrelationChanges class. */
+    private CorrelationChanges() {}
 
     /**
-     * Get the changedVariables property: correlated variables.
+     * Get the changedVariables property: The correlated variables that have correlation changes under an anomaly.
      *
      * @return the changedVariables value.
      */
     public List<String> getChangedVariables() {
         return this.changedVariables;
-    }
-
-    /**
-     * Set the changedVariables property: correlated variables.
-     *
-     * @param changedVariables the changedVariables value to set.
-     * @return the CorrelationChanges object itself.
-     */
-    public CorrelationChanges setChangedVariables(List<String> changedVariables) {
-        this.changedVariables = changedVariables;
-        return this;
-    }
-
-    /**
-     * Get the changedValues property: changes in correlation.
-     *
-     * @return the changedValues value.
-     */
-    public List<Float> getChangedValues() {
-        return this.changedValues;
-    }
-
-    /**
-     * Set the changedValues property: changes in correlation.
-     *
-     * @param changedValues the changedValues value to set.
-     * @return the CorrelationChanges object itself.
-     */
-    public CorrelationChanges setChangedValues(List<Float> changedValues) {
-        this.changedValues = changedValues;
-        return this;
     }
 }

@@ -22,6 +22,10 @@ public final class VaultPropertiesRedundancySettings {
     @JsonProperty(value = "crossRegionRestore", access = JsonProperty.Access.WRITE_ONLY)
     private CrossRegionRestore crossRegionRestore;
 
+    /** Creates an instance of VaultPropertiesRedundancySettings class. */
+    public VaultPropertiesRedundancySettings() {
+    }
+
     /**
      * Get the standardTierStorageRedundancy property: The storage redundancy setting of a vault.
      *

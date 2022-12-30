@@ -28,6 +28,9 @@ public final class ArtifactManifestPlatform {
     @JsonProperty(value = "os", access = JsonProperty.Access.WRITE_ONLY)
     private ArtifactOperatingSystem operatingSystem;
 
+    /** Creates an instance of ArtifactManifestPlatform class. */
+    public ArtifactManifestPlatform() {}
+
     /**
      * Get the digest property: Manifest digest.
      *

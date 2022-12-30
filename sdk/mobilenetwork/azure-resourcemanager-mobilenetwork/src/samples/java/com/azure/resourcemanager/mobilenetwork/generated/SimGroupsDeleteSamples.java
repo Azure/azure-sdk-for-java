@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SimGroups Delete. */
 public final class SimGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SimGroupDelete.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimGroupDelete.json
      */
     /**
      * Sample code: Delete SIM group.

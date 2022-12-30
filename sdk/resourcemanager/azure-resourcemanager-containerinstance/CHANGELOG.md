@@ -1,14 +1,10 @@
 # Release History
 
-## 2.21.0-beta.1 (Unreleased)
+## 2.22.0 (2022-12-23)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported configuring liveness probes and readiness probes for container instances.
 
 ## 2.21.0 (2022-11-24)
 

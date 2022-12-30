@@ -4,14 +4,14 @@
 
 package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Site properties. */
-@Fluent
+@Immutable
 public final class SitePropertiesFormat {
     /*
      * The provisioning state of the site resource.
@@ -20,11 +20,15 @@ public final class SitePropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * An array of IDs of the network functions deployed on the site,
-     * maintained by the user.
+     * An array of IDs of the network functions deployed in the site. Deleting the site will delete any network
+     * functions that are deployed in the site.
      */
-    @JsonProperty(value = "networkFunctions")
+    @JsonProperty(value = "networkFunctions", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> networkFunctions;
+
+    /** Creates an instance of SitePropertiesFormat class. */
+    public SitePropertiesFormat() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the site resource.
@@ -36,25 +40,13 @@ public final class SitePropertiesFormat {
     }
 
     /**
-     * Get the networkFunctions property: An array of IDs of the network functions deployed on the site, maintained by
-     * the user.
+     * Get the networkFunctions property: An array of IDs of the network functions deployed in the site. Deleting the
+     * site will delete any network functions that are deployed in the site.
      *
      * @return the networkFunctions value.
      */
     public List<SubResource> networkFunctions() {
         return this.networkFunctions;
-    }
-
-    /**
-     * Set the networkFunctions property: An array of IDs of the network functions deployed on the site, maintained by
-     * the user.
-     *
-     * @param networkFunctions the networkFunctions value to set.
-     * @return the SitePropertiesFormat object itself.
-     */
-    public SitePropertiesFormat withNetworkFunctions(List<SubResource> networkFunctions) {
-        this.networkFunctions = networkFunctions;
-        return this;
     }
 
     /**

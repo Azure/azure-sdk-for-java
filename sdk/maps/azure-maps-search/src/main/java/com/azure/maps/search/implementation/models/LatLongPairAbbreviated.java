@@ -22,6 +22,9 @@ public final class LatLongPairAbbreviated {
     @JsonProperty(value = "lon")
     private Double lon;
 
+    /** Creates an instance of LatLongPairAbbreviated class. */
+    public LatLongPairAbbreviated() {}
+
     /**
      * Get the lat property: Latitude property.
      *
