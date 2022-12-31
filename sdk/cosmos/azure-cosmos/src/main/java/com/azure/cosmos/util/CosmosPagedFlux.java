@@ -276,6 +276,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                         break;
                     case ON_NEXT:
                         FeedResponse<T> feedResponse = signal.get();
+
                         boolean diagnosticsCapturedInPagedFluxByTracer = false;
                         if (isTracerEnabled(tracerProvider) &&
                             this.cosmosDiagnosticsAccessor.isDiagnosticsCapturedInPagedFlux(feedResponse.getCosmosDiagnostics()).compareAndSet(false, true)) {
@@ -312,8 +313,18 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                         CosmosDiagnostics diagnostics = feedResponse != null ?
                             feedResponse.getCosmosDiagnostics() : null;
 
+                        FeedResponseDiagnostics feedResponseDiagnostics = ImplementationBridgeHelpers
+                                .CosmosDiagnosticsHelper
+                                .getCosmosDiagnosticsAccessor()
+                                .getFeedResponseDiagnostics(diagnostics);
+
                         Duration effectiveLatency = Duration.between(startTime.get(), Instant.now()).minus(
                                 Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
+
+                        // record effective latency for feed response creation if not recorded before
+                        if (feedResponseDiagnostics.getFeedResponseCreationLatency() == Duration.ZERO) {
+                            feedResponseDiagnostics.recordFeedResponseCreationLatency(effectiveLatency);
+                        }
 
                         if (clientTelemetryEnabled || clientMetricsEnabled) {
                             if (diagnosticsCapturedInPagedFluxByTracer || this.cosmosDiagnosticsAccessor
@@ -361,11 +372,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                             }
                         }
 
-                        ImplementationBridgeHelpers
-                                .CosmosDiagnosticsHelper
-                                .getCosmosDiagnosticsAccessor()
-                                .getFeedResponseDiagnostics(feedResponse.getCosmosDiagnostics())
-                                .recordFeedResponseCreationLatency(effectiveLatency);
+
                         break;
                     default:
                         break;
