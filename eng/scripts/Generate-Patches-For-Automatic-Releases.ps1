@@ -13,27 +13,41 @@ $StartTime = $( get-date )
 . "${PSScriptRoot}/../common/scripts/Helpers/PSModule-Helpers.ps1"
 . "${PSScriptRoot}/bomhelpers.ps1"
 
-# Generate the list of artifacts to update for a patch release.
-. "${PSScriptRoot}/Update-Artifacts-List-For-Patch-Release.ps1" -SourcesDirectory $SourcesDirectory -YmlToUpdate $PackagesYmlPath
-
-# Read the package info from the generated YAML file
-$ymlContent = Get-Content $PackagesYmlPath -Raw
-$ymlObject = ConvertFrom-Yaml $ymlContent -Ordered
-$packagesData = $ymlObject["extends"]["parameters"]["artifacts"]
-$libraryList = $null
-$remoteName = GetRemoteName
-$branchName = GetBranchName -ArtifactId "patches-for-auto-release"
-$currentBranchName = GetCurrentBranchName
-
-# Reset each package to the latest stable release and update CHANGELOG, POM and README for patch release.
-foreach ($packageData in $packagesData) {
-    . "${PSScriptRoot}/generatepatch.ps1" -ArtifactIds $packageData["name"] -ServiceDirectoryName $packageData["ServiceDirectory"] -BranchName $branchName
-    $libraryList += $packageData["groupId"] + ":" + $packageData["name"] + ","
-}
-
-$libraryList = $libraryList.Substring(0, $libraryList.Length - 1)
-
 try {
+    $remoteName = GetRemoteName
+    $branchName = GetBranchName -ArtifactId "patches-for-auto-release"
+    $currentBranchName = GetCurrentBranchName
+
+    # Checkout a branch to work on.
+    Write-Host "git checkout $remoteName/$branchName"
+    git checkout $remoteName/$branchName
+
+    # Generate the list of artifacts to update for a patch release.
+    . "${PSScriptRoot}/Update-Artifacts-List-For-Patch-Release.ps1" -SourcesDirectory $SourcesDirectory -YmlToUpdate $PackagesYmlPath
+
+    # Add the updated YAML file.
+    Write-Host "git add -A"
+    git add -A
+
+    $commitMessage = "Updated list of libraries to patch in patch-release.yml"
+
+    Write-Host "git -c user.name=`"azure-sdk`" -c user.email=`"azuresdk@microsoft.com`" commit -m $commitMessage"
+    git -c user.name = "azure-sdk" -c user.email = "azuresdk@microsoft.com" commit -m $commitMessage
+
+    # Read the package info from the generated YAML file
+    $ymlContent = Get-Content $PackagesYmlPath -Raw
+    $ymlObject = ConvertFrom-Yaml $ymlContent -Ordered
+    $packagesData = $ymlObject["extends"]["parameters"]["artifacts"]
+    $libraryList = $null
+
+    # Reset each package to the latest stable release and update CHANGELOG, POM and README for patch release.
+    foreach ($packageData in $packagesData) {
+        . "${PSScriptRoot}/generatepatch.ps1" -ArtifactIds $packageData["name"] -ServiceDirectoryName $packageData["ServiceDirectory"] -BranchName $branchName
+        $libraryList += $packageData["groupId"] + ":" + $packageData["name"] + ","
+    }
+
+    $libraryList = $libraryList.Substring(0, $libraryList.Length - 1)
+
     Write-Host "git checkout $remoteName/$branchName"
     git checkout $remoteName/$branchName
 
