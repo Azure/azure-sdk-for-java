@@ -315,7 +315,7 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
   }
 
   if ($currentPomFileVersion -ne $releaseVersion) {
-    Write-Output "Hard reseting the sources for $artifactId to version $releaseVersion using release tag: $releaseTag."
+    Write-Output "Hard resetting the sources for $artifactId to version $releaseVersion using release tag: $releaseTag."
     Write-Output "Fetching all the tags from $RemoteName"
     Write-Host "git fetch $RemoteName $releaseTag"
     $cmdOutput = git fetch $RemoteName $releaseTag
