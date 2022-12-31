@@ -1,0 +1,20 @@
+# Format
+# <groupId>:<artifactId>
+#
+# This document contains a list of artifacts that have opted-in to be a part of the automated patch release process.
+#
+# An automated patch release for a library contains updates to a library's dependencies, CHANGELOG and README only,
+# compared to the latest stable version. No other changes shall be included as part of such a release.
+#
+# Currently, the process only handles data plane libraries (those under the 'com.azure' group ID), meaning this will
+# not work for management plane or Spring libraries.
+#
+# Libraries listed here will not be released for a given release cycle if a new stable version for them has been marked
+# for release in our Azure DevOps portal either manually or by using the /eng/common/scripts/Prepare-Release.ps1 script.
+# Marking a library for a beta release will not affect this process.
+
+com.azure:azure-security-attestation
+com.azure:azure-security-keyvault-administration
+com.azure:azure-security-keyvault-certificates
+com.azure:azure-security-keyvault-keys
+com.azure:azure-security-keyvault-secrets

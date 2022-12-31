@@ -2,9 +2,7 @@ param(
   # $(Build.SourcesDirectory) - root of the repository
   [Parameter(Mandatory=$true)][string]$SourcesDirectory,
   # The yml file whose artifacts and additionalModules lists will be updated
-  [Parameter(Mandatory=$true)][string]$YmlToUpdate,
-  # The project list to be built for patch release
-  [Parameter(Mandatory=$true)][array] $ProjectList
+  [Parameter(Mandatory=$true)][string]$YmlToUpdate
 )
 
 $StartTime = $(get-date)
@@ -73,6 +71,19 @@ foreach ($ymlFile in $ymlFiles) {
         }
     }
 }
+
+[System.Collections.ArrayList]$ProjectList = @()
+
+Write-Host "Loading libraries to patch from text file:"
+
+foreach ($line in Get-Content "${PSScriptRoot}/../pipelines/patch_release_client.txt") {
+    if (($line) -and !($line.StartsWith("#"))) {
+        $ProjectList.Add($line) > $null
+        Write-Host $line
+    }
+}
+
+Write-Host "Searching for libraries in dictionaries:"
 
 $newArtifacts = @()
 $newAdditionalMods = @()
