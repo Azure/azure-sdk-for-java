@@ -27,9 +27,30 @@ $currentBranchName = GetCurrentBranchName
 
 # Reset each package to the latest stable release and update CHANGELOG, POM and README for patch release.
 foreach ($packageData in $packagesData) {
-    . "${PSScriptRoot}/generatepatch.ps1" -ArtifactIds $packageData["name"] -ServiceDirectoryName $packageData["ServiceDirectory"] -BranchName $branchName -PushToRemote $True
+    . "${PSScriptRoot}/generatepatch.ps1" -ArtifactIds $packageData["name"] -ServiceDirectoryName $packageData["ServiceDirectory"] -BranchName $branchName
     $libraryList += $packageData["groupId"] + ":" + $packageData["name"] + ","
 }
 
-Write-Host "git checkout $currentBranchName"
-git checkout $currentBranchName
+$libraryList = $libraryList.Substring(0, $libraryList.Length - 1)
+
+try {
+    # Update POMs for all libraries with dependencies on the libraries to patch. Also, update the READMEs of the latter.
+    python "${PSScriptRoot}/../versioning/update_versions.py" --update-type library --build-type client --ll $libraryList
+
+    Write-Host "git checkout $remoteName/$branchName"
+    git checkout $remoteName/$branchName
+
+    $commitMessage = "Updated dependencies in libraries and READMEs via version_client.txt"
+
+    Write-Host "git -c user.name=`"azure-sdk`" -c user.email=`"azuresdk@microsoft.com`" commit -m $commitMessage"
+    git -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" commit -m $commitMessage
+
+    Write-Host "git -c user.name=`"azure-sdk`" -c user.email=`"azuresdk@microsoft.com`" push $remoteName $branchName"
+    git -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" push $remoteName $branchName
+} catch {
+    LogError "Failed to update dependencies in libraries and READMEs via version_client.txt"
+    exit 1
+} finally {
+    Write-Host "git checkout $currentBranchName"
+    git checkout $currentBranchName
+}
