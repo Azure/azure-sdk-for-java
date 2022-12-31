@@ -34,11 +34,14 @@ foreach ($packageData in $packagesData) {
 $libraryList = $libraryList.Substring(0, $libraryList.Length - 1)
 
 try {
+    Write-Host "git checkout $remoteName/$branchName"
+    git checkout $remoteName/$branchName
+
     # Update POMs for all libraries with dependencies on the libraries to patch. Also, update the READMEs of the latter.
     python "${PSScriptRoot}/../versioning/update_versions.py" --update-type library --build-type client --ll $libraryList
 
-    Write-Host "git checkout $remoteName/$branchName"
-    git checkout $remoteName/$branchName
+    Write-Host "git add -A"
+    git add -A
 
     $commitMessage = "Updated dependencies in libraries and READMEs via version_client.txt"
 
