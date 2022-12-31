@@ -182,7 +182,7 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
     exit 1
   }
 
-  $cmdOutput = python $UpdateVersionFilePath --ut all --bt client --sr
+  $cmdOutput = python $UpdateVersionFilePath --ut all --bt client
     if($LASTEXITCODE -ne 0) {
     LogError "Could not update the versions in the pom files.. Exiting..."
     exit 1

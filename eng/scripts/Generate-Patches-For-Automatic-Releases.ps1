@@ -31,28 +31,5 @@ foreach ($packageData in $packagesData) {
     $libraryList += $packageData["groupId"] + ":" + $packageData["name"] + ","
 }
 
-$libraryList = $libraryList.Substring(0, $libraryList.Length - 1)
-
-try {
-    # Update POMs for all libraries with dependencies on the libraries to patch. Also, update the READMEs of the latter.
-    python "${PSScriptRoot}/../versioning/update_versions.py" --update-type library --build-type client --ll $libraryList
-
-    Write-Host "git checkout $remoteName/$branchName"
-    git checkout $remoteName/$branchName
-
-    $userName = "azure-sdk"
-    $userEmail = "azuresdk@microsoft.com"
-    $commitMessage = "Updated dependencies in libraries and READMEs via version_client.txt"
-
-    Write-Host "git -c user.name=$userName -c user.email=$userEmail commit -m $commitMessage"
-    git -c user.name = $userName -c user.email = $userEmail commit -m $commitMessage
-
-    Write-Host "git -c user.name=$userName -c user.email=$userEmail push $remoteName $branchName"
-    git -c user.name = $userName -c user.email = $userEmail push $remoteName $branchName
-} catch {
-    LogError "Failed to update dependencies in libraries and READMEs via version_client.txt"
-    exit 1
-} finally {
-    Write-Host "git checkout $currentBranchName"
-    git checkout $currentBranchName
-}
+Write-Host "git checkout $currentBranchName"
+git checkout $currentBranchName
