@@ -26,9 +26,16 @@ $ymlContent = Get-Content $YmlToRead -Raw
 $ymlObject = ConvertFrom-Yaml $ymlContent -Ordered
 $packagesData = $ymlObject["extends"]["parameters"]["artifacts"]
 $branchName = GetBranchName -ArtifactId "patch-for-auto-release"
+$libraryList = $null
 
 # Reset each package to the latest stable release and update CHANGELOG, POM and README for patch release.
 foreach ($packageData in $packagesData)
 {
     . "${PSScriptRoot}/generatepatch.ps1" -ArtifactIds $packageData["name"] -ServiceDirectoryName $packageData["ServiceDirectory"] -BranchName $branchName
+    $libraryList += $packageData["groupId"] + ":" + $packageData["name"] + ","
 }
+
+$libraryList = $libraryList.Substring(0, $libraryList.Length - 1)
+
+# Update POMs for all libraries with dependencies on the libraries to patch. Also, update the READMEs of the latter.
+python "${PSScriptRoot}/../versioning/update_versions.py" --update-type library --build-type client --ll $libraryList
