@@ -84,7 +84,7 @@ foreach ($artifactId in $ArtifactIds) {
     $patchInfo.ArtifactId = $artifactId
     $patchInfo.ServiceDirectoryName = $ServiceDirectoryName
     GeneratePatch -PatchInfo $patchInfo -BranchName $BranchName -RemoteName $RemoteName -GroupId "com.azure"
-    TriggerPipeline -PatchInfos $patchInfo -BranchName $BranchName
+    #TriggerPipeline -PatchInfos $patchInfo -BranchName $BranchName
 }
 
 Write-Output "Patch generation completed successfully."

@@ -227,7 +227,7 @@ function GeneratePatches($ArtifactPatchInfos, [string]$BranchName, [string]$Remo
     GeneratePatch -PatchInfo $patchInfo -BranchName $BranchName -RemoteName $RemoteName -GroupId $GroupId
   }
 
-  TriggerPipeline  -PatchInfos $ArtifactPatchInfos -BranchName $BranchName
+  #TriggerPipeline  -PatchInfos $ArtifactPatchInfos -BranchName $BranchName
 }
 
 
