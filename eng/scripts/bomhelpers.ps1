@@ -41,7 +41,7 @@ function UpdateDependencyOfClientSDK() {
   $cmdOutput = python $updateVersionFilePath --ut all --bt client --sr
 }
 
-# Get all azure com client artifacts from maven.
+# Get all azure com client artifacts from Maven.
 function GetAllAzComClientArtifactsFromMaven() {
   $webResponseObj = Invoke-WebRequest -Uri "https://repo1.maven.org/maven2/com/azure"
   $azureComArtifactIds = $webResponseObj.Links.HRef | Where-Object { ($_ -like 'azure-*') -and ($IgnoreList -notcontains $_) } |  ForEach-Object { $_.substring(0, $_.length - 1) }
@@ -76,9 +76,9 @@ function GetPatchVersion([String]$ReleaseVersion) {
 
 # Get remote name
 function GetRemoteName() {
-  $mainRemoteUrl = 'https://github.com/Azure/azure-sdk-for-java'
-  $remoteName = 'origin'
-  Write-Host 'git remote show'
+  $mainRemoteUrl = "https://github.com/Azure/azure-sdk-for-java"
+  $remoteName = "origin"
+  Write-Host "git remote show"
   $remoteNames = git remote show
   foreach ($rem in $remoteNames) {
     Write-Host "git remote get-url $rem"
@@ -213,7 +213,7 @@ function UpdateChangeLogEntry($ChangeLogPath, $PatchVersion, $ArtifactId, $Conte
 }
 
 function GitCommit($Message) {
-  Write-Host "git -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" commit -am $Message"
+  Write-Host "git -c user.name=`"azure-sdk`" -c user.email=`"azuresdk@microsoft.com`" commit -am $Message"
   $cmdOutput = git -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" commit -am $Message
   if ($LASTEXITCODE -ne 0) {
     LogError "Could not commit the changes locally.Exiting..."
@@ -232,7 +232,7 @@ function GeneratePatches($ArtifactPatchInfos, [string]$BranchName, [string]$Remo
 
 
 function GetCurrentBranchName() {
-  Write-Host 'git rev-parse --abbrev-ref HEAD'
+  Write-Host "git rev-parse --abbrev-ref HEAD"
   return git rev-parse --abbrev-ref HEAD
 }
 
@@ -278,17 +278,17 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
   }
 
   if (!$releaseVersion) {
-    Write-Output "Computing the latest release version for each of the relevant artifacts from maven central."
+    Write-Output "Computing the latest release version for each of the relevant artifacts from Maven Central."
     $mavenArtifactInfo = [MavenArtifactInfo](GetVersionInfoForAnArtifactId -ArtifactId $artifactId)
 
     if ($null -eq $mavenArtifactInfo) {
-      LogError "Could not find $artifactId on maven central."
+      LogError "Could not find $artifactId on Maven Central."
       exit 1
     }
 
     $mavenLatestGAOrPatchVersion = $mavenArtifactInfo.LatestGAOrPatchVersion
     if ([String]::IsNullOrWhiteSpace($mavenLatestGAOrPatchVersion)) {
-      LogError "Could not compute the latest GA\release version for $artifactId from maven central. Exiting."
+      LogError "Could not compute the latest GA\release version for $artifactId from Maven Central. Exiting."
       exit 1
     }
 

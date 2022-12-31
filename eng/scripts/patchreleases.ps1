@@ -315,7 +315,7 @@ function GenerateBOMFile($ArtifactInfos, $BomFileBranchName) {
         $releaseVersion = $bomFileContent.project.version
         $patchVersion = GetPatchVersion -ReleaseVersion $releaseVersion
         $remoteName = GetRemoteName
-        Write-Host "git checkout -b $BomFileBranchName $remoteName/main "
+        Write-Host "git checkout -b $BomFileBranchName $remoteName/main"
         $cmdOutput = git checkout -b $BomFileBranchName $remoteName/main
         $bomFileContent.Save($BomFilePath)
         Write-Host "git add $BomFilePath"
@@ -323,7 +323,7 @@ function GenerateBOMFile($ArtifactInfos, $BomFileBranchName) {
         $content = GetChangeLogContentFromMessage -ContentMessage '- Updated Azure SDK dependency versions to the latest releases.'
         UpdateChangeLogEntry -ChangeLogPath $BomChangeLogPath -PatchVersion $patchVersion -ArtifactId "azure-sdk-bom" -Content $content
         GitCommit -Message "Prepare BOM for release version $releaseVersion"
-        Write-Host "git push -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" -f $remoteName $BomFileBranchName"
+        Write-Host "git push -c user.name=`"azure-sdk`" -c user.email=`"azuresdk@microsoft.com`" -f $remoteName $BomFileBranchName"
         git push -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" -f $remoteName $BomFileBranchName
     }
     finally {
@@ -439,7 +439,7 @@ try {
         GeneratePatches -ArtifactPatchInfos $patchInfo -BranchName $patchBranchName -RemoteName $RemoteName -GroupId $GroupId
     }
 
-    Write-Host "git -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" push $RemoteName $patchBranchName"
+    Write-Host "git -c user.name=`"azure-sdk`" -c user.email=`"azuresdk@microsoft.com`" push $RemoteName $patchBranchName"
     $cmdOutput = git -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" push $RemoteName $patchBranchName
     if ($LASTEXITCODE -ne 0) {
       LogError "Could not push the changes to $RemoteName/$BranchName. Exiting..."
