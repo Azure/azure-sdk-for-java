@@ -888,7 +888,7 @@ class ReactorConnectionTest {
     private Answer<ReactorExecutor> answerByCreatingExecutor() {
         // Even before introducing 'ReactorProvider.createExecutorForReactor', the tests used to rely on a real
         // 'ReactorExecutor' object, not on a mock(ReactorExecutor), continue using a real 'ReactorExecutor'
-        //  object with this helper method. The tests could be reworked using mock(ReactorExecutor) later.
+        //  object for now with this helper method. The tests could be reworked using mock(ReactorExecutor) later.
         return invocation -> {
             final Reactor r = invocation.getArgument(0);
             final String conId = invocation.getArgument(1);
