@@ -29,7 +29,7 @@ import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextW
 /**
  * Schedules the proton-j reactor to continuously run work.
  */
-class ReactorExecutor implements AsyncCloseable {
+public class ReactorExecutor implements AsyncCloseable {
     private final ClientLogger logger;
     private final AtomicBoolean hasStarted = new AtomicBoolean();
     private final AtomicBoolean isDisposed = new AtomicBoolean();
