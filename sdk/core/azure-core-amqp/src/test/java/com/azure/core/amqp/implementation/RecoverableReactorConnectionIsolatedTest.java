@@ -60,9 +60,9 @@ public class RecoverableReactorConnectionIsolatedTest {
     public void shouldRetryIfWaitForConnectionActiveTimeout() {
         final int connectionsCount = 2;
         final Deque<ConnectionState> connectionStates = new ArrayDeque<>(connectionsCount);
-        // The first connection with the state never emit so the wait for 'active' timeout.
+        // The state for the first connection that never emit, so the wait for the connection to 'active' timeout.
         connectionStates.add(ConnectionState.never());
-        // The second connection with the active state.
+        // The state for the second connection that will be active.
         connectionStates.add(ConnectionState.as(EndpointState.ACTIVE));
 
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier(connectionStates, retryOptions);
@@ -132,9 +132,9 @@ public class RecoverableReactorConnectionIsolatedTest {
     public void shouldRetryOnRetriableErrors() {
         final int connectionsCount = 4;
         final Deque<ConnectionState> connectionStates = new ArrayDeque<>(connectionsCount);
-        connectionStates.add(ConnectionState.error(new AmqpException(true, "retriable1", null)));
-        connectionStates.add(ConnectionState.error(new RejectedExecutionException("retriable2")));
-        connectionStates.add(ConnectionState.error(new IllegalStateException("retriable3")));
+        connectionStates.add(ConnectionState.error(new AmqpException(true, "retriable0", null)));
+        connectionStates.add(ConnectionState.error(new RejectedExecutionException("retriable1")));
+        connectionStates.add(ConnectionState.error(new IllegalStateException("retriable2")));
         connectionStates.add(ConnectionState.as(EndpointState.ACTIVE));
 
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier(connectionStates, retryOptions);
