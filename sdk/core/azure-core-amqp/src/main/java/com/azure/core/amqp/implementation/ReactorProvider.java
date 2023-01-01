@@ -16,7 +16,6 @@ import reactor.core.scheduler.Schedulers;
 import java.io.IOException;
 import java.nio.channels.Pipe;
 import java.time.Duration;
-import java.util.Objects;
 
 public class ReactorProvider {
     private static final ClientLogger LOGGER = new ClientLogger(ReactorProvider.class);
@@ -73,27 +72,34 @@ public class ReactorProvider {
         return this.reactor;
     }
 
-    public ReactorExecutor createExecutorForReactor(String connectionId,
-                                                    String fullyQualifiedNamespace,
-                                                    ReactorConnection.ReactorExceptionHandler reactorExceptionHandler,
-                                                    AmqpRetryOptions retryOptions) {
-        synchronized (lock) {
-            Objects.requireNonNull(this.reactor, "'createReactor' should be called before 'createReactorExecutor'");
+    /**
+     * Creates an executor to process the events in the given QPID Reactor.
+     *
+     * @param reactor The QPID Reactor.
+     * @param connectionId The id of the amqp connection that the Reactor serves.
+     * @param fullyQualifiedNamespace The broker FQDN.
+     * @param reactorExceptionHandler The handler to notify any errors in executor.
+     * @param retryOptions the retry options, used to compute the grace period to process pending events
+     *                    before shutting down the Reactor.
+     * @return The single threaded executor associated with the provided Reactor.
+     *
+     * Note: This could be a static method, keeping it instance-level for now to simplify the testing.
+     */
+    public ReactorExecutor createExecutorForReactor(Reactor reactor, String connectionId, String fullyQualifiedNamespace,
+        ReactorConnection.ReactorExceptionHandler reactorExceptionHandler, AmqpRetryOptions retryOptions) {
+        final Duration timeoutDivided = retryOptions.getTryTimeout().dividedBy(2);
+        final Duration pendingTasksDuration = ClientConstants.SERVER_BUSY_WAIT_TIME.compareTo(timeoutDivided) < 0
+            ? ClientConstants.SERVER_BUSY_WAIT_TIME
+            : timeoutDivided;
+        // Use a new single-threaded scheduler to run QPID's Reactor's work as Reactor is not thread-safe.
+        // Using Schedulers.single() will use the same thread for all connections in this process which
+        // limits the scalability of the no. of concurrent connections a single process can have.
+        // This could be a long timeout depending on the user's operation timeout. It's probable that the
+        // connection's long disposed.
+        final Scheduler scheduler = Schedulers.newSingle("reactor-executor");
 
-            final Duration timeoutDivided = retryOptions.getTryTimeout().dividedBy(2);
-            final Duration pendingTasksDuration = ClientConstants.SERVER_BUSY_WAIT_TIME.compareTo(timeoutDivided) < 0
-                ? ClientConstants.SERVER_BUSY_WAIT_TIME
-                : timeoutDivided;
-            // Use a new single-threaded scheduler to run QPID's Reactor's work as Reactor is not thread-safe.
-            // Using Schedulers.single() will use the same thread for all connections in this process which
-            // limits the scalability of the no. of concurrent connections a single process can have.
-            // This could be a long timeout depending on the user's operation timeout. It's probable that the
-            // connection's long disposed.
-            final Scheduler scheduler = Schedulers.newSingle("reactor-executor");
-
-            return new ReactorExecutor(this.reactor, scheduler, connectionId,
-                reactorExceptionHandler, pendingTasksDuration,
-                fullyQualifiedNamespace);
-        }
+        return new ReactorExecutor(reactor, scheduler, connectionId,
+            reactorExceptionHandler, pendingTasksDuration,
+            fullyQualifiedNamespace);
     }
 }
