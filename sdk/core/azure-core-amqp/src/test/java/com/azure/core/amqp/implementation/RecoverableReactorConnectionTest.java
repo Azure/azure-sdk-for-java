@@ -427,7 +427,7 @@ public class RecoverableReactorConnectionTest {
                 throw new UncheckedIOException(ioe);
             }
             when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
-            when(reactorProvider.createExecutorForReactor(anyString(), any(), any(), any())).thenReturn(reactorExecutor);
+            when(reactorProvider.createExecutorForReactor(any(), anyString(), any(), any(), any())).thenReturn(reactorExecutor);
 
             final ConnectionHandler connectionHandler = mock(ConnectionHandler.class);
             when(connectionHandler.getEndpointStates()).thenReturn(endpointStates);

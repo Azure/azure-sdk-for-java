@@ -136,13 +136,12 @@ public class ReactorConnection implements AmqpConnection {
                         handler.getErrorContext())));
                 return activeEndpoint.thenReturn(reactorConnection);
             })
-            .onErrorResume(error -> {
-                if (!isDisposed.getAndSet(true)) {
-                    return closeAsync(new AmqpShutdownSignal(false, false,
-                        "Error occurred while connection was starting. Error: " + error)).then(Mono.error(error));
-                } else {
+            .doOnError(error -> {
+                if (isDisposed.getAndSet(true)) {
                     logger.verbose("Connection was already disposed: Error occurred while connection was starting.", error);
-                    return Mono.error(error);
+                } else {
+                    closeAsync(new AmqpShutdownSignal(false, false,
+                        "Error occurred while connection was starting. Error: " + error)).subscribe();
                 }
             });
 
@@ -597,10 +596,8 @@ public class ReactorConnection implements AmqpConnection {
 
             final ReactorExceptionHandler reactorExceptionHandler = new ReactorExceptionHandler();
 
-            executor = reactorProvider.createExecutorForReactor(connectionId,
-                connectionOptions.getFullyQualifiedNamespace(),
-                reactorExceptionHandler,
-                connectionOptions.getRetry());
+            executor = reactorProvider.createExecutorForReactor(reactor, connectionId,
+                connectionOptions.getFullyQualifiedNamespace(), reactorExceptionHandler, connectionOptions.getRetry());
 
             // To avoid inconsistent synchronization of executor, we set this field with the closeAsync method.
             // It will not be kicked off until subscribed to.
@@ -629,7 +626,7 @@ public class ReactorConnection implements AmqpConnection {
         return connection;
     }
 
-    final class ReactorExceptionHandler extends AmqpExceptionHandler {
+    public final class ReactorExceptionHandler extends AmqpExceptionHandler {
         private ReactorExceptionHandler() {
             super();
         }
