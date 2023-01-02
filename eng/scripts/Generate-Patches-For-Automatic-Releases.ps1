@@ -19,8 +19,15 @@ try {
     $currentBranchName = GetCurrentBranchName
 
     # Checkout a branch to work on.
-    Write-Host "git checkout $remoteName/$branchName"
-    git checkout $remoteName/$branchName
+    if ($currentBranchName -ne $branchName) {
+        Write-Host "git checkout -b $branchName $remoteName/main"
+        git checkout -b $branchName $remoteName/main
+
+        if ($LASTEXITCODE -ne 0) {
+            LogError "Could not checkout branch $branchName, please check if it already exists and delete as necessary. Exiting..."
+            exit $LASTEXITCODE
+        }
+    }
 
     # Generate the list of artifacts to update for a patch release.
     . "${PSScriptRoot}/Update-Artifacts-List-For-Patch-Release.ps1" -SourcesDirectory $SourcesDirectory -YmlToUpdate $PackagesYmlPath
@@ -48,8 +55,8 @@ try {
 
     $libraryList = $libraryList.Substring(0, $libraryList.Length - 1)
 
-    Write-Host "git checkout $remoteName/$branchName"
-    git checkout $remoteName/$branchName
+    Write-Host "git checkout $branchName"
+    git checkout $branchName
 
     # Update POMs for all libraries with dependencies on the libraries to patch. Also, update the READMEs of the latter.
     python "${PSScriptRoot}/../versioning/update_versions.py" --update-type library --build-type client --ll $libraryList
