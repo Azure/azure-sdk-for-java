@@ -18,6 +18,9 @@ try {
     $branchName = GetBranchName -ArtifactId "patches-for-auto-release"
     $currentBranchName = GetCurrentBranchName
 
+    # Generate the list of artifacts to update for a patch release.
+    . "${PSScriptRoot}/Update-Artifacts-List-For-Patch-Release.ps1" -SourcesDirectory $SourcesDirectory -YmlToUpdate $PackagesYmlPath
+
     # Checkout a branch to work on.
     if ($currentBranchName -ne $branchName) {
         Write-Host "git checkout -b $branchName $remoteName/main"
@@ -28,9 +31,6 @@ try {
             exit $LASTEXITCODE
         }
     }
-
-    # Generate the list of artifacts to update for a patch release.
-    . "${PSScriptRoot}/Update-Artifacts-List-For-Patch-Release.ps1" -SourcesDirectory $SourcesDirectory -YmlToUpdate $PackagesYmlPath
 
     # Add the updated YAML file.
     Write-Host "git add -A"
