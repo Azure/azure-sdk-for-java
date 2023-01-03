@@ -265,7 +265,6 @@ public class EventHubClientBuilderTest {
             String.format("Expected: %s. Actual: %s%n", fullyQualifiedDomainName,
                 client.getFullyQualifiedNamespace()));
 
-        assertEquals(fullyQualifiedDomainName, client.getFullyQualifiedNamespace());
         assertEquals(EVENT_HUB_NAME, client.getEventHubName());
     }
 
