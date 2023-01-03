@@ -105,7 +105,7 @@
     <!-- Suppress external dependency Checkstyle on Event Hubs Stress Test packages as it use spring framework and may directly use external dependencies -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.messaging.eventhubs.stress.*\.java"/>
-  <suppress checks="MissingJavadocMethod" files="com.azure.messaging.eventhubs.stress.*\.java"/>       
+  <suppress checks="MissingJavadocMethod" files="com.azure.messaging.eventhubs.stress.*\.java"/>
 
 
   <!-- Suppress warnings for Event Processor until the usage of "Client" is discussed and resolved:
@@ -127,10 +127,13 @@ the main ServiceBusClientBuilder. -->
 
   <suppress checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" files="ServiceBusMessageBatch.java"/>
 
+  <!-- Suppress the long package name in autoconfigure.implementation.redis package  -->
+  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.implementation.redis.*" />
+
   <!-- Suppress external dependency Checkstyle on Service Bus Stress Test packages as it use spring framework and may directly use external dependencies -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.messaging.servicebus.stress.*\.java"/>
-  <suppress checks="MissingJavadocMethod" files="com.azure.messaging.servicebus.stress.*\.java"/>       
+  <suppress checks="MissingJavadocMethod" files="com.azure.messaging.servicebus.stress.*\.java"/>
 
   <!-- Suppress warning for ServiceClients to have Client in its name as Azure Container Registry has Clientlets which do not follow the same convention. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="(ContainerRepository|RegistryArtifact)(Async)?.java"/>
@@ -410,6 +413,9 @@ the main ServiceBusClientBuilder. -->
   <!--DenyListedWordsCheck: URL is the name -->
   <suppress checks="com.azure.tools.checkstyle.checks.DenyListedWordsCheck" files="com.azure.spring.cloud.core.resource.StorageBlobResource.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.DenyListedWordsCheck" files="com.azure.spring.cloud.core.resource.StorageFileResource.java"/>
+
+  <!-- Checkstyle suppressions for com.azure.spring.cloud.service.implementation.redis package -->
+  <suppress checks="MethodName" files="com.azure.spring.cloud.service.implementation.redis.AzureJedisClientConfig"/>
 
   <!-- ### end: Spring related suppression -->
 

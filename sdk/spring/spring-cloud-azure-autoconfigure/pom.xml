@@ -280,6 +280,14 @@
       <optional>true</optional>
     </dependency>
 
+    <!-- Jedis -->
+    <dependency>
+      <groupId>redis.clients</groupId>
+      <artifactId>jedis</artifactId>
+      <version>3.8.0</version> <!-- {x-version-update;spring_redis.clients:jedis;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+
     <!-- TEST-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -321,6 +329,21 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-jdbc</artifactId>
       <version>6.0.3</version> <!-- {x-version-update;org.springframework:spring-jdbc;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <!--testcontainers-->
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>testcontainers</artifactId>
+      <version>1.17.6</version> <!-- {x-version-update;org.testcontainers:testcontainers;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>1.17.6</version> <!-- {x-version-update;org.testcontainers:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -391,6 +414,7 @@
                 <include>org.springframework:spring-jdbc:[6.0.3]</include> <!-- {x-include-update;org.springframework:spring-jdbc;external_dependency} -->
                 <include>org.springframework:spring-jms:[6.0.3]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
                 <include>org.springframework:spring-tx:[6.0.3]</include> <!-- {x-include-update;org.springframework:spring-tx;external_dependency} -->
+                <include>redis.clients:jedis:[3.8.0]</include> <!-- {x-include-update;spring_redis.clients:jedis;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

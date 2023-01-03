@@ -39,6 +39,10 @@ parameters:
   displayName: 'spring-cloud-azure-resourcemanager'
   type: boolean
   default: true
+- name: release_springcloudazuretracesleuth
+  displayName: 'spring-cloud-azure-trace-sleuth'
+  type: boolean
+  default: true
 - name: release_springmessagingazure
   displayName: 'spring-messaging-azure'
   type: boolean
@@ -197,6 +201,10 @@ parameters:
   default: true
 - name: release_springcloudazurestarterjdbcpostgresql
   displayName: 'spring-cloud-azure-starter-jdbc-postgresql'
+  type: boolean
+  default: true
+- name: release_springcloudazurestarterredis
+  displayName: 'spring-cloud-azure-starter-redis'
   type: boolean
   default: true
 
@@ -513,5 +521,13 @@ extends:
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterjdbcpostgresql }}
+      - name: spring-cloud-azure-starter-redis
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterredis
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+        releaseInBatch: ${{ parameters.release_springcloudazurestarterredis }}
     MatrixFilters:
         - JavaTestVersion=^(?!1.8|1.11).*

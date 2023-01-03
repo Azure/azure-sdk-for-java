@@ -2,9 +2,12 @@
 
 ## 5.1.0-beta.1 (Unreleased)
 
+#### Features Added
+- Release the `spring-cloud-azure-starter-redis`. This starter supports Azure hosted Redis service authenticating with Azure AD.
+
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
-
+w
 #### Features Added
 - Make the domain-name option optional when configuring Event Hubs/Service Bus in non-public Azure cloud [#32034](https://github.com/Azure/azure-sdk-for-java/issues/32034).
 
