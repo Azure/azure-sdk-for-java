@@ -39,7 +39,7 @@ try {
     $commitMessage = "Updated list of libraries to patch in patch-release.yml"
 
     Write-Host "git -c user.name=`"azure-sdk`" -c user.email=`"azuresdk@microsoft.com`" commit -m $commitMessage"
-    git -c user.name = "azure-sdk" -c user.email = "azuresdk@microsoft.com" commit -m $commitMessage
+    git -c user.name="azure-sdk" -c user.email="azuresdk@microsoft.com" commit -m $commitMessage
 
     # Read the package info from the generated YAML file
     $ymlContent = Get-Content $PackagesYmlPath -Raw
