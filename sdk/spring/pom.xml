@@ -58,6 +58,7 @@
         <module>spring-cloud-azure-trace-sleuth</module>
         <module>spring-cloud-azure-starter-jdbc-mysql</module>
         <module>spring-cloud-azure-starter-jdbc-postgresql</module>
+        <module>spring-cloud-azure-starter-redis</module>
         <module>spring-cloud-azure-integration-tests</module>
       </modules>
     </profile>
@@ -110,6 +111,7 @@
         <module>spring-cloud-azure-trace-sleuth</module>
         <module>spring-cloud-azure-starter-jdbc-mysql</module>
         <module>spring-cloud-azure-starter-jdbc-postgresql</module>
+        <module>spring-cloud-azure-starter-redis</module>
       </modules>
     </profile>
   </profiles>

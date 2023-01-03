@@ -83,7 +83,7 @@ public enum AuthProperty {
         "Scopes for Azure resources.",
         false),
     /**
-     * Max time to get an access token.
+     * Max time to get an access token.SCOPES
      */
     GET_TOKEN_TIMEOUT("azure.accessTokenTimeoutInSeconds",
         "Max time to get an access token.",

@@ -3,6 +3,8 @@
 
 package com.azure.spring.cloud.service.implementation.passwordless;
 
+import com.azure.identity.extensions.implementation.enums.AuthProperty;
+import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.properties.authentication.TokenCredentialProperties;
 import com.azure.spring.cloud.core.properties.client.ClientProperties;
@@ -11,13 +13,20 @@ import com.azure.spring.cloud.core.properties.proxy.ProxyProperties;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider;
 
+import java.util.Properties;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+
 /**
  * Implement {@link TokenCredentialOptionsProvider} and {@link AzureProfileOptionsProvider} for Spring Cloud Azure
  * support for other third party services.
  */
 public class AzurePasswordlessProperties implements AzureProperties {
+    private static final PropertyMapper PROPERTY_MAPPER = new PropertyMapper();
 
     private AzureProfileProperties profile = new AzureProfileProperties();
+
+    private String scopes;
 
     private TokenCredentialProperties credential = new TokenCredentialProperties();
 
@@ -72,5 +81,80 @@ public class AzurePasswordlessProperties implements AzureProperties {
 
     public void setPasswordlessEnabled(boolean passwordlessEnabled) {
         this.passwordlessEnabled = passwordlessEnabled;
+    }
+
+    public String getScopes() {
+        return scopes;
+    }
+
+    public void setScopes(String scopes) {
+        this.scopes = scopes;
+    }
+
+    public Properties toProperties() {
+        Properties target = new Properties();
+        for (AzurePasswordlessPropertiesMapping m : AzurePasswordlessPropertiesMapping.values()) {
+            PROPERTY_MAPPER.from(m.getter().apply(this)).to(v -> m.setter.accept(target, v));
+        }
+        return target;
+    }
+
+    private enum AzurePasswordlessPropertiesMapping {
+
+        scopes(
+            p -> p.getScopes(),
+            (p, s) -> p.setProperty(AuthProperty.SCOPES.getPropertyKey(), s)),
+
+        clientCertificatePassword(
+            p -> p.getCredential().getClientCertificatePassword(),
+            (p, s) -> p.setProperty(AuthProperty.CLIENT_CERTIFICATE_PASSWORD.getPropertyKey(), s)),
+
+        clientCertificatePath(
+            p -> p.getCredential().getClientCertificatePath(),
+            (p, s) -> p.setProperty(AuthProperty.CLIENT_CERTIFICATE_PATH.getPropertyKey(), s)),
+
+        clientId(
+            p -> p.getCredential().getClientId(),
+            (p, s) -> p.setProperty(AuthProperty.CLIENT_ID.getPropertyKey(), s)),
+
+        clientSecret(
+            p -> p.getCredential().getClientSecret(),
+            (p, s) -> p.setProperty(AuthProperty.CLIENT_SECRET.getPropertyKey(), s)),
+
+        managedIdentityEnabled(
+
+            p -> String.valueOf(p.getCredential().isManagedIdentityEnabled()),
+            (p, s) -> p.setProperty(AuthProperty.MANAGED_IDENTITY_ENABLED.getPropertyKey(), s)),
+
+        password(
+            p -> p.getCredential().getPassword(),
+            (p, s) -> p.setProperty(AuthProperty.PASSWORD.getPropertyKey(), s)),
+
+        username(
+            p -> p.getCredential().getUsername(),
+            (p, s) -> p.setProperty(AuthProperty.USERNAME.getPropertyKey(), s)),
+
+
+        tenantId(
+            p -> p.getProfile().getTenantId(),
+            (p, s) -> p.setProperty(AuthProperty.TENANT_ID.getPropertyKey(), s));
+
+        private Function<AzurePasswordlessProperties, String> getter;
+        private BiConsumer<Properties, String> setter;
+
+        AzurePasswordlessPropertiesMapping(Function<AzurePasswordlessProperties, String> getter, BiConsumer<Properties,
+            String> setter) {
+            this.getter = getter;
+            this.setter = setter;
+        }
+
+        public Function<AzurePasswordlessProperties, String> getter() {
+            return getter;
+        }
+
+        public BiConsumer<Properties, String> setter() {
+            return setter;
+        }
+
     }
 }

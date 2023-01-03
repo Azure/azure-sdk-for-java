@@ -206,6 +206,7 @@ com.azure.spring:spring-cloud-azure-starter-data-cosmos;4.5.0;4.6.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-eventhubs;4.5.0;4.6.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-jdbc-mysql;4.5.0;4.6.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-jdbc-postgresql;4.5.0;4.6.0-beta.1
+com.azure.spring:spring-cloud-azure-starter-redis;4.6.0-beta.1;4.6.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-keyvault;4.5.0;4.6.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-keyvault-certificates;4.5.0;4.6.0-beta.1
 com.azure.spring:spring-cloud-azure-starter-keyvault-secrets;4.5.0;4.6.0-beta.1
