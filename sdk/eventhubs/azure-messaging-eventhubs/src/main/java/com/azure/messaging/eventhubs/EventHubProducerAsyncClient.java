@@ -306,7 +306,7 @@ public class EventHubProducerAsyncClient implements Closeable {
                 MAX_PARTITION_KEY_LENGTH)));
         }
 
-        return getSendLink(partitionId)
+        final Mono<EventDataBatch> createBatch = getSendLink(partitionId)
             .flatMap(link -> link.getLinkSize()
                 .flatMap(size -> {
                     final int maximumLinkSize = size > 0
@@ -326,6 +326,12 @@ public class EventHubProducerAsyncClient implements Closeable {
 
                     return Mono.just(new EventDataBatch(batchSize, partitionId, partitionKey, link::getErrorContext, instrumentation));
                 }));
+
+        // Similar to the companion API 'send', the 'create-batch' can also make network calls, so retry in case
+        // of transient errors.
+        return withRetry(createBatch, retryOptions,
+            String.format("partitionId[%s]: Creating batch timed out.", partitionId))
+            .publishOn(scheduler);
     }
 
     /**
