@@ -474,8 +474,8 @@ public final class BinaryData {
      * Creates an instance of {@link BinaryData} from the given {@link Flux} of {@link ByteBuffer}.
      * This API does perform any asynchronous operations on the given data, and so cannot eagerly operate on it.
      *
-     * @param data Content to wrap.
-     * @param length Optional known length of the content in bytes.
+     * @param data The {@link Flux} of {@link ByteBuffer} that {@link BinaryData} will represent.
+     * @param length The length of {@code data} in bytes.
      * @return BinaryData instance wrapping the flux.
      */
     public static BinaryData fromFluxSync(Flux<ByteBuffer> data, Long length) {
@@ -484,21 +484,43 @@ public final class BinaryData {
 
     /**
      * Creates an instance of {@link BinaryData} from the given {@link Flux} of {@link ByteBuffer}.
-     *      * This API does perform any asynchronous operations on the given data, and so cannot eagerly operate on it.
+     * This API does perform any asynchronous operations on the given data, and so cannot eagerly operate on it.
      *
-     * @param data Content to wrap.
-     * @param length Optional known length of the content in bytes.
-     * @param isReplayable Whether the content is replayable.
+     * @param data The {@link Flux} of {@link ByteBuffer} that {@link BinaryData} will represent.
+     * @param length The length of {@code data} in bytes.
+     * @param bufferContent A flag indicating whether {@link Flux} should be buffered eagerly or consumption deferred.
      * @return BinaryData instance wrapping the flux.
      */
-    public static BinaryData fromFluxSync(Flux<ByteBuffer> data, Long length, boolean isReplayable) {
+    public static BinaryData fromFluxSync(Flux<ByteBuffer> data, Long length, boolean bufferContent) {
         if (data == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'data' cannot be null."));
         }
         if (length != null && length < 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'length' cannot be less than 0."));
         }
-        return new BinaryData(new FluxByteBufferContent(data, length, isReplayable));
+
+        if (!bufferContent) {
+            return new BinaryData(new FluxByteBufferContent(data, length));
+        }
+
+        // Buffer the Flux<ByteBuffer> content using ByteBuffers of equal size to the original ByteBuffer.
+        // Previously this was using FluxUtil.collectBytesInByteBufferStream which runs into two issues:
+        //
+        // 1. The content is limited in size as it collects into a byte array which is limited to ~2GB in size.
+        // 2. This could lead to a very large chunk of data existing which can cause pauses when allocating large
+        //    arrays.
+        long[] trueLength = new long[]{0};
+        var lazyBufferingFlux = data.map(buffer -> {
+                int bufferSize = buffer.remaining();
+                ByteBuffer copy = ByteBuffer.allocate(bufferSize);
+                trueLength[0] += bufferSize;
+                copy.put(buffer);
+                copy.flip();
+
+                return copy;
+            });
+            return new BinaryData(new FluxByteBufferContent(lazyBufferingFlux.map(ByteBuffer::duplicate),
+                (length != null) ? length : trueLength[0], true));
     }
 
     /**
