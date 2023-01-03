@@ -33,11 +33,8 @@ public final class StorageSharedKeyCredential {
     private static final Context LOG_STRING_TO_SIGN_CONTEXT = new Context(Constants.STORAGE_LOG_STRING_TO_SIGN, true);
 
     // Pieces of the connection string that are needed.
-    private static final String ACCOUNT = "account";
-    private static final String KEY = "key";
-    private static final String ACCOUNT_KEY = ACCOUNT + KEY;
-    private static final String NAME = "name";
-    private static final String ACCOUNT_NAME = ACCOUNT + NAME;
+    private static final String ACCOUNT_KEY = "account-key";
+    private static final String ACCOUNT_NAME = "account-name";
 
     private final AzureNamedKeyCredential azureNamedKeyCredential;
 
@@ -79,18 +76,16 @@ public final class StorageSharedKeyCredential {
         String accountKey = null;
 
         for (String connectionStringPiece : connectionString.split(";")) {
-            // Check if the connection string piece begins with 'account'.
-            if (!ACCOUNT.regionMatches(true, 0, connectionStringPiece, 0, ACCOUNT.length())) {
+            String[] kvp = connectionStringPiece.split("=", 2);
+
+            if (kvp.length < 2) {
                 continue;
             }
 
-            // Check if the connection string piece is followed by 'account' with 'key=' or 'name='
-            if (connectionStringPiece.charAt(ACCOUNT_KEY.length()) == '='
-                && KEY.regionMatches(true, 0, connectionStringPiece, ACCOUNT.length(), KEY.length())) {
-                accountKey = connectionStringPiece.substring(ACCOUNT_KEY.length() + 1);
-            } else if (connectionStringPiece.charAt(ACCOUNT_NAME.length()) == '='
-                && NAME.regionMatches(true, 0, connectionStringPiece, ACCOUNT.length(), NAME.length())) {
-                accountName = connectionStringPiece.substring(ACCOUNT_NAME.length() + 1);
+            if (ACCOUNT_NAME.equalsIgnoreCase(kvp[0])) {
+                accountName = kvp[1];
+            } else if (ACCOUNT_KEY.equalsIgnoreCase(kvp[0])) {
+                accountKey = kvp[1];
             }
         }
 
