@@ -10,6 +10,8 @@
 
 ### Bugs Fixed
 
+- Added retry for createBatch API as this API also makes network calls similar to its companion send API.
+
 ### Other Changes
 
 ## 5.15.0 (2022-11-16)
