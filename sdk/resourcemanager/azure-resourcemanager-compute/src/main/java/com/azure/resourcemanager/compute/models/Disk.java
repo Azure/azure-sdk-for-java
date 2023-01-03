@@ -83,6 +83,9 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
      */
     Mono<Void> revokeAccessAsync();
 
+    /** @return whether the OS on a disk supports hibernation. */
+    boolean isHibernationSupported();
+
     /** The entirety of the managed disk definition. */
     interface Definition
         extends DefinitionStages.Blank,
@@ -416,6 +419,17 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
             WithCreate withDiskEncryptionSet(String diskEncryptionSetId);
         }
 
+        /** The stage of the managed disk definition allowing to configure hibernation support for the OS on the disk. */
+        interface WithHibernationSupport {
+            /**
+             * Specifies hibernation support for the OS on the disk.
+             * Hibernation support is required if you want to create a virtual machine with hibernation capability that use this disk as its OS disk.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withHibernationSupport();
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
@@ -425,7 +439,8 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
                 Resource.DefinitionWithTags<Disk.DefinitionStages.WithCreate>,
                 WithSku,
                 WithAvailabilityZone,
-                WithDiskEncryption {
+                WithDiskEncryption,
+                WithHibernationSupport {
 
             /**
              * Begins creating the disk resource.
@@ -482,6 +497,23 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
              */
             Update withDiskEncryptionSet(String diskEncryptionSetId, EncryptionType encryptionType);
         }
+
+        /** The stage of the managed disk definition allowing to configure hibernation support. */
+        interface WithHibernationSupport {
+            /**
+             * Specifies hibernation support for the OS on the disk.
+             *
+             * @return the next stage of the definition
+             */
+            Update withHibernationSupport();
+
+            /**
+             * Specifies hibernation support disabled for the OS on the disk.
+             *
+             * @return the next stage of the definition
+             */
+            Update withoutHibernationSupport();
+        }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
@@ -491,6 +523,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
             UpdateStages.WithSku,
             UpdateStages.WithSize,
             UpdateStages.WithOSSettings,
-            UpdateStages.WithDiskEncryption {
+            UpdateStages.WithDiskEncryption,
+            UpdateStages.WithHibernationSupport {
     }
 }

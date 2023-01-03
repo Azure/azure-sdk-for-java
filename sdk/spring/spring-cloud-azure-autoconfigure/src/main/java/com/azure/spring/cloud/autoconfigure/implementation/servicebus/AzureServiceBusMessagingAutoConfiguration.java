@@ -9,6 +9,7 @@ import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionSt
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
+import com.azure.spring.messaging.implementation.converter.ObjectMapperHolder;
 import com.azure.spring.messaging.servicebus.core.DefaultServiceBusNamespaceProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.DefaultServiceBusNamespaceProducerFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
@@ -17,7 +18,8 @@ import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ProducerProperties;
-import com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter;
+import com.azure.spring.messaging.servicebus.implementation.support.converter.ServiceBusMessageConverter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -96,8 +98,16 @@ public class AzureServiceBusMessagingAutoConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        ServiceBusMessageConverter serviceBusMessageConverter() {
-            return new ServiceBusMessageConverter();
+        @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper", havingValue = "true", matchIfMissing = true)
+        ServiceBusMessageConverter defaultServiceBusMessageConverter() {
+            return new ServiceBusMessageConverter(ObjectMapperHolder.OBJECT_MAPPER);
+        }
+
+        @Bean
+        @ConditionalOnMissingBean
+        @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper", havingValue = "false")
+        ServiceBusMessageConverter serviceBusMessageConverter(ObjectMapper objectMapper) {
+            return new ServiceBusMessageConverter(objectMapper);
         }
 
         @Bean

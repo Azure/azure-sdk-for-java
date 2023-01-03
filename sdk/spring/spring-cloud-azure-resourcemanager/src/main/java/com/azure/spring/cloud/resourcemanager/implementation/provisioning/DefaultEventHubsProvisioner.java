@@ -8,7 +8,6 @@ import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.EventHubNamespaceCrud;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.EventHubsConsumerGroupCrud;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.EventHubsCrud;
-import com.azure.spring.cloud.resourcemanager.provisioning.EventHubsProvisioner;
 import reactor.util.function.Tuples;
 
 /**

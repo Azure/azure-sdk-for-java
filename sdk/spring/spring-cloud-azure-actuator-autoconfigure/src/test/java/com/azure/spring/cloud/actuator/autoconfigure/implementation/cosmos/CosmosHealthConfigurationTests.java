@@ -5,7 +5,7 @@ package com.azure.spring.cloud.actuator.autoconfigure.implementation.cosmos;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.spring.cloud.actuator.cosmos.CosmosHealthIndicator;
+import com.azure.spring.cloud.actuator.implementation.cosmos.CosmosHealthIndicator;
 import com.azure.spring.cloud.autoconfigure.implementation.cosmos.AzureCosmosAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import org.junit.jupiter.api.Test;

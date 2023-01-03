@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EndpointType. */
+/** The type of Digital Twins endpoint. */
 public final class EndpointType extends ExpandableStringEnum<EndpointType> {
     /** Static value EventHub for EndpointType. */
     public static final EndpointType EVENT_HUB = fromString("EventHub");

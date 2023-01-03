@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VersionState. */
+/** The state of this packet core control plane version. */
 public final class VersionState extends ExpandableStringEnum<VersionState> {
     /** Static value Unknown for VersionState. */
     public static final VersionState UNKNOWN = fromString("Unknown");
