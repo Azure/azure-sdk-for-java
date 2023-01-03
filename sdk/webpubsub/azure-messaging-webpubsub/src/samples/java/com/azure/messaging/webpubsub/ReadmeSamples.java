@@ -62,16 +62,19 @@ public class ReadmeSamples {
 
         // BEGIN: readme-sample-broadcastToAll-filter
         // send a text message to the entire hub with a filter on userId
+        BinaryData message = BinaryData.fromString("Hello World - Broadcast test!");
         webPubSubServiceClient.sendToAllWithResponse(
-            BinaryData.fromString("Hello World - Broadcast test!"),
-            new RequestOptions().setHeader("Content-Type", "text/plain")
-                .addQueryParam("filter", "userId ne 'user1'"));
+            message,
+            WebPubSubContentType.TEXT_PLAIN,
+            message.getLength(),
+            new RequestOptions().addQueryParam("filter", "userId ne 'user1'"));
 
         // send a text message to the entire hub with another filter on group
         webPubSubServiceClient.sendToAllWithResponse(
-            BinaryData.fromString("Hello World - Broadcast test!"),
-            new RequestOptions().setHeader("Content-Type", "text/plain")
-                .addQueryParam("filter", "'GroupA' in groups and not('GroupB' in groups)"));
+            message,
+            WebPubSubContentType.TEXT_PLAIN,
+            message.getLength(),
+            new RequestOptions().addQueryParam("filter", "'GroupA' in groups and not('GroupB' in groups)"));
         // END: readme-sample-broadcastToAll-filter
     }
 
