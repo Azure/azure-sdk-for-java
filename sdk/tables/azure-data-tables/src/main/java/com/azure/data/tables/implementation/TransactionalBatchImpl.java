@@ -66,6 +66,18 @@ public final class TransactionalBatchImpl {
             @HeaderParam("DataServiceVersion") String dataServiceVersion,
             @BodyParam("multipart/mixed") TransactionalBatchRequestBody body,
             Context context);
+
+        @Post("/$batch")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]> submitTransactionalBatchSync(
+            @HostParam("url") String url,
+            @HeaderParam("Content-Type") String multipartContentType,
+            @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("DataServiceVersion") String dataServiceVersion,
+            @BodyParam("multipart/mixed") TransactionalBatchRequestBody body,
+            Context context);
     }
 
     /**
@@ -87,4 +99,25 @@ public final class TransactionalBatchImpl {
         return service.submitTransactionalBatch(this.client.getUrl(), body.getContentType(), this.client.getVersion(), requestId,
             dataServiceVersion, body, context);
     }
+
+    /**
+     * The submit transactional batch operation allows multiple API calls to be embedded into a single HTTP request.
+     *
+     * @param body Initial data.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     *
+     * @return A {@code ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]>}.
+     *
+     * @throws IllegalArgumentException If parameters fail validation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]> submitTransactionalBatchWithRestResponse(TransactionalBatchRequestBody body, String requestId, Context context) {
+        final String dataServiceVersion = "3.0";
+
+        return service.submitTransactionalBatchSync(this.client.getUrl(), body.getContentType(), this.client.getVersion(), requestId,
+            dataServiceVersion, body, context);
+    }
+
 }

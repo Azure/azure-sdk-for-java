@@ -5,12 +5,15 @@ package com.azure.data.tables.implementation.models;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
 import com.azure.data.tables.TableAsyncClient;
+import com.azure.data.tables.TableClient;
 import com.azure.data.tables.models.TableEntity;
 import com.azure.data.tables.models.TableEntityUpdateMode;
 import reactor.core.publisher.Mono;
 
 public interface TransactionalBatchAction {
     Mono<HttpRequest> prepareRequest(TableAsyncClient preparer);
+
+    HttpRequest prepareRequest(TableClient preparer);
 
     class CreateEntity implements TransactionalBatchAction {
         private final TableEntity entity;
@@ -26,6 +29,11 @@ public interface TransactionalBatchAction {
         @Override
         public Mono<HttpRequest> prepareRequest(TableAsyncClient client) {
             return client.createEntityWithResponse(entity).map(Response::getRequest);
+        }
+
+        @Override
+        public HttpRequest prepareRequest(TableClient client) {
+            return client.createEntityWithResponse(entity, null, null).getRequest();
         }
 
         @Override
@@ -57,6 +65,11 @@ public interface TransactionalBatchAction {
         @Override
         public Mono<HttpRequest> prepareRequest(TableAsyncClient preparer) {
             return preparer.upsertEntityWithResponse(entity, updateMode).map(Response::getRequest);
+        }
+
+        @Override
+        public HttpRequest prepareRequest(TableClient preparer) {
+            return preparer.upsertEntityWithResponse(entity, updateMode, null, null).getRequest();
         }
 
         @Override
@@ -98,6 +111,12 @@ public interface TransactionalBatchAction {
         }
 
         @Override
+        public HttpRequest prepareRequest(TableClient preparer) {
+            return preparer
+                .updateEntityWithResponse(entity, updateMode, ifUnchanged, null, null).getRequest();
+        }
+
+        @Override
         public String toString() {
             return "UpdateEntity{"
                 + "partitionKey='" + entity.getPartitionKey() + '\''
@@ -128,6 +147,11 @@ public interface TransactionalBatchAction {
         @Override
         public Mono<HttpRequest> prepareRequest(TableAsyncClient preparer) {
             return preparer.deleteEntityWithResponse(entity, ifUnchanged).map(Response::getRequest);
+        }
+
+        @Override
+        public HttpRequest prepareRequest(TableClient preparer) {
+            return preparer.deleteEntityWithResponse(entity, ifUnchanged, null, null).getRequest();
         }
 
         @Override

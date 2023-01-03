@@ -238,6 +238,10 @@ public final class TableAsyncClient {
         return new TableSasGenerator(tableSasSignatureValues, getTableName(), azureNamedKeyCredential).getSas();
     }
 
+    private Context setContext(Context context) {
+        return context == null ? Context.NONE : context;
+    }
+
     /**
      * Creates the table within the Tables service.
      *
@@ -287,7 +291,7 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<TableItem>> createTableWithResponse(Context context) {
-        context = context == null ? Context.NONE : context;
+        context = setContext(context);
         final TableProperties properties = new TableProperties().setTableName(tableName);
 
         try {
@@ -349,7 +353,7 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<Void>> deleteTableWithResponse(Context context) {
-        context = context == null ? Context.NONE : context;
+        context = setContext(context);
 
         try {
             return tablesImplementation.getTables().deleteWithResponseAsync(tableName, null, context)
@@ -432,7 +436,7 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<Void>> createEntityWithResponse(TableEntity entity, Context context) {
-        context = context == null ? Context.NONE : context;
+        context = setContext(context);
 
         if (entity == null) {
             return monoError(logger, new IllegalArgumentException("'entity' cannot be null."));
@@ -532,7 +536,7 @@ public final class TableAsyncClient {
 
     Mono<Response<Void>> upsertEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
                                                   Context context) {
-        context = context == null ? Context.NONE : context;
+        context = setContext(context);
 
         if (entity == null) {
             return monoError(logger, new IllegalArgumentException("'entity' cannot be null."));
@@ -699,7 +703,7 @@ public final class TableAsyncClient {
 
     Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
                                                   boolean ifUnchanged, Context context) {
-        context = context == null ? Context.NONE : context;
+        context = setContext(context);
 
         if (entity == null) {
             return monoError(logger, new IllegalArgumentException("'entity' cannot be null."));
@@ -839,7 +843,7 @@ public final class TableAsyncClient {
 
     Mono<Response<Void>> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, boolean ifUnchanged,
                                                   Context context) {
-        context = context == null ? Context.NONE : context;
+        context = setContext(context);
         eTag = ifUnchanged ? eTag : "*";
 
         if (isNullOrEmpty(partitionKey) || isNullOrEmpty(rowKey)) {
@@ -967,7 +971,7 @@ public final class TableAsyncClient {
     private <T extends TableEntity> Mono<PagedResponse<T>> listEntities(String nextPartitionKey, String nextRowKey,
                                                                         Context context, ListEntitiesOptions options,
                                                                         Class<T> resultType) {
-        context = context == null ? Context.NONE : context;
+        context = setContext(context);
         String select = null;
 
         if (options.getSelect() != null) {
@@ -1248,7 +1252,7 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<TableAccessPolicies>> getAccessPoliciesWithResponse(Context context) {
-        context = context == null ? Context.NONE : context;
+        context = setContext(context);
 
         try {
             return tablesImplementation.getTables()
@@ -1368,7 +1372,7 @@ public final class TableAsyncClient {
 
     Mono<Response<Void>> setAccessPoliciesWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
                                                        Context context) {
-        context = context == null ? Context.NONE : context;
+        context = setContext(context);
         List<SignedIdentifier> signedIdentifiers = null;
 
         /*
@@ -1617,7 +1621,7 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<TableTransactionResult>> submitTransactionWithResponse(List<TableTransactionAction> transactionActions, Context context) {
-        Context finalContext = context == null ? Context.NONE : context;
+        Context finalContext = setContext(context);
 
         if (transactionActions.isEmpty()) {
             return monoError(logger,

@@ -6,27 +6,61 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureNamedKeyCredential;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.IterableStream;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.data.tables.implementation.AzureTableImpl;
+import com.azure.data.tables.implementation.AzureTableImplBuilder;
+import com.azure.data.tables.implementation.ModelHelper;
+import com.azure.data.tables.implementation.TableAccountSasGenerator;
+import com.azure.data.tables.implementation.TableSasUtils;
 import com.azure.data.tables.implementation.TableUtils;
+import com.azure.data.tables.implementation.models.CorsRule;
+import com.azure.data.tables.implementation.models.GeoReplication;
+import com.azure.data.tables.implementation.models.Logging;
+import com.azure.data.tables.implementation.models.Metrics;
+import com.azure.data.tables.implementation.models.OdataMetadataFormat;
+import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
+import com.azure.data.tables.implementation.models.RetentionPolicy;
 import com.azure.data.tables.implementation.models.TableProperties;
+import com.azure.data.tables.implementation.models.TableQueryResponse;
+import com.azure.data.tables.implementation.models.TableResponseProperties;
+import com.azure.data.tables.implementation.models.TableServiceStats;
+import com.azure.data.tables.implementation.models.TablesQueryHeaders;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableItem;
+import com.azure.data.tables.models.TableServiceCorsRule;
 import com.azure.data.tables.models.TableServiceException;
+import com.azure.data.tables.models.TableServiceGeoReplication;
+import com.azure.data.tables.models.TableServiceGeoReplicationStatus;
+import com.azure.data.tables.models.TableServiceLogging;
+import com.azure.data.tables.models.TableServiceMetrics;
 import com.azure.data.tables.models.TableServiceProperties;
+import com.azure.data.tables.models.TableServiceRetentionPolicy;
 import com.azure.data.tables.models.TableServiceStatistics;
 import com.azure.data.tables.sas.TableAccountSasSignatureValues;
-import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.time.Duration;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
-import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.data.tables.implementation.TableUtils.blockWithOptionalTimeout;
 
 /**
  * Provides a synchronous service client for accessing the Azure Tables service.
@@ -52,10 +86,31 @@ import static com.azure.data.tables.implementation.TableUtils.blockWithOptionalT
  */
 @ServiceClient(builder = TableServiceClientBuilder.class)
 public final class TableServiceClient {
-    private final TableServiceAsyncClient client;
 
-    TableServiceClient(TableServiceAsyncClient client) {
-        this.client = client;
+    private final ClientLogger logger = new ClientLogger(TableServiceClient.class);
+    private final AzureTableImpl implementation;
+    private final String accountName;
+    private final HttpPipeline pipeline;
+
+    TableServiceClient(HttpPipeline pipeline, String url, TableServiceVersion serviceVersion,
+                            SerializerAdapter serializerAdapter) {
+
+        try {
+            final URI uri = URI.create(url);
+            this.accountName = uri.getHost().split("\\.", 2)[0];
+
+            logger.verbose("Table Service URI: {}", uri);
+        } catch (NullPointerException | IllegalArgumentException ex) {
+            throw logger.logExceptionAsError(ex);
+        }
+
+        this.implementation = new AzureTableImplBuilder()
+            .serializerAdapter(serializerAdapter)
+            .url(url)
+            .pipeline(pipeline)
+            .version(serviceVersion.getVersion())
+            .buildClient();
+        this.pipeline = implementation.getHttpPipeline();
     }
 
     /**
@@ -64,7 +119,7 @@ public final class TableServiceClient {
      * @return The name of the account containing the table.
      */
     public String getAccountName() {
-        return client.getAccountName();
+        return accountName;
     }
 
     /**
@@ -73,7 +128,7 @@ public final class TableServiceClient {
      * @return The endpoint for the Tables service.
      */
     public String getServiceEndpoint() {
-        return client.getServiceEndpoint();
+        return implementation.getUrl();
     }
 
     /**
@@ -82,7 +137,7 @@ public final class TableServiceClient {
      * @return The REST API version used by this client.
      */
     public TableServiceVersion getServiceVersion() {
-        return client.getServiceVersion();
+        return TableServiceVersion.fromString(implementation.getVersion());
     }
 
     /**
@@ -91,7 +146,7 @@ public final class TableServiceClient {
      * @return This client's {@link HttpPipeline}.
      */
     HttpPipeline getHttpPipeline() {
-        return client.getHttpPipeline();
+        return this.pipeline;
     }
 
     /**
@@ -109,7 +164,14 @@ public final class TableServiceClient {
      * {@link AzureNamedKeyCredential}.
      */
     public String generateAccountSas(TableAccountSasSignatureValues tableAccountSasSignatureValues) {
-        return client.generateAccountSas(tableAccountSasSignatureValues);
+        AzureNamedKeyCredential azureNamedKeyCredential = TableSasUtils.extractNamedKeyCredential(getHttpPipeline());
+
+        if (azureNamedKeyCredential == null) {
+            throw logger.logExceptionAsError(new IllegalStateException("Cannot generate a SAS token with a client that"
+                + " is not authenticated with an AzureNamedKeyCredential."));
+        }
+
+        return new TableAccountSasGenerator(tableAccountSasSignatureValues, azureNamedKeyCredential).getSas();
     }
 
     /**
@@ -124,7 +186,13 @@ public final class TableServiceClient {
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
      */
     public TableClient getTableClient(String tableName) {
-        return new TableClient(client.getTableClient(tableName));
+        return new TableClientBuilder()
+            .pipeline(this.implementation.getHttpPipeline())
+            .serviceVersion(this.getServiceVersion())
+            .endpoint(this.getServiceEndpoint())
+            .tableName(tableName)
+            .buildClient();
+
     }
 
     /**
@@ -179,21 +247,25 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableClient> createTableWithResponse(String tableName, Duration timeout, Context context) {
-        return blockWithOptionalTimeout(createTableWithResponse(tableName, context), timeout);
+        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        long timeoutInMillis = setTimeout(timeout);
+        Callable<Response<TableClient>> callable = () -> createTableWithResponse(tableName, context);
+        Future<Response<TableClient>> future = scheduler.submit(callable);
+        scheduler.shutdown();
+        try {
+            return future.get(timeoutInMillis, TimeUnit.MILLISECONDS);
+        } catch (Exception ex) {
+            throw logger.logExceptionAsError(new RuntimeException(TableUtils.mapThrowableToTableServiceException(ex)));
+        }
     }
 
-    Mono<Response<TableClient>> createTableWithResponse(String tableName, Context context) {
+    Response<TableClient> createTableWithResponse(String tableName, Context context) {
         context = context == null ? Context.NONE : context;
         final TableProperties properties = new TableProperties().setTableName(tableName);
 
-        try {
-            return client.getImplementation().getTables().createWithResponseAsync(properties, null,
-                ResponseFormat.RETURN_NO_CONTENT, null, context)
-                .onErrorMap(TableUtils::mapThrowableToTableServiceException)
-                .map(response -> new SimpleResponse<>(response, getTableClient(tableName)));
-        } catch (RuntimeException ex) {
-            return monoError(client.getLogger(), ex);
-        }
+        return new SimpleResponse<>(implementation.getTables()
+            .createWithResponse(properties, null, ResponseFormat.RETURN_NO_CONTENT, null, context),
+            getTableClient(tableName));
     }
 
     /**
@@ -249,18 +321,32 @@ public final class TableServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableClient> createTableIfNotExistsWithResponse(String tableName, Duration timeout,
                                                                     Context context) {
-        return blockWithOptionalTimeout(createTableIfNotExistsWithResponse(tableName, context), timeout);
+        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        long timeoutInMillis = setTimeout(timeout);
+        Callable<Response<TableClient>> callable = () -> createTableIfNotExistsWithResponse(tableName, context);
+        Future<Response<TableClient>> future = scheduler.submit(callable);
+        scheduler.shutdown();
+        try {
+            return future.get(timeoutInMillis, TimeUnit.MILLISECONDS);
+        } catch (Exception e) {
+            throw logger.logExceptionAsError(new RuntimeException(TableUtils.mapThrowableToTableServiceException(e)));
+        }
     }
 
-    Mono<Response<TableClient>> createTableIfNotExistsWithResponse(String tableName, Context context) {
-        return createTableWithResponse(tableName, context).onErrorResume(e -> e instanceof TableServiceException
+    Response<TableClient> createTableIfNotExistsWithResponse(String tableName, Context context) throws Exception {
+        try {
+            return createTableWithResponse(tableName, null, null);
+        } catch (Exception e) {
+            if (e instanceof TableServiceException
                 && ((TableServiceException) e).getResponse() != null
-                && ((TableServiceException) e).getResponse().getStatusCode() == 409,
-            e -> {
+                && ((TableServiceException) e).getResponse().getStatusCode() == 409) {
                 HttpResponse response = ((TableServiceException) e).getResponse();
-                return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), null));
-            });
+                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), null);
+            }
+
+            throw logger.logThrowableAsError(e);
+        }
     }
 
     /**
@@ -285,7 +371,7 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTable(String tableName) {
-        client.deleteTable(tableName).block();
+        deleteTableWithResponse(tableName, null, null);
     }
 
     /**
@@ -317,7 +403,30 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTableWithResponse(String tableName, Duration timeout, Context context) {
-        return blockWithOptionalTimeout(client.deleteTableWithResponse(tableName, context), timeout);
+        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        long timeoutInMillis = setTimeout(timeout);
+        Future<Response<Void>> future =
+            scheduler.submit(() -> deleteTableWithResponse(tableName, context));
+        scheduler.shutdown();
+        try {
+            return future.get(timeoutInMillis, TimeUnit.MILLISECONDS);
+        } catch (Exception e) {
+            Exception exception = (Exception) TableUtils.mapThrowableToTableServiceException(e);
+            if (exception instanceof TableServiceException
+                && ((TableServiceException) exception).getResponse().getStatusCode() == 404) {
+                HttpResponse httpResponse = ((TableServiceException) exception).getResponse();
+                return new SimpleResponse<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
+                    httpResponse.getHeaders(), null);
+            }
+
+            throw logger.logExceptionAsError(new RuntimeException(exception));
+        }
+    }
+
+    Response<Void> deleteTableWithResponse(String tableName, Context context) {
+        context = context == null ? Context.NONE : context;
+        return new SimpleResponse<>(
+            implementation.getTables().deleteWithResponse(tableName, null, context), null);
     }
 
     /**
@@ -340,7 +449,7 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableItem> listTables() {
-        return new PagedIterable<>(client.listTables());
+        return listTables(new ListTablesOptions(), null, null);
     }
 
     /**
@@ -373,7 +482,98 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableItem> listTables(ListTablesOptions options, Duration timeout, Context context) {
-        return new PagedIterable<>(client.listTables(options, context, timeout));
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        long timeoutInMillis = setTimeout(timeout);
+        Future<PagedIterable<TableItem>> future = scheduler.submit(() -> listTables(options, context));
+        scheduler.shutdown();
+        try {
+            return future.get(timeoutInMillis, TimeUnit.MILLISECONDS);
+        } catch (Exception e) {
+            throw logger.logExceptionAsError(new RuntimeException(TableUtils.mapThrowableToTableServiceException(e)));
+        }
+    }
+
+    private PagedIterable<TableItem> listTables(ListTablesOptions options, Context context) {
+        return new PagedIterable<TableItem>(
+            () -> listTablesFirstPage(context, options),
+            token -> listTablesNextPage(token, context, options)
+        );
+    }
+
+    private PagedResponse<TableItem> listTablesFirstPage(Context context, ListTablesOptions options) {
+        return listTables(null, context, options);
+    }
+
+    private PagedResponse<TableItem> listTablesNextPage(String token, Context context, ListTablesOptions options) {
+        return listTables(token, context, options);
+    }
+
+    private PagedResponse<TableItem> listTables(String nextTableName, Context context, ListTablesOptions options) {
+        context = context == null ? Context.NONE : context;
+        QueryOptions queryOptions = new QueryOptions()
+            .setFilter(options.getFilter())
+            .setTop(options.getTop())
+            .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
+
+        ResponseBase<TablesQueryHeaders, TableQueryResponse> response =
+            implementation.getTables().queryWithResponse(null, nextTableName, queryOptions, context);
+        TableQueryResponse tableQueryResponse = response.getValue();
+
+        if (tableQueryResponse == null) {
+            return null;
+        }
+
+        List<TableResponseProperties> tableResponsePropertiesList = tableQueryResponse.getValue();
+
+        if (tableResponsePropertiesList == null) {
+            return null;
+        }
+
+        final List<TableItem> tables = tableResponsePropertiesList.stream()
+            .map(ModelHelper::createItem).collect(Collectors.toList());
+
+        return new TablePaged(response, tables, response.getDeserializedHeaders().getXMsContinuationNextTableName());
+    }
+
+    private static class TablePaged implements PagedResponse<TableItem> {
+        private final Response<TableQueryResponse> httpResponse;
+        private final IterableStream<TableItem> tableStream;
+        private final String continuationToken;
+
+        TablePaged(Response<TableQueryResponse> httpResponse, List<TableItem> tableList, String continuationToken) {
+            this.httpResponse = httpResponse;
+            this.tableStream = IterableStream.of(tableList);
+            this.continuationToken = continuationToken;
+        }
+
+        @Override
+        public int getStatusCode() {
+            return httpResponse.getStatusCode();
+        }
+
+        @Override
+        public HttpHeaders getHeaders() {
+            return httpResponse.getHeaders();
+        }
+
+        @Override
+        public HttpRequest getRequest() {
+            return httpResponse.getRequest();
+        }
+
+        @Override
+        public IterableStream<TableItem> getElements() {
+            return tableStream;
+        }
+
+        @Override
+        public String getContinuationToken() {
+            return continuationToken;
+        }
+
+        @Override
+        public void close() {
+        }
     }
 
     /**
@@ -398,7 +598,7 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableServiceProperties getProperties() {
-        return client.getProperties().block();
+        return getPropertiesWithResponse(null, null).getValue();
     }
 
     /**
@@ -430,9 +630,88 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
-        return blockWithOptionalTimeout(client.getPropertiesWithResponse(context), timeout);
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        long timeoutInMillis = setTimeout(timeout);
+        Future<Response<TableServiceProperties>> future = scheduler.submit(() -> getPropertiesWithResponse(context));
+        scheduler.shutdown();
+        try {
+            return future.get(timeoutInMillis, TimeUnit.MILLISECONDS);
+        } catch (Exception ex) {
+            throw logger.logExceptionAsError(new RuntimeException(TableUtils.mapThrowableToTableServiceException(ex)));
+        }
     }
 
+    Response<TableServiceProperties> getPropertiesWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
+        Response<com.azure.data.tables.implementation.models.TableServiceProperties> response =
+            this.implementation.getServices().getPropertiesWithResponse(null, null, context);
+        return new SimpleResponse<>(response, toTableServiceProperties(response.getValue()));
+    }
+
+    private TableServiceProperties toTableServiceProperties(
+        com.azure.data.tables.implementation.models.TableServiceProperties tableServiceProperties) {
+
+        if (tableServiceProperties == null) {
+            return null;
+        }
+
+        return new TableServiceProperties()
+            .setLogging(toTableServiceLogging(tableServiceProperties.getLogging()))
+            .setHourMetrics(toTableServiceMetrics(tableServiceProperties.getHourMetrics()))
+            .setMinuteMetrics(toTableServiceMetrics(tableServiceProperties.getMinuteMetrics()))
+            .setCorsRules(tableServiceProperties.getCors() == null ? null
+                : tableServiceProperties.getCors().stream()
+                .map(this::toTablesServiceCorsRule)
+                .collect(Collectors.toList()));
+    }
+
+    private TableServiceLogging toTableServiceLogging(Logging logging) {
+        if (logging == null) {
+            return null;
+        }
+
+        return new TableServiceLogging()
+            .setAnalyticsVersion(logging.getVersion())
+            .setDeleteLogged(logging.isDelete())
+            .setReadLogged(logging.isRead())
+            .setWriteLogged(logging.isWrite())
+            .setRetentionPolicy(toTableServiceRetentionPolicy(logging.getRetentionPolicy()));
+    }
+
+    private TableServiceRetentionPolicy toTableServiceRetentionPolicy(RetentionPolicy retentionPolicy) {
+        if (retentionPolicy == null) {
+            return null;
+        }
+
+        return new TableServiceRetentionPolicy()
+            .setEnabled(retentionPolicy.isEnabled())
+            .setDaysToRetain(retentionPolicy.getDays());
+    }
+
+    private TableServiceMetrics toTableServiceMetrics(Metrics metrics) {
+        if (metrics == null) {
+            return null;
+        }
+
+        return new TableServiceMetrics()
+            .setVersion(metrics.getVersion())
+            .setEnabled(metrics.isEnabled())
+            .setIncludeApis(metrics.isIncludeAPIs())
+            .setRetentionPolicy(toTableServiceRetentionPolicy(metrics.getRetentionPolicy()));
+    }
+
+    private TableServiceCorsRule toTablesServiceCorsRule(CorsRule corsRule) {
+        if (corsRule == null) {
+            return null;
+        }
+
+        return new TableServiceCorsRule()
+            .setAllowedOrigins(corsRule.getAllowedOrigins())
+            .setAllowedMethods(corsRule.getAllowedMethods())
+            .setAllowedHeaders(corsRule.getAllowedHeaders())
+            .setExposedHeaders(corsRule.getExposedHeaders())
+            .setMaxAgeInSeconds(corsRule.getMaxAgeInSeconds());
+    }
     /**
      * Sets the properties of the account's Table service, including properties for Analytics and CORS (Cross-Origin
      * Resource Sharing) rules.
@@ -466,7 +745,7 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void setProperties(TableServiceProperties tableServiceProperties) {
-        client.setProperties(tableServiceProperties).block();
+        setPropertiesWithResponse(tableServiceProperties, null, null);
     }
 
     /**
@@ -510,7 +789,84 @@ public final class TableServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setPropertiesWithResponse(TableServiceProperties tableServiceProperties, Duration timeout,
                                                     Context context) {
-        return blockWithOptionalTimeout(client.setPropertiesWithResponse(tableServiceProperties, context), timeout);
+
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        long timeoutInMillis = setTimeout(timeout);
+        Future<Response<Void>> future = scheduler.submit(() -> setPropertiesWithResponse(tableServiceProperties, context));
+        scheduler.shutdown();
+        try {
+            return future.get(timeoutInMillis, TimeUnit.MILLISECONDS);
+        } catch (Exception e) {
+            throw logger.logExceptionAsError(new RuntimeException(TableUtils.mapThrowableToTableServiceException(e)));
+        }
+    }
+
+    Response<Void> setPropertiesWithResponse(TableServiceProperties tableServiceProperties, Context context) {
+        context = context == null ? Context.NONE : context;
+        return new SimpleResponse<>(this.implementation.getServices()
+            .setPropertiesWithResponse(toImplTableServiceProperties(tableServiceProperties), null,
+                null, context), null);
+    }
+
+    private com.azure.data.tables.implementation.models.TableServiceProperties toImplTableServiceProperties(
+        TableServiceProperties tableServiceProperties) {
+
+        return new com.azure.data.tables.implementation.models.TableServiceProperties()
+            .setLogging(toLogging(tableServiceProperties.getLogging()))
+            .setHourMetrics(toMetrics(tableServiceProperties.getHourMetrics()))
+            .setMinuteMetrics(toMetrics(tableServiceProperties.getMinuteMetrics()))
+            .setCors(tableServiceProperties.getCorsRules() == null ? null
+                : tableServiceProperties.getCorsRules().stream()
+                .map(this::toCorsRule)
+                .collect(Collectors.toList()));
+    }
+
+    private Logging toLogging(TableServiceLogging tableServiceLogging) {
+        if (tableServiceLogging == null) {
+            return null;
+        }
+
+        return new Logging()
+            .setVersion(tableServiceLogging.getAnalyticsVersion())
+            .setDelete(tableServiceLogging.isDeleteLogged())
+            .setRead(tableServiceLogging.isReadLogged())
+            .setWrite(tableServiceLogging.isWriteLogged())
+            .setRetentionPolicy(toRetentionPolicy(tableServiceLogging.getRetentionPolicy()));
+    }
+
+    private RetentionPolicy toRetentionPolicy(TableServiceRetentionPolicy tableServiceRetentionPolicy) {
+        if (tableServiceRetentionPolicy == null) {
+            return null;
+        }
+
+        return new RetentionPolicy()
+            .setEnabled(tableServiceRetentionPolicy.isEnabled())
+            .setDays(tableServiceRetentionPolicy.getDaysToRetain());
+    }
+
+    private Metrics toMetrics(TableServiceMetrics tableServiceMetrics) {
+        if (tableServiceMetrics == null) {
+            return null;
+        }
+
+        return new Metrics()
+            .setVersion(tableServiceMetrics.getVersion())
+            .setEnabled(tableServiceMetrics.isEnabled())
+            .setIncludeAPIs(tableServiceMetrics.isIncludeApis())
+            .setRetentionPolicy(toRetentionPolicy(tableServiceMetrics.getTableServiceRetentionPolicy()));
+    }
+
+    private CorsRule toCorsRule(TableServiceCorsRule corsRule) {
+        if (corsRule == null) {
+            return null;
+        }
+
+        return new CorsRule()
+            .setAllowedOrigins(corsRule.getAllowedOrigins())
+            .setAllowedMethods(corsRule.getAllowedMethods())
+            .setAllowedHeaders(corsRule.getAllowedHeaders())
+            .setExposedHeaders(corsRule.getExposedHeaders())
+            .setMaxAgeInSeconds(corsRule.getMaxAgeInSeconds());
     }
 
     /**
@@ -535,7 +891,7 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableServiceStatistics getStatistics() {
-        return client.getStatistics().block();
+        return getStatisticsWithResponse(null, null).getValue();
     }
 
     /**
@@ -568,6 +924,44 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableServiceStatistics> getStatisticsWithResponse(Duration timeout, Context context) {
-        return blockWithOptionalTimeout(client.getStatisticsWithResponse(context), timeout);
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        long timeoutInMillis = setTimeout(timeout);
+        Future<Response<TableServiceStatistics>> future = scheduler.submit(() -> getStatisticsWithResponse(context));
+        scheduler.shutdown();
+        try {
+            return future.get(timeoutInMillis, TimeUnit.MILLISECONDS);
+        } catch (Exception e) {
+            throw logger.logExceptionAsError(new RuntimeException(TableUtils.mapThrowableToTableServiceException(e)));
+        }
+    }
+
+
+    Response<TableServiceStatistics> getStatisticsWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
+        Response<TableServiceStats> response = this.implementation.getServices().getStatisticsWithResponse(
+            null, null, context);
+        return new SimpleResponse<>(response, toTableServiceStatistics(response.getValue()));
+    }
+
+
+    private TableServiceStatistics toTableServiceStatistics(TableServiceStats tableServiceStats) {
+        if (tableServiceStats == null) {
+            return null;
+        }
+
+        return new TableServiceStatistics(toTableServiceGeoReplication(tableServiceStats.getGeoReplication()));
+    }
+
+    private TableServiceGeoReplication toTableServiceGeoReplication(GeoReplication geoReplication) {
+        if (geoReplication == null) {
+            return null;
+        }
+
+        return new TableServiceGeoReplication(
+            TableServiceGeoReplicationStatus.fromString(geoReplication.getStatus().toString()),
+            geoReplication.getLastSyncTime());
+    }
+    private Long setTimeout(Duration timeout) {
+        return timeout != null ? timeout.toMillis() : -1;
     }
 }
