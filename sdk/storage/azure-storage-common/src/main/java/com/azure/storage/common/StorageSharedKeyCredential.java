@@ -33,8 +33,8 @@ public final class StorageSharedKeyCredential {
     private static final Context LOG_STRING_TO_SIGN_CONTEXT = new Context(Constants.STORAGE_LOG_STRING_TO_SIGN, true);
 
     // Pieces of the connection string that are needed.
-    private static final String ACCOUNT_KEY = "account-key";
-    private static final String ACCOUNT_NAME = "account-name";
+    private static final String ACCOUNT_KEY = "accountkey";
+    private static final String ACCOUNT_NAME = "accountname";
 
     private final AzureNamedKeyCredential azureNamedKeyCredential;
 
