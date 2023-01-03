@@ -8,8 +8,6 @@ import com.azure.core.util.paging.ContinuablePagedIterable;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 
 import java.time.Duration;
@@ -31,8 +29,6 @@ import java.util.stream.StreamSupport;
  * @since 4.0.0
  */
 public class KeyVaultOperation {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultOperation.class);
 
     /**
      * Stores the case-sensitive flag.
@@ -67,8 +63,8 @@ public class KeyVaultOperation {
      */
     public KeyVaultOperation(final SecretClient secretClient,
                              final Duration refreshDuration,
-                             List<String> secretKeys,
-                             boolean caseSensitive) {
+                             final List<String> secretKeys,
+                             final boolean caseSensitive) {
 
         this.caseSensitive = caseSensitive;
         this.secretClient = secretClient;
