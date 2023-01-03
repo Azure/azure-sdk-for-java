@@ -56,7 +56,7 @@ public class KeyVaultOperation {
     /**
      * Stores the timer object to schedule refresh task.
      */
-    private static Timer timer;
+    private static final Timer timer = new Timer(true);
 
     /**
      * Constructor.
@@ -79,15 +79,6 @@ public class KeyVaultOperation {
         final long refreshInMillis = refreshDuration.toMillis();
         if (refreshInMillis > 0) {
             synchronized (KeyVaultOperation.class) {
-                if (timer != null) {
-                    try {
-                        timer.cancel();
-                        timer.purge();
-                    } catch (RuntimeException runtimeException) {
-                        LOGGER.error("Error of terminating Timer", runtimeException);
-                    }
-                }
-                timer = new Timer(true);
                 final TimerTask task = new TimerTask() {
                     @Override
                     public void run() {
