@@ -67,7 +67,7 @@ add the direct dependency to your project as follows.
 ### Authenticate the storage container client
 
 In order to create an instance of `JedisCheckpointStore`, a `JedisPool` object must be created. To make this `JedisPool`
-object, a hostname String and a primary key String are required. These can be used as shown below to create a 
+object, a hostname String and a primary key String are required. These can be used as shown below to create a
 `JedisPool` object.
 
 ## Key concepts
@@ -80,8 +80,8 @@ Key concepts are explained in detail [here][key_concepts].
 
 ### Create an instance of JedisPool
 
-To create an instance of JedisPool using Azure Redis Cache, follow the instructions in 
-[Use Azure Cache for Redis in Java][redis_quickstart_java] to fetch the hostname and access key.  Otherwise, use 
+To create an instance of JedisPool using Azure Redis Cache, follow the instructions in
+[Use Azure Cache for Redis in Java][redis_quickstart_java] to fetch the hostname and access key.  Otherwise, use
 connection information from a running Redis instance.
 
 ```java readme-sample-createJedis
@@ -177,7 +177,7 @@ Guidelines][guidelines] for more information.
 [key_concepts]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/README.md#key-concepts
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [maven]: https://maven.apache.org/
-[redis_quickstart]: https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/quickstart-create-redis
+[redis_quickstart]: https://learn.microsoft.com/azure/azure-cache-for-redis/quickstart-create-redis
 [redis_quickstart_java]: https://learn.microsoft.com/azure/azure-cache-for-redis/cache-java-get-started
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis
 [sample_jedis_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/src/samples/java/com/azure/messaging/eventhubs/checkpointstore/jedis/JedisRedisCheckpointStoreSample.java
