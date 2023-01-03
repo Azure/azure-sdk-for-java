@@ -3,6 +3,7 @@
 ## 12.0.0-beta.20 (Unreleased)
 
 ### Features Added
+- Added support for 2021-12-02 service version.
 
 ### Breaking Changes
 
