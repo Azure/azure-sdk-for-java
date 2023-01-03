@@ -86,7 +86,7 @@ public final class GeolocationAsyncClient {
 
     /**
      * Get Location
-     * 
+     *  
      * <!-- src_embed com.azure.maps.geolocation.async.get_ip_to_location -->
      * <pre>
      * asyncClient.getLocation&#40;&quot;131.107.0.89&quot;&#41;;

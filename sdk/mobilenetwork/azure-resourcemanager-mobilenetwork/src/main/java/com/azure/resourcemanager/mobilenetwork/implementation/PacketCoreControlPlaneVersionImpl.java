@@ -7,9 +7,10 @@ package com.azure.resourcemanager.mobilenetwork.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCoreControlPlaneVersionInner;
 import com.azure.resourcemanager.mobilenetwork.models.PacketCoreControlPlaneVersion;
+import com.azure.resourcemanager.mobilenetwork.models.Platform;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
-import com.azure.resourcemanager.mobilenetwork.models.RecommendedVersion;
-import com.azure.resourcemanager.mobilenetwork.models.VersionState;
+import java.util.Collections;
+import java.util.List;
 
 public final class PacketCoreControlPlaneVersionImpl implements PacketCoreControlPlaneVersion {
     private PacketCoreControlPlaneVersionInner innerObject;
@@ -43,12 +44,13 @@ public final class PacketCoreControlPlaneVersionImpl implements PacketCoreContro
         return this.innerModel().provisioningState();
     }
 
-    public VersionState versionState() {
-        return this.innerModel().versionState();
-    }
-
-    public RecommendedVersion recommendedVersion() {
-        return this.innerModel().recommendedVersion();
+    public List<Platform> platforms() {
+        List<Platform> inner = this.innerModel().platforms();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public PacketCoreControlPlaneVersionInner innerModel() {

@@ -35,15 +35,6 @@ public final class SimPoliciesImpl implements SimPolicies {
         this.serviceClient().delete(resourceGroupName, mobileNetworkName, simPolicyName, context);
     }
 
-    public SimPolicy get(String resourceGroupName, String mobileNetworkName, String simPolicyName) {
-        SimPolicyInner inner = this.serviceClient().get(resourceGroupName, mobileNetworkName, simPolicyName);
-        if (inner != null) {
-            return new SimPolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SimPolicy> getWithResponse(
         String resourceGroupName, String mobileNetworkName, String simPolicyName, Context context) {
         Response<SimPolicyInner> inner =
@@ -54,6 +45,15 @@ public final class SimPoliciesImpl implements SimPolicies {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SimPolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SimPolicy get(String resourceGroupName, String mobileNetworkName, String simPolicyName) {
+        SimPolicyInner inner = this.serviceClient().get(resourceGroupName, mobileNetworkName, simPolicyName);
+        if (inner != null) {
+            return new SimPolicyImpl(inner, this.manager());
         } else {
             return null;
         }
