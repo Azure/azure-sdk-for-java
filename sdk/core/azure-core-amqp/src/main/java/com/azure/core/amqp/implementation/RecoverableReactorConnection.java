@@ -56,9 +56,10 @@ public final class RecoverableReactorConnection {
                                         Map<String, Object> loggingContext) {
         Objects.requireNonNull(connectionSupplier, "'connectionSupplier' cannot be null.");
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
-        // Note: FQDN, entity-path still treated as generic, but if we find more connection description parameters that
-        // are non-generic, i.e., specific to individual messaging services, then consider creating dedicated POJO types
-        // in corresponding libraries rather than polluting shared 'RecoverableReactorConnection' type.
+        // Note: FQDN, (to an extent) entity-path are generic enough, but if we find more connection description
+        // parameters that are non-generic, i.e., specific to individual messaging services, then consider creating
+        // dedicated POJO types to pass around connection description parameters in corresponding libraries rather
+        // than polluting shared 'RecoverableReactorConnection' type.
         this.entityPath = entityPath;
         Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
         this.retryOptions = retryPolicy.getRetryOptions();
@@ -118,7 +119,7 @@ public final class RecoverableReactorConnection {
      *
      * @return a Mono that emits active connection.
      */
-    public Mono<ReactorConnection> getConnection() {
+    public Mono<ReactorConnection> get() {
         return createOrGetCachedConnection;
     }
 
