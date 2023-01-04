@@ -175,17 +175,6 @@ System.out.println("Message Id: " + response.getMessageId());
 Azure Communication Services support sending email with attachments.
 
 ```java readme-sample-sendEmailWithAttachment
-File file = new File("C:/attachment.txt");
-
-byte[] fileContent = null;
-try {
-    fileContent = Files.readAllBytes(file.toPath());
-} catch (Exception e) {
-    System.out.println(e);
-}
-
-String b64file = Base64.getEncoder().encodeToString(fileContent);
-
 EmailAddress emailAddress = new EmailAddress("<recipient-email-address>");
 
 ArrayList<EmailAddress> addressList = new ArrayList<>();
@@ -197,7 +186,8 @@ EmailRecipients emailRecipients = new EmailRecipients()
 EmailContent content = new EmailContent("test subject")
     .setPlainText("test message");
 
-EmailAttachment attachment = new EmailAttachment("attachment.txt", "TXT", b64file);
+BinaryData attachmentContent = BinaryData.fromFile(new File("C:/attachment.txt").toPath());
+EmailAttachment attachment = new EmailAttachment("attachment.txt", "TXT", attachmentContent);
 
 ArrayList<EmailAttachment> attachmentList = new ArrayList<>();
 attachmentList.add(attachment);

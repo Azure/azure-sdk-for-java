@@ -5,6 +5,7 @@ package com.azure.communication.email;
 
 import com.azure.communication.email.models.*;
 import com.azure.core.http.HttpClient;
+import com.azure.core.util.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -90,7 +91,7 @@ public class EmailAsyncClientTests extends EmailTestBase {
         EmailAttachment attachment = new EmailAttachment(
             "attachment.txt",
             "TXT",
-            "dGVzdA=="
+            BinaryData.fromString("test")
         );
 
         ArrayList<EmailAttachment> attachmentList = new ArrayList<>();

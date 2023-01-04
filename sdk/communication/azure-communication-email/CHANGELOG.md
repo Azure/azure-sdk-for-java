@@ -12,6 +12,7 @@
 ### Breaking Changes
 
 - `recipients` is a required property in the `EmailMessage` object and must now be passed in through the constructor
+- the `EmailAttachment` constructor now receives BinaryData instead of a string
 
 ### Bugs Fixed
 

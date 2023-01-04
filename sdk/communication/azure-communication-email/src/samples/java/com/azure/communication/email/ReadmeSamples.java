@@ -11,12 +11,11 @@ import com.azure.communication.email.models.SendStatusResult;
 import com.azure.communication.email.models.EmailAttachment;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.ArrayList;
 import java.io.File;
-import java.nio.file.Files;
-import java.util.Base64;
 
 public class ReadmeSamples {
 
@@ -134,17 +133,6 @@ public class ReadmeSamples {
         EmailClient emailClient = createEmailClientWithConnectionString();
 
         // BEGIN: readme-sample-sendEmailWithAttachment
-        File file = new File("C:/attachment.txt");
-
-        byte[] fileContent = null;
-        try {
-            fileContent = Files.readAllBytes(file.toPath());
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-
-        String b64file = Base64.getEncoder().encodeToString(fileContent);
-
         EmailAddress emailAddress = new EmailAddress("<recipient-email-address>");
 
         ArrayList<EmailAddress> addressList = new ArrayList<>();
@@ -156,7 +144,8 @@ public class ReadmeSamples {
         EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
 
-        EmailAttachment attachment = new EmailAttachment("attachment.txt", "TXT", b64file);
+        BinaryData attachmentContent = BinaryData.fromFile(new File("C:/attachment.txt").toPath());
+        EmailAttachment attachment = new EmailAttachment("attachment.txt", "TXT", attachmentContent);
 
         ArrayList<EmailAttachment> attachmentList = new ArrayList<>();
         attachmentList.add(attachment);

@@ -5,7 +5,10 @@
 package com.azure.communication.email.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Base64;
 
 /** Attachment to the email. */
 @Fluent
@@ -32,12 +35,12 @@ public final class EmailAttachment {
      * Constructor for EmailAttachment
      * @param name the name of the attachment
      * @param attachmentType the type of attachment file
-     * @param contentBytesBase64 the base64 encoded contents of the attachment
+     * @param content the contents of the attachment
      */
-    public EmailAttachment(String name, String attachmentType, String contentBytesBase64) {
+    public EmailAttachment(String name, String attachmentType, BinaryData content) {
         this.name = name;
         this.type = attachmentType;
-        this.contentBytesBase64 = contentBytesBase64;
+        this.contentBytesBase64 = Base64.getEncoder().encodeToString(content.toBytes());
     }
 
     /**
