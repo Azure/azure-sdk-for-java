@@ -17,7 +17,7 @@ import java.util.Map;
 public class TestProxyTestServer implements Closeable {
     private final DisposableServer server;
 
-    private static final String TEST_RESPONSE_BODY = "{\"modelId\":\"REDACTED\",\"createdDateTime\":\"2022-08-31T00:00:00Z\",\"apiVersion\":\"2022-08-31\"}";
+    private static final String TEST_RESPONSE_BODY = "{\"modelId\":\"0cd2728b-210e-4c05-b706-f70554276bcc\",\"createdDateTime\":\"2022-08-31T00:00:00Z\",\"apiVersion\":\"2022-08-31\"}";
 
     /**
      * Constructor for TestProxyTestServer

@@ -40,7 +40,9 @@ public class HttpURLConnectionHttpClient implements HttpClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
-            if (connection != null ) { connection.disconnect(); }
+            if (connection != null ) {
+                connection.disconnect();
+            }
         }
     }
 
@@ -58,7 +60,9 @@ public class HttpURLConnectionHttpClient implements HttpClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
-            if (connection != null ) { connection.disconnect(); }
+            if (connection != null ) {
+                connection.disconnect();
+            }
         }
     }
 
@@ -72,13 +76,17 @@ public class HttpURLConnectionHttpClient implements HttpClient {
         return new HttpURLResponse(connection, request);
     }
 
-    private static void setBodyOnRequest(HttpRequest request, HttpURLConnection connection) throws IOException {
-        BinaryData body = request.getBodyAsBinaryData();
-        if(body != null) {
-            connection.setDoOutput(true);
-            BufferedOutputStream stream = new BufferedOutputStream(connection.getOutputStream());
-            stream.write(body.toBytes());
-            stream.flush();
+    private static void setBodyOnRequest(HttpRequest request, HttpURLConnection connection) {
+        try {
+            BinaryData body = request.getBodyAsBinaryData();
+            if (body != null) {
+                connection.setDoOutput(true);
+                BufferedOutputStream stream = new BufferedOutputStream(connection.getOutputStream());
+                stream.write(body.toBytes());
+                stream.flush();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

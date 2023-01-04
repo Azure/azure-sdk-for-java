@@ -86,10 +86,8 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
 
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        HttpRequest request = context.getHttpRequest();
-        TestProxyUtils.changeHeaders(request, xRecordingId, "record");
-        HttpResponse response = next.processSync();
-        return response;
+        TestProxyUtils.changeHeaders(context.getHttpRequest(), xRecordingId, "record");
+        return next.processSync();
     }
 
     @Override
@@ -100,48 +98,47 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     }
 
     private void addProxySanitization() {
+        if (this.sanitizers == null) {
+            // TODO : (add default sanitization)
+            return;
+        }
         this.sanitizers.forEach(testProxySanitizer  -> {
+            String requestBody;
             switch (testProxySanitizer.getType()) {
                 case URL:
-                    addUrlRegexSanitizer(testProxySanitizer.getRegex(), testProxySanitizer.getRedactedValue());
+                    requestBody = createUrlRegexRequestBody(testProxySanitizer.getRegex(), testProxySanitizer.getRedactedValue());
+                    addRegexSanitizer(requestBody, "UriRegexSanitizer");
                     break;
                 case BODY:
-                    addBodySanitizer(testProxySanitizer.getRegex(), testProxySanitizer.getRedactedValue());
+                    requestBody = createBodyRegexRequestBody(testProxySanitizer.getRegex(), testProxySanitizer.getRedactedValue());
+                    addRegexSanitizer(requestBody, "BodyKeySanitizer");
                     break;
                 case HEADER:
-                    addHeaderSanitizer(testProxySanitizer.getRegex(), testProxySanitizer.getRedactedValue());
+                    requestBody = createHeaderRegexRequestBody(testProxySanitizer.getRegex(), testProxySanitizer.getRedactedValue());
+                    addRegexSanitizer(requestBody, "HeaderRegexSanitizer");
                     break;
                 default:
-                    System.out.println("Sanitizer type not supported");
+                    throw new RuntimeException("Sanitizer type not supported");
             }
         });
     }
 
-    private void addUrlRegexSanitizer(String regexValue, String redactedValue) {
-        String requestBody = String.format("{\"value\":\"%s\",\"regex\":\"%s\"}", redactedValue, regexValue);
+    private String createUrlRegexRequestBody(String regexValue, String redactedValue) {
+        return String.format("{\"value\":\"%s\",\"regex\":\"%s\"}", redactedValue, regexValue);
+    }
+
+    private String createBodyRegexRequestBody(String regexValue, String redactedValue) {
+        return String.format("{\"value\":\"%s\",\"jsonPath\":\"%s\"}", redactedValue, regexValue);
+    }
+
+    private String createHeaderRegexRequestBody(String regexValue, String redactedValue) {
+        return String.format("{\"value\":\"%s\",\"key\":\"%s\"}", redactedValue, regexValue);
+    }
+
+    private void addRegexSanitizer(String requestBody, String sanitizerType) {
         HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/AddSanitizer", TestProxyUtils.getProxyUrl()))
                 .setBody(requestBody);
-        request.setHeader("x-abstraction-identifier", "UriRegexSanitizer");
-        request.setHeader("x-recording-id", xRecordingId);
-        client.sendSync(request, Context.NONE);
-    }
-
-    private void addBodySanitizer(String regexValue, String redactedValue) {
-        String requestBody = String.format("{\"value\":\"%s\",\"jsonPath\":\"%s\"}", redactedValue, regexValue);
-
-        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/AddSanitizer", TestProxyUtils.getProxyUrl()))
-            .setBody(requestBody);
-        request.setHeader("x-abstraction-identifier", "BodyKeySanitizer");
-        request.setHeader("x-recording-id", xRecordingId);
-        client.sendSync(request, Context.NONE);
-    }
-
-    private void addHeaderSanitizer(String regexValue, String redactedValue) {
-        String requestBody = String.format("{\"value\":\"%s\",\"key\":\"%s\"}", redactedValue, regexValue);
-
-        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/AddSanitizer", TestProxyUtils.getProxyUrl()))
-            .setBody(requestBody);
-        request.setHeader("x-abstraction-identifier", "HeaderRegexSanitizer");
+        request.setHeader("x-abstraction-identifier", sanitizerType);
         request.setHeader("x-recording-id", xRecordingId);
         client.sendSync(request, Context.NONE);
     }

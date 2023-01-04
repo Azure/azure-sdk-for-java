@@ -12,7 +12,7 @@ public enum TestProxySanitizerType {
      */
     URL,
     /**
-     * Sanitize the response bODY.
+     * Sanitize the response body.
      */
     BODY,
     /**

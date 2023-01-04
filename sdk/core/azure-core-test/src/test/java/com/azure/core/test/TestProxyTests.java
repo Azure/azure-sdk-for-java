@@ -149,7 +149,7 @@ public class TestProxyTests extends TestBase {
     public void testRecordWithRedaction() throws JsonProcessingException {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
 
-        interceptorManager.addRecordSanitizer(recordSanitizers);
+        interceptorManager.addRecordSanitizers(recordSanitizers);
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
@@ -165,8 +165,6 @@ public class TestProxyTests extends TestBase {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
-        testResourceNamer.randomName("test", 10);
-        testResourceNamer.now();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         request.setHeader("Ocp-Apim-Subscription-Key", "TEST_API_KEY");
         request.setHeader("Content-Type", "application/json");
@@ -183,7 +181,7 @@ public class TestProxyTests extends TestBase {
     @Test
     @Tag("Playback")
     public void testPlaybackWithRedaction() {
-        interceptorManager.addRecordSanitizer(recordSanitizers);
+        interceptorManager.addRecordSanitizers(recordSanitizers);
         HttpClient client = interceptorManager.getPlaybackClient();
         URL url;
 
@@ -197,8 +195,6 @@ public class TestProxyTests extends TestBase {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
-        testResourceNamer.randomName("test", 10);
-        testResourceNamer.now();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         request.setHeader("Ocp-Apim-Subscription-Key", "TEST_API_KEY");
         request.setHeader("Content-Type", "application/json");

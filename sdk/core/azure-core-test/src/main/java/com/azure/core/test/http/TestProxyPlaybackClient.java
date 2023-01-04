@@ -47,7 +47,6 @@ public class TestProxyPlaybackClient implements HttpClient {
      * @throws RuntimeException if an {@link IOException} is thrown.
      */
     public Queue<String> startPlayback(String recordFile) {
-        // TODO: replacement rules
         HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/start", TestProxyUtils.getProxyUrl()))
             .setBody(String.format("{\"x-recording-file\": \"%s\"}", recordFile));
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
@@ -91,6 +90,10 @@ public class TestProxyPlaybackClient implements HttpClient {
     }
 
     private void addProxySanitization() {
+        if (this.sanitizers == null) {
+            // TODO : (add default sanitization)
+            return;
+        }
         this.sanitizers.forEach(testProxySanitizer  -> {
             switch (testProxySanitizer.getType()) {
                 case URL:

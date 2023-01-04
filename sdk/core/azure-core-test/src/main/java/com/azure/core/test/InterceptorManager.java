@@ -26,7 +26,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -143,7 +142,6 @@ public class InterceptorManager implements AutoCloseable {
         } else {
             this.recordedData = null;
         }
-        this.recordSanitizers = new ArrayList<>();
     }
 
     /**
@@ -435,7 +433,7 @@ public class InterceptorManager implements AutoCloseable {
      * Add text replacement rule (regex as key, the replacement text as value) into {@code recordSanitizers}
      * @param recordSanitizers the list of replacement regex and rules.
      */
-    public void addRecordSanitizer(List<TestProxySanitizer> recordSanitizers) {
+    public void addRecordSanitizers(List<TestProxySanitizer> recordSanitizers) {
         this.recordSanitizers = recordSanitizers;
     }
 }
