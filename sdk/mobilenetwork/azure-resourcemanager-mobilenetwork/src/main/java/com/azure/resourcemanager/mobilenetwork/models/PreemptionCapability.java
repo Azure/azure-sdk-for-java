@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PreemptionCapability. */
+/** Preemption capability. */
 public final class PreemptionCapability extends ExpandableStringEnum<PreemptionCapability> {
     /** Static value NotPreempt for PreemptionCapability. */
     public static final PreemptionCapability NOT_PREEMPT = fromString("NotPreempt");

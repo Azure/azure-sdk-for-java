@@ -27,11 +27,13 @@ import com.azure.resourcemanager.mobilenetwork.fluent.DataNetworksClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.MobileNetworkManagementClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.MobileNetworksClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.OperationsClient;
+import com.azure.resourcemanager.mobilenetwork.fluent.PacketCoreControlPlaneOperationsClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.PacketCoreControlPlaneVersionsClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.PacketCoreControlPlanesClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.PacketCoreDataPlanesClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.ServicesClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.SimGroupsClient;
+import com.azure.resourcemanager.mobilenetwork.fluent.SimOperationsClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.SimPoliciesClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.SimsClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.SitesClient;
@@ -156,42 +158,6 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
         return this.mobileNetworks;
     }
 
-    /** The SitesClient object to access its operations. */
-    private final SitesClient sites;
-
-    /**
-     * Gets the SitesClient object to access its operations.
-     *
-     * @return the SitesClient object.
-     */
-    public SitesClient getSites() {
-        return this.sites;
-    }
-
-    /** The SimGroupsClient object to access its operations. */
-    private final SimGroupsClient simGroups;
-
-    /**
-     * Gets the SimGroupsClient object to access its operations.
-     *
-     * @return the SimGroupsClient object.
-     */
-    public SimGroupsClient getSimGroups() {
-        return this.simGroups;
-    }
-
-    /** The SimsClient object to access its operations. */
-    private final SimsClient sims;
-
-    /**
-     * Gets the SimsClient object to access its operations.
-     *
-     * @return the SimsClient object.
-     */
-    public SimsClient getSims() {
-        return this.sims;
-    }
-
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -214,6 +180,18 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
      */
     public PacketCoreControlPlanesClient getPacketCoreControlPlanes() {
         return this.packetCoreControlPlanes;
+    }
+
+    /** The PacketCoreControlPlaneOperationsClient object to access its operations. */
+    private final PacketCoreControlPlaneOperationsClient packetCoreControlPlaneOperations;
+
+    /**
+     * Gets the PacketCoreControlPlaneOperationsClient object to access its operations.
+     *
+     * @return the PacketCoreControlPlaneOperationsClient object.
+     */
+    public PacketCoreControlPlaneOperationsClient getPacketCoreControlPlaneOperations() {
+        return this.packetCoreControlPlaneOperations;
     }
 
     /** The PacketCoreControlPlaneVersionsClient object to access its operations. */
@@ -252,6 +230,42 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
         return this.services;
     }
 
+    /** The SimsClient object to access its operations. */
+    private final SimsClient sims;
+
+    /**
+     * Gets the SimsClient object to access its operations.
+     *
+     * @return the SimsClient object.
+     */
+    public SimsClient getSims() {
+        return this.sims;
+    }
+
+    /** The SimOperationsClient object to access its operations. */
+    private final SimOperationsClient simOperations;
+
+    /**
+     * Gets the SimOperationsClient object to access its operations.
+     *
+     * @return the SimOperationsClient object.
+     */
+    public SimOperationsClient getSimOperations() {
+        return this.simOperations;
+    }
+
+    /** The SimGroupsClient object to access its operations. */
+    private final SimGroupsClient simGroups;
+
+    /**
+     * Gets the SimGroupsClient object to access its operations.
+     *
+     * @return the SimGroupsClient object.
+     */
+    public SimGroupsClient getSimGroups() {
+        return this.simGroups;
+    }
+
     /** The SimPoliciesClient object to access its operations. */
     private final SimPoliciesClient simPolicies;
 
@@ -262,6 +276,18 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
      */
     public SimPoliciesClient getSimPolicies() {
         return this.simPolicies;
+    }
+
+    /** The SitesClient object to access its operations. */
+    private final SitesClient sites;
+
+    /**
+     * Gets the SitesClient object to access its operations.
+     *
+     * @return the SitesClient object.
+     */
+    public SitesClient getSites() {
+        return this.sites;
     }
 
     /** The SlicesClient object to access its operations. */
@@ -298,19 +324,21 @@ public final class MobileNetworkManagementClientImpl implements MobileNetworkMan
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-04-01-preview";
+        this.apiVersion = "2022-11-01";
         this.attachedDataNetworks = new AttachedDataNetworksClientImpl(this);
         this.dataNetworks = new DataNetworksClientImpl(this);
         this.mobileNetworks = new MobileNetworksClientImpl(this);
-        this.sites = new SitesClientImpl(this);
-        this.simGroups = new SimGroupsClientImpl(this);
-        this.sims = new SimsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.packetCoreControlPlanes = new PacketCoreControlPlanesClientImpl(this);
+        this.packetCoreControlPlaneOperations = new PacketCoreControlPlaneOperationsClientImpl(this);
         this.packetCoreControlPlaneVersions = new PacketCoreControlPlaneVersionsClientImpl(this);
         this.packetCoreDataPlanes = new PacketCoreDataPlanesClientImpl(this);
         this.services = new ServicesClientImpl(this);
+        this.sims = new SimsClientImpl(this);
+        this.simOperations = new SimOperationsClientImpl(this);
+        this.simGroups = new SimGroupsClientImpl(this);
         this.simPolicies = new SimPoliciesClientImpl(this);
+        this.sites = new SitesClientImpl(this);
         this.slices = new SlicesClientImpl(this);
     }
 

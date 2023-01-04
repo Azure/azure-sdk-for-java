@@ -15,22 +15,19 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class ServiceBus extends DigitalTwinsEndpointResourceProperties {
     /*
-     * PrimaryConnectionString of the endpoint for key-based authentication.
-     * Will be obfuscated during read.
+     * PrimaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read.
      */
     @JsonProperty(value = "primaryConnectionString")
     private String primaryConnectionString;
 
     /*
-     * SecondaryConnectionString of the endpoint for key-based authentication.
-     * Will be obfuscated during read.
+     * SecondaryConnectionString of the endpoint for key-based authentication. Will be obfuscated during read.
      */
     @JsonProperty(value = "secondaryConnectionString")
     private String secondaryConnectionString;
 
     /*
-     * The URL of the ServiceBus namespace for identity-based authentication.
-     * It must include the protocol 'sb://'.
+     * The URL of the ServiceBus namespace for identity-based authentication. It must include the protocol 'sb://'.
      */
     @JsonProperty(value = "endpointUri")
     private String endpointUri;
@@ -40,6 +37,10 @@ public final class ServiceBus extends DigitalTwinsEndpointResourceProperties {
      */
     @JsonProperty(value = "entityPath")
     private String entityPath;
+
+    /** Creates an instance of ServiceBus class. */
+    public ServiceBus() {
+    }
 
     /**
      * Get the primaryConnectionString property: PrimaryConnectionString of the endpoint for key-based authentication.
@@ -145,6 +146,13 @@ public final class ServiceBus extends DigitalTwinsEndpointResourceProperties {
     @Override
     public ServiceBus withDeadLetterUri(String deadLetterUri) {
         super.withDeadLetterUri(deadLetterUri);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ServiceBus withIdentity(ManagedIdentityReference identity) {
+        super.withIdentity(identity);
         return this;
     }
 

@@ -41,6 +41,10 @@ public final class VaultPropertiesMoveDetails {
     @JsonProperty(value = "targetResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String targetResourceId;
 
+    /** Creates an instance of VaultPropertiesMoveDetails class. */
+    public VaultPropertiesMoveDetails() {
+    }
+
     /**
      * Get the operationId property: OperationId of the Resource Move Operation.
      *

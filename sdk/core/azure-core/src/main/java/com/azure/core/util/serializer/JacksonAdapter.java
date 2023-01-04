@@ -121,7 +121,8 @@ public class JacksonAdapter implements SerializerAdapter {
      * Temporary way to capture raw ObjectMapper instances, allows to support deprecated simpleMapper() and
      * serializer()
      */
-    private void captureRawMappersAndConfigure(ObjectMapper outerMapper, ObjectMapper innerMapper, BiConsumer<ObjectMapper, ObjectMapper> configure) {
+    private void captureRawMappersAndConfigure(ObjectMapper outerMapper, ObjectMapper innerMapper,
+        BiConsumer<ObjectMapper, ObjectMapper> configure) {
         this.rawOuterMapper = outerMapper;
         this.rawInnerMapper = innerMapper;
 

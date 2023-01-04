@@ -66,7 +66,7 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      */
     @Host("{$host}")
     @ServiceInterface(name = "MobileNetworkManagem")
-    private interface PacketCoreControlPlanesService {
+    public interface PacketCoreControlPlanesService {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
@@ -537,21 +537,6 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified packet core control plane.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PacketCoreControlPlaneInner getByResourceGroup(String resourceGroupName, String packetCoreControlPlaneName) {
-        return getByResourceGroupAsync(resourceGroupName, packetCoreControlPlaneName).block();
-    }
-
-    /**
-     * Gets information about the specified packet core control plane.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -562,6 +547,21 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
     public Response<PacketCoreControlPlaneInner> getByResourceGroupWithResponse(
         String resourceGroupName, String packetCoreControlPlaneName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, packetCoreControlPlaneName, context).block();
+    }
+
+    /**
+     * Gets information about the specified packet core control plane.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param packetCoreControlPlaneName The name of the packet core control plane.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified packet core control plane.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PacketCoreControlPlaneInner getByResourceGroup(String resourceGroupName, String packetCoreControlPlaneName) {
+        return getByResourceGroupWithResponse(resourceGroupName, packetCoreControlPlaneName, Context.NONE).getValue();
     }
 
     /**
@@ -995,23 +995,6 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param parameters Parameters supplied to update packet core control plane tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return packet core control plane resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PacketCoreControlPlaneInner updateTags(
-        String resourceGroupName, String packetCoreControlPlaneName, TagsObject parameters) {
-        return updateTagsAsync(resourceGroupName, packetCoreControlPlaneName, parameters).block();
-    }
-
-    /**
-     * Updates packet core control planes tags.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param packetCoreControlPlaneName The name of the packet core control plane.
-     * @param parameters Parameters supplied to update packet core control plane tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1022,6 +1005,24 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
     public Response<PacketCoreControlPlaneInner> updateTagsWithResponse(
         String resourceGroupName, String packetCoreControlPlaneName, TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, packetCoreControlPlaneName, parameters, context).block();
+    }
+
+    /**
+     * Updates packet core control planes tags.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param packetCoreControlPlaneName The name of the packet core control plane.
+     * @param parameters Parameters supplied to update packet core control plane tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return packet core control plane resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PacketCoreControlPlaneInner updateTags(
+        String resourceGroupName, String packetCoreControlPlaneName, TagsObject parameters) {
+        return updateTagsWithResponse(resourceGroupName, packetCoreControlPlaneName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1340,7 +1341,8 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1377,7 +1379,8 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1415,7 +1418,8 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1452,7 +1456,8 @@ public final class PacketCoreControlPlanesClientImpl implements PacketCoreContro
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -8,28 +8,31 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BillingSku. */
+/**
+ * The SKU of the packet core control plane resource. The SKU list may change over time when a new SKU gets added or an
+ * exiting SKU gets removed.
+ */
 public final class BillingSku extends ExpandableStringEnum<BillingSku> {
-    /** Static value EvaluationPackage for BillingSku. */
-    public static final BillingSku EVALUATION_PACKAGE = fromString("EvaluationPackage");
+    /** Static value G0 for BillingSku. */
+    public static final BillingSku G0 = fromString("G0");
 
-    /** Static value FlagshipStarterPackage for BillingSku. */
-    public static final BillingSku FLAGSHIP_STARTER_PACKAGE = fromString("FlagshipStarterPackage");
+    /** Static value G1 for BillingSku. */
+    public static final BillingSku G1 = fromString("G1");
 
-    /** Static value EdgeSite2GBPS for BillingSku. */
-    public static final BillingSku EDGE_SITE2GBPS = fromString("EdgeSite2GBPS");
+    /** Static value G2 for BillingSku. */
+    public static final BillingSku G2 = fromString("G2");
 
-    /** Static value EdgeSite3GBPS for BillingSku. */
-    public static final BillingSku EDGE_SITE3GBPS = fromString("EdgeSite3GBPS");
+    /** Static value G3 for BillingSku. */
+    public static final BillingSku G3 = fromString("G3");
 
-    /** Static value EdgeSite4GBPS for BillingSku. */
-    public static final BillingSku EDGE_SITE4GBPS = fromString("EdgeSite4GBPS");
+    /** Static value G4 for BillingSku. */
+    public static final BillingSku G4 = fromString("G4");
 
-    /** Static value MediumPackage for BillingSku. */
-    public static final BillingSku MEDIUM_PACKAGE = fromString("MediumPackage");
+    /** Static value G5 for BillingSku. */
+    public static final BillingSku G5 = fromString("G5");
 
-    /** Static value LargePackage for BillingSku. */
-    public static final BillingSku LARGE_PACKAGE = fromString("LargePackage");
+    /** Static value G10 for BillingSku. */
+    public static final BillingSku G10 = fromString("G10");
 
     /**
      * Creates or finds a BillingSku from its string representation.

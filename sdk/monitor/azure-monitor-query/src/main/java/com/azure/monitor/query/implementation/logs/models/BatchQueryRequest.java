@@ -35,13 +35,13 @@ public final class BatchQueryRequest {
      * The path property.
      */
     @JsonProperty(value = "path")
-    private String path;
+    private String path = "/query";
 
     /*
      * The method property.
      */
     @JsonProperty(value = "method")
-    private String method;
+    private String method = "POST";
 
     /*
      * Workspace Id to be included in the query
@@ -61,6 +61,8 @@ public final class BatchQueryRequest {
             @JsonProperty(value = "id", required = true) String id,
             @JsonProperty(value = "body", required = true) QueryBody body,
             @JsonProperty(value = "workspace", required = true) String workspace) {
+        path = "/query";
+        method = "POST";
         this.id = id;
         this.body = body;
         this.workspace = workspace;

@@ -94,15 +94,14 @@ public final class FluxUtil {
 
         return Mono.just(progressReporter).flatMapMany(reporter -> {
             /*
-            Each time there is a new subscription, we will rewind the progress. This is desirable specifically
-            for retries, which resubscribe on each try. The first time this flowable is subscribed to, the
-            reset will be a noop as there will have been no progress made. Subsequent rewinds will work as
-            expected.
+             * Each time there is a new subscription, we will rewind the progress. This is desirable specifically for
+             * retries, which resubscribe on each try. The first time this flowable is subscribed to, the reset will be
+             * a noop as there will have been no progress made. Subsequent rewinds will work as expected.
              */
             reporter.reset();
 
             /*
-            Every time we emit some data, report it to the Tracker, which will pass it on to the end user.
+             * Every time we emit some data, report it to the Tracker, which will pass it on to the end user.
              */
             return flux.doOnNext(buffer -> reporter.reportProgress(buffer.remaining()));
         });

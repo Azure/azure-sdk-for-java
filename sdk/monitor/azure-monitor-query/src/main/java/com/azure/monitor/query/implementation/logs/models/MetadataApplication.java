@@ -8,7 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Application Insights apps that were part of the metadata request and that the user has access to. */
+/**
+ * An Application Insights application.
+ *
+ * <p>Application Insights apps that were part of the metadata request and that the user has access to.
+ */
 @Fluent
 public final class MetadataApplication {
     /*

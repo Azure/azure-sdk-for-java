@@ -4,9 +4,11 @@
 
 package com.azure.resourcemanager.mobilenetwork.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SimInner;
 import java.util.List;
+import java.util.Map;
 
 /** An immutable client-side representation of Sim. */
 public interface Sim {
@@ -32,6 +34,27 @@ public interface Sim {
     String type();
 
     /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the authenticationKey property: The Ki value for the SIM.
+     *
+     * @return the authenticationKey value.
+     */
+    String authenticationKey();
+
+    /**
+     * Gets the operatorKeyCode property: The Opc value for the SIM.
+     *
+     * @return the operatorKeyCode value.
+     */
+    String operatorKeyCode();
+
+    /**
      * Gets the provisioningState property: The provisioning state of the SIM resource.
      *
      * @return the provisioningState value.
@@ -44,6 +67,14 @@ public interface Sim {
      * @return the simState value.
      */
     SimState simState();
+
+    /**
+     * Gets the siteProvisioningState property: A dictionary of sites to the provisioning state of this SIM on that
+     * site.
+     *
+     * @return the siteProvisioningState value.
+     */
+    Map<String, SiteProvisioningState> siteProvisioningState();
 
     /**
      * Gets the internationalMobileSubscriberIdentity property: The international mobile subscriber identity (IMSI) for
@@ -61,20 +92,6 @@ public interface Sim {
     String integratedCircuitCardIdentifier();
 
     /**
-     * Gets the authenticationKey property: The Ki value for the SIM.
-     *
-     * @return the authenticationKey value.
-     */
-    String authenticationKey();
-
-    /**
-     * Gets the operatorKeyCode property: The Opc value for the SIM.
-     *
-     * @return the operatorKeyCode value.
-     */
-    String operatorKeyCode();
-
-    /**
      * Gets the deviceType property: An optional free-form text field that can be used to record the device type this
      * SIM is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered based
      * on this value.
@@ -84,7 +101,8 @@ public interface Sim {
     String deviceType();
 
     /**
-     * Gets the simPolicy property: The SIM policy used by this SIM.
+     * Gets the simPolicy property: The SIM policy used by this SIM. The SIM policy must be in the same location as the
+     * SIM.
      *
      * @return the simPolicy value.
      */
@@ -97,6 +115,21 @@ public interface Sim {
      * @return the staticIpConfiguration value.
      */
     List<SimStaticIpProperties> staticIpConfiguration();
+
+    /**
+     * Gets the vendorName property: The name of the SIM vendor who provided this SIM, if any.
+     *
+     * @return the vendorName value.
+     */
+    String vendorName();
+
+    /**
+     * Gets the vendorKeyFingerprint property: The public key fingerprint of the SIM vendor who provided this SIM, if
+     * any.
+     *
+     * @return the vendorKeyFingerprint value.
+     */
+    String vendorKeyFingerprint();
 
     /**
      * Gets the name of the resource group.
@@ -153,9 +186,9 @@ public interface Sim {
          * created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithIntegratedCircuitCardIdentifier,
-                DefinitionStages.WithAuthenticationKey,
+            extends DefinitionStages.WithAuthenticationKey,
                 DefinitionStages.WithOperatorKeyCode,
+                DefinitionStages.WithIntegratedCircuitCardIdentifier,
                 DefinitionStages.WithDeviceType,
                 DefinitionStages.WithSimPolicy,
                 DefinitionStages.WithStaticIpConfiguration {
@@ -173,17 +206,6 @@ public interface Sim {
              * @return the created resource.
              */
             Sim create(Context context);
-        }
-        /** The stage of the Sim definition allowing to specify integratedCircuitCardIdentifier. */
-        interface WithIntegratedCircuitCardIdentifier {
-            /**
-             * Specifies the integratedCircuitCardIdentifier property: The integrated circuit card ID (ICCID) for the
-             * SIM..
-             *
-             * @param integratedCircuitCardIdentifier The integrated circuit card ID (ICCID) for the SIM.
-             * @return the next definition stage.
-             */
-            WithCreate withIntegratedCircuitCardIdentifier(String integratedCircuitCardIdentifier);
         }
         /** The stage of the Sim definition allowing to specify authenticationKey. */
         interface WithAuthenticationKey {
@@ -205,6 +227,17 @@ public interface Sim {
              */
             WithCreate withOperatorKeyCode(String operatorKeyCode);
         }
+        /** The stage of the Sim definition allowing to specify integratedCircuitCardIdentifier. */
+        interface WithIntegratedCircuitCardIdentifier {
+            /**
+             * Specifies the integratedCircuitCardIdentifier property: The integrated circuit card ID (ICCID) for the
+             * SIM..
+             *
+             * @param integratedCircuitCardIdentifier The integrated circuit card ID (ICCID) for the SIM.
+             * @return the next definition stage.
+             */
+            WithCreate withIntegratedCircuitCardIdentifier(String integratedCircuitCardIdentifier);
+        }
         /** The stage of the Sim definition allowing to specify deviceType. */
         interface WithDeviceType {
             /**
@@ -222,9 +255,10 @@ public interface Sim {
         /** The stage of the Sim definition allowing to specify simPolicy. */
         interface WithSimPolicy {
             /**
-             * Specifies the simPolicy property: The SIM policy used by this SIM..
+             * Specifies the simPolicy property: The SIM policy used by this SIM. The SIM policy must be in the same
+             * location as the SIM..
              *
-             * @param simPolicy The SIM policy used by this SIM.
+             * @param simPolicy The SIM policy used by this SIM. The SIM policy must be in the same location as the SIM.
              * @return the next definition stage.
              */
             WithCreate withSimPolicy(SimPolicyResourceId simPolicy);
@@ -251,9 +285,9 @@ public interface Sim {
 
     /** The template for Sim update. */
     interface Update
-        extends UpdateStages.WithIntegratedCircuitCardIdentifier,
-            UpdateStages.WithAuthenticationKey,
+        extends UpdateStages.WithAuthenticationKey,
             UpdateStages.WithOperatorKeyCode,
+            UpdateStages.WithIntegratedCircuitCardIdentifier,
             UpdateStages.WithDeviceType,
             UpdateStages.WithSimPolicy,
             UpdateStages.WithStaticIpConfiguration {
@@ -274,17 +308,6 @@ public interface Sim {
     }
     /** The Sim update stages. */
     interface UpdateStages {
-        /** The stage of the Sim update allowing to specify integratedCircuitCardIdentifier. */
-        interface WithIntegratedCircuitCardIdentifier {
-            /**
-             * Specifies the integratedCircuitCardIdentifier property: The integrated circuit card ID (ICCID) for the
-             * SIM..
-             *
-             * @param integratedCircuitCardIdentifier The integrated circuit card ID (ICCID) for the SIM.
-             * @return the next definition stage.
-             */
-            Update withIntegratedCircuitCardIdentifier(String integratedCircuitCardIdentifier);
-        }
         /** The stage of the Sim update allowing to specify authenticationKey. */
         interface WithAuthenticationKey {
             /**
@@ -305,6 +328,17 @@ public interface Sim {
              */
             Update withOperatorKeyCode(String operatorKeyCode);
         }
+        /** The stage of the Sim update allowing to specify integratedCircuitCardIdentifier. */
+        interface WithIntegratedCircuitCardIdentifier {
+            /**
+             * Specifies the integratedCircuitCardIdentifier property: The integrated circuit card ID (ICCID) for the
+             * SIM..
+             *
+             * @param integratedCircuitCardIdentifier The integrated circuit card ID (ICCID) for the SIM.
+             * @return the next definition stage.
+             */
+            Update withIntegratedCircuitCardIdentifier(String integratedCircuitCardIdentifier);
+        }
         /** The stage of the Sim update allowing to specify deviceType. */
         interface WithDeviceType {
             /**
@@ -322,9 +356,10 @@ public interface Sim {
         /** The stage of the Sim update allowing to specify simPolicy. */
         interface WithSimPolicy {
             /**
-             * Specifies the simPolicy property: The SIM policy used by this SIM..
+             * Specifies the simPolicy property: The SIM policy used by this SIM. The SIM policy must be in the same
+             * location as the SIM..
              *
-             * @param simPolicy The SIM policy used by this SIM.
+             * @param simPolicy The SIM policy used by this SIM. The SIM policy must be in the same location as the SIM.
              * @return the next definition stage.
              */
             Update withSimPolicy(SimPolicyResourceId simPolicy);

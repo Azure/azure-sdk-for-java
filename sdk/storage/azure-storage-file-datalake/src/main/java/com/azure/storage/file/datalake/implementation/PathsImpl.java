@@ -32,7 +32,6 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.implementation.models.LeaseAccessConditions;
-import com.azure.storage.file.datalake.implementation.models.LeaseAction;
 import com.azure.storage.file.datalake.implementation.models.ModifiedAccessConditions;
 import com.azure.storage.file.datalake.implementation.models.PathExpiryOptions;
 import com.azure.storage.file.datalake.implementation.models.PathGetPropertiesAction;
@@ -57,6 +56,7 @@ import com.azure.storage.file.datalake.implementation.models.SetAccessControlRec
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.EncryptionAlgorithmType;
+import com.azure.storage.file.datalake.models.LeaseAction;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;

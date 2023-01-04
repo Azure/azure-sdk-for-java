@@ -1,5 +1,44 @@
 # Release History
 
+## 4.6.0-beta.1 (Unreleased)
+Upgrade Spring Boot dependencies version to 2.7.7 and Spring Cloud dependencies version to 2021.0.5
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
+- Enhance the Event Hubs/Service Bus/Storage Queue message converter to support Spring autoconfiguration-pattern. [#30741](https://github.com/Azure/azure-sdk-for-java/issues/30741)
+- Support the PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD property. [#30252](https://github.com/Azure/azure-sdk-for-java/issues/30252)
+
+#### Breaking Changes
+- Delete properties: `spring.jms.serviebus.username`, `spring.jms.serviebus.password` and `spring.jms.serviebus.remote-uri` [#32467](https://github.com/Azure/azure-sdk-for-java/pull/32467).
+
+### Spring Cloud Azure Core
+This section includes changes in `spring-cloud-azure-core`, `spring-cloud-azure-service`, and `spring-cloud-azure-resourcemanager` modules.
+
+#### Bugs Fixed
+- Remove warning logs about client properties while using Kafka passwordless. [#32235](https://github.com/Azure/azure-sdk-for-java/issues/32235)
+
+## 6.0.0-beta.4 (2022-12-07)
+Upgrade Spring Boot dependencies version to 3.0.0-RC2 and Spring Cloud dependencies version to 2022.0.0-RC2.
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
+- Remove warning logs of Kafka passwordless autoconfiguration. [#31182](https://github.com/Azure/azure-sdk-for-java/issues/31182).
+- Enhance the Azure AD Resource Server configurer to accept the custom jwt granted authorities converter. [#28665](https://github.com/Azure/azure-sdk-for-java/issues/28665).
+
+#### Breaking Changes
+- Move Key Vault environment classes for internal usage to the implementation package [#32428](https://github.com/Azure/azure-sdk-for-java/pull/32428).
+- Delete properties: `spring.jms.serviebus.username`, `spring.jms.serviebus.password` and `spring.jms.serviebus.remote-uri` [#32465](https://github.com/Azure/azure-sdk-for-java/pull/32465).
+
+#### Dependency Updates
+- Upgrade Azure SDK BOM to 1.2.8.
+- Upgrade Azure Identity to 1.7.1.
+- Upgrade Azure Identity Extensions to 1.0.0.
+- Upgrade Azure Resource Manager to 2.21.0.
+
 ## 4.5.0 (2022-12-06)
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.14, 2.7.0-2.7.6. (Note: 2.5.x (x>14), 2.6.y (y>14) and 2.7.z (z>6) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2020.0.3-2020.0.6, 2021.0.0-2021.0.5. (Note: 2020.0.x (x>6) and 2021.0.y (y>5) should be supported, but they aren't tested with this release.)
@@ -20,20 +59,11 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Dependency Updates
 - Upgrade spring-security to 5.7.5 to address [CVE-2022-31690](https://tanzu.vmware.com/security/cve-2022-31690) [#32145](https://github.com/Azure/azure-sdk-for-java/pull/32145).
-
-## 6.0.0-beta.4 (2022-12-07)
-Upgrade Spring Boot dependencies version to 3.0.0-RC2 and Spring Cloud dependencies version to 2022.0.0-RC2.
-
-### Spring Cloud Azure Autoconfigure
-This section includes changes in `spring-cloud-azure-autoconfigure` module.
-
-#### Features Added
-- Remove warning logs of Kafka passwordless autoconfiguration. [#31182](https://github.com/Azure/azure-sdk-for-java/issues/31182).
-- Enhance the Azure AD Resource Server configurer to accept the custom jwt granted authorities converter. [#28665](https://github.com/Azure/azure-sdk-for-java/issues/28665).
-
-#### Breaking Changes
-- Move Key Vault environment classes for internal usage to the implementation package [#32428](https://github.com/Azure/azure-sdk-for-java/pull/32428).
-- Delete properties: `spring.jms.serviebus.username`, `spring.jms.serviebus.password` and `spring.jms.serviebus.remote-uri` [#32465](https://github.com/Azure/azure-sdk-for-java/pull/32465).
+- Upgrade Azure SDK BOM to 1.2.8.
+- Upgrade Azure Identity to 1.7.1.
+- Upgrade Azure Identity Extensions to 1.0.0.
+- Upgrade Azure Spring Data Cosmos to 3.30.0.
+- Upgrade Azure Resource Manager to 2.21.0.
 
 ## 6.0.0-beta.3 (2022-11-04)
 Upgrade Spring Boot dependencies version to 3.0.0-RC1 and Spring Cloud dependencies version to 2022.0.0-RC1.
