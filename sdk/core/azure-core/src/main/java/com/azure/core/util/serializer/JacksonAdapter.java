@@ -378,16 +378,16 @@ public class JacksonAdapter implements SerializerAdapter {
             return UUID.fromString(value);
         } else if (type == LocalDate.class) {
             return LocalDate.parse(value);
-        } else if (type == Enum.class) {
+        } else if (Enum.class.isAssignableFrom((Class<?>) type)) {
             return Enum.valueOf((Class) type, value);
-        } else if (type == ExpandableStringEnum.class) {
+        } else if (ExpandableStringEnum.class.isAssignableFrom((Class<?>) type)) {
             try {
                 return ((Class<?>) type).getDeclaredMethod("fromString", String.class).invoke(null, value);
             } catch (ReflectiveOperationException ex) {
                 throw new IOException(ex);
             }
         } else {
-            throw new RuntimeException("Unsupported text Content-Type Type: " + type);
+            throw new IllegalStateException("Unsupported text Content-Type Type: " + type);
         }
     }
 
