@@ -42,6 +42,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class RecoverableReactorConnectionTest {
+    private static final String FQDN = "contoso-shopping.servicebus.windows.net";
+    private static final String ENTITY_PATH = "orders";
     private static final Duration VERIFY_TIMEOUT = Duration.ofSeconds(30);
     @Mock
     private AmqpRetryPolicy retryPolicy;
@@ -66,10 +68,9 @@ public class RecoverableReactorConnectionTest {
     public void shouldGetConnection() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
         final RecoverableReactorConnection recoverableConnection = new RecoverableReactorConnection(connectionSupplier,
-            retryPolicy,
-            errorContext,
-            new HashMap<>());
+            FQDN, ENTITY_PATH, retryPolicy, errorContext, new HashMap<>());
         try {
+            // The request (subscription) for connection should get a connection.
             StepVerifier.create(recoverableConnection.getConnection(), 0)
                 .thenRequest(1)
                 .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
@@ -92,12 +93,10 @@ public class RecoverableReactorConnectionTest {
     public void shouldCacheConnection() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
         final RecoverableReactorConnection recoverableConnection = new RecoverableReactorConnection(connectionSupplier,
-            retryPolicy,
-            errorContext,
-            new HashMap<>());
+            FQDN, ENTITY_PATH, retryPolicy, errorContext, new HashMap<>());
         try {
             final ReactorConnection[] c = new ReactorConnection[1];
-            // The first connection request populates the cache.
+            // The first request (subscription) for connection populates the cache.
             StepVerifier.create(recoverableConnection.getConnection(), 0)
                 .thenRequest(1)
                 .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
@@ -112,10 +111,11 @@ public class RecoverableReactorConnectionTest {
                 .verify(VERIFY_TIMEOUT);
             connectionSupplier.assertInvocationCount(1);
 
-            // Later connection request is served from the cache.
+            // Later a second connection request (Subscription) must be served from the cache.
             StepVerifier.create(recoverableConnection.getConnection(), 0)
                 .thenRequest(1)
                 .expectNextMatches(con -> {
+                    // Assert the second subscription got the same connection (cached) as first subscription.
                     Assertions.assertEquals(c[0], con);
                     return true;
                 })
@@ -134,12 +134,10 @@ public class RecoverableReactorConnectionTest {
     public void shouldRefreshCacheOnCompletionOfCachedConnection() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
         final RecoverableReactorConnection recoverableConnection = new RecoverableReactorConnection(connectionSupplier,
-            retryPolicy,
-            errorContext,
-            new HashMap<>());
+            FQDN, ENTITY_PATH, retryPolicy, errorContext, new HashMap<>());
         try {
             final ReactorConnection[] c = new ReactorConnection[1];
-            // The first connection request populates the cache.
+            // The first request (subscription) for connection populates the cache.
             StepVerifier.create(recoverableConnection.getConnection(), 0)
                 .thenRequest(1)
                 .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
@@ -158,12 +156,13 @@ public class RecoverableReactorConnectionTest {
             // Close the cached connection by completing connection endpoint.
             connectionSupplier.completeEndpointState();
 
-            // A new subscription for connection should refresh cache.
+            // A new request (subscription) for connection should refresh cache.
             StepVerifier.create(recoverableConnection.getConnection(), 0)
                 .thenRequest(1)
                 .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
                 .expectNextMatches(con -> {
                     Assertions.assertFalse(con.isDisposed());
+                    // Assert the second subscription got a new connection as a result of cache refresh.
                     Assertions.assertNotEquals(c[0], con);
                     return true;
                 })
@@ -182,11 +181,10 @@ public class RecoverableReactorConnectionTest {
     public void shouldRefreshCacheOnErrorInCachedConnection() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
         final RecoverableReactorConnection recoverableConnection = new RecoverableReactorConnection(connectionSupplier,
-            retryPolicy,
-            errorContext,
-            new HashMap<>());
+            FQDN, ENTITY_PATH, retryPolicy, errorContext, new HashMap<>());
         try {
             final ReactorConnection[] c = new ReactorConnection[1];
+            // The first request (subscription) for connection populates the cache.
             StepVerifier.create(recoverableConnection.getConnection(), 0)
                 .thenRequest(1)
                 .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
@@ -205,13 +203,14 @@ public class RecoverableReactorConnectionTest {
             // Close the cached connection by error-ing connection endpoint.
             connectionSupplier.errorEndpointState(new RuntimeException("connection dropped"));
 
-            // A new subscription for connection should refresh cache.
+            // A new request (subscription) for connection should refresh cache.
             StepVerifier.create(recoverableConnection.getConnection(), 0)
                 .thenRequest(1)
                 .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
                 .expectNextMatches(con -> {
                     connectionSupplier.assertConnection(con);
                     Assertions.assertFalse(con.isDisposed());
+                    // Assert the second subscription got a new connection as a result of cache refresh.
                     Assertions.assertNotEquals(c[0], con);
                     return true;
                 })
@@ -230,12 +229,10 @@ public class RecoverableReactorConnectionTest {
     public void shouldBubbleUpNonRetriableError() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
         final RecoverableReactorConnection recoverableConnection = new RecoverableReactorConnection(connectionSupplier,
-            retryPolicy,
-            errorContext,
-            new HashMap<>());
+            FQDN, ENTITY_PATH, retryPolicy, errorContext, new HashMap<>());
         final Throwable nonRetriableError = new Throwable("non-retriable");
         try {
-            // The first connection request fails with non-retriable error.
+            // The first request (subscription) fails with non-retriable error.
             StepVerifier.create(recoverableConnection.getConnection(), 0)
                 .thenRequest(1)
                 .then(() -> connectionSupplier.errorEndpointState(nonRetriableError))
@@ -245,11 +242,12 @@ public class RecoverableReactorConnectionTest {
                 .verify(VERIFY_TIMEOUT);
             connectionSupplier.assertInvocationCount(1);
 
-            // A new subscription should obtain a new connection.
+            // A new request (subscription) for connection should obtain a connection refreshing cache.
             StepVerifier.create(recoverableConnection.getConnection(), 0)
                 .thenRequest(1)
                 .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
                 .expectNextMatches(con -> {
+                    Assertions.assertFalse(con.isDisposed());
                     connectionSupplier.assertConnection(con);
                     return true;
                 })
@@ -268,9 +266,7 @@ public class RecoverableReactorConnectionTest {
     public void shouldDisposeConnectionUponTermination() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
         final RecoverableReactorConnection recoverableConnection = new RecoverableReactorConnection(connectionSupplier,
-            retryPolicy,
-            errorContext,
-            new HashMap<>());
+            FQDN, ENTITY_PATH, retryPolicy, errorContext, new HashMap<>());
         final ReactorConnection[] c = new ReactorConnection[1];
         try {
             StepVerifier.create(recoverableConnection.getConnection(), 0)
@@ -303,9 +299,7 @@ public class RecoverableReactorConnectionTest {
     public void shouldNotProvideConnectionAfterTermination() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
         final RecoverableReactorConnection recoverableConnection = new RecoverableReactorConnection(connectionSupplier,
-            retryPolicy,
-            errorContext,
-            new HashMap<>());
+            FQDN, ENTITY_PATH, retryPolicy, errorContext, new HashMap<>());
         // Terminating the recovery support.
         recoverableConnection.terminate();
         try {
@@ -336,20 +330,26 @@ public class RecoverableReactorConnectionTest {
         private ReactorConnection currentConnection;
 
         ConnectionSupplier() {
+            // the queue is null, so each invocation of 'get' returns a new connection with no endpoint state set yet.
+            // Depending on the use case being tested, the test case can set the state later by calling
+            // 'emitEndpointState(EndpointState)', 'completeEndpointState()' or 'errorEndpointState(Throwable)'.
             this.connectionsStateQueue = null;
             this.retryOptions = new AmqpRetryOptions();
         }
 
         ConnectionSupplier(Deque<ConnectionState> connectionsStateQueue, AmqpRetryOptions retryOptions) {
             Objects.requireNonNull(connectionsStateQueue);
+            // the queue is set, so each invocation of 'get' returns a new connection with the state dequeued from
+            // the queue. Invoking 'get' for connection once the queue is empty will throw.
             this.connectionsStateQueue = connectionsStateQueue;
             this.retryOptions = retryOptions;
         }
 
+        // implements Supplier<ReactorConnection>::get
         @Override
         public ReactorConnection get() {
             if (currentConnection != null && !currentConnection.isDisposed()) {
-                throw new IllegalStateException("Unexpected request for new connection when current one is not disposed.");
+                throw new RuntimeException("Unexpected request for new connection when current one is not disposed.");
             }
 
             invocationCount++;
@@ -443,6 +443,7 @@ public class RecoverableReactorConnectionTest {
         }
     }
 
+    // Describes the state of a connection that 'ConnectionSupplier' utility class provides.
     static final class ConnectionState {
         private final boolean never;
         private final boolean complete;
