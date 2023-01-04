@@ -180,7 +180,8 @@ public final class TestProxyDownloader {
                 throw new RuntimeException("unexpected osName " + osName);
             }
             String arch = System.getProperty("os.arch").toLowerCase(Locale.ROOT);
-            if (arch.contains("amd64")) {
+            // intel Macs are x86_64.
+            if (arch.contains("amd64") || arch.contains("x86_64")) {
                 architecture = "x64";
             } else if (arch.contains("arm64")) {
                 architecture = "arm64";
