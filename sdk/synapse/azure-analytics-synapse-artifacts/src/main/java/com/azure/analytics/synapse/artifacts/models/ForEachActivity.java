@@ -41,6 +41,9 @@ public class ForEachActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties.activities", required = true)
     private List<Activity> activities;
 
+    /** Creates an instance of ForEachActivity class. */
+    public ForEachActivity() {}
+
     /**
      * Get the isSequential property: Should the loop be executed in sequence or in parallel (max 50).
      *

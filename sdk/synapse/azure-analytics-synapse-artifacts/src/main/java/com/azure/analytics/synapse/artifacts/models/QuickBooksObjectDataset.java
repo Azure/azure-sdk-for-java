@@ -24,6 +24,9 @@ public class QuickBooksObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
+    /** Creates an instance of QuickBooksObjectDataset class. */
+    public QuickBooksObjectDataset() {}
+
     /**
      * Get the tableName property: The table name. Type: string (or Expression with resultType string).
      *

@@ -23,6 +23,9 @@ public final class PipelineListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of PipelineListResponse class. */
+    public PipelineListResponse() {}
+
     /**
      * Get the value property: List of pipelines.
      *

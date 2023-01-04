@@ -22,6 +22,9 @@ public class SelfHostedIntegrationRuntime extends IntegrationRuntime {
     @JsonProperty(value = "typeProperties.linkedInfo")
     private LinkedIntegrationRuntimeType linkedInfo;
 
+    /** Creates an instance of SelfHostedIntegrationRuntime class. */
+    public SelfHostedIntegrationRuntime() {}
+
     /**
      * Get the linkedInfo property: Linked integration runtime type from data factory.
      *

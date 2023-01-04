@@ -80,6 +80,9 @@ public class ServiceNowLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of ServiceNowLinkedService class. */
+    public ServiceNowLinkedService() {}
+
     /**
      * Get the endpoint property: The endpoint of the ServiceNow server. (i.e. &lt;instance&gt;.service-now.com).
      *

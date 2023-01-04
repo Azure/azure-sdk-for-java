@@ -44,11 +44,25 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     private Object className;
 
     /*
-     * Additional files used for reference in the main definition file, which will override the 'files' of the spark
-     * job definition you provide.
+     * (Deprecated. Please use pythonCodeReference and filesV2) Additional files used for reference in the main
+     * definition file, which will override the 'files' of the spark job definition you provide.
      */
     @JsonProperty(value = "typeProperties.files")
     private List<Object> files;
+
+    /*
+     * Additional python code files used for reference in the main definition file, which will override the 'pyFiles'
+     * of the spark job definition you provide.
+     */
+    @JsonProperty(value = "typeProperties.pythonCodeReference")
+    private List<Object> pythonCodeReference;
+
+    /*
+     * Additional files used for reference in the main definition file, which will override the 'jars' and 'files' of
+     * the spark job definition you provide.
+     */
+    @JsonProperty(value = "typeProperties.filesV2")
+    private List<Object> filesV2;
 
     /*
      * The name of the big data pool which will be used to execute the spark batch job, which will override the
@@ -85,6 +99,9 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
      */
     @JsonProperty(value = "typeProperties.numExecutors")
     private Integer numExecutors;
+
+    /** Creates an instance of SynapseSparkJobDefinitionActivity class. */
+    public SynapseSparkJobDefinitionActivity() {}
 
     /**
      * Get the sparkJob property: Synapse spark job reference.
@@ -173,8 +190,8 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the files property: Additional files used for reference in the main definition file, which will override the
-     * 'files' of the spark job definition you provide.
+     * Get the files property: (Deprecated. Please use pythonCodeReference and filesV2) Additional files used for
+     * reference in the main definition file, which will override the 'files' of the spark job definition you provide.
      *
      * @return the files value.
      */
@@ -183,14 +200,58 @@ public class SynapseSparkJobDefinitionActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the files property: Additional files used for reference in the main definition file, which will override the
-     * 'files' of the spark job definition you provide.
+     * Set the files property: (Deprecated. Please use pythonCodeReference and filesV2) Additional files used for
+     * reference in the main definition file, which will override the 'files' of the spark job definition you provide.
      *
      * @param files the files value to set.
      * @return the SynapseSparkJobDefinitionActivity object itself.
      */
     public SynapseSparkJobDefinitionActivity setFiles(List<Object> files) {
         this.files = files;
+        return this;
+    }
+
+    /**
+     * Get the pythonCodeReference property: Additional python code files used for reference in the main definition
+     * file, which will override the 'pyFiles' of the spark job definition you provide.
+     *
+     * @return the pythonCodeReference value.
+     */
+    public List<Object> getPythonCodeReference() {
+        return this.pythonCodeReference;
+    }
+
+    /**
+     * Set the pythonCodeReference property: Additional python code files used for reference in the main definition
+     * file, which will override the 'pyFiles' of the spark job definition you provide.
+     *
+     * @param pythonCodeReference the pythonCodeReference value to set.
+     * @return the SynapseSparkJobDefinitionActivity object itself.
+     */
+    public SynapseSparkJobDefinitionActivity setPythonCodeReference(List<Object> pythonCodeReference) {
+        this.pythonCodeReference = pythonCodeReference;
+        return this;
+    }
+
+    /**
+     * Get the filesV2 property: Additional files used for reference in the main definition file, which will override
+     * the 'jars' and 'files' of the spark job definition you provide.
+     *
+     * @return the filesV2 value.
+     */
+    public List<Object> getFilesV2() {
+        return this.filesV2;
+    }
+
+    /**
+     * Set the filesV2 property: Additional files used for reference in the main definition file, which will override
+     * the 'jars' and 'files' of the spark job definition you provide.
+     *
+     * @param filesV2 the filesV2 value to set.
+     * @return the SynapseSparkJobDefinitionActivity object itself.
+     */
+    public SynapseSparkJobDefinitionActivity setFilesV2(List<Object> filesV2) {
+        this.filesV2 = filesV2;
         return this;
     }
 

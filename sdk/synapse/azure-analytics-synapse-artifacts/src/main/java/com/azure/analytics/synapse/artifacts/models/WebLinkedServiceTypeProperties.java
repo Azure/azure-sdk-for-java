@@ -34,6 +34,9 @@ public class WebLinkedServiceTypeProperties {
     @JsonProperty(value = "url", required = true)
     private Object url;
 
+    /** Creates an instance of WebLinkedServiceTypeProperties class. */
+    public WebLinkedServiceTypeProperties() {}
+
     /**
      * Get the url property: The URL of the web service endpoint, e.g. http://www.microsoft.com . Type: string (or
      * Expression with resultType string).

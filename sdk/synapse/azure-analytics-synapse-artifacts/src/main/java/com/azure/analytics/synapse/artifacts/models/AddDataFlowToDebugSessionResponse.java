@@ -16,6 +16,9 @@ public final class AddDataFlowToDebugSessionResponse {
     @JsonProperty(value = "jobVersion")
     private String jobVersion;
 
+    /** Creates an instance of AddDataFlowToDebugSessionResponse class. */
+    public AddDataFlowToDebugSessionResponse() {}
+
     /**
      * Get the jobVersion property: The ID of data flow debug job version.
      *
