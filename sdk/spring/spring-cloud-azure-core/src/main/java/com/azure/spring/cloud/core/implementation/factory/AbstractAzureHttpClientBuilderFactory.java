@@ -149,7 +149,9 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
      */
     protected void configureHttpLogOptions(T builder) {
         ClientOptionsProvider.ClientOptions client = getAzureProperties().getClient();
-
+        if (client == null) {
+            return;
+        }
         if (client instanceof ClientOptionsProvider.HttpClientOptions) {
             HttpLogOptions logOptions =
                 HTTP_LOG_OPTIONS_CONVERTER.convert(((ClientOptionsProvider.HttpClientOptions) client).getLogging());
