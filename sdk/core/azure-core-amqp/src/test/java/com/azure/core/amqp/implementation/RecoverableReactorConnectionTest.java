@@ -71,7 +71,7 @@ public class RecoverableReactorConnectionTest {
             FQDN, ENTITY_PATH, retryPolicy, errorContext, new HashMap<>());
         try {
             // The request (subscription) for connection should get a connection.
-            StepVerifier.create(recoverableConnection.getConnection(), 0)
+            StepVerifier.create(recoverableConnection.get(), 0)
                 .thenRequest(1)
                 .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
                 .expectNextMatches(con -> {
@@ -97,7 +97,7 @@ public class RecoverableReactorConnectionTest {
         try {
             final ReactorConnection[] c = new ReactorConnection[1];
             // The first request (subscription) for connection populates the cache.
-            StepVerifier.create(recoverableConnection.getConnection(), 0)
+            StepVerifier.create(recoverableConnection.get(), 0)
                 .thenRequest(1)
                 .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
                 .expectNextMatches(con -> {
@@ -112,7 +112,7 @@ public class RecoverableReactorConnectionTest {
             connectionSupplier.assertInvocationCount(1);
 
             // Later a second connection request (Subscription) must be served from the cache.
-            StepVerifier.create(recoverableConnection.getConnection(), 0)
+            StepVerifier.create(recoverableConnection.get(), 0)
                 .thenRequest(1)
                 .expectNextMatches(con -> {
                     // Assert the second subscription got the same connection (cached) as first subscription.
@@ -138,7 +138,7 @@ public class RecoverableReactorConnectionTest {
         try {
             final ReactorConnection[] c = new ReactorConnection[1];
             // The first request (subscription) for connection populates the cache.
-            StepVerifier.create(recoverableConnection.getConnection(), 0)
+            StepVerifier.create(recoverableConnection.get(), 0)
                 .thenRequest(1)
                 .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
                 .expectNextMatches(con -> {
@@ -157,7 +157,7 @@ public class RecoverableReactorConnectionTest {
             connectionSupplier.completeEndpointState();
 
             // A new request (subscription) for connection should refresh cache.
-            StepVerifier.create(recoverableConnection.getConnection(), 0)
+            StepVerifier.create(recoverableConnection.get(), 0)
                 .thenRequest(1)
                 .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
                 .expectNextMatches(con -> {
@@ -185,7 +185,7 @@ public class RecoverableReactorConnectionTest {
         try {
             final ReactorConnection[] c = new ReactorConnection[1];
             // The first request (subscription) for connection populates the cache.
-            StepVerifier.create(recoverableConnection.getConnection(), 0)
+            StepVerifier.create(recoverableConnection.get(), 0)
                 .thenRequest(1)
                 .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
                 .expectNextMatches(con -> {
@@ -204,7 +204,7 @@ public class RecoverableReactorConnectionTest {
             connectionSupplier.errorEndpointState(new RuntimeException("connection dropped"));
 
             // A new request (subscription) for connection should refresh cache.
-            StepVerifier.create(recoverableConnection.getConnection(), 0)
+            StepVerifier.create(recoverableConnection.get(), 0)
                 .thenRequest(1)
                 .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
                 .expectNextMatches(con -> {
@@ -233,7 +233,7 @@ public class RecoverableReactorConnectionTest {
         final Throwable nonRetriableError = new Throwable("non-retriable");
         try {
             // The first request (subscription) fails with non-retriable error.
-            StepVerifier.create(recoverableConnection.getConnection(), 0)
+            StepVerifier.create(recoverableConnection.get(), 0)
                 .thenRequest(1)
                 .then(() -> connectionSupplier.errorEndpointState(nonRetriableError))
                 .expectErrorSatisfies(e -> {
@@ -243,7 +243,7 @@ public class RecoverableReactorConnectionTest {
             connectionSupplier.assertInvocationCount(1);
 
             // A new request (subscription) for connection should obtain a connection refreshing cache.
-            StepVerifier.create(recoverableConnection.getConnection(), 0)
+            StepVerifier.create(recoverableConnection.get(), 0)
                 .thenRequest(1)
                 .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
                 .expectNextMatches(con -> {
@@ -269,7 +269,7 @@ public class RecoverableReactorConnectionTest {
             FQDN, ENTITY_PATH, retryPolicy, errorContext, new HashMap<>());
         final ReactorConnection[] c = new ReactorConnection[1];
         try {
-            StepVerifier.create(recoverableConnection.getConnection(), 0)
+            StepVerifier.create(recoverableConnection.get(), 0)
                 .thenRequest(1)
                 .then(() -> connectionSupplier.emitEndpointState(EndpointState.ACTIVE))
                 .expectNextMatches(con -> {
@@ -304,7 +304,7 @@ public class RecoverableReactorConnectionTest {
         recoverableConnection.terminate();
         try {
             // Attempt to obtain a connection post the termination of recovery support will fail.
-            StepVerifier.create(recoverableConnection.getConnection(), 0)
+            StepVerifier.create(recoverableConnection.get(), 0)
                 .thenRequest(1)
                 .expectErrorSatisfies(e -> {
                     Assertions.assertTrue(e instanceof AmqpException);
