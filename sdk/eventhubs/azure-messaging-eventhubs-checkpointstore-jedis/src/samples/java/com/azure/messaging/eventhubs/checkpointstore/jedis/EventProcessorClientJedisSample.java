@@ -3,6 +3,8 @@
 
 package com.azure.messaging.eventhubs.checkpointstore.jedis;
 
+import com.azure.messaging.eventhubs.CheckpointStore;
+import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.models.ErrorContext;
