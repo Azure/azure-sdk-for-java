@@ -6,6 +6,7 @@ package com.azure.communication.email.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Message payload for sending an email. */
 @Fluent
@@ -14,13 +15,13 @@ public final class EmailMessage {
      * Custom email headers to be passed.
      */
     @JsonProperty(value = "headers")
-    private Iterable<EmailCustomHeader> customHeaders;
+    private Map<String, String> headers;
 
     /*
      * Sender email address from a verified domain.
      */
-    @JsonProperty(value = "sender", required = true)
-    private String sender;
+    @JsonProperty(value = "senderEmail", required = true)
+    private String senderEmail;
 
     /*
      * Email content to be sent.
@@ -29,19 +30,14 @@ public final class EmailMessage {
     private EmailContent content;
 
     /*
-     * The importance type for the email.
-     */
-    @JsonProperty(value = "importance")
-    private EmailImportance importance;
-
-    /*
      * Recipients for the email.
      */
     @JsonProperty(value = "recipients", required = true)
     private EmailRecipients recipients;
 
     /*
-     * list of attachments
+     * List of attachments. Please note that we limit the total size of an
+     * email request (which includes attachments) to 10MB.
      */
     @JsonProperty(value = "attachments")
     private Iterable<EmailAttachment> attachments;
@@ -62,43 +58,43 @@ public final class EmailMessage {
 
     /**
      * Constructor for EmailMessage
-     * @param sender the sender email address from a verified domain
+     * @param senderEmail the sender email address from a verified domain
      * @param content the email content to be sent
      * @param recipients the recipients for the email
      */
-    public EmailMessage(String sender, EmailContent content, EmailRecipients recipients) {
-        this.sender = sender;
+    public EmailMessage(String senderEmail, EmailContent content, EmailRecipients recipients) {
+        this.senderEmail = senderEmail;
         this.content = content;
         this.recipients = recipients;
     }
 
     /**
-     * Get the customHeaders property: Custom email headers to be passed.
+     * Get the headers property: Custom email headers to be passed.
      *
-     * @return the customHeaders value.
+     * @return the headers value.
      */
-    public Iterable<EmailCustomHeader> getCustomHeaders() {
-        return this.customHeaders;
+    public Map<String, String> getHeaders() {
+        return this.headers;
     }
 
     /**
-     * Set the customHeaders property: Custom email headers to be passed.
+     * Set the headers property: Custom email headers to be passed.
      *
-     * @param customHeaders the customHeaders value to set.
+     * @param headers the headers value to set.
      * @return the EmailMessage object itself.
      */
-    public EmailMessage setCustomHeaders(Iterable<EmailCustomHeader> customHeaders) {
-        this.customHeaders = customHeaders;
+    public EmailMessage setHeaders(Map<String, String> headers) {
+        this.headers = headers;
         return this;
     }
 
     /**
-     * Get the sender property: Sender email address from a verified domain.
+     * Get the senderEmail property: Sender email address from a verified domain.
      *
-     * @return the sender value.
+     * @return the senderEmail value.
      */
-    public String getSender() {
-        return this.sender;
+    public String getSenderEmail() {
+        return this.senderEmail;
     }
 
     /**
@@ -111,26 +107,6 @@ public final class EmailMessage {
     }
 
     /**
-     * Get the importance property: The importance type for the email.
-     *
-     * @return the importance value.
-     */
-    public EmailImportance getImportance() {
-        return this.importance;
-    }
-
-    /**
-     * Set the importance property: The importance type for the email.
-     *
-     * @param importance the importance value to set.
-     * @return the EmailMessage object itself.
-     */
-    public EmailMessage setImportance(EmailImportance importance) {
-        this.importance = importance;
-        return this;
-    }
-
-    /**
      * Get the recipients property: Recipients for the email.
      *
      * @return the recipients value.
@@ -140,7 +116,8 @@ public final class EmailMessage {
     }
 
     /**
-     * Get the attachments property: list of attachments.
+     * Get the attachments property: List of attachments. Please note that we limit the total size of an email request
+     * (which includes attachments) to 10MB.
      *
      * @return the attachments value.
      */
@@ -149,7 +126,8 @@ public final class EmailMessage {
     }
 
     /**
-     * Set the attachments property: list of attachments.
+     * Set the attachments property: List of attachments. Please note that we limit the total size of an email request
+     * (which includes attachments) to 10MB.
      *
      * @param attachments the attachments value to set.
      * @return the EmailMessage object itself.

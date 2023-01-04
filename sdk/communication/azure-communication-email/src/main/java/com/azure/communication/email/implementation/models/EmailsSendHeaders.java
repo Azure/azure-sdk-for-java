@@ -5,17 +5,12 @@
 package com.azure.communication.email.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The EmailsSendHeaders model. */
 @Fluent
 public final class EmailsSendHeaders {
-    /*
-     * The Retry-After property.
-     */
-    @JsonProperty(value = "Retry-After")
-    private Integer retryAfter;
-
     /*
      * The Repeatability-Result property.
      */
@@ -34,24 +29,16 @@ public final class EmailsSendHeaders {
     @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
 
+    // HttpHeaders containing the raw property values.
     /**
-     * Get the retryAfter property: The Retry-After property.
+     * Creates an instance of EmailsSendHeaders class.
      *
-     * @return the retryAfter value.
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
-    public Integer getRetryAfter() {
-        return this.retryAfter;
-    }
-
-    /**
-     * Set the retryAfter property: The Retry-After property.
-     *
-     * @param retryAfter the retryAfter value to set.
-     * @return the EmailsSendHeaders object itself.
-     */
-    public EmailsSendHeaders setRetryAfter(Integer retryAfter) {
-        this.retryAfter = retryAfter;
-        return this;
+    public EmailsSendHeaders(HttpHeaders rawHeaders) {
+        this.repeatabilityResult = rawHeaders.getValue("Repeatability-Result");
+        this.operationLocation = rawHeaders.getValue("Operation-Location");
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
     }
 
     /**

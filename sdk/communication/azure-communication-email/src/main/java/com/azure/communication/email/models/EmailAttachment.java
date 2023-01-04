@@ -17,10 +17,10 @@ public final class EmailAttachment {
     private String name;
 
     /*
-     * The type of attachment file.
+     * MIME type of the content being attached.
      */
-    @JsonProperty(value = "attachmentType", required = true)
-    private EmailAttachmentType attachmentType;
+    @JsonProperty(value = "type", required = true)
+    private String type;
 
     /*
      * Base64 encoded contents of the attachment
@@ -34,9 +34,9 @@ public final class EmailAttachment {
      * @param attachmentType the type of attachment file
      * @param contentBytesBase64 the base64 encoded contents of the attachment
      */
-    public EmailAttachment(String name, EmailAttachmentType attachmentType, String contentBytesBase64) {
+    public EmailAttachment(String name, String attachmentType, String contentBytesBase64) {
         this.name = name;
-        this.attachmentType = attachmentType;
+        this.type = attachmentType;
         this.contentBytesBase64 = contentBytesBase64;
     }
 
@@ -50,12 +50,12 @@ public final class EmailAttachment {
     }
 
     /**
-     * Get the attachmentType property: The type of attachment file.
+     * Get the type property: MIME type of the content being attached.
      *
-     * @return the attachmentType value.
+     * @return the type value.
      */
-    public EmailAttachmentType getAttachmentType() {
-        return this.attachmentType;
+    public String getType() {
+        return this.type;
     }
 
     /**

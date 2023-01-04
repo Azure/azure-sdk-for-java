@@ -5,6 +5,7 @@
 package com.azure.communication.email.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The EmailsGetSendStatusHeaders model. */
@@ -15,6 +16,18 @@ public final class EmailsGetSendStatusHeaders {
      */
     @JsonProperty(value = "Retry-After")
     private Integer retryAfter;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of EmailsGetSendStatusHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public EmailsGetSendStatusHeaders(HttpHeaders rawHeaders) {
+        if (rawHeaders.getValue("Retry-After") != null) {
+            this.retryAfter = Integer.parseInt(rawHeaders.getValue("Retry-After"));
+        }
+    }
 
     /**
      * Get the retryAfter property: The Retry-After property.

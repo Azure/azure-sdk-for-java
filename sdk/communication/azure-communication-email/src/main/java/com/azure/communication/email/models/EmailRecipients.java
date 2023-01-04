@@ -19,13 +19,13 @@ public final class EmailRecipients {
     /*
      * Email CC recipients
      */
-    @JsonProperty(value = "CC")
+    @JsonProperty(value = "cc")
     private Iterable<EmailAddress> cc;
 
     /*
      * Email BCC recipients
      */
-    @JsonProperty(value = "bCC")
+    @JsonProperty(value = "bcc")
     private Iterable<EmailAddress> bcc;
 
     /**

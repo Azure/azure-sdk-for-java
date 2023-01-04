@@ -9,8 +9,6 @@ import com.azure.communication.email.models.EmailRecipients;
 import com.azure.communication.email.models.SendEmailResult;
 import com.azure.communication.email.models.SendStatusResult;
 import com.azure.communication.email.models.EmailAttachment;
-import com.azure.communication.email.models.EmailAttachmentType;
-
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -158,7 +156,7 @@ public class ReadmeSamples {
         EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
 
-        EmailAttachment attachment = new EmailAttachment("attachment.txt", EmailAttachmentType.TXT, b64file);
+        EmailAttachment attachment = new EmailAttachment("attachment.txt", "TXT", b64file);
 
         ArrayList<EmailAttachment> attachmentList = new ArrayList<>();
         attachmentList.add(attachment);

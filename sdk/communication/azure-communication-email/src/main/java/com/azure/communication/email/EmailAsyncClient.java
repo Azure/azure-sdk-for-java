@@ -6,9 +6,16 @@ package com.azure.communication.email;
 
 import com.azure.communication.email.models.*;
 import com.azure.communication.email.implementation.EmailsImpl;
+import com.azure.communication.email.models.EmailMessage;
+import com.azure.communication.email.models.SendEmailResult;
+import com.azure.communication.email.models.SendStatusResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -32,22 +39,51 @@ public final class EmailAsyncClient {
 
     /**
      * Gets the status of a message sent previously.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     messageId: String (Required)
+     *     status: String(queued/outForDelivery/dropped) (Required)
+     * }
+     * }</pre>
+     *
      * @param messageId System generated message id (GUID) returned from a previous call to send email.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the status of a message sent previously
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SendStatusResult> getSendStatus(String messageId) {
         return this.serviceClient.getSendStatusWithResponseAsync(messageId, null)
-                .flatMap((Response<BinaryData> response) -> {
-                    return Mono.just(response.getValue().toObject(SendStatusResult.class));
-                });
+            .flatMap((Response<BinaryData> response) -> {
+                return Mono.just(response.getValue().toObject(SendStatusResult.class));
+            });
     }
 
     /**
      * Gets the status of a message sent previously.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     messageId: String (Required)
+     *     status: String(queued/outForDelivery/dropped) (Required)
+     * }
+     * }</pre>
+     *
      * @param messageId System generated message id (GUID) returned from a previous call to send email.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the status of a message sent previously with {@link Response} on successful completion of {@link Mono}
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the status of a message sent previously along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SendStatusResult>> getSendStatusWithResponse(String messageId, RequestOptions requestOptions) {
@@ -111,30 +147,146 @@ public final class EmailAsyncClient {
     }
 
     /**
-     * Queues an email message to be sent to one or more recipients
-     * @param emailMessage Message payload for sending an email.
+     * Queues an email message to be sent to one or more recipients.
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>x-ms-client-request-id</td><td>String</td><td>No</td><td>Tracking ID sent with the request to help with debugging.</td></tr>
+     *     <tr><td>repeatability-request-id</td><td>String</td><td>No</td><td>Repeatability request ID header</td></tr>
+     *     <tr><td>repeatability-first-sent</td><td>String</td><td>No</td><td>Repeatability first sent header as HTTP-date</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     headers (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     senderEmail: String (Required)
+     *     content (Required): {
+     *         subject: String (Required)
+     *         plainText: String (Optional)
+     *         html: String (Optional)
+     *     }
+     *     recipients (Required): {
+     *         to (Required): [
+     *              (Required){
+     *                 email: String (Required)
+     *                 displayName: String (Optional)
+     *             }
+     *         ]
+     *         cc (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         bcc (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *     }
+     *     attachments (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             type: String (Required)
+     *             contentBytesBase64: String (Required)
+     *         }
+     *     ]
+     *     replyTo (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     disableUserEngagementTracking: Boolean (Optional)
+     * }
+     * }</pre>
+     *
+     * @param message Message payload for sending an email.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the SendEmailResult
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendEmailResult> send(EmailMessage emailMessage) {
-        return this.serviceClient.sendWithResponseAsync(BinaryData.fromObject(emailMessage), null)
-                .flatMap((Response<Void> response) -> {
-                    SendEmailResult result = new SendEmailResult(
-                        response.getHeaders().getValue("x-ms-request-id")
-                    );
-                    return Mono.just(result);
-                });
+    public Mono<SendEmailResult> send(EmailMessage message) {
+        return this.serviceClient.sendWithResponseAsync(BinaryData.fromObject(message), null)
+            .flatMap((Response<Void> response) -> {
+                SendEmailResult result = new SendEmailResult(
+                    response.getHeaders().getValue("x-ms-request-id")
+                );
+                return Mono.just(result);
+            });
     }
 
     /**
-     * Queues an email message to be sent to one or more recipients
-     * @param emailMessage Message payload for sending an email.
+     * Queues an email message to be sent to one or more recipients.
+     *
+     * <p><strong>Header Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>x-ms-client-request-id</td><td>String</td><td>No</td><td>Tracking ID sent with the request to help with debugging.</td></tr>
+     *     <tr><td>repeatability-request-id</td><td>String</td><td>No</td><td>Repeatability request ID header</td></tr>
+     *     <tr><td>repeatability-first-sent</td><td>String</td><td>No</td><td>Repeatability first sent header as HTTP-date</td></tr>
+     * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     headers (Optional): {
+     *         String: String (Optional)
+     *     }
+     *     senderEmail: String (Required)
+     *     content (Required): {
+     *         subject: String (Required)
+     *         plainText: String (Optional)
+     *         html: String (Optional)
+     *     }
+     *     recipients (Required): {
+     *         to (Required): [
+     *              (Required){
+     *                 email: String (Required)
+     *                 displayName: String (Optional)
+     *             }
+     *         ]
+     *         cc (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         bcc (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *     }
+     *     attachments (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             type: String (Required)
+     *             contentBytesBase64: String (Required)
+     *         }
+     *     ]
+     *     replyTo (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     disableUserEngagementTracking: Boolean (Optional)
+     * }
+     * }</pre>
+     *
+     * @param message Message payload for sending an email.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return the SendEmailResult along with {@link Response} on successful completion of {@link Mono}
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the SendEmailResult along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SendEmailResult>> sendWithResponse(EmailMessage emailMessage, RequestOptions requestOptions) {
-        return this.serviceClient.sendWithResponseAsync(BinaryData.fromObject(emailMessage), requestOptions)
+    public Mono<Response<SendEmailResult>> sendWithResponse(EmailMessage message, RequestOptions requestOptions) {
+        return this.serviceClient.sendWithResponseAsync(BinaryData.fromObject(message), requestOptions)
             .flatMap((Response<Void> response) -> {
                 SendEmailResult result = new SendEmailResult(
                     response.getHeaders().getValue("x-ms-request-id")

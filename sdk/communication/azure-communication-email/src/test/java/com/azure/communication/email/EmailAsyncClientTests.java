@@ -89,7 +89,7 @@ public class EmailAsyncClientTests extends EmailTestBase {
 
         EmailAttachment attachment = new EmailAttachment(
             "attachment.txt",
-            EmailAttachmentType.TXT,
+            "TXT",
             "dGVzdA=="
         );
 

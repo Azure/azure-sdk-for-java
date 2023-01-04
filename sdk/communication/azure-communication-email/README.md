@@ -197,7 +197,7 @@ EmailRecipients emailRecipients = new EmailRecipients()
 EmailContent content = new EmailContent("test subject")
     .setPlainText("test message");
 
-EmailAttachment attachment = new EmailAttachment("attachment.txt", EmailAttachmentType.TXT, b64file);
+EmailAttachment attachment = new EmailAttachment("attachment.txt", "TXT", b64file);
 
 ArrayList<EmailAttachment> attachmentList = new ArrayList<>();
 attachmentList.add(attachment);

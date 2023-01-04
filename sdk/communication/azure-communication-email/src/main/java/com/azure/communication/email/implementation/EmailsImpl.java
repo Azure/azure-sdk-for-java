@@ -92,7 +92,7 @@ public final class EmailsImpl {
         Mono<Response<Void>> send(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData emailMessage,
+                @BodyParam("application/json") BinaryData message,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -105,8 +105,8 @@ public final class EmailsImpl {
      *
      * <pre>{@code
      * {
-     *     messageId: String
-     *     status: String(queued/outForDelivery/dropped)
+     *     messageId: String (Required)
+     *     status: String(queued/outForDelivery/dropped) (Required)
      * }
      * }</pre>
      *
@@ -140,8 +140,8 @@ public final class EmailsImpl {
      *
      * <pre>{@code
      * {
-     *     messageId: String
-     *     status: String(queued/outForDelivery/dropped)
+     *     messageId: String (Required)
+     *     status: String(queued/outForDelivery/dropped) (Required)
      * }
      * }</pre>
      *
@@ -175,8 +175,8 @@ public final class EmailsImpl {
      *
      * <pre>{@code
      * {
-     *     messageId: String
-     *     status: String(queued/outForDelivery/dropped)
+     *     messageId: String (Required)
+     *     status: String(queued/outForDelivery/dropped) (Required)
      * }
      * }</pre>
      *
@@ -201,56 +201,55 @@ public final class EmailsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>x-ms-client-request-id</td><td>String</td><td>No</td><td>Tracking ID sent with the request to help with debugging.</td></tr>
      *     <tr><td>repeatability-request-id</td><td>String</td><td>No</td><td>Repeatability request ID header</td></tr>
      *     <tr><td>repeatability-first-sent</td><td>String</td><td>No</td><td>Repeatability first sent header as HTTP-date</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     customHeaders: [
-     *         {
-     *             name: String
-     *             value: String
-     *         }
-     *     ]
-     *     sender: String
-     *     content: {
-     *         subject: String
-     *         plainText: String
-     *         html: String
+     *     headers (Optional): {
+     *         String: String (Optional)
      *     }
-     *     importance: String(high/normal/low)
-     *     recipients: {
-     *         to: [
-     *             {
-     *                 email: String
-     *                 displayName: String
+     *     senderEmail: String (Required)
+     *     content (Required): {
+     *         subject: String (Required)
+     *         plainText: String (Optional)
+     *         html: String (Optional)
+     *     }
+     *     recipients (Required): {
+     *         to (Required): [
+     *              (Required){
+     *                 email: String (Required)
+     *                 displayName: String (Optional)
      *             }
      *         ]
-     *         cc: [
+     *         cc (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         bcc: [
+     *         bcc (Optional): [
      *             (recursive schema, see above)
      *         ]
      *     }
-     *     attachments: [
-     *         {
-     *             name: String
-     *             attachmentType: String(avi/bmp/doc/docm/docx/gif/jpeg/mp3/one/pdf/png/ppsm/ppsx/ppt/pptm/pptx/pub/rpmsg/rtf/tif/txt/vsd/wav/wma/xls/xlsb/xlsm/xlsx)
-     *             contentBytesBase64: String
+     *     attachments (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             type: String (Required)
+     *             contentBytesBase64: String (Required)
      *         }
      *     ]
-     *     replyTo: [
+     *     replyTo (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     disableUserEngagementTracking: Boolean
+     *     disableUserEngagementTracking: Boolean (Optional)
      * }
      * }</pre>
      *
-     * @param emailMessage Message payload for sending an email.
+     * @param message Message payload for sending an email.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -259,7 +258,7 @@ public final class EmailsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendWithResponseAsync(BinaryData emailMessage, RequestOptions requestOptions) {
+    public Mono<Response<Void>> sendWithResponseAsync(BinaryData message, RequestOptions requestOptions) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.setHeader("repeatability-request-id", UUID.randomUUID().toString());
@@ -270,7 +269,7 @@ public final class EmailsImpl {
                         service.send(
                                 this.client.getEndpoint(),
                                 this.client.getServiceVersion().getVersion(),
-                                emailMessage,
+                                message,
                                 accept,
                                 requestOptionsLocal,
                                 context));
@@ -284,56 +283,55 @@ public final class EmailsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>x-ms-client-request-id</td><td>String</td><td>No</td><td>Tracking ID sent with the request to help with debugging.</td></tr>
      *     <tr><td>repeatability-request-id</td><td>String</td><td>No</td><td>Repeatability request ID header</td></tr>
      *     <tr><td>repeatability-first-sent</td><td>String</td><td>No</td><td>Repeatability first sent header as HTTP-date</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     customHeaders: [
-     *         {
-     *             name: String
-     *             value: String
-     *         }
-     *     ]
-     *     sender: String
-     *     content: {
-     *         subject: String
-     *         plainText: String
-     *         html: String
+     *     headers (Optional): {
+     *         String: String (Optional)
      *     }
-     *     importance: String(high/normal/low)
-     *     recipients: {
-     *         to: [
-     *             {
-     *                 email: String
-     *                 displayName: String
+     *     senderEmail: String (Required)
+     *     content (Required): {
+     *         subject: String (Required)
+     *         plainText: String (Optional)
+     *         html: String (Optional)
+     *     }
+     *     recipients (Required): {
+     *         to (Required): [
+     *              (Required){
+     *                 email: String (Required)
+     *                 displayName: String (Optional)
      *             }
      *         ]
-     *         cc: [
+     *         cc (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         bcc: [
+     *         bcc (Optional): [
      *             (recursive schema, see above)
      *         ]
      *     }
-     *     attachments: [
-     *         {
-     *             name: String
-     *             attachmentType: String(avi/bmp/doc/docm/docx/gif/jpeg/mp3/one/pdf/png/ppsm/ppsx/ppt/pptm/pptx/pub/rpmsg/rtf/tif/txt/vsd/wav/wma/xls/xlsb/xlsm/xlsx)
-     *             contentBytesBase64: String
+     *     attachments (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             type: String (Required)
+     *             contentBytesBase64: String (Required)
      *         }
      *     ]
-     *     replyTo: [
+     *     replyTo (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     disableUserEngagementTracking: Boolean
+     *     disableUserEngagementTracking: Boolean (Optional)
      * }
      * }</pre>
      *
-     * @param emailMessage Message payload for sending an email.
+     * @param message Message payload for sending an email.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -344,7 +342,7 @@ public final class EmailsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendWithResponseAsync(
-            BinaryData emailMessage, RequestOptions requestOptions, Context context) {
+            BinaryData message, RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.setHeader("repeatability-request-id", UUID.randomUUID().toString());
@@ -353,7 +351,7 @@ public final class EmailsImpl {
         return service.send(
                 this.client.getEndpoint(),
                 this.client.getServiceVersion().getVersion(),
-                emailMessage,
+                message,
                 accept,
                 requestOptionsLocal,
                 context);
@@ -367,56 +365,55 @@ public final class EmailsImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>x-ms-client-request-id</td><td>String</td><td>No</td><td>Tracking ID sent with the request to help with debugging.</td></tr>
      *     <tr><td>repeatability-request-id</td><td>String</td><td>No</td><td>Repeatability request ID header</td></tr>
      *     <tr><td>repeatability-first-sent</td><td>String</td><td>No</td><td>Repeatability first sent header as HTTP-date</td></tr>
      * </table>
+     *
+     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     customHeaders: [
-     *         {
-     *             name: String
-     *             value: String
-     *         }
-     *     ]
-     *     sender: String
-     *     content: {
-     *         subject: String
-     *         plainText: String
-     *         html: String
+     *     headers (Optional): {
+     *         String: String (Optional)
      *     }
-     *     importance: String(high/normal/low)
-     *     recipients: {
-     *         to: [
-     *             {
-     *                 email: String
-     *                 displayName: String
+     *     senderEmail: String (Required)
+     *     content (Required): {
+     *         subject: String (Required)
+     *         plainText: String (Optional)
+     *         html: String (Optional)
+     *     }
+     *     recipients (Required): {
+     *         to (Required): [
+     *              (Required){
+     *                 email: String (Required)
+     *                 displayName: String (Optional)
      *             }
      *         ]
-     *         cc: [
+     *         cc (Optional): [
      *             (recursive schema, see above)
      *         ]
-     *         bcc: [
+     *         bcc (Optional): [
      *             (recursive schema, see above)
      *         ]
      *     }
-     *     attachments: [
-     *         {
-     *             name: String
-     *             attachmentType: String(avi/bmp/doc/docm/docx/gif/jpeg/mp3/one/pdf/png/ppsm/ppsx/ppt/pptm/pptx/pub/rpmsg/rtf/tif/txt/vsd/wav/wma/xls/xlsb/xlsm/xlsx)
-     *             contentBytesBase64: String
+     *     attachments (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             type: String (Required)
+     *             contentBytesBase64: String (Required)
      *         }
      *     ]
-     *     replyTo: [
+     *     replyTo (Optional): [
      *         (recursive schema, see above)
      *     ]
-     *     disableUserEngagementTracking: Boolean
+     *     disableUserEngagementTracking: Boolean (Optional)
      * }
      * }</pre>
      *
-     * @param emailMessage Message payload for sending an email.
+     * @param message Message payload for sending an email.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -425,7 +422,7 @@ public final class EmailsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendWithResponse(BinaryData emailMessage, RequestOptions requestOptions) {
-        return sendWithResponseAsync(emailMessage, requestOptions).block();
+    public Response<Void> sendWithResponse(BinaryData message, RequestOptions requestOptions) {
+        return sendWithResponseAsync(message, requestOptions).block();
     }
 }
