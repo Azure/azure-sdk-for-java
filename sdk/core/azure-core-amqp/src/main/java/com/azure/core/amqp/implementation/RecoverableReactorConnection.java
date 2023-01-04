@@ -56,9 +56,9 @@ public final class RecoverableReactorConnection {
                                         Map<String, Object> loggingContext) {
         Objects.requireNonNull(connectionSupplier, "'connectionSupplier' cannot be null.");
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
-        // Note: If we find more connection description parameters that are non-generic, i.e., specific to individual
-        // messaging services, then consider creating dedicated POJO types in individual libraries rather than polluting
-        // shared 'RecoverableReactorConnection' type. FQDN, entity-path still treated as generic.
+        // Note: FQDN, entity-path still treated as generic, but if we find more connection description parameters that
+        // are non-generic, i.e., specific to individual messaging services, then consider creating dedicated POJO types
+        // in corresponding libraries rather than polluting shared 'RecoverableReactorConnection' type.
         this.entityPath = entityPath;
         Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
         this.retryOptions = retryPolicy.getRetryOptions();
@@ -147,6 +147,16 @@ public final class RecoverableReactorConnection {
      */
     public AmqpRetryOptions getRetryOptions() {
         return retryOptions;
+    }
+
+    public boolean isCurrentConnectionClosed() {
+        // The AmqpChannelProcessor has the API 'isChannelClosed()' with impl as
+        // { return currentChannel == null || isDisposed(); }.
+        // That API is backing the 'EventHubConsumerAsyncClient::isConnectionClosed()' API,
+        // which is used in 'PartitionPumpManager'. That original code introduced seems not correct,
+        // but at the moment, it's still being determined what the side effects of removing that would be.
+        //
+        return (currentConnection != null && currentConnection.isDisposed()) || terminated;
     }
 
     /**
