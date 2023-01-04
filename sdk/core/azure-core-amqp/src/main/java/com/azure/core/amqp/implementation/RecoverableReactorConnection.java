@@ -3,6 +3,7 @@
 
 package com.azure.core.amqp.implementation;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.exception.AmqpErrorContext;
@@ -24,6 +25,9 @@ import static com.azure.core.amqp.implementation.ClientConstants.INTERVAL_KEY;
 public final class RecoverableReactorConnection {
     private static final AmqpException TERMINATED_ERROR = new AmqpException(false, "Connection recovery support is terminated.", null);
     private static final String TRY_COUNT_KEY = "tryCount";
+    private final String fullyQualifiedNamespace;
+    private final String entityPath;
+    private final AmqpRetryOptions retryOptions;
     private final ClientLogger logger;
     private final AmqpErrorContext errorContext;
     private volatile ReactorConnection currentConnection;
@@ -38,16 +42,26 @@ public final class RecoverableReactorConnection {
      *
      * @param connectionSupplier the supplier that provides a new connection object, which is not yet
      *                          connected to the host or active.
+     * @param fullyQualifiedNamespace The connection FQDN of the remote broker/resource.
+     * @param entityPath The relative path to the entity under the FQDN to which the connection established to.
      * @param retryPolicy the retry configuration to use to obtain a new active connection.
      * @param errorContext the error context.
      * @param loggingContext the logger context.
      */
     public RecoverableReactorConnection(Supplier<ReactorConnection> connectionSupplier,
+                                        String fullyQualifiedNamespace,
+                                        String entityPath,
                                         AmqpRetryPolicy retryPolicy,
                                         AmqpErrorContext errorContext,
                                         Map<String, Object> loggingContext) {
         Objects.requireNonNull(connectionSupplier, "'connectionSupplier' cannot be null.");
+        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
+        // Note: If we find more connection description parameters that are non-generic, i.e., specific to individual
+        // messaging services, then consider creating dedicated POJO types in individual libraries rather than polluting
+        // shared 'RecoverableReactorConnection' type. FQDN, entity-path still treated as generic.
+        this.entityPath = entityPath;
         Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
+        this.retryOptions = retryPolicy.getRetryOptions();
         this.errorContext = Objects.requireNonNull(errorContext, "'errorContext' cannot be null.");
         this.logger = new ClientLogger(getClass(), Objects.requireNonNull(loggingContext, "'loggingContext' cannot be null."));
 
@@ -105,7 +119,34 @@ public final class RecoverableReactorConnection {
      * @return a Mono that emits active connection.
      */
     public Mono<ReactorConnection> getConnection() {
-        return this.createOrGetCachedConnection;
+        return createOrGetCachedConnection;
+    }
+
+    /**
+     * Get the connection FQDN of the remote broker/resource.
+     *
+     * @return the connection FQDN.
+     */
+    public String getFullyQualifiedNamespace() {
+        return fullyQualifiedNamespace;
+    }
+
+    /**
+     * Get the relative path to the entity under the FQDN to which the connection established to.
+     *
+     * @return the entity path.
+     */
+    public String getEntityPath() {
+        return entityPath;
+    }
+
+    /**
+     * Get the retry option object describing the retry parameters driving the connection recovery.
+     *
+     * @return The options for connection recovery retries.
+     */
+    public AmqpRetryOptions getRetryOptions() {
+        return retryOptions;
     }
 
     /**

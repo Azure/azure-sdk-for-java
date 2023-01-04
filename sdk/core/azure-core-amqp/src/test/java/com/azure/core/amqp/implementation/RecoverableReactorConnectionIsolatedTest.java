@@ -34,6 +34,8 @@ import java.util.function.Supplier;
 @Execution(ExecutionMode.SAME_THREAD)
 @Isolated
 public class RecoverableReactorConnectionIsolatedTest {
+    private static final String FQDN = "contoso-shopping.servicebus.windows.net";
+    private static final String ENTITY_PATH = "orders";
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(3);
     private static final Duration VIRTUAL_TIME_SHIFT = OPERATION_TIMEOUT.plusSeconds(30);
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(OPERATION_TIMEOUT);
@@ -67,9 +69,7 @@ public class RecoverableReactorConnectionIsolatedTest {
 
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier(connectionStates, retryOptions);
         final RecoverableReactorConnection recoverableConnection = new RecoverableReactorConnection(connectionSupplier,
-            retryPolicy,
-            errorContext,
-            new HashMap<>());
+            FQDN, ENTITY_PATH, retryPolicy, errorContext, new HashMap<>());
         try {
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
                 verifier.create(() -> recoverableConnection.getConnection())
@@ -96,16 +96,14 @@ public class RecoverableReactorConnectionIsolatedTest {
     public void shouldRetryIfConnectionClosesWithoutBeingActive() {
         final int connectionsCount = 2;
         final Deque<ConnectionState> connectionStates = new ArrayDeque<>(connectionsCount);
-        // The first connection with the state that directly completes without being active.
+        // The state for the first connection that directly completes without being active.
         connectionStates.add(ConnectionState.complete());
-        // The second connection with the active state.
+        // The state for the second connection that will be active.
         connectionStates.add(ConnectionState.as(EndpointState.ACTIVE));
 
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier(connectionStates, retryOptions);
         final RecoverableReactorConnection recoverableConnection = new RecoverableReactorConnection(connectionSupplier,
-            retryPolicy,
-            errorContext,
-            new HashMap<>());
+            FQDN, ENTITY_PATH, retryPolicy, errorContext, new HashMap<>());
         try {
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
                 verifier.create(() -> recoverableConnection.getConnection())
@@ -139,9 +137,7 @@ public class RecoverableReactorConnectionIsolatedTest {
 
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier(connectionStates, retryOptions);
         final RecoverableReactorConnection recoverableConnection = new RecoverableReactorConnection(connectionSupplier,
-            retryPolicy,
-            errorContext,
-            new HashMap<>());
+            FQDN, ENTITY_PATH, retryPolicy, errorContext, new HashMap<>());
         try {
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
                 verifier.create(() -> recoverableConnection.getConnection())
@@ -166,6 +162,8 @@ public class RecoverableReactorConnectionIsolatedTest {
     public void retryShouldNeverExhaustProvidedErrorsAreRetriable() {
         final int connectionsCount = 8;
         final int maxRetryCount = 4;
+        // State for all eight connections that the connection supplier supplies, 7 of them emit a retriable error.
+        // Though max-retry is 4, given these are retriable errors, all those connections are consumed.
         final Deque<ConnectionState> connectionStates = new ArrayDeque<>(connectionsCount);
         connectionStates.add(ConnectionState.error(new AmqpException(true, "retriable0", null)));
         connectionStates.add(ConnectionState.error(new AmqpException(true, "retriable1", null)));
@@ -183,9 +181,7 @@ public class RecoverableReactorConnectionIsolatedTest {
 
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier(connectionStates, retryOptions);
         final RecoverableReactorConnection recoverableConnection = new RecoverableReactorConnection(connectionSupplier,
-            retryPolicy,
-            errorContext,
-            new HashMap<>());
+            FQDN, ENTITY_PATH, retryPolicy, errorContext, new HashMap<>());
         try {
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
                 verifier.create(() -> recoverableConnection.getConnection())
