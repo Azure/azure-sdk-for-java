@@ -186,6 +186,7 @@
       <Class name="com.azure.core.util.CoreUtils"/> <!-- false positive -->
       <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
       <Class name="com.azure.storage.blob.FileTransferExample"/>
+      <Class name="com.azure.core.test.utils.TestProxyDownloader"/>
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
   </Match>
