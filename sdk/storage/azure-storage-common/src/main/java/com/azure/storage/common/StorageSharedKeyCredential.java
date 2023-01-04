@@ -37,8 +37,8 @@ public final class StorageSharedKeyCredential {
     private static final Context LOG_STRING_TO_SIGN_CONTEXT = new Context(Constants.STORAGE_LOG_STRING_TO_SIGN, true);
 
     // Pieces of the connection string that are needed.
-    private static final String ACCOUNT_NAME = "accountname";
     private static final String ACCOUNT_KEY = "accountkey";
+    private static final String ACCOUNT_NAME = "accountname";
 
     private static final HttpHeaderName X_MS_DATE = HttpHeaderName.fromString("x-ms-date");
     private static final Collator ROOT_COLLATOR = Collator.getInstance(Locale.ROOT);
@@ -84,6 +84,11 @@ public final class StorageSharedKeyCredential {
 
         for (String connectionStringPiece : connectionString.split(";")) {
             String[] kvp = connectionStringPiece.split("=", 2);
+
+            if (kvp.length < 2) {
+                continue;
+            }
+
             if (ACCOUNT_NAME.equalsIgnoreCase(kvp[0])) {
                 accountName = kvp[1];
             } else if (ACCOUNT_KEY.equalsIgnoreCase(kvp[0])) {
