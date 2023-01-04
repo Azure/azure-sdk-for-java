@@ -29,7 +29,7 @@ context-client-method-parameter: true
 optional-constant-as-enum: true
 default-http-exception-type: com.azure.storage.file.datalake.models.DataLakeStorageException
 models-subpackage: implementation.models
-custom-types: FileSystemInfo,FileSystemItem,FileSystemProperties,PathInfo,PathItem,PathProperties,ListFileSystemsOptions,PathHttpHeaders,EncryptionAlgorithmType
+custom-types: FileSystemInfo,FileSystemItem,FileSystemProperties,PathInfo,PathItem,PathProperties,ListFileSystemsOptions,PathHttpHeaders,EncryptionAlgorithmType,LeaseAction
 custom-types-subpackage: models
 customization-class: src/main/java/DataLakeStorageCustomization.java
 generic-response-type: true
@@ -114,6 +114,7 @@ directive:
     delete $.properties.eTag;
     $.properties.etag["x-ms-client-name"] = "eTag";
 ```
+
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-datalake%2Fswagger%2FREADME.png)
 

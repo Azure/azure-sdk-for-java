@@ -145,5 +145,10 @@ public class BlobStorageCustomization extends Customization {
             .getJavadoc()
             .setDeprecated("Please use {@link BlobErrorCode#SNAPSHOT_OPERATION_RATE_EXCEEDED}");
 
+        blobErrorCode.getConstant("INCREMENTAL_COPY_OF_ERALIER_VERSION_SNAPSHOT_NOT_ALLOWED")
+            .addAnnotation("@Deprecated")
+            .getJavadoc()
+            .setDeprecated("Please use {@link BlobErrorCode#INCREMENTAL_COPY_OF_EARLIER_VERSION_SNAPSHOT_NOT_ALLOWED}");
+
     }
 }

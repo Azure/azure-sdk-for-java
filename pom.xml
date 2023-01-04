@@ -98,7 +98,7 @@
     <module>sdk/kubernetesconfiguration</module>
     <module>sdk/kusto</module>
     <module>sdk/labservices</module>
-    <module>sdk/loadtestservice</module>
+    <module>sdk/loadtesting</module>
     <module>sdk/loganalytics</module>
     <module>sdk/logic</module>
     <module>sdk/logz</module>
@@ -136,6 +136,7 @@
     <module>sdk/quota</module>
     <module>sdk/recoveryservices</module>
     <module>sdk/recoveryservicesbackup</module>
+    <module>sdk/recoveryservicessiterecovery</module>
     <module>sdk/redisenterprise</module>
     <module>sdk/relay</module>
     <module>sdk/remoterendering</module>

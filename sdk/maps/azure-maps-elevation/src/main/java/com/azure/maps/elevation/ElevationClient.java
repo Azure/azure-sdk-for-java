@@ -48,7 +48,7 @@ public final class ElevationClient {
      * <!-- src_embed com.azure.maps.elevation.sync.get_data_for_points -->
      * <pre>
      * client.getDataForPoints&#40;Arrays.asList&#40;
-     *     new GeoPosition&#40;-121.66853362143818, 46.84646479863713&#41;, 
+     *     new GeoPosition&#40;-121.66853362143818, 46.84646479863713&#41;,
      *     new GeoPosition&#40;-121.68853362143818, 46.856464798637127&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.maps.elevation.sync.get_data_for_points -->
@@ -85,7 +85,7 @@ public final class ElevationClient {
      * <!-- src_embed com.azure.maps.elevation.sync.get_data_for_points -->
      * <pre>
      * client.getDataForPoints&#40;Arrays.asList&#40;
-     *     new GeoPosition&#40;-121.66853362143818, 46.84646479863713&#41;, 
+     *     new GeoPosition&#40;-121.66853362143818, 46.84646479863713&#41;,
      *     new GeoPosition&#40;-121.68853362143818, 46.856464798637127&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.maps.elevation.sync.get_data_for_points -->
@@ -123,7 +123,7 @@ public final class ElevationClient {
      * <!-- src_embed com.azure.maps.elevation.sync.get_data_for_polyline -->
      * <pre>
      * client.getDataForPolyline&#40;Arrays.asList&#40;
-     *     new GeoPosition&#40;-121.66853362143818, 46.84646479863713&#41;, 
+     *     new GeoPosition&#40;-121.66853362143818, 46.84646479863713&#41;,
      *     new GeoPosition&#40;-121.65853362143818, 46.85646479863713&#41;&#41;, 5&#41;;
      * </pre>
      * <!-- end com.azure.maps.elevation.sync.get_data_for_polyline -->
@@ -166,7 +166,7 @@ public final class ElevationClient {
      * <!-- src_embed com.azure.maps.elevation.sync.get_data_for_polyline -->
      * <pre>
      * client.getDataForPolyline&#40;Arrays.asList&#40;
-     *     new GeoPosition&#40;-121.66853362143818, 46.84646479863713&#41;, 
+     *     new GeoPosition&#40;-121.66853362143818, 46.84646479863713&#41;,
      *     new GeoPosition&#40;-121.65853362143818, 46.85646479863713&#41;&#41;, 5&#41;;
      * </pre>
      * <!-- end com.azure.maps.elevation.sync.get_data_for_polyline -->
@@ -209,7 +209,7 @@ public final class ElevationClient {
      * Get Data For Bounding Box
      * <!-- src_embed com.azure.maps.elevation.sync.get_data_for_bounding_box -->
      * <pre>
-     * client.getDataForBoundingBox&#40;new GeoBoundingBox&#40;-121.668533621438, 46.8464647986371, 
+     * client.getDataForBoundingBox&#40;new GeoBoundingBox&#40;-121.668533621438, 46.8464647986371,
      *     -121.658533621438, 46.8564647986371&#41;, 3, 3&#41;;
      * </pre>
      * <!-- end com.azure.maps.elevation.sync.get_data_for_bounding_box -->
@@ -247,7 +247,7 @@ public final class ElevationClient {
      * Get Data For Bounding Box
      * <!-- src_embed com.azure.maps.elevation.sync.get_data_for_bounding_box -->
      * <pre>
-     * client.getDataForBoundingBox&#40;new GeoBoundingBox&#40;-121.668533621438, 46.8464647986371, 
+     * client.getDataForBoundingBox&#40;new GeoBoundingBox&#40;-121.668533621438, 46.8464647986371,
      *     -121.658533621438, 46.8564647986371&#41;, 3, 3&#41;;
      * </pre>
      * <!-- end com.azure.maps.elevation.sync.get_data_for_bounding_box -->

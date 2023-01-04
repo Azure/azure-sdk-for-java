@@ -1,12 +1,14 @@
 # Release History
 
 ## 4.6.0-beta.1 (Unreleased)
+Upgrade Spring Boot dependencies version to 2.7.7 and Spring Cloud dependencies version to 2021.0.5
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Features Added
 - Enhance the Event Hubs/Service Bus/Storage Queue message converter to support Spring autoconfiguration-pattern. [#30741](https://github.com/Azure/azure-sdk-for-java/issues/30741)
+- Support the PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD property. [#30252](https://github.com/Azure/azure-sdk-for-java/issues/30252)
 
 #### Breaking Changes
 - Delete properties: `spring.jms.serviebus.username`, `spring.jms.serviebus.password` and `spring.jms.serviebus.remote-uri` [#32467](https://github.com/Azure/azure-sdk-for-java/pull/32467).

@@ -3,6 +3,8 @@
 ## 12.14.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for 2021-12-02 service version.
+- Added support for leasing operations on `DataLakeFileClient.appendWithResponse()` and `DataLakeFileClient.flushWithResponse()`.
 
 ### Breaking Changes
 
