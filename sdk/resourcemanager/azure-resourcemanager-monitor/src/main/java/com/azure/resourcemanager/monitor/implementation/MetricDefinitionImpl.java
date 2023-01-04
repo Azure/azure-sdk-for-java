@@ -180,7 +180,7 @@ class MetricDefinitionImpl extends WrapperImpl<MetricDefinitionInner>
         return this
             .manager()
             .serviceClient()
-            .getMetricsOperations()
+            .getMetrics()
             .listWithResponseAsync(
                 this.inner.resourceId(),
                 String

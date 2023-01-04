@@ -13,8 +13,8 @@ import com.azure.resourcemanager.monitor.models.ResultType;
 import java.time.Duration;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MetricsOperationsClient. */
-public interface MetricsOperationsClient {
+/** An instance of this class provides access to all the operations defined in MetricsClient. */
+public interface MetricsClient {
     /**
      * **Lists the metric values for a resource**.
      *

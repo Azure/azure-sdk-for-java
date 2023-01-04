@@ -21,38 +21,37 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.resourcemanager.monitor.fluent.MetricsOperationsClient;
+import com.azure.resourcemanager.monitor.fluent.MetricsClient;
 import com.azure.resourcemanager.monitor.fluent.models.ResponseInner;
 import com.azure.resourcemanager.monitor.models.ResultType;
 import java.time.Duration;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MetricsOperationsClient. */
-public final class MetricsOperationsClientImpl implements MetricsOperationsClient {
+/** An instance of this class provides access to all the operations defined in MetricsClient. */
+public final class MetricsClientImpl implements MetricsClient {
     /** The proxy service used to perform REST calls. */
-    private final MetricsOperationsService service;
+    private final MetricsService service;
 
     /** The service client containing this operation class. */
     private final MonitorClientImpl client;
 
     /**
-     * Initializes an instance of MetricsOperationsClientImpl.
+     * Initializes an instance of MetricsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    MetricsOperationsClientImpl(MonitorClientImpl client) {
-        this.service =
-            RestProxy.create(MetricsOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    MetricsClientImpl(MonitorClientImpl client) {
+        this.service = RestProxy.create(MetricsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for MonitorClientMetricsOperations to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for MonitorClientMetrics to be used by the proxy service to perform REST
+     * calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientMetrics")
-    public interface MetricsOperationsService {
+    public interface MetricsService {
         @Headers({"Content-Type: application/json"})
         @Get("/{resourceUri}/providers/Microsoft.Insights/metrics")
         @ExpectedResponses({200})
