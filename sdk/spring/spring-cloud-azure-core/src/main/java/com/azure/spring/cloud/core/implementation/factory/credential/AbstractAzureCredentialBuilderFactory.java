@@ -15,7 +15,6 @@ import com.azure.identity.CredentialBuilderBase;
 import com.azure.spring.cloud.core.implementation.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.cloud.core.implementation.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.spring.cloud.core.properties.AzureProperties;
-import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
 import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,9 +22,6 @@ import org.slf4j.LoggerFactory;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
-
-import static com.azure.spring.cloud.core.implementation.converter.AzureHttpLogOptionsConverter.HTTP_LOG_OPTIONS_CONVERTER;
-
 /**
  *
  */
@@ -125,16 +121,5 @@ public abstract class AbstractAzureCredentialBuilderFactory<T extends Credential
     @Override
     protected void configureService(T builder) {
 
-    }
-
-    @Override
-    protected void configureHttpLogOptions(T builder) {
-        ClientOptionsProvider.ClientOptions client = getAzureProperties().getClient();
-
-        if (client instanceof ClientOptionsProvider.HttpClientOptions) {
-            HttpLogOptions logOptions =
-                HTTP_LOG_OPTIONS_CONVERTER.convert(((ClientOptionsProvider.HttpClientOptions) client).getLogging());
-            consumeHttpLogOptions().accept(builder, logOptions);
-        }
     }
 }

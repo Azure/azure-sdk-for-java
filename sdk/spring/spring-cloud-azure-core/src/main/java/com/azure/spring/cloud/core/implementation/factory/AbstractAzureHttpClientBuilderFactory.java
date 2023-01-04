@@ -155,7 +155,7 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
                 HTTP_LOG_OPTIONS_CONVERTER.convert(((ClientOptionsProvider.HttpClientOptions) client).getLogging());
             consumeHttpLogOptions().accept(builder, logOptions);
         } else {
-            LOGGER.warn("The client properties of an http-based client is of type {}", client.getClass().getName());
+            LOGGER.debug("The client properties of an http-based client is of type {}", client.getClass().getName());
         }
 
     }
