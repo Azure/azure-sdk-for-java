@@ -9,6 +9,8 @@ import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.compress.archivers.ArchiveInputStream;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
 import org.apache.commons.compress.utils.IOUtils;
 
 import java.io.BufferedInputStream;
@@ -24,6 +26,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Locale;
+import java.util.zip.GZIPInputStream;
 
 /**
  * Class for managing downloads of the test proxy
@@ -68,10 +71,28 @@ public final class TestProxyDownloader {
             }
         }
 
-        try (InputStream file = Files.newInputStream(zipFile);
-             InputStream buffer = new BufferedInputStream(file);
-             ArchiveInputStream archive = new ArchiveStreamFactory().createArchiveInputStream(buffer)) {
+        try {
+            if (platformInfo.extension.equals("tar.gz")) {
+                try (InputStream file = Files.newInputStream(zipFile);
+                     InputStream buffer = new BufferedInputStream(file);
+                     GZIPInputStream gzipInputStream = new GZIPInputStream(buffer);
+                     ArchiveInputStream archive = new TarArchiveInputStream(gzipInputStream)) {
+                    decompress(archive);
+                }
+            } else {
+                try (InputStream file = Files.newInputStream(zipFile);
+                     InputStream buffer = new BufferedInputStream(file);
+                     ArchiveInputStream archive = new ZipArchiveInputStream(buffer)) {
+                    decompress(archive);
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    private static void decompress(ArchiveInputStream archive) {
+        try {
             ArchiveEntry entry = archive.getNextEntry();
 
             while (entry != null) {
@@ -95,7 +116,7 @@ public final class TestProxyDownloader {
                 }
                 entry = archive.getNextEntry();
             }
-        } catch (IOException | ArchiveException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
