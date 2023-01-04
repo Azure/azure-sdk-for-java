@@ -6,11 +6,44 @@ package com.azure.core.test.models;
 /**
  * Keeps track of different sanitizers that redact the sensitive information when recording
  */
-public interface TestProxySanitizer {
+public class TestProxySanitizer {
+    private final TestProxySanitizerType testProxySanitizerType;
+    private final String regexKey;
+    private final String redactedValue;
 
-    TestProxySanitizerType getType();
+    /**
+     * Creates an instance of TestProxySanitizer
+     * @param regexKey the regex key to lookup for redaction
+     * @param redactedValue the replacement for regex matched content
+     * @param testProxySanitizerType the type of sanitizer
+     */
+    public TestProxySanitizer(String regexKey, String redactedValue, TestProxySanitizerType testProxySanitizerType) {
+        this.testProxySanitizerType = testProxySanitizerType;
+        this.regexKey = regexKey;
+        this.redactedValue = redactedValue;
+    }
 
-    String getRedactedValue();
+    /**
+     * Get the type of proxy sanitizer
+     * @return the type of proxy sanitizer
+     */
+    public TestProxySanitizerType getType() {
+        return testProxySanitizerType;
+    }
 
-    String getRegex();
+    /**
+     * Get the regex key to lookup for redaction
+     * @return the regex key to lookup for redaction
+     */
+    public String getRegex() {
+        return regexKey;
+    }
+
+    /**
+     * Get the  replacement for regex matched content
+     * @return the replacement for regex matched content
+     */
+    public String getRedactedValue() {
+        return redactedValue;
+    }
 }

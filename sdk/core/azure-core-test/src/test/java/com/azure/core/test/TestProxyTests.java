@@ -10,10 +10,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.TestProxyTestServer;
-import com.azure.core.test.models.BodyRegexSanitizer;
-import com.azure.core.test.models.HeaderRegexSanitizer;
 import com.azure.core.test.models.TestProxySanitizer;
-import com.azure.core.test.models.UrlRegexSanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
@@ -31,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SuppressWarnings("deprecation")
 public class TestProxyTests extends TestBase {
@@ -41,9 +39,9 @@ public class TestProxyTests extends TestBase {
 
     static {
         recordSanitizers = new ArrayList<>();
-        recordSanitizers.add(new UrlRegexSanitizer("^(?:https?:\\\\/\\\\/)?(?:[^@\\\\/\\\\n]+@)?(?:www\\\\.)?([^:\\\\/?\\\\n]+)", "https://REDACTED.cognitiveservices.azure.com"));
-        recordSanitizers.add(new BodyRegexSanitizer("$..modelId", "REDACTED"));
-        recordSanitizers.add(new HeaderRegexSanitizer("Ocp-Apim-Subscription-Key", "REDACTED"));
+        recordSanitizers.add(new TestProxySanitizer("^(?:https?:\\\\/\\\\/)?(?:[^@\\\\/\\\\n]+@)?(?:www\\\\.)?([^:\\\\/?\\\\n]+)", "https://REDACTED.cognitiveservices.azure.com", TestProxySanitizerType.URL));
+        recordSanitizers.add(new TestProxySanitizer("$..modelId", "REDACTED", TestProxySanitizerType.BODY));
+        recordSanitizers.add(new TestProxySanitizer("Ocp-Apim-Subscription-Key", "REDACTED", TestProxySanitizerType.HEADER));
     }
 
     @BeforeAll
@@ -170,10 +168,14 @@ public class TestProxyTests extends TestBase {
         request.setHeader("Content-Type", "application/json");
 
         HttpResponse response = pipeline.sendSync(request, Context.NONE);
+
+        // TODO (need to get the record file written data to verify redacted content)
         String responseData = response.getBodyAsBinaryData().toString();
         ObjectMapper objectMapper = new ObjectMapper();
         Map jsonMap = objectMapper.readValue(responseData, Map.class);
         assertEquals(response.getStatusCode(), 200);
+        assertTrue(response.getRequest().getUrl().toString().contains("REDACTED"));
+
         String actualValue = jsonMap.get("modelId").toString();
         assertEquals("REDACTED", actualValue);
     }
