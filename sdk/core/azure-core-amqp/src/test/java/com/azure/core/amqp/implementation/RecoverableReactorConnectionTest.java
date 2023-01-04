@@ -5,7 +5,6 @@ package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
-import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
@@ -47,8 +46,6 @@ public class RecoverableReactorConnectionTest {
     private static final Duration VERIFY_TIMEOUT = Duration.ofSeconds(30);
     @Mock
     private AmqpRetryPolicy retryPolicy;
-    @Mock
-    private AmqpErrorContext errorContext;
     private AutoCloseable mocksCloseable;
 
     @BeforeEach
@@ -68,7 +65,7 @@ public class RecoverableReactorConnectionTest {
     public void shouldGetConnection() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
         final RecoverableReactorConnection recoverableConnection = new RecoverableReactorConnection(connectionSupplier,
-            FQDN, ENTITY_PATH, retryPolicy, errorContext, new HashMap<>());
+            FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         try {
             // The request (subscription) for connection should get a connection.
             StepVerifier.create(recoverableConnection.get(), 0)
@@ -93,7 +90,7 @@ public class RecoverableReactorConnectionTest {
     public void shouldCacheConnection() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
         final RecoverableReactorConnection recoverableConnection = new RecoverableReactorConnection(connectionSupplier,
-            FQDN, ENTITY_PATH, retryPolicy, errorContext, new HashMap<>());
+            FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         try {
             final ReactorConnection[] c = new ReactorConnection[1];
             // The first request (subscription) for connection populates the cache.
@@ -134,7 +131,7 @@ public class RecoverableReactorConnectionTest {
     public void shouldRefreshCacheOnCompletionOfCachedConnection() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
         final RecoverableReactorConnection recoverableConnection = new RecoverableReactorConnection(connectionSupplier,
-            FQDN, ENTITY_PATH, retryPolicy, errorContext, new HashMap<>());
+            FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         try {
             final ReactorConnection[] c = new ReactorConnection[1];
             // The first request (subscription) for connection populates the cache.
@@ -181,7 +178,7 @@ public class RecoverableReactorConnectionTest {
     public void shouldRefreshCacheOnErrorInCachedConnection() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
         final RecoverableReactorConnection recoverableConnection = new RecoverableReactorConnection(connectionSupplier,
-            FQDN, ENTITY_PATH, retryPolicy, errorContext, new HashMap<>());
+            FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         try {
             final ReactorConnection[] c = new ReactorConnection[1];
             // The first request (subscription) for connection populates the cache.
@@ -229,7 +226,7 @@ public class RecoverableReactorConnectionTest {
     public void shouldBubbleUpNonRetriableError() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
         final RecoverableReactorConnection recoverableConnection = new RecoverableReactorConnection(connectionSupplier,
-            FQDN, ENTITY_PATH, retryPolicy, errorContext, new HashMap<>());
+            FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         final Throwable nonRetriableError = new Throwable("non-retriable");
         try {
             // The first request (subscription) fails with non-retriable error.
@@ -266,7 +263,7 @@ public class RecoverableReactorConnectionTest {
     public void shouldDisposeConnectionUponTermination() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
         final RecoverableReactorConnection recoverableConnection = new RecoverableReactorConnection(connectionSupplier,
-            FQDN, ENTITY_PATH, retryPolicy, errorContext, new HashMap<>());
+            FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         final ReactorConnection[] c = new ReactorConnection[1];
         try {
             StepVerifier.create(recoverableConnection.get(), 0)
@@ -299,7 +296,7 @@ public class RecoverableReactorConnectionTest {
     public void shouldNotProvideConnectionAfterTermination() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
         final RecoverableReactorConnection recoverableConnection = new RecoverableReactorConnection(connectionSupplier,
-            FQDN, ENTITY_PATH, retryPolicy, errorContext, new HashMap<>());
+            FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         // Terminating the recovery support.
         recoverableConnection.terminate();
         try {

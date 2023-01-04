@@ -28,10 +28,10 @@ public final class RecoverableReactorConnection {
     private final String fullyQualifiedNamespace;
     private final String entityPath;
     private final AmqpRetryOptions retryOptions;
-    private final ClientLogger logger;
     private final AmqpErrorContext errorContext;
-    private volatile ReactorConnection currentConnection;
+    private final ClientLogger logger;
     private final Mono<ReactorConnection> createOrGetCachedConnection;
+    private volatile ReactorConnection currentConnection;
     private volatile boolean terminated;
 
     /**
@@ -45,16 +45,13 @@ public final class RecoverableReactorConnection {
      * @param fullyQualifiedNamespace The connection FQDN of the remote broker/resource.
      * @param entityPath The relative path to the entity under the FQDN to which the connection established to.
      * @param retryPolicy the retry configuration to use to obtain a new active connection.
-     * @param errorContext the error context.
      * @param loggingContext the logger context.
      */
     public RecoverableReactorConnection(Supplier<ReactorConnection> connectionSupplier,
                                         String fullyQualifiedNamespace,
                                         String entityPath,
                                         AmqpRetryPolicy retryPolicy,
-                                        AmqpErrorContext errorContext,
                                         Map<String, Object> loggingContext) {
-        Objects.requireNonNull(connectionSupplier, "'connectionSupplier' cannot be null.");
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
         // Note: FQDN, (to an extent) entity-path are generic enough, but if we find more connection description
         // parameters that are non-generic, i.e., specific to individual messaging services, then consider creating
@@ -63,9 +60,9 @@ public final class RecoverableReactorConnection {
         this.entityPath = entityPath;
         Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
         this.retryOptions = retryPolicy.getRetryOptions();
-        this.errorContext = Objects.requireNonNull(errorContext, "'errorContext' cannot be null.");
+        this.errorContext = new AmqpErrorContext(fullyQualifiedNamespace);
         this.logger = new ClientLogger(getClass(), Objects.requireNonNull(loggingContext, "'loggingContext' cannot be null."));
-
+        Objects.requireNonNull(connectionSupplier, "'connectionSupplier' cannot be null.");
         final Mono<ReactorConnection> newConnection = Mono.fromSupplier(() -> {
             if (terminated) {
                 logger.info("Connection recovery support is terminated, dropping the request for new connection.");
