@@ -52,8 +52,7 @@ public final class ImplUtils {
      */
     public static Duration getRetryAfterFromHeaders(HttpHeaders headers, Supplier<OffsetDateTime> nowSupplier) {
         // Found 'x-ms-retry-after-ms' header, use a Duration of milliseconds based on the value.
-        Duration retryDelay = tryGetRetryDelay(headers, X_MS_RETRY_AFTER_MS_HEADER,
-            ImplUtils::tryGetDelayMillis);
+        Duration retryDelay = tryGetRetryDelay(headers, X_MS_RETRY_AFTER_MS_HEADER, ImplUtils::tryGetDelayMillis);
         if (retryDelay != null) {
             return retryDelay;
         }
@@ -68,12 +67,9 @@ public final class ImplUtils {
         // attempt to resolve it as an HTTP date (RFC1123).
         retryDelay = tryGetRetryDelay(headers, HttpHeaderName.RETRY_AFTER,
             headerValue -> tryParseLongOrDateTime(headerValue, nowSupplier));
-        if (retryDelay != null) {
-            return retryDelay;
-        }
 
-        // None of the well-known headers have been found, return null to indicate no retry after.
-        return null;
+        // Either the retry delay will have been found or it'll be null, null indicates no retry after.
+        return retryDelay;
     }
 
     private static Duration tryGetRetryDelay(HttpHeaders headers, HttpHeaderName headerName,

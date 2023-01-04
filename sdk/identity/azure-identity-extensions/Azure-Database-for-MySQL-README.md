@@ -143,7 +143,7 @@ MySQL)[Azure Active Directory for authenticating with MySQL]
 
 ### Architecture
 
-This picture shows how the jdbc authentication plugin for MySQL authenticating with MSI.
+This picture shows how the jdbc authentication plugin for MySQL authenticating with managed identity.
 
 ![mysql_design.png](img/mysql_design.png)
 

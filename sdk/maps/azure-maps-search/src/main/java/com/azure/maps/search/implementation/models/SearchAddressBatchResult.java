@@ -17,6 +17,9 @@ public final class SearchAddressBatchResult extends BatchResult {
     @JsonProperty(value = "batchItems", access = JsonProperty.Access.WRITE_ONLY)
     private List<SearchAddressBatchItemPrivate> batchItems;
 
+    /** Creates an instance of SearchAddressBatchResult class. */
+    public SearchAddressBatchResult() {}
+
     /**
      * Get the batchItems property: Array containing the batch results.
      *

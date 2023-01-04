@@ -137,7 +137,7 @@ client.searchPointOfInterestWithResponse(
 
 Search Nearby Point Of Interest
 ```java com.azure.maps.search.sync.search_nearby
-System.out.println("Search Nearby:");
+System.out.println("Search Nearby Points of Interest:");
 
 // options
 client.searchNearbyPointsOfInterest(
@@ -155,7 +155,7 @@ client.searchNearbyPointsOfInterestWithResponse(
 
 Search Point Of Interest Category
 ```java com.azure.maps.search.sync.search_nearby
-System.out.println("Search Nearby:");
+System.out.println("Search Nearby Points of Interest:");
 
 // options
 client.searchNearbyPointsOfInterest(

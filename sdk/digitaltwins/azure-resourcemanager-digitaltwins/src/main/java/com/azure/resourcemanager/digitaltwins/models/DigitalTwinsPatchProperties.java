@@ -16,6 +16,10 @@ public final class DigitalTwinsPatchProperties {
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
+    /** Creates an instance of DigitalTwinsPatchProperties class. */
+    public DigitalTwinsPatchProperties() {
+    }
+
     /**
      * Get the publicNetworkAccess property: Public network access for the DigitalTwinsInstance.
      *

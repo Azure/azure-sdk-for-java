@@ -17,6 +17,10 @@ public final class CustomLocationResourceId {
     @JsonProperty(value = "id", required = true)
     private String id;
 
+    /** Creates an instance of CustomLocationResourceId class. */
+    public CustomLocationResourceId() {
+    }
+
     /**
      * Get the id property: Azure Arc custom location resource ID.
      *

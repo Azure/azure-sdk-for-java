@@ -35,15 +35,6 @@ public final class SlicesImpl implements Slices {
         this.serviceClient().delete(resourceGroupName, mobileNetworkName, sliceName, context);
     }
 
-    public Slice get(String resourceGroupName, String mobileNetworkName, String sliceName) {
-        SliceInner inner = this.serviceClient().get(resourceGroupName, mobileNetworkName, sliceName);
-        if (inner != null) {
-            return new SliceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Slice> getWithResponse(
         String resourceGroupName, String mobileNetworkName, String sliceName, Context context) {
         Response<SliceInner> inner =
@@ -54,6 +45,15 @@ public final class SlicesImpl implements Slices {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SliceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Slice get(String resourceGroupName, String mobileNetworkName, String sliceName) {
+        SliceInner inner = this.serviceClient().get(resourceGroupName, mobileNetworkName, sliceName);
+        if (inner != null) {
+            return new SliceImpl(inner, this.manager());
         } else {
             return null;
         }

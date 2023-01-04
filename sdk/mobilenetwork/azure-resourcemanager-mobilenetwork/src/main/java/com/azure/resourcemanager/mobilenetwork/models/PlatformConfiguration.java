@@ -7,6 +7,7 @@ package com.azure.resourcemanager.mobilenetwork.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** The platform where the packet core is deployed. */
 @Fluent
@@ -18,12 +19,24 @@ public final class PlatformConfiguration {
     private PlatformType type;
 
     /*
-     * The Azure Stack Edge device where where the packet core is deployed. If
-     * the device is part of a fault tolerant pair, either device in the pair
-     * can be specified.
+     * The Azure Stack Edge device where the packet core is deployed. If the device is part of a fault tolerant pair,
+     * either device in the pair can be specified.
      */
     @JsonProperty(value = "azureStackEdgeDevice")
     private AzureStackEdgeDeviceResourceId azureStackEdgeDevice;
+
+    /*
+     * The Azure Stack Edge devices where the packet core is deployed. If the packet core is deployed across multiple
+     * devices, all devices will appear in this list.
+     */
+    @JsonProperty(value = "azureStackEdgeDevices", access = JsonProperty.Access.WRITE_ONLY)
+    private List<AzureStackEdgeDeviceResourceId> azureStackEdgeDevices;
+
+    /*
+     * The Azure Stack HCI cluster where the packet core is deployed.
+     */
+    @JsonProperty(value = "azureStackHciCluster")
+    private AzureStackHciClusterResourceId azureStackHciCluster;
 
     /*
      * Azure Arc connected cluster where the packet core is deployed.
@@ -36,6 +49,10 @@ public final class PlatformConfiguration {
      */
     @JsonProperty(value = "customLocation")
     private CustomLocationResourceId customLocation;
+
+    /** Creates an instance of PlatformConfiguration class. */
+    public PlatformConfiguration() {
+    }
 
     /**
      * Get the type property: The platform type where packet core is deployed.
@@ -58,8 +75,8 @@ public final class PlatformConfiguration {
     }
 
     /**
-     * Get the azureStackEdgeDevice property: The Azure Stack Edge device where where the packet core is deployed. If
-     * the device is part of a fault tolerant pair, either device in the pair can be specified.
+     * Get the azureStackEdgeDevice property: The Azure Stack Edge device where the packet core is deployed. If the
+     * device is part of a fault tolerant pair, either device in the pair can be specified.
      *
      * @return the azureStackEdgeDevice value.
      */
@@ -68,14 +85,44 @@ public final class PlatformConfiguration {
     }
 
     /**
-     * Set the azureStackEdgeDevice property: The Azure Stack Edge device where where the packet core is deployed. If
-     * the device is part of a fault tolerant pair, either device in the pair can be specified.
+     * Set the azureStackEdgeDevice property: The Azure Stack Edge device where the packet core is deployed. If the
+     * device is part of a fault tolerant pair, either device in the pair can be specified.
      *
      * @param azureStackEdgeDevice the azureStackEdgeDevice value to set.
      * @return the PlatformConfiguration object itself.
      */
     public PlatformConfiguration withAzureStackEdgeDevice(AzureStackEdgeDeviceResourceId azureStackEdgeDevice) {
         this.azureStackEdgeDevice = azureStackEdgeDevice;
+        return this;
+    }
+
+    /**
+     * Get the azureStackEdgeDevices property: The Azure Stack Edge devices where the packet core is deployed. If the
+     * packet core is deployed across multiple devices, all devices will appear in this list.
+     *
+     * @return the azureStackEdgeDevices value.
+     */
+    public List<AzureStackEdgeDeviceResourceId> azureStackEdgeDevices() {
+        return this.azureStackEdgeDevices;
+    }
+
+    /**
+     * Get the azureStackHciCluster property: The Azure Stack HCI cluster where the packet core is deployed.
+     *
+     * @return the azureStackHciCluster value.
+     */
+    public AzureStackHciClusterResourceId azureStackHciCluster() {
+        return this.azureStackHciCluster;
+    }
+
+    /**
+     * Set the azureStackHciCluster property: The Azure Stack HCI cluster where the packet core is deployed.
+     *
+     * @param azureStackHciCluster the azureStackHciCluster value to set.
+     * @return the PlatformConfiguration object itself.
+     */
+    public PlatformConfiguration withAzureStackHciCluster(AzureStackHciClusterResourceId azureStackHciCluster) {
+        this.azureStackHciCluster = azureStackHciCluster;
         return this;
     }
 
@@ -132,6 +179,12 @@ public final class PlatformConfiguration {
         }
         if (azureStackEdgeDevice() != null) {
             azureStackEdgeDevice().validate();
+        }
+        if (azureStackEdgeDevices() != null) {
+            azureStackEdgeDevices().forEach(e -> e.validate());
+        }
+        if (azureStackHciCluster() != null) {
+            azureStackHciCluster().validate();
         }
         if (connectedCluster() != null) {
             connectedCluster().validate();

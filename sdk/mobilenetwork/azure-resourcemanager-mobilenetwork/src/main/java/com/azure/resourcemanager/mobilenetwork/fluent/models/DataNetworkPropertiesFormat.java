@@ -23,6 +23,10 @@ public final class DataNetworkPropertiesFormat {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of DataNetworkPropertiesFormat class. */
+    public DataNetworkPropertiesFormat() {
+    }
+
     /**
      * Get the provisioningState property: The provisioning state of the data network resource.
      *
