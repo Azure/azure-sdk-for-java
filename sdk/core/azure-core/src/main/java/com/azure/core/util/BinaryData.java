@@ -510,17 +510,17 @@ public final class BinaryData {
         // 2. This could lead to a very large chunk of data existing which can cause pauses when allocating large
         //    arrays.
         long[] trueLength = new long[]{0};
-        var lazyBufferingFlux = data.map(buffer -> {
-                int bufferSize = buffer.remaining();
-                ByteBuffer copy = ByteBuffer.allocate(bufferSize);
-                trueLength[0] += bufferSize;
-                copy.put(buffer);
-                copy.flip();
+        Flux<ByteBuffer> lazyBufferingFlux = data.map(buffer -> {
+            int bufferSize = buffer.remaining();
+            ByteBuffer copy = ByteBuffer.allocate(bufferSize);
+            trueLength[0] += bufferSize;
+            copy.put(buffer);
+            copy.flip();
 
-                return copy;
-            });
-            return new BinaryData(new FluxByteBufferContent(lazyBufferingFlux.map(ByteBuffer::duplicate),
-                (length != null) ? length : trueLength[0], true));
+            return copy;
+        });
+        return new BinaryData(new FluxByteBufferContent(lazyBufferingFlux.map(ByteBuffer::duplicate),
+            (length != null) ? length : trueLength[0], true));
     }
 
     /**

@@ -179,7 +179,7 @@ public class BinaryDataTest {
 
     @Test
     public void wrapFromNullFlux() {
-        assertThrows(NullPointerException.class, () -> BinaryData.wrapFlux(null, null));
+        assertThrows(NullPointerException.class, () -> BinaryData.fromFluxSync(null, null));
     }
 
     @Test
@@ -301,7 +301,7 @@ public class BinaryDataTest {
         final long expectedLength = expected.length;
 
         // Act & Assert
-        BinaryData actual = BinaryData.wrapFlux(dataFlux, expectedLength);
+        BinaryData actual = BinaryData.fromFluxSync(dataFlux, expectedLength);
         assertEquals(expectedLength, actual.getLength());
         assertArrayEquals(expected, actual.toBytes());
     }
@@ -313,7 +313,7 @@ public class BinaryDataTest {
         final byte[] expected = "DoeDoe".getBytes(StandardCharsets.UTF_8);
 
         // Act & Assert
-        BinaryData actual = BinaryData.wrapFlux(dataFlux, null);
+        BinaryData actual = BinaryData.fromFluxSync(dataFlux, null);
         assertNull(actual.getLength());
         assertArrayEquals(expected, actual.toBytes());
     }
@@ -342,11 +342,11 @@ public class BinaryDataTest {
     public void wrapFluxValidations(Flux<ByteBuffer> flux, Long length, Boolean buffer,
         Class<? extends Throwable> expectedException) {
         if (length == null && buffer == null) {
-            assertThrows(expectedException, () -> BinaryData.wrapFlux(flux, null));
+            assertThrows(expectedException, () -> BinaryData.fromFluxSync(flux, null));
         } else if (buffer == null) {
-            assertThrows(expectedException, () -> BinaryData.wrapFlux(flux, length));
+            assertThrows(expectedException, () -> BinaryData.fromFluxSync(flux, length));
         } else {
-            assertThrows(expectedException, () -> BinaryData.wrapFlux(flux, length, buffer));
+            assertThrows(expectedException, () -> BinaryData.fromFluxSync(flux, length, buffer));
         }
     }
 
