@@ -30,6 +30,10 @@ public final class ActionGroupResourceInner extends AzureResource {
     @JsonProperty(value = "properties")
     private ActionGroup innerProperties;
 
+    /** Creates an instance of ActionGroupResourceInner class. */
+    public ActionGroupResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: The action groups properties of the resource.
      *

@@ -11,6 +11,10 @@ import java.util.Map;
 /** An azure resource object. */
 @Fluent
 public class AzureResource extends Resource {
+    /** Creates an instance of AzureResource class. */
+    public AzureResource() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public AzureResource withLocation(String location) {

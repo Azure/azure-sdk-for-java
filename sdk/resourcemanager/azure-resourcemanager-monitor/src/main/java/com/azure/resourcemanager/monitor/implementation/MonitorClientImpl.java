@@ -26,8 +26,10 @@ import com.azure.resourcemanager.monitor.fluent.MetricAlertsClient;
 import com.azure.resourcemanager.monitor.fluent.MetricAlertsStatusClient;
 import com.azure.resourcemanager.monitor.fluent.MetricDefinitionsClient;
 import com.azure.resourcemanager.monitor.fluent.MetricNamespacesClient;
-import com.azure.resourcemanager.monitor.fluent.MetricsClient;
+import com.azure.resourcemanager.monitor.fluent.MetricsOperationsClient;
 import com.azure.resourcemanager.monitor.fluent.MonitorClient;
+import com.azure.resourcemanager.monitor.fluent.MonitoringAccountsClient;
+import com.azure.resourcemanager.monitor.fluent.MonitorsClient;
 import com.azure.resourcemanager.monitor.fluent.OperationsClient;
 import com.azure.resourcemanager.monitor.fluent.PredictiveMetricsClient;
 import com.azure.resourcemanager.monitor.fluent.PrivateEndpointConnectionsClient;
@@ -260,16 +262,16 @@ public final class MonitorClientImpl extends AzureServiceClient implements Monit
         return this.metricDefinitions;
     }
 
-    /** The MetricsClient object to access its operations. */
-    private final MetricsClient metrics;
+    /** The MetricsOperationsClient object to access its operations. */
+    private final MetricsOperationsClient metricsOperations;
 
     /**
-     * Gets the MetricsClient object to access its operations.
+     * Gets the MetricsOperationsClient object to access its operations.
      *
-     * @return the MetricsClient object.
+     * @return the MetricsOperationsClient object.
      */
-    public MetricsClient getMetrics() {
-        return this.metrics;
+    public MetricsOperationsClient getMetricsOperations() {
+        return this.metricsOperations;
     }
 
     /** The BaselinesClient object to access its operations. */
@@ -452,6 +454,30 @@ public final class MonitorClientImpl extends AzureServiceClient implements Monit
         return this.dataCollectionRules;
     }
 
+    /** The MonitoringAccountsClient object to access its operations. */
+    private final MonitoringAccountsClient monitoringAccounts;
+
+    /**
+     * Gets the MonitoringAccountsClient object to access its operations.
+     *
+     * @return the MonitoringAccountsClient object.
+     */
+    public MonitoringAccountsClient getMonitoringAccounts() {
+        return this.monitoringAccounts;
+    }
+
+    /** The MonitorsClient object to access its operations. */
+    private final MonitorsClient monitors;
+
+    /**
+     * Gets the MonitorsClient object to access its operations.
+     *
+     * @return the MonitorsClient object.
+     */
+    public MonitorsClient getMonitors() {
+        return this.monitors;
+    }
+
     /**
      * Initializes an instance of MonitorClient client.
      *
@@ -488,7 +514,7 @@ public final class MonitorClientImpl extends AzureServiceClient implements Monit
         this.eventCategories = new EventCategoriesClientImpl(this);
         this.tenantActivityLogs = new TenantActivityLogsClientImpl(this);
         this.metricDefinitions = new MetricDefinitionsClientImpl(this);
-        this.metrics = new MetricsClientImpl(this);
+        this.metricsOperations = new MetricsOperationsClientImpl(this);
         this.baselines = new BaselinesClientImpl(this);
         this.metricAlerts = new MetricAlertsClientImpl(this);
         this.metricAlertsStatus = new MetricAlertsStatusClientImpl(this);
@@ -504,5 +530,7 @@ public final class MonitorClientImpl extends AzureServiceClient implements Monit
         this.dataCollectionEndpoints = new DataCollectionEndpointsClientImpl(this);
         this.dataCollectionRuleAssociations = new DataCollectionRuleAssociationsClientImpl(this);
         this.dataCollectionRules = new DataCollectionRulesClientImpl(this);
+        this.monitoringAccounts = new MonitoringAccountsClientImpl(this);
+        this.monitors = new MonitorsClientImpl(this);
     }
 }

@@ -26,6 +26,10 @@ public final class DiagnosticSettingsCategoryResourceInner extends ResourceAutoG
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of DiagnosticSettingsCategoryResourceInner class. */
+    public DiagnosticSettingsCategoryResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of a Diagnostic Settings Category.
      *

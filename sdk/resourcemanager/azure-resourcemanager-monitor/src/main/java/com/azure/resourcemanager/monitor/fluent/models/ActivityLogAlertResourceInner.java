@@ -21,6 +21,10 @@ public final class ActivityLogAlertResourceInner extends AzureResourceAutoGenera
     @JsonProperty(value = "properties")
     private AlertRuleProperties innerProperties;
 
+    /** Creates an instance of ActivityLogAlertResourceInner class. */
+    public ActivityLogAlertResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: The Activity Log Alert rule properties of the resource.
      *

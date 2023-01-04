@@ -7,8 +7,8 @@ package com.azure.resourcemanager.monitor.generated;
 import com.azure.core.util.Context;
 import java.time.Duration;
 
-/** Samples for Metrics List. */
-public final class MetricsListSamples {
+/** Samples for MetricsOperation List. */
+public final class MetricsOperationListSamples {
     /*
      * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-01-01/examples/GetMetric.json
      */
@@ -22,7 +22,7 @@ public final class MetricsListSamples {
             .diagnosticSettings()
             .manager()
             .serviceClient()
-            .getMetrics()
+            .getMetricsOperations()
             .listWithResponse(
                 "subscriptions/b324c52b-4073-4807-93af-e07d289c093e/resourceGroups/test/providers/Microsoft.Storage/storageAccounts/larryshoebox/blobServices/default",
                 "2017-04-14T02:20:00Z/2017-04-14T04:20:00Z",
@@ -50,7 +50,7 @@ public final class MetricsListSamples {
             .diagnosticSettings()
             .manager()
             .serviceClient()
-            .getMetrics()
+            .getMetricsOperations()
             .listWithResponse(
                 "subscriptions/b324c52b-4073-4807-93af-e07d289c093e/resourceGroups/test/providers/Microsoft.Storage/storageAccounts/larryshoebox/blobServices/default",
                 "2017-04-14T02:20:00Z/2017-04-14T04:20:00Z",
@@ -78,7 +78,7 @@ public final class MetricsListSamples {
             .diagnosticSettings()
             .manager()
             .serviceClient()
-            .getMetrics()
+            .getMetricsOperations()
             .listWithResponse(
                 "subscriptions/ac41e21f-afd6-4a79-8070-f01eba278f97/resourceGroups/todking/providers/Microsoft.DocumentDb/databaseAccounts/tk-cosmos-mongo",
                 "2021-06-07T21:51:00Z/2021-06-08T01:51:00Z",

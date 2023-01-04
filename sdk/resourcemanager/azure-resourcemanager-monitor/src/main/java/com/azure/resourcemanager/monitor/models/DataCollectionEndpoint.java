@@ -46,6 +46,10 @@ public class DataCollectionEndpoint {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private KnownDataCollectionEndpointProvisioningState provisioningState;
 
+    /** Creates an instance of DataCollectionEndpoint class. */
+    public DataCollectionEndpoint() {
+    }
+
     /**
      * Get the description property: Description of the data collection endpoint.
      *

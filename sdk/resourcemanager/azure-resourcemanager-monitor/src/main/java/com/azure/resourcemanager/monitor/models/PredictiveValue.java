@@ -24,6 +24,10 @@ public final class PredictiveValue {
     @JsonProperty(value = "value", required = true)
     private double value;
 
+    /** Creates an instance of PredictiveValue class. */
+    public PredictiveValue() {
+    }
+
     /**
      * Get the timestamp property: the timestamp for the metric value in ISO 8601 format.
      *

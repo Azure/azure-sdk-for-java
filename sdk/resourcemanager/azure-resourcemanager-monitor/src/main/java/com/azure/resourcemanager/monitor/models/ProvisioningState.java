@@ -8,19 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning state of the scheduled query rule. */
+/** The provisioning state of the monitoring account. Set to Succeeded if everything is healthy. */
 public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
+    /** Static value Creating for ProvisioningState. */
+    public static final ProvisioningState CREATING = fromString("Creating");
+
     /** Static value Succeeded for ProvisioningState. */
     public static final ProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Deploying for ProvisioningState. */
-    public static final ProvisioningState DEPLOYING = fromString("Deploying");
-
-    /** Static value Canceled for ProvisioningState. */
-    public static final ProvisioningState CANCELED = fromString("Canceled");
+    /** Static value Deleting for ProvisioningState. */
+    public static final ProvisioningState DELETING = fromString("Deleting");
 
     /** Static value Failed for ProvisioningState. */
     public static final ProvisioningState FAILED = fromString("Failed");
+
+    /** Static value Canceled for ProvisioningState. */
+    public static final ProvisioningState CANCELED = fromString("Canceled");
 
     /**
      * Creates or finds a ProvisioningState from its string representation.

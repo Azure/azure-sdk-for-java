@@ -13,6 +13,10 @@ import java.util.List;
  */
 @Fluent
 public final class DataCollectionRuleDataSources extends DataSourcesSpec {
+    /** Creates an instance of DataCollectionRuleDataSources class. */
+    public DataCollectionRuleDataSources() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public DataCollectionRuleDataSources withPerformanceCounters(List<PerfCounterDataSource> performanceCounters) {
