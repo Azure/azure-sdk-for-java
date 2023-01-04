@@ -75,7 +75,7 @@ public class RecoverableReactorConnectionIsolatedTest {
             FQDN, ENTITY_PATH, retryPolicy, errorContext, new HashMap<>());
         try {
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-                verifier.create(() -> recoverableConnection.getConnection())
+                verifier.create(() -> recoverableConnection.get())
                     .thenRequest(1)
                     .thenAwait(VIRTUAL_TIME_SHIFT)
                     .expectNextMatches(con -> {
@@ -109,7 +109,7 @@ public class RecoverableReactorConnectionIsolatedTest {
             FQDN, ENTITY_PATH, retryPolicy, errorContext, new HashMap<>());
         try {
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-                verifier.create(() -> recoverableConnection.getConnection())
+                verifier.create(() -> recoverableConnection.get())
                     .thenRequest(1)
                     .thenAwait(VIRTUAL_TIME_SHIFT)
                     .expectNextMatches(con -> {
@@ -143,7 +143,7 @@ public class RecoverableReactorConnectionIsolatedTest {
             FQDN, ENTITY_PATH, retryPolicy, errorContext, new HashMap<>());
         try {
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-                verifier.create(() -> recoverableConnection.getConnection())
+                verifier.create(() -> recoverableConnection.get())
                     .thenRequest(1)
                     .thenAwait(VIRTUAL_TIME_SHIFT)
                     .expectNextMatches(con -> {
@@ -187,7 +187,7 @@ public class RecoverableReactorConnectionIsolatedTest {
             FQDN, ENTITY_PATH, retryPolicy, errorContext, new HashMap<>());
         try {
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-                verifier.create(() -> recoverableConnection.getConnection())
+                verifier.create(() -> recoverableConnection.get())
                     .thenRequest(1)
                     .thenAwait(VIRTUAL_TIME_SHIFT)
                     .expectNextMatches(con -> {
@@ -259,7 +259,7 @@ public class RecoverableReactorConnectionIsolatedTest {
             // The first connection request where the internal retry-cycle inspects the state of all connections
             // from set1 and emits the 'active' one (i.e., the last one in set1).
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-                verifier.create(() -> recoverableConnection.getConnection())
+                verifier.create(() -> recoverableConnection.get())
                     .thenRequest(1)
                     .thenAwait(VIRTUAL_TIME_SHIFT)
                     .expectNextMatches(con -> {
@@ -286,7 +286,7 @@ public class RecoverableReactorConnectionIsolatedTest {
             // The second connection request where the internal retry-cycle inspects the state of all connections
             // from set2 and emits the 'active' one (i.e., the last one in set2).
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-                verifier.create(() -> recoverableConnection.getConnection())
+                verifier.create(() -> recoverableConnection.get())
                     .thenRequest(1)
                     .thenAwait(VIRTUAL_TIME_SHIFT)
                     .expectNextMatches(con -> {
