@@ -53,7 +53,7 @@ public class HttpURLConnectionHttpClient implements HttpClient {
                 }
             }
             connection.connect();
-            return Mono.just(createHttpResponse(connection));
+            return Mono.just(createHttpResponse(connection, request));
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
@@ -63,14 +63,14 @@ public class HttpURLConnectionHttpClient implements HttpClient {
         }
     }
 
-    private HttpResponse createHttpResponse(HttpURLConnection connection) {
+    private HttpResponse createHttpResponse(HttpURLConnection connection, HttpRequest request) {
 
         if (connection == null) {
             return null;
         }
 
 
-        return new HttpURLResponse(connection);
+        return new HttpURLResponse(connection, request);
     }
 
     private static class HttpURLResponse extends HttpResponse {
@@ -90,11 +90,13 @@ public class HttpURLConnectionHttpClient implements HttpClient {
 
         /**
          * Constructor for HttpURLResponse
+         *
          * @param connection The {@link HttpURLConnection} to create a {@link HttpResponse} from.
+         * @param request The {@link HttpRequest} that resulted in this {@link HttpResponse}.
          * @throws RuntimeException if a failure occurs reading the body of the response.
          */
-        HttpURLResponse(HttpURLConnection connection) {
-            super(null);
+        HttpURLResponse(HttpURLConnection connection, HttpRequest request) {
+            super(request);
             this.connection = connection;
             try {
                 byte[] bytes = BinaryData.fromStream(connection.getInputStream()).toBytes();
