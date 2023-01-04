@@ -2280,8 +2280,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             options,
                             klass);
 
-
-
                         // create the executable query
                         Flux<FeedResponse<Document>> queries = createReadManyQuery(
                             resourceLink,
@@ -2296,43 +2294,43 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                         // merge results from point reads and queries
                         return Flux.merge(pointReads, queries)
-                            .collectList()
-                            // aggregating the result to construct a FeedResponse and aggregate RUs.
-                            .map(feedList -> {
-                                List<T> finalList = new ArrayList<>();
-                                HashMap<String, String> headers = new HashMap<>();
-                                ConcurrentMap<String, QueryMetrics> aggregatedQueryMetrics = new ConcurrentHashMap<>();
-                                List<ClientSideRequestStatistics> aggregateRequestStatistics = new ArrayList<>();
-                                double requestCharge = 0;
-                                for (FeedResponse<Document> page : feedList) {
-                                    ConcurrentMap<String, QueryMetrics> pageQueryMetrics =
-                                        ModelBridgeInternal.queryMetrics(page);
-                                    if (pageQueryMetrics != null) {
-                                        pageQueryMetrics.forEach(
-                                            aggregatedQueryMetrics::putIfAbsent);
-                                    }
+                                .collectList()
+                                // aggregating the result to construct a FeedResponse and aggregate RUs.
+                                .map(feedList -> {
+                                    List<T> finalList = new ArrayList<>();
+                                    HashMap<String, String> headers = new HashMap<>();
+                                    ConcurrentMap<String, QueryMetrics> aggregatedQueryMetrics = new ConcurrentHashMap<>();
+                                    List<ClientSideRequestStatistics> aggregateRequestStatistics = new ArrayList<>();
+                                    double requestCharge = 0;
+                                    for (FeedResponse<Document> page : feedList) {
+                                        ConcurrentMap<String, QueryMetrics> pageQueryMetrics =
+                                                ModelBridgeInternal.queryMetrics(page);
+                                        if (pageQueryMetrics != null) {
+                                            pageQueryMetrics.forEach(
+                                                    aggregatedQueryMetrics::putIfAbsent);
+                                        }
 
-                                    requestCharge += page.getRequestCharge();
-                                    // TODO: this does double serialization: FIXME
-                                    finalList.addAll(page.getResults().stream().map(document ->
-                                        ModelBridgeInternal.toObjectFromJsonSerializable(document, klass)).collect(Collectors.toList()));
-                                    aggregateRequestStatistics.addAll(BridgeInternal.getClientSideRequestStatisticsList(page.getCosmosDiagnostics()));
-                                }
-                                CosmosDiagnostics aggregatedDiagnostics = BridgeInternal.createCosmosDiagnostics(aggregatedQueryMetrics);
-                                BridgeInternal.addClientSideDiagnosticsToFeed(aggregatedDiagnostics, aggregateRequestStatistics);
-                                headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
-                                    .toString(requestCharge));
-                                FeedResponse<T> frp = BridgeInternal
-                                    .createFeedResponseWithQueryMetrics(
-                                        finalList,
-                                        headers,
-                                        aggregatedQueryMetrics,
-                                        null,
-                                        false,
-                                        false,
-                                        aggregatedDiagnostics);
-                                return frp;
-                            })
+                                        requestCharge += page.getRequestCharge();
+                                        // TODO: this does double serialization: FIXME
+                                        finalList.addAll(page.getResults().stream().map(document ->
+                                                ModelBridgeInternal.toObjectFromJsonSerializable(document, klass)).collect(Collectors.toList()));
+                                        aggregateRequestStatistics.addAll(BridgeInternal.getClientSideRequestStatisticsList(page.getCosmosDiagnostics()));
+                                    }
+                                    CosmosDiagnostics aggregatedDiagnostics = BridgeInternal.createCosmosDiagnostics(aggregatedQueryMetrics);
+                                    BridgeInternal.addClientSideDiagnosticsToFeed(aggregatedDiagnostics, aggregateRequestStatistics);
+                                    headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
+                                            .toString(requestCharge));
+                                    FeedResponse<T> frp = BridgeInternal
+                                            .createFeedResponseWithQueryMetrics(
+                                                    finalList,
+                                                    headers,
+                                                    aggregatedQueryMetrics,
+                                                    null,
+                                                    false,
+                                                    false,
+                                                    aggregatedDiagnostics);
+                                    return frp;
+                                })
                                 .doOnSubscribe(s -> startTime.set(Instant.now()))
                                 .doOnSuccess(feedResponse -> {
                                     Duration feedResponseCreationLatency = Duration.between(startTime.get(), Instant.now());

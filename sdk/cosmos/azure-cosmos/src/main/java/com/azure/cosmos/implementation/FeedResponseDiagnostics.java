@@ -32,12 +32,11 @@ public class FeedResponseDiagnostics {
     private Map<String, QueryMetrics> queryMetricsMap;
     private QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext;
     private final List<ClientSideRequestStatistics> clientSideRequestStatisticsList;
-    private AtomicReference<Duration> feedResponseCreationLatency;
+    private final AtomicReference<Duration> feedResponseCreationLatency = new AtomicReference<>(Duration.ZERO);
 
     public FeedResponseDiagnostics(Map<String, QueryMetrics> queryMetricsMap) {
         this.queryMetricsMap = queryMetricsMap;
         this.clientSideRequestStatisticsList = Collections.synchronizedList(new ArrayList<>());
-        this.feedResponseCreationLatency = new AtomicReference<>(Duration.ZERO);
     }
 
     public FeedResponseDiagnostics(FeedResponseDiagnostics toBeCloned) {
@@ -57,7 +56,7 @@ public class FeedResponseDiagnostics {
         }
 
         if (toBeCloned.feedResponseCreationLatency != null) {
-            this.feedResponseCreationLatency = toBeCloned.feedResponseCreationLatency;
+            this.feedResponseCreationLatency.set(toBeCloned.getFeedResponseCreationLatency());
         }
     }
 

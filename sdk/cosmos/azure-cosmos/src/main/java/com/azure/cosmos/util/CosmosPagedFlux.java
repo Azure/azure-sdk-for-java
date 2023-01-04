@@ -371,8 +371,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                                 feedResponseConsumerLatencyInNanos.set(0);
                             }
                         }
-
-
+                        
                         break;
                     default:
                         break;
