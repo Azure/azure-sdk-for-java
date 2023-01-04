@@ -371,8 +371,6 @@ public final class WebPubSubServiceClient {
     /**
      * Remove a connection from all groups.
      *
-     * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
-     *     characters or underscore.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -384,7 +382,7 @@ public final class WebPubSubServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeConnectionFromAllGroupsWithResponse(
-        String hub, String connectionId, RequestOptions requestOptions) {
+        String connectionId, RequestOptions requestOptions) {
         return this.serviceClient.removeConnectionFromAllGroupsWithResponse(hub, connectionId, requestOptions);
     }
 

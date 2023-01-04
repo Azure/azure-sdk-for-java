@@ -216,7 +216,7 @@ public class WebPubSubServiceClientTests extends TestBase {
     @Test
     public void testRemoveConnectionFromAllGroup() {
         Response<Void> response =
-            client.removeConnectionFromAllGroupsWithResponse("java", "test_connection", new RequestOptions());
+            client.removeConnectionFromAllGroupsWithResponse("test_connection", new RequestOptions());
         assertEquals(204, response.getStatusCode());
     }
 
