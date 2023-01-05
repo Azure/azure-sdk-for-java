@@ -65,7 +65,6 @@ public class TokenGenerationTest  extends TestBase {
             .endpoint(endpoint)
             .httpClient(HttpClient.createDefault())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .credential(new DefaultAzureCredentialBuilder().build())
             .hub("test");
 
         String connectionString = "Endpoint=http://testendpoint.webpubsubdev.azure.com;"
