@@ -4,17 +4,51 @@
 package com.azure.messaging.webpubsub.client;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.http.policy.ExponentialBackoff;
+import com.azure.core.http.policy.FixedDelay;
+import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.http.policy.RetryStrategy;
+
+import java.util.Objects;
 
 @ServiceClientBuilder(serviceClients = {WebPubSubAsyncClient.class, WebPubSubClient.class})
 public class WebPubSubClientBuilder {
 
     private WebPubSubClientCredential credential;
 
+    private WebPubSubProtocol webPubSubProtocol = new WebPubSubJsonReliableProtocol();
+
+    private RetryOptions retryOptions = null;
+
+    private boolean autoReconnect = true;
+
+    private boolean autoRestoreGroup = true;
+
     public WebPubSubClientBuilder() {
     }
 
     public WebPubSubClientBuilder credential(WebPubSubClientCredential credential) {
-        this.credential = credential;
+        this.credential = Objects.requireNonNull(credential);
+        return this;
+    }
+
+    public WebPubSubClientBuilder webPubSubProtocol(WebPubSubProtocol webPubSubProtocol) {
+        this.webPubSubProtocol = Objects.requireNonNull(webPubSubProtocol);
+        return this;
+    }
+
+    public WebPubSubClientBuilder retryOptions(RetryOptions retryOptions) {
+        this.retryOptions = Objects.requireNonNull(retryOptions);
+        return this;
+    }
+
+    public WebPubSubClientBuilder autoReconnect(boolean autoReconnect) {
+        this.autoReconnect = autoReconnect;
+        return this;
+    }
+
+    public WebPubSubClientBuilder autoRestoreGroup(boolean autoRestoreGroup) {
+        this.autoRestoreGroup = autoRestoreGroup;
         return this;
     }
 
@@ -23,6 +57,19 @@ public class WebPubSubClientBuilder {
     }
 
     public WebPubSubAsyncClient buildAsyncClient() {
-        return new WebPubSubAsyncClient(credential.getClientAccessUriAsync());
+        RetryStrategy retryStrategy;
+        if (retryOptions != null) {
+            if (retryOptions.getExponentialBackoffOptions() != null) {
+                retryStrategy = new ExponentialBackoff(retryOptions.getExponentialBackoffOptions());
+            } else if (retryOptions.getFixedDelayOptions() != null) {
+                retryStrategy = new FixedDelay(retryOptions.getFixedDelayOptions());
+            } else {
+                throw new IllegalArgumentException("'retryOptions' didn't define any retry strategy options");
+            }
+        } else {
+            retryStrategy = new ExponentialBackoff();
+        }
+        return new WebPubSubAsyncClient(
+            credential.getClientAccessUriAsync(), webPubSubProtocol, retryStrategy, autoReconnect, autoRestoreGroup);
     }
 }

@@ -127,7 +127,7 @@ public class ClientTests {
 
 
         // close
-        asyncClient.close().block();
+        asyncClient.closeAsync().block();
     }
 
     private static WebPubSubClientBuilder clientBuilder() {

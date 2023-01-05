@@ -4,9 +4,13 @@
 package com.azure.messaging.webpubsub.client;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.policy.RetryStrategy;
+import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.webpubsub.client.implementation.AckMessage;
 import com.azure.messaging.webpubsub.client.implementation.ConnectedMessage;
+import com.azure.messaging.webpubsub.client.implementation.LoggingUtils;
 import com.azure.messaging.webpubsub.client.models.DisconnectedMessage;
 import com.azure.messaging.webpubsub.client.implementation.MessageDecoder;
 import com.azure.messaging.webpubsub.client.implementation.MessageEncoder;
@@ -39,43 +43,74 @@ import java.net.URI;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
 @ServiceClient(builder = WebPubSubClientBuilder.class)
-public class WebPubSubAsyncClient {
+public class WebPubSubAsyncClient implements AsyncCloseable {
 
+    // logging
+    private ClientLogger logger;
+
+    // options
     private final Mono<String> clientAccessUriProvider;
+    private final WebPubSubProtocol webPubSubProtocol;
+    private final RetryStrategy retryStrategy;
+    private final boolean autoReconnect;
+    private final boolean autoRestoreGroup;
 
+    // websocket client
     private final ClientManager clientManager;
-
     private Endpoint endpoint;
-
     private Session session;
 
     private String connectionId;
+    private String reconnectionToken;
 
-    Sinks.Many<GroupMessageEvent> groupMessageEventSink =
+    private static final AtomicLong ACK_ID = new AtomicLong(0);
+
+    // Reactor messages
+    private final Sinks.Many<GroupMessageEvent> groupMessageEventSink =
         Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
     private Sinks.Many<AckMessage> ackMessageSink =
         Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
-    Sinks.Many<ConnectedEvent> connectedEventSink =
+    private final Sinks.Many<ConnectedEvent> connectedEventSink =
         Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
-    Sinks.Many<DisconnectedEvent> disconnectedEventSink =
+    private final Sinks.Many<DisconnectedEvent> disconnectedEventSink =
         Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
-    WebPubSubAsyncClient(Mono<String> clientAccessUriProvider) {
+    // state on close
+    private final AtomicBoolean isDisposed = new AtomicBoolean();
+    private final Sinks.Empty<Void> isClosedMono = Sinks.empty();
+
+    WebPubSubAsyncClient(Mono<String> clientAccessUriProvider,
+                         WebPubSubProtocol webPubSubProtocol,
+                         RetryStrategy retryStrategy,
+                         boolean autoReconnect,
+                         boolean autoRestoreGroup) {
+
+        this.logger = new ClientLogger(WebPubSubAsyncClient.class);
+
         this.clientAccessUriProvider = clientAccessUriProvider;
+        this.webPubSubProtocol = webPubSubProtocol;
+        this.retryStrategy = retryStrategy;
+        this.autoReconnect = autoReconnect;
+        this.autoRestoreGroup = autoRestoreGroup;
 
         this.clientManager = ClientManager.createClient();
+    }
+
+    public String getConnectionId() {
+        return connectionId;
     }
 
     public Mono<Void> start() {
         this.endpoint = new ClientEndpoint();
         ClientEndpointConfig config = ClientEndpointConfig.Builder.create()
-            .preferredSubprotocols(Collections.singletonList("json.webpubsub.azure.v1"))
+            .preferredSubprotocols(Collections.singletonList(webPubSubProtocol.getName()))
             .encoders(Collections.singletonList(MessageEncoder.class))
             .decoders(Collections.singletonList(MessageDecoder.class))
             .build();
@@ -95,7 +130,7 @@ public class WebPubSubAsyncClient {
 
 //                groupDataMessageSink.tryEmitComplete();
 //                groupDataMessageSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
-                ackMessageSink.tryEmitComplete();
+                ackMessageSink.emitComplete(emitFailureHandler("Unable to emit Complete to ackMessageSink"));
                 ackMessageSink = Sinks.many().multicast().onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
 //                disconnectedEventSink.tryEmitNext(new DisconnectedEvent(connectionId, ""));
@@ -104,13 +139,22 @@ public class WebPubSubAsyncClient {
         }).subscribeOn(Schedulers.boundedElastic());
     }
 
-    public Mono<Void> close() {
-        return stop().then(Mono.defer(() -> {
-            groupMessageEventSink.tryEmitComplete();
-            connectedEventSink.tryEmitComplete();
-            disconnectedEventSink.tryEmitComplete();
-            return Mono.empty();
-        }));
+    public Mono<Void> closeAsync() {
+        if (this.isDisposed.getAndSet(true)) {
+            return this.isClosedMono.asMono();
+        } else {
+            return stop().then(Mono.fromRunnable(() -> {
+                groupMessageEventSink.emitComplete(
+                    emitFailureHandler("Unable to emit Complete to groupMessageEventSink"));
+                connectedEventSink.emitComplete(
+                    emitFailureHandler("Unable to emit Complete to connectedEventSink"));
+                disconnectedEventSink.emitComplete(
+                    emitFailureHandler("Unable to emit Complete to disconnectedEventSink"));
+
+                isClosedMono.emitEmpty(
+                    emitFailureHandler("Unable to emit Close"));
+            }));
+        }
     }
 
     public Mono<WebPubSubResult> joinGroup(String group) {
@@ -141,7 +185,7 @@ public class WebPubSubAsyncClient {
         long ackId = options != null && options.getAckId() != null ? options.getAckId() : nextAckId();
 
         BinaryData data = content;
-        if (dataType == WebPubSubDataType.BINARY) {
+        if (dataType == WebPubSubDataType.BINARY || dataType == WebPubSubDataType.PROTOBUF) {
             data = BinaryData.fromBytes(Base64.getEncoder().encode(content.toBytes()));
         }
 
@@ -171,7 +215,6 @@ public class WebPubSubAsyncClient {
         return disconnectedEventSink.asFlux();
     }
 
-    private static final AtomicLong ACK_ID = new AtomicLong(0);
     private long nextAckId() {
         return ACK_ID.getAndUpdate(value -> {
             // keep positive
@@ -218,18 +261,27 @@ public class WebPubSubAsyncClient {
                 @Override
                 public void onMessage(WebPubSubMessage webPubSubMessage) {
                     if (webPubSubMessage instanceof GroupDataMessage) {
-                        groupMessageEventSink.tryEmitNext(new GroupMessageEvent((GroupDataMessage) webPubSubMessage));
+                        groupMessageEventSink.emitNext(
+                            new GroupMessageEvent((GroupDataMessage) webPubSubMessage),
+                            emitFailureHandler("Unable to emit GroupMessageEvent"));
                     } else if (webPubSubMessage instanceof AckMessage) {
-                        ackMessageSink.tryEmitNext((AckMessage) webPubSubMessage);
+                        ackMessageSink.emitNext((AckMessage) webPubSubMessage,
+                            emitFailureHandler("Unable to emit GroupMessageEvent"));
                     } else if (webPubSubMessage instanceof ConnectedMessage) {
                         connectionId = ((ConnectedMessage) webPubSubMessage).getConnectionId();
-                        connectedEventSink.tryEmitNext(new ConnectedEvent(
+
+                        logger = new ClientLogger(WebPubSubAsyncClient.class,
+                            LoggingUtils.createContextWithConnectionId(connectionId));
+
+                        connectedEventSink.emitNext(new ConnectedEvent(
                             connectionId,
-                            ((ConnectedMessage) webPubSubMessage).getUserId()));
+                            ((ConnectedMessage) webPubSubMessage).getUserId()),
+                            emitFailureHandler("Unable to emit ConnectedEvent"));
                     } else if (webPubSubMessage instanceof DisconnectedMessage) {
-                        disconnectedEventSink.tryEmitNext(new DisconnectedEvent(
+                        disconnectedEventSink.emitNext(new DisconnectedEvent(
                             connectionId,
-                            (DisconnectedMessage) webPubSubMessage));
+                            (DisconnectedMessage) webPubSubMessage),
+                            emitFailureHandler("Unable to emit DisconnectedEvent"));
                     } else {
                         // TODO
                     }
@@ -246,5 +298,13 @@ public class WebPubSubAsyncClient {
         public void onError(Session session, Throwable thr) {
 //            System.out.println("session error: " + thr);
         }
+    }
+
+    private Sinks.EmitFailureHandler emitFailureHandler(String message) {
+        return (signalType, emitResult) -> {
+            LoggingUtils.addSignalTypeAndResult(this.logger.atWarning(), signalType, emitResult)
+                .log(message);
+            return false;
+        };
     }
 }

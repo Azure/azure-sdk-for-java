@@ -32,7 +32,7 @@ public class WebPubSubClient implements AutoCloseable {
 
     @Override
     public void close() {
-        client.close().block();
+        client.closeAsync().block();
     }
 
     public WebPubSubResult joinGroup(String group) {
