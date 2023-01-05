@@ -9,16 +9,9 @@ import com.azure.core.util.ExpandableStringEnum;
  * OTel schema version.
  */
 public class OpenTelemetrySchemaVersion extends ExpandableStringEnum<OpenTelemetrySchemaVersion> {
-    /**
-     * Creates a new instance of {@link ExpandableStringEnum} without a {@link #toString()} value.
-     * <p>
-     * This constructor shouldn't be called as it will produce a {@link ExpandableStringEnum} which doesn't
-     * have a String enum value.
-     *
-     * @deprecated Use the explicit pre-constructed version.
-     */
-    @Deprecated
-    public OpenTelemetrySchemaVersion() {
+    @SuppressWarnings("deprecation")
+    OpenTelemetrySchemaVersion() {
+        super();
     }
 
     /**
@@ -30,7 +23,7 @@ public class OpenTelemetrySchemaVersion extends ExpandableStringEnum<OpenTelemet
      * Gets latest version.
      * @return latest supported schema version.
      */
-    static final OpenTelemetrySchemaVersion getLatest() {
+    public static final OpenTelemetrySchemaVersion getLatest() {
         return V1_12_0;
     }
 }

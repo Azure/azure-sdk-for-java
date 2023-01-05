@@ -3,13 +3,17 @@
 
 package com.azure.core.util;
 
+import com.azure.core.implementation.ReflectionUtils;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static java.lang.invoke.MethodType.methodType;
 
 /**
  * Base implementation for expandable, single string enums.
@@ -56,10 +60,13 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
             return value;
         } else {
             try {
-                value = clazz.newInstance();
+                MethodHandles.Lookup lookup = ReflectionUtils.getLookupToUse(clazz);
+                value = (T) lookup.findConstructor(clazz, methodType(void.class)).invoke();
                 return value.nameAndAddValue(name, value, clazz);
-            } catch (IllegalAccessException | InstantiationException ex) {
+            } catch (NoSuchMethodException | IllegalAccessException e) {
                 return null;
+            } catch (Throwable e) {
+                throw new RuntimeException(e);
             }
         }
     }
