@@ -39,7 +39,7 @@ class EventHubAsyncClient implements Closeable {
     private final Meter meter;
 
     EventHubAsyncClient(RecoverableReactorConnection<EventHubReactorAmqpConnection> connectionProcessor, MessageSerializer messageSerializer,
-                        Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose, String identifier, Meter meter, Tracer tracer) {
+        Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose, String identifier, Meter meter, Tracer tracer) {
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
             "'connectionProcessor' cannot be null.");

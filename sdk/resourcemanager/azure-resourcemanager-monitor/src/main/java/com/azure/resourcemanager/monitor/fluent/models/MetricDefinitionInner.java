@@ -93,6 +93,10 @@ public final class MetricDefinitionInner {
     @JsonProperty(value = "dimensions")
     private List<LocalizableStringInner> dimensions;
 
+    /** Creates an instance of MetricDefinitionInner class. */
+    public MetricDefinitionInner() {
+    }
+
     /**
      * Get the isDimensionRequired property: Flag to indicate whether the dimension is required.
      *

@@ -90,6 +90,10 @@ public final class MetricTrigger {
     @JsonProperty(value = "dividePerInstance")
     private Boolean dividePerInstance;
 
+    /** Creates an instance of MetricTrigger class. */
+    public MetricTrigger() {
+    }
+
     /**
      * Get the metricName property: the name of the metric that defines what the rule monitors.
      *

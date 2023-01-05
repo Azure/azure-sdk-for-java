@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,53 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2022-12-22)
+
+- Azure Resource Manager AzureDigitalTwins client library for Java. This package contains Microsoft Azure SDK for AzureDigitalTwins Management SDK. Azure Digital Twins Client for managing DigitalTwinsInstance. Package tag package-2022-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.IdentityType` was added
+
+* `models.UserAssignedIdentity` was added
+
+* `models.ManagedIdentityReference` was added
+
+#### `models.DigitalTwinsIdentity` was modified
+
+* `userAssignedIdentities()` was added
+* `withUserAssignedIdentities(java.util.Map)` was added
+
+#### `models.EventGrid` was modified
+
+* `withIdentity(models.ManagedIdentityReference)` was added
+* `withIdentity(models.ManagedIdentityReference)` was added
+
+#### `models.DigitalTwinsEndpointResourceProperties` was modified
+
+* `identity()` was added
+* `withIdentity(models.ManagedIdentityReference)` was added
+
+#### `models.TimeSeriesDatabaseConnectionProperties` was modified
+
+* `withIdentity(models.ManagedIdentityReference)` was added
+* `identity()` was added
+
+#### `models.AzureDataExplorerConnectionProperties` was modified
+
+* `withIdentity(models.ManagedIdentityReference)` was added
+* `withIdentity(models.ManagedIdentityReference)` was added
+
+#### `models.EventHub` was modified
+
+* `withIdentity(models.ManagedIdentityReference)` was added
+* `withIdentity(models.ManagedIdentityReference)` was added
+
+#### `models.ServiceBus` was modified
+
+* `withIdentity(models.ManagedIdentityReference)` was added
+* `withIdentity(models.ManagedIdentityReference)` was added
 
 ## 1.1.0-beta.1 (2022-12-20)
 

@@ -54,7 +54,7 @@ public final class EventCategoriesClientImpl implements EventCategoriesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientEventCa")
-    private interface EventCategoriesService {
+    public interface EventCategoriesService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Insights/eventcategories")
         @ExpectedResponses({200})

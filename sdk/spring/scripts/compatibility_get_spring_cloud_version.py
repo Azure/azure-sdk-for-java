@@ -6,8 +6,8 @@
 
 
 import os
-import json
 import argparse
+import requests
 
 
 def get_args():
@@ -24,8 +24,7 @@ def change_to_repo_root_dir():
 def get_spring_cloud_version(filepath):
     spring_boot_version = get_args().spring_boot_dependencies_version
     spring_cloud_version = ""
-    with open(filepath, 'r') as file:
-        data = json.load(file)
+    data = requests.get(filepath).json()
     for entry in data:
         for key in entry:
             if spring_boot_version == entry[key]:
@@ -36,7 +35,7 @@ def get_spring_cloud_version(filepath):
 
 def main():
     change_to_repo_root_dir()
-    get_spring_cloud_version("./sdk/spring/spring-cloud-azure-supported-spring.json")
+    get_spring_cloud_version("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/spring/spring-cloud-azure-supported-spring.json")
 
 
 if __name__ == '__main__':
