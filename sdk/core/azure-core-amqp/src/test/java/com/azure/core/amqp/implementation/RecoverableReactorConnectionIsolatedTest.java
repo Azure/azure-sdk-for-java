@@ -67,11 +67,12 @@ public class RecoverableReactorConnectionIsolatedTest {
         connectionStates.add(ConnectionState.as(EndpointState.ACTIVE));
 
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier(connectionStates, retryOptions);
-        final RecoverableReactorConnection recoverableConnection = new RecoverableReactorConnection(connectionSupplier,
-            FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final RecoverableReactorConnection<ReactorConnection> recoverableConnection = new RecoverableReactorConnection<>(
+            connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         try {
+            final Mono<ReactorConnection> connectionMono = recoverableConnection.get();
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-                verifier.create(() -> recoverableConnection.get())
+                verifier.create(() -> connectionMono)
                     .thenRequest(1)
                     .thenAwait(VIRTUAL_TIME_SHIFT)
                     .expectNextMatches(con -> {
@@ -86,7 +87,7 @@ public class RecoverableReactorConnectionIsolatedTest {
             }
         } finally {
             connectionSupplier.dispose();
-            recoverableConnection.terminate();
+            recoverableConnection.dispose();
         }
     }
 
@@ -101,11 +102,12 @@ public class RecoverableReactorConnectionIsolatedTest {
         connectionStates.add(ConnectionState.as(EndpointState.ACTIVE));
 
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier(connectionStates, retryOptions);
-        final RecoverableReactorConnection recoverableConnection = new RecoverableReactorConnection(connectionSupplier,
-            FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final RecoverableReactorConnection<ReactorConnection> recoverableConnection = new RecoverableReactorConnection<>(
+            connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         try {
+            final Mono<ReactorConnection> connectionMono = recoverableConnection.get();
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-                verifier.create(() -> recoverableConnection.get())
+                verifier.create(() -> connectionMono)
                     .thenRequest(1)
                     .thenAwait(VIRTUAL_TIME_SHIFT)
                     .expectNextMatches(con -> {
@@ -120,7 +122,7 @@ public class RecoverableReactorConnectionIsolatedTest {
             }
         } finally {
             connectionSupplier.dispose();
-            recoverableConnection.terminate();
+            recoverableConnection.dispose();
         }
     }
 
@@ -135,11 +137,12 @@ public class RecoverableReactorConnectionIsolatedTest {
         connectionStates.add(ConnectionState.as(EndpointState.ACTIVE));
 
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier(connectionStates, retryOptions);
-        final RecoverableReactorConnection recoverableConnection = new RecoverableReactorConnection(connectionSupplier,
-            FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final RecoverableReactorConnection<ReactorConnection> recoverableConnection = new RecoverableReactorConnection<>(
+            connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         try {
+            final Mono<ReactorConnection> connectionMono = recoverableConnection.get();
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-                verifier.create(() -> recoverableConnection.get())
+                verifier.create(() -> connectionMono)
                     .thenRequest(1)
                     .thenAwait(VIRTUAL_TIME_SHIFT)
                     .expectNextMatches(con -> {
@@ -152,7 +155,7 @@ public class RecoverableReactorConnectionIsolatedTest {
             }
         } finally {
             connectionSupplier.dispose();
-            recoverableConnection.terminate();
+            recoverableConnection.dispose();
         }
     }
 
@@ -179,11 +182,12 @@ public class RecoverableReactorConnectionIsolatedTest {
         final FixedAmqpRetryPolicy retryPolicy = new FixedAmqpRetryPolicy(retryOptions);
 
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier(connectionStates, retryOptions);
-        final RecoverableReactorConnection recoverableConnection = new RecoverableReactorConnection(connectionSupplier,
-            FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final RecoverableReactorConnection<ReactorConnection> recoverableConnection = new RecoverableReactorConnection<>(
+            connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         try {
+            final Mono<ReactorConnection> connectionMono = recoverableConnection.get();
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-                verifier.create(() -> recoverableConnection.get())
+                verifier.create(() -> connectionMono)
                     .thenRequest(1)
                     .thenAwait(VIRTUAL_TIME_SHIFT)
                     .expectNextMatches(con -> {
@@ -197,7 +201,7 @@ public class RecoverableReactorConnectionIsolatedTest {
             }
         } finally {
             connectionSupplier.dispose();
-            recoverableConnection.terminate();
+            recoverableConnection.dispose();
         }
     }
 
@@ -249,13 +253,15 @@ public class RecoverableReactorConnectionIsolatedTest {
 
         final TestRetryPolicy retryPolicy = new TestRetryPolicy(retryOptions);
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier(connectionStates, retryOptions);
-        final RecoverableReactorConnection recoverableConnection = new RecoverableReactorConnection(connectionSupplier,
-            FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final RecoverableReactorConnection<ReactorConnection> recoverableConnection = new RecoverableReactorConnection<>(
+            connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         try {
+            final Mono<ReactorConnection> connectionMono = recoverableConnection.get();
+
             // The first connection request where the internal retry-cycle inspects the state of all connections
             // from set1 and emits the 'active' one (i.e., the last one in set1).
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-                verifier.create(() -> recoverableConnection.get())
+                verifier.create(() -> connectionMono)
                     .thenRequest(1)
                     .thenAwait(VIRTUAL_TIME_SHIFT)
                     .expectNextMatches(con -> {
@@ -282,7 +288,7 @@ public class RecoverableReactorConnectionIsolatedTest {
             // The second connection request where the internal retry-cycle inspects the state of all connections
             // from set2 and emits the 'active' one (i.e., the last one in set2).
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-                verifier.create(() -> recoverableConnection.get())
+                verifier.create(() -> connectionMono)
                     .thenRequest(1)
                     .thenAwait(VIRTUAL_TIME_SHIFT)
                     .expectNextMatches(con -> {
@@ -302,7 +308,7 @@ public class RecoverableReactorConnectionIsolatedTest {
 
         } finally {
             connectionSupplier.dispose();
-            recoverableConnection.terminate();
+            recoverableConnection.dispose();
         }
     }
 
