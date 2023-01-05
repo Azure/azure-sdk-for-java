@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Tests for {@link AzureJedisPasswordlessConnectionConfiguration} when Lettuce is not on the classpath.
  */
-class AzureJedisPasswordlessAutoConfigurationTest {
+class AzureJedisPasswordlessConnectionConfigurationTest {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withPropertyValues(
