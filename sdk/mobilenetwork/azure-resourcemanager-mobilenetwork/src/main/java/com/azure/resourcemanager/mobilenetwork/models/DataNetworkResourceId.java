@@ -17,6 +17,10 @@ public final class DataNetworkResourceId {
     @JsonProperty(value = "id", required = true)
     private String id;
 
+    /** Creates an instance of DataNetworkResourceId class. */
+    public DataNetworkResourceId() {
+    }
+
     /**
      * Get the id property: Data network resource ID.
      *

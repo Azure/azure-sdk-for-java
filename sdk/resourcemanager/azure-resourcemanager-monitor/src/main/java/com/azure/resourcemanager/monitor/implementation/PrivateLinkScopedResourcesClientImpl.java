@@ -65,7 +65,7 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      */
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientPrivate")
-    private interface PrivateLinkScopedResourcesService {
+    public interface PrivateLinkScopedResourcesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights"
@@ -272,22 +272,6 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
      * @param name The name of the scoped resource object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a scoped resource in a private link scope.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ScopedResourceInner get(String resourceGroupName, String scopeName, String name) {
-        return getAsync(resourceGroupName, scopeName, name).block();
-    }
-
-    /**
-     * Gets a scoped resource in a private link scope.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
-     * @param name The name of the scoped resource object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -298,6 +282,22 @@ public final class PrivateLinkScopedResourcesClientImpl implements PrivateLinkSc
     public Response<ScopedResourceInner> getWithResponse(
         String resourceGroupName, String scopeName, String name, Context context) {
         return getWithResponseAsync(resourceGroupName, scopeName, name, context).block();
+    }
+
+    /**
+     * Gets a scoped resource in a private link scope.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scopeName The name of the Azure Monitor PrivateLinkScope resource.
+     * @param name The name of the scoped resource object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a scoped resource in a private link scope.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ScopedResourceInner get(String resourceGroupName, String scopeName, String name) {
+        return getWithResponse(resourceGroupName, scopeName, name, Context.NONE).getValue();
     }
 
     /**

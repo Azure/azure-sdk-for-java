@@ -16,6 +16,10 @@ public class Metadata {
     @JsonProperty(value = "provisionedBy", access = JsonProperty.Access.WRITE_ONLY)
     private String provisionedBy;
 
+    /** Creates an instance of Metadata class. */
+    public Metadata() {
+    }
+
     /**
      * Get the provisionedBy property: Azure offering managing this resource on-behalf-of customer.
      *

@@ -64,8 +64,8 @@ public interface Site {
     ProvisioningState provisioningState();
 
     /**
-     * Gets the networkFunctions property: An array of IDs of the network functions deployed on the site, maintained by
-     * the user.
+     * Gets the networkFunctions property: An array of IDs of the network functions deployed in the site. Deleting the
+     * site will delete any network functions that are deployed in the site.
      *
      * @return the networkFunctions value.
      */
@@ -144,7 +144,7 @@ public interface Site {
          * The stage of the Site definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithNetworkFunctions {
+        interface WithCreate extends DefinitionStages.WithTags {
             /**
              * Executes the create request.
              *
@@ -169,18 +169,6 @@ public interface Site {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
-        }
-        /** The stage of the Site definition allowing to specify networkFunctions. */
-        interface WithNetworkFunctions {
-            /**
-             * Specifies the networkFunctions property: An array of IDs of the network functions deployed on the site,
-             * maintained by the user..
-             *
-             * @param networkFunctions An array of IDs of the network functions deployed on the site, maintained by the
-             *     user.
-             * @return the next definition stage.
-             */
-            WithCreate withNetworkFunctions(List<SubResource> networkFunctions);
         }
     }
     /**

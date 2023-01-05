@@ -770,6 +770,23 @@ class BlockBlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_12_02")
+    def "Commit block list cold tier"() {
+        setup:
+        blockBlobClient = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        def blockID = getBlockID()
+        blockBlobClient.stageBlock(blockID, data.defaultInputStream, data.defaultDataSize)
+        def ids = [blockID] as List
+        def commitOptions = new BlockBlobCommitBlockListOptions(ids).setTier(AccessTier.COLD)
+
+        when:
+        blockBlobClient.commitBlockListWithResponse(commitOptions, null, null)
+        def properties = blockBlobClient.getProperties()
+
+        then:
+        properties.getAccessTier() == AccessTier.COLD
+    }
+
     def "Get block list"() {
         setup:
         def committedBlocks = [getBlockID(), getBlockID()]
@@ -1478,6 +1495,19 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         bc.getProperties().getAccessTier() == AccessTier.COOL
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_12_02")
+    def "Upload with access tier cold"() {
+        setup:
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        when:
+        bc.uploadWithResponse(data.defaultInputStream, data.defaultDataSize, null, null, AccessTier.COLD, null, null, null,
+            null)
+
+        then:
+        bc.getProperties().getAccessTier() == AccessTier.COLD
     }
 
     def "Upload overwrite false"() {
@@ -2609,6 +2639,28 @@ class BlockBlobAPITest extends APISpec {
         mode                           | _
         BlobCopySourceTagsMode.COPY    | _
         BlobCopySourceTagsMode.REPLACE | _
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_12_02")
+    def "Upload from Url access tier cold"() {
+        setup:
+        def sourceBlob = primaryBlobServiceClient.getBlobContainerClient(containerName).getBlobClient(generateBlobName())
+        sourceBlob.upload(data.defaultInputStream, data.defaultDataSize)
+        def sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+            new BlobContainerSasPermission().setReadPermission(true)))
+        if (blockBlobClient.exists()) {
+            blockBlobClient.delete()
+        }
+
+        def uploadOptions = new BlobUploadFromUrlOptions(sourceBlob.getBlobUrl() + "?" + sas)
+            .setTier(AccessTier.COLD)
+
+        when:
+        blockBlobClient.uploadFromUrlWithResponse(uploadOptions, null, null)
+        def properties = blockBlobClient.getProperties()
+
+        then:
+        properties.getAccessTier() == AccessTier.COLD
     }
 
     def "BlockBlobItem null headers"() {

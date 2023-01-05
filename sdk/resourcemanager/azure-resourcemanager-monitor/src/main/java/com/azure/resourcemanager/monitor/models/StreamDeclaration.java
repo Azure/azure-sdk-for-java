@@ -17,6 +17,10 @@ public final class StreamDeclaration {
     @JsonProperty(value = "columns")
     private List<ColumnDefinition> columns;
 
+    /** Creates an instance of StreamDeclaration class. */
+    public StreamDeclaration() {
+    }
+
     /**
      * Get the columns property: List of columns used by data in this stream.
      *

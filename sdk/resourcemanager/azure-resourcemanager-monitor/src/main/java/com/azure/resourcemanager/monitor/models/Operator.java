@@ -25,9 +25,6 @@ public final class Operator extends ExpandableStringEnum<Operator> {
     /** Static value LessThanOrEqual for Operator. */
     public static final Operator LESS_THAN_OR_EQUAL = fromString("LessThanOrEqual");
 
-    /** Static value Include for Operator. */
-    public static final Operator INCLUDE = fromString("Include");
-
     /**
      * Creates or finds a Operator from its string representation.
      *

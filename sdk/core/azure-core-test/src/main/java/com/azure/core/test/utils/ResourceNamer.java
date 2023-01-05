@@ -4,14 +4,13 @@
 package com.azure.core.test.utils;
 
 import java.util.Locale;
-import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * A random string generator used in tests.
  */
 public class ResourceNamer {
-    private static final Random RANDOM = new Random();
     private static final Locale LOCALE = Locale.US;
 
     private final String randName;
@@ -43,7 +42,7 @@ public class ResourceNamer {
             return randomString(maxLen);
         }
 
-        String minRandomString = String.format("%05d", Math.abs(RANDOM.nextInt() % 100000));
+        String minRandomString = String.format("%05d", Math.abs(ThreadLocalRandom.current().nextInt() % 100000));
 
         if (maxLen <= prefix.length() + randName.length() + minRandomnessLength) {
             String str = prefix + minRandomString;

@@ -56,11 +56,11 @@ public final class ActionGroupsCreateNotificationsAtActionGroupResourceLevelSamp
                             .asList(
                                 new SmsReceiver()
                                     .withName("John Doe's mobile")
-                                    .withCountryCode("1")
-                                    .withPhoneNumber("fakePhoneNumberPlaceholder"),
+                                    .withCountryCode("fakeTokenPlaceholder")
+                                    .withPhoneNumber("1234567890"),
                                 new SmsReceiver()
                                     .withName("Jane Smith's mobile")
-                                    .withCountryCode("1")
+                                    .withCountryCode("fakeTokenPlaceholder")
                                     .withPhoneNumber("0987654321")))
                     .withWebhookReceivers(
                         Arrays
@@ -112,8 +112,8 @@ public final class ActionGroupsCreateNotificationsAtActionGroupResourceLevelSamp
                             .asList(
                                 new VoiceReceiver()
                                     .withName("Sample voice")
-                                    .withCountryCode("1")
-                                    .withPhoneNumber("fakePhoneNumberPlaceholder")))
+                                    .withCountryCode("fakeTokenPlaceholder")
+                                    .withPhoneNumber("1234567890")))
                     .withLogicAppReceivers(
                         Arrays
                             .asList(

@@ -6,13 +6,16 @@ package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.SimPolicyResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.SimState;
 import com.azure.resourcemanager.mobilenetwork.models.SimStaticIpProperties;
+import com.azure.resourcemanager.mobilenetwork.models.SiteProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** SIM resource. */
 @Fluent
@@ -23,6 +26,16 @@ public final class SimInner extends ProxyResource {
     @JsonProperty(value = "properties", required = true)
     private SimPropertiesFormat innerProperties = new SimPropertiesFormat();
 
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /** Creates an instance of SimInner class. */
+    public SimInner() {
+    }
+
     /**
      * Get the innerProperties property: SIM Properties.
      *
@@ -30,6 +43,61 @@ public final class SimInner extends ProxyResource {
      */
     private SimPropertiesFormat innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the authenticationKey property: The Ki value for the SIM.
+     *
+     * @return the authenticationKey value.
+     */
+    public String authenticationKey() {
+        return this.innerProperties() == null ? null : this.innerProperties().authenticationKey();
+    }
+
+    /**
+     * Set the authenticationKey property: The Ki value for the SIM.
+     *
+     * @param authenticationKey the authenticationKey value to set.
+     * @return the SimInner object itself.
+     */
+    public SimInner withAuthenticationKey(String authenticationKey) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SimPropertiesFormat();
+        }
+        this.innerProperties().withAuthenticationKey(authenticationKey);
+        return this;
+    }
+
+    /**
+     * Get the operatorKeyCode property: The Opc value for the SIM.
+     *
+     * @return the operatorKeyCode value.
+     */
+    public String operatorKeyCode() {
+        return this.innerProperties() == null ? null : this.innerProperties().operatorKeyCode();
+    }
+
+    /**
+     * Set the operatorKeyCode property: The Opc value for the SIM.
+     *
+     * @param operatorKeyCode the operatorKeyCode value to set.
+     * @return the SimInner object itself.
+     */
+    public SimInner withOperatorKeyCode(String operatorKeyCode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SimPropertiesFormat();
+        }
+        this.innerProperties().withOperatorKeyCode(operatorKeyCode);
+        return this;
     }
 
     /**
@@ -48,6 +116,15 @@ public final class SimInner extends ProxyResource {
      */
     public SimState simState() {
         return this.innerProperties() == null ? null : this.innerProperties().simState();
+    }
+
+    /**
+     * Get the siteProvisioningState property: A dictionary of sites to the provisioning state of this SIM on that site.
+     *
+     * @return the siteProvisioningState value.
+     */
+    public Map<String, SiteProvisioningState> siteProvisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().siteProvisioningState();
     }
 
     /**
@@ -99,52 +176,6 @@ public final class SimInner extends ProxyResource {
     }
 
     /**
-     * Get the authenticationKey property: The Ki value for the SIM.
-     *
-     * @return the authenticationKey value.
-     */
-    public String authenticationKey() {
-        return this.innerProperties() == null ? null : this.innerProperties().authenticationKey();
-    }
-
-    /**
-     * Set the authenticationKey property: The Ki value for the SIM.
-     *
-     * @param authenticationKey the authenticationKey value to set.
-     * @return the SimInner object itself.
-     */
-    public SimInner withAuthenticationKey(String authenticationKey) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SimPropertiesFormat();
-        }
-        this.innerProperties().withAuthenticationKey(authenticationKey);
-        return this;
-    }
-
-    /**
-     * Get the operatorKeyCode property: The Opc value for the SIM.
-     *
-     * @return the operatorKeyCode value.
-     */
-    public String operatorKeyCode() {
-        return this.innerProperties() == null ? null : this.innerProperties().operatorKeyCode();
-    }
-
-    /**
-     * Set the operatorKeyCode property: The Opc value for the SIM.
-     *
-     * @param operatorKeyCode the operatorKeyCode value to set.
-     * @return the SimInner object itself.
-     */
-    public SimInner withOperatorKeyCode(String operatorKeyCode) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SimPropertiesFormat();
-        }
-        this.innerProperties().withOperatorKeyCode(operatorKeyCode);
-        return this;
-    }
-
-    /**
      * Get the deviceType property: An optional free-form text field that can be used to record the device type this SIM
      * is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered based on
      * this value.
@@ -172,7 +203,8 @@ public final class SimInner extends ProxyResource {
     }
 
     /**
-     * Get the simPolicy property: The SIM policy used by this SIM.
+     * Get the simPolicy property: The SIM policy used by this SIM. The SIM policy must be in the same location as the
+     * SIM.
      *
      * @return the simPolicy value.
      */
@@ -181,7 +213,8 @@ public final class SimInner extends ProxyResource {
     }
 
     /**
-     * Set the simPolicy property: The SIM policy used by this SIM.
+     * Set the simPolicy property: The SIM policy used by this SIM. The SIM policy must be in the same location as the
+     * SIM.
      *
      * @param simPolicy the simPolicy value to set.
      * @return the SimInner object itself.
@@ -217,6 +250,25 @@ public final class SimInner extends ProxyResource {
         }
         this.innerProperties().withStaticIpConfiguration(staticIpConfiguration);
         return this;
+    }
+
+    /**
+     * Get the vendorName property: The name of the SIM vendor who provided this SIM, if any.
+     *
+     * @return the vendorName value.
+     */
+    public String vendorName() {
+        return this.innerProperties() == null ? null : this.innerProperties().vendorName();
+    }
+
+    /**
+     * Get the vendorKeyFingerprint property: The public key fingerprint of the SIM vendor who provided this SIM, if
+     * any.
+     *
+     * @return the vendorKeyFingerprint value.
+     */
+    public String vendorKeyFingerprint() {
+        return this.innerProperties() == null ? null : this.innerProperties().vendorKeyFingerprint();
     }
 
     /**

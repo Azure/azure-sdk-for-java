@@ -934,6 +934,32 @@ public class MultiDatabaseApplication implements CommandLineRunner {
 }
 ```
 
+### Multi-Tenancy at the Database Level
+- Azure-spring-data-cosmos supports multi-tenancy at the database level configuration by extending `CosmosFactory` and overriding the getDatabaseName() function.
+```java readme-sample-MultiTenantDBCosmosFactory
+public class MultiTenantDBCosmosFactory extends CosmosFactory {
+
+    private String tenantId;
+    
+    /**
+     * Validate config and initialization
+     *
+     * @param cosmosAsyncClient cosmosAsyncClient
+     * @param databaseName      databaseName
+     */
+    public MultiTenantDBCosmosFactory(CosmosAsyncClient cosmosAsyncClient, String databaseName) {
+        super(cosmosAsyncClient, databaseName);
+        
+        this.tenantId = databaseName;
+    }
+
+    @Override
+    public String getDatabaseName() {
+        return this.getCosmosAsyncClient().getDatabase(this.tenantId).toString();
+    }
+}
+```
+
 ## Beta version package
 
 Beta version built from `main` branch are available, you can refer to the [instruction](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md#nightly-package-builds) to use beta version packages.

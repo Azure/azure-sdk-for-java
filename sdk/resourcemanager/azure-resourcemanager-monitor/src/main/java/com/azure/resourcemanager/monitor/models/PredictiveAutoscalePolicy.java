@@ -25,6 +25,10 @@ public final class PredictiveAutoscalePolicy {
     @JsonProperty(value = "scaleLookAheadTime")
     private Duration scaleLookAheadTime;
 
+    /** Creates an instance of PredictiveAutoscalePolicy class. */
+    public PredictiveAutoscalePolicy() {
+    }
+
     /**
      * Get the scaleMode property: the predictive autoscale mode.
      *

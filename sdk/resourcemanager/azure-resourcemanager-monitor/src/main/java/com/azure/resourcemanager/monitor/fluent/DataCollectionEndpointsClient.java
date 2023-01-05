@@ -125,19 +125,6 @@ public interface DataCollectionEndpointsClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionEndpointName The name of the data collection endpoint. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DataCollectionEndpointResourceInner getByResourceGroup(String resourceGroupName, String dataCollectionEndpointName);
-
-    /**
-     * Returns the specified data collection endpoint.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionEndpointName The name of the data collection endpoint. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -147,6 +134,19 @@ public interface DataCollectionEndpointsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DataCollectionEndpointResourceInner> getByResourceGroupWithResponse(
         String resourceGroupName, String dataCollectionEndpointName, Context context);
+
+    /**
+     * Returns the specified data collection endpoint.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dataCollectionEndpointName The name of the data collection endpoint. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of ARM tracked top level resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DataCollectionEndpointResourceInner getByResourceGroup(String resourceGroupName, String dataCollectionEndpointName);
 
     /**
      * Creates or updates a data collection endpoint.
@@ -169,21 +169,6 @@ public interface DataCollectionEndpointsClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionEndpointName The name of the data collection endpoint. The name is case insensitive.
-     * @param body The payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DataCollectionEndpointResourceInner> createAsync(
-        String resourceGroupName, String dataCollectionEndpointName, DataCollectionEndpointResourceInner body);
-
-    /**
-     * Creates or updates a data collection endpoint.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionEndpointName The name of the data collection endpoint. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -191,19 +176,6 @@ public interface DataCollectionEndpointsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DataCollectionEndpointResourceInner> createAsync(String resourceGroupName, String dataCollectionEndpointName);
-
-    /**
-     * Creates or updates a data collection endpoint.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionEndpointName The name of the data collection endpoint. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DataCollectionEndpointResourceInner create(String resourceGroupName, String dataCollectionEndpointName);
 
     /**
      * Creates or updates a data collection endpoint.
@@ -223,6 +195,19 @@ public interface DataCollectionEndpointsClient
         String dataCollectionEndpointName,
         DataCollectionEndpointResourceInner body,
         Context context);
+
+    /**
+     * Creates or updates a data collection endpoint.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dataCollectionEndpointName The name of the data collection endpoint. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of ARM tracked top level resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DataCollectionEndpointResourceInner create(String resourceGroupName, String dataCollectionEndpointName);
 
     /**
      * Updates part of a data collection endpoint.
@@ -245,21 +230,6 @@ public interface DataCollectionEndpointsClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionEndpointName The name of the data collection endpoint. The name is case insensitive.
-     * @param body The payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DataCollectionEndpointResourceInner> updateAsync(
-        String resourceGroupName, String dataCollectionEndpointName, ResourceForUpdate body);
-
-    /**
-     * Updates part of a data collection endpoint.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionEndpointName The name of the data collection endpoint. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -267,19 +237,6 @@ public interface DataCollectionEndpointsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DataCollectionEndpointResourceInner> updateAsync(String resourceGroupName, String dataCollectionEndpointName);
-
-    /**
-     * Updates part of a data collection endpoint.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionEndpointName The name of the data collection endpoint. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of ARM tracked top level resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DataCollectionEndpointResourceInner update(String resourceGroupName, String dataCollectionEndpointName);
 
     /**
      * Updates part of a data collection endpoint.
@@ -296,6 +253,19 @@ public interface DataCollectionEndpointsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DataCollectionEndpointResourceInner> updateWithResponse(
         String resourceGroupName, String dataCollectionEndpointName, ResourceForUpdate body, Context context);
+
+    /**
+     * Updates part of a data collection endpoint.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dataCollectionEndpointName The name of the data collection endpoint. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of ARM tracked top level resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DataCollectionEndpointResourceInner update(String resourceGroupName, String dataCollectionEndpointName);
 
     /**
      * Deletes a data collection endpoint.
@@ -328,18 +298,6 @@ public interface DataCollectionEndpointsClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dataCollectionEndpointName The name of the data collection endpoint. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String dataCollectionEndpointName);
-
-    /**
-     * Deletes a data collection endpoint.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dataCollectionEndpointName The name of the data collection endpoint. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -348,4 +306,16 @@ public interface DataCollectionEndpointsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(String resourceGroupName, String dataCollectionEndpointName, Context context);
+
+    /**
+     * Deletes a data collection endpoint.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dataCollectionEndpointName The name of the data collection endpoint. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String dataCollectionEndpointName);
 }

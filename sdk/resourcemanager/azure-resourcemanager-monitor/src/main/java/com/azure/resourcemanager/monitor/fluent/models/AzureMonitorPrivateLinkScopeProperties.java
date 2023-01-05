@@ -33,6 +33,10 @@ public final class AzureMonitorPrivateLinkScopeProperties {
     @JsonProperty(value = "accessModeSettings", required = true)
     private AccessModeSettings accessModeSettings;
 
+    /** Creates an instance of AzureMonitorPrivateLinkScopeProperties class. */
+    public AzureMonitorPrivateLinkScopeProperties() {
+    }
+
     /**
      * Get the provisioningState property: Current state of this PrivateLinkScope: whether or not is has been
      * provisioned within the resource group it is defined. Users cannot change this value but are able to read from it.

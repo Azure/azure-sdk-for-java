@@ -25,6 +25,10 @@ public final class TimeSeriesElement {
     @JsonProperty(value = "data")
     private List<MetricValue> data;
 
+    /** Creates an instance of TimeSeriesElement class. */
+    public TimeSeriesElement() {
+    }
+
     /**
      * Get the metadatavalues property: the metadata values returned if $filter was specified in the call.
      *
