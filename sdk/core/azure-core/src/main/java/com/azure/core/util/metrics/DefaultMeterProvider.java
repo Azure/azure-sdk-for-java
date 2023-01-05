@@ -19,7 +19,7 @@ final class DefaultMeterProvider implements MeterProvider {
         + "but one could not be found on the classpath. If you are using a dependency manager, consider including a "
         + "dependency on azure-core-metrics-opentelemetry or enabling instrumentation package.";
 
-    private static final Providers<MeterProvider, Meter> METER_PROVIDER = new Providers(MeterProvider.class, NO_DEFAULT_PROVIDER);
+    private static final Providers<MeterProvider, Meter> METER_PROVIDER = new Providers<>(MeterProvider.class, null, NO_DEFAULT_PROVIDER);
 
     private DefaultMeterProvider() {
     }
@@ -31,7 +31,7 @@ final class DefaultMeterProvider implements MeterProvider {
     public Meter createMeter(String libraryName, String libraryVersion, MetricsOptions options) {
         Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
 
-        return METER_PROVIDER.createInstance(provider -> provider.createMeter(libraryName, libraryVersion, options),
+        return METER_PROVIDER.create(provider -> provider.createMeter(libraryName, libraryVersion, options),
             NoopMeter.INSTANCE, null);
     }
 

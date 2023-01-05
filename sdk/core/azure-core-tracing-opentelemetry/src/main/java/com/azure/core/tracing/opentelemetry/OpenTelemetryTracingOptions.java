@@ -35,7 +35,7 @@ public class OpenTelemetryTracingOptions extends TracingOptions {
      *     .addSpanProcessor&#40;SimpleSpanProcessor.create&#40;LoggingSpanExporter.create&#40;&#41;&#41;&#41;
      *     .build&#40;&#41;;
      *
-     * &#47;&#47; Pass OTel tracerProvider to TracingOptions.
+     * &#47;&#47; Pass OpenTelemetry tracerProvider to TracingOptions.
      * TracingOptions customTracingOptions = new OpenTelemetryTracingOptions&#40;&#41;
      *     .setProvider&#40;tracerProvider&#41;;
      *
@@ -46,7 +46,7 @@ public class OpenTelemetryTracingOptions extends TracingOptions {
      *     .clientOptions&#40;new ClientOptions&#40;&#41;.setTracingOptions&#40;customTracingOptions&#41;&#41;
      *     .build&#40;&#41;;
      *
-     * &#47;&#47; use client as usual, if it emits metric, they will be exported
+     * &#47;&#47; use client as usual, if it emits spans, they will be exported
      * sampleClient.methodCall&#40;&quot;get items&quot;&#41;;
      *
      * </pre>

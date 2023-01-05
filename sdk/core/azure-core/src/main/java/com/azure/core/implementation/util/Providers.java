@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.core.implementation.util;
 
-import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -12,8 +11,11 @@ import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.function.Function;
 
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_HTTP_CLIENT_IMPLEMENTATION;
-
+/**
+ * Helper class that unifies SPI instances creation.
+ * @param <TProvider> Service Provider interface.
+ * @param <TInstance> Service interface type.
+ */
 public final class Providers<TProvider, TInstance> {
     private static final ClientLogger LOGGER = new ClientLogger(Providers.class);
     private final TProvider defaultProvider;
@@ -23,9 +25,14 @@ public final class Providers<TProvider, TInstance> {
     private final boolean noDefaultImplementation;
     private final String noProviderMessage;
     private final Class<TProvider> providerClass;
-    private String noSpecificProviderMessage;
 
-    public Providers(Class<TProvider> providerClass, String noProviderErrorMessage) {
+    /**
+     * Resolves available providers.
+     * @param providerClass Provider class.
+     * @param defaultImplementationName Explicit name of implementation provider class to use.
+     * @param noProviderErrorMessage Error message to throw and log in case no providers are found.
+     */
+    public Providers(Class<TProvider> providerClass, String defaultImplementationName, String noProviderErrorMessage) {
         this.providerClass = providerClass;
         // Use as classloader to load provider-configuration files and provider classes the classloader
         // that loaded this class. In most cases this will be the System classloader.
@@ -53,8 +60,7 @@ public final class Providers<TProvider, TInstance> {
             LOGGER.verbose("Additional provider found on the classpath: {}", additionalProviderName);
         }
 
-        defaultImplementation = Configuration.getGlobalConfiguration()
-            .get(PROPERTY_AZURE_HTTP_CLIENT_IMPLEMENTATION);
+        defaultImplementation = defaultImplementationName;
         noDefaultImplementation = CoreUtils.isNullOrEmpty(defaultImplementation);
         noProviderMessage = noProviderErrorMessage;
     }
@@ -64,32 +70,40 @@ public final class Providers<TProvider, TInstance> {
                 + "%s but it wasn't found on the classpath. If you're using a dependency manager ensure you're "
                 + "including the dependency that provides the specific implementation. If you're including the "
                 + "specific implementation ensure that the %s service it supplies is being included in the "
-                + "'META-INF/services' file '%s'. The requested %s was: ",
-                providerClass.getName(), providerClass.getName(), providerClass.getName(), selectedImplementation);
+                + "'META-INF/services' file '%s'. The requested provider was: %s.",
+                providerClass.getSimpleName(), providerClass.getSimpleName(), providerClass.getName(), selectedImplementation);
     }
 
-    public TInstance createInstance(Function<TProvider, TInstance> createInstance,
-                                TInstance fallBackInstance, Class<? extends TProvider> selectedImplementation) {
-        if (defaultProvider == null) {
-            if (fallBackInstance == null) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(noProviderMessage));
+    /**
+     * Creates instance of service.
+     *
+     * @param createInstance callback that creates service instance with resolved provider.
+     * @param fallbackInstance service instance to return if provider is not found. Usually a no-op implementation.
+     *                         If null and no provider (satisfying all conditions) is found, throws {@link IllegalStateException}
+     * @param selectedImplementation Explicit provider implementation class. It still must be registered in META-INF/services.
+     * @return created service instance.
+     *
+     * @throws IllegalStateException when requested provider cannot be found and fallback instance is null.
+     */
+    public TInstance create(Function<TProvider, TInstance> createInstance,
+                                TInstance fallbackInstance, Class<? extends TProvider> selectedImplementation) {
+        TProvider provider;
+        String errorMessage;
+        if (selectedImplementation == null && noDefaultImplementation) {
+            provider = defaultProvider;
+            errorMessage = noProviderMessage;
+        } else {
+            String implementationName = selectedImplementation == null ? defaultImplementation : selectedImplementation.getName();
+            provider = availableProviders.get(implementationName);
+            errorMessage = formatNoSpecificProviderErrorMessage(implementationName);
+        }
+
+        if (provider == null) {
+            if (fallbackInstance == null) {
+                throw LOGGER.logExceptionAsError(new IllegalStateException(errorMessage));
             }
 
-            return fallBackInstance;
-        }
-
-        if (selectedImplementation == null && noDefaultImplementation) {
-            return createInstance.apply(defaultProvider);
-        }
-
-        String implementationName = (selectedImplementation == null)
-            ? defaultImplementation
-            : selectedImplementation.getName();
-
-        TProvider provider = availableProviders.get(implementationName);
-        if (provider == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException(formatNoSpecificProviderErrorMessage(implementationName)));
+            return fallbackInstance;
         }
 
         return createInstance.apply(provider);

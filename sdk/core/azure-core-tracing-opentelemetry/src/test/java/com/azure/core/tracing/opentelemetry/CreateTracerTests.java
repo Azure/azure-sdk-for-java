@@ -60,7 +60,6 @@ public class CreateTracerTests {
         assertFalse(tracer.isEnabled());
     }
 
-
     @Test
     public void createTracerNoAzNamespace() {
         OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions()

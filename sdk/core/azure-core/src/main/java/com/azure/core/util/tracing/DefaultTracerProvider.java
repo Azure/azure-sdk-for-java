@@ -20,7 +20,7 @@ final class DefaultTracerProvider implements TracerProvider {
     private static final TracerProvider INSTANCE = new DefaultTracerProvider();
     private static final ClientLogger LOGGER = new ClientLogger(DefaultTracerProvider.class);
     private static final TracingOptions DEFAULT_OPTIONS = TracingOptions.fromConfiguration(Configuration.getGlobalConfiguration());
-    private static Providers<TracerProvider, Tracer> tracerProvider = new Providers<>(TracerProvider.class, NO_DEFAULT_PROVIDER);
+    private static final Providers<TracerProvider, Tracer> TRACER_PROVIDERS = new Providers<>(TracerProvider.class, null, NO_DEFAULT_PROVIDER);
     private static final Tracer FALLBACK_TRACER = createFallbackTracer();
 
     private DefaultTracerProvider() {
@@ -49,7 +49,7 @@ final class DefaultTracerProvider implements TracerProvider {
         final TracingOptions finalOptions = options != null ? options : DEFAULT_OPTIONS;
 
         if (finalOptions.isEnabled()) {
-            return tracerProvider.createInstance((provider) -> provider.createTracer(libraryName, libraryVersion, azNamespace, finalOptions),
+            return TRACER_PROVIDERS.create((provider) -> provider.createTracer(libraryName, libraryVersion, azNamespace, finalOptions),
                 FALLBACK_TRACER, null);
         }
 

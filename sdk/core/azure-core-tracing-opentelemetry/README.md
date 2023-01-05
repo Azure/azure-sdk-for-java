@@ -73,7 +73,7 @@ SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
     .addSpanProcessor(SimpleSpanProcessor.create(LoggingSpanExporter.create()))
     .build();
 
-// Pass OTel tracerProvider to TracingOptions.
+// Pass OpenTelemetry tracerProvider to TracingOptions.
 TracingOptions customTracingOptions = new OpenTelemetryTracingOptions()
     .setProvider(tracerProvider);
 
@@ -84,7 +84,7 @@ AzureClient sampleClient = new AzureClientBuilder()
     .clientOptions(new ClientOptions().setTracingOptions(customTracingOptions))
     .build();
 
-// use client as usual, if it emits metric, they will be exported
+// use client as usual, if it emits spans, they will be exported
 sampleClient.methodCall("get items");
 
 ```
@@ -136,14 +136,14 @@ AzureClient sampleClient = new AzureClientBuilder()
 
 Tracer tracer = tracerProvider.get("test");
 Span parent = tracer.spanBuilder("parent").startSpan();
-io.opentelemetry.context.Context otelContext = io.opentelemetry.context.Context.current().with(parent);
+io.opentelemetry.context.Context traceContext = io.opentelemetry.context.Context.current().with(parent);
 
 // do some  work
 
 // You can pass parent explicitly using PARENT_TRACE_CONTEXT_KEY in the com.azure.core.util.Context.
 // Or, when using async clients, pass it in reactor.util.context.Context under the same key.
 String response = sampleClient.methodCall("get items",
-    new Context(PARENT_TRACE_CONTEXT_KEY, otelContext));
+    new Context(PARENT_TRACE_CONTEXT_KEY, traceContext));
 
 // do more work
 parent.end();

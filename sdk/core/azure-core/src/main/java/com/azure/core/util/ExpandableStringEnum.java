@@ -46,6 +46,8 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
      * @param clazz The class of the expandable string enum.
      * @param <T> the class of the expandable string enum.
      * @return The expandable string enum instance.
+     *
+     * @throws RuntimeException wrapping implementation class constructor exception (if any is thrown).
      */
     @SuppressWarnings({"unchecked", "deprecation"})
     protected static <T extends ExpandableStringEnum<T>> T fromString(String name, Class<T> clazz) {
