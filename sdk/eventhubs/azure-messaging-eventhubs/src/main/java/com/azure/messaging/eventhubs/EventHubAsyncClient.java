@@ -4,11 +4,12 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.RecoverableReactorConnection;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
+import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -29,7 +30,7 @@ import java.util.Objects;
 class EventHubAsyncClient implements Closeable {
     private static final ClientLogger LOGGER = new ClientLogger(EventHubAsyncClient.class);
     private final MessageSerializer messageSerializer;
-    private final EventHubConnectionProcessor connectionProcessor;
+    private final RecoverableReactorConnection<EventHubReactorAmqpConnection> connectionProcessor;
     private final Scheduler scheduler;
     private final boolean isSharedConnection;
     private final Runnable onClientClose;
@@ -37,8 +38,8 @@ class EventHubAsyncClient implements Closeable {
     private final Tracer tracer;
     private final Meter meter;
 
-    EventHubAsyncClient(EventHubConnectionProcessor connectionProcessor, MessageSerializer messageSerializer,
-        Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose, String identifier, Meter meter, Tracer tracer) {
+    EventHubAsyncClient(RecoverableReactorConnection<EventHubReactorAmqpConnection> connectionProcessor, MessageSerializer messageSerializer,
+                        Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose, String identifier, Meter meter, Tracer tracer) {
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
             "'connectionProcessor' cannot be null.");
@@ -66,7 +67,7 @@ class EventHubAsyncClient implements Closeable {
      * @return The Event Hub name this client interacts with.
      */
     String getEventHubName() {
-        return connectionProcessor.getEventHubName();
+        return connectionProcessor.getEntityPath();
     }
 
     /**
@@ -76,6 +77,7 @@ class EventHubAsyncClient implements Closeable {
      */
     Mono<EventHubProperties> getProperties() {
         return connectionProcessor
+            .get()
             .flatMap(connection -> connection.getManagementNode())
             .flatMap(EventHubManagementNode::getEventHubProperties);
     }
@@ -98,6 +100,7 @@ class EventHubAsyncClient implements Closeable {
      */
     Mono<PartitionProperties> getPartitionProperties(String partitionId) {
         return connectionProcessor
+            .get()
             .flatMap(connection -> connection.getManagementNode())
             .flatMap(node -> node.getPartitionProperties(partitionId));
     }
@@ -109,7 +112,7 @@ class EventHubAsyncClient implements Closeable {
      * @return A new {@link EventHubProducerAsyncClient}.
      */
     EventHubProducerAsyncClient createProducer() {
-        EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(tracer, meter, connectionProcessor.getFullyQualifiedNamespace(), connectionProcessor.getEventHubName());
+        EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(tracer, meter, connectionProcessor.getFullyQualifiedNamespace(), connectionProcessor.getEntityPath());
         return new EventHubProducerAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), getEventHubName(),
             connectionProcessor, connectionProcessor.getRetryOptions(), messageSerializer, scheduler,
             isSharedConnection, onClientClose, identifier, instrumentation);
@@ -136,7 +139,7 @@ class EventHubAsyncClient implements Closeable {
         }
 
         EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
-            connectionProcessor.getFullyQualifiedNamespace(), connectionProcessor.getEventHubName(), consumerGroup, isSync);
+            connectionProcessor.getFullyQualifiedNamespace(), connectionProcessor.getEntityPath(), consumerGroup, isSync);
 
         return new EventHubConsumerAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), getEventHubName(),
             connectionProcessor, messageSerializer, consumerGroup, prefetchCount, isSharedConnection,
