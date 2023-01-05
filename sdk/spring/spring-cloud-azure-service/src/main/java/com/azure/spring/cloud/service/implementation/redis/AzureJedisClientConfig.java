@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.service.redis;
+package com.azure.spring.cloud.service.implementation.redis;
 
 import redis.clients.jedis.HostAndPortMapper;
 import redis.clients.jedis.JedisClientConfig;
@@ -13,6 +13,9 @@ import javax.net.ssl.SSLSocketFactory;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+/**
+ * JedisClientConfig implementation used for Azure Redis.
+ */
 public final class AzureJedisClientConfig implements JedisClientConfig {
 
     private final int connectionTimeoutMillis;
@@ -123,7 +126,7 @@ public final class AzureJedisClientConfig implements JedisClientConfig {
         return new Builder();
     }
 
-    public static class Builder {
+    public static final class Builder {
 
         private int connectionTimeoutMillis = Protocol.DEFAULT_TIMEOUT;
         private int socketTimeoutMillis = Protocol.DEFAULT_TIMEOUT;

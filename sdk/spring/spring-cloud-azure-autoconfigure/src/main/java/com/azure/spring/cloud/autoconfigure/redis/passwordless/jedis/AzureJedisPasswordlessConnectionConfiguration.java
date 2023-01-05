@@ -45,7 +45,7 @@ import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUti
 @ConditionalOnClass({GenericObjectPool.class, JedisConnection.class, Jedis.class})
 @ConditionalOnExpression("${spring.redis.azure.passwordless-enabled:false}")
 @ConditionalOnMissingBean(RedisConnectionFactory.class)
-@ConditionalOnProperty(prefix = "spring.redis", name = { "host", "username" })
+@ConditionalOnProperty(prefix = "spring.redis", name = {"host", "username"})
 @EnableConfigurationProperties(RedisProperties.class)
 class AzureJedisPasswordlessConnectionConfiguration {
 
@@ -74,7 +74,7 @@ class AzureJedisPasswordlessConnectionConfiguration {
         RedisStandaloneConfiguration standaloneConfig = getStandaloneConfig(redisProperties);
         JedisClientConfiguration clientConfiguration = getJedisClientConfiguration(redisProperties);
 
-        return new AzureJedisConnectionFactory(standaloneConfig, clientConfiguration , azureRedisCredentialSupplier);
+        return new AzureJedisConnectionFactory(standaloneConfig, clientConfiguration, azureRedisCredentialSupplier);
     }
 
 
@@ -157,8 +157,7 @@ class AzureJedisPasswordlessConnectionConfiguration {
             config.setPort(connectionInfo.getPort());
             config.setUsername(connectionInfo.getUsername());
             config.setPassword(RedisPassword.of(connectionInfo.getPassword()));
-        }
-        else {
+        } else {
             config.setHostName(redisProperties.getHost());
             config.setPort(redisProperties.getPort());
             config.setUsername(redisProperties.getUsername());
@@ -187,14 +186,12 @@ class AzureJedisPasswordlessConnectionConfiguration {
                 if (index >= 0) {
                     username = candidate.substring(0, index);
                     password = candidate.substring(index + 1);
-                }
-                else {
+                } else {
                     password = candidate;
                 }
             }
             return new ConnectionInfo(uri, useSsl, username, password);
-        }
-        catch (URISyntaxException ex) {
+        } catch (URISyntaxException ex) {
             throw new RedisUrlSyntaxException(url, ex);
         }
     }

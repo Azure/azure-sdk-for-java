@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.redis.passwordless.jedis;
 
-import com.azure.spring.cloud.service.redis.AzureJedisClientConfig;
-import com.azure.spring.cloud.service.redis.AzureJedisPool;
+import com.azure.spring.cloud.service.implementation.redis.AzureJedisClientConfig;
+import com.azure.spring.cloud.service.implementation.redis.AzureJedisPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,11 +31,16 @@ import redis.clients.jedis.util.Pool;
 
 import java.util.function.Supplier;
 
+/**
+ * Connection factory creating Jedis based connections to Azure Redis.
+ *
+ * @since 4.6.0
+ */
 public class AzureJedisConnectionFactory implements InitializingBean, DisposableBean, RedisConnectionFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureJedisConnectionFactory.class);
 
-    private RedisStandaloneConfiguration standaloneConfig;
+    private final RedisStandaloneConfiguration standaloneConfig;
 
     private final Supplier<char[]> credentialSupplier;
     private final JedisClientConfiguration clientConfiguration;
@@ -47,6 +52,13 @@ public class AzureJedisConnectionFactory implements InitializingBean, Disposable
     private boolean convertPipelineAndTxResults = true;
 
 
+    /**
+     * Constructs a new AzureJedisConnectionFactory instance using the given RedisStandaloneConfiguration, JedisClientConfiguration and CredentialSupplier.
+     *
+     * @param standaloneConfig must not be {@literal null}.
+     * @param clientConfiguration must not be {@literal null}.
+     * @param credentialSupplier must not be {@literal null}.
+     */
     public AzureJedisConnectionFactory(RedisStandaloneConfiguration standaloneConfig, JedisClientConfiguration clientConfiguration, Supplier<char[]> credentialSupplier) {
         this.standaloneConfig = standaloneConfig;
         this.clientConfiguration = clientConfiguration;
@@ -123,18 +135,37 @@ public class AzureJedisConnectionFactory implements InitializingBean, Disposable
         this.convertPipelineAndTxResults = convertPipelineAndTxResults;
     }
 
+    /**
+     * Indicates the use of a connection pool.
+     * <p>
+     * Applies only to single node Redis.
+     * @return the use of connection pooling.
+     */
     public boolean getUsePool() {
         return clientConfiguration.isUsePooling();
     }
 
+    /**
+     * Returns the index of the database.
+     *
+     * @return the database index.
+     */
     public int getDatabase() {
         return RedisConfiguration.getDatabaseOrElse(standaloneConfig, standaloneConfig::getDatabase);
     }
 
+    /**
+     * Returns the port used to connect to the Redis instance.
+     *
+     * @return the Redis port.
+     */
     public int getPort() {
         return standaloneConfig.getPort();
     }
 
+    /**
+     * @return {@literal true} to use SSL, {@literal false} to use unencrypted connections.
+     */
     public boolean isUseSsl() {
         return clientConfiguration.isUseSsl();
     }
@@ -158,17 +189,29 @@ public class AzureJedisConnectionFactory implements InitializingBean, Disposable
         return getRedisPassword().map(String::new).orElse(null);
     }
 
-    // TODO how to not use @SuppressWarnings
+    /**
+     * Returns the poolConfig.
+     *
+     * @return the poolConfig
+     */
     @SuppressWarnings("unchecked")
     @Nullable
     public GenericObjectPoolConfig<Jedis> getPoolConfig() {
         return clientConfiguration.getPoolConfig().orElse(null);
     }
 
+    /**
+     * @return the {@link JedisClientConfiguration}.
+     */
     public JedisClientConfiguration getClientConfiguration() {
         return clientConfiguration;
     }
 
+    /**
+     * Returns the client name.
+     *
+     * @return the client name.
+     */
     @Nullable
     public String getClientName() {
         return clientConfiguration.getClientName().orElse(null);
@@ -194,6 +237,14 @@ public class AzureJedisConnectionFactory implements InitializingBean, Disposable
             this.jedisClientConfig);
     }
 
+
+    /**
+     * Returns a Jedis instance to be used as a Redis connection. The instance can be newly created or retrieved from a
+     * pool.
+     *
+     * @throws RedisConnectionFailureException when can't fetch a jedis instance.
+     * @return Jedis instance ready for wrapping into a {@link RedisConnection}.
+     */
     protected Jedis fetchJedisConnector() {
         try {
 

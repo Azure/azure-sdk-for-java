@@ -101,42 +101,31 @@ public class AzurePasswordlessProperties implements AzureProperties {
 
     private enum AzurePasswordlessPropertiesMapping {
 
-        scopes(
-            p -> p.getScopes(),
+        scopes(p -> p.getScopes(),
             (p, s) -> p.setProperty(AuthProperty.SCOPES.getPropertyKey(), s)),
 
-        clientCertificatePassword(
-            p -> p.getCredential().getClientCertificatePassword(),
+        clientCertificatePassword(p -> p.getCredential().getClientCertificatePassword(),
             (p, s) -> p.setProperty(AuthProperty.CLIENT_CERTIFICATE_PASSWORD.getPropertyKey(), s)),
 
-        clientCertificatePath(
-            p -> p.getCredential().getClientCertificatePath(),
+        clientCertificatePath(p -> p.getCredential().getClientCertificatePath(),
             (p, s) -> p.setProperty(AuthProperty.CLIENT_CERTIFICATE_PATH.getPropertyKey(), s)),
 
-        clientId(
-            p -> p.getCredential().getClientId(),
+        clientId(p -> p.getCredential().getClientId(),
             (p, s) -> p.setProperty(AuthProperty.CLIENT_ID.getPropertyKey(), s)),
 
-        clientSecret(
-            p -> p.getCredential().getClientSecret(),
+        clientSecret(p -> p.getCredential().getClientSecret(),
             (p, s) -> p.setProperty(AuthProperty.CLIENT_SECRET.getPropertyKey(), s)),
 
-        managedIdentityEnabled(
-
-            p -> String.valueOf(p.getCredential().isManagedIdentityEnabled()),
+        managedIdentityEnabled(p -> String.valueOf(p.getCredential().isManagedIdentityEnabled()),
             (p, s) -> p.setProperty(AuthProperty.MANAGED_IDENTITY_ENABLED.getPropertyKey(), s)),
 
-        password(
-            p -> p.getCredential().getPassword(),
+        password(p -> p.getCredential().getPassword(),
             (p, s) -> p.setProperty(AuthProperty.PASSWORD.getPropertyKey(), s)),
 
-        username(
-            p -> p.getCredential().getUsername(),
+        username(p -> p.getCredential().getUsername(),
             (p, s) -> p.setProperty(AuthProperty.USERNAME.getPropertyKey(), s)),
 
-
-        tenantId(
-            p -> p.getProfile().getTenantId(),
+        tenantId(p -> p.getProfile().getTenantId(),
             (p, s) -> p.setProperty(AuthProperty.TENANT_ID.getPropertyKey(), s));
 
         private Function<AzurePasswordlessProperties, String> getter;
