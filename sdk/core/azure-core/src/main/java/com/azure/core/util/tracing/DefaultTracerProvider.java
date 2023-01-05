@@ -3,6 +3,7 @@
 
 package com.azure.core.util.tracing;
 
+import com.azure.core.implementation.util.Providers;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
@@ -10,52 +11,28 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.ServiceLoader;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 final class DefaultTracerProvider implements TracerProvider {
+    private static final String NO_DEFAULT_PROVIDER = "A request was made to load the default TracerProvider provider "
+        + "but one could not be found on the classpath. If you are using a dependency manager, consider including a "
+        + "dependency on azure-core-tracing-opentelemetry, or adding instrumentation java agent.";
+
+    private static final String CANNOT_FIND_SPECIFIC_PROVIDER = "A request was made to use a specific "
+        + "TracerProvider to create an instance of Tracer but it wasn't found on the classpath. If you're "
+        + "using a dependency manager ensure you're including the dependency that provides the specific "
+        + "implementation. If you're including the specific implementation ensure that the TracerProvider service "
+        + "it supplies is being included in the 'META-INF/services' file 'com.azure.core.util.tracing.TracerProvider'. "
+        + "The requested TracerProvider was: ";
+
     private static final TracerProvider INSTANCE = new DefaultTracerProvider();
-    private static final RuntimeException ERROR;
     private static final ClientLogger LOGGER = new ClientLogger(DefaultTracerProvider.class);
     private static final TracingOptions DEFAULT_OPTIONS = TracingOptions.fromConfiguration(Configuration.getGlobalConfiguration());
-    private static TracerProvider tracerProvider;
-    private static Tracer fallbackTracer;
-
+    private static Providers<TracerProvider> tracerProvider = new Providers<>(TracerProvider.class);
+    private static final Tracer FALLBACK_TRACER = createFallbackTracer();
 
     private DefaultTracerProvider() {
     }
 
-    static {
-        // Use as classloader to load provider-configuration files and provider classes the classloader
-        // that loaded this class. In most cases this will be the System classloader.
-        // But this choice here provides additional flexibility in managed environments that control
-        // classloading differently (OSGi, Spring and others) and don't depend on the
-        // System classloader to load Meter classes.
-        ServiceLoader<TracerProvider> serviceLoader = ServiceLoader.load(TracerProvider.class, TracerProvider.class.getClassLoader());
-        Iterator<TracerProvider> iterator = serviceLoader.iterator();
-        if (iterator.hasNext()) {
-            tracerProvider = iterator.next();
-
-            if (iterator.hasNext()) {
-                String allProviders = StreamSupport.stream(serviceLoader.spliterator(), false)
-                    .map(p -> p.getClass().getName())
-                    .collect(Collectors.joining(", "));
-
-                // TODO (lmolkova) add configuration to allow picking specific provider
-                String message = String.format("Expected only one TracerProvider on the classpath, but found multiple providers: %s. "
-                         + "Please pick one TracerProvider implementation and remove or exclude packages that bring other implementations", allProviders);
-
-                ERROR = new IllegalStateException(message);
-                LOGGER.error(message);
-            } else {
-                ERROR = null;
-                LOGGER.info("Found TracerProvider implementation on the classpath: {}", tracerProvider.getClass().getName());
-            }
-        } else {
-            ERROR = null;
-            fallbackTracer = createFallbackTracer();
-        }
-    }
 
     private static Tracer createFallbackTracer() {
         // backward compatibility with preview OTel plugin - it didn't have TracerProvider
@@ -67,32 +44,21 @@ final class DefaultTracerProvider implements TracerProvider {
             return tracer;
         }
 
-        return null;
+        return NoopTracer.INSTANCE;
     }
 
     static TracerProvider getInstance() {
-        if (ERROR != null) {
-            throw LOGGER.logThrowableAsError(ERROR);
-        }
-
         return INSTANCE;
     }
 
     public Tracer createTracer(String libraryName, String libraryVersion, String azNamespace, TracingOptions options) {
         Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
 
-        if (options == null) {
-            options = DEFAULT_OPTIONS;
-        }
+        final TracingOptions finalOptions = options != null ? options : DEFAULT_OPTIONS;
 
-        if (!options.isEnabled()) {
-            return NoopTracer.INSTANCE;
-        }
-
-        if (tracerProvider != null) {
-            return tracerProvider.createTracer(libraryName, libraryVersion, azNamespace, options);
-        } else if (fallbackTracer != null) {
-            return fallbackTracer;
+        if (finalOptions.isEnabled()) {
+            return tracerProvider.createInstance((provider) -> provider.createTracer(libraryName, libraryVersion, azNamespace, finalOptions),
+                FALLBACK_TRACER, null, NO_DEFAULT_PROVIDER, CANNOT_FIND_SPECIFIC_PROVIDER);
         }
 
         return NoopTracer.INSTANCE;

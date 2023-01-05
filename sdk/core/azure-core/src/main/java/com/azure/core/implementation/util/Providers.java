@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.util.tracing;
+package com.azure.core.implementation.util;
 
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -14,7 +14,7 @@ import java.util.function.Function;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_HTTP_CLIENT_IMPLEMENTATION;
 
-final class Providers<T> {
+public final class Providers<T> {
     private static final String NO_DEFAULT_PROVIDER = "A request was made to load the default HttpClient provider "
         + "but one could not be found on the classpath. If you are using a dependency manager, consider including a "
         + "dependency on azure-core-http-netty or azure-core-http-okhttp. Depending on your existing dependencies, you "
@@ -68,11 +68,17 @@ final class Providers<T> {
     }
 
 
-    public <U> U createInstance(Function<T, U> createInstance, Class<? extends T> selectedImplementation,
+    public <U> U createInstance(Function<T, U> createInstance,
+                                U fallBackInstance,
+                                Class<? extends T> selectedImplementation,
                                 String noDefaultProviderFoundMessage,
                                 String noSpecificProviderFoundMessage) {
         if (defaultProvider == null) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(noDefaultProviderFoundMessage));
+            if (fallBackInstance == null) {
+                throw LOGGER.logExceptionAsError(new IllegalStateException(noDefaultProviderFoundMessage));
+            }
+
+            return fallBackInstance;
         }
 
         if (selectedImplementation == null && noDefaultImplementation) {
