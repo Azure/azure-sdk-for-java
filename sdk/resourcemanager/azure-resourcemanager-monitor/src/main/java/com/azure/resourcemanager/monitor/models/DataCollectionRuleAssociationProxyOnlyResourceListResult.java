@@ -25,6 +25,10 @@ public final class DataCollectionRuleAssociationProxyOnlyResourceListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of DataCollectionRuleAssociationProxyOnlyResourceListResult class. */
+    public DataCollectionRuleAssociationProxyOnlyResourceListResult() {
+    }
+
     /**
      * Get the value property: A list of resources.
      *

@@ -30,6 +30,10 @@ public final class ManagementEventAggregationCondition {
     @JsonProperty(value = "windowSize")
     private Duration windowSize;
 
+    /** Creates an instance of ManagementEventAggregationCondition class. */
+    public ManagementEventAggregationCondition() {
+    }
+
     /**
      * Get the operator property: the condition operator.
      *
