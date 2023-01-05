@@ -5,6 +5,7 @@
 ### Bugs Fixed
 
 - Fixed incorrect "audience" from `getClientAccessToken` method in `WebPubSubServiceAsyncClient`. ([#24741](https://github.com/Azure/azure-sdk-for-java/issues/24741))
+- Fixed bug of getting incorrect token in `getClientAccessToken`method from Azure token credential. 
 
 ### Features Added
 
