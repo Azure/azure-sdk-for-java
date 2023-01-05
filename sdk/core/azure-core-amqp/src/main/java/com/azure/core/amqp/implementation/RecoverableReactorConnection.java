@@ -9,6 +9,7 @@ import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 
@@ -22,7 +23,7 @@ import java.util.function.Supplier;
 import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.INTERVAL_KEY;
 
-public final class RecoverableReactorConnection {
+public final class RecoverableReactorConnection<C extends ReactorConnection> implements Disposable {
     private static final AmqpException TERMINATED_ERROR = new AmqpException(false, "Connection recovery support is terminated.", null);
     private static final String TRY_COUNT_KEY = "tryCount";
     private final String fullyQualifiedNamespace;
@@ -30,8 +31,8 @@ public final class RecoverableReactorConnection {
     private final AmqpRetryOptions retryOptions;
     private final AmqpErrorContext errorContext;
     private final ClientLogger logger;
-    private final Mono<ReactorConnection> createOrGetCachedConnection;
-    private volatile ReactorConnection currentConnection;
+    private final Mono<C> createOrGetCachedConnection;
+    private volatile C currentConnection;
     private volatile boolean terminated;
 
     /**
@@ -47,7 +48,7 @@ public final class RecoverableReactorConnection {
      * @param retryPolicy the retry configuration to use to obtain a new active connection.
      * @param loggingContext the logger context.
      */
-    public RecoverableReactorConnection(Supplier<ReactorConnection> connectionSupplier,
+    public RecoverableReactorConnection(Supplier<C> connectionSupplier,
                                         String fullyQualifiedNamespace,
                                         String entityPath,
                                         AmqpRetryPolicy retryPolicy,
@@ -63,7 +64,7 @@ public final class RecoverableReactorConnection {
         this.errorContext = new AmqpErrorContext(fullyQualifiedNamespace);
         this.logger = new ClientLogger(getClass(), Objects.requireNonNull(loggingContext, "'loggingContext' cannot be null."));
         Objects.requireNonNull(connectionSupplier, "'connectionSupplier' cannot be null.");
-        final Mono<ReactorConnection> newConnection = Mono.fromSupplier(() -> {
+        final Mono<C> newConnection = Mono.fromSupplier(() -> {
             if (terminated) {
                 logger.info("Connection recovery support is terminated, dropping the request for new connection.");
                 throw TERMINATED_ERROR;
@@ -87,8 +88,10 @@ public final class RecoverableReactorConnection {
                     });
             })
             .retryWhen(retryWhenSpec(retryPolicy))
-            .<ReactorConnection>handle((c, sink) -> {
-                currentConnection = c;
+            .<C>handle((c, sink) -> {
+                @SuppressWarnings("unchecked")
+                final C connection = (C) c;
+                currentConnection = connection;
                 if (terminated) {
                     currentConnection.closeAsync(closeSignal("Connection recovery support is terminated.")).subscribe();
                     sink.error(TERMINATED_ERROR);
@@ -96,7 +99,7 @@ public final class RecoverableReactorConnection {
                     logger.atInfo()
                         .addKeyValue(CONNECTION_ID_KEY, c.getId())
                         .log("Emitting the new active connection.");
-                    sink.next(c);
+                    sink.next(connection);
                 }
             }).cacheInvalidateIf(c -> {
                 if (c.isDisposed()) {
@@ -116,7 +119,7 @@ public final class RecoverableReactorConnection {
      *
      * @return a Mono that emits active connection.
      */
-    public Mono<ReactorConnection> get() {
+    public Mono<C> get() {
         return createOrGetCachedConnection;
     }
 
@@ -161,7 +164,8 @@ public final class RecoverableReactorConnection {
      * Terminate so that consumers will no longer be able to request connection. If there is a current (cached)
      * connection then it will be closed.
      */
-    public void terminate() {
+    @Override
+    public void dispose() {
         if (!terminated) {
             terminated = true;
             if (currentConnection != null && !currentConnection.isDisposed()) {
@@ -170,6 +174,11 @@ public final class RecoverableReactorConnection {
                 logger.info("Terminating the connection recovery support.");
             }
         }
+    }
+
+    @Override
+    public boolean isDisposed() {
+        return terminated;
     }
 
     private Retry retryWhenSpec(AmqpRetryPolicy retryPolicy) {
