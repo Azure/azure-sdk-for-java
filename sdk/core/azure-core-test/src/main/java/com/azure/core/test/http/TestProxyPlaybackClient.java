@@ -8,7 +8,6 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.models.TestProxySanitizer;
-import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestProxyUtils;
 import com.azure.core.util.Context;
@@ -27,9 +26,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.stream.Collectors;
 
-import static com.azure.core.test.utils.TestProxyUtils.createBodyRegexRequestBody;
-import static com.azure.core.test.utils.TestProxyUtils.createHeaderRegexRequestBody;
-import static com.azure.core.test.utils.TestProxyUtils.createUrlRegexRequestBody;
+import static com.azure.core.test.utils.TestProxyUtils.getRegexSanitizerRequests;
 import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
 
 /**
@@ -99,35 +96,10 @@ public class TestProxyPlaybackClient implements HttpClient {
     }
 
     private void addProxySanitization() {
-        this.sanitizers.forEach(testProxySanitizer  -> {
-            String requestBody;
-            String sanitizerType;
-            switch (testProxySanitizer.getType()) {
-                case URL:
-                    requestBody = createUrlRegexRequestBody(testProxySanitizer.getRegex(), testProxySanitizer.getRedactedValue());
-                    sanitizerType = TestProxySanitizerType.URL.name;
-                    break;
-                case BODY:
-                    requestBody = createBodyRegexRequestBody(testProxySanitizer.getRegex(), testProxySanitizer.getRedactedValue());
-                    sanitizerType = TestProxySanitizerType.BODY.name;
-                    break;
-                case HEADER:
-                    requestBody = createHeaderRegexRequestBody(testProxySanitizer.getRegex(), testProxySanitizer.getRedactedValue());
-                    sanitizerType = TestProxySanitizerType.HEADER.name;
-                    break;
-                default:
-                    throw new RuntimeException("Sanitizer type not supported");
-            }
-            addRegexSanitizer(requestBody, sanitizerType);
-        });
-    }
-
-    private void addRegexSanitizer(String requestBody, String sanitizerType) {
-        HttpRequest request
-            = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/AddSanitizer", TestProxyUtils.getProxyUrl()))
-            .setBody(requestBody);
-        request.setHeader("x-abstraction-identifier", sanitizerType);
-        request.setHeader("x-recording-id", xRecordingId);
-        client.sendSync(request, Context.NONE);
+        getRegexSanitizerRequests(this.sanitizers)
+            .forEach(request -> {
+                request.setHeader("x-recording-id", xRecordingId);
+                client.sendSync(request, Context.NONE);
+            });
     }
 }

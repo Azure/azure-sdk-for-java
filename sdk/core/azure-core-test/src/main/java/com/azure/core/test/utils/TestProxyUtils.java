@@ -8,7 +8,6 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
-import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
 
 import java.net.MalformedURLException;
@@ -32,7 +31,8 @@ public class TestProxyUtils {
         Arrays.asList("authHeader", "accountKey", "accessToken", "accountName", "applicationId", "apiKey",
             "connectionString", "url", "host", "password", "userName"));
 
-    private static final String URL_REGEX = "^(?:https?:\\\\/\\\\/)?(?:[^@\\\\/\\\\n]+@)?(?:www\\\\.)?([^:\\\\/?\\\\n]+)";
+    private static final String URL_REGEX =
+        "^(?:https?:\\\\/\\\\/)?(?:[^@\\\\/\\\\n]+@)?(?:www\\\\.)?([^:\\\\/?\\\\n]+)";
     private static final String URL_REDACTION_VALUE = "https://REDACTED";
     private static final List<String> HEADERS_TO_REDACT = new ArrayList<>(Arrays.asList("Ocp-Apim-Subscription-Key"));
     private static final String REDACTED_VALUE = "REDACTED";
@@ -85,6 +85,7 @@ public class TestProxyUtils {
         sanitizers.addAll(getDefaultHeaderSanitizers());
         return sanitizers;
     }
+
     public static String createUrlRegexRequestBody(String regexValue, String redactedValue) {
         return String.format("{\"value\":\"%s\",\"regex\":\"%s\"}", redactedValue, regexValue);
     }
@@ -96,18 +97,53 @@ public class TestProxyUtils {
     public static String createHeaderRegexRequestBody(String regexValue, String redactedValue) {
         return String.format("{\"value\":\"%s\",\"key\":\"%s\"}", redactedValue, regexValue);
     }
+
+    public static List<HttpRequest> getRegexSanitizerRequests(List<TestProxySanitizer> sanitizers) {
+        return sanitizers.stream().map(testProxySanitizer -> {
+            String requestBody;
+            String sanitizerType;
+            switch (testProxySanitizer.getType()) {
+                case URL:
+                    requestBody =
+                        createUrlRegexRequestBody(testProxySanitizer.getRegex(), testProxySanitizer.getRedactedValue());
+                    sanitizerType = TestProxySanitizerType.URL.name;
+                    break;
+                case BODY:
+                    requestBody = createBodyRegexRequestBody(testProxySanitizer.getRegex(),
+                        testProxySanitizer.getRedactedValue());
+                    sanitizerType = TestProxySanitizerType.BODY.name;
+                    break;
+                case HEADER:
+                    requestBody = createHeaderRegexRequestBody(testProxySanitizer.getRegex(),
+                        testProxySanitizer.getRedactedValue());
+                    sanitizerType = TestProxySanitizerType.HEADER.name;
+                    break;
+                default:
+                    throw new RuntimeException("Sanitizer type not supported");
+            }
+            HttpRequest request
+                = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/AddSanitizer", TestProxyUtils.getProxyUrl()))
+                .setBody(requestBody);
+            request.setHeader("x-abstraction-identifier", sanitizerType);
+            return request;
+        }).collect(Collectors.toList());
+    }
+
     private static TestProxySanitizer getDefaultUrlSanitizer() {
         return new TestProxySanitizer(URL_REGEX, URL_REDACTION_VALUE, TestProxySanitizerType.URL);
     }
 
     private static List<TestProxySanitizer> getDefaultBodySanitizers() {
         return JSON_PROPERTIES_TO_REDACT.stream()
-            .map(jsonProperty -> new TestProxySanitizer(String.format("$..%s", jsonProperty), REDACTED_VALUE, TestProxySanitizerType.BODY))
+            .map(jsonProperty -> new TestProxySanitizer(String.format("$..%s", jsonProperty), REDACTED_VALUE,
+                TestProxySanitizerType.BODY))
             .collect(Collectors.toList());
     }
+
     private static List<TestProxySanitizer> getDefaultHeaderSanitizers() {
         return HEADERS_TO_REDACT.stream()
-            .map(headerProperty -> new TestProxySanitizer(headerProperty, REDACTED_VALUE, TestProxySanitizerType.HEADER))
+            .map(
+                headerProperty -> new TestProxySanitizer(headerProperty, REDACTED_VALUE, TestProxySanitizerType.HEADER))
             .collect(Collectors.toList());
     }
 }
