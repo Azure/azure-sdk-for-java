@@ -5,6 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpClientOptions;
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.client.traits.AmqpTrait;
@@ -14,6 +15,8 @@ import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
+import com.azure.core.amqp.implementation.RecoverableReactorConnection;
+import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.models.CbsAuthorizationType;
@@ -35,18 +38,16 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
-import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
-import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import org.apache.qpid.proton.engine.SslDomain;
-import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -57,6 +58,7 @@ import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.CONNECTION_ID_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.ENTITY_PATH_KEY;
 
 /**
  * This class provides a fluent builder API to aid the instantiation of {@link EventHubProducerAsyncClient}, {@link
@@ -195,7 +197,7 @@ public class EventHubClientBuilder implements
     private String fullyQualifiedNamespace;
     private String eventHubName;
     private String consumerGroup;
-    private EventHubConnectionProcessor eventHubConnectionProcessor;
+    private RecoverableReactorConnection<EventHubReactorAmqpConnection> eventHubConnectionProcessor;
     private Integer prefetchCount;
     private ClientOptions clientOptions;
     private SslDomain.VerifyMode verifyMode;
@@ -817,7 +819,7 @@ public class EventHubClientBuilder implements
 
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
-        final EventHubConnectionProcessor processor;
+        final RecoverableReactorConnection<EventHubReactorAmqpConnection> processor;
         if (isSharedConnection.get()) {
             synchronized (connectionLock) {
                 if (eventHubConnectionProcessor == null) {
@@ -907,7 +909,7 @@ public class EventHubClientBuilder implements
             clientOptions == null ? null : clientOptions.getMetricsOptions());
     }
 
-    private EventHubConnectionProcessor buildConnectionProcessor(MessageSerializer messageSerializer, Meter meter) {
+    private RecoverableReactorConnection<EventHubReactorAmqpConnection> buildConnectionProcessor(MessageSerializer messageSerializer, Meter meter) {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         final Supplier<String> getEventHubName = () -> {
             if (CoreUtils.isNullOrEmpty(eventHubName)) {
@@ -916,17 +918,9 @@ public class EventHubClientBuilder implements
             return eventHubName;
         };
 
-        final Flux<EventHubAmqpConnection> connectionFlux = Flux.create(sink -> {
-            sink.onRequest(request -> {
-
-                if (request == 0) {
-                    return;
-                } else if (request > 1) {
-                    sink.error(LOGGER.logExceptionAsWarning(new IllegalArgumentException(
-                        "Requested more than one connection. Only emitting one. Request: " + request)));
-                    return;
-                }
-
+        final Supplier<EventHubReactorAmqpConnection> connectionSupplier = new Supplier<EventHubReactorAmqpConnection>() {
+            @Override
+            public EventHubReactorAmqpConnection get() {
                 final String connectionId = StringUtil.getRandomString("MF");
                 LOGGER.atInfo()
                     .addKeyValue(CONNECTION_ID_KEY, connectionId)
@@ -938,16 +932,20 @@ public class EventHubClientBuilder implements
                 final ReactorProvider provider = new ReactorProvider();
                 final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider, meter);
 
-                final EventHubAmqpConnection connection = new EventHubReactorAmqpConnection(connectionId,
+                final EventHubReactorAmqpConnection connection = new EventHubReactorAmqpConnection(connectionId,
                     connectionOptions, getEventHubName.get(), provider, handlerProvider, tokenManagerProvider,
                     messageSerializer);
 
-                sink.next(connection);
-            });
-        });
+                return connection;
+            }
+        };
 
-        return connectionFlux.subscribeWith(new EventHubConnectionProcessor(
-            connectionOptions.getFullyQualifiedNamespace(), getEventHubName.get(), connectionOptions.getRetry()));
+        final String fqdn = connectionOptions.getFullyQualifiedNamespace();
+        final String entityPath = getEventHubName.get();
+        final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
+        final Map<String, Object> loggingContext = Collections.singletonMap(ENTITY_PATH_KEY, entityPath);
+
+        return new RecoverableReactorConnection<>(connectionSupplier, fqdn, entityPath, retryPolicy, loggingContext);
     }
 
     private ConnectionOptions getConnectionOptions() {
