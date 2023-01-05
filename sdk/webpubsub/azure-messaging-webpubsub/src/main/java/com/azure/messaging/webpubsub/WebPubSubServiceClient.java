@@ -30,19 +30,17 @@ public final class WebPubSubServiceClient {
     private final String endpoint;
     private final AzureKeyCredential keyCredential;
     private final String hub;
-    private final WebPubSubServiceVersion version;
 
     /**
      * Initializes an instance of WebPubSubs client.
      * @param serviceClient the service client implementation.
      */
     WebPubSubServiceClient(WebPubSubsImpl serviceClient, String hub, String endpoint,
-                           AzureKeyCredential keyCredential, WebPubSubServiceVersion version) {
+                           AzureKeyCredential keyCredential) {
         this.serviceClient = serviceClient;
         this.endpoint = endpoint;
         this.keyCredential = keyCredential;
         this.hub = hub;
-        this.version = version;
     }
 
     /**

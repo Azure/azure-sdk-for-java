@@ -32,7 +32,6 @@ public final class WebPubSubServiceAsyncClient {
     private final String hub;
     private final String endpoint;
     private final AzureKeyCredential keyCredential;
-    private final WebPubSubServiceVersion version;
 
     /**
      * Initializes an instance of WebPubSubs client.
@@ -40,13 +39,11 @@ public final class WebPubSubServiceAsyncClient {
      */
     WebPubSubServiceAsyncClient(WebPubSubsImpl serviceClient, String hub,
                                 final String endpoint,
-                                final AzureKeyCredential keyCredential,
-                                final WebPubSubServiceVersion version) {
+                                final AzureKeyCredential keyCredential) {
         this.serviceClient = serviceClient;
         this.hub = hub;
         this.endpoint = endpoint;
         this.keyCredential = keyCredential;
-        this.version = version;
     }
 
     /**
