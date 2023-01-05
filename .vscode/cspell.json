@@ -16,6 +16,7 @@
     "**/sdk/**/target/**",
     "**/session-records/**",
     "**/chromedriver",
+    ".gitignore",	
     "*.jar",
     "*.zip",
     "*.avro",

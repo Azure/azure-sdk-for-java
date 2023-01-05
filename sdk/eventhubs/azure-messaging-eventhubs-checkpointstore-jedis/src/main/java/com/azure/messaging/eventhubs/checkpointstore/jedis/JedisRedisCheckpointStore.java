@@ -47,7 +47,7 @@ import java.util.Set;
  * @see EventProcessorClient
  * @see EventProcessorClientBuilder
  */
-public class JedisRedisCheckpointStore implements CheckpointStore {
+public final class JedisRedisCheckpointStore implements CheckpointStore {
 
     private static final ClientLogger LOGGER = new ClientLogger(JedisRedisCheckpointStore.class);
     static final JsonSerializer DEFAULT_SERIALIZER = JsonSerializerProviders.createInstance(true);

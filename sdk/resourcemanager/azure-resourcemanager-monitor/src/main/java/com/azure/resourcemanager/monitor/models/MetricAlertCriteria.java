@@ -39,6 +39,10 @@ public class MetricAlertCriteria {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MetricAlertCriteria class. */
+    public MetricAlertCriteria() {
+    }
+
     /**
      * Get the additionalProperties property: The rule criteria that defines the conditions of the alert rule.
      *

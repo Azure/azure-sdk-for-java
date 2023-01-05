@@ -17,6 +17,10 @@ public class AzureMonitorMetricsDestination {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of AzureMonitorMetricsDestination class. */
+    public AzureMonitorMetricsDestination() {
+    }
+
     /**
      * Get the name property: A friendly name for the destination. This name should be unique across all destinations
      * (regardless of type) within the data collection rule.
