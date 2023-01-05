@@ -23,8 +23,6 @@ import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import com.azure.messaging.webpubsub.models.WebPubSubContentType;
 import com.azure.messaging.webpubsub.models.WebPubSubPermission;
 
-import java.util.stream.Collectors;
-
 /** Initializes a new instance of the synchronous AzureWebPubSubServiceRestAPI type. */
 @ServiceClient(builder = WebPubSubServiceClientBuilder.class)
 public final class WebPubSubServiceClient {

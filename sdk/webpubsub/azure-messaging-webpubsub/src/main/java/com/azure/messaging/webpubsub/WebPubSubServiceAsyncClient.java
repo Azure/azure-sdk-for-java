@@ -25,8 +25,6 @@ import com.azure.messaging.webpubsub.models.WebPubSubContentType;
 import com.azure.messaging.webpubsub.models.WebPubSubPermission;
 import reactor.core.publisher.Mono;
 
-import java.util.stream.Collectors;
-
 /** Initializes a new instance of the asynchronous AzureWebPubSubServiceRestAPI type. */
 @ServiceClient(builder = WebPubSubServiceClientBuilder.class, isAsync = true)
 public final class WebPubSubServiceAsyncClient {
