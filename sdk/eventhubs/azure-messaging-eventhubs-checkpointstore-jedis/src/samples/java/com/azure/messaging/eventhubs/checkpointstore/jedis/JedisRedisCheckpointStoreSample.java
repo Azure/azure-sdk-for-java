@@ -22,7 +22,7 @@ import java.util.UUID;
  * ownership records in Azure Redis Cache.
  */
 public class JedisRedisCheckpointStoreSample {
-    private static final String EVENT_HUB_NAMESPACE = "{your-namespace}.servicebus.windows.net}";
+    private static final String EVENT_HUB_NAMESPACE = "{your-namespace}.servicebus.windows.net";
     private static final String EVENT_HUB_NAME = "{event-hub-name}";
     private static final String CONSUMER_GROUP = "$DEFAULT";
     private static final Duration TIMEOUT = Duration.ofSeconds(30);
