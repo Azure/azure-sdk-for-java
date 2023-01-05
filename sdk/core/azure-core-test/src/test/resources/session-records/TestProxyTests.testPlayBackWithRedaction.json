@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://REDACTED.cognitiveservices.azure.com:3000/fr/models",
+      "RequestUri": "https://REDACTED:3000/fr/models",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
@@ -18,11 +18,14 @@
         "Content-Length": "117",
         "Host": "localhost:3000",
         "Ocp-Apim-Subscription-Key": "REDACTED",
-        "traceparent": "00-f0f7b61539028bcd3bec507079196124-9d5bf0293562aca5-00",
+        "traceparent": "00-aaf4e0fe4dc759409f242a3ad0375af3-e5e774dda018a184-00",
         "User-Agent": "Java/11.0.9"
       },
       "ResponseBody": "eyJtb2RlbElkIjoiMGNkMjcyOGItMjEwZS00YzA1LWI3MDYtZjcwNTU0Mjc2YmNjIiwiY3JlYXRlZERhdGVUaW1lIjoiMjAyMi0wOC0zMVQwMDowMDowMFoiLCJhcGlWZXJzaW9uIjoiMjAyMi0wOC0zMSJ9"
     }
   ],
-  "Variables": {}
+  "Variables": {
+    "0": "test83867",
+    "1": "2023-01-05T02:44:42.162720500Z"
+  }
 }

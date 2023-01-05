@@ -1,12 +1,12 @@
 {
   "Entries": [
     {
-      "RequestUri": "http://localhost:3000/first/path",
+      "RequestUri": "https://REDACTED:3000/first/path",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
         "Connection": "keep-alive",
-        "User-Agent": "Java/17.0.4"
+        "User-Agent": "Java/11.0.9"
       },
       "RequestBody": null,
       "StatusCode": 200,

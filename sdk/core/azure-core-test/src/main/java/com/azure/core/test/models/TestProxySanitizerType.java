@@ -10,13 +10,19 @@ public enum TestProxySanitizerType {
     /**
      * Sanitize the request url.
      */
-    URL,
+    URL("UriRegexSanitizer"),
     /**
      * Sanitize the response body.
      */
-    BODY,
+    BODY("BodyKeySanitizer"),
     /**
      * Sanitize the request/response headers.
      */
-    HEADER,
+    HEADER("HeaderRegexSanitizer");
+
+    public final String name;
+
+    TestProxySanitizerType(String name) {
+        this.name = name;
+    }
 }

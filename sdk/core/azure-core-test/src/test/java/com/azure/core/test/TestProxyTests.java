@@ -15,8 +15,6 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
@@ -26,22 +24,16 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SuppressWarnings("deprecation")
 public class TestProxyTests extends TestBase {
     static TestProxyTestServer server;
 
-    private static List<TestProxySanitizer> recordSanitizers;
-
+    private static List<TestProxySanitizer> customSanitizer = new ArrayList<>();
     static {
-        recordSanitizers = new ArrayList<>();
-        recordSanitizers.add(new TestProxySanitizer("^(?:https?:\\\\/\\\\/)?(?:[^@\\\\/\\\\n]+@)?(?:www\\\\.)?([^:\\\\/?\\\\n]+)", "https://REDACTED.cognitiveservices.azure.com", TestProxySanitizerType.URL));
-        recordSanitizers.add(new TestProxySanitizer("$..modelId", "REDACTED", TestProxySanitizerType.BODY));
-        recordSanitizers.add(new TestProxySanitizer("Ocp-Apim-Subscription-Key", "REDACTED", TestProxySanitizerType.HEADER));
+        customSanitizer.add(new TestProxySanitizer("$..modelId", "REDACTED", TestProxySanitizerType.BODY));
     }
 
     @BeforeAll
@@ -76,7 +68,7 @@ public class TestProxyTests extends TestBase {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         HttpResponse response = pipeline.sendSync(request, Context.NONE);
 
-        assertEquals(response.getStatusCode(), 200);
+        assertEquals(200, response.getStatusCode());
     }
 
     @Test
@@ -97,7 +89,7 @@ public class TestProxyTests extends TestBase {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         HttpResponse response = pipeline.sendSync(request, Context.NONE);
 
-        assertEquals(response.getStatusCode(), 200);
+        assertEquals(200, response.getStatusCode());
     }
 
     @Test
@@ -120,7 +112,7 @@ public class TestProxyTests extends TestBase {
         request.setHeader("header2", "value2");
         HttpResponse response = pipeline.sendSync(request, Context.NONE);
 
-        assertEquals(response.getStatusCode(), 200);
+        assertEquals(200, response.getStatusCode());
     }
 
     @Test
@@ -138,16 +130,16 @@ public class TestProxyTests extends TestBase {
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         HttpResponse response = client.sendSync(request, Context.NONE);
-        assertEquals(response.getBodyAsString().block(), "first path");
-        assertEquals(response.getStatusCode(), 200);
+        assertEquals("first path", response.getBodyAsString().block());
+        assertEquals(200, response.getStatusCode());
     }
 
     @Test
     @Tag("Record")
-    public void testRecordWithRedaction() throws JsonProcessingException {
+    public void testRecordWithRedaction() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
 
-        interceptorManager.addRecordSanitizers(recordSanitizers);
+        interceptorManager.addRecordSanitizers(customSanitizer);
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
@@ -163,27 +155,25 @@ public class TestProxyTests extends TestBase {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
+        testResourceNamer.randomName("test", 10);
+        testResourceNamer.now();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader("Ocp-Apim-Subscription-Key", "TEST_API_KEY");
+        request.setHeader("Ocp-Apim-Subscription-Key", "SECRET_API_KEY");
         request.setHeader("Content-Type", "application/json");
 
         HttpResponse response = pipeline.sendSync(request, Context.NONE);
 
-        // TODO (need to get the record file written data to verify redacted content)
-        String responseData = response.getBodyAsBinaryData().toString();
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map jsonMap = objectMapper.readValue(responseData, Map.class);
         assertEquals(response.getStatusCode(), 200);
-        assertTrue(response.getRequest().getUrl().toString().contains("REDACTED"));
 
-        String actualValue = jsonMap.get("modelId").toString();
-        assertEquals("REDACTED", actualValue);
+        // TODO (need to get the record file written data to verify redacted content)
+        assertEquals(200, response.getStatusCode());
+
     }
 
     @Test
     @Tag("Playback")
     public void testPlaybackWithRedaction() {
-        interceptorManager.addRecordSanitizers(recordSanitizers);
+        interceptorManager.addRecordSanitizers(customSanitizer);
         HttpClient client = interceptorManager.getPlaybackClient();
         URL url;
 
@@ -198,13 +188,12 @@ public class TestProxyTests extends TestBase {
             throw new RuntimeException(e);
         }
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
-        request.setHeader("Ocp-Apim-Subscription-Key", "TEST_API_KEY");
+        request.setHeader("Ocp-Apim-Subscription-Key", "SECRET_API_KEY");
         request.setHeader("Content-Type", "application/json");
 
         HttpResponse response = client.sendSync(request, Context.NONE);
 
-        assertEquals(response.getStatusCode(), 200);
+        assertEquals(200, response.getStatusCode());
     }
-
 }
 

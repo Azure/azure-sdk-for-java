@@ -11,6 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestProxyUtils;
 import com.azure.core.util.Context;
@@ -20,11 +21,19 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+
+import static com.azure.core.test.utils.TestProxyUtils.createBodyRegexRequestBody;
+import static com.azure.core.test.utils.TestProxyUtils.createHeaderRegexRequestBody;
+import static com.azure.core.test.utils.TestProxyUtils.createUrlRegexRequestBody;
+import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
+
 
 /**
  * A {@link HttpPipelinePolicy} for redirecting traffic through the test proxy for recording.
@@ -33,10 +42,12 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
     private final HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
     private String xRecordingId;
-    private final List<TestProxySanitizer> sanitizers;
+    private final List<TestProxySanitizer> sanitizers = new ArrayList<>();
+    private static final List<TestProxySanitizer> DEFAULT_SANITIZERS = loadSanitizers();
 
-    public TestProxyRecordPolicy(List<TestProxySanitizer> recordSanitizers) {
-        this.sanitizers = recordSanitizers;
+    public TestProxyRecordPolicy(List<TestProxySanitizer> customSanitizers) {
+        this.sanitizers.addAll(DEFAULT_SANITIZERS);
+        this.sanitizers.addAll(customSanitizers == null ? Collections.emptyList() : customSanitizers);
     }
 
     /**
@@ -98,46 +109,33 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     }
 
     private void addProxySanitization() {
-        if (this.sanitizers == null) {
-            // TODO : (add default sanitization)
-            return;
-        }
         this.sanitizers.forEach(testProxySanitizer  -> {
             String requestBody;
+            String sanitizerType;
             switch (testProxySanitizer.getType()) {
                 case URL:
                     requestBody = createUrlRegexRequestBody(testProxySanitizer.getRegex(), testProxySanitizer.getRedactedValue());
-                    addRegexSanitizer(requestBody, "UriRegexSanitizer");
+                    sanitizerType = TestProxySanitizerType.URL.name;
                     break;
                 case BODY:
                     requestBody = createBodyRegexRequestBody(testProxySanitizer.getRegex(), testProxySanitizer.getRedactedValue());
-                    addRegexSanitizer(requestBody, "BodyKeySanitizer");
+                    sanitizerType = TestProxySanitizerType.BODY.name;
                     break;
                 case HEADER:
                     requestBody = createHeaderRegexRequestBody(testProxySanitizer.getRegex(), testProxySanitizer.getRedactedValue());
-                    addRegexSanitizer(requestBody, "HeaderRegexSanitizer");
+                    sanitizerType = TestProxySanitizerType.HEADER.name;
                     break;
                 default:
                     throw new RuntimeException("Sanitizer type not supported");
             }
+            addRegexSanitizer(requestBody, sanitizerType);
         });
     }
 
-    private String createUrlRegexRequestBody(String regexValue, String redactedValue) {
-        return String.format("{\"value\":\"%s\",\"regex\":\"%s\"}", redactedValue, regexValue);
-    }
-
-    private String createBodyRegexRequestBody(String regexValue, String redactedValue) {
-        return String.format("{\"value\":\"%s\",\"jsonPath\":\"%s\"}", redactedValue, regexValue);
-    }
-
-    private String createHeaderRegexRequestBody(String regexValue, String redactedValue) {
-        return String.format("{\"value\":\"%s\",\"key\":\"%s\"}", redactedValue, regexValue);
-    }
-
     private void addRegexSanitizer(String requestBody, String sanitizerType) {
-        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/AddSanitizer", TestProxyUtils.getProxyUrl()))
-                .setBody(requestBody);
+        HttpRequest request
+            = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/AddSanitizer", TestProxyUtils.getProxyUrl()))
+            .setBody(requestBody);
         request.setHeader("x-abstraction-identifier", sanitizerType);
         request.setHeader("x-recording-id", xRecordingId);
         client.sendSync(request, Context.NONE);
