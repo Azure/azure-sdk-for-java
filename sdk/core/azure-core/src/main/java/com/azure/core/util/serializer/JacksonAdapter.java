@@ -170,7 +170,7 @@ public class JacksonAdapter implements SerializerAdapter {
             if (encoding == SerializerEncoding.XML) {
                 return getXmlMapper().writeValueAsString(object);
             } else if (encoding == SerializerEncoding.TEXT) {
-                return String.valueOf(object);
+                return object.toString();
             } else {
                 return mapper.writeValueAsString(object);
             }
@@ -187,7 +187,7 @@ public class JacksonAdapter implements SerializerAdapter {
             if (encoding == SerializerEncoding.XML) {
                 return getXmlMapper().writeValueAsBytes(object);
             } else if (encoding == SerializerEncoding.TEXT) {
-                return String.valueOf(object).getBytes(StandardCharsets.UTF_8);
+                return object.toString().getBytes(StandardCharsets.UTF_8);
             } else {
                 return mapper.writeValueAsBytes(object);
             }
@@ -204,7 +204,7 @@ public class JacksonAdapter implements SerializerAdapter {
             if (encoding == SerializerEncoding.XML) {
                 getXmlMapper().writeValue(outputStream, object);
             } else if (encoding == SerializerEncoding.TEXT) {
-                outputStream.write(String.valueOf(object).getBytes(StandardCharsets.UTF_8));
+                outputStream.write(object.toString().getBytes(StandardCharsets.UTF_8));
             } else {
                 mapper.writeValue(outputStream, object);
             }
