@@ -63,10 +63,10 @@ public final class WebPubSubServiceClient {
                 requestOptions.addQueryParam("minutesToExpire", String.valueOf(options.getExpiresAfter().toMinutes()));
             }
             if (CoreUtils.isNullOrEmpty(options.getRoles())) {
-                requestOptions.addQueryParam("role", options.getRoles().stream().collect(Collectors.joining(",")));
+                options.getRoles().stream().forEach(roleName -> requestOptions.addQueryParam("role", roleName));
             }
             if (CoreUtils.isNullOrEmpty(options.getGroups())) {
-                requestOptions.addQueryParam("group", options.getGroups().stream().collect(Collectors.joining(",")));
+                options.getGroups().stream().forEach(groupName -> requestOptions.addQueryParam("group", groupName));
             }
             requestOptions.addQueryParam("api-version", version.getVersion());
             return this.serviceClient.generateClientTokenWithResponseAsync(hub, requestOptions)
