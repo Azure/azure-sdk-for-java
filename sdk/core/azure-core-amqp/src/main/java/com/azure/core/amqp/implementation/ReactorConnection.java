@@ -464,7 +464,7 @@ public class ReactorConnection implements AmqpConnection {
         return closeAsync(new AmqpShutdownSignal(false, true, "Disposed by client."));
     }
 
-    Mono<Void> closeAsync(AmqpShutdownSignal shutdownSignal) {
+    public Mono<Void> closeAsync(AmqpShutdownSignal shutdownSignal) {
         addShutdownSignal(logger.atInfo(), shutdownSignal).log("Disposing of ReactorConnection.");
         final Sinks.EmitResult result = shutdownSignalSink.tryEmitValue(shutdownSignal);
 
