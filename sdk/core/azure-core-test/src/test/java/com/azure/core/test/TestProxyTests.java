@@ -15,25 +15,50 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SuppressWarnings("deprecation")
 public class TestProxyTests extends TestBase {
     static TestProxyTestServer server;
+    private static final String LOCAL_FILE_PATH = "src/test/resources/session-records/";
+    private static final ObjectMapper RECORD_MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
     private static List<TestProxySanitizer> customSanitizer = new ArrayList<>();
+
+    public static final String REDACTED = "REDACTED";
+
     static {
-        customSanitizer.add(new TestProxySanitizer("$..modelId", "REDACTED", TestProxySanitizerType.BODY));
+        customSanitizer.add(new TestProxySanitizer("$..modelId", REDACTED, TestProxySanitizerType.BODY));
+    }
+
+    private TestInfo testInfo;
+
+    @BeforeEach
+    void init(TestInfo testInfo) {
+        this.testInfo = testInfo;
     }
 
     @BeforeAll
@@ -155,8 +180,7 @@ public class TestProxyTests extends TestBase {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
-        testResourceNamer.randomName("test", 10);
-        testResourceNamer.now();
+
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         request.setHeader("Ocp-Apim-Subscription-Key", "SECRET_API_KEY");
         request.setHeader("Content-Type", "application/json");
@@ -165,8 +189,14 @@ public class TestProxyTests extends TestBase {
 
         assertEquals(response.getStatusCode(), 200);
 
-        // TODO (need to get the record file written data to verify redacted content)
         assertEquals(200, response.getStatusCode());
+        RecordedTestProxyData recordedTestProxyData = readDataFromFile();
+        RecordedTestProxyData.TestProxyDataRecord record = recordedTestProxyData.getTestProxyDataRecords().get(0);
+        // default sanitizers
+        assertEquals("https://REDACTED:3000/fr/models", record.getUri());
+        assertEquals(REDACTED, record.getHeaders().get("Ocp-Apim-Subscription-Key"));
+        // custom sanitizers
+        assertEquals(REDACTED, record.getResponse().get("modelId"));
 
     }
 
@@ -194,6 +224,74 @@ public class TestProxyTests extends TestBase {
         HttpResponse response = client.sendSync(request, Context.NONE);
 
         assertEquals(200, response.getStatusCode());
+    }
+
+    private RecordedTestProxyData readDataFromFile() {
+        File recordFile = new File(LOCAL_FILE_PATH + testInfo.getTestClass().get().getSimpleName() + "." + testInfo.getDisplayName().substring(0, testInfo.getDisplayName().length() - 2) + ".json");
+
+        try (BufferedReader reader = Files.newBufferedReader(recordFile.toPath())) {
+            return RECORD_MAPPER.readValue(reader, RecordedTestProxyData.class);
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
+        }
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    static class RecordedTestProxyData {
+        @JsonProperty("Entries")
+        private final LinkedList<TestProxyDataRecord> testProxyDataRecords;
+        RecordedTestProxyData() {
+            testProxyDataRecords = new LinkedList<>();
+        }
+
+        public LinkedList<TestProxyDataRecord> getTestProxyDataRecords() {
+            return testProxyDataRecords;
+        }
+
+        @JsonIgnoreProperties(ignoreUnknown = true)
+        static class TestProxyDataRecord {
+            @JsonProperty("RequestMethod")
+            private String method;
+
+            @JsonProperty("RequestUri")
+            private String uri;
+
+            @JsonProperty("RequestHeaders")
+            private Map<String, String> headers;
+
+            @JsonProperty("ResponseBody")
+            private Map<String, String> response;
+
+            @JsonProperty("ResponseHeaders")
+            private Map<String, String> responseHeaders;
+
+            @JsonProperty("RequestBody")
+            private String requestBody;
+
+            public String getMethod() {
+                return method;
+            }
+
+            public String getUri() {
+                return uri;
+            }
+
+            public Map<String, String> getHeaders() {
+                return headers;
+            }
+
+            public Map<String, String> getResponse() {
+                return response;
+            }
+
+            public Map<String, String> getResponseHeaders() {
+                return responseHeaders;
+            }
+
+            public String getRequestBody() {
+                return requestBody;
+            }
+        }
     }
 }
 

@@ -1,0 +1,36 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED:3000/fr/models",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+        "Connection": "keep-alive",
+        "Content-Type": "application/json",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "Java/11.0.9"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Accept": "text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2",
+        "Connection": "keep-alive",
+        "Content-Length": "89",
+        "Content-Type": "application/json",
+        "Host": "localhost:3000",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "traceparent": "00-991ec280d6eb610706ed90b754f450d5-f327e47ae4f71dc1-00",
+        "User-Agent": "Java/11.0.9"
+      },
+      "ResponseBody": {
+        "modelId": "REDACTED",
+        "createdDateTime": "2022-08-31T00:00:00Z",
+        "apiVersion": "2022-08-31"
+      }
+    }
+  ],
+  "Variables": {
+    "0": "test21822",
+    "1": "2023-01-05T21:43:38.703776200Z"
+  }
+}
