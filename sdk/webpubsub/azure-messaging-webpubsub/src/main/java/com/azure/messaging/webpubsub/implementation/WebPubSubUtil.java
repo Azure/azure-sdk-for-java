@@ -33,6 +33,8 @@ public final class WebPubSubUtil {
                     String fieldName = parser.getCurrentName();
                     System.out.println(fieldName);
                     if (TOKEN.equals(fieldName)) {
+                        // move parser forward to get value of "token"
+                        parser.nextToken();
                         return parser.getValueAsString();
                     }
                 }
