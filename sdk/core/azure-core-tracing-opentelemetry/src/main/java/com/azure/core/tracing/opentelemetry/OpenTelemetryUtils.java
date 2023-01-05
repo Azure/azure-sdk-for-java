@@ -22,10 +22,6 @@ class OpenTelemetryUtils {
     private static final ClientLogger LOGGER = new ClientLogger(OpenTelemetryUtils.class);
 
     private static final Map<String, String> ATTRIBUTE_MAPPING_V1_12_0 = getMappingsV1200();
-    static final String HTTP_USER_AGENT = "http.user_agent";
-    static final String HTTP_METHOD = "http.method";
-    static final String HTTP_URL = "http.url";
-    static final String HTTP_STATUS_CODE = "http.status_code";
     static final String SERVICE_REQUEST_ID_ATTRIBUTE = "serviceRequestId";
     static final String CLIENT_REQUEST_ID_ATTRIBUTE = "requestId";
 
@@ -34,10 +30,6 @@ class OpenTelemetryUtils {
         // messaging mapping, attributes are defined in com.azure.core.amqp.implementation.ClientConstants
         mappings.put(ENTITY_PATH_KEY, "messaging.destination");
         mappings.put(HOST_NAME_KEY, "net.peer.name");
-        mappings.put(HTTP_USER_AGENT, "http.user_agent");
-        mappings.put(HTTP_METHOD, "http.method");
-        mappings.put(HTTP_URL, "http.url");
-        mappings.put(HTTP_STATUS_CODE, "http.status_code");
         mappings.put(CLIENT_REQUEST_ID_ATTRIBUTE, "az.client_request_id");
         mappings.put(SERVICE_REQUEST_ID_ATTRIBUTE, "az.service_request_id");
 
@@ -72,8 +64,8 @@ class OpenTelemetryUtils {
             return ATTRIBUTE_MAPPING_V1_12_0;
         }
 
-        // return latest mappings if version is not found.
-        return ATTRIBUTE_MAPPING_V1_12_0;
+        LOGGER.warning("Unknown OpenTelemetry Semantic Conventions version: {}, using latest instead: {}", version, OpenTelemetrySchemaVersion.getLatest());
+        return getMappingsForVersion(OpenTelemetrySchemaVersion.getLatest());
     }
 
     private static String map(String propertyName, Map<String, String> mappings) {

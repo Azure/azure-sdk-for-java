@@ -29,7 +29,7 @@ final class DefaultMeterProvider implements MeterProvider {
         // Use as classloader to load provider-configuration files and provider classes the classloader
         // that loaded this class. In most cases this will be the System classloader.
         // But this choice here provides additional flexibility in managed environments that control
-        // classloading differently (OSGi, Spring and others) and don't/ depend on the
+        // classloading differently (OSGi, Spring and others) and don't depend on the
         // System classloader to load Meter classes.
         ServiceLoader<MeterProvider> serviceLoader = ServiceLoader.load(MeterProvider.class, MeterProvider.class.getClassLoader());
         Iterator<MeterProvider> iterator = serviceLoader.iterator();

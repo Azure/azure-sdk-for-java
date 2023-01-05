@@ -15,7 +15,7 @@ public class OpenTelemetrySchemaVersion extends ExpandableStringEnum<OpenTelemet
      * This constructor shouldn't be called as it will produce a {@link ExpandableStringEnum} which doesn't
      * have a String enum value.
      *
-     * @deprecated Use the explicit pre-constracted version.
+     * @deprecated Use the explicit pre-constructed version.
      */
     @Deprecated
     public OpenTelemetrySchemaVersion() {

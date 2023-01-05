@@ -3,6 +3,7 @@
 
 package com.azure.core.implementation.http.policy;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
@@ -23,15 +24,15 @@ import reactor.core.publisher.Signal;
 import static com.azure.core.util.tracing.Tracer.DISABLE_TRACING_KEY;
 
 public class InstrumentationPolicy implements HttpPipelinePolicy {
-    static final String HTTP_USER_AGENT = "http.user_agent";
-    static final String HTTP_METHOD = "http.method";
-    static final String HTTP_URL = "http.url";
-    static final String HTTP_STATUS_CODE = "http.status_code";
-    static final String SERVICE_REQUEST_ID_ATTRIBUTE = "serviceRequestId";
-    static final String CLIENT_REQUEST_ID_ATTRIBUTE = "requestId";
+    private static final String HTTP_USER_AGENT = "http.user_agent";
+    private static final String HTTP_METHOD = "http.method";
+    private static final String HTTP_URL = "http.url";
+    private static final String HTTP_STATUS_CODE = "http.status_code";
+    private static final String SERVICE_REQUEST_ID_ATTRIBUTE = "serviceRequestId";
+    private static final String CLIENT_REQUEST_ID_ATTRIBUTE = "requestId";
     private static final String REACTOR_HTTP_TRACE_CONTEXT_KEY = "instrumentation-context-key";
-    private static final String SERVICE_REQUEST_ID_HEADER = "x-ms-request-id";
-    private static final String CLIENT_REQUEST_ID_HEADER = "x-ms-client-request-id";
+    private static final HttpHeaderName SERVICE_REQUEST_ID_HEADER = HttpHeaderName.fromString("x-ms-request-id");
+    private static final HttpHeaderName CLIENT_REQUEST_ID_HEADER = HttpHeaderName.fromString("x-ms-client-request-id");
     private static final String LEGACY_OTEL_POLICY_NAME = "io.opentelemetry.javaagent.instrumentation.azurecore.v1_19.shaded.com.azure.core.tracing.opentelemetry.OpenTelemetryHttpPolicy";
     private static final ClientLogger LOGGER = new ClientLogger(InstrumentationPolicy.class);
 
@@ -145,7 +146,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
                 tracer.setAttribute(SERVICE_REQUEST_ID_ATTRIBUTE, requestId, span);
             }
 
-            tracer.end((statusCode >= 300) ? "error" : null, null, span);
+            tracer.end((statusCode >= 400) ? "error" : null, null, span);
         }
 
         tracer.end(null, error, span);

@@ -3,6 +3,7 @@
 
 package com.azure.core.util.tracing;
 
+import com.azure.core.util.Configuration;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -16,8 +17,10 @@ final class DefaultTracerProvider implements TracerProvider {
     private static final TracerProvider INSTANCE = new DefaultTracerProvider();
     private static final RuntimeException ERROR;
     private static final ClientLogger LOGGER = new ClientLogger(DefaultTracerProvider.class);
+    private static final TracingOptions DEFAULT_OPTIONS = TracingOptions.fromConfiguration(Configuration.getGlobalConfiguration());
     private static TracerProvider tracerProvider;
     private static Tracer fallbackTracer;
+
 
     private DefaultTracerProvider() {
     }
@@ -26,7 +29,7 @@ final class DefaultTracerProvider implements TracerProvider {
         // Use as classloader to load provider-configuration files and provider classes the classloader
         // that loaded this class. In most cases this will be the System classloader.
         // But this choice here provides additional flexibility in managed environments that control
-        // classloading differently (OSGi, Spring and others) and don't/ depend on the
+        // classloading differently (OSGi, Spring and others) and don't depend on the
         // System classloader to load Meter classes.
         ServiceLoader<TracerProvider> serviceLoader = ServiceLoader.load(TracerProvider.class, TracerProvider.class.getClassLoader());
         Iterator<TracerProvider> iterator = serviceLoader.iterator();
@@ -78,7 +81,11 @@ final class DefaultTracerProvider implements TracerProvider {
     public Tracer createTracer(String libraryName, String libraryVersion, String azNamespace, TracingOptions options) {
         Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
 
-        if (options != null && !options.isEnabled()) {
+        if (options == null) {
+            options = DEFAULT_OPTIONS;
+        }
+
+        if (!options.isEnabled()) {
             return NoopTracer.INSTANCE;
         }
 

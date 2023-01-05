@@ -122,7 +122,7 @@ When using async clients without Application Insights Java agent or OpenTelemetr
 
 #### Synchronous clients 
 
-Pass OpenTelemetry `Context` under `PARENT_TRACE_CONTEXT_KEY` in c`om.azure.core.util.Context`: 
+Pass OpenTelemetry `Context` under `PARENT_TRACE_CONTEXT_KEY` in `com.azure.core.util.Context`: 
 
 ```java com.azure.core.util.tracing#explicit-parent
 

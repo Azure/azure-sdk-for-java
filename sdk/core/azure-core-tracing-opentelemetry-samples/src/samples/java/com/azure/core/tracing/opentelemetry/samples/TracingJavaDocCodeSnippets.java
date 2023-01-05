@@ -25,7 +25,7 @@ import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 public class TracingJavaDocCodeSnippets {
 
     @SuppressWarnings("try")
-    public void sampleDefaultSdkConfiguration() {
+    public void sampleGlobalSdkConfiguration() {
         // BEGIN: com.azure.core.util.tracing.TracingOptions#default
 
         // configure OpenTelemetry SDK using io.opentelemetry:opentelemetry-sdk-extension-autoconfigure
@@ -73,7 +73,7 @@ public class TracingJavaDocCodeSnippets {
             .clientOptions(new ClientOptions().setTracingOptions(customTracingOptions))
             .build();
 
-        // use client as usual, if it emits metric, they will be exported
+        // use client as usual, if it emits spans, they will be exported
         sampleClient.methodCall("get items");
 
         // END: com.azure.core.tracing.TracingOptions#custom
