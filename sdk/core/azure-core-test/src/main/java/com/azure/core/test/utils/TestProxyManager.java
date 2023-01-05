@@ -88,7 +88,9 @@ public class TestProxyManager {
         if (osName.contains("windows")) {
             return "test-proxy.exe";
         } else if (osName.contains("linux")) {
-            throw new UnsupportedOperationException();
+            return "test-proxy";
+        } else if (osName.contains("mac os x")) {
+            return "test-proxy";
         } else {
             throw new UnsupportedOperationException();
         }
