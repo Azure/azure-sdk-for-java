@@ -55,7 +55,7 @@ public final class MetricNamespacesClientImpl implements MetricNamespacesClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientMetricN")
-    private interface MetricNamespacesService {
+    public interface MetricNamespacesService {
         @Headers({"Content-Type: application/json"})
         @Get("/{resourceUri}/providers/microsoft.insights/metricNamespaces")
         @ExpectedResponses({200})

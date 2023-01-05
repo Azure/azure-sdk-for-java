@@ -31,6 +31,10 @@ public final class RuleEmailAction extends RuleAction {
     @JsonProperty(value = "customEmails")
     private List<String> customEmails;
 
+    /** Creates an instance of RuleEmailAction class. */
+    public RuleEmailAction() {
+    }
+
     /**
      * Get the sendToServiceOwners property: Whether the administrators (service and co-administrators) of the service
      * should be notified when the alert is activated.

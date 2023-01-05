@@ -26,6 +26,10 @@ public final class ActionGroupPatchBody {
     @JsonProperty(value = "properties")
     private ActionGroupPatch innerProperties;
 
+    /** Creates an instance of ActionGroupPatchBody class. */
+    public ActionGroupPatchBody() {
+    }
+
     /**
      * Get the tags property: Resource tags.
      *

@@ -26,6 +26,10 @@ public final class AzureMonitorPrivateLinkScopeListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of AzureMonitorPrivateLinkScopeListResult class. */
+    public AzureMonitorPrivateLinkScopeListResult() {
+    }
+
     /**
      * Get the value property: List of Azure Monitor PrivateLinkScope definitions.
      *

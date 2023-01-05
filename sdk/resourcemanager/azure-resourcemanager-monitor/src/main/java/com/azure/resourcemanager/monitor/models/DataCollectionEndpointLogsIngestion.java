@@ -9,6 +9,10 @@ import com.azure.core.annotation.Immutable;
 /** The endpoint used by clients to ingest logs. */
 @Immutable
 public final class DataCollectionEndpointLogsIngestion extends LogsIngestionEndpointSpec {
+    /** Creates an instance of DataCollectionEndpointLogsIngestion class. */
+    public DataCollectionEndpointLogsIngestion() {
+    }
+
     /**
      * Validates the instance.
      *

@@ -374,6 +374,17 @@ public final class CoreUtils {
         Objects.requireNonNull(into, "'into' cannot be null.");
         Objects.requireNonNull(from, "'from' cannot be null.");
 
+        // If the 'into' Context is the NONE Context just return the 'from' Context.
+        // This is safe as Context is immutable and prevents needing to create any new Contexts and temporary arrays.
+        if (into == Context.NONE) {
+            return from;
+        }
+
+        // Same goes the other way, where if the 'from' Context is the NONE Context just return the 'into' Context.
+        if (from == Context.NONE) {
+            return into;
+        }
+
         Context[] contextChain = from.getContextChain();
 
         Context returnContext = into;

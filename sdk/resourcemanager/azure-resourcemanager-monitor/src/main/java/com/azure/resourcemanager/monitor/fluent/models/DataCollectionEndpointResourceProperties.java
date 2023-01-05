@@ -13,6 +13,10 @@ import com.azure.resourcemanager.monitor.models.DataCollectionEndpointNetworkAcl
 /** Resource properties. */
 @Fluent
 public final class DataCollectionEndpointResourceProperties extends DataCollectionEndpoint {
+    /** Creates an instance of DataCollectionEndpointResourceProperties class. */
+    public DataCollectionEndpointResourceProperties() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public DataCollectionEndpointResourceProperties withDescription(String description) {
