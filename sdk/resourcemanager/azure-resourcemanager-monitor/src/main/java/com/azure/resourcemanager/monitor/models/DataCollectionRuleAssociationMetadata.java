@@ -9,6 +9,10 @@ import com.azure.core.annotation.Immutable;
 /** Metadata about the resource. */
 @Immutable
 public final class DataCollectionRuleAssociationMetadata extends Metadata {
+    /** Creates an instance of DataCollectionRuleAssociationMetadata class. */
+    public DataCollectionRuleAssociationMetadata() {
+    }
+
     /**
      * Validates the instance.
      *
