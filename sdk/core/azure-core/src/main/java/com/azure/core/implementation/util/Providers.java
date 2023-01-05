@@ -14,49 +14,40 @@ import java.util.function.Function;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_HTTP_CLIENT_IMPLEMENTATION;
 
-public final class Providers<T> {
-    private static final String NO_DEFAULT_PROVIDER = "A request was made to load the default HttpClient provider "
-        + "but one could not be found on the classpath. If you are using a dependency manager, consider including a "
-        + "dependency on azure-core-http-netty or azure-core-http-okhttp. Depending on your existing dependencies, you "
-        + "have the choice of Netty or OkHttp implementations. Additionally, refer to "
-        + "https://aka.ms/azsdk/java/docs/custom-httpclient to learn about writing your own implementation.";
-
-    private static final String CANNOT_FIND_SPECIFIC_PROVIDER = "A request was made to use a specific "
-        + "HttpClientProvider to create an instance of HttpClient but it wasn't found on the classpath. If you're "
-        + "using a dependency manager ensure you're including the dependency that provides the specific "
-        + "implementation. If you're including the specific implementation ensure that the HttpClientProvider service "
-        + "it supplies is being included in the 'META-INF/services' file 'com'azure.core.http.HttpClientProvider'. "
-        + "The requested HttpClientProvider was: ";
+public final class Providers<TProvider, TInstance> {
     private static final ClientLogger LOGGER = new ClientLogger(Providers.class);
-    private final T defaultProvider;
-    private final Map<String, T> availableProviders;
+    private final TProvider defaultProvider;
+    private final Map<String, TProvider> availableProviders;
 
     private final String defaultImplementation;
     private final boolean noDefaultImplementation;
+    private final String noProviderMessage;
+    private final Class<TProvider> providerClass;
+    private String noSpecificProviderMessage;
 
-
-    public Providers(Class<T> clazz) {
+    public Providers(Class<TProvider> providerClass, String noProviderErrorMessage) {
+        this.providerClass = providerClass;
         // Use as classloader to load provider-configuration files and provider classes the classloader
         // that loaded this class. In most cases this will be the System classloader.
         // But this choice here provides additional flexibility in managed environments that control
         // classloading differently (OSGi, Spring and others) and don't depend on the
-        // System classloader to load HttpClientProvider classes.
-        ServiceLoader<T> serviceLoader = ServiceLoader.load(clazz, Providers.class.getClassLoader());
+        // System classloader to load TProvider classes.
+        ServiceLoader<TProvider> serviceLoader = ServiceLoader.load(providerClass, Providers.class.getClassLoader());
 
         availableProviders = new HashMap<>();
         // Use the first provider found in the service loader iterator.
-        Iterator<T> it = serviceLoader.iterator();
+        Iterator<TProvider> it = serviceLoader.iterator();
         if (it.hasNext()) {
             defaultProvider = it.next();
             String defaultProviderName = defaultProvider.getClass().getName();
             availableProviders.put(defaultProviderName, defaultProvider);
-            LOGGER.verbose("Using {} as the default {}.", defaultProviderName, clazz.getName());
+            LOGGER.verbose("Using {} as the default {}.", defaultProviderName, providerClass.getName());
         } else {
             defaultProvider = null;
         }
 
         while (it.hasNext()) {
-            T additionalProvider = it.next();
+            TProvider additionalProvider = it.next();
             String additionalProviderName = additionalProvider.getClass().getName();
             availableProviders.put(additionalProviderName, additionalProvider);
             LOGGER.verbose("Additional provider found on the classpath: {}", additionalProviderName);
@@ -65,17 +56,23 @@ public final class Providers<T> {
         defaultImplementation = Configuration.getGlobalConfiguration()
             .get(PROPERTY_AZURE_HTTP_CLIENT_IMPLEMENTATION);
         noDefaultImplementation = CoreUtils.isNullOrEmpty(defaultImplementation);
+        noProviderMessage = noProviderErrorMessage;
     }
 
+    private String formatNoSpecificProviderErrorMessage(String selectedImplementation) {
+        return String.format("A request was made to use a specific "
+                + "%s but it wasn't found on the classpath. If you're using a dependency manager ensure you're "
+                + "including the dependency that provides the specific implementation. If you're including the "
+                + "specific implementation ensure that the %s service it supplies is being included in the "
+                + "'META-INF/services' file '%s'. The requested %s was: ",
+                providerClass.getName(), providerClass.getName(), providerClass.getName(), selectedImplementation);
+    }
 
-    public <U> U createInstance(Function<T, U> createInstance,
-                                U fallBackInstance,
-                                Class<? extends T> selectedImplementation,
-                                String noDefaultProviderFoundMessage,
-                                String noSpecificProviderFoundMessage) {
+    public TInstance createInstance(Function<TProvider, TInstance> createInstance,
+                                TInstance fallBackInstance, Class<? extends TProvider> selectedImplementation) {
         if (defaultProvider == null) {
             if (fallBackInstance == null) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(noDefaultProviderFoundMessage));
+                throw LOGGER.logExceptionAsError(new IllegalStateException(noProviderMessage));
             }
 
             return fallBackInstance;
@@ -88,10 +85,11 @@ public final class Providers<T> {
         String implementationName = (selectedImplementation == null)
             ? defaultImplementation
             : selectedImplementation.getName();
-        T provider = availableProviders.get(implementationName);
+
+        TProvider provider = availableProviders.get(implementationName);
         if (provider == null) {
             throw LOGGER.logExceptionAsError(
-                new IllegalStateException(noSpecificProviderFoundMessage + implementationName));
+                new IllegalStateException(formatNoSpecificProviderErrorMessage(implementationName)));
         }
 
         return createInstance.apply(provider);

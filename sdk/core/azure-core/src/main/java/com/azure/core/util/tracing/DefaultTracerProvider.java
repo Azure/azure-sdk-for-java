@@ -15,24 +15,16 @@ import java.util.ServiceLoader;
 final class DefaultTracerProvider implements TracerProvider {
     private static final String NO_DEFAULT_PROVIDER = "A request was made to load the default TracerProvider provider "
         + "but one could not be found on the classpath. If you are using a dependency manager, consider including a "
-        + "dependency on azure-core-tracing-opentelemetry, or adding instrumentation java agent.";
-
-    private static final String CANNOT_FIND_SPECIFIC_PROVIDER = "A request was made to use a specific "
-        + "TracerProvider to create an instance of Tracer but it wasn't found on the classpath. If you're "
-        + "using a dependency manager ensure you're including the dependency that provides the specific "
-        + "implementation. If you're including the specific implementation ensure that the TracerProvider service "
-        + "it supplies is being included in the 'META-INF/services' file 'com.azure.core.util.tracing.TracerProvider'. "
-        + "The requested TracerProvider was: ";
+        + "dependency on azure-core-tracing-opentelemetry or enabling instrumentation java agent.";
 
     private static final TracerProvider INSTANCE = new DefaultTracerProvider();
     private static final ClientLogger LOGGER = new ClientLogger(DefaultTracerProvider.class);
     private static final TracingOptions DEFAULT_OPTIONS = TracingOptions.fromConfiguration(Configuration.getGlobalConfiguration());
-    private static Providers<TracerProvider> tracerProvider = new Providers<>(TracerProvider.class);
+    private static Providers<TracerProvider, Tracer> tracerProvider = new Providers<>(TracerProvider.class, NO_DEFAULT_PROVIDER);
     private static final Tracer FALLBACK_TRACER = createFallbackTracer();
 
     private DefaultTracerProvider() {
     }
-
 
     private static Tracer createFallbackTracer() {
         // backward compatibility with preview OTel plugin - it didn't have TracerProvider
@@ -58,7 +50,7 @@ final class DefaultTracerProvider implements TracerProvider {
 
         if (finalOptions.isEnabled()) {
             return tracerProvider.createInstance((provider) -> provider.createTracer(libraryName, libraryVersion, azNamespace, finalOptions),
-                FALLBACK_TRACER, null, NO_DEFAULT_PROVIDER, CANNOT_FIND_SPECIFIC_PROVIDER);
+                FALLBACK_TRACER, null);
         }
 
         return NoopTracer.INSTANCE;
