@@ -203,7 +203,6 @@
     "sdk/spring/spring-cloud-azure-starter-storage-queue/**",
     "sdk/spring/spring-cloud-azure-starter-stream-eventhubs/**",
     "sdk/spring/spring-cloud-azure-starter-stream-servicebus/**",
-    "sdk/spring/spring-cloud-azure-autoconfigure/**",
     "sdk/spring/spring-cloud-azure-trace-sleuth/**",
     "sdk/spring/spring-cloud-azure-stream-binder-eventhubs-core/**",
     "sdk/spring/spring-cloud-azure-stream-binder-servicebus/**",
@@ -983,6 +982,38 @@
         "xmpp",
         "xsom",
         "zaxxer"
+      ]
+    },
+    {
+      "filename": "sdk/spring/spring-cloud-azure-autoconfigure/**",
+      "words": [
+        "aadb",
+        "AADB",
+        "amqps",
+        "Authoritys",
+        "autoconfiguation",
+        "Conditonal",
+        "DOCUMENTDB",
+        "documentdb",
+        "Jaas",
+        "JAAS",
+        "Jndi",
+        "JWKS",
+        "myproject",
+        "MYPROJECT",
+        "namesapce",
+        "normalalize",
+        "OAUTHBEAR",
+        "oauthbearer",
+        "OAUTHBEARER",
+        "Oidc",
+        "oidc",
+        "OIDC",
+        "reqoest",
+        "SQLDB",
+        "sqldb",
+        "Vcap",
+        "VCAP"
       ]
     }
   ],
