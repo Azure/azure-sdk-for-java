@@ -3,11 +3,19 @@
 
 package com.azure.messaging.webpubsub;
 
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.test.TestBase;
+import com.azure.core.test.TestMode;
+import com.azure.core.util.Configuration;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.JWTParser;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -26,8 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Unit tests for {@link WebPubSubServiceAsyncClient#getClientAccessToken(GetClientAccessTokenOptions)
  * getAuthenticationToken} method.
  */
-public class TokenGenerationTest {
-
+public class TokenGenerationTest  extends TestBase {
     @ParameterizedTest
     @MethodSource("getTokenOptions")
     public void testTokenGeneration(GetClientAccessTokenOptions tokenOptions, String connectionString,
@@ -48,6 +55,49 @@ public class TokenGenerationTest {
         assertEquals(expectedRoles, jwtClaimsSet.getClaim("role"));
         assertEquals(expectedGroups, jwtClaimsSet.getClaim("webpubsub.group"));
 
+    }
+
+    @Test
+    public void testTokenGenerationFromAadCredential() throws ParseException {
+        String endpoint = Configuration.getGlobalConfiguration()
+            .get("WEB_PUB_SUB_ENDPOINT", "http://testendpoint.webpubsubdev.azure.com");
+        WebPubSubServiceClientBuilder webPubSubServiceClientBuilder = new WebPubSubServiceClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(HttpClient.createDefault())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .hub("test");
+
+        String connectionString = "Endpoint=http://testendpoint.webpubsubdev.azure.com;"
+                    + "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;Port=8080";
+        if (getTestMode() == TestMode.PLAYBACK) {
+            webPubSubServiceClientBuilder.httpClient(interceptorManager.getPlaybackClient())
+                .connectionString(connectionString);
+        } else if (getTestMode() == TestMode.RECORD) {
+            webPubSubServiceClientBuilder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new DefaultAzureCredentialBuilder().build());
+        } else if (getTestMode() == TestMode.LIVE) {
+            webPubSubServiceClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+
+        List<String> expectedRoles = Arrays.asList("a", "b");
+        // test for special char case
+        List<String> expectedGroups = Arrays.asList("a&b", "c");
+        String expectedSubject = "foo";
+        GetClientAccessTokenOptions tokenOptions = new GetClientAccessTokenOptions()
+            .setUserId(expectedSubject)
+            .setRoles(expectedRoles)
+            .setGroups(expectedGroups);
+        WebPubSubServiceClient client = webPubSubServiceClientBuilder.buildClient();
+        WebPubSubClientAccessToken authenticationToken = client.getClientAccessToken(tokenOptions);
+
+        assertNotNull(authenticationToken.getToken());
+        assertTrue(authenticationToken.getUrl().endsWith("access_token=" + authenticationToken.getToken()));
+        JWT parse = JWTParser.parse(authenticationToken.getToken());
+        JWTClaimsSet jwtClaimsSet = parse.getJWTClaimsSet();
+        assertEquals(expectedSubject, jwtClaimsSet.getSubject());
+        assertEquals(expectedRoles, jwtClaimsSet.getClaim("role"));
+        assertEquals(expectedGroups, jwtClaimsSet.getClaim("webpubsub.group"));
     }
 
     /**
