@@ -16,6 +16,9 @@ public final class AcrAccessToken {
     @JsonProperty(value = "access_token")
     private String accessToken;
 
+    /** Creates an instance of AcrAccessToken class. */
+    public AcrAccessToken() {}
+
     /**
      * Get the accessToken property: The access token for performing authenticated requests.
      *

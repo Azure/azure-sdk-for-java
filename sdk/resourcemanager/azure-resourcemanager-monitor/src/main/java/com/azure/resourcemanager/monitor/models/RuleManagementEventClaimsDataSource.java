@@ -16,6 +16,10 @@ public final class RuleManagementEventClaimsDataSource {
     @JsonProperty(value = "emailAddress")
     private String emailAddress;
 
+    /** Creates an instance of RuleManagementEventClaimsDataSource class. */
+    public RuleManagementEventClaimsDataSource() {
+    }
+
     /**
      * Get the emailAddress property: the email address.
      *

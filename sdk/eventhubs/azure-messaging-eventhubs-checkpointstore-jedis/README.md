@@ -2,7 +2,7 @@
 
 Azure Event Hubs Checkpoint Store can be used for storing checkpoints while processing events from Azure Event Hubs.
 This package makes use of Redis as a persistent store for maintaining checkpoints and partition ownership information.
-The `JedisRedisCheckpointStore` provided in this package can be plugged in to `EventProcessor`.
+The `JedisRedisCheckpointStore` provided in this package can be plugged in to `EventProcessorClient`.
 
 [Source code][source_code]| [API reference documentation][api_documentation] | [Product
 documentation][event_hubs_product_docs] | [Samples][sample_examples]
@@ -18,7 +18,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 - Azure Event Hubs instance
     - Step-by-step guide for [creating an Event Hub using the Azure Portal][event_hubs_create]
 - Azure Redis Cache or a suitable alternative Redis server
-    - Step-by-step guide for [creating a Redis Cache using the Azure Portal][redis_cache]
+    - Step-by-step guide for [creating a Redis Cache using the Azure Portal][redis_quickstart]
 
 ### Include the package
 #### Include the BOM file
@@ -66,8 +66,9 @@ add the direct dependency to your project as follows.
 
 ### Authenticate the storage container client
 
-In order to create an instance of `JedisCheckpointStore`, a `JedisPool` object must be created. To make this `JedisPool` object, a hostname String and a primary key String are required. These can be used as shown below to create a `JedisPool` object.
-
+In order to create an instance of `JedisCheckpointStore`, a `JedisPool` object must be created. To make this `JedisPool`
+object, a hostname String and a primary key String are required. These can be used as shown below to create a
+`JedisPool` object.
 
 ## Key concepts
 
@@ -77,16 +78,26 @@ Key concepts are explained in detail [here][key_concepts].
 - [Create and run an instance of JedisRedisCheckpointStore][sample_jedis_client]
 - [Consume events from all Event Hub partitions][sample_event_processor]
 
-### Create an instance of JedisPool with Azure Redis Cache
+### Create an instance of JedisPool
 
-```java
-String hostname = "yourHostName.redis.cache.windows.net";
+To create an instance of JedisPool using Azure Redis Cache, follow the instructions in
+[Use Azure Cache for Redis in Java][redis_quickstart_java] to fetch the hostname and access key.  Otherwise, use
+connection information from a running Redis instance.
 
-String password = "<PRIMARY KEY FOR AZURE REDIS CACHE>";
+```java readme-sample-createJedis
+JedisClientConfig clientConfig = DefaultJedisClientConfig.builder()
+    .password("<YOUR_REDIS_PRIMARY_ACCESS_KEY>")
+    .ssl(true)
+    .build();
 
-String name = "<NAME OF THE USER CLIENT>"; //this can also be a default value as the connection of Redis Cache is not dependent on this value
+String redisHostName = "<YOUR_REDIS_HOST_NAME>.redis.cache.windows.net";
+HostAndPort hostAndPort = new HostAndPort(redisHostName, 6380);
+JedisPool jedisPool = new JedisPool(hostAndPort, clientConfig);
 
-JedisPool jedisPool = new JedisPool(poolConfig, hostname, port, 1000, 1000, password, Protocol.DEFAULT_DATABASE, name, true, null, null, null);
+// Do things with JedisPool.
+
+// Finally, dispose of resource
+jedisPool.close();
 ```
 
 ### Consume events using an Event Processor Client
@@ -95,27 +106,35 @@ To consume events for all partitions of an Event Hub, you'll create an
 [`EventProcessorClient`][source_eventprocessorclient] for a specific consumer group. When an Event Hub is created, it
 provides a default consumer group that can be used to get started.
 
-The [`EventProcessorClient`][source_eventprocessorclient] will delegate processing of events to a callback function that you
-provide, allowing you to focus on the logic needed to provide value while the processor holds responsibility for
-managing the underlying consumer operations.
+The [`EventProcessorClient`][source_eventprocessorclient] will delegate processing of events to a callback function
+that you provide, allowing you to focus on the logic needed to provide value while the processor holds responsibility
+for managing the underlying consumer operations.
 
 In our example, we will focus on building the [`EventProcessor`][source_eventprocessorclient], use the
 [`JedisRedisCheckpointStore`][source_jedisredischeckpointstore], and a simple callback function to process the events
 received from the Event Hubs, writes to console and updates the checkpoint in Blob storage after each event.
 
-```java
-JedisPool jedisPool = new JedisPool(poolConfig, hostname, port, 1000, 1000, password, Protocol.DEFAULT_DATABASE, name, true, null, null, null);
+```java readme-sample-createCheckpointStore
+JedisClientConfig clientConfig = DefaultJedisClientConfig.builder()
+    .password("<YOUR_REDIS_PRIMARY_ACCESS_KEY>")
+    .ssl(true)
+    .build();
+
+String redisHostName = "<YOUR_REDIS_HOST_NAME>.redis.cache.windows.net";
+HostAndPort hostAndPort = new HostAndPort(redisHostName, 6380);
+JedisPool jedisPool = new JedisPool(hostAndPort, clientConfig);
 
 EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
     .consumerGroup("<< CONSUMER GROUP NAME >>")
-    .connectionString("<< EVENT HUB CONNECTION STRING >>")
+    .connectionString("<< EVENT HUB NAMESPACE CONNECTION STRING >>")
+    .eventHubName("<< EVENT HUB NAME >>")
     .checkpointStore(new JedisRedisCheckpointStore(jedisPool))
     .processEvent(eventContext -> {
         System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
             + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
     })
-    .processError(errorContext -> {
-        System.out.println("Error occurred while processing events " + errorContext.getThrowable().getMessage());
+    .processError(context -> {
+        System.out.println("Error occurred while processing events " + context.getThrowable().getMessage());
     })
     .buildEventProcessorClient();
 
@@ -123,10 +142,14 @@ EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
 eventProcessorClient.start();
 
 // (for demo purposes only - adding sleep to wait for receiving events)
-TimeUnit.SECONDS.sleep(5);
+// Your application will probably keep the eventProcessorClient alive until the program ends.
+TimeUnit.SECONDS.sleep(2);
 
 // When the user wishes to stop processing events, they can call `stop()`.
 eventProcessorClient.stop();
+
+// Dispose of JedisPool resource.
+jedisPool.close();
 ```
 
 ## Troubleshooting
@@ -136,13 +159,6 @@ eventProcessorClient.stop();
 Azure SDK for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite
 their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
 locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
-
-### Default SSL library
-
-All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
-operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides
-better performance compared to the default SSL implementation within the JDK. For more information, including how to
-reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ## Next steps
 
@@ -157,18 +173,17 @@ Guidelines][guidelines] for more information.
 [api_documentation]: https://azure.github.io/azure-sdk-for-java
 [event_hubs_create]: https://docs.microsoft.com/azure/event-hubs/event-hubs-create
 [event_hubs_product_docs]: https://docs.microsoft.com/azure/event-hubs/
-[java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [key_concepts]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob/README.md#key-concepts
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [maven]: https://maven.apache.org/
-[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
-[redis_cache]: https://docs.microsoft.com/azure/azure-cache-for-redis/cache-configure
+[redis_quickstart]: https://learn.microsoft.com/azure/azure-cache-for-redis/quickstart-create-redis
+[redis_quickstart_java]: https://learn.microsoft.com/azure/azure-cache-for-redis/cache-java-get-started
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis
 [sample_jedis_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/src/samples/java/com/azure/messaging/eventhubs/checkpointstore/jedis/JedisRedisCheckpointStoreSample.java
-[sample_event_processor]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/src/samples/java/com/azure/messaging/eventhubs/checkpointstore/jedis/EventProcessorJedisRedisCheckpointStoreSample.java
-[sample_examples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis
+[sample_event_processor]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/src/samples/java/com/azure/messaging/eventhubs/checkpointstore/jedis/EventProcessorClientJedisSample.java
+[sample_examples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/src/samples
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis
 [source_eventprocessorclient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/main/java/com/azure/messaging/eventhubs/EventProcessorClient.java
-[source_jedisredischeckpointstore]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis
+[source_jedisredischeckpointstore]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/src/main/java/com/azure/messaging/eventhubs/checkpointstore/jedis/JedisRedisCheckpointStore.java
 [guidelines]: https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md

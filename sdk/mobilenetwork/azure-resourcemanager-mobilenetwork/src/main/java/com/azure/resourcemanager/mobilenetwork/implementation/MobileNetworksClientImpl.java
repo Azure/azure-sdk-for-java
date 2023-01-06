@@ -14,7 +14,6 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -35,7 +34,6 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mobilenetwork.fluent.MobileNetworksClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.MobileNetworkInner;
-import com.azure.resourcemanager.mobilenetwork.fluent.models.SimIdListResultInner;
 import com.azure.resourcemanager.mobilenetwork.models.MobileNetworkListResult;
 import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
 import java.nio.ByteBuffer;
@@ -67,7 +65,7 @@ public final class MobileNetworksClientImpl implements MobileNetworksClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MobileNetworkManagem")
-    private interface MobileNetworksService {
+    public interface MobileNetworksService {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
@@ -152,21 +150,6 @@ public final class MobileNetworksClientImpl implements MobileNetworksClient {
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
-                + "/mobileNetworks/{mobileNetworkName}/listSimIds")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> listSimIds(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("mobileNetworkName") String mobileNetworkName,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -542,21 +525,6 @@ public final class MobileNetworksClientImpl implements MobileNetworksClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified mobile network.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MobileNetworkInner getByResourceGroup(String resourceGroupName, String mobileNetworkName) {
-        return getByResourceGroupAsync(resourceGroupName, mobileNetworkName).block();
-    }
-
-    /**
-     * Gets information about the specified mobile network.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -567,6 +535,21 @@ public final class MobileNetworksClientImpl implements MobileNetworksClient {
     public Response<MobileNetworkInner> getByResourceGroupWithResponse(
         String resourceGroupName, String mobileNetworkName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, mobileNetworkName, context).block();
+    }
+
+    /**
+     * Gets information about the specified mobile network.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified mobile network.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MobileNetworkInner getByResourceGroup(String resourceGroupName, String mobileNetworkName) {
+        return getByResourceGroupWithResponse(resourceGroupName, mobileNetworkName, Context.NONE).getValue();
     }
 
     /**
@@ -972,22 +955,6 @@ public final class MobileNetworksClientImpl implements MobileNetworksClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param parameters Parameters supplied to update mobile network tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return mobile network resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MobileNetworkInner updateTags(String resourceGroupName, String mobileNetworkName, TagsObject parameters) {
-        return updateTagsAsync(resourceGroupName, mobileNetworkName, parameters).block();
-    }
-
-    /**
-     * Updates mobile network tags.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param parameters Parameters supplied to update mobile network tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -998,6 +965,22 @@ public final class MobileNetworksClientImpl implements MobileNetworksClient {
     public Response<MobileNetworkInner> updateTagsWithResponse(
         String resourceGroupName, String mobileNetworkName, TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, mobileNetworkName, parameters, context).block();
+    }
+
+    /**
+     * Updates mobile network tags.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param parameters Parameters supplied to update mobile network tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return mobile network resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MobileNetworkInner updateTags(String resourceGroupName, String mobileNetworkName, TagsObject parameters) {
+        return updateTagsWithResponse(resourceGroupName, mobileNetworkName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -1309,254 +1292,10 @@ public final class MobileNetworksClientImpl implements MobileNetworksClient {
     }
 
     /**
-     * Lists the IDs of all provisioned SIMs in a mobile network.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list SIM IDs API service call along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> listSimIdsWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (mobileNetworkName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter mobileNetworkName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listSimIds(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            mobileNetworkName,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Lists the IDs of all provisioned SIMs in a mobile network.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list SIM IDs API service call along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> listSimIdsWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (mobileNetworkName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter mobileNetworkName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listSimIds(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                mobileNetworkName,
-                accept,
-                context);
-    }
-
-    /**
-     * Lists the IDs of all provisioned SIMs in a mobile network.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of response for list SIM IDs API service call.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SimIdListResultInner>, SimIdListResultInner> beginListSimIdsAsync(
-        String resourceGroupName, String mobileNetworkName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = listSimIdsWithResponseAsync(resourceGroupName, mobileNetworkName);
-        return this
-            .client
-            .<SimIdListResultInner, SimIdListResultInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SimIdListResultInner.class,
-                SimIdListResultInner.class,
-                this.client.getContext());
-    }
-
-    /**
-     * Lists the IDs of all provisioned SIMs in a mobile network.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of response for list SIM IDs API service call.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SimIdListResultInner>, SimIdListResultInner> beginListSimIdsAsync(
-        String resourceGroupName, String mobileNetworkName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            listSimIdsWithResponseAsync(resourceGroupName, mobileNetworkName, context);
-        return this
-            .client
-            .<SimIdListResultInner, SimIdListResultInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SimIdListResultInner.class, SimIdListResultInner.class, context);
-    }
-
-    /**
-     * Lists the IDs of all provisioned SIMs in a mobile network.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for list SIM IDs API service call.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SimIdListResultInner>, SimIdListResultInner> beginListSimIds(
-        String resourceGroupName, String mobileNetworkName) {
-        return beginListSimIdsAsync(resourceGroupName, mobileNetworkName).getSyncPoller();
-    }
-
-    /**
-     * Lists the IDs of all provisioned SIMs in a mobile network.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for list SIM IDs API service call.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SimIdListResultInner>, SimIdListResultInner> beginListSimIds(
-        String resourceGroupName, String mobileNetworkName, Context context) {
-        return beginListSimIdsAsync(resourceGroupName, mobileNetworkName, context).getSyncPoller();
-    }
-
-    /**
-     * Lists the IDs of all provisioned SIMs in a mobile network.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list SIM IDs API service call on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SimIdListResultInner> listSimIdsAsync(String resourceGroupName, String mobileNetworkName) {
-        return beginListSimIdsAsync(resourceGroupName, mobileNetworkName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Lists the IDs of all provisioned SIMs in a mobile network.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list SIM IDs API service call on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SimIdListResultInner> listSimIdsAsync(
-        String resourceGroupName, String mobileNetworkName, Context context) {
-        return beginListSimIdsAsync(resourceGroupName, mobileNetworkName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Lists the IDs of all provisioned SIMs in a mobile network.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list SIM IDs API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SimIdListResultInner listSimIds(String resourceGroupName, String mobileNetworkName) {
-        return listSimIdsAsync(resourceGroupName, mobileNetworkName).block();
-    }
-
-    /**
-     * Lists the IDs of all provisioned SIMs in a mobile network.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list SIM IDs API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SimIdListResultInner listSimIds(String resourceGroupName, String mobileNetworkName, Context context) {
-        return listSimIdsAsync(resourceGroupName, mobileNetworkName, context).block();
-    }
-
-    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1593,7 +1332,8 @@ public final class MobileNetworksClientImpl implements MobileNetworksClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1631,7 +1371,8 @@ public final class MobileNetworksClientImpl implements MobileNetworksClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1668,7 +1409,8 @@ public final class MobileNetworksClientImpl implements MobileNetworksClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -113,7 +113,7 @@ abstract class AbstractKafkaPropertiesBeanPostProcessorTest<P extends AbstractKa
     @Test
     void testConfigureKafkaUserAgent() {
         getApiVersionsRequestData().ifPresent(method -> {
-            processor.configureKafkaUserAgent();
+            AbstractKafkaPropertiesBeanPostProcessor.configureKafkaUserAgent();
             ApiVersionsRequest apiVersionsRequest = new ApiVersionsRequest.Builder().build();
             ApiVersionsRequestData apiVersionsRequestData = (ApiVersionsRequestData) ReflectionUtils.invokeMethod(method, apiVersionsRequest);
             assertTrue(apiVersionsRequestData.clientSoftwareName()
@@ -126,8 +126,8 @@ abstract class AbstractKafkaPropertiesBeanPostProcessorTest<P extends AbstractKa
     @Test
     void testConfigureKafkaUserAgentMultipleTimes() {
         getApiVersionsRequestData().ifPresent(method -> {
-            processor.configureKafkaUserAgent();
-            processor.configureKafkaUserAgent();
+            AbstractKafkaPropertiesBeanPostProcessor.configureKafkaUserAgent();
+            AbstractKafkaPropertiesBeanPostProcessor.configureKafkaUserAgent();
             ApiVersionsRequest apiVersionsRequest = new ApiVersionsRequest.Builder().build();
             ApiVersionsRequestData apiVersionsRequestData = (ApiVersionsRequestData) ReflectionUtils.invokeMethod(method, apiVersionsRequest);
             assertTrue(apiVersionsRequestData.clientSoftwareName()

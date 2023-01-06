@@ -143,7 +143,7 @@ MySQL)[Azure Active Directory for authenticating with MySQL]
 
 ### Architecture
 
-This picture shows how the jdbc authentication plugin for MySQL authenticating with MSI.
+This picture shows how the jdbc authentication plugin for MySQL authenticating with managed identity.
 
 ![mysql_design.png](img/mysql_design.png)
 
@@ -282,6 +282,14 @@ Connection connection=DriverManager.getConnection(url,properties);
 ## Troubleshooting
 
 If you encounter any bugs, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues).
+
+### Known issues
+- java.sql.SQLException: Access denied for user 'user@company.com@'170.170.170.170' (using password: NO) [#31599](https://github.com/Azure/azure-sdk-for-java/issues/31599).
+
+  If you are using `MysqlConnectionPoolDataSource` class as the datasource in your application, please remove the `defaultAuthenticationPlugin` in your code.
+
+  ~~properties.put("defaultAuthenticationPlugin","com.azure.identity.extensions.jdbc.mysql.AzureMysqlAuthenticationPlugin");~~
+
 
 ## Next steps
 

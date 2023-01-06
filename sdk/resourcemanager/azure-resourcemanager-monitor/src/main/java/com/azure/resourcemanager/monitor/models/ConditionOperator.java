@@ -19,7 +19,10 @@ public enum ConditionOperator {
     LESS_THAN("LessThan"),
 
     /** Enum value LessThanOrEqual. */
-    LESS_THAN_OR_EQUAL("LessThanOrEqual");
+    LESS_THAN_OR_EQUAL("LessThanOrEqual"),
+
+    /** Enum value Equals. */
+    EQUALS("Equals");
 
     /** The actual serialized value for a ConditionOperator instance. */
     private final String value;

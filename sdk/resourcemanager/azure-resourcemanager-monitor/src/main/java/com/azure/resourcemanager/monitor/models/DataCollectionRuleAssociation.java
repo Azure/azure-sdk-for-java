@@ -40,6 +40,10 @@ public class DataCollectionRuleAssociation {
     @JsonProperty(value = "metadata", access = JsonProperty.Access.WRITE_ONLY)
     private DataCollectionRuleAssociationMetadata metadata;
 
+    /** Creates an instance of DataCollectionRuleAssociation class. */
+    public DataCollectionRuleAssociation() {
+    }
+
     /**
      * Get the description property: Description of the association.
      *

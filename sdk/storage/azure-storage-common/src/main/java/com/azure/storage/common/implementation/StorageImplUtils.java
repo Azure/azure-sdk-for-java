@@ -41,8 +41,6 @@ public class StorageImplUtils {
 
     private static final String PARAMETER_NOT_IN_RANGE = "The value of the parameter '%s' should be between %s and %s.";
 
-    private static final String NO_PATH_SEGMENTS = "URL %s does not contain path segments.";
-
     private static final String STRING_TO_SIGN_LOG_INFO_MESSAGE = "The string to sign computed by the SDK is: {}{}";
 
     private static final String STRING_TO_SIGN_LOG_WARNING_MESSAGE = "Please remember to disable '{}' before going "
@@ -62,52 +60,27 @@ public class StorageImplUtils {
         Constants.STORAGE_LOG_STRING_TO_SIGN, Constants.STORAGE_LOG_STRING_TO_SIGN,
         Constants.STORAGE_LOG_STRING_TO_SIGN);
 
-    /**
-     * @deprecated See value in {@link StorageImplUtils}
-     */
-    @Deprecated
-    public static final String INVALID_DATE_STRING = "Invalid Date String: %s.";
+    private static final String INVALID_BASE64_KEY =
+        "'base64Key' was not a valid Base64 scheme. Ensure the Storage account key or SAS key is properly formatted.";
 
-    /**
-     * Stores a reference to the date/time pattern with the greatest precision Java.util.Date is capable of expressing.
-     * @deprecated See value in {@link StorageImplUtils}
-     */
-    @Deprecated
-    public static final String MAX_PRECISION_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS";
+    private static final String INVALID_DATE_STRING = "Invalid Date String: %s.";
 
-    /**
-     * The length of a datestring that matches the MAX_PRECISION_PATTERN.
-     * @deprecated See value in {@link StorageImplUtils}
-     */
-    @Deprecated
-    public static final int MAX_PRECISION_DATESTRING_LENGTH = MAX_PRECISION_PATTERN.replaceAll("'", "")
-            .length();
+    private static final String MAX_PRECISION_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS";
 
-    /**
-     * Stores a reference to the ISO8601 date/time pattern.
-     * @deprecated See value in {@link StorageImplUtils}
-     */
-    @Deprecated
-    public static final String ISO8601_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-
-    /**
-     * Stores a reference to the ISO8601 date/time pattern.
-     * @deprecated See value in {@link StorageImplUtils}
-     */
-    @Deprecated
-    public static final String ISO8601_PATTERN_NO_SECONDS = "yyyy-MM-dd'T'HH:mm'Z'";
+    private static final int MAX_PRECISION_DATESTRING_LENGTH = MAX_PRECISION_PATTERN.replaceAll("'", "").length();
 
     // Use constant DateTimeFormatters as 'ofPattern' requires the passed pattern to be parsed each time, significantly
     // increasing the overhead of using DateTimeFormatter.
-    private static final DateTimeFormatter MAX_PRECISION_FORMATTER = DateTimeFormatter.ofPattern(MAX_PRECISION_PATTERN)
+    private static final DateTimeFormatter MAX_PRECISION_FORMATTER =
+        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS")
+            .withLocale(Locale.ROOT);
+
+    private static final DateTimeFormatter ISO8601_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
         .withLocale(Locale.ROOT);
 
-    private static final DateTimeFormatter ISO8601_FORMATTER = DateTimeFormatter.ofPattern(ISO8601_PATTERN)
-        .withLocale(Locale.ROOT);
-
-    private static final DateTimeFormatter NO_SECONDS_FORMATTER = DateTimeFormatter
-        .ofPattern(ISO8601_PATTERN_NO_SECONDS)
-        .withLocale(Locale.ROOT);
+    private static final DateTimeFormatter NO_SECONDS_FORMATTER =
+        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm'Z'")
+            .withLocale(Locale.ROOT);
 
     /**
      * Parses the query string into a key-value pair map that maintains key, query parameter key, order. The value is
@@ -213,8 +186,14 @@ public class StorageImplUtils {
      * string, or the UTF-8 charset isn't supported.
      */
     public static String computeHMac256(final String base64Key, final String stringToSign) {
+        byte[] key;
         try {
-            byte[] key = Base64.getDecoder().decode(base64Key);
+            key = Base64.getDecoder().decode(base64Key);
+        } catch (IllegalArgumentException ex) {
+            throw new RuntimeException(INVALID_BASE64_KEY, ex);
+        }
+
+        try {
             Mac hmacSHA256 = Mac.getInstance("HmacSHA256");
             hmacSHA256.init(new SecretKeySpec(key, "HmacSHA256"));
             byte[] utf8Bytes = stringToSign.getBytes(StandardCharsets.UTF_8);
@@ -243,30 +222,6 @@ public class StorageImplUtils {
 
         builder.setPath(builder.getPath() + name);
 
-        try {
-            return builder.toUrl();
-        } catch (MalformedURLException ex) {
-            throw new IllegalArgumentException(ex);
-        }
-    }
-
-
-    /**
-     * Strips the last path segment from the passed URL.
-     *
-     * @param baseUrl URL having its last path segment stripped
-     * @return a URL with the path segment stripped.
-     * @throws IllegalArgumentException If stripping the last path segment causes the URL to become malformed or it
-     * doesn't contain any path segments.
-     */
-    public static URL stripLastPathSegment(URL baseUrl) {
-        UrlBuilder builder = UrlBuilder.parse(baseUrl);
-
-        if (builder.getPath() == null || !builder.getPath().contains("/")) {
-            throw new IllegalArgumentException(String.format(Locale.ROOT, NO_PATH_SEGMENTS, baseUrl));
-        }
-
-        builder.setPath(builder.getPath().substring(0, builder.getPath().lastIndexOf("/")));
         try {
             return builder.toUrl();
         } catch (MalformedURLException ex) {

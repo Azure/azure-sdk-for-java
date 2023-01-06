@@ -35,15 +35,6 @@ public final class SimsImpl implements Sims {
         this.serviceClient().delete(resourceGroupName, simGroupName, simName, context);
     }
 
-    public Sim get(String resourceGroupName, String simGroupName, String simName) {
-        SimInner inner = this.serviceClient().get(resourceGroupName, simGroupName, simName);
-        if (inner != null) {
-            return new SimImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Sim> getWithResponse(
         String resourceGroupName, String simGroupName, String simName, Context context) {
         Response<SimInner> inner =
@@ -59,13 +50,22 @@ public final class SimsImpl implements Sims {
         }
     }
 
-    public PagedIterable<Sim> listBySimGroup(String resourceGroupName, String simGroupName) {
-        PagedIterable<SimInner> inner = this.serviceClient().listBySimGroup(resourceGroupName, simGroupName);
+    public Sim get(String resourceGroupName, String simGroupName, String simName) {
+        SimInner inner = this.serviceClient().get(resourceGroupName, simGroupName, simName);
+        if (inner != null) {
+            return new SimImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public PagedIterable<Sim> listByGroup(String resourceGroupName, String simGroupName) {
+        PagedIterable<SimInner> inner = this.serviceClient().listByGroup(resourceGroupName, simGroupName);
         return Utils.mapPage(inner, inner1 -> new SimImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Sim> listBySimGroup(String resourceGroupName, String simGroupName, Context context) {
-        PagedIterable<SimInner> inner = this.serviceClient().listBySimGroup(resourceGroupName, simGroupName, context);
+    public PagedIterable<Sim> listByGroup(String resourceGroupName, String simGroupName, Context context) {
+        PagedIterable<SimInner> inner = this.serviceClient().listByGroup(resourceGroupName, simGroupName, context);
         return Utils.mapPage(inner, inner1 -> new SimImpl(inner1, this.manager()));
     }
 

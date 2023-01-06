@@ -19,6 +19,10 @@ public final class MetricDefinitionCollection {
     @JsonProperty(value = "value", required = true)
     private List<MetricDefinitionInner> value;
 
+    /** Creates an instance of MetricDefinitionCollection class. */
+    public MetricDefinitionCollection() {
+    }
+
     /**
      * Get the value property: the values for the metric definitions.
      *

@@ -24,6 +24,10 @@ public final class ActionGroupList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ActionGroupList class. */
+    public ActionGroupList() {
+    }
+
     /**
      * Get the value property: The list of action groups.
      *

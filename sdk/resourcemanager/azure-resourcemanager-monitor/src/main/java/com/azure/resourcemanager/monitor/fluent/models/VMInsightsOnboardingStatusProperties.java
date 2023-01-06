@@ -41,6 +41,10 @@ public final class VMInsightsOnboardingStatusProperties {
     @JsonProperty(value = "data")
     private List<DataContainer> data;
 
+    /** Creates an instance of VMInsightsOnboardingStatusProperties class. */
+    public VMInsightsOnboardingStatusProperties() {
+    }
+
     /**
      * Get the resourceId property: Azure Resource Manager identifier of the resource whose onboarding status is being
      * represented.

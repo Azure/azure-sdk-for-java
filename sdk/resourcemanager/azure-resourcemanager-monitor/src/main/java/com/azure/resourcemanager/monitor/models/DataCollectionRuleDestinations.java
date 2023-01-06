@@ -10,6 +10,10 @@ import java.util.List;
 /** The specification of destinations. */
 @Fluent
 public final class DataCollectionRuleDestinations extends DestinationsSpec {
+    /** Creates an instance of DataCollectionRuleDestinations class. */
+    public DataCollectionRuleDestinations() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public DataCollectionRuleDestinations withLogAnalytics(List<LogAnalyticsDestination> logAnalytics) {

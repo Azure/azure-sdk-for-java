@@ -56,7 +56,7 @@ public final class BgpServiceCommunitiesClientImpl implements BgpServiceCommunit
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface BgpServiceCommunitiesService {
+    public interface BgpServiceCommunitiesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/bgpServiceCommunities")
         @ExpectedResponses({200})
@@ -101,7 +101,7 @@ public final class BgpServiceCommunitiesClientImpl implements BgpServiceCommunit
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -144,7 +144,7 @@ public final class BgpServiceCommunitiesClientImpl implements BgpServiceCommunit
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -25,6 +25,10 @@ public final class DataCollectionEndpointResourceListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of DataCollectionEndpointResourceListResult class. */
+    public DataCollectionEndpointResourceListResult() {
+    }
+
     /**
      * Get the value property: A list of resources.
      *

@@ -23,6 +23,9 @@ public final class MetadataApplicationRelated {
     @JsonProperty(value = "functions")
     private List<String> functions;
 
+    /** Creates an instance of MetadataApplicationRelated class. */
+    public MetadataApplicationRelated() {}
+
     /**
      * Get the tables property: The related tables for the Application Insights app.
      *

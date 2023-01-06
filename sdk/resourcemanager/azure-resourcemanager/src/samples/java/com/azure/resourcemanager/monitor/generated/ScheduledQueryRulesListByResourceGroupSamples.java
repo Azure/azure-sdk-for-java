@@ -9,19 +9,19 @@ import com.azure.core.util.Context;
 /** Samples for ScheduledQueryRules ListByResourceGroup. */
 public final class ScheduledQueryRulesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-04-16/examples/listScheduledQueryRules.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/listScheduledQueryRulesByResourceGroup.json
      */
     /**
-     * Sample code: List rules.
+     * Sample code: List scheduled query rules by resource group.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void listRules(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void listScheduledQueryRulesByResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .diagnosticSettings()
             .manager()
             .serviceClient()
             .getScheduledQueryRules()
-            .listByResourceGroup("gigtest", null, Context.NONE);
+            .listByResourceGroup("QueryResourceGroupName", Context.NONE);
     }
 }

@@ -174,6 +174,10 @@ public final class EventDataInner {
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
+    /** Creates an instance of EventDataInner class. */
+    public EventDataInner() {
+    }
+
     /**
      * Get the authorization property: The sender authorization information.
      *

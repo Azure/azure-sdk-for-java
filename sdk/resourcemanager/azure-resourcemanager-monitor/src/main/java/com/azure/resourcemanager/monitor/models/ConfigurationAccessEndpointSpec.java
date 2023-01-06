@@ -16,6 +16,10 @@ public class ConfigurationAccessEndpointSpec {
     @JsonProperty(value = "endpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String endpoint;
 
+    /** Creates an instance of ConfigurationAccessEndpointSpec class. */
+    public ConfigurationAccessEndpointSpec() {
+    }
+
     /**
      * Get the endpoint property: The endpoint. This property is READ-ONLY.
      *

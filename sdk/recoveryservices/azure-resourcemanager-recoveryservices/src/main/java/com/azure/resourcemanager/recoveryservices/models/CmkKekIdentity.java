@@ -11,18 +11,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class CmkKekIdentity {
     /*
-     * Indicate that system assigned identity should be used. Mutually
-     * exclusive with 'userAssignedIdentity' field
+     * Indicate that system assigned identity should be used. Mutually exclusive with 'userAssignedIdentity' field
      */
     @JsonProperty(value = "useSystemAssignedIdentity")
     private Boolean useSystemAssignedIdentity;
 
     /*
-     * The user assigned identity to be used to grant permissions in case the
-     * type of identity used is UserAssigned
+     * The user assigned identity to be used to grant permissions in case the type of identity used is UserAssigned
      */
     @JsonProperty(value = "userAssignedIdentity")
     private String userAssignedIdentity;
+
+    /** Creates an instance of CmkKekIdentity class. */
+    public CmkKekIdentity() {
+    }
 
     /**
      * Get the useSystemAssignedIdentity property: Indicate that system assigned identity should be used. Mutually

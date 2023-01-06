@@ -41,16 +41,6 @@ public final class DigitalTwinsEndpointsImpl implements DigitalTwinsEndpoints {
         return Utils.mapPage(inner, inner1 -> new DigitalTwinsEndpointResourceImpl(inner1, this.manager()));
     }
 
-    public DigitalTwinsEndpointResource get(String resourceGroupName, String resourceName, String endpointName) {
-        DigitalTwinsEndpointResourceInner inner =
-            this.serviceClient().get(resourceGroupName, resourceName, endpointName);
-        if (inner != null) {
-            return new DigitalTwinsEndpointResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DigitalTwinsEndpointResource> getWithResponse(
         String resourceGroupName, String resourceName, String endpointName, Context context) {
         Response<DigitalTwinsEndpointResourceInner> inner =
@@ -61,6 +51,16 @@ public final class DigitalTwinsEndpointsImpl implements DigitalTwinsEndpoints {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new DigitalTwinsEndpointResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DigitalTwinsEndpointResource get(String resourceGroupName, String resourceName, String endpointName) {
+        DigitalTwinsEndpointResourceInner inner =
+            this.serviceClient().get(resourceGroupName, resourceName, endpointName);
+        if (inner != null) {
+            return new DigitalTwinsEndpointResourceImpl(inner, this.manager());
         } else {
             return null;
         }

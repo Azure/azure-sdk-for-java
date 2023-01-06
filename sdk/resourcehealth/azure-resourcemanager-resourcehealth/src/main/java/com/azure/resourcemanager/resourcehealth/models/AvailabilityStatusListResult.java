@@ -20,11 +20,15 @@ public final class AvailabilityStatusListResult {
     private List<AvailabilityStatusInner> value;
 
     /*
-     * The URI to fetch the next page of availabilityStatuses. Call ListNext()
-     * with this URI to fetch the next page of availabilityStatuses.
+     * The URI to fetch the next page of availabilityStatuses. Call ListNext() with this URI to fetch the next page of
+     * availabilityStatuses.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of AvailabilityStatusListResult class. */
+    public AvailabilityStatusListResult() {
+    }
 
     /**
      * Get the value property: The list of availabilityStatuses.

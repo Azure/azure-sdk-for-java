@@ -313,6 +313,7 @@ abstract class AsyncBenchmark<T> {
             case QueryTopOrderby:
             case Mixed:
             case ReadAllItemsOfLogicalPartition:
+            case ReadManyLatency:
                 return true;
             default:
                 return false;

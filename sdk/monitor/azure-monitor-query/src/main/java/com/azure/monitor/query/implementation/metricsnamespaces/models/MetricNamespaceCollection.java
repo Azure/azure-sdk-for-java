@@ -4,13 +4,13 @@
 
 package com.azure.monitor.query.implementation.metricsnamespaces.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents collection of metric namespaces. */
-@Fluent
+@Immutable
 public final class MetricNamespaceCollection {
     /*
      * The values for the metric namespaces.
