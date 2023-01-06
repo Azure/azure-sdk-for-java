@@ -122,4 +122,13 @@ public class TestContextManager {
     void setTestIteration(Integer testIteration) {
         this.testIteration = testIteration;
     }
+
+    /**
+     * Returns the name of the class of the test being ran.
+     *
+     * @return The class name.
+     */
+    public String getClassName() {
+        return className;
+    }
 }

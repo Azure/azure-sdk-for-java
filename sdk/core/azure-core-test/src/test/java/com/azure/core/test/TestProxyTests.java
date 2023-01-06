@@ -21,10 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -43,7 +41,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SuppressWarnings("deprecation")
 public class TestProxyTests extends TestBase {
     static TestProxyTestServer server;
-    private static final String LOCAL_FILE_PATH = "src/test/resources/session-records/";
     private static final ObjectMapper RECORD_MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
     private static List<TestProxySanitizer> customSanitizer = new ArrayList<>();
@@ -52,13 +49,6 @@ public class TestProxyTests extends TestBase {
 
     static {
         customSanitizer.add(new TestProxySanitizer("$..modelId", REDACTED, TestProxySanitizerType.BODY));
-    }
-
-    private TestInfo testInfo;
-
-    @BeforeEach
-    void init(TestInfo testInfo) {
-        this.testInfo = testInfo;
     }
 
     @BeforeAll
@@ -227,8 +217,8 @@ public class TestProxyTests extends TestBase {
     }
 
     private RecordedTestProxyData readDataFromFile() {
-        File recordFile = new File(LOCAL_FILE_PATH + testInfo.getTestClass().get().getSimpleName() + "." + testInfo.getDisplayName().substring(0, testInfo.getDisplayName().length() - 2) + ".json");
-
+        String filePath = InterceptorManager.getRecordFolder() + "\\" + this.testContextManager.getClassName() + "." + this.testContextManager.getTestName() + ".json";
+        File recordFile = new File(filePath);
         try (BufferedReader reader = Files.newBufferedReader(recordFile.toPath())) {
             return RECORD_MAPPER.readValue(reader, RecordedTestProxyData.class);
         } catch (IOException ex) {
