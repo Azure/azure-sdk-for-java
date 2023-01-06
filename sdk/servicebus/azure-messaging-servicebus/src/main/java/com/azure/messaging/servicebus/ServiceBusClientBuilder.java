@@ -37,6 +37,7 @@ import com.azure.core.util.metrics.MeterProvider;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
+import com.azure.messaging.servicebus.implementation.ServiceBusAmqpLinkProvider;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
@@ -706,9 +707,10 @@ public final class ServiceBusClientBuilder implements
                     final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
                         connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
                         connectionOptions.getAuthorizationScope());
+                    final ServiceBusAmqpLinkProvider linkProvider = new ServiceBusAmqpLinkProvider();
 
                     return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(connectionId,
-                        connectionOptions, provider, handlerProvider, tokenManagerProvider, serializer,
+                        connectionOptions, provider, handlerProvider, linkProvider, tokenManagerProvider, serializer,
                         crossEntityTransactions);
                 }).repeat();
 
