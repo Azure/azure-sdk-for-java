@@ -88,7 +88,12 @@ public class AddressResolver implements IAddressResolver {
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink, ConnectionConfig containerConnectionConfig) {
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
+        return Flux.empty();
+    }
+
+    @Override
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(ConnectionConfig containerConnectionConfig) {
         return Flux.empty();
     }
 
