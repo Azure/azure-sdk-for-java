@@ -111,7 +111,7 @@ private class ChangeFeedBatch
           assertNotNullOrEmpty(latestOffsetLocation, "latestOffset checkpointLocation"))
 
         val latestOffsetJson = latestOffset.json()
-
+       log.logInfo(s"Latest offset for batchId: $batchId -> $latestOffsetJson")
         if (!metadataLog.add(0, latestOffsetJson)) {
           val existingLatestOffset = metadataLog.get(0).get
 
