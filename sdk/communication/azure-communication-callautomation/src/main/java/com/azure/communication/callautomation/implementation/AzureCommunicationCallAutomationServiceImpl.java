@@ -4,26 +4,53 @@
 
 package com.azure.communication.callautomation.implementation;
 
+import com.azure.communication.callautomation.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.callautomation.implementation.models.MuteAllParticipantsRequestInternal;
+import com.azure.communication.callautomation.implementation.models.MuteParticipantRequestInternal;
+import com.azure.communication.callautomation.implementation.models.MuteParticipantsResponse;
+import com.azure.communication.callautomation.implementation.models.UnmuteAllParticipantsRequestInternal;
+import com.azure.communication.callautomation.implementation.models.UnmuteParticipantRequestInternal;
+import com.azure.communication.callautomation.implementation.models.UnmuteParticipantsResponse;
+import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.HeaderParam;
+import com.azure.core.annotation.Host;
+import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
+import com.azure.core.annotation.QueryParam;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceInterface;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.RestProxy;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import java.net.URL;
+import java.util.UUID;
+import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the AzureCommunicationCallAutomationService type. */
 public final class AzureCommunicationCallAutomationServiceImpl {
+    /** The proxy service used to perform REST calls. */
+    private final AzureCommunicationCallAutomationServiceService service;
+
     /** The endpoint of the Azure Communication resource. */
-    private final URL endpoint;
+    private final String endpoint;
 
     /**
      * Gets The endpoint of the Azure Communication resource.
      *
      * @return the endpoint value.
      */
-    public URL getEndpoint() {
+    public String getEndpoint() {
         return this.endpoint;
     }
 
@@ -117,7 +144,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @param endpoint The endpoint of the Azure Communication resource.
      * @param apiVersion Api Version.
      */
-    AzureCommunicationCallAutomationServiceImpl(URL endpoint, String apiVersion) {
+    AzureCommunicationCallAutomationServiceImpl(String endpoint, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -134,7 +161,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @param endpoint The endpoint of the Azure Communication resource.
      * @param apiVersion Api Version.
      */
-    AzureCommunicationCallAutomationServiceImpl(HttpPipeline httpPipeline, URL endpoint, String apiVersion) {
+    AzureCommunicationCallAutomationServiceImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
@@ -147,7 +174,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @param apiVersion Api Version.
      */
     AzureCommunicationCallAutomationServiceImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, URL endpoint, String apiVersion) {
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
@@ -156,5 +183,942 @@ public final class AzureCommunicationCallAutomationServiceImpl {
         this.callConnections = new CallConnectionsImpl(this);
         this.contents = new ContentsImpl(this);
         this.serverCalls = new ServerCallsImpl(this);
+        this.service =
+                RestProxy.create(
+                        AzureCommunicationCallAutomationServiceService.class,
+                        this.httpPipeline,
+                        this.getSerializerAdapter());
+    }
+
+    /**
+     * The interface defining all the services for AzureCommunicationCallAutomationService to be used by the proxy
+     * service to perform REST calls.
+     */
+    @Host("{endpoint}")
+    @ServiceInterface(name = "AzureCommunicationCa")
+    public interface AzureCommunicationCallAutomationServiceService {
+        @Post("/calling/callConnections/{callConnectionId}/participants:muteAll")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<MuteParticipantsResponse>> callingCallConnectionsMuteAll(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("callConnectionId") String callConnectionId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Repeatability-Request-ID") UUID repeatabilityRequestID,
+                @HeaderParam("Repeatability-First-Sent") String repeatabilityFirstSent,
+                @BodyParam("application/json") MuteAllParticipantsRequestInternal muteAllParticipantsRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/calling/callConnections/{callConnectionId}/participants:unmuteAll")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<UnmuteParticipantsResponse>> callingCallConnectionsUnmuteAll(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("callConnectionId") String callConnectionId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Repeatability-Request-ID") UUID repeatabilityRequestID,
+                @HeaderParam("Repeatability-First-Sent") String repeatabilityFirstSent,
+                @BodyParam("application/json") UnmuteAllParticipantsRequestInternal unmuteAllParticipantsRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/calling/callConnections/{callConnectionId}/participants:mute")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<MuteParticipantsResponse>> callingCallConnectionsMute(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("callConnectionId") String callConnectionId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Repeatability-Request-ID") UUID repeatabilityRequestID,
+                @HeaderParam("Repeatability-First-Sent") String repeatabilityFirstSent,
+                @BodyParam("application/json") MuteParticipantRequestInternal muteParticipantsRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/calling/callConnections/{callConnectionId}/participants:unmute")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
+        Mono<Response<UnmuteParticipantsResponse>> callingCallConnectionsUnmute(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("callConnectionId") String callConnectionId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Repeatability-Request-ID") UUID repeatabilityRequestID,
+                @HeaderParam("Repeatability-First-Sent") String repeatabilityFirstSent,
+                @BodyParam("application/json") UnmuteParticipantRequestInternal unmuteParticipantsRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
+    }
+
+    /**
+     * Remove participant from the call using identifier.
+     *
+     * @param callConnectionId The call connection id.
+     * @param muteAllParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for removing participants of the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<MuteParticipantsResponse>> callingCallConnectionsMuteAllWithResponseAsync(
+            String callConnectionId,
+            MuteAllParticipantsRequestInternal muteAllParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.callingCallConnectionsMuteAll(
+                                this.getEndpoint(),
+                                callConnectionId,
+                                this.getApiVersion(),
+                                repeatabilityRequestID,
+                                repeatabilityFirstSent,
+                                muteAllParticipantsRequest,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Remove participant from the call using identifier.
+     *
+     * @param callConnectionId The call connection id.
+     * @param muteAllParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for removing participants of the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<MuteParticipantsResponse>> callingCallConnectionsMuteAllWithResponseAsync(
+            String callConnectionId,
+            MuteAllParticipantsRequestInternal muteAllParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent,
+            Context context) {
+        final String accept = "application/json";
+        return service.callingCallConnectionsMuteAll(
+                this.getEndpoint(),
+                callConnectionId,
+                this.getApiVersion(),
+                repeatabilityRequestID,
+                repeatabilityFirstSent,
+                muteAllParticipantsRequest,
+                accept,
+                context);
+    }
+
+    /**
+     * Remove participant from the call using identifier.
+     *
+     * @param callConnectionId The call connection id.
+     * @param muteAllParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for removing participants of the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MuteParticipantsResponse> callingCallConnectionsMuteAllAsync(
+            String callConnectionId,
+            MuteAllParticipantsRequestInternal muteAllParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent) {
+        return callingCallConnectionsMuteAllWithResponseAsync(
+                        callConnectionId, muteAllParticipantsRequest, repeatabilityRequestID, repeatabilityFirstSent)
+                .flatMap(
+                        (Response<MuteParticipantsResponse> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Remove participant from the call using identifier.
+     *
+     * @param callConnectionId The call connection id.
+     * @param muteAllParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for removing participants of the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MuteParticipantsResponse> callingCallConnectionsMuteAllAsync(
+            String callConnectionId,
+            MuteAllParticipantsRequestInternal muteAllParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent,
+            Context context) {
+        return callingCallConnectionsMuteAllWithResponseAsync(
+                        callConnectionId,
+                        muteAllParticipantsRequest,
+                        repeatabilityRequestID,
+                        repeatabilityFirstSent,
+                        context)
+                .flatMap(
+                        (Response<MuteParticipantsResponse> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Remove participant from the call using identifier.
+     *
+     * @param callConnectionId The call connection id.
+     * @param muteAllParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for removing participants of the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MuteParticipantsResponse callingCallConnectionsMuteAll(
+            String callConnectionId,
+            MuteAllParticipantsRequestInternal muteAllParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent) {
+        return callingCallConnectionsMuteAllAsync(
+                        callConnectionId, muteAllParticipantsRequest, repeatabilityRequestID, repeatabilityFirstSent)
+                .block();
+    }
+
+    /**
+     * Remove participant from the call using identifier.
+     *
+     * @param callConnectionId The call connection id.
+     * @param muteAllParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for removing participants of the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MuteParticipantsResponse> callingCallConnectionsMuteAllWithResponse(
+            String callConnectionId,
+            MuteAllParticipantsRequestInternal muteAllParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent,
+            Context context) {
+        return callingCallConnectionsMuteAllWithResponseAsync(
+                        callConnectionId,
+                        muteAllParticipantsRequest,
+                        repeatabilityRequestID,
+                        repeatabilityFirstSent,
+                        context)
+                .block();
+    }
+
+    /**
+     * Remove participant from the call using identifier.
+     *
+     * @param callConnectionId The call connection id.
+     * @param unmuteAllParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for removing participants of the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<UnmuteParticipantsResponse>> callingCallConnectionsUnmuteAllWithResponseAsync(
+            String callConnectionId,
+            UnmuteAllParticipantsRequestInternal unmuteAllParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.callingCallConnectionsUnmuteAll(
+                                this.getEndpoint(),
+                                callConnectionId,
+                                this.getApiVersion(),
+                                repeatabilityRequestID,
+                                repeatabilityFirstSent,
+                                unmuteAllParticipantsRequest,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Remove participant from the call using identifier.
+     *
+     * @param callConnectionId The call connection id.
+     * @param unmuteAllParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for removing participants of the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<UnmuteParticipantsResponse>> callingCallConnectionsUnmuteAllWithResponseAsync(
+            String callConnectionId,
+            UnmuteAllParticipantsRequestInternal unmuteAllParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent,
+            Context context) {
+        final String accept = "application/json";
+        return service.callingCallConnectionsUnmuteAll(
+                this.getEndpoint(),
+                callConnectionId,
+                this.getApiVersion(),
+                repeatabilityRequestID,
+                repeatabilityFirstSent,
+                unmuteAllParticipantsRequest,
+                accept,
+                context);
+    }
+
+    /**
+     * Remove participant from the call using identifier.
+     *
+     * @param callConnectionId The call connection id.
+     * @param unmuteAllParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for removing participants of the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<UnmuteParticipantsResponse> callingCallConnectionsUnmuteAllAsync(
+            String callConnectionId,
+            UnmuteAllParticipantsRequestInternal unmuteAllParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent) {
+        return callingCallConnectionsUnmuteAllWithResponseAsync(
+                        callConnectionId, unmuteAllParticipantsRequest, repeatabilityRequestID, repeatabilityFirstSent)
+                .flatMap(
+                        (Response<UnmuteParticipantsResponse> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Remove participant from the call using identifier.
+     *
+     * @param callConnectionId The call connection id.
+     * @param unmuteAllParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for removing participants of the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<UnmuteParticipantsResponse> callingCallConnectionsUnmuteAllAsync(
+            String callConnectionId,
+            UnmuteAllParticipantsRequestInternal unmuteAllParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent,
+            Context context) {
+        return callingCallConnectionsUnmuteAllWithResponseAsync(
+                        callConnectionId,
+                        unmuteAllParticipantsRequest,
+                        repeatabilityRequestID,
+                        repeatabilityFirstSent,
+                        context)
+                .flatMap(
+                        (Response<UnmuteParticipantsResponse> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Remove participant from the call using identifier.
+     *
+     * @param callConnectionId The call connection id.
+     * @param unmuteAllParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for removing participants of the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public UnmuteParticipantsResponse callingCallConnectionsUnmuteAll(
+            String callConnectionId,
+            UnmuteAllParticipantsRequestInternal unmuteAllParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent) {
+        return callingCallConnectionsUnmuteAllAsync(
+                        callConnectionId, unmuteAllParticipantsRequest, repeatabilityRequestID, repeatabilityFirstSent)
+                .block();
+    }
+
+    /**
+     * Remove participant from the call using identifier.
+     *
+     * @param callConnectionId The call connection id.
+     * @param unmuteAllParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for removing participants of the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<UnmuteParticipantsResponse> callingCallConnectionsUnmuteAllWithResponse(
+            String callConnectionId,
+            UnmuteAllParticipantsRequestInternal unmuteAllParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent,
+            Context context) {
+        return callingCallConnectionsUnmuteAllWithResponseAsync(
+                        callConnectionId,
+                        unmuteAllParticipantsRequest,
+                        repeatabilityRequestID,
+                        repeatabilityFirstSent,
+                        context)
+                .block();
+    }
+
+    /**
+     * Remove participant from the call using identifier.
+     *
+     * @param callConnectionId The call connection id.
+     * @param muteParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for removing participants of the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<MuteParticipantsResponse>> callingCallConnectionsMuteWithResponseAsync(
+            String callConnectionId,
+            MuteParticipantRequestInternal muteParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.callingCallConnectionsMute(
+                                this.getEndpoint(),
+                                callConnectionId,
+                                this.getApiVersion(),
+                                repeatabilityRequestID,
+                                repeatabilityFirstSent,
+                                muteParticipantsRequest,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Remove participant from the call using identifier.
+     *
+     * @param callConnectionId The call connection id.
+     * @param muteParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for removing participants of the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<MuteParticipantsResponse>> callingCallConnectionsMuteWithResponseAsync(
+            String callConnectionId,
+            MuteParticipantRequestInternal muteParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent,
+            Context context) {
+        final String accept = "application/json";
+        return service.callingCallConnectionsMute(
+                this.getEndpoint(),
+                callConnectionId,
+                this.getApiVersion(),
+                repeatabilityRequestID,
+                repeatabilityFirstSent,
+                muteParticipantsRequest,
+                accept,
+                context);
+    }
+
+    /**
+     * Remove participant from the call using identifier.
+     *
+     * @param callConnectionId The call connection id.
+     * @param muteParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for removing participants of the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MuteParticipantsResponse> callingCallConnectionsMuteAsync(
+            String callConnectionId,
+            MuteParticipantRequestInternal muteParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent) {
+        return callingCallConnectionsMuteWithResponseAsync(
+                        callConnectionId, muteParticipantsRequest, repeatabilityRequestID, repeatabilityFirstSent)
+                .flatMap(
+                        (Response<MuteParticipantsResponse> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Remove participant from the call using identifier.
+     *
+     * @param callConnectionId The call connection id.
+     * @param muteParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for removing participants of the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MuteParticipantsResponse> callingCallConnectionsMuteAsync(
+            String callConnectionId,
+            MuteParticipantRequestInternal muteParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent,
+            Context context) {
+        return callingCallConnectionsMuteWithResponseAsync(
+                        callConnectionId,
+                        muteParticipantsRequest,
+                        repeatabilityRequestID,
+                        repeatabilityFirstSent,
+                        context)
+                .flatMap(
+                        (Response<MuteParticipantsResponse> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Remove participant from the call using identifier.
+     *
+     * @param callConnectionId The call connection id.
+     * @param muteParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for removing participants of the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MuteParticipantsResponse callingCallConnectionsMute(
+            String callConnectionId,
+            MuteParticipantRequestInternal muteParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent) {
+        return callingCallConnectionsMuteAsync(
+                        callConnectionId, muteParticipantsRequest, repeatabilityRequestID, repeatabilityFirstSent)
+                .block();
+    }
+
+    /**
+     * Remove participant from the call using identifier.
+     *
+     * @param callConnectionId The call connection id.
+     * @param muteParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for removing participants of the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MuteParticipantsResponse> callingCallConnectionsMuteWithResponse(
+            String callConnectionId,
+            MuteParticipantRequestInternal muteParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent,
+            Context context) {
+        return callingCallConnectionsMuteWithResponseAsync(
+                        callConnectionId,
+                        muteParticipantsRequest,
+                        repeatabilityRequestID,
+                        repeatabilityFirstSent,
+                        context)
+                .block();
+    }
+
+    /**
+     * Remove participant from the call using identifier.
+     *
+     * @param callConnectionId The call connection id.
+     * @param unmuteParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for removing participants of the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<UnmuteParticipantsResponse>> callingCallConnectionsUnmuteWithResponseAsync(
+            String callConnectionId,
+            UnmuteParticipantRequestInternal unmuteParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context ->
+                        service.callingCallConnectionsUnmute(
+                                this.getEndpoint(),
+                                callConnectionId,
+                                this.getApiVersion(),
+                                repeatabilityRequestID,
+                                repeatabilityFirstSent,
+                                unmuteParticipantsRequest,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Remove participant from the call using identifier.
+     *
+     * @param callConnectionId The call connection id.
+     * @param unmuteParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for removing participants of the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<UnmuteParticipantsResponse>> callingCallConnectionsUnmuteWithResponseAsync(
+            String callConnectionId,
+            UnmuteParticipantRequestInternal unmuteParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent,
+            Context context) {
+        final String accept = "application/json";
+        return service.callingCallConnectionsUnmute(
+                this.getEndpoint(),
+                callConnectionId,
+                this.getApiVersion(),
+                repeatabilityRequestID,
+                repeatabilityFirstSent,
+                unmuteParticipantsRequest,
+                accept,
+                context);
+    }
+
+    /**
+     * Remove participant from the call using identifier.
+     *
+     * @param callConnectionId The call connection id.
+     * @param unmuteParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for removing participants of the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<UnmuteParticipantsResponse> callingCallConnectionsUnmuteAsync(
+            String callConnectionId,
+            UnmuteParticipantRequestInternal unmuteParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent) {
+        return callingCallConnectionsUnmuteWithResponseAsync(
+                        callConnectionId, unmuteParticipantsRequest, repeatabilityRequestID, repeatabilityFirstSent)
+                .flatMap(
+                        (Response<UnmuteParticipantsResponse> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Remove participant from the call using identifier.
+     *
+     * @param callConnectionId The call connection id.
+     * @param unmuteParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for removing participants of the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<UnmuteParticipantsResponse> callingCallConnectionsUnmuteAsync(
+            String callConnectionId,
+            UnmuteParticipantRequestInternal unmuteParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent,
+            Context context) {
+        return callingCallConnectionsUnmuteWithResponseAsync(
+                        callConnectionId,
+                        unmuteParticipantsRequest,
+                        repeatabilityRequestID,
+                        repeatabilityFirstSent,
+                        context)
+                .flatMap(
+                        (Response<UnmuteParticipantsResponse> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Remove participant from the call using identifier.
+     *
+     * @param callConnectionId The call connection id.
+     * @param unmuteParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for removing participants of the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public UnmuteParticipantsResponse callingCallConnectionsUnmute(
+            String callConnectionId,
+            UnmuteParticipantRequestInternal unmuteParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent) {
+        return callingCallConnectionsUnmuteAsync(
+                        callConnectionId, unmuteParticipantsRequest, repeatabilityRequestID, repeatabilityFirstSent)
+                .block();
+    }
+
+    /**
+     * Remove participant from the call using identifier.
+     *
+     * @param callConnectionId The call connection id.
+     * @param unmuteParticipantsRequest The participants to be removed from the call.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response payload for removing participants of the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<UnmuteParticipantsResponse> callingCallConnectionsUnmuteWithResponse(
+            String callConnectionId,
+            UnmuteParticipantRequestInternal unmuteParticipantsRequest,
+            UUID repeatabilityRequestID,
+            String repeatabilityFirstSent,
+            Context context) {
+        return callingCallConnectionsUnmuteWithResponseAsync(
+                        callConnectionId,
+                        unmuteParticipantsRequest,
+                        repeatabilityRequestID,
+                        repeatabilityFirstSent,
+                        context)
+                .block();
     }
 }
