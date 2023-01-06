@@ -181,4 +181,18 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assertions.assertFalse(storageAccount.isBlobPublicAccessAllowed());
         Assertions.assertFalse(storageAccount.isSharedKeyAccessAllowed());
     }
+
+    @Test
+    public void testCreateWithInfrastructureEncryption() {
+        StorageAccount storageAccount = storageManager.storageAccounts().define(saName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withInfrastructureEncryption()
+            .create();
+
+        Assertions.assertTrue(storageAccount.infrastructureEncryptionEnabled());
+
+        storageAccount = storageManager.storageAccounts().getByResourceGroup(rgName, saName);
+        Assertions.assertTrue(storageAccount.infrastructureEncryptionEnabled());
+    }
 }
