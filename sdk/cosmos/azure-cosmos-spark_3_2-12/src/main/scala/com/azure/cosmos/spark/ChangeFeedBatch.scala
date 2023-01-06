@@ -71,10 +71,18 @@ private class ChangeFeedBatch
 
         if (metadataLog.get(0).isDefined) {
           val offsetJson = metadataLog.get(0).get
+
+          log.logInfo(s"Start offset retrieved from file location '$startOffsetLocation' for batchId: $batchId " +
+            s"-> offset: '$offsetJson'.")
+
           ChangeFeedOffset.fromJson(offsetJson).changeFeedState
         } else {
           val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(
             container, changeFeedConfig, partitioningConfig, None)
+
+          log.logInfo(s"No Start offset retrieved from file location '$startOffsetLocation' for batchId: $batchId " +
+            s"-> offset retrieved from from service: '$newOffsetJson'.")
+
           newOffsetJson
         }
       } else {
@@ -119,6 +127,9 @@ private class ChangeFeedBatch
           } else {
             log.logInfo(msg)
           }
+        } else {
+          log.logInfo(s"Successfully updated latest offset at location '$latestOffsetLocation' for batchId: $batchId " +
+            s"-> existing latestOffset: 'n/a', new latestOffset: '$latestOffsetJson'.")
         }
       }
 
