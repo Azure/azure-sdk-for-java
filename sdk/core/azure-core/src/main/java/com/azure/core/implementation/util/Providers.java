@@ -88,22 +88,22 @@ public final class Providers<TProvider, TInstance> {
     public TInstance create(Function<TProvider, TInstance> createInstance,
                                 TInstance fallbackInstance, Class<? extends TProvider> selectedImplementation) {
         TProvider provider;
-        String errorMessage;
         if (selectedImplementation == null && noDefaultImplementation) {
             provider = defaultProvider;
-            errorMessage = noProviderMessage;
+            if (provider == null) {
+                if (fallbackInstance == null) {
+                    throw LOGGER.logExceptionAsError(new IllegalStateException(noProviderMessage));
+                }
+
+                return fallbackInstance;
+            }
         } else {
             String implementationName = selectedImplementation == null ? defaultImplementation : selectedImplementation.getName();
             provider = availableProviders.get(implementationName);
-            errorMessage = formatNoSpecificProviderErrorMessage(implementationName);
-        }
-
-        if (provider == null) {
-            if (fallbackInstance == null) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(errorMessage));
+            if (provider == null) {
+                // no fallback here - user requested specific implementation, and it was not found
+                throw LOGGER.logExceptionAsError(new IllegalStateException(formatNoSpecificProviderErrorMessage(implementationName)));
             }
-
-            return fallbackInstance;
         }
 
         return createInstance.apply(provider);

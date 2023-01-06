@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import com.azure.core.implementation.EnumWithPackagePrivateCtor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -30,13 +31,36 @@ public class ExpandableStringEnumTests {
     }
 
     /**
-     * Tests that a {@code private} {@link ExpandableStringEnum} class will always return {@code null}.
+     * Tests that a private {@link ExpandableStringEnum} class will return {@code null} on Java 9+
      */
     @Test
-    public void privateStringEnumAlwaysReturnsNull() {
-        assertNull(PrivateStringEnum.fromString("test"));
-        assertNull(PrivateStringEnum.fromString("anotherTest"));
-        assertNull(PrivateStringEnum.fromString("finalTest"));
+    public void privateStringEnumDifferentPackageInCoreAlwaysReturnsNull() {
+        if ("1.8".equals(System.getProperty("java.version"))) {
+            // Java 8 does not work with modules, we always use private lookups there
+            // and therefore can access com.azure.core.util.ExpandableStringEnumTests.PrivateStringEnum
+            // from com.azure.core.implementation.ExpandableStringEnum
+            assertEquals("test", PrivateStringEnum.fromString("test"));
+        } else {
+            // on Java 9+, when enum impl is in the core module, we use MethodHandles.lookup
+            // which does not provide access com.azure.core.util.ExpandableStringEnumTests.PrivateStringEnum
+            // from com.azure.core.implementation.ExpandableStringEnum
+            //
+            // but if it was in a different module, which is open to core, we would be able to access it
+            assertNull(PrivateStringEnum.fromString("test"));
+            assertNull(PrivateStringEnum.fromString("anotherTest"));
+            assertNull(PrivateStringEnum.fromString("finalTest"));
+        }
+    }
+
+    /**
+     * Tests that a same package, package-private {@link ExpandableStringEnum} class will always return non-null value
+     */
+    @Test
+    public void privateStringEnumSamePackageInCoreReturnsValue() {
+        // EnumWithPackagePrivateCtor is in the same package as ExpandableStringEnum
+        assertEquals("test", EnumWithPackagePrivateCtor.fromString("test").toString());
+        assertEquals("anotherTest", EnumWithPackagePrivateCtor.fromString("anotherTest").toString());
+        assertEquals("finalTest", EnumWithPackagePrivateCtor.fromString("finalTest").toString());
     }
 
     /**
@@ -107,9 +131,9 @@ public class ExpandableStringEnumTests {
         }
     }
 
-    private static final class PrivateStringEnum extends ExpandableStringEnum<PrivateStringEnum> {
+    public static final class PrivateStringEnum extends ExpandableStringEnum<PrivateStringEnum> {
         @Deprecated
-        private PrivateStringEnum() {
+        PrivateStringEnum() {
         }
 
         static PrivateStringEnum fromString(String name) {

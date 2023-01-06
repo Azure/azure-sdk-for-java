@@ -79,17 +79,19 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         }
 
         Context span = startSpan(context);
+        Throwable exception = null;
+        HttpResponse response = null;
         try (AutoCloseable scope = tracer.makeSpanCurrent(span)) {
-            HttpResponse response = next.processSync();
-            endSpan(response, null, span);
-
+            response = next.processSync();
             return response;
         } catch (RuntimeException ex) {
-            endSpan(null, ex, span);
+            exception = ex;
             throw ex;
         } catch (Exception ex) {
-            endSpan(null, ex, span);
+            exception = ex;
             throw LOGGER.logExceptionAsWarning(new RuntimeException(ex));
+        } finally {
+            endSpan(response, exception, span);
         }
     }
 

@@ -28,7 +28,9 @@ public class TracingJavaDocCodeSnippets {
     public void sampleGlobalSdkConfiguration() {
         // BEGIN: com.azure.core.util.tracing.TracingOptions#default
 
-        // configure OpenTelemetry SDK using io.opentelemetry:opentelemetry-sdk-extension-autoconfigure
+        // no need to configure OpenTelemetry if you're using the OpenTelemetry Java agent (or another vendor-specific Java agent based on it).
+
+        // if you're using OpenTelemetry SDK, you can configure it with io.opentelemetry:opentelemetry-sdk-extension-autoconfigure package:
         // AutoConfiguredOpenTelemetrySdk.initialize();
 
         // configure Azure Client, no metric configuration needed

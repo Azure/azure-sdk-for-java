@@ -32,7 +32,7 @@ Azure SDK produces span for public client calls such as `SecretClient.getSecret`
 
 By using an Azure Monitor Java in-process agent, you can enable monitoring of your applications without any code changes. For more information, see [Azure Monitor OpenTelemetry-based auto-instrumentation for Java applications](https://docs.microsoft.com/azure/azure-monitor/app/java-in-process-agent). Azure SDK support is enabled by default starting with agent version 3.2.
 
-## Tracing Azure SDK calls with OpenTelemetry agent
+## Tracing Azure SDK calls with OpenTelemetry Java agent
 
 If you use [OpenTelemetry Java agent](https://github.com/open-telemetry/opentelemetry-java-instrumentation/), Azure SDK instrumentation is enabled out-of-the-box starting from version 1.12.0.
 
@@ -63,6 +63,11 @@ You don't need this package if you use ApplicationInsights Java agent or OpenTel
 The following sections provides examples of using the `azure-core-tracing-opentelemetry` plugin with a few Azure Java SDK libraries. 
 
 ### Configuration
+
+If you want to configure tracing on specific instances of Azure client, you can do so with `OpenTelemetryTracingOptions`. With it,
+you can disable tracing on the client, or configure custom `TracerProvider`.
+
+If no `TraceProvider` is specified, Azure SDK will use global one (`GlobalOpenTelemetry.getTracerProvider()`). 
 
 Pass OpenTelemetry TracerProvider to Azure client:
 

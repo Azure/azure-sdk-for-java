@@ -26,7 +26,7 @@ class OpenTelemetryUtils {
     static final String CLIENT_REQUEST_ID_ATTRIBUTE = "requestId";
 
     private static Map<String, String> getMappingsV1200() {
-        Map<String, String> mappings = new HashMap<>();
+        Map<String, String> mappings = new HashMap<>(4);
         // messaging mapping, attributes are defined in com.azure.core.amqp.implementation.ClientConstants
         mappings.put(ENTITY_PATH_KEY, "messaging.destination");
         mappings.put(HOST_NAME_KEY, "net.peer.name");

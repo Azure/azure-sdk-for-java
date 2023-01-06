@@ -31,7 +31,7 @@ public final class JsonProviders {
         // Use as classloader to load provider-configuration files and provider classes the classloader
         // that loaded this class. In most cases this will be the System classloader.
         // But this choice here provides additional flexibility in managed environments that control
-        // classloading differently (OSGi, Spring and others) and don't/ depend on the
+        // classloading differently (OSGi, Spring and others) and don't depend on the
         // System classloader to load HttpClientProvider classes.
         ServiceLoader<JsonProvider> serviceLoader = ServiceLoader.load(JsonProvider.class,
             JsonProvider.class.getClassLoader());

@@ -6,7 +6,7 @@ package com.azure.core.tracing.opentelemetry;
 import com.azure.core.util.ExpandableStringEnum;
 
 /**
- * OTel schema version.
+ * OpenTelemetry schema version.
  */
 public class OpenTelemetrySchemaVersion extends ExpandableStringEnum<OpenTelemetrySchemaVersion> {
     @SuppressWarnings("deprecation")
