@@ -303,26 +303,4 @@
       </build>
     </profile>
   </profiles>
-
-  <repositories>
-    <repository>
-      <id>spring-release</id>
-      <name>Spring release</name>
-      <url>https://repo.spring.io/release</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <name>Spring release</name>
-      <id>release</id>
-      <url>https://repo.spring.io/release</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </pluginRepository>
-  </pluginRepositories>
 </project>
