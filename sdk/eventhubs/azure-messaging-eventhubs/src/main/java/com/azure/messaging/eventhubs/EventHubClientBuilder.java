@@ -9,6 +9,7 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.client.traits.AmqpTrait;
+import com.azure.core.amqp.implementation.AmqpLinkProvider;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
@@ -911,26 +912,31 @@ public class EventHubClientBuilder implements
 
     private RecoverableReactorConnection<EventHubReactorAmqpConnection> buildConnectionProcessor(MessageSerializer messageSerializer, Meter meter) {
         final ConnectionOptions connectionOptions = getConnectionOptions();
-        final Supplier<EventHubReactorAmqpConnection> connectionSupplier = new Supplier<EventHubReactorAmqpConnection>() {
-            @Override
-            public EventHubReactorAmqpConnection get() {
-                final String connectionId = StringUtil.getRandomString("MF");
-                LOGGER.atInfo()
-                    .addKeyValue(CONNECTION_ID_KEY, connectionId)
-                    .log("Emitting a single connection.");
-
-                final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
-                    connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
-                    connectionOptions.getAuthorizationScope());
-                final ReactorProvider provider = new ReactorProvider();
-                final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider, meter);
-
-                final EventHubReactorAmqpConnection connection = new EventHubReactorAmqpConnection(connectionId,
-                    connectionOptions, getEventHubName(), provider, handlerProvider, tokenManagerProvider,
-                    messageSerializer);
-
-                return connection;
+        final Supplier<String> getEventHubName = () -> {
+            if (CoreUtils.isNullOrEmpty(eventHubName)) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
             }
+            return eventHubName;
+        };
+
+        final Supplier<EventHubReactorAmqpConnection> connectionSupplier = () -> {
+            final String connectionId = StringUtil.getRandomString("MF");
+            LOGGER.atInfo()
+                .addKeyValue(CONNECTION_ID_KEY, connectionId)
+                .log("Emitting a single connection.");
+
+            final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
+                connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getAuthorizationScope());
+            final ReactorProvider provider = new ReactorProvider();
+            final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider, meter);
+            final AmqpLinkProvider linkProvider = new AmqpLinkProvider();
+
+            final EventHubReactorAmqpConnection connection = new EventHubReactorAmqpConnection(connectionId,
+                connectionOptions, getEventHubName.get(), provider, handlerProvider, linkProvider, tokenManagerProvider,
+                messageSerializer);
+
+            return connection;
         };
 
         final String fqdn = connectionOptions.getFullyQualifiedNamespace();
