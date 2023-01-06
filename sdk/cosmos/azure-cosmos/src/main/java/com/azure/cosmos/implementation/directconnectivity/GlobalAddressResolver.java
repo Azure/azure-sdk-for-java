@@ -27,11 +27,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -139,22 +135,37 @@ public class GlobalAddressResolver implements IAddressResolver {
             List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities,
             ContainerConnectionConfig containerConnectionConfig) {
 
+        // TODO: Check if containerConnectionConfig has preferredRegions set
+        // TODO: for proactively adding opening connections for all regions
+        if (!containerConnectionConfig.getPreferredRegions().equals(Collections.emptySet())) {
+            return Flux.fromStream(this.endpointManager.getReadEndpoints().stream())
+                    .flatMap(readEndpoint -> {
+                        // TODO: Open connections only for regions present in preferredRegions
+                        // TODO: use locationCache maybe to determine region for URI
+                        if (this.addressCacheByEndpoint.containsKey(readEndpoint)) {
+                            return this.addressCacheByEndpoint.get(readEndpoint)
+                                    .addressCache
+                                    .openConnectionsAndInitCaches(collection, partitionKeyRangeIdentities);
+                        }
+
+
+                        return Flux.empty();
+                    });
+        }
+
         // Currently, we will only open connections to current read region
         return Flux.just(this.endpointManager.getReadEndpoints().stream().findFirst())
                 .flatMap(readEndpointOptional -> {
                     if (readEndpointOptional.isPresent()) {
                         if (this.addressCacheByEndpoint.containsKey(readEndpointOptional.get())) {
                             return this.addressCacheByEndpoint.get(readEndpointOptional.get())
-                                        .addressCache
-                                        .openConnectionsAndInitCaches(collection, partitionKeyRangeIdentities);
+                                    .addressCache
+                                    .openConnectionsAndInitCaches(collection, partitionKeyRangeIdentities);
                         }
                     }
 
                     return Flux.empty();
                 });
-
-        // TODO: Check if containerConnectionConfig has preferredRegions set
-        // TODO: for proactively adding opening connections for all regions
     }
 
     @Override
