@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Vaults ListByResourceGroup. */
 public final class VaultsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/ListResources.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ListResources.json
      */
     /**
      * Sample code: List of Recovery Services Resources in ResourceGroup.

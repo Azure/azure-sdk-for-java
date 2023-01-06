@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed incorrect "audience" from `getClientAccessToken` method in `WebPubSubServiceAsyncClient`. ([#24741](https://github.com/Azure/azure-sdk-for-java/issues/24741))
+
 ### Other Changes
 
 ## 1.1.8 (2022-11-09)

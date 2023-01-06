@@ -19,7 +19,6 @@ import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import java.net.URL;
 import java.text.Collator;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -34,8 +33,8 @@ public final class StorageSharedKeyCredential {
     private static final Context LOG_STRING_TO_SIGN_CONTEXT = new Context(Constants.STORAGE_LOG_STRING_TO_SIGN, true);
 
     // Pieces of the connection string that are needed.
-    private static final String ACCOUNT_NAME = "accountname";
     private static final String ACCOUNT_KEY = "accountkey";
+    private static final String ACCOUNT_NAME = "accountname";
 
     private final AzureNamedKeyCredential azureNamedKeyCredential;
 
@@ -73,14 +72,22 @@ public final class StorageSharedKeyCredential {
      * @throws IllegalArgumentException If {@code connectionString} doesn't have AccountName or AccountKey.
      */
     public static StorageSharedKeyCredential fromConnectionString(String connectionString) {
-        HashMap<String, String> connectionStringPieces = new HashMap<>();
+        String accountName = null;
+        String accountKey = null;
+
         for (String connectionStringPiece : connectionString.split(";")) {
             String[] kvp = connectionStringPiece.split("=", 2);
-            connectionStringPieces.put(kvp[0].toLowerCase(Locale.ROOT), kvp[1]);
-        }
 
-        String accountName = connectionStringPieces.get(ACCOUNT_NAME);
-        String accountKey = connectionStringPieces.get(ACCOUNT_KEY);
+            if (kvp.length < 2) {
+                continue;
+            }
+
+            if (ACCOUNT_NAME.equalsIgnoreCase(kvp[0])) {
+                accountName = kvp[1];
+            } else if (ACCOUNT_KEY.equalsIgnoreCase(kvp[0])) {
+                accountKey = kvp[1];
+            }
+        }
 
         if (CoreUtils.isNullOrEmpty(accountName) || CoreUtils.isNullOrEmpty(accountKey)) {
             throw new IllegalArgumentException("Connection string must contain 'AccountName' and 'AccountKey'.");

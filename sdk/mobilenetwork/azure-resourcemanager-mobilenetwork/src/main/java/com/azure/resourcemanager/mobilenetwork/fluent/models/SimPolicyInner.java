@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mobilenetwork.models.Ambr;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
+import com.azure.resourcemanager.mobilenetwork.models.SiteProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.SliceConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.SliceResourceId;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -26,11 +27,14 @@ public final class SimPolicyInner extends Resource {
     private SimPolicyPropertiesFormat innerProperties = new SimPolicyPropertiesFormat();
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of SimPolicyInner class. */
+    public SimPolicyInner() {
+    }
 
     /**
      * Get the innerProperties property: SIM policy Properties.
@@ -74,6 +78,16 @@ public final class SimPolicyInner extends Resource {
     }
 
     /**
+     * Get the siteProvisioningState property: A dictionary of sites to the provisioning state of this SIM policy on
+     * that site.
+     *
+     * @return the siteProvisioningState value.
+     */
+    public Map<String, SiteProvisioningState> siteProvisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().siteProvisioningState();
+    }
+
+    /**
      * Get the ueAmbr property: Aggregate maximum bit rate across all non-GBR QoS flows of all PDU sessions of a given
      * UE. See 3GPP TS23.501 section 5.7.2.6 for a full description of the UE-AMBR.
      *
@@ -100,7 +114,7 @@ public final class SimPolicyInner extends Resource {
 
     /**
      * Get the defaultSlice property: The default slice to use if the UE does not explicitly specify it. This slice must
-     * exist in the `sliceConfigurations` map.
+     * exist in the `sliceConfigurations` map. The slice must be in the same location as the SIM policy.
      *
      * @return the defaultSlice value.
      */
@@ -110,7 +124,7 @@ public final class SimPolicyInner extends Resource {
 
     /**
      * Set the defaultSlice property: The default slice to use if the UE does not explicitly specify it. This slice must
-     * exist in the `sliceConfigurations` map.
+     * exist in the `sliceConfigurations` map. The slice must be in the same location as the SIM policy.
      *
      * @param defaultSlice the defaultSlice value to set.
      * @return the SimPolicyInner object itself.

@@ -23,6 +23,10 @@ public final class Ambr {
     @JsonProperty(value = "downlink", required = true)
     private String downlink;
 
+    /** Creates an instance of Ambr class. */
+    public Ambr() {
+    }
+
     /**
      * Get the uplink property: Uplink bit rate.
      *

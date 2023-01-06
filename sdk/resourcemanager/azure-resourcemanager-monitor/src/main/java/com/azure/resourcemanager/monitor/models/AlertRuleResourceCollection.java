@@ -18,6 +18,10 @@ public final class AlertRuleResourceCollection {
     @JsonProperty(value = "value")
     private List<AlertRuleResourceInner> value;
 
+    /** Creates an instance of AlertRuleResourceCollection class. */
+    public AlertRuleResourceCollection() {
+    }
+
     /**
      * Get the value property: the values for the alert rule resources.
      *

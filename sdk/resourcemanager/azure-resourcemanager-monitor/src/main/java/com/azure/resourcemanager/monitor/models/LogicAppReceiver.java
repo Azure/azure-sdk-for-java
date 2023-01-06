@@ -35,6 +35,10 @@ public final class LogicAppReceiver {
     @JsonProperty(value = "useCommonAlertSchema")
     private Boolean useCommonAlertSchema;
 
+    /** Creates an instance of LogicAppReceiver class. */
+    public LogicAppReceiver() {
+    }
+
     /**
      * Get the name property: The name of the logic app receiver. Names must be unique across all receivers within an
      * action group.

@@ -18,6 +18,10 @@ public final class IncidentListResult {
     @JsonProperty(value = "value")
     private List<IncidentInner> value;
 
+    /** Creates an instance of IncidentListResult class. */
+    public IncidentListResult() {
+    }
+
     /**
      * Get the value property: the incident collection.
      *

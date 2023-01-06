@@ -10,6 +10,9 @@
 
 ### Bugs Fixed
 
+- Fixed ability to pass in namespace connection string in EventHubClientBuilder. ([#29536](https://github.com/Azure/azure-sdk-for-java/issues/29536))
+- Added retry for createBatch API as this API also makes network calls similar to its companion send API.
+
 ### Other Changes
 
 ## 5.15.0 (2022-11-16)

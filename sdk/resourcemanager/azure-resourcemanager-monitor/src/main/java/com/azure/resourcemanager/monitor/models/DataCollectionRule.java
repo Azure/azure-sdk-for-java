@@ -70,6 +70,10 @@ public class DataCollectionRule {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private KnownDataCollectionRuleProvisioningState provisioningState;
 
+    /** Creates an instance of DataCollectionRule class. */
+    public DataCollectionRule() {
+    }
+
     /**
      * Get the description property: Description of the data collection rule.
      *

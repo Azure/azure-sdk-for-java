@@ -18,6 +18,10 @@ public final class ReplicationUsageList {
     @JsonProperty(value = "value")
     private List<ReplicationUsageInner> value;
 
+    /** Creates an instance of ReplicationUsageList class. */
+    public ReplicationUsageList() {
+    }
+
     /**
      * Get the value property: The list of replication usages for the given vault.
      *

@@ -19,6 +19,10 @@ public final class MetricNamespaceCollection {
     @JsonProperty(value = "value", required = true)
     private List<MetricNamespaceInner> value;
 
+    /** Creates an instance of MetricNamespaceCollection class. */
+    public MetricNamespaceCollection() {
+    }
+
     /**
      * Get the value property: The values for the metric namespaces.
      *
