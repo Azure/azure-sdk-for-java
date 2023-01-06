@@ -4,6 +4,8 @@ package com.azure.spring.data.cosmos.common;
 
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.spring.data.cosmos.domain.Address;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -107,6 +109,11 @@ public final class TestConstants {
     public static final Map<String, String> PASSPORT_IDS_BY_COUNTRY = new HashMap<String, String>() {{
         put("United States of America", "123456789");
         put("Côte d'Ivoire", "IC1234567");
+    }};
+
+    public static final Map<String, String> NEW_PASSPORT_IDS_BY_COUNTRY = new HashMap<String, String>() {{
+        put("United Kingdom", "123456789");
+        put("Germany", "IC1234567");
     }};
 
     private TestConstants() {

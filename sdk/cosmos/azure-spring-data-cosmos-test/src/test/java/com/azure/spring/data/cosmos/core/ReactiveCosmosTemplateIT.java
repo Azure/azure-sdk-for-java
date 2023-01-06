@@ -36,6 +36,8 @@ import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.AuditableRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.After;
 import org.junit.Assert;
@@ -68,6 +70,7 @@ import static com.azure.spring.data.cosmos.common.TestConstants.AGE;
 import static com.azure.spring.data.cosmos.common.TestConstants.FIRST_NAME;
 import static com.azure.spring.data.cosmos.common.TestConstants.HOBBIES;
 import static com.azure.spring.data.cosmos.common.TestConstants.LAST_NAME;
+import static com.azure.spring.data.cosmos.common.TestConstants.NEW_PASSPORT_IDS_BY_COUNTRY;
 import static com.azure.spring.data.cosmos.common.TestConstants.PASSPORT_IDS_BY_COUNTRY;
 import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_AGE_1;
 import static com.azure.spring.data.cosmos.common.TestConstants.PATCH_AGE_INCREMENT;
@@ -97,6 +100,9 @@ public class ReactiveCosmosTemplateIT {
     private static final String PRECONDITION_IS_NOT_MET = "is not met";
     private static final String WRONG_ETAG = "WRONG_ETAG";
 
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final JsonNode NEW_PASSPORT_IDS_BY_COUNTRY_JSON = OBJECT_MAPPER.convertValue(NEW_PASSPORT_IDS_BY_COUNTRY, JsonNode.class);
+
     private static final CosmosPatchOperations operations = CosmosPatchOperations
         .create()
         .replace("/age", PATCH_AGE_1);
@@ -104,6 +110,7 @@ public class ReactiveCosmosTemplateIT {
     CosmosPatchOperations multiPatchOperations = CosmosPatchOperations
         .create()
         .replace("/firstName", PATCH_FIRST_NAME)
+        .replace("/passportIdsByCountry", NEW_PASSPORT_IDS_BY_COUNTRY_JSON)
         .add("/hobbies/2", PATCH_HOBBY1)
         .increment("/age", PATCH_AGE_INCREMENT);
 
@@ -319,6 +326,7 @@ public class ReactiveCosmosTemplateIT {
         assertEquals(patchedPerson.block().getAge().intValue(), (AGE + PATCH_AGE_INCREMENT));
         assertEquals(patchedPerson.block().getHobbies(),PATCH_HOBBIES);
         assertEquals(patchedPerson.block().getFirstName(), PATCH_FIRST_NAME);
+        assertEquals(patchedPerson.block().getPassportIdsByCountry(), NEW_PASSPORT_IDS_BY_COUNTRY);
     }
 
     @Test

@@ -151,7 +151,7 @@ public interface ReactiveCosmosOperations {
      * patches item with CosmosPatchItemRequestOptions
      * @param entityToPatch must not be {@literal null}, must contain {@link org.springframework.data.annotation.Id}
      *      * and {@link com.azure.spring.data.cosmos.core.mapping.PartitionKey} field
-     * @param patchOperations must not be {@literal null}
+     * @param patchOperations must not be {@literal null}, max operations is 10
      * @param options Optional CosmosPatchItemRequestOptions, e.g. options.setFilterPredicate("FROM products p WHERE p.used = false");
      * @param <T> entity to be patched
      * @return Mono with the patched item
