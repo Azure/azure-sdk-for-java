@@ -20,6 +20,7 @@ import com.azure.data.schemaregistry.implementation.models.ErrorException;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.BufferedReader;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
@@ -289,30 +291,19 @@ public final class SchemaRegistryAsyncClient {
         return this.restService.getSchemas().getSchemaVersionWithResponseAsync(groupName, schemaName, schemaVersion,
                 context)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
-            .handle((response, sink) -> {
-                final InputStream schemaInputStream = response.getValue().toStream();
+            .flatMap(response -> {
+                final Flux<ByteBuffer> schemaFlux = response.getValue().toFluxByteBuffer();
                 final SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaPropertiesFromSchemasGetSchemaVersionHeaders(response);
-                final String schema;
 
-                if (schemaInputStream == null) {
-                    sink.error(new IllegalArgumentException(String.format(
+                if (schemaFlux == null) {
+                    return Mono.error(new IllegalArgumentException(String.format(
                         "Schema definition should not be null. Group Name: %s. Schema Name: %s. Version: %d",
                         groupName, schemaName, schemaVersion)));
-
-                    return;
                 }
-
-                try {
-                    schema = convertToString(schemaInputStream);
-                } catch (UncheckedIOException e) {
-                    sink.error(e);
-                    return;
-                }
-
-                sink.next(new SimpleResponse<>(
-                    response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), new SchemaRegistrySchema(schemaObject, schema)));
-                sink.complete();
+                return convertToString(schemaFlux)
+                    .map(schema -> new SimpleResponse<>(
+                        response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), new SchemaRegistrySchema(schemaObject, schema)));
             });
     }
 
@@ -456,5 +447,22 @@ public final class SchemaRegistryAsyncClient {
         }
 
         return builder.toString();
+    }
+
+    /**
+     * Converts a Flux of Byte Buffer into its string representation.
+     *
+     * @param byteBufferFlux the Byte Buffer Flux input.
+     *
+     * @return A string representation.
+     *
+     */
+    static Mono<String> convertToString(Flux<ByteBuffer> byteBufferFlux) {
+        final StringBuilder builder = new StringBuilder();
+        return byteBufferFlux
+            .map(byteBuffer -> {
+                builder.append(new String(byteBuffer.array(), StandardCharsets.UTF_8));
+                return Mono.empty();
+            }).then(Mono.defer(() -> Mono.just(builder.toString())));
     }
 }

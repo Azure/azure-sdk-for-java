@@ -72,9 +72,8 @@ public final class SchemasGetByIdHeaders {
      */
     public SchemasGetByIdHeaders(HttpHeaders rawHeaders) {
         String schemaVersion = rawHeaders.getValue(SCHEMA_VERSION);
-        if (schemaVersion != null) {
-            this.schemaVersion = Integer.parseInt(schemaVersion);
-        }
+        //Note: AutoRest adds an if null check for schema version, which is hand-reverted here as it is a behavioural breaking change.
+        this.schemaVersion = Integer.parseInt(schemaVersion);
         this.schemaId = rawHeaders.getValue(SCHEMA_ID);
         this.schemaGroupName = rawHeaders.getValue(SCHEMA_GROUP_NAME);
         this.schemaName = rawHeaders.getValue(SCHEMA_NAME);
