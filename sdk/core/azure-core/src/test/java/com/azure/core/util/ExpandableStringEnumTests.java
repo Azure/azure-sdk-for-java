@@ -4,6 +4,7 @@
 package com.azure.core.util;
 
 import com.azure.core.implementation.EnumWithPackagePrivateCtor;
+import com.azure.core.implementation.ReflectionUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -35,12 +36,7 @@ public class ExpandableStringEnumTests {
      */
     @Test
     public void privateStringEnumDifferentPackageInCoreAlwaysReturnsNull() {
-        if ("1.8".equals(System.getProperty("java.version"))) {
-            // Java 8 does not work with modules, we always use private lookups there
-            // and therefore can access com.azure.core.util.ExpandableStringEnumTests.PrivateStringEnum
-            // from com.azure.core.implementation.ExpandableStringEnum
-            assertEquals("test", PrivateStringEnum.fromString("test"));
-        } else {
+        if (ReflectionUtils.isModuleBased()) {
             // on Java 9+, when enum impl is in the core module, we use MethodHandles.lookup
             // which does not provide access com.azure.core.util.ExpandableStringEnumTests.PrivateStringEnum
             // from com.azure.core.implementation.ExpandableStringEnum
@@ -49,6 +45,11 @@ public class ExpandableStringEnumTests {
             assertNull(PrivateStringEnum.fromString("test"));
             assertNull(PrivateStringEnum.fromString("anotherTest"));
             assertNull(PrivateStringEnum.fromString("finalTest"));
+        } else {
+            // Java 8 does not work with modules, we always use private lookups there
+            // and therefore can access com.azure.core.util.ExpandableStringEnumTests.PrivateStringEnum
+            // from com.azure.core.implementation.ExpandableStringEnum
+            assertEquals("java8", PrivateStringEnum.fromString("java8"));
         }
     }
 
