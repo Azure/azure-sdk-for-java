@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ContainerConnectionConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AuthorizationTokenType;

@@ -23,10 +23,7 @@ import com.azure.cosmos.models.CosmosPermissionProperties;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 
 import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper;
 
@@ -121,6 +118,7 @@ public class CosmosClientBuilder implements
     private CosmosClientTelemetryConfig clientTelemetryConfig;
     private ApiType apiType = null;
     private Boolean clientTelemetryEnabledOverride = null;
+    private List<ContainerConnectionConfig> containerConnectionConfigs;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -132,6 +130,7 @@ public class CosmosClientBuilder implements
         this.userAgentSuffix = "";
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
         this.clientTelemetryConfig = new CosmosClientTelemetryConfig();
+        this.containerConnectionConfigs = new ArrayList<>();
     }
 
     CosmosClientBuilder metadataCaches(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
@@ -429,6 +428,10 @@ public class CosmosClientBuilder implements
         return credential;
     }
 
+    List<ContainerConnectionConfig> getContainerConnectionConfigs() {
+        return containerConnectionConfigs;
+    }
+
     /**
      * Sets the {@link AzureKeyCredential} to be used
      *
@@ -677,6 +680,11 @@ public class CosmosClientBuilder implements
      */
     public CosmosClientBuilder readRequestsFallbackEnabled(boolean readRequestsFallbackEnabled) {
         this.readRequestsFallbackEnabled = readRequestsFallbackEnabled;
+        return this;
+    }
+
+    public CosmosClientBuilder addContainerConnectionConfig(ContainerConnectionConfig containerConnectionConfig) {
+        this.containerConnectionConfigs.add(containerConnectionConfig);
         return this;
     }
 

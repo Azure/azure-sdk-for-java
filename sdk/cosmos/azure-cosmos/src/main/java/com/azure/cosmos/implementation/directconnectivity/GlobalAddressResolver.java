@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.ContainerConnectionConfig;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Constants;
@@ -95,7 +96,7 @@ public class GlobalAddressResolver implements IAddressResolver {
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink, ContainerConnectionConfig containerConnectionConfig) {
         checkArgument(StringUtils.isNotEmpty(containerLink), "Argument 'containerLink' should not be null nor empty");
 
         // Strip the leading "/", which follows the same format for document requests
@@ -129,13 +130,14 @@ public class GlobalAddressResolver implements IAddressResolver {
                                         .map(pkRange -> new PartitionKeyRangeIdentity(collection.getResourceId(), pkRange.getId()))
                                         .collect(Collectors.toList());
                             })
-                            .flatMapMany(pkRangeIdentities -> this.openConnectionsAndInitCachesInternal(collection, pkRangeIdentities));
+                            .flatMapMany(pkRangeIdentities -> this.openConnectionsAndInitCachesInternal(collection, pkRangeIdentities, containerConnectionConfig));
                 });
     }
 
     private Flux<OpenConnectionResponse> openConnectionsAndInitCachesInternal(
             DocumentCollection collection,
-            List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities) {
+            List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities,
+            ContainerConnectionConfig containerConnectionConfig) {
 
         // Currently, we will only open connections to current read region
         return Flux.just(this.endpointManager.getReadEndpoints().stream().findFirst())
@@ -150,6 +152,9 @@ public class GlobalAddressResolver implements IAddressResolver {
 
                     return Flux.empty();
                 });
+
+        // TODO: Check if containerConnectionConfig has preferredRegions set
+        // TODO: for proactively adding opening connections for all regions
     }
 
     @Override

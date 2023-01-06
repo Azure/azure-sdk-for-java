@@ -37,6 +37,7 @@ import com.azure.cosmos.util.UtilBridgeInternal;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
@@ -86,6 +87,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final boolean clientMetricsEnabled;
     private final boolean isSendClientTelemetryToServiceEnabled;
     private final MeterRegistry clientMetricRegistrySnapshot;
+    private final List<ContainerConnectionConfig> containerConnectionConfigs;
 
     static {
         ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
@@ -109,6 +111,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.tokenCredential = builder.getTokenCredential();
         this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         this.enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
+        this.containerConnectionConfigs = builder.getContainerConnectionConfigs();
         ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor
             telemetryConfigAccessor = ImplementationBridgeHelpers
             .CosmosClientTelemetryConfigHelper
@@ -590,6 +593,16 @@ public final class CosmosAsyncClient implements Closeable {
      */
     public GlobalThroughputControlConfigBuilder createGlobalThroughputControlConfigBuilder(String databaseId, String containerId) {
         return new GlobalThroughputControlConfigBuilder(this, databaseId, containerId);
+    }
+
+    // TODO: Find a way to set isInitialized to true for containers whose
+    // TODO: connections have been opened
+    public Flux<Void> openConnectionsAndInitCaches() {
+        return Flux.fromIterable(this.containerConnectionConfigs)
+                .flatMap(containerConnectionConfig -> this.asyncDocumentClient
+                        .openConnectionsAndInitCaches(
+                                containerConnectionConfig.getContainerLink(), containerConnectionConfig))
+                .flatMap(openConnectionResponse -> Mono.empty());
     }
 
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options){

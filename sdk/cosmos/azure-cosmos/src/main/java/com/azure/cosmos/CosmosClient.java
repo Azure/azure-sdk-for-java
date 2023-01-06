@@ -134,6 +134,11 @@ public final class CosmosClient implements Closeable {
         return blockDatabaseResponse(asyncClientWrapper.createDatabase(id, throughputProperties));
     }
 
+    // TODO: Improve exception handling here
+    public void openConnectionsAndInitCaches() {
+        asyncClientWrapper.openConnectionsAndInitCaches().blockLast();
+    }
+
     CosmosDatabaseResponse blockDatabaseResponse(Mono<CosmosDatabaseResponse> databaseMono) {
         try {
             return databaseMono.block();

@@ -472,7 +472,7 @@ public class CosmosAsyncContainer {
     public Mono<Void> openConnectionsAndInitCaches() {
 
         if(isInitialized.compareAndSet(false, true)) {
-            return withContext(context -> openConnectionsAndInitCachesInternal()
+            return withContext(context -> openConnectionsAndInitCachesInternal(new ContainerConnectionConfigBuilder(getLink()).buildEmptyConfig())
                                             .flatMap(openResult -> {
                                                 logger.info("OpenConnectionsAndInitCaches: {}", openResult);
                                                 return Mono.empty();
@@ -486,13 +486,29 @@ public class CosmosAsyncContainer {
         }
     }
 
+    public Mono<Void> openConnectionsAndInitCaches(ContainerConnectionConfig containerConnectionConfig) {
+        if(isInitialized.compareAndSet(false, true)) {
+            return withContext(context -> openConnectionsAndInitCachesInternal(containerConnectionConfig)
+                    .flatMap(openResult -> {
+                        logger.info("OpenConnectionsAndInitCaches: {}", openResult);
+                        return Mono.empty();
+                    }));
+        } else {
+            logger.warn(
+                    String.format(
+                            "OpenConnectionsAndInitCaches is already called once on Container %s, no operation will take place in this call",
+                            this.getId()));
+            return Mono.empty();
+        }
+    }
+
     /***
      * Internal implementation to try to initialize the container by warming up the caches and connections for the current read region.
      *
      * @return a string represents the open result.
      */
-    private Mono<String> openConnectionsAndInitCachesInternal() {
-        return this.database.getDocClientWrapper().openConnectionsAndInitCaches(getLink())
+    private Mono<String> openConnectionsAndInitCachesInternal(ContainerConnectionConfig containerConnectionConfig) {
+        return this.database.getDocClientWrapper().openConnectionsAndInitCaches(getLink(), containerConnectionConfig)
                 .collectList()
                 .flatMap(openConnectionResponses -> {
                     // Generate a simple statistics string for open connections
