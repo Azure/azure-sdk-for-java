@@ -745,6 +745,7 @@ private object CosmosWriteConfig {
              // col[(](.*?)[)]: column name match
              // ([.]path[(](.*)[)])*: mapping path match, it is optional
              // [.]op[(](.*)[)]: patch operation mapping
+             // (.rawJson$|$): optional .rawJson suffix to indicate that the col(column) contains raw json
              val operationConfigaRegx = """(?i)col[(](.*?)[)]([.]path[(](.*)[)])*[.]op[(](.*)[)](.rawJson$|$)""".r
              columnConfigString match {
                case operationConfigaRegx(columnName, _, path, operationTypeString, rawJsonSuffix) =>
