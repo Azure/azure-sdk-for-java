@@ -8,6 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
@@ -57,36 +58,21 @@ public class TokenGenerationTest  extends TestBase {
 
     }
 
-    @Test
-    public void testTokenGenerationFromAadCredential() throws ParseException {
+    @ParameterizedTest
+    @MethodSource("getTokenOptions")
+    @DoNotRecord(skipInPlayback = true)
+    public void testTokenGenerationFromAadCredential(GetClientAccessTokenOptions tokenOptions, String connectionString,
+                                                     String expectedUrlPrefix, String expectedSubject,
+                                                     List<String> expectedRoles, List<String> expectedGroups) throws ParseException {
         String endpoint = Configuration.getGlobalConfiguration()
             .get("WEB_PUB_SUB_ENDPOINT", "http://testendpoint.webpubsubdev.azure.com");
         WebPubSubServiceClientBuilder webPubSubServiceClientBuilder = new WebPubSubServiceClientBuilder()
             .endpoint(endpoint)
             .httpClient(HttpClient.createDefault())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .hub("test");
 
-        String connectionString = "Endpoint=http://testendpoint.webpubsubdev.azure.com;"
-                    + "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;Port=8080";
-        if (getTestMode() == TestMode.PLAYBACK) {
-            webPubSubServiceClientBuilder.httpClient(interceptorManager.getPlaybackClient())
-                .connectionString(connectionString);
-        } else if (getTestMode() == TestMode.RECORD) {
-            webPubSubServiceClientBuilder.addPolicy(interceptorManager.getRecordPolicy())
-                .credential(new DefaultAzureCredentialBuilder().build());
-        } else if (getTestMode() == TestMode.LIVE) {
-            webPubSubServiceClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
-        }
-
-        List<String> expectedRoles = Arrays.asList("a", "b");
-        // test for special char case
-        List<String> expectedGroups = Arrays.asList("a&b", "c");
-        String expectedSubject = "foo";
-        GetClientAccessTokenOptions tokenOptions = new GetClientAccessTokenOptions()
-            .setUserId(expectedSubject)
-            .setRoles(expectedRoles)
-            .setGroups(expectedGroups);
         WebPubSubServiceClient client = webPubSubServiceClientBuilder.buildClient();
         WebPubSubClientAccessToken authenticationToken = client.getClientAccessToken(tokenOptions);
 
@@ -135,20 +121,22 @@ public class TokenGenerationTest  extends TestBase {
             Arguments.of(
                 new GetClientAccessTokenOptions()
                     .setUserId("foo")
-                    .addRole("admin"),
+                    .addRole("admin")
+                    .addRole("special&char"),
                 "Endpoint=https://testendpoint.webpubsubdev.azure.com;"
                     + "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;",
-                "wss://testendpoint.webpubsubdev.azure.com/", "foo", Arrays.asList("admin"), null),
+                "wss://testendpoint.webpubsubdev.azure.com/", "foo", Arrays.asList("admin", "special&char"), null),
 
             // HTTPS with port
             Arguments.of(
                 new GetClientAccessTokenOptions()
                     .setUserId("foo")
                     .setExpiresAfter(Duration.ofDays(1))
-                    .addRole("admin"),
+                    .addRole("admin")
+                    .addRole("special,char"),
                 "Endpoint=https://testendpoint.webpubsubdev.azure.com;Port=8080;"
                     + "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;",
-                "wss://testendpoint.webpubsubdev.azure.com:8080/", "foo", Arrays.asList("admin"), null),
+                "wss://testendpoint.webpubsubdev.azure.com:8080/", "foo", Arrays.asList("admin", "special,char"), null),
 
             // HTTPS with "https" in domain name
             Arguments.of(
@@ -166,10 +154,10 @@ public class TokenGenerationTest  extends TestBase {
                     .setUserId("foo")
                     .setExpiresAfter(Duration.ofDays(1))
                     .setRoles(Arrays.asList("admin", "owner"))
-                    .setGroups(Arrays.asList("java")),
+                    .setGroups(Arrays.asList("java", "special&char")),
                 "Endpoint=https://testendpoint.webpubsubdev.azure.com/test/path?query_param=value;"
                     + "AccessKey=xJItsTUmJB1m+98rVG8YepBvx5BaMnUtGtbGa/oDM+mGyZ=;Version=1.0;Port=8080",
-                "wss://testendpoint.webpubsubdev.azure.com:8080/", "foo", Arrays.asList("admin", "owner"), Arrays.asList("java"))
+                "wss://testendpoint.webpubsubdev.azure.com:8080/", "foo", Arrays.asList("admin", "owner"), Arrays.asList("java", "special&char"))
         );
     }
 }
