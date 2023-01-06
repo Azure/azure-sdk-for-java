@@ -56,7 +56,7 @@ public class ReactorExecutor implements AsyncCloseable {
      * Starts the reactor and will begin processing any reactor events until there are no longer any left or {@link
      * #closeAsync()} is called.
      */
-    void start() {
+    public void start() {
         if (isDisposed.get()) {
             logger.warning("Cannot start reactor when executor has been disposed.");
             return;

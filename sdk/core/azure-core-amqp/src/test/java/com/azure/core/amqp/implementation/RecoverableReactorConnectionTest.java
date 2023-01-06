@@ -440,7 +440,7 @@ public class RecoverableReactorConnectionTest {
             when(handlerProvider.createConnectionHandler(anyString(), any())).thenReturn(connectionHandler);
 
             final ReactorConnection connection = new ReactorConnection(id, connectionOptions,
-                reactorProvider, handlerProvider,
+                reactorProvider, handlerProvider, mock(AmqpLinkProvider.class),
                 mock(TokenManagerProvider.class), mock(MessageSerializer.class),
                 SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
             return connection;

@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs.implementation;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.implementation.AmqpLinkProvider;
 import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -97,6 +98,7 @@ public class EventHubReactorConnectionTest {
 
     private ConnectionOptions connectionOptions;
     private ConnectionHandler connectionHandler;
+    private AmqpLinkProvider linkProvider = new AmqpLinkProvider();
 
     @BeforeAll
     public static void init() {
@@ -191,7 +193,7 @@ public class EventHubReactorConnectionTest {
             .thenReturn(new SendLinkHandler(CONNECTION_ID, HOSTNAME, "sender-name", "test-entity-path", AmqpMetricsProvider.noop()));
 
         final EventHubReactorAmqpConnection connection = new EventHubReactorAmqpConnection(CONNECTION_ID,
-            connectionOptions, "event-hub-name", reactorProvider, handlerProvider, tokenManagerProvider,
+            connectionOptions, "event-hub-name", reactorProvider, handlerProvider, linkProvider, tokenManagerProvider,
             messageSerializer);
 
         // Act & Assert

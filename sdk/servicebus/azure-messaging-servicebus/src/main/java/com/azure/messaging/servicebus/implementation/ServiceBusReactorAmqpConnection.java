@@ -47,6 +47,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     private final String connectionId;
     private final ReactorProvider reactorProvider;
     private final ReactorHandlerProvider handlerProvider;
+    private final ServiceBusAmqpLinkProvider linkProvider;
     private final TokenManagerProvider tokenManagerProvider;
     private final AmqpRetryOptions retryOptions;
     private final MessageSerializer messageSerializer;
@@ -62,21 +63,23 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @param connectionOptions A set of options used to create the AMQP connection.
      * @param reactorProvider Provides proton-j reactor instances.
      * @param handlerProvider Provides {@link BaseHandler} to listen to proton-j reactor events.
+     * @param linkProvider Provides amqp links for send and receive.
      * @param tokenManagerProvider Provides a token manager for authorizing with CBS node.
      * @param messageSerializer Serializes and deserializes proton-j messages.
      * @param distributedTransactionsSupport indicate if distributed transaction across different entities is required
      *        for this connection.
      */
     public ServiceBusReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions,
-        ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
+        ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider, ServiceBusAmqpLinkProvider linkProvider,
         TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
         boolean distributedTransactionsSupport) {
-        super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
+        super(connectionId, connectionOptions, reactorProvider, handlerProvider, linkProvider, tokenManagerProvider,
             messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
 
         this.connectionId = connectionId;
         this.reactorProvider = reactorProvider;
         this.handlerProvider = handlerProvider;
+        this.linkProvider = linkProvider;
         this.tokenManagerProvider = tokenManagerProvider;
         this.authorizationType = connectionOptions.getAuthorizationType();
         this.retryOptions = connectionOptions.getRetry();
@@ -220,7 +223,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     @Override
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
         return new ServiceBusReactorSession(this, session, handler, sessionName, reactorProvider,
-            handlerProvider, getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer, retryOptions,
+            handlerProvider, linkProvider, getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer, retryOptions,
             new ServiceBusCreateSessionOptions(distributedTransactionsSupport));
     }
 }

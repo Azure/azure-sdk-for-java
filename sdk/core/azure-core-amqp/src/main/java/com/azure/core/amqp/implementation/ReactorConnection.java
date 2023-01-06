@@ -77,6 +77,7 @@ public class ReactorConnection implements AmqpConnection {
     private final Mono<Connection> connectionMono;
     private final ConnectionHandler handler;
     private final ReactorHandlerProvider handlerProvider;
+    private final AmqpLinkProvider linkProvider;
     private final TokenManagerProvider tokenManagerProvider;
     private final MessageSerializer messageSerializer;
     private final ConnectionOptions connectionOptions;
@@ -100,13 +101,14 @@ public class ReactorConnection implements AmqpConnection {
      * @param connectionOptions A set of options used to create the AMQP connection.
      * @param reactorProvider Provides proton-j Reactor instances.
      * @param handlerProvider Provides {@link BaseHandler} to listen to proton-j reactor events.
+     * @param linkProvider Provides amqp links for send and receive.
      * @param tokenManagerProvider Provides the appropriate token manager to authorize with CBS node.
      * @param messageSerializer Serializer to translate objects to and from proton-j {@link Message messages}.
      * @param senderSettleMode to set as {@link SenderSettleMode} on sender.
      * @param receiverSettleMode to set as {@link ReceiverSettleMode} on receiver.
      */
     public ReactorConnection(String connectionId, ConnectionOptions connectionOptions, ReactorProvider reactorProvider,
-        ReactorHandlerProvider handlerProvider, TokenManagerProvider tokenManagerProvider,
+        ReactorHandlerProvider handlerProvider, AmqpLinkProvider linkProvider, TokenManagerProvider tokenManagerProvider,
         MessageSerializer messageSerializer, SenderSettleMode senderSettleMode,
         ReceiverSettleMode receiverSettleMode) {
 
@@ -115,6 +117,7 @@ public class ReactorConnection implements AmqpConnection {
         this.connectionId = connectionId;
         this.logger = new ClientLogger(ReactorConnection.class, createContextWithConnectionId(connectionId));
         this.handlerProvider = handlerProvider;
+        this.linkProvider = linkProvider;
         this.tokenManagerProvider = Objects.requireNonNull(tokenManagerProvider,
             "'tokenManagerProvider' cannot be null.");
         this.messageSerializer = messageSerializer;
@@ -369,7 +372,7 @@ public class ReactorConnection implements AmqpConnection {
      */
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
         return new ReactorSession(this, session, handler, sessionName, reactorProvider,
-            handlerProvider, getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer,
+            handlerProvider, linkProvider, getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer,
             connectionOptions.getRetry());
     }
 
