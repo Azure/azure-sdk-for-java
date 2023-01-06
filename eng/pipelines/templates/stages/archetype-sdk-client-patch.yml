@@ -78,6 +78,18 @@ stages:
             versionSpec: $(PythonVersion)
 
         - task: PythonScript@0
+          displayName: 'Set versions for source build'
+          inputs:
+            scriptPath: 'eng/versioning/set_versions.py'
+            arguments: '--build-type client --pst --project-list $(ProjectList)'
+
+        - task: PythonScript@0
+          displayName: 'Update versions for source build'
+          inputs:
+            scriptPath: 'eng/versioning/update_versions.py'
+            arguments: '--update-type library --build-type client --sr'
+
+        - task: PythonScript@0
           displayName: 'Generate FromSource POM and directories for sparse checkout'
           inputs:
             scriptPath: 'eng/scripts/generate_from_source_pom.py'
@@ -196,12 +208,25 @@ stages:
             Artifacts: ${{ parameters.Artifacts }}
             AdditionalModules: ${{ parameters.AdditionalModules }}
             JobType: 'AnalyzeAndVerify'
+            UseCache: false
 
         - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
           parameters:
             PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
             ServiceDirectory: "template"
             TestPipeline: ${{parameters.TestPipeline}}
+
+        - task: PythonScript@0
+          displayName: 'Set versions for source build'
+          inputs:
+            scriptPath: 'eng/versioning/set_versions.py'
+            arguments: '--build-type client --pst --project-list $(ProjectList)'
+
+        - task: PythonScript@0
+          displayName: 'Update versions for source build'
+          inputs:
+            scriptPath: 'eng/versioning/update_versions.py'
+            arguments: '--update-type library --build-type client --sr'
 
         - task: PythonScript@0
           displayName: 'Generate FromSource POM and directories for sparse checkout'

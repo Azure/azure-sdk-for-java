@@ -204,8 +204,10 @@ def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifac
 # all of the dependency versions to the current versions. This will effectively cause maven
 # to use the built version of the libraries for build and testing. The purpose of this is to
 # ensure current version compatibility amongst the various libraries for a given built type
-def prep_version_file_for_source_testing(build_type):
-
+def prep_version_file_for_source_testing(build_type, project_list):
+    project_list_identifiers = None
+    if project_list:
+        project_list_identifiers = project_list.split(',')
     version_file = os.path.normpath('eng/versioning/version_' + build_type.name + '.txt')
     print('version_file=' + version_file)
     file_changed = False
@@ -222,8 +224,15 @@ def prep_version_file_for_source_testing(build_type):
             else:
                 module = CodeModule(stripped_line)
                 if hasattr(module, 'current') and not module.current == module.dependency:
-                    module.dependency = module.current
-                    file_changed = True
+                    # If the project list is passed in, only prep the versions for from source
+                    # build for those modules. This is the case specifically for patch release.
+                    if project_list_identifiers is not None:
+                        if module.name in project_list_identifiers:
+                            module.dependency = module.current
+                            file_changed = True
+                    else:
+                        module.dependency = module.current
+                        file_changed = True
                 # In order to ensure that the From Source runs are effectively testing everything
                 # together using the latest source built libraries, ensure that the beta_ dependency's
                 # version is set
@@ -400,6 +409,7 @@ def main():
     optional.add_argument('--increment-version', '--iv', action='store_true', help='increment the version for a given group/artifact')
     optional.add_argument('--verify-version', '--vv', action='store_true', help='verify the version for a given group/artifact')
     optional.add_argument('--set-dev-zero-version', '--sdzv', action='store_true', help='Set a zero dev build version for packages that do not already have dev versions set (should be run after setting dev versions for other packages)')
+    optional.add_argument('--project-list', '--pl', type=str, help='If set, only the projects in the list will be modified when setting versions for From Source testing.')
     optional.add_argument('-h', '--help', action='help', default=argparse.SUPPRESS, help='show this help message and exit')
 
     args = parser.parse_args()
@@ -408,7 +418,7 @@ def main():
     start_time = time.time()
     file_changed = False
     if (args.prep_source_testing):
-        file_changed = prep_version_file_for_source_testing(args.build_type)
+        file_changed = prep_version_file_for_source_testing(args.build_type, args.project_list)
     elif (args.increment_version):
         if not args.artifact_id or not args.group_id:
             raise ValueError('increment-version requires both the artifact-id and group-id arguments. artifact-id={}, group-id={}'.format(args.artifact_id, args.group_id))
