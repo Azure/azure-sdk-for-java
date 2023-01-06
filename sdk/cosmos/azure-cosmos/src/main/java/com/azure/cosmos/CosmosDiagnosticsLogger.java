@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.util.HashSet;
 import java.util.Set;
 
-public final class CosmosDiagnosticsLogger  implements CosmosDiagnosticsHandler{
+public class CosmosDiagnosticsLogger  implements CosmosDiagnosticsHandler{
     private final static Logger logger = LoggerFactory.getLogger(CosmosDiagnosticsLogger.class);
 
     private final CosmosDiagnosticsLoggerConfig config;
