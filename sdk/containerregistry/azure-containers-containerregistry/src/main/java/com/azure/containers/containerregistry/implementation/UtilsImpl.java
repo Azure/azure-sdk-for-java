@@ -178,13 +178,9 @@ public final class UtilsImpl {
         return httpPipeline;
     }
 
+    @SuppressWarnings("unchecked")
     private static ArrayList<HttpPipelinePolicy> clone(ArrayList<HttpPipelinePolicy> policies) {
-        ArrayList<HttpPipelinePolicy> clonedPolicy = new ArrayList<>();
-        for (HttpPipelinePolicy policy:policies) {
-            clonedPolicy.add(policy);
-        }
-
-        return clonedPolicy;
+        return (ArrayList<HttpPipelinePolicy>) policies.clone();
     }
 
     /**
@@ -265,25 +261,10 @@ public final class UtilsImpl {
             return exception;
         }
 
-        final HttpResponse errorHttpResponse = acrException.getResponse();
-        final int statusCode = errorHttpResponse.getStatusCode();
-        final String errorDetail = acrException.getMessage();
-
-        switch (statusCode) {
-            case 401:
-                return new ClientAuthenticationException(errorDetail, acrException.getResponse(), exception);
-            case 404:
-                return new ResourceNotFoundException(errorDetail, acrException.getResponse(), exception);
-            case 409:
-                return new ResourceExistsException(errorDetail, acrException.getResponse(), exception);
-            case 412:
-                return new ResourceModifiedException(errorDetail, acrException.getResponse(), exception);
-            default:
-                return new HttpResponseException(errorDetail, acrException.getResponse(), exception);
-        }
+        return mapAcrErrorsException(acrException);
     }
 
-    public static HttpResponseException mapAcrErrorsException(AcrErrorsException acrException) {
+    public static HttpResponseException mapAcrErrorsException(HttpResponseException acrException) {
         final HttpResponse errorHttpResponse = acrException.getResponse();
         final int statusCode = errorHttpResponse.getStatusCode();
         final String errorDetail = acrException.getMessage();
