@@ -11,6 +11,7 @@ import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallParticipant;
 import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
+import com.azure.communication.callautomation.models.MuteParticipantOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantsOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantsResult;
 import com.azure.communication.callautomation.models.RepeatabilityHeaders;
@@ -309,7 +310,8 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
         assertEquals(CALL_OPERATION_CONTEXT, muteParticipantsResult.getOperationContext());
          */
         assertThrows(RuntimeException.class, () ->
-            callConnectionAsync.muteParticipantAsync(new CommunicationUserIdentifier(CALL_TARGET_ID)).block());
+            callConnectionAsync.muteParticipantAsync(new CommunicationUserIdentifier(CALL_TARGET_ID)).block()
+        );
     }
 
     @Test
@@ -321,20 +323,26 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        RemoveParticipantsOptions removeParticipantsOptions = new RemoveParticipantsOptions(
-            new ArrayList<>(Arrays.asList(new CommunicationUserIdentifier(CALL_TARGET_ID))))
+        MuteParticipantOptions muteParticipantOptions = new MuteParticipantOptions(
+            new CommunicationUserIdentifier(CALL_TARGET_ID))
             .setOperationContext(CALL_OPERATION_CONTEXT);
-        Response<RemoveParticipantsResult> removeParticipantsResultResponse = callConnectionAsync.removeParticipantsWithResponse(
-            removeParticipantsOptions).block();
 
+        /**
+         * TODO: To complete when method is implemented.
+        Response<MuteParticipantsResult> muteParticipantsResultResponse = callConnectionAsync.muteParticipantsWithResponse(
+            muteParticipantOptions).block();
 
-        assertNotNull(removeParticipantsResultResponse);
-        assertEquals(202, removeParticipantsResultResponse.getStatusCode());
-        assertNotNull(removeParticipantsResultResponse.getValue());
+        assertNotNull(muteParticipantsResultResponse);
+        assertEquals(202, muteParticipantsResultResponse.getStatusCode());
+        assertNotNull(muteParticipantsResultResponse.getValue());
 
-        RepeatabilityHeaders repeatabilityHeaders = removeParticipantsOptions.getRepeatabilityHeaders();
+        RepeatabilityHeaders repeatabilityHeaders = muteParticipantOptions.getRepeatabilityHeaders();
         assertNotNull(repeatabilityHeaders);
         assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
         assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
+         */
+        assertThrows(RuntimeException.class, () ->
+            callConnectionAsync.muteParticipantsWithResponse(muteParticipantOptions).block()
+        );
     }
 }
