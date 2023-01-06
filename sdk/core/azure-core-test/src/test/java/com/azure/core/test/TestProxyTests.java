@@ -217,7 +217,7 @@ public class TestProxyTests extends TestBase {
     }
 
     private RecordedTestProxyData readDataFromFile() {
-        String filePath = InterceptorManager.getRecordFolder() + "\\" + this.testContextManager.getClassName() + "." + this.testContextManager.getTestName() + ".json";
+        String filePath = InterceptorManager.getRecordFolder() + "\\" + this.testContextManager.getTestPlaybackRecordingName() + ".json";
         File recordFile = new File(filePath);
         try (BufferedReader reader = Files.newBufferedReader(recordFile.toPath())) {
             return RECORD_MAPPER.readValue(reader, RecordedTestProxyData.class);
