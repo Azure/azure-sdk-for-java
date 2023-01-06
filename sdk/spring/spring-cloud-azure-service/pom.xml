@@ -162,6 +162,7 @@
             <bannedDependencies>
               <includes>
                 <include>org.apache.kafka:kafka-clients:[3.1.2]</include> <!-- {x-include-update;org.apache.kafka:kafka-clients;external_dependency} -->
+                <include>redis.clients:jedis:[3.8.0]</include> <!-- {x-version-update;spring_redis.clients:jedis;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
