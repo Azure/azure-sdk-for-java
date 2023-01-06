@@ -796,10 +796,6 @@ public class CosmosContainer {
         blockVoidResponse(this.asyncContainer.openConnectionsAndInitCaches());
     }
 
-    public void openConnectionsAndInitCaches(ContainerConnectionConfig containerConnectionConfig) {
-        blockVoidResponse(this.asyncContainer.openConnectionsAndInitCaches(containerConnectionConfig));
-    }
-
     private void blockVoidResponse(Mono<Void> voidMono) {
         try {
             voidMono.block();

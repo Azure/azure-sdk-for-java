@@ -4301,10 +4301,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink, ContainerConnectionConfig containerConnectionConfig) {
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
         checkArgument(StringUtils.isNotEmpty(containerLink), "Argument 'containerLink' should not be null nor empty");
 
-        return this.storeModel.openConnectionsAndInitCaches(containerLink, containerConnectionConfig);
+        return this.storeModel.openConnectionsAndInitCaches(containerLink);
+    }
+
+    @Override
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(ConnectionConfig connectionConfig) {
+        return this.storeModel.openConnectionsAndInitCaches(connectionConfig);
     }
 
     private static SqlQuerySpec createLogicalPartitionScanQuerySpec(

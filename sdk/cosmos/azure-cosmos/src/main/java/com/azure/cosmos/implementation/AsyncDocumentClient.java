@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.ContainerConnectionConfig;
+import com.azure.cosmos.ConnectionConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
@@ -1661,5 +1661,7 @@ public interface AsyncDocumentClient {
      *
      * @param containerLink the container link.
      */
-    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink, ContainerConnectionConfig containerConnectionConfig);
+    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink);
+
+    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(ConnectionConfig connectionConfig);
 }

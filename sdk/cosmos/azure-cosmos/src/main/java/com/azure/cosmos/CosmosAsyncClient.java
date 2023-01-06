@@ -87,7 +87,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final boolean clientMetricsEnabled;
     private final boolean isSendClientTelemetryToServiceEnabled;
     private final MeterRegistry clientMetricRegistrySnapshot;
-    private final List<ContainerConnectionConfig> containerConnectionConfigs;
+    private final List<ConnectionConfig> containerConnectionConfigs;
 
     static {
         ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
@@ -599,9 +599,7 @@ public final class CosmosAsyncClient implements Closeable {
     // TODO: connections have been opened
     public Flux<Void> openConnectionsAndInitCaches() {
         return Flux.fromIterable(this.containerConnectionConfigs)
-                .flatMap(containerConnectionConfig -> this.asyncDocumentClient
-                        .openConnectionsAndInitCaches(
-                                containerConnectionConfig.getContainerLink(), containerConnectionConfig))
+                .flatMap(this.asyncDocumentClient::openConnectionsAndInitCaches)
                 .flatMap(openConnectionResponse -> Mono.empty());
     }
 

@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.ContainerConnectionConfig;
+import com.azure.cosmos.ConnectionConfig;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
@@ -190,7 +190,12 @@ public class ReplicatedResourceClient {
         }
     }
 
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink, ContainerConnectionConfig containerConnectionConfig) {
-        return this.addressSelector.openConnectionsAndInitCaches(containerLink, containerConnectionConfig);
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
+        return this.addressSelector.openConnectionsAndInitCaches(containerLink);
     }
+
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(ConnectionConfig containerConnectionConfig) {
+        return this.addressSelector.openConnectionsAndInitCaches(containerConnectionConfig);
+    }
+
 }

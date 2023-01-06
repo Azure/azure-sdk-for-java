@@ -11,8 +11,9 @@ import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import org.testng.annotations.Test;
 
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -184,5 +185,21 @@ public class CosmosClientBuilderTest {
         RxDocumentClientImpl documentClient =
             (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(cosmosClientBuilder.buildAsyncClient());
         assertThat(ReflectionUtils.getApiType(documentClient)).isEqualTo(apiType);
+    }
+
+    @Test
+    public void validateClientBuilderWithConnectionInit() {
+        Set<String> regions = new HashSet<>();
+        regions.add("East US");
+        regions.add("West US");
+
+        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .addConnectionConfig(new ConnectionConfigBuilder("").addPreferredRegions(regions).build())
+                .addConnectionConfig(new ConnectionConfigBuilder("").addPreferredRegions(regions).build());
+
+        CosmosClient cosmosClient = cosmosClientBuilder.buildClient();
+        cosmosClient.openConnectionsAndInitCaches();
     }
 }

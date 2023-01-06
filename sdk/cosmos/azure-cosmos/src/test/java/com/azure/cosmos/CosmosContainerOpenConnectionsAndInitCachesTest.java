@@ -28,6 +28,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -59,6 +61,8 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .contentResponseOnWriteEnabled(true)
+                .endpointDiscoveryEnabled(true)
+                .preferredRegions(Arrays.asList("East US", "West US"))
                 .directMode()
                 .buildAsyncClient();
         directCosmosAsyncDatabase = getSharedCosmosDatabase(directCosmosAsyncClient);
@@ -113,6 +117,49 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
                 { true },
                 { false }
         };
+    }
+
+    @Test
+    public void openConnectionThroughClientBuilder() {
+        directCosmosAsyncDatabase.createContainerIfNotExists("id1", "/mypk").block();
+        directCosmosAsyncDatabase.createContainerIfNotExists("id2", "/mypk").block();
+        directCosmosAsyncDatabase.createContainerIfNotExists("id3", "/mypk").block();
+
+        CosmosAsyncContainer cosmosContainer1 = directCosmosAsyncDatabase.getContainer("id1");
+        CosmosAsyncContainer cosmosContainer2 = directCosmosAsyncDatabase.getContainer("id2");
+        CosmosAsyncContainer cosmosContainer3 = directCosmosAsyncDatabase.getContainer("id3");
+
+        String linkContainer1 = cosmosContainer1.getLink();
+        String linkContainer2 = cosmosContainer2.getLink();
+        String linkContainer3 = cosmosContainer3.getLink();
+
+        Set<String> regions = new HashSet<>();
+        regions.add("East US");
+        regions.add("West US");
+
+        Set<String> containerLinks = new HashSet<>();
+        containerLinks.add(linkContainer1);
+        containerLinks.add(linkContainer2);
+        containerLinks.add(linkContainer3);
+
+
+        ConnectionConfig connectionConfig = new ConnectionConfigBuilder()
+                .addContainerLinks(containerLinks)
+                .addPreferredRegions(regions)
+                .build();
+
+        CosmosClient cosmosClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .addConnectionConfig(connectionConfig)
+                .contentResponseOnWriteEnabled(true)
+                .preferredRegions(Arrays.asList("East US", "West US"))
+                .endpointDiscoveryEnabled(true)
+                .directMode()
+                .buildClient();
+
+        cosmosClient.openConnectionsAndInitCaches();
+
     }
 
     @Test(groups = {"simple"}, dataProvider = "useAsyncParameterProvider")

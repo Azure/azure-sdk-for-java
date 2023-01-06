@@ -3,7 +3,8 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.ContainerConnectionConfig;
+import com.azure.cosmos.ConnectionConfig;
+import com.azure.cosmos.ConnectionConfigBuilder;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Constants;
@@ -96,7 +97,7 @@ public class GlobalAddressResolver implements IAddressResolver {
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink, ContainerConnectionConfig containerConnectionConfig) {
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
         checkArgument(StringUtils.isNotEmpty(containerLink), "Argument 'containerLink' should not be null nor empty");
 
         // Strip the leading "/", which follows the same format for document requests
@@ -130,18 +131,57 @@ public class GlobalAddressResolver implements IAddressResolver {
                                         .map(pkRange -> new PartitionKeyRangeIdentity(collection.getResourceId(), pkRange.getId()))
                                         .collect(Collectors.toList());
                             })
-                            .flatMapMany(pkRangeIdentities -> this.openConnectionsAndInitCachesInternal(collection, pkRangeIdentities, containerConnectionConfig));
+                            .flatMapMany(pkRangeIdentities -> this.openConnectionsAndInitCachesInternal(collection, pkRangeIdentities, new ConnectionConfigBuilder().buildEmptyConfig()));
                 });
+    }
+
+    @Override
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(ConnectionConfig connectionConfig) {
+        // Strip the leading "/", which follows the same format for document requests
+        // TODO: currently, the cache key used for collectionCache is inconsistent: some are using path with "/", some use path with stripped leading "/",
+        // TODO: ideally it should have been consistent across
+        return Flux.fromIterable(connectionConfig.getContainerLinks())
+                .flatMap(containerLink -> Mono.just(StringUtils.strip(containerLink, Constants.Properties.PATH_SEPARATOR)))
+                .flatMap(cacheKey -> this.collectionCache.resolveByNameAsync(null, cacheKey, null)
+                        .flatMapMany(collection -> {
+                            if (collection == null) {
+                                logger.warn("Can not find the collection, no connections will be opened");
+                                return Mono.empty();
+                            }
+
+                            return this.routingMapProvider.tryGetOverlappingRangesAsync(
+                                            null,
+                                            collection.getResourceId(),
+                                            PartitionKeyInternalHelper.FullRange,
+                                            true,
+                                            null)
+                                    .map(valueHolder -> {
+
+                                        if (valueHolder == null || valueHolder.v == null || valueHolder.v.size() == 0) {
+                                            logger.warn(
+                                                    "There is no pkRanges found for collection {}, no connections will be opened",
+                                                    collection.getResourceId());
+                                            return new ArrayList<PartitionKeyRangeIdentity>();
+                                        }
+
+                                        return valueHolder.v
+                                                .stream()
+                                                .map(pkRange -> new PartitionKeyRangeIdentity(collection.getResourceId(), pkRange.getId()))
+                                                .collect(Collectors.toList());
+                                    })
+                                    .flatMapMany(pkRangeIdentities -> this.openConnectionsAndInitCachesInternal(collection, pkRangeIdentities, connectionConfig));
+                        }));
     }
 
     private Flux<OpenConnectionResponse> openConnectionsAndInitCachesInternal(
             DocumentCollection collection,
             List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities,
-            ContainerConnectionConfig containerConnectionConfig) {
+            ConnectionConfig connectionConfig
+            ) {
 
         // TODO: Check if containerConnectionConfig has preferredRegions set
         // TODO: for proactively adding opening connections for all regions
-        if (!containerConnectionConfig.getPreferredRegions().equals(Collections.emptySet())) {
+        if (!connectionConfig.getPreferredRegions().equals(Collections.emptySet())) {
             return Flux.fromStream(this.endpointManager.getReadEndpoints().stream())
                     .flatMap(readEndpoint -> {
                         // TODO: Open connections only for regions present in preferredRegions

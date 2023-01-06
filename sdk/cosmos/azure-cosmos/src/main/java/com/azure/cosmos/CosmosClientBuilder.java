@@ -122,7 +122,7 @@ public class CosmosClientBuilder implements
     private CosmosClientTelemetryConfig clientTelemetryConfig;
     private ApiType apiType = null;
     private Boolean clientTelemetryEnabledOverride = null;
-    private List<ContainerConnectionConfig> containerConnectionConfigs;
+    private List<ConnectionConfig> containerConnectionConfigs;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -432,7 +432,7 @@ public class CosmosClientBuilder implements
         return credential;
     }
 
-    List<ContainerConnectionConfig> getContainerConnectionConfigs() {
+    List<ConnectionConfig> getContainerConnectionConfigs() {
         return containerConnectionConfigs;
     }
 
@@ -687,7 +687,7 @@ public class CosmosClientBuilder implements
         return this;
     }
 
-    public CosmosClientBuilder addContainerConnectionConfig(ContainerConnectionConfig containerConnectionConfig) {
+    public CosmosClientBuilder addConnectionConfig(ConnectionConfig containerConnectionConfig) {
         this.containerConnectionConfigs.add(containerConnectionConfig);
         return this;
     }
