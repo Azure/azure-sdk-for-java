@@ -217,6 +217,30 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
             .verifyError();
     }
 
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void beginUpdatePhoneNumberCapabilitiesUnauthorizedPhoneNumber(HttpClient httpClient) {
+        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+        capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
+        StepVerifier.create(
+            this.getClientWithConnectionString(httpClient, "beginUpdatePhoneNumberCapabilitiesUnauthorizedPhoneNumber")
+                .beginUpdatePhoneNumberCapabilities("+14255555111", capabilities)
+            )
+            .verifyError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void beginUpdatePhoneNumberCapabilitiesInvalidPhoneNumber(HttpClient httpClient) {
+        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+        capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
+        StepVerifier.create(
+            this.getClientWithConnectionString(httpClient, "beginUpdatePhoneNumberCapabilitiesInvalidPhoneNumber")
+                .beginUpdatePhoneNumberCapabilities("invalid-phone-number", capabilities)
+            )
+            .verifyError();
+    }
+
     private PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersHelper(HttpClient httpClient, String testName, boolean withOptions) {
         PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
         capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
