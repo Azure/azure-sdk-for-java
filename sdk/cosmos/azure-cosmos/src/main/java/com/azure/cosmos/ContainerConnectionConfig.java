@@ -8,7 +8,7 @@ public final class ContainerConnectionConfig {
     private final Set<String> preferredRegions;
     private final int maxChannelsPerReplica;
 
-    public ContainerConnectionConfig(String containerLink, Set<String> preferredRegions, int maxChannelsPerReplica) {
+    ContainerConnectionConfig(String containerLink, Set<String> preferredRegions, int maxChannelsPerReplica) {
         this.containerLink = containerLink;
         this.preferredRegions = preferredRegions;
         this.maxChannelsPerReplica = maxChannelsPerReplica;
