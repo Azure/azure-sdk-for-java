@@ -15,6 +15,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
+import java.nio.charset.StandardCharsets;
+import java.nio.charset.UnsupportedCharsetException;
 import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -26,6 +30,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Utility class containing implementation specific methods.
@@ -36,6 +42,16 @@ public final class ImplUtils {
 
     // future improvement - make this configurable
     public static final int MAX_CACHE_SIZE = 10000;
+
+    private static final Charset UTF_32BE = Charset.forName("UTF-32BE");
+    private static final Charset UTF_32LE = Charset.forName("UTF-32LE");
+    private static final byte ZERO = (byte) 0x00;
+    private static final byte BB = (byte) 0xBB;
+    private static final byte BF = (byte) 0xBF;
+    private static final byte EF = (byte) 0xEF;
+    private static final byte FE = (byte) 0xFE;
+    private static final byte FF = (byte) 0xFF;
+    private static final Pattern CHARSET_PATTERN = Pattern.compile("charset=(\\S+)\\b", Pattern.CASE_INSENSITIVE);
 
     /**
      * Attempts to extract a retry after duration from a given set of {@link HttpHeaders}.
@@ -244,6 +260,61 @@ public final class ImplUtils {
             }
 
             return new AbstractMap.SimpleImmutableEntry<>(key, value);
+        }
+    }
+
+    /**
+     * Attempts to convert a byte stream into the properly encoded String.
+     * <p>
+     * This utility method will attempt to find the encoding for the String in this order.
+     * <ol>
+     *     <li>Find the byte order mark in the byte array.</li>
+     *     <li>Find the charset in the {@code contentType} header.</li>
+     *     <li>Default to {@code UTF-8}.</li>
+     * </ol>
+     *
+     * @param bytes The byte array.
+     * @param offset The starting offset in the byte array.
+     * @param count The number of bytes to process in the byte array.
+     * @param contentType The {@code Content-Type} header value.
+     * @return A string representation of the byte encoded to the found encoding, or null if {@code bytes} is null.
+     */
+    public static String bomAwareToString(byte[] bytes, int offset, int count, String contentType) {
+        if (bytes == null) {
+            return null;
+        }
+
+        if (count >= 3 && bytes[offset] == EF && bytes[offset + 1] == BB && bytes[offset + 2] == BF) {
+            return new String(bytes, 3, bytes.length - 3, StandardCharsets.UTF_8);
+        } else if (count >= 4 && bytes[offset] == ZERO && bytes[offset + 1] == ZERO
+            && bytes[offset + 2] == FE && bytes[offset + 3] == FF) {
+            return new String(bytes, 4, bytes.length - 4, UTF_32BE);
+        } else if (count >= 4 && bytes[offset] == FF && bytes[offset + 1] == FE
+            && bytes[offset + 2] == ZERO && bytes[offset + 3] == ZERO) {
+            return new String(bytes, 4, bytes.length - 4, UTF_32LE);
+        } else if (count >= 2 && bytes[offset] == FE && bytes[offset + 1] == FF) {
+            return new String(bytes, 2, bytes.length - 2, StandardCharsets.UTF_16BE);
+        } else if (count >= 2 && bytes[offset] == FF && bytes[offset + 1] == FE) {
+            return new String(bytes, 2, bytes.length - 2, StandardCharsets.UTF_16LE);
+        } else {
+            /*
+             * Attempt to retrieve the default charset from the 'Content-Encoding' header, if the value isn't
+             * present or invalid fallback to 'UTF-8' for the default charset.
+             */
+            if (!CoreUtils.isNullOrEmpty(contentType)) {
+                try {
+                    Matcher charsetMatcher = CHARSET_PATTERN.matcher(contentType);
+                    if (charsetMatcher.find()) {
+                        return new String(bytes, offset, count, Charset.forName(charsetMatcher.group(1)));
+                    } else {
+                        return new String(bytes, offset, count, StandardCharsets.UTF_8);
+                    }
+                } catch (IllegalCharsetNameException | UnsupportedCharsetException ex) {
+                    return new String(bytes, offset, count, StandardCharsets.UTF_8);
+                }
+            } else {
+                return new String(bytes, offset, count, StandardCharsets.UTF_8);
+            }
         }
     }
 

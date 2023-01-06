@@ -307,7 +307,7 @@ public class JacksonAdapter implements SerializerAdapter {
             if (encoding == SerializerEncoding.XML) {
                 return getXmlMapper().readValue(bytes, type);
             } else if (encoding == SerializerEncoding.TEXT) {
-                return deserializeText(new String(bytes, StandardCharsets.UTF_8), type);
+                return deserializeText(CoreUtils.bomAwareToString(bytes, null), type);
             } else {
                 return mapper.readValue(bytes, type);
             }
@@ -333,7 +333,7 @@ public class JacksonAdapter implements SerializerAdapter {
                     outputStream.write(buffer, 0, readCount);
                 }
 
-                return deserializeText(outputStream.toString(StandardCharsets.UTF_8), type);
+                return deserializeText(outputStream.bomAwareToString(null), type);
             } else {
                 return mapper.readValue(inputStream, type);
             }
