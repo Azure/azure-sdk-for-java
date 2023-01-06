@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.AmqpConstants;
+import com.azure.core.amqp.implementation.AmqpLinkProvider;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -58,6 +59,7 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
      * @param sessionName Name of the session.
      * @param provider Provides reactor instances for messages to sent with.
      * @param handlerProvider Providers reactor handlers for listening to proton-j reactor events.
+     * @param linkProvider Provides amqp links for send and receive.
      * @param cbsNodeSupplier Mono that returns a reference to the {@link ClaimsBasedSecurityNode}.
      * @param tokenManagerProvider Provides {@link TokenManager} that authorizes the client when performing
      *     operations on the message broker.
@@ -65,10 +67,10 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
      * @param messageSerializer to be used.
      */
     EventHubReactorSession(AmqpConnection amqpConnection, Session session, SessionHandler sessionHandler,
-        String sessionName, ReactorProvider provider, ReactorHandlerProvider handlerProvider,
+        String sessionName, ReactorProvider provider, ReactorHandlerProvider handlerProvider, AmqpLinkProvider linkProvider,
         Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
         AmqpRetryOptions retryOptions, MessageSerializer messageSerializer) {
-        super(amqpConnection, session, sessionHandler, sessionName, provider, handlerProvider, cbsNodeSupplier,
+        super(amqpConnection, session, sessionHandler, sessionName, provider, handlerProvider, linkProvider, cbsNodeSupplier,
             tokenManagerProvider, messageSerializer, retryOptions);
     }
 
