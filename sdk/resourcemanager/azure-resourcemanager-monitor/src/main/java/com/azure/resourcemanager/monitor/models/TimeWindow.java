@@ -54,6 +54,10 @@ public final class TimeWindow {
     @JsonProperty(value = "end", required = true)
     private OffsetDateTime end;
 
+    /** Creates an instance of TimeWindow class. */
+    public TimeWindow() {
+    }
+
     /**
      * Get the timeZone property: the timezone of the start and end times for the profile. Some examples of valid time
      * zones are: Dateline Standard Time, UTC-11, Hawaiian Standard Time, Alaskan Standard Time, Pacific Standard Time

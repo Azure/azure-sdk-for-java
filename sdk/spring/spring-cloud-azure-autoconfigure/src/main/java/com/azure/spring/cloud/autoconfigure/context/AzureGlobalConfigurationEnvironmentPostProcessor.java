@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_AUTHORITY_HOST;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_CLIENT_ID;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_CLIENT_SECRET;
@@ -72,6 +73,8 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
 
         CLIENT_CERTIFICATE_PATH(PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH, "credential.client-certificate-path"),
 
+        CLIENT_CERTIFICATE_PASSWORD(PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD, "credential.client-certificate-password"),
+
         USERNAME(PROPERTY_AZURE_USERNAME, "credential.username"),
 
         PASSWORD(PROPERTY_AZURE_PASSWORD, "credential.password"),
@@ -101,7 +104,7 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
         HTTP_NO_PROXY(PROPERTY_NO_PROXY, "proxy.http.non-proxy-hosts");
 
 
-        // TODO (xiada): how to set this proxy?
+        // TODO: how to set this proxy?
         // proxy(PROPERTY_HTTP_PROXY, PROPERTY_HTTPS_PROXY)
 
         private static Log logger;

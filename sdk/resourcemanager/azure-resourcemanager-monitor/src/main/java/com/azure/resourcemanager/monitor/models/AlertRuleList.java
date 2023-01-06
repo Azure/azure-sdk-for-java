@@ -24,6 +24,10 @@ public final class AlertRuleList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of AlertRuleList class. */
+    public AlertRuleList() {
+    }
+
     /**
      * Get the value property: The list of Activity Log Alert rules.
      *

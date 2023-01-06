@@ -71,6 +71,10 @@ public final class DiagnosticSettings {
     @JsonProperty(value = "logAnalyticsDestinationType")
     private String logAnalyticsDestinationType;
 
+    /** Creates an instance of DiagnosticSettings class. */
+    public DiagnosticSettings() {
+    }
+
     /**
      * Get the storageAccountId property: The resource ID of the storage account to which you would like to send
      * Diagnostic Logs.

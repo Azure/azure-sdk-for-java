@@ -42,6 +42,10 @@ public final class ThresholdRuleCondition extends RuleCondition {
     @JsonProperty(value = "timeAggregation")
     private TimeAggregationOperator timeAggregation;
 
+    /** Creates an instance of ThresholdRuleCondition class. */
+    public ThresholdRuleCondition() {
+    }
+
     /**
      * Get the operator property: the operator used to compare the data and the threshold.
      *

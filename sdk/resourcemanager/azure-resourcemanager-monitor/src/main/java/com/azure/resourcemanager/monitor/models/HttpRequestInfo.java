@@ -34,6 +34,10 @@ public final class HttpRequestInfo {
     @JsonProperty(value = "uri")
     private String uri;
 
+    /** Creates an instance of HttpRequestInfo class. */
+    public HttpRequestInfo() {
+    }
+
     /**
      * Get the clientRequestId property: the client request id.
      *

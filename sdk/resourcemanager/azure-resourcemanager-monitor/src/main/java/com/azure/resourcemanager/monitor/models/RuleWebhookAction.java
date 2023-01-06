@@ -33,6 +33,10 @@ public final class RuleWebhookAction extends RuleAction {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> properties;
 
+    /** Creates an instance of RuleWebhookAction class. */
+    public RuleWebhookAction() {
+    }
+
     /**
      * Get the serviceUri property: the service uri to Post the notification when the alert activates or resolves.
      *

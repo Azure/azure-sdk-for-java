@@ -35,6 +35,10 @@ public final class EmailReceiver {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ReceiverStatus status;
 
+    /** Creates an instance of EmailReceiver class. */
+    public EmailReceiver() {
+    }
+
     /**
      * Get the name property: The name of the email receiver. Names must be unique across all receivers within an action
      * group.
