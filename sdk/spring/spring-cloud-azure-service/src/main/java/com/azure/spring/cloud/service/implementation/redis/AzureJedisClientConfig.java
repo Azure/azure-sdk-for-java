@@ -34,12 +34,12 @@ public final class AzureJedisClientConfig implements JedisClientConfig {
 
     private final HostAndPortMapper hostAndPortMapper;
 
-    private Supplier<char[]> credentialSupplier;
+    private Supplier<String> credentialSupplier ;
 
     private AzureJedisClientConfig(int connectionTimeoutMillis, int soTimeoutMillis,
                                    int blockingSocketTimeoutMillis, String user, String password, int database, String clientName,
                                    boolean ssl, SSLSocketFactory sslSocketFactory, SSLParameters sslParameters,
-                                   HostnameVerifier hostnameVerifier, HostAndPortMapper hostAndPortMapper, Supplier<char[]> credentialSupplier) {
+                                   HostnameVerifier hostnameVerifier, HostAndPortMapper hostAndPortMapper, Supplier<String> credentialSupplier) {
         this.connectionTimeoutMillis = connectionTimeoutMillis;
         this.socketTimeoutMillis = soTimeoutMillis;
         this.blockingSocketTimeoutMillis = blockingSocketTimeoutMillis;
@@ -77,7 +77,13 @@ public final class AzureJedisClientConfig implements JedisClientConfig {
 
     @Override
     public String getPassword() {
-        return this.password != null ? this.password : new String(this.credentialSupplier.get());
+        if (this.password != null) {
+            return this.password;
+        }
+        if (this.credentialSupplier != null) {
+            return this.credentialSupplier.get();
+        }
+        return this.password;
     }
 
     @Override
@@ -135,7 +141,7 @@ public final class AzureJedisClientConfig implements JedisClientConfig {
         private String user = null;
         private String password = null;
 
-        private Supplier<char[]> credentialSupplier = null;
+        private Supplier<String> credentialSupplier = null;
         private int database = Protocol.DEFAULT_DATABASE;
         private String clientName = null;
 
@@ -180,7 +186,7 @@ public final class AzureJedisClientConfig implements JedisClientConfig {
             return this;
         }
 
-        public Builder credentialSupplier(Supplier<char[]> credentialSupplier) {
+        public Builder credentialSupplier(Supplier<String> credentialSupplier) {
             this.credentialSupplier = credentialSupplier;
             return this;
         }

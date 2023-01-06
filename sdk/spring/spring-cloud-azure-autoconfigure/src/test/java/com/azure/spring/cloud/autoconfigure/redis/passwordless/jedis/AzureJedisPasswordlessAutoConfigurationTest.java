@@ -18,9 +18,9 @@ import java.time.Duration;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Tests for {@link AzureJedisPasswordlessConnectionConfiguration} when Lettuce is not on the classpath.
+ * Tests for {@link AzureJedisPasswordlessAutoConfiguration} when Lettuce is not on the classpath.
  */
-class AzureJedisPasswordlessConnectionConfigurationTest {
+class AzureJedisPasswordlessAutoConfigurationTest {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withPropertyValues(
@@ -28,14 +28,28 @@ class AzureJedisPasswordlessConnectionConfigurationTest {
             "spring.redis.username = testuser",
             "spring.redis.host = testhost"
         )
-        .withConfiguration(AutoConfigurations.of(AzureJedisPasswordlessConnectionConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureJedisPasswordlessAutoConfiguration.class));
+
+    @Test
+    void testScopes() {
+
+    }
+
+    @Test
+    void testCredentialSupplier() {
+
+    }
+
+    @Test
+    void testProperties() {
+
+    }
 
     @Test
     void connectionFactoryDefaultsToJedis() {
         this.contextRunner.run((context) -> assertThat(context.getBean("azureRedisConnectionFactory"))
             .isInstanceOf(AzureJedisConnectionFactory.class));
     }
-
 
     @Test
     void testOverrideRedisConfiguration() {

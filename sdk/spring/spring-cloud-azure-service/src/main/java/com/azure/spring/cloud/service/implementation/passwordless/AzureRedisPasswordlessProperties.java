@@ -4,11 +4,12 @@
 package com.azure.spring.cloud.service.implementation.passwordless;
 
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
+
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
+ * Configuration properties for passwordless connections with Azure Redis.
  */
 public class AzureRedisPasswordlessProperties extends AzurePasswordlessProperties {
 

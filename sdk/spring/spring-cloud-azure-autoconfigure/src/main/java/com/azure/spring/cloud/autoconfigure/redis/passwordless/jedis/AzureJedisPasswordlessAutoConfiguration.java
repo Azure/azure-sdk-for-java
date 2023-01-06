@@ -47,10 +47,10 @@ import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUti
 @ConditionalOnMissingBean(RedisConnectionFactory.class)
 @ConditionalOnProperty(prefix = "spring.redis", name = {"host", "username"})
 @EnableConfigurationProperties(RedisProperties.class)
-class AzureJedisPasswordlessConnectionConfiguration {
+class AzureJedisPasswordlessAutoConfiguration {
 
     private static final boolean COMMONS_POOL2_AVAILABLE = ClassUtils.isPresent("org.apache.commons.pool2.ObjectPool",
-        AzureJedisPasswordlessConnectionConfiguration.class.getClassLoader());
+        AzureJedisPasswordlessAutoConfiguration.class.getClassLoader());
 
     private static final String AZURE_REDIS_CREDENTIAL_SUPPLIER_BEAN_NAME = "azureRedisCredentialSupplier";
 
@@ -64,19 +64,18 @@ class AzureJedisPasswordlessConnectionConfiguration {
 
     @Bean(name = AZURE_REDIS_CREDENTIAL_SUPPLIER_BEAN_NAME)
     @ConditionalOnMissingBean(name = AZURE_REDIS_CREDENTIAL_SUPPLIER_BEAN_NAME)
-    Supplier<char[]> azureRedisCredentialSupplier(ObjectProvider<AzureGlobalProperties> azureGlobalProperties, AzureRedisPasswordlessProperties azureRedisPasswordlessProperties) {
+    Supplier<String> azureRedisCredentialSupplier(ObjectProvider<AzureGlobalProperties> azureGlobalProperties, AzureRedisPasswordlessProperties azureRedisPasswordlessProperties) {
         Properties properties = mergeAzureProperties(azureGlobalProperties.getIfAvailable(), azureRedisPasswordlessProperties).toProperties();
         return new AzureRedisCredentialSupplier(properties);
     }
 
     @Bean
-    AzureJedisConnectionFactory azureRedisConnectionFactory(RedisProperties redisProperties, @Qualifier(value = AZURE_REDIS_CREDENTIAL_SUPPLIER_BEAN_NAME) Supplier<char[]> azureRedisCredentialSupplier) {
+    AzureJedisConnectionFactory azureRedisConnectionFactory(RedisProperties redisProperties, @Qualifier(value = AZURE_REDIS_CREDENTIAL_SUPPLIER_BEAN_NAME) Supplier<String> azureRedisCredentialSupplier) {
         RedisStandaloneConfiguration standaloneConfig = getStandaloneConfig(redisProperties);
         JedisClientConfiguration clientConfiguration = getJedisClientConfiguration(redisProperties);
 
         return new AzureJedisConnectionFactory(standaloneConfig, clientConfiguration, azureRedisCredentialSupplier);
     }
-
 
     private JedisClientConfiguration getJedisClientConfiguration(RedisProperties redisProperties) {
 

@@ -12,11 +12,11 @@ import java.util.Properties;
 import java.util.function.Supplier;
 
 /**
- * AzureRedisCredentialSupplier that provide a char array as the password to connect Azure Redis.
+ * AzureRedisCredentialSupplier that provide a String as the password to connect Azure Redis.
  *
  * @since 4.6.0
  */
-public class AzureRedisCredentialSupplier implements Supplier<char[]> {
+public class AzureRedisCredentialSupplier implements Supplier<String> {
 
     private final AzureAuthenticationTemplate azureAuthenticationTemplate;
 
@@ -42,17 +42,20 @@ public class AzureRedisCredentialSupplier implements Supplier<char[]> {
 
     /**
      * Create {@link AzureRedisCredentialSupplier} instance.
-     * @param tokenCredentialProvider Supplier that provide a {@link TokenCredential}.
+     * @param tokenCredentialProvider Supplier that provide a {@link TokenCredential}, must not be {@literal null}.
      * @param accessTokenResolver An {@link AccessTokenResolver} instance, which will take a TokenCredential as input
-     *                            and outputs a publisher that emits a single access token.
+     *                            and outputs a publisher that emits a single access token, must not be {@literal null}.
      */
     public AzureRedisCredentialSupplier(TokenCredentialProvider tokenCredentialProvider, AccessTokenResolver accessTokenResolver) {
-        azureAuthenticationTemplate = new AzureAuthenticationTemplate(tokenCredentialProvider, accessTokenResolver);
+        this(null, tokenCredentialProvider, accessTokenResolver);
     }
 
     @Override
-    public char[] get() {
-        return azureAuthenticationTemplate.getTokenAsPassword().toCharArray();
+    public String get() {
+        return azureAuthenticationTemplate.getTokenAsPassword();
     }
 
+    AzureRedisCredentialSupplier(AzureAuthenticationTemplate azureAuthenticationTemplate) {
+        this.azureAuthenticationTemplate = azureAuthenticationTemplate;
+    }
 }

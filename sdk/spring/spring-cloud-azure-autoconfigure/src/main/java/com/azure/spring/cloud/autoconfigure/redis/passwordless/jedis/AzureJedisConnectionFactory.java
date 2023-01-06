@@ -42,7 +42,7 @@ public class AzureJedisConnectionFactory implements InitializingBean, Disposable
 
     private final RedisStandaloneConfiguration standaloneConfig;
 
-    private final Supplier<char[]> credentialSupplier;
+    private final Supplier<String> credentialSupplier;
     private final JedisClientConfiguration clientConfiguration;
     private JedisClientConfig jedisClientConfig;
     private @Nullable Pool<Jedis> pool;
@@ -51,7 +51,6 @@ public class AzureJedisConnectionFactory implements InitializingBean, Disposable
 
     private boolean convertPipelineAndTxResults = true;
 
-
     /**
      * Constructs a new AzureJedisConnectionFactory instance using the given RedisStandaloneConfiguration, JedisClientConfiguration and CredentialSupplier.
      *
@@ -59,7 +58,7 @@ public class AzureJedisConnectionFactory implements InitializingBean, Disposable
      * @param clientConfiguration must not be {@literal null}.
      * @param credentialSupplier must not be {@literal null}.
      */
-    public AzureJedisConnectionFactory(RedisStandaloneConfiguration standaloneConfig, JedisClientConfiguration clientConfiguration, Supplier<char[]> credentialSupplier) {
+    public AzureJedisConnectionFactory(RedisStandaloneConfiguration standaloneConfig, JedisClientConfiguration clientConfiguration, Supplier<String> credentialSupplier) {
         this.standaloneConfig = standaloneConfig;
         this.clientConfiguration = clientConfiguration;
         this.credentialSupplier = credentialSupplier;
@@ -107,7 +106,7 @@ public class AzureJedisConnectionFactory implements InitializingBean, Disposable
 
     @Override
     public DataAccessException translateExceptionIfPossible(RuntimeException ex) {
-        return null;
+        throw new UnsupportedOperationException("This operation is not supported");
     }
 
     @Override
@@ -186,7 +185,11 @@ public class AzureJedisConnectionFactory implements InitializingBean, Disposable
      */
     @Nullable
     public String getPassword() {
-        return getRedisPassword().map(String::new).orElse(null);
+        RedisPassword password = getRedisPassword();
+        if (password == null & credentialSupplier != null) {
+            return credentialSupplier.get();
+        }
+        return password.map(String::new).orElse(null);
     }
 
     /**
@@ -314,4 +317,7 @@ public class AzureJedisConnectionFactory implements InitializingBean, Disposable
         Assert.state(!this.destroyed, "JedisConnectionFactory was destroyed and cannot be used anymore");
     }
 
+    void setPool(@Nullable Pool<Jedis> pool) {
+        this.pool = pool;
+    }
 }
