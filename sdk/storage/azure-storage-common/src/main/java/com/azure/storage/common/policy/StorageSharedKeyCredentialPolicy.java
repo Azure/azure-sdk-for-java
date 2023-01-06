@@ -5,6 +5,7 @@ package com.azure.storage.common.policy;
 
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -34,12 +35,22 @@ public final class StorageSharedKeyCredentialPolicy implements HttpPipelinePolic
     }
 
     @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        setAuthorizationHeader(context);
+        return next.processSync();
+    }
+
+    @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        setAuthorizationHeader(context);
+        return next.process();
+    }
+
+    private void setAuthorizationHeader(HttpPipelineCallContext context) {
         String authorizationValue = credential.generateAuthorizationHeader(context.getHttpRequest().getUrl(),
             context.getHttpRequest().getHttpMethod().toString(),
             context.getHttpRequest().getHeaders(),
             Boolean.TRUE.equals(context.getData(Constants.STORAGE_LOG_STRING_TO_SIGN).orElse(false)));
         context.getHttpRequest().setHeader("Authorization", authorizationValue);
-        return next.process();
     }
 }
