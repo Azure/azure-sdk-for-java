@@ -25,6 +25,7 @@ import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
+import com.azure.communication.callautomation.models.MuteAllParticipantsOptions;
 import com.azure.communication.callautomation.models.MuteParticipantOptions;
 import com.azure.communication.callautomation.models.MuteParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantsOptions;
@@ -426,6 +427,26 @@ public class CallConnectionAsync {
      * @return a Response containing the MuteParticipantsResult object.
      */
     public Mono<Response<MuteParticipantsResult>> muteParticipantsWithResponse(MuteParticipantOptions muteParticipantOptions) {
+        throw logger.logExceptionAsError(new RuntimeException("Not implemented yet"));
+    }
+
+    /**
+     * Mute all participants in the call, except for the initiator.
+     * @param requestInitiator Optional - if passed, this participant won't be muted. If not passed,
+     *                         the server won't be muted.
+     * @return a MuteParticipantsResult object.
+     */
+    public Mono<MuteParticipantsResult> muteAllParticipantsAsync(CommunicationUserIdentifier requestInitiator) {
+        throw logger.logExceptionAsError(new RuntimeException("Not implemented yet"));
+    }
+
+
+    /**
+     * Mute all participants in the call, except for the initiator.
+     * @param options - Options for the operation.
+     * @return a Response containing a MuteParticipantsResult object.
+     */
+    public Mono<Response<MuteParticipantsResult>> muteAllParticipantsWithResponse(MuteAllParticipantsOptions options) {
         throw logger.logExceptionAsError(new RuntimeException("Not implemented yet"));
     }
     //endregion

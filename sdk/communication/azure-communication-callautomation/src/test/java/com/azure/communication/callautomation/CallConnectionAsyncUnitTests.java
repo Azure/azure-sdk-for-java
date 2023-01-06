@@ -11,6 +11,7 @@ import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallParticipant;
 import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
+import com.azure.communication.callautomation.models.MuteAllParticipantsOptions;
 import com.azure.communication.callautomation.models.MuteParticipantOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantsOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantsResult;
@@ -343,6 +344,113 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
          */
         assertThrows(RuntimeException.class, () ->
             callConnectionAsync.muteParticipantsWithResponse(muteParticipantOptions).block()
+        );
+    }
+
+    @Test
+    public void muteAllParticipantsWithInitiator() {
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(serializeObject(new RemoveParticipantsResponseInternal()
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+            )))
+            .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        /**
+         * TODO: When method's implemented.
+         MuteParticipantsResult muteParticipantsResult = callConnectionAsync.muteAllParticipantsAsync(
+         new CommunicationUserIdentifier(CALL_TARGET_ID)).block();
+
+         assertNotNull(muteParticipantsResult);
+         assertEquals(CALL_OPERATION_CONTEXT, muteParticipantsResult.getOperationContext());
+         */
+        assertThrows(RuntimeException.class, () ->
+            callConnectionAsync.muteAllParticipantsAsync(new CommunicationUserIdentifier(CALL_TARGET_ID)).block()
+        );
+    }
+
+    @Test
+    public void muteAllParticipantsWithResponseWithInitiator() {
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(serializeObject(new RemoveParticipantsResponseInternal()
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+            )))
+            .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        MuteAllParticipantsOptions muteParticipantOptions = new MuteAllParticipantsOptions()
+            .setRequestInitiator(new CommunicationUserIdentifier(CALL_TARGET_ID))
+            .setOperationContext(CALL_OPERATION_CONTEXT);
+
+        /**
+         * TODO: To complete when method is implemented.
+         Response<MuteParticipantsResult> muteParticipantsResultResponse = callConnectionAsync.muteParticipantsWithResponse(
+         muteParticipantOptions).block();
+
+         assertNotNull(muteParticipantsResultResponse);
+         assertEquals(202, muteParticipantsResultResponse.getStatusCode());
+         assertNotNull(muteParticipantsResultResponse.getValue());
+
+         RepeatabilityHeaders repeatabilityHeaders = muteParticipantOptions.getRepeatabilityHeaders();
+         assertNotNull(repeatabilityHeaders);
+         assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
+         assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
+         */
+        assertThrows(RuntimeException.class, () ->
+            callConnectionAsync.muteAllParticipantsWithResponse(muteParticipantOptions).block()
+        );
+    }
+
+    @Test
+    public void muteAllParticipantsWithoutInitiator() {
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(serializeObject(new RemoveParticipantsResponseInternal()
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+            )))
+            .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        /**
+         * TODO: When method's implemented.
+         MuteParticipantsResult muteParticipantsResult = callConnectionAsync.muteAllParticipantsAsync(
+         new CommunicationUserIdentifier(CALL_TARGET_ID)).block();
+
+         assertNotNull(muteParticipantsResult);
+         assertEquals(CALL_OPERATION_CONTEXT, muteParticipantsResult.getOperationContext());
+         */
+        assertThrows(RuntimeException.class, () ->
+            callConnectionAsync.muteAllParticipantsAsync(null).block()
+        );
+    }
+
+    @Test
+    public void muteAllParticipantsWithResponseWithoutInitiator() {
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(serializeObject(new RemoveParticipantsResponseInternal()
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+            )))
+            .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        MuteAllParticipantsOptions muteParticipantOptions = new MuteAllParticipantsOptions()
+            .setOperationContext(CALL_OPERATION_CONTEXT);
+
+        /**
+         * TODO: To complete when method is implemented.
+         Response<MuteParticipantsResult> muteParticipantsResultResponse = callConnectionAsync.muteParticipantsWithResponse(
+         muteParticipantOptions).block();
+
+         assertNotNull(muteParticipantsResultResponse);
+         assertEquals(202, muteParticipantsResultResponse.getStatusCode());
+         assertNotNull(muteParticipantsResultResponse.getValue());
+
+         RepeatabilityHeaders repeatabilityHeaders = muteParticipantOptions.getRepeatabilityHeaders();
+         assertNotNull(repeatabilityHeaders);
+         assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
+         assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
+         */
+        assertThrows(RuntimeException.class, () ->
+            callConnectionAsync.muteAllParticipantsWithResponse(muteParticipantOptions).block()
         );
     }
 }

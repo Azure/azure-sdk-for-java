@@ -10,14 +10,14 @@ import java.time.Instant;
 import java.util.UUID;
 
 /**
- * The options for muting a participant.
+ * The options for muting all participants.
  */
 @Fluent
-public final class MuteParticipantOptions {
+public final class MuteAllParticipantsOptions {
     /**
-     * The participant to mute.
+     * The participant that emitted the request.
      */
-    private final CommunicationIdentifier participant;
+    private CommunicationIdentifier requestInitiator;
 
     /**
      * The operational context
@@ -32,20 +32,18 @@ public final class MuteParticipantOptions {
     /**
      * Constructor
      *
-     * @param participant The participant to mute.
      */
-    public MuteParticipantOptions(CommunicationIdentifier participant) {
-        this.participant = participant;
+    public MuteAllParticipantsOptions() {
         this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
     /**
      * Get the participant.
      *
-     * @return the participants to mute.
+     * @return the participants to be mute.
      */
-    public CommunicationIdentifier getParticipant() {
-        return participant;
+    public CommunicationIdentifier getRequestInitiator() {
+        return requestInitiator;
     }
 
     /**
@@ -70,9 +68,9 @@ public final class MuteParticipantOptions {
      * Set the repeatability headers
      *
      * @param repeatabilityHeaders The repeatability headers configuration.
-     * @return the RemoveParticipantsOptions object itself.
+     * @return the MuteAllParticipantsOptions object itself.
      */
-    public MuteParticipantOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
+    public MuteAllParticipantsOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
         this.repeatabilityHeaders = repeatabilityHeaders;
         return this;
     }
@@ -81,10 +79,20 @@ public final class MuteParticipantOptions {
      * Set the operationContext.
      *
      * @param operationContext the operationContext to set
-     * @return the RemoveParticipantsOptions object itself.
+     * @return the MuteAllParticipantsOptions object itself.
      */
-    public MuteParticipantOptions setOperationContext(String operationContext) {
+    public MuteAllParticipantsOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Set the request initiator.
+     * @param requestInitiator the participant that initiated the request.
+     * @return the MuteAllParticipantsOptions object itself.
+     */
+    public MuteAllParticipantsOptions setRequestInitiator(CommunicationIdentifier requestInitiator) {
+        this.requestInitiator = requestInitiator;
         return this;
     }
 }
