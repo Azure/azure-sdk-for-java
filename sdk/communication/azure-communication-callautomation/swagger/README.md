@@ -154,11 +154,17 @@ directive:
     from: MuteAllParticipantsRequest
     to: MuteAllParticipantsRequestInternal
 - rename-model:
+    from: MuteParticipantsResponse
+    to: MuteParticipantsResponseInternal
+- rename-model:
     from: UnmuteParticipantRequest
     to: UnmuteParticipantRequestInternal
 - rename-model:
     from: UnmuteAllParticipantsRequest
     to: UnmuteAllParticipantsRequestInternal
+- rename-model:
+    from: UnmuteParticipantsResponse
+    to: UnmuteParticipantsResponseInternal
 
 # Remove models
 - remove-model: AddParticipantsFailed

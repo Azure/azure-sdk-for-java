@@ -25,12 +25,14 @@ import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
+import com.azure.communication.callautomation.models.MuteParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantsOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantsResult;
 import com.azure.communication.callautomation.models.RepeatabilityHeaders;
 import com.azure.communication.callautomation.models.TransferCallResult;
 import com.azure.communication.callautomation.models.TransferToParticipantCallOptions;
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
@@ -405,6 +407,16 @@ public class CallConnectionAsync {
      */
     private RepeatabilityHeaders handleApiIdempotency(RepeatabilityHeaders repeatabilityHeaders) {
         return CallAutomationAsyncClient.handleApiIdempotency(repeatabilityHeaders);
+    }
+
+    /**
+     * Mutes a single participant in the call.
+     * @param communicationUserIdentifier - Participant to be muted.
+     * @return A MuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MuteParticipantsResult> muteParticipantAsync(CommunicationUserIdentifier communicationUserIdentifier) {
+        throw logger.logExceptionAsError(new RuntimeException("Not implemented yet"));
     }
     //endregion
 }

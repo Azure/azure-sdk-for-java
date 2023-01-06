@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The response payload for removing participants of the call. */
 @Fluent
-public final class UnmuteParticipantsResponse {
+public final class MuteParticipantsResponseInternal {
     /*
      * The operation context provided by client.
      */
@@ -29,9 +29,9 @@ public final class UnmuteParticipantsResponse {
      * Set the operationContext property: The operation context provided by client.
      *
      * @param operationContext the operationContext value to set.
-     * @return the UnmuteParticipantsResponse object itself.
+     * @return the MuteParticipantsResponseInternal object itself.
      */
-    public UnmuteParticipantsResponse setOperationContext(String operationContext) {
+    public MuteParticipantsResponseInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }

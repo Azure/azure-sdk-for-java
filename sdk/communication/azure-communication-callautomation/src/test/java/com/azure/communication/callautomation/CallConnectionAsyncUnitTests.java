@@ -26,6 +26,7 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
     @Test
@@ -266,6 +267,53 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
 
     @Test
     public void removeParticipantsWithResponse() {
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(serializeObject(new RemoveParticipantsResponseInternal()
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+            )))
+            .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        RemoveParticipantsOptions removeParticipantsOptions = new RemoveParticipantsOptions(
+            new ArrayList<>(Arrays.asList(new CommunicationUserIdentifier(CALL_TARGET_ID))))
+            .setOperationContext(CALL_OPERATION_CONTEXT);
+        Response<RemoveParticipantsResult> removeParticipantsResultResponse = callConnectionAsync.removeParticipantsWithResponse(
+            removeParticipantsOptions).block();
+
+
+        assertNotNull(removeParticipantsResultResponse);
+        assertEquals(202, removeParticipantsResultResponse.getStatusCode());
+        assertNotNull(removeParticipantsResultResponse.getValue());
+
+        RepeatabilityHeaders repeatabilityHeaders = removeParticipantsOptions.getRepeatabilityHeaders();
+        assertNotNull(repeatabilityHeaders);
+        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
+        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
+    }
+
+    @Test
+    public void muteParticipant() {
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(serializeObject(new RemoveParticipantsResponseInternal()
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+            )))
+            .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        /**
+         * TODO: When method's implemented.
+        MuteParticipantsResult muteParticipantsResult = callConnectionAsync.muteParticipantAsync(
+            new CommunicationUserIdentifier(CALL_TARGET_ID)).block();
+
+        assertNotNull(muteParticipantsResult);
+        assertEquals(CALL_OPERATION_CONTEXT, muteParticipantsResult.getOperationContext());
+         */
+        assertThrows(RuntimeException.class, () ->
+            callConnectionAsync.muteParticipantAsync(new CommunicationUserIdentifier(CALL_TARGET_ID)).block());
+    }
+
+    @Test
+    public void muteParticipantWithResponse() {
         CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(serializeObject(new RemoveParticipantsResponseInternal()

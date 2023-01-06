@@ -7,10 +7,10 @@ package com.azure.communication.callautomation.implementation;
 import com.azure.communication.callautomation.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.callautomation.implementation.models.MuteAllParticipantsRequestInternal;
 import com.azure.communication.callautomation.implementation.models.MuteParticipantRequestInternal;
-import com.azure.communication.callautomation.implementation.models.MuteParticipantsResponse;
+import com.azure.communication.callautomation.implementation.models.MuteParticipantsResponseInternal;
 import com.azure.communication.callautomation.implementation.models.UnmuteAllParticipantsRequestInternal;
 import com.azure.communication.callautomation.implementation.models.UnmuteParticipantRequestInternal;
-import com.azure.communication.callautomation.implementation.models.UnmuteParticipantsResponse;
+import com.azure.communication.callautomation.implementation.models.UnmuteParticipantsResponseInternal;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
@@ -200,7 +200,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
         @Post("/calling/callConnections/{callConnectionId}/participants:muteAll")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<MuteParticipantsResponse>> callingCallConnectionsMuteAll(
+        Mono<Response<MuteParticipantsResponseInternal>> callingCallConnectionsMuteAll(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
@@ -213,7 +213,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
         @Post("/calling/callConnections/{callConnectionId}/participants:unmuteAll")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<UnmuteParticipantsResponse>> callingCallConnectionsUnmuteAll(
+        Mono<Response<UnmuteParticipantsResponseInternal>> callingCallConnectionsUnmuteAll(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
@@ -226,7 +226,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
         @Post("/calling/callConnections/{callConnectionId}/participants:mute")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<MuteParticipantsResponse>> callingCallConnectionsMute(
+        Mono<Response<MuteParticipantsResponseInternal>> callingCallConnectionsMute(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
@@ -239,7 +239,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
         @Post("/calling/callConnections/{callConnectionId}/participants:unmute")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<UnmuteParticipantsResponse>> callingCallConnectionsUnmute(
+        Mono<Response<UnmuteParticipantsResponseInternal>> callingCallConnectionsUnmute(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
@@ -269,7 +269,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the response payload for removing participants of the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MuteParticipantsResponse>> callingCallConnectionsMuteAllWithResponseAsync(
+    public Mono<Response<MuteParticipantsResponseInternal>> callingCallConnectionsMuteAllWithResponseAsync(
             String callConnectionId,
             MuteAllParticipantsRequestInternal muteAllParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -308,7 +308,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the response payload for removing participants of the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MuteParticipantsResponse>> callingCallConnectionsMuteAllWithResponseAsync(
+    public Mono<Response<MuteParticipantsResponseInternal>> callingCallConnectionsMuteAllWithResponseAsync(
             String callConnectionId,
             MuteAllParticipantsRequestInternal muteAllParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -345,7 +345,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the response payload for removing participants of the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MuteParticipantsResponse> callingCallConnectionsMuteAllAsync(
+    public Mono<MuteParticipantsResponseInternal> callingCallConnectionsMuteAllAsync(
             String callConnectionId,
             MuteAllParticipantsRequestInternal muteAllParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -353,7 +353,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
         return callingCallConnectionsMuteAllWithResponseAsync(
                         callConnectionId, muteAllParticipantsRequest, repeatabilityRequestID, repeatabilityFirstSent)
                 .flatMap(
-                        (Response<MuteParticipantsResponse> res) -> {
+                        (Response<MuteParticipantsResponseInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -382,7 +382,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the response payload for removing participants of the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MuteParticipantsResponse> callingCallConnectionsMuteAllAsync(
+    public Mono<MuteParticipantsResponseInternal> callingCallConnectionsMuteAllAsync(
             String callConnectionId,
             MuteAllParticipantsRequestInternal muteAllParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -395,7 +395,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
                         repeatabilityFirstSent,
                         context)
                 .flatMap(
-                        (Response<MuteParticipantsResponse> res) -> {
+                        (Response<MuteParticipantsResponseInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -423,7 +423,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the response payload for removing participants of the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MuteParticipantsResponse callingCallConnectionsMuteAll(
+    public MuteParticipantsResponseInternal callingCallConnectionsMuteAll(
             String callConnectionId,
             MuteAllParticipantsRequestInternal muteAllParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -453,7 +453,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the response payload for removing participants of the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MuteParticipantsResponse> callingCallConnectionsMuteAllWithResponse(
+    public Response<MuteParticipantsResponseInternal> callingCallConnectionsMuteAllWithResponse(
             String callConnectionId,
             MuteAllParticipantsRequestInternal muteAllParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -487,7 +487,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the response payload for removing participants of the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UnmuteParticipantsResponse>> callingCallConnectionsUnmuteAllWithResponseAsync(
+    public Mono<Response<UnmuteParticipantsResponseInternal>> callingCallConnectionsUnmuteAllWithResponseAsync(
             String callConnectionId,
             UnmuteAllParticipantsRequestInternal unmuteAllParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -526,7 +526,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the response payload for removing participants of the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UnmuteParticipantsResponse>> callingCallConnectionsUnmuteAllWithResponseAsync(
+    public Mono<Response<UnmuteParticipantsResponseInternal>> callingCallConnectionsUnmuteAllWithResponseAsync(
             String callConnectionId,
             UnmuteAllParticipantsRequestInternal unmuteAllParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -563,7 +563,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the response payload for removing participants of the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UnmuteParticipantsResponse> callingCallConnectionsUnmuteAllAsync(
+    public Mono<UnmuteParticipantsResponseInternal> callingCallConnectionsUnmuteAllAsync(
             String callConnectionId,
             UnmuteAllParticipantsRequestInternal unmuteAllParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -571,7 +571,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
         return callingCallConnectionsUnmuteAllWithResponseAsync(
                         callConnectionId, unmuteAllParticipantsRequest, repeatabilityRequestID, repeatabilityFirstSent)
                 .flatMap(
-                        (Response<UnmuteParticipantsResponse> res) -> {
+                        (Response<UnmuteParticipantsResponseInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -600,7 +600,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the response payload for removing participants of the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UnmuteParticipantsResponse> callingCallConnectionsUnmuteAllAsync(
+    public Mono<UnmuteParticipantsResponseInternal> callingCallConnectionsUnmuteAllAsync(
             String callConnectionId,
             UnmuteAllParticipantsRequestInternal unmuteAllParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -613,7 +613,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
                         repeatabilityFirstSent,
                         context)
                 .flatMap(
-                        (Response<UnmuteParticipantsResponse> res) -> {
+                        (Response<UnmuteParticipantsResponseInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -641,7 +641,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the response payload for removing participants of the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UnmuteParticipantsResponse callingCallConnectionsUnmuteAll(
+    public UnmuteParticipantsResponseInternal callingCallConnectionsUnmuteAll(
             String callConnectionId,
             UnmuteAllParticipantsRequestInternal unmuteAllParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -671,7 +671,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the response payload for removing participants of the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UnmuteParticipantsResponse> callingCallConnectionsUnmuteAllWithResponse(
+    public Response<UnmuteParticipantsResponseInternal> callingCallConnectionsUnmuteAllWithResponse(
             String callConnectionId,
             UnmuteAllParticipantsRequestInternal unmuteAllParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -705,7 +705,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the response payload for removing participants of the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MuteParticipantsResponse>> callingCallConnectionsMuteWithResponseAsync(
+    public Mono<Response<MuteParticipantsResponseInternal>> callingCallConnectionsMuteWithResponseAsync(
             String callConnectionId,
             MuteParticipantRequestInternal muteParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -744,7 +744,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the response payload for removing participants of the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MuteParticipantsResponse>> callingCallConnectionsMuteWithResponseAsync(
+    public Mono<Response<MuteParticipantsResponseInternal>> callingCallConnectionsMuteWithResponseAsync(
             String callConnectionId,
             MuteParticipantRequestInternal muteParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -781,7 +781,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the response payload for removing participants of the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MuteParticipantsResponse> callingCallConnectionsMuteAsync(
+    public Mono<MuteParticipantsResponseInternal> callingCallConnectionsMuteAsync(
             String callConnectionId,
             MuteParticipantRequestInternal muteParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -789,7 +789,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
         return callingCallConnectionsMuteWithResponseAsync(
                         callConnectionId, muteParticipantsRequest, repeatabilityRequestID, repeatabilityFirstSent)
                 .flatMap(
-                        (Response<MuteParticipantsResponse> res) -> {
+                        (Response<MuteParticipantsResponseInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -818,7 +818,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the response payload for removing participants of the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MuteParticipantsResponse> callingCallConnectionsMuteAsync(
+    public Mono<MuteParticipantsResponseInternal> callingCallConnectionsMuteAsync(
             String callConnectionId,
             MuteParticipantRequestInternal muteParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -831,7 +831,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
                         repeatabilityFirstSent,
                         context)
                 .flatMap(
-                        (Response<MuteParticipantsResponse> res) -> {
+                        (Response<MuteParticipantsResponseInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -859,7 +859,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the response payload for removing participants of the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MuteParticipantsResponse callingCallConnectionsMute(
+    public MuteParticipantsResponseInternal callingCallConnectionsMute(
             String callConnectionId,
             MuteParticipantRequestInternal muteParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -889,7 +889,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the response payload for removing participants of the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MuteParticipantsResponse> callingCallConnectionsMuteWithResponse(
+    public Response<MuteParticipantsResponseInternal> callingCallConnectionsMuteWithResponse(
             String callConnectionId,
             MuteParticipantRequestInternal muteParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -923,7 +923,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the response payload for removing participants of the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UnmuteParticipantsResponse>> callingCallConnectionsUnmuteWithResponseAsync(
+    public Mono<Response<UnmuteParticipantsResponseInternal>> callingCallConnectionsUnmuteWithResponseAsync(
             String callConnectionId,
             UnmuteParticipantRequestInternal unmuteParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -962,7 +962,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the response payload for removing participants of the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UnmuteParticipantsResponse>> callingCallConnectionsUnmuteWithResponseAsync(
+    public Mono<Response<UnmuteParticipantsResponseInternal>> callingCallConnectionsUnmuteWithResponseAsync(
             String callConnectionId,
             UnmuteParticipantRequestInternal unmuteParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -999,7 +999,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the response payload for removing participants of the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UnmuteParticipantsResponse> callingCallConnectionsUnmuteAsync(
+    public Mono<UnmuteParticipantsResponseInternal> callingCallConnectionsUnmuteAsync(
             String callConnectionId,
             UnmuteParticipantRequestInternal unmuteParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -1007,7 +1007,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
         return callingCallConnectionsUnmuteWithResponseAsync(
                         callConnectionId, unmuteParticipantsRequest, repeatabilityRequestID, repeatabilityFirstSent)
                 .flatMap(
-                        (Response<UnmuteParticipantsResponse> res) -> {
+                        (Response<UnmuteParticipantsResponseInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -1036,7 +1036,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the response payload for removing participants of the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UnmuteParticipantsResponse> callingCallConnectionsUnmuteAsync(
+    public Mono<UnmuteParticipantsResponseInternal> callingCallConnectionsUnmuteAsync(
             String callConnectionId,
             UnmuteParticipantRequestInternal unmuteParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -1049,7 +1049,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
                         repeatabilityFirstSent,
                         context)
                 .flatMap(
-                        (Response<UnmuteParticipantsResponse> res) -> {
+                        (Response<UnmuteParticipantsResponseInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -1077,7 +1077,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the response payload for removing participants of the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UnmuteParticipantsResponse callingCallConnectionsUnmute(
+    public UnmuteParticipantsResponseInternal callingCallConnectionsUnmute(
             String callConnectionId,
             UnmuteParticipantRequestInternal unmuteParticipantsRequest,
             UUID repeatabilityRequestID,
@@ -1107,7 +1107,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @return the response payload for removing participants of the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UnmuteParticipantsResponse> callingCallConnectionsUnmuteWithResponse(
+    public Response<UnmuteParticipantsResponseInternal> callingCallConnectionsUnmuteWithResponse(
             String callConnectionId,
             UnmuteParticipantRequestInternal unmuteParticipantsRequest,
             UUID repeatabilityRequestID,
