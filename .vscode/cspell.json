@@ -299,7 +299,6 @@
     "etag",
     "eventhub",
     "eventhubs",
-    "failonerror",
     "filereports",
     "gapra",
     "gmavenplus",
@@ -355,7 +354,6 @@
     "onenote",
     "pwsh",
     "PSQL",
-    "qpid",
     "racdw",
     "reimage",
     "reimaging",
@@ -855,6 +853,13 @@
         ]
     },
     {
+      "filename": "sdk/spring/spring-cloud-azure-starter-servicebus-jms/**",
+      "words": [
+        "failonerror",
+        "qpid"
+      ]
+    },
+    {
       "filename": "sdk/spring/scripts/**",
       "words": [
         "antlr",
@@ -891,7 +896,6 @@
         "hsqldb",
         "humio",
         "hystrix",
-        "liquibase",
         "inmemory",
         "infinispan",
         "integ",
@@ -1009,6 +1013,7 @@
         "Oidc",
         "oidc",
         "OIDC",
+        "qpid",
         "reqoest",
         "SQLDB",
         "sqldb",
