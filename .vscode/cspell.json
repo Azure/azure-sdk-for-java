@@ -371,7 +371,6 @@
     "skus",
     "sonatype",
     "Sonatype",
-    "Spel",
     "spotbugs",
     "ssis",
     "substringof",
@@ -710,27 +709,6 @@
       ]
     },
     {
-      "filename": "sdk/spring/CHANGELOG.md",
-      "words": [
-        "AADB",
-        "JPMS",
-        "nimbusds"
-      ]
-    },
-    {
-      "filename": "sdk/spring/README.md",
-      "words": [
-        "Dcheckstyle",
-        "Dcodesnippet",
-        "Djacoco",
-        "Drevapi",
-        "Dskip",
-        "Dspotbugs",
-        "Pdev",
-        ""
-      ]
-    },
-    {
       "filename": "sdk/storage/azure-storage-common/**",
       "words": [
         "alzimmer",
@@ -851,13 +829,6 @@
         "qpid",
         "unretriable"
         ]
-    },
-    {
-      "filename": "sdk/spring/spring-cloud-azure-starter-servicebus-jms/**",
-      "words": [
-        "failonerror",
-        "qpid"
-      ]
     },
     {
       "filename": "sdk/spring/scripts/**",
@@ -989,7 +960,7 @@
       ]
     },
     {
-      "filename": "sdk/spring/spring-cloud-azure-autoconfigure/**",
+      "filename": "sdk/spring/**",
       "words": [
         "aadb",
         "AADB",
@@ -997,15 +968,19 @@
         "Authoritys",
         "autoconfiguation",
         "Conditonal",
-        "DOCUMENTDB",
         "documentdb",
+        "DOCUMENTDB",
+        "DOWHILE",
+        "failonerror",
         "Jaas",
         "JAAS",
         "Jndi",
+        "JPMS",
         "JWKS",
         "myproject",
         "MYPROJECT",
         "namesapce",
+        "nimbusds",
         "normalalize",
         "OAUTHBEAR",
         "oauthbearer",
@@ -1015,10 +990,24 @@
         "OIDC",
         "qpid",
         "reqoest",
-        "SQLDB",
+        "Spel",
         "sqldb",
+        "SQLDB",
         "Vcap",
         "VCAP"
+      ]
+    },
+    {
+      "filename": "sdk/spring/**.md",
+      "words": [
+        "Dcheckstyle",
+        "Dcodesnippet",
+        "Djacoco",
+        "Dparallel",
+        "Drevapi",
+        "Dskip",
+        "Dspotbugs",
+        "Pdev"
       ]
     }
   ],
