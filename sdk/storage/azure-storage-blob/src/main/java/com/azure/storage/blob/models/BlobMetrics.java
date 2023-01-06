@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** a summary of request statistics grouped by API in hour or minute aggregates for blobs. */
-@Fluent
 @JacksonXmlRootElement(localName = "Metrics")
+@Fluent
 public final class BlobMetrics {
 
     /*
