@@ -6,7 +6,6 @@ package com.azure.containers.containerregistry.implementation;
 import com.azure.containers.containerregistry.ContainerRegistryServiceVersion;
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryCredentialsPolicy;
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryTokenService;
-import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.implementation.models.ManifestAttributesBase;
 import com.azure.containers.containerregistry.implementation.models.TagAttributesBase;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
@@ -245,15 +244,15 @@ public final class UtilsImpl {
      * @return The exception returned by the public methods.
      */
     public static Throwable mapException(Throwable exception) {
-        AcrErrorsException acrException = null;
+        HttpResponseException acrException = null;
 
-        if (exception instanceof AcrErrorsException) {
-            acrException = ((AcrErrorsException) exception);
+        if (exception instanceof HttpResponseException) {
+            acrException = ((HttpResponseException) exception);
         } else if (exception instanceof RuntimeException) {
             RuntimeException runtimeException = (RuntimeException) exception;
             Throwable throwable = runtimeException.getCause();
-            if (throwable instanceof AcrErrorsException) {
-                acrException = (AcrErrorsException) throwable;
+            if (throwable instanceof HttpResponseException) {
+                acrException = (HttpResponseException) throwable;
             }
         }
 
