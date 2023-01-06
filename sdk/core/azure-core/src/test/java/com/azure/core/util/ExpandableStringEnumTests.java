@@ -49,7 +49,7 @@ public class ExpandableStringEnumTests {
             // Java 8 does not work with modules, we always use private lookups there
             // and therefore can access com.azure.core.util.ExpandableStringEnumTests.PrivateStringEnum
             // from com.azure.core.implementation.ExpandableStringEnum
-            assertEquals("java8", PrivateStringEnum.fromString("java8"));
+            assertEquals("java8", PrivateStringEnum.fromString("java8").toString());
         }
     }
 
