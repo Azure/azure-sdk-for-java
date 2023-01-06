@@ -124,6 +124,7 @@ public class ServiceBusReactorSessionTest {
     private AmqpConnection connection;
 
     private ServiceBusReactorSession serviceBusReactorSession;
+    private ServiceBusAmqpLinkProvider linkProvider = new ServiceBusAmqpLinkProvider();
 
     @BeforeAll
     static void beforeAll() {
@@ -199,7 +200,7 @@ public class ServiceBusReactorSessionTest {
 
         when(connection.getShutdownSignals()).thenReturn(Flux.empty());
         serviceBusReactorSession = new ServiceBusReactorSession(connection, session, handler, SESSION_NAME, reactorProvider,
-            handlerProvider, cbsNodeSupplier, tokenManagerProvider, messageSerializer, retryOptions,
+            handlerProvider, linkProvider, cbsNodeSupplier, tokenManagerProvider, messageSerializer, retryOptions,
             new ServiceBusCreateSessionOptions(false));
         when(connection.getShutdownSignals()).thenReturn(Flux.never());
     }
@@ -302,7 +303,7 @@ public class ServiceBusReactorSessionTest {
         when(session.sender(transactionLinkName)).thenReturn(coordinatorSenderEntity);
 
         final ServiceBusReactorSession serviceBusReactorSession = new ServiceBusReactorSession(connection, session, handler,
-            SESSION_NAME, reactorProvider, handlerProvider, cbsNodeSupplier, tokenManagerProvider, messageSerializer,
+            SESSION_NAME, reactorProvider, handlerProvider, linkProvider, cbsNodeSupplier, tokenManagerProvider, messageSerializer,
             retryOptions, new ServiceBusCreateSessionOptions(true));
 
         when(handlerProvider.createSendLinkHandler(CONNECTION_ID, HOSTNAME, transactionLinkName, transactionLinkName))

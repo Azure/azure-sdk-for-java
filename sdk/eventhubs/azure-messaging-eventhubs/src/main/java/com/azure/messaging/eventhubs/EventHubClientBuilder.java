@@ -9,6 +9,7 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.client.traits.AmqpTrait;
+import com.azure.core.amqp.implementation.AmqpLinkProvider;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
@@ -918,26 +919,24 @@ public class EventHubClientBuilder implements
             return eventHubName;
         };
 
-        final Supplier<EventHubReactorAmqpConnection> connectionSupplier = new Supplier<EventHubReactorAmqpConnection>() {
-            @Override
-            public EventHubReactorAmqpConnection get() {
-                final String connectionId = StringUtil.getRandomString("MF");
-                LOGGER.atInfo()
-                    .addKeyValue(CONNECTION_ID_KEY, connectionId)
-                    .log("Emitting a single connection.");
+        final Supplier<EventHubReactorAmqpConnection> connectionSupplier = () -> {
+            final String connectionId = StringUtil.getRandomString("MF");
+            LOGGER.atInfo()
+                .addKeyValue(CONNECTION_ID_KEY, connectionId)
+                .log("Emitting a single connection.");
 
-                final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
-                    connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
-                    connectionOptions.getAuthorizationScope());
-                final ReactorProvider provider = new ReactorProvider();
-                final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider, meter);
+            final TokenManagerProvider tokenManagerProvider = new AzureTokenManagerProvider(
+                connectionOptions.getAuthorizationType(), connectionOptions.getFullyQualifiedNamespace(),
+                connectionOptions.getAuthorizationScope());
+            final ReactorProvider provider = new ReactorProvider();
+            final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider, meter);
+            final AmqpLinkProvider linkProvider = new AmqpLinkProvider();
 
-                final EventHubAmqpConnection connection = new EventHubReactorAmqpConnection(connectionId,
-                    connectionOptions, getEventHubName.get(), provider, handlerProvider, tokenManagerProvider,
-                    messageSerializer);
+            final EventHubReactorAmqpConnection connection = new EventHubReactorAmqpConnection(connectionId,
+                connectionOptions, getEventHubName.get(), provider, handlerProvider, linkProvider, tokenManagerProvider,
+                messageSerializer);
 
-                return connection;
-            }
+            return connection;
         };
 
         final String fqdn = connectionOptions.getFullyQualifiedNamespace();
