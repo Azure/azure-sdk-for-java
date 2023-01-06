@@ -12,6 +12,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Breaking Changes
 - Delete properties: `spring.jms.serviebus.username`, `spring.jms.serviebus.password` and `spring.jms.serviebus.remote-uri` [#32467](https://github.com/Azure/azure-sdk-for-java/pull/32467).
+- Change the default value of `spring.jms.servicebus.idle-timeout` from 30 minutes to 2 minutes.
 
 ## 6.0.0-beta.4 (2022-12-07)
 Upgrade Spring Boot dependencies version to 3.0.0-RC2 and Spring Cloud dependencies version to 2022.0.0-RC2.
