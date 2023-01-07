@@ -19,6 +19,7 @@ public final class GetClientAccessTokenOptions {
     private Duration expiresAfter;
     private String userId;
     private List<String> roles;
+    private List<String> groups;
 
     /**
      * Specifies when the duration after which the requested authentication token will expire.
@@ -66,7 +67,7 @@ public final class GetClientAccessTokenOptions {
 
     /**
      * Returns the complete set of roles to be included when creating the authentication token.
-     * @return The complete set of roles to be included when creating the authentication token
+     * @return The complete set of roles to be included when creating the authentication token.
      */
     public List<String> getRoles() {
         return roles == null ? Collections.emptyList() : roles;
@@ -89,5 +90,39 @@ public final class GetClientAccessTokenOptions {
      */
     public String getUserId() {
         return userId;
+    }
+
+    /**
+     * Returns the complete set of groups to be included when creating the authentication token.
+     * @return The complete set of groups to be included when creating the authentication token
+     */
+    public List<String> getGroups() {
+        return groups == null ? Collections.emptyList() : groups;
+    }
+
+    /**
+     * Specifies the complete set of groups to be included when creating the authentication token, overwriting any other
+     * groups previously set on this instance.
+     *
+     * @param groups The complete set of groups to be included when creating the authentication token.
+     * @return The same instance of this type, modified based on the value provided in this set method.
+     */
+    public GetClientAccessTokenOptions setGroups(List<String> groups) {
+        this.groups = groups;
+        return this;
+    }
+
+    /**
+     * Adds a group to the requested authentication token.
+     *
+     * @param group The group to be added to the requested authentication token.
+     * @return The same instance of this type, modified based on the value provided in this add method.
+     */
+    public GetClientAccessTokenOptions addGroup(String group) {
+        if (groups == null) {
+            groups = new ArrayList<>();
+        }
+        groups.add(group);
+        return this;
     }
 }
