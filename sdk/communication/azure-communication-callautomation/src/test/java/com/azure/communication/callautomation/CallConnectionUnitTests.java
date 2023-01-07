@@ -328,7 +328,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
          assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
          */
         assertThrows(RuntimeException.class, () ->
-            callConnection.muteParticipantsWithResponse(muteParticipantOptions, null)
+            callConnection.muteParticipantWithResponse(muteParticipantOptions, null)
         );
     }
 
@@ -489,7 +489,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
          assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
          */
         assertThrows(RuntimeException.class, () ->
-            callConnection.unmuteParticipantsWithResponse(muteParticipantOptions, null)
+            callConnection.unmuteParticipantWithResponse(muteParticipantOptions, null)
         );
     }
 

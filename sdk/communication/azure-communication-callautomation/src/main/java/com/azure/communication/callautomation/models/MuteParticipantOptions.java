@@ -17,7 +17,7 @@ public final class MuteParticipantOptions {
     /**
      * The participant to mute.
      */
-    private final CommunicationIdentifier participant;
+    private final CommunicationIdentifier targetParticipant;
 
     /**
      * The operational context
@@ -32,10 +32,10 @@ public final class MuteParticipantOptions {
     /**
      * Constructor
      *
-     * @param participant The participant to mute.
+     * @param targetParticipant The targetParticipant to mute.
      */
-    public MuteParticipantOptions(CommunicationIdentifier participant) {
-        this.participant = participant;
+    public MuteParticipantOptions(CommunicationIdentifier targetParticipant) {
+        this.targetParticipant = targetParticipant;
         this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
@@ -44,8 +44,8 @@ public final class MuteParticipantOptions {
      *
      * @return the participants to mute.
      */
-    public CommunicationIdentifier getParticipant() {
-        return participant;
+    public CommunicationIdentifier getTargetParticipant() {
+        return targetParticipant;
     }
 
     /**

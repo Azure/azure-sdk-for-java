@@ -508,7 +508,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
          assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
          */
         assertThrows(RuntimeException.class, () ->
-            callConnectionAsync.unmuteParticipantsWithResponse(muteParticipantOptions).block()
+            callConnectionAsync.unmuteParticipantWithResponse(muteParticipantOptions).block()
         );
     }
 

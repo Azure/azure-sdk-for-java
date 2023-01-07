@@ -17,7 +17,7 @@ public final class UnmuteParticipantOptions {
     /**
      * The participant to unmute.
      */
-    private final CommunicationIdentifier participant;
+    private final CommunicationIdentifier targetParticipant;
 
     /**
      * The operational context
@@ -32,10 +32,10 @@ public final class UnmuteParticipantOptions {
     /**
      * Constructor
      *
-     * @param participant The participant to mute.
+     * @param targetParticipant The participant to mute.
      */
-    public UnmuteParticipantOptions(CommunicationIdentifier participant) {
-        this.participant = participant;
+    public UnmuteParticipantOptions(CommunicationIdentifier targetParticipant) {
+        this.targetParticipant = targetParticipant;
         this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
@@ -44,8 +44,8 @@ public final class UnmuteParticipantOptions {
      *
      * @return the participants to mute.
      */
-    public CommunicationIdentifier getParticipant() {
-        return participant;
+    public CommunicationIdentifier getTargetParticipant() {
+        return targetParticipant;
     }
 
     /**

@@ -243,7 +243,7 @@ public class CallConnection {
      * @return a Response containing the MuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MuteParticipantsResult> muteParticipantsWithResponse(MuteParticipantOptions muteParticipantOptions, Context context) {
+    public Response<MuteParticipantsResult> muteParticipantWithResponse(MuteParticipantOptions muteParticipantOptions, Context context) {
         return callConnectionAsync.muteParticipantWithResponse(muteParticipantOptions).block();
     }
 
@@ -287,8 +287,8 @@ public class CallConnection {
      * @return a Response containing the UnmuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UnmuteParticipantsResult> unmuteParticipantsWithResponse(UnmuteParticipantOptions unmuteParticipantOptions, Context context) {
-        return callConnectionAsync.unmuteParticipantsWithResponse(unmuteParticipantOptions).block();
+    public Response<UnmuteParticipantsResult> unmuteParticipantWithResponse(UnmuteParticipantOptions unmuteParticipantOptions, Context context) {
+        return callConnectionAsync.unmuteParticipantWithResponse(unmuteParticipantOptions).block();
     }
 
     /**

@@ -394,11 +394,11 @@ public class CallConnectionAsync {
 
     /**
      * Mutes a single participant in the call.
-     * @param communicationUserIdentifier - Participant to be muted.
+     * @param targetParticipant - Participant to be muted.
      * @return A MuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MuteParticipantsResult> muteParticipantAsync(CommunicationUserIdentifier communicationUserIdentifier) {
+    public Mono<MuteParticipantsResult> muteParticipantAsync(CommunicationUserIdentifier targetParticipant) {
         throw logger.logExceptionAsError(new RuntimeException("Not implemented yet"));
     }
 
@@ -450,7 +450,7 @@ public class CallConnectionAsync {
      * @return a Response containing the UnmuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UnmuteParticipantsResult>> unmuteParticipantsWithResponse(UnmuteParticipantOptions unmuteParticipantOptions) {
+    public Mono<Response<UnmuteParticipantsResult>> unmuteParticipantWithResponse(UnmuteParticipantOptions unmuteParticipantOptions) {
         throw logger.logExceptionAsError(new RuntimeException("Not implemented yet"));
     }
 
