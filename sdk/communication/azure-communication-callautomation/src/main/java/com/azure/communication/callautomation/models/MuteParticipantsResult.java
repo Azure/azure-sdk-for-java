@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
 
 import java.util.Objects;
 
-/** The RemoveParticipantsResult model. */
+/** The MuteParticipantsResult model. */
 @Immutable
 public final class MuteParticipantsResult {
     /*

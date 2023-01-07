@@ -33,6 +33,9 @@ import com.azure.communication.callautomation.models.RemoveParticipantsResult;
 import com.azure.communication.callautomation.models.RepeatabilityHeaders;
 import com.azure.communication.callautomation.models.TransferCallResult;
 import com.azure.communication.callautomation.models.TransferToParticipantCallOptions;
+import com.azure.communication.callautomation.models.UnmuteAllParticipantsOptions;
+import com.azure.communication.callautomation.models.UnmuteParticipantOptions;
+import com.azure.communication.callautomation.models.UnmuteParticipantsResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -389,6 +392,88 @@ public class CallConnectionAsync {
         }
     }
 
+    /**
+     * Mutes a single participant in the call.
+     * @param communicationUserIdentifier - Participant to be muted.
+     * @return A MuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MuteParticipantsResult> muteParticipantAsync(CommunicationUserIdentifier communicationUserIdentifier) {
+        throw logger.logExceptionAsError(new RuntimeException("Not implemented yet"));
+    }
+
+    /**
+     * Mute a single participant in the call.
+     * @param muteParticipantOptions - Options for the request.
+     * @return a Response containing the MuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<MuteParticipantsResult>> muteParticipantsWithResponse(MuteParticipantOptions muteParticipantOptions) {
+        throw logger.logExceptionAsError(new RuntimeException("Not implemented yet"));
+    }
+
+    /**
+     * Mute all participants in the call, except for the initiator.
+     * @param requestInitiator Optional - if passed, this participant won't be muted. If not passed,
+     *                         the server won't be muted.
+     * @return a MuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MuteParticipantsResult> muteAllParticipantsAsync(CommunicationUserIdentifier requestInitiator) {
+        throw logger.logExceptionAsError(new RuntimeException("Not implemented yet"));
+    }
+
+
+    /**
+     * Mute all participants in the call, except for the initiator.
+     * @param options - Options for the operation.
+     * @return a Response containing a MuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<MuteParticipantsResult>> muteAllParticipantsWithResponse(MuteAllParticipantsOptions options) {
+        throw logger.logExceptionAsError(new RuntimeException("Not implemented yet"));
+    }
+
+    /**
+     * Unmutes a single participant in the call.
+     * @param communicationUserIdentifier - Participant to be muted.
+     * @return An UnmuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<UnmuteParticipantsResult> unmuteParticipantAsync(CommunicationUserIdentifier communicationUserIdentifier) {
+        throw logger.logExceptionAsError(new RuntimeException("Not implemented yet"));
+    }
+
+    /**
+     * Mute a single participant in the call.
+     * @param unmuteParticipantOptions - Options for the request.
+     * @return a Response containing the UnmuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<UnmuteParticipantsResult>> unmuteParticipantsWithResponse(UnmuteParticipantOptions unmuteParticipantOptions) {
+        throw logger.logExceptionAsError(new RuntimeException("Not implemented yet"));
+    }
+
+    /**
+     * Unmute all participants in the call.
+     * @return an UnmuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<UnmuteParticipantsResult> unmuteAllParticipantsAsync() {
+        throw logger.logExceptionAsError(new RuntimeException("Not implemented yet"));
+    }
+
+
+    /**
+     * Unmute all participants in the call, except for the initiator.
+     * @param options - Options for the operation.
+     * @return a Response containing an UnmuteParticipantsResult object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<UnmuteParticipantsResult>> unmuteAllParticipantsWithResponse(UnmuteAllParticipantsOptions options) {
+        throw logger.logExceptionAsError(new RuntimeException("Not implemented yet"));
+    }
+
     //region Content management Actions
     /***
      * Returns an object of CallContentAsync
@@ -411,43 +496,5 @@ public class CallConnectionAsync {
         return CallAutomationAsyncClient.handleApiIdempotency(repeatabilityHeaders);
     }
 
-    /**
-     * Mutes a single participant in the call.
-     * @param communicationUserIdentifier - Participant to be muted.
-     * @return A MuteParticipantsResult object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MuteParticipantsResult> muteParticipantAsync(CommunicationUserIdentifier communicationUserIdentifier) {
-        throw logger.logExceptionAsError(new RuntimeException("Not implemented yet"));
-    }
-
-    /**
-     * Mute a single participant in the call.
-     * @param muteParticipantOptions - Options for the request.
-     * @return a Response containing the MuteParticipantsResult object.
-     */
-    public Mono<Response<MuteParticipantsResult>> muteParticipantsWithResponse(MuteParticipantOptions muteParticipantOptions) {
-        throw logger.logExceptionAsError(new RuntimeException("Not implemented yet"));
-    }
-
-    /**
-     * Mute all participants in the call, except for the initiator.
-     * @param requestInitiator Optional - if passed, this participant won't be muted. If not passed,
-     *                         the server won't be muted.
-     * @return a MuteParticipantsResult object.
-     */
-    public Mono<MuteParticipantsResult> muteAllParticipantsAsync(CommunicationUserIdentifier requestInitiator) {
-        throw logger.logExceptionAsError(new RuntimeException("Not implemented yet"));
-    }
-
-
-    /**
-     * Mute all participants in the call, except for the initiator.
-     * @param options - Options for the operation.
-     * @return a Response containing a MuteParticipantsResult object.
-     */
-    public Mono<Response<MuteParticipantsResult>> muteAllParticipantsWithResponse(MuteAllParticipantsOptions options) {
-        throw logger.logExceptionAsError(new RuntimeException("Not implemented yet"));
-    }
     //endregion
 }
