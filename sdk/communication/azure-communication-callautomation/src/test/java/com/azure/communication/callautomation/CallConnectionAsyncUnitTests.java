@@ -347,7 +347,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
          */
         assertThrows(RuntimeException.class, () ->
-            callConnectionAsync.muteParticipantsWithResponse(muteParticipantOptions).block()
+            callConnectionAsync.muteParticipantWithResponse(muteParticipantOptions).block()
         );
     }
 
@@ -513,7 +513,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
-    public void unmuteAllParticipantsWithInitiator() {
+    public void unmuteAllParticipants() {
         CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(serializeObject(new UnmuteParticipantsResponseInternal()
@@ -523,8 +523,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
 
         /**
          * TODO: When method's implemented.
-         UnmuteParticipantsResult unmuteParticipantsResult = callConnectionAsync.unmuteAllParticipantsAsync(
-         new CommunicationUserIdentifier(CALL_TARGET_ID)).block();
+         UnmuteParticipantsResult unmuteParticipantsResult = callConnectionAsync.unmuteAllParticipantsAsync().block();
 
          assertNotNull(unmuteParticipantsResult);
          assertEquals(CALL_OPERATION_CONTEXT, unmuteParticipantsResult.getOperationContext());

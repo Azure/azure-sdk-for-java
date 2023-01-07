@@ -408,7 +408,7 @@ public class CallConnectionAsync {
      * @return a Response containing the MuteParticipantsResult object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MuteParticipantsResult>> muteParticipantsWithResponse(MuteParticipantOptions muteParticipantOptions) {
+    public Mono<Response<MuteParticipantsResult>> muteParticipantWithResponse(MuteParticipantOptions muteParticipantOptions) {
         throw logger.logExceptionAsError(new RuntimeException("Not implemented yet"));
     }
 
