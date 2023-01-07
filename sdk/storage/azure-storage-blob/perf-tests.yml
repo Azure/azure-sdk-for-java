@@ -3,6 +3,7 @@ Service: storage-blob
 Project: sdk/storage/azure-storage-perf
 
 PrimaryPackage: 'com.azure:azure-storage-blob'
+
 PackageVersions:
 - 'com.azure:azure-storage-common': 12.19.1
   'com.azure:azure-storage-blob': 12.20.1
