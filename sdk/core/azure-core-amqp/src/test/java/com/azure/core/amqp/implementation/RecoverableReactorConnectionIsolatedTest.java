@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Execution(ExecutionMode.SAME_THREAD)
 @Isolated
@@ -274,12 +276,11 @@ public class RecoverableReactorConnectionIsolatedTest {
             connectionSupplier.assertInvocationCount(connectionsCountSet1);
             List<Integer> attempts = retryPolicy.getAllRetryAttempts();
             Assertions.assertEquals(connectionsCountSet1 - 1, attempts.size());
-            // The retry-cycle associated with the first connection request beings with retry-attempt 0
-            Assertions.assertEquals(0, attempts.get(0));
-            // the next retry-attempt in the retry-cycle will be 1 and so on...
-            Assertions.assertEquals(1, attempts.get(1));
+            // expectedAttempts1 is the retry-attempt values in the retry-cycle associated with the first connection.
             // the last retry-attempt in the retry-cycle will be 4 since min(attempt, retryOptions.getMaxRetry()) == 4.
-            Assertions.assertEquals(4, attempts.get(connectionsCountSet1 - 2));
+            final List<Integer> expectedAttempts1 = IntStream.of(new int[] { 0, 1, 2, 3, 4, 4 })
+                .boxed().collect(Collectors.toList());
+            Assertions.assertIterableEquals(expectedAttempts1, attempts);
 
             // Close the cached connection by completing connection endpoint,
             // so the next (second) connection request refreshes cache.
@@ -302,10 +303,9 @@ public class RecoverableReactorConnectionIsolatedTest {
             attempts = retryPolicy.getAllRetryAttempts();
             Assertions.assertEquals(connectionsCountSet1 + connectionsCountSet2 - 2, attempts.size());
             // Assert that the retry-cycle associated with the second connection request had retry-attempt "reset" to 0.
-            Assertions.assertEquals(0, attempts.get(connectionsCountSet1 - 1));
-            // the next retry-attempt in the retry-cycle will be 1 and so on...
-            Assertions.assertEquals(1, attempts.get(connectionsCountSet1 - 1 + 1));
-
+            final List<Integer> expectedAttempts2 = IntStream.of(new int[] { 0, 1, 2, 3, 4 })
+                .boxed().collect(Collectors.toList());
+            Assertions.assertIterableEquals(expectedAttempts2, attempts.subList(connectionsCountSet1 - 1, attempts.size()));
         } finally {
             connectionSupplier.dispose();
             recoverableConnection.dispose();
