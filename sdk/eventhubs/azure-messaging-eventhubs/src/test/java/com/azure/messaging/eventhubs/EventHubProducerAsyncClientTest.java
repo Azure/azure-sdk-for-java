@@ -40,7 +40,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.mockito.ArgumentCaptor;
@@ -59,17 +58,13 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
-import java.util.ArrayDeque;
 import java.util.Collections;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Supplier;
 
 import static com.azure.core.amqp.implementation.RetryUtil.getRetryPolicy;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -1204,279 +1199,6 @@ class EventHubProducerAsyncClientTest {
         verifyNoInteractions(onClientClosed);
     }
 
-    /**
-     * Verifies that another link is received and we can continue publishing events on a transient failure.
-     */
-    @Test
-    @Disabled("todo:anuchan - test based on time, isolate using VTS")
-    void reopensOnFailure() {
-        // Arrange
-
-        // a good connection that gets emitted when attempting the first producer.send.
-        final EventHubReactorAmqpConnection connection1 = mock(EventHubReactorAmqpConnection.class);
-        when(connection1.connectAndAwaitToActive()).thenReturn(Mono.just(connection1));
-        when(connection1.closeAsync(any(AmqpShutdownSignal.class))).thenReturn(Mono.empty());
-
-        // A connection with transient error, connection gets emitted when attempting the second producer.send.
-        final EventHubReactorAmqpConnection connection2 = mock(EventHubReactorAmqpConnection.class);
-        when(connection2.connectAndAwaitToActive()).thenReturn(Mono.error(new AmqpException(true,
-            AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-message", new AmqpErrorContext("test-namespace"))));
-        when(connection2.closeAsync(any(AmqpShutdownSignal.class))).thenReturn(Mono.empty());
-
-        // a good connection that gets emitted when attempting the second producer.send.
-        final EventHubReactorAmqpConnection connection3 = mock(EventHubReactorAmqpConnection.class);
-        when(connection3.connectAndAwaitToActive()).thenReturn(Mono.just(connection3));
-        when(connection3.closeAsync(any(AmqpShutdownSignal.class))).thenReturn(Mono.empty());
-
-        final Deque<EventHubReactorAmqpConnection> connections = new ArrayDeque<>(3);
-        connections.add(connection1);
-        connections.add(connection2);
-        connections.add(connection3);
-
-        final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
-            .setDelay(Duration.ofMillis(100))
-            .setMode(AmqpRetryMode.FIXED)
-            .setTryTimeout(Duration.ofSeconds(1));
-
-        connectionProcessor = new RecoverableReactorConnection<>(new Supplier<EventHubReactorAmqpConnection>() {
-            @Override
-            public EventHubReactorAmqpConnection get() {
-                return connections.remove();
-            }
-        }, connectionOptions.getFullyQualifiedNamespace(), EVENT_HUB_NAME, getRetryPolicy(connectionOptions.getRetry()), new HashMap<>());
-        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
-            messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
-
-        when(connection1.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
-            .thenReturn(Mono.just(sendLink));
-        when(sendLink.send(anyList())).thenReturn(Mono.empty());
-
-        when(connection2.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
-            .thenReturn(Mono.just(sendLink2));
-        when(sendLink2.send(any(Message.class))).thenReturn(Mono.empty());
-
-        when(connection3.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
-            .thenReturn(Mono.just(sendLink3));
-        when(sendLink3.send(any(Message.class))).thenReturn(Mono.empty());
-
-        // Act
-        //
-        // 1. First 'producer.send', uses 'sendLink' in 'connection1', which will succeeded as 'connection1' as in a
-        //    good state.
-        final int count = 4;
-        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
-        final Flux<EventData> testData = Flux.range(0, count).flatMap(number -> {
-            final EventData data = new EventData(contents);
-            return Flux.just(data);
-        });
-        StepVerifier.create(producer.send(testData))
-            .verifyComplete();
-
-        // 2. Close (dispose) the 'connection1',
-        when(connection1.isDisposed()).thenReturn(true);
-
-        // 4. Second 'producer.send', chain sees 'connection1' as disposed and obtain 'connection2',
-        //    since 'connection2' has transient error, the next connection 'connection3', which is
-        //    in good (active) state is obtained and used.
-        final EventData testData2 = new EventData("test");
-        StepVerifier.create(producer.send(testData2))
-            .verifyComplete();
-
-        // Assertions
-        //
-        // Assert that 'sendLink' in 'connection1' was used.
-        verify(sendLink).send(messagesCaptor.capture());
-        final List<Message> messagesSent = messagesCaptor.getValue();
-        Assertions.assertEquals(count, messagesSent.size());
-        // Assert that 'sendLink2' in 'connection2' was not used, as 'connection2' had transient error.
-        verifyNoInteractions(sendLink2);
-        // Assert that 'sendLink3' in 'connection3' was used, as 'connection3' was in a good state.
-        verify(sendLink3, times(1)).send(any(Message.class));
-
-        verifyNoInteractions(onClientClosed);
-    }
-
-    /**
-     * Verifies that on a non-transient failure, no more event hub connections are recreated and we can not send events.
-     * An error should be propagated back to us.
-     */
-    @Test
-    @Disabled("todo:anuchan - test based on time, isolate using VTS")
-    void closesOnNonTransientFailure() {
-        // Arrange
-
-        // a good connection with that gets emitted when attempting the first producer.send.
-        final EventHubReactorAmqpConnection connection1 = mock(EventHubReactorAmqpConnection.class);
-        when(connection1.connectAndAwaitToActive()).thenReturn(Mono.just(connection1));
-        when(connection1.closeAsync(any(AmqpShutdownSignal.class))).thenReturn(Mono.empty());
-
-        // second connection with transient error that gets emitted when attempting the second producer.send.
-        final AmqpException transientError = new AmqpException(true,
-            AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-message", new AmqpErrorContext("test-namespace"));
-        final EventHubReactorAmqpConnection connection2 = mock(EventHubReactorAmqpConnection.class);
-        when(connection2.connectAndAwaitToActive()).thenReturn(Mono.error(transientError));
-        when(connection2.closeAsync(any(AmqpShutdownSignal.class))).thenReturn(Mono.empty());
-
-        // last connection with non-transient error that gets emitted when attempting the second producer.send.
-        final AmqpException nonTransientError = new AmqpException(false, AmqpErrorCondition.UNAUTHORIZED_ACCESS,
-            "Test unauthorized access", new AmqpErrorContext("test-namespace"));
-        final EventHubReactorAmqpConnection connection3 = mock(EventHubReactorAmqpConnection.class);
-        when(connection3.connectAndAwaitToActive()).thenReturn(Mono.error(nonTransientError));
-        when(connection3.closeAsync(any(AmqpShutdownSignal.class))).thenReturn(Mono.empty());
-
-        final Deque<EventHubReactorAmqpConnection> connections = new ArrayDeque<>(3);
-        connections.add(connection1);
-        connections.add(connection2);
-        connections.add(connection3);
-
-        final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
-            .setDelay(Duration.ofMillis(100))
-            .setMode(AmqpRetryMode.FIXED)
-            .setTryTimeout(Duration.ofSeconds(1));
-
-        connectionProcessor = new RecoverableReactorConnection<>(new Supplier<EventHubReactorAmqpConnection>() {
-            @Override
-            public EventHubReactorAmqpConnection get() {
-                return connections.remove();
-            }
-        }, connectionOptions.getFullyQualifiedNamespace(), EVENT_HUB_NAME, getRetryPolicy(connectionOptions.getRetry()), new HashMap<>());
-        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
-            messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
-
-        when(connection1.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
-            .thenReturn(Mono.just(sendLink));
-        when(sendLink.send(anyList())).thenReturn(Mono.empty());
-
-        when(connection2.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
-            .thenReturn(Mono.just(sendLink2));
-        when(sendLink2.send(any(Message.class))).thenReturn(Mono.empty());
-
-        when(connection3.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
-            .thenReturn(Mono.just(sendLink3));
-        when(sendLink3.send(any(Message.class))).thenReturn(Mono.empty());
-
-        // Act
-        //
-        // 1. First 'producer.send', uses 'sendLink' in 'connection1', which will succeeded as 'connection1' as in a
-        //    good state.
-        final int count = 4;
-        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
-        final Flux<EventData> testData = Flux.range(0, count).flatMap(number -> {
-            final EventData data = new EventData(contents);
-            return Flux.just(data);
-        });
-        StepVerifier.create(producer.send(testData))
-            .verifyComplete();
-
-        // 2. Close (dispose) the 'connection1',
-        when(connection1.isDisposed()).thenReturn(true);
-
-        // 4. Second 'producer.send', the chain sees 'connection1' as disposed and obtain 'connection2',
-        //    since 'connection2' has transient error, the next connection 'connection3' is obtained,
-        //    since 'connection3' has non-transient error, it gets propagated.
-        final EventData testData2 = new EventData("test");
-        StepVerifier.create(producer.send(testData2))
-            .expectErrorSatisfies(error -> {
-                Assertions.assertTrue(error instanceof AmqpException);
-
-                final AmqpException actual = (AmqpException) error;
-                Assertions.assertEquals(nonTransientError.isTransient(), actual.isTransient());
-                Assertions.assertEquals(nonTransientError.getContext(), actual.getContext());
-                Assertions.assertEquals(nonTransientError.getErrorCondition(), actual.getErrorCondition());
-                Assertions.assertEquals(nonTransientError.getMessage(), actual.getMessage());
-            })
-            .verify(Duration.ofSeconds(10));
-
-        // Assertions
-        //
-        // Assert that 'sendLink' in 'connection1' was used.
-        verify(sendLink).send(messagesCaptor.capture());
-        final List<Message> messagesSent = messagesCaptor.getValue();
-        Assertions.assertEquals(count, messagesSent.size());
-        // Assert that 'sendLink2' in 'connection2' was not used, as 'connection2' had error.
-        verifyNoInteractions(sendLink2);
-        // Assert that 'sendLink3' in 'connection3' was not used, as 'connection3' had error.
-        verifyNoInteractions(sendLink3);
-        verifyNoInteractions(onClientClosed);
-    }
-
-    /**
-     * Verifies that we can resend a message when a transient error occurs.
-     */
-    @Test
-    @Disabled("todo:anuchan - test based on time, isolate using VTS")
-    void resendMessageOnTransientLinkFailure() {
-        // Arrange
-        when(connection.getEndpointStates()).thenReturn(endpointProcessor);
-        when(connection.connectAndAwaitToActive()).thenReturn(Mono.just(connection));
-        when(connection.closeAsync(any(AmqpShutdownSignal.class))).thenReturn(Mono.empty());
-        endpointSink.next(AmqpEndpointState.ACTIVE);
-
-
-        EventHubReactorAmqpConnection[] connections = new EventHubReactorAmqpConnection[]{connection, connection2};
-        connectionProcessor = new RecoverableReactorConnection<>(new Supplier<EventHubReactorAmqpConnection>() {
-            final AtomicInteger count = new AtomicInteger();
-            @Override
-            public EventHubReactorAmqpConnection get() {
-                final int current = count.getAndIncrement();
-                final int index = current % connections.length;
-                return connections[index];
-            }
-        }, connectionOptions.getFullyQualifiedNamespace(), EVENT_HUB_NAME, getRetryPolicy(connectionOptions.getRetry()), new HashMap<>());
-        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
-            messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
-
-        final String failureKey = "fail";
-        final EventData testData2 = new EventData("test");
-        testData2.getProperties().put(failureKey, "true");
-
-        // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
-            .thenReturn(Mono.just(sendLink));
-        when(sendLink.send(anyList())).thenReturn(Mono.empty());
-
-        // Send a transient error, and close the original link, if we get a message that contains the "failureKey".
-        // This simulates when a link is closed.
-        when(sendLink.send(argThat((Message message) -> {
-            return message.getApplicationProperties().getValue().containsKey(failureKey);
-        }))).thenAnswer(mock -> {
-            final Throwable error = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-message",
-                new AmqpErrorContext("test-namespace"));
-
-            endpointSink.error(error);
-            return Mono.error(error);
-        });
-
-        final DirectProcessor<AmqpEndpointState> connectionState2 = DirectProcessor.create();
-        when(connection2.getEndpointStates()).thenReturn(connectionState2);
-        when(connection2.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), eq(retryOptions), eq(CLIENT_IDENTIFIER)))
-            .thenReturn(Mono.just(sendLink2));
-        when(sendLink2.send(any(Message.class))).thenReturn(Mono.empty());
-
-        // Act
-        final int count = 4;
-        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
-        final Flux<EventData> testData = Flux.range(0, count).flatMap(number -> {
-            final EventData data = new EventData(contents);
-            return Flux.just(data);
-        });
-        StepVerifier.create(producer.send(testData))
-            .verifyComplete();
-
-        StepVerifier.create(producer.send(testData2))
-            .verifyComplete();
-
-        // Assert
-        verify(sendLink).send(messagesCaptor.capture());
-        final List<Message> messagesSent = messagesCaptor.getValue();
-        Assertions.assertEquals(count, messagesSent.size());
-
-        verify(sendLink2, times(1)).send(any(Message.class));
-        verifyNoInteractions(sendLink3);
-
-        verifyNoInteractions(onClientClosed);
-    }
-
     private void assertAttributes(String entityName, String entityPath, String status, Map<String, Object> attributes) {
         assertEquals(entityPath == null ? 3 : 4, attributes.size());
         assertEquals(HOSTNAME, attributes.get("hostName"));
@@ -1485,7 +1207,7 @@ class EventHubProducerAsyncClientTest {
         assertEquals(status, attributes.get("status"));
     }
 
-    private static final String TEST_CONTENTS = "SSLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec "
+    static final String TEST_CONTENTS = "SSLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec "
         + "vehicula posuere lobortis. Aliquam finibus volutpat dolor, faucibus pellentesque ipsum bibendum vitae. "
         + "Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut sit amet "
         + "urna hendrerit, dapibus justo a, sodales justo. Mauris finibus augue id pulvinar congue. Nam maximus "
