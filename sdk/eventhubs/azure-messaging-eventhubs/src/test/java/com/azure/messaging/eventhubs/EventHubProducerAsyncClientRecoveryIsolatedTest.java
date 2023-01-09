@@ -822,17 +822,19 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
 
             final ConnectionOptions connectionOptions = mock(ConnectionOptions.class);
             final Connection connection = mock(Connection.class);
+            final Sinks.Many<EndpointState> connectionStateSink = Sinks.many().replay()
+                .latestOrDefault(EndpointState.UNINITIALIZED);
+            final ConnectionHandler connectionHandler = mock(ConnectionHandler.class);
+
             final Reactor reactor = mock(Reactor.class);
             final ReactorDispatcher reactorDispatcher = mock(ReactorDispatcher.class);
             final ReactorExecutor reactorExecutor = mock(ReactorExecutor.class);
+
             final ReactorProvider reactorProvider = mock(ReactorProvider.class);
-            final ConnectionHandler connectionHandler = mock(ConnectionHandler.class);
-            final Sinks.Many<EndpointState> connectionStateSink = Sinks.many().replay()
-                .latestOrDefault(EndpointState.UNINITIALIZED);
             final ReactorHandlerProvider handlerProvider = mock(ReactorHandlerProvider.class);
             final AmqpLinkProvider linkProvider = mock(AmqpLinkProvider.class);
-            final TokenManagerProvider tokenManagerProvider = mock(TokenManagerProvider.class);
             final TokenManager tokenManager = mock(TokenManager.class);
+            final TokenManagerProvider tokenManagerProvider = mock(TokenManagerProvider.class);
             final MessageSerializer messageSerializer = mock(MessageSerializer.class);
 
             return new MockEndpoint(connectionId, eventHubName, retryOptions, mockSendSessions, connectionOptions, connection,
@@ -846,10 +848,13 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
             }
 
             mockSendSessions.arrange(handlerProvider, linkProvider, connection, connectionStateSink);
-            connectionStateSink.emitNext(EndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
 
             when(connectionOptions.getRetry()).thenReturn(retryOptions);
             doNothing().when(connection).close();
+            connectionStateSink.emitNext(EndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+            when(connectionHandler.getEndpointStates()).thenReturn(connectionStateSink.asFlux().distinctUntilChanged());
+            doNothing().when(connectionHandler).close();
+
             when(reactor.connectionToHost(any(), anyInt(), any())).thenReturn(connection);
             try {
                 doAnswer(invocation -> {
@@ -868,10 +873,9 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
             } catch (IOException ioe) {
                 throw new UncheckedIOException(ioe);
             }
+
             when(reactorProvider.getReactorDispatcher()).thenReturn(reactorDispatcher);
             when(reactorProvider.createExecutorForReactor(any(), anyString(), any(), any(), any())).thenReturn(reactorExecutor);
-            when(connectionHandler.getEndpointStates()).thenReturn(connectionStateSink.asFlux().distinctUntilChanged());
-            doNothing().when(connectionHandler).close();
             when(handlerProvider.createConnectionHandler(anyString(), any())).thenReturn(connectionHandler);
             when(tokenManager.authorize()).thenReturn(Mono.just(Duration.ofHours(1).toMillis()));
             when(tokenManagerProvider.getTokenManager(any(), anyString())).thenReturn(tokenManager);
@@ -893,17 +897,17 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
         }
 
         void emitCurrentSessionState(EndpointState state) {
-            final MockSendSession session = mockSendSessions.getCurrentSession();
+            final MockSendSession session = mockSendSessions.getCurrentSendSession();
             session.emitSessionState(state);
         }
 
         void emitCurrentSessionError(Throwable throwable) {
-            final MockSendSession session = mockSendSessions.getCurrentSession();
+            final MockSendSession session = mockSendSessions.getCurrentSendSession();
             session.emitSessionError(throwable);
         }
 
         void emitCurrentSessionCompletion() {
-            final MockSendSession session = mockSendSessions.getCurrentSession();
+            final MockSendSession session = mockSendSessions.getCurrentSendSession();
             session.emitSessionCompletion();
         }
 
@@ -926,15 +930,15 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
         public void close() {
             Mockito.framework().clearInlineMock(connectionOptions);
             Mockito.framework().clearInlineMock(connection);
+            Mockito.framework().clearInlineMock(connectionHandler);
             Mockito.framework().clearInlineMock(reactor);
             Mockito.framework().clearInlineMock(reactorDispatcher);
             Mockito.framework().clearInlineMock(reactorExecutor);
             Mockito.framework().clearInlineMock(reactorProvider);
-            Mockito.framework().clearInlineMock(connectionHandler);
             Mockito.framework().clearInlineMock(handlerProvider);
             Mockito.framework().clearInlineMock(linkProvider);
-            Mockito.framework().clearInlineMock(tokenManagerProvider);
             Mockito.framework().clearInlineMock(tokenManager);
+            Mockito.framework().clearInlineMock(tokenManagerProvider);
             Mockito.framework().clearInlineMock(messageSerializer);
 
             mockSendSessions.close();
@@ -966,6 +970,7 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
                 mockSendSessions.add(MockSendSession.create(connectionId, linksPerSession[i]));
             }
             final MockSendSession terminalMockSendSession = MockSendSession.create(connectionId, 0);
+
             return new MockSendSessions(Collections.unmodifiableList(mockSendSessions), terminalMockSendSession);
         }
 
@@ -978,10 +983,10 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
             terminalMockSendSession.arrange();
             terminalMockSendSession.emitSessionCompletion();
 
-            // Arrange the stub to provide SessionHandlers.
+            // Arrange the stub to provide SessionHandlers hosting AmqpSendLinks.
             when(handlerProvider.createSessionHandler(anyString(), any(), anyString(), any()))
                 .thenAnswer(invocation -> {
-                    final MockSendSession session = moveToNextSession(connectionStateSink);
+                    final MockSendSession session = moveToNextSendSession(connectionStateSink);
                     return session.getSessionHandler();
                 });
 
@@ -1008,7 +1013,6 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
                 qpidSessions.add(mockSendSession.getQpidSession());
             }
             qpidSessions.add(terminalMockSendSession.getQpidSession());
-
             when(connection.session())
                 .thenReturn(qpidSessions.get(0), qpidSessions.subList(1, sessionsCnt + 1).toArray(new Session[0]));
         }
@@ -1019,7 +1023,7 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
             return session.getAmqpSendLink(linkIdx);
         }
 
-        MockSendSession getCurrentSession() {
+        MockSendSession getCurrentSendSession() {
             final MockSendSession session;
             synchronized (lock) {
                 session = Objects.requireNonNull(currentMockSendSession, "Current Session is null");
@@ -1030,13 +1034,13 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
         MockSendLink getCurrentSendLink() {
             final MockSendLink sendLink;
             synchronized (lock) {
-                final MockSendSession session = getCurrentSession();
+                final MockSendSession session = getCurrentSendSession();
                 sendLink = session.getCurrentSendLink();
             }
             return sendLink;
         }
 
-        private MockSendSession moveToNextSession(Sinks.Many<EndpointState> connectionStateSink) {
+        private MockSendSession moveToNextSendSession(Sinks.Many<EndpointState> connectionStateSink) {
             final MockSendSession nextSession;
             synchronized (lock) {
                 if (sessionIdx >= sessionsCnt) {
@@ -1118,7 +1122,6 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
             this.sessionAttachments = sessionAttachments;
             this.sessionHandler = sessionHandler;
             this.sessionStateSink = sessionStateSink;
-
             this.mockSendLinks = mockSendLinks;
             this.terminalMockSendLink = terminalMockSendLink;
             this.sendLinkCnt = this.mockSendLinks.size();
@@ -1134,9 +1137,9 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
 
             final Record sessionAttachments = mock(Record.class);
             final Session session = mock(Session.class);
+            final SessionHandler sessionHandler = mock(SessionHandler.class);
             final Sinks.Many<EndpointState> sessionStateSink = Sinks.many().replay()
                 .latestOrDefault(EndpointState.UNINITIALIZED);
-            final SessionHandler sessionHandler = mock(SessionHandler.class);
             return new MockSendSession(connectionId, session, sessionAttachments, sessionHandler, sessionStateSink,
                 Collections.unmodifiableList(mockSendLinks), terminalMockSendLink);
         }
@@ -1161,13 +1164,11 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
             when(terminalMockSendLink.getAmqpSendLink().send(any(), anyInt(), anyInt(), any(DeliveryState.class))).then(terminalSendAnswer);
 
             doNothing().when(sessionAttachments).set(any(), any(), anyString());
-
             when(session.attachments()).thenReturn(sessionAttachments);
             doNothing().when(session).open();
             doNothing().when(session).setCondition(any());
-
-            when(sessionHandler.getEndpointStates()).thenReturn(sessionStateSink.asFlux().distinctUntilChanged());
             when(sessionHandler.getConnectionId()).thenReturn(connectionId);
+            when(sessionHandler.getEndpointStates()).thenReturn(sessionStateSink.asFlux().distinctUntilChanged());
             doNothing().when(sessionHandler).close();
 
             // Arrange the stub to provide the QPID senders.
@@ -1176,7 +1177,6 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
                 qpidSenders.add(mockSendLink.getQpidSender());
             }
             qpidSenders.add(terminalMockSendLink.getQpidSender());
-
             when(session.sender(any()))
                 .thenReturn(qpidSenders.get(0), qpidSenders.subList(1, sendLinkCnt + 1).toArray(new Sender[0]));
         }
@@ -1272,27 +1272,24 @@ public class EventHubProducerAsyncClientRecoveryIsolatedTest {
         static MockSendLink create() {
             final Record senderAttachments = mock(Record.class);
             final Sender sender = mock(Sender.class);
-            final Sinks.Many<EndpointState> sendLinkStateSink = Sinks.many().replay()
-                .latestOrDefault(EndpointState.UNINITIALIZED);
             final AmqpSendLink amqpSendLink = mock(AmqpSendLink.class);
             final SendLinkHandler sendLinkHandler = mock(SendLinkHandler.class);
+            final Sinks.Many<EndpointState> sendLinkStateSink = Sinks.many().replay()
+                .latestOrDefault(EndpointState.UNINITIALIZED);
             return new MockSendLink(sender, senderAttachments, amqpSendLink, sendLinkHandler, sendLinkStateSink);
         }
 
         void arrange() {
             doNothing().when(senderAttachments).set(any(), any(), anyString());
-
             when(sender.attachments()).thenReturn(senderAttachments);
             doNothing().when(sender).setTarget(any());
             doNothing().when(sender).setSenderSettleMode(any());
             doNothing().when(sender).setProperties(any());
             doNothing().when(sender).setSource(any());
             doNothing().when(sender).open();
-
             when(amqpSendLink.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
             when(amqpSendLink.getEndpointStates())
                 .thenReturn(sendLinkStateSink.asFlux().distinctUntilChanged().map(state -> toAmqpEndpointState(state)));
-
             when(sendLinkHandler.getEndpointStates()).thenReturn(sendLinkStateSink.asFlux().distinctUntilChanged());
             doNothing().when(sendLinkHandler).close();
         }
