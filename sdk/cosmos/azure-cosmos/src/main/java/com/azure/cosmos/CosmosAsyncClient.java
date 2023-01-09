@@ -597,7 +597,7 @@ public final class CosmosAsyncClient implements Closeable {
 
     // TODO: Find a way to set isInitialized to true for containers whose
     // TODO: connections have been opened
-    public Flux<Void> openConnectionsAndInitCaches() {
+    Flux<Void> openConnectionsAndInitCaches() {
         if (this.eagerConnectionConfig != null) {
             return Flux.just(this.eagerConnectionConfig)
                     .flatMap(eagerConnectionConfig -> this.asyncDocumentClient.openConnectionsAndInitCaches(eagerConnectionConfig))

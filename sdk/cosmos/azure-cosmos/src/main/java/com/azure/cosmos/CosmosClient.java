@@ -135,7 +135,7 @@ public final class CosmosClient implements Closeable {
     }
 
     // TODO: Improve exception handling here
-    public void openConnectionsAndInitCaches() {
+    void openConnectionsAndInitCaches() {
         asyncClientWrapper.openConnectionsAndInitCaches().blockLast();
     }
 
