@@ -126,7 +126,10 @@ public class AzurePasswordlessProperties implements AzureProperties {
             (p, s) -> p.setProperty(AuthProperty.USERNAME.getPropertyKey(), s)),
 
         tenantId(p -> p.getProfile().getTenantId(),
-            (p, s) -> p.setProperty(AuthProperty.TENANT_ID.getPropertyKey(), s));
+            (p, s) -> p.setProperty(AuthProperty.TENANT_ID.getPropertyKey(), s)),
+
+        authorityHost(p -> p.getProfile().getEnvironment().getActiveDirectoryEndpoint(),
+            (p, s) -> p.setProperty(AuthProperty.AUTHORITY_HOST.getPropertyKey(), s));
 
         private Function<AzurePasswordlessProperties, String> getter;
         private BiConsumer<Properties, String> setter;

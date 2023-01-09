@@ -21,6 +21,7 @@ import java.time.Duration;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import static org.mockito.Answers.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.when;
@@ -285,7 +286,8 @@ class AzureJedisConnectionFactoryTest {
     @Test
     @SuppressWarnings("unchecked")
     void testGetPasswordFromSupplier() {
-        standaloneConfig = mock(RedisStandaloneConfiguration.class);
+        standaloneConfig = mock(RedisStandaloneConfiguration.class, RETURNS_DEEP_STUBS);
+        when(standaloneConfig.getPassword().isPresent()).thenReturn(false);
         credentialSupplier = mock(Supplier.class);
         when(credentialSupplier.get()).thenReturn("password-from-credential-supplier");
         AzureJedisConnectionFactory azureJedisConnectionFactory = new AzureJedisConnectionFactory(standaloneConfig, clientConfiguration, credentialSupplier);

@@ -434,7 +434,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="MethodName" files="com.azure.spring.data.cosmos.config.CosmosConfig.java"/>
   <suppress checks="MemberName" files="com.azure.spring.data.cosmos.MyItem.java"/>
 
-  <!-- Checkstyle suppressions for com.azure.spring.cloud.service.redis package -->
+  <!-- Checkstyle suppressions for com.azure.spring.cloud.service.implementation.redis package -->
   <suppress checks="MethodName" files="com.azure.spring.cloud.service.implementation.redis.AzureJedisClientConfig"/>
   
   <!-- ### end: Spring related suppression -->

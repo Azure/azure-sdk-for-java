@@ -23,7 +23,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Tests for {@link AzureJedisPasswordlessAutoConfiguration} when Lettuce is not on the classpath.
+ * Tests for {@link AzureJedisPasswordlessAutoConfiguration}.
  */
 class AzureJedisPasswordlessAutoConfigurationTest {
     private static final String AZURE_REDIS_CREDENTIAL_SUPPLIER_BEAN_NAME = "azureRedisCredentialSupplier";

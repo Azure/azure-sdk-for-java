@@ -24,10 +24,7 @@ public class AzureRedisPasswordlessProperties extends AzurePasswordlessPropertie
 
     @Override
     public String getScopes() {
-        if (super.getScopes() == null) {
-            super.setScopes(getRedisScopes());
-        }
-        return super.getScopes();
+        return super.getScopes() == null ? getRedisScopes() : super.getScopes();
     }
 
     private String getRedisScopes() {

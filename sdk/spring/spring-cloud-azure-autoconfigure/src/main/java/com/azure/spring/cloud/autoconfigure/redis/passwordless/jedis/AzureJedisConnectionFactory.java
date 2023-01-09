@@ -54,9 +54,9 @@ public class AzureJedisConnectionFactory implements InitializingBean, Disposable
     /**
      * Constructs a new AzureJedisConnectionFactory instance using the given RedisStandaloneConfiguration, JedisClientConfiguration and CredentialSupplier.
      *
-     * @param standaloneConfig must not be {@literal null}.
+     * @param standaloneConfig    must not be {@literal null}.
      * @param clientConfiguration must not be {@literal null}.
-     * @param credentialSupplier must not be {@literal null}.
+     * @param credentialSupplier  must not be {@literal null}.
      */
     public AzureJedisConnectionFactory(RedisStandaloneConfiguration standaloneConfig, JedisClientConfiguration clientConfiguration, Supplier<String> credentialSupplier) {
         this.standaloneConfig = standaloneConfig;
@@ -138,6 +138,7 @@ public class AzureJedisConnectionFactory implements InitializingBean, Disposable
      * Indicates the use of a connection pool.
      * <p>
      * Applies only to single node Redis.
+     *
      * @return the use of connection pooling.
      */
     public boolean getUsePool() {
@@ -186,7 +187,7 @@ public class AzureJedisConnectionFactory implements InitializingBean, Disposable
     @Nullable
     public String getPassword() {
         RedisPassword password = getRedisPassword();
-        if (password != null && password.isPresent()) {
+        if (password.isPresent()) {
             return password.map(String::new).orElse(null);
         } else if (credentialSupplier != null) {
             return credentialSupplier.get();
@@ -242,13 +243,12 @@ public class AzureJedisConnectionFactory implements InitializingBean, Disposable
             this.jedisClientConfig);
     }
 
-
     /**
      * Returns a Jedis instance to be used as a Redis connection. The instance can be newly created or retrieved from a
      * pool.
      *
-     * @throws RedisConnectionFailureException when can't fetch a jedis instance.
      * @return Jedis instance ready for wrapping into a {@link RedisConnection}.
+     * @throws RedisConnectionFailureException when can't fetch a jedis instance.
      */
     protected Jedis fetchJedisConnector() {
         try {
