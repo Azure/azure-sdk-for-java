@@ -82,11 +82,12 @@ class AzureJedisPasswordlessAutoConfigurationTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     void testGetPasswordFromSupplier() {
         Supplier<String> mockCredentialSupplier = mock(Supplier.class);
         when(mockCredentialSupplier.get()).thenReturn("fake-password-from-mock-supplier");
         this.contextRunner.withPropertyValues("spring.redis.host:foo", "spring.redis.database:1")
-            .withBean("azureRedisCredentialSupplier", Supplier.class, ()-> mockCredentialSupplier, null)
+            .withBean("azureRedisCredentialSupplier", Supplier.class, () -> mockCredentialSupplier, beanDefinition -> beanDefinition.setPrimary(true))
             .run((context) -> {
                 AzureJedisConnectionFactory cf = context.getBean(AzureJedisConnectionFactory.class);
                 assertThat(cf.getHostName()).isEqualTo("foo");

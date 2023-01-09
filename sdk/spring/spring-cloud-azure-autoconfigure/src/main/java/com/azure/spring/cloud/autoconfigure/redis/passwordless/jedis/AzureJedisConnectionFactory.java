@@ -186,9 +186,9 @@ public class AzureJedisConnectionFactory implements InitializingBean, Disposable
     @Nullable
     public String getPassword() {
         RedisPassword password = getRedisPassword();
-        if (password.isPresent()){
+        if (password != null && password.isPresent()) {
             return password.map(String::new).orElse(null);
-        }else if (credentialSupplier != null){
+        } else if (credentialSupplier != null) {
             return credentialSupplier.get();
         }
         return null;
