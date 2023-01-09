@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for InstancePools Update. */
 public final class InstancePoolsUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2018-06-01-preview/examples/PatchInstancePool.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/PatchInstancePool.json
      */
     /**
      * Sample code: Patch an instance pool.

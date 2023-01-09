@@ -25,6 +25,10 @@ public final class SyncFullSchemaPropertiesInner {
     @JsonProperty(value = "lastUpdateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdateTime;
 
+    /** Creates an instance of SyncFullSchemaPropertiesInner class. */
+    public SyncFullSchemaPropertiesInner() {
+    }
+
     /**
      * Get the tables property: List of tables in the database full schema.
      *

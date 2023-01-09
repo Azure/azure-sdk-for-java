@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ServerKeys ListByServer. */
 public final class ServerKeysListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/examples/ServerKeyList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerKeyList.json
      */
     /**
      * Sample code: List the server keys by server.

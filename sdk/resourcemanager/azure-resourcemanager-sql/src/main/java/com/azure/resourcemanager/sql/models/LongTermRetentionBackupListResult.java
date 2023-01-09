@@ -24,6 +24,10 @@ public final class LongTermRetentionBackupListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of LongTermRetentionBackupListResult class. */
+    public LongTermRetentionBackupListResult() {
+    }
+
     /**
      * Get the value property: Array of results.
      *

@@ -48,12 +48,15 @@ public final class JobTarget {
     private String shardMapName;
 
     /*
-     * The resource ID of the credential that is used during job execution to
-     * connect to the target and determine the list of databases inside the
-     * target.
+     * The resource ID of the credential that is used during job execution to connect to the target and determine the
+     * list of databases inside the target.
      */
     @JsonProperty(value = "refreshCredential")
     private String refreshCredential;
+
+    /** Creates an instance of JobTarget class. */
+    public JobTarget() {
+    }
 
     /**
      * Get the membershipType property: Whether the target is included or excluded from the group.
