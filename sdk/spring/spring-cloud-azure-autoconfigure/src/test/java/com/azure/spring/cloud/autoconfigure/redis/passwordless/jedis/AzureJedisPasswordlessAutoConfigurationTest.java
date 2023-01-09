@@ -19,6 +19,8 @@ import java.time.Duration;
 import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests for {@link AzureJedisPasswordlessAutoConfiguration} when Lettuce is not on the classpath.
@@ -80,14 +82,18 @@ class AzureJedisPasswordlessAutoConfigurationTest {
     }
 
     @Test
-    void testOverrideRedisConfiguration() {
-        this.contextRunner.withPropertyValues("spring.redis.host:foo", "spring.redis.database:1").run((context) -> {
-            AzureJedisConnectionFactory cf = context.getBean(AzureJedisConnectionFactory.class);
-            assertThat(cf.getHostName()).isEqualTo("foo");
-            assertThat(cf.getDatabase()).isEqualTo(1);
-            assertThat(cf.getPassword()).isNull();
-            assertThat(cf.isUseSsl()).isTrue();
-        });
+    void testGetPasswordFromSupplier() {
+        Supplier<String> mockCredentialSupplier = mock(Supplier.class);
+        when(mockCredentialSupplier.get()).thenReturn("fake-password-from-mock-supplier");
+        this.contextRunner.withPropertyValues("spring.redis.host:foo", "spring.redis.database:1")
+            .withBean("azureRedisCredentialSupplier", Supplier.class, ()-> mockCredentialSupplier, null)
+            .run((context) -> {
+                AzureJedisConnectionFactory cf = context.getBean(AzureJedisConnectionFactory.class);
+                assertThat(cf.getHostName()).isEqualTo("foo");
+                assertThat(cf.getDatabase()).isEqualTo(1);
+                assertThat(cf.getPassword()).isEqualTo("fake-password-from-mock-supplier");
+                assertThat(cf.isUseSsl()).isTrue();
+            });
     }
 
     @Test
