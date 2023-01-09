@@ -35,6 +35,10 @@ public final class DataFlow {
     @JsonProperty(value = "outputStream")
     private String outputStream;
 
+    /** Creates an instance of DataFlow class. */
+    public DataFlow() {
+    }
+
     /**
      * Get the streams property: List of streams for this data flow.
      *

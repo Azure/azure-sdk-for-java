@@ -84,7 +84,6 @@ public abstract class IdentityClientBase {
     static final String LINUX_MAC_SWITCHER = "-c";
     static final String WINDOWS_PROCESS_ERROR_MESSAGE = "'az' is not recognized";
     static final Pattern LINUX_MAC_PROCESS_ERROR_MESSAGE = Pattern.compile("(.*)az:(.*)not found");
-    static final String DEFAULT_WINDOWS_SYSTEM_ROOT = System.getenv("SystemRoot");
     static final String DEFAULT_WINDOWS_PS_EXECUTABLE = "pwsh.exe";
     static final String LEGACY_WINDOWS_PS_EXECUTABLE = "powershell.exe";
     static final String DEFAULT_LINUX_PS_EXECUTABLE = "pwsh";
@@ -501,10 +500,12 @@ public abstract class IdentityClientBase {
 
     String getSafeWorkingDirectory() {
         if (isWindowsPlatform()) {
-            if (CoreUtils.isNullOrEmpty(DEFAULT_WINDOWS_SYSTEM_ROOT)) {
+            String windowsSystemRoot = System.getenv("SystemRoot");
+            if (CoreUtils.isNullOrEmpty(windowsSystemRoot)) {
                 return null;
             }
-            return DEFAULT_WINDOWS_SYSTEM_ROOT + "\\system32";
+
+            return windowsSystemRoot + "\\system32";
         } else {
             return DEFAULT_MAC_LINUX_PATH;
         }

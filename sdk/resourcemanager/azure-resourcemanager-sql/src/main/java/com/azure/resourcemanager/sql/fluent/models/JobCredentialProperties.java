@@ -23,6 +23,10 @@ public final class JobCredentialProperties {
     @JsonProperty(value = "password", required = true)
     private String password;
 
+    /** Creates an instance of JobCredentialProperties class. */
+    public JobCredentialProperties() {
+    }
+
     /**
      * Get the username property: The credential user name.
      *

@@ -47,19 +47,6 @@ public interface DiagnosticSettingsCategoriesClient {
      *
      * @param resourceUri The identifier of the resource.
      * @param name The name of the diagnostic setting.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the diagnostic settings category for the specified resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DiagnosticSettingsCategoryResourceInner get(String resourceUri, String name);
-
-    /**
-     * Gets the diagnostic settings category for the specified resource.
-     *
-     * @param resourceUri The identifier of the resource.
-     * @param name The name of the diagnostic setting.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -68,6 +55,19 @@ public interface DiagnosticSettingsCategoriesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DiagnosticSettingsCategoryResourceInner> getWithResponse(String resourceUri, String name, Context context);
+
+    /**
+     * Gets the diagnostic settings category for the specified resource.
+     *
+     * @param resourceUri The identifier of the resource.
+     * @param name The name of the diagnostic setting.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the diagnostic settings category for the specified resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DiagnosticSettingsCategoryResourceInner get(String resourceUri, String name);
 
     /**
      * Lists the diagnostic settings categories for the specified resource.

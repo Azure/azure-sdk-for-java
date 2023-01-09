@@ -33,6 +33,10 @@ public final class DatabaseAutomaticTuningProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, AutomaticTuningOptions> options;
 
+    /** Creates an instance of DatabaseAutomaticTuningProperties class. */
+    public DatabaseAutomaticTuningProperties() {
+    }
+
     /**
      * Get the desiredState property: Automatic tuning desired state.
      *

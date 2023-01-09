@@ -18,6 +18,10 @@ public final class TdeCertificate extends ProxyResource {
     @JsonProperty(value = "properties")
     private TdeCertificateProperties innerProperties;
 
+    /** Creates an instance of TdeCertificate class. */
+    public TdeCertificate() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

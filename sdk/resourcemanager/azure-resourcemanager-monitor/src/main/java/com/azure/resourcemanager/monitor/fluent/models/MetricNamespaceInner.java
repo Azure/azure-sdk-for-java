@@ -42,6 +42,10 @@ public final class MetricNamespaceInner {
     @JsonProperty(value = "properties")
     private MetricNamespaceName properties;
 
+    /** Creates an instance of MetricNamespaceInner class. */
+    public MetricNamespaceInner() {
+    }
+
     /**
      * Get the id property: The ID of the metric namespace.
      *

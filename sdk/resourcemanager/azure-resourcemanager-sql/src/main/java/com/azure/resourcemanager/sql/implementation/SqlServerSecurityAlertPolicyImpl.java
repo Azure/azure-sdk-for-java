@@ -115,7 +115,7 @@ public class SqlServerSecurityAlertPolicyImpl
 
     @Override
     public SecurityAlertPolicyState state() {
-        return this.innerModel().state();
+        return this.innerModel().state() == null ? null : SecurityAlertPolicyState.fromString(this.innerModel().state().toString());
     }
 
     @Override

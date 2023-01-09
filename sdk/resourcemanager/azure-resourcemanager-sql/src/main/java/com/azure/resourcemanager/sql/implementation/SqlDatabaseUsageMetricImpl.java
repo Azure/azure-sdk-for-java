@@ -5,7 +5,6 @@ package com.azure.resourcemanager.sql.implementation;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.resourcemanager.sql.models.SqlDatabaseUsageMetric;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseUsageInner;
-import java.time.OffsetDateTime;
 
 /** Implementation for Azure SQL Database usage. */
 public class SqlDatabaseUsageMetricImpl extends WrapperImpl<DatabaseUsageInner> implements SqlDatabaseUsageMetric {
@@ -17,11 +16,6 @@ public class SqlDatabaseUsageMetricImpl extends WrapperImpl<DatabaseUsageInner> 
     @Override
     public String name() {
         return this.innerModel().name();
-    }
-
-    @Override
-    public String resourceName() {
-        return this.innerModel().resourceName();
     }
 
     @Override
@@ -42,10 +36,5 @@ public class SqlDatabaseUsageMetricImpl extends WrapperImpl<DatabaseUsageInner> 
     @Override
     public String unit() {
         return this.innerModel().unit();
-    }
-
-    @Override
-    public OffsetDateTime nextResetTime() {
-        return this.innerModel().nextResetTime();
     }
 }

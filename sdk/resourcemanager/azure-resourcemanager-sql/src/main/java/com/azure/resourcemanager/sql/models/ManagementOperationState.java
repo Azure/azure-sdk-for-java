@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ManagementOperationState. */
+/** The operation state. */
 public final class ManagementOperationState extends ExpandableStringEnum<ManagementOperationState> {
     /** Static value Pending for ManagementOperationState. */
     public static final ManagementOperationState PENDING = fromString("Pending");

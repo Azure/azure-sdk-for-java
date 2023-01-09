@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagedInstanceKeys Get. */
 public final class ManagedInstanceKeysGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-10-01-preview/examples/ManagedInstanceKeyGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceKeyGet.json
      */
     /**
      * Sample code: Get the managed instance key.

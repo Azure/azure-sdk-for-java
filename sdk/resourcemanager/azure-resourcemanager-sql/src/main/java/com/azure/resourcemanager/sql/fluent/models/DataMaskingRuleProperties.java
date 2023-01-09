@@ -20,17 +20,9 @@ public final class DataMaskingRuleProperties {
     private String id;
 
     /*
-     * The alias name. This is a legacy parameter and is no longer used.
-     */
-    @JsonProperty(value = "aliasName")
-    private String aliasName;
-
-    /*
-     * The rule state. Used to delete a rule. To delete an existing rule,
-     * specify the schemaName, tableName, columnName, maskingFunction, and
-     * specify ruleState as disabled. However, if the rule doesn't already
-     * exist, the rule will be created with ruleState set to enabled,
-     * regardless of the provided value of ruleState.
+     * The rule state. Used to delete a rule. To delete an existing rule, specify the schemaName, tableName,
+     * columnName, maskingFunction, and specify ruleState as disabled. However, if the rule doesn't already exist, the
+     * rule will be created with ruleState set to enabled, regardless of the provided value of ruleState.
      */
     @JsonProperty(value = "ruleState")
     private DataMaskingRuleState ruleState;
@@ -54,48 +46,55 @@ public final class DataMaskingRuleProperties {
     private String columnName;
 
     /*
+     * The alias name. This is a legacy parameter and is no longer used.
+     */
+    @JsonProperty(value = "aliasName")
+    private String aliasName;
+
+    /*
      * The masking function that is used for the data masking rule.
      */
     @JsonProperty(value = "maskingFunction", required = true)
     private DataMaskingFunction maskingFunction;
 
     /*
-     * The numberFrom property of the masking rule. Required if maskingFunction
-     * is set to Number, otherwise this parameter will be ignored.
+     * The numberFrom property of the masking rule. Required if maskingFunction is set to Number, otherwise this
+     * parameter will be ignored.
      */
     @JsonProperty(value = "numberFrom")
     private String numberFrom;
 
     /*
-     * The numberTo property of the data masking rule. Required if
-     * maskingFunction is set to Number, otherwise this parameter will be
-     * ignored.
+     * The numberTo property of the data masking rule. Required if maskingFunction is set to Number, otherwise this
+     * parameter will be ignored.
      */
     @JsonProperty(value = "numberTo")
     private String numberTo;
 
     /*
-     * If maskingFunction is set to Text, the number of characters to show
-     * unmasked in the beginning of the string. Otherwise, this parameter will
-     * be ignored.
+     * If maskingFunction is set to Text, the number of characters to show unmasked in the beginning of the string.
+     * Otherwise, this parameter will be ignored.
      */
     @JsonProperty(value = "prefixSize")
     private String prefixSize;
 
     /*
-     * If maskingFunction is set to Text, the number of characters to show
-     * unmasked at the end of the string. Otherwise, this parameter will be
-     * ignored.
+     * If maskingFunction is set to Text, the number of characters to show unmasked at the end of the string.
+     * Otherwise, this parameter will be ignored.
      */
     @JsonProperty(value = "suffixSize")
     private String suffixSize;
 
     /*
-     * If maskingFunction is set to Text, the character to use for masking the
-     * unexposed part of the string. Otherwise, this parameter will be ignored.
+     * If maskingFunction is set to Text, the character to use for masking the unexposed part of the string. Otherwise,
+     * this parameter will be ignored.
      */
     @JsonProperty(value = "replacementString")
     private String replacementString;
+
+    /** Creates an instance of DataMaskingRuleProperties class. */
+    public DataMaskingRuleProperties() {
+    }
 
     /**
      * Get the id property: The rule Id.
@@ -104,26 +103,6 @@ public final class DataMaskingRuleProperties {
      */
     public String id() {
         return this.id;
-    }
-
-    /**
-     * Get the aliasName property: The alias name. This is a legacy parameter and is no longer used.
-     *
-     * @return the aliasName value.
-     */
-    public String aliasName() {
-        return this.aliasName;
-    }
-
-    /**
-     * Set the aliasName property: The alias name. This is a legacy parameter and is no longer used.
-     *
-     * @param aliasName the aliasName value to set.
-     * @return the DataMaskingRuleProperties object itself.
-     */
-    public DataMaskingRuleProperties withAliasName(String aliasName) {
-        this.aliasName = aliasName;
-        return this;
     }
 
     /**
@@ -209,6 +188,26 @@ public final class DataMaskingRuleProperties {
      */
     public DataMaskingRuleProperties withColumnName(String columnName) {
         this.columnName = columnName;
+        return this;
+    }
+
+    /**
+     * Get the aliasName property: The alias name. This is a legacy parameter and is no longer used.
+     *
+     * @return the aliasName value.
+     */
+    public String aliasName() {
+        return this.aliasName;
+    }
+
+    /**
+     * Set the aliasName property: The alias name. This is a legacy parameter and is no longer used.
+     *
+     * @param aliasName the aliasName value to set.
+     * @return the DataMaskingRuleProperties object itself.
+     */
+    public DataMaskingRuleProperties withAliasName(String aliasName) {
+        this.aliasName = aliasName;
         return this;
     }
 

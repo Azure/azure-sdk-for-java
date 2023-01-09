@@ -3,72 +3,108 @@
 
 package com.azure.messaging.eventhubs.checkpointstore.jedis;
 
+import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
+import redis.clients.jedis.DefaultJedisClientConfig;
+import redis.clients.jedis.HostAndPort;
+import redis.clients.jedis.JedisClientConfig;
 import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
-import redis.clients.jedis.Protocol;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Collections;
-import java.util.StringJoiner;
+import java.util.List;
+import java.util.UUID;
 
 /**
- * Sample that demonstrates the use of {@link JedisRedisCheckpointStoreSample} for storing and updating partition ownership records
- * in Azure Redis Cache.
+ * Sample that demonstrates the use of {@link JedisRedisCheckpointStoreSample} for storing and updating partition
+ * ownership records in Azure Redis Cache.
  */
 public class JedisRedisCheckpointStoreSample {
-    private static final int PORT = 6380; //default SSL port for Azure Redis Cache
-    private static final String HOST_NAME = ""; // For Azure Redis Cache, this will look like '....redis.cache.windows.net'
-    private static final String PASSWORD = ""; //Primary Key used for connecting to Azure Redis Cache
-    private static final JedisPoolConfig POOL_CONFIG = new JedisPoolConfig();
-    private static final JedisPool JEDIS_POOL = new JedisPool(POOL_CONFIG, HOST_NAME, PORT, 1000, 1000, PASSWORD, Protocol.DEFAULT_DATABASE, "clientname", true, null, null, null);
+    private static final String EVENT_HUB_NAMESPACE = "{your-namespace}.servicebus.windows.net";
+    private static final String EVENT_HUB_NAME = "{event-hub-name}";
+    private static final String CONSUMER_GROUP = "$DEFAULT";
+    private static final Duration TIMEOUT = Duration.ofSeconds(30);
 
     /**
      * The main method to run the sample.
      *
      * @param args Unused arguments given to the sample
-     * @throws Exception an Exception will be thrown in case of errors while running the sample
      */
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
-        // Instantiating the JedisRedisCheckpointStore
-        JedisRedisCheckpointStore jedisRedisCheckpointStore = new JedisRedisCheckpointStore(JEDIS_POOL);
+        // To create the JedisRedisCheckpointStore, an instance of JedisPool is required.
+        // 1. Create a redis service.  The following link describes how to create one for Azure Redis Cache.
+        //    https://learn.microsoft.com/azure/azure-cache-for-redis/quickstart-create-redis
+        // 2. Go to your Azure Redis service.
+        // 3. The host name is on the main page.  It will look similar to "{your-hostname}.redis.cache.windows.net"
+        // 4. Under Settings, select Access keys.  The primary or secondary key is the password.
+        HostAndPort hostAndPort = new HostAndPort("{your-hostname}.redis.cache.windows.net", 6380);
+        JedisClientConfig clientConfig = DefaultJedisClientConfig.builder()
+            .password("{your-access-key}")
+            .ssl(true)
+            .build();
+        JedisPool jedisPool = new JedisPool(hostAndPort, clientConfig);
 
-        jedisRedisCheckpointStore.listOwnership("namespace", "abc", "xyz")
-            .subscribe(JedisRedisCheckpointStoreSample::printPartitionOwnership);
+        // Instantiate an instance of the checkpoint store with configured JedisPool.
+        CheckpointStore checkpointStore = new JedisRedisCheckpointStore(jedisPool);
 
-        System.out.println("Updating checkpoint");
+        System.out.println("1. Listing existing partition ownerships.");
+
+        // listCheckpoints returns a Flux<PartitionOwnership>, this is a non-blocking call.  When the Flux is
+        // constructed, it will move to the next line in the program.  For purposes of the demo, block() is chained at
+        // the end to make it a synchronous call.
+        List<PartitionOwnership> existingOwnerships = checkpointStore.listOwnership(EVENT_HUB_NAMESPACE, EVENT_HUB_NAME,
+                CONSUMER_GROUP)
+            .collectList()
+            .block(TIMEOUT);
+
+        printOwnerships(existingOwnerships);
+
+        System.out.println("2. Updating checkpoint.");
+
         Checkpoint checkpoint = new Checkpoint()
-            .setFullyQualifiedNamespace("namespace")
-            .setConsumerGroup("xyz")
-            .setEventHubName("abc")
+            .setFullyQualifiedNamespace(EVENT_HUB_NAMESPACE)
+            .setEventHubName(EVENT_HUB_NAME)
+            .setConsumerGroup(CONSUMER_GROUP)
             .setPartitionId("0")
             .setSequenceNumber(2L)
             .setOffset(250L);
-        jedisRedisCheckpointStore.updateCheckpoint(checkpoint)
-            .subscribe(eTag -> System.out.println(eTag), error -> System.out.println(error.getMessage()));
 
-        System.out.println("Claiming checkpoint");
+        checkpointStore.updateCheckpoint(checkpoint).block(TIMEOUT);
+
+        System.out.println("3. Claiming ownership.");
+
         PartitionOwnership partitionOwnership = new PartitionOwnership()
-            .setFullyQualifiedNamespace("namespace")
-            .setConsumerGroup("xyz")
-            .setEventHubName("abc")
-            .setPartitionId("0");
-        jedisRedisCheckpointStore.claimOwnership(Collections.singletonList(partitionOwnership))
-            .subscribe(ownership -> System.out.println(ownership.getOwnerId()), error -> System.out.println(error.getMessage())); // This should print null for the first time a partition is claimed
+            .setFullyQualifiedNamespace(EVENT_HUB_NAMESPACE)
+            .setEventHubName(EVENT_HUB_NAME)
+            .setConsumerGroup(CONSUMER_GROUP)
+            .setPartitionId("0")
+            .setOwnerId("test-owner-id")
+            .setETag(UUID.randomUUID().toString())
+            .setLastModifiedTime(Instant.now().getEpochSecond());
 
+        List<PartitionOwnership> updatedOwnerships = checkpointStore.claimOwnership(
+                Collections.singletonList(partitionOwnership))
+            .collectList()
+            .block(TIMEOUT);
+
+        printOwnerships(updatedOwnerships);
     }
 
-    static void printPartitionOwnership(PartitionOwnership partitionOwnership) {
-        String po =
-            new StringJoiner(",")
-                .add("pid=" + partitionOwnership.getPartitionId())
-                .add("ownerId=" + partitionOwnership.getOwnerId())
-                .add("cg=" + partitionOwnership.getConsumerGroup())
-                .add("eh=" + partitionOwnership.getEventHubName())
-                .add("etag=" + partitionOwnership.getETag())
-                .add("lastModified=" + partitionOwnership.getLastModifiedTime())
-                .toString();
-        System.out.println(po);
+    private static void printOwnerships(List<PartitionOwnership> ownerships) {
+        if (ownerships == null || ownerships.isEmpty()) {
+            System.out.println("\tThere were no ownerships to print out.");
+            return;
+        }
+
+        System.out.println("\tPrinting ownerships:");
+
+        for (PartitionOwnership ownership : ownerships) {
+            System.out.printf("\t- partitionId[%s] ownerId[%s] eTag[%s] lastModified[%s]%n",
+                ownership.getPartitionId(), ownership.getOwnerId(), ownership.getETag(),
+                ownership.getLastModifiedTime());
+        }
     }
 }
