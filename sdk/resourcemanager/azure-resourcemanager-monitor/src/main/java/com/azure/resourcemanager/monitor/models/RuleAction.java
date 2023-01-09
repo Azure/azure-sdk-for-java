@@ -26,6 +26,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class RuleAction {
+    /** Creates an instance of RuleAction class. */
+    public RuleAction() {
+    }
+
     /**
      * Validates the instance.
      *

@@ -27,6 +27,10 @@ public final class FailoverGroupUpdate {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of FailoverGroupUpdate class. */
+    public FailoverGroupUpdate() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for RouteMaps List. */
 public final class RouteMapsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/RouteMapList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/RouteMapList.json
      */
     /**
      * Sample code: RouteMapList.

@@ -41,19 +41,6 @@ public interface SimPolicies {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified SIM policy.
-     */
-    SimPolicy get(String resourceGroupName, String mobileNetworkName, String simPolicyName);
-
-    /**
-     * Gets information about the specified SIM policy.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param simPolicyName The name of the SIM policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -62,6 +49,19 @@ public interface SimPolicies {
      */
     Response<SimPolicy> getWithResponse(
         String resourceGroupName, String mobileNetworkName, String simPolicyName, Context context);
+
+    /**
+     * Gets information about the specified SIM policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param simPolicyName The name of the SIM policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified SIM policy.
+     */
+    SimPolicy get(String resourceGroupName, String mobileNetworkName, String simPolicyName);
 
     /**
      * Gets all the SIM policies in a mobile network.

@@ -41,6 +41,9 @@ public final class OciBlobDescriptor {
     @JsonProperty(value = "annotations")
     private OciAnnotations annotations;
 
+    /** Creates an instance of OciBlobDescriptor class. */
+    public OciBlobDescriptor() {}
+
     /**
      * Get the mediaType property: Layer media type.
      *

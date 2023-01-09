@@ -3,17 +3,18 @@
 package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.resourcemanager.sql.fluent.models.ImportExportOperationResultInner;
 import com.azure.resourcemanager.sql.models.SqlDatabaseImportExportResponse;
-import com.azure.resourcemanager.sql.fluent.models.ImportExportResponseInner;
+
 import java.util.UUID;
 
 /** Implementation for SqlDatabaseImportExportResponse. */
-public class SqlDatabaseImportExportResponseImpl extends WrapperImpl<ImportExportResponseInner>
+public class SqlDatabaseImportExportResponseImpl extends WrapperImpl<ImportExportOperationResultInner>
     implements SqlDatabaseImportExportResponse {
 
     private String key;
 
-    protected SqlDatabaseImportExportResponseImpl(ImportExportResponseInner innerObject) {
+    protected SqlDatabaseImportExportResponseImpl(ImportExportOperationResultInner innerObject) {
         super(innerObject);
         this.key = UUID.randomUUID().toString();
     }

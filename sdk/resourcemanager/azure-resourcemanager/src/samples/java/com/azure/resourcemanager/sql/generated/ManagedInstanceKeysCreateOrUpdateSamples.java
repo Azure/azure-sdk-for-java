@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.ServerKeyType;
 /** Samples for ManagedInstanceKeys CreateOrUpdate. */
 public final class ManagedInstanceKeysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-10-01-preview/examples/ManagedInstanceKeyCreateOrUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceKeyCreateOrUpdate.json
      */
     /**
      * Sample code: Creates or updates a managed instance key.

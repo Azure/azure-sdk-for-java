@@ -7,9 +7,7 @@ import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.RequestConditions
-import com.azure.core.http.policy.ExponentialBackoffOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
-import com.azure.core.http.policy.RetryOptions
 import com.azure.core.util.BinaryData
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.HttpClientOptions
@@ -335,6 +333,21 @@ class BlobAPITest extends APISpec {
         // test whether failure occurs due to small timeout intervals set on the service client
         thrown(RuntimeException)
 
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_12_02")
+    def "Upload stream access tier cold"() {
+        setup:
+        def randomData = getRandomByteArray(Constants.KB)
+        def input = new ByteArrayInputStream(randomData)
+        def blobUploadOptions = new BlobParallelUploadOptions(input).setTier(AccessTier.COLD)
+
+        when:
+        bc.uploadWithResponse(blobUploadOptions, null, null)
+        def properties = bc.getProperties()
+
+        then:
+        properties.getAccessTier() == AccessTier.COLD
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
@@ -2341,7 +2354,7 @@ class BlobAPITest extends APISpec {
         false  | true
         false  | false
     }
-
+    
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Copy source AC"() {
@@ -2823,6 +2836,18 @@ class BlobAPITest extends APISpec {
         BlobCopySourceTagsMode.REPLACE | _
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_12_02")
+    def "Sync copy from url access tier cold"() {
+        setup:
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        def bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        def copyOptions = new BlobCopyFromUrlOptions(bc.getBlobUrl()).setTier(AccessTier.COLD)
+
+        expect:
+        bu2.copyFromUrlWithResponse(copyOptions, null, null).getStatusCode() == 202
+        bu2.getProperties().getAccessTier() == AccessTier.COLD
+    }
+
     def "Sync copy error"() {
         setup:
         def bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
@@ -3185,6 +3210,28 @@ class BlobAPITest extends APISpec {
         AccessTier.ARCHIVE | AccessTier.COOL || ArchiveStatus.REHYDRATE_PENDING_TO_COOL
         AccessTier.ARCHIVE | AccessTier.HOT  || ArchiveStatus.REHYDRATE_PENDING_TO_HOT
         AccessTier.ARCHIVE | AccessTier.HOT  || ArchiveStatus.REHYDRATE_PENDING_TO_HOT
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_12_02")
+    def "Set tier cold"() {
+        setup:
+        def cc = primaryBlobServiceClient.createBlobContainer(generateContainerName())
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bc.upload(data.defaultInputStream, data.defaultData.remaining())
+
+        when:
+        def initialResponse = bc.setAccessTierWithResponse(AccessTier.COLD, null, null, null, null)
+        def headers = initialResponse.getHeaders()
+
+        then:
+        initialResponse.getStatusCode() == 200 || initialResponse.getStatusCode() == 202
+        headers.getValue("x-ms-version") != null
+        headers.getValue("x-ms-request-id") != null
+        bc.getProperties().getAccessTier() == AccessTier.COLD
+        cc.listBlobs().iterator().next().getProperties().getAccessTier() == AccessTier.COLD
+
+        cleanup:
+        cc.delete()
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")

@@ -17,8 +17,8 @@ import java.util.Map;
 @Fluent
 public final class OciAnnotations {
     /*
-     * Date and time on which the image was built (string, date-time as defined
-     * by https://tools.ietf.org/html/rfc3339#section-5.6)
+     * Date and time on which the image was built (string, date-time as defined by
+     * https://tools.ietf.org/html/rfc3339#section-5.6)
      */
     @JsonProperty(value = "org.opencontainers.image.created")
     private OffsetDateTime created;
@@ -48,9 +48,8 @@ public final class OciAnnotations {
     private String source;
 
     /*
-     * Version of the packaged software. The version MAY match a label or tag
-     * in the source code repository, may also be Semantic
-     * versioning-compatible
+     * Version of the packaged software. The version MAY match a label or tag in the source code repository, may also
+     * be Semantic versioning-compatible
      */
     @JsonProperty(value = "org.opencontainers.image.version")
     private String version;
@@ -68,8 +67,7 @@ public final class OciAnnotations {
     private String vendor;
 
     /*
-     * License(s) under which contained software is distributed as an SPDX
-     * License Expression.
+     * License(s) under which contained software is distributed as an SPDX License Expression.
      */
     @JsonProperty(value = "org.opencontainers.image.licenses")
     private String licenses;
@@ -96,6 +94,9 @@ public final class OciAnnotations {
      * Additional information provided through arbitrary metadata.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of OciAnnotations class. */
+    public OciAnnotations() {}
 
     /**
      * Get the created property: Date and time on which the image was built (string, date-time as defined by

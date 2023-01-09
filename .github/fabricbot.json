@@ -2721,7 +2721,6 @@
               "Search"
             ],
             "mentionees": [
-              "brjohnstmsft",
               "bleroy",
               "tjacobhi",
               "markheff",
@@ -3039,7 +3038,8 @@
             "mentionees": [
               "@trask",
               "@ramthi",
-              "@heyams"
+              "@heyams",
+              "@jeanbisutti"
             ]
           },
           {

@@ -5,23 +5,34 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
+import com.azure.resourcemanager.sql.models.ManagedInstanceExternalAdministrator;
 import com.azure.resourcemanager.sql.models.ManagedInstanceLicenseType;
+import com.azure.resourcemanager.sql.models.ManagedInstancePecProperty;
+import com.azure.resourcemanager.sql.models.ManagedInstancePropertiesProvisioningState;
 import com.azure.resourcemanager.sql.models.ManagedInstanceProxyOverride;
 import com.azure.resourcemanager.sql.models.ManagedServerCreateMode;
+import com.azure.resourcemanager.sql.models.ServicePrincipal;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /** The properties of a managed instance. */
 @Fluent
 public final class ManagedInstanceProperties {
     /*
+     * The provisioningState property.
+     */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ManagedInstancePropertiesProvisioningState provisioningState;
+
+    /*
      * Specifies the mode of database creation.
      *
      * Default: Regular instance creation.
      *
-     * Restore: Creates an instance by restoring a set of backups to specific
-     * point in time. RestorePointInTime and SourceManagedInstanceId must be
-     * specified.
+     * Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and
+     * SourceManagedInstanceId must be specified.
      */
     @JsonProperty(value = "managedInstanceCreateMode")
     private ManagedServerCreateMode managedInstanceCreateMode;
@@ -33,16 +44,14 @@ public final class ManagedInstanceProperties {
     private String fullyQualifiedDomainName;
 
     /*
-     * Administrator username for the managed instance. Can only be specified
-     * when the managed instance is being created (and is required for
-     * creation).
+     * Administrator username for the managed instance. Can only be specified when the managed instance is being
+     * created (and is required for creation).
      */
     @JsonProperty(value = "administratorLogin")
     private String administratorLogin;
 
     /*
-     * The administrator login password (required for managed instance
-     * creation).
+     * The administrator login password (required for managed instance creation).
      */
     @JsonProperty(value = "administratorLoginPassword")
     private String administratorLoginPassword;
@@ -60,9 +69,8 @@ public final class ManagedInstanceProperties {
     private String state;
 
     /*
-     * The license type. Possible values are 'LicenseIncluded' (regular price
-     * inclusive of a new SQL license) and 'BasePrice' (discounted AHB price
-     * for bringing your own SQL licenses).
+     * The license type. Possible values are 'LicenseIncluded' (regular price inclusive of a new SQL license) and
+     * 'BasePrice' (discounted AHB price for bringing your own SQL licenses).
      */
     @JsonProperty(value = "licenseType")
     private ManagedInstanceLicenseType licenseType;
@@ -74,8 +82,8 @@ public final class ManagedInstanceProperties {
     private Integer vCores;
 
     /*
-     * Storage size in GB. Minimum value: 32. Maximum value: 8192. Increments
-     * of 32 GB allowed only.
+     * Storage size in GB. Minimum value: 32. Maximum value: 16384. Increments of 32 GB allowed only. Maximum value
+     * depends on the selected hardware family and number of vCores.
      */
     @JsonProperty(value = "storageSizeInGB")
     private Integer storageSizeInGB;
@@ -93,8 +101,7 @@ public final class ManagedInstanceProperties {
     private String dnsZone;
 
     /*
-     * The resource id of another managed instance whose DNS zone this managed
-     * instance will share after creation.
+     * The resource id of another managed instance whose DNS zone this managed instance will share after creation.
      */
     @JsonProperty(value = "dnsZonePartner")
     private String dnsZonePartner;
@@ -106,15 +113,14 @@ public final class ManagedInstanceProperties {
     private Boolean publicDataEndpointEnabled;
 
     /*
-     * The resource identifier of the source managed instance associated with
-     * create operation of this instance.
+     * The resource identifier of the source managed instance associated with create operation of this instance.
      */
     @JsonProperty(value = "sourceManagedInstanceId")
     private String sourceManagedInstanceId;
 
     /*
-     * Specifies the point in time (ISO8601 format) of the source database that
-     * will be restored to create the new database.
+     * Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new
+     * database.
      */
     @JsonProperty(value = "restorePointInTime")
     private OffsetDateTime restorePointInTime;
@@ -127,16 +133,11 @@ public final class ManagedInstanceProperties {
 
     /*
      * Id of the timezone. Allowed values are timezones supported by Windows.
-     * Windows keeps details on supported timezones, including the id, in
-     * registry under
-     * KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time
-     * Zones.
-     * You can get those registry values via SQL Server by querying SELECT name
-     * AS timezone_id FROM sys.time_zone_info.
-     * List of Ids can also be obtained by executing
-     * [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell.
-     * An example of valid timezone id is "Pacific Standard Time" or "W. Europe
-     * Standard Time".
+     * Windows keeps details on supported timezones, including the id, in registry under
+     * KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
+     * You can get those registry values via SQL Server by querying SELECT name AS timezone_id FROM sys.time_zone_info.
+     * List of Ids can also be obtained by executing [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell.
+     * An example of valid timezone id is "Pacific Standard Time" or "W. Europe Standard Time".
      */
     @JsonProperty(value = "timezoneId")
     private String timezoneId;
@@ -148,10 +149,81 @@ public final class ManagedInstanceProperties {
     private String instancePoolId;
 
     /*
+     * Specifies maintenance configuration id to apply to this managed instance.
+     */
+    @JsonProperty(value = "maintenanceConfigurationId")
+    private String maintenanceConfigurationId;
+
+    /*
+     * List of private endpoint connections on a managed instance.
+     */
+    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ManagedInstancePecProperty> privateEndpointConnections;
+
+    /*
      * Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'
      */
     @JsonProperty(value = "minimalTlsVersion")
     private String minimalTlsVersion;
+
+    /*
+     * The storage account type used to store backups for this instance. The options are Local
+     * (LocallyRedundantStorage), Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage) and
+     * GeoZone(GeoZoneRedundantStorage)
+     */
+    @JsonProperty(value = "currentBackupStorageRedundancy", access = JsonProperty.Access.WRITE_ONLY)
+    private BackupStorageRedundancy currentBackupStorageRedundancy;
+
+    /*
+     * The storage account type to be used to store backups for this instance. The options are Local
+     * (LocallyRedundantStorage), Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage) and
+     * GeoZone(GeoZoneRedundantStorage)
+     */
+    @JsonProperty(value = "requestedBackupStorageRedundancy")
+    private BackupStorageRedundancy requestedBackupStorageRedundancy;
+
+    /*
+     * Whether or not the multi-az is enabled.
+     */
+    @JsonProperty(value = "zoneRedundant")
+    private Boolean zoneRedundant;
+
+    /*
+     * The resource id of a user assigned identity to be used by default.
+     */
+    @JsonProperty(value = "primaryUserAssignedIdentityId")
+    private String primaryUserAssignedIdentityId;
+
+    /*
+     * A CMK URI of the key to use for encryption.
+     */
+    @JsonProperty(value = "keyId")
+    private String keyId;
+
+    /*
+     * The Azure Active Directory administrator of the server.
+     */
+    @JsonProperty(value = "administrators")
+    private ManagedInstanceExternalAdministrator administrators;
+
+    /*
+     * The managed instance's service principal.
+     */
+    @JsonProperty(value = "servicePrincipal")
+    private ServicePrincipal servicePrincipal;
+
+    /** Creates an instance of ManagedInstanceProperties class. */
+    public ManagedInstanceProperties() {
+    }
+
+    /**
+     * Get the provisioningState property: The provisioningState property.
+     *
+     * @return the provisioningState value.
+     */
+    public ManagedInstancePropertiesProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
 
     /**
      * Get the managedInstanceCreateMode property: Specifies the mode of database creation.
@@ -308,8 +380,8 @@ public final class ManagedInstanceProperties {
     }
 
     /**
-     * Get the storageSizeInGB property: Storage size in GB. Minimum value: 32. Maximum value: 8192. Increments of 32 GB
-     * allowed only.
+     * Get the storageSizeInGB property: Storage size in GB. Minimum value: 32. Maximum value: 16384. Increments of 32
+     * GB allowed only. Maximum value depends on the selected hardware family and number of vCores.
      *
      * @return the storageSizeInGB value.
      */
@@ -318,8 +390,8 @@ public final class ManagedInstanceProperties {
     }
 
     /**
-     * Set the storageSizeInGB property: Storage size in GB. Minimum value: 32. Maximum value: 8192. Increments of 32 GB
-     * allowed only.
+     * Set the storageSizeInGB property: Storage size in GB. Minimum value: 32. Maximum value: 16384. Increments of 32
+     * GB allowed only. Maximum value depends on the selected hardware family and number of vCores.
      *
      * @param storageSizeInGB the storageSizeInGB value to set.
      * @return the ManagedInstanceProperties object itself.
@@ -515,6 +587,37 @@ public final class ManagedInstanceProperties {
     }
 
     /**
+     * Get the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this managed
+     * instance.
+     *
+     * @return the maintenanceConfigurationId value.
+     */
+    public String maintenanceConfigurationId() {
+        return this.maintenanceConfigurationId;
+    }
+
+    /**
+     * Set the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this managed
+     * instance.
+     *
+     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
+     * @return the ManagedInstanceProperties object itself.
+     */
+    public ManagedInstanceProperties withMaintenanceConfigurationId(String maintenanceConfigurationId) {
+        this.maintenanceConfigurationId = maintenanceConfigurationId;
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: List of private endpoint connections on a managed instance.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<ManagedInstancePecProperty> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
      * Get the minimalTlsVersion property: Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'.
      *
      * @return the minimalTlsVersion value.
@@ -535,10 +638,157 @@ public final class ManagedInstanceProperties {
     }
 
     /**
+     * Get the currentBackupStorageRedundancy property: The storage account type used to store backups for this
+     * instance. The options are Local (LocallyRedundantStorage), Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage)
+     * and GeoZone(GeoZoneRedundantStorage).
+     *
+     * @return the currentBackupStorageRedundancy value.
+     */
+    public BackupStorageRedundancy currentBackupStorageRedundancy() {
+        return this.currentBackupStorageRedundancy;
+    }
+
+    /**
+     * Get the requestedBackupStorageRedundancy property: The storage account type to be used to store backups for this
+     * instance. The options are Local (LocallyRedundantStorage), Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage)
+     * and GeoZone(GeoZoneRedundantStorage).
+     *
+     * @return the requestedBackupStorageRedundancy value.
+     */
+    public BackupStorageRedundancy requestedBackupStorageRedundancy() {
+        return this.requestedBackupStorageRedundancy;
+    }
+
+    /**
+     * Set the requestedBackupStorageRedundancy property: The storage account type to be used to store backups for this
+     * instance. The options are Local (LocallyRedundantStorage), Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage)
+     * and GeoZone(GeoZoneRedundantStorage).
+     *
+     * @param requestedBackupStorageRedundancy the requestedBackupStorageRedundancy value to set.
+     * @return the ManagedInstanceProperties object itself.
+     */
+    public ManagedInstanceProperties withRequestedBackupStorageRedundancy(
+        BackupStorageRedundancy requestedBackupStorageRedundancy) {
+        this.requestedBackupStorageRedundancy = requestedBackupStorageRedundancy;
+        return this;
+    }
+
+    /**
+     * Get the zoneRedundant property: Whether or not the multi-az is enabled.
+     *
+     * @return the zoneRedundant value.
+     */
+    public Boolean zoneRedundant() {
+        return this.zoneRedundant;
+    }
+
+    /**
+     * Set the zoneRedundant property: Whether or not the multi-az is enabled.
+     *
+     * @param zoneRedundant the zoneRedundant value to set.
+     * @return the ManagedInstanceProperties object itself.
+     */
+    public ManagedInstanceProperties withZoneRedundant(Boolean zoneRedundant) {
+        this.zoneRedundant = zoneRedundant;
+        return this;
+    }
+
+    /**
+     * Get the primaryUserAssignedIdentityId property: The resource id of a user assigned identity to be used by
+     * default.
+     *
+     * @return the primaryUserAssignedIdentityId value.
+     */
+    public String primaryUserAssignedIdentityId() {
+        return this.primaryUserAssignedIdentityId;
+    }
+
+    /**
+     * Set the primaryUserAssignedIdentityId property: The resource id of a user assigned identity to be used by
+     * default.
+     *
+     * @param primaryUserAssignedIdentityId the primaryUserAssignedIdentityId value to set.
+     * @return the ManagedInstanceProperties object itself.
+     */
+    public ManagedInstanceProperties withPrimaryUserAssignedIdentityId(String primaryUserAssignedIdentityId) {
+        this.primaryUserAssignedIdentityId = primaryUserAssignedIdentityId;
+        return this;
+    }
+
+    /**
+     * Get the keyId property: A CMK URI of the key to use for encryption.
+     *
+     * @return the keyId value.
+     */
+    public String keyId() {
+        return this.keyId;
+    }
+
+    /**
+     * Set the keyId property: A CMK URI of the key to use for encryption.
+     *
+     * @param keyId the keyId value to set.
+     * @return the ManagedInstanceProperties object itself.
+     */
+    public ManagedInstanceProperties withKeyId(String keyId) {
+        this.keyId = keyId;
+        return this;
+    }
+
+    /**
+     * Get the administrators property: The Azure Active Directory administrator of the server.
+     *
+     * @return the administrators value.
+     */
+    public ManagedInstanceExternalAdministrator administrators() {
+        return this.administrators;
+    }
+
+    /**
+     * Set the administrators property: The Azure Active Directory administrator of the server.
+     *
+     * @param administrators the administrators value to set.
+     * @return the ManagedInstanceProperties object itself.
+     */
+    public ManagedInstanceProperties withAdministrators(ManagedInstanceExternalAdministrator administrators) {
+        this.administrators = administrators;
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipal property: The managed instance's service principal.
+     *
+     * @return the servicePrincipal value.
+     */
+    public ServicePrincipal servicePrincipal() {
+        return this.servicePrincipal;
+    }
+
+    /**
+     * Set the servicePrincipal property: The managed instance's service principal.
+     *
+     * @param servicePrincipal the servicePrincipal value to set.
+     * @return the ManagedInstanceProperties object itself.
+     */
+    public ManagedInstanceProperties withServicePrincipal(ServicePrincipal servicePrincipal) {
+        this.servicePrincipal = servicePrincipal;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
+        }
+        if (administrators() != null) {
+            administrators().validate();
+        }
+        if (servicePrincipal() != null) {
+            servicePrincipal().validate();
+        }
     }
 }

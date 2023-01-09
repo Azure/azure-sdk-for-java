@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Service resource. */
+/** Service resource. Must be created in the same location as its parent mobile network. */
 @Fluent
 public final class ServiceInner extends Resource {
     /*
@@ -25,11 +25,14 @@ public final class ServiceInner extends Resource {
     private ServicePropertiesFormat innerProperties = new ServicePropertiesFormat();
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of ServiceInner class. */
+    public ServiceInner() {
+    }
 
     /**
      * Get the innerProperties property: Service Properties.

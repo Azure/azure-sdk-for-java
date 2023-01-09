@@ -28,6 +28,10 @@ public final class ClientDiscoveryForLogSpecification {
     @JsonProperty(value = "blobDuration")
     private String blobDuration;
 
+    /** Creates an instance of ClientDiscoveryForLogSpecification class. */
+    public ClientDiscoveryForLogSpecification() {
+    }
+
     /**
      * Get the name property: Name of the log.
      *

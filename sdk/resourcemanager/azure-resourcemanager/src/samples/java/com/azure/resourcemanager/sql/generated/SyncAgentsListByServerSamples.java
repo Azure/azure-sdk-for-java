@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SyncAgents ListByServer. */
 public final class SyncAgentsListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/examples/SyncAgentListByServer.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncAgentListByServer.json
      */
     /**
      * Sample code: Get sync agents under a server.

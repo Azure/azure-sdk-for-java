@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Usages ListByVaults. */
 public final class UsagesListByVaultsSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/ListUsages.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ListUsages.json
      */
     /**
      * Sample code: Gets vault usages.

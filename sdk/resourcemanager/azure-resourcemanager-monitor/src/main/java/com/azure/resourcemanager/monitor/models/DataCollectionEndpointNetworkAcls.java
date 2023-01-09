@@ -9,6 +9,10 @@ import com.azure.core.annotation.Fluent;
 /** Network access control rules for the endpoints. */
 @Fluent
 public final class DataCollectionEndpointNetworkAcls extends NetworkRuleSet {
+    /** Creates an instance of DataCollectionEndpointNetworkAcls class. */
+    public DataCollectionEndpointNetworkAcls() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public DataCollectionEndpointNetworkAcls withPublicNetworkAccess(

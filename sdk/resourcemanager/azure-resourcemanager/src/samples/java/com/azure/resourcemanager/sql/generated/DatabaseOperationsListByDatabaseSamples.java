@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DatabaseOperations ListByDatabase. */
 public final class DatabaseOperationsListByDatabaseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-10-01-preview/examples/ListDatabaseOperations.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListDatabaseOperations.json
      */
     /**
      * Sample code: List the database management operations.

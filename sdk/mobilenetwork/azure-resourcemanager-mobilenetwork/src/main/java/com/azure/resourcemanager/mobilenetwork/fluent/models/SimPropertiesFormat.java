@@ -5,41 +5,15 @@
 package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
+import com.azure.resourcemanager.mobilenetwork.models.CommonSimPropertiesFormat;
 import com.azure.resourcemanager.mobilenetwork.models.SimPolicyResourceId;
-import com.azure.resourcemanager.mobilenetwork.models.SimState;
 import com.azure.resourcemanager.mobilenetwork.models.SimStaticIpProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** SIM properties. */
 @Fluent
-public final class SimPropertiesFormat {
-    /*
-     * The provisioning state of the SIM resource.
-     */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The state of the SIM resource.
-     */
-    @JsonProperty(value = "simState", access = JsonProperty.Access.WRITE_ONLY)
-    private SimState simState;
-
-    /*
-     * The international mobile subscriber identity (IMSI) for the SIM.
-     */
-    @JsonProperty(value = "internationalMobileSubscriberIdentity", required = true)
-    private String internationalMobileSubscriberIdentity;
-
-    /*
-     * The integrated circuit card ID (ICCID) for the SIM.
-     */
-    @JsonProperty(value = "integratedCircuitCardIdentifier")
-    private String integratedCircuitCardIdentifier;
-
+public final class SimPropertiesFormat extends CommonSimPropertiesFormat {
     /*
      * The Ki value for the SIM.
      */
@@ -52,86 +26,8 @@ public final class SimPropertiesFormat {
     @JsonProperty(value = "operatorKeyCode")
     private String operatorKeyCode;
 
-    /*
-     * An optional free-form text field that can be used to record the device
-     * type this SIM is associated with, for example 'Video camera'. The Azure
-     * portal allows SIMs to be grouped and filtered based on this value.
-     */
-    @JsonProperty(value = "deviceType")
-    private String deviceType;
-
-    /*
-     * The SIM policy used by this SIM.
-     */
-    @JsonProperty(value = "simPolicy")
-    private SimPolicyResourceId simPolicy;
-
-    /*
-     * A list of static IP addresses assigned to this SIM. Each address is
-     * assigned at a defined network scope, made up of {attached data network,
-     * slice}.
-     */
-    @JsonProperty(value = "staticIpConfiguration")
-    private List<SimStaticIpProperties> staticIpConfiguration;
-
-    /**
-     * Get the provisioningState property: The provisioning state of the SIM resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the simState property: The state of the SIM resource.
-     *
-     * @return the simState value.
-     */
-    public SimState simState() {
-        return this.simState;
-    }
-
-    /**
-     * Get the internationalMobileSubscriberIdentity property: The international mobile subscriber identity (IMSI) for
-     * the SIM.
-     *
-     * @return the internationalMobileSubscriberIdentity value.
-     */
-    public String internationalMobileSubscriberIdentity() {
-        return this.internationalMobileSubscriberIdentity;
-    }
-
-    /**
-     * Set the internationalMobileSubscriberIdentity property: The international mobile subscriber identity (IMSI) for
-     * the SIM.
-     *
-     * @param internationalMobileSubscriberIdentity the internationalMobileSubscriberIdentity value to set.
-     * @return the SimPropertiesFormat object itself.
-     */
-    public SimPropertiesFormat withInternationalMobileSubscriberIdentity(String internationalMobileSubscriberIdentity) {
-        this.internationalMobileSubscriberIdentity = internationalMobileSubscriberIdentity;
-        return this;
-    }
-
-    /**
-     * Get the integratedCircuitCardIdentifier property: The integrated circuit card ID (ICCID) for the SIM.
-     *
-     * @return the integratedCircuitCardIdentifier value.
-     */
-    public String integratedCircuitCardIdentifier() {
-        return this.integratedCircuitCardIdentifier;
-    }
-
-    /**
-     * Set the integratedCircuitCardIdentifier property: The integrated circuit card ID (ICCID) for the SIM.
-     *
-     * @param integratedCircuitCardIdentifier the integratedCircuitCardIdentifier value to set.
-     * @return the SimPropertiesFormat object itself.
-     */
-    public SimPropertiesFormat withIntegratedCircuitCardIdentifier(String integratedCircuitCardIdentifier) {
-        this.integratedCircuitCardIdentifier = integratedCircuitCardIdentifier;
-        return this;
+    /** Creates an instance of SimPropertiesFormat class. */
+    public SimPropertiesFormat() {
     }
 
     /**
@@ -174,69 +70,38 @@ public final class SimPropertiesFormat {
         return this;
     }
 
-    /**
-     * Get the deviceType property: An optional free-form text field that can be used to record the device type this SIM
-     * is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered based on
-     * this value.
-     *
-     * @return the deviceType value.
-     */
-    public String deviceType() {
-        return this.deviceType;
+    /** {@inheritDoc} */
+    @Override
+    public SimPropertiesFormat withInternationalMobileSubscriberIdentity(String internationalMobileSubscriberIdentity) {
+        super.withInternationalMobileSubscriberIdentity(internationalMobileSubscriberIdentity);
+        return this;
     }
 
-    /**
-     * Set the deviceType property: An optional free-form text field that can be used to record the device type this SIM
-     * is associated with, for example 'Video camera'. The Azure portal allows SIMs to be grouped and filtered based on
-     * this value.
-     *
-     * @param deviceType the deviceType value to set.
-     * @return the SimPropertiesFormat object itself.
-     */
+    /** {@inheritDoc} */
+    @Override
+    public SimPropertiesFormat withIntegratedCircuitCardIdentifier(String integratedCircuitCardIdentifier) {
+        super.withIntegratedCircuitCardIdentifier(integratedCircuitCardIdentifier);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public SimPropertiesFormat withDeviceType(String deviceType) {
-        this.deviceType = deviceType;
+        super.withDeviceType(deviceType);
         return this;
     }
 
-    /**
-     * Get the simPolicy property: The SIM policy used by this SIM.
-     *
-     * @return the simPolicy value.
-     */
-    public SimPolicyResourceId simPolicy() {
-        return this.simPolicy;
-    }
-
-    /**
-     * Set the simPolicy property: The SIM policy used by this SIM.
-     *
-     * @param simPolicy the simPolicy value to set.
-     * @return the SimPropertiesFormat object itself.
-     */
+    /** {@inheritDoc} */
+    @Override
     public SimPropertiesFormat withSimPolicy(SimPolicyResourceId simPolicy) {
-        this.simPolicy = simPolicy;
+        super.withSimPolicy(simPolicy);
         return this;
     }
 
-    /**
-     * Get the staticIpConfiguration property: A list of static IP addresses assigned to this SIM. Each address is
-     * assigned at a defined network scope, made up of {attached data network, slice}.
-     *
-     * @return the staticIpConfiguration value.
-     */
-    public List<SimStaticIpProperties> staticIpConfiguration() {
-        return this.staticIpConfiguration;
-    }
-
-    /**
-     * Set the staticIpConfiguration property: A list of static IP addresses assigned to this SIM. Each address is
-     * assigned at a defined network scope, made up of {attached data network, slice}.
-     *
-     * @param staticIpConfiguration the staticIpConfiguration value to set.
-     * @return the SimPropertiesFormat object itself.
-     */
+    /** {@inheritDoc} */
+    @Override
     public SimPropertiesFormat withStaticIpConfiguration(List<SimStaticIpProperties> staticIpConfiguration) {
-        this.staticIpConfiguration = staticIpConfiguration;
+        super.withStaticIpConfiguration(staticIpConfiguration);
         return this;
     }
 
@@ -245,21 +110,8 @@ public final class SimPropertiesFormat {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (internationalMobileSubscriberIdentity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property internationalMobileSubscriberIdentity in model"
-                            + " SimPropertiesFormat"));
-        }
-        if (simPolicy() != null) {
-            simPolicy().validate();
-        }
-        if (staticIpConfiguration() != null) {
-            staticIpConfiguration().forEach(e -> e.validate());
-        }
+        super.validate();
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SimPropertiesFormat.class);
 }
