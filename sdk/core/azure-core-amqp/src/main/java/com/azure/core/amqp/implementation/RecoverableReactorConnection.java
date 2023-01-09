@@ -32,6 +32,10 @@ public final class RecoverableReactorConnection<C extends ReactorConnection> imp
     private final AmqpErrorContext errorContext;
     private final ClientLogger logger;
     private final Mono<C> createOrGetCachedConnection;
+    // Note: The only reason to have below 'currentConnection' is to close the cached Connection internally
+    // upon 'RecoverableReactorConnection' termination. We must never expose 'currentConnection' variable to
+    // any dependent type; instead, the dependent type must acquire Connection only through the cache route,
+    // i.e., by subscribing to 'createOrGetCachedConnection' via 'get()' getter.
     private volatile C currentConnection;
     private volatile boolean terminated;
 
@@ -93,7 +97,7 @@ public final class RecoverableReactorConnection<C extends ReactorConnection> imp
                 final C connection = (C) c;
                 currentConnection = connection;
                 if (terminated) {
-                    currentConnection.closeAsync(closeSignal("Connection recovery support is terminated.")).subscribe();
+                    connection.closeAsync(closeSignal("Connection recovery support is terminated.")).subscribe();
                     sink.error(TERMINATED_ERROR);
                 } else {
                     logger.atInfo()
