@@ -433,7 +433,8 @@ class APISpec extends StorageSpec {
                 def readCount2 = stream2.read(buffer2)
 
                 // Use TestUtils.assertArraysEqual as it is more optimized than Groovy/Spock's '==' for arrays.
-                assert readCount1 == readCount2 && TestUtils.assertArraysEqual(buffer1, buffer2)
+                assert readCount1 == readCount2
+                TestUtils.assertArraysEqual(buffer1, buffer2)
 
                 pos += expectedReadCount
             }
