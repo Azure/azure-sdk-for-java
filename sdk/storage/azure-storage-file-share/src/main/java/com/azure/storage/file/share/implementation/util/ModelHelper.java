@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.share.implementation.util;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.ParallelTransferOptions;
@@ -36,6 +37,8 @@ public class ModelHelper {
 
     private static final long MAX_FILE_PUT_RANGE_BYTES = 4 * Constants.MB;
     private static final int FILE_DEFAULT_NUMBER_OF_BUFFERS = 8;
+
+    private static final HttpHeaderName X_MS_ERROR_CODE = HttpHeaderName.fromString("x-ms-error-code");
 
     /**
      * Fills in default values for a ParallelTransferOptions where no value has been set. This will construct a new
@@ -190,11 +193,11 @@ public class ModelHelper {
         }
 
         return ShareFileDownloadHeadersConstructorProxy.create(headers)
-            .setErrorCode(rawHeaders.getValue("x-ms-error-code"));
+            .setErrorCode(rawHeaders.getValue(X_MS_ERROR_CODE));
     }
 
     public static String getETag(HttpHeaders headers) {
-        return headers.getValue("ETag");
+        return headers.getValue(HttpHeaderName.ETAG);
     }
 
     public static ShareFileItemProperties transformFileProperty(FileProperty property) {
