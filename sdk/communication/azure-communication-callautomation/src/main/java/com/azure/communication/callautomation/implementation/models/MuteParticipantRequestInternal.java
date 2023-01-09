@@ -7,13 +7,13 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The request payload for adding participants to the call. */
+/** The request payload for muting participants from the call. */
 @Fluent
 public final class MuteParticipantRequestInternal {
     /*
      * The targetParticipant property.
      */
-    @JsonProperty(value = "targetParticipant")
+    @JsonProperty(value = "targetParticipant", required = true)
     private CommunicationIdentifierModel targetParticipant;
 
     /*
