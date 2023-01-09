@@ -12,7 +12,6 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisPassword;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
-import org.springframework.data.redis.connection.jedis.JedisConnection;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisClientConfig;
 import redis.clients.jedis.JedisPoolConfig;
@@ -31,17 +30,6 @@ class AzureJedisConnectionFactoryTest {
     RedisStandaloneConfiguration standaloneConfig;
     JedisClientConfiguration clientConfiguration;
     Supplier<String> credentialSupplier;
-
-    @Test
-    void testPostProcessConnection() {
-        AzureJedisConnectionFactory azureJedisConnectionFactory = new AzureJedisConnectionFactory(standaloneConfig, clientConfiguration, credentialSupplier);
-        JedisConnection mockJedisConnection = mock(JedisConnection.class);
-
-        JedisConnection jedisConnection = azureJedisConnectionFactory.postProcessConnection(mockJedisConnection);
-
-        Assertions.assertEquals(mockJedisConnection, jedisConnection);
-
-    }
 
     @Test
     void testFetchJedisConnectorWithNoPool() {
@@ -140,23 +128,6 @@ class AzureJedisConnectionFactoryTest {
         Assertions.assertNotNull(jedisClientConfig);
         Assertions.assertTrue(initialized);
         Assertions.assertNotNull(pool);
-
-    }
-
-    @Test
-    void testCreateRedisPool() {
-        standaloneConfig = mock(RedisStandaloneConfiguration.class);
-        when(standaloneConfig.getUsername()).thenReturn("fake-userName");
-        when(standaloneConfig.getHostName()).thenReturn("fake-hostName");
-        when(standaloneConfig.getPort()).thenReturn(1233);
-
-        clientConfiguration = mock(JedisClientConfiguration.class);
-        when(clientConfiguration.getPoolConfig()).thenReturn(Optional.of(new JedisPoolConfig()));
-
-        AzureJedisConnectionFactory azureJedisConnectionFactory = new AzureJedisConnectionFactory(standaloneConfig, clientConfiguration, credentialSupplier);
-        Pool<Jedis> redisPool = azureJedisConnectionFactory.createRedisPool();
-
-        Assertions.assertNotNull(redisPool);
 
     }
 

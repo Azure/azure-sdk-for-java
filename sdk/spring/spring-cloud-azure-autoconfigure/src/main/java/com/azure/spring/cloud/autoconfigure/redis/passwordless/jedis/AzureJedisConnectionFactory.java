@@ -229,12 +229,12 @@ public class AzureJedisConnectionFactory implements InitializingBean, Disposable
         return getReadTimeout();
     }
 
-    protected JedisConnection postProcessConnection(JedisConnection connection) {
+    private JedisConnection postProcessConnection(JedisConnection connection) {
         return connection;
     }
 
     @SuppressWarnings("unchecked")
-    protected Pool<Jedis> createRedisPool() {
+    private Pool<Jedis> createRedisPool() {
         return new AzureJedisPool(this.clientConfiguration.getPoolConfig().get(),
             new HostAndPort(this.standaloneConfig.getHostName(), this.standaloneConfig.getPort()),
             this.jedisClientConfig);
