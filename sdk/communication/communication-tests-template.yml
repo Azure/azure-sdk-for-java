@@ -52,9 +52,6 @@ stages:
       PreSteps:
         - bash: echo "##vso[task.setvariable variable=DefaultTestOptions]-Djacoco.skip=true $(DefaultTestOptions)"
           condition: not(startsWith(variables['System.StageName'], 'Public'))
-        - bash: echo "Adding in a delay"
-        - bash: sleep 20m
-        - bash: echo "Delay done"
       PostSteps:
         - task: PublishCodeCoverageResults@1
           condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'), startsWith(variables['System.StageName'], 'Public'))
