@@ -11,6 +11,15 @@ public final class CosmosContainerIdentity {
 
 
     public CosmosContainerIdentity(String databaseName, String containerName) {
+
+        if (databaseName == null || databaseName.isEmpty()) {
+            throw new IllegalArgumentException("databaseName is null or empty");
+        }
+
+        if (containerName == null || containerName.isEmpty()) {
+            throw new IllegalArgumentException("containerName is null or empty");
+        }
+
         this.containerName = containerName;
         this.databaseName = databaseName;
 
@@ -19,6 +28,11 @@ public final class CosmosContainerIdentity {
     }
 
     public CosmosContainerIdentity(String containerLink) {
+
+        if (containerLink == null || containerLink.isEmpty()) {
+            throw new IllegalArgumentException("containerLink is null or empty");
+        }
+
         this.containerLink = containerLink;
         // TODO: Extract databaseName and containerName
         this.databaseName = "";
