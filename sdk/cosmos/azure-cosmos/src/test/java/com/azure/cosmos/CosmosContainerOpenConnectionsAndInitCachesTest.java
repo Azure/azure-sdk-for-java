@@ -28,7 +28,10 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
@@ -135,14 +138,14 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         regions.add("East US");
         regions.add("West US");
 
-        List<String> containerLinks = new ArrayList<>();
-        containerLinks.add(containerLink1);
-        containerLinks.add(containerLink2);
-        containerLinks.add(containerLink3);
+        List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
+        cosmosContainerIdentities.add(new CosmosContainerIdentity(containerLink1));
+        cosmosContainerIdentities.add(new CosmosContainerIdentity(containerLink1));
+        cosmosContainerIdentities.add(new CosmosContainerIdentity(containerLink1));
 
         EagerConnectionConfig eagerConnectionConfig = new EagerConnectionConfigBuilder()
-                .addContainerLinks(containerLinks)
-                .addPreferredRegions(regions)
+                .addContainerIdentities(cosmosContainerIdentities)
+                .addEagerConnectionRegions(regions)
                 .build();
 
         CosmosClient cosmosClient = new CosmosClientBuilder()

@@ -140,8 +140,8 @@ public class GlobalAddressResolver implements IAddressResolver {
         // Strip the leading "/", which follows the same format for document requests
         // TODO: currently, the cache key used for collectionCache is inconsistent: some are using path with "/", some use path with stripped leading "/",
         // TODO: ideally it should have been consistent across
-        return Flux.fromIterable(eagerConnectionConfig.getContainerLinks())
-                .flatMap(containerLink -> Mono.just(StringUtils.strip(containerLink, Constants.Properties.PATH_SEPARATOR)))
+        return Flux.fromIterable(eagerConnectionConfig.getCosmosContainerIdentities())
+                .flatMap(containerIdentity -> Mono.just(StringUtils.strip(containerIdentity.getContainerLink(), Constants.Properties.PATH_SEPARATOR)))
                 .flatMap(cacheKey -> this.collectionCache.resolveByNameAsync(null, cacheKey, null)
                         .flatMapMany(collection -> {
                             if (collection == null) {

@@ -1,20 +1,18 @@
 package com.azure.cosmos;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 public final class EagerConnectionConfig {
-    private final List<String> containerLinks;
+    private final List<CosmosContainerIdentity> cosmosContainerIdentities;
     private final List<String> eagerConnectionRegions;
 
-    EagerConnectionConfig(List<String> containerLinks, List<String> eagerConnectionRegions) {
-        this.containerLinks = containerLinks;
+    EagerConnectionConfig(List<CosmosContainerIdentity> cosmosContainerIdentities, List<String> eagerConnectionRegions) {
+        this.cosmosContainerIdentities = cosmosContainerIdentities;
         this.eagerConnectionRegions = eagerConnectionRegions;
     }
 
-    public List<String> getContainerLinks() {
-        return containerLinks;
+    public List<CosmosContainerIdentity> getCosmosContainerIdentities() {
+        return cosmosContainerIdentities;
     }
 
     public List<String> getEagerConnectionRegions() {
