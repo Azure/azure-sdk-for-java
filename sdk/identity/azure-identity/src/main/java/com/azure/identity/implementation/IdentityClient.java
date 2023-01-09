@@ -765,11 +765,11 @@ public class IdentityClient extends IdentityClientBase {
                                                                       TokenRequestContext request) {
         return Mono.fromCallable(() -> {
             HttpURLConnection connection = null;
-            String payload = "resource="
-                + URLEncoder.encode(ScopeUtil.scopesToResource(request.getScopes()), StandardCharsets.UTF_8.name())
+            String payload = identityEndpoint + "?resource="
+                + urlEncode(ScopeUtil.scopesToResource(request.getScopes()))
                 + "&api-version=" + ARC_MANAGED_IDENTITY_ENDPOINT_API_VERSION;
 
-            URL url = getUrl(identityEndpoint + "?" + payload);
+            URL url = getUrl(payload);
 
 
             String secretKey = null;
@@ -857,8 +857,7 @@ public class IdentityClient extends IdentityClientBase {
 
                 String urlParams = "client_assertion=" + assertionToken
                     + "&client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer&client_id="
-                    + clientId + "&grant_type=client_credentials&scope="
-                    + URLEncoder.encode(request.getScopes().get(0), StandardCharsets.UTF_8.name());
+                    + clientId + "&grant_type=client_credentials&scope=" + urlEncode(request.getScopes().get(0));
 
                 byte[] postData = urlParams.getBytes(StandardCharsets.UTF_8);
                 int postDataLength = postData.length;
@@ -905,26 +904,27 @@ public class IdentityClient extends IdentityClientBase {
             HttpsURLConnection connection = null;
 
             String resource = ScopeUtil.scopesToResource(request.getScopes());
-            StringBuilder payload = new StringBuilder();
+            StringBuilder payload = new StringBuilder(1024)
+                .append(identityEndpoint);
 
-            payload.append("resource=");
-            payload.append(URLEncoder.encode(resource, StandardCharsets.UTF_8.name()));
+            payload.append("?resource=");
+            payload.append(urlEncode(resource));
             payload.append("&api-version=");
             payload.append(SERVICE_FABRIC_MANAGED_IDENTITY_API_VERSION);
             if (clientId != null) {
                 LOGGER.warning("User assigned managed identities are not supported in the Service Fabric environment.");
                 payload.append("&client_id=");
-                payload.append(URLEncoder.encode(clientId, StandardCharsets.UTF_8.name()));
+                payload.append(urlEncode(clientId));
             }
 
             if (resourceId != null) {
                 LOGGER.warning("User assigned managed identities are not supported in the Service Fabric environment.");
                 payload.append("&mi_res_id=");
-                payload.append(URLEncoder.encode(resourceId, StandardCharsets.UTF_8.name()));
+                payload.append(urlEncode(resourceId));
             }
 
             try {
-                URL url = getUrl(identityEndpoint + "?" + payload);
+                URL url = getUrl(payload.toString());
                 connection = (HttpsURLConnection) url.openConnection();
 
                 IdentitySslUtil.addTrustedCertificateThumbprint(connection, thumbprint, LOGGER);
@@ -983,10 +983,11 @@ public class IdentityClient extends IdentityClientBase {
 
             String resource = ScopeUtil.scopesToResource(request.getScopes());
             HttpURLConnection connection = null;
-            StringBuilder payload = new StringBuilder();
+            StringBuilder payload = new StringBuilder(1024)
+                .append(endpoint);
 
-            payload.append("resource=");
-            payload.append(URLEncoder.encode(resource, StandardCharsets.UTF_8.name()));
+            payload.append("?resource=");
+            payload.append(urlEncode(resource));
             payload.append("&api-version=");
             payload.append(MSI_ENDPOINT_VERSION);
             if (clientId != null) {
@@ -999,7 +1000,7 @@ public class IdentityClient extends IdentityClientBase {
                     }
                     payload.append("&clientid=");
                 }
-                payload.append(URLEncoder.encode(clientId, StandardCharsets.UTF_8.name()));
+                payload.append(urlEncode(clientId));
             }
             if (resourceId != null) {
                 if (endpointVersion.equals(MSI_ENDPOINT_VERSION) && headerValue == null) {
@@ -1007,10 +1008,10 @@ public class IdentityClient extends IdentityClientBase {
                     LOGGER.warning("User assigned managed identities are not supported in the Cloud Shell environment.");
                 }
                 payload.append("&mi_res_id=");
-                payload.append(URLEncoder.encode(resourceId, StandardCharsets.UTF_8.name()));
+                payload.append(urlEncode(resourceId));
             }
             try {
-                URL url = getUrl(endpoint + "?" + payload);
+                URL url = getUrl(payload.toString());
                 connection = (HttpURLConnection) url.openConnection();
 
                 connection.setRequestMethod("GET");
@@ -1053,14 +1054,14 @@ public class IdentityClient extends IdentityClientBase {
         try {
             payload.append("api-version=2018-02-01");
             payload.append("&resource=");
-            payload.append(URLEncoder.encode(resource, StandardCharsets.UTF_8.name()));
+            payload.append(urlEncode(resource));
             if (clientId != null) {
                 payload.append("&client_id=");
-                payload.append(URLEncoder.encode(clientId, StandardCharsets.UTF_8.name()));
+                payload.append(urlEncode(clientId));
             }
             if (resourceId != null) {
                 payload.append("&mi_res_id=");
-                payload.append(URLEncoder.encode(resourceId, StandardCharsets.UTF_8.name()));
+                payload.append(urlEncode(resourceId));
             }
         } catch (IOException exception) {
             return Mono.error(exception);
@@ -1237,5 +1238,9 @@ public class IdentityClient extends IdentityClientBase {
 
     private boolean isADFSTenant() {
         return ADFS_TENANT.equals(this.tenantId);
+    }
+
+    private static String urlEncode(String value) throws IOException {
+        return URLEncoder.encode(value, StandardCharsets.UTF_8.name());
     }
 }
