@@ -25,10 +25,5 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: spring-experimental
-    Artifacts:
-      - name: spring-cloud-azure-native-configuration
-        groupId: com.azure.spring
-        safeName: springcloudazurenativeconfiguration
-        skipPublishDocMs: true
     MatrixFilters:
       - JavaTestVersion=^(?!1.8).*
