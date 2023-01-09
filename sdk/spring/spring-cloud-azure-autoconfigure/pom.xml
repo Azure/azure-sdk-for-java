@@ -384,6 +384,7 @@
                 <include>org.springframework.security:spring-security-config:[5.7.6]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->
                 <include>org.springframework:spring-jms:[5.3.24]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
                 <include>org.springframework:spring-jdbc:[5.3.24]</include> <!-- {x-include-update;org.springframework:spring-jdbc;external_dependency} -->
+                <include>redis.clients:jedis:[3.8.0]</include> <!-- {x-include-update;spring_redis.clients:jedis;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
