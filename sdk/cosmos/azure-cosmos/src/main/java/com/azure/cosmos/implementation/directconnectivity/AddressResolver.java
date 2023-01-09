@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionConfig;
+import com.azure.cosmos.EagerConnectionConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.DocumentCollection;
@@ -93,7 +93,7 @@ public class AddressResolver implements IAddressResolver {
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(ConnectionConfig containerConnectionConfig) {
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(EagerConnectionConfig containerEagerConnectionConfig) {
         return Flux.empty();
     }
 

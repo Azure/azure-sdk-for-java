@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.ConnectionConfig;
+import com.azure.cosmos.EagerConnectionConfig;
 import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
@@ -38,5 +38,5 @@ public interface IStoreClient {
     }
 
     Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink);
-    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(ConnectionConfig containerConnectionConfig);
+    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(EagerConnectionConfig containerEagerConnectionConfig);
 }

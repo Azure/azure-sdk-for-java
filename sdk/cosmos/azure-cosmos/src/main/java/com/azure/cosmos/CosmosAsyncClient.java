@@ -87,7 +87,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final boolean clientMetricsEnabled;
     private final boolean isSendClientTelemetryToServiceEnabled;
     private final MeterRegistry clientMetricRegistrySnapshot;
-    private final List<ConnectionConfig> containerConnectionConfigs;
+    private final EagerConnectionConfig eagerConnectionConfig;
 
     static {
         ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
@@ -111,7 +111,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.tokenCredential = builder.getTokenCredential();
         this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         this.enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
-        this.containerConnectionConfigs = builder.getContainerConnectionConfigs();
+        this.eagerConnectionConfig = builder.getConnectionConfig();
         ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor
             telemetryConfigAccessor = ImplementationBridgeHelpers
             .CosmosClientTelemetryConfigHelper
@@ -598,9 +598,12 @@ public final class CosmosAsyncClient implements Closeable {
     // TODO: Find a way to set isInitialized to true for containers whose
     // TODO: connections have been opened
     public Flux<Void> openConnectionsAndInitCaches() {
-        return Flux.fromIterable(this.containerConnectionConfigs)
-                .flatMap(this.asyncDocumentClient::openConnectionsAndInitCaches)
-                .flatMap(openConnectionResponse -> Mono.empty());
+        if (this.eagerConnectionConfig != null) {
+            return Flux.just(this.eagerConnectionConfig)
+                    .flatMap(eagerConnectionConfig -> this.asyncDocumentClient.openConnectionsAndInitCaches(eagerConnectionConfig))
+                    .flatMap(openConnectionResponse -> Mono.empty());
+        }
+        return Flux.empty();
     }
 
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options){

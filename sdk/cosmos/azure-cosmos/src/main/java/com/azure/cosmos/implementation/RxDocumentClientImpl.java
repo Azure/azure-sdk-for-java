@@ -4308,8 +4308,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(ConnectionConfig connectionConfig) {
-        return this.storeModel.openConnectionsAndInitCaches(connectionConfig);
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(EagerConnectionConfig eagerConnectionConfig) {
+        return this.storeModel.openConnectionsAndInitCaches(eagerConnectionConfig);
     }
 
     private static SqlQuerySpec createLogicalPartitionScanQuerySpec(

@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionConfig;
+import com.azure.cosmos.EagerConnectionConfig;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -62,8 +62,8 @@ public class ServerStoreModel implements RxStoreModel {
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(ConnectionConfig connectionConfig) {
-        return this.storeClient.openConnectionsAndInitCaches(connectionConfig);
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(EagerConnectionConfig eagerConnectionConfig) {
+        return this.storeClient.openConnectionsAndInitCaches(eagerConnectionConfig);
     }
 
 }

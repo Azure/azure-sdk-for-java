@@ -23,7 +23,6 @@ import com.azure.cosmos.models.CosmosPermissionProperties;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -122,7 +121,7 @@ public class CosmosClientBuilder implements
     private CosmosClientTelemetryConfig clientTelemetryConfig;
     private ApiType apiType = null;
     private Boolean clientTelemetryEnabledOverride = null;
-    private List<ConnectionConfig> containerConnectionConfigs;
+    private EagerConnectionConfig eagerConnectionConfig;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -134,7 +133,6 @@ public class CosmosClientBuilder implements
         this.userAgentSuffix = "";
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
         this.clientTelemetryConfig = new CosmosClientTelemetryConfig();
-        this.containerConnectionConfigs = new ArrayList<>();
     }
 
     CosmosClientBuilder metadataCaches(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
@@ -432,8 +430,8 @@ public class CosmosClientBuilder implements
         return credential;
     }
 
-    List<ConnectionConfig> getContainerConnectionConfigs() {
-        return containerConnectionConfigs;
+    EagerConnectionConfig getConnectionConfig() {
+        return eagerConnectionConfig;
     }
 
     /**
@@ -687,8 +685,8 @@ public class CosmosClientBuilder implements
         return this;
     }
 
-    public CosmosClientBuilder addConnectionConfig(ConnectionConfig containerConnectionConfig) {
-        this.containerConnectionConfigs.add(containerConnectionConfig);
+    public CosmosClientBuilder openConnectionsAndInitCaches(EagerConnectionConfig eagerConnectionConfig) {
+        this.eagerConnectionConfig = eagerConnectionConfig;
         return this;
     }
 
@@ -843,7 +841,9 @@ public class CosmosClientBuilder implements
     public CosmosAsyncClient buildAsyncClient() {
         validateConfig();
         buildConnectionPolicy();
-        return new CosmosAsyncClient(this);
+        CosmosAsyncClient cosmosAsyncClient = new CosmosAsyncClient(this);
+        cosmosAsyncClient.openConnectionsAndInitCaches().subscribe();
+        return cosmosAsyncClient;
     }
 
     /**
@@ -855,7 +855,9 @@ public class CosmosClientBuilder implements
 
         validateConfig();
         buildConnectionPolicy();
-        return new CosmosClient(this);
+        CosmosClient cosmosClient = new CosmosClient(this);
+        cosmosClient.openConnectionsAndInitCaches();
+        return cosmosClient;
     }
 
     //  Connection policy has to be built before it can be used by this builder

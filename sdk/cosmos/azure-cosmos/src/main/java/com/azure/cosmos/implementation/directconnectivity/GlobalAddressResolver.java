@@ -3,8 +3,8 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.ConnectionConfig;
-import com.azure.cosmos.ConnectionConfigBuilder;
+import com.azure.cosmos.EagerConnectionConfig;
+import com.azure.cosmos.EagerConnectionConfigBuilder;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Constants;
@@ -131,16 +131,16 @@ public class GlobalAddressResolver implements IAddressResolver {
                                         .map(pkRange -> new PartitionKeyRangeIdentity(collection.getResourceId(), pkRange.getId()))
                                         .collect(Collectors.toList());
                             })
-                            .flatMapMany(pkRangeIdentities -> this.openConnectionsAndInitCachesInternal(collection, pkRangeIdentities, new ConnectionConfigBuilder().buildEmptyConfig()));
+                            .flatMapMany(pkRangeIdentities -> this.openConnectionsAndInitCachesInternal(collection, pkRangeIdentities, new EagerConnectionConfigBuilder().buildEmptyConfig()));
                 });
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(ConnectionConfig connectionConfig) {
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(EagerConnectionConfig eagerConnectionConfig) {
         // Strip the leading "/", which follows the same format for document requests
         // TODO: currently, the cache key used for collectionCache is inconsistent: some are using path with "/", some use path with stripped leading "/",
         // TODO: ideally it should have been consistent across
-        return Flux.fromIterable(connectionConfig.getContainerLinks())
+        return Flux.fromIterable(eagerConnectionConfig.getContainerLinks())
                 .flatMap(containerLink -> Mono.just(StringUtils.strip(containerLink, Constants.Properties.PATH_SEPARATOR)))
                 .flatMap(cacheKey -> this.collectionCache.resolveByNameAsync(null, cacheKey, null)
                         .flatMapMany(collection -> {
@@ -169,19 +169,19 @@ public class GlobalAddressResolver implements IAddressResolver {
                                                 .map(pkRange -> new PartitionKeyRangeIdentity(collection.getResourceId(), pkRange.getId()))
                                                 .collect(Collectors.toList());
                                     })
-                                    .flatMapMany(pkRangeIdentities -> this.openConnectionsAndInitCachesInternal(collection, pkRangeIdentities, connectionConfig));
+                                    .flatMapMany(pkRangeIdentities -> this.openConnectionsAndInitCachesInternal(collection, pkRangeIdentities, eagerConnectionConfig));
                         }));
     }
 
     private Flux<OpenConnectionResponse> openConnectionsAndInitCachesInternal(
             DocumentCollection collection,
             List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities,
-            ConnectionConfig connectionConfig
+            EagerConnectionConfig eagerConnectionConfig
             ) {
 
         // TODO: Check if containerConnectionConfig has preferredRegions set
         // TODO: for proactively adding opening connections for all regions
-        if (!connectionConfig.getPreferredRegions().equals(Collections.emptySet())) {
+        if (!eagerConnectionConfig.getEagerConnectionRegions().equals(Collections.emptySet())) {
             return Flux.fromStream(this.endpointManager.getReadEndpoints().stream())
                     .flatMap(readEndpoint -> {
                         // TODO: Open connections only for regions present in preferredRegions

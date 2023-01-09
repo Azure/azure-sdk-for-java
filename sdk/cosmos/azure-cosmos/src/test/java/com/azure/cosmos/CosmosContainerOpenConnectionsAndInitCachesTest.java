@@ -28,9 +28,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
@@ -129,21 +127,20 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         CosmosAsyncContainer cosmosContainer2 = directCosmosAsyncDatabase.getContainer("id2");
         CosmosAsyncContainer cosmosContainer3 = directCosmosAsyncDatabase.getContainer("id3");
 
-        String linkContainer1 = cosmosContainer1.getLink();
-        String linkContainer2 = cosmosContainer2.getLink();
-        String linkContainer3 = cosmosContainer3.getLink();
+        String containerLink1 = cosmosContainer1.getLink();
+        String containerLink2 = cosmosContainer2.getLink();
+        String containerLink3 = cosmosContainer3.getLink();
 
-        Set<String> regions = new HashSet<>();
+        List<String> regions = new ArrayList<>();
         regions.add("East US");
         regions.add("West US");
 
-        Set<String> containerLinks = new HashSet<>();
-        containerLinks.add(linkContainer1);
-        containerLinks.add(linkContainer2);
-        containerLinks.add(linkContainer3);
+        List<String> containerLinks = new ArrayList<>();
+        containerLinks.add(containerLink1);
+        containerLinks.add(containerLink2);
+        containerLinks.add(containerLink3);
 
-
-        ConnectionConfig connectionConfig = new ConnectionConfigBuilder()
+        EagerConnectionConfig eagerConnectionConfig = new EagerConnectionConfigBuilder()
                 .addContainerLinks(containerLinks)
                 .addPreferredRegions(regions)
                 .build();
@@ -151,14 +148,12 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         CosmosClient cosmosClient = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
-                .addConnectionConfig(connectionConfig)
+                .openConnectionsAndInitCaches(eagerConnectionConfig)
                 .contentResponseOnWriteEnabled(true)
                 .preferredRegions(Arrays.asList("East US", "West US"))
                 .endpointDiscoveryEnabled(true)
                 .directMode()
                 .buildClient();
-
-        cosmosClient.openConnectionsAndInitCaches();
 
     }
 

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.ConnectionConfig;
+import com.azure.cosmos.EagerConnectionConfig;
 import com.azure.cosmos.implementation.spark.OperationContext;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.implementation.spark.OperationListener;
@@ -60,5 +60,5 @@ public interface RxStoreModel {
      * @return a flux of {@link OpenConnectionResponse}.
      */
     Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink);
-    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(ConnectionConfig containerConnectionConfig);
+    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(EagerConnectionConfig containerEagerConnectionConfig);
 }
