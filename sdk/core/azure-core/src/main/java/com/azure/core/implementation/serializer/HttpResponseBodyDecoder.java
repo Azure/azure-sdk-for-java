@@ -51,7 +51,12 @@ public final class HttpResponseBodyDecoder {
         HttpResponseDecodeData decodeData) {
         ensureRequestSet(httpResponse);
 
-        if (isErrorStatus(httpResponse.getStatusCode(), decodeData)) {
+        // Check for HEAD HTTP method first as it's possible for the underlying HttpClient to treat a non-existent
+        // response body as an empty byte array.
+        if (httpResponse.getRequest().getHttpMethod() == HttpMethod.HEAD) {
+            // RFC: A response to a HEAD method should not have a body. If so, it must be ignored
+            return null;
+        } else if (isErrorStatus(httpResponse.getStatusCode(), decodeData)) {
             try {
                 return deserializeBody(body,
                     decodeData.getUnexpectedException(httpResponse.getStatusCode()).getExceptionBodyType(),
@@ -62,9 +67,6 @@ public final class HttpResponseBodyDecoder {
                 LOGGER.warning("Failed to deserialize the error entity.", ex);
                 return null;
             }
-        } else if (httpResponse.getRequest().getHttpMethod() == HttpMethod.HEAD) {
-            // RFC: A response to a HEAD method should not have a body. If so, it must be ignored
-            return null;
         } else {
             if (!decodeData.isReturnTypeDecodeable()) {
                 return null;
@@ -89,13 +91,13 @@ public final class HttpResponseBodyDecoder {
     static Type decodedType(final HttpResponse httpResponse, final HttpResponseDecodeData decodeData) {
         ensureRequestSet(httpResponse);
 
-        if (isErrorStatus(httpResponse.getStatusCode(), decodeData)) {
+        if (httpResponse.getRequest().getHttpMethod() == HttpMethod.HEAD) {
+            // RFC: A response to a HEAD method should not have a body. If so, it must be ignored
+            return null;
+        } else if (isErrorStatus(httpResponse.getStatusCode(), decodeData)) {
             // For error cases we always try to decode the non-empty response body
             // either to a strongly typed exception model or to Object
             return decodeData.getUnexpectedException(httpResponse.getStatusCode()).getExceptionBodyType();
-        } else if (httpResponse.getRequest().getHttpMethod() == HttpMethod.HEAD) {
-            // RFC: A response to a HEAD method should not have a body. If so, it must be ignored
-            return null;
         } else {
             return decodeData.isReturnTypeDecodeable() ? extractEntityTypeFromReturnType(decodeData) : null;
         }
