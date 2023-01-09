@@ -1,53 +1,59 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/rotatekey79282014/create?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/rotatekey74297601/create?api-version=7.3",
     "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "717",
+      "content-length" : "693",
+      "x-ms-keyvault-rbac-assignment-id" : "f4e2dde1-5ff5-56c6-8923-012f34e01597",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 11 Nov 2022 22:30:07 GMT",
+      "Date" : "Tue, 29 Mar 2022 03:03:35 GMT",
+      "x-ms-keyvault-rbac-cache" : "ra_age=4560;da_age=4560;rd_age=4560;brd_age=9636;ra_notif_age=7342;dec_lev=2;",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "westus2",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "66d44a01-8b4a-4234-ba25-184230259466",
-      "x-ms-keyvault-service-version" : "1.9.576.1",
-      "Body" : "{\"key\":{\"kid\":\"https://vicolinakeyvault.vault.azure.net/keys/rotatekey79282014/a7a27056a8664d93b31d8ab603ef7f37\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"8DtudbL2YBkygx4csXBXa4g5nZXRKpgP3F3HoCUQ3EC-Ury04gENzsduW43x2S17zKvXL0Jdk6PxzmG7eczplGWDCZGAn0SWdJEsHqqsbIRRWSp1kScD0D0PNuj3eCf1POddA28uoSNyTLkfq9TK8P-FKk8pOKfF58vgw32XgY7NafotnFaS0rH1kga7IrgqhQpXBA7R4BFjI2PgrPk8mIjYEyN-rXYxS55Tq45z-whGOmz5YZB2DD-vcvwps8EYLTyY-9BHXSKkcRHW6387tsyQGcSc1PuALA8jI7nWYv4vNvgZ4Ws1iqYkcsvgA2Xxw0zwO7X9kn5_xhtX8su8iQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"created\":1668205807,\"updated\":1668205807,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7,\"exportable\":false}}",
-      "Content-Type" : "application/json; charset=utf-8"
+      "x-ms-request-id" : "fd99bfe8-63a0-4440-837a-792fcbde44e6",
+      "x-ms-keyvault-service-version" : "1.9.331.5",
+      "Body" : "{\"key\":{\"kid\":\"https://azsdktests.vault.azure.net/keys/rotatekey74297601/53c4fbd9046041989e59c68ff47c23d4\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"x2qIclI5RB38YGlvccw7TWmGyWM0bxZB3LO7GDRzdIHyfwmfFtjd4I_oFrBoKnGdOon-7CutmcDd_s8fANRj6mGMiEFp_zmfuxETvOOvVQJLS0nVBrzTWgmGiAGVEakYs8fOCsA1s7DOUh5FwlZcJZWMg9wLghNRuHQ6anHCfxSyZzyu18LZ_08Nr4t1gVQRWCorzROhfnbTfQE8H7EubFjlHjQrPUt1SJa_p8iLjIV4vkZE5SaTQezaEHtnh3WvctbGHVVr0kqdKEYxd73Btog6cpKLXhDnv5Uq5cD_shoP3mIE4Ddt_sQe8-C5nHHacZBSoG3TyEQQ9dc9j-vqHQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"created\":1648523015,\"updated\":1648523015,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.vault.azure.net/keys/rotatekey79282014/rotationpolicy?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/rotatekey74297601/rotationpolicy?api-version=7.3",
     "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)"
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
     },
     "Response" : {
       "content-length" : "106",
+      "x-ms-keyvault-rbac-assignment-id" : "f4e2dde1-5ff5-56c6-8923-012f34e01597",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Fri, 11 Nov 2022 22:30:07 GMT",
+      "Date" : "Tue, 29 Mar 2022 03:03:35 GMT",
+      "x-ms-keyvault-rbac-cache" : "ra_age=4560;da_age=4560;rd_age=4560;brd_age=9636;ra_notif_age=7342;dec_lev=1;",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "westus2",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "x-ms-request-id" : "e30fcedb-fa0b-4331-bdb2-bb1642903d7f",
-      "x-ms-keyvault-service-version" : "1.9.576.1",
+      "x-ms-request-id" : "aeddde35-04e0-4877-82e0-f77c36202564",
+      "x-ms-keyvault-service-version" : "1.9.331.5",
       "Body" : "{\"lifetimeActions\":[{\"trigger\":{\"timeBeforeExpiry\":\"P30D\"},\"action\":{\"type\":\"Notify\"}}],\"attributes\":null}",
-      "Content-Type" : "application/json; charset=utf-8"
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
     },
     "Exception" : null
   } ],
-  "variables" : [ "rotatekey79282014" ]
+  "variables" : [ "rotatekey74297601" ]
 }

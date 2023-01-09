@@ -1,28 +1,28 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/testrsakey592232e/create?api-version=7.4-preview.1",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/testrsakey8147652/create?api-version=7.3",
     "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (18.0.2; Windows 11; 10.0)",
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "781",
+      "content-length" : "776",
       "x-frame-options" : "SAMEORIGIN",
       "retry-after" : "0",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-server-latency" : "401",
+      "x-ms-server-latency" : "890",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-region" : "northus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=189.203.88.141;act_addr_fam=Ipv4;",
+      "x-ms-keyvault-region" : "westus2",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "5868893a-6211-11ed-b6e0-000d3a602e9a",
-      "Body" : "{\"attributes\":{\"created\":1668206215,\"enabled\":true,\"exp\":2527113600,\"exportable\":false,\"nbf\":949237199,\"recoverableDays\":7,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"updated\":1668206215},\"key\":{\"e\":\"Aw\",\"key_ops\":[\"wrapKey\",\"decrypt\",\"encrypt\",\"unwrapKey\",\"sign\",\"verify\"],\"kid\":\"https://vicolinakeyvaulthsm.managedhsm.azure.net/keys/testrsakey592232e/0df6bfe50405053490afda142a4f2d34\",\"kty\":\"RSA-HSM\",\"n\":\"ufUPb_m5LaETgIfs3tGgiLywHkSsTrRXX5sn8-GA8ydH3kzLT66wgPXuYDxUjqKOgyV1v53PraZsT822qDOb5n_3MZzWXPQu86A62CToQYB66Ve5lWkHrLYovi3UQuukCpFugNWcyGMdmbebs3LFdGdyZg8g1FNp8cJuUPzk6paxdFiJpHOcLod_YlKPe8TE0wZLmLSADfGnvJZ8ELIH3xx59T70wuazxmu5jCAEh0dfKS2laA850B6EDX8kDcqu5cYy8FgO56asG8jeU6r3GG_7TMOJ1Xhw6G9PpWA82Vih7-cRc2zJjgq_BoSgkR5FIFdKk2P8iVhm9_UcjukNNw\"},\"tags\":{\"foo\":\"baz\"}}"
+      "x-ms-request-id" : "fc4d290c-af0b-11ec-8d99-0022487870d4",
+      "Body" : "{\"attributes\":{\"created\":1648522655,\"enabled\":true,\"exp\":2527113600,\"exportable\":false,\"nbf\":949237199,\"recoverableDays\":7,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"updated\":1648522655},\"key\":{\"e\":\"Aw\",\"key_ops\":[\"wrapKey\",\"decrypt\",\"encrypt\",\"unwrapKey\",\"sign\",\"verify\"],\"kid\":\"https://azsdktestshsm.managedhsm.azure.net/keys/testrsakey8147652/8dfa5f5ce74006db1fc3ce87602b960b\",\"kty\":\"RSA-HSM\",\"n\":\"nQIIKcB2-eJL3GSIbLF4csle1MvFPUofZek3ZaP-GIZ9o47ae0LF4ULfcp_rwOFX1tif0b1UDEdZTZOYzaTrEoTG9QsbUvmT_4w13rCzFzJYRJxmNxN8vjGEi6nQWOlCZH72JcuuYhLFziYRool2ZJqgy7LU80wmYyvaZUiDrbSvAGfWWB_W_tOzKQ1e4z_gEgSZDek8nsMh2uAL9uvDy7yxInDKK_wKJpICc_LcFaYatvxsMunEM4qPqBPDa2bJ-TZdoEWNFLK1LdZXxSL1Y5UEDf_SzBYI6qntDFN8qzWkEEuB234sC-tYA_HVJYjZsPPEpJSi-_EdP2BzQJDBdw\"},\"tags\":{\"foo\":\"baz\"}}"
     },
     "Exception" : null
   } ],
-  "variables" : [ "testrsakey592232e" ]
+  "variables" : [ "testrsakey8147652" ]
 }
