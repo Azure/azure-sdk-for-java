@@ -54,6 +54,10 @@ public final class SyncAgentProperties {
     @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
+    /** Creates an instance of SyncAgentProperties class. */
+    public SyncAgentProperties() {
+    }
+
     /**
      * Get the name property: Name of the sync agent.
      *

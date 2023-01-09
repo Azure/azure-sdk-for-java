@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagedInstances List. */
 public final class ManagedInstancesListSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2018-06-01-preview/examples/ManagedInstanceList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceList.json
      */
     /**
      * Sample code: List managed instances.
@@ -17,6 +17,19 @@ public final class ManagedInstancesListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listManagedInstances(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.sqlServers().manager().serviceClient().getManagedInstances().list(Context.NONE);
+        azure.sqlServers().manager().serviceClient().getManagedInstances().list(null, Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceListWithExpandEqualsAdministrators.json
+     */
+    /**
+     * Sample code: List managed instances with $expand=administrators/activedirectory.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void listManagedInstancesWithExpandAdministratorsActivedirectory(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.sqlServers().manager().serviceClient().getManagedInstances().list(null, Context.NONE);
     }
 }

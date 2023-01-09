@@ -24,6 +24,10 @@ public final class ElasticPoolOperationListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ElasticPoolOperationListResult class. */
+    public ElasticPoolOperationListResult() {
+    }
+
     /**
      * Get the value property: Array of results.
      *

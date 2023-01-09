@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SyncMembers Delete. */
 public final class SyncMembersDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/examples/SyncMemberDelete.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncMemberDelete.json
      */
     /**
      * Sample code: Delete a sync member.

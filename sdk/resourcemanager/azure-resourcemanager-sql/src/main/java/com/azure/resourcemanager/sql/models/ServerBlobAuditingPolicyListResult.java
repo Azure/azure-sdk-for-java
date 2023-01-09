@@ -24,6 +24,10 @@ public final class ServerBlobAuditingPolicyListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ServerBlobAuditingPolicyListResult class. */
+    public ServerBlobAuditingPolicyListResult() {
+    }
+
     /**
      * Get the value property: Array of results.
      *

@@ -19,8 +19,7 @@ public final class VirtualNetworkRuleProperties {
     private String virtualNetworkSubnetId;
 
     /*
-     * Create firewall rule before the virtual network has vnet service
-     * endpoint enabled.
+     * Create firewall rule before the virtual network has vnet service endpoint enabled.
      */
     @JsonProperty(value = "ignoreMissingVnetServiceEndpoint")
     private Boolean ignoreMissingVnetServiceEndpoint;
@@ -30,6 +29,10 @@ public final class VirtualNetworkRuleProperties {
      */
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualNetworkRuleState state;
+
+    /** Creates an instance of VirtualNetworkRuleProperties class. */
+    public VirtualNetworkRuleProperties() {
+    }
 
     /**
      * Get the virtualNetworkSubnetId property: The ARM resource id of the virtual network subnet.

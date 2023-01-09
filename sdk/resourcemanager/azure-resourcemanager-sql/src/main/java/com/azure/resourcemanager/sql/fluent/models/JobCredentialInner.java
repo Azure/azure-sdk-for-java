@@ -17,6 +17,10 @@ public final class JobCredentialInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private JobCredentialProperties innerProperties;
 
+    /** Creates an instance of JobCredentialInner class. */
+    public JobCredentialInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

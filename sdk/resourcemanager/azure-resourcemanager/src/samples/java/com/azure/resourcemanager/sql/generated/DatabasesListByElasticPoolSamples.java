@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Databases ListByElasticPool. */
 public final class DatabasesListByElasticPoolSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-10-01-preview/examples/ListDatabasesByElasticPool.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListDatabasesByElasticPool.json
      */
     /**
      * Sample code: Gets a list of databases in an elastic pool.
