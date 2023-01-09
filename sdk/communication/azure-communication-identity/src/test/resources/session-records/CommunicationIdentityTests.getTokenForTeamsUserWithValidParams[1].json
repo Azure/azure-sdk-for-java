@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.communication.azure.net/teamsUser/:exchangeAccessToken?api-version=2022-10-01",
+    "Uri" : "https://REDACTED.communication.azure.com/teamsUser/:exchangeAccessToken?api-version=2022-10-01",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-identity/1.4.0 (17.0.2; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "f2507e73-f562-41aa-a7ce-ffb8af6220fa",
+      "User-Agent" : "azsdk-java-azure-communication-identity/1.5.0-beta.1 (11.0.17; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "5d18cdcb-6ef6-4525-909d-2b055721c4e1",
       "Content-Type" : "application/json"
     },
     "Response" : {
+      "content-length" : "842",
       "X-Cache" : "CONFIG_NOCACHE",
-      "content-length" : "824",
       "api-supported-versions" : "2021-10-31-preview, 2022-06-01, 2022-10-01",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Mon, 05 Sep 2022 18:47:45 GMT",
+      "Date" : "Mon, 09 Jan 2023 14:38:35 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "403ms",
-      "MS-CV" : "rGaGYlRR2k6e+cr1atRyAA.0",
-      "X-Azure-Ref" : "0UUQWYwAAAABy5/PghorlSYlFIxMYGylDUFJHMDFFREdFMDkxOABmMDlhNGMxMy0yMWYxLTQ4ZWMtOWNmNy02NjU0NTY4NGI2NDI=",
-      "Body" : "{\"token\":\"REDACTED\",\"expiresOn\":\"2022-09-05T20:10:42.4351505+00:00\"}",
-      "x-ms-client-request-id" : "f2507e73-f562-41aa-a7ce-ffb8af6220fa",
-      "Content-Type" : "application/json; charset=utf-8",
-      "Request-Context" : "appId="
+      "X-Processing-Time" : "349ms",
+      "MS-CV" : "5PHc8L7oDkKoLnTHb0wfMA.0",
+      "X-Azure-Ref" : "06ya8YwAAAAC18lSisTImR7fw6epQZLjeSEVMMDFFREdFMjAwOQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "Body" : "{\"token\":\"REDACTED\",\"expiresOn\":\"2023-01-09T15:56:01.3963309+00:00\"}",
+      "x-ms-client-request-id" : "5d18cdcb-6ef6-4525-909d-2b055721c4e1",
+      "Request-Context" : "appId=",
+      "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
