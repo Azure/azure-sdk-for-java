@@ -517,7 +517,7 @@ extends:
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterjdbcpostgresql }}
-      - name: spring-cloud-azure-starter-jdbc-postgresql
+      - name: spring-cloud-azure-starter-redis
         groupId: com.azure.spring
         safeName: springcloudazurestarterredis
         skipPublishDocGithubIo: true
