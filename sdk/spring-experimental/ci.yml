@@ -25,5 +25,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: spring-experimental
+    Artifacts:
     MatrixFilters:
       - JavaTestVersion=^(?!1.8).*
