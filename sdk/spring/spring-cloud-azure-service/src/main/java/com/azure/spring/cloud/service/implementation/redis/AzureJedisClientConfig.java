@@ -34,7 +34,7 @@ public final class AzureJedisClientConfig implements JedisClientConfig {
 
     private final HostAndPortMapper hostAndPortMapper;
 
-    private Supplier<String> credentialSupplier ;
+    private Supplier<String> credentialSupplier;
 
     private AzureJedisClientConfig(int connectionTimeoutMillis, int soTimeoutMillis,
                                    int blockingSocketTimeoutMillis, String user, String password, int database, String clientName,

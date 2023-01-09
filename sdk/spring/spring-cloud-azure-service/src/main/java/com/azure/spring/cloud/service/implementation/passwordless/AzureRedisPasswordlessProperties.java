@@ -13,16 +13,14 @@ import java.util.Map;
  */
 public class AzureRedisPasswordlessProperties extends AzurePasswordlessProperties {
 
-    // todo
     private static final Map<CloudType, String> REDIS_SCOPE_MAP = new HashMap<CloudType, String>() {
         {
             put(AzureProfileOptionsProvider.CloudType.AZURE, "https://*.cacheinfra.windows.net:10225/appid/.default");
-            put(AzureProfileOptionsProvider.CloudType.AZURE_CHINA, "https://*.cacheinfra.windows.net:10225/appid/.default");
-            put(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY, "https://*.cacheinfra.windows.net:10225/appid/.default");
-            put(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT, "https://*.cacheinfra.windows.net:10225/appid/.default");
+            put(AzureProfileOptionsProvider.CloudType.AZURE_CHINA, "https://*.cacheinfra.windows.net.china:10225/appid/.default");
+            put(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY, "https://*.cacheinfra.windows.net.germany:10225/appid/.default");
+            put(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT, "https://*.cacheinfra.windows.us.government.net:10225/appid/.default");
         }
     };
-
 
     @Override
     public String getScopes() {
@@ -42,7 +40,7 @@ public class AzureRedisPasswordlessProperties extends AzurePasswordlessPropertie
         } else if (AzureProfileOptionsProvider.CloudType.AZURE_GERMANY.equals(cloudType)) {
             redisScope = REDIS_SCOPE_MAP.get(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
         } else if (AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT.equals(cloudType)) {
-            redisScope = REDIS_SCOPE_MAP.get(AzureProfileOptionsProvider.CloudType.AZURE_GERMANY);
+            redisScope = REDIS_SCOPE_MAP.get(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
         }
         return redisScope;
     }

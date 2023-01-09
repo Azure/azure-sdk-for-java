@@ -1,5 +1,7 @@
-package com.azure.spring.cloud.service.implementation.redis;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
+package com.azure.spring.cloud.service.implementation.redis;
 
 import org.apache.commons.pool2.PooledObject;
 import org.junit.jupiter.api.Assertions;
@@ -19,11 +21,11 @@ import static org.mockito.Mockito.when;
 class AzureJedisFactoryTest {
 
     @Test
+    @SuppressWarnings("unchecked")
     void testActivateObjectJedis() {
 
         JedisClientConfig jedisClientConfig = mock(JedisClientConfig.class);
         PooledObject<Jedis> pooledJedis = mock(PooledObject.class);
-        ;
         HostAndPort hostAndPort = mock(HostAndPort.class);
         Jedis jedis = mock(Jedis.class);
 
@@ -41,10 +43,10 @@ class AzureJedisFactoryTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     void testDestroyObject() {
         JedisClientConfig jedisClientConfig = mock(JedisClientConfig.class);
         PooledObject<Jedis> pooledJedis = mock(PooledObject.class);
-        ;
         HostAndPort hostAndPort = mock(HostAndPort.class);
         Jedis jedis = mock(Jedis.class);
 
@@ -60,6 +62,7 @@ class AzureJedisFactoryTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     void testValidateObjectFalse() {
         JedisClientConfig jedisClientConfig = mock(JedisClientConfig.class);
         PooledObject<Jedis> pooledJedis = mock(PooledObject.class);
@@ -76,10 +79,10 @@ class AzureJedisFactoryTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     void testValidateObjectTrue() {
         JedisClientConfig jedisClientConfig = mock(JedisClientConfig.class);
         PooledObject<Jedis> pooledJedis = mock(PooledObject.class);
-        ;
         HostAndPort hostAndPort = mock(HostAndPort.class);
         when(hostAndPort.getHost()).thenReturn("mock-host");
         when(hostAndPort.getPort()).thenReturn(1233);
@@ -103,7 +106,7 @@ class AzureJedisFactoryTest {
         HostAndPort hostAndPort = mock(HostAndPort.class);
         AzureJedisFactory testTarget = new AzureJedisFactory(hostAndPort, jedisClientConfig);
 
-        try (MockedConstruction<Jedis> ignoredVariable = mockConstruction(Jedis.class,
+        try (MockedConstruction<Jedis> jedisMockedConstruction = mockConstruction(Jedis.class,
             (jedisMocker, context) -> {
                 when(jedisMocker.isConnected()).thenReturn(true);
                 when(jedisMocker.get("fake-key")).thenReturn("fake-value");
@@ -112,6 +115,7 @@ class AzureJedisFactoryTest {
                 Assertions.assertEquals(jedisMocker, testTarget.makeObject().getObject());
                 Assertions.assertEquals("fake-value", testTarget.makeObject().getObject().get("fake-key"));
             })) {
+            Assertions.assertEquals(0, jedisMockedConstruction.constructed().size());
         }
     }
 }

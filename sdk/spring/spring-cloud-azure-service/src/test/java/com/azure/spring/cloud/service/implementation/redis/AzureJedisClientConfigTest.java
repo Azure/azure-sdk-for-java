@@ -1,5 +1,7 @@
-package com.azure.spring.cloud.service.implementation.redis;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
+package com.azure.spring.cloud.service.implementation.redis;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -82,7 +84,7 @@ class AzureJedisClientConfigTest {
 
     @Test
     void testGetPasswordFromCredentialSupplier() {
-        builder.credentialSupplier(()-> "password-from-credential-supplier");
+        builder.credentialSupplier(() -> "password-from-credential-supplier");
         AzureJedisClientConfig config = builder.build();
 
         Assertions.assertEquals("password-from-credential-supplier", config.getPassword());
@@ -97,7 +99,7 @@ class AzureJedisClientConfigTest {
 
     @Test
     void testUpdatePassword() {
-        builder.credentialSupplier(()-> "password-from-credential-supplier");
+        builder.credentialSupplier(() -> "password-from-credential-supplier");
         AzureJedisClientConfig config = builder.build();
 
         Assertions.assertEquals("password-from-credential-supplier", config.getPassword());

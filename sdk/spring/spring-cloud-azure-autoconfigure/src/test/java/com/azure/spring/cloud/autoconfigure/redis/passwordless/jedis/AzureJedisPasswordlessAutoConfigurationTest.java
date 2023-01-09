@@ -3,6 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.redis.passwordless.jedis;
 
+import com.azure.spring.cloud.service.implementation.passwordless.AzureRedisPasswordlessProperties;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -14,6 +16,7 @@ import org.springframework.data.redis.connection.jedis.JedisClientConfiguration.
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 
 import java.time.Duration;
+import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,6 +24,12 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Tests for {@link AzureJedisPasswordlessAutoConfiguration} when Lettuce is not on the classpath.
  */
 class AzureJedisPasswordlessAutoConfigurationTest {
+    private static final String AZURE_REDIS_CREDENTIAL_SUPPLIER_BEAN_NAME = "azureRedisCredentialSupplier";
+
+    private static final String REDIS_SCOPE_GLOBAL = "https://*.cacheinfra.windows.net:10225/appid/.default";
+    private static final String REDIS_SCOPE_CHINA = "https://*.cacheinfra.windows.net.china:10225/appid/.default";
+    private static final String REDIS_SCOPE_GERMANY = "https://*.cacheinfra.windows.net.germany:10225/appid/.default";
+    private static final String REDIS_SCOPE_US_GOVERNMENT = "https://*.cacheinfra.windows.us.government.net:10225/appid/.default";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withPropertyValues(
@@ -31,17 +40,36 @@ class AzureJedisPasswordlessAutoConfigurationTest {
         .withConfiguration(AutoConfigurations.of(AzureJedisPasswordlessAutoConfiguration.class));
 
     @Test
+    @SuppressWarnings("unchecked")
+    void testCredentialSupplier() {
+        this.contextRunner.run((context) -> {
+            Supplier<String> supplier = (Supplier<String>) context.getBean(AZURE_REDIS_CREDENTIAL_SUPPLIER_BEAN_NAME);
+            Assertions.assertNotNull(supplier);
+        });
+    }
+
+    @Test
     void testScopes() {
 
-    }
+        this.contextRunner.run((context) -> {
+            AzureRedisPasswordlessProperties properties = context.getBean(AzureRedisPasswordlessProperties.class);
+            Assertions.assertEquals(REDIS_SCOPE_GLOBAL, properties.getScopes());
+        });
 
-    @Test
-    void testCredentialSupplier() {
+        this.contextRunner.withPropertyValues("spring.redis.azure.profile.cloud-type = AZURE_CHINA").run((context) -> {
+            AzureRedisPasswordlessProperties properties = context.getBean(AzureRedisPasswordlessProperties.class);
+            Assertions.assertEquals(REDIS_SCOPE_CHINA, properties.getScopes());
+        });
 
-    }
+        this.contextRunner.withPropertyValues("spring.redis.azure.profile.cloud-type = AZURE_GERMANY").run((context) -> {
+            AzureRedisPasswordlessProperties properties = context.getBean(AzureRedisPasswordlessProperties.class);
+            Assertions.assertEquals(REDIS_SCOPE_GERMANY, properties.getScopes());
+        });
 
-    @Test
-    void testProperties() {
+        this.contextRunner.withPropertyValues("spring.redis.azure.profile.cloud-type = AZURE_US_GOVERNMENT").run((context) -> {
+            AzureRedisPasswordlessProperties properties = context.getBean(AzureRedisPasswordlessProperties.class);
+            Assertions.assertEquals(REDIS_SCOPE_US_GOVERNMENT, properties.getScopes());
+        });
 
     }
 
