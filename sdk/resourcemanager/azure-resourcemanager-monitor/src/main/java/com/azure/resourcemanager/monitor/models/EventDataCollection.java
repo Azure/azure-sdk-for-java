@@ -25,6 +25,10 @@ public final class EventDataCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of EventDataCollection class. */
+    public EventDataCollection() {
+    }
+
     /**
      * Get the value property: this list that includes the Azure audit logs.
      *

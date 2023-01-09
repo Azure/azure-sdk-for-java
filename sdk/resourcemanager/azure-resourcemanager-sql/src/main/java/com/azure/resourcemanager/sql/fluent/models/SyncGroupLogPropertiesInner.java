@@ -49,6 +49,10 @@ public final class SyncGroupLogPropertiesInner {
     @JsonProperty(value = "operationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String operationStatus;
 
+    /** Creates an instance of SyncGroupLogPropertiesInner class. */
+    public SyncGroupLogPropertiesInner() {
+    }
+
     /**
      * Get the timestamp property: Timestamp of the sync group log.
      *

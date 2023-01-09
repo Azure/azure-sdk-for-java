@@ -24,6 +24,10 @@ public final class AzureAppPushReceiver {
     @JsonProperty(value = "emailAddress", required = true)
     private String emailAddress;
 
+    /** Creates an instance of AzureAppPushReceiver class. */
+    public AzureAppPushReceiver() {
+    }
+
     /**
      * Get the name property: The name of the Azure mobile app push receiver. Names must be unique across all receivers
      * within an action group.

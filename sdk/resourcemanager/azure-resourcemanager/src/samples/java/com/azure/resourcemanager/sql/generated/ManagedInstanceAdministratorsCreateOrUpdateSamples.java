@@ -6,13 +6,14 @@ package com.azure.resourcemanager.sql.generated;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.ManagedInstanceAdministratorInner;
+import com.azure.resourcemanager.sql.models.AdministratorName;
 import com.azure.resourcemanager.sql.models.ManagedInstanceAdministratorType;
 import java.util.UUID;
 
 /** Samples for ManagedInstanceAdministrators CreateOrUpdate. */
 public final class ManagedInstanceAdministratorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/ManagedInstanceAdministratorCreate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceAdministratorCreate.json
      */
     /**
      * Sample code: Create administrator of managed instance.
@@ -28,6 +29,7 @@ public final class ManagedInstanceAdministratorsCreateOrUpdateSamples {
             .createOrUpdate(
                 "Default-SQL-SouthEastAsia",
                 "managedInstance",
+                AdministratorName.ACTIVE_DIRECTORY,
                 new ManagedInstanceAdministratorInner()
                     .withAdministratorType(ManagedInstanceAdministratorType.ACTIVE_DIRECTORY)
                     .withLogin("bob@contoso.com")
@@ -37,7 +39,7 @@ public final class ManagedInstanceAdministratorsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/ManagedInstanceAdministratorUpdate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceAdministratorUpdate.json
      */
     /**
      * Sample code: Update administrator of managed instance.
@@ -53,6 +55,7 @@ public final class ManagedInstanceAdministratorsCreateOrUpdateSamples {
             .createOrUpdate(
                 "Default-SQL-SouthEastAsia",
                 "managedInstance",
+                AdministratorName.ACTIVE_DIRECTORY,
                 new ManagedInstanceAdministratorInner()
                     .withAdministratorType(ManagedInstanceAdministratorType.ACTIVE_DIRECTORY)
                     .withLogin("bob@contoso.com")

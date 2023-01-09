@@ -46,6 +46,10 @@ public final class AutoscaleProfileInner {
     @JsonProperty(value = "recurrence")
     private Recurrence recurrence;
 
+    /** Creates an instance of AutoscaleProfileInner class. */
+    public AutoscaleProfileInner() {
+    }
+
     /**
      * Get the name property: the name of the profile.
      *

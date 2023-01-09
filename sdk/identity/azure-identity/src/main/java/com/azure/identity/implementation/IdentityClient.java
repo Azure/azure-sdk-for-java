@@ -62,6 +62,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -1154,7 +1155,7 @@ public class IdentityClient extends IdentityClientBase {
                             || responseCode == 404
                             || (responseCode >= 500 && responseCode <= 599)) {
                         int retryTimeoutInMs = options.getRetryTimeout()
-                                .apply(Duration.ofSeconds(RANDOM.nextInt(retry))).getNano() / 1000;
+                                .apply(Duration.ofSeconds(ThreadLocalRandom.current().nextInt(retry))).getNano() / 1000;
                         // Error code 410 indicates IMDS upgrade is in progress, which can take up to 70s
                         //
                         retryTimeoutInMs =

@@ -28,6 +28,10 @@ public final class AzureMonitorPrivateLinkScopeInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of AzureMonitorPrivateLinkScopeInner class. */
+    public AzureMonitorPrivateLinkScopeInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties that define a Azure Monitor PrivateLinkScope resource.
      *

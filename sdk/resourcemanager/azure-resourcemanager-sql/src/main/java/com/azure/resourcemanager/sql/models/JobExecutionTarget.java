@@ -28,6 +28,10 @@ public final class JobExecutionTarget {
     @JsonProperty(value = "databaseName", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseName;
 
+    /** Creates an instance of JobExecutionTarget class. */
+    public JobExecutionTarget() {
+    }
+
     /**
      * Get the type property: The type of the target.
      *

@@ -1,7 +1,7 @@
 ## Generate autorest code
 
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/webpubsub/data-plane/WebPubSub/stable/2021-10-01/webpubsub.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/webpubsub/data-plane/WebPubSub/stable/2022-11-01/webpubsub.json
 java: true
 output-folder: ..
 namespace: com.azure.messaging.webpubsub
@@ -18,6 +18,8 @@ use-iterable: true
 data-plane: true
 generate-sync-async-clients: true
 service-name: WebPubSubService
+generate-builder-per-client: false
 service-versions:
   - '2021-10-01'
+  - '2022-11-01'
 ```

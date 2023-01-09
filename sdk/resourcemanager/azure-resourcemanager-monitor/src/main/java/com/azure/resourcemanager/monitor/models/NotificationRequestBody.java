@@ -13,7 +13,9 @@ import java.util.List;
 @Fluent
 public final class NotificationRequestBody {
     /*
-     * The name of the supported alert type.
+     * The value of the supported alert type. Supported alert type values are: servicehealth, metricstaticthreshold,
+     * metricsdynamicthreshold, logalertv2, smartalert, webtestalert, logalertv1numresult, logalertv1metricmeasurement,
+     * resourcehealth, activitylog, budget
      */
     @JsonProperty(value = "alertType", required = true)
     private String alertType;
@@ -85,8 +87,14 @@ public final class NotificationRequestBody {
     @JsonProperty(value = "eventHubReceivers")
     private List<EventHubReceiver> eventHubReceivers;
 
+    /** Creates an instance of NotificationRequestBody class. */
+    public NotificationRequestBody() {
+    }
+
     /**
-     * Get the alertType property: The name of the supported alert type.
+     * Get the alertType property: The value of the supported alert type. Supported alert type values are:
+     * servicehealth, metricstaticthreshold, metricsdynamicthreshold, logalertv2, smartalert, webtestalert,
+     * logalertv1numresult, logalertv1metricmeasurement, resourcehealth, activitylog, budget.
      *
      * @return the alertType value.
      */
@@ -95,7 +103,9 @@ public final class NotificationRequestBody {
     }
 
     /**
-     * Set the alertType property: The name of the supported alert type.
+     * Set the alertType property: The value of the supported alert type. Supported alert type values are:
+     * servicehealth, metricstaticthreshold, metricsdynamicthreshold, logalertv2, smartalert, webtestalert,
+     * logalertv1numresult, logalertv1metricmeasurement, resourcehealth, activitylog, budget.
      *
      * @param alertType the alertType value to set.
      * @return the NotificationRequestBody object itself.
