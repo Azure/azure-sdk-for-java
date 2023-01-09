@@ -5,16 +5,24 @@ extends:
   parameters:
     SkipAggregateReports: true
     artifacts:
-    - name: azure-sdk-template
+    - name: azure-security-attestation
       groupId: com.azure
-      safeName: azuresdktemplate
-      ServiceDirectory: template
-    - name: azure-sdk-template-two
+      safeName: azuresecurityattestation
+      ServiceDirectory: attestation
+    - name: azure-security-keyvault-administration
       groupId: com.azure
-      safeName: azuresdktemplatetwo
-      ServiceDirectory: template
-    - name: azure-sdk-template-three
+      safeName: azuresecuritykeyvaultadministration
+      ServiceDirectory: keyvault
+    - name: azure-security-keyvault-certificates
       groupId: com.azure
-      safeName: azuresdktemplatethree
-      ServiceDirectory: template
+      safeName: azuresecuritykeyvaultcertificates
+      ServiceDirectory: keyvault
+    - name: azure-security-keyvault-keys
+      groupId: com.azure
+      safeName: azuresecuritykeyvaultkeys
+      ServiceDirectory: keyvault
+    - name: azure-security-keyvault-secrets
+      groupId: com.azure
+      safeName: azuresecuritykeyvaultsecrets
+      ServiceDirectory: keyvault
 
