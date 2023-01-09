@@ -13,6 +13,7 @@ import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
 import com.azure.core.test.TestMode
+import com.azure.core.test.utils.TestUtils
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.FluxUtil
 import com.azure.identity.EnvironmentCredentialBuilder
@@ -431,8 +432,8 @@ class APISpec extends StorageSpec {
                 def readCount1 = stream1.read(buffer1)
                 def readCount2 = stream2.read(buffer2)
 
-                // Use Arrays.equals as it is more optimized than Groovy/Spock's '==' for arrays.
-                assert readCount1 == readCount2 && Arrays.equals(buffer1, buffer2)
+                // Use TestUtils.assertArraysEqual as it is more optimized than Groovy/Spock's '==' for arrays.
+                assert readCount1 == readCount2 && TestUtils.assertArraysEqual(buffer1, buffer2)
 
                 pos += expectedReadCount
             }

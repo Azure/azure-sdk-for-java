@@ -9,6 +9,8 @@ import spock.lang.Unroll
 import java.nio.file.ClosedFileSystemException
 import java.nio.file.DirectoryIteratorException
 import java.nio.file.Path
+import java.util.concurrent.ConcurrentHashMap
+import java.util.stream.IntStream
 
 class AzureDirectoryStreamTest extends APISpec {
     AzureFileSystem fs
@@ -25,12 +27,15 @@ class AzureDirectoryStreamTest extends APISpec {
         }
         def rootName = absolute ? getNonDefaultRootDir(fs) : ""
         def dirName = generateBlobName()
-        def resources = new HashMap<Path, AzureResource>()
-        for (int i = 0; i < numFiles; i++) {
-            def path = fs.getPath(rootName, dirName, generateBlobName())
-            def resource = new AzureResource(path)
-            resource.getBlobClient().getBlockBlobClient().commitBlockList(Collections.emptyList())
-            resources.put(path, resource)
+        def resources = new ConcurrentHashMap<Path, AzureResource>()
+
+        if (numFiles > 0) {
+            IntStream.range(0, numFiles).parallel().forEach {
+                def path = fs.getPath(rootName, dirName, generateBlobName())
+                def resource = new AzureResource(path)
+                resource.getBlobClient().getBlockBlobClient().commitBlockList(Collections.emptyList())
+                resources.put(path, resource)
+            }
         }
 
         when:
