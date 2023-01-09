@@ -187,6 +187,22 @@ class NettyAsyncHttpClient implements HttpClient {
                 .onRetryExhaustedThrow((ignoredSpec, signal) -> signal.failure()));
     }
 
+    @Override
+    public HttpResponse sendSync(HttpRequest request, Context context) {
+        try {
+            return send(request, context).block();
+        } catch (Exception e) {
+            Throwable unwrapped = Exceptions.unwrap(e);
+            if (unwrapped instanceof RuntimeException) {
+                throw (RuntimeException) unwrapped;
+            } else if (unwrapped instanceof IOException) {
+                throw new UncheckedIOException((IOException) unwrapped);
+            } else {
+                throw new RuntimeException(unwrapped);
+            }
+        }
+    }
+
     /**
      * Delegate to send the request content.
      *
