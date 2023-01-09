@@ -5,8 +5,6 @@ import com.azure.cosmos.implementation.Utils;
 
 public final class CosmosContainerIdentity {
 
-    private final String databaseName;
-    private final String containerName;
     private final String containerLink;
 
 
@@ -20,9 +18,6 @@ public final class CosmosContainerIdentity {
             throw new IllegalArgumentException("containerName is null or empty");
         }
 
-        this.containerName = containerName;
-        this.databaseName = databaseName;
-
         String databaseLink = Utils.joinPath(Paths.DATABASES_ROOT, databaseName);
         this.containerLink = Utils.joinPath(databaseLink, Paths.COLLECTIONS_PATH_SEGMENT) + containerName;
     }
@@ -34,17 +29,6 @@ public final class CosmosContainerIdentity {
         }
 
         this.containerLink = containerLink;
-        // TODO: Extract databaseName and containerName
-        this.databaseName = "";
-        this.containerName = "";
-    }
-
-    public String getContainerName() {
-        return containerName;
-    }
-
-    public String getDatabaseName() {
-        return databaseName;
     }
 
     public String getContainerLink() {

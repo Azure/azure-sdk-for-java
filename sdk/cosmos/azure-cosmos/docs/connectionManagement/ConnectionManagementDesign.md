@@ -5,13 +5,10 @@
     * ````
       public final class CosmosContainerIdentity {
 
-       private final String databaseName;
-       private final String containerName;
        private final String containerLink;
-
-
-       public CosmosContainerIdentity(String databaseName, String containerName) {
       
+       public CosmosContainerIdentity(String databaseName, String containerName) {
+
         if (databaseName == null || databaseName.isEmpty()) {
             throw new IllegalArgumentException("databaseName is null or empty");
         }
@@ -19,40 +16,28 @@
         if (containerName == null || containerName.isEmpty()) {
             throw new IllegalArgumentException("containerName is null or empty");
         }
-      
-        this.containerName = containerName;
-        this.databaseName = databaseName;
 
         String databaseLink = Utils.joinPath(Paths.DATABASES_ROOT, databaseName);
         this.containerLink = Utils.joinPath(databaseLink, Paths.COLLECTIONS_PATH_SEGMENT) + containerName;
-      }
+       }
 
        public CosmosContainerIdentity(String containerLink) {
+
         if (containerLink == null || containerLink.isEmpty()) {
             throw new IllegalArgumentException("containerLink is null or empty");
         }
-      
+
         this.containerLink = containerLink;
-        // TODO: Extract databaseName and containerName
-        this.databaseName = "";
-        this.containerName = "";
-       }
-
-       public String getContainerName() {
-        return containerName;
-       }
-
-       public String getDatabaseName() {
-        return databaseName;
-       }
-
+      }
+    
        public String getContainerLink() {
         return containerLink;
        }
       }
       ````
-    * Ideas
-      * Getters for `databaseName` and `containerName` could be removed.
+    * Questions
+      * Do we add `databaseName` and `containerName` as class members? Getters for `databaseName` and `containerName`?
+      * Do we expose constructor `CosmosContainerIdentity(containerLink)`?
   * `EagerConnectionConfig`
     * Create `EagerConnectionConfig` to configure a list of `eagerConnectionRegions` and list of `cosmosContainerIdentities`.
       * Implementation
@@ -79,6 +64,8 @@
         * Use the builder pattern to instantiate EagerConnectionConfig, an `EagerConnectionConfigBuilder`, perhaps. Keep the `EagerConnectionConfig`
       constructor package-private.
         * Use the `EagerConnectionConfig` constructor.
+    * Questions
+      * Do we use `int numEagerConnectionRegions;` instead?
   * `CosmosClientBuilder`
     * Methods to possibly add/enhance:
       * `public CosmosClientBuilder openConnectionsAndInitCaches(EagerConnectionConfig eagerConnectionConfig)`
@@ -90,8 +77,7 @@
         * Should be package-private.
         * Invoked on buildAsync
         * Questions
-          * Should a boolean be used to invoke openConnectionsAndInitCaches() in a blocking/non-blocking manner?
-          * 
+          * Should a boolean (isBlocking) be used to invoke openConnectionsAndInitCaches() in a blocking/non-blocking manner?
   * CosmosClient
       * `void openConnectionsAndInitCaches()` - `openConnectionsAndInitCaches()` defined in CosmosAsyncClient will be invoked in a blocking manner.
         * Should be package-private.
@@ -107,12 +93,12 @@
     * `IAddressResolver`
   * `GlobalAddressResolver`
     * This would implement `openConnectionsAndInitCaches(eagerConnectionConfig)`
-      * This would have logic to stream all read endpoints and pick regions to be eagerly connected with.
+      * This would have logic to stream all read/write endpoints and pick regions to be eagerly connected with.
       * Open connections to filtered out regions.
       * Questions
         * What should be done if no regions are configured?
-        * What should be done in case of incorrect/invalid regions?
+        * What should be done in case of incorrect/invalid regions? - Quietly skip and log?
         * What to choose from - read/write regions?
 * Diagnostics
-  * Add eager connection regions to diagnostics.
-  
+  * Eager connection regions and replicas to diagnostics.
+  * Containers/Collections for which connections have been proactively opened. 
