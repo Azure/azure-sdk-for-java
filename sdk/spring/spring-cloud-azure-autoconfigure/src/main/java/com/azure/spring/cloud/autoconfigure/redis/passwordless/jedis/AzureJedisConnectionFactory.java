@@ -54,9 +54,9 @@ public class AzureJedisConnectionFactory implements InitializingBean, Disposable
     /**
      * Constructs a new AzureJedisConnectionFactory instance using the given RedisStandaloneConfiguration, JedisClientConfiguration and CredentialSupplier.
      *
-     * @param standaloneConfig    must not be {@literal null}.
+     * @param standaloneConfig must not be {@literal null}.
      * @param clientConfiguration must not be {@literal null}.
-     * @param credentialSupplier  must not be {@literal null}.
+     * @param credentialSupplier must not be {@literal null}.
      */
     public AzureJedisConnectionFactory(RedisStandaloneConfiguration standaloneConfig, JedisClientConfiguration clientConfiguration, Supplier<String> credentialSupplier) {
         this.standaloneConfig = standaloneConfig;
