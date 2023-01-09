@@ -1,15 +1,15 @@
 # NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
 
-trigger:
-  branches:
-    include:
-      - main
-      - feature/*
-      - hotfix/*
-      - release/*
-  paths:
-    include:
-      - sdk/spring-experimental/
+trigger: none
+#  branches:
+#    include:
+#      - main
+#      - feature/*
+#      - hotfix/*
+#      - release/*
+#  paths:
+#    include:
+#      - sdk/spring-experimental/
 pr:
   branches:
     include:
