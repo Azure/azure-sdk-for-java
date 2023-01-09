@@ -1,8 +1,15 @@
 # Release History
 
 ## 1.1.0-beta.13 (Unreleased)
+- Adds support for Azure Communication Services Phone Numbers Browse API Methods, giving users the ability to:
+  - Get all supported countries
+  - Get all supported localities given a country code. (Localities is a technical term for city/town)
+  - Get all Toll-Free area codes from a given country code.
+  - Get all Geographic area codes from a given country code / locality.
+  - Get all offerings from a given country code.
 
 ### Features Added
+- Added support for API version `2022-12-01`
 
 ### Breaking Changes
 
