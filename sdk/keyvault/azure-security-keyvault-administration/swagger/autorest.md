@@ -16,7 +16,7 @@ To see additional help and options, run:
 > `autorest --help`
 
 ### Generation
-There are three swagger specifications for KeyVault Administration: rbac, backuprestore and settings. They use the following tags respectively: `--tag=rbac`, `--tag=backuprestore`, `--tag=settings`.
+There are two swagger specifications for KeyVault Administration: rbac and backuprestore. They use the following tags: `--tag=rbac` & `--tag=backuprestore`.
 
 ```ps
 cd <swagger-folder>
@@ -32,11 +32,6 @@ autorest --use=@microsoft.azure/autorest.java@4.0.0 --tag=rbac
 ```ps
 cd <swagger-folder>
 autorest --use=@microsoft.azure/autorest.java@4.0.0 --tag=backuprestore
-```
-
-```ps
-cd <swagger-folder>
-autorest --use=@microsoft.azure/autorest.java@4.0.0 --tag=settings
 ```
 
 ## Code generation settings
@@ -68,17 +63,4 @@ These settings apply only when `--tag=backuprestore` is specified on the command
 ``` yaml $(tag) == 'backuprestore'
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/e2ef44b87405b412403ccb005bfb3975411adf60/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.3/backuprestore.json
 title: KeyVaultBackupClient
-```
-
-### Tag: settings
-These settings apply only when `--tag=settings` is specified on the command line.
-
-``` yaml $(tag) == 'settings'
-input-file: https://github.com/Azure/azure-rest-api-specs/tree/d78681a9d322bbd8d33ecaad7e6aaa2d513513b4/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.4-preview.1/settings.json
-title: KeyVaultSettingsClient
-directive:
-- where-model: SettingsListResult
-  rename-property:
-    from: value
-    to: settings
 ```
