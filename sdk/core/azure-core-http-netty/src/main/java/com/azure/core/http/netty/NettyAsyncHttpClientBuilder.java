@@ -236,8 +236,8 @@ public class NettyAsyncHttpClientBuilder {
         if (connectionProvider != null) {
             LOGGER.verbose("Setting ConnectionProvider for the Reactor Netty HttpClient. Please be aware of the "
                 + "differences in runtime behavior when creating a default Reactor Netty HttpClient vs an HttpClient"
-                + "with a specified ConnectionProvider, namely around handling for maximum number of connections and"
-                + "maximum number of pending connections.");
+                + "with a specified ConnectionProvider. For more details see " 
+                + "https://aka.ms/azsdk/java/docs/configure-httpclient.");
         }
 
         this.connectionProvider = connectionProvider;
