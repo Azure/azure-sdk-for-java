@@ -303,15 +303,11 @@
       </build>
     </profile>
   </profiles>
-
-  <repositories>
+ <repositories>
     <repository>
       <id>spring-release</id>
       <name>Spring release</name>
-      <url>https://repo.spring.io/release</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
+      <url>https://repo.spring.io/snapshot</url>
     </repository>
   </repositories>
 </project>
