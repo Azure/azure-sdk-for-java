@@ -17,6 +17,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Breaking Changes
 - Remove the `public` access modifier from bean methods [#32514](https://github.com/Azure/azure-sdk-for-java/pull/32514).
 - Remove Cloud Foundry support [#32616](https://github.com/Azure/azure-sdk-for-java/pull/32616).
+- Change the default value of `spring.jms.servicebus.idle-timeout` from 30 minutes to 2 minutes [#32817](https://github.com/Azure/azure-sdk-for-java/pull/32817).
 
 #### Bugs Fixed
 - Remove unused class `RestTemplateProxyCustomizerConfiguration` [#32616](https://github.com/Azure/azure-sdk-for-java/pull/32616)
