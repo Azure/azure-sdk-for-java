@@ -136,11 +136,35 @@ class AzureJedisPasswordlessAutoConfiguration {
         config.setMaxTotal(pool.getMaxActive());
         config.setMaxIdle(pool.getMaxIdle());
         config.setMinIdle(pool.getMinIdle());
+
         if (pool.getTimeBetweenEvictionRuns() != null) {
-            config.setTimeBetweenEvictionRuns(pool.getTimeBetweenEvictionRuns());
+            Method method = ReflectionUtils.findMethod(RedisProperties.Pool.class, "setTimeBetweenEvictionRuns");
+            if (method != null) {
+                try {
+                    method.invoke(pool, pool.getTimeBetweenEvictionRuns());
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                } catch (InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                config.setTimeBetweenEvictionRunsMillis(pool.getTimeBetweenEvictionRuns().toMillis());
+            }
         }
+
         if (pool.getMaxWait() != null) {
-            config.setMaxWait(pool.getMaxWait());
+            Method method = ReflectionUtils.findMethod(RedisProperties.Pool.class, "setMaxWait");
+            if (method != null) {
+                try {
+                    method.invoke(pool, pool.getMaxWait());
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                } catch (InvocationTargetException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                config.setMaxWaitMillis(pool.getMaxWait().toMillis());
+            }
         }
         return config;
     }
