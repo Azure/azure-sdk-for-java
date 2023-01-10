@@ -47,14 +47,12 @@ import java.util.Objects;
  * This class provides helper methods for common builder patterns.
  */
 public final class BuilderHelper {
-    private static final String CLIENT_NAME;
-    private static final String CLIENT_VERSION;
-
-    static {
-        Map<String, String> properties = CoreUtils.getProperties("azure-storage-queue.properties");
-        CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
-        CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
-    }
+    private static final Map<String, String> PROPERTIES =
+        CoreUtils.getProperties("azure-storage-queue.properties");
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
+    private static final String CLIENT_NAME = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+    private static final String CLIENT_VERSION = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
 
     /**
      * Determines whether or not the passed authority is IP style, that is it is of the format
@@ -179,8 +177,9 @@ public final class BuilderHelper {
 
         // We need to place this policy right before the credential policy since headers may affect the string to sign
         // of the request.
-        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(clientOptions);
-        if (headers != null) {
+        HttpHeaders headers = new HttpHeaders();
+        clientOptions.getHeaders().forEach(header -> headers.put(header.getName(), header.getValue()));
+        if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
         policies.add(new MetadataValidationPolicy());
@@ -243,7 +242,9 @@ public final class BuilderHelper {
     private static UserAgentPolicy getUserAgentPolicy(Configuration configuration, HttpLogOptions logOptions,
         ClientOptions clientOptions) {
         configuration = (configuration == null) ? Configuration.NONE : configuration;
-        String applicationId = CoreUtils.getApplicationId(clientOptions, logOptions);
+
+        String applicationId = clientOptions.getApplicationId() != null ? clientOptions.getApplicationId()
+            : logOptions.getApplicationId();
         return new UserAgentPolicy(applicationId, CLIENT_NAME, CLIENT_VERSION, configuration);
     }
 
