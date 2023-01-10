@@ -9,7 +9,6 @@ import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.TelemetryAttributes;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.metrics.DoubleHistogram;
-import com.azure.core.util.metrics.LongCounter;
 import com.azure.core.util.metrics.LongGauge;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
