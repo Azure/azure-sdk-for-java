@@ -73,7 +73,7 @@
       * `public CosmosClient build()`
   * CosmosAsyncClient
       * `Flux<Void> openConnectionsAndInitCaches()` - this will be invoked in a non-blocking manner provided 
-    `EagerConnectionConfig` is not empty.
+    `EagerConnectionConfig` is not null.
         * Should be package-private.
         * Invoked on buildAsync
         * Questions
