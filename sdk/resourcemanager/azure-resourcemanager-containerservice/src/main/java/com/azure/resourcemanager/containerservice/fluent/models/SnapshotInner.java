@@ -142,7 +142,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Get the osSku property: Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux.
-     * The default is Windows2019 when Kubernetes &lt;= 1.24 or Windows2022 when Kubernetes &gt;= 1.25 if OSType is
+     * The default is Windows2019 when Kubernetes &lt;= 1.24 or windows2019 when Kubernetes &gt;= 1.25 if OSType is
      * Windows.
      *
      * @return the osSku value.

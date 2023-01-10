@@ -155,7 +155,7 @@ public final class AgentPoolsCreateOrUpdateSamples {
                     .withCount(3)
                     .withVmSize("Standard_D4s_v3")
                     .withOsType(OSType.WINDOWS)
-                    .withOsSku(OSSku.WINDOWS2022)
+                    .withOsSku(OSSku.windows2019)
                     .withOrchestratorVersion("1.23.3"),
                 Context.NONE);
     }

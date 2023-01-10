@@ -10,7 +10,7 @@ import java.util.Collection;
 
 /**
  * Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux. The default is Windows2019
- * when Kubernetes &lt;= 1.24 or Windows2022 when Kubernetes &gt;= 1.25 if OSType is Windows.
+ * when Kubernetes &lt;= 1.24 or windows2019 when Kubernetes &gt;= 1.25 if OSType is Windows.
  */
 public final class OSSku extends ExpandableStringEnum<OSSku> {
     /** Static value Ubuntu for OSSku. */
@@ -22,8 +22,8 @@ public final class OSSku extends ExpandableStringEnum<OSSku> {
     /** Static value Windows2019 for OSSku. */
     public static final OSSku WINDOWS2019 = fromString("Windows2019");
 
-    /** Static value Windows2022 for OSSku. */
-    public static final OSSku WINDOWS2022 = fromString("Windows2022");
+    /** Static value windows2019 for OSSku. */
+    public static final OSSku windows2019 = fromString("windows2019");
 
     /**
      * Creates or finds a OSSku from its string representation.
