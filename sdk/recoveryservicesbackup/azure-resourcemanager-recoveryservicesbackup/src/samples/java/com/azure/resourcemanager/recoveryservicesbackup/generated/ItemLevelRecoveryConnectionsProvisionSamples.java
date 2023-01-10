@@ -11,7 +11,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.IlrRequestResourc
 /** Samples for ItemLevelRecoveryConnections Provision. */
 public final class ItemLevelRecoveryConnectionsProvisionSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/AzureIaasVm/Provision_Ilr.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/Provision_Ilr.json
      */
     /**
      * Sample code: Provision Instant Item Level Recovery for Azure Vm.

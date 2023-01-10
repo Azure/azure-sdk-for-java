@@ -11,4 +11,5 @@ module com.azure.ai.textanalytics {
     opens com.azure.ai.textanalytics.implementation to com.fasterxml.jackson.databind;
     opens com.azure.ai.textanalytics.models to com.fasterxml.jackson.databind;
     opens com.azure.ai.textanalytics.implementation.models to com.fasterxml.jackson.databind, com.azure.core;
+    opens com.azure.ai.textanalytics.util to com.fasterxml.jackson.databind;
 }

@@ -9,7 +9,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
 import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.AuthenticationType;
-import com.azure.resourcemanager.sql.models.ExportRequest;
+import com.azure.resourcemanager.sql.models.ExportDatabaseDefinition;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
 import com.azure.resourcemanager.sql.models.SqlDatabaseExportRequest;
 import com.azure.resourcemanager.sql.models.SqlDatabaseImportExportResponse;
@@ -27,12 +27,12 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
 
     private final SqlDatabaseImpl sqlDatabase;
     private final SqlServerManager sqlServerManager;
-    private ExportRequest inner;
+    private ExportDatabaseDefinition inner;
 
     SqlDatabaseExportRequestImpl(SqlDatabaseImpl sqlDatabase, SqlServerManager sqlServerManager) {
         this.sqlDatabase = sqlDatabase;
         this.sqlServerManager = sqlServerManager;
-        this.inner = new ExportRequest();
+        this.inner = new ExportDatabaseDefinition();
     }
 
     @Override
@@ -41,7 +41,7 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
     }
 
     @Override
-    public ExportRequest innerModel() {
+    public ExportDatabaseDefinition innerModel() {
         return this.inner;
     }
 
@@ -62,7 +62,7 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
     @Override
     public SqlDatabaseExportRequestImpl exportTo(String storageUri) {
         if (this.inner == null) {
-            this.inner = new ExportRequest();
+            this.inner = new ExportDatabaseDefinition();
         }
         this.inner.withStorageUri(storageUri);
         return this;
@@ -114,7 +114,7 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
         Objects.requireNonNull(containerName);
         Objects.requireNonNull(fileName);
         if (this.inner == null) {
-            this.inner = new ExportRequest();
+            this.inner = new ExportDatabaseDefinition();
         }
         this
             .addDependency(
@@ -126,7 +126,7 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
     public SqlDatabaseExportRequestImpl exportTo(
         final Creatable<StorageAccount> storageAccountCreatable, final String containerName, final String fileName) {
         if (this.inner == null) {
-            this.inner = new ExportRequest();
+            this.inner = new ExportDatabaseDefinition();
         }
         this
             .addDependency(
@@ -164,21 +164,21 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
     }
 
     SqlDatabaseExportRequestImpl withAuthenticationType(AuthenticationType authenticationType) {
-        this.inner.withAuthenticationType(authenticationType);
+        this.inner.withAuthenticationType(authenticationType.toString());
         return this;
     }
 
     @Override
     public SqlDatabaseExportRequestImpl withSqlAdministratorLoginAndPassword(
         String administratorLogin, String administratorPassword) {
-        this.inner.withAuthenticationType(AuthenticationType.SQL);
+        this.inner.withAuthenticationType(AuthenticationType.SQL.toString());
         return this.withLoginAndPassword(administratorLogin, administratorPassword);
     }
 
     @Override
     public SqlDatabaseExportRequestImpl withActiveDirectoryLoginAndPassword(
         String administratorLogin, String administratorPassword) {
-        this.inner.withAuthenticationType(AuthenticationType.ADPASSWORD);
+        this.inner.withAuthenticationType(AuthenticationType.ADPASSWORD.toString());
         return this.withLoginAndPassword(administratorLogin, administratorPassword);
     }
 

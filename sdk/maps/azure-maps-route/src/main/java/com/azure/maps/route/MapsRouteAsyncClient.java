@@ -119,14 +119,14 @@ public final class MapsRouteAsyncClient {
      *
      * &#47;&#47; origins
      * GeoPointCollection origins3 = new GeoPointCollection&#40;Arrays.asList&#40;
-     *     new GeoPoint&#40;52.36006, 4.85106&#41;,
-     *     new GeoPoint&#40;52.36187, 4.85056&#41;
+     *     new GeoPoint&#40;4.85106, 52.36006&#41;,
+     *     new GeoPoint&#40;4.85056, 52.36187&#41;
      * &#41;&#41;;
      *
      * &#47;&#47; destinations
      * GeoPointCollection destinations3 = new GeoPointCollection&#40;Arrays.asList&#40;
-     *     new GeoPoint&#40;52.36241, 4.85003&#41;,
-     *     new GeoPoint&#40;52.50931, 13.42937&#41;
+     *     new GeoPoint&#40;4.85003, 52.36241&#41;,
+     *     new GeoPoint&#40;13.42937, 52.50931&#41;
      * &#41;&#41;;
      *
      * matrixQuery3.setDestinations&#40;destinations3&#41;;
@@ -158,14 +158,14 @@ public final class MapsRouteAsyncClient {
      *
      * &#47;&#47; origins
      * GeoPointCollection origins3 = new GeoPointCollection&#40;Arrays.asList&#40;
-     *     new GeoPoint&#40;52.36006, 4.85106&#41;,
-     *     new GeoPoint&#40;52.36187, 4.85056&#41;
+     *     new GeoPoint&#40;4.85106, 52.36006&#41;,
+     *     new GeoPoint&#40;4.85056, 52.36187&#41;
      * &#41;&#41;;
      *
      * &#47;&#47; destinations
      * GeoPointCollection destinations3 = new GeoPointCollection&#40;Arrays.asList&#40;
-     *     new GeoPoint&#40;52.36241, 4.85003&#41;,
-     *     new GeoPoint&#40;52.50931, 13.42937&#41;
+     *     new GeoPoint&#40;4.85003, 52.36241&#41;,
+     *     new GeoPoint&#40;13.42937, 52.50931&#41;
      * &#41;&#41;;
      *
      * matrixQuery3.setDestinations&#40;destinations3&#41;;
@@ -252,6 +252,7 @@ public final class MapsRouteAsyncClient {
      * @return this object is returned from a successful Route Matrix call.
      */
     PollerFlux<RouteMatrixResult, RouteMatrixResult> beginGetRouteMatrix(String matrixId, Context context) {
+        // TO DO Add null check and print if origin and destination multiply less than the max limit
         return createPollerFlux(
             () -> this.serviceClient.getRouteMatrixWithResponseAsync(matrixId, context)
                     .flatMap(response -> {
@@ -629,7 +630,7 @@ public final class MapsRouteAsyncClient {
      * <!-- src_embed com.azure.maps.search.async.route_range -->
      * <pre>
      * System.out.println&#40;&quot;Get route range&quot;&#41;;
-     * RouteRangeOptions rangeOptions2 = new RouteRangeOptions&#40;new GeoPosition&#40;5.86605, 50.97452&#41;, Duration.ofSeconds&#40;6000&#41;&#41;;
+     * RouteRangeOptions rangeOptions2 = new RouteRangeOptions&#40;new GeoPosition&#40;50.97452, 5.86605&#41;, Duration.ofSeconds&#40;6000&#41;&#41;;
      * asyncClient.getRouteRange&#40;rangeOptions2&#41;.block&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.search.async.route_range -->
@@ -653,7 +654,7 @@ public final class MapsRouteAsyncClient {
      * <!-- src_embed com.azure.maps.search.async.route_range -->
      * <pre>
      * System.out.println&#40;&quot;Get route range&quot;&#41;;
-     * RouteRangeOptions rangeOptions2 = new RouteRangeOptions&#40;new GeoPosition&#40;5.86605, 50.97452&#41;, Duration.ofSeconds&#40;6000&#41;&#41;;
+     * RouteRangeOptions rangeOptions2 = new RouteRangeOptions&#40;new GeoPosition&#40;50.97452, 5.86605&#41;, Duration.ofSeconds&#40;6000&#41;&#41;;
      * asyncClient.getRouteRange&#40;rangeOptions2&#41;.block&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.search.async.route_range -->
@@ -674,7 +675,7 @@ public final class MapsRouteAsyncClient {
      * <!-- src_embed com.azure.maps.search.async.route_range -->
      * <pre>
      * System.out.println&#40;&quot;Get route range&quot;&#41;;
-     * RouteRangeOptions rangeOptions2 = new RouteRangeOptions&#40;new GeoPosition&#40;5.86605, 50.97452&#41;, Duration.ofSeconds&#40;6000&#41;&#41;;
+     * RouteRangeOptions rangeOptions2 = new RouteRangeOptions&#40;new GeoPosition&#40;50.97452, 5.86605&#41;, Duration.ofSeconds&#40;6000&#41;&#41;;
      * asyncClient.getRouteRange&#40;rangeOptions2&#41;.block&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.search.async.route_range -->

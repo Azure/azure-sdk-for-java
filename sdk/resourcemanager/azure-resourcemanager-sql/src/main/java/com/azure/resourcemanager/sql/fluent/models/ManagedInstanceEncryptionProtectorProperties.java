@@ -36,6 +36,16 @@ public final class ManagedInstanceEncryptionProtectorProperties {
     @JsonProperty(value = "thumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbprint;
 
+    /*
+     * Key auto rotation opt-in flag. Either true or false.
+     */
+    @JsonProperty(value = "autoRotationEnabled")
+    private Boolean autoRotationEnabled;
+
+    /** Creates an instance of ManagedInstanceEncryptionProtectorProperties class. */
+    public ManagedInstanceEncryptionProtectorProperties() {
+    }
+
     /**
      * Get the serverKeyName property: The name of the managed instance key.
      *
@@ -92,6 +102,26 @@ public final class ManagedInstanceEncryptionProtectorProperties {
      */
     public String thumbprint() {
         return this.thumbprint;
+    }
+
+    /**
+     * Get the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
+     *
+     * @return the autoRotationEnabled value.
+     */
+    public Boolean autoRotationEnabled() {
+        return this.autoRotationEnabled;
+    }
+
+    /**
+     * Set the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
+     *
+     * @param autoRotationEnabled the autoRotationEnabled value to set.
+     * @return the ManagedInstanceEncryptionProtectorProperties object itself.
+     */
+    public ManagedInstanceEncryptionProtectorProperties withAutoRotationEnabled(Boolean autoRotationEnabled) {
+        this.autoRotationEnabled = autoRotationEnabled;
+        return this;
     }
 
     /**

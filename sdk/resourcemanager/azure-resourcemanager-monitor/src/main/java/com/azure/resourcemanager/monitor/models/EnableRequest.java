@@ -17,6 +17,10 @@ public final class EnableRequest {
     @JsonProperty(value = "receiverName", required = true)
     private String receiverName;
 
+    /** Creates an instance of EnableRequest class. */
+    public EnableRequest() {
+    }
+
     /**
      * Get the receiverName property: The name of the receiver to resubscribe.
      *

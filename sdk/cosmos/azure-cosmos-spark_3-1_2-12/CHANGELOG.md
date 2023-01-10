@@ -1,14 +1,22 @@
 ## Release History
 
-### 4.15.0-beta.1 (Unreleased)
+### 4.16.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added the `spark.cosmos.read.maxIntegratedCacheStalenessInMS` configuration key
+  to make `MaxIntegratedCacheStaleness` tunable for caching queries. - See [PR 32592](https://github.com/Azure/azure-sdk-for-java/pull/32592)
 
 #### Breaking Changes
 
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.15.0 (2022-11-16)
+
+#### Other Changes
+* Fixed shading instructions to correct dependency issues in Azure Synapse with version 4.14.0 and 4.14.1. - See [PR 31980](https://github.com/Azure/azure-sdk-for-java/pull/31980) 
+* Reduced the logging noise level on CancellationExceptions from `RntbdReporter.reportIssue`. - See [PR 32175](https://github.com/Azure/azure-sdk-for-java/pull/32175)
 
 ### 4.14.1 (2022-10-07)
 > [!IMPORTANT]
@@ -33,6 +41,9 @@
 * Added support to allow overriding json parsing behavior when a json document contains duplicated properties. Config entry `spark.cosmos.read.allowInvalidJsonWithDuplicateJsonProperties` can be used to not raise a hard error and use the last property instead. - See [PR 30916](https://github.com/Azure/azure-sdk-for-java/pull/30916)
 
 ### 4.12.2 (2022-08-04)
+
+#### Breaking Changes
+* Known issue introduced with Java SDK [PR 30161](https://github.com/Azure/azure-sdk-for-java/pull/30161) for incremental change feed schema when schema inference is disabled, possibly causing schema mismatch errors due to new `_lsn` column. Mitigation would be to drop that column from the dataframe: `spark.readStream.format("cosmos.oltp.changeFeed").options(**changeFeedCfg).load().drop("_lsn")`
 
 #### Bugs Fixed
 * Fixed the SerializationDateTimeConversionMode `AlwaysEpochMillisecdsWithSystemDefaultTimezone` where ZoneOffset calculation could be wrong especially for dates in the 19xx years. - See [PR 30266](https://github.com/Azure/azure-sdk-for-java/pull/30266)

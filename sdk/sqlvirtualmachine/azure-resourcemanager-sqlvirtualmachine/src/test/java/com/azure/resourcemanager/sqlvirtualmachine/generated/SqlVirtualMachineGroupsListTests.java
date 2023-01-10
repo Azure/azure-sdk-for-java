@@ -35,7 +35,7 @@ public final class SqlVirtualMachineGroupsListTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"uahaquhcdhmd\",\"sqlImageOffer\":\"laexqp\",\"sqlImageSku\":\"Developer\",\"scaleType\":\"HA\",\"clusterManagerType\":\"WSFC\",\"clusterConfiguration\":\"Domainful\",\"wsfcDomainProfile\":{\"domainFqdn\":\"vxpvgomz\",\"ouPath\":\"misgwbnb\",\"clusterBootstrapAccount\":\"ldawkzbaliourqha\",\"clusterOperatorAccount\":\"uhashsfwx\",\"sqlServiceAccount\":\"owzxcu\",\"fileShareWitnessPath\":\"cjooxdjebwpucwwf\",\"storageAccountUrl\":\"vbvmeu\",\"storageAccountPrimaryKey\":\"ivyhzceuojgjrwju\",\"clusterSubnetType\":\"SingleSubnet\"}},\"location\":\"wmcdytdxwi\",\"tags\":{\"qwgxhniskx\":\"rjaw\",\"klwndnhjdauwhv\":\"bkpyc\",\"zbtd\":\"l\"},\"id\":\"xujznbmpowu\",\"name\":\"przqlveu\",\"type\":\"lupj\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"uahaquhcdhmd\",\"sqlImageOffer\":\"laexqp\",\"sqlImageSku\":\"Developer\",\"scaleType\":\"HA\",\"clusterManagerType\":\"WSFC\",\"clusterConfiguration\":\"Domainful\",\"wsfcDomainProfile\":{\"domainFqdn\":\"vxpvgomz\",\"ouPath\":\"misgwbnb\",\"clusterBootstrapAccount\":\"ldawkzbaliourqha\",\"clusterOperatorAccount\":\"uhashsfwx\",\"sqlServiceAccount\":\"owzxcu\",\"fileShareWitnessPath\":\"cjooxdjebwpucwwf\",\"storageAccountUrl\":\"vbvmeu\",\"storageAccountPrimaryKey\":\"fakeStorageAccountPrimaryKeyPlaceholder\",\"clusterSubnetType\":\"SingleSubnet\"}},\"location\":\"wmcdytdxwi\",\"tags\":{\"qwgxhniskx\":\"rjaw\",\"klwndnhjdauwhv\":\"bkpyc\",\"zbtd\":\"l\"},\"id\":\"xujznbmpowu\",\"name\":\"przqlveu\",\"type\":\"lupj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -80,7 +80,7 @@ public final class SqlVirtualMachineGroupsListTests {
         Assertions.assertEquals("vbvmeu", response.iterator().next().wsfcDomainProfile().storageAccountUrl());
         Assertions
             .assertEquals(
-                "ivyhzceuojgjrwju", response.iterator().next().wsfcDomainProfile().storageAccountPrimaryKey());
+                "fakeStorageAccountPrimaryKeyPlaceholder", response.iterator().next().wsfcDomainProfile().storageAccountPrimaryKey());
         Assertions
             .assertEquals(
                 ClusterSubnetType.SINGLE_SUBNET, response.iterator().next().wsfcDomainProfile().clusterSubnetType());

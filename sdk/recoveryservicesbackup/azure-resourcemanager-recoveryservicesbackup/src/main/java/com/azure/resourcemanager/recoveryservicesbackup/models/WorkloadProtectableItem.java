@@ -48,6 +48,10 @@ public class WorkloadProtectableItem {
     @JsonProperty(value = "protectionState")
     private ProtectionStatus protectionState;
 
+    /** Creates an instance of WorkloadProtectableItem class. */
+    public WorkloadProtectableItem() {
+    }
+
     /**
      * Get the backupManagementType property: Type of backup management to backup an item.
      *

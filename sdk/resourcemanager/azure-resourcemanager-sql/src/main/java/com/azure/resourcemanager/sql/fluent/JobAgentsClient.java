@@ -102,21 +102,6 @@ public interface JobAgentsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job agent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    JobAgentInner get(String resourceGroupName, String serverName, String jobAgentName);
-
-    /**
-     * Gets a job agent.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent to be retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -126,6 +111,21 @@ public interface JobAgentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<JobAgentInner> getWithResponse(
         String resourceGroupName, String serverName, String jobAgentName, Context context);
+
+    /**
+     * Gets a job agent.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a job agent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    JobAgentInner get(String resourceGroupName, String serverName, String jobAgentName);
 
     /**
      * Creates or updates a job agent.

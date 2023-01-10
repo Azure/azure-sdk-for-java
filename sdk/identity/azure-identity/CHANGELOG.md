@@ -1,6 +1,6 @@
 # Release History
 
-## 1.7.0-beta.3 (Unreleased)
+## 1.8.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,36 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.7.3 (2023-01-06)
+
+### Bugs Fixed
+- No longer statically accessing environment variables. [#32781](https://github.com/Azure/azure-sdk-for-java/issues/32781)
+- Use `ThreadLocalRandom` instead of `Random` to better enable static compilation. [#32744](https://github.com/Azure/azure-sdk-for-java/issues/32744)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.34.0` to version `1.35.0`.
+
+## 1.7.2 (2022-12-09)
+
+### Bugs Fixed
+- Fixed MSI token `expires_in` parsing issue.
+
+## 1.7.1 (2022-11-17)
+
+### Features Added
+
+- Added user-agent header to Identity requests
+
+## 1.7.0 (2022-11-04)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.33.0` to version `1.34.0`.
+- Upgraded `msal4j` from `1.13.2` to `1.13.3`
 
 ## 1.7.0-beta.2 (2022-10-13)
 

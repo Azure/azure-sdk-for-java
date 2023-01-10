@@ -16,6 +16,10 @@ public final class AdvancedThreatProtectionProperties {
     @JsonProperty(value = "isEnabled")
     private Boolean isEnabled;
 
+    /** Creates an instance of AdvancedThreatProtectionProperties class. */
+    public AdvancedThreatProtectionProperties() {
+    }
+
     /**
      * Get the isEnabled property: Indicates whether Advanced Threat Protection is enabled.
      *

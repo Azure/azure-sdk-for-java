@@ -80,20 +80,6 @@ public interface SimPoliciesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param simPolicyName The name of the SIM policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified SIM policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SimPolicyInner get(String resourceGroupName, String mobileNetworkName, String simPolicyName);
-
-    /**
-     * Gets information about the specified SIM policy.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param simPolicyName The name of the SIM policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -105,7 +91,21 @@ public interface SimPoliciesClient {
         String resourceGroupName, String mobileNetworkName, String simPolicyName, Context context);
 
     /**
-     * Creates or updates a SIM policy.
+     * Gets information about the specified SIM policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param simPolicyName The name of the SIM policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified SIM policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SimPolicyInner get(String resourceGroupName, String mobileNetworkName, String simPolicyName);
+
+    /**
+     * Creates or updates a SIM policy. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -121,7 +121,7 @@ public interface SimPoliciesClient {
         String resourceGroupName, String mobileNetworkName, String simPolicyName, SimPolicyInner parameters);
 
     /**
-     * Creates or updates a SIM policy.
+     * Creates or updates a SIM policy. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -142,7 +142,7 @@ public interface SimPoliciesClient {
         Context context);
 
     /**
-     * Creates or updates a SIM policy.
+     * Creates or updates a SIM policy. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -158,7 +158,7 @@ public interface SimPoliciesClient {
         String resourceGroupName, String mobileNetworkName, String simPolicyName, SimPolicyInner parameters);
 
     /**
-     * Creates or updates a SIM policy.
+     * Creates or updates a SIM policy. Must be created in the same location as its parent mobile network.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
@@ -177,22 +177,6 @@ public interface SimPoliciesClient {
         String simPolicyName,
         SimPolicyInner parameters,
         Context context);
-
-    /**
-     * Updates SIM policy tags.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param simPolicyName The name of the SIM policy.
-     * @param parameters Parameters supplied to update SIM policy tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sIM policy resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SimPolicyInner updateTags(
-        String resourceGroupName, String mobileNetworkName, String simPolicyName, TagsObject parameters);
 
     /**
      * Updates SIM policy tags.
@@ -214,6 +198,22 @@ public interface SimPoliciesClient {
         String simPolicyName,
         TagsObject parameters,
         Context context);
+
+    /**
+     * Updates SIM policy tags.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param simPolicyName The name of the SIM policy.
+     * @param parameters Parameters supplied to update SIM policy tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sIM policy resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SimPolicyInner updateTags(
+        String resourceGroupName, String mobileNetworkName, String simPolicyName, TagsObject parameters);
 
     /**
      * Gets all the SIM policies in a mobile network.

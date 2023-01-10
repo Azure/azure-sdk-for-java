@@ -10,7 +10,7 @@ import com.azure.resourcemanager.compute.models.ReplicationStatusTypes;
 /** Samples for GalleryImageVersions Get. */
 public final class GalleryImageVersionsGetSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-01-03/examples/galleryExamples/GalleryImageVersion_Get_WithVhdAsSource.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/GalleryImageVersion_Get_WithVhdAsSource.json
      */
     /**
      * Sample code: Get a gallery image version with vhd as a source.
@@ -27,7 +27,7 @@ public final class GalleryImageVersionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-01-03/examples/galleryExamples/GalleryImageVersion_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/GalleryImageVersion_Get.json
      */
     /**
      * Sample code: Get a gallery image version.
@@ -44,7 +44,7 @@ public final class GalleryImageVersionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-01-03/examples/galleryExamples/GalleryImageVersion_Get_WithReplicationStatus.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/GalleryImageVersion_Get_WithReplicationStatus.json
      */
     /**
      * Sample code: Get a gallery image version with replication status.
@@ -68,7 +68,7 @@ public final class GalleryImageVersionsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-01-03/examples/galleryExamples/GalleryImageVersion_Get_WithSnapshotsAsSource.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-03-03/examples/galleryExamples/GalleryImageVersion_Get_WithSnapshotsAsSource.json
      */
     /**
      * Sample code: Get a gallery image version with snapshots as a source.

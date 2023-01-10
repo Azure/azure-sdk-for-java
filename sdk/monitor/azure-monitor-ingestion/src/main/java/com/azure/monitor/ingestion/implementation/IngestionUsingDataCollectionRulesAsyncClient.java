@@ -33,7 +33,9 @@ public final class IngestionUsingDataCollectionRulesAsyncClient {
     }
 
     /**
-     * See error response code and error response message for more detail.
+     * Ingestion API used to directly ingest data using Data Collection Rules
+     *
+     * <p>See error response code and error response message for more detail.
      *
      * <p><strong>Header Parameters</strong>
      *
@@ -44,11 +46,13 @@ public final class IngestionUsingDataCollectionRulesAsyncClient {
      *     <tr><td>x-ms-client-request-id</td><td>String</td><td>No</td><td>Client request Id</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * [
-     *     Object
+     *     Object (Required)
      * ]
      * }</pre>
      *

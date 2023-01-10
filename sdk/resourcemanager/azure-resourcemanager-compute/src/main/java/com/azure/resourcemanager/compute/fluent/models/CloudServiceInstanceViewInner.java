@@ -38,6 +38,10 @@ public final class CloudServiceInstanceViewInner {
     @JsonProperty(value = "statuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceInstanceViewStatus> statuses;
 
+    /** Creates an instance of CloudServiceInstanceViewInner class. */
+    public CloudServiceInstanceViewInner() {
+    }
+
     /**
      * Get the roleInstance property: Instance view statuses.
      *

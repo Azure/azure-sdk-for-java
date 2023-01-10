@@ -43,19 +43,6 @@ public interface Deployments {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified deployments associated with the Cognitive Services account.
-     */
-    Deployment get(String resourceGroupName, String accountName, String deploymentName);
-
-    /**
-     * Gets the specified deployments associated with the Cognitive Services account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of Cognitive Services account.
-     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -64,6 +51,19 @@ public interface Deployments {
      */
     Response<Deployment> getWithResponse(
         String resourceGroupName, String accountName, String deploymentName, Context context);
+
+    /**
+     * Gets the specified deployments associated with the Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified deployments associated with the Cognitive Services account.
+     */
+    Deployment get(String resourceGroupName, String accountName, String deploymentName);
 
     /**
      * Deletes the specified deployment associated with the Cognitive Services account.

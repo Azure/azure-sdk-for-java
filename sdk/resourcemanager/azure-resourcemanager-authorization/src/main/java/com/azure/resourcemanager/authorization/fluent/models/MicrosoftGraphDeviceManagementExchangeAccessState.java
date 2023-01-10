@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftGraphDeviceManagementExchangeAccessState. */
+/** deviceManagementExchangeAccessState. */
 public final class MicrosoftGraphDeviceManagementExchangeAccessState
     extends ExpandableStringEnum<MicrosoftGraphDeviceManagementExchangeAccessState> {
     /** Static value none for MicrosoftGraphDeviceManagementExchangeAccessState. */
@@ -37,7 +37,11 @@ public final class MicrosoftGraphDeviceManagementExchangeAccessState
         return fromString(name, MicrosoftGraphDeviceManagementExchangeAccessState.class);
     }
 
-    /** @return known MicrosoftGraphDeviceManagementExchangeAccessState values. */
+    /**
+     * Gets known MicrosoftGraphDeviceManagementExchangeAccessState values.
+     *
+     * @return known MicrosoftGraphDeviceManagementExchangeAccessState values.
+     */
     public static Collection<MicrosoftGraphDeviceManagementExchangeAccessState> values() {
         return values(MicrosoftGraphDeviceManagementExchangeAccessState.class);
     }

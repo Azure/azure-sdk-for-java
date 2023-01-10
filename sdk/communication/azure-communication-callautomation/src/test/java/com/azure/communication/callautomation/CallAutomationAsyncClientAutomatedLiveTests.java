@@ -3,13 +3,16 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
+import com.azure.communication.callautomation.models.CallSource;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
-import com.azure.communication.callautomation.models.RepeatabilityHeaders;
-import com.azure.communication.callautomation.models.events.CallConnectedEvent;
-import com.azure.communication.callautomation.models.events.CallDisconnectedEvent;
-import com.azure.communication.callautomation.models.events.ParticipantsUpdatedEvent;
+import com.azure.communication.callautomation.models.HangUpOptions;
+import com.azure.communication.callautomation.models.RejectCallOptions;
+import com.azure.communication.callautomation.models.events.CallConnected;
+import com.azure.communication.callautomation.models.events.CallDisconnected;
+import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.core.http.HttpClient;
@@ -22,8 +25,10 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
@@ -60,13 +65,9 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
 
             // create a call
             List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
-            CreateCallOptions createCallOptions = new CreateCallOptions(caller, targets,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            CreateCallOptions createCallOptions = new CreateCallOptions(new CallSource(caller), targets,
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).setRepeatabilityHeaders(null);
             Response<CreateCallResult> createCallResultResponse = callAsyncClient.createCallWithResponse(createCallOptions).block();
-            RepeatabilityHeaders repeatabilityHeaders = createCallOptions.getRepeatabilityHeaders();
-            assertNotNull(repeatabilityHeaders);
-            assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId());
-            assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSent());
 
             assertNotNull(createCallResultResponse);
             CreateCallResult createCallResult = createCallResultResponse.getValue();
@@ -80,8 +81,9 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             assertNotNull(incomingCallContext);
 
             // answer the call
-            AnswerCallResult answerCallResult = callAsyncClient.answerCall(incomingCallContext,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).block();
+            AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext,
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).setRepeatabilityHeaders(null);
+            AnswerCallResult answerCallResult = Objects.requireNonNull(callAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
             assertNotNull(answerCallResult);
             assertNotNull(answerCallResult.getCallConnectionAsync());
             assertNotNull(answerCallResult.getCallConnectionProperties());
@@ -89,14 +91,14 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             callDestructors.add(answerCallResult.getCallConnectionAsync());
 
             // check events to caller side
-            CallConnectedEvent callerCallConnectedEvent = waitForEvent(CallConnectedEvent.class, callerConnectionId, Duration.ofSeconds(10));
-            ParticipantsUpdatedEvent callerParticipantUpdatedEvent = waitForEvent(ParticipantsUpdatedEvent.class, callerConnectionId, Duration.ofSeconds(10));
+            CallConnected callerCallConnectedEvent = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
+            ParticipantsUpdated callerParticipantUpdatedEvent = waitForEvent(ParticipantsUpdated.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(callerCallConnectedEvent);
             assertNotNull(callerParticipantUpdatedEvent);
 
             // check events to receiver side
-            CallConnectedEvent receiverCallConnectedEvent = waitForEvent(CallConnectedEvent.class, receiverConnectionId, Duration.ofSeconds(10));
-            ParticipantsUpdatedEvent receiverParticipantUpdatedEvent = waitForEvent(ParticipantsUpdatedEvent.class, callerConnectionId, Duration.ofSeconds(10));
+            CallConnected receiverCallConnectedEvent = waitForEvent(CallConnected.class, receiverConnectionId, Duration.ofSeconds(10));
+            ParticipantsUpdated receiverParticipantUpdatedEvent = waitForEvent(ParticipantsUpdated.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(receiverCallConnectedEvent);
             assertNotNull(receiverParticipantUpdatedEvent);
 
@@ -104,8 +106,8 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             answerCallResult.getCallConnectionAsync().hangUp(true).block();
 
             // check if both parties had the call terminated.
-            CallDisconnectedEvent callerCallDisconnectedEvent = waitForEvent(CallDisconnectedEvent.class, receiverConnectionId, Duration.ofSeconds(10));
-            CallDisconnectedEvent receiverCallDisconnectedEvent = waitForEvent(CallDisconnectedEvent.class, callerConnectionId, Duration.ofSeconds(10));
+            CallDisconnected callerCallDisconnectedEvent = waitForEvent(CallDisconnected.class, receiverConnectionId, Duration.ofSeconds(10));
+            CallDisconnected receiverCallDisconnectedEvent = waitForEvent(CallDisconnected.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(callerCallDisconnectedEvent);
             assertNotNull(receiverCallDisconnectedEvent);
 
@@ -114,12 +116,69 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
         } finally {
             if (!callDestructors.isEmpty()) {
                 try {
-                    callDestructors.forEach(callConnection -> callConnection.hangUp(true).block());
+                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(new HangUpOptions(true).setRepeatabilityHeaders(null)).block());
                 } catch (Exception ignored) {
                     // Some call might have been terminated during the test, and it will cause exceptions here.
                     // Do nothing and iterate to next call connection.
                 }
             }
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)",
+        disabledReason = "Requires environment to be set up")
+    public void createVOIPCallAndRejectAutomatedTest(HttpClient httpClient) {
+        /* Test case: ACS to ACS call but rejected
+         * 1. create a CallAutomationClient.
+         * 2. Reject
+         * 3. See if call is not established
+         */
+        CallAutomationAsyncClient callAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
+            .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenHangupAutomatedTest", next))
+            .buildAsyncClient();
+
+        CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
+            .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenHangupAutomatedTest", next))
+            .buildAsyncClient();
+
+        try {
+            // create caller and receiver
+            CommunicationIdentifier caller = identityAsyncClient.createUser().block();
+            CommunicationIdentifier target = identityAsyncClient.createUser().block();
+
+            String uniqueId = serviceBusWithNewCall(caller, target);
+
+            // create a call
+            List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(target));
+            CreateCallOptions createCallOptions = new CreateCallOptions(new CallSource(caller), targets,
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).setRepeatabilityHeaders(null);
+            Response<CreateCallResult> createCallResultResponse = callAsyncClient.createCallWithResponse(createCallOptions).block();
+
+            assertNotNull(createCallResultResponse);
+            CreateCallResult createCallResult = createCallResultResponse.getValue();
+            assertNotNull(createCallResult);
+            assertNotNull(createCallResult.getCallConnectionProperties());
+            String callerConnectionId = createCallResult.getCallConnectionProperties().getCallConnectionId();
+            assertNotNull(callerConnectionId);
+
+            // wait for the incomingCallContext
+            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
+            assertNotNull(incomingCallContext);
+
+            // answer the call
+            RejectCallOptions rejectCallOptions = new RejectCallOptions(incomingCallContext).setRepeatabilityHeaders(null);
+            callAsyncClient.rejectCallWithResponse(rejectCallOptions).block();
+
+            // check events
+            CallDisconnected callDisconnectedEvent = waitForEvent(CallDisconnected.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(callDisconnectedEvent);
+            assertThrows(RuntimeException.class, () -> createCallResult.getCallConnection().getCallProperties());
+        } catch (Exception ex) {
+            fail("Unexpected exception received", ex);
         }
     }
 }

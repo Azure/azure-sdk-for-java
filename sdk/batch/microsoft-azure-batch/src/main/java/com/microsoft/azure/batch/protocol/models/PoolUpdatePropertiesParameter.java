@@ -66,6 +66,15 @@ public class PoolUpdatePropertiesParameter {
     private List<MetadataItem> metadata;
 
     /**
+     * The desired node communication mode for the pool.
+     * This setting replaces any existing targetNodeCommunication setting on
+     * the Pool. If omitted, the existing setting is default. Possible values
+     * include: 'default', 'classic', 'simplified'.
+     */
+    @JsonProperty(value = "targetNodeCommunicationMode")
+    private NodeCommunicationMode targetNodeCommunicationMode;
+
+    /**
      * Get if this element is present, it overwrites any existing StartTask. If omitted, any existing StartTask is removed from the Pool.
      *
      * @return the startTask value
@@ -142,6 +151,26 @@ public class PoolUpdatePropertiesParameter {
      */
     public PoolUpdatePropertiesParameter withMetadata(List<MetadataItem> metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get this setting replaces any existing targetNodeCommunication setting on the Pool. If omitted, the existing setting is default. Possible values include: 'default', 'classic', 'simplified'.
+     *
+     * @return the targetNodeCommunicationMode value
+     */
+    public NodeCommunicationMode targetNodeCommunicationMode() {
+        return this.targetNodeCommunicationMode;
+    }
+
+    /**
+     * Set this setting replaces any existing targetNodeCommunication setting on the Pool. If omitted, the existing setting is default. Possible values include: 'default', 'classic', 'simplified'.
+     *
+     * @param targetNodeCommunicationMode the targetNodeCommunicationMode value to set
+     * @return the PoolUpdatePropertiesParameter object itself.
+     */
+    public PoolUpdatePropertiesParameter withTargetNodeCommunicationMode(NodeCommunicationMode targetNodeCommunicationMode) {
+        this.targetNodeCommunicationMode = targetNodeCommunicationMode;
         return this;
     }
 

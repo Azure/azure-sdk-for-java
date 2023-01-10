@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.AttachedDataNetworkInner;
 import java.util.List;
@@ -48,6 +49,13 @@ public interface AttachedDataNetwork {
     Map<String, String> tags();
 
     /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the provisioningState property: The provisioning state of the attached data network resource.
      *
      * @return the provisioningState value.
@@ -63,7 +71,8 @@ public interface AttachedDataNetwork {
     InterfaceProperties userPlaneDataInterface();
 
     /**
-     * Gets the dnsAddresses property: The DNS servers to signal to UEs to use for this attached data network.
+     * Gets the dnsAddresses property: The DNS servers to signal to UEs to use for this attached data network. This
+     * configuration is mandatory - if you don't want DNS servers, you must provide an empty array.
      *
      * @return the dnsAddresses value.
      */
@@ -133,6 +142,7 @@ public interface AttachedDataNetwork {
             DefinitionStages.WithLocation,
             DefinitionStages.WithParentResource,
             DefinitionStages.WithUserPlaneDataInterface,
+            DefinitionStages.WithDnsAddresses,
             DefinitionStages.WithCreate {
     }
     /** The AttachedDataNetwork definition stages. */
@@ -181,7 +191,20 @@ public interface AttachedDataNetwork {
              *     N6 interface. For 4G networks, this is the SGi interface.
              * @return the next definition stage.
              */
-            WithCreate withUserPlaneDataInterface(InterfaceProperties userPlaneDataInterface);
+            WithDnsAddresses withUserPlaneDataInterface(InterfaceProperties userPlaneDataInterface);
+        }
+        /** The stage of the AttachedDataNetwork definition allowing to specify dnsAddresses. */
+        interface WithDnsAddresses {
+            /**
+             * Specifies the dnsAddresses property: The DNS servers to signal to UEs to use for this attached data
+             * network. This configuration is mandatory - if you don't want DNS servers, you must provide an empty
+             * array..
+             *
+             * @param dnsAddresses The DNS servers to signal to UEs to use for this attached data network. This
+             *     configuration is mandatory - if you don't want DNS servers, you must provide an empty array.
+             * @return the next definition stage.
+             */
+            WithCreate withDnsAddresses(List<String> dnsAddresses);
         }
         /**
          * The stage of the AttachedDataNetwork definition which contains all the minimum required properties for the
@@ -189,7 +212,6 @@ public interface AttachedDataNetwork {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
-                DefinitionStages.WithDnsAddresses,
                 DefinitionStages.WithNaptConfiguration,
                 DefinitionStages.WithUserEquipmentAddressPoolPrefix,
                 DefinitionStages.WithUserEquipmentStaticAddressPoolPrefix {
@@ -217,17 +239,6 @@ public interface AttachedDataNetwork {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
-        }
-        /** The stage of the AttachedDataNetwork definition allowing to specify dnsAddresses. */
-        interface WithDnsAddresses {
-            /**
-             * Specifies the dnsAddresses property: The DNS servers to signal to UEs to use for this attached data
-             * network..
-             *
-             * @param dnsAddresses The DNS servers to signal to UEs to use for this attached data network.
-             * @return the next definition stage.
-             */
-            WithCreate withDnsAddresses(List<String> dnsAddresses);
         }
         /** The stage of the AttachedDataNetwork definition allowing to specify naptConfiguration. */
         interface WithNaptConfiguration {

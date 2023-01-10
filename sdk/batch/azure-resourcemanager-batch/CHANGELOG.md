@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,136 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.1 (2022-11-24)
+
+- Azure Resource Manager Batch client library for Java. This package contains Microsoft Azure SDK for Batch Management SDK. Batch Client. Package tag package-2022-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.PrivateEndpointConnectionsUpdateHeaders` was removed
+
+* `models.BatchAccountsCreateResponse` was removed
+
+* `models.PoolsDeleteHeaders` was removed
+
+* `models.BatchAccountsDeleteHeaders` was removed
+
+* `models.CertificatesDeleteResponse` was removed
+
+* `models.BatchAccountsDeleteResponse` was removed
+
+* `models.CertificatesDeleteHeaders` was removed
+
+* `models.BatchAccountsCreateHeaders` was removed
+
+* `models.PrivateEndpointConnectionsUpdateResponse` was removed
+
+* `models.PoolsDeleteResponse` was removed
+
+#### `models.NetworkConfiguration` was modified
+
+* `withDynamicVNetAssignmentScope(models.DynamicVNetAssignmentScope)` was removed
+* `dynamicVNetAssignmentScope()` was removed
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `actionRequired()` was removed
+
+#### `models.Certificate$Definition` was modified
+
+* `withData(java.lang.String)` was removed
+
+#### `models.PrivateEndpointConnections` was modified
+
+* `update(java.lang.String,java.lang.String,java.lang.String,fluent.models.PrivateEndpointConnectionInner,java.lang.String)` was removed
+
+### Features Added
+
+* `models.NetworkProfile` was added
+
+* `models.EndpointAccessProfile` was added
+
+* `models.NodeCommunicationMode` was added
+
+* `models.EndpointAccessDefaultAction` was added
+
+* `models.IpRule` was added
+
+#### `models.NetworkConfiguration` was modified
+
+* `withDynamicVnetAssignmentScope(models.DynamicVNetAssignmentScope)` was added
+* `dynamicVnetAssignmentScope()` was added
+
+#### `BatchManager$Configurable` was modified
+
+* `withRetryOptions(com.azure.core.http.policy.RetryOptions)` was added
+
+#### `models.Application` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.BatchAccount` was modified
+
+* `networkProfile()` was added
+* `resourceGroupName()` was added
+* `nodeManagementEndpoint()` was added
+
+#### `models.BatchAccountUpdateParameters` was modified
+
+* `networkProfile()` was added
+* `withPublicNetworkAccess(models.PublicNetworkAccessType)` was added
+* `withNetworkProfile(models.NetworkProfile)` was added
+* `publicNetworkAccess()` was added
+
+#### `models.Certificate` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `groupIds()` was added
+
+#### `BatchManager` was modified
+
+* `authenticate(com.azure.core.http.HttpPipeline,com.azure.core.management.profile.AzureProfile)` was added
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `actionsRequired()` was added
+
+#### `models.BatchAccount$Definition` was modified
+
+* `withNetworkProfile(models.NetworkProfile)` was added
+
+#### `models.PrivateEndpointConnections` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String)` was added
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.Pool$Definition` was modified
+
+* `withTargetNodeCommunicationMode(models.NodeCommunicationMode)` was added
+
+#### `models.BatchAccount$Update` was modified
+
+* `withPublicNetworkAccess(models.PublicNetworkAccessType)` was added
+* `withNetworkProfile(models.NetworkProfile)` was added
+
+#### `models.BatchAccountCreateParameters` was modified
+
+* `networkProfile()` was added
+* `withNetworkProfile(models.NetworkProfile)` was added
+
+#### `models.Pool` was modified
+
+* `currentNodeCommunicationMode()` was added
+* `resourceGroupName()` was added
+* `targetNodeCommunicationMode()` was added
+
+#### `models.Pool$Update` was modified
+
+* `withTargetNodeCommunicationMode(models.NodeCommunicationMode)` was added
 
 ## 1.0.0 (2022-03-23)
 

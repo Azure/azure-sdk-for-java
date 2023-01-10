@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Addons Get. */
 public final class AddonsGetSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/Addons_Get_SRM.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Addons_Get_SRM.json
      */
     /**
      * Sample code: Addons_Get_SRM.
@@ -21,7 +21,7 @@ public final class AddonsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/Addons_Get_VR.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Addons_Get_VR.json
      */
     /**
      * Sample code: Addons_Get_VR.
@@ -33,7 +33,7 @@ public final class AddonsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/Addons_Get_HCX.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Addons_Get_HCX.json
      */
     /**
      * Sample code: Addons_Get_HCX.
@@ -42,5 +42,17 @@ public final class AddonsGetSamples {
      */
     public static void addonsGetHCX(com.azure.resourcemanager.avs.AvsManager manager) {
         manager.addons().getWithResponse("group1", "cloud1", "hcx", Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Addons_Get_ArcReg.json
+     */
+    /**
+     * Sample code: Addons_Get_ArcReg.
+     *
+     * @param manager Entry point to AvsManager.
+     */
+    public static void addonsGetArcReg(com.azure.resourcemanager.avs.AvsManager manager) {
+        manager.addons().getWithResponse("group1", "cloud1", "arc", Context.NONE);
     }
 }

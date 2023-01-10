@@ -9,9 +9,21 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Represents the type of a GeoJSON object.
+ * Represents the type of GeoJSON object.
  */
 public final class GeoObjectType extends ExpandableStringEnum<GeoObjectType> {
+    /**
+     * Creates a new instance of {@link GeoObjectType} without a {@link #toString()} value.
+     * <p>
+     * This constructor shouldn't be called as it will produce a {@link GeoObjectType} which doesn't
+     * have a String enum value.
+     *
+     * @deprecated Use one of the constants or the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GeoObjectType() {
+    }
+
     /**
      * GeoJSON point.
      */

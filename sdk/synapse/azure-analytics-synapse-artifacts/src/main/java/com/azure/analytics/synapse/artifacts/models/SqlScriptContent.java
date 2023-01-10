@@ -44,6 +44,9 @@ public final class SqlScriptContent {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of SqlScriptContent class. */
+    public SqlScriptContent() {}
+
     /**
      * Get the query property: SQL query to execute.
      *

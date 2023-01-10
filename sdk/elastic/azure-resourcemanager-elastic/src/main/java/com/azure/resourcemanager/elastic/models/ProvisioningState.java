@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProvisioningState. */
+/**
+ * ProvisioningState
+ *
+ * <p>Provisioning state of Elastic resource.
+ */
 public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
     /** Static value Accepted for ProvisioningState. */
     public static final ProvisioningState ACCEPTED = fromString("Accepted");
@@ -48,7 +52,11 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
         return fromString(name, ProvisioningState.class);
     }
 
-    /** @return known ProvisioningState values. */
+    /**
+     * Gets known ProvisioningState values.
+     *
+     * @return known ProvisioningState values.
+     */
     public static Collection<ProvisioningState> values() {
         return values(ProvisioningState.class);
     }

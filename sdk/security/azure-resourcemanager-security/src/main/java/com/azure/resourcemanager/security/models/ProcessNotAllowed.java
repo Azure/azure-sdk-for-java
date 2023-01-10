@@ -14,6 +14,10 @@ import java.util.List;
 @JsonTypeName("ProcessNotAllowed")
 @Fluent
 public final class ProcessNotAllowed extends AllowlistCustomAlertRule {
+    /** Creates an instance of ProcessNotAllowed class. */
+    public ProcessNotAllowed() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public ProcessNotAllowed withAllowlistValues(List<String> allowlistValues) {

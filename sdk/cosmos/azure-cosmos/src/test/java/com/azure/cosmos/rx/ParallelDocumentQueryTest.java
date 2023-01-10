@@ -283,7 +283,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "non-emulator" }, timeOut = TIMEOUT * 10)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10)
     public void queryDocumentsWithCompositeContinuationTokens() throws Exception {
         String query = "SELECT * FROM c";
 
@@ -467,7 +467,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         assertThat(fetchedResults).containsExactlyInAnyOrderElementsOf(expectedValues);
     }
 
-    @BeforeClass(groups = { "simple", "non-emulator" }, timeOut = 4 * SETUP_TIMEOUT)
+    @BeforeClass(groups = { "simple" }, timeOut = 4 * SETUP_TIMEOUT)
     public void before_ParallelDocumentQueryTest() {
         client = getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
@@ -507,7 +507,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         return items;
     }
 
-    @AfterClass(groups = { "simple", "non-emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }
@@ -718,6 +718,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         assertThat(documentFeedResponse.getResults().size()).isEqualTo(itemIdentities.size());
         assertThat(documentFeedResponse.getResults().stream().map(jsonNode -> jsonNode.get("id").textValue()).collect(Collectors.toList()))
             .containsAll(itemIdentities.stream().map(i -> i.getId()).collect(Collectors.toList()));
+        assertThat(documentFeedResponse.getCosmosDiagnostics()).isNotNull();
     }
 
     //TODO: Fix the test for GW mode

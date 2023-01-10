@@ -49,6 +49,10 @@ public final class VaultUsageInner {
     @JsonProperty(value = "name")
     private NameInfo name;
 
+    /** Creates an instance of VaultUsageInner class. */
+    public VaultUsageInner() {
+    }
+
     /**
      * Get the unit property: Unit of the usage.
      *

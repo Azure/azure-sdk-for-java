@@ -16,6 +16,10 @@ public class AksSchema {
     @JsonProperty(value = "properties")
     private AksSchemaProperties properties;
 
+    /** Creates an instance of AksSchema class. */
+    public AksSchema() {
+    }
+
     /**
      * Get the properties property: AKS properties.
      *

@@ -9,20 +9,19 @@ import com.azure.core.util.Context;
 /** Samples for ReplicationLinks Failover. */
 public final class ReplicationLinksFailoverSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/ReplicationLinkFailover.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ReplicationLinkFailover.json
      */
     /**
-     * Sample code: Failover a replication link.
+     * Sample code: Planned failover of a replication link.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void failoverAReplicationLink(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void plannedFailoverOfAReplicationLink(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .sqlServers()
             .manager()
             .serviceClient()
             .getReplicationLinks()
-            .failover(
-                "sqlcrudtest-8931", "sqlcrudtest-2137", "testdb", "f0550bf5-07ce-4270-8e4b-71737975973a", Context.NONE);
+            .failover("Default", "sourcesvr", "gamma-db", "4891ca10-ebd0-47d7-9182-c722651780fb", Context.NONE);
     }
 }

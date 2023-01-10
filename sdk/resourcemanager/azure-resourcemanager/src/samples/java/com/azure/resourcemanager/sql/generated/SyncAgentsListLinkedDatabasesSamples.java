@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SyncAgents ListLinkedDatabases. */
 public final class SyncAgentsListLinkedDatabasesSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/examples/SyncAgentGetLinkedDatabases.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncAgentGetLinkedDatabases.json
      */
     /**
      * Sample code: Get sync agent linked databases.

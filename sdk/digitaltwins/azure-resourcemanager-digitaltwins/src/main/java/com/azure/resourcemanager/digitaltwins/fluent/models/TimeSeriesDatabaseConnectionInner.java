@@ -18,6 +18,10 @@ public final class TimeSeriesDatabaseConnectionInner extends ExternalResource {
     @JsonProperty(value = "properties")
     private TimeSeriesDatabaseConnectionProperties properties;
 
+    /** Creates an instance of TimeSeriesDatabaseConnectionInner class. */
+    public TimeSeriesDatabaseConnectionInner() {
+    }
+
     /**
      * Get the properties property: Properties of a specific time series database connection.
      *

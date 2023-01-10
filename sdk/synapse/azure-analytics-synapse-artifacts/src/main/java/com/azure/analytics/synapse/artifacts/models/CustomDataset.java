@@ -22,6 +22,9 @@ public final class CustomDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private Object typeProperties;
 
+    /** Creates an instance of CustomDataset class. */
+    public CustomDataset() {}
+
     /**
      * Get the typeProperties property: Custom dataset properties.
      *

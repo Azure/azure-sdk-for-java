@@ -35,6 +35,10 @@ public final class ManagedClusterHttpProxyConfig {
     @JsonProperty(value = "trustedCa")
     private String trustedCa;
 
+    /** Creates an instance of ManagedClusterHttpProxyConfig class. */
+    public ManagedClusterHttpProxyConfig() {
+    }
+
     /**
      * Get the httpProxy property: The HTTP proxy server endpoint to use.
      *

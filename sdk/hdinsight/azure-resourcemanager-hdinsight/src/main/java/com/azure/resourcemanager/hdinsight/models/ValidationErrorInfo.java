@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The validation error information. */
 @Fluent
 public final class ValidationErrorInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ValidationErrorInfo.class);
-
     /*
      * The error code.
      */
@@ -38,6 +34,10 @@ public final class ValidationErrorInfo {
      */
     @JsonProperty(value = "messageArguments")
     private List<String> messageArguments;
+
+    /** Creates an instance of ValidationErrorInfo class. */
+    public ValidationErrorInfo() {
+    }
 
     /**
      * Get the code property: The error code.

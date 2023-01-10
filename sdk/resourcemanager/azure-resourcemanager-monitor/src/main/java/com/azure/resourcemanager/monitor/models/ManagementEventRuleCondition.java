@@ -22,6 +22,10 @@ public final class ManagementEventRuleCondition extends RuleCondition {
     @JsonProperty(value = "aggregation")
     private ManagementEventAggregationCondition aggregation;
 
+    /** Creates an instance of ManagementEventRuleCondition class. */
+    public ManagementEventRuleCondition() {
+    }
+
     /**
      * Get the aggregation property: How the data that is collected should be combined over time and when the alert is
      * activated. Note that for management event alerts aggregation is optional – if it is not provided then any event

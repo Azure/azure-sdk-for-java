@@ -23,6 +23,9 @@ public final class LinkConnectionQueryTableStatus {
     @JsonProperty(value = "continuationToken")
     private Object continuationToken;
 
+    /** Creates an instance of LinkConnectionQueryTableStatus class. */
+    public LinkConnectionQueryTableStatus() {}
+
     /**
      * Get the value property: Link tables' status.
      *

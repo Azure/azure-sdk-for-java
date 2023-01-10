@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for RegisteredIdentities Delete. */
 public final class RegisteredIdentitiesDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-04-01/examples/DeleteRegisteredIdentities.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/DeleteRegisteredIdentities.json
      */
     /**
      * Sample code: Delete registered Identity.

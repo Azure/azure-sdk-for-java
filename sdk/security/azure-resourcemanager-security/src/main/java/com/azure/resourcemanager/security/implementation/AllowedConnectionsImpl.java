@@ -49,16 +49,6 @@ public final class AllowedConnectionsImpl implements AllowedConnections {
         return Utils.mapPage(inner, inner1 -> new AllowedConnectionsResourceImpl(inner1, this.manager()));
     }
 
-    public AllowedConnectionsResource get(String resourceGroupName, String ascLocation, ConnectionType connectionType) {
-        AllowedConnectionsResourceInner inner =
-            this.serviceClient().get(resourceGroupName, ascLocation, connectionType);
-        if (inner != null) {
-            return new AllowedConnectionsResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AllowedConnectionsResource> getWithResponse(
         String resourceGroupName, String ascLocation, ConnectionType connectionType, Context context) {
         Response<AllowedConnectionsResourceInner> inner =
@@ -69,6 +59,16 @@ public final class AllowedConnectionsImpl implements AllowedConnections {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AllowedConnectionsResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AllowedConnectionsResource get(String resourceGroupName, String ascLocation, ConnectionType connectionType) {
+        AllowedConnectionsResourceInner inner =
+            this.serviceClient().get(resourceGroupName, ascLocation, connectionType);
+        if (inner != null) {
+            return new AllowedConnectionsResourceImpl(inner, this.manager());
         } else {
             return null;
         }

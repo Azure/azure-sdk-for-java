@@ -9,7 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.machinelearning.fluent.models.DatastoreDataInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.DatastoreInner;
 import com.azure.resourcemanager.machinelearning.fluent.models.DatastoreSecretsInner;
 import java.util.List;
 
@@ -26,7 +26,7 @@ public interface DatastoresClient {
      * @return a paginated list of Datastore entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatastoreDataInner> list(String resourceGroupName, String workspaceName);
+    PagedIterable<DatastoreInner> list(String resourceGroupName, String workspaceName);
 
     /**
      * List datastores.
@@ -47,7 +47,7 @@ public interface DatastoresClient {
      * @return a paginated list of Datastore entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatastoreDataInner> list(
+    PagedIterable<DatastoreInner> list(
         String resourceGroupName,
         String workspaceName,
         String skip,
@@ -65,19 +65,6 @@ public interface DatastoresClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String workspaceName, String name);
-
-    /**
-     * Delete datastore.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName Name of Azure Machine Learning workspace.
-     * @param name Datastore name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -88,7 +75,7 @@ public interface DatastoresClient {
     Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String name, Context context);
 
     /**
-     * Get datastore.
+     * Delete datastore.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
@@ -96,10 +83,9 @@ public interface DatastoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return datastore.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatastoreDataInner get(String resourceGroupName, String workspaceName, String name);
+    void delete(String resourceGroupName, String workspaceName, String name);
 
     /**
      * Get datastore.
@@ -114,24 +100,22 @@ public interface DatastoresClient {
      * @return datastore along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatastoreDataInner> getWithResponse(
+    Response<DatastoreInner> getWithResponse(
         String resourceGroupName, String workspaceName, String name, Context context);
 
     /**
-     * Create or update datastore.
+     * Get datastore.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
-     * @param body Datastore entity to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Resource Manager resource envelope.
+     * @return datastore.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatastoreDataInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String name, DatastoreDataInner body);
+    DatastoreInner get(String resourceGroupName, String workspaceName, String name);
 
     /**
      * Create or update datastore.
@@ -148,27 +132,28 @@ public interface DatastoresClient {
      * @return azure Resource Manager resource envelope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatastoreDataInner> createOrUpdateWithResponse(
+    Response<DatastoreInner> createOrUpdateWithResponse(
         String resourceGroupName,
         String workspaceName,
         String name,
-        DatastoreDataInner body,
+        DatastoreInner body,
         Boolean skipValidation,
         Context context);
 
     /**
-     * Get datastore secrets.
+     * Create or update datastore.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Datastore name.
+     * @param body Datastore entity to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return datastore secrets.
+     * @return azure Resource Manager resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatastoreSecretsInner listSecrets(String resourceGroupName, String workspaceName, String name);
+    DatastoreInner createOrUpdate(String resourceGroupName, String workspaceName, String name, DatastoreInner body);
 
     /**
      * Get datastore secrets.
@@ -185,4 +170,18 @@ public interface DatastoresClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DatastoreSecretsInner> listSecretsWithResponse(
         String resourceGroupName, String workspaceName, String name, Context context);
+
+    /**
+     * Get datastore secrets.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Datastore name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return datastore secrets.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DatastoreSecretsInner listSecrets(String resourceGroupName, String workspaceName, String name);
 }

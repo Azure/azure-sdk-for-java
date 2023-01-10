@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ElasticDeploymentStatus. */
+/** Flag specifying if the Elastic deployment status is healthy or not. */
 public final class ElasticDeploymentStatus extends ExpandableStringEnum<ElasticDeploymentStatus> {
     /** Static value Healthy for ElasticDeploymentStatus. */
     public static final ElasticDeploymentStatus HEALTHY = fromString("Healthy");
@@ -27,7 +27,11 @@ public final class ElasticDeploymentStatus extends ExpandableStringEnum<ElasticD
         return fromString(name, ElasticDeploymentStatus.class);
     }
 
-    /** @return known ElasticDeploymentStatus values. */
+    /**
+     * Gets known ElasticDeploymentStatus values.
+     *
+     * @return known ElasticDeploymentStatus values.
+     */
     public static Collection<ElasticDeploymentStatus> values() {
         return values(ElasticDeploymentStatus.class);
     }

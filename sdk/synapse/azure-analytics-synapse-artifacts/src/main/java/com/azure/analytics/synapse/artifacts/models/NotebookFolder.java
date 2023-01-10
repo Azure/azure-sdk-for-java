@@ -16,6 +16,9 @@ public final class NotebookFolder {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of NotebookFolder class. */
+    public NotebookFolder() {}
+
     /**
      * Get the name property: The name of the folder that this notebook is in.
      *

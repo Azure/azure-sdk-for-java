@@ -100,7 +100,7 @@ public final class DataFlowDebugSessionAddDataFlowSamples {
                                             .withAnnotations(Arrays.asList())
                                             .withConnectionString(
                                                 "DefaultEndpointsProtocol=https;AccountName=<storageName>;EndpointSuffix=core.windows.net;")
-                                            .withEncryptedCredential("<credential>"))))
+                                            .withEncryptedCredential("fakeTokenPlaceholder"))))
                     .withDebugSettings(
                         new DataFlowDebugPackageDebugSettings()
                             .withSourceSettings(

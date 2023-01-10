@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mobilenetwork.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SimInner;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
@@ -11,8 +12,10 @@ import com.azure.resourcemanager.mobilenetwork.models.Sim;
 import com.azure.resourcemanager.mobilenetwork.models.SimPolicyResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.SimState;
 import com.azure.resourcemanager.mobilenetwork.models.SimStaticIpProperties;
+import com.azure.resourcemanager.mobilenetwork.models.SiteProvisioningState;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
     private SimInner innerObject;
@@ -31,20 +34,8 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
         return this.innerModel().type();
     }
 
-    public ProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public SimState simState() {
-        return this.innerModel().simState();
-    }
-
-    public String internationalMobileSubscriberIdentity() {
-        return this.innerModel().internationalMobileSubscriberIdentity();
-    }
-
-    public String integratedCircuitCardIdentifier() {
-        return this.innerModel().integratedCircuitCardIdentifier();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String authenticationKey() {
@@ -53,6 +44,31 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
 
     public String operatorKeyCode() {
         return this.innerModel().operatorKeyCode();
+    }
+
+    public ProvisioningState provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public SimState simState() {
+        return this.innerModel().simState();
+    }
+
+    public Map<String, SiteProvisioningState> siteProvisioningState() {
+        Map<String, SiteProvisioningState> inner = this.innerModel().siteProvisioningState();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
+    public String internationalMobileSubscriberIdentity() {
+        return this.innerModel().internationalMobileSubscriberIdentity();
+    }
+
+    public String integratedCircuitCardIdentifier() {
+        return this.innerModel().integratedCircuitCardIdentifier();
     }
 
     public String deviceType() {
@@ -70,6 +86,14 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public String vendorName() {
+        return this.innerModel().vendorName();
+    }
+
+    public String vendorKeyFingerprint() {
+        return this.innerModel().vendorKeyFingerprint();
     }
 
     public String resourceGroupName() {
@@ -175,11 +199,6 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
         return this;
     }
 
-    public SimImpl withIntegratedCircuitCardIdentifier(String integratedCircuitCardIdentifier) {
-        this.innerModel().withIntegratedCircuitCardIdentifier(integratedCircuitCardIdentifier);
-        return this;
-    }
-
     public SimImpl withAuthenticationKey(String authenticationKey) {
         this.innerModel().withAuthenticationKey(authenticationKey);
         return this;
@@ -187,6 +206,11 @@ public final class SimImpl implements Sim, Sim.Definition, Sim.Update {
 
     public SimImpl withOperatorKeyCode(String operatorKeyCode) {
         this.innerModel().withOperatorKeyCode(operatorKeyCode);
+        return this;
+    }
+
+    public SimImpl withIntegratedCircuitCardIdentifier(String integratedCircuitCardIdentifier) {
+        this.innerModel().withIntegratedCircuitCardIdentifier(integratedCircuitCardIdentifier);
         return this;
     }
 

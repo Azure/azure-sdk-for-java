@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** Stats for the storage service. */
-@Fluent
 @JacksonXmlRootElement(localName = "StorageServiceStats")
+@Fluent
 public final class QueueServiceStatistics {
 
     /*
@@ -17,6 +17,9 @@ public final class QueueServiceStatistics {
      */
     @JsonProperty(value = "GeoReplication")
     private GeoReplication geoReplication;
+
+    /** Creates an instance of QueueServiceStatistics class. */
+    public QueueServiceStatistics() {}
 
     /**
      * Get the geoReplication property: Geo-Replication information for the Secondary Storage Service.

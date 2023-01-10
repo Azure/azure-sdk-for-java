@@ -14,51 +14,59 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ImageReference {
     /*
-     * The publisher of the Azure Virtual Machines Marketplace image. For
-     * example, Canonical or MicrosoftWindowsServer.
+     * The publisher of the Azure Virtual Machines Marketplace image.
+     *
+     * For example, Canonical or MicrosoftWindowsServer.
      */
     @JsonProperty(value = "publisher")
     private String publisher;
 
     /*
-     * The offer type of the Azure Virtual Machines Marketplace image. For
-     * example, UbuntuServer or WindowsServer.
+     * The offer type of the Azure Virtual Machines Marketplace image.
+     *
+     * For example, UbuntuServer or WindowsServer.
      */
     @JsonProperty(value = "offer")
     private String offer;
 
     /*
-     * The SKU of the Azure Virtual Machines Marketplace image. For example,
-     * 18.04-LTS or 2022-datacenter.
+     * The SKU of the Azure Virtual Machines Marketplace image.
+     *
+     * For example, 18.04-LTS or 2022-datacenter.
      */
     @JsonProperty(value = "sku")
     private String sku;
 
     /*
-     * The version of the Azure Virtual Machines Marketplace image. A value of
-     * 'latest' can be specified to select the latest version of an image. If
-     * omitted, the default is 'latest'.
+     * The version of the Azure Virtual Machines Marketplace image.
+     *
+     * A value of 'latest' can be specified to select the latest version of an image. If omitted, the default is
+     * 'latest'.
      */
     @JsonProperty(value = "version")
     private String version;
 
     /*
-     * The ARM resource identifier of the Shared Image Gallery Image. Compute
-     * Nodes in the Pool will be created using this Image Id. This is of the
-     * form
+     * The ARM resource identifier of the Shared Image Gallery Image. Compute Nodes in the Pool will be created using
+     * this Image Id. This is of the form
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageDefinitionName}/versions/{versionId}.
-     * This property is mutually exclusive with other properties. The Shared
-     * Image Gallery image must have replicas in the same region as the Azure
-     * Batch account. For information about the firewall settings for the Batch
-     * node agent to communicate with the Batch service see
+     *
+     * This property is mutually exclusive with other properties. The Shared Image Gallery image must have replicas in
+     * the same region as the Azure Batch account. For information about the firewall settings for the Batch node agent
+     * to communicate with the Batch service see
      * https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
      */
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of ImageReference class. */
+    public ImageReference() {
+    }
+
     /**
-     * Get the publisher property: The publisher of the Azure Virtual Machines Marketplace image. For example, Canonical
-     * or MicrosoftWindowsServer.
+     * Get the publisher property: The publisher of the Azure Virtual Machines Marketplace image.
+     *
+     * <p>For example, Canonical or MicrosoftWindowsServer.
      *
      * @return the publisher value.
      */
@@ -67,8 +75,9 @@ public final class ImageReference {
     }
 
     /**
-     * Set the publisher property: The publisher of the Azure Virtual Machines Marketplace image. For example, Canonical
-     * or MicrosoftWindowsServer.
+     * Set the publisher property: The publisher of the Azure Virtual Machines Marketplace image.
+     *
+     * <p>For example, Canonical or MicrosoftWindowsServer.
      *
      * @param publisher the publisher value to set.
      * @return the ImageReference object itself.
@@ -79,8 +88,9 @@ public final class ImageReference {
     }
 
     /**
-     * Get the offer property: The offer type of the Azure Virtual Machines Marketplace image. For example, UbuntuServer
-     * or WindowsServer.
+     * Get the offer property: The offer type of the Azure Virtual Machines Marketplace image.
+     *
+     * <p>For example, UbuntuServer or WindowsServer.
      *
      * @return the offer value.
      */
@@ -89,8 +99,9 @@ public final class ImageReference {
     }
 
     /**
-     * Set the offer property: The offer type of the Azure Virtual Machines Marketplace image. For example, UbuntuServer
-     * or WindowsServer.
+     * Set the offer property: The offer type of the Azure Virtual Machines Marketplace image.
+     *
+     * <p>For example, UbuntuServer or WindowsServer.
      *
      * @param offer the offer value to set.
      * @return the ImageReference object itself.
@@ -101,8 +112,9 @@ public final class ImageReference {
     }
 
     /**
-     * Get the sku property: The SKU of the Azure Virtual Machines Marketplace image. For example, 18.04-LTS or
-     * 2022-datacenter.
+     * Get the sku property: The SKU of the Azure Virtual Machines Marketplace image.
+     *
+     * <p>For example, 18.04-LTS or 2022-datacenter.
      *
      * @return the sku value.
      */
@@ -111,8 +123,9 @@ public final class ImageReference {
     }
 
     /**
-     * Set the sku property: The SKU of the Azure Virtual Machines Marketplace image. For example, 18.04-LTS or
-     * 2022-datacenter.
+     * Set the sku property: The SKU of the Azure Virtual Machines Marketplace image.
+     *
+     * <p>For example, 18.04-LTS or 2022-datacenter.
      *
      * @param sku the sku value to set.
      * @return the ImageReference object itself.
@@ -123,8 +136,10 @@ public final class ImageReference {
     }
 
     /**
-     * Get the version property: The version of the Azure Virtual Machines Marketplace image. A value of 'latest' can be
-     * specified to select the latest version of an image. If omitted, the default is 'latest'.
+     * Get the version property: The version of the Azure Virtual Machines Marketplace image.
+     *
+     * <p>A value of 'latest' can be specified to select the latest version of an image. If omitted, the default is
+     * 'latest'.
      *
      * @return the version value.
      */
@@ -133,8 +148,10 @@ public final class ImageReference {
     }
 
     /**
-     * Set the version property: The version of the Azure Virtual Machines Marketplace image. A value of 'latest' can be
-     * specified to select the latest version of an image. If omitted, the default is 'latest'.
+     * Set the version property: The version of the Azure Virtual Machines Marketplace image.
+     *
+     * <p>A value of 'latest' can be specified to select the latest version of an image. If omitted, the default is
+     * 'latest'.
      *
      * @param version the version value to set.
      * @return the ImageReference object itself.
@@ -148,9 +165,10 @@ public final class ImageReference {
      * Get the id property: The ARM resource identifier of the Shared Image Gallery Image. Compute Nodes in the Pool
      * will be created using this Image Id. This is of the form
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageDefinitionName}/versions/{versionId}.
-     * This property is mutually exclusive with other properties. The Shared Image Gallery image must have replicas in
-     * the same region as the Azure Batch account. For information about the firewall settings for the Batch node agent
-     * to communicate with the Batch service see
+     *
+     * <p>This property is mutually exclusive with other properties. The Shared Image Gallery image must have replicas
+     * in the same region as the Azure Batch account. For information about the firewall settings for the Batch node
+     * agent to communicate with the Batch service see
      * https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
      *
      * @return the id value.
@@ -163,9 +181,10 @@ public final class ImageReference {
      * Set the id property: The ARM resource identifier of the Shared Image Gallery Image. Compute Nodes in the Pool
      * will be created using this Image Id. This is of the form
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageDefinitionName}/versions/{versionId}.
-     * This property is mutually exclusive with other properties. The Shared Image Gallery image must have replicas in
-     * the same region as the Azure Batch account. For information about the firewall settings for the Batch node agent
-     * to communicate with the Batch service see
+     *
+     * <p>This property is mutually exclusive with other properties. The Shared Image Gallery image must have replicas
+     * in the same region as the Azure Batch account. For information about the firewall settings for the Batch node
+     * agent to communicate with the Batch service see
      * https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
      *
      * @param id the id value to set.

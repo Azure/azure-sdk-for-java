@@ -52,6 +52,9 @@ public final class AzureSqlSink extends CopySink {
     @JsonProperty(value = "tableOption")
     private Object tableOption;
 
+    /** Creates an instance of AzureSqlSink class. */
+    public AzureSqlSink() {}
+
     /**
      * Get the sqlWriterStoredProcedureName property: SQL writer stored procedure name. Type: string (or Expression with
      * resultType string).

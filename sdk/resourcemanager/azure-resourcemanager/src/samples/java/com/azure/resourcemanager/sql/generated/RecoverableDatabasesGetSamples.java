@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for RecoverableDatabases Get. */
 public final class RecoverableDatabasesGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/RecoverableDatabaseGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/RecoverableDatabaseGet.json
      */
     /**
      * Sample code: Get a recoverable database.

@@ -27,6 +27,10 @@ public final class ApplicationsCheckMemberGroupsRequestBody {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of ApplicationsCheckMemberGroupsRequestBody class. */
+    public ApplicationsCheckMemberGroupsRequestBody() {
+    }
+
     /**
      * Get the groupIds property: The groupIds property.
      *

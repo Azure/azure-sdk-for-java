@@ -34,6 +34,10 @@ public final class ClientDiscoveryDisplay {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of ClientDiscoveryDisplay class. */
+    public ClientDiscoveryDisplay() {
+    }
+
     /**
      * Get the provider property: Name of the provider for display purposes.
      *

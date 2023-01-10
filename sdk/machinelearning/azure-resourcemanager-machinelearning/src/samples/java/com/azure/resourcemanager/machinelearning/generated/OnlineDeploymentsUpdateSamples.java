@@ -4,24 +4,17 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.Context;
-import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.machinelearning.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.machinelearning.models.OnlineDeploymentData;
-import com.azure.resourcemanager.machinelearning.models.PartialKubernetesOnlineDeployment;
-import com.azure.resourcemanager.machinelearning.models.PartialManagedOnlineDeployment;
-import com.azure.resourcemanager.machinelearning.models.PartialManagedServiceIdentity;
+import com.azure.resourcemanager.machinelearning.models.OnlineDeployment;
 import com.azure.resourcemanager.machinelearning.models.PartialSku;
 import com.azure.resourcemanager.machinelearning.models.SkuTier;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for OnlineDeployments Update. */
 public final class OnlineDeploymentsUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineDeployment/ManagedOnlineDeployment/update.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/OnlineDeployment/ManagedOnlineDeployment/update.json
      */
     /**
      * Sample code: Update Managed Online Deployment.
@@ -29,8 +22,8 @@ public final class OnlineDeploymentsUpdateSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void updateManagedOnlineDeployment(
-        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) throws IOException {
-        OnlineDeploymentData resource =
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
+        OnlineDeployment resource =
             manager
                 .onlineDeployments()
                 .getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", Context.NONE)
@@ -38,17 +31,6 @@ public final class OnlineDeploymentsUpdateSamples {
         resource
             .update()
             .withTags(mapOf())
-            .withIdentity(
-                new PartialManagedServiceIdentity()
-                    .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "string",
-                            SerializerFactory
-                                .createDefaultManagementSerializerAdapter()
-                                .deserialize("{}", Object.class, SerializerEncoding.JSON))))
-            .withKind("string")
-            .withProperties(new PartialManagedOnlineDeployment())
             .withSku(
                 new PartialSku()
                     .withCapacity(1)
@@ -60,7 +42,7 @@ public final class OnlineDeploymentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/OnlineDeployment/KubernetesOnlineDeployment/update.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/OnlineDeployment/KubernetesOnlineDeployment/update.json
      */
     /**
      * Sample code: Update Kubernetes Online Deployment.
@@ -68,8 +50,8 @@ public final class OnlineDeploymentsUpdateSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void updateKubernetesOnlineDeployment(
-        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) throws IOException {
-        OnlineDeploymentData resource =
+        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
+        OnlineDeployment resource =
             manager
                 .onlineDeployments()
                 .getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", Context.NONE)
@@ -77,17 +59,6 @@ public final class OnlineDeploymentsUpdateSamples {
         resource
             .update()
             .withTags(mapOf())
-            .withIdentity(
-                new PartialManagedServiceIdentity()
-                    .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "string",
-                            SerializerFactory
-                                .createDefaultManagementSerializerAdapter()
-                                .deserialize("{}", Object.class, SerializerEncoding.JSON))))
-            .withKind("string")
-            .withProperties(new PartialKubernetesOnlineDeployment())
             .withSku(
                 new PartialSku()
                     .withCapacity(1)

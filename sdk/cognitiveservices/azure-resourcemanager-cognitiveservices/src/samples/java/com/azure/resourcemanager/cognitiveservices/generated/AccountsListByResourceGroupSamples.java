@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Accounts ListByResourceGroup. */
 public final class AccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/ListAccountsByResourceGroup.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/ListAccountsByResourceGroup.json
      */
     /**
      * Sample code: List Accounts by Resource Group.

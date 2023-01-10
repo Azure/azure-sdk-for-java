@@ -28,6 +28,9 @@ public final class InnerError {
     @JsonProperty(value = "innererror")
     private InnerError innererror;
 
+    /** Creates an instance of InnerError class. */
+    public InnerError() {}
+
     /**
      * Get the code property: Error code.
      *

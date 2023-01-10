@@ -14,15 +14,15 @@ public final class GalleryPropertiesTests {
     public void testDeserialize() {
         GalleryProperties model =
             BinaryData
-                .fromString("{\"provisioningState\":\"c\",\"galleryResourceId\":\"jpgd\"}")
+                .fromString("{\"provisioningState\":\"Created\",\"galleryResourceId\":\"wzrlovmclwhij\"}")
                 .toObject(GalleryProperties.class);
-        Assertions.assertEquals("jpgd", model.galleryResourceId());
+        Assertions.assertEquals("wzrlovmclwhij", model.galleryResourceId());
     }
 
     @Test
     public void testSerialize() {
-        GalleryProperties model = new GalleryProperties().withGalleryResourceId("jpgd");
+        GalleryProperties model = new GalleryProperties().withGalleryResourceId("wzrlovmclwhij");
         model = BinaryData.fromObject(model).toObject(GalleryProperties.class);
-        Assertions.assertEquals("jpgd", model.galleryResourceId());
+        Assertions.assertEquals("wzrlovmclwhij", model.galleryResourceId());
     }
 }

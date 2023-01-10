@@ -37,6 +37,9 @@ public class CloudError {
     @JsonProperty(value = "error.details")
     private List<CloudError> details;
 
+    /** Creates an instance of CloudError class. */
+    public CloudError() {}
+
     /**
      * Get the code property: Error code.
      *

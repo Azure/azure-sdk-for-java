@@ -13,8 +13,8 @@ import com.azure.core.test.annotation.SyncAsyncTest;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
-import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
@@ -46,7 +46,7 @@ import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -73,8 +73,6 @@ public abstract class HttpClientTests {
     private static final String BOM_WITH_SAME_HEADER = "bomBytesWithSameHeader";
     private static final String BOM_WITH_DIFFERENT_HEADER = "bomBytesWithDifferentHeader";
     protected static final String ECHO_RESPONSE = "echo";
-
-    private static final Random RANDOM = new Random();
 
     private static final byte[] EXPECTED_RETURN_BYTES = "Hello World!".getBytes(StandardCharsets.UTF_8);
 
@@ -354,6 +352,26 @@ public abstract class HttpClientTests {
     }
 
     /**
+     * Tests that eagerly converting implementation HTTP headers to azure-core HttpHeaders is done.
+     */
+    @SyncAsyncTest
+    public void eagerlyConvertedHeadersAreHttpHeaders() {
+        BinaryData requestBody = BinaryData.fromString("test body");
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE), new HttpHeaders(),
+            requestBody);
+
+        Context context = Context.NONE.addData("azure-eagerly-convert-headers", true);
+
+        HttpResponse response = SyncAsyncExtension.execute(
+            () -> createHttpClient().sendSync(request, context),
+            () -> createHttpClient().send(request, context)
+        );
+
+        // Validate getHttpHeaders type is HttpHeaders (not instanceof)
+        assertEquals(HttpHeaders.class, response.getHeaders().getClass());
+    }
+
+    /**
      * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
      * @param requestBody The BinaryData that contains random bytes.
      * @param expectedResponseBody The expected bytes in the echo response.
@@ -463,7 +481,7 @@ public abstract class HttpClientTests {
             .flatMap(size -> {
                 try {
                     byte[] bytes = new byte[size];
-                    RANDOM.nextBytes(bytes);
+                    ThreadLocalRandom.current().nextBytes(bytes);
 
                     BinaryData byteArrayData = BinaryData.fromBytes(bytes);
 

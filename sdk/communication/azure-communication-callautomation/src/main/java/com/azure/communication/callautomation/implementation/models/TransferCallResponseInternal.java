@@ -7,7 +7,7 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TransferCallResponseInternal model. */
+/** The response payload for transferring the call. */
 @Fluent
 public final class TransferCallResponseInternal {
     /*

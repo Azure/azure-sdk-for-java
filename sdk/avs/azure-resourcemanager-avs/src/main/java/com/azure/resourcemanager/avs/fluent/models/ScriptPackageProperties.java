@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of a Script Package subresource. */
 @Immutable
 public final class ScriptPackageProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptPackageProperties.class);
-
     /*
      * User friendly description of the package
      */
@@ -25,6 +21,22 @@ public final class ScriptPackageProperties {
      */
     @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
+
+    /*
+     * Company that created and supports the package
+     */
+    @JsonProperty(value = "company", access = JsonProperty.Access.WRITE_ONLY)
+    private String company;
+
+    /*
+     * Link to support by the package vendor
+     */
+    @JsonProperty(value = "uri", access = JsonProperty.Access.WRITE_ONLY)
+    private String uri;
+
+    /** Creates an instance of ScriptPackageProperties class. */
+    public ScriptPackageProperties() {
+    }
 
     /**
      * Get the description property: User friendly description of the package.
@@ -42,6 +54,24 @@ public final class ScriptPackageProperties {
      */
     public String version() {
         return this.version;
+    }
+
+    /**
+     * Get the company property: Company that created and supports the package.
+     *
+     * @return the company value.
+     */
+    public String company() {
+        return this.company;
+    }
+
+    /**
+     * Get the uri property: Link to support by the package vendor.
+     *
+     * @return the uri value.
+     */
+    public String uri() {
+        return this.uri;
     }
 
     /**

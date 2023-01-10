@@ -251,6 +251,29 @@ public final class BackendAddressPoolInner extends SubResource {
     }
 
     /**
+     * Get the virtualNetwork property: A reference to a virtual network.
+     *
+     * @return the virtualNetwork value.
+     */
+    public SubResource virtualNetwork() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetwork();
+    }
+
+    /**
+     * Set the virtualNetwork property: A reference to a virtual network.
+     *
+     * @param virtualNetwork the virtualNetwork value to set.
+     * @return the BackendAddressPoolInner object itself.
+     */
+    public BackendAddressPoolInner withVirtualNetwork(SubResource virtualNetwork) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackendAddressPoolPropertiesFormat();
+        }
+        this.innerProperties().withVirtualNetwork(virtualNetwork);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

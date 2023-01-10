@@ -70,7 +70,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
 
     @BeforeAll
     static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
     }
 
     @AfterAll

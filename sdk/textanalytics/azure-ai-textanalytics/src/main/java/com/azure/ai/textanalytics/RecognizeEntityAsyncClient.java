@@ -169,7 +169,7 @@ class RecognizeEntityAsyncClient {
                        .doOnSuccess(response -> logger.info("Recognized entities for a batch of documents- {}",
                            response.getValue()))
                        .doOnError(error -> logger.warning("Failed to recognize entities - {}", error))
-                       .map(Utility::toRecognizeEntitiesResultCollection2)
+                       .map(Utility::toRecognizeEntitiesResultCollectionResponseLanguageApi)
                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         }
 
@@ -185,7 +185,7 @@ class RecognizeEntityAsyncClient {
             .doOnSuccess(response -> logger.info("Recognized entities for a batch of documents- {}",
                 response.getValue()))
             .doOnError(error -> logger.warning("Failed to recognize entities - {}", error))
-            .map(Utility::toRecognizeEntitiesResultCollection)
+            .map(Utility::toRecognizeEntitiesResultCollectionResponse)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }
 

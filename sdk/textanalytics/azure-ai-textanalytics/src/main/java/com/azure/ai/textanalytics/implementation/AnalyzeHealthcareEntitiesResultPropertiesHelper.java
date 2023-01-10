@@ -4,10 +4,13 @@
 package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
+import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.core.util.IterableStream;
+
+import java.util.Map;
 
 /**
  * The helper class to set the non-public properties of an {@link AnalyzeHealthcareEntitiesResult} instance.
@@ -22,11 +25,13 @@ public final class AnalyzeHealthcareEntitiesResultPropertiesHelper {
      * instance.
      */
     public interface AnalyzeHealthcareEntitiesResultAccessor {
+        void setDetectedLanguage(AnalyzeHealthcareEntitiesResult entitiesResult, DetectedLanguage detectedLanguage);
         void setEntities(AnalyzeHealthcareEntitiesResult entitiesResult, IterableStream<HealthcareEntity> entities);
         void setWarnings(AnalyzeHealthcareEntitiesResult entitiesResult,
             IterableStream<TextAnalyticsWarning> warnings);
         void setEntityRelations(AnalyzeHealthcareEntitiesResult entitiesResult,
             IterableStream<HealthcareEntityRelation> entityRelations);
+        void setFhirBundle(AnalyzeHealthcareEntitiesResult entitiesResult, Map<String, Object> fhirBundle);
     }
 
     /**
@@ -37,6 +42,11 @@ public final class AnalyzeHealthcareEntitiesResultPropertiesHelper {
     public static void setAccessor(
         final AnalyzeHealthcareEntitiesResultAccessor analyzeHealthcareEntitiesResultAccessor) {
         accessor = analyzeHealthcareEntitiesResultAccessor;
+    }
+
+    public static void setDetectedLanguage(AnalyzeHealthcareEntitiesResult entitiesResult,
+        DetectedLanguage detectedLanguage) {
+        accessor.setDetectedLanguage(entitiesResult, detectedLanguage);
     }
 
     public static void setEntities(AnalyzeHealthcareEntitiesResult entitiesResult,
@@ -52,5 +62,9 @@ public final class AnalyzeHealthcareEntitiesResultPropertiesHelper {
     public static void setEntityRelations(AnalyzeHealthcareEntitiesResult entitiesResult,
         IterableStream<HealthcareEntityRelation> entityRelations) {
         accessor.setEntityRelations(entitiesResult, entityRelations);
+    }
+
+    public static void setFhirBundle(AnalyzeHealthcareEntitiesResult entitiesResult, Map<String, Object> fhirBundle) {
+        accessor.setFhirBundle(entitiesResult, fhirBundle);
     }
 }

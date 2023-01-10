@@ -5,12 +5,17 @@
 package com.azure.resourcemanager.mobilenetwork.generated;
 
 import com.azure.resourcemanager.mobilenetwork.models.KeyVaultKey;
+import com.azure.resourcemanager.mobilenetwork.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.mobilenetwork.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.mobilenetwork.models.MobileNetworkResourceId;
+import com.azure.resourcemanager.mobilenetwork.models.UserAssignedIdentity;
+import java.util.HashMap;
+import java.util.Map;
 
 /** Samples for SimGroups CreateOrUpdate. */
 public final class SimGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SimGroupCreate.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SimGroupCreate.json
      */
     /**
      * Sample code: Create SIM group.
@@ -23,11 +28,29 @@ public final class SimGroupsCreateOrUpdateSamples {
             .define("testSimGroup")
             .withRegion("eastus")
             .withExistingResourceGroup("rg1")
-            .withEncryptionKey(new KeyVaultKey().withKeyUrl("https://contosovault.vault.azure.net/keys/azureKey"))
+            .withIdentity(
+                new ManagedServiceIdentity()
+                    .withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(
+                        mapOf(
+                            "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUserAssignedManagedIdentity",
+                            new UserAssignedIdentity())))
+            .withEncryptionKey(new KeyVaultKey().withKeyUrl("fakeTokenPlaceholder"))
             .withMobileNetwork(
                 new MobileNetworkResourceId()
                     .withId(
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.MobileNetwork/mobileNetworks/testMobileNetwork"))
             .create();
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

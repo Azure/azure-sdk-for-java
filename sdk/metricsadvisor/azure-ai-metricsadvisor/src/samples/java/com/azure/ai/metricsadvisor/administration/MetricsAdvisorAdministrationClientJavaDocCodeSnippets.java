@@ -1335,18 +1335,18 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
             = metricsAdvisorAdminClient.getAlertConfig(alertConfigId);
         List<String> hookIds = new ArrayList<>(existingAnomalyConfig.getHookIdsToAlert());
         hookIds.add(additionalHookId);
-        final AnomalyAlertConfiguration updatAnomalyAlertConfiguration
+        final AnomalyAlertConfiguration updatedAnomalyAlertConfiguration
             = metricsAdvisorAdminClient.updateAlertConfig(
             existingAnomalyConfig
                 .setHookIdsToAlert(hookIds)
                 .setDescription("updated to add more hook ids")
         );
 
-        System.out.printf("Updated anomaly alert configuration Id: %s%n", updatAnomalyAlertConfiguration.getId());
+        System.out.printf("Updated anomaly alert configuration Id: %s%n", updatedAnomalyAlertConfiguration.getId());
         System.out.printf("Updated anomaly alert configuration description: %s%n",
-            updatAnomalyAlertConfiguration.getDescription());
+            updatedAnomalyAlertConfiguration.getDescription());
         System.out.printf("Updated anomaly alert configuration hook ids: %s%n",
-            updatAnomalyAlertConfiguration.getHookIdsToAlert());
+            updatedAnomalyAlertConfiguration.getHookIdsToAlert());
         // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateAlertConfig#AnomalyAlertConfiguration
     }
 
@@ -1370,12 +1370,12 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
                 .setDescription("updated to add more hook ids"), Context.NONE);
 
         System.out.printf("Update anomaly alert operation status: %s%n", alertConfigurationResponse.getStatusCode());
-        final AnomalyAlertConfiguration updatAnomalyAlertConfiguration = alertConfigurationResponse.getValue();
-        System.out.printf("Updated anomaly alert configuration Id: %s%n", updatAnomalyAlertConfiguration.getId());
+        final AnomalyAlertConfiguration updatedAnomalyAlertConfiguration = alertConfigurationResponse.getValue();
+        System.out.printf("Updated anomaly alert configuration Id: %s%n", updatedAnomalyAlertConfiguration.getId());
         System.out.printf("Updated anomaly alert configuration description: %s%n",
-            updatAnomalyAlertConfiguration.getDescription());
+            updatedAnomalyAlertConfiguration.getDescription());
         System.out.printf("Updated anomaly alert configuration hook ids: %sf%n",
-            updatAnomalyAlertConfiguration.getHookIdsToAlert());
+            updatedAnomalyAlertConfiguration.getHookIdsToAlert());
         // END: com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateAlertConfigWithResponse#AnomalyAlertConfiguration-Context
     }
 
@@ -1450,11 +1450,11 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         final String name = "sample_name" + UUID.randomUUID();
         final String cId = "f45668b2-bffa-11eb-8529-0246ac130003";
         final String tId = "67890ded-5e07-4e52-b225-4ae8f905afb5";
-        final String mockSecr = "890hy69-5e07-4e52-b225-4ae8f905afb5";
+        final String mockSecret = "890hy69-5e07-4e52-b225-4ae8f905afb5";
 
         datasourceCredential = new DataSourceServicePrincipalInKeyVault()
             .setName(name)
-            .setKeyVaultForDataSourceSecrets("kv", cId, mockSecr)
+            .setKeyVaultForDataSourceSecrets("kv", cId, mockSecret)
             .setTenantId(tId)
             .setSecretNameForDataSourceClientId("DSClientID_1")
             .setSecretNameForDataSourceClientSecret("DSClientSer_1");
@@ -1486,11 +1486,11 @@ public class MetricsAdvisorAdministrationClientJavaDocCodeSnippets {
         final String name = "sample_name" + UUID.randomUUID();
         final String cId = "f45668b2-bffa-11eb-8529-0246ac130003";
         final String tId = "67890ded-5e07-4e52-b225-4ae8f905afb5";
-        final String mockSecr = "890hy69-5e07-4e52-b225-4ae8f905afb5";
+        final String mockSecret = "890hy69-5e07-4e52-b225-4ae8f905afb5";
 
         datasourceCredential = new DataSourceServicePrincipalInKeyVault()
             .setName(name)
-            .setKeyVaultForDataSourceSecrets("kv", cId, mockSecr)
+            .setKeyVaultForDataSourceSecrets("kv", cId, mockSecret)
             .setTenantId(tId)
             .setSecretNameForDataSourceClientId("DSClientID_1")
             .setSecretNameForDataSourceClientSecret("DSClientSer_1");

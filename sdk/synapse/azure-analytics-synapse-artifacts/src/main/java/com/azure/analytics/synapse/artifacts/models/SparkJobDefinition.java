@@ -63,6 +63,9 @@ public final class SparkJobDefinition {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of SparkJobDefinition class. */
+    public SparkJobDefinition() {}
+
     /**
      * Get the description property: The description of the Spark job definition.
      *

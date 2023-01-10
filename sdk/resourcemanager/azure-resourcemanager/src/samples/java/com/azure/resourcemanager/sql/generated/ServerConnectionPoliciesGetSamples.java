@@ -10,19 +10,19 @@ import com.azure.resourcemanager.sql.models.ConnectionPolicyName;
 /** Samples for ServerConnectionPolicies Get. */
 public final class ServerConnectionPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/ServerConnectionPolicyGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerConnectionPoliciesGet.json
      */
     /**
-     * Sample code: Get a server's secure connection policy.
+     * Sample code: Gets a server connection policy.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getAServerSSecureConnectionPolicy(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void getsAServerConnectionPolicy(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .sqlServers()
             .manager()
             .serviceClient()
             .getServerConnectionPolicies()
-            .getWithResponse("test-1234", "test-5678", ConnectionPolicyName.DEFAULT, Context.NONE);
+            .getWithResponse("rgtest-12", "servertest-6285", ConnectionPolicyName.DEFAULT, Context.NONE);
     }
 }

@@ -1,14 +1,32 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.2.0 (Unreleased)
 
 ### Bugs Fixed
 
+- Fixed incorrect "audience" from `getClientAccessToken` method in `WebPubSubServiceAsyncClient`. ([#24741](https://github.com/Azure/azure-sdk-for-java/issues/24741))
+- Fixed bug of getting incorrect token in `getClientAccessToken` method from Azure token credential. 
+
+### Features Added
+
+- Added method `removeConnectionFromAllGroupsWithResponse` in `WebPubSubServiceClient` and `WebPubSubServiceAsyncClient` to remove the connection from all the groups it is in.
+- Added a `webpubsub.group` option in `GetClientAccessTokenOptions`, to enable connections join initial groups once it is connected.
+- Added a `filter` parameter when sending messages to connections in a hub/group/user to filter out the connections recieving message, details about `filter` syntax please see [OData filter syntax for Azure Web PubSub](https://aka.ms/awps/filter-syntax).
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-11-01`.
+
+## 1.1.8 (2022-11-09)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.33.0` to version `1.34.0`.
+- Upgraded `azure-core-http-netty` from `1.12.6` to version `1.12.7`.
 
 ## 1.1.7 (2022-10-12)
 

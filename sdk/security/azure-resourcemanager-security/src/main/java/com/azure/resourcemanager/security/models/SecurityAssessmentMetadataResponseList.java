@@ -24,6 +24,10 @@ public final class SecurityAssessmentMetadataResponseList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SecurityAssessmentMetadataResponseList class. */
+    public SecurityAssessmentMetadataResponseList() {
+    }
+
     /**
      * Get the value property: The value property.
      *

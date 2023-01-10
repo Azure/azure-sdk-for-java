@@ -13,16 +13,17 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @Fluent
 public final class DestinationLeaseAccessConditions {
     /*
-     * Required if the destination file has an active infinite lease. The lease
-     * ID specified for this header must match the lease ID of the destination
-     * file. If the request does not include the lease ID or it is not valid,
-     * the operation fails with status code 412 (Precondition Failed). If this
-     * header is specified and the destination file does not currently have an
-     * active lease, the operation will also fail with status code 412
-     * (Precondition Failed).
+     * Required if the destination file has an active infinite lease. The lease ID specified for this header must match
+     * the lease ID of the destination file. If the request does not include the lease ID or it is not valid, the
+     * operation fails with status code 412 (Precondition Failed). If this header is specified and the destination file
+     * does not currently have an active lease, the operation will also fail with status code 412 (Precondition
+     * Failed).
      */
     @JsonProperty(value = "destinationLeaseId")
     private String destinationLeaseId;
+
+    /** Creates an instance of DestinationLeaseAccessConditions class. */
+    public DestinationLeaseAccessConditions() {}
 
     /**
      * Get the destinationLeaseId property: Required if the destination file has an active infinite lease. The lease ID

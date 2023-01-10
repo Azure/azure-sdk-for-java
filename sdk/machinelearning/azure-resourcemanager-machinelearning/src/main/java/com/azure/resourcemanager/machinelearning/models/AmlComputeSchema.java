@@ -16,6 +16,10 @@ public class AmlComputeSchema {
     @JsonProperty(value = "properties")
     private AmlComputeProperties properties;
 
+    /** Creates an instance of AmlComputeSchema class. */
+    public AmlComputeSchema() {
+    }
+
     /**
      * Get the properties property: Properties of AmlCompute.
      *

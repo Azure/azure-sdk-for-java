@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureBackupGoals")
 @Immutable
 public final class AzureBackupGoalFeatureSupportRequest extends FeatureSupportRequest {
+    /** Creates an instance of AzureBackupGoalFeatureSupportRequest class. */
+    public AzureBackupGoalFeatureSupportRequest() {
+    }
+
     /**
      * Validates the instance.
      *

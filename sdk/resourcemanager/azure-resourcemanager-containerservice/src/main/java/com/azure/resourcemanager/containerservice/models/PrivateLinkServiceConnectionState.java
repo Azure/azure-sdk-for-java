@@ -22,6 +22,10 @@ public final class PrivateLinkServiceConnectionState {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of PrivateLinkServiceConnectionState class. */
+    public PrivateLinkServiceConnectionState() {
+    }
+
     /**
      * Get the status property: The private link service connection status.
      *

@@ -10,6 +10,7 @@ import com.azure.communication.callautomation.implementation.ServerCallingsImpl;
 import com.azure.communication.callautomation.implementation.ServerCallsImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
+import com.azure.communication.callautomation.implementation.converters.CallSourceConverter;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.CallSourceInternal;
 import com.azure.communication.callautomation.implementation.models.MediaStreamingAudioChannelTypeInternal;
@@ -18,6 +19,7 @@ import com.azure.communication.callautomation.implementation.models.MediaStreami
 import com.azure.communication.callautomation.implementation.models.MediaStreamingTransportTypeInternal;
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
+import com.azure.communication.callautomation.models.CallSource;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.CreateCallRequestInternal;
@@ -25,7 +27,6 @@ import com.azure.communication.callautomation.implementation.models.AnswerCallRe
 import com.azure.communication.callautomation.implementation.models.RedirectCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RejectCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.CallRejectReasonInternal;
-import com.azure.communication.callautomation.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.MediaStreamingOptions;
@@ -82,17 +83,17 @@ public final class CallAutomationAsyncClient {
         this.contentsInternal = callServiceClient.getContents();
         this.logger = new ClientLogger(CallAutomationAsyncClient.class);
         this.contentDownloader = new ContentDownloader(
-            callServiceClient.getEndpoint(),
+            callServiceClient.getEndpoint().toString(),
             callServiceClient.getHttpPipeline());
         this.httpPipelineInternal = callServiceClient.getHttpPipeline();
-        this.resourceEndpoint = callServiceClient.getEndpoint();
+        this.resourceEndpoint = callServiceClient.getEndpoint().toString();
     }
 
     //region Pre-call Actions
     /**
      * Create a call connection request from a source identity to a target identity.
      *
-     * @param source The caller.
+     * @param source The caller of the call.
      * @param targets The list of targets.
      * @param callbackUrl The call back url for receiving events.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -100,7 +101,7 @@ public final class CallAutomationAsyncClient {
      * @return Response for a successful CreateCallConnection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateCallResult> createCall(CommunicationIdentifier source,
+    public Mono<CreateCallResult> createCall(CallSource source,
                                              List<CommunicationIdentifier> targets,
                                              String callbackUrl) {
         CreateCallOptions createCallOptions = new CreateCallOptions(source, targets, callbackUrl);
@@ -125,14 +126,12 @@ public final class CallAutomationAsyncClient {
         try {
             context = context == null ? Context.NONE : context;
             CreateCallRequestInternal request = getCreateCallRequestInternal(createCallOptions);
-            if (createCallOptions.getRepeatabilityHeaders() == null) {
-                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), Instant.now());
-                createCallOptions.setRepeatabilityHeaders(autoRepeatabilityHeaders);
-            }
+
+            createCallOptions.setRepeatabilityHeaders(handleApiIdempotency(createCallOptions.getRepeatabilityHeaders()));
 
             return serverCallingInternal.createCallWithResponseAsync(request,
-                    createCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId(),
-                    createCallOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat(),
+                    createCallOptions.getRepeatabilityHeaders() != null ? createCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
+                    createCallOptions.getRepeatabilityHeaders() != null ? createCallOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
                     context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
@@ -155,12 +154,7 @@ public final class CallAutomationAsyncClient {
         List<CommunicationIdentifierModel> targetsModel = createCallOptions.getTargets()
             .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
 
-        CallSourceInternal callSourceDto = new CallSourceInternal().setIdentifier(
-            CommunicationIdentifierConverter.convert(createCallOptions.getSource()));
-        if (createCallOptions.getSourceCallerId() != null) {
-            callSourceDto.setCallerId(new PhoneNumberIdentifierModel().setValue(createCallOptions.getSourceCallerId()));
-        }
-
+        CallSourceInternal callSourceDto = CallSourceConverter.convert(createCallOptions.getSource());
         CreateCallRequestInternal request = new CreateCallRequestInternal()
             .setSource(callSourceDto)
             .setTargets(targetsModel)
@@ -172,6 +166,11 @@ public final class CallAutomationAsyncClient {
                 getMediaStreamingConfigurationInternal(createCallOptions.getMediaStreamingConfiguration());
             request.setMediaStreamingConfiguration(streamingConfigurationInternal);
         }
+
+        if (createCallOptions.getAzureCognitiveServicesEndpointUrl() != null && !createCallOptions.getAzureCognitiveServicesEndpointUrl().isEmpty()) {
+            request.setAzureCognitiveServicesEndpointUrl(createCallOptions.getAzureCognitiveServicesEndpointUrl());
+        }
+
         return request;
     }
 
@@ -227,10 +226,7 @@ public final class CallAutomationAsyncClient {
                 .setIncomingCallContext(answerCallOptions.getIncomingCallContext())
                 .setCallbackUri(answerCallOptions.getCallbackUrl());
 
-            if (answerCallOptions.getRepeatabilityHeaders() == null) {
-                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), Instant.now());
-                answerCallOptions.setRepeatabilityHeaders(autoRepeatabilityHeaders);
-            }
+            answerCallOptions.setRepeatabilityHeaders(handleApiIdempotency(answerCallOptions.getRepeatabilityHeaders()));
 
             if (answerCallOptions.getMediaStreamingConfiguration() != null) {
                 MediaStreamingConfigurationInternal mediaStreamingConfigurationInternal =
@@ -239,10 +235,13 @@ public final class CallAutomationAsyncClient {
                 request.setMediaStreamingConfiguration(mediaStreamingConfigurationInternal);
             }
 
+            if (answerCallOptions.getAzureCognitiveServicesEndpointUrl() != null && !answerCallOptions.getAzureCognitiveServicesEndpointUrl().isEmpty()) {
+                request.setAzureCognitiveServicesEndpointUrl(answerCallOptions.getAzureCognitiveServicesEndpointUrl());
+            }
 
             return serverCallingInternal.answerCallWithResponseAsync(request,
-                    answerCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId(),
-                    answerCallOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat(),
+                    answerCallOptions.getRepeatabilityHeaders() != null ? answerCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
+                    answerCallOptions.getRepeatabilityHeaders() != null ? answerCallOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
                     context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                 .map(response -> {
@@ -296,14 +295,11 @@ public final class CallAutomationAsyncClient {
                 .setIncomingCallContext(redirectCallOptions.getIncomingCallContext())
                 .setTarget(CommunicationIdentifierConverter.convert(redirectCallOptions.getTarget()));
 
-            if (redirectCallOptions.getRepeatabilityHeaders() == null) {
-                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), Instant.now());
-                redirectCallOptions.setRepeatabilityHeaders(autoRepeatabilityHeaders);
-            }
+            redirectCallOptions.setRepeatabilityHeaders(handleApiIdempotency(redirectCallOptions.getRepeatabilityHeaders()));
 
             return serverCallingInternal.redirectCallWithResponseAsync(request,
-                    redirectCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId(),
-                    redirectCallOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat(),
+                    redirectCallOptions.getRepeatabilityHeaders() != null ? redirectCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
+                    redirectCallOptions.getRepeatabilityHeaders() != null ? redirectCallOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
                     context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
@@ -348,14 +344,11 @@ public final class CallAutomationAsyncClient {
                 request.setCallRejectReason(CallRejectReasonInternal.fromString(rejectCallOptions.getCallRejectReason().toString()));
             }
 
-            if (rejectCallOptions.getRepeatabilityHeaders() == null) {
-                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), Instant.now());
-                rejectCallOptions.setRepeatabilityHeaders(autoRepeatabilityHeaders);
-            }
+            rejectCallOptions.setRepeatabilityHeaders(handleApiIdempotency(rejectCallOptions.getRepeatabilityHeaders()));
 
             return serverCallingInternal.rejectCallWithResponseAsync(request,
-                    rejectCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId(),
-                    rejectCallOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat(),
+                    rejectCallOptions.getRepeatabilityHeaders() != null ? rejectCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
+                    rejectCallOptions.getRepeatabilityHeaders() != null ? rejectCallOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
                     context)
                 .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
         } catch (RuntimeException ex) {
@@ -385,6 +378,26 @@ public final class CallAutomationAsyncClient {
     public CallRecordingAsync getCallRecordingAsync() {
         return new CallRecordingAsync(serverCallsInternal, contentsInternal,
             contentDownloader, httpPipelineInternal, resourceEndpoint);
+    }
+    //endregion
+
+    //region helper functions
+    /***
+     * Make sure repeatability headers of the request are correctly set.
+     *
+     * @return a verified RepeatabilityHeaders object.
+     */
+    static RepeatabilityHeaders handleApiIdempotency(RepeatabilityHeaders repeatabilityHeaders) {
+        // This case means user did not disable idempotency
+        if (repeatabilityHeaders != null) {
+            // This means user never set the repeatability headers manually.
+            if (repeatabilityHeaders.getRepeatabilityRequestId().equals(UUID.fromString("0-0-0-0-0"))
+                && repeatabilityHeaders.getRepeatabilityFirstSent() == Instant.MIN) {
+                repeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), Instant.now());
+            } // Else do nothing, use the repeatability headers that user specified.
+        } // Else do nothing, since the user disabled idempotency. Leave it as null.
+
+        return repeatabilityHeaders;
     }
     //endregion
 }

@@ -6,12 +6,15 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
 import com.azure.resourcemanager.sql.models.CatalogCollationType;
 import com.azure.resourcemanager.sql.models.CreateMode;
+import com.azure.resourcemanager.sql.models.DatabaseIdentity;
 import com.azure.resourcemanager.sql.models.DatabaseLicenseType;
 import com.azure.resourcemanager.sql.models.DatabaseReadScale;
 import com.azure.resourcemanager.sql.models.DatabaseStatus;
 import com.azure.resourcemanager.sql.models.SampleName;
+import com.azure.resourcemanager.sql.models.SecondaryType;
 import com.azure.resourcemanager.sql.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -24,9 +27,8 @@ public final class DatabaseInner extends Resource {
     /*
      * The database SKU.
      *
-     * The list of SKUs may vary by region and support offer. To determine the
-     * SKUs (including the SKU name, tier/edition, family, and capacity) that
-     * are available to your subscription in an Azure region, use the
+     * The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name,
+     * tier/edition, family, and capacity) that are available to your subscription in an Azure region, use the
      * `Capabilities_ListByLocation` REST API or one of the following commands:
      *
      * ```azurecli
@@ -54,10 +56,20 @@ public final class DatabaseInner extends Resource {
     private String managedBy;
 
     /*
+     * The Azure Active Directory identity of the database.
+     */
+    @JsonProperty(value = "identity")
+    private DatabaseIdentity identity;
+
+    /*
      * Resource properties.
      */
     @JsonProperty(value = "properties")
     private DatabaseProperties innerProperties;
+
+    /** Creates an instance of DatabaseInner class. */
+    public DatabaseInner() {
+    }
 
     /**
      * Get the sku property: The database SKU.
@@ -111,6 +123,26 @@ public final class DatabaseInner extends Resource {
      */
     public String managedBy() {
         return this.managedBy;
+    }
+
+    /**
+     * Get the identity property: The Azure Active Directory identity of the database.
+     *
+     * @return the identity value.
+     */
+    public DatabaseIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The Azure Active Directory identity of the database.
+     *
+     * @param identity the identity value to set.
+     * @return the DatabaseInner object itself.
+     */
+    public DatabaseInner withIdentity(DatabaseIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -586,7 +618,8 @@ public final class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the licenseType property: The license type to apply for this database.
+     * Get the licenseType property: The license type to apply for this database. `LicenseIncluded` if you need a
+     * license, or `BasePrice` if you have a license and are eligible for the Azure Hybrid Benefit.
      *
      * @return the licenseType value.
      */
@@ -595,7 +628,8 @@ public final class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the licenseType property: The license type to apply for this database.
+     * Set the licenseType property: The license type to apply for this database. `LicenseIncluded` if you need a
+     * license, or `BasePrice` if you have a license and are eligible for the Azure Hybrid Benefit.
      *
      * @param licenseType the licenseType value to set.
      * @return the DatabaseInner object itself.
@@ -628,9 +662,9 @@ public final class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the readScale property: If enabled, connections that have application intent set to readonly in their
-     * connection string may be routed to a readonly secondary replica. This property is only settable for Premium and
-     * Business Critical databases.
+     * Get the readScale property: The state of read-only routing. If enabled, connections that have application intent
+     * set to readonly in their connection string may be routed to a readonly secondary replica in the same region. Not
+     * applicable to a Hyperscale database within an elastic pool.
      *
      * @return the readScale value.
      */
@@ -639,9 +673,9 @@ public final class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the readScale property: If enabled, connections that have application intent set to readonly in their
-     * connection string may be routed to a readonly secondary replica. This property is only settable for Premium and
-     * Business Critical databases.
+     * Set the readScale property: The state of read-only routing. If enabled, connections that have application intent
+     * set to readonly in their connection string may be routed to a readonly secondary replica in the same region. Not
+     * applicable to a Hyperscale database within an elastic pool.
      *
      * @param readScale the readScale value to set.
      * @return the DatabaseInner object itself.
@@ -655,29 +689,52 @@ public final class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the readReplicaCount property: The number of readonly secondary replicas associated with the database to
-     * which readonly application intent connections may be routed. This property is only settable for Hyperscale
-     * edition databases.
+     * Get the highAvailabilityReplicaCount property: The number of secondary replicas associated with the database that
+     * are used to provide high availability. Not applicable to a Hyperscale database within an elastic pool.
      *
-     * @return the readReplicaCount value.
+     * @return the highAvailabilityReplicaCount value.
      */
-    public Integer readReplicaCount() {
-        return this.innerProperties() == null ? null : this.innerProperties().readReplicaCount();
+    public Integer highAvailabilityReplicaCount() {
+        return this.innerProperties() == null ? null : this.innerProperties().highAvailabilityReplicaCount();
     }
 
     /**
-     * Set the readReplicaCount property: The number of readonly secondary replicas associated with the database to
-     * which readonly application intent connections may be routed. This property is only settable for Hyperscale
-     * edition databases.
+     * Set the highAvailabilityReplicaCount property: The number of secondary replicas associated with the database that
+     * are used to provide high availability. Not applicable to a Hyperscale database within an elastic pool.
      *
-     * @param readReplicaCount the readReplicaCount value to set.
+     * @param highAvailabilityReplicaCount the highAvailabilityReplicaCount value to set.
      * @return the DatabaseInner object itself.
      */
-    public DatabaseInner withReadReplicaCount(Integer readReplicaCount) {
+    public DatabaseInner withHighAvailabilityReplicaCount(Integer highAvailabilityReplicaCount) {
         if (this.innerProperties() == null) {
             this.innerProperties = new DatabaseProperties();
         }
-        this.innerProperties().withReadReplicaCount(readReplicaCount);
+        this.innerProperties().withHighAvailabilityReplicaCount(highAvailabilityReplicaCount);
+        return this;
+    }
+
+    /**
+     * Get the secondaryType property: The secondary type of the database if it is a secondary. Valid values are Geo and
+     * Named.
+     *
+     * @return the secondaryType value.
+     */
+    public SecondaryType secondaryType() {
+        return this.innerProperties() == null ? null : this.innerProperties().secondaryType();
+    }
+
+    /**
+     * Set the secondaryType property: The secondary type of the database if it is a secondary. Valid values are Geo and
+     * Named.
+     *
+     * @param secondaryType the secondaryType value to set.
+     * @return the DatabaseInner object itself.
+     */
+    public DatabaseInner withSecondaryType(SecondaryType secondaryType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withSecondaryType(secondaryType);
         return this;
     }
 
@@ -716,6 +773,42 @@ public final class DatabaseInner extends Resource {
     }
 
     /**
+     * Get the currentBackupStorageRedundancy property: The storage account type used to store backups for this
+     * database.
+     *
+     * @return the currentBackupStorageRedundancy value.
+     */
+    public BackupStorageRedundancy currentBackupStorageRedundancy() {
+        return this.innerProperties() == null ? null : this.innerProperties().currentBackupStorageRedundancy();
+    }
+
+    /**
+     * Get the requestedBackupStorageRedundancy property: The storage account type to be used to store backups for this
+     * database.
+     *
+     * @return the requestedBackupStorageRedundancy value.
+     */
+    public BackupStorageRedundancy requestedBackupStorageRedundancy() {
+        return this.innerProperties() == null ? null : this.innerProperties().requestedBackupStorageRedundancy();
+    }
+
+    /**
+     * Set the requestedBackupStorageRedundancy property: The storage account type to be used to store backups for this
+     * database.
+     *
+     * @param requestedBackupStorageRedundancy the requestedBackupStorageRedundancy value to set.
+     * @return the DatabaseInner object itself.
+     */
+    public DatabaseInner withRequestedBackupStorageRedundancy(
+        BackupStorageRedundancy requestedBackupStorageRedundancy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withRequestedBackupStorageRedundancy(requestedBackupStorageRedundancy);
+        return this;
+    }
+
+    /**
      * Get the minCapacity property: Minimal capacity that database will always have allocated, if not paused.
      *
      * @return the minCapacity value.
@@ -739,7 +832,7 @@ public final class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the pausedDate property: The date when database was paused by user configuration or action (ISO8601 format).
+     * Get the pausedDate property: The date when database was paused by user configuration or action(ISO8601 format).
      * Null if the database is ready.
      *
      * @return the pausedDate value.
@@ -759,6 +852,153 @@ public final class DatabaseInner extends Resource {
     }
 
     /**
+     * Get the maintenanceConfigurationId property: Maintenance configuration id assigned to the database. This
+     * configuration defines the period when the maintenance updates will occur.
+     *
+     * @return the maintenanceConfigurationId value.
+     */
+    public String maintenanceConfigurationId() {
+        return this.innerProperties() == null ? null : this.innerProperties().maintenanceConfigurationId();
+    }
+
+    /**
+     * Set the maintenanceConfigurationId property: Maintenance configuration id assigned to the database. This
+     * configuration defines the period when the maintenance updates will occur.
+     *
+     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
+     * @return the DatabaseInner object itself.
+     */
+    public DatabaseInner withMaintenanceConfigurationId(String maintenanceConfigurationId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withMaintenanceConfigurationId(maintenanceConfigurationId);
+        return this;
+    }
+
+    /**
+     * Get the isLedgerOn property: Whether or not this database is a ledger database, which means all tables in the
+     * database are ledger tables. Note: the value of this property cannot be changed after the database has been
+     * created.
+     *
+     * @return the isLedgerOn value.
+     */
+    public Boolean isLedgerOn() {
+        return this.innerProperties() == null ? null : this.innerProperties().isLedgerOn();
+    }
+
+    /**
+     * Set the isLedgerOn property: Whether or not this database is a ledger database, which means all tables in the
+     * database are ledger tables. Note: the value of this property cannot be changed after the database has been
+     * created.
+     *
+     * @param isLedgerOn the isLedgerOn value to set.
+     * @return the DatabaseInner object itself.
+     */
+    public DatabaseInner withIsLedgerOn(Boolean isLedgerOn) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withIsLedgerOn(isLedgerOn);
+        return this;
+    }
+
+    /**
+     * Get the isInfraEncryptionEnabled property: Infra encryption is enabled for this database.
+     *
+     * @return the isInfraEncryptionEnabled value.
+     */
+    public Boolean isInfraEncryptionEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().isInfraEncryptionEnabled();
+    }
+
+    /**
+     * Get the federatedClientId property: The Client id used for cross tenant per database CMK scenario.
+     *
+     * @return the federatedClientId value.
+     */
+    public UUID federatedClientId() {
+        return this.innerProperties() == null ? null : this.innerProperties().federatedClientId();
+    }
+
+    /**
+     * Set the federatedClientId property: The Client id used for cross tenant per database CMK scenario.
+     *
+     * @param federatedClientId the federatedClientId value to set.
+     * @return the DatabaseInner object itself.
+     */
+    public DatabaseInner withFederatedClientId(UUID federatedClientId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withFederatedClientId(federatedClientId);
+        return this;
+    }
+
+    /**
+     * Get the sourceResourceId property: The resource identifier of the source associated with the create operation of
+     * this database.
+     *
+     * <p>This property is only supported for DataWarehouse edition and allows to restore across subscriptions.
+     *
+     * <p>When sourceResourceId is specified, sourceDatabaseId, recoverableDatabaseId, restorableDroppedDatabaseId and
+     * sourceDatabaseDeletionDate must not be specified and CreateMode must be PointInTimeRestore, Restore or Recover.
+     *
+     * <p>When createMode is PointInTimeRestore, sourceResourceId must be the resource ID of the existing database or
+     * existing sql pool, and restorePointInTime must be specified.
+     *
+     * <p>When createMode is Restore, sourceResourceId must be the resource ID of restorable dropped database or
+     * restorable dropped sql pool.
+     *
+     * <p>When createMode is Recover, sourceResourceId must be the resource ID of recoverable database or recoverable
+     * sql pool.
+     *
+     * <p>When source subscription belongs to a different tenant than target subscription,
+     * “x-ms-authorization-auxiliary” header must contain authentication token for the source tenant. For more details
+     * about “x-ms-authorization-auxiliary” header see
+     * https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/authenticate-multi-tenant.
+     *
+     * @return the sourceResourceId value.
+     */
+    public String sourceResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().sourceResourceId();
+    }
+
+    /**
+     * Set the sourceResourceId property: The resource identifier of the source associated with the create operation of
+     * this database.
+     *
+     * <p>This property is only supported for DataWarehouse edition and allows to restore across subscriptions.
+     *
+     * <p>When sourceResourceId is specified, sourceDatabaseId, recoverableDatabaseId, restorableDroppedDatabaseId and
+     * sourceDatabaseDeletionDate must not be specified and CreateMode must be PointInTimeRestore, Restore or Recover.
+     *
+     * <p>When createMode is PointInTimeRestore, sourceResourceId must be the resource ID of the existing database or
+     * existing sql pool, and restorePointInTime must be specified.
+     *
+     * <p>When createMode is Restore, sourceResourceId must be the resource ID of restorable dropped database or
+     * restorable dropped sql pool.
+     *
+     * <p>When createMode is Recover, sourceResourceId must be the resource ID of recoverable database or recoverable
+     * sql pool.
+     *
+     * <p>When source subscription belongs to a different tenant than target subscription,
+     * “x-ms-authorization-auxiliary” header must contain authentication token for the source tenant. For more details
+     * about “x-ms-authorization-auxiliary” header see
+     * https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/authenticate-multi-tenant.
+     *
+     * @param sourceResourceId the sourceResourceId value to set.
+     * @return the DatabaseInner object itself.
+     */
+    public DatabaseInner withSourceResourceId(String sourceResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseProperties();
+        }
+        this.innerProperties().withSourceResourceId(sourceResourceId);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -766,6 +1006,9 @@ public final class DatabaseInner extends Resource {
     public void validate() {
         if (sku() != null) {
             sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
         }
         if (innerProperties() != null) {
             innerProperties().validate();

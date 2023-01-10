@@ -455,16 +455,6 @@ public interface GovernanceRule {
     /**
      * Execute a security GovernanceRule on the given subscription.
      *
-     * @param executeGovernanceRuleParams GovernanceRule over a subscription scope.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void ruleIdExecuteSingleSubscription(ExecuteGovernanceRuleParams executeGovernanceRuleParams);
-
-    /**
-     * Execute a security GovernanceRule on the given subscription.
-     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */

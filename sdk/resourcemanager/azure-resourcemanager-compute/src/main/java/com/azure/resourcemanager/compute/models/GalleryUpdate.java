@@ -18,6 +18,10 @@ public final class GalleryUpdate extends UpdateResourceDefinition {
     @JsonProperty(value = "properties")
     private GalleryProperties innerProperties;
 
+    /** Creates an instance of GalleryUpdate class. */
+    public GalleryUpdate() {
+    }
+
     /**
      * Get the innerProperties property: Describes the properties of a Shared Image Gallery.
      *

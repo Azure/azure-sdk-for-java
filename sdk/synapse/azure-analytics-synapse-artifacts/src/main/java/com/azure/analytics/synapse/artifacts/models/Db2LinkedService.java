@@ -81,6 +81,9 @@ public class Db2LinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of Db2LinkedService class. */
+    public Db2LinkedService() {}
+
     /**
      * Get the connectionString property: The connection string. It is mutually exclusive with server, database,
      * authenticationType, userName, packageCollection and certificateCommonName property. Type: string, SecureString or

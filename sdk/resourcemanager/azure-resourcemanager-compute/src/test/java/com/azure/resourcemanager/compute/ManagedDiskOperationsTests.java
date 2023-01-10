@@ -5,6 +5,8 @@ package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.compute.models.CreationSourceType;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskCreateOption;
@@ -13,14 +15,16 @@ import com.azure.resourcemanager.compute.models.Snapshot;
 import com.azure.resourcemanager.compute.models.SnapshotSkuType;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.core.management.Region;
-import com.azure.core.management.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+
 public class ManagedDiskOperationsTests extends ComputeManagementTest {
     private String rgName = "";
+    private String rgName2 = null;
     private Region region = Region.US_WEST_CENTRAL;
+    private Region region2 = Region.US_EAST;
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -31,6 +35,9 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
     @Override
     protected void cleanUpResources() {
         resourceManager.resourceGroups().beginDeleteByName(rgName);
+        if (rgName2 != null) {
+            resourceManager.resourceGroups().beginDeleteByName(rgName2);
+        }
     }
 
     @Test
@@ -236,5 +243,122 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
         Assertions.assertNotNull(fromSnapshotDisk.source());
         Assertions.assertEquals(fromSnapshotDisk.source().type(), CreationSourceType.COPIED_FROM_SNAPSHOT);
         Assertions.assertTrue(fromSnapshotDisk.source().sourceId().equalsIgnoreCase(snapshot.id()));
+    }
+
+    @Test
+    public void canCopyStartIncrementalSnapshot() {
+        rgName2 = generateRandomResourceName("rg", 15);
+        final String emptyDiskName = generateRandomResourceName("md-empty-", 20);
+        final String snapshotName = generateRandomResourceName("snp-", 20);
+        final String snapshotName2 = generateRandomResourceName("snp-", 20);
+        final String newRegionSnapshotName = generateRandomResourceName("snp-newregion-", 20);
+        final String snapshotBasedDiskName = generateRandomResourceName("md-snp-newregion-", 20);
+
+        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName).withRegion(region).create();
+        ResourceGroup resourceGroup2 = resourceManager.resourceGroups().define(rgName2).withRegion(region2).create();
+
+        // create disk to copy
+        Disk emptyDisk =
+            computeManager
+                .disks()
+                .define(emptyDiskName)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .withData()
+                .withSizeInGB(100)
+                .create();
+
+        // create incremental snapshot from the disk
+        Snapshot snapshot =
+            computeManager
+                .snapshots()
+                .define(snapshotName)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .withDataFromDisk(emptyDisk)
+                .withSku(SnapshotSkuType.STANDARD_LRS)
+                .withIncremental(true)
+                .create();
+
+        Assertions.assertTrue(snapshot.incremental());
+        Assertions.assertEquals(CreationSourceType.COPIED_FROM_DISK, snapshot.source().type());
+        Assertions.assertEquals(DiskCreateOption.COPY, snapshot.creationMethod());
+        Assertions.assertThrows(IllegalStateException.class, snapshot::awaitCopyStartCompletion);
+
+        // copy the snapshot to the same region
+        Snapshot snapshotSameRegion =
+            computeManager
+                .snapshots()
+                .define(snapshotName2)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .withDataFromSnapshot(snapshot)
+                .withCopyStart()
+                .withIncremental(true)
+                .create();
+
+        Assertions.assertTrue(snapshotSameRegion.incremental());
+        Assertions.assertEquals(CreationSourceType.COPIED_FROM_SNAPSHOT, snapshotSameRegion.source().type());
+        Assertions.assertEquals(DiskCreateOption.COPY_START, snapshotSameRegion.creationMethod());
+        Assertions.assertNull(snapshotSameRegion.copyCompletionError());
+        // we don't wait for CopyStart to finish, so it should be in progress
+        Assertions.assertNotEquals(100, snapshotSameRegion.copyCompletionPercent());
+
+        computeManager
+            .snapshots()
+            .deleteById(snapshotSameRegion.id());
+
+        Snapshot snapshotSameRegion2 = computeManager
+            .snapshots()
+            .define(snapshotName2)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withDataFromSnapshot(snapshot)
+            .withCopyStart()
+            .withIncremental(true)
+            .create();
+        Assertions.assertFalse(!isPlaybackMode() && snapshotSameRegion2.awaitCopyStartCompletion(Duration.ofMillis(1)));
+        Assertions.assertTrue(snapshotSameRegion2.awaitCopyStartCompletion(Duration.ofHours(24)));
+
+        // copy the snapshot to a new region
+        Snapshot snapshotNewRegion =
+            computeManager
+                .snapshots()
+                .define(newRegionSnapshotName)
+                .withRegion(region2)
+                .withExistingResourceGroup(resourceGroup2)
+                .withDataFromSnapshot(snapshot)
+                .withCopyStart()
+                .withIncremental(true)
+                .create();
+        snapshotNewRegion.awaitCopyStartCompletion();
+
+        Assertions.assertTrue(snapshotNewRegion.incremental());
+        Assertions.assertEquals(CreationSourceType.COPIED_FROM_SNAPSHOT, snapshotNewRegion.source().type());
+        Assertions.assertEquals(DiskCreateOption.COPY_START, snapshotNewRegion.creationMethod());
+        Assertions.assertEquals(100, snapshotNewRegion.copyCompletionPercent());
+        Assertions.assertNull(snapshotNewRegion.copyCompletionError());
+
+        // create disk from snapshot in the new region
+        Disk fromSnapshotDisk =
+            computeManager
+                .disks()
+                .define(snapshotBasedDiskName)
+                .withRegion(region2)
+                .withExistingResourceGroup(resourceGroup2)
+                .withData()
+                .fromSnapshot(snapshotNewRegion)
+                .withSizeInGB(300)
+                .create();
+
+        Assertions.assertNotNull(fromSnapshotDisk.id());
+        Assertions.assertTrue(fromSnapshotDisk.name().equalsIgnoreCase(snapshotBasedDiskName));
+        Assertions.assertEquals(fromSnapshotDisk.sku(), DiskSkuTypes.STANDARD_LRS);
+        Assertions.assertEquals(fromSnapshotDisk.creationMethod(), DiskCreateOption.COPY);
+        Assertions.assertEquals(fromSnapshotDisk.sizeInGB(), 300);
+        Assertions.assertNull(fromSnapshotDisk.osType());
+        Assertions.assertNotNull(fromSnapshotDisk.source());
+        Assertions.assertEquals(fromSnapshotDisk.source().type(), CreationSourceType.COPIED_FROM_SNAPSHOT);
+        Assertions.assertTrue(fromSnapshotDisk.source().sourceId().equalsIgnoreCase(snapshotNewRegion.id()));
     }
 }

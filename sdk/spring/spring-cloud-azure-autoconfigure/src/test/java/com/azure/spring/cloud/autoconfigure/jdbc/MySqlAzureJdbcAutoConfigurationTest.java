@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
-import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
+import com.azure.identity.extensions.implementation.enums.AuthProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringUtils;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
@@ -42,7 +42,7 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
     private static final String AUTHPROPERTY_CREDENTIAL_BEAN_NAME
         = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.getPropertyKey() + "=" + "passwordlessTokenCredential";
 
-    private static final String MYSQL_USER_AGENT = MYSQL_PROPERTY_NAME_CONNECTION_ATTRIBUTES + "="
+    public static final String MYSQL_USER_AGENT = MYSQL_PROPERTY_NAME_CONNECTION_ATTRIBUTES + "="
         + MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_ATTRIBUTE_EXTENSION_VERSION
         + MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_KV_DELIMITER
         + AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH;
@@ -84,6 +84,7 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
                     DatabaseType.MYSQL,
                     false,
                     connectionString,
+                    PUBLIC_AUTHORITY_HOST_STRING,
                     AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
                     MYSQL_USER_AGENT
                 );
@@ -108,6 +109,7 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
                     DatabaseType.MYSQL,
                     false,
                     connectionString,
+                    PUBLIC_AUTHORITY_HOST_STRING,
                     AUTHPROPERTY_CREDENTIAL_BEAN_NAME,
                     AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
                     MYSQL_USER_AGENT

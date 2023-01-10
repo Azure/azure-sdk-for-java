@@ -11,6 +11,7 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.exception.TooManyRedirectsException;
 import com.azure.core.http.ContentType;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
@@ -22,9 +23,9 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.implementation.TypeUtil;
-import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
+import com.azure.core.implementation.serializer.MalformedValueException;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
@@ -88,8 +89,19 @@ public abstract class RestProxyBase {
             Context context = methodParser.setContext(args);
             context = RestProxyUtils.mergeRequestOptionsContext(context, options);
 
-            context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName())
-                .addData("azure-eagerly-read-response", methodParser.isResponseEagerlyRead());
+            context = context.addData("caller-method", methodParser.getFullyQualifiedMethodName());
+
+            if (methodParser.isResponseEagerlyRead()) {
+                context = context.addData("azure-eagerly-read-response", true);
+            }
+
+            if (methodParser.isResponseBodyIgnored()) {
+                context = context.addData("azure-ignore-response-body", true);
+            }
+
+            if (methodParser.isHeadersEagerlyConverted()) {
+                context = context.addData("azure-eagerly-convert-headers", true);
+            }
 
             return invoke(proxy, method, options, errorOptions, requestCallback, methodParser, request, context);
 
@@ -270,7 +282,7 @@ public abstract class RestProxyBase {
         SerializerAdapter serializerAdapter, boolean isAsync, final Object[] args) throws IOException {
         final Object bodyContentObject = methodParser.setBody(args, serializer);
         if (bodyContentObject == null) {
-            HttpHeadersHelper.setNoKeyFormatting(request.getHeaders(), "content-length", "Content-Length", "0");
+            request.setHeader(HttpHeaderName.CONTENT_LENGTH, "0");
         } else {
             // We read the content type from the @BodyParam annotation
             String contentType = methodParser.getBodyContentType();
@@ -285,12 +297,11 @@ public abstract class RestProxyBase {
                 }
             }
 
-            HttpHeadersHelper.setNoKeyFormatting(request.getHeaders(), "content-type", "Content-Type", contentType);
+            request.setHeader(HttpHeaderName.CONTENT_TYPE, contentType);
             if (bodyContentObject instanceof BinaryData) {
                 BinaryData binaryData = (BinaryData) bodyContentObject;
                 if (binaryData.getLength() != null) {
-                    HttpHeadersHelper.setNoKeyFormatting(request.getHeaders(), "content-length", "Content-Length",
-                        binaryData.getLength().toString());
+                    request.setHeader(HttpHeaderName.CONTENT_LENGTH, binaryData.getLength().toString());
                 }
                 // The request body is not read here. The call to `toFluxByteBuffer()` lazily converts the underlying
                 // content of BinaryData to a Flux<ByteBuffer> which is then read by HttpClient implementations when
@@ -334,12 +345,22 @@ public abstract class RestProxyBase {
 
         final String contentType = httpResponse.getHeaderValue("Content-Type");
         if ("application/octet-stream".equalsIgnoreCase(contentType)) {
-            String contentLength = HttpHeadersHelper.getValueNoKeyFormatting(httpResponse.getHeaders(), "content-length");
+            String contentLength = httpResponse.getHeaderValue(HttpHeaderName.CONTENT_LENGTH);
             exceptionMessage.append("(").append(contentLength).append("-byte body)");
         } else if (responseContent == null || responseContent.length == 0) {
             exceptionMessage.append("(empty body)");
         } else {
             exceptionMessage.append("\"").append(new String(responseContent, StandardCharsets.UTF_8)).append("\"");
+        }
+
+        // If the decoded response content is on of these exception types there was a failure in creating the actual
+        // exception body type. In this case return an HttpResponseException to maintain the exception having a
+        // reference to the HttpResponse and information about what caused the deserialization failure.
+        if (responseDecodedContent instanceof IOException
+            || responseDecodedContent instanceof MalformedValueException
+            || responseDecodedContent instanceof IllegalStateException) {
+            return new HttpResponseException(exceptionMessage.toString(), httpResponse,
+                (Throwable) responseDecodedContent);
         }
 
         // For HttpResponseException types that exist in azure-core, call the constructor directly.

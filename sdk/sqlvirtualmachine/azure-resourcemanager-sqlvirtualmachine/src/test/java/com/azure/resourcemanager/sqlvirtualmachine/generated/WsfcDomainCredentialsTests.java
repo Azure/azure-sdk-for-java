@@ -15,23 +15,27 @@ public final class WsfcDomainCredentialsTests {
         WsfcDomainCredentials model =
             BinaryData
                 .fromString(
-                    "{\"clusterBootstrapAccountPassword\":\"fyhxde\",\"clusterOperatorAccountPassword\":\"jzicwifsjt\",\"sqlServiceAccountPassword\":\"zfbishcbkhaj\"}")
+                    "{\"clusterBootstrapAccountPassword\":\"fakeClusterBootstrapAccountPasswordPlaceholder\",\"clusterOperatorAccountPassword\":\"fakeClusterOperatorAccountPasswordPlaceholder\",\"sqlServiceAccountPassword\":\"fakeSqlServiceAccountPasswordPlaceholder\"}")
                 .toObject(WsfcDomainCredentials.class);
-        Assertions.assertEquals("fyhxde", model.clusterBootstrapAccountPassword());
-        Assertions.assertEquals("jzicwifsjt", model.clusterOperatorAccountPassword());
-        Assertions.assertEquals("zfbishcbkhaj", model.sqlServiceAccountPassword());
+        Assertions.assertEquals("fakeClusterBootstrapAccountPasswordPlaceholder",
+            model.clusterBootstrapAccountPassword());
+        Assertions.assertEquals("fakeClusterOperatorAccountPasswordPlaceholder",
+            model.clusterOperatorAccountPassword());
+        Assertions.assertEquals("fakeSqlServiceAccountPasswordPlaceholder", model.sqlServiceAccountPassword());
     }
 
     @Test
     public void testSerialize() {
         WsfcDomainCredentials model =
             new WsfcDomainCredentials()
-                .withClusterBootstrapAccountPassword("fyhxde")
-                .withClusterOperatorAccountPassword("jzicwifsjt")
-                .withSqlServiceAccountPassword("zfbishcbkhaj");
+                .withClusterBootstrapAccountPassword("fakeClusterBootstrapAccountPasswordPlaceholder")
+                .withClusterOperatorAccountPassword("fakeClusterOperatorAccountPasswordPlaceholder")
+                .withSqlServiceAccountPassword("fakeSqlServiceAccountPasswordPlaceholder");
         model = BinaryData.fromObject(model).toObject(WsfcDomainCredentials.class);
-        Assertions.assertEquals("fyhxde", model.clusterBootstrapAccountPassword());
-        Assertions.assertEquals("jzicwifsjt", model.clusterOperatorAccountPassword());
-        Assertions.assertEquals("zfbishcbkhaj", model.sqlServiceAccountPassword());
+        Assertions.assertEquals("fakeClusterBootstrapAccountPasswordPlaceholder",
+            model.clusterBootstrapAccountPassword());
+        Assertions.assertEquals("fakeClusterOperatorAccountPasswordPlaceholder",
+            model.clusterOperatorAccountPassword());
+        Assertions.assertEquals("fakeSqlServiceAccountPasswordPlaceholder", model.sqlServiceAccountPassword());
     }
 }

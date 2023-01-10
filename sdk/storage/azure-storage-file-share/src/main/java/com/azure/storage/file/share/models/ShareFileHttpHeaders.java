@@ -9,13 +9,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** Parameter group. */
-@Fluent
 @JacksonXmlRootElement(localName = "share-file-http-headers")
+@Fluent
 public final class ShareFileHttpHeaders {
 
     /*
-     * Sets the MIME content type of the file. The default type is
-     * 'application/octet-stream'.
+     * Sets the MIME content type of the file. The default type is 'application/octet-stream'.
      */
     @JsonProperty(value = "contentType")
     private String contentType;
@@ -33,8 +32,7 @@ public final class ShareFileHttpHeaders {
     private String contentLanguage;
 
     /*
-     * Sets the file's cache control. The File service stores this value but
-     * does not use or modify it.
+     * Sets the file's cache control. The File service stores this value but does not use or modify it.
      */
     @JsonProperty(value = "cacheControl")
     private String cacheControl;
@@ -50,6 +48,9 @@ public final class ShareFileHttpHeaders {
      */
     @JsonProperty(value = "contentDisposition")
     private String contentDisposition;
+
+    /** Creates an instance of ShareFileHttpHeaders class. */
+    public ShareFileHttpHeaders() {}
 
     /**
      * Get the contentType property: Sets the MIME content type of the file. The default type is

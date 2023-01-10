@@ -11,7 +11,7 @@ import com.azure.resourcemanager.cognitiveservices.models.Sku;
 /** Samples for Accounts Update. */
 public final class AccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-03-01/examples/UpdateAccount.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/UpdateAccount.json
      */
     /**
      * Sample code: Update Account.

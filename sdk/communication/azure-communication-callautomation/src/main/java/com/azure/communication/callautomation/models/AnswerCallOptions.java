@@ -5,6 +5,9 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.core.annotation.Fluent;
 
+import java.time.Instant;
+import java.util.UUID;
+
 /**
  * The options for creating a call.
  */
@@ -30,6 +33,11 @@ public class AnswerCallOptions {
      */
     private MediaStreamingOptions mediaStreamingOptions;
 
+    /*
+     * The endpoint URL of the Azure Cognitive Services resource attached
+     */
+    private String azureCognitiveServicesEndpointUrl;
+
     /**
      * Constructor
      *
@@ -39,6 +47,7 @@ public class AnswerCallOptions {
     public AnswerCallOptions(String incomingCallContext, String callbackUrl) {
         this.incomingCallContext = incomingCallContext;
         this.callbackUrl = callbackUrl;
+        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
     /**
@@ -57,6 +66,16 @@ public class AnswerCallOptions {
      */
     public String getCallbackUrl() {
         return callbackUrl;
+    }
+
+    /**
+     * Get the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
+     * attached.
+     *
+     * @return the azureCognitiveServicesEndpointUrl value.
+     */
+    public String getAzureCognitiveServicesEndpointUrl() {
+        return this.azureCognitiveServicesEndpointUrl;
     }
 
     /**
@@ -96,6 +115,18 @@ public class AnswerCallOptions {
      */
     public AnswerCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
         this.mediaStreamingOptions = mediaStreamingOptions;
+        return this;
+    }
+
+    /**
+     * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
+     * attached.
+     *
+     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    public AnswerCallOptions setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
+        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
         return this;
     }
 }

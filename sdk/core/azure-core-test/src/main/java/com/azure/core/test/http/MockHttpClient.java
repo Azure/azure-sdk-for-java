@@ -28,7 +28,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
@@ -41,7 +41,6 @@ public class MockHttpClient extends NoOpHttpClient {
         .set("X-Processed-Time", "1.0")
         .set("Access-Control-Allow-Credentials", "true")
         .set("Content-Type", "application/json");
-    private static final Random RANDOM = new Random();
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
@@ -72,7 +71,7 @@ public class MockHttpClient extends NoOpHttpClient {
                     byte[] content;
                     if (byteCount > 0) {
                         content = new byte[byteCount];
-                        RANDOM.nextBytes(content);
+                        ThreadLocalRandom.current().nextBytes(content);
                         newHeaders = newHeaders.set("ETag", MessageDigestUtils.md5(content));
                     } else {
                         content = null;
@@ -181,6 +180,11 @@ public class MockHttpClient extends NoOpHttpClient {
                     final String statusCodeString = requestPathLower.substring("/status/".length());
                     final int statusCode = Integer.parseInt(statusCodeString);
                     response = new MockHttpResponse(request, statusCode);
+                } else if (requestPathLower.startsWith("/voideagerreadoom")) {
+                    response = new MockHttpResponse(request, 200);
+                } else if (requestPathLower.startsWith("/voiderrorreturned")) {
+                    response = new MockHttpResponse(request, 400,
+                        "void exception body thrown".getBytes(StandardCharsets.UTF_8));
                 }
             } else if ("echo.org".equalsIgnoreCase(requestHost)) {
                 return FluxUtil.collectBytesInByteBufferStream(request.getBody())

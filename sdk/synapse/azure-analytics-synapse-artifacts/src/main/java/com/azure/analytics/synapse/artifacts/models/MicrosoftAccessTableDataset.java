@@ -24,6 +24,9 @@ public class MicrosoftAccessTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
+    /** Creates an instance of MicrosoftAccessTableDataset class. */
+    public MicrosoftAccessTableDataset() {}
+
     /**
      * Get the tableName property: The Microsoft Access table name. Type: string (or Expression with resultType string).
      *

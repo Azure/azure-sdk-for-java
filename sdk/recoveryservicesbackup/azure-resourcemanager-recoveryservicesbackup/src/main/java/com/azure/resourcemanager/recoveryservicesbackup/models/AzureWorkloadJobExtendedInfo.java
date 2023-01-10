@@ -32,6 +32,10 @@ public final class AzureWorkloadJobExtendedInfo {
     @JsonProperty(value = "dynamicErrorMessage")
     private String dynamicErrorMessage;
 
+    /** Creates an instance of AzureWorkloadJobExtendedInfo class. */
+    public AzureWorkloadJobExtendedInfo() {
+    }
+
     /**
      * Get the tasksList property: List of tasks for this job.
      *
