@@ -688,7 +688,7 @@ public final class ServiceBusClientBuilder implements
         }
     }
 
-    private RecoverableReactorConnection<ServiceBusReactorAmqpConnection> getOrCreateConnectionProcessor(MessageSerializer serializer) {
+    private RecoverableReactorConnection<ServiceBusReactorAmqpConnection> getOrCreateRecoverableConnection(MessageSerializer serializer) {
         if (retryOptions == null) {
             retryOptions = DEFAULT_RETRY;
         }
@@ -910,7 +910,7 @@ public final class ServiceBusClientBuilder implements
          * @throws IllegalArgumentException if the entity type is not a queue or a topic.
          */
         public ServiceBusSenderAsyncClient buildAsyncClient() {
-            final RecoverableReactorConnection<ServiceBusReactorAmqpConnection> connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+            final RecoverableReactorConnection<ServiceBusReactorAmqpConnection> recoverableConnection = getOrCreateRecoverableConnection(messageSerializer);
             final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
                 queueName);
 
@@ -939,9 +939,9 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(ServiceBusTracer.getDefaultTracer(),
-                createMeter(), connectionProcessor.getFullyQualifiedNamespace(), entityName);
+                createMeter(), recoverableConnection.getFullyQualifiedNamespace(), entityName);
 
-            return new ServiceBusSenderAsyncClient(entityName, entityType, connectionProcessor, retryOptions,
+            return new ServiceBusSenderAsyncClient(entityName, entityType, recoverableConnection, retryOptions,
                 instrumentation, messageSerializer, ServiceBusClientBuilder.this::onClientClose, null, clientIdentifier);
         }
 
@@ -1407,7 +1407,7 @@ public final class ServiceBusClientBuilder implements
                 maxAutoLockRenewDuration = Duration.ZERO;
             }
 
-            final RecoverableReactorConnection<ServiceBusReactorAmqpConnection> connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+            final RecoverableReactorConnection<ServiceBusReactorAmqpConnection> recoverableConnection = getOrCreateRecoverableConnection(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete, null,
                 maxConcurrentSessions);
@@ -1421,13 +1421,13 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusSessionManager sessionManager = new ServiceBusSessionManager(entityPath, entityType,
-                connectionProcessor, messageSerializer, receiverOptions, clientIdentifier);
+                recoverableConnection, messageSerializer, receiverOptions, clientIdentifier);
 
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
-                ServiceBusTracer.getDefaultTracer(), createMeter(), connectionProcessor.getFullyQualifiedNamespace(),
+                ServiceBusTracer.getDefaultTracer(), createMeter(), recoverableConnection.getFullyQualifiedNamespace(),
                 entityPath, subscriptionName, false);
-            return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
-                entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
+            return new ServiceBusReceiverAsyncClient(recoverableConnection.getFullyQualifiedNamespace(), entityPath,
+                entityType, receiverOptions, recoverableConnection, ServiceBusConstants.OPERATION_TIMEOUT,
                 instrumentation, messageSerializer, ServiceBusClientBuilder.this::onClientClose, sessionManager);
         }
 
@@ -1488,7 +1488,7 @@ public final class ServiceBusClientBuilder implements
                 maxAutoLockRenewDuration = Duration.ZERO;
             }
 
-            final RecoverableReactorConnection<ServiceBusReactorAmqpConnection> connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+            final RecoverableReactorConnection<ServiceBusReactorAmqpConnection> recoverableConnection = getOrCreateRecoverableConnection(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete, null, maxConcurrentSessions);
 
@@ -1501,9 +1501,9 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(ServiceBusTracer.getDefaultTracer(),
-                createMeter(), connectionProcessor.getFullyQualifiedNamespace(), entityPath, subscriptionName, syncConsumer);
-            return new ServiceBusSessionReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(),
-                entityPath, entityType, receiverOptions, connectionProcessor, instrumentation, messageSerializer,
+                createMeter(), recoverableConnection.getFullyQualifiedNamespace(), entityPath, subscriptionName, syncConsumer);
+            return new ServiceBusSessionReceiverAsyncClient(recoverableConnection.getFullyQualifiedNamespace(),
+                entityPath, entityType, receiverOptions, recoverableConnection, instrumentation, messageSerializer,
                 ServiceBusClientBuilder.this::onClientClose, clientIdentifier);
         }
     }
@@ -1971,7 +1971,7 @@ public final class ServiceBusClientBuilder implements
                 maxAutoLockRenewDuration = Duration.ZERO;
             }
 
-            final RecoverableReactorConnection<ServiceBusReactorAmqpConnection> connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+            final RecoverableReactorConnection<ServiceBusReactorAmqpConnection> recoverableConnection = getOrCreateRecoverableConnection(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete);
 
@@ -1984,9 +1984,9 @@ public final class ServiceBusClientBuilder implements
             }
 
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(ServiceBusTracer.getDefaultTracer(),
-                createMeter(), connectionProcessor.getFullyQualifiedNamespace(), entityPath, subscriptionName, syncConsumer);
-            return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
-                entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
+                createMeter(), recoverableConnection.getFullyQualifiedNamespace(), entityPath, subscriptionName, syncConsumer);
+            return new ServiceBusReceiverAsyncClient(recoverableConnection.getFullyQualifiedNamespace(), entityPath,
+                entityType, receiverOptions, recoverableConnection, ServiceBusConstants.OPERATION_TIMEOUT,
                 instrumentation, messageSerializer, ServiceBusClientBuilder.this::onClientClose, clientIdentifier);
         }
     }
@@ -2043,9 +2043,9 @@ public final class ServiceBusClientBuilder implements
                 null);
             final String entityPath = getEntityPath(entityType, null, topicName, subscriptionName,
                 null);
-            final RecoverableReactorConnection<ServiceBusReactorAmqpConnection> connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+            final RecoverableReactorConnection<ServiceBusReactorAmqpConnection> recoverableConnection = getOrCreateRecoverableConnection(messageSerializer);
 
-            return new ServiceBusRuleManagerAsyncClient(entityPath, entityType, connectionProcessor,
+            return new ServiceBusRuleManagerAsyncClient(entityPath, entityType, recoverableConnection,
                 ServiceBusClientBuilder.this::onClientClose);
         }
 

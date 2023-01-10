@@ -52,7 +52,7 @@ public class ServiceBusRuleManagerAsyncClientTest {
     private static final String RULE_NAME = "foo-bar";
 
     private ServiceBusRuleManagerAsyncClient ruleManager;
-    private RecoverableReactorConnection<ServiceBusReactorAmqpConnection> connectionProcessor;
+    private RecoverableReactorConnection<ServiceBusReactorAmqpConnection> recoverableConnection;
 
     private AutoCloseable mocksCloseable;
     private CreateRuleOptions ruleOptions;
@@ -107,11 +107,11 @@ public class ServiceBusRuleManagerAsyncClientTest {
         when(connection.isDisposed()).thenReturn(false);
         when(connection.closeAsync(any(AmqpShutdownSignal.class))).thenReturn(Mono.empty());
 
-        connectionProcessor = new RecoverableReactorConnection<>(() -> connection,
+        recoverableConnection = new RecoverableReactorConnection<>(() -> connection,
             connectionOptions.getFullyQualifiedNamespace(), ENTITY_PATH, getRetryPolicy(connectionOptions.getRetry()),
             new HashMap<>());
 
-        ruleManager = new ServiceBusRuleManagerAsyncClient(ENTITY_PATH, ENTITY_TYPE, connectionProcessor, onClientClose);
+        ruleManager = new ServiceBusRuleManagerAsyncClient(ENTITY_PATH, ENTITY_TYPE, recoverableConnection, onClientClose);
 
     }
 

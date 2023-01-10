@@ -83,7 +83,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
 
     private final String entityPath;
     private final MessagingEntityType entityType;
-    private final RecoverableReactorConnection<ServiceBusReactorAmqpConnection> connectionProcessor;
+    private final RecoverableReactorConnection<ServiceBusReactorAmqpConnection> recoverableConnection;
     private final Runnable onClientClose;
     private final AtomicBoolean isDisposed = new AtomicBoolean();
 
@@ -92,15 +92,15 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
      *
      * @param entityPath The name of the topic and subscription.
      * @param entityType The type of the Service Bus resource.
-     * @param connectionProcessor The AMQP connection to the Service Bus resource.
+     * @param recoverableConnection The AMQP connection to the Service Bus resource.
      * @param onClientClose Operation to run when the client completes.
      */
     ServiceBusRuleManagerAsyncClient(String entityPath, MessagingEntityType entityType,
-        RecoverableReactorConnection<ServiceBusReactorAmqpConnection> connectionProcessor, Runnable onClientClose) {
+        RecoverableReactorConnection<ServiceBusReactorAmqpConnection> recoverableConnection, Runnable onClientClose) {
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.entityType = Objects.requireNonNull(entityType, "'entityType' cannot be null.");
-        this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
-            "'connectionProcessor' cannot be null.");
+        this.recoverableConnection = Objects.requireNonNull(recoverableConnection,
+            "'recoverableConnection' cannot be null.");
         this.onClientClose = onClientClose;
     }
 
@@ -110,7 +110,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
      * @return The fully qualified namespace.
      */
     public String getFullyQualifiedNamespace() {
-        return connectionProcessor.getFullyQualifiedNamespace();
+        return recoverableConnection.getFullyQualifiedNamespace();
     }
 
     /**
@@ -158,7 +158,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
             ));
         }
 
-        return connectionProcessor
+        return recoverableConnection
             .get()
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMapMany(ServiceBusManagementNode::listRules);
@@ -188,7 +188,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
             return monoError(LOGGER, new IllegalArgumentException("'ruleName' cannot be an empty string."));
         }
 
-        return connectionProcessor
+        return recoverableConnection
             .get()
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(managementNode -> managementNode.deleteRule(ruleName));
@@ -220,7 +220,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
             return monoError(LOGGER, new IllegalArgumentException("'ruleName' cannot be an empty string."));
         }
 
-        return connectionProcessor
+        return recoverableConnection
             .get()
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(managementNode -> managementNode.createRule(ruleName, options));

@@ -165,7 +165,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     private final MessagingEntityType entityType;
     private final Runnable onClientClose;
     private final String entityName;
-    private final RecoverableReactorConnection<ServiceBusReactorAmqpConnection> connectionProcessor;
+    private final RecoverableReactorConnection<ServiceBusReactorAmqpConnection> recoverableConnection;
     private final String viaEntityName;
     private final String identifier;
     private final ServiceBusSenderInstrumentation instrumentation;
@@ -175,7 +175,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * Creates a new instance of this {@link ServiceBusSenderAsyncClient} that sends messages to a Service Bus entity.
      */
     ServiceBusSenderAsyncClient(String entityName, MessagingEntityType entityType,
-        RecoverableReactorConnection<ServiceBusReactorAmqpConnection> connectionProcessor, AmqpRetryOptions retryOptions,
+        RecoverableReactorConnection<ServiceBusReactorAmqpConnection> recoverableConnection, AmqpRetryOptions retryOptions,
         ServiceBusSenderInstrumentation instrumentation, MessageSerializer messageSerializer, Runnable onClientClose,
         String viaEntityName, String identifier) {
         // Caching the created link so we don't invoke another link creation.
@@ -183,8 +183,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             "'messageSerializer' cannot be null.");
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.entityName = Objects.requireNonNull(entityName, "'entityPath' cannot be null.");
-        this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
-            "'connectionProcessor' cannot be null.");
+        this.recoverableConnection = Objects.requireNonNull(recoverableConnection,
+            "'recoverableConnection' cannot be null.");
         this.instrumentation = Objects.requireNonNull(instrumentation, "'instrumentation' cannot be null.");
         this.tracer = instrumentation.getTracer();
         this.retryPolicy = getRetryPolicy(retryOptions);
@@ -200,7 +200,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @return The fully qualified namespace.
      */
     public String getFullyQualifiedNamespace() {
-        return connectionProcessor.getFullyQualifiedNamespace();
+        return recoverableConnection.getFullyQualifiedNamespace();
     }
 
     /**
@@ -511,7 +511,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             })
             .flatMapMany(messageBatch ->
                 tracer.traceFluxWithLinks("ServiceBus.scheduleMessages",
-                    connectionProcessor
+                    recoverableConnection
                         .get()
                         .flatMap(connection -> connection.getManagementNode(entityName, entityType))
                         .flatMapMany(managementNode -> managementNode.schedule(messageBatch.getMessages(), scheduledEnqueueTime,
@@ -541,7 +541,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         }
 
         return tracer.traceMono("ServiceBus.cancelScheduledMessage",
-                connectionProcessor
+                recoverableConnection
                     .get()
                     .flatMap(connection -> connection.getManagementNode(entityName, entityType))
                     .flatMap(managementNode -> managementNode.cancelScheduledMessages(
@@ -571,7 +571,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         }
 
         return tracer.traceMono("ServiceBus.cancelScheduledMessages",
-                connectionProcessor
+                recoverableConnection
                     .get()
                     .flatMap(connection -> connection.getManagementNode(entityName, entityType))
                     .flatMap(managementNode -> managementNode.cancelScheduledMessages(sequenceNumbers, linkName.get())))
@@ -596,7 +596,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         }
 
         return tracer.traceMono("ServiceBus.createTransaction",
-                connectionProcessor
+                recoverableConnection
                     .get()
                     .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
                     .flatMap(transactionSession -> transactionSession.createTransaction())
@@ -630,7 +630,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         }
 
         return
-            tracer.traceMono("ServiceBus.commitTransaction", connectionProcessor
+            tracer.traceMono("ServiceBus.commitTransaction", recoverableConnection
                 .get()
                 .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
                 .flatMap(transactionSession -> transactionSession.commitTransaction(new AmqpTransaction(
@@ -664,7 +664,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         }
 
         return tracer.traceMono("ServiceBus.rollbackTransaction",
-                connectionProcessor
+                recoverableConnection
                 .get()
                 .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
                 .flatMap(transactionSession -> transactionSession.rollbackTransaction(new AmqpTransaction(
@@ -717,7 +717,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                         ? size
                         : MAX_MESSAGE_LENGTH_BYTES;
 
-                    return connectionProcessor
+                    return recoverableConnection
                         .get()
                         .flatMap(connection -> connection.getManagementNode(entityName, entityType))
                         .flatMap(managementNode -> managementNode.schedule(Arrays.asList(message), scheduledEnqueueTime,
@@ -814,7 +814,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     }
 
     private Mono<AmqpSendLink> getSendLink() {
-        return connectionProcessor
+        return recoverableConnection
             .get()
             .flatMap(connection -> {
                 if (!CoreUtils.isNullOrEmpty(viaEntityName)) {
