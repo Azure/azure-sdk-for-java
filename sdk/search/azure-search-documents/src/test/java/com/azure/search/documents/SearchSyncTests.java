@@ -52,6 +52,7 @@ import static com.azure.search.documents.TestHelpers.assertHttpResponseException
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static com.azure.search.documents.TestHelpers.convertMapToValue;
+import static com.azure.search.documents.TestHelpers.equalDocumentSets;
 import static com.azure.search.documents.TestHelpers.readJsonFileToList;
 import static com.azure.search.documents.TestHelpers.setupSharedIndex;
 import static com.azure.search.documents.TestHelpers.uploadDocuments;
@@ -296,14 +297,13 @@ public class SearchSyncTests extends SearchTestBase {
         SearchPagedResponse result = iterator.next();
         assertEquals(2, result.getValue().size());
 
-        try {
-            assertObjectEquals(doc1, result.getValue().get(0).getDocument(NonNullableModel.class), true);
-            assertObjectEquals(doc2, result.getValue().get(1).getDocument(NonNullableModel.class), true);
-        } catch (AssertionError e) {
-            assertObjectEquals(doc2, result.getValue().get(0).getDocument(NonNullableModel.class), true);
-            assertObjectEquals(doc1, result.getValue().get(1).getDocument(NonNullableModel.class), true);
-        }
+        List<NonNullableModel> expectedDocuments = new ArrayList<>();
+        expectedDocuments.add(doc1); expectedDocuments.add(doc2);
 
+        List<NonNullableModel> actualDocuments = new ArrayList<>();
+        result.getValue().forEach(val -> actualDocuments.add(val.getDocument(NonNullableModel.class)));
+
+        assertTrue(equalDocumentSets(expectedDocuments, actualDocuments));
     }
 
     @SuppressWarnings("UseOfObsoleteDateTimeApi")
