@@ -4,6 +4,10 @@
 
 This is the 1.1.0 GA version of Azure identity extensions library for Java.
 
+### Dependency Updates
+
+- Upgrade Azure Identity to 1.7.3.
+
 ## 1.0.0 (2022-12-05)
 
 This is the 1.0.0 GA version of Azure identity extensions library for Java.
