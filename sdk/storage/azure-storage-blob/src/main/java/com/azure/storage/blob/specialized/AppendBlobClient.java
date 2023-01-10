@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerClient;
@@ -53,6 +54,8 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  */
 @ServiceClient(builder = SpecializedBlobClientBuilder.class)
 public final class AppendBlobClient extends BlobClientBase {
+    private static final ClientLogger LOGGER = new ClientLogger(AppendBlobAsyncClient.class);
+
     private final AppendBlobAsyncClient appendBlobAsyncClient;
 
     /**
@@ -100,13 +103,33 @@ public final class AppendBlobClient extends BlobClientBase {
 
     /**
      * Creates and opens an output stream to write data to the append blob. If the blob already exists on the service,
-     * it will be overwritten.
+     * new data will get appended to the existing blob.
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream() {
         return getBlobOutputStream(null);
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the append blob.
+     * <p>
+     *
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     * @param overwrite Whether to overwrite, should data exist on the blob.
+     * @throws BlobStorageException If a storage service error occurred.
+     */
+    public BlobOutputStream getBlobOutputStream(boolean overwrite) {
+        AppendBlobRequestConditions requestConditions = null;
+        if (!overwrite) {
+            // fix logic to create a new blob
+            if (exists()) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
+            }
+            requestConditions = new AppendBlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
+        return getBlobOutputStream(requestConditions);
     }
 
     /**
