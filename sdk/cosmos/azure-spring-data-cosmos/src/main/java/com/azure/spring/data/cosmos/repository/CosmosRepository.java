@@ -43,8 +43,10 @@ public interface CosmosRepository<T, ID extends Serializable> extends PagingAndS
      *
      * @param id must not be {@literal null}
      * @param partitionKey must not be {@literal null}
+     * @param domainType must not be {@literal null}
      * @param patchOperations must not be {@literal null}, max operations is 10
      * @param <S> type class of domain type
+     * @return the patched entity
      * @throws IllegalArgumentException in case the given {@code id} is {@literal null}.
      */
     <S extends T> S save(ID id, PartitionKey partitionKey, Class<S> domainType, CosmosPatchOperations patchOperations);
@@ -54,9 +56,11 @@ public interface CosmosRepository<T, ID extends Serializable> extends PagingAndS
      *
      * @param id must not be {@literal null}
      * @param partitionKey must not be {@literal null}
+     * @param domainType must not be {@literal null}
      * @param patchOperations must not be {@literal null}, max operations is 10
      * @param options Optional CosmosPatchItemRequestOptions, e.g. options.setFilterPredicate("FROM products p WHERE p.used = false");
      * @param <S> type class of domain type
+     * @return the patched entity
      * @throws IllegalArgumentException in case the given {@code id} is {@literal null}.
      */
     <S extends T> S save(ID id, PartitionKey partitionKey, Class<S> domainType, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options);

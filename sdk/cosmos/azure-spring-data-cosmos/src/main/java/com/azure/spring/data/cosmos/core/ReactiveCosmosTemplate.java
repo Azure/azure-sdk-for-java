@@ -466,7 +466,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      * @return the patched item
      */
     @Override
-    public <T> Mono<T> patch(Object id, PartitionKey partitionKey, Class<T> domainType, CosmosPatchOperations patchOperations){
+    public <T> Mono<T> patch(Object id, PartitionKey partitionKey, Class<T> domainType, CosmosPatchOperations patchOperations) {
         return patch(id, partitionKey, domainType, patchOperations,  null);
     }
 
@@ -491,7 +491,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
 
         LOGGER.debug("execute patchItem in database {} container {}", this.getDatabaseName(), containerName);
 
-        if(options==null){
+        if (options == null) {
             options = new CosmosPatchItemRequestOptions();
         }
 

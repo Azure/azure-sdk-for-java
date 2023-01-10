@@ -249,7 +249,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * @return the patched item
      */
     @Override
-    public <T> T patch(Object id, PartitionKey partitionKey, Class<T> domainType, CosmosPatchOperations patchOperations){
+    public <T> T patch(Object id, PartitionKey partitionKey, Class<T> domainType, CosmosPatchOperations patchOperations) {
         return patch(id, partitionKey, domainType, patchOperations,  null);
     }
 
@@ -275,7 +275,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         LOGGER.debug("execute patchItem in database {} container {}", this.getDatabaseName(),
             containerName);
 
-        if(options==null){
+        if (options == null) {
             options = new CosmosPatchItemRequestOptions();
         }
         final CosmosItemResponse<JsonNode> response = this.getCosmosAsyncClient()

@@ -129,6 +129,7 @@ public interface CosmosOperations {
      * patches item
      * @param id must not be {@literal null}
      * @param partitionKey must not be {@literal null}
+     * @param domainType must not be {@literal null}
      * @param patchOperations must not be {@literal null}, max operations is 10
      * @param <T> type class of domain type
      * @return the patched item
