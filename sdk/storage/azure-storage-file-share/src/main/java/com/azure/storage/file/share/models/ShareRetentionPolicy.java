@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** The retention policy. */
-@JacksonXmlRootElement(localName = "RetentionPolicy")
 @Fluent
+@JacksonXmlRootElement(localName = "RetentionPolicy")
 public final class ShareRetentionPolicy {
 
     /*

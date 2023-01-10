@@ -5,7 +5,6 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
@@ -66,18 +65,6 @@ public final class FilesUploadRangeFromURLHeaders {
     @JsonProperty(value = "x-ms-file-last-write-time")
     private OffsetDateTime xMsFileLastWriteTime;
 
-    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
-
-    private static final HttpHeaderName X_MS_CONTENT_CRC64 = HttpHeaderName.fromString("x-ms-content-crc64");
-
-    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
-
-    private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED =
-            HttpHeaderName.fromString("x-ms-request-server-encrypted");
-
-    private static final HttpHeaderName X_MS_FILE_LAST_WRITE_TIME =
-            HttpHeaderName.fromString("x-ms-file-last-write-time");
-
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of FilesUploadRangeFromURLHeaders class.
@@ -85,26 +72,26 @@ public final class FilesUploadRangeFromURLHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public FilesUploadRangeFromURLHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
-        String xMsContentCrc64 = rawHeaders.getValue(X_MS_CONTENT_CRC64);
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        this.eTag = rawHeaders.getValue("ETag");
+        String xMsContentCrc64 = rawHeaders.getValue("x-ms-content-crc64");
         if (xMsContentCrc64 != null) {
             this.xMsContentCrc64 = Base64.getDecoder().decode(xMsContentCrc64);
         }
-        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
+        String lastModified = rawHeaders.getValue("Last-Modified");
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
-        String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        String xMsRequestServerEncrypted = rawHeaders.getValue("x-ms-request-server-encrypted");
         if (xMsRequestServerEncrypted != null) {
             this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
         }
-        String date = rawHeaders.getValue(HttpHeaderName.DATE);
+        String date = rawHeaders.getValue("Date");
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }
-        String xMsFileLastWriteTime = rawHeaders.getValue(X_MS_FILE_LAST_WRITE_TIME);
+        String xMsFileLastWriteTime = rawHeaders.getValue("x-ms-file-last-write-time");
         if (xMsFileLastWriteTime != null) {
             this.xMsFileLastWriteTime = OffsetDateTime.parse(xMsFileLastWriteTime);
         }

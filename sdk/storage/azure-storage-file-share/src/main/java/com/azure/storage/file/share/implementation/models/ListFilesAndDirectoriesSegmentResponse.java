@@ -32,12 +32,6 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     private String shareSnapshot;
 
     /*
-     * The Encoded property.
-     */
-    @JacksonXmlProperty(localName = "Encoded", isAttribute = true)
-    private Boolean encoded;
-
-    /*
      * The DirectoryPath property.
      */
     @JacksonXmlProperty(localName = "DirectoryPath", isAttribute = true)
@@ -47,7 +41,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      * The Prefix property.
      */
     @JsonProperty(value = "Prefix", required = true)
-    private StringEncoded prefix;
+    private String prefix;
 
     /*
      * The Marker property.
@@ -143,26 +137,6 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     }
 
     /**
-     * Get the encoded property: The Encoded property.
-     *
-     * @return the encoded value.
-     */
-    public Boolean isEncoded() {
-        return this.encoded;
-    }
-
-    /**
-     * Set the encoded property: The Encoded property.
-     *
-     * @param encoded the encoded value to set.
-     * @return the ListFilesAndDirectoriesSegmentResponse object itself.
-     */
-    public ListFilesAndDirectoriesSegmentResponse setEncoded(Boolean encoded) {
-        this.encoded = encoded;
-        return this;
-    }
-
-    /**
      * Get the directoryPath property: The DirectoryPath property.
      *
      * @return the directoryPath value.
@@ -187,7 +161,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      *
      * @return the prefix value.
      */
-    public StringEncoded getPrefix() {
+    public String getPrefix() {
         return this.prefix;
     }
 
@@ -197,7 +171,7 @@ public final class ListFilesAndDirectoriesSegmentResponse {
      * @param prefix the prefix value to set.
      * @return the ListFilesAndDirectoriesSegmentResponse object itself.
      */
-    public ListFilesAndDirectoriesSegmentResponse setPrefix(StringEncoded prefix) {
+    public ListFilesAndDirectoriesSegmentResponse setPrefix(String prefix) {
         this.prefix = prefix;
         return this;
     }

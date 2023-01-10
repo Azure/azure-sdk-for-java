@@ -16,7 +16,7 @@ public final class DirectoryItem {
      * The Name property.
      */
     @JsonProperty(value = "Name", required = true)
-    private StringEncoded name;
+    private String name;
 
     /*
      * The FileId property.
@@ -50,7 +50,7 @@ public final class DirectoryItem {
      *
      * @return the name value.
      */
-    public StringEncoded getName() {
+    public String getName() {
         return this.name;
     }
 
@@ -60,7 +60,7 @@ public final class DirectoryItem {
      * @param name the name value to set.
      * @return the DirectoryItem object itself.
      */
-    public DirectoryItem setName(StringEncoded name) {
+    public DirectoryItem setName(String name) {
         this.name = name;
         return this;
     }

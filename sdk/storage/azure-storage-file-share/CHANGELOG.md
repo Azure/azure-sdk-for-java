@@ -1,17 +1,5 @@
 # Release History
 
-## 12.17.0-beta.1 (Unreleased)
-
-### Features Added
-- Added support for 2021-12-02 service version.
-- Added support for invalid XML characters in file and directory names for `ShareDirectoryClient.listFilesAndDirectories()`, `ShareDirectoryClient.listHandles()`, and `ShareFileClient.listHandles()`.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 12.16.1 (2022-11-15)
 
 ### Other Changes

@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.share.implementation.util;
 
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.ParallelTransferOptions;
@@ -17,8 +16,6 @@ import com.azure.storage.file.share.implementation.models.InternalShareFileItemP
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
-import com.azure.storage.file.share.implementation.models.StringEncoded;
-import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
 import com.azure.storage.file.share.models.ShareFileItemProperties;
 import com.azure.storage.file.share.models.ShareItem;
@@ -26,19 +23,11 @@ import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-
 public class ModelHelper {
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
 
     private static final long MAX_FILE_PUT_RANGE_BYTES = 4 * Constants.MB;
     private static final int FILE_DEFAULT_NUMBER_OF_BUFFERS = 8;
-
-    private static final HttpHeaderName X_MS_ERROR_CODE = HttpHeaderName.fromString("x-ms-error-code");
 
     /**
      * Fills in default values for a ParallelTransferOptions where no value has been set. This will construct a new
@@ -193,11 +182,11 @@ public class ModelHelper {
         }
 
         return ShareFileDownloadHeadersConstructorProxy.create(headers)
-            .setErrorCode(rawHeaders.getValue(X_MS_ERROR_CODE));
+            .setErrorCode(rawHeaders.getValue("x-ms-error-code"));
     }
 
     public static String getETag(HttpHeaders headers) {
-        return headers.getValue(HttpHeaderName.ETAG);
+        return headers.getValue("ETag");
     }
 
     public static ShareFileItemProperties transformFileProperty(FileProperty property) {
@@ -206,37 +195,5 @@ public class ModelHelper {
         }
         return new InternalShareFileItemProperties(property.getCreationTime(), property.getLastAccessTime(),
             property.getLastWriteTime(), property.getChangeTime(), property.getLastModified(), property.getEtag());
-    }
-
-    public static HandleItem transformHandleItem(com.azure.storage.file.share.implementation.models.HandleItem handleItem) {
-        return new HandleItem()
-            .setHandleId(handleItem.getHandleId())
-            .setPath(decodeName(handleItem.getPath())) // handles decoding path if path is encoded
-            .setSessionId(handleItem.getSessionId())
-            .setClientIp(handleItem.getClientIp())
-            .setFileId(handleItem.getFileId())
-            .setParentId(handleItem.getParentId())
-            .setLastReconnectTime(handleItem.getLastReconnectTime())
-            .setOpenTime(handleItem.getOpenTime());
-    }
-
-    public static List<HandleItem> transformHandleItems(List<com.azure.storage.file.share.implementation.models.HandleItem> handleItems) {
-        List<HandleItem> result = new ArrayList<>();
-        handleItems.forEach(item -> {
-            result.add(transformHandleItem(item));
-        });
-        return result;
-    }
-
-    public static String decodeName(StringEncoded stringEncoded) {
-        if (stringEncoded.isEncoded() != null && stringEncoded.isEncoded()) {
-            try {
-                return URLDecoder.decode(stringEncoded.getContent(), StandardCharsets.UTF_8.name());
-            } catch (UnsupportedEncodingException e) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(e));
-            }
-        } else {
-            return stringEncoded.getContent();
-        }
     }
 }

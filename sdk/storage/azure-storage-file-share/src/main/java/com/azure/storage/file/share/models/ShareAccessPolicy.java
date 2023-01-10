@@ -9,8 +9,8 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
 /** An Access policy. */
-@JacksonXmlRootElement(localName = "AccessPolicy")
 @Fluent
+@JacksonXmlRootElement(localName = "AccessPolicy")
 public final class ShareAccessPolicy {
 
     /*

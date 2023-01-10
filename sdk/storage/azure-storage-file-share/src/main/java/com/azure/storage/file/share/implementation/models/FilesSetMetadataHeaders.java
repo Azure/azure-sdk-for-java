@@ -5,7 +5,6 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -46,13 +45,6 @@ public final class FilesSetMetadataHeaders {
     @JsonProperty(value = "Date")
     private DateTimeRfc1123 date;
 
-    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
-
-    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
-
-    private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED =
-            HttpHeaderName.fromString("x-ms-request-server-encrypted");
-
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of FilesSetMetadataHeaders class.
@@ -60,14 +52,14 @@ public final class FilesSetMetadataHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public FilesSetMetadataHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
-        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
-        String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        this.eTag = rawHeaders.getValue("ETag");
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        String xMsRequestServerEncrypted = rawHeaders.getValue("x-ms-request-server-encrypted");
         if (xMsRequestServerEncrypted != null) {
             this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
         }
-        String date = rawHeaders.getValue(HttpHeaderName.DATE);
+        String date = rawHeaders.getValue("Date");
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }
