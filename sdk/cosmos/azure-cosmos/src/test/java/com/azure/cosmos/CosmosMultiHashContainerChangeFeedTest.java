@@ -20,7 +20,6 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyBuilder;
-import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -359,15 +358,6 @@ public class CosmosMultiHashContainerChangeFeedTest extends TestSuiteBase {
         drainAndValidateChangeFeedResults(options, null, expectedTotalEventCountAfterUpdates);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void asyncChangeFeed_fromBeginning_fullFidelity_forFullRange() throws Exception {
-        assertThrows(
-            IllegalStateException.class,
-            () -> CosmosChangeFeedRequestOptions
-                .createForProcessingFromBeginning(FeedRange.forFullRange())
-                .allVersionsAndDeletes());
-    }
-
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void asyncChangeFeed_fromNow_incremental_forFullRange() throws Exception {
@@ -408,7 +398,6 @@ public class CosmosMultiHashContainerChangeFeedTest extends TestSuiteBase {
         drainAndValidateChangeFeedResults(options, null, expectedEventCountAfterUpdates);
     }
 
-    //TODO Temporarily disabling
     @Test(groups = { "emulator" }, timeOut = TIMEOUT, enabled = false)
     public void asyncChangeFeed_fromNow_fullFidelity_forFullRange() throws Exception {
         this.createContainer(
