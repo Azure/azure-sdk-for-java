@@ -27,7 +27,7 @@ public class EmailAsyncClientTests extends EmailTestBase {
 
     @ParameterizedTest
     @MethodSource("getTestParameters")
-    public void sendEmailToSingleRecipient(HttpClient httpClient) {
+    public void sendEmailToSingleRecipientAsync(HttpClient httpClient) {
         emailAsyncClient = getEmailAsyncClient(httpClient);
 
         EmailAddress emailAddress = new EmailAddress(RECIPIENT_ADDRESS);
@@ -42,9 +42,11 @@ public class EmailAsyncClientTests extends EmailTestBase {
             .setPlainText("test message");
 
         EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients);
+        System.out.println("Making request");
 
         StepVerifier.create(emailAsyncClient.send(emailMessage))
             .assertNext(response -> {
+                System.out.println("Request made");
                 assertNotNull(response.getMessageId());
             })
             .verifyComplete();
@@ -52,7 +54,7 @@ public class EmailAsyncClientTests extends EmailTestBase {
 
     @ParameterizedTest
     @MethodSource("getTestParameters")
-    public void sendEmailToMultipleRecipients(HttpClient httpClient) {
+    public void sendEmailToMultipleRecipientsAsync(HttpClient httpClient) {
         emailAsyncClient = getEmailAsyncClient(httpClient);
 
         EmailAddress emailAddress = new EmailAddress(RECIPIENT_ADDRESS);
@@ -77,9 +79,11 @@ public class EmailAsyncClientTests extends EmailTestBase {
             .setPlainText("test message");
 
         EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients);
+        System.out.println("Making request");
 
         StepVerifier.create(emailAsyncClient.send(emailMessage))
             .assertNext(response -> {
+                System.out.println("Request made");
                 assertNotNull(response.getMessageId());
             })
             .verifyComplete();
@@ -87,7 +91,7 @@ public class EmailAsyncClientTests extends EmailTestBase {
 
     @ParameterizedTest
     @MethodSource("getTestParameters")
-    public void sendEmailWithAttachment(HttpClient httpClient) {
+    public void sendEmailWithAttachmentAsync(HttpClient httpClient) {
         emailAsyncClient = getEmailAsyncClient(httpClient);
 
         EmailAddress emailAddress = new EmailAddress(RECIPIENT_ADDRESS);
@@ -112,9 +116,11 @@ public class EmailAsyncClientTests extends EmailTestBase {
 
         EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients)
             .setAttachments(attachmentList);
+        System.out.println("Making request");
 
         StepVerifier.create(emailAsyncClient.send(emailMessage))
             .assertNext(response -> {
+                System.out.println("Request made");
                 assertNotNull(response.getMessageId());
             })
             .verifyComplete();
@@ -153,7 +159,7 @@ public class EmailAsyncClientTests extends EmailTestBase {
 
     @ParameterizedTest
     @MethodSource("getTestParameters")
-    public void sendEmailWithoutToRecipient(HttpClient httpClient) {
+    public void sendEmailWithoutToRecipientAsync(HttpClient httpClient) {
         emailAsyncClient = getEmailAsyncClient(httpClient);
 
         EmailAddress emailAddress = new EmailAddress(RECIPIENT_ADDRESS);
@@ -168,9 +174,11 @@ public class EmailAsyncClientTests extends EmailTestBase {
             .setPlainText("test message");
 
         EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients);
+        System.out.println("Making request");
 
         StepVerifier.create(emailAsyncClient.send(emailMessage))
             .assertNext(response -> {
+                System.out.println("Request made");
                 assertNotNull(response.getMessageId());
             })
             .verifyComplete();
