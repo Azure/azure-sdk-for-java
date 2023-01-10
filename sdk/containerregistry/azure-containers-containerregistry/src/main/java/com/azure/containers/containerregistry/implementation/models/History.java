@@ -16,9 +16,6 @@ public final class History {
     @JsonProperty(value = "v1Compatibility")
     private String v1Compatibility;
 
-    /** Creates an instance of History class. */
-    public History() {}
-
     /**
      * Get the v1Compatibility property: The raw v1 compatibility information.
      *

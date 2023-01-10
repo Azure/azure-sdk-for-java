@@ -12,9 +12,10 @@ import java.time.OffsetDateTime;
 /** Properties of this repository. */
 @JsonFlatten
 @Fluent
-public class ContainerRepositoryProperties {
+public final class ContainerRepositoryProperties {
     /*
-     * Registry login server name. This is likely to be similar to {registry-name}.azurecr.io.
+     * Registry login server name. This is likely to be similar to
+     * {registry-name}.azurecr.io.
      */
     @JsonProperty(value = "registry", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String registryLoginServer;
@@ -72,9 +73,6 @@ public class ContainerRepositoryProperties {
      */
     @JsonProperty(value = "changeableAttributes.readEnabled")
     private Boolean readEnabled;
-
-    /** Creates an instance of ContainerRepositoryProperties class. */
-    public ContainerRepositoryProperties() {}
 
     /**
      * Get the registryLoginServer property: Registry login server name. This is likely to be similar to

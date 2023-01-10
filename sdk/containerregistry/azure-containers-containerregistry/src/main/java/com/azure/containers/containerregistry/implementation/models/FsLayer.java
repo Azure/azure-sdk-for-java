@@ -16,9 +16,6 @@ public final class FsLayer {
     @JsonProperty(value = "blobSum")
     private String blobSum;
 
-    /** Creates an instance of FsLayer class. */
-    public FsLayer() {}
-
     /**
      * Get the blobSum property: SHA of an image layer.
      *

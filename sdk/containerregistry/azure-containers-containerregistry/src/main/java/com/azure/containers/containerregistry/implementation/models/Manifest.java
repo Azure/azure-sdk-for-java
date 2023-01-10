@@ -16,9 +16,6 @@ public class Manifest {
     @JsonProperty(value = "schemaVersion")
     private Integer schemaVersion;
 
-    /** Creates an instance of Manifest class. */
-    public Manifest() {}
-
     /**
      * Get the schemaVersion property: Schema version.
      *

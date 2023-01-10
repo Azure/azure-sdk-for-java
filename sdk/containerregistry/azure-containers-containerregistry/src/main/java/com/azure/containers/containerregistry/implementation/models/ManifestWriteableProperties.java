@@ -34,9 +34,6 @@ public final class ManifestWriteableProperties {
     @JsonProperty(value = "readEnabled")
     private Boolean readEnabled;
 
-    /** Creates an instance of ManifestWriteableProperties class. */
-    public ManifestWriteableProperties() {}
-
     /**
      * Get the deleteEnabled property: Delete enabled.
      *

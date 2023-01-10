@@ -18,9 +18,6 @@ public final class ManifestAttributesManifest {
     @JsonProperty(value = "references")
     private List<ArtifactManifestPlatform> references;
 
-    /** Creates an instance of ManifestAttributesManifest class. */
-    public ManifestAttributesManifest() {}
-
     /**
      * Get the references property: List of manifest attributes details.
      *

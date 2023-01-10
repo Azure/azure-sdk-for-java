@@ -23,9 +23,6 @@ public final class RepositoryTags {
     @JsonProperty(value = "tags")
     private List<String> tags;
 
-    /** Creates an instance of RepositoryTags class. */
-    public RepositoryTags() {}
-
     /**
      * Get the name property: Name of the image.
      *

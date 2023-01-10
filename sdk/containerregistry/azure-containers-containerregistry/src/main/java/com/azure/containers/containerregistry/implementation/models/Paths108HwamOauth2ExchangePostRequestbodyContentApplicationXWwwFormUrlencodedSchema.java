@@ -11,7 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema {
     /*
-     * Can take a value of access_token_refresh_token, or access_token, or refresh_token
+     * Can take a value of access_token_refresh_token, or access_token, or
+     * refresh_token
      */
     @JsonProperty(value = "grant_type", required = true)
     private PostContentSchemaGrantType grantType;
@@ -29,21 +30,18 @@ public final class Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXW
     private String tenant;
 
     /*
-     * AAD refresh token, mandatory when grant_type is access_token_refresh_token or refresh_token
+     * AAD refresh token, mandatory when grant_type is
+     * access_token_refresh_token or refresh_token
      */
     @JsonProperty(value = "refresh_token")
     private String refreshToken;
 
     /*
-     * AAD access token, mandatory when grant_type is access_token_refresh_token or access_token.
+     * AAD access token, mandatory when grant_type is
+     * access_token_refresh_token or access_token.
      */
     @JsonProperty(value = "access_token")
     private String aadAccessToken;
-
-    /**
-     * Creates an instance of Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema class.
-     */
-    public Paths108HwamOauth2ExchangePostRequestbodyContentApplicationXWwwFormUrlencodedSchema() {}
 
     /**
      * Get the grantType property: Can take a value of access_token_refresh_token, or access_token, or refresh_token.

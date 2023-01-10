@@ -5,7 +5,6 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ContainerRegistriesGetRepositoriesHeaders model. */
@@ -16,16 +15,6 @@ public final class ContainerRegistriesGetRepositoriesHeaders {
      */
     @JsonProperty(value = "Link")
     private String link;
-
-    // HttpHeaders containing the raw property values.
-    /**
-     * Creates an instance of ContainerRegistriesGetRepositoriesHeaders class.
-     *
-     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
-     */
-    public ContainerRegistriesGetRepositoriesHeaders(HttpHeaders rawHeaders) {
-        this.link = rawHeaders.getValue("Link");
-    }
 
     /**
      * Get the link property: The Link property.

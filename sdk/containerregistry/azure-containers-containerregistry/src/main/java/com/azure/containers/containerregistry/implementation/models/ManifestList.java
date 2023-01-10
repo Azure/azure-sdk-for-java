@@ -23,9 +23,6 @@ public final class ManifestList extends Manifest {
     @JsonProperty(value = "manifests")
     private List<ManifestListAttributes> manifests;
 
-    /** Creates an instance of ManifestList class. */
-    public ManifestList() {}
-
     /**
      * Get the mediaType property: Media type for this Manifest.
      *
@@ -63,13 +60,6 @@ public final class ManifestList extends Manifest {
      */
     public ManifestList setManifests(List<ManifestListAttributes> manifests) {
         this.manifests = manifests;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ManifestList setSchemaVersion(Integer schemaVersion) {
-        super.setSchemaVersion(schemaVersion);
         return this;
     }
 }

@@ -17,9 +17,6 @@ public final class AcrErrors {
     @JsonProperty(value = "errors")
     private List<AcrErrorInfo> errors;
 
-    /** Creates an instance of AcrErrors class. */
-    public AcrErrors() {}
-
     /**
      * Get the errors property: Array of detailed error.
      *
