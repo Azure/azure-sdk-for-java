@@ -22,6 +22,9 @@ public final class ParameterSpecification {
     @JsonProperty(value = "defaultValue")
     private Object defaultValue;
 
+    /** Creates an instance of ParameterSpecification class. */
+    public ParameterSpecification() {}
+
     /**
      * Get the type property: Parameter type.
      *

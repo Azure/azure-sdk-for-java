@@ -6,7 +6,10 @@ package com.azure.containers.containerregistry.implementation;
 import com.azure.containers.containerregistry.ContainerRegistryServiceVersion;
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryCredentialsPolicy;
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryTokenService;
-import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
+import com.azure.containers.containerregistry.implementation.models.ManifestAttributesBase;
+import com.azure.containers.containerregistry.implementation.models.TagAttributesBase;
+import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
+import com.azure.containers.containerregistry.models.ArtifactTagProperties;
 import com.azure.containers.containerregistry.models.ContainerRegistryAudience;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
@@ -35,11 +38,11 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
-import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
@@ -51,6 +54,9 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * This is the utility class that includes helper methods used across our clients.
@@ -63,6 +69,7 @@ public final class UtilsImpl {
     private static final String CONTINUATION_LINK_HEADER_NAME;
     private static final Pattern CONTINUATION_LINK_PATTERN;
     private static final ClientLogger LOGGER;
+    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
 
     public static final String DOCKER_DIGEST_HEADER_NAME;
     public static final String OCI_MANIFEST_MEDIA_TYPE;
@@ -170,13 +177,9 @@ public final class UtilsImpl {
         return httpPipeline;
     }
 
+    @SuppressWarnings("unchecked")
     private static ArrayList<HttpPipelinePolicy> clone(ArrayList<HttpPipelinePolicy> policies) {
-        ArrayList<HttpPipelinePolicy> clonedPolicy = new ArrayList<>();
-        for (HttpPipelinePolicy policy:policies) {
-            clonedPolicy.add(policy);
-        }
-
-        return clonedPolicy;
+        return (ArrayList<HttpPipelinePolicy>) policies.clone();
     }
 
     /**
@@ -217,7 +220,7 @@ public final class UtilsImpl {
      * @param <T> The encapsulating value.
      * @return The transformed response object.
      */
-    public static <T> Mono<Response<Void>> deleteResponseToSuccess(Response<T> responseT) {
+    public static <T> Response<Void> deleteResponseToSuccess(Response<T> responseT) {
         if (responseT.getStatusCode() != HTTP_STATUS_CODE_NOT_FOUND) {
             // In case of success scenario return Response<Void>.
             return getAcceptedDeleteResponse(responseT, responseT.getStatusCode());
@@ -227,12 +230,12 @@ public final class UtilsImpl {
         return getAcceptedDeleteResponse(responseT, HTTP_STATUS_CODE_ACCEPTED);
     }
 
-    static <T> Mono<Response<Void>> getAcceptedDeleteResponse(Response<T> responseT, int statusCode) {
-        return Mono.just(new SimpleResponse<Void>(
+    private static <T> Response<Void> getAcceptedDeleteResponse(Response<T> responseT, int statusCode) {
+        return new SimpleResponse<Void>(
             responseT.getRequest(),
             statusCode,
             responseT.getHeaders(),
-            null));
+            null);
     }
 
     /**
@@ -241,15 +244,15 @@ public final class UtilsImpl {
      * @return The exception returned by the public methods.
      */
     public static Throwable mapException(Throwable exception) {
-        AcrErrorsException acrException = null;
+        HttpResponseException acrException = null;
 
-        if (exception instanceof AcrErrorsException) {
-            acrException = ((AcrErrorsException) exception);
+        if (exception instanceof HttpResponseException) {
+            acrException = ((HttpResponseException) exception);
         } else if (exception instanceof RuntimeException) {
             RuntimeException runtimeException = (RuntimeException) exception;
             Throwable throwable = runtimeException.getCause();
-            if (throwable instanceof AcrErrorsException) {
-                acrException = (AcrErrorsException) throwable;
+            if (throwable instanceof HttpResponseException) {
+                acrException = (HttpResponseException) throwable;
             }
         }
 
@@ -257,21 +260,25 @@ public final class UtilsImpl {
             return exception;
         }
 
+        return mapAcrErrorsException(acrException);
+    }
+
+    public static HttpResponseException mapAcrErrorsException(HttpResponseException acrException) {
         final HttpResponse errorHttpResponse = acrException.getResponse();
         final int statusCode = errorHttpResponse.getStatusCode();
         final String errorDetail = acrException.getMessage();
 
         switch (statusCode) {
             case 401:
-                return new ClientAuthenticationException(errorDetail, acrException.getResponse(), exception);
+                return new ClientAuthenticationException(errorDetail, acrException.getResponse(), acrException);
             case 404:
-                return new ResourceNotFoundException(errorDetail, acrException.getResponse(), exception);
+                return new ResourceNotFoundException(errorDetail, acrException.getResponse(), acrException);
             case 409:
-                return new ResourceExistsException(errorDetail, acrException.getResponse(), exception);
+                return new ResourceExistsException(errorDetail, acrException.getResponse(), acrException);
             case 412:
-                return new ResourceModifiedException(errorDetail, acrException.getResponse(), exception);
+                return new ResourceModifiedException(errorDetail, acrException.getResponse(), acrException);
             default:
-                return new HttpResponseException(errorDetail, acrException.getResponse(), exception);
+                return new HttpResponseException(errorDetail, acrException.getResponse(), acrException);
         }
     }
 
@@ -337,6 +344,54 @@ public final class UtilsImpl {
         );
     }
 
+    public static List<ArtifactManifestProperties> mapManifestsProperties(List<ManifestAttributesBase> baseArtifacts,
+                                                                          String repositoryName,
+                                                                          String registryLoginServer) {
+        if (baseArtifacts == null) {
+            return null;
+        }
+
+        return baseArtifacts.stream().map(value -> {
+            ArtifactManifestProperties manifestProperties = new ArtifactManifestProperties()
+                .setDeleteEnabled(value.isDeleteEnabled())
+                .setListEnabled(value.isListEnabled())
+                .setWriteEnabled(value.isWriteEnabled())
+                .setReadEnabled(value.isReadEnabled());
+
+            ArtifactManifestPropertiesHelper.setRepositoryName(manifestProperties, repositoryName);
+            ArtifactManifestPropertiesHelper.setRegistryLoginServer(manifestProperties, registryLoginServer);
+            ArtifactManifestPropertiesHelper.setDigest(manifestProperties, value.getDigest());
+            ArtifactManifestPropertiesHelper.setRelatedArtifacts(manifestProperties, value.getRelatedArtifacts());
+            ArtifactManifestPropertiesHelper.setCpuArchitecture(manifestProperties, value.getArchitecture());
+            ArtifactManifestPropertiesHelper.setOperatingSystem(manifestProperties, value.getOperatingSystem());
+            ArtifactManifestPropertiesHelper.setCreatedOn(manifestProperties, value.getCreatedOn());
+            ArtifactManifestPropertiesHelper.setlastUpdatedOn(manifestProperties, value.getLastUpdatedOn());
+            ArtifactManifestPropertiesHelper.setSizeInBytes(manifestProperties, value.getSize());
+            ArtifactManifestPropertiesHelper.setTags(manifestProperties, value.getTags());
+            return manifestProperties;
+        }).collect(Collectors.toList());
+    }
+
+    public static List<ArtifactTagProperties> getTagProperties(List<TagAttributesBase> baseValues,
+                                                               String repositoryName) {
+        Objects.requireNonNull(baseValues);
+
+        return baseValues.stream().map(value -> {
+            ArtifactTagProperties tagProperties = new ArtifactTagProperties()
+                .setDeleteEnabled(value.isDeleteEnabled())
+                .setReadEnabled(value.isReadEnabled())
+                .setListEnabled(value.isListEnabled())
+                .setWriteEnabled(value.isWriteEnabled());
+
+            ArtifactTagPropertiesHelper.setCreatedOn(tagProperties, value.getCreatedOn());
+            ArtifactTagPropertiesHelper.setlastUpdatedOn(tagProperties, value.getLastUpdatedOn());
+            ArtifactTagPropertiesHelper.setRepositoryName(tagProperties, repositoryName);
+            ArtifactTagPropertiesHelper.setName(tagProperties, value.getName());
+            ArtifactTagPropertiesHelper.setDigest(tagProperties, value.getDigest());
+            return tagProperties;
+        }).collect(Collectors.toList());
+    }
+
     /**
      * Get the digest from the response header if available.
      * @param headers The headers to parse.
@@ -344,5 +399,25 @@ public final class UtilsImpl {
      */
     public static <T> String getDigestFromHeader(HttpHeaders headers) {
         return headers.getValue(DOCKER_DIGEST_HEADER_NAME);
+    }
+
+    public static Context enableSync(Context tracingContext) {
+        return tracingContext.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
+    }
+    public static Context getTracingContext(Context context) {
+        return context.addData(AZ_TRACING_NAMESPACE_KEY, CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE);
+    }
+
+    public static String trimNextLink(String locationHeader) {
+        // The location header returned in the nextLink for upload chunk operations starts with a '/'
+        // which the service expects us to remove before calling it.
+        if (locationHeader != null && locationHeader.startsWith("/")) {
+            return locationHeader.substring(1);
+        }
+
+        return locationHeader;
+    }
+    public static boolean isDigest(String tagOrDigest) {
+        return tagOrDigest.contains(":");
     }
 }

@@ -32,6 +32,10 @@ public final class AccessModeSettingsExclusion {
     @JsonProperty(value = "ingestionAccessMode")
     private AccessMode ingestionAccessMode;
 
+    /** Creates an instance of AccessModeSettingsExclusion class. */
+    public AccessModeSettingsExclusion() {
+    }
+
     /**
      * Get the privateEndpointConnectionName property: The private endpoint connection name associated to the private
      * endpoint on which we want to apply the specific access mode settings.

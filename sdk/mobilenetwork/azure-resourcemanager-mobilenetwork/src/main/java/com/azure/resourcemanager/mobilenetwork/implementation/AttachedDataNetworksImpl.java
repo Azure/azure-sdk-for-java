@@ -54,22 +54,6 @@ public final class AttachedDataNetworksImpl implements AttachedDataNetworks {
                 context);
     }
 
-    public AttachedDataNetwork get(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCoreDataPlaneName,
-        String attachedDataNetworkName) {
-        AttachedDataNetworkInner inner =
-            this
-                .serviceClient()
-                .get(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName);
-        if (inner != null) {
-            return new AttachedDataNetworkImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AttachedDataNetwork> getWithResponse(
         String resourceGroupName,
         String packetCoreControlPlaneName,
@@ -91,6 +75,22 @@ public final class AttachedDataNetworksImpl implements AttachedDataNetworks {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AttachedDataNetworkImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AttachedDataNetwork get(
+        String resourceGroupName,
+        String packetCoreControlPlaneName,
+        String packetCoreDataPlaneName,
+        String attachedDataNetworkName) {
+        AttachedDataNetworkInner inner =
+            this
+                .serviceClient()
+                .get(resourceGroupName, packetCoreControlPlaneName, packetCoreDataPlaneName, attachedDataNetworkName);
+        if (inner != null) {
+            return new AttachedDataNetworkImpl(inner, this.manager());
         } else {
             return null;
         }

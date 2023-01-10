@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Databases UpgradeDataWarehouse. */
 public final class DatabasesUpgradeDataWarehouseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-10-01-preview/examples/UpgradeDataWarehouse.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/UpgradeDataWarehouse.json
      */
     /**
      * Sample code: Upgrades a data warehouse.

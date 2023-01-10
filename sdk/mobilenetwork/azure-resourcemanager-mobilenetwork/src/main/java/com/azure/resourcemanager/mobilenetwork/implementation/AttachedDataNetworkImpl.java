@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.mobilenetwork.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.AttachedDataNetworkInner;
 import com.azure.resourcemanager.mobilenetwork.models.AttachedDataNetwork;
@@ -45,6 +46,10 @@ public final class AttachedDataNetworkImpl
         } else {
             return Collections.emptyMap();
         }
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public ProvisioningState provisioningState() {
@@ -253,6 +258,11 @@ public final class AttachedDataNetworkImpl
         return this;
     }
 
+    public AttachedDataNetworkImpl withDnsAddresses(List<String> dnsAddresses) {
+        this.innerModel().withDnsAddresses(dnsAddresses);
+        return this;
+    }
+
     public AttachedDataNetworkImpl withTags(Map<String, String> tags) {
         if (isInCreateMode()) {
             this.innerModel().withTags(tags);
@@ -261,11 +271,6 @@ public final class AttachedDataNetworkImpl
             this.updateParameters.withTags(tags);
             return this;
         }
-    }
-
-    public AttachedDataNetworkImpl withDnsAddresses(List<String> dnsAddresses) {
-        this.innerModel().withDnsAddresses(dnsAddresses);
-        return this;
     }
 
     public AttachedDataNetworkImpl withNaptConfiguration(NaptConfiguration naptConfiguration) {

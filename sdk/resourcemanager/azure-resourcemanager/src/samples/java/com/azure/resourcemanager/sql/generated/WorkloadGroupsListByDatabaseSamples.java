@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WorkloadGroups ListByDatabase. */
 public final class WorkloadGroupsListByDatabaseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/GetWorkloadGroupList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetWorkloadGroupList.json
      */
     /**
      * Sample code: Get the list of workload groups for a data warehouse.

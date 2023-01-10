@@ -37,16 +37,6 @@ public interface OperationsClient {
     /**
      * Lists all of the available operations from Microsoft.Insights provider.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Microsoft.Insights operations.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationListResultInner list();
-
-    /**
-     * Lists all of the available operations from Microsoft.Insights provider.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -55,4 +45,14 @@ public interface OperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<OperationListResultInner> listWithResponse(Context context);
+
+    /**
+     * Lists all of the available operations from Microsoft.Insights provider.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list Microsoft.Insights operations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OperationListResultInner list();
 }

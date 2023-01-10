@@ -63,6 +63,9 @@ public class CustomActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.autoUserSpecification")
     private Object autoUserSpecification;
 
+    /** Creates an instance of CustomActivity class. */
+    public CustomActivity() {}
+
     /**
      * Get the command property: Command for custom activity Type: string (or Expression with resultType string).
      *

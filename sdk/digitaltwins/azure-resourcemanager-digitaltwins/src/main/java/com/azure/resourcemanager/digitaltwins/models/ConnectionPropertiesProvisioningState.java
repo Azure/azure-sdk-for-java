@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConnectionPropertiesProvisioningState. */
+/** The provisioning state. */
 public final class ConnectionPropertiesProvisioningState
     extends ExpandableStringEnum<ConnectionPropertiesProvisioningState> {
     /** Static value Pending for ConnectionPropertiesProvisioningState. */

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for FirewallRules ListByServer. */
 public final class FirewallRulesListByServerSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2014-04-01/examples/FirewallRuleList.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/FirewallRuleList.json
      */
     /**
      * Sample code: List Firewall Rules.

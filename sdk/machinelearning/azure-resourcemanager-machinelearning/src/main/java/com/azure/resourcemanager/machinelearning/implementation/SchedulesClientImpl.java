@@ -64,7 +64,7 @@ public final class SchedulesClientImpl implements SchedulesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
-    private interface SchedulesService {
+    public interface SchedulesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"

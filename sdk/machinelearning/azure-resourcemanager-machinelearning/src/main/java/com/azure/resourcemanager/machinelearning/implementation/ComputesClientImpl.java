@@ -69,7 +69,7 @@ public final class ComputesClientImpl implements ComputesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
-    private interface ComputesService {
+    public interface ComputesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"

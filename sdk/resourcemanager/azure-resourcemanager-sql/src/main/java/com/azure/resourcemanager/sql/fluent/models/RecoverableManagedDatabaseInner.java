@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.sql.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A recoverable managed database resource. */
-@Fluent
+@Immutable
 public final class RecoverableManagedDatabaseInner extends ProxyResource {
     /*
      * Resource properties.
      */
     @JsonProperty(value = "properties")
     private RecoverableManagedDatabaseProperties innerProperties;
+
+    /** Creates an instance of RecoverableManagedDatabaseInner class. */
+    public RecoverableManagedDatabaseInner() {
+    }
 
     /**
      * Get the innerProperties property: Resource properties.

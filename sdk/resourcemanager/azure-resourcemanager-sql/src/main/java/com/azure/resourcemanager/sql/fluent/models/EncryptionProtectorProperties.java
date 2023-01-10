@@ -42,6 +42,16 @@ public final class EncryptionProtectorProperties {
     @JsonProperty(value = "thumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbprint;
 
+    /*
+     * Key auto rotation opt-in flag. Either true or false.
+     */
+    @JsonProperty(value = "autoRotationEnabled")
+    private Boolean autoRotationEnabled;
+
+    /** Creates an instance of EncryptionProtectorProperties class. */
+    public EncryptionProtectorProperties() {
+    }
+
     /**
      * Get the subregion property: Subregion of the encryption protector.
      *
@@ -107,6 +117,26 @@ public final class EncryptionProtectorProperties {
      */
     public String thumbprint() {
         return this.thumbprint;
+    }
+
+    /**
+     * Get the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
+     *
+     * @return the autoRotationEnabled value.
+     */
+    public Boolean autoRotationEnabled() {
+        return this.autoRotationEnabled;
+    }
+
+    /**
+     * Set the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
+     *
+     * @param autoRotationEnabled the autoRotationEnabled value to set.
+     * @return the EncryptionProtectorProperties object itself.
+     */
+    public EncryptionProtectorProperties withAutoRotationEnabled(Boolean autoRotationEnabled) {
+        this.autoRotationEnabled = autoRotationEnabled;
+        return this;
     }
 
     /**

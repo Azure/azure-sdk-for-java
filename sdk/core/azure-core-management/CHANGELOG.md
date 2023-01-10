@@ -1,6 +1,6 @@
 # Release History
 
-## 1.10.0-beta.1 (Unreleased)
+## 1.11.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,18 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.10.0 (2023-01-05)
+
+### Breaking Changes
+
+- Deprecated `AzureEnvironment.AZURE_GERMANY`. Removed it from response of `AzureEnvironment.knownEnvironments`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.34.0` to `1.35.0`.
 
 ## 1.9.0 (2022-11-04)
 

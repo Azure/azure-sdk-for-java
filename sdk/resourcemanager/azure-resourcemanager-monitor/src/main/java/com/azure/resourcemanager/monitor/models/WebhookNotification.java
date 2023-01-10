@@ -25,6 +25,10 @@ public final class WebhookNotification {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> properties;
 
+    /** Creates an instance of WebhookNotification class. */
+    public WebhookNotification() {
+    }
+
     /**
      * Get the serviceUri property: the service address to receive the notification.
      *

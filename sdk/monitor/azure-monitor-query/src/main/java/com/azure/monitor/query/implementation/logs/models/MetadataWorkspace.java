@@ -8,7 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Log Analytics workspaces that were part of the metadata request and that the user has access to. */
+/**
+ * A Log Analytics workspace.
+ *
+ * <p>Log Analytics workspaces that were part of the metadata request and that the user has access to.
+ */
 @Fluent
 public final class MetadataWorkspace {
     /*

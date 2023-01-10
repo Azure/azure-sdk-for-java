@@ -40,6 +40,16 @@ public final class VaultInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /*
+     * Optional ETag.
+     */
+    @JsonProperty(value = "etag")
+    private String etag;
+
+    /** Creates an instance of VaultInner class. */
+    public VaultInner() {
+    }
+
     /**
      * Get the identity property: Identity for the resource.
      *
@@ -107,6 +117,26 @@ public final class VaultInner extends Resource {
      */
     public SystemData systemData() {
         return this.systemData;
+    }
+
+    /**
+     * Get the etag property: Optional ETag.
+     *
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Set the etag property: Optional ETag.
+     *
+     * @param etag the etag value to set.
+     * @return the VaultInner object itself.
+     */
+    public VaultInner withEtag(String etag) {
+        this.etag = etag;
+        return this;
     }
 
     /** {@inheritDoc} */

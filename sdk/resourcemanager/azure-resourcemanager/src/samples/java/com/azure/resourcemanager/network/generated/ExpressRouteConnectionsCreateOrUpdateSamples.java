@@ -15,7 +15,7 @@ import java.util.Arrays;
 /** Samples for ExpressRouteConnections CreateOrUpdate. */
 public final class ExpressRouteConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ExpressRouteConnectionCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/ExpressRouteConnectionCreate.json
      */
     /**
      * Sample code: ExpressRouteConnectionCreate.
@@ -40,7 +40,7 @@ public final class ExpressRouteConnectionsCreateOrUpdateSamples {
                         new ExpressRouteCircuitPeeringId()
                             .withId(
                                 "/subscriptions/subid/resourceGroups/resourceGroupName/providers/Microsoft.Network/expressRouteCircuits/circuitName/peerings/AzurePrivatePeering"))
-                    .withAuthorizationKey("authorizationKey")
+                    .withAuthorizationKey("fakeTokenPlaceholder")
                     .withRoutingWeight(2)
                     .withRoutingConfiguration(
                         new RoutingConfiguration()

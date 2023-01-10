@@ -5,6 +5,7 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -93,6 +94,29 @@ public final class DirectoriesCreateHeaders {
     @JsonProperty(value = "x-ms-file-last-write-time")
     private OffsetDateTime xMsFileLastWriteTime;
 
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_FILE_PERMISSION_KEY =
+            HttpHeaderName.fromString("x-ms-file-permission-key");
+
+    private static final HttpHeaderName X_MS_FILE_ID = HttpHeaderName.fromString("x-ms-file-id");
+
+    private static final HttpHeaderName X_MS_FILE_CREATION_TIME = HttpHeaderName.fromString("x-ms-file-creation-time");
+
+    private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED =
+            HttpHeaderName.fromString("x-ms-request-server-encrypted");
+
+    private static final HttpHeaderName X_MS_FILE_ATTRIBUTES = HttpHeaderName.fromString("x-ms-file-attributes");
+
+    private static final HttpHeaderName X_MS_FILE_CHANGE_TIME = HttpHeaderName.fromString("x-ms-file-change-time");
+
+    private static final HttpHeaderName X_MS_FILE_PARENT_ID = HttpHeaderName.fromString("x-ms-file-parent-id");
+
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
+    private static final HttpHeaderName X_MS_FILE_LAST_WRITE_TIME =
+            HttpHeaderName.fromString("x-ms-file-last-write-time");
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of DirectoriesCreateHeaders class.
@@ -100,34 +124,34 @@ public final class DirectoriesCreateHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public DirectoriesCreateHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        this.xMsFilePermissionKey = rawHeaders.getValue("x-ms-file-permission-key");
-        this.xMsFileId = rawHeaders.getValue("x-ms-file-id");
-        String xMsFileCreationTime = rawHeaders.getValue("x-ms-file-creation-time");
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.xMsFilePermissionKey = rawHeaders.getValue(X_MS_FILE_PERMISSION_KEY);
+        this.xMsFileId = rawHeaders.getValue(X_MS_FILE_ID);
+        String xMsFileCreationTime = rawHeaders.getValue(X_MS_FILE_CREATION_TIME);
         if (xMsFileCreationTime != null) {
             this.xMsFileCreationTime = OffsetDateTime.parse(xMsFileCreationTime);
         }
-        String lastModified = rawHeaders.getValue("Last-Modified");
+        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        String xMsRequestServerEncrypted = rawHeaders.getValue("x-ms-request-server-encrypted");
+        String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
         if (xMsRequestServerEncrypted != null) {
             this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
         }
-        String date = rawHeaders.getValue("Date");
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }
-        this.eTag = rawHeaders.getValue("ETag");
-        this.xMsFileAttributes = rawHeaders.getValue("x-ms-file-attributes");
-        String xMsFileChangeTime = rawHeaders.getValue("x-ms-file-change-time");
+        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        this.xMsFileAttributes = rawHeaders.getValue(X_MS_FILE_ATTRIBUTES);
+        String xMsFileChangeTime = rawHeaders.getValue(X_MS_FILE_CHANGE_TIME);
         if (xMsFileChangeTime != null) {
             this.xMsFileChangeTime = OffsetDateTime.parse(xMsFileChangeTime);
         }
-        this.xMsFileParentId = rawHeaders.getValue("x-ms-file-parent-id");
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        String xMsFileLastWriteTime = rawHeaders.getValue("x-ms-file-last-write-time");
+        this.xMsFileParentId = rawHeaders.getValue(X_MS_FILE_PARENT_ID);
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        String xMsFileLastWriteTime = rawHeaders.getValue(X_MS_FILE_LAST_WRITE_TIME);
         if (xMsFileLastWriteTime != null) {
             this.xMsFileLastWriteTime = OffsetDateTime.parse(xMsFileLastWriteTime);
         }

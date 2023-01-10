@@ -18,15 +18,12 @@ public final class TextSourceInternal {
 
     /*
      * Source language locale to be played
+     * Refer to available locales here: <seealso
+     * href="https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts"
+     * />
      */
     @JsonProperty(value = "sourceLocale")
     private String sourceLocale;
-
-    /*
-     * Target language locale to be played
-     */
-    @JsonProperty(value = "targetLocale")
-    private String targetLocale;
 
     /*
      * Voice gender type
@@ -36,6 +33,9 @@ public final class TextSourceInternal {
 
     /*
      * Voice name to be played
+     * Refer to available Text-to-speech voices here: <seealso
+     * href="https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts"
+     * />
      */
     @JsonProperty(value = "voiceName")
     private String voiceName;
@@ -61,7 +61,9 @@ public final class TextSourceInternal {
     }
 
     /**
-     * Get the sourceLocale property: Source language locale to be played.
+     * Get the sourceLocale property: Source language locale to be played Refer to available locales here: &lt;seealso
+     * href="https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts"
+     * /&gt;.
      *
      * @return the sourceLocale value.
      */
@@ -70,33 +72,15 @@ public final class TextSourceInternal {
     }
 
     /**
-     * Set the sourceLocale property: Source language locale to be played.
+     * Set the sourceLocale property: Source language locale to be played Refer to available locales here: &lt;seealso
+     * href="https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts"
+     * /&gt;.
      *
      * @param sourceLocale the sourceLocale value to set.
      * @return the TextSourceInternal object itself.
      */
     public TextSourceInternal setSourceLocale(String sourceLocale) {
         this.sourceLocale = sourceLocale;
-        return this;
-    }
-
-    /**
-     * Get the targetLocale property: Target language locale to be played.
-     *
-     * @return the targetLocale value.
-     */
-    public String getTargetLocale() {
-        return this.targetLocale;
-    }
-
-    /**
-     * Set the targetLocale property: Target language locale to be played.
-     *
-     * @param targetLocale the targetLocale value to set.
-     * @return the TextSourceInternal object itself.
-     */
-    public TextSourceInternal setTargetLocale(String targetLocale) {
-        this.targetLocale = targetLocale;
         return this;
     }
 
@@ -121,7 +105,9 @@ public final class TextSourceInternal {
     }
 
     /**
-     * Get the voiceName property: Voice name to be played.
+     * Get the voiceName property: Voice name to be played Refer to available Text-to-speech voices here: &lt;seealso
+     * href="https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts"
+     * /&gt;.
      *
      * @return the voiceName value.
      */
@@ -130,7 +116,9 @@ public final class TextSourceInternal {
     }
 
     /**
-     * Set the voiceName property: Voice name to be played.
+     * Set the voiceName property: Voice name to be played Refer to available Text-to-speech voices here: &lt;seealso
+     * href="https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts"
+     * /&gt;.
      *
      * @param voiceName the voiceName value to set.
      * @return the TextSourceInternal object itself.

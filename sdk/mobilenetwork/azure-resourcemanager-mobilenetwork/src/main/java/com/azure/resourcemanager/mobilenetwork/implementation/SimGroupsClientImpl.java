@@ -65,7 +65,7 @@ public final class SimGroupsClientImpl implements SimGroupsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MobileNetworkManagem")
-    private interface SimGroupsService {
+    public interface SimGroupsService {
         @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
@@ -518,21 +518,6 @@ public final class SimGroupsClientImpl implements SimGroupsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified SIM group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SimGroupInner getByResourceGroup(String resourceGroupName, String simGroupName) {
-        return getByResourceGroupAsync(resourceGroupName, simGroupName).block();
-    }
-
-    /**
-     * Gets information about the specified SIM group.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param simGroupName The name of the SIM Group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -543,6 +528,21 @@ public final class SimGroupsClientImpl implements SimGroupsClient {
     public Response<SimGroupInner> getByResourceGroupWithResponse(
         String resourceGroupName, String simGroupName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, simGroupName, context).block();
+    }
+
+    /**
+     * Gets information about the specified SIM group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified SIM group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SimGroupInner getByResourceGroup(String resourceGroupName, String simGroupName) {
+        return getByResourceGroupWithResponse(resourceGroupName, simGroupName, Context.NONE).getValue();
     }
 
     /**
@@ -942,22 +942,6 @@ public final class SimGroupsClientImpl implements SimGroupsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param simGroupName The name of the SIM Group.
      * @param parameters Parameters supplied to update SIM group tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sIM group resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SimGroupInner updateTags(String resourceGroupName, String simGroupName, TagsObject parameters) {
-        return updateTagsAsync(resourceGroupName, simGroupName, parameters).block();
-    }
-
-    /**
-     * Updates SIM group tags.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param simGroupName The name of the SIM Group.
-     * @param parameters Parameters supplied to update SIM group tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -968,6 +952,22 @@ public final class SimGroupsClientImpl implements SimGroupsClient {
     public Response<SimGroupInner> updateTagsWithResponse(
         String resourceGroupName, String simGroupName, TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, simGroupName, parameters, context).block();
+    }
+
+    /**
+     * Updates SIM group tags.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param simGroupName The name of the SIM Group.
+     * @param parameters Parameters supplied to update SIM group tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sIM group resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SimGroupInner updateTags(String resourceGroupName, String simGroupName, TagsObject parameters) {
+        return updateTagsWithResponse(resourceGroupName, simGroupName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -1281,7 +1281,8 @@ public final class SimGroupsClientImpl implements SimGroupsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1318,7 +1319,8 @@ public final class SimGroupsClientImpl implements SimGroupsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1355,7 +1357,8 @@ public final class SimGroupsClientImpl implements SimGroupsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1392,7 +1395,8 @@ public final class SimGroupsClientImpl implements SimGroupsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

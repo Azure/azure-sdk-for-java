@@ -71,7 +71,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
-    private interface OnlineEndpointsService {
+    public interface OnlineEndpointsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"

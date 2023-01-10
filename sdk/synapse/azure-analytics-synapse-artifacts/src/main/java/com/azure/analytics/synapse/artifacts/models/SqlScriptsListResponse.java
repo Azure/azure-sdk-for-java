@@ -23,6 +23,9 @@ public final class SqlScriptsListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of SqlScriptsListResponse class. */
+    public SqlScriptsListResponse() {}
+
     /**
      * Get the value property: List of sql scripts.
      *

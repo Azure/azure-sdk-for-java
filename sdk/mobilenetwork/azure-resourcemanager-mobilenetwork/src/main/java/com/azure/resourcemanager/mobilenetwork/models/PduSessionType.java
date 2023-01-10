@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PduSessionType. */
+/** PDU session type (IPv4/IPv6). */
 public final class PduSessionType extends ExpandableStringEnum<PduSessionType> {
     /** Static value IPv4 for PduSessionType. */
     public static final PduSessionType IPV4 = fromString("IPv4");

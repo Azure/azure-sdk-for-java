@@ -23,6 +23,10 @@ public final class DynamicThresholdFailingPeriods {
     @JsonProperty(value = "minFailingPeriodsToAlert", required = true)
     private float minFailingPeriodsToAlert;
 
+    /** Creates an instance of DynamicThresholdFailingPeriods class. */
+    public DynamicThresholdFailingPeriods() {
+    }
+
     /**
      * Get the numberOfEvaluationPeriods property: The number of aggregated lookback points. The lookback time window is
      * calculated based on the aggregation granularity (windowSize) and the selected number of aggregated points.

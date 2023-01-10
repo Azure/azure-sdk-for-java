@@ -24,6 +24,9 @@ public class SapEccResourceDataset extends Dataset {
     @JsonProperty(value = "typeProperties.path", required = true)
     private Object path;
 
+    /** Creates an instance of SapEccResourceDataset class. */
+    public SapEccResourceDataset() {}
+
     /**
      * Get the path property: The path of the SAP ECC OData entity. Type: string (or Expression with resultType string).
      *

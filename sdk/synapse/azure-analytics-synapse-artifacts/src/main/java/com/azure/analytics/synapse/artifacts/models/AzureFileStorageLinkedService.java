@@ -82,6 +82,9 @@ public class AzureFileStorageLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of AzureFileStorageLinkedService class. */
+    public AzureFileStorageLinkedService() {}
+
     /**
      * Get the host property: Host name of the server. Type: string (or Expression with resultType string).
      *

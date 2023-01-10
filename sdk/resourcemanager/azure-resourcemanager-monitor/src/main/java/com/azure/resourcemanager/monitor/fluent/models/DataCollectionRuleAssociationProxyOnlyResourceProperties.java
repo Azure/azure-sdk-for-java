@@ -10,6 +10,10 @@ import com.azure.resourcemanager.monitor.models.DataCollectionRuleAssociation;
 /** Resource properties. */
 @Fluent
 public final class DataCollectionRuleAssociationProxyOnlyResourceProperties extends DataCollectionRuleAssociation {
+    /** Creates an instance of DataCollectionRuleAssociationProxyOnlyResourceProperties class. */
+    public DataCollectionRuleAssociationProxyOnlyResourceProperties() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public DataCollectionRuleAssociationProxyOnlyResourceProperties withDescription(String description) {

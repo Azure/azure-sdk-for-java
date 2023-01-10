@@ -26,6 +26,10 @@ public final class JobAgentInner extends Resource {
     @JsonProperty(value = "properties")
     private JobAgentProperties innerProperties;
 
+    /** Creates an instance of JobAgentInner class. */
+    public JobAgentInner() {
+    }
+
     /**
      * Get the sku property: The name and tier of the SKU.
      *

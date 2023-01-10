@@ -37,6 +37,9 @@ public class NetezzaLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of NetezzaLinkedService class. */
+    public NetezzaLinkedService() {}
+
     /**
      * Get the connectionString property: An ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.

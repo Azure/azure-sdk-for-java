@@ -41,6 +41,10 @@ public final class ElasticPoolPerDatabaseMaxPerformanceLevelCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
+    /** Creates an instance of ElasticPoolPerDatabaseMaxPerformanceLevelCapability class. */
+    public ElasticPoolPerDatabaseMaxPerformanceLevelCapability() {
+    }
+
     /**
      * Get the limit property: The maximum performance level per database.
      *

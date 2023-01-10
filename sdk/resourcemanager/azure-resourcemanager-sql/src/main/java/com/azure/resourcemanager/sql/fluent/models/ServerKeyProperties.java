@@ -26,7 +26,8 @@ public final class ServerKeyProperties {
     private ServerKeyType serverKeyType;
 
     /*
-     * The URI of the server key.
+     * The URI of the server key. If the ServerKeyType is AzureKeyVault, then the URI is required. The AKV URI is
+     * required to be in this format: 'https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion'
      */
     @JsonProperty(value = "uri")
     private String uri;
@@ -34,14 +35,24 @@ public final class ServerKeyProperties {
     /*
      * Thumbprint of the server key.
      */
-    @JsonProperty(value = "thumbprint")
+    @JsonProperty(value = "thumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbprint;
 
     /*
      * The server key creation date.
      */
-    @JsonProperty(value = "creationDate")
+    @JsonProperty(value = "creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationDate;
+
+    /*
+     * Key auto rotation opt-in flag. Either true or false.
+     */
+    @JsonProperty(value = "autoRotationEnabled", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean autoRotationEnabled;
+
+    /** Creates an instance of ServerKeyProperties class. */
+    public ServerKeyProperties() {
+    }
 
     /**
      * Get the subregion property: Subregion of the server key.
@@ -73,7 +84,9 @@ public final class ServerKeyProperties {
     }
 
     /**
-     * Get the uri property: The URI of the server key.
+     * Get the uri property: The URI of the server key. If the ServerKeyType is AzureKeyVault, then the URI is required.
+     * The AKV URI is required to be in this format:
+     * 'https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion'.
      *
      * @return the uri value.
      */
@@ -82,7 +95,9 @@ public final class ServerKeyProperties {
     }
 
     /**
-     * Set the uri property: The URI of the server key.
+     * Set the uri property: The URI of the server key. If the ServerKeyType is AzureKeyVault, then the URI is required.
+     * The AKV URI is required to be in this format:
+     * 'https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion'.
      *
      * @param uri the uri value to set.
      * @return the ServerKeyProperties object itself.
@@ -102,17 +117,6 @@ public final class ServerKeyProperties {
     }
 
     /**
-     * Set the thumbprint property: Thumbprint of the server key.
-     *
-     * @param thumbprint the thumbprint value to set.
-     * @return the ServerKeyProperties object itself.
-     */
-    public ServerKeyProperties withThumbprint(String thumbprint) {
-        this.thumbprint = thumbprint;
-        return this;
-    }
-
-    /**
      * Get the creationDate property: The server key creation date.
      *
      * @return the creationDate value.
@@ -122,14 +126,12 @@ public final class ServerKeyProperties {
     }
 
     /**
-     * Set the creationDate property: The server key creation date.
+     * Get the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
      *
-     * @param creationDate the creationDate value to set.
-     * @return the ServerKeyProperties object itself.
+     * @return the autoRotationEnabled value.
      */
-    public ServerKeyProperties withCreationDate(OffsetDateTime creationDate) {
-        this.creationDate = creationDate;
-        return this;
+    public Boolean autoRotationEnabled() {
+        return this.autoRotationEnabled;
     }
 
     /**

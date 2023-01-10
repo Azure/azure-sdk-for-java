@@ -98,6 +98,9 @@ public class GoogleBigQueryLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of GoogleBigQueryLinkedService class. */
+    public GoogleBigQueryLinkedService() {}
+
     /**
      * Get the project property: The default BigQuery project to query against.
      *

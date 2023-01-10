@@ -13,83 +13,88 @@ import java.util.List;
 @Fluent
 public final class DataNetworkConfiguration {
     /*
-     * A reference to the data network that these settings apply to
+     * A reference to the data network that these settings apply to. The data network must be in the same location as
+     * the SIM policy.
      */
     @JsonProperty(value = "dataNetwork", required = true)
     private DataNetworkResourceId dataNetwork;
 
     /*
-     * Aggregate maximum bit rate across all non-GBR QoS flows of a given PDU
-     * session. See 3GPP TS23.501 section 5.7.2.6 for a full description of the
-     * Session-AMBR.
+     * Aggregate maximum bit rate across all non-GBR QoS flows of a given PDU session. See 3GPP TS23.501 section
+     * 5.7.2.6 for a full description of the Session-AMBR.
      */
     @JsonProperty(value = "sessionAmbr", required = true)
     private Ambr sessionAmbr;
 
     /*
-     * Default QoS Flow 5G QoS Indicator value. The 5QI identifies a specific
-     * QoS forwarding treatment to be provided to a flow. This must not be a
-     * standardized 5QI value corresponding to a GBR (guaranteed bit rate) QoS
-     * Flow. The illegal GBR 5QI values are: 1, 2, 3, 4, 65, 66, 67, 71, 72,
-     * 73, 74, 75, 76, 82, 83, 84, and 85. See 3GPP TS23.501 section 5.7.2.1
-     * for a full description of the 5QI parameter, and table 5.7.4-1 for the
-     * definition of which are the GBR 5QI values.
+     * Default QoS Flow 5G QoS Indicator value. The 5QI identifies a specific QoS forwarding treatment to be provided
+     * to a flow. This must not be a standardized 5QI value corresponding to a GBR (guaranteed bit rate) QoS Flow. The
+     * illegal GBR 5QI values are: 1, 2, 3, 4, 65, 66, 67, 71, 72, 73, 74, 75, 76, 82, 83, 84, and 85. See 3GPP
+     * TS23.501 section 5.7.2.1 for a full description of the 5QI parameter, and table 5.7.4-1 for the definition of
+     * which are the GBR 5QI values.
      */
     @JsonProperty(value = "5qi")
     private Integer fiveQi;
 
     /*
-     * Default QoS Flow allocation and retention priority (ARP) level. Flows
-     * with higher priority preempt flows with lower priority, if the settings
-     * of `preemptionCapability` and `preemptionVulnerability` allow it. 1 is
-     * the highest level of priority. If this field is not specified then `5qi`
-     * is used to derive the ARP value. See 3GPP TS23.501 section 5.7.2.2 for a
-     * full description of the ARP parameters.
+     * Default QoS Flow allocation and retention priority (ARP) level. Flows with higher priority preempt flows with
+     * lower priority, if the settings of `preemptionCapability` and `preemptionVulnerability` allow it. 1 is the
+     * highest level of priority. If this field is not specified then `5qi` is used to derive the ARP value. See 3GPP
+     * TS23.501 section 5.7.2.2 for a full description of the ARP parameters.
      */
     @JsonProperty(value = "allocationAndRetentionPriorityLevel")
     private Integer allocationAndRetentionPriorityLevel;
 
     /*
-     * Default QoS Flow preemption capability. The preemption capability of a
-     * QoS Flow controls whether it can preempt another QoS Flow with a lower
-     * priority level. See 3GPP TS23.501 section 5.7.2.2 for a full description
-     * of the ARP parameters.
+     * Default QoS Flow preemption capability. The preemption capability of a QoS Flow controls whether it can preempt
+     * another QoS Flow with a lower priority level. See 3GPP TS23.501 section 5.7.2.2 for a full description of the
+     * ARP parameters.
      */
     @JsonProperty(value = "preemptionCapability")
     private PreemptionCapability preemptionCapability;
 
     /*
-     * Default QoS Flow preemption vulnerability. The preemption vulnerability
-     * of a QoS Flow controls whether it can be preempted by a QoS Flow with a
-     * higher priority level. See 3GPP TS23.501 section 5.7.2.2 for a full
-     * description of the ARP parameters.
+     * Default QoS Flow preemption vulnerability. The preemption vulnerability of a QoS Flow controls whether it can be
+     * preempted by a QoS Flow with a higher priority level. See 3GPP TS23.501 section 5.7.2.2 for a full description
+     * of the ARP parameters.
      */
     @JsonProperty(value = "preemptionVulnerability")
     private PreemptionVulnerability preemptionVulnerability;
 
     /*
-     * The default PDU session type, which is used if the UE does not request a
-     * specific session type.
+     * The default PDU session type, which is used if the UE does not request a specific session type.
      */
     @JsonProperty(value = "defaultSessionType")
     private PduSessionType defaultSessionType;
 
     /*
-     * Allowed session types in addition to the default session type. Must not
-     * duplicate the default session type.
+     * Allowed session types in addition to the default session type. Must not duplicate the default session type.
      */
     @JsonProperty(value = "additionalAllowedSessionTypes")
     private List<PduSessionType> additionalAllowedSessionTypes;
 
     /*
-     * List of services that can be used as part of this SIM policy. The list
-     * must not contain duplicate items and must contain at least one item.
+     * List of services that can be used as part of this SIM policy. The list must not contain duplicate items and must
+     * contain at least one item. The services must be in the same location as the SIM policy.
      */
     @JsonProperty(value = "allowedServices", required = true)
     private List<ServiceResourceId> allowedServices;
 
+    /*
+     * The maximum number of downlink packets to buffer at the user plane for High Latency Communication - Extended
+     * Buffering. See 3GPP TS29.272 v15.10.0 section 7.3.188 for a full description. This maximum is not guaranteed
+     * because there is a internal limit on buffered packets across all PDU sessions.
+     */
+    @JsonProperty(value = "maximumNumberOfBufferedPackets")
+    private Integer maximumNumberOfBufferedPackets;
+
+    /** Creates an instance of DataNetworkConfiguration class. */
+    public DataNetworkConfiguration() {
+    }
+
     /**
-     * Get the dataNetwork property: A reference to the data network that these settings apply to.
+     * Get the dataNetwork property: A reference to the data network that these settings apply to. The data network must
+     * be in the same location as the SIM policy.
      *
      * @return the dataNetwork value.
      */
@@ -98,7 +103,8 @@ public final class DataNetworkConfiguration {
     }
 
     /**
-     * Set the dataNetwork property: A reference to the data network that these settings apply to.
+     * Set the dataNetwork property: A reference to the data network that these settings apply to. The data network must
+     * be in the same location as the SIM policy.
      *
      * @param dataNetwork the dataNetwork value to set.
      * @return the DataNetworkConfiguration object itself.
@@ -282,7 +288,8 @@ public final class DataNetworkConfiguration {
 
     /**
      * Get the allowedServices property: List of services that can be used as part of this SIM policy. The list must not
-     * contain duplicate items and must contain at least one item.
+     * contain duplicate items and must contain at least one item. The services must be in the same location as the SIM
+     * policy.
      *
      * @return the allowedServices value.
      */
@@ -292,13 +299,40 @@ public final class DataNetworkConfiguration {
 
     /**
      * Set the allowedServices property: List of services that can be used as part of this SIM policy. The list must not
-     * contain duplicate items and must contain at least one item.
+     * contain duplicate items and must contain at least one item. The services must be in the same location as the SIM
+     * policy.
      *
      * @param allowedServices the allowedServices value to set.
      * @return the DataNetworkConfiguration object itself.
      */
     public DataNetworkConfiguration withAllowedServices(List<ServiceResourceId> allowedServices) {
         this.allowedServices = allowedServices;
+        return this;
+    }
+
+    /**
+     * Get the maximumNumberOfBufferedPackets property: The maximum number of downlink packets to buffer at the user
+     * plane for High Latency Communication - Extended Buffering. See 3GPP TS29.272 v15.10.0 section 7.3.188 for a full
+     * description. This maximum is not guaranteed because there is a internal limit on buffered packets across all PDU
+     * sessions.
+     *
+     * @return the maximumNumberOfBufferedPackets value.
+     */
+    public Integer maximumNumberOfBufferedPackets() {
+        return this.maximumNumberOfBufferedPackets;
+    }
+
+    /**
+     * Set the maximumNumberOfBufferedPackets property: The maximum number of downlink packets to buffer at the user
+     * plane for High Latency Communication - Extended Buffering. See 3GPP TS29.272 v15.10.0 section 7.3.188 for a full
+     * description. This maximum is not guaranteed because there is a internal limit on buffered packets across all PDU
+     * sessions.
+     *
+     * @param maximumNumberOfBufferedPackets the maximumNumberOfBufferedPackets value to set.
+     * @return the DataNetworkConfiguration object itself.
+     */
+    public DataNetworkConfiguration withMaximumNumberOfBufferedPackets(Integer maximumNumberOfBufferedPackets) {
+        this.maximumNumberOfBufferedPackets = maximumNumberOfBufferedPackets;
         return this;
     }
 

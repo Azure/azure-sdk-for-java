@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ServerKeys Get. */
 public final class ServerKeysGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/examples/ServerKeyGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerKeyGet.json
      */
     /**
      * Sample code: Get the server key.

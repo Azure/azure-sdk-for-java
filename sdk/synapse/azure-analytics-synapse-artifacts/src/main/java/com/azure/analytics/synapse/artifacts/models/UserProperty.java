@@ -22,6 +22,9 @@ public final class UserProperty {
     @JsonProperty(value = "value", required = true)
     private Object value;
 
+    /** Creates an instance of UserProperty class. */
+    public UserProperty() {}
+
     /**
      * Get the name property: User property name.
      *

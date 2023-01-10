@@ -26,7 +26,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133?api-version=2019-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.sql/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -46,15 +46,15 @@
       "x-ms-routing-request-id" : "KOREASOUTH:20200803T082759Z:96b1a78b-8746-4a32-b43b-ea6dc78d59ad",
       "connection" : "keep-alive",
       "content-type" : "application/json; charset=utf-8",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/serverOperationResults/130d5526-c35e-4ecb-95d7-2d9a7ebc68f9?api-version=2019-06-01-preview",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/serverOperationResults/130d5526-c35e-4ecb-95d7-2d9a7ebc68f9?api-version=2021-11-01",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "130d5526-c35e-4ecb-95d7-2d9a7ebc68f9",
       "Body" : "{\"operation\":\"UpsertLogicalServer\",\"startTime\":\"2020-08-03T08:27:58.847Z\"}",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/serverAzureAsyncOperation/130d5526-c35e-4ecb-95d7-2d9a7ebc68f9?api-version=2019-06-01-preview"
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/serverAzureAsyncOperation/130d5526-c35e-4ecb-95d7-2d9a7ebc68f9?api-version=2021-11-01"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/serverAzureAsyncOperation/130d5526-c35e-4ecb-95d7-2d9a7ebc68f9?api-version=2019-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/serverAzureAsyncOperation/130d5526-c35e-4ecb-95d7-2d9a7ebc68f9?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -79,7 +79,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/serverAzureAsyncOperation/130d5526-c35e-4ecb-95d7-2d9a7ebc68f9?api-version=2019-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/serverAzureAsyncOperation/130d5526-c35e-4ecb-95d7-2d9a7ebc68f9?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -104,7 +104,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/serverAzureAsyncOperation/130d5526-c35e-4ecb-95d7-2d9a7ebc68f9?api-version=2019-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/serverAzureAsyncOperation/130d5526-c35e-4ecb-95d7-2d9a7ebc68f9?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -129,7 +129,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/serverAzureAsyncOperation/130d5526-c35e-4ecb-95d7-2d9a7ebc68f9?api-version=2019-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/serverAzureAsyncOperation/130d5526-c35e-4ecb-95d7-2d9a7ebc68f9?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -154,7 +154,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/serverAzureAsyncOperation/130d5526-c35e-4ecb-95d7-2d9a7ebc68f9?api-version=2019-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/serverAzureAsyncOperation/130d5526-c35e-4ecb-95d7-2d9a7ebc68f9?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -179,7 +179,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133?api-version=2019-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -204,7 +204,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/firewallRules/AllowAllWindowsAzureIps?api-version=2014-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/firewallRules/AllowAllWindowsAzureIps?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.sql/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -230,7 +230,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-to-restore?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-to-restore?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.sql/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -250,15 +250,15 @@
       "x-ms-routing-request-id" : "KOREASOUTH:20200803T082850Z:502a7dde-6e19-43dc-b7ae-98221671cbc1",
       "connection" : "keep-alive",
       "content-type" : "application/json; charset=utf-8",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/b22cb5e8-bb38-4095-9fdb-940eb226c102?api-version=2017-10-01-preview",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/b22cb5e8-bb38-4095-9fdb-940eb226c102?api-version=2021-11-01",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "b22cb5e8-bb38-4095-9fdb-940eb226c102",
       "Body" : "{\"operation\":\"CreateLogicalDatabase\",\"startTime\":\"2020-08-03T08:28:50.21Z\"}",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/b22cb5e8-bb38-4095-9fdb-940eb226c102?api-version=2017-10-01-preview"
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/b22cb5e8-bb38-4095-9fdb-940eb226c102?api-version=2021-11-01"
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-to-delete?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-to-delete?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.sql/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -278,15 +278,15 @@
       "x-ms-routing-request-id" : "KOREASOUTH:20200803T082850Z:62d41176-5a36-4380-91ee-4291684140ea",
       "connection" : "keep-alive",
       "content-type" : "application/json; charset=utf-8",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/0e1db697-61a6-4681-b933-7e65e29065c8?api-version=2017-10-01-preview",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/0e1db697-61a6-4681-b933-7e65e29065c8?api-version=2021-11-01",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "0e1db697-61a6-4681-b933-7e65e29065c8",
       "Body" : "{\"operation\":\"CreateLogicalDatabase\",\"startTime\":\"2020-08-03T08:28:50.377Z\"}",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/0e1db697-61a6-4681-b933-7e65e29065c8?api-version=2017-10-01-preview"
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/0e1db697-61a6-4681-b933-7e65e29065c8?api-version=2021-11-01"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/b22cb5e8-bb38-4095-9fdb-940eb226c102?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/b22cb5e8-bb38-4095-9fdb-940eb226c102?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -311,7 +311,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/0e1db697-61a6-4681-b933-7e65e29065c8?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/0e1db697-61a6-4681-b933-7e65e29065c8?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -336,7 +336,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/b22cb5e8-bb38-4095-9fdb-940eb226c102?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/b22cb5e8-bb38-4095-9fdb-940eb226c102?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -361,7 +361,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/0e1db697-61a6-4681-b933-7e65e29065c8?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/0e1db697-61a6-4681-b933-7e65e29065c8?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -386,7 +386,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/b22cb5e8-bb38-4095-9fdb-940eb226c102?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/b22cb5e8-bb38-4095-9fdb-940eb226c102?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -411,7 +411,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/0e1db697-61a6-4681-b933-7e65e29065c8?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/0e1db697-61a6-4681-b933-7e65e29065c8?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -436,7 +436,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-to-restore?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-to-restore?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -461,7 +461,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-to-delete?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-to-delete?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -486,7 +486,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-to-delete?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-to-delete?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.sql/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -512,7 +512,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-to-restore?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-to-restore?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.sql/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -538,7 +538,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-to-restore/restorePoints?api-version=2017-03-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-to-restore/restorePoints?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.sql/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -564,7 +564,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-to-restore/restorePoints?api-version=2017-03-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-to-restore/restorePoints?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.sql/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -590,7 +590,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-restore-pit?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-restore-pit?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.sql/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -610,15 +610,15 @@
       "x-ms-routing-request-id" : "KOREASOUTH:20200803T090437Z:7813d198-48b5-499a-8758-762c095b5d9a",
       "connection" : "keep-alive",
       "content-type" : "application/json; charset=utf-8",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "a38898a9-7b1d-4c27-b909-85eda8346234",
       "Body" : "{\"operation\":\"CreateRestoreRequest\",\"startTime\":\"2020-08-03T09:04:37.06Z\"}",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview"
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -643,7 +643,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -668,7 +668,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -693,7 +693,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -718,7 +718,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -743,7 +743,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -768,7 +768,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -793,7 +793,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -818,7 +818,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -843,7 +843,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -868,7 +868,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -893,7 +893,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -918,7 +918,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -943,7 +943,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -968,7 +968,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -993,7 +993,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1018,7 +1018,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1043,7 +1043,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1068,7 +1068,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1093,7 +1093,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1118,7 +1118,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1143,7 +1143,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1168,7 +1168,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1193,7 +1193,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1218,7 +1218,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1243,7 +1243,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1268,7 +1268,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1293,7 +1293,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1318,7 +1318,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1343,7 +1343,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1368,7 +1368,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1393,7 +1393,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1418,7 +1418,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1443,7 +1443,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1468,7 +1468,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1493,7 +1493,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1518,7 +1518,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1543,7 +1543,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/a38898a9-7b1d-4c27-b909-85eda8346234?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1568,7 +1568,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-restore-pit?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-restore-pit?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1593,7 +1593,7 @@
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-restore-pit?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-restore-pit?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.sql/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -1613,15 +1613,15 @@
       "x-ms-routing-request-id" : "KOREASOUTH:20200803T091450Z:5f9108d4-1575-43ea-bac9-3945443714b7",
       "connection" : "keep-alive",
       "content-type" : "application/json; charset=utf-8",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/234cc012-8cda-4c01-898f-ec2f2dbaecf1?api-version=2017-10-01-preview",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/234cc012-8cda-4c01-898f-ec2f2dbaecf1?api-version=2021-11-01",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "234cc012-8cda-4c01-898f-ec2f2dbaecf1",
       "Body" : "{\"operation\":\"DropLogicalDatabase\",\"startTime\":\"2020-08-03T09:14:50.463Z\"}",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/234cc012-8cda-4c01-898f-ec2f2dbaecf1?api-version=2017-10-01-preview"
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/234cc012-8cda-4c01-898f-ec2f2dbaecf1?api-version=2021-11-01"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/234cc012-8cda-4c01-898f-ec2f2dbaecf1?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/234cc012-8cda-4c01-898f-ec2f2dbaecf1?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1646,7 +1646,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/234cc012-8cda-4c01-898f-ec2f2dbaecf1?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/234cc012-8cda-4c01-898f-ec2f2dbaecf1?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1670,7 +1670,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-restore-pit-2?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-restore-pit-2?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.sql/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -1690,15 +1690,15 @@
       "x-ms-routing-request-id" : "KOREASOUTH:20200803T091512Z:44e84777-9d85-4540-8ff2-d5d3d06bc0f6",
       "connection" : "keep-alive",
       "content-type" : "application/json; charset=utf-8",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "e963583a-d3be-4920-b058-92c6211be216",
       "Body" : "{\"operation\":\"CreateRestoreRequest\",\"startTime\":\"2020-08-03T09:15:12.247Z\"}",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview"
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1723,7 +1723,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1748,7 +1748,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1773,7 +1773,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1798,7 +1798,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1823,7 +1823,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1848,7 +1848,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1873,7 +1873,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1898,7 +1898,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1923,7 +1923,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1948,7 +1948,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1973,7 +1973,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -1998,7 +1998,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2023,7 +2023,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2048,7 +2048,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2073,7 +2073,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2098,7 +2098,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2123,7 +2123,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2148,7 +2148,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2173,7 +2173,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2198,7 +2198,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2223,7 +2223,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2248,7 +2248,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2273,7 +2273,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2298,7 +2298,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2323,7 +2323,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2348,7 +2348,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2373,7 +2373,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2398,7 +2398,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2423,7 +2423,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2448,7 +2448,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2473,7 +2473,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2498,7 +2498,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2523,7 +2523,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2548,7 +2548,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2573,7 +2573,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2598,7 +2598,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2623,7 +2623,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2648,7 +2648,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2673,7 +2673,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2698,7 +2698,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2723,7 +2723,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2748,7 +2748,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2773,7 +2773,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2798,7 +2798,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2823,7 +2823,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2848,7 +2848,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2873,7 +2873,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2898,7 +2898,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2923,7 +2923,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2948,7 +2948,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2973,7 +2973,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -2998,7 +2998,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3023,7 +3023,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/e963583a-d3be-4920-b058-92c6211be216?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3048,7 +3048,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-restore-pit-2?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-restore-pit-2?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3073,7 +3073,7 @@
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-restore-pit-2?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-restore-pit-2?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.sql/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -3093,15 +3093,15 @@
       "x-ms-routing-request-id" : "KOREASOUTH:20200803T092937Z:97d69cf8-085e-4011-a4de-54084552f032",
       "connection" : "keep-alive",
       "content-type" : "application/json; charset=utf-8",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/caccec48-4710-40f1-bbd6-e5a2d4def195?api-version=2017-10-01-preview",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/caccec48-4710-40f1-bbd6-e5a2d4def195?api-version=2021-11-01",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "caccec48-4710-40f1-bbd6-e5a2d4def195",
       "Body" : "{\"operation\":\"DropLogicalDatabase\",\"startTime\":\"2020-08-03T09:29:37.027Z\"}",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/caccec48-4710-40f1-bbd6-e5a2d4def195?api-version=2017-10-01-preview"
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/caccec48-4710-40f1-bbd6-e5a2d4def195?api-version=2021-11-01"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/caccec48-4710-40f1-bbd6-e5a2d4def195?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/caccec48-4710-40f1-bbd6-e5a2d4def195?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3126,7 +3126,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/caccec48-4710-40f1-bbd6-e5a2d4def195?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/caccec48-4710-40f1-bbd6-e5a2d4def195?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3150,7 +3150,7 @@
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-to-delete?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-to-delete?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.sql/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -3170,15 +3170,15 @@
       "x-ms-routing-request-id" : "KOREASOUTH:20200803T092955Z:7ad31cac-f399-4ddb-b976-5c75d5edbf25",
       "connection" : "keep-alive",
       "content-type" : "application/json; charset=utf-8",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/c94d3dd3-91df-4bd5-b894-2ac5f55ac666?api-version=2017-10-01-preview",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/c94d3dd3-91df-4bd5-b894-2ac5f55ac666?api-version=2021-11-01",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "c94d3dd3-91df-4bd5-b894-2ac5f55ac666",
       "Body" : "{\"operation\":\"DropLogicalDatabase\",\"startTime\":\"2020-08-03T09:29:55.267Z\"}",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/c94d3dd3-91df-4bd5-b894-2ac5f55ac666?api-version=2017-10-01-preview"
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/c94d3dd3-91df-4bd5-b894-2ac5f55ac666?api-version=2021-11-01"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/c94d3dd3-91df-4bd5-b894-2ac5f55ac666?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/c94d3dd3-91df-4bd5-b894-2ac5f55ac666?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3203,7 +3203,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/c94d3dd3-91df-4bd5-b894-2ac5f55ac666?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/c94d3dd3-91df-4bd5-b894-2ac5f55ac666?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3227,7 +3227,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/restorableDroppedDatabases?api-version=2014-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/restorableDroppedDatabases?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.sql/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -3252,7 +3252,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/restorableDroppedDatabases?api-version=2014-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/restorableDroppedDatabases?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.sql/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -3277,7 +3277,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/restorableDroppedDatabases?api-version=2014-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/restorableDroppedDatabases?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.sql/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -3302,7 +3302,7 @@
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-restore-deleted?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-restore-deleted?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.sql/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -3322,15 +3322,15 @@
       "x-ms-routing-request-id" : "KOREASOUTH:20200803T093521Z:f0a7d59c-1518-43c8-bc8e-892a745f68e0",
       "connection" : "keep-alive",
       "content-type" : "application/json; charset=utf-8",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "62be166e-82ec-4a43-804b-52db6d3f8841",
       "Body" : "{\"operation\":\"CreateRestoreRequest\",\"startTime\":\"2020-08-03T09:35:20.943Z\"}",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview"
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3355,7 +3355,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3380,7 +3380,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3405,7 +3405,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3430,7 +3430,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3455,7 +3455,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3480,7 +3480,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3505,7 +3505,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3530,7 +3530,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3555,7 +3555,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3580,7 +3580,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3605,7 +3605,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3630,7 +3630,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3655,7 +3655,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3680,7 +3680,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3705,7 +3705,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3730,7 +3730,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3755,7 +3755,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3780,7 +3780,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3805,7 +3805,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3830,7 +3830,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3855,7 +3855,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3880,7 +3880,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3905,7 +3905,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3930,7 +3930,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3955,7 +3955,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -3980,7 +3980,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4005,7 +4005,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4030,7 +4030,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4055,7 +4055,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4080,7 +4080,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4105,7 +4105,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4130,7 +4130,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4155,7 +4155,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4180,7 +4180,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4205,7 +4205,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4230,7 +4230,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4255,7 +4255,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4280,7 +4280,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4305,7 +4305,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4330,7 +4330,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4355,7 +4355,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4380,7 +4380,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4405,7 +4405,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4430,7 +4430,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4455,7 +4455,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4480,7 +4480,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4505,7 +4505,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/62be166e-82ec-4a43-804b-52db6d3f8841?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4530,7 +4530,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-restore-deleted?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-restore-deleted?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4555,7 +4555,7 @@
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-to-restore?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-to-restore?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.sql/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -4575,15 +4575,15 @@
       "x-ms-routing-request-id" : "KOREASOUTH:20200803T094810Z:a5ec7b03-79ef-4914-b41f-15383c792a80",
       "connection" : "keep-alive",
       "content-type" : "application/json; charset=utf-8",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/5c82d0c2-17a0-402f-a397-55c5354f45a8?api-version=2017-10-01-preview",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/5c82d0c2-17a0-402f-a397-55c5354f45a8?api-version=2021-11-01",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "5c82d0c2-17a0-402f-a397-55c5354f45a8",
       "Body" : "{\"operation\":\"DropLogicalDatabase\",\"startTime\":\"2020-08-03T09:48:10.027Z\"}",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/5c82d0c2-17a0-402f-a397-55c5354f45a8?api-version=2017-10-01-preview"
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/5c82d0c2-17a0-402f-a397-55c5354f45a8?api-version=2021-11-01"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/5c82d0c2-17a0-402f-a397-55c5354f45a8?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/5c82d0c2-17a0-402f-a397-55c5354f45a8?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4608,7 +4608,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/5c82d0c2-17a0-402f-a397-55c5354f45a8?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/5c82d0c2-17a0-402f-a397-55c5354f45a8?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4632,7 +4632,7 @@
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-restore-deleted?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133/databases/db-restore-deleted?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.sql/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -4652,15 +4652,15 @@
       "x-ms-routing-request-id" : "KOREASOUTH:20200803T094828Z:f3bb53f0-eb87-4582-9be6-042f1fec9629",
       "connection" : "keep-alive",
       "content-type" : "application/json; charset=utf-8",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/ee6a9820-c692-4573-aad1-642bfbb07571?api-version=2017-10-01-preview",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/ee6a9820-c692-4573-aad1-642bfbb07571?api-version=2021-11-01",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "ee6a9820-c692-4573-aad1-642bfbb07571",
       "Body" : "{\"operation\":\"DropLogicalDatabase\",\"startTime\":\"2020-08-03T09:48:28.327Z\"}",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/ee6a9820-c692-4573-aad1-642bfbb07571?api-version=2017-10-01-preview"
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/ee6a9820-c692-4573-aad1-642bfbb07571?api-version=2021-11-01"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/ee6a9820-c692-4573-aad1-642bfbb07571?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseAzureAsyncOperation/ee6a9820-c692-4573-aad1-642bfbb07571?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4685,7 +4685,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/ee6a9820-c692-4573-aad1-642bfbb07571?api-version=2017-10-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/databaseOperationResults/ee6a9820-c692-4573-aad1-642bfbb07571?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4709,7 +4709,7 @@
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133?api-version=2019-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/servers/sqlserverc13584133?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.sql/2.0.0-beta.4 (11.0.3; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -4729,15 +4729,15 @@
       "x-ms-routing-request-id" : "SOUTHEASTASIA:20200803T094846Z:c20b2724-06a9-4adb-bc7b-3b429e38aab6",
       "connection" : "keep-alive",
       "content-type" : "application/json; charset=utf-8",
-      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/serverOperationResults/640304fe-082b-42d7-92fd-40332f53a383?api-version=2019-06-01-preview",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/serverOperationResults/640304fe-082b-42d7-92fd-40332f53a383?api-version=2021-11-01",
       "cache-control" : "no-cache",
       "x-ms-request-id" : "640304fe-082b-42d7-92fd-40332f53a383",
       "Body" : "{\"operation\":\"DropLogicalServer\",\"startTime\":\"2020-08-03T09:48:46.477Z\"}",
-      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/serverAzureAsyncOperation/640304fe-082b-42d7-92fd-40332f53a383?api-version=2019-06-01-preview"
+      "azure-asyncoperation" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/serverAzureAsyncOperation/640304fe-082b-42d7-92fd-40332f53a383?api-version=2021-11-01"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/serverAzureAsyncOperation/640304fe-082b-42d7-92fd-40332f53a383?api-version=2019-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/serverAzureAsyncOperation/640304fe-082b-42d7-92fd-40332f53a383?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },
@@ -4762,7 +4762,7 @@
     }
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/serverOperationResults/640304fe-082b-42d7-92fd-40332f53a383?api-version=2019-06-01-preview",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgsqle8e53727cc7/providers/Microsoft.Sql/locations/eastus/serverOperationResults/640304fe-082b-42d7-92fd-40332f53a383?api-version=2021-11-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources.fluentcore.policy/null (11.0.3; Windows 10; 10.0)"
     },

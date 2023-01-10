@@ -13,6 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Anonymous")
 @Fluent
 public final class WebAnonymousAuthentication extends WebLinkedServiceTypeProperties {
+    /** Creates an instance of WebAnonymousAuthentication class. */
+    public WebAnonymousAuthentication() {}
+
     /** {@inheritDoc} */
     @Override
     public WebAnonymousAuthentication setUrl(Object url) {

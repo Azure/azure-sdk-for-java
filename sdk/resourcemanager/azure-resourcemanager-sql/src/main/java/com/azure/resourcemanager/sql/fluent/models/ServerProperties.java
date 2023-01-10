@@ -5,17 +5,19 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.sql.models.ServerExternalAdministrator;
+import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
 import com.azure.resourcemanager.sql.models.ServerPrivateEndpointConnection;
-import com.azure.resourcemanager.sql.models.ServerPublicNetworkAccess;
+import com.azure.resourcemanager.sql.models.ServerWorkspaceFeature;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.UUID;
 
 /** The properties of a server. */
 @Fluent
 public final class ServerProperties {
     /*
-     * Administrator username for the server. Once created it cannot be
-     * changed.
+     * Administrator username for the server. Once created it cannot be changed.
      */
     @JsonProperty(value = "administratorLogin")
     private String administratorLogin;
@@ -57,11 +59,52 @@ public final class ServerProperties {
     private String minimalTlsVersion;
 
     /*
-     * Whether or not public endpoint access is allowed for this server.  Value
-     * is optional but if passed in, must be 'Enabled' or 'Disabled'
+     * Whether or not public endpoint access is allowed for this server.  Value is optional but if passed in, must be
+     * 'Enabled' or 'Disabled'
      */
     @JsonProperty(value = "publicNetworkAccess")
-    private ServerPublicNetworkAccess publicNetworkAccess;
+    private ServerNetworkAccessFlag publicNetworkAccess;
+
+    /*
+     * Whether or not existing server has a workspace created and if it allows connection from workspace
+     */
+    @JsonProperty(value = "workspaceFeature", access = JsonProperty.Access.WRITE_ONLY)
+    private ServerWorkspaceFeature workspaceFeature;
+
+    /*
+     * The resource id of a user assigned identity to be used by default.
+     */
+    @JsonProperty(value = "primaryUserAssignedIdentityId")
+    private String primaryUserAssignedIdentityId;
+
+    /*
+     * The Client id used for cross tenant CMK scenario
+     */
+    @JsonProperty(value = "federatedClientId")
+    private UUID federatedClientId;
+
+    /*
+     * A CMK URI of the key to use for encryption.
+     */
+    @JsonProperty(value = "keyId")
+    private String keyId;
+
+    /*
+     * The Azure Active Directory administrator of the server.
+     */
+    @JsonProperty(value = "administrators")
+    private ServerExternalAdministrator administrators;
+
+    /*
+     * Whether or not to restrict outbound network access for this server.  Value is optional but if passed in, must be
+     * 'Enabled' or 'Disabled'
+     */
+    @JsonProperty(value = "restrictOutboundNetworkAccess")
+    private ServerNetworkAccessFlag restrictOutboundNetworkAccess;
+
+    /** Creates an instance of ServerProperties class. */
+    public ServerProperties() {
+    }
 
     /**
      * Get the administratorLogin property: Administrator username for the server. Once created it cannot be changed.
@@ -176,7 +219,7 @@ public final class ServerProperties {
      *
      * @return the publicNetworkAccess value.
      */
-    public ServerPublicNetworkAccess publicNetworkAccess() {
+    public ServerNetworkAccessFlag publicNetworkAccess() {
         return this.publicNetworkAccess;
     }
 
@@ -187,8 +230,122 @@ public final class ServerProperties {
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ServerProperties object itself.
      */
-    public ServerProperties withPublicNetworkAccess(ServerPublicNetworkAccess publicNetworkAccess) {
+    public ServerProperties withPublicNetworkAccess(ServerNetworkAccessFlag publicNetworkAccess) {
         this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the workspaceFeature property: Whether or not existing server has a workspace created and if it allows
+     * connection from workspace.
+     *
+     * @return the workspaceFeature value.
+     */
+    public ServerWorkspaceFeature workspaceFeature() {
+        return this.workspaceFeature;
+    }
+
+    /**
+     * Get the primaryUserAssignedIdentityId property: The resource id of a user assigned identity to be used by
+     * default.
+     *
+     * @return the primaryUserAssignedIdentityId value.
+     */
+    public String primaryUserAssignedIdentityId() {
+        return this.primaryUserAssignedIdentityId;
+    }
+
+    /**
+     * Set the primaryUserAssignedIdentityId property: The resource id of a user assigned identity to be used by
+     * default.
+     *
+     * @param primaryUserAssignedIdentityId the primaryUserAssignedIdentityId value to set.
+     * @return the ServerProperties object itself.
+     */
+    public ServerProperties withPrimaryUserAssignedIdentityId(String primaryUserAssignedIdentityId) {
+        this.primaryUserAssignedIdentityId = primaryUserAssignedIdentityId;
+        return this;
+    }
+
+    /**
+     * Get the federatedClientId property: The Client id used for cross tenant CMK scenario.
+     *
+     * @return the federatedClientId value.
+     */
+    public UUID federatedClientId() {
+        return this.federatedClientId;
+    }
+
+    /**
+     * Set the federatedClientId property: The Client id used for cross tenant CMK scenario.
+     *
+     * @param federatedClientId the federatedClientId value to set.
+     * @return the ServerProperties object itself.
+     */
+    public ServerProperties withFederatedClientId(UUID federatedClientId) {
+        this.federatedClientId = federatedClientId;
+        return this;
+    }
+
+    /**
+     * Get the keyId property: A CMK URI of the key to use for encryption.
+     *
+     * @return the keyId value.
+     */
+    public String keyId() {
+        return this.keyId;
+    }
+
+    /**
+     * Set the keyId property: A CMK URI of the key to use for encryption.
+     *
+     * @param keyId the keyId value to set.
+     * @return the ServerProperties object itself.
+     */
+    public ServerProperties withKeyId(String keyId) {
+        this.keyId = keyId;
+        return this;
+    }
+
+    /**
+     * Get the administrators property: The Azure Active Directory administrator of the server.
+     *
+     * @return the administrators value.
+     */
+    public ServerExternalAdministrator administrators() {
+        return this.administrators;
+    }
+
+    /**
+     * Set the administrators property: The Azure Active Directory administrator of the server.
+     *
+     * @param administrators the administrators value to set.
+     * @return the ServerProperties object itself.
+     */
+    public ServerProperties withAdministrators(ServerExternalAdministrator administrators) {
+        this.administrators = administrators;
+        return this;
+    }
+
+    /**
+     * Get the restrictOutboundNetworkAccess property: Whether or not to restrict outbound network access for this
+     * server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @return the restrictOutboundNetworkAccess value.
+     */
+    public ServerNetworkAccessFlag restrictOutboundNetworkAccess() {
+        return this.restrictOutboundNetworkAccess;
+    }
+
+    /**
+     * Set the restrictOutboundNetworkAccess property: Whether or not to restrict outbound network access for this
+     * server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @param restrictOutboundNetworkAccess the restrictOutboundNetworkAccess value to set.
+     * @return the ServerProperties object itself.
+     */
+    public ServerProperties withRestrictOutboundNetworkAccess(ServerNetworkAccessFlag restrictOutboundNetworkAccess) {
+        this.restrictOutboundNetworkAccess = restrictOutboundNetworkAccess;
         return this;
     }
 
@@ -200,6 +357,9 @@ public final class ServerProperties {
     public void validate() {
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
+        }
+        if (administrators() != null) {
+            administrators().validate();
         }
     }
 }

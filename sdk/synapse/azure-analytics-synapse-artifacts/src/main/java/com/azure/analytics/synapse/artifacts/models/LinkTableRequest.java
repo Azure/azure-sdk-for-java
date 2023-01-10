@@ -34,6 +34,9 @@ public final class LinkTableRequest {
     @JsonProperty(value = "operationType")
     private String operationType;
 
+    /** Creates an instance of LinkTableRequest class. */
+    public LinkTableRequest() {}
+
     /**
      * Get the id property: Link table id.
      *

@@ -24,6 +24,9 @@ public final class OCIIndex extends Manifest {
     @JsonProperty(value = "annotations")
     private OciAnnotations annotations;
 
+    /** Creates an instance of OCIIndex class. */
+    public OCIIndex() {}
+
     /**
      * Get the manifests property: List of OCI image layer information.
      *
@@ -61,6 +64,13 @@ public final class OCIIndex extends Manifest {
      */
     public OCIIndex setAnnotations(OciAnnotations annotations) {
         this.annotations = annotations;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public OCIIndex setSchemaVersion(Integer schemaVersion) {
+        super.setSchemaVersion(schemaVersion);
         return this;
     }
 }

@@ -36,6 +36,9 @@ public class GreenplumTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.schema")
     private Object schemaTypePropertiesSchema;
 
+    /** Creates an instance of GreenplumTableDataset class. */
+    public GreenplumTableDataset() {}
+
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.

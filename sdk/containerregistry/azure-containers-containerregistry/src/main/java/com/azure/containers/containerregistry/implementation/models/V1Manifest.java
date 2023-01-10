@@ -47,6 +47,9 @@ public final class V1Manifest extends Manifest {
     @JsonProperty(value = "signatures")
     private List<ImageSignature> signatures;
 
+    /** Creates an instance of V1Manifest class. */
+    public V1Manifest() {}
+
     /**
      * Get the architecture property: CPU architecture.
      *
@@ -164,6 +167,13 @@ public final class V1Manifest extends Manifest {
      */
     public V1Manifest setSignatures(List<ImageSignature> signatures) {
         this.signatures = signatures;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public V1Manifest setSchemaVersion(Integer schemaVersion) {
+        super.setSchemaVersion(schemaVersion);
         return this;
     }
 }
