@@ -101,7 +101,7 @@ class AzureJedisPasswordlessAutoConfigurationTest {
             .run((context) -> {
                 AzureJedisConnectionFactory cf = context.getBean(AzureJedisConnectionFactory.class);
                 assertThat(cf.isUseSsl()).isTrue();
-        });
+            });
     }
 
     @Test
