@@ -239,39 +239,49 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     }
 
     /**
+     * Patches item
+     *
+     * applies partial update (patch) to an item
+     * @param id must not be {@literal null}
+     * @param partitionKey must not be {@literal null}
+     * @param patchOperations must not be {@literal null}
+     * @param <T> type class of domain type
+     * @return the patched item
+     */
+    @Override
+    public <T> T patch(Object id, PartitionKey partitionKey, Class<T> domainType, CosmosPatchOperations patchOperations){
+        return patch(id, partitionKey, domainType, patchOperations,  null);
+    }
+
+    /**
      * applies partial update (patch) to an item with CosmosPatchItemRequestOptions
      *
-     * @param entityToPatch must not be {@literal null}, must contain {@link org.springframework.data.annotation.Id}
-     * and {@link com.azure.spring.data.cosmos.core.mapping.PartitionKey} field
+     * @param id must not be {@literal null}
+     * @param partitionKey must not be {@literal null}
+     * @param domainType must not be {@literal null}
      * @param patchOperations must not be {@literal null}
-     * @param options optional CosmosPatchItemRequestOptions, e.g. options.setFilterPredicate("FROM products p WHERE p.used = false");
+     * @param options must not be {@literal null}
      * @param <T> type class of domain type
-     * @return the inserted item
+     * @return the patched item
      */
-    public <T> T patch(T entityToPatch, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options) {
+    public <T> T patch(Object id, PartitionKey partitionKey, Class<T> domainType, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options) {
         Assert.notNull(patchOperations, "expected non-null cosmosPatchOperations");
 
-        @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) entityToPatch.getClass();
+        final String containerName = getContainerName(domainType);
+        Assert.notNull(id, "id should not be null");
+        Assert.notNull(partitionKey, "partitionKey should not be null, empty or only whitespaces");
+        Assert.notNull(patchOperations, "patchOperations should not be null, empty or only whitespaces");
 
-        final String containerName = getContainerName(entityToPatch.getClass());
         LOGGER.debug("execute patchItem in database {} container {}", this.getDatabaseName(),
             containerName);
 
-        if (options == null) {
+        if(options==null){
             options = new CosmosPatchItemRequestOptions();
         }
-
-        CosmosEntityInformation<T, String> objectToPatchInfo = new CosmosEntityInformation<>(domainType);
-
-        //  extract id and partitionKey from the objectToPatchInfo
-        String id = objectToPatchInfo.getId(entityToPatch);
-        Assert.notNull(id, "expected non-null itemId");
-        PartitionKey partitionKey = new PartitionKey(objectToPatchInfo.getPartitionKeyFieldValue(entityToPatch));
-        Assert.notNull(partitionKey, "expected non-null partitionKey for patchItem");
         final CosmosItemResponse<JsonNode> response = this.getCosmosAsyncClient()
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
-            .patchItem(id, partitionKey, patchOperations, options, JsonNode.class)
+            .patchItem(id.toString(), partitionKey, patchOperations, options, JsonNode.class)
             .publishOn(Schedulers.parallel())
             .doOnNext(cosmosItemResponse ->
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,

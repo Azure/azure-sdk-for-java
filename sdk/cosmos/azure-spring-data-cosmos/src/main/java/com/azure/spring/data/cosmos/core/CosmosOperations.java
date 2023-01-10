@@ -127,15 +127,25 @@ public interface CosmosOperations {
 
     /**
      * patches item
-     * @param entityToPatch must not be {@literal null}, must contain {@link org.springframework.data.annotation.Id}
-     * and {@link com.azure.spring.data.cosmos.core.mapping.PartitionKey} field
+     * @param id must not be {@literal null}
+     * @param partitionKey must not be {@literal null}
+     * @param patchOperations must not be {@literal null}, max operations is 10
+     * @param <T> type class of domain type
+     * @return the patched item
+     */
+    <T> T patch(Object id, PartitionKey partitionKey, Class<T> domainType, CosmosPatchOperations patchOperations);
+
+    /**
+     * patches item
+     * @param id must not be {@literal null}
+     * @param partitionKey must not be {@literal null}
+     * @param domainType must not be {@literal null}
      * @param patchOperations must not be {@literal null}, max operations is 10
      * @param options Optional CosmosPatchItemRequestOptions, e.g. options.setFilterPredicate("FROM products p WHERE p.used = false");
      * @param <T> type class of domain type
      * @return the patched item
      */
-    <T> T patch(T entityToPatch, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options);
-
+    <T> T patch(Object id, PartitionKey partitionKey, Class<T> domainType, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options);
     /**
      * Inserts item
      *

@@ -106,10 +106,17 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
     }
 
     @Override
-    public <S extends T> Mono<S> save(S entityToPatch, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options) {
-        Assert.notNull(entityToPatch, "entity must not be null");
+    public <S extends T> Mono<S> save(K id, PartitionKey partitionKey, Class<S> domainType, CosmosPatchOperations patchOperations) {
+        Assert.notNull(id, "entity must not be null");
         // patch items
-        return cosmosOperations.patch(entityToPatch, patchOperations, options);
+        return cosmosOperations.patch(id, partitionKey, domainType, patchOperations);
+    }
+
+    @Override
+    public <S extends T> Mono<S> save(K id, PartitionKey partitionKey, Class<S> domainType, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options) {
+        Assert.notNull(id, "entity must not be null");
+        // patch items
+        return cosmosOperations.patch(id, partitionKey, domainType, patchOperations, options);
     }
 
     @Override

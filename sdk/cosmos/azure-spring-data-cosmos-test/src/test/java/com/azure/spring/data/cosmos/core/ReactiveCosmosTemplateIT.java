@@ -109,9 +109,10 @@ public class ReactiveCosmosTemplateIT {
 
     CosmosPatchOperations multiPatchOperations = CosmosPatchOperations
         .create()
-        .replace("/firstName", PATCH_FIRST_NAME)
+        .set("/firstName", PATCH_FIRST_NAME)
         .replace("/passportIdsByCountry", NEW_PASSPORT_IDS_BY_COUNTRY_JSON)
         .add("/hobbies/2", PATCH_HOBBY1)
+        .remove("/shippingAddresses/1")
         .increment("/age", PATCH_AGE_INCREMENT);
 
     private static final CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
@@ -310,29 +311,35 @@ public class ReactiveCosmosTemplateIT {
 
     @Test
     public void testPatch() {
-        final Mono<Person> patch = cosmosTemplate.patch(insertedPerson, operations, null);
+        final Mono<Person> patch = cosmosTemplate.patch(insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), Person.class, operations);
         StepVerifier.create(patch).expectNextCount(1).verifyComplete();
         Mono<Person> patchedPerson = cosmosTemplate.findById(containerName, insertedPerson.getId(), Person.class);
-        StepVerifier.create(patchedPerson).expectNextCount(1).verifyComplete();
-        assertEquals(patchedPerson.block().getAge(), PATCH_AGE_1);
+        StepVerifier.create(patchedPerson).expectNextMatches(person -> person.getAge() == PATCH_AGE_1).verifyComplete();
     }
 
     @Test
     public void testPatchMultiOperations() {
-        final Mono<Person> patch = cosmosTemplate.patch(insertedPerson, multiPatchOperations, null);
+        final Mono<Person> patch = cosmosTemplate.patch(insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), Person.class, multiPatchOperations);
         StepVerifier.create(patch).expectNextCount(1).verifyComplete();
-        Mono<Person> patchedPerson = cosmosTemplate.findById(containerName, insertedPerson.getId(), Person.class);
-        StepVerifier.create(patchedPerson).expectNextCount(1).verifyComplete();
-        assertEquals(patchedPerson.block().getAge().intValue(), (AGE + PATCH_AGE_INCREMENT));
-        assertEquals(patchedPerson.block().getHobbies(),PATCH_HOBBIES);
-        assertEquals(patchedPerson.block().getFirstName(), PATCH_FIRST_NAME);
-        assertEquals(patchedPerson.block().getPassportIdsByCountry(), NEW_PASSPORT_IDS_BY_COUNTRY);
+        Person patchedPerson = cosmosTemplate.findById(containerName, insertedPerson.getId(), Person.class).block();
+        assertEquals(patchedPerson.getAge().intValue(), (AGE + PATCH_AGE_INCREMENT));
+        assertEquals(patchedPerson.getHobbies(),PATCH_HOBBIES);
+        assertEquals(patchedPerson.getFirstName(), PATCH_FIRST_NAME);
+        assertEquals(patchedPerson.getShippingAddresses().size(), 1);
+        assertEquals(patchedPerson.getPassportIdsByCountry(), NEW_PASSPORT_IDS_BY_COUNTRY);
+    }
+
+    @Test
+    public void testPatchPreConditionSuccess() {
+        options.setFilterPredicate("FROM person p WHERE p.lastName = '"+LAST_NAME+"'");
+        Mono<Person> patchedPerson = cosmosTemplate.patch(insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), Person.class, operations, options);
+        StepVerifier.create(patchedPerson).expectNextMatches(person -> person.getAge() == PATCH_AGE_1).verifyComplete();
     }
 
     @Test
     public void testPatchPreConditionFail() {
         options.setFilterPredicate("FROM person p WHERE p.lastName = 'dummy'");
-        Mono<Person> person = cosmosTemplate.patch(insertedPerson, operations, options);
+        Mono<Person> person = cosmosTemplate.patch(insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), Person.class, operations, options);
         StepVerifier.create(person).expectErrorMatches(ex -> ex instanceof CosmosAccessException &&
                 ((CosmosAccessException) ex).getCosmosException() instanceof PreconditionFailedException).verify();
     }

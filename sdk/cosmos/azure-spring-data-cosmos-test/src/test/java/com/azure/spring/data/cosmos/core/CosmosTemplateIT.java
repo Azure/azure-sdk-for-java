@@ -119,9 +119,10 @@ public class CosmosTemplateIT {
 
     CosmosPatchOperations multiPatchOperations = CosmosPatchOperations
         .create()
-        .replace("/firstName", PATCH_FIRST_NAME)
+        .set("/firstName", PATCH_FIRST_NAME)
         .replace("/passportIdsByCountry", NEW_PASSPORT_IDS_BY_COUNTRY_JSON)
         .add("/hobbies/2", PATCH_HOBBY1)
+        .remove("/shippingAddresses/1")
         .increment("/age", PATCH_AGE_INCREMENT);
 
     private static final CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
@@ -301,28 +302,33 @@ public class CosmosTemplateIT {
 
     @Test
     public void testPatch() {
-        insertedPerson = cosmosTemplate.patch(insertedPerson, operations, null);
-        Person patchedPerson = cosmosTemplate.findById(containerName, insertedPerson.getId(), Person.class);
-        assertEquals(insertedPerson.getAge(), PATCH_AGE_1);
+        Person patchedPerson = cosmosTemplate.patch(insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), Person.class, operations);
+        assertEquals(patchedPerson.getAge(), PATCH_AGE_1);
     }
 
     @Test
     public void testPatchMultiOperations() {
-        insertedPerson = cosmosTemplate.patch(insertedPerson, multiPatchOperations, null);
-        Person patchedPerson = cosmosTemplate.findById(containerName, insertedPerson.getId(), Person.class);
-        assertEquals(insertedPerson.getAge().intValue(), (AGE + PATCH_AGE_INCREMENT));
-        assertEquals(insertedPerson.getHobbies(), PATCH_HOBBIES);
-        assertEquals(insertedPerson.getFirstName(), PATCH_FIRST_NAME);
-        assertEquals(insertedPerson.getPassportIdsByCountry(), NEW_PASSPORT_IDS_BY_COUNTRY);
+        Person patchedPerson = cosmosTemplate.patch(insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), Person.class, multiPatchOperations);
+        assertEquals(patchedPerson.getAge().intValue(), (AGE + PATCH_AGE_INCREMENT));
+        assertEquals(patchedPerson.getHobbies(), PATCH_HOBBIES);
+        assertEquals(patchedPerson.getFirstName(), PATCH_FIRST_NAME);
+        assertEquals(patchedPerson.getShippingAddresses().size(), 1);
+        assertEquals(patchedPerson.getPassportIdsByCountry(), NEW_PASSPORT_IDS_BY_COUNTRY);
+    }
+
+    @Test
+    public void testPatchPreConditionSuccess() {
+        options.setFilterPredicate("FROM person p WHERE p.lastName = '"+LAST_NAME+"'");
+        Person patchedPerson = cosmosTemplate.patch(insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), Person.class, operations, options);
+        assertEquals(patchedPerson.getAge(), patchedPerson.getAge());
     }
 
     @Test
     public void testPatchPreConditionFail() {
         try {
             options.setFilterPredicate("FROM person p WHERE p.lastName = 'dummy'");
-            insertedPerson = cosmosTemplate.patch(insertedPerson, operations,options);
-            Person patchedPerson = cosmosTemplate.findById(containerName, insertedPerson.getId(), Person.class);
-            assertEquals(insertedPerson.getAge(), patchedPerson.getAge());
+            Person patchedPerson = cosmosTemplate.patch(insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), Person.class,  operations, options);
+            assertEquals(patchedPerson.getAge(), patchedPerson.getAge());
             fail();
         } catch (CosmosAccessException ex) {
             assertThat(ex.getCosmosException()).isInstanceOf(PreconditionFailedException.class);

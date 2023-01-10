@@ -101,16 +101,33 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
 
     /**
      * patch entity with CosmosPatchItemRequestOptions
-     * @param entityToPatch entity to be patched
-     * @param p path operations
-     * @param options options
-     * @param <S> type of entity
+     * @param id of entity to be patched
+     * @param partitionKey of entity to be patched
+     * @param patchOperations for entity to be patched
+     * @param <S> domainType of entity
      */
     @Override
-    public <S extends T> S save(S entityToPatch, CosmosPatchOperations p, CosmosPatchItemRequestOptions options) {
-        Assert.notNull(entityToPatch, "entity must not be null");
+    public <S extends T> S save(ID id, PartitionKey partitionKey, Class<S> domainType, CosmosPatchOperations patchOperations) {
+        Assert.notNull(id, "id must not be null");
+        Assert.notNull(partitionKey, "partitionKey must not be null");
         // patch items
-        return operation.patch(entityToPatch, p, options);
+        return operation.patch(id, partitionKey, domainType, patchOperations);
+    }
+
+    /**
+     * patch entity with CosmosPatchItemRequestOptions
+     * @param id of entity to be patched
+     * @param partitionKey of entity to be patched
+     * @param patchOperations for entity to be patched
+     * @param options options
+     * @param <S> domainType of entity
+     */
+    @Override
+    public <S extends T> S save(ID id, PartitionKey partitionKey, Class<S> domainType, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options) {
+        Assert.notNull(id, "id must not be null");
+        Assert.notNull(partitionKey, "partitionKey must not be null");
+        // patch items
+        return operation.patch(id, partitionKey, domainType, patchOperations, options);
     }
 
     /**
