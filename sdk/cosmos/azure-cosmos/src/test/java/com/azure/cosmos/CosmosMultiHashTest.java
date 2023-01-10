@@ -8,6 +8,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -104,6 +105,29 @@ public class CosmosMultiHashTest extends TestSuiteBase {
             documentId, partitionKey, ObjectNode.class);
         validateIdOfItemResponse(documentId, readResponse);
         assertThat(readResponse.getItem().equals(properties));
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void invalidPartitionKeyDepth() throws CosmosException {
+        PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
+        partitionKeyDefinition.setKind(PartitionKind.MULTI_HASH);
+        partitionKeyDefinition.setVersion(PartitionKeyDefinitionVersion.V2);
+        ArrayList<String> paths = new ArrayList<>();
+        paths.add("/country");
+        paths.add("/city");
+        paths.add("/zipcode");
+        paths.add("/street");
+        partitionKeyDefinition.setPaths(paths);
+
+        CosmosContainerProperties containerProperties = getCollectionDefinition(UUID.randomUUID().toString(),
+            partitionKeyDefinition);
+
+        try {
+            createdDatabase.createContainer(containerProperties);
+        } catch (CosmosException e) {
+            assertThat(e.getStatusCode()).isEqualTo(400);
+            assertThat(e.getMessage().contains("Too many partition key paths (4) specified. A maximum of 3 is allowed.")).isTrue();
+        }
     }
 
     private ObjectNode getItem(String documentId, List<String> pkIds) throws JsonProcessingException {
@@ -262,6 +286,17 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         } catch (Exception e) {
             assertThat(e.getMessage().contains("Partition key provided either doesn't correspond to definition in the collection or doesn't match partition key field values specified in the document.\n"));
         }
+
+        //Document Update
+        TextNode version = new TextNode(UUID.randomUUID().toString());
+        doc6.set("version", version);
+        createdMultiHashContainer.upsertItem(doc6);
+        partitionKey = new PartitionKeyBuilder()
+            .add(doc6.get("city").asText())
+            .add(doc6.get("zipcode").asText())
+            .build();
+        CosmosItemResponse<ObjectNode> x = createdMultiHashContainer.readItem(doc6.get("id").asText(), partitionKey, ObjectNode.class);
+        assertThat(x.getItem().get("version")).isEqualTo(version);
 
         // Query Tests
         for (int i = 0; i < docs.size(); i++) {
