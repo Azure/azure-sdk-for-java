@@ -1,0 +1,6 @@
+spring:
+  redis:
+    username: redis-test-container-host
+    host: redis-test-container-host
+    azure:
+      passwordless-enabled: true

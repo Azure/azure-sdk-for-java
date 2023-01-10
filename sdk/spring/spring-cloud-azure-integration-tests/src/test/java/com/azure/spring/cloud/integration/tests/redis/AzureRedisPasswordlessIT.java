@@ -1,0 +1,65 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+package com.azure.spring.cloud.integration.tests.redis;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@Testcontainers
+@ActiveProfiles("redis")
+public class AzureRedisPasswordlessIT {
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    private static final String REDIS_PASSWORD = "fake-testcontainer-password";
+
+    @Bean(name = "azureRedisCredentialSupplier")
+    Supplier<String> redisCredential() {
+        return () -> REDIS_PASSWORD;
+    }
+
+    @Container
+    private static GenericContainer<?> redis =
+        new GenericContainer<>(DockerImageName.parse("redis:5.0.3-alpine"))
+            .withCommand("--requirepass", REDIS_PASSWORD)
+            .withExposedPorts(6379);
+
+
+    @DynamicPropertySource
+    static void redisProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.redis.host", redis::getHost);
+        registry.add("spring.redis.port", redis::getFirstMappedPort);
+        registry.add("spring.redis.azure.passwordless-enabled", () -> true);
+    }
+
+    @Test
+    public void testRedisTemplate() {
+        Map valueMap = new HashMap();
+        valueMap.put("valueMap1", "map1");
+        valueMap.put("valueMap2", "map2");
+        valueMap.put("valueMap3", "map3");
+        redisTemplate.opsForValue().multiSet(valueMap);
+        String value = (String) redisTemplate.opsForValue().get("valueMap2");
+        Assertions.assertEquals("map2", value);
+    }
+
+}
+
+
