@@ -41,6 +41,14 @@ public final class CompressionCodec extends ExpandableStringEnum<CompressionCode
     public static final CompressionCodec TAR_GZIP = fromString("tarGZip");
 
     /**
+     * Creates a new instance of CompressionCodec value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CompressionCodec() {}
+
+    /**
      * Creates or finds a CompressionCodec from its string representation.
      *
      * @param name a name to look for.

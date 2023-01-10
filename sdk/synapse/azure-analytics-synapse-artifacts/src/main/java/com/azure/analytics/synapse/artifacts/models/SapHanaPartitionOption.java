@@ -20,6 +20,14 @@ public final class SapHanaPartitionOption extends ExpandableStringEnum<SapHanaPa
     public static final SapHanaPartitionOption SAP_HANA_DYNAMIC_RANGE = fromString("SapHanaDynamicRange");
 
     /**
+     * Creates a new instance of SapHanaPartitionOption value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SapHanaPartitionOption() {}
+
+    /**
      * Creates or finds a SapHanaPartitionOption from its string representation.
      *
      * @param name a name to look for.

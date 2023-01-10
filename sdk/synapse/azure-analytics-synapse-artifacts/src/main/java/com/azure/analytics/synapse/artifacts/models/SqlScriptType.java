@@ -14,6 +14,14 @@ public final class SqlScriptType extends ExpandableStringEnum<SqlScriptType> {
     public static final SqlScriptType SQL_QUERY = fromString("SqlQuery");
 
     /**
+     * Creates a new instance of SqlScriptType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SqlScriptType() {}
+
+    /**
      * Creates or finds a SqlScriptType from its string representation.
      *
      * @param name a name to look for.

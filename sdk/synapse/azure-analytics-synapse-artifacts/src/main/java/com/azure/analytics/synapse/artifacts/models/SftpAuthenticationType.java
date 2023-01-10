@@ -17,6 +17,14 @@ public final class SftpAuthenticationType extends ExpandableStringEnum<SftpAuthe
     public static final SftpAuthenticationType SSH_PUBLIC_KEY = fromString("SshPublicKey");
 
     /**
+     * Creates a new instance of SftpAuthenticationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SftpAuthenticationType() {}
+
+    /**
      * Creates or finds a SftpAuthenticationType from its string representation.
      *
      * @param name a name to look for.

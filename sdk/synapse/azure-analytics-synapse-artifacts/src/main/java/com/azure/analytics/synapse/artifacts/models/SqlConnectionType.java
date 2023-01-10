@@ -17,6 +17,14 @@ public final class SqlConnectionType extends ExpandableStringEnum<SqlConnectionT
     public static final SqlConnectionType SQL_POOL = fromString("SqlPool");
 
     /**
+     * Creates a new instance of SqlConnectionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SqlConnectionType() {}
+
+    /**
      * Creates or finds a SqlConnectionType from its string representation.
      *
      * @param name a name to look for.

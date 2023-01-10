@@ -20,6 +20,14 @@ public final class NetezzaPartitionOption extends ExpandableStringEnum<NetezzaPa
     public static final NetezzaPartitionOption DYNAMIC_RANGE = fromString("DynamicRange");
 
     /**
+     * Creates a new instance of NetezzaPartitionOption value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NetezzaPartitionOption() {}
+
+    /**
      * Creates or finds a NetezzaPartitionOption from its string representation.
      *
      * @param name a name to look for.

@@ -17,6 +17,14 @@ public final class DatasetCompressionLevel extends ExpandableStringEnum<DatasetC
     public static final DatasetCompressionLevel FASTEST = fromString("Fastest");
 
     /**
+     * Creates a new instance of DatasetCompressionLevel value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DatasetCompressionLevel() {}
+
+    /**
      * Creates or finds a DatasetCompressionLevel from its string representation.
      *
      * @param name a name to look for.

@@ -32,6 +32,14 @@ public final class StoredProcedureParameterType extends ExpandableStringEnum<Sto
     public static final StoredProcedureParameterType DATE = fromString("Date");
 
     /**
+     * Creates a new instance of StoredProcedureParameterType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StoredProcedureParameterType() {}
+
+    /**
      * Creates or finds a StoredProcedureParameterType from its string representation.
      *
      * @param name a name to look for.

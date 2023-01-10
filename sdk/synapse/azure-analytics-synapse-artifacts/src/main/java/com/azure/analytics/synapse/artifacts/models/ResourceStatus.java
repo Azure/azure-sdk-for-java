@@ -20,6 +20,14 @@ public final class ResourceStatus extends ExpandableStringEnum<ResourceStatus> {
     public static final ResourceStatus FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of ResourceStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ResourceStatus() {}
+
+    /**
      * Creates or finds a ResourceStatus from its string representation.
      *
      * @param name a name to look for.

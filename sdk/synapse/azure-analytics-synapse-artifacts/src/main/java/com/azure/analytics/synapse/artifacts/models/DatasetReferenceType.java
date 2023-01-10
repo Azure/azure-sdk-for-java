@@ -14,6 +14,14 @@ public final class DatasetReferenceType extends ExpandableStringEnum<DatasetRefe
     public static final DatasetReferenceType DATASET_REFERENCE = fromString("DatasetReference");
 
     /**
+     * Creates a new instance of DatasetReferenceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DatasetReferenceType() {}
+
+    /**
      * Creates or finds a DatasetReferenceType from its string representation.
      *
      * @param name a name to look for.

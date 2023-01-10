@@ -17,6 +17,14 @@ public final class DynamicsDeploymentType extends ExpandableStringEnum<DynamicsD
     public static final DynamicsDeploymentType ON_PREMISES_WITH_IFD = fromString("OnPremisesWithIfd");
 
     /**
+     * Creates a new instance of DynamicsDeploymentType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DynamicsDeploymentType() {}
+
+    /**
      * Creates or finds a DynamicsDeploymentType from its string representation.
      *
      * @param name a name to look for.
