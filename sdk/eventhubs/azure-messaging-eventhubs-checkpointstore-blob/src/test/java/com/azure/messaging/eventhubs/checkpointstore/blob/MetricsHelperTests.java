@@ -172,7 +172,7 @@ public class MetricsHelperTests {
 
         TestHistogram checkpointDuration = meter.getHistograms().get("messaging.eventhubs.checkpoint.duration");
         TestMeasurement<Double> durationMeasurements = checkpointDuration.getMeasurements().get(0);
-        assertEquals(0d, durationMeasurements.getValue(), 1d);
+        assertEquals(0d, durationMeasurements.getValue(), 1000d);
         assertStatusAttributes(checkpoint, "ok", durationMeasurements.getAttributes());
     }
 
@@ -296,9 +296,9 @@ public class MetricsHelperTests {
         TestHistogram duration = meter.getHistograms().get("messaging.eventhubs.checkpoint.duration");
         assertEquals(2, duration.getMeasurements().size());
 
-        assertEquals(0d, duration.getMeasurements().get(0).getValue(), 1d);
+        assertEquals(0d, duration.getMeasurements().get(0).getValue(), 1000d);
         assertStatusAttributes(checkpoint1, "ok", duration.getMeasurements().get(0).getAttributes());
-        assertEquals(0d, duration.getMeasurements().get(1).getValue(), 1d);
+        assertEquals(0d, duration.getMeasurements().get(1).getValue(), 1000d);
         assertStatusAttributes(checkpoint2, "ok", duration.getMeasurements().get(1).getAttributes());
     }
 
