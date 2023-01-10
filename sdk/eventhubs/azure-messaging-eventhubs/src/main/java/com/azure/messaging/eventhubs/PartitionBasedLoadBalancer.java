@@ -9,20 +9,19 @@ import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
-
-import java.time.Duration;
-import java.util.concurrent.atomic.AtomicBoolean;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -45,8 +44,6 @@ import static java.util.stream.Collectors.toList;
  * </p>
  */
 final class PartitionBasedLoadBalancer {
-
-    private static final Random RANDOM = new Random();
     private static final ClientLogger LOGGER = new ClientLogger(PartitionBasedLoadBalancer.class);
 
     private final String eventHubName;
@@ -220,7 +217,8 @@ final class PartitionBasedLoadBalancer {
                  * running or all Event Processors are down for this Event Hub, consumer group combination. All
                  * partitions in this Event Hub are available to claim. Choose a random partition to claim ownership.
                  */
-                claimOwnership(partitionOwnershipMap, partitionIds.get(RANDOM.nextInt(numberOfPartitions)));
+                claimOwnership(partitionOwnershipMap, partitionIds.get(ThreadLocalRandom.current()
+                    .nextInt(numberOfPartitions)));
                 return;
             }
 
@@ -322,7 +320,7 @@ final class PartitionBasedLoadBalancer {
                 () -> isLoadBalancerRunning.set(false));
     }
 
-    private String format(Map<String, List<PartitionOwnership>> ownerPartitionMap) {
+    private static String format(Map<String, List<PartitionOwnership>> ownerPartitionMap) {
         return ownerPartitionMap.entrySet()
             .stream()
             .map(entry -> {
@@ -366,7 +364,8 @@ final class PartitionBasedLoadBalancer {
             .addKeyValue(OWNER_ID_KEY, ownerWithMaxPartitions.getKey())
             .log("Owner owns {} partitions, stealing a partition from it.", numberOfPartitions);
 
-        return ownerWithMaxPartitions.getValue().get(RANDOM.nextInt(numberOfPartitions)).getPartitionId();
+        return ownerWithMaxPartitions.getValue().get(ThreadLocalRandom.current().nextInt(numberOfPartitions))
+            .getPartitionId();
     }
 
     /*

@@ -73,20 +73,20 @@ See [API design][design] for general introduction on design and key concepts on 
 Get Data For Points
 ```java com.azure.maps.elevation.sync.get_data_for_points
 client.getDataForPoints(Arrays.asList(
-    new GeoPosition(-121.66853362143818, 46.84646479863713), 
+    new GeoPosition(-121.66853362143818, 46.84646479863713),
     new GeoPosition(-121.68853362143818, 46.856464798637127)));
 ```
 
 Get Data For Polyline
 ```java com.azure.maps.elevation.sync.get_data_for_polyline
 client.getDataForPolyline(Arrays.asList(
-    new GeoPosition(-121.66853362143818, 46.84646479863713), 
+    new GeoPosition(-121.66853362143818, 46.84646479863713),
     new GeoPosition(-121.65853362143818, 46.85646479863713)), 5);
 ```
 
 Get Data For Bounding Box
 ```java com.azure.maps.elevation.sync.get_data_for_bounding_box
-client.getDataForBoundingBox(new GeoBoundingBox(-121.668533621438, 46.8464647986371, 
+client.getDataForBoundingBox(new GeoBoundingBox(-121.668533621438, 46.8464647986371,
     -121.658533621438, 46.8564647986371), 3, 3);
 ```
 

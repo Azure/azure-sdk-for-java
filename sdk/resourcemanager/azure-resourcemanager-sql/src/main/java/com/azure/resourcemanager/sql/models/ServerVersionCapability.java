@@ -41,6 +41,10 @@ public final class ServerVersionCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
+    /** Creates an instance of ServerVersionCapability class. */
+    public ServerVersionCapability() {
+    }
+
     /**
      * Get the name property: The server version name.
      *

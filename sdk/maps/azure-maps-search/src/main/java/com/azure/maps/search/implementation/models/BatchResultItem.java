@@ -16,6 +16,9 @@ public class BatchResultItem {
     @JsonProperty(value = "statusCode", access = JsonProperty.Access.WRITE_ONLY)
     private Integer statusCode;
 
+    /** Creates an instance of BatchResultItem class. */
+    public BatchResultItem() {}
+
     /**
      * Get the statusCode property: HTTP request status code.
      *

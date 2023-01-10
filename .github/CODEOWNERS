@@ -93,7 +93,7 @@
 /sdk/cosmos/azure-spring-data-cosmos-test/          @kushagraThapar @FabianMeiswinkel @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @xinlian12 @moarychan @aayush3011 @simorenoh @fangjian0423 @jeet1995 @Pilchie
 
 # PRLabel: %Load Testing
-/sdk/loadtestservice/                               @Harshan01 @abranj1219
+/sdk/loadtesting/                                   @Harshan01 @abranj1219
 
 # ServiceLabel: %Device Update for IoT Hub %Service Attention
 /sdk/deviceupdate/                                  @dpokluda
@@ -102,7 +102,7 @@
 /sdk/digitaltwins/                                  @johngallardo @efriesner @abhinav-ghai @Aashish93-stack @sjiherzig @Satya-Kolluri
 
 # PRLabel: %Models Repository
-/sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @azabbasi @digimaun @andyk-ms @brycewang-microsoft @tmahmood-microsoft @ngastelum-ms
+/sdk/modelsrepository                               @drwill-ms @timtay-microsoft @abhipsaMisra @digimaun @andyk-ms @brycewang-microsoft @tmahmood-microsoft @ngastelum-ms
 
 # PRLabel: %Event Grid
 /sdk/eventgrid/                                     @mssfang @srnagar @lmolkova @billwert
@@ -141,7 +141,7 @@
 /sdk/loganalytics/microsoft-azure-loganalytics/     @divyajay @alongafni
 
 # PRLabel:  %Monitor - Exporter
-/sdk/monitor/azure-monitor-opentelemetry-exporter   @trask @ramthi @heyams
+/sdk/monitor/azure-monitor-opentelemetry-exporter   @trask @ramthi @heyams @jeanbisutti
 
 # PRLabel:  %Monitor
 /sdk/monitor/azure-monitor-query                    @srnagar @lmolkova @ki1729
@@ -153,7 +153,7 @@
 /sdk/mixedreality/azure-mixedreality-authentication @craigktreasure
 
 # PRLabel: %Remote Rendering
-/sdk/remoterendering/                               @MalcolmTyrrell
+/sdk/remoterendering/                               @MichaelZp0 @ChristopherManthei
 
 # PRLabel: %Schema Registry
 /sdk/schemaregistry/                                @conniey @sjkwak @srnagar
@@ -168,7 +168,7 @@
 /sdk/servicebus/microsoft-azure-servicebus/         @shankarsama @yvgopal
 
 # PRLabel: %Storage
-/sdk/storage/                                       @rickle-msft @jaschrep-msft @alzimmermsft @ibrahimrabab
+/sdk/storage/                                       @ibrahimrabab @jaschrep-msft @alzimmermsft
 
 # PRLabel: %Tables
 /sdk/tables/                                        @vcolin7 @conniey @jairmyree
@@ -181,9 +181,6 @@
 
 # PRLabel: %Azure SDK Tools
 /sdk/tools/                                         @srnagar @jonathangiles
-
-# PRLabel: %azure-spring
-/sdk/jdbc/                                          @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
 
 # PRLabel: %azure-spring
 /sdk/spring/                                        @backwind1233 @chenrujun @hui1110 @netyyyy @saragluna @stliu @yiliuTo @moarychan @fangjian0423
@@ -623,7 +620,7 @@
 #/<NotInRepo>/          @derek1ee
 
 # ServiceLabel: %Search %Service Attention
-#/<NotInRepo>/          @brjohnstmsft @bleroy @tjacobhi @markheff @miwelsh
+#/<NotInRepo>/          @bleroy @tjacobhi @markheff @miwelsh
 
 # ServiceLabel: %Security %Service Attention
 #/<NotInRepo>/          @chlahav

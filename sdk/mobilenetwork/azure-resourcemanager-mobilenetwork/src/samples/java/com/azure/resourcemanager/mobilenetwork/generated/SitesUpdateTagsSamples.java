@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for Sites UpdateTags. */
 public final class SitesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/preview/2022-04-01-preview/examples/SiteUpdateTags.json
+     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2022-11-01/examples/SiteUpdateTags.json
      */
     /**
      * Sample code: Update mobile network site tags.

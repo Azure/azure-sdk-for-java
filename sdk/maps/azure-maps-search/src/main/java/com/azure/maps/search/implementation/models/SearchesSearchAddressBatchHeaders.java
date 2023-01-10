@@ -5,6 +5,7 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SearchesSearchAddressBatchHeaders model. */
@@ -15,6 +16,16 @@ public final class SearchesSearchAddressBatchHeaders {
      */
     @JsonProperty(value = "Location")
     private String location;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of SearchesSearchAddressBatchHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public SearchesSearchAddressBatchHeaders(HttpHeaders rawHeaders) {
+        this.location = rawHeaders.getValue("Location");
+    }
 
     /**
      * Get the location property: The Location property.

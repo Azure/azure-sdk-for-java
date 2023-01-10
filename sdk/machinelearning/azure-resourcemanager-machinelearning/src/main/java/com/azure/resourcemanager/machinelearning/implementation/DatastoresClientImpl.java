@@ -63,7 +63,7 @@ public final class DatastoresClientImpl implements DatastoresClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
-    private interface DatastoresService {
+    public interface DatastoresService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"

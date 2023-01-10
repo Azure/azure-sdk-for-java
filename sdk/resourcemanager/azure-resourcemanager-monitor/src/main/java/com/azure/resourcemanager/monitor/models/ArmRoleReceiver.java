@@ -29,6 +29,10 @@ public final class ArmRoleReceiver {
     @JsonProperty(value = "useCommonAlertSchema")
     private Boolean useCommonAlertSchema;
 
+    /** Creates an instance of ArmRoleReceiver class. */
+    public ArmRoleReceiver() {
+    }
+
     /**
      * Get the name property: The name of the arm role receiver. Names must be unique across all receivers within an
      * action group.

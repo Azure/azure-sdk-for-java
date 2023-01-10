@@ -7,7 +7,7 @@ package com.azure.resourcemanager.sql.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for AutomaticTuningServerReason. */
+/** Reason description if desired and actual state are different. */
 public enum AutomaticTuningServerReason {
     /** Enum value Default. */
     DEFAULT("Default"),
@@ -33,6 +33,9 @@ public enum AutomaticTuningServerReason {
      */
     @JsonCreator
     public static AutomaticTuningServerReason fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AutomaticTuningServerReason[] items = AutomaticTuningServerReason.values();
         for (AutomaticTuningServerReason item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum AutomaticTuningServerReason {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

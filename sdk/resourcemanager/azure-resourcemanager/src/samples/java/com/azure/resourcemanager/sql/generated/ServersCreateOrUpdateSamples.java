@@ -6,11 +6,15 @@ package com.azure.resourcemanager.sql.generated;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.ServerInner;
+import com.azure.resourcemanager.sql.models.PrincipalType;
+import com.azure.resourcemanager.sql.models.ServerExternalAdministrator;
+import com.azure.resourcemanager.sql.models.ServerNetworkAccessFlag;
+import java.util.UUID;
 
 /** Samples for Servers CreateOrUpdate. */
 public final class ServersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/ServerCreate.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerCreate.json
      */
     /**
      * Sample code: Create server.
@@ -29,7 +33,16 @@ public final class ServersCreateOrUpdateSamples {
                 new ServerInner()
                     .withLocation("Japan East")
                     .withAdministratorLogin("dummylogin")
-                    .withAdministratorLoginPassword("Un53cuRE!"),
+                    .withAdministratorLoginPassword("PLACEHOLDER")
+                    .withPublicNetworkAccess(ServerNetworkAccessFlag.ENABLED)
+                    .withAdministrators(
+                        new ServerExternalAdministrator()
+                            .withPrincipalType(PrincipalType.USER)
+                            .withLogin("bob@contoso.com")
+                            .withSid(UUID.fromString("00000011-1111-2222-2222-123456789111"))
+                            .withTenantId(UUID.fromString("00000011-1111-2222-2222-123456789111"))
+                            .withAzureADOnlyAuthentication(true))
+                    .withRestrictOutboundNetworkAccess(ServerNetworkAccessFlag.ENABLED),
                 Context.NONE);
     }
 }

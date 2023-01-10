@@ -30,6 +30,9 @@ public class AzureDatabricksDeltaLakeDataset extends Dataset {
     @JsonProperty(value = "typeProperties.database")
     private Object database;
 
+    /** Creates an instance of AzureDatabricksDeltaLakeDataset class. */
+    public AzureDatabricksDeltaLakeDataset() {}
+
     /**
      * Get the table property: The name of delta table. Type: string (or Expression with resultType string).
      *

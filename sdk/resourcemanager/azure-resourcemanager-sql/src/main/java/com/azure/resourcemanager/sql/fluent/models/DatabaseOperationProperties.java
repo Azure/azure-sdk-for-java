@@ -96,6 +96,10 @@ public final class DatabaseOperationProperties {
     @JsonProperty(value = "isCancellable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isCancellable;
 
+    /** Creates an instance of DatabaseOperationProperties class. */
+    public DatabaseOperationProperties() {
+    }
+
     /**
      * Get the databaseName property: The name of the database the operation is being performed on.
      *

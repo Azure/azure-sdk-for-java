@@ -31,6 +31,10 @@ public final class ScaleRuleMetricDimension {
     @JsonProperty(value = "Values", required = true)
     private List<String> values;
 
+    /** Creates an instance of ScaleRuleMetricDimension class. */
+    public ScaleRuleMetricDimension() {
+    }
+
     /**
      * Get the dimensionName property: Name of the dimension.
      *

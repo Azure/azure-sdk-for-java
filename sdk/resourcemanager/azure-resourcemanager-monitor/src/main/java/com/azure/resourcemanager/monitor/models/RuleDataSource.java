@@ -53,6 +53,10 @@ public class RuleDataSource {
     @JsonProperty(value = "metricNamespace")
     private String metricNamespace;
 
+    /** Creates an instance of RuleDataSource class. */
+    public RuleDataSource() {
+    }
+
     /**
      * Get the resourceUri property: the resource identifier of the resource the rule monitors. **NOTE**: this property
      * cannot be updated for an existing rule.

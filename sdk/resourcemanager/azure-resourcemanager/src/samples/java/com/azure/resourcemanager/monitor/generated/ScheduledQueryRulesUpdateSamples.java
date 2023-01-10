@@ -5,29 +5,28 @@
 package com.azure.resourcemanager.monitor.generated;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.monitor.models.Enabled;
-import com.azure.resourcemanager.monitor.models.LogSearchRuleResourcePatch;
+import com.azure.resourcemanager.monitor.models.ScheduledQueryRuleResourcePatch;
 
 /** Samples for ScheduledQueryRules Update. */
 public final class ScheduledQueryRulesUpdateSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2018-04-16/examples/patchScheduledQueryRules.json
+     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/stable/2022-06-15/examples/patchScheduledQueryRule.json
      */
     /**
-     * Sample code: Patch Log Search Rule.
+     * Sample code: Create or update a scheduled query rule.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void patchLogSearchRule(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void createOrUpdateAScheduledQueryRule(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .diagnosticSettings()
             .manager()
             .serviceClient()
             .getScheduledQueryRules()
             .updateWithResponse(
-                "my-resource-group",
-                "logalertfoo",
-                new LogSearchRuleResourcePatch().withEnabled(Enabled.TRUE),
+                "QueryResourceGroupName",
+                "heartbeat",
+                new ScheduledQueryRuleResourcePatch().withEnabled(false),
                 Context.NONE);
     }
 }

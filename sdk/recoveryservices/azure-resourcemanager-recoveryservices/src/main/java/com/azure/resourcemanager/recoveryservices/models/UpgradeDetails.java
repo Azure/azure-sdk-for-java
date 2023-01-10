@@ -65,6 +65,10 @@ public final class UpgradeDetails {
     @JsonProperty(value = "previousResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String previousResourceId;
 
+    /** Creates an instance of UpgradeDetails class. */
+    public UpgradeDetails() {
+    }
+
     /**
      * Get the operationId property: ID of the vault upgrade operation.
      *

@@ -38,6 +38,10 @@ public final class ScaleAction {
     @JsonProperty(value = "cooldown", required = true)
     private Duration cooldown;
 
+    /** Creates an instance of ScaleAction class. */
+    public ScaleAction() {
+    }
+
     /**
      * Get the direction property: the scale direction. Whether the scaling action increases or decreases the number of
      * instances.

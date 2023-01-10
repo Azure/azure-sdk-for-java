@@ -23,6 +23,9 @@ public final class ActivityRunsQueryResponse {
     @JsonProperty(value = "continuationToken")
     private String continuationToken;
 
+    /** Creates an instance of ActivityRunsQueryResponse class. */
+    public ActivityRunsQueryResponse() {}
+
     /**
      * Get the value property: List of activity runs.
      *

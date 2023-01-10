@@ -22,6 +22,9 @@ public final class MetadataValue {
     @JsonProperty(value = "value")
     private String value;
 
+    /** Creates an instance of MetadataValue class. */
+    public MetadataValue() {}
+
     /**
      * Get the name property: the name of the metadata.
      *

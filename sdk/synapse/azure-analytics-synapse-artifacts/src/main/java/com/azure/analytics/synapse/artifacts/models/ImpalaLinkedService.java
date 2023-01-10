@@ -89,6 +89,9 @@ public class ImpalaLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of ImpalaLinkedService class. */
+    public ImpalaLinkedService() {}
+
     /**
      * Get the host property: The IP address or host name of the Impala server. (i.e. 192.168.222.160).
      *

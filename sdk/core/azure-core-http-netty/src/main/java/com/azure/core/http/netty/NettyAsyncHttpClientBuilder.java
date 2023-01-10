@@ -233,6 +233,18 @@ public class NettyAsyncHttpClientBuilder {
      */
     public NettyAsyncHttpClientBuilder connectionProvider(ConnectionProvider connectionProvider) {
         // Enables overriding the default reactor-netty connection/channel pool.
+        if (connectionProvider != null) {
+            LOGGER.verbose("Setting ConnectionProvider for the Reactor Netty HttpClient. Please be aware of the "
+                + "differences in runtime behavior when creating a default Reactor Netty HttpClient vs an HttpClient"
+                + "with a specified ConnectionProvider. For more details see " 
+                + "https://aka.ms/azsdk/java/docs/configure-httpclient.");
+        }
+
+        this.connectionProvider = connectionProvider;
+        return this;
+    }
+
+    NettyAsyncHttpClientBuilder connectionProviderInternal(ConnectionProvider connectionProvider) {
         this.connectionProvider = connectionProvider;
         return this;
     }

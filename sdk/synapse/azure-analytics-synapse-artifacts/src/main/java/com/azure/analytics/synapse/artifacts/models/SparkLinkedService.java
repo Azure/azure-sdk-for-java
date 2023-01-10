@@ -107,6 +107,9 @@ public class SparkLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of SparkLinkedService class. */
+    public SparkLinkedService() {}
+
     /**
      * Get the host property: IP address or host name of the Spark server.
      *

@@ -2,6 +2,8 @@
   - [Getting started](#getting-started)
     - [Prerequisites](#prerequisites)
   - [Key concepts](#key-concepts)
+  - [Architecture](#architecture)
+    - [Authenticating with JDBC](#authenticating-with-jdbc)
   - [Examples](#examples)
   - [Troubleshooting](#troubleshooting)
   - [Next steps](#next-steps)
@@ -24,6 +26,13 @@ This package contains authentication extensions to get a token from Azure Active
 Azure Identity Extensions contains a common template framework for users to get a token from Azure AD and
 use the token as a password. For example, to connect Azure hosted MySQL, get a token from Azure AD and use the
 token as a password to connect with MySQL.
+
+## Architecture
+
+### Authenticating with JDBC
+
+This picture shows how the JDBC authentication plugins provided by Azure Identity Extensions authenticate with managed identity.
+![Architecture](img/passwordless-connections-from-java-apps-to-data-services.jpg)
 
 ## Examples
 For documentation on how to use this package, please refer to [Quickstart:Use Java and JDBC with Azure Database for MySQL](https://aka.ms/passwordless/quickstart/mysql) and [Quickstart:Use Java and JDBC with Azure Database for PostgreSQL](https://aka.ms/passwordless/quickstart/postgresql).

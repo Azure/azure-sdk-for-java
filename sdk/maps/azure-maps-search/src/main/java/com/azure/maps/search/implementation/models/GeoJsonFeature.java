@@ -18,18 +18,16 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class GeoJsonFeature extends GeoJsonObject {
     /*
-     * A valid `GeoJSON` geometry object. The type must be one of the seven
-     * valid GeoJSON geometry types - Point, MultiPoint, LineString,
-     * MultiLineString, Polygon, MultiPolygon and GeometryCollection. Please
-     * refer to [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.1) for
-     * details.
+     * A valid `GeoJSON` geometry object. The type must be one of the seven valid GeoJSON geometry types - Point,
+     * MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon and GeometryCollection. Please refer to [RFC
+     * 7946](https://tools.ietf.org/html/rfc7946#section-3.1) for details.
      */
     @JsonProperty(value = "geometry", required = true)
     private GeoJsonGeometry geometry;
 
     /*
-     * Properties can contain any additional metadata about the `Feature`.
-     * Value can be any JSON object or a JSON null value
+     * Properties can contain any additional metadata about the `Feature`. Value can be any JSON object or a JSON null
+     * value
      */
     @JsonProperty(value = "properties")
     private Object properties;
@@ -41,11 +39,14 @@ public final class GeoJsonFeature extends GeoJsonObject {
     private String id;
 
     /*
-     * The type of the feature. The value depends on the data model the current
-     * feature is part of. Some data models may have an empty value.
+     * The type of the feature. The value depends on the data model the current feature is part of. Some data models
+     * may have an empty value.
      */
     @JsonProperty(value = "featureType")
     private String featureType;
+
+    /** Creates an instance of GeoJsonFeature class. */
+    public GeoJsonFeature() {}
 
     /**
      * Get the geometry property: A valid `GeoJSON` geometry object. The type must be one of the seven valid GeoJSON

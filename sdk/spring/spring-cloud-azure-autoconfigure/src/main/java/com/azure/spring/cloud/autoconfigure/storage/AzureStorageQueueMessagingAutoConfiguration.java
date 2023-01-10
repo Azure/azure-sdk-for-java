@@ -5,11 +5,13 @@ package com.azure.spring.cloud.autoconfigure.storage;
 
 import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties.AzureStorageQueueProperties;
 import com.azure.spring.cloud.autoconfigure.storage.queue.AzureStorageQueueAutoConfiguration;
+import com.azure.spring.messaging.implementation.converter.ObjectMapperHolder;
 import com.azure.spring.messaging.storage.queue.core.StorageQueueTemplate;
 import com.azure.spring.messaging.storage.queue.core.factory.StorageQueueClientFactory;
 import com.azure.spring.messaging.storage.queue.core.properties.StorageQueueProperties;
 import com.azure.spring.messaging.storage.queue.implementation.factory.DefaultStorageQueueClientFactory;
 import com.azure.spring.messaging.storage.queue.support.converter.StorageQueueMessageConverter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -58,13 +60,17 @@ public class AzureStorageQueueMessagingAutoConfiguration {
         return storageQueueTemplate;
     }
 
-    /**
-     * Autoconfigure the {@link StorageQueueMessageConverter} instance.
-     * @return the storage queue message converter.
-     */
     @Bean
     @ConditionalOnMissingBean
-    public StorageQueueMessageConverter messageConverter() {
-        return new StorageQueueMessageConverter();
+    @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper", havingValue = "true", matchIfMissing = true)
+    StorageQueueMessageConverter defaultStorageQueueMessageConverter() {
+        return new StorageQueueMessageConverter(ObjectMapperHolder.OBJECT_MAPPER);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper", havingValue = "false")
+    StorageQueueMessageConverter storageQueueMessageConverter(ObjectMapper objectMapper) {
+        return new StorageQueueMessageConverter(objectMapper);
     }
 }

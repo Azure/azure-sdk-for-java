@@ -28,6 +28,10 @@ public final class CheckNameAvailabilityResultInner {
     @JsonProperty(value = "message")
     private String message;
 
+    /** Creates an instance of CheckNameAvailabilityResultInner class. */
+    public CheckNameAvailabilityResultInner() {
+    }
+
     /**
      * Get the nameAvailable property: The nameAvailable property.
      *

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagedDatabaseSensitivityLabels ListRecommendedByDatabase. */
 public final class ManagedDatabaseSensitivityLabelsListRecommendedByDatabaseSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2018-06-01-preview/examples/ManagedDatabaseSensitivityLabelsListByDatabaseRecommended.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedDatabaseSensitivityLabelsListByDatabaseRecommended.json
      */
     /**
      * Sample code: Gets the recommended sensitivity labels of a given database in a managed database.

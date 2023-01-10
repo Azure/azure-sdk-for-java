@@ -35,6 +35,9 @@ public final class OciManifest {
     @JsonProperty(value = "schemaVersion")
     private Integer schemaVersion;
 
+    /** Creates an instance of OciManifest class. */
+    public OciManifest() {}
+
     /**
      * Get the config property: V2 image config descriptor.
      *

@@ -32,6 +32,9 @@ public final class DataFlowSourceSetting {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of DataFlowSourceSetting class. */
+    public DataFlowSourceSetting() {}
+
     /**
      * Get the sourceName property: The data flow source name.
      *

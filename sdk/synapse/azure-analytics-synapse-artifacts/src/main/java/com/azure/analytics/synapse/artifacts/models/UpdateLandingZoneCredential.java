@@ -16,6 +16,9 @@ public final class UpdateLandingZoneCredential {
     @JsonProperty(value = "sasToken")
     private SecureString sasToken;
 
+    /** Creates an instance of UpdateLandingZoneCredential class. */
+    public UpdateLandingZoneCredential() {}
+
     /**
      * Get the sasToken property: Landing zone's sas token.
      *

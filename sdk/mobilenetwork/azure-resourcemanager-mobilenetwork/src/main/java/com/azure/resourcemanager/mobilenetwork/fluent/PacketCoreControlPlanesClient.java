@@ -74,19 +74,6 @@ public interface PacketCoreControlPlanesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified packet core control plane.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PacketCoreControlPlaneInner getByResourceGroup(String resourceGroupName, String packetCoreControlPlaneName);
-
-    /**
-     * Gets information about the specified packet core control plane.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -98,6 +85,19 @@ public interface PacketCoreControlPlanesClient {
         String resourceGroupName, String packetCoreControlPlaneName, Context context);
 
     /**
+     * Gets information about the specified packet core control plane.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param packetCoreControlPlaneName The name of the packet core control plane.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified packet core control plane.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PacketCoreControlPlaneInner getByResourceGroup(String resourceGroupName, String packetCoreControlPlaneName);
+
+    /**
      * Creates or updates a packet core control plane.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -164,21 +164,6 @@ public interface PacketCoreControlPlanesClient {
         String packetCoreControlPlaneName,
         PacketCoreControlPlaneInner parameters,
         Context context);
-
-    /**
-     * Updates packet core control planes tags.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param packetCoreControlPlaneName The name of the packet core control plane.
-     * @param parameters Parameters supplied to update packet core control plane tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return packet core control plane resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PacketCoreControlPlaneInner updateTags(
-        String resourceGroupName, String packetCoreControlPlaneName, TagsObject parameters);
 
     /**
      * Updates packet core control planes tags.
@@ -195,6 +180,21 @@ public interface PacketCoreControlPlanesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<PacketCoreControlPlaneInner> updateTagsWithResponse(
         String resourceGroupName, String packetCoreControlPlaneName, TagsObject parameters, Context context);
+
+    /**
+     * Updates packet core control planes tags.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param packetCoreControlPlaneName The name of the packet core control plane.
+     * @param parameters Parameters supplied to update packet core control plane tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return packet core control plane resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PacketCoreControlPlaneInner updateTags(
+        String resourceGroupName, String packetCoreControlPlaneName, TagsObject parameters);
 
     /**
      * Lists all the packet core control planes in a subscription.

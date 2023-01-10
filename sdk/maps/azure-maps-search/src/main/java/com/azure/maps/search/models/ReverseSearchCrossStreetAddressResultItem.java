@@ -23,6 +23,9 @@ public final class ReverseSearchCrossStreetAddressResultItem {
     @JsonProperty(value = "position", access = JsonProperty.Access.WRITE_ONLY)
     private String position;
 
+    /** Creates an instance of ReverseSearchCrossStreetAddressResultItem class. */
+    public ReverseSearchCrossStreetAddressResultItem() {}
+
     /**
      * Get the address property: The address of the result.
      *

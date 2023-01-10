@@ -74,7 +74,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
-    private interface WorkspacesService {
+    public interface WorkspacesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"

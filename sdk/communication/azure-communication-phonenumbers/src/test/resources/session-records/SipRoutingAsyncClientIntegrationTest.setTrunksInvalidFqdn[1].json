@@ -3,8 +3,8 @@
     "Method" : "PATCH",
     "Uri" : "https://REDACTED.communication.azure.com/sip?api-version=2021-05-01-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (11.0.16.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "01eca51e-7447-457d-beb7-cc0470b37eec",
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "512dde42-d269-470b-8a46-2e4a1b952067",
       "Content-Type" : "application/merge-patch+json"
     },
     "Response" : {
@@ -12,13 +12,13 @@
       "X-Cache" : "CONFIG_NOCACHE",
       "Strict-Transport-Security" : "max-age=2592000",
       "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview",
-      "X-Processing-Time" : "39ms",
-      "MS-CV" : "i2IPZfs5qEWQTeyKHI3tzA.0",
+      "X-Processing-Time" : "37ms",
+      "MS-CV" : "+vjz7NR7RUaaRv3p57riXw.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0PmeNYwAAAADRfclnnCF4RLc68x/TRUBlUFJHMDFFREdFMDkxMgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Azure-Ref" : "0laOkYwAAAAAnDf70Y2aDQ4V4o9gPX61bTUVYMzFFREdFMDMyMgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "422",
       "Body" : "{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"InvalidTrunkFqdn\",\"message\":\"Trunk with an invalid FQDN.\"}}}",
-      "Date" : "Mon, 05 Dec 2022 03:36:30 GMT",
+      "Date" : "Thu, 22 Dec 2022 18:36:05 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null
@@ -26,21 +26,21 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.communication.azure.com/sip?api-version=2021-05-01-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (11.0.16.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "72671bb0-f389-424b-a996-1917275857fa"
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "55c31650-9aaa-478f-9e9f-0bb234398a44"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
       "Strict-Transport-Security" : "max-age=2592000",
       "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview",
-      "X-Processing-Time" : "97ms",
-      "MS-CV" : "c/ApkdVr+EG/1aygq6CxUA.0",
+      "X-Processing-Time" : "102ms",
+      "MS-CV" : "dZMSPRRyGkOHMJd3rMH7gw.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0P2eNYwAAAACJatrRK3IwSaZSDiA5sPvNUFJHMDFFREdFMDkxMgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Azure-Ref" : "0laOkYwAAAAAKEOUdqzh7QZ4nbGSb+m9pTUVYMzFFREdFMDMxMAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "200",
       "Body" : "{\"trunks\":{},\"routes\":[]}",
-      "Date" : "Mon, 05 Dec 2022 03:36:30 GMT",
+      "Date" : "Thu, 22 Dec 2022 18:36:05 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -48,8 +48,8 @@
     "Method" : "PATCH",
     "Uri" : "https://REDACTED.communication.azure.com/sip?api-version=2021-05-01-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (11.0.16.1; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "bc9b95b5-805a-4ab1-b363-f37466060734",
+      "User-Agent" : "azsdk-java-azure-communication-phonenumbers/1.1.0-beta.13 (17.0.5; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "a2ad2d6b-f563-412e-b058-fa5bd4f849c6",
       "Content-Type" : "application/merge-patch+json"
     },
     "Response" : {
@@ -57,13 +57,13 @@
       "X-Cache" : "CONFIG_NOCACHE",
       "Strict-Transport-Security" : "max-age=2592000",
       "api-supported-versions" : "2021-05-01-preview, 2022-09-01-preview",
-      "X-Processing-Time" : "43ms",
-      "MS-CV" : "ZhDHDr//60C1KrPmQX9dSA.0",
+      "X-Processing-Time" : "34ms",
+      "MS-CV" : "CFobqRWmN0K4Yxcf91/S5Q.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0P2eNYwAAAAA63mv8RqYZQ62C8zis6PtCUFJHMDFFREdFMDkxMgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Azure-Ref" : "0laOkYwAAAAB5f513Fr5JSLivnh06sElkTUVYMzFFREdFMDMyMgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "422",
       "Body" : "{\"error\":{\"code\":\"UnprocessableConfiguration\",\"message\":\"One or more request inputs are not valid.\",\"innererror\":{\"code\":\"InvalidTrunkFqdn\",\"message\":\"Trunk with an invalid FQDN.\"}}}",
-      "Date" : "Mon, 05 Dec 2022 03:36:30 GMT",
+      "Date" : "Thu, 22 Dec 2022 18:36:05 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null

@@ -19,6 +19,10 @@ public final class InstancePoolUpdate {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of InstancePoolUpdate class. */
+    public InstancePoolUpdate() {
+    }
+
     /**
      * Get the tags property: Resource tags.
      *

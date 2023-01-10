@@ -173,20 +173,6 @@ public final class PipelineRunsImpl {
      * Query pipeline runs in the workspace based on input filter conditions.
      *
      * @param filterParameters Parameters to filter the pipeline run.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list pipeline runs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PipelineRunsQueryResponse queryPipelineRunsByWorkspace(RunFilterParameters filterParameters) {
-        return queryPipelineRunsByWorkspaceAsync(filterParameters).block();
-    }
-
-    /**
-     * Query pipeline runs in the workspace based on input filter conditions.
-     *
-     * @param filterParameters Parameters to filter the pipeline run.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -197,6 +183,20 @@ public final class PipelineRunsImpl {
     public Response<PipelineRunsQueryResponse> queryPipelineRunsByWorkspaceWithResponse(
             RunFilterParameters filterParameters, Context context) {
         return queryPipelineRunsByWorkspaceWithResponseAsync(filterParameters, context).block();
+    }
+
+    /**
+     * Query pipeline runs in the workspace based on input filter conditions.
+     *
+     * @param filterParameters Parameters to filter the pipeline run.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list pipeline runs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PipelineRunsQueryResponse queryPipelineRunsByWorkspace(RunFilterParameters filterParameters) {
+        return queryPipelineRunsByWorkspaceWithResponse(filterParameters, Context.NONE).getValue();
     }
 
     /**
@@ -266,20 +266,6 @@ public final class PipelineRunsImpl {
      * Get a pipeline run by its run ID.
      *
      * @param runId The pipeline run identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pipeline run by its run ID.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PipelineRun getPipelineRun(String runId) {
-        return getPipelineRunAsync(runId).block();
-    }
-
-    /**
-     * Get a pipeline run by its run ID.
-     *
-     * @param runId The pipeline run identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -289,6 +275,20 @@ public final class PipelineRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PipelineRun> getPipelineRunWithResponse(String runId, Context context) {
         return getPipelineRunWithResponseAsync(runId, context).block();
+    }
+
+    /**
+     * Get a pipeline run by its run ID.
+     *
+     * @param runId The pipeline run identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a pipeline run by its run ID.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PipelineRun getPipelineRun(String runId) {
+        return getPipelineRunWithResponse(runId, Context.NONE).getValue();
     }
 
     /**
@@ -383,23 +383,6 @@ public final class PipelineRunsImpl {
      * @param pipelineName The pipeline name.
      * @param runId The pipeline run identifier.
      * @param filterParameters Parameters to filter the activity runs.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list activity runs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ActivityRunsQueryResponse queryActivityRuns(
-            String pipelineName, String runId, RunFilterParameters filterParameters) {
-        return queryActivityRunsAsync(pipelineName, runId, filterParameters).block();
-    }
-
-    /**
-     * Query activity runs based on input filter conditions.
-     *
-     * @param pipelineName The pipeline name.
-     * @param runId The pipeline run identifier.
-     * @param filterParameters Parameters to filter the activity runs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -410,6 +393,23 @@ public final class PipelineRunsImpl {
     public Response<ActivityRunsQueryResponse> queryActivityRunsWithResponse(
             String pipelineName, String runId, RunFilterParameters filterParameters, Context context) {
         return queryActivityRunsWithResponseAsync(pipelineName, runId, filterParameters, context).block();
+    }
+
+    /**
+     * Query activity runs based on input filter conditions.
+     *
+     * @param pipelineName The pipeline name.
+     * @param runId The pipeline run identifier.
+     * @param filterParameters Parameters to filter the activity runs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list activity runs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ActivityRunsQueryResponse queryActivityRuns(
+            String pipelineName, String runId, RunFilterParameters filterParameters) {
+        return queryActivityRunsWithResponse(pipelineName, runId, filterParameters, Context.NONE).getValue();
     }
 
     /**
@@ -501,13 +501,29 @@ public final class PipelineRunsImpl {
      *
      * @param runId The pipeline run identifier.
      * @param isRecursive If true, cancel all the Child pipelines that are triggered by the current pipeline.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> cancelPipelineRunWithResponse(String runId, Boolean isRecursive, Context context) {
+        return cancelPipelineRunWithResponseAsync(runId, isRecursive, context).block();
+    }
+
+    /**
+     * Cancel a pipeline run by its run ID.
+     *
+     * @param runId The pipeline run identifier.
+     * @param isRecursive If true, cancel all the Child pipelines that are triggered by the current pipeline.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelPipelineRun(String runId, Boolean isRecursive) {
-        cancelPipelineRunAsync(runId, isRecursive).block();
+        cancelPipelineRunWithResponse(runId, isRecursive, Context.NONE);
     }
 
     /**
@@ -521,22 +537,6 @@ public final class PipelineRunsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void cancelPipelineRun(String runId) {
         final Boolean isRecursive = null;
-        cancelPipelineRunAsync(runId, isRecursive).block();
-    }
-
-    /**
-     * Cancel a pipeline run by its run ID.
-     *
-     * @param runId The pipeline run identifier.
-     * @param isRecursive If true, cancel all the Child pipelines that are triggered by the current pipeline.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelPipelineRunWithResponse(String runId, Boolean isRecursive, Context context) {
-        return cancelPipelineRunWithResponseAsync(runId, isRecursive, context).block();
+        cancelPipelineRunWithResponse(runId, isRecursive, Context.NONE);
     }
 }

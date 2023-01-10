@@ -24,6 +24,9 @@ public class DocumentDbCollectionDataset extends Dataset {
     @JsonProperty(value = "typeProperties.collectionName", required = true)
     private Object collectionName;
 
+    /** Creates an instance of DocumentDbCollectionDataset class. */
+    public DocumentDbCollectionDataset() {}
+
     /**
      * Get the collectionName property: Document Database collection name. Type: string (or Expression with resultType
      * string).

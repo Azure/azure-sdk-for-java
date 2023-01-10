@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Usages ListByInstancePool. */
 public final class UsagesListByInstancePoolSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2018-06-01-preview/examples/ListInstancePoolUsage.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListInstancePoolUsage.json
      */
     /**
      * Sample code: List instance pool usages.
@@ -26,7 +26,7 @@ public final class UsagesListByInstancePoolSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2018-06-01-preview/examples/ListInstancePoolUsageExpanded.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ListInstancePoolUsageExpanded.json
      */
     /**
      * Sample code: List instance pool usages expanded with children.

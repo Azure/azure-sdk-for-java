@@ -30,6 +30,10 @@ public final class SingleBaseline {
     @JsonProperty(value = "highThresholds", required = true)
     private List<Double> highThresholds;
 
+    /** Creates an instance of SingleBaseline class. */
+    public SingleBaseline() {
+    }
+
     /**
      * Get the sensitivity property: the sensitivity of the baseline.
      *

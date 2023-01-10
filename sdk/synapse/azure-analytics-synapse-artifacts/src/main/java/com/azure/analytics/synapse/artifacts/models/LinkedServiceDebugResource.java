@@ -16,6 +16,9 @@ public final class LinkedServiceDebugResource extends SubResourceDebugResource {
     @JsonProperty(value = "properties", required = true)
     private LinkedService properties;
 
+    /** Creates an instance of LinkedServiceDebugResource class. */
+    public LinkedServiceDebugResource() {}
+
     /**
      * Get the properties property: Properties of linked service.
      *
