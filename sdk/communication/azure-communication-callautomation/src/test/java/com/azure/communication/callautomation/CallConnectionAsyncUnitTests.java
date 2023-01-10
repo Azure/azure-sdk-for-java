@@ -11,6 +11,7 @@ import com.azure.communication.callautomation.models.AddParticipantsOptions;
 import com.azure.communication.callautomation.models.AddParticipantsResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallParticipant;
+import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
 import com.azure.communication.callautomation.models.MuteAllParticipantsOptions;
@@ -35,6 +36,7 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
     @Test
@@ -341,6 +343,18 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
+    public void muteParticipantNotFound() {
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>("", 404)
+            )))
+            .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        assertThrows(CallingServerErrorException.class, () ->  callConnectionAsync.muteParticipantAsync(
+            new CommunicationUserIdentifier(CALL_TARGET_ID)).block());
+    }
+
+    @Test
     public void muteAllParticipantsWithInitiator() {
         CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
@@ -437,6 +451,18 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
 
         assertNotNull(unmuteParticipantsResult);
         assertNull(unmuteParticipantsResult.getOperationContext());
+    }
+
+    @Test
+    public void unmuteParticipantNotFound() {
+        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>("", 404)
+            )))
+            .getCallConnectionAsync(CALL_CONNECTION_ID);
+
+        assertThrows(CallingServerErrorException.class, () ->  callConnectionAsync.unmuteParticipantAsync(
+            new CommunicationUserIdentifier(CALL_TARGET_ID)).block());
     }
 
     @Test

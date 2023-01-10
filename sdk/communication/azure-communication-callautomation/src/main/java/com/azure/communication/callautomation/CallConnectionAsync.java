@@ -420,20 +420,24 @@ public class CallConnectionAsync {
     }
 
     Mono<Response<MuteParticipantsResult>> muteParticipantWithResponseInternal(MuteParticipantOptions muteParticipantOptions, Context context) {
-        context = context == null ? Context.NONE : context;
-        MuteParticipantRequestInternal request = new MuteParticipantRequestInternal()
-            .setTargetParticipant(CommunicationIdentifierConverter.convert(muteParticipantOptions.getTargetParticipant()))
-            .setOperationContext(muteParticipantOptions.getOperationContext());
-        muteParticipantOptions.setRepeatabilityHeaders(handleApiIdempotency(muteParticipantOptions.getRepeatabilityHeaders()));
+        try {
+            context = context == null ? Context.NONE : context;
+            MuteParticipantRequestInternal request = new MuteParticipantRequestInternal()
+                .setTargetParticipant(CommunicationIdentifierConverter.convert(muteParticipantOptions.getTargetParticipant()))
+                .setOperationContext(muteParticipantOptions.getOperationContext());
+            muteParticipantOptions.setRepeatabilityHeaders(handleApiIdempotency(muteParticipantOptions.getRepeatabilityHeaders()));
 
-        return callConnectionInternal.muteWithResponseAsync(
-                callConnectionId,
-                request,
-                muteParticipantOptions.getRepeatabilityHeaders() != null ? muteParticipantOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
-                muteParticipantOptions.getRepeatabilityHeaders() != null ? muteParticipantOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
-                context)
-            .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-            .map(internalResponse -> new SimpleResponse<>(internalResponse, MuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
+            return callConnectionInternal.muteWithResponseAsync(
+                    callConnectionId,
+                    request,
+                    muteParticipantOptions.getRepeatabilityHeaders() != null ? muteParticipantOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
+                    muteParticipantOptions.getRepeatabilityHeaders() != null ? muteParticipantOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
+                    context)
+                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
+                .map(internalResponse -> new SimpleResponse<>(internalResponse, MuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -460,20 +464,24 @@ public class CallConnectionAsync {
     }
 
     Mono<Response<MuteParticipantsResult>> muteAllParticipantsWithResponseInternal(MuteAllParticipantsOptions muteAllParticipantsOptions, Context context) {
-        context = context == null ? Context.NONE : context;
-        MuteAllParticipantsRequestInternal request = new MuteAllParticipantsRequestInternal()
-            .setRequestInitiator(CommunicationIdentifierConverter.convert(muteAllParticipantsOptions.getRequestInitiator()))
-            .setOperationContext(muteAllParticipantsOptions.getOperationContext());
-        muteAllParticipantsOptions.setRepeatabilityHeaders(handleApiIdempotency(muteAllParticipantsOptions.getRepeatabilityHeaders()));
+        try {
+            context = context == null ? Context.NONE : context;
+            MuteAllParticipantsRequestInternal request = new MuteAllParticipantsRequestInternal()
+                .setRequestInitiator(CommunicationIdentifierConverter.convert(muteAllParticipantsOptions.getRequestInitiator()))
+                .setOperationContext(muteAllParticipantsOptions.getOperationContext());
+            muteAllParticipantsOptions.setRepeatabilityHeaders(handleApiIdempotency(muteAllParticipantsOptions.getRepeatabilityHeaders()));
 
-        return callConnectionInternal.muteAllWithResponseAsync(
-                callConnectionId,
-                request,
-                muteAllParticipantsOptions.getRepeatabilityHeaders() != null ? muteAllParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
-                muteAllParticipantsOptions.getRepeatabilityHeaders() != null ? muteAllParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
-                context)
-            .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-            .map(internalResponse -> new SimpleResponse<>(internalResponse, MuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
+            return callConnectionInternal.muteAllWithResponseAsync(
+                    callConnectionId,
+                    request,
+                    muteAllParticipantsOptions.getRepeatabilityHeaders() != null ? muteAllParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
+                    muteAllParticipantsOptions.getRepeatabilityHeaders() != null ? muteAllParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
+                    context)
+                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
+                .map(internalResponse -> new SimpleResponse<>(internalResponse, MuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -498,20 +506,24 @@ public class CallConnectionAsync {
     }
 
     Mono<Response<UnmuteParticipantsResult>> unmuteParticipantWithResponseInternal(UnmuteParticipantOptions unmuteParticipantOptions, Context context) {
-        context = context == null ? Context.NONE : context;
-        UnmuteParticipantRequestInternal request = new UnmuteParticipantRequestInternal()
-            .setTargetParticipant(CommunicationIdentifierConverter.convert(unmuteParticipantOptions.getTargetParticipant()))
-            .setOperationContext(unmuteParticipantOptions.getOperationContext());
-        unmuteParticipantOptions.setRepeatabilityHeaders(handleApiIdempotency(unmuteParticipantOptions.getRepeatabilityHeaders()));
+        try {
+            context = context == null ? Context.NONE : context;
+            UnmuteParticipantRequestInternal request = new UnmuteParticipantRequestInternal()
+                .setTargetParticipant(CommunicationIdentifierConverter.convert(unmuteParticipantOptions.getTargetParticipant()))
+                .setOperationContext(unmuteParticipantOptions.getOperationContext());
+            unmuteParticipantOptions.setRepeatabilityHeaders(handleApiIdempotency(unmuteParticipantOptions.getRepeatabilityHeaders()));
 
-        return callConnectionInternal.unmuteWithResponseAsync(
-                callConnectionId,
-                request,
-                unmuteParticipantOptions.getRepeatabilityHeaders() != null ? unmuteParticipantOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
-                unmuteParticipantOptions.getRepeatabilityHeaders() != null ? unmuteParticipantOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
-                context)
-            .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-            .map(internalResponse -> new SimpleResponse<>(internalResponse, UnmuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
+            return callConnectionInternal.unmuteWithResponseAsync(
+                    callConnectionId,
+                    request,
+                    unmuteParticipantOptions.getRepeatabilityHeaders() != null ? unmuteParticipantOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
+                    unmuteParticipantOptions.getRepeatabilityHeaders() != null ? unmuteParticipantOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
+                    context)
+                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
+                .map(internalResponse -> new SimpleResponse<>(internalResponse, UnmuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -539,19 +551,23 @@ public class CallConnectionAsync {
         UnmuteAllParticipantsOptions unmuteAllParticipantsOptions,
         Context context
     ) {
-        context = context == null ? Context.NONE : context;
-        UnmuteAllParticipantsRequestInternal request = new UnmuteAllParticipantsRequestInternal()
-            .setOperationContext(unmuteAllParticipantsOptions.getOperationContext());
-        unmuteAllParticipantsOptions.setRepeatabilityHeaders(handleApiIdempotency(unmuteAllParticipantsOptions.getRepeatabilityHeaders()));
+        try {
+            context = context == null ? Context.NONE : context;
+            UnmuteAllParticipantsRequestInternal request = new UnmuteAllParticipantsRequestInternal()
+                .setOperationContext(unmuteAllParticipantsOptions.getOperationContext());
+            unmuteAllParticipantsOptions.setRepeatabilityHeaders(handleApiIdempotency(unmuteAllParticipantsOptions.getRepeatabilityHeaders()));
 
-        return callConnectionInternal.unmuteAllWithResponseAsync(
-                callConnectionId,
-                request,
-                unmuteAllParticipantsOptions.getRepeatabilityHeaders() != null ? unmuteAllParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
-                unmuteAllParticipantsOptions.getRepeatabilityHeaders() != null ? unmuteAllParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
-                context)
-            .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
-            .map(internalResponse -> new SimpleResponse<>(internalResponse, UnmuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
+            return callConnectionInternal.unmuteAllWithResponseAsync(
+                    callConnectionId,
+                    request,
+                    unmuteAllParticipantsOptions.getRepeatabilityHeaders() != null ? unmuteAllParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
+                    unmuteAllParticipantsOptions.getRepeatabilityHeaders() != null ? unmuteAllParticipantsOptions.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
+                    context)
+                .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
+                .map(internalResponse -> new SimpleResponse<>(internalResponse, UnmuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     //region Content management Actions
