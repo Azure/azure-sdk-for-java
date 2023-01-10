@@ -244,7 +244,7 @@ public class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MuteParticipantsResult> muteParticipantWithResponse(MuteParticipantOptions muteParticipantOptions, Context context) {
-        return callConnectionAsync.muteParticipantWithResponse(muteParticipantOptions).block();
+        return callConnectionAsync.muteParticipantWithResponseInternal(muteParticipantOptions, context).block();
     }
 
     /**
@@ -267,7 +267,7 @@ public class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MuteParticipantsResult> muteAllParticipantsWithResponse(MuteAllParticipantsOptions options, Context context) {
-        return callConnectionAsync.muteAllParticipantsWithResponse(options).block();
+        return callConnectionAsync.muteAllParticipantsWithResponseInternal(options, context).block();
     }
 
     /**
@@ -288,7 +288,7 @@ public class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UnmuteParticipantsResult> unmuteParticipantWithResponse(UnmuteParticipantOptions unmuteParticipantOptions, Context context) {
-        return callConnectionAsync.unmuteParticipantWithResponse(unmuteParticipantOptions).block();
+        return callConnectionAsync.unmuteParticipantWithResponseInternal(unmuteParticipantOptions, context).block();
     }
 
     /**
@@ -309,7 +309,7 @@ public class CallConnection {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UnmuteParticipantsResult> unmuteAllParticipantsWithResponse(UnmuteAllParticipantsOptions options, Context context) {
-        return callConnectionAsync.unmuteAllParticipantsWithResponse(options).block();
+        return callConnectionAsync.unmuteAllParticipantsWithResponseInternal(options, context).block();
     }
 
     //region Content management Actions
