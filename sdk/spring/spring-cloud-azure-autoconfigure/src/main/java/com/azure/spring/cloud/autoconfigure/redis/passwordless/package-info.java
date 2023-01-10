@@ -4,4 +4,4 @@
 /**
  * Spring Cloud Azure's auto-configuration for Azure Redis passwordless connections.
  */
-package com.azure.spring.cloud.autoconfigure.redis.passwordless.jedis;
+package com.azure.spring.cloud.autoconfigure.redis.passwordless;

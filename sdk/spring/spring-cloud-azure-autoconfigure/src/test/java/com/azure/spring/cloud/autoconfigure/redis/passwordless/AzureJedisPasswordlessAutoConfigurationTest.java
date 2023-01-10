@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.redis.passwordless.jedis;
+package com.azure.spring.cloud.autoconfigure.redis.passwordless;
 
+import com.azure.spring.cloud.autoconfigure.implementation.redis.passwordless.jedis.AzureJedisConnectionFactory;
 import com.azure.spring.cloud.service.implementation.passwordless.AzureRedisPasswordlessProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -163,8 +164,8 @@ class AzureJedisPasswordlessAutoConfigurationTest {
                 assertThat(cf.getPoolConfig().getMinIdle()).isEqualTo(1);
                 assertThat(cf.getPoolConfig().getMaxIdle()).isEqualTo(4);
                 assertThat(cf.getPoolConfig().getMaxTotal()).isEqualTo(16);
-                assertThat(cf.getPoolConfig().getMaxWaitDuration()).isEqualTo(Duration.ofSeconds(2));
-                assertThat(cf.getPoolConfig().getDurationBetweenEvictionRuns()).isEqualTo(Duration.ofSeconds(30));
+                assertThat(cf.getPoolConfig().getMaxWaitMillis()).isEqualTo(Duration.ofSeconds(2).toMillis());
+                assertThat(cf.getPoolConfig().getTimeBetweenEvictionRunsMillis()).isEqualTo(Duration.ofSeconds(30).toMillis());
             });
     }
 

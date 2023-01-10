@@ -1,9 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.redis.passwordless.jedis;
+package com.azure.spring.cloud.autoconfigure.redis.passwordless;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.redis.passwordless.jedis.AzureJedisConnectionFactory;
+import com.azure.spring.cloud.autoconfigure.implementation.redis.passwordless.jedis.AzureRedisCredentialSupplier;
 import com.azure.spring.cloud.service.implementation.passwordless.AzureRedisPasswordlessProperties;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.springframework.beans.factory.ObjectProvider;

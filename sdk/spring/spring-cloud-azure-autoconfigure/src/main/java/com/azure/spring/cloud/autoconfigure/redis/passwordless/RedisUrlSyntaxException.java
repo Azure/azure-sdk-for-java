@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.redis.passwordless.jedis;
+package com.azure.spring.cloud.autoconfigure.redis.passwordless;
 
 class RedisUrlSyntaxException extends RuntimeException {
 
