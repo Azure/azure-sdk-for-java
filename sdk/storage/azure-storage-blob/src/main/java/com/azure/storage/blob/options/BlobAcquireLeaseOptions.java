@@ -16,10 +16,10 @@ public class BlobAcquireLeaseOptions {
     private BlobLeaseRequestConditions requestConditions;
 
     /**
-     * @param durationInSeconds The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
+     * @param duration The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
      */
-    public BlobAcquireLeaseOptions(int durationInSeconds) {
-        this.duration = durationInSeconds;
+    public BlobAcquireLeaseOptions(int duration) {
+        this.duration = duration;
     }
 
     /**
