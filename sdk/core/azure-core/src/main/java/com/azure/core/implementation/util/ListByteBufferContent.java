@@ -54,8 +54,7 @@ public class ListByteBufferContent extends BinaryDataContent {
 
     @Override
     public InputStream toStream() {
-        //TODO implementation that can support long-length
-        return null;
+        return new ListByteBufferInputStream(content);
     }
 
     @Override
