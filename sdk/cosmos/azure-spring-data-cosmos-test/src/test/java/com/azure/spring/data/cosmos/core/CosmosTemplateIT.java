@@ -320,7 +320,7 @@ public class CosmosTemplateIT {
     public void testPatchPreConditionSuccess() {
         options.setFilterPredicate("FROM person p WHERE p.lastName = '"+LAST_NAME+"'");
         Person patchedPerson = cosmosTemplate.patch(insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), Person.class, operations, options);
-        assertEquals(patchedPerson.getAge(), patchedPerson.getAge());
+        assertEquals(patchedPerson.getAge(), PATCH_AGE_1);
     }
 
     @Test
@@ -328,7 +328,7 @@ public class CosmosTemplateIT {
         try {
             options.setFilterPredicate("FROM person p WHERE p.lastName = 'dummy'");
             Person patchedPerson = cosmosTemplate.patch(insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), Person.class,  operations, options);
-            assertEquals(patchedPerson.getAge(), patchedPerson.getAge());
+            assertEquals(patchedPerson.getAge(), PATCH_AGE_1);
             fail();
         } catch (CosmosAccessException ex) {
             assertThat(ex.getCosmosException()).isInstanceOf(PreconditionFailedException.class);
