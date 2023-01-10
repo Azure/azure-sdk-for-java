@@ -4,6 +4,8 @@ package com.azure.spring.cloud.integration.tests.redis;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +25,7 @@ import java.util.function.Supplier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Testcontainers
 @ActiveProfiles("redis")
+@DisabledOnOs({OS.WINDOWS, OS.MAC})
 public class AzureRedisPasswordlessIT {
 
     @Autowired

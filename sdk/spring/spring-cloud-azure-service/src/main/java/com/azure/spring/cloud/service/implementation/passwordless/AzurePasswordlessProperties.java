@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.service.implementation.passwordless;
 
 import com.azure.identity.extensions.implementation.enums.AuthProperty;
-import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.properties.authentication.TokenCredentialProperties;
 import com.azure.spring.cloud.core.properties.client.ClientProperties;
@@ -22,7 +21,6 @@ import java.util.function.Function;
  * support for other third party services.
  */
 public class AzurePasswordlessProperties implements AzureProperties {
-    private static final PropertyMapper PROPERTY_MAPPER = new PropertyMapper();
 
     private AzureProfileProperties profile = new AzureProfileProperties();
 
@@ -94,7 +92,7 @@ public class AzurePasswordlessProperties implements AzureProperties {
     public Properties toProperties() {
         Properties target = new Properties();
         for (AzurePasswordlessPropertiesMapping m : AzurePasswordlessPropertiesMapping.values()) {
-            PROPERTY_MAPPER.from(m.getter().apply(this)).to(v -> m.setter.accept(target, v));
+            m.setter.accept(target, m.getter.apply(this));
         }
         return target;
     }
