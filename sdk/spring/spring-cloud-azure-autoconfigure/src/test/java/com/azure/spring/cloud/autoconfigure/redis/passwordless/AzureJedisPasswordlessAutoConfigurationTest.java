@@ -20,8 +20,6 @@ import java.time.Duration;
 import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Tests for {@link AzureJedisPasswordlessAutoConfiguration}.
@@ -85,8 +83,7 @@ class AzureJedisPasswordlessAutoConfigurationTest {
     @Test
     @SuppressWarnings("unchecked")
     void testGetPasswordFromSupplier() {
-        Supplier<String> mockCredentialSupplier = mock(Supplier.class);
-        when(mockCredentialSupplier.get()).thenReturn("fake-password-from-mock-supplier");
+        Supplier<String> mockCredentialSupplier = () -> "fake-password-from-mock-supplier";
         this.contextRunner.withPropertyValues("spring.redis.host:foo", "spring.redis.database:1")
             .withBean("azureRedisCredentialSupplier", Supplier.class, () -> mockCredentialSupplier, beanDefinition -> beanDefinition.setPrimary(true))
             .run((context) -> {
@@ -100,9 +97,10 @@ class AzureJedisPasswordlessAutoConfigurationTest {
 
     @Test
     void testUseSsl() {
-        this.contextRunner.run((context) -> {
-            AzureJedisConnectionFactory cf = context.getBean(AzureJedisConnectionFactory.class);
-            assertThat(cf.isUseSsl()).isTrue();
+        this.contextRunner
+            .run((context) -> {
+                AzureJedisConnectionFactory cf = context.getBean(AzureJedisConnectionFactory.class);
+                assertThat(cf.isUseSsl()).isTrue();
         });
     }
 

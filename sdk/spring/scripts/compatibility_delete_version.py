@@ -18,9 +18,7 @@ from log import log
 IGNORED_ARTIFACTS = {'com.github.tomakehurst:wiremock-jre8'}
 IGNORED_SPRINGBOOT_ARTIFACTS = {
     "2.5.14": {"org.postgresql:postgresql",
-               "com.mysql:mysql-connector-j",
-               "org.mockito:mockito-core",
-               "org.mockito:mockito-junit-jupiter"}
+               "com.mysql:mysql-connector-j"}
     }
 
 def get_args():

@@ -114,6 +114,9 @@ class AzureJedisPasswordlessAutoConfiguration {
     }
 
     private boolean isPoolEnabled(RedisProperties.Pool pool) {
+        if (pool == null) {
+            return false;
+        }
         Boolean enabled = true;
         Method method = ReflectionUtils.findMethod(RedisProperties.Pool.class, "getEnabled");
         if (method != null) {
