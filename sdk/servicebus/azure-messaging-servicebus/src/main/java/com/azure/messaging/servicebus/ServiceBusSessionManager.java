@@ -59,7 +59,7 @@ class ServiceBusSessionManager implements AutoCloseable {
     private final MessagingEntityType entityType;
     private final ReceiverOptions receiverOptions;
     private final ServiceBusReceiveLink receiveLink;
-    private final RecoverableReactorConnection<ServiceBusReactorAmqpConnection> connectionProcessor;
+    private final RecoverableReactorConnection<ServiceBusReactorAmqpConnection> recoverableConnection;
     private final Duration operationTimeout;
     private final MessageSerializer messageSerializer;
     private final String identifier;
@@ -80,13 +80,13 @@ class ServiceBusSessionManager implements AutoCloseable {
     private volatile Flux<ServiceBusMessageContext> receiveFlux;
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
-        RecoverableReactorConnection<ServiceBusReactorAmqpConnection> connectionProcessor,
+        RecoverableReactorConnection<ServiceBusReactorAmqpConnection> recoverableConnection,
         MessageSerializer messageSerializer, ReceiverOptions receiverOptions, ServiceBusReceiveLink receiveLink, String identifier) {
         this.entityPath = entityPath;
         this.entityType = entityType;
         this.receiverOptions = receiverOptions;
-        this.connectionProcessor = connectionProcessor;
-        this.operationTimeout = connectionProcessor.getRetryOptions().getTryTimeout();
+        this.recoverableConnection = recoverableConnection;
+        this.operationTimeout = recoverableConnection.getRetryOptions().getTryTimeout();
         this.messageSerializer = messageSerializer;
         this.maxSessionLockRenewDuration = receiverOptions.getMaxLockRenewDuration();
         this.identifier = identifier;
@@ -111,9 +111,9 @@ class ServiceBusSessionManager implements AutoCloseable {
     }
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
-        RecoverableReactorConnection<ServiceBusReactorAmqpConnection> connectionProcessor,
+        RecoverableReactorConnection<ServiceBusReactorAmqpConnection> recoverableConnection,
         MessageSerializer messageSerializer, ReceiverOptions receiverOptions, String identifier) {
-        this(entityPath, entityType, connectionProcessor,
+        this(entityPath, entityType, recoverableConnection,
             messageSerializer, receiverOptions, null, identifier);
     }
 
@@ -245,7 +245,7 @@ class ServiceBusSessionManager implements AutoCloseable {
     }
 
     private AmqpErrorContext getErrorContext() {
-        return new SessionErrorContext(connectionProcessor.getFullyQualifiedNamespace(), entityPath);
+        return new SessionErrorContext(recoverableConnection.getFullyQualifiedNamespace(), entityPath);
     }
 
     /**
@@ -259,7 +259,7 @@ class ServiceBusSessionManager implements AutoCloseable {
         final String linkName = (sessionId != null)
             ? sessionId
             : StringUtil.getRandomString("session-");
-        return connectionProcessor
+        return recoverableConnection
             .get()
             .flatMap(connection -> {
                 return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
@@ -318,7 +318,7 @@ class ServiceBusSessionManager implements AutoCloseable {
                     return existing;
                 }
 
-                return new ServiceBusSessionReceiver(link, messageSerializer, connectionProcessor.getRetryOptions(),
+                return new ServiceBusSessionReceiver(link, messageSerializer, recoverableConnection.getRetryOptions(),
                     receiverOptions.getPrefetchCount(), disposeOnIdle, scheduler, this::renewSessionLock,
                     maxSessionLockRenewDuration);
             })))
@@ -338,7 +338,7 @@ class ServiceBusSessionManager implements AutoCloseable {
     }
 
     private Mono<ServiceBusManagementNode> getManagementNode() {
-        return connectionProcessor.get().flatMap(connection -> connection.getManagementNode(entityPath, entityType));
+        return recoverableConnection.get().flatMap(connection -> connection.getManagementNode(entityPath, entityType));
     }
 
     /**

@@ -74,7 +74,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 // This class is executed synchronously as it runs into a NullPointerException when attempting to dispose
-// connectionProcessor in parallel runs.
+// recoverableConnection in parallel runs.
 @Execution(ExecutionMode.SAME_THREAD)
 @Isolated
 class ServiceBusSessionManagerTest {
@@ -94,7 +94,7 @@ class ServiceBusSessionManagerTest {
     private final FluxSink<Message> messageSink = messageProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private final Tracer tracer = null;
 
-    private RecoverableReactorConnection<ServiceBusReactorAmqpConnection> connectionProcessor;
+    private RecoverableReactorConnection<ServiceBusReactorAmqpConnection> recoverableConnection;
     private ServiceBusSessionManager sessionManager;
     private AutoCloseable mocksCloseable;
 
@@ -152,7 +152,7 @@ class ServiceBusSessionManagerTest {
         when(connection.isDisposed()).thenReturn(false);
         when(connection.closeAsync(any(AmqpShutdownSignal.class))).thenReturn(Mono.empty());
 
-        connectionProcessor = new RecoverableReactorConnection<>(() -> connection,
+        recoverableConnection = new RecoverableReactorConnection<>(() -> connection,
             connectionOptions.getFullyQualifiedNamespace(), ENTITY_PATH, getRetryPolicy(connectionOptions.getRetry()),
             new HashMap<>());
     }
@@ -169,8 +169,8 @@ class ServiceBusSessionManagerTest {
             sessionManager.close();
         }
 
-        if (connectionProcessor != null) {
-            connectionProcessor.dispose();
+        if (recoverableConnection != null) {
+            recoverableConnection.dispose();
         }
 
         // If this test class is made to run in parallel this will need to change to
@@ -182,7 +182,7 @@ class ServiceBusSessionManagerTest {
     void properties() {
         // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null, 5);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, recoverableConnection,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
 
         // Act & Assert
@@ -193,7 +193,7 @@ class ServiceBusSessionManagerTest {
     void receiveNull() {
         // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null, 5);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, recoverableConnection,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
 
         // Act & Assert
@@ -210,7 +210,7 @@ class ServiceBusSessionManagerTest {
         // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null,
             5);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, recoverableConnection,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
 
         final String sessionId = "session-1";
@@ -265,7 +265,7 @@ class ServiceBusSessionManagerTest {
         // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null,
             1);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, recoverableConnection,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
 
         final String sessionId = "session-1";
@@ -323,7 +323,7 @@ class ServiceBusSessionManagerTest {
         // Arrange
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, true,
             null, 5);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, recoverableConnection,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
 
         final int numberOfMessages = 5;
@@ -452,7 +452,7 @@ class ServiceBusSessionManagerTest {
         final ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, Duration.ZERO, false,
             null, 1);
 
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, recoverableConnection,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
 
         final String sessionId = "session-1";
@@ -524,7 +524,7 @@ class ServiceBusSessionManagerTest {
         // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null,
             2);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, recoverableConnection,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
 
         final String sessionId = "session-1";

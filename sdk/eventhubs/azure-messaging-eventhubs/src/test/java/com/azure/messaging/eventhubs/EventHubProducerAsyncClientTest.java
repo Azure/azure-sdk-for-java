@@ -135,7 +135,7 @@ class EventHubProducerAsyncClientTest {
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
     private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private EventHubProducerAsyncClient producer;
-    private RecoverableReactorConnection<EventHubReactorAmqpConnection> connectionProcessor;
+    private RecoverableReactorConnection<EventHubReactorAmqpConnection> recoverableConnection;
     private ConnectionOptions connectionOptions;
     private final Scheduler testScheduler = Schedulers.newBoundedElastic(10, 10, "test");
 
@@ -166,9 +166,9 @@ class EventHubProducerAsyncClientTest {
 
         when(connection.closeAsync()).thenReturn(Mono.empty());
 
-        connectionProcessor = new RecoverableReactorConnection<>(() -> connection,
+        recoverableConnection = new RecoverableReactorConnection<>(() -> connection,
             connectionOptions.getFullyQualifiedNamespace(), "event-hub-path", getRetryPolicy(connectionOptions.getRetry()), new HashMap<>());
-        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, recoverableConnection, retryOptions,
             messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
         when(sendLink.getLinkSize()).thenReturn(Mono.just(ClientConstants.MAX_MESSAGE_LENGTH_BYTES));
@@ -262,7 +262,7 @@ class EventHubProducerAsyncClientTest {
         final Semaphore semaphore = new Semaphore(1);
         // In our actual client builder, we allow this.
         final EventHubProducerAsyncClient flexibleProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, messageSerializer, testScheduler,
+            recoverableConnection, retryOptions, messageSerializer, testScheduler,
             false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
@@ -339,7 +339,7 @@ class EventHubProducerAsyncClientTest {
         final Tracer tracer1 = mock(Tracer.class);
         final EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(tracer1, null, HOSTNAME, EVENT_HUB_NAME);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, messageSerializer, Schedulers.parallel(),
+            recoverableConnection, retryOptions, messageSerializer, Schedulers.parallel(),
             false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
 
         when(connection.createSendLink(eq(EVENT_HUB_NAME), eq(EVENT_HUB_NAME), any(), eq(CLIENT_IDENTIFIER)))
@@ -405,7 +405,7 @@ class EventHubProducerAsyncClientTest {
         final Tracer tracer1 = mock(Tracer.class);
         final EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(tracer1, null, HOSTNAME, EVENT_HUB_NAME);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, messageSerializer, Schedulers.parallel(),
+            recoverableConnection, retryOptions, messageSerializer, Schedulers.parallel(),
             false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
 
         EventHubProperties ehProperties = new EventHubProperties(EVENT_HUB_NAME, Instant.now(), new String[]{"0"});
@@ -463,7 +463,7 @@ class EventHubProducerAsyncClientTest {
         //Arrange
         final Tracer tracer1 = mock(Tracer.class);
         final EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(tracer1, null, HOSTNAME, EVENT_HUB_NAME);
-        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
+        producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, recoverableConnection, retryOptions,
             messageSerializer, Schedulers.parallel(), false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
 
         final String failureKey = "fail";
@@ -598,7 +598,7 @@ class EventHubProducerAsyncClientTest {
         final Tracer tracer1 = mock(Tracer.class);
         final EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(tracer1, null, HOSTNAME, EVENT_HUB_NAME);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, messageSerializer, Schedulers.parallel(),
+            recoverableConnection, retryOptions, messageSerializer, Schedulers.parallel(),
             false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
         final AmqpSendLink link = mock(AmqpSendLink.class);
 
@@ -901,12 +901,12 @@ class EventHubProducerAsyncClientTest {
         TestMeter meter = new TestMeter();
         EventHubsProducerInstrumentation instrumentation1 = new EventHubsProducerInstrumentation(null, meter, HOSTNAME, eventHub1);
         EventHubProducerAsyncClient producer1 = new EventHubProducerAsyncClient(HOSTNAME, eventHub1,
-            connectionProcessor, retryOptions,
+            recoverableConnection, retryOptions,
             messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation1);
 
         EventHubsProducerInstrumentation instrumentation2 = new EventHubsProducerInstrumentation(null, meter, HOSTNAME, eventHub2);
         EventHubProducerAsyncClient producer2 = new EventHubProducerAsyncClient(HOSTNAME, eventHub2,
-            connectionProcessor, retryOptions,
+            recoverableConnection, retryOptions,
             messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation2);
 
         StepVerifier.create(producer1.createBatch()
@@ -947,7 +947,7 @@ class EventHubProducerAsyncClientTest {
         EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(null, meter, HOSTNAME, EVENT_HUB_NAME);
 
         EventHubProducerAsyncClient producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions,
+            recoverableConnection, retryOptions,
             messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
 
         StepVerifier.create(producer.send(new EventData("1")))
@@ -978,7 +978,7 @@ class EventHubProducerAsyncClientTest {
         TestMeter meter = new TestMeter();
         EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(null, meter, HOSTNAME, EVENT_HUB_NAME);
         EventHubProducerAsyncClient producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
+            recoverableConnection, retryOptions, messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
 
         SendOptions options = new SendOptions().setPartitionId(partitionId);
         StepVerifier.create(producer.send(new EventData("1"), options))
@@ -1007,7 +1007,7 @@ class EventHubProducerAsyncClientTest {
         Tracer tracer = mock(Tracer.class);
         EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(tracer, meter, HOSTNAME, EVENT_HUB_NAME);
         EventHubProducerAsyncClient producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
+            recoverableConnection, retryOptions, messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
 
         when(tracer.start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND))).thenAnswer(
             invocation -> {
@@ -1057,7 +1057,7 @@ class EventHubProducerAsyncClientTest {
         TestMeter meter = new TestMeter(false);
         EventHubsProducerInstrumentation instrumentation = new EventHubsProducerInstrumentation(null, meter, HOSTNAME, EVENT_HUB_NAME);
         EventHubProducerAsyncClient producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
+            recoverableConnection, retryOptions, messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, instrumentation);
 
         StepVerifier.create(producer.send(new EventData("1")))
             .verifyComplete();
@@ -1075,7 +1075,7 @@ class EventHubProducerAsyncClientTest {
         when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
 
         EventHubProducerAsyncClient producer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
+            recoverableConnection, retryOptions, messageSerializer, testScheduler, false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
         StepVerifier.create(producer.send(new EventData("1")))
             .verifyComplete();
