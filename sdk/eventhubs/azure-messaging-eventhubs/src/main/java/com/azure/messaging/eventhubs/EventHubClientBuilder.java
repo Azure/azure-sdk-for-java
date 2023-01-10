@@ -198,7 +198,7 @@ public class EventHubClientBuilder implements
     private String fullyQualifiedNamespace;
     private String eventHubName;
     private String consumerGroup;
-    private RecoverableReactorConnection<EventHubReactorAmqpConnection> eventHubConnectionProcessor;
+    private RecoverableReactorConnection<EventHubReactorAmqpConnection> sharedRecoverableConnection;
     private Integer prefetchCount;
     private ClientOptions clientOptions;
     private SslDomain.VerifyMode verifyMode;
@@ -820,20 +820,20 @@ public class EventHubClientBuilder implements
 
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
-        final RecoverableReactorConnection<EventHubReactorAmqpConnection> processor;
+        final RecoverableReactorConnection<EventHubReactorAmqpConnection> recoverableConnection;
         if (isSharedConnection.get()) {
             synchronized (connectionLock) {
-                if (eventHubConnectionProcessor == null) {
-                    eventHubConnectionProcessor = buildConnectionProcessor(messageSerializer, meter);
+                if (sharedRecoverableConnection == null) {
+                    sharedRecoverableConnection = buildRecoverableConnection(messageSerializer, meter);
                 }
             }
 
-            processor = eventHubConnectionProcessor;
+            recoverableConnection = sharedRecoverableConnection;
 
             final int numberOfOpenClients = openClients.incrementAndGet();
             LOGGER.info("# of open clients with shared connection: {}", numberOfOpenClients);
         } else {
-            processor = buildConnectionProcessor(messageSerializer, meter);
+            recoverableConnection = buildRecoverableConnection(messageSerializer, meter);
         }
 
         String identifier;
@@ -844,7 +844,7 @@ public class EventHubClientBuilder implements
             identifier = UUID.randomUUID().toString();
         }
 
-        return new EventHubAsyncClient(processor, messageSerializer, scheduler,
+        return new EventHubAsyncClient(recoverableConnection, messageSerializer, scheduler,
             isSharedConnection.get(), this::onClientClose, identifier, meter, EventHubsTracer.getDefaultTracer());
     }
 
@@ -896,11 +896,11 @@ public class EventHubClientBuilder implements
             }
 
             LOGGER.info("No more open clients, closing shared connection.");
-            if (eventHubConnectionProcessor != null) {
-                eventHubConnectionProcessor.dispose();
-                eventHubConnectionProcessor = null;
+            if (sharedRecoverableConnection != null) {
+                sharedRecoverableConnection.dispose();
+                sharedRecoverableConnection = null;
             } else {
-                LOGGER.warning("Shared EventHubConnectionProcessor was already disposed.");
+                LOGGER.warning("Shared EventHub RecoverableConnection was already disposed.");
             }
         }
     }
@@ -910,7 +910,7 @@ public class EventHubClientBuilder implements
             clientOptions == null ? null : clientOptions.getMetricsOptions());
     }
 
-    private RecoverableReactorConnection<EventHubReactorAmqpConnection> buildConnectionProcessor(MessageSerializer messageSerializer, Meter meter) {
+    private RecoverableReactorConnection<EventHubReactorAmqpConnection> buildRecoverableConnection(MessageSerializer messageSerializer, Meter meter) {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         final Supplier<String> getEventHubName = () -> {
             if (CoreUtils.isNullOrEmpty(eventHubName)) {
