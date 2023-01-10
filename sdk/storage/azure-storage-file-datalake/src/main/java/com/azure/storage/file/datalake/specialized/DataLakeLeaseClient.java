@@ -99,12 +99,12 @@ public final class DataLakeLeaseClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.acquireLease#int -->
      *
-     * @param durationInSeconds The duration of the lease between 15 and 60 seconds or -1 for an infinite duration.
+     * @param duration The duration of the lease between 15 and 60 seconds or -1 for an infinite duration.
      * @return The lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public String acquireLease(int durationInSeconds) {
-        return acquireLeaseWithResponse(durationInSeconds, null, null, Context.NONE).getValue();
+    public String acquireLease(int duration) {
+        return acquireLeaseWithResponse(duration, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -124,7 +124,7 @@ public final class DataLakeLeaseClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseClient.acquireLeaseWithResponse#int-RequestConditions-Duration-Context -->
      *
-     * @param durationInSeconds The duration of the lease between 15 and 60 seconds or -1 for an infinite duration.
+     * @param duration The duration of the lease between 15 and 60 seconds or -1 for an infinite duration.
      * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
      * request. The request will fail if the specified condition is not satisfied.
@@ -133,10 +133,10 @@ public final class DataLakeLeaseClient {
      * @return The lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<String> acquireLeaseWithResponse(int durationInSeconds, RequestConditions modifiedRequestConditions,
+    public Response<String> acquireLeaseWithResponse(int duration, RequestConditions modifiedRequestConditions,
         Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() ->
-            blobLeaseClient.acquireLeaseWithResponse(durationInSeconds, modifiedRequestConditions, timeout, context), LOGGER);
+            blobLeaseClient.acquireLeaseWithResponse(duration, modifiedRequestConditions, timeout, context), LOGGER);
     }
 
     /**

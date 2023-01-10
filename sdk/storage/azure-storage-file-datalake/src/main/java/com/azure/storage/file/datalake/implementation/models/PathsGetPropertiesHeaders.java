@@ -5,7 +5,6 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -154,28 +153,6 @@ public final class PathsGetPropertiesHeaders {
     @JsonProperty(value = "Content-Type")
     private String contentType;
 
-    private static final HttpHeaderName X_MS_GROUP = HttpHeaderName.fromString("x-ms-group");
-
-    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
-
-    private static final HttpHeaderName X_MS_LEASE_STATUS = HttpHeaderName.fromString("x-ms-lease-status");
-
-    private static final HttpHeaderName X_MS_LEASE_STATE = HttpHeaderName.fromString("x-ms-lease-state");
-
-    private static final HttpHeaderName X_MS_ACL = HttpHeaderName.fromString("x-ms-acl");
-
-    private static final HttpHeaderName X_MS_PROPERTIES = HttpHeaderName.fromString("x-ms-properties");
-
-    private static final HttpHeaderName X_MS_RESOURCE_TYPE = HttpHeaderName.fromString("x-ms-resource-type");
-
-    private static final HttpHeaderName X_MS_PERMISSIONS = HttpHeaderName.fromString("x-ms-permissions");
-
-    private static final HttpHeaderName X_MS_LEASE_DURATION = HttpHeaderName.fromString("x-ms-lease-duration");
-
-    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
-
-    private static final HttpHeaderName X_MS_OWNER = HttpHeaderName.fromString("x-ms-owner");
-
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of PathsGetPropertiesHeaders class.
@@ -183,38 +160,38 @@ public final class PathsGetPropertiesHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public PathsGetPropertiesHeaders(HttpHeaders rawHeaders) {
-        this.xMsGroup = rawHeaders.getValue(X_MS_GROUP);
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        this.xMsLeaseStatus = rawHeaders.getValue(X_MS_LEASE_STATUS);
-        this.contentRange = rawHeaders.getValue(HttpHeaderName.CONTENT_RANGE);
-        this.xMsLeaseState = rawHeaders.getValue(X_MS_LEASE_STATE);
-        this.xMsAcl = rawHeaders.getValue(X_MS_ACL);
-        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
+        this.xMsGroup = rawHeaders.getValue("x-ms-group");
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        this.xMsLeaseStatus = rawHeaders.getValue("x-ms-lease-status");
+        this.contentRange = rawHeaders.getValue("Content-Range");
+        this.xMsLeaseState = rawHeaders.getValue("x-ms-lease-state");
+        this.xMsAcl = rawHeaders.getValue("x-ms-acl");
+        String lastModified = rawHeaders.getValue("Last-Modified");
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        this.xMsProperties = rawHeaders.getValue(X_MS_PROPERTIES);
-        String date = rawHeaders.getValue(HttpHeaderName.DATE);
+        this.xMsProperties = rawHeaders.getValue("x-ms-properties");
+        String date = rawHeaders.getValue("Date");
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }
-        this.xMsResourceType = rawHeaders.getValue(X_MS_RESOURCE_TYPE);
-        this.contentMD5 = rawHeaders.getValue(HttpHeaderName.CONTENT_MD5);
-        this.acceptRanges = rawHeaders.getValue(HttpHeaderName.ACCEPT_RANGES);
-        this.cacheControl = rawHeaders.getValue(HttpHeaderName.CACHE_CONTROL);
-        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
-        this.contentDisposition = rawHeaders.getValue(HttpHeaderName.CONTENT_DISPOSITION);
-        this.contentEncoding = rawHeaders.getValue(HttpHeaderName.CONTENT_ENCODING);
-        this.xMsPermissions = rawHeaders.getValue(X_MS_PERMISSIONS);
-        this.xMsLeaseDuration = rawHeaders.getValue(X_MS_LEASE_DURATION);
-        String contentLength = rawHeaders.getValue(HttpHeaderName.CONTENT_LENGTH);
+        this.xMsResourceType = rawHeaders.getValue("x-ms-resource-type");
+        this.contentMD5 = rawHeaders.getValue("Content-MD5");
+        this.acceptRanges = rawHeaders.getValue("Accept-Ranges");
+        this.cacheControl = rawHeaders.getValue("Cache-Control");
+        this.eTag = rawHeaders.getValue("ETag");
+        this.contentDisposition = rawHeaders.getValue("Content-Disposition");
+        this.contentEncoding = rawHeaders.getValue("Content-Encoding");
+        this.xMsPermissions = rawHeaders.getValue("x-ms-permissions");
+        this.xMsLeaseDuration = rawHeaders.getValue("x-ms-lease-duration");
+        String contentLength = rawHeaders.getValue("Content-Length");
         if (contentLength != null) {
             this.contentLength = Long.parseLong(contentLength);
         }
-        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
-        this.contentLanguage = rawHeaders.getValue(HttpHeaderName.CONTENT_LANGUAGE);
-        this.xMsOwner = rawHeaders.getValue(X_MS_OWNER);
-        this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        this.contentLanguage = rawHeaders.getValue("Content-Language");
+        this.xMsOwner = rawHeaders.getValue("x-ms-owner");
+        this.contentType = rawHeaders.getValue("Content-Type");
     }
 
     /**

@@ -10,7 +10,7 @@ parameters:
 - name: Arguments
   displayName: Arguments (regex of arguments to run)
   type: string
-  default: '(10240)|(10485760)|(1073741824)'
+  default: '(10240)|(10485760)|(1073741824)' 
 - name: Iterations
   displayName: Iterations (times to run each test)
   type: number
@@ -19,9 +19,6 @@ parameters:
   displayName: AdditionalArguments (passed to PerfAutomation)
   type: string
   default: ' '
-- name: Profile
-  type: boolean
-  default: false
 
 extends:
   template: /eng/pipelines/templates/jobs/perf.yml
@@ -33,4 +30,3 @@ extends:
     Arguments: ${{ parameters.Arguments }}
     Iterations: ${{ parameters.Iterations }}
     AdditionalArguments: ${{ parameters.AdditionalArguments }}
-    Profile: ${{ parameters.Profile }}

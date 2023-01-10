@@ -5,7 +5,6 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -58,14 +57,6 @@ public final class PathsLeaseHeaders {
     @JsonProperty(value = "Date")
     private DateTimeRfc1123 date;
 
-    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
-
-    private static final HttpHeaderName X_MS_LEASE_TIME = HttpHeaderName.fromString("x-ms-lease-time");
-
-    private static final HttpHeaderName X_MS_LEASE_ID = HttpHeaderName.fromString("x-ms-lease-id");
-
-    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
-
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of PathsLeaseHeaders class.
@@ -73,16 +64,16 @@ public final class PathsLeaseHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public PathsLeaseHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
-        this.xMsLeaseTime = rawHeaders.getValue(X_MS_LEASE_TIME);
-        this.xMsLeaseId = rawHeaders.getValue(X_MS_LEASE_ID);
-        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        this.eTag = rawHeaders.getValue("ETag");
+        this.xMsLeaseTime = rawHeaders.getValue("x-ms-lease-time");
+        this.xMsLeaseId = rawHeaders.getValue("x-ms-lease-id");
+        String lastModified = rawHeaders.getValue("Last-Modified");
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
-        String date = rawHeaders.getValue(HttpHeaderName.DATE);
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        String date = rawHeaders.getValue("Date");
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }
