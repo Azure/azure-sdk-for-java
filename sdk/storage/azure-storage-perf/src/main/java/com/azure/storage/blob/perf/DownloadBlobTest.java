@@ -10,20 +10,25 @@ import reactor.core.publisher.Mono;
 import java.io.OutputStream;
 
 public class DownloadBlobTest extends AbstractDownloadTest<BlobPerfStressOptions> {
-    private static final int BUFFER_SIZE = 16 * 1024 * 1024;
-    private static final OutputStream DEV_NULL = new NullOutputStream();
+    private static final int DEFAULT_BUFFER_SIZE = 16 * 1024 * 1024;
+    private final OutputStream devNull = new NullOutputStream();
 
-    private final byte[] buffer = new byte[BUFFER_SIZE];
+    private final int bufferSize;
+    private final byte[] buffer;
 
     public DownloadBlobTest(BlobPerfStressOptions options) {
         super(options);
+        // Dynamically determine the buffer size to be the minimum of 2 * the download size or 16MB.
+        // This reduces heap allocations when running smaller tests.
+        this.bufferSize = (int) Math.min(2 * options.getSize(), DEFAULT_BUFFER_SIZE);
+        this.buffer = new byte[bufferSize];
     }
 
 
     // Perform the API call to be tested here
     @Override
     public void run() {
-        blobClient.download(DEV_NULL);
+        blobClient.download(devNull);
     }
 
 
@@ -34,7 +39,7 @@ public class DownloadBlobTest extends AbstractDownloadTest<BlobPerfStressOptions
                 int readCount = 0;
                 int remaining = b.remaining();
                 while (readCount < remaining) {
-                    int expectedReadCount = Math.min(remaining - readCount, BUFFER_SIZE);
+                    int expectedReadCount = Math.min(remaining - readCount, bufferSize);
                     b.get(buffer, 0, expectedReadCount);
                     readCount += expectedReadCount;
                 }

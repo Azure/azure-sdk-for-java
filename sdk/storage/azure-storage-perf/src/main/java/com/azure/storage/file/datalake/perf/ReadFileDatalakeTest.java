@@ -16,19 +16,26 @@ import java.util.UUID;
 import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
 
 public class ReadFileDatalakeTest extends DirectoryTest<PerfStressOptions> {
-    private static final int BUFFER_SIZE = 16 * 1024 * 1024;
-    private static final OutputStream DEV_NULL = new NullOutputStream();
-    private static final String FILE_NAME = "perfstress-filev11-" + UUID.randomUUID().toString();
+    private static final int DEFAULT_BUFFER_SIZE = 16 * 1024 * 1024;
+    private static final String FILE_NAME = "perfstress-filev11-" + UUID.randomUUID();
 
     protected final DataLakeFileClient dataLakeFileClient;
     protected final DataLakeFileAsyncClient dataLakeFileAsyncClient;
 
-    private final byte[] buffer = new byte[BUFFER_SIZE];
+    private final OutputStream devNull = new NullOutputStream();
+
+    private final int bufferSize;
+    private final byte[] buffer;
 
     public ReadFileDatalakeTest(PerfStressOptions options) {
         super(options);
         dataLakeFileClient = dataLakeDirectoryClient.getFileClient(FILE_NAME);
         dataLakeFileAsyncClient = dataLakeDirectoryAsyncClient.getFileAsyncClient(FILE_NAME);
+
+        // Dynamically determine the buffer size to be the minimum of 2 * the download size or 16MB.
+        // This reduces heap allocations when running smaller tests.
+        this.bufferSize = (int) Math.min(2 * options.getSize(), DEFAULT_BUFFER_SIZE);
+        this.buffer = new byte[bufferSize];
     }
 
     // Required resource setup goes here, upload the file to be downloaded during tests.
@@ -42,7 +49,7 @@ public class ReadFileDatalakeTest extends DirectoryTest<PerfStressOptions> {
     // Perform the API call to be tested here
     @Override
     public void run() {
-        dataLakeFileClient.read(DEV_NULL);
+        dataLakeFileClient.read(devNull);
     }
 
     @Override
@@ -52,7 +59,7 @@ public class ReadFileDatalakeTest extends DirectoryTest<PerfStressOptions> {
                 int readCount = 0;
                 int remaining = b.remaining();
                 while (readCount < remaining) {
-                    int expectedReadCount = Math.min(remaining - readCount, BUFFER_SIZE);
+                    int expectedReadCount = Math.min(remaining - readCount, bufferSize);
                     b.get(buffer, 0, expectedReadCount);
                     readCount += expectedReadCount;
                 }
