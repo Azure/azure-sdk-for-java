@@ -305,12 +305,14 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getLocalitiesAdministrativeDivisionWithAAD(HttpClient httpClient) {
+        PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+                .listAvailableLocalities("US", null).blockFirst();
         StepVerifier.create(
                 this.getClientWithManagedIdentity(httpClient, "listAvailableLocalities")
-                        .listAvailableLocalities("US", "WA").next())
-                .assertNext((PhoneNumberLocality locality) -> {
-                    assertNotNull(locality);
-                    assertEquals(locality.getAdministrativeDivision().getAbbreviatedName(), "WA");
+                        .listAvailableLocalities("US", locality.getAdministrativeDivision().getAbbreviatedName()).next())
+                .assertNext((PhoneNumberLocality localityWithAD) -> {
+                    assertNotNull(localityWithAD);
+                    assertEquals(localityWithAD.getAdministrativeDivision().getAbbreviatedName(), locality.getAdministrativeDivision().getAbbreviatedName());
                 })
                 .verifyComplete();
     }
