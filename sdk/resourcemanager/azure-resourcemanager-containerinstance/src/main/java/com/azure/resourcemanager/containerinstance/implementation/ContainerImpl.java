@@ -27,7 +27,8 @@ import java.util.Map;
 /** Implementation for container group's container instance definition stages interface. */
 class ContainerImpl
     implements ContainerGroup.DefinitionStages.ContainerInstanceDefinitionStages.ContainerInstanceDefinition<
-        ContainerGroup.DefinitionStages.WithNextContainerInstance> {
+        ContainerGroup.DefinitionStages.WithNextContainerInstance>,
+        ContainerGroup.UpdateStages.ContainerInstanceUpdateStages.WithContainerInstanceUpdate<ContainerGroup.Update> {
     private Container innerContainer;
     private ContainerGroupImpl parent;
 
@@ -38,6 +39,11 @@ class ContainerImpl
                 .withName(containerName)
                 .withResources(
                     new ResourceRequirements().withRequests(new ResourceRequests().withCpu(1).withMemoryInGB(1.5)));
+    }
+
+    ContainerImpl(ContainerGroupImpl parent, Container container) {
+        this.parent = parent;
+        this.innerContainer = container;
     }
 
     @Override
@@ -134,7 +140,7 @@ class ContainerImpl
     @Override
     public ContainerImpl withInternalTcpPort(int port) {
         if (innerContainer.ports() == null) {
-            innerContainer.withPorts(new ArrayList<ContainerPort>());
+            innerContainer.withPorts(new ArrayList<>());
         }
         innerContainer.ports().add(new ContainerPort().withPort(port).withProtocol(ContainerNetworkProtocol.TCP));
 
@@ -378,5 +384,10 @@ class ContainerImpl
             this.innerContainer.withReadinessProbe(readinessProbe);
         }
         return this;
+    }
+
+    @Override
+    public ContainerGroupImpl parent() {
+        return parent;
     }
 }

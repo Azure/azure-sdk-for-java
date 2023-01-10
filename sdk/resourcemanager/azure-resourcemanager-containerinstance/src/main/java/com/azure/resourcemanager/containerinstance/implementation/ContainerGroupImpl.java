@@ -98,20 +98,13 @@ public class ContainerGroupImpl
         this.containerGroupMsiHandler.handleExternalIdentities();
         final ContainerGroupImpl self = this;
 
-        if (!isInCreateMode()) {
-            Resource resource = new Resource();
-            resource.withLocation(self.regionName());
-            resource.withTags(self.tags());
+        if (!isInCreateMode() || newFileShares == null || creatableStorageAccountKey == null) {
             return beforeCreation()
                 .then(
                     manager()
                         .serviceClient()
                         .getContainerGroups()
-                        .updateAsync(self.resourceGroupName(), self.name(), resource));
-        } else if (newFileShares == null || creatableStorageAccountKey == null) {
-            return beforeCreation()
-                .then(manager().serviceClient().getContainerGroups()
-                    .createOrUpdateAsync(resourceGroupName(), name(), innerModel()));
+                        .createOrUpdateAsync(self.resourceGroupName(), self.name(), innerModel()));
         } else {
             final StorageAccount storageAccount = this.taskResult(this.creatableStorageAccountKey);
             return beforeCreation()
@@ -131,6 +124,11 @@ public class ContainerGroupImpl
                         .getContainerGroups()
                         .createOrUpdateAsync(resourceGroupName(), name(), innerModel()));
         }
+    }
+
+    @Override
+    public ContainerImpl updateContainerInstance(String name) {
+        return new ContainerImpl(this, this.containers.get(name));
     }
 
     private static class VolumeParameters {

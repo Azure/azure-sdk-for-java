@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.containerinstance;
 
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.containerinstance.models.Container;
 import com.azure.resourcemanager.containerinstance.models.ContainerAttachResult;
 import com.azure.resourcemanager.containerinstance.models.ContainerExec;
@@ -179,5 +180,52 @@ public class ContainerGroupTest extends ContainerInstanceManagementTest {
         // duration before restart should be in between healthy duration plus last probe and healthy duration plus latest probe
         Assertions.assertTrue(durationBeforeRestart.compareTo(Duration.ofSeconds(healthySeconds + probePeriodSeconds * (failureThreshold - 1))) > 0);
         Assertions.assertTrue(durationBeforeRestart.compareTo(Duration.ofSeconds(healthySeconds + probePeriodSeconds * failureThreshold)) <= 0);
+    }
+
+    @Test
+    public void testContainerUpdate() {
+        String containerGroupName = generateRandomResourceName("container", 20);
+        String dnsPrefix = generateRandomResourceName("aci-dns", 20);
+        Region region = Region.US_EAST;
+        String containerName1 = generateRandomResourceName("container", 20);
+
+        final String shareName = generateRandomResourceName("fileshare", 20);
+        final String volumeMountName = "aci-helloshare";
+
+        ContainerGroup containerGroup =
+            containerInstanceManager
+                .containerGroups()
+                .define(containerGroupName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withLinux()
+                .withPublicImageRegistryOnly()
+                .withoutVolume()
+                .defineContainerInstance(containerName1)
+                    .withImage("mcr.microsoft.com/azuredocs/aci-helloworld")
+                    .withExternalTcpPort(80)
+                    .withCpuCoreCount(1)
+                    .attach()
+                .withDnsPrefix(dnsPrefix)
+                .create();
+
+        containerGroup.update()
+            .updateContainerInstance(containerName1)
+                .withImage("nginx")
+                .withExternalTcpPort(8080)
+                .withStartingCommandLine("/bin/sh", "-c", "touch /tmp/healthy; sleep 600;")
+                .withEnvironmentVariable("myEnvName", "myEnvValue")
+                .withLivenessProbeExecutionCommand(Arrays.asList("cat", "/tmp/healthy"), 30)
+                .withReadinessProbeExecutionCommand(Arrays.asList("cat", "/tmp/healthy"), 30)
+                .parent()
+            .apply();
+
+        Container container = containerGroup.containers().get(containerName1);
+
+        Assertions.assertTrue(container.ports().stream().anyMatch(port -> port.port() == 8080));
+        Assertions.assertTrue(container.environmentVariables().stream().anyMatch(environmentVariable -> environmentVariable.name().equals("myEnvName")));
+        Assertions.assertFalse(CoreUtils.isNullOrEmpty(container.command()));
+        Assertions.assertNotNull(container.livenessProbe());
+        Assertions.assertNotNull(container.readinessProbe());
     }
 }

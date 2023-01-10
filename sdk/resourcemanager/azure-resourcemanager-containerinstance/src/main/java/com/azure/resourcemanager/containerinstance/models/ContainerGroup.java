@@ -15,6 +15,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
+import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import java.util.Collection;
 import java.util.List;
@@ -1312,7 +1313,397 @@ public interface ContainerGroup
         }
     }
 
+    /** Grouping of the container group update stages. */
+    interface UpdateStages {
+
+        /** /** The stage of the container group definition allowing to define new or update existing container instance. */
+        interface WithContainerInstanceDefineOrUpdate {
+            /**
+             * Begins the update of specified container instance.
+             *
+             * @param name the name of the existing container instance to update.
+             * @return the next stage of the update
+             */
+            ContainerInstanceUpdateStages.WithContainerInstanceUpdate<Update> updateContainerInstance(String name);
+        }
+
+        /** Grouping of volume definition stages. */
+        interface ContainerInstanceUpdateStages {
+            /**
+             * The stage of the container instance update allowing to specify the container image.
+             *
+             * @param <ParentT> the stage of the parent update to return to after updating this definition
+             */
+            interface WithImage<ParentT> {
+                /**
+                 * Specifies the container image to be used.
+                 *
+                 * @param imageName the container image
+                 * @return the next stage of the update
+                 */
+                WithOrWithoutPorts<ParentT> withImage(String imageName);
+            }
+
+            /**
+             * The stage of the container instance update allowing to specify (or not) the container ports.
+             *
+             * @param <ParentT> the stage of the parent update to return to after updating this definition
+             */
+            interface WithOrWithoutPorts<ParentT> extends WithPorts<ParentT>, WithoutPorts<ParentT> {
+            }
+
+            /**
+             * The stage of the container instance update allowing not to specify any container ports internal or
+             * external.
+             *
+             * @param <ParentT> the stage of the parent update to return to after updating this definition
+             */
+            interface WithoutPorts<ParentT> {
+                /**
+                 * Specifies that not ports will be opened internally or externally for this container instance.
+                 *
+                 * @return the next stage of the definition
+                 */
+                WithContainerInstanceUpdate<ParentT> withoutPorts();
+            }
+
+            /**
+             * The stage of the container instance update allowing to specify the container ports.
+             *
+             * @param <ParentT> the stage of the parent update to return to after updating this definition
+             */
+            interface WithPorts<ParentT> {
+                /**
+                 * Specifies the container's TCP ports available to external clients.
+                 *
+                 * <p>A public IP address will be create to allow external clients to reach the containers within the
+                 * group. To enable external clients to reach a container within the group, you must expose the port on
+                 * the IP address and from the container. Because containers within the group share a port namespace,
+                 * port mapping is not supported.
+                 *
+                 * @param ports array of TCP ports to be exposed externally
+                 * @return the next stage of the update
+                 */
+                WithContainerInstanceUpdate<ParentT> withExternalTcpPorts(int... ports);
+
+                /**
+                 * Specifies the container's TCP port available to external clients.
+                 *
+                 * <p>A public IP address will be create to allow external clients to reach the containers within the
+                 * group. To enable external clients to reach a container within the group, you must expose the port on
+                 * the IP address and from the container. Because containers within the group share a port namespace,
+                 * port mapping is not supported.
+                 *
+                 * @param port TCP port to be exposed externally
+                 * @return the next stage of the update
+                 */
+                WithContainerInstanceUpdate<ParentT> withExternalTcpPort(int port);
+
+                /**
+                 * Specifies the container's UDP ports available to external clients.
+                 *
+                 * <p>A public IP address will be create to allow external clients to reach the containers within the
+                 * group. To enable external clients to reach a container within the group, you must expose the port on
+                 * the IP address and from the container. Because containers within the group share a port namespace,
+                 * port mapping is not supported.
+                 *
+                 * @param ports array of UDP ports to be exposed externally
+                 * @return the next stage of the update
+                 */
+                WithContainerInstanceUpdate<ParentT> withExternalUdpPorts(int... ports);
+
+                /**
+                 * Specifies the container's UDP port available to external clients.
+                 *
+                 * <p>A public IP address will be create to allow external clients to reach the containers within the
+                 * group. To enable external clients to reach a container within the group, you must expose the port on
+                 * the IP address and from the container. Because containers within the group share a port namespace,
+                 * port mapping is not supported.
+                 *
+                 * @param port UDP port to be exposed externally
+                 * @return the next stage of the update
+                 */
+                WithContainerInstanceUpdate<ParentT> withExternalUdpPort(int port);
+
+                /**
+                 * Specifies the container's TCP ports are available to internal clients only (other container instances
+                 * within the container group).
+                 *
+                 * <p>Containers within a group can reach each other via localhost on the ports that they have exposed,
+                 * even if those ports are not exposed externally on the group's IP address.
+                 *
+                 * @param ports array of TCP ports to be exposed internally
+                 * @return the next stage of the update
+                 */
+                WithContainerInstanceUpdate<ParentT> withInternalTcpPorts(int... ports);
+
+                /**
+                 * Specifies the container's Udp ports are available to internal clients only (other container instances
+                 * within the container group).
+                 *
+                 * <p>Containers within a group can reach each other via localhost on the ports that they have exposed,
+                 * even if those ports are not exposed externally on the group's IP address.
+                 *
+                 * @param ports array of UDP ports to be exposed internally
+                 * @return the next stage of the update
+                 */
+                WithContainerInstanceUpdate<ParentT> withInternalUdpPorts(int... ports);
+
+                /**
+                 * Specifies the container's TCP port is available to internal clients only (other container instances
+                 * within the container group).
+                 *
+                 * <p>Containers within a group can reach each other via localhost on the ports that they have exposed,
+                 * even if those ports are not exposed externally on the group's IP address.
+                 *
+                 * @param port TCP port to be exposed internally
+                 * @return the next stage of the update
+                 */
+                WithContainerInstanceUpdate<ParentT> withInternalTcpPort(int port);
+
+                /**
+                 * Specifies the container's UDP port is available to internal clients only (other container instances
+                 * within the container group).
+                 *
+                 * <p>Containers within a group can reach each other via localhost on the ports that they have exposed,
+                 * even if those ports are not exposed externally on the group's IP address.
+                 *
+                 * @param port UDP port to be exposed internally
+                 * @return the next stage of the update
+                 */
+                WithContainerInstanceUpdate<ParentT> withInternalUdpPort(int port);
+            }
+
+            /**
+             * The stage of the container instance update allowing to specify the starting command line.
+             *
+             * @param <ParentT> the stage of the parent update to return to after updating this definition
+             */
+            interface WithStartingCommandLine<ParentT> {
+                /**
+                 * Specifies the starting command lines.
+                 *
+                 * @param executable the executable which it will call after initializing the container
+                 * @param parameters the parameter list for the executable to be called
+                 * @return the next stage of the update
+                 */
+                WithContainerInstanceUpdate<ParentT> withStartingCommandLine(String executable, String... parameters);
+
+                /**
+                 * Specifies the starting command line.
+                 *
+                 * @param executable the executable or path to the executable that will be called after initializing the
+                 *     container
+                 * @return the next stage of the update
+                 */
+                WithContainerInstanceUpdate<ParentT> withStartingCommandLine(String executable);
+            }
+
+            /**
+             * The stage of the container instance update allowing to specify the environment variables.
+             *
+             * @param <ParentT> the stage of the parent update to return to after updating this definition
+             */
+            interface WithEnvironmentVariables<ParentT> {
+                /**
+                 * Specifies the environment variables.
+                 *
+                 * @param environmentVariables the environment variables in a name and value pair to be set after the
+                 *     container gets initialized
+                 * @return the next stage of the update
+                 */
+                WithContainerInstanceUpdate<ParentT> withEnvironmentVariables(Map<String, String> environmentVariables);
+
+                /**
+                 * Specifies the environment variable.
+                 *
+                 * @param envName the environment variable name
+                 * @param envValue the environment variable value
+                 * @return the next stage of the update
+                 */
+                WithContainerInstanceUpdate<ParentT> withEnvironmentVariable(String envName, String envValue);
+
+                /**
+                 * Specifies a collection of name and secure value pairs for the environment variables.
+                 *
+                 * @param environmentVariables the environment variables in a name and value pair to be set after the
+                 *     container gets initialized
+                 * @return the next stage of the update
+                 */
+                WithContainerInstanceUpdate<ParentT> withEnvironmentVariableWithSecuredValue(
+                    Map<String, String> environmentVariables);
+
+                /**
+                 * Specifies the environment variable that has a secured value.
+                 *
+                 * @param envName the environment variable name
+                 * @param securedValue the environment variable secured value
+                 * @return the next stage of the update
+                 */
+                WithContainerInstanceUpdate<ParentT> withEnvironmentVariableWithSecuredValue(
+                    String envName, String securedValue);
+            }
+
+            /**
+             * The stage of the container instance update allowing to specify liveness probe.
+             * Azure Container Instances supports liveness probes so that you can configure your containers within your
+             * container group to restart if critical functionality is not working.
+             *
+             * @param <ParentT> the stage of the parent update to return to after updating this definition
+             */
+            interface WithLivenessProbe<ParentT> {
+                /**
+                 * Specifies the container's liveness probe to execute a given command at a given interval.
+                 * <p>If the probe command execution fails, the container will restart.</p>
+                 * <p>Only 1 liveness probe can be set for a given container.</p>
+                 *
+                 * @param command the command for the probe to execute
+                 * @param probePeriodSeconds the interval at which the command executes
+                 * @return the next stage of the update
+                 * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-liveness-probe#liveness-command">liveness command</a>
+                 * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-liveness-probe#liveness-probes-and-restart-policies">liveness probes and restart policies</a>
+                 */
+                WithContainerInstanceUpdate<ParentT> withLivenessProbeExecutionCommand(List<String> command, int probePeriodSeconds);
+
+                /**
+                 * Specifies the container's liveness probe to execute a given command at a given interval.
+                 * <p>After the probe command execution failure reaches the given threshold, the container will restart.</p>
+                 * <p>Only 1 liveness probe can be set for a given container.</p>
+                 *
+                 * @param command the command for the probe to execute
+                 * @param probePeriodSeconds the interval at which the command executes
+                 * @param failureThreshold the consecutive probe failure count before the container restarts
+                 * @return the next stage of the update
+                 * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-liveness-probe#liveness-command">liveness command</a>
+                 * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-liveness-probe#liveness-probes-and-restart-policies">liveness probes and restart policies</a>
+                 */
+                WithContainerInstanceUpdate<ParentT> withLivenessProbeExecutionCommand(List<String> command, int probePeriodSeconds, int failureThreshold);
+
+                /**
+                 * Specifies the container's liveness probe to perform an Http Get at a given interval.
+                 * <p>If the probe HTTP GET operation fails with non-200 response, the container will restart.</p>
+                 * <p>Only 1 liveness probe can be set for a given container.</p>
+                 *
+                 * @param path the path to perform the Http Get, starts with "/"
+                 * @param probePeriodSeconds the interval at which the Http Get performs
+                 * @param port the port number to probe
+                 * @return the next stage of the update
+                 * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-liveness-probe#liveness-probes-and-restart-policies">liveness probes and restart policies</a>
+                 */
+                WithContainerInstanceUpdate<ParentT> withLivenessProbeHttpGet(String path, int port, int probePeriodSeconds);
+
+                /**
+                 * Specifies the container's liveness probe to perform an Http Get at a given interval.
+                 * <p>After the probe HTTP GET failure with non-200 response reaches the given threshold, the container will restart.</p>
+                 * <p>Only 1 liveness probe can be set for a given container.</p>
+                 *
+                 * @param path the path to perform the Http Get, starts with "/"
+                 * @param probePeriodSeconds the interval at which the Http Get performs
+                 * @param port the port number to probe
+                 * @param failureThreshold the consecutive probe failure count before the container restarts
+                 * @return the next stage of the update
+                 * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-liveness-probe#liveness-probes-and-restart-policies">liveness probes and restart policies</a>
+                 */
+                WithContainerInstanceUpdate<ParentT> withLivenessProbeHttpGet(String path, int port, int probePeriodSeconds, int failureThreshold);
+
+                /**
+                 * Specifies the container's liveness probe.
+                 *
+                 * @param livenessProbe the liveness probe
+                 * @return the next stage of the update
+                 * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-liveness-probe#liveness-probes-and-restart-policies">liveness probes and restart policies</a>
+                 */
+                WithContainerInstanceUpdate<ParentT> withLivenessProbe(ContainerProbe livenessProbe);
+            }
+
+            /**
+             * The stage of the container instance update allowing to specify readiness probe.
+             * Azure Container Instances supports readiness probes to include configurations so that your container
+             * can't be accessed under certain conditions.
+             *
+             * @param <ParentT> the stage of the parent update to return to after updating this definition
+             */
+            interface WithReadinessProbe<ParentT> {
+                /**
+                 * Specifies the container's readiness probe to execute a given command at a given interval.
+                 * <p>If the probe command execution fails, the container will continue to run but can't be accessed.</p>
+                 * <p>Only 1 readiness probe can be set for a given container.</p>
+                 *
+                 * @param command the command for the probe to execute
+                 * @param probePeriodSeconds the interval at which the command executes
+                 * @return the next stage of the update
+                 * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-readiness-probe#readiness-command">readiness command</a>
+                 */
+                WithContainerInstanceUpdate<ParentT> withReadinessProbeExecutionCommand(List<String> command, int probePeriodSeconds);
+
+                /**
+                 * Specifies the container's readiness probe to execute a given command at a given interval.
+                 * <p>After the probe command execution failure reaches the given threshold, the container will continue to run but can't be accessed.</p>
+                 * <p>Only 1 readiness probe can be set for a given container.</p>
+                 *
+                 * @param command the command for the probe to execute
+                 * @param probePeriodSeconds the interval at which the command executes
+                 * @param failureThreshold the consecutive probe failure count before the container becomes inaccessible
+                 * @return the next stage of the update
+                 * @see <a href="https://learn.microsoft.com/en-us/azure/container-instances/container-instances-readiness-probe#readiness-command">readiness command</a>
+                 */
+                WithContainerInstanceUpdate<ParentT> withReadinessProbeExecutionCommand(List<String> command, int probePeriodSeconds, int failureThreshold);
+
+                /**
+                 * Specifies the container's readiness probe to perform an Http Get at a given interval.
+                 * <p>If the probe HTTP GET operation fails with non-200 response, the container will continue to run but can't be accessed.</p>
+                 * <p>Only 1 readiness probe can be set for a given container.</p>
+                 *
+                 * @param path the path to perform the Http Get, starts with "/"
+                 * @param port the port number to probe
+                 * @param probePeriodSeconds the interval at which the Http Get performs
+                 * @return the next stage of the update
+                 */
+                WithContainerInstanceUpdate<ParentT> withReadinessProbeHttpGet(String path, int port, int probePeriodSeconds);
+
+                /**
+                 * Specifies the container's readiness probe to perform an Http Get at a given interval.
+                 * <p>After the probe HTTP GET failure with non-200 response reaches the given threshold, the container will continue to run but can't be accessed.</p>
+                 * <p>Only 1 readiness probe can be set for a given container.</p>
+                 *
+                 * @param path the path to perform the Http Get, starts with "/"
+                 * @param port the port number to probe
+                 * @param probePeriodSeconds the interval at which the Http Get performs
+                 * @param failureThreshold the consecutive probe failure count before the container becomes inaccessible
+                 * @return the next stage of the update
+                 */
+                WithContainerInstanceUpdate<ParentT> withReadinessProbeHttpGet(String path, int port, int probePeriodSeconds, int failureThreshold);
+
+                /**
+                 * Specifies the container's readiness probe.
+                 *
+                 * @param readinessProbe the readiness probe
+                 * @return the next stage of the update
+                 */
+                WithContainerInstanceUpdate<ParentT> withReadinessProbe(ContainerProbe readinessProbe);
+            }
+
+            /**
+             * The final stage of the container instance update.
+             *
+             * <p>At this stage, any remaining optional settings can be specified, or the subnet definition can be
+             * attached to the parent virtual network definition.
+             *
+             * @param <ParentT> the stage of the parent update to return to after updating this definition
+             */
+            interface WithContainerInstanceUpdate<ParentT>
+                extends WithStartingCommandLine<ParentT>,
+                WithEnvironmentVariables<ParentT>,
+                WithLivenessProbe<ParentT>,
+                WithReadinessProbe<ParentT>,
+                WithImage<ParentT>,
+                WithOrWithoutPorts<ParentT>,
+                Settable<ParentT> {
+            }
+        }
+    }
+
     /** The template for an update operation, containing all the settings that can be modified. */
-    interface Update extends Resource.UpdateWithTags<Update>, Appliable<ContainerGroup> {
+    interface Update extends Resource.UpdateWithTags<Update>, Appliable<ContainerGroup>, UpdateStages.WithContainerInstanceDefineOrUpdate {
     }
 }
