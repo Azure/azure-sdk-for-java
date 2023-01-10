@@ -67,7 +67,7 @@ public final class BatchEndpointsClientImpl implements BatchEndpointsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
-    private interface BatchEndpointsService {
+    public interface BatchEndpointsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
