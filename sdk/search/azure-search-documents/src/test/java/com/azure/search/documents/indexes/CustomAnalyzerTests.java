@@ -132,7 +132,7 @@ public class CustomAnalyzerTests extends SearchTestBase {
     }
 
     @Test
-    public void canSearchWithCustomAnalyzer() {
+    public void canSearchWithCustomAnalyzerSync() {
         SearchClient searchClient = setupSearchIndexForCustomAnalyzerSearch(searchIndexClient::getSearchClient);
 
         Iterator<SearchResult> iterator = searchClient
