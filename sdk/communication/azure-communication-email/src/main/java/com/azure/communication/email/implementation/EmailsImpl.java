@@ -275,6 +275,9 @@ public final class EmailsImpl {
                                 accept,
                                 requestOptionsLocal,
                                 context));
+        Response<Void> testResponse = response.block();
+        System.out.println("EmailsImpl - printing response headers");
+        System.out.println(testResponse.getHeaders());
         System.out.println("EmailsImpl - end");
         return response;
     }
