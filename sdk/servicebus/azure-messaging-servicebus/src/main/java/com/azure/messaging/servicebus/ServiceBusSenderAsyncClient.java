@@ -11,11 +11,12 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.RecoverableReactorConnection;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
+import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 import org.apache.qpid.proton.amqp.Binary;
@@ -164,7 +165,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     private final MessagingEntityType entityType;
     private final Runnable onClientClose;
     private final String entityName;
-    private final ServiceBusConnectionProcessor connectionProcessor;
+    private final RecoverableReactorConnection<ServiceBusReactorAmqpConnection> connectionProcessor;
     private final String viaEntityName;
     private final String identifier;
     private final ServiceBusSenderInstrumentation instrumentation;
@@ -174,8 +175,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * Creates a new instance of this {@link ServiceBusSenderAsyncClient} that sends messages to a Service Bus entity.
      */
     ServiceBusSenderAsyncClient(String entityName, MessagingEntityType entityType,
-        ServiceBusConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, ServiceBusSenderInstrumentation instrumentation,
-        MessageSerializer messageSerializer, Runnable onClientClose, String viaEntityName, String identifier) {
+        RecoverableReactorConnection<ServiceBusReactorAmqpConnection> connectionProcessor, AmqpRetryOptions retryOptions,
+        ServiceBusSenderInstrumentation instrumentation, MessageSerializer messageSerializer, Runnable onClientClose,
+        String viaEntityName, String identifier) {
         // Caching the created link so we don't invoke another link creation.
         this.messageSerializer = Objects.requireNonNull(messageSerializer,
             "'messageSerializer' cannot be null.");
@@ -510,6 +512,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             .flatMapMany(messageBatch ->
                 tracer.traceFluxWithLinks("ServiceBus.scheduleMessages",
                     connectionProcessor
+                        .get()
                         .flatMap(connection -> connection.getManagementNode(entityName, entityType))
                         .flatMapMany(managementNode -> managementNode.schedule(messageBatch.getMessages(), scheduledEnqueueTime,
                             messageBatch.getMaxSizeInBytes(), linkName.get(), transactionContext)),
@@ -539,6 +542,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         return tracer.traceMono("ServiceBus.cancelScheduledMessage",
                 connectionProcessor
+                    .get()
                     .flatMap(connection -> connection.getManagementNode(entityName, entityType))
                     .flatMap(managementNode -> managementNode.cancelScheduledMessages(
                         Collections.singletonList(sequenceNumber), linkName.get())))
@@ -568,6 +572,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         return tracer.traceMono("ServiceBus.cancelScheduledMessages",
                 connectionProcessor
+                    .get()
                     .flatMap(connection -> connection.getManagementNode(entityName, entityType))
                     .flatMap(managementNode -> managementNode.cancelScheduledMessages(sequenceNumbers, linkName.get())))
             .onErrorMap(this::mapError);
@@ -592,6 +597,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         return tracer.traceMono("ServiceBus.createTransaction",
                 connectionProcessor
+                    .get()
                     .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
                     .flatMap(transactionSession -> transactionSession.createTransaction())
                     .map(transaction -> new ServiceBusTransactionContext(transaction.getTransactionId())))
@@ -625,6 +631,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         return
             tracer.traceMono("ServiceBus.commitTransaction", connectionProcessor
+                .get()
                 .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
                 .flatMap(transactionSession -> transactionSession.commitTransaction(new AmqpTransaction(
                     transactionContext.getTransactionId()))))
@@ -658,6 +665,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         return tracer.traceMono("ServiceBus.rollbackTransaction",
                 connectionProcessor
+                .get()
                 .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
                 .flatMap(transactionSession -> transactionSession.rollbackTransaction(new AmqpTransaction(
                     transactionContext.getTransactionId()))))
@@ -710,6 +718,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                         : MAX_MESSAGE_LENGTH_BYTES;
 
                     return connectionProcessor
+                        .get()
                         .flatMap(connection -> connection.getManagementNode(entityName, entityType))
                         .flatMap(managementNode -> managementNode.schedule(Arrays.asList(message), scheduledEnqueueTime,
                             maxSize, link.getLinkName(), transactionContext)
@@ -806,6 +815,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
     private Mono<AmqpSendLink> getSendLink() {
         return connectionProcessor
+            .get()
             .flatMap(connection -> {
                 if (!CoreUtils.isNullOrEmpty(viaEntityName)) {
                     return connection.createSendLink("VIA-".concat(viaEntityName), viaEntityName, retryOptions,
