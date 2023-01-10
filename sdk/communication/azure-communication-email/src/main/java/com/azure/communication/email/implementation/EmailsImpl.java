@@ -265,7 +265,8 @@ public final class EmailsImpl {
         requestOptionsLocal.setHeader("repeatability-request-id", UUID.randomUUID().toString());
         requestOptionsLocal.setHeader(
                 "repeatability-first-sent", DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()));
-        return FluxUtil.withContext(
+        System.out.println("About to send with response");
+        Mono<Response<Void>> response = FluxUtil.withContext(
                 context ->
                         service.send(
                                 this.client.getEndpoint(),
@@ -274,6 +275,8 @@ public final class EmailsImpl {
                                 accept,
                                 requestOptionsLocal,
                                 context));
+        System.out.println("Sent with response");
+        return response;
     }
 
     /**
