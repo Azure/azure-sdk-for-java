@@ -65,6 +65,9 @@ public class WebHookActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties.reportStatusOnCallBack")
     private Object reportStatusOnCallBack;
 
+    /** Creates an instance of WebHookActivity class. */
+    public WebHookActivity() {}
+
     /**
      * Get the method property: Rest API method for target endpoint.
      *

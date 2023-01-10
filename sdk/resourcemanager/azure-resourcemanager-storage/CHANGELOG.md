@@ -1,6 +1,12 @@
 # Release History
 
-## 2.22.0-beta.1 (Unreleased)
+## 2.23.0-beta.1 (Unreleased)
+
+### Bugs Fixed
+
+- Fixed a bug that `StorageAccount.infrastructureEncryptionEnabled()` always returns `false`.
+
+## 2.22.0 (2022-12-23)
 
 ### Other Changes
 

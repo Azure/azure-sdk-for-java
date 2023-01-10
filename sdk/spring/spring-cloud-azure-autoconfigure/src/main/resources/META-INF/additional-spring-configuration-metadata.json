@@ -1575,6 +1575,12 @@
       "description": "Whether to enable passwordless connections to Azure databases by using OAuth2 Azure Active Directory token credentials.",
       "sourceType": "com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties",
       "defaultValue": false
+    },
+    {
+      "name": "spring.cloud.azure.message-converter.isolated-object-mapper",
+      "type": "java.lang.Boolean",
+      "description": "Whether to use an isolated object mapper to serialize/deserialize message in EventHubsMessageConverter/ServiceBusMessageConverter/StorageQueueMessageConverter.",
+      "defaultValue": "true"
     }
   ],
   "hints": [

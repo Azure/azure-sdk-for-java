@@ -46,6 +46,9 @@ public final class OracleSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
+    /** Creates an instance of OracleSource class. */
+    public OracleSource() {}
+
     /**
      * Get the oracleReaderQuery property: Oracle reader query. Type: string (or Expression with resultType string).
      *

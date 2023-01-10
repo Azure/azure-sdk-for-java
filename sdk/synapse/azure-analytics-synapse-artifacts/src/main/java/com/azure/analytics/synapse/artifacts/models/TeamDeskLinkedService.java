@@ -55,6 +55,9 @@ public class TeamDeskLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of TeamDeskLinkedService class. */
+    public TeamDeskLinkedService() {}
+
     /**
      * Get the authenticationType property: The authentication type to use.
      *

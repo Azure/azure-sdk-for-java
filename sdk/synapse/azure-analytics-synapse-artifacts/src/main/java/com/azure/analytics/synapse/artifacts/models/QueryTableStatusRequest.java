@@ -22,6 +22,9 @@ public final class QueryTableStatusRequest {
     @JsonProperty(value = "continuationToken")
     private Object continuationToken;
 
+    /** Creates an instance of QueryTableStatusRequest class. */
+    public QueryTableStatusRequest() {}
+
     /**
      * Get the maxSegmentCount property: Max segment count to query table status.
      *

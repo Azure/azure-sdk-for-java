@@ -23,6 +23,10 @@ public final class BaselineMetadata {
     @JsonProperty(value = "value", required = true)
     private String value;
 
+    /** Creates an instance of BaselineMetadata class. */
+    public BaselineMetadata() {
+    }
+
     /**
      * Get the name property: Name of the baseline metadata.
      *

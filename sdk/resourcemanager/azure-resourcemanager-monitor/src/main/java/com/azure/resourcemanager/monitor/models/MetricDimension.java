@@ -30,6 +30,10 @@ public final class MetricDimension {
     @JsonProperty(value = "values", required = true)
     private List<String> values;
 
+    /** Creates an instance of MetricDimension class. */
+    public MetricDimension() {
+    }
+
     /**
      * Get the name property: Name of the dimension.
      *

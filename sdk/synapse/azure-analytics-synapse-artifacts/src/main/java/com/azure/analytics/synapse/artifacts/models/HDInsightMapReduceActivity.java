@@ -66,6 +66,9 @@ public class HDInsightMapReduceActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.defines")
     private Map<String, Object> defines;
 
+    /** Creates an instance of HDInsightMapReduceActivity class. */
+    public HDInsightMapReduceActivity() {}
+
     /**
      * Get the storageLinkedServices property: Storage linked service references.
      *

@@ -12,4 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("CustomSetupBase")
 @Immutable
-public final class CustomSetupBase {}
+public final class CustomSetupBase {
+    /** Creates an instance of CustomSetupBase class. */
+    public CustomSetupBase() {}
+}

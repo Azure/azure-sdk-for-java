@@ -7,7 +7,7 @@ import com.azure.cosmos.spark.utils.CosmosPatchTestHelper
 import org.apache.spark.sql.types.{NumericType, StructType}
 
 import java.text.SimpleDateFormat
-import java.time.Instant
+import java.time.{Duration, Instant}
 import java.util.UUID
 import scala.collection.mutable.ListBuffer
 import scala.util.Random
@@ -245,11 +245,13 @@ class CosmosConfigSpec extends UnitSpec {
     config.customQuery shouldBe empty
     config.maxItemCount shouldBe 1000
     config.prefetchBufferSize shouldBe 8
+    config.dedicatedGatewayRequestOptions.getMaxIntegratedCacheStaleness shouldBe null
 
     userConfig = Map(
       "spark.cosmos.read.forceEventualConsistency" -> "false",
       "spark.cosmos.read.schemaConversionMode" -> "Strict",
-      "spark.cosmos.read.maxItemCount" -> "1000"
+      "spark.cosmos.read.maxItemCount" -> "1000",
+      "spark.cosmos.read.maxIntegratedCacheStalenessInMS" -> "1000"
     )
 
     config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
@@ -259,6 +261,7 @@ class CosmosConfigSpec extends UnitSpec {
     config.customQuery shouldBe empty
     config.maxItemCount shouldBe 1000
     config.prefetchBufferSize shouldBe 8
+    config.dedicatedGatewayRequestOptions.getMaxIntegratedCacheStaleness shouldBe Duration.ofMillis(1000)
 
     userConfig = Map(
       "spark.cosmos.read.forceEventualConsistency" -> "false",

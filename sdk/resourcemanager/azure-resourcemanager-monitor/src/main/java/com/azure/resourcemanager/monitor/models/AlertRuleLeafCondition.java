@@ -37,6 +37,10 @@ public class AlertRuleLeafCondition {
     @JsonProperty(value = "containsAny")
     private List<String> containsAny;
 
+    /** Creates an instance of AlertRuleLeafCondition class. */
+    public AlertRuleLeafCondition() {
+    }
+
     /**
      * Get the field property: The name of the Activity Log event's field that this condition will examine. The possible
      * values for this field are (case-insensitive): 'resourceId', 'category', 'caller', 'level', 'operationName',

@@ -22,6 +22,10 @@ public final class MetadataValueInner {
     @JsonProperty(value = "value")
     private String value;
 
+    /** Creates an instance of MetadataValueInner class. */
+    public MetadataValueInner() {
+    }
+
     /**
      * Get the name property: the name of the metadata.
      *

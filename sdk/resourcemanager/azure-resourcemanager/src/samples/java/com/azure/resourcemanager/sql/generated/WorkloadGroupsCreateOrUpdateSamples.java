@@ -10,7 +10,7 @@ import com.azure.resourcemanager.sql.fluent.models.WorkloadGroupInner;
 /** Samples for WorkloadGroups CreateOrUpdate. */
 public final class WorkloadGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/CreateOrUpdateWorkloadGroupMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateOrUpdateWorkloadGroupMin.json
      */
     /**
      * Sample code: Create a workload group with the required properties specified.
@@ -37,7 +37,7 @@ public final class WorkloadGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/CreateOrUpdateWorkloadGroupMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateOrUpdateWorkloadGroupMax.json
      */
     /**
      * Sample code: Create a workload group with all properties specified.
@@ -60,7 +60,7 @@ public final class WorkloadGroupsCreateOrUpdateSamples {
                     .withMinResourcePercent(0)
                     .withMaxResourcePercent(100)
                     .withMinResourcePercentPerRequest(3.0)
-                    .withMaxResourcePercentPerRequest(3.0)
+                    .withMaxResourcePercentPerRequest(3.0D)
                     .withImportance("normal")
                     .withQueryExecutionTimeout(0),
                 Context.NONE);

@@ -70,6 +70,22 @@ public final class ManagedDatabaseSecurityAlertPoliciesClientImpl
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/securityAlertPolicies")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ManagedDatabaseSecurityAlertPolicyListResult>> listByDatabase(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/managedInstances/{managedInstanceName}/databases/{databaseName}/securityAlertPolicies"
                 + "/{securityAlertPolicyName}")
         @ExpectedResponses({200})
@@ -105,22 +121,6 @@ public final class ManagedDatabaseSecurityAlertPoliciesClientImpl
             Context context);
 
         @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/databases/{databaseName}/securityAlertPolicies")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedDatabaseSecurityAlertPolicyListResult>> listByDatabase(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("managedInstanceName") String managedInstanceName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -129,439 +129,6 @@ public final class ManagedDatabaseSecurityAlertPoliciesClientImpl
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
             Context context);
-    }
-
-    /**
-     * Gets a managed database's security alert policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database for which the security alert policy is defined.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's security alert policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManagedDatabaseSecurityAlertPolicyInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (managedInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (securityAlertPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2017-03-01-preview";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            databaseName,
-                            securityAlertPolicyName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Gets a managed database's security alert policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database for which the security alert policy is defined.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's security alert policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedDatabaseSecurityAlertPolicyInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (managedInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (securityAlertPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2017-03-01-preview";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                databaseName,
-                securityAlertPolicyName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context);
-    }
-
-    /**
-     * Gets a managed database's security alert policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database for which the security alert policy is defined.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's security alert policy on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedDatabaseSecurityAlertPolicyInner> getAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName) {
-        return getWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, securityAlertPolicyName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Gets a managed database's security alert policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database for which the security alert policy is defined.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's security alert policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedDatabaseSecurityAlertPolicyInner get(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName) {
-        return getAsync(resourceGroupName, managedInstanceName, databaseName, securityAlertPolicyName).block();
-    }
-
-    /**
-     * Gets a managed database's security alert policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database for which the security alert policy is defined.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's security alert policy along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagedDatabaseSecurityAlertPolicyInner> getWithResponse(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        Context context) {
-        return getWithResponseAsync(
-                resourceGroupName, managedInstanceName, databaseName, securityAlertPolicyName, context)
-            .block();
-    }
-
-    /**
-     * Creates or updates a database's security alert policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database for which the security alert policy is defined.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters The database security alert policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database security alert policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManagedDatabaseSecurityAlertPolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        ManagedDatabaseSecurityAlertPolicyInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (managedInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (securityAlertPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2017-03-01-preview";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            databaseName,
-                            securityAlertPolicyName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Creates or updates a database's security alert policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database for which the security alert policy is defined.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters The database security alert policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database security alert policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedDatabaseSecurityAlertPolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        ManagedDatabaseSecurityAlertPolicyInner parameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (managedInstanceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (securityAlertPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2017-03-01-preview";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                databaseName,
-                securityAlertPolicyName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                accept,
-                context);
-    }
-
-    /**
-     * Creates or updates a database's security alert policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database for which the security alert policy is defined.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters The database security alert policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database security alert policy on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedDatabaseSecurityAlertPolicyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        ManagedDatabaseSecurityAlertPolicyInner parameters) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, managedInstanceName, databaseName, securityAlertPolicyName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Creates or updates a database's security alert policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database for which the security alert policy is defined.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters The database security alert policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database security alert policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedDatabaseSecurityAlertPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        ManagedDatabaseSecurityAlertPolicyInner parameters) {
-        return createOrUpdateAsync(
-                resourceGroupName, managedInstanceName, databaseName, securityAlertPolicyName, parameters)
-            .block();
-    }
-
-    /**
-     * Creates or updates a database's security alert policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the managed database for which the security alert policy is defined.
-     * @param securityAlertPolicyName The name of the security alert policy.
-     * @param parameters The database security alert policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database security alert policy along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagedDatabaseSecurityAlertPolicyInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        ManagedDatabaseSecurityAlertPolicyInner parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, managedInstanceName, databaseName, securityAlertPolicyName, parameters, context)
-            .block();
     }
 
     /**
@@ -603,7 +170,6 @@ public final class ManagedDatabaseSecurityAlertPoliciesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -615,7 +181,7 @@ public final class ManagedDatabaseSecurityAlertPoliciesClientImpl
                             managedInstanceName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<ManagedDatabaseSecurityAlertPolicyInner>>map(
@@ -670,7 +236,6 @@ public final class ManagedDatabaseSecurityAlertPoliciesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -680,7 +245,7 @@ public final class ManagedDatabaseSecurityAlertPoliciesClientImpl
                 managedInstanceName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(
@@ -773,9 +338,441 @@ public final class ManagedDatabaseSecurityAlertPoliciesClientImpl
     }
 
     /**
+     * Gets a managed database's security alert policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database for which the security alert policy is defined.
+     * @param securityAlertPolicyName The name of the security alert policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database's security alert policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ManagedDatabaseSecurityAlertPolicyInner>> getWithResponseAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        SecurityAlertPolicyName securityAlertPolicyName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (securityAlertPolicyName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            databaseName,
+                            securityAlertPolicyName,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets a managed database's security alert policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database for which the security alert policy is defined.
+     * @param securityAlertPolicyName The name of the security alert policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database's security alert policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ManagedDatabaseSecurityAlertPolicyInner>> getWithResponseAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        SecurityAlertPolicyName securityAlertPolicyName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (securityAlertPolicyName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .get(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                managedInstanceName,
+                databaseName,
+                securityAlertPolicyName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Gets a managed database's security alert policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database for which the security alert policy is defined.
+     * @param securityAlertPolicyName The name of the security alert policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database's security alert policy on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ManagedDatabaseSecurityAlertPolicyInner> getAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        SecurityAlertPolicyName securityAlertPolicyName) {
+        return getWithResponseAsync(resourceGroupName, managedInstanceName, databaseName, securityAlertPolicyName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a managed database's security alert policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database for which the security alert policy is defined.
+     * @param securityAlertPolicyName The name of the security alert policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database's security alert policy along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ManagedDatabaseSecurityAlertPolicyInner> getWithResponse(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        SecurityAlertPolicyName securityAlertPolicyName,
+        Context context) {
+        return getWithResponseAsync(
+                resourceGroupName, managedInstanceName, databaseName, securityAlertPolicyName, context)
+            .block();
+    }
+
+    /**
+     * Gets a managed database's security alert policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database for which the security alert policy is defined.
+     * @param securityAlertPolicyName The name of the security alert policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database's security alert policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagedDatabaseSecurityAlertPolicyInner get(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        SecurityAlertPolicyName securityAlertPolicyName) {
+        return getWithResponse(
+                resourceGroupName, managedInstanceName, databaseName, securityAlertPolicyName, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Creates or updates a database's security alert policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database for which the security alert policy is defined.
+     * @param securityAlertPolicyName The name of the security alert policy.
+     * @param parameters The database security alert policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database security alert policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ManagedDatabaseSecurityAlertPolicyInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        SecurityAlertPolicyName securityAlertPolicyName,
+        ManagedDatabaseSecurityAlertPolicyInner parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (securityAlertPolicyName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            databaseName,
+                            securityAlertPolicyName,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            parameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Creates or updates a database's security alert policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database for which the security alert policy is defined.
+     * @param securityAlertPolicyName The name of the security alert policy.
+     * @param parameters The database security alert policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database security alert policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ManagedDatabaseSecurityAlertPolicyInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        SecurityAlertPolicyName securityAlertPolicyName,
+        ManagedDatabaseSecurityAlertPolicyInner parameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (securityAlertPolicyName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .createOrUpdate(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                managedInstanceName,
+                databaseName,
+                securityAlertPolicyName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                parameters,
+                accept,
+                context);
+    }
+
+    /**
+     * Creates or updates a database's security alert policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database for which the security alert policy is defined.
+     * @param securityAlertPolicyName The name of the security alert policy.
+     * @param parameters The database security alert policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database security alert policy on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ManagedDatabaseSecurityAlertPolicyInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        SecurityAlertPolicyName securityAlertPolicyName,
+        ManagedDatabaseSecurityAlertPolicyInner parameters) {
+        return createOrUpdateWithResponseAsync(
+                resourceGroupName, managedInstanceName, databaseName, securityAlertPolicyName, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates or updates a database's security alert policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database for which the security alert policy is defined.
+     * @param securityAlertPolicyName The name of the security alert policy.
+     * @param parameters The database security alert policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database security alert policy along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ManagedDatabaseSecurityAlertPolicyInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        SecurityAlertPolicyName securityAlertPolicyName,
+        ManagedDatabaseSecurityAlertPolicyInner parameters,
+        Context context) {
+        return createOrUpdateWithResponseAsync(
+                resourceGroupName, managedInstanceName, databaseName, securityAlertPolicyName, parameters, context)
+            .block();
+    }
+
+    /**
+     * Creates or updates a database's security alert policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database for which the security alert policy is defined.
+     * @param securityAlertPolicyName The name of the security alert policy.
+     * @param parameters The database security alert policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database security alert policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ManagedDatabaseSecurityAlertPolicyInner createOrUpdate(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        SecurityAlertPolicyName securityAlertPolicyName,
+        ManagedDatabaseSecurityAlertPolicyInner parameters) {
+        return createOrUpdateWithResponse(
+                resourceGroupName, managedInstanceName, databaseName, securityAlertPolicyName, parameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -812,7 +809,8 @@ public final class ManagedDatabaseSecurityAlertPoliciesClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

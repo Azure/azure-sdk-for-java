@@ -37,6 +37,9 @@ public class MariaDBLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of MariaDBLinkedService class. */
+    public MariaDBLinkedService() {}
+
     /**
      * Get the connectionString property: An ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.

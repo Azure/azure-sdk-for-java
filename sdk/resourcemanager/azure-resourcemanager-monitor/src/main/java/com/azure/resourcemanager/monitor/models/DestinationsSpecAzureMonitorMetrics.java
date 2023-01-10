@@ -9,6 +9,10 @@ import com.azure.core.annotation.Fluent;
 /** Azure Monitor Metrics destination. */
 @Fluent
 public final class DestinationsSpecAzureMonitorMetrics extends AzureMonitorMetricsDestination {
+    /** Creates an instance of DestinationsSpecAzureMonitorMetrics class. */
+    public DestinationsSpecAzureMonitorMetrics() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public DestinationsSpecAzureMonitorMetrics withName(String name) {

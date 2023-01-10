@@ -29,6 +29,9 @@ public final class IntegrationRuntimeReference {
     @JsonProperty(value = "parameters")
     private Map<String, Object> parameters;
 
+    /** Creates an instance of IntegrationRuntimeReference class. */
+    public IntegrationRuntimeReference() {}
+
     /**
      * Get the type property: Type of integration runtime.
      *

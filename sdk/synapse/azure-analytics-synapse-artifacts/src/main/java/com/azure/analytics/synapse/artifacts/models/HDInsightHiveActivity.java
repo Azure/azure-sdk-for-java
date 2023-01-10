@@ -67,6 +67,9 @@ public class HDInsightHiveActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.queryTimeout")
     private Integer queryTimeout;
 
+    /** Creates an instance of HDInsightHiveActivity class. */
+    public HDInsightHiveActivity() {}
+
     /**
      * Get the storageLinkedServices property: Storage linked service references.
      *

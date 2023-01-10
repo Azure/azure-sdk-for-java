@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -24,7 +25,7 @@ public final class DataFlowDebugSessionsCreateDataFlowDebugSessionHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public DataFlowDebugSessionsCreateDataFlowDebugSessionHeaders(HttpHeaders rawHeaders) {
-        this.location = rawHeaders.getValue("location");
+        this.location = rawHeaders.getValue(HttpHeaderName.LOCATION);
     }
 
     /**

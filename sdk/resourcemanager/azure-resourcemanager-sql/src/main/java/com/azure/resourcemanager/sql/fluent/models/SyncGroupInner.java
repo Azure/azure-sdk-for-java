@@ -6,6 +6,7 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.resourcemanager.sql.models.Sku;
 import com.azure.resourcemanager.sql.models.SyncConflictResolutionPolicy;
 import com.azure.resourcemanager.sql.models.SyncGroupSchema;
 import com.azure.resourcemanager.sql.models.SyncGroupState;
@@ -16,10 +17,40 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class SyncGroupInner extends ProxyResource {
     /*
+     * The name and capacity of the SKU.
+     */
+    @JsonProperty(value = "sku")
+    private Sku sku;
+
+    /*
      * Resource properties.
      */
     @JsonProperty(value = "properties")
     private SyncGroupProperties innerProperties;
+
+    /** Creates an instance of SyncGroupInner class. */
+    public SyncGroupInner() {
+    }
+
+    /**
+     * Get the sku property: The name and capacity of the SKU.
+     *
+     * @return the sku value.
+     */
+    public Sku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The name and capacity of the SKU.
+     *
+     * @param sku the sku value to set.
+     * @return the SyncGroupInner object itself.
+     */
+    public SyncGroupInner withSku(Sku sku) {
+        this.sku = sku;
+        return this;
+    }
 
     /**
      * Get the innerProperties property: Resource properties.
@@ -187,11 +218,93 @@ public final class SyncGroupInner extends ProxyResource {
     }
 
     /**
+     * Get the enableConflictLogging property: If conflict logging is enabled.
+     *
+     * @return the enableConflictLogging value.
+     */
+    public Boolean enableConflictLogging() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableConflictLogging();
+    }
+
+    /**
+     * Set the enableConflictLogging property: If conflict logging is enabled.
+     *
+     * @param enableConflictLogging the enableConflictLogging value to set.
+     * @return the SyncGroupInner object itself.
+     */
+    public SyncGroupInner withEnableConflictLogging(Boolean enableConflictLogging) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncGroupProperties();
+        }
+        this.innerProperties().withEnableConflictLogging(enableConflictLogging);
+        return this;
+    }
+
+    /**
+     * Get the conflictLoggingRetentionInDays property: Conflict logging retention period.
+     *
+     * @return the conflictLoggingRetentionInDays value.
+     */
+    public Integer conflictLoggingRetentionInDays() {
+        return this.innerProperties() == null ? null : this.innerProperties().conflictLoggingRetentionInDays();
+    }
+
+    /**
+     * Set the conflictLoggingRetentionInDays property: Conflict logging retention period.
+     *
+     * @param conflictLoggingRetentionInDays the conflictLoggingRetentionInDays value to set.
+     * @return the SyncGroupInner object itself.
+     */
+    public SyncGroupInner withConflictLoggingRetentionInDays(Integer conflictLoggingRetentionInDays) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncGroupProperties();
+        }
+        this.innerProperties().withConflictLoggingRetentionInDays(conflictLoggingRetentionInDays);
+        return this;
+    }
+
+    /**
+     * Get the usePrivateLinkConnection property: If use private link connection is enabled.
+     *
+     * @return the usePrivateLinkConnection value.
+     */
+    public Boolean usePrivateLinkConnection() {
+        return this.innerProperties() == null ? null : this.innerProperties().usePrivateLinkConnection();
+    }
+
+    /**
+     * Set the usePrivateLinkConnection property: If use private link connection is enabled.
+     *
+     * @param usePrivateLinkConnection the usePrivateLinkConnection value to set.
+     * @return the SyncGroupInner object itself.
+     */
+    public SyncGroupInner withUsePrivateLinkConnection(Boolean usePrivateLinkConnection) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SyncGroupProperties();
+        }
+        this.innerProperties().withUsePrivateLinkConnection(usePrivateLinkConnection);
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointName property: Private endpoint name of the sync group if use private link connection is
+     * enabled.
+     *
+     * @return the privateEndpointName value.
+     */
+    public String privateEndpointName() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointName();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }

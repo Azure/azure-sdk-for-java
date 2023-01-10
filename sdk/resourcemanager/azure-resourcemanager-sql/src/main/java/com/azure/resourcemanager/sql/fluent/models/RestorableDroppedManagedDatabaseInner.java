@@ -19,6 +19,10 @@ public final class RestorableDroppedManagedDatabaseInner extends Resource {
     @JsonProperty(value = "properties")
     private RestorableDroppedManagedDatabaseProperties innerProperties;
 
+    /** Creates an instance of RestorableDroppedManagedDatabaseInner class. */
+    public RestorableDroppedManagedDatabaseInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

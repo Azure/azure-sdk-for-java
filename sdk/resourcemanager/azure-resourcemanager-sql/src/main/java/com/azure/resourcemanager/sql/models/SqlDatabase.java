@@ -101,24 +101,6 @@ public interface SqlDatabase
     PagedFlux<RestorePoint> listRestorePointsAsync();
 
     /**
-     * @param filter an OData filter expression that describes a subset of metrics to return.
-     * @return the list of metrics for this database
-     */
-    List<SqlDatabaseMetric> listMetrics(String filter);
-
-    /**
-     * @param filter an OData filter expression that describes a subset of metrics to return.
-     * @return a representation of the deferred computation of the metrics for this database
-     */
-    PagedFlux<SqlDatabaseMetric> listMetricsAsync(String filter);
-
-    /** @return the list of metric definitions for this database */
-    List<SqlDatabaseMetricDefinition> listMetricDefinitions();
-
-    /** @return a representation of the deferred computation of the metric definitions for this database */
-    PagedFlux<SqlDatabaseMetricDefinition> listMetricDefinitionsAsync();
-
-    /**
      * Gets an Azure SQL Database Transparent Data Encryption for this database.
      *
      * @return an Azure SQL Database Transparent Data Encryption for this database
@@ -132,15 +114,6 @@ public interface SqlDatabase
      *     this database
      */
     Mono<TransparentDataEncryption> getTransparentDataEncryptionAsync();
-
-    /** @return information about service tier advisors for the current database */
-    Map<String, ServiceTierAdvisor> listServiceTierAdvisors();
-
-    /**
-     * @return a representation of the deferred computation of the information about service tier advisors for this
-     *     database
-     */
-    PagedFlux<ServiceTierAdvisor> listServiceTierAdvisorsAsync();
 
     /** @return all the replication links associated with this database */
     Map<String, ReplicationLink> listReplicationLinks();
@@ -205,8 +178,18 @@ public interface SqlDatabase
      *
      * @param policyName the name of the security alert policy
      * @return the first stage of the SqlDatabaseThreatDetectionPolicy definition
+     * @deprecated use {@link SqlDatabase#defineThreatDetectionPolicy(SecurityAlertPolicyName)}
      */
+    @Deprecated
     SqlDatabaseThreatDetectionPolicy.DefinitionStages.Blank defineThreatDetectionPolicy(String policyName);
+
+    /**
+     * Begins a definition for a security alert policy.
+     *
+     * @param policyName the name of the security alert policy
+     * @return the first stage of the SqlDatabaseThreatDetectionPolicy definition
+     */
+    SqlDatabaseThreatDetectionPolicy.DefinitionStages.Blank defineThreatDetectionPolicy(SecurityAlertPolicyName policyName);
 
     /**
      * Gets a SQL database threat detection policy.

@@ -5,12 +5,14 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
 import com.azure.resourcemanager.sql.models.CatalogCollationType;
 import com.azure.resourcemanager.sql.models.CreateMode;
 import com.azure.resourcemanager.sql.models.DatabaseLicenseType;
 import com.azure.resourcemanager.sql.models.DatabaseReadScale;
 import com.azure.resourcemanager.sql.models.DatabaseStatus;
 import com.azure.resourcemanager.sql.models.SampleName;
+import com.azure.resourcemanager.sql.models.SecondaryType;
 import com.azure.resourcemanager.sql.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -24,37 +26,28 @@ public final class DatabaseProperties {
      *
      * Default: regular database creation.
      *
-     * Copy: creates a database as a copy of an existing database.
-     * sourceDatabaseId must be specified as the resource ID of the source
-     * database.
+     * Copy: creates a database as a copy of an existing database. sourceDatabaseId must be specified as the resource
+     * ID of the source database.
      *
-     * Secondary: creates a database as a secondary replica of an existing
-     * database. sourceDatabaseId must be specified as the resource ID of the
-     * existing primary database.
+     * Secondary: creates a database as a secondary replica of an existing database. sourceDatabaseId must be specified
+     * as the resource ID of the existing primary database.
      *
-     * PointInTimeRestore: Creates a database by restoring a point in time
-     * backup of an existing database. sourceDatabaseId must be specified as
-     * the resource ID of the existing database, and restorePointInTime must be
+     * PointInTimeRestore: Creates a database by restoring a point in time backup of an existing database.
+     * sourceDatabaseId must be specified as the resource ID of the existing database, and restorePointInTime must be
      * specified.
      *
-     * Recovery: Creates a database by restoring a geo-replicated backup.
-     * sourceDatabaseId must be specified as the recoverable database resource
-     * ID to restore.
+     * Recovery: Creates a database by restoring a geo-replicated backup. sourceDatabaseId must be specified as the
+     * recoverable database resource ID to restore.
      *
-     * Restore: Creates a database by restoring a backup of a deleted database.
-     * sourceDatabaseId must be specified. If sourceDatabaseId is the
-     * database's original resource ID, then sourceDatabaseDeletionDate must be
-     * specified. Otherwise sourceDatabaseId must be the restorable dropped
-     * database resource ID and sourceDatabaseDeletionDate is ignored.
-     * restorePointInTime may also be specified to restore from an earlier
-     * point in time.
+     * Restore: Creates a database by restoring a backup of a deleted database. sourceDatabaseId must be specified. If
+     * sourceDatabaseId is the database's original resource ID, then sourceDatabaseDeletionDate must be specified.
+     * Otherwise sourceDatabaseId must be the restorable dropped database resource ID and sourceDatabaseDeletionDate is
+     * ignored. restorePointInTime may also be specified to restore from an earlier point in time.
      *
-     * RestoreLongTermRetentionBackup: Creates a database by restoring from a
-     * long term retention vault. recoveryServicesRecoveryPointResourceId must
-     * be specified as the recovery point resource ID.
+     * RestoreLongTermRetentionBackup: Creates a database by restoring from a long term retention vault.
+     * recoveryServicesRecoveryPointResourceId must be specified as the recovery point resource ID.
      *
-     * Copy, Secondary, and RestoreLongTermRetentionBackup are not supported
-     * for DataWarehouse edition.
+     * Copy, Secondary, and RestoreLongTermRetentionBackup are not supported for DataWarehouse edition.
      */
     @JsonProperty(value = "createMode")
     private CreateMode createMode;
@@ -84,8 +77,7 @@ public final class DatabaseProperties {
     private String elasticPoolId;
 
     /*
-     * The resource identifier of the source database associated with create
-     * operation of this database.
+     * The resource identifier of the source database associated with create operation of this database.
      */
     @JsonProperty(value = "sourceDatabaseId")
     private String sourceDatabaseId;
@@ -133,8 +125,8 @@ public final class DatabaseProperties {
     private String failoverGroupId;
 
     /*
-     * Specifies the point in time (ISO8601 format) of the source database that
-     * will be restored to create the new database.
+     * Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new
+     * database.
      */
     @JsonProperty(value = "restorePointInTime")
     private OffsetDateTime restorePointInTime;
@@ -146,29 +138,25 @@ public final class DatabaseProperties {
     private OffsetDateTime sourceDatabaseDeletionDate;
 
     /*
-     * The resource identifier of the recovery point associated with create
-     * operation of this database.
+     * The resource identifier of the recovery point associated with create operation of this database.
      */
     @JsonProperty(value = "recoveryServicesRecoveryPointId")
     private String recoveryServicesRecoveryPointId;
 
     /*
-     * The resource identifier of the long term retention backup associated
-     * with create operation of this database.
+     * The resource identifier of the long term retention backup associated with create operation of this database.
      */
     @JsonProperty(value = "longTermRetentionBackupResourceId")
     private String longTermRetentionBackupResourceId;
 
     /*
-     * The resource identifier of the recoverable database associated with
-     * create operation of this database.
+     * The resource identifier of the recoverable database associated with create operation of this database.
      */
     @JsonProperty(value = "recoverableDatabaseId")
     private String recoverableDatabaseId;
 
     /*
-     * The resource identifier of the restorable dropped database associated
-     * with create operation of this database.
+     * The resource identifier of the restorable dropped database associated with create operation of this database.
      */
     @JsonProperty(value = "restorableDroppedDatabaseId")
     private String restorableDroppedDatabaseId;
@@ -180,14 +168,15 @@ public final class DatabaseProperties {
     private CatalogCollationType catalogCollation;
 
     /*
-     * Whether or not this database is zone redundant, which means the replicas
-     * of this database will be spread across multiple availability zones.
+     * Whether or not this database is zone redundant, which means the replicas of this database will be spread across
+     * multiple availability zones.
      */
     @JsonProperty(value = "zoneRedundant")
     private Boolean zoneRedundant;
 
     /*
-     * The license type to apply for this database.
+     * The license type to apply for this database. `LicenseIncluded` if you need a license, or `BasePrice` if you have
+     * a license and are eligible for the Azure Hybrid Benefit.
      */
     @JsonProperty(value = "licenseType")
     private DatabaseLicenseType licenseType;
@@ -199,28 +188,31 @@ public final class DatabaseProperties {
     private Long maxLogSizeBytes;
 
     /*
-     * This records the earliest start date and time that restore is available
-     * for this database (ISO8601 format).
+     * This records the earliest start date and time that restore is available for this database (ISO8601 format).
      */
     @JsonProperty(value = "earliestRestoreDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime earliestRestoreDate;
 
     /*
-     * If enabled, connections that have application intent set to readonly in
-     * their connection string may be routed to a readonly secondary replica.
-     * This property is only settable for Premium and Business Critical
-     * databases.
+     * The state of read-only routing. If enabled, connections that have application intent set to readonly in their
+     * connection string may be routed to a readonly secondary replica in the same region. Not applicable to a
+     * Hyperscale database within an elastic pool.
      */
     @JsonProperty(value = "readScale")
     private DatabaseReadScale readScale;
 
     /*
-     * The number of readonly secondary replicas associated with the database
-     * to which readonly application intent connections may be routed. This
-     * property is only settable for Hyperscale edition databases.
+     * The number of secondary replicas associated with the database that are used to provide high availability. Not
+     * applicable to a Hyperscale database within an elastic pool.
      */
-    @JsonProperty(value = "readReplicaCount")
-    private Integer readReplicaCount;
+    @JsonProperty(value = "highAvailabilityReplicaCount")
+    private Integer highAvailabilityReplicaCount;
+
+    /*
+     * The secondary type of the database if it is a secondary.  Valid values are Geo and Named.
+     */
+    @JsonProperty(value = "secondaryType")
+    private SecondaryType secondaryType;
 
     /*
      * The name and tier of the SKU.
@@ -229,11 +221,23 @@ public final class DatabaseProperties {
     private Sku currentSku;
 
     /*
-     * Time in minutes after which database is automatically paused. A value of
-     * -1 means that automatic pause is disabled
+     * Time in minutes after which database is automatically paused. A value of -1 means that automatic pause is
+     * disabled
      */
     @JsonProperty(value = "autoPauseDelay")
     private Integer autoPauseDelay;
+
+    /*
+     * The storage account type used to store backups for this database.
+     */
+    @JsonProperty(value = "currentBackupStorageRedundancy", access = JsonProperty.Access.WRITE_ONLY)
+    private BackupStorageRedundancy currentBackupStorageRedundancy;
+
+    /*
+     * The storage account type to be used to store backups for this database.
+     */
+    @JsonProperty(value = "requestedBackupStorageRedundancy")
+    private BackupStorageRedundancy requestedBackupStorageRedundancy;
 
     /*
      * Minimal capacity that database will always have allocated, if not paused
@@ -242,18 +246,73 @@ public final class DatabaseProperties {
     private Double minCapacity;
 
     /*
-     * The date when database was paused by user configuration or action
-     * (ISO8601 format). Null if the database is ready.
+     * The date when database was paused by user configuration or action(ISO8601 format). Null if the database is
+     * ready.
      */
     @JsonProperty(value = "pausedDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime pausedDate;
 
     /*
-     * The date when database was resumed by user action or database login
-     * (ISO8601 format). Null if the database is paused.
+     * The date when database was resumed by user action or database login (ISO8601 format). Null if the database is
+     * paused.
      */
     @JsonProperty(value = "resumedDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime resumedDate;
+
+    /*
+     * Maintenance configuration id assigned to the database. This configuration defines the period when the
+     * maintenance updates will occur.
+     */
+    @JsonProperty(value = "maintenanceConfigurationId")
+    private String maintenanceConfigurationId;
+
+    /*
+     * Whether or not this database is a ledger database, which means all tables in the database are ledger tables.
+     * Note: the value of this property cannot be changed after the database has been created.
+     */
+    @JsonProperty(value = "isLedgerOn")
+    private Boolean isLedgerOn;
+
+    /*
+     * Infra encryption is enabled for this database.
+     */
+    @JsonProperty(value = "isInfraEncryptionEnabled", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isInfraEncryptionEnabled;
+
+    /*
+     * The Client id used for cross tenant per database CMK scenario
+     */
+    @JsonProperty(value = "federatedClientId")
+    private UUID federatedClientId;
+
+    /*
+     * The resource identifier of the source associated with the create operation of this database.
+     *
+     * This property is only supported for DataWarehouse edition and allows to restore across subscriptions.
+     *
+     * When sourceResourceId is specified, sourceDatabaseId, recoverableDatabaseId, restorableDroppedDatabaseId and
+     * sourceDatabaseDeletionDate must not be specified and CreateMode must be PointInTimeRestore, Restore or Recover.
+     *
+     * When createMode is PointInTimeRestore, sourceResourceId must be the resource ID of the existing database or
+     * existing sql pool, and restorePointInTime must be specified.
+     *
+     * When createMode is Restore, sourceResourceId must be the resource ID of restorable dropped database or
+     * restorable dropped sql pool.
+     *
+     * When createMode is Recover, sourceResourceId must be the resource ID of recoverable database or recoverable sql
+     * pool.
+     *
+     * When source subscription belongs to a different tenant than target subscription, “x-ms-authorization-auxiliary”
+     * header must contain authentication token for the source tenant. For more details about
+     * “x-ms-authorization-auxiliary” header see
+     * https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/authenticate-multi-tenant
+     */
+    @JsonProperty(value = "sourceResourceId")
+    private String sourceResourceId;
+
+    /** Creates an instance of DatabaseProperties class. */
+    public DatabaseProperties() {
+    }
 
     /**
      * Get the createMode property: Specifies the mode of database creation.
@@ -663,7 +722,8 @@ public final class DatabaseProperties {
     }
 
     /**
-     * Get the licenseType property: The license type to apply for this database.
+     * Get the licenseType property: The license type to apply for this database. `LicenseIncluded` if you need a
+     * license, or `BasePrice` if you have a license and are eligible for the Azure Hybrid Benefit.
      *
      * @return the licenseType value.
      */
@@ -672,7 +732,8 @@ public final class DatabaseProperties {
     }
 
     /**
-     * Set the licenseType property: The license type to apply for this database.
+     * Set the licenseType property: The license type to apply for this database. `LicenseIncluded` if you need a
+     * license, or `BasePrice` if you have a license and are eligible for the Azure Hybrid Benefit.
      *
      * @param licenseType the licenseType value to set.
      * @return the DatabaseProperties object itself.
@@ -702,9 +763,9 @@ public final class DatabaseProperties {
     }
 
     /**
-     * Get the readScale property: If enabled, connections that have application intent set to readonly in their
-     * connection string may be routed to a readonly secondary replica. This property is only settable for Premium and
-     * Business Critical databases.
+     * Get the readScale property: The state of read-only routing. If enabled, connections that have application intent
+     * set to readonly in their connection string may be routed to a readonly secondary replica in the same region. Not
+     * applicable to a Hyperscale database within an elastic pool.
      *
      * @return the readScale value.
      */
@@ -713,9 +774,9 @@ public final class DatabaseProperties {
     }
 
     /**
-     * Set the readScale property: If enabled, connections that have application intent set to readonly in their
-     * connection string may be routed to a readonly secondary replica. This property is only settable for Premium and
-     * Business Critical databases.
+     * Set the readScale property: The state of read-only routing. If enabled, connections that have application intent
+     * set to readonly in their connection string may be routed to a readonly secondary replica in the same region. Not
+     * applicable to a Hyperscale database within an elastic pool.
      *
      * @param readScale the readScale value to set.
      * @return the DatabaseProperties object itself.
@@ -726,26 +787,46 @@ public final class DatabaseProperties {
     }
 
     /**
-     * Get the readReplicaCount property: The number of readonly secondary replicas associated with the database to
-     * which readonly application intent connections may be routed. This property is only settable for Hyperscale
-     * edition databases.
+     * Get the highAvailabilityReplicaCount property: The number of secondary replicas associated with the database that
+     * are used to provide high availability. Not applicable to a Hyperscale database within an elastic pool.
      *
-     * @return the readReplicaCount value.
+     * @return the highAvailabilityReplicaCount value.
      */
-    public Integer readReplicaCount() {
-        return this.readReplicaCount;
+    public Integer highAvailabilityReplicaCount() {
+        return this.highAvailabilityReplicaCount;
     }
 
     /**
-     * Set the readReplicaCount property: The number of readonly secondary replicas associated with the database to
-     * which readonly application intent connections may be routed. This property is only settable for Hyperscale
-     * edition databases.
+     * Set the highAvailabilityReplicaCount property: The number of secondary replicas associated with the database that
+     * are used to provide high availability. Not applicable to a Hyperscale database within an elastic pool.
      *
-     * @param readReplicaCount the readReplicaCount value to set.
+     * @param highAvailabilityReplicaCount the highAvailabilityReplicaCount value to set.
      * @return the DatabaseProperties object itself.
      */
-    public DatabaseProperties withReadReplicaCount(Integer readReplicaCount) {
-        this.readReplicaCount = readReplicaCount;
+    public DatabaseProperties withHighAvailabilityReplicaCount(Integer highAvailabilityReplicaCount) {
+        this.highAvailabilityReplicaCount = highAvailabilityReplicaCount;
+        return this;
+    }
+
+    /**
+     * Get the secondaryType property: The secondary type of the database if it is a secondary. Valid values are Geo and
+     * Named.
+     *
+     * @return the secondaryType value.
+     */
+    public SecondaryType secondaryType() {
+        return this.secondaryType;
+    }
+
+    /**
+     * Set the secondaryType property: The secondary type of the database if it is a secondary. Valid values are Geo and
+     * Named.
+     *
+     * @param secondaryType the secondaryType value to set.
+     * @return the DatabaseProperties object itself.
+     */
+    public DatabaseProperties withSecondaryType(SecondaryType secondaryType) {
+        this.secondaryType = secondaryType;
         return this;
     }
 
@@ -781,6 +862,39 @@ public final class DatabaseProperties {
     }
 
     /**
+     * Get the currentBackupStorageRedundancy property: The storage account type used to store backups for this
+     * database.
+     *
+     * @return the currentBackupStorageRedundancy value.
+     */
+    public BackupStorageRedundancy currentBackupStorageRedundancy() {
+        return this.currentBackupStorageRedundancy;
+    }
+
+    /**
+     * Get the requestedBackupStorageRedundancy property: The storage account type to be used to store backups for this
+     * database.
+     *
+     * @return the requestedBackupStorageRedundancy value.
+     */
+    public BackupStorageRedundancy requestedBackupStorageRedundancy() {
+        return this.requestedBackupStorageRedundancy;
+    }
+
+    /**
+     * Set the requestedBackupStorageRedundancy property: The storage account type to be used to store backups for this
+     * database.
+     *
+     * @param requestedBackupStorageRedundancy the requestedBackupStorageRedundancy value to set.
+     * @return the DatabaseProperties object itself.
+     */
+    public DatabaseProperties withRequestedBackupStorageRedundancy(
+        BackupStorageRedundancy requestedBackupStorageRedundancy) {
+        this.requestedBackupStorageRedundancy = requestedBackupStorageRedundancy;
+        return this;
+    }
+
+    /**
      * Get the minCapacity property: Minimal capacity that database will always have allocated, if not paused.
      *
      * @return the minCapacity value.
@@ -801,7 +915,7 @@ public final class DatabaseProperties {
     }
 
     /**
-     * Get the pausedDate property: The date when database was paused by user configuration or action (ISO8601 format).
+     * Get the pausedDate property: The date when database was paused by user configuration or action(ISO8601 format).
      * Null if the database is ready.
      *
      * @return the pausedDate value.
@@ -818,6 +932,141 @@ public final class DatabaseProperties {
      */
     public OffsetDateTime resumedDate() {
         return this.resumedDate;
+    }
+
+    /**
+     * Get the maintenanceConfigurationId property: Maintenance configuration id assigned to the database. This
+     * configuration defines the period when the maintenance updates will occur.
+     *
+     * @return the maintenanceConfigurationId value.
+     */
+    public String maintenanceConfigurationId() {
+        return this.maintenanceConfigurationId;
+    }
+
+    /**
+     * Set the maintenanceConfigurationId property: Maintenance configuration id assigned to the database. This
+     * configuration defines the period when the maintenance updates will occur.
+     *
+     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
+     * @return the DatabaseProperties object itself.
+     */
+    public DatabaseProperties withMaintenanceConfigurationId(String maintenanceConfigurationId) {
+        this.maintenanceConfigurationId = maintenanceConfigurationId;
+        return this;
+    }
+
+    /**
+     * Get the isLedgerOn property: Whether or not this database is a ledger database, which means all tables in the
+     * database are ledger tables. Note: the value of this property cannot be changed after the database has been
+     * created.
+     *
+     * @return the isLedgerOn value.
+     */
+    public Boolean isLedgerOn() {
+        return this.isLedgerOn;
+    }
+
+    /**
+     * Set the isLedgerOn property: Whether or not this database is a ledger database, which means all tables in the
+     * database are ledger tables. Note: the value of this property cannot be changed after the database has been
+     * created.
+     *
+     * @param isLedgerOn the isLedgerOn value to set.
+     * @return the DatabaseProperties object itself.
+     */
+    public DatabaseProperties withIsLedgerOn(Boolean isLedgerOn) {
+        this.isLedgerOn = isLedgerOn;
+        return this;
+    }
+
+    /**
+     * Get the isInfraEncryptionEnabled property: Infra encryption is enabled for this database.
+     *
+     * @return the isInfraEncryptionEnabled value.
+     */
+    public Boolean isInfraEncryptionEnabled() {
+        return this.isInfraEncryptionEnabled;
+    }
+
+    /**
+     * Get the federatedClientId property: The Client id used for cross tenant per database CMK scenario.
+     *
+     * @return the federatedClientId value.
+     */
+    public UUID federatedClientId() {
+        return this.federatedClientId;
+    }
+
+    /**
+     * Set the federatedClientId property: The Client id used for cross tenant per database CMK scenario.
+     *
+     * @param federatedClientId the federatedClientId value to set.
+     * @return the DatabaseProperties object itself.
+     */
+    public DatabaseProperties withFederatedClientId(UUID federatedClientId) {
+        this.federatedClientId = federatedClientId;
+        return this;
+    }
+
+    /**
+     * Get the sourceResourceId property: The resource identifier of the source associated with the create operation of
+     * this database.
+     *
+     * <p>This property is only supported for DataWarehouse edition and allows to restore across subscriptions.
+     *
+     * <p>When sourceResourceId is specified, sourceDatabaseId, recoverableDatabaseId, restorableDroppedDatabaseId and
+     * sourceDatabaseDeletionDate must not be specified and CreateMode must be PointInTimeRestore, Restore or Recover.
+     *
+     * <p>When createMode is PointInTimeRestore, sourceResourceId must be the resource ID of the existing database or
+     * existing sql pool, and restorePointInTime must be specified.
+     *
+     * <p>When createMode is Restore, sourceResourceId must be the resource ID of restorable dropped database or
+     * restorable dropped sql pool.
+     *
+     * <p>When createMode is Recover, sourceResourceId must be the resource ID of recoverable database or recoverable
+     * sql pool.
+     *
+     * <p>When source subscription belongs to a different tenant than target subscription,
+     * “x-ms-authorization-auxiliary” header must contain authentication token for the source tenant. For more details
+     * about “x-ms-authorization-auxiliary” header see
+     * https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/authenticate-multi-tenant.
+     *
+     * @return the sourceResourceId value.
+     */
+    public String sourceResourceId() {
+        return this.sourceResourceId;
+    }
+
+    /**
+     * Set the sourceResourceId property: The resource identifier of the source associated with the create operation of
+     * this database.
+     *
+     * <p>This property is only supported for DataWarehouse edition and allows to restore across subscriptions.
+     *
+     * <p>When sourceResourceId is specified, sourceDatabaseId, recoverableDatabaseId, restorableDroppedDatabaseId and
+     * sourceDatabaseDeletionDate must not be specified and CreateMode must be PointInTimeRestore, Restore or Recover.
+     *
+     * <p>When createMode is PointInTimeRestore, sourceResourceId must be the resource ID of the existing database or
+     * existing sql pool, and restorePointInTime must be specified.
+     *
+     * <p>When createMode is Restore, sourceResourceId must be the resource ID of restorable dropped database or
+     * restorable dropped sql pool.
+     *
+     * <p>When createMode is Recover, sourceResourceId must be the resource ID of recoverable database or recoverable
+     * sql pool.
+     *
+     * <p>When source subscription belongs to a different tenant than target subscription,
+     * “x-ms-authorization-auxiliary” header must contain authentication token for the source tenant. For more details
+     * about “x-ms-authorization-auxiliary” header see
+     * https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/authenticate-multi-tenant.
+     *
+     * @param sourceResourceId the sourceResourceId value to set.
+     * @return the DatabaseProperties object itself.
+     */
+    public DatabaseProperties withSourceResourceId(String sourceResourceId) {
+        this.sourceResourceId = sourceResourceId;
+        return this;
     }
 
     /**
