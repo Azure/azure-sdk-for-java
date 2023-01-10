@@ -55,7 +55,10 @@ public final class EmailClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SendEmailResult send(EmailMessage emailMessage) {
-        return this.client.send(emailMessage).block();
+        System.out.println("EmailClient - begin");
+        SendEmailResult result = this.client.send(emailMessage).block();
+        System.out.println("EmailClient - end");
+        return result;
     }
 
     /**

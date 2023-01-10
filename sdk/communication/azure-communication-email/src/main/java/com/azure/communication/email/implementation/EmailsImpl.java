@@ -260,12 +260,12 @@ public final class EmailsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendWithResponseAsync(BinaryData emailMessage, RequestOptions requestOptions) {
+        System.out.println("EmailsImpl - begin");
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
         requestOptionsLocal.setHeader("repeatability-request-id", UUID.randomUUID().toString());
         requestOptionsLocal.setHeader(
                 "repeatability-first-sent", DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()));
-        System.out.println("About to send with response");
         Mono<Response<Void>> response = FluxUtil.withContext(
                 context ->
                         service.send(
@@ -275,7 +275,7 @@ public final class EmailsImpl {
                                 accept,
                                 requestOptionsLocal,
                                 context));
-        System.out.println("Sent with response");
+        System.out.println("EmailsImpl - end");
         return response;
     }
 

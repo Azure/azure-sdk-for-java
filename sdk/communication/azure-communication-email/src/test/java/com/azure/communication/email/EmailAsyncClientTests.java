@@ -42,11 +42,11 @@ public class EmailAsyncClientTests extends EmailTestBase {
             .setPlainText("test message");
 
         EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients);
-        System.out.println("Making request");
 
+        System.out.println("From Test - Making request");
         StepVerifier.create(emailAsyncClient.send(emailMessage))
             .assertNext(response -> {
-                System.out.println("Request made");
+                System.out.println("From Test - Request successfully made");
                 assertNotNull(response.getMessageId());
             })
             .verifyComplete();
@@ -79,11 +79,11 @@ public class EmailAsyncClientTests extends EmailTestBase {
             .setPlainText("test message");
 
         EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients);
-        System.out.println("Making request");
 
+        System.out.println("From Test - Making request");
         StepVerifier.create(emailAsyncClient.send(emailMessage))
             .assertNext(response -> {
-                System.out.println("Request made");
+                System.out.println("From Test - Request successfully made");
                 assertNotNull(response.getMessageId());
             })
             .verifyComplete();
@@ -116,11 +116,11 @@ public class EmailAsyncClientTests extends EmailTestBase {
 
         EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients)
             .setAttachments(attachmentList);
-        System.out.println("Making request");
 
+        System.out.println("From Test - Making request");
         StepVerifier.create(emailAsyncClient.send(emailMessage))
             .assertNext(response -> {
-                System.out.println("Request made");
+                System.out.println("From Test - Request successfully made");
                 assertNotNull(response.getMessageId());
             })
             .verifyComplete();
@@ -174,11 +174,11 @@ public class EmailAsyncClientTests extends EmailTestBase {
             .setPlainText("test message");
 
         EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients);
-        System.out.println("Making request");
 
+        System.out.println("From Test - Making request");
         StepVerifier.create(emailAsyncClient.send(emailMessage))
             .assertNext(response -> {
-                System.out.println("Request made");
+                System.out.println("From Test - Request successfully made");
                 assertNotNull(response.getMessageId());
             })
             .verifyComplete();

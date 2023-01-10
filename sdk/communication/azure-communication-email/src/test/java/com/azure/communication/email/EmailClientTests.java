@@ -42,10 +42,10 @@ public class EmailClientTests extends EmailTestBase {
             .setPlainText("test message");
 
         EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients);
-        System.out.println("Making request");
 
+        System.out.println("From Test - Making request");
         SendEmailResult response = emailClient.send(emailMessage);
-        System.out.println("Request made");
+        System.out.println("From Test - Request successfully made");
 
         assertNotNull(response.getMessageId());
     }
@@ -76,11 +76,12 @@ public class EmailClientTests extends EmailTestBase {
         EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
 
-        System.out.println("Making request");
         EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients);
-        System.out.println("Request made");
 
+        System.out.println("From Test - Making request");
         SendEmailResult response = emailClient.send(emailMessage);
+        System.out.println("From Test - Request successfully made");
+
         assertNotNull(response.getMessageId());
     }
 
@@ -109,12 +110,13 @@ public class EmailClientTests extends EmailTestBase {
         ArrayList<EmailAttachment> attachmentList = new ArrayList<>();
         attachmentList.add(attachment);
 
-        System.out.println("Making request");
         EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients)
             .setAttachments(attachmentList);
-        System.out.println("Request made");
 
+        System.out.println("From Test - Making request");
         SendEmailResult response = emailClient.send(emailMessage);
+        System.out.println("From Test - Request successfully made");
+
         assertNotNull(response.getMessageId());
     }
 
@@ -134,12 +136,13 @@ public class EmailClientTests extends EmailTestBase {
         EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
 
-        System.out.println("Making request");
         EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients);
-        System.out.println("Request made");
 
+        System.out.println("From Test - Making request");
         SendEmailResult sendEmailResult = emailClient.send(emailMessage);
         SendStatusResult sendStatusResult = emailClient.getSendStatus(sendEmailResult.getMessageId());
+        System.out.println("From Test - Request successfully made");
+
         assertNotNull(sendStatusResult.getStatus());
     }
 
@@ -159,11 +162,12 @@ public class EmailClientTests extends EmailTestBase {
         EmailContent content = new EmailContent("test subject")
             .setPlainText("test message");
 
-        System.out.println("Making request");
         EmailMessage emailMessage = new EmailMessage(SENDER_ADDRESS, content, emailRecipients);
-        System.out.println("Request made");
 
+        System.out.println("From Test - Making request");
         SendEmailResult response = emailClient.send(emailMessage);
+        System.out.println("From Test - Request successfully made");
+
         assertNotNull(response.getMessageId());
     }
 }

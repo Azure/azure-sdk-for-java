@@ -68,11 +68,13 @@ public final class EmailAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SendEmailResult> send(EmailMessage emailMessage) {
+        System.out.println("EmailAsyncClient - begin");
         return this.serviceClient.sendWithResponseAsync(BinaryData.fromObject(emailMessage), null)
                 .flatMap((Response<Void> response) -> {
                     SendEmailResult result = new SendEmailResult(
                         response.getHeaders().getValue("x-ms-request-id")
                     );
+                    System.out.println("EmailAsyncClient - end");
                     return Mono.just(result);
                 });
     }
