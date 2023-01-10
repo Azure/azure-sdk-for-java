@@ -285,12 +285,17 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getLocalitiesWithAdministrativeDivisionWithAAD(HttpClient httpClient) {
+        PagedIterable<PhoneNumberLocality> localities = this
+                .getClientWithManagedIdentity(httpClient, "listAvailableLocalities")
+                .listAvailableLocalities("US", null);
+        PhoneNumberLocality localityWithAD = localities.iterator().next();
+
         PagedIterable<PhoneNumberLocality> localitiesResult = this
                 .getClientWithManagedIdentity(httpClient, "listAvailableLocalities")
-                .listAvailableLocalities("US", "WA");
+                .listAvailableLocalities("US", localityWithAD.getAdministrativeDivision().getAbbreviatedName());
         PhoneNumberLocality locality = localitiesResult.iterator().next();
         assertNotNull(locality);
-        assertEquals(locality.getAdministrativeDivision().getAbbreviatedName(), "WA");
+        assertEquals(locality.getAdministrativeDivision().getAbbreviatedName(), localityWithAD.getAdministrativeDivision().getAbbreviatedName());
     }
 
     @ParameterizedTest
