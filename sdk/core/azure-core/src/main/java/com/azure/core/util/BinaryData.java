@@ -10,6 +10,7 @@ import com.azure.core.implementation.util.ByteBufferContent;
 import com.azure.core.implementation.util.FileContent;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.implementation.util.InputStreamContent;
+import com.azure.core.implementation.util.ListByteBufferContent;
 import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.logging.ClientLogger;
@@ -29,6 +30,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 
@@ -548,6 +550,10 @@ public final class BinaryData {
      */
     public static BinaryData fromByteBuffer(ByteBuffer data) {
         return new BinaryData(new ByteBufferContent(data));
+    }
+
+    public static BinaryData fromList(List<ByteBuffer> data) {
+        return new BinaryData(new ListByteBufferContent(data));
     }
 
     /**
