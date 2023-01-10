@@ -24,10 +24,13 @@ import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnection;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPoolConfig;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Properties;
@@ -109,7 +112,17 @@ class AzureJedisPasswordlessAutoConfiguration {
     }
 
     private boolean isPoolEnabled(RedisProperties.Pool pool) {
-        Boolean enabled = pool.getEnabled();
+        Boolean enabled = true;
+        Method method = ReflectionUtils.findMethod(RedisProperties.Pool.class, "getEnabled");
+        if (method != null) {
+            try {
+                enabled = (Boolean) method.invoke(pool);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            } catch (InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
         return (enabled != null) ? enabled : COMMONS_POOL2_AVAILABLE;
     }
 
