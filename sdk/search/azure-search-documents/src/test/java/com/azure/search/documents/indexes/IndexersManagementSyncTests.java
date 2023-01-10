@@ -52,9 +52,8 @@ public class IndexersManagementSyncTests extends SearchTestBase {
     private static final String TARGET_INDEX_NAME = "indexforindexers";
     private static final HttpPipelinePolicy MOCK_STATUS_PIPELINE_POLICY = (context, next) -> {
         String url = context.getHttpRequest().getUrl().toString();
-        String separator = url.contains("?") ? "&" : "?";
-        context.getHttpRequest()
-            .setUrl(url + separator + "mock_status=inProgress");
+        String separator = (url.indexOf('?') >= 0) ? "&" : "?";
+        context.getHttpRequest().setUrl(url + separator + "mock_status=inProgress");
         return next.process();
     };
 
@@ -64,7 +63,9 @@ public class IndexersManagementSyncTests extends SearchTestBase {
     private final List<String> skillsetsToDelete = new ArrayList<>();
 
     private SearchIndexerClient searchIndexerClient;
+    private SearchIndexerAsyncClient searchIndexerAsyncClient;
     private SearchIndexClient searchIndexClient;
+    private SearchIndexAsyncClient searchIndexAsyncClient;
 
     private String createDataSource() {
         SearchIndexerDataSourceConnection dataSource = createBlobDataSource();
@@ -110,8 +111,14 @@ public class IndexersManagementSyncTests extends SearchTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        searchIndexerClient = getSearchIndexerClientBuilder().buildClient();
-        searchIndexClient = getSearchIndexClientBuilder().buildClient();
+
+        SearchIndexerClientBuilder searchIndexerClientBuilder = getSearchIndexerClientBuilder();
+        searchIndexerClient = searchIndexerClientBuilder.buildClient();
+        searchIndexerAsyncClient = searchIndexerClientBuilder.buildAsyncClient();
+
+        SearchIndexClientBuilder searchIndexClientBuilder = getSearchIndexClientBuilder();
+        searchIndexClient = searchIndexClientBuilder.buildClient();
+        searchIndexAsyncClient = searchIndexClientBuilder.buildAsyncClient();
     }
 
     @Override
@@ -617,7 +624,18 @@ public class IndexersManagementSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canCreateIndexerWithSkillset() {
+    public void canCreateIndexerWithSkillsetSync() {
+        SearchIndexerSkillset skillset = searchIndexerClient.createSkillset(createSkillsetObject());
+        skillsetsToDelete.add(skillset.getName());
+
+        SearchIndexer indexer = createBaseTestIndexerObject(createIndex(), createDataSource())
+            .setSkillsetName(skillset.getName());
+
+        createAndValidateIndexer(indexer);
+    }
+
+    @Test
+    public void canCreateIndexerWithSkillsetAsync() {
         SearchIndexerSkillset skillset = searchIndexerClient.createSkillset(createSkillsetObject());
         skillsetsToDelete.add(skillset.getName());
 
