@@ -36,6 +36,9 @@ public class OracleTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.table")
     private Object table;
 
+    /** Creates an instance of OracleTableDataset class. */
+    public OracleTableDataset() {}
+
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.

@@ -29,6 +29,9 @@ public class SetVariableActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties.value")
     private Object value;
 
+    /** Creates an instance of SetVariableActivity class. */
+    public SetVariableActivity() {}
+
     /**
      * Get the variableName property: Name of the variable whose value needs to be set.
      *

@@ -21,4 +21,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "AzureKeyVaultSecret", value = AzureKeyVaultSecretReference.class)
 })
 @Immutable
-public class SecretBase {}
+public class SecretBase {
+    /** Creates an instance of SecretBase class. */
+    public SecretBase() {}
+}

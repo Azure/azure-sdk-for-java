@@ -36,6 +36,9 @@ public class SqlPoolStoredProcedureActivity extends Activity {
     @JsonProperty(value = "typeProperties.storedProcedureParameters")
     private Map<String, StoredProcedureParameter> storedProcedureParameters;
 
+    /** Creates an instance of SqlPoolStoredProcedureActivity class. */
+    public SqlPoolStoredProcedureActivity() {}
+
     /**
      * Get the sqlPool property: SQL pool stored procedure reference.
      *

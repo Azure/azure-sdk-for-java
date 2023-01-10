@@ -28,6 +28,9 @@ public final class SapEccSource extends TabularSource {
     @JsonProperty(value = "httpRequestTimeout")
     private Object httpRequestTimeout;
 
+    /** Creates an instance of SapEccSource class. */
+    public SapEccSource() {}
+
     /**
      * Get the query property: SAP ECC OData query. For example, "$top=1". Type: string (or Expression with resultType
      * string).

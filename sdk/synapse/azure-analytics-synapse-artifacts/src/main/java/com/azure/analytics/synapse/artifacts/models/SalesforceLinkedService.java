@@ -58,6 +58,9 @@ public class SalesforceLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of SalesforceLinkedService class. */
+    public SalesforceLinkedService() {}
+
     /**
      * Get the environmentUrl property: The URL of Salesforce instance. Default is 'https://login.salesforce.com'. To
      * copy data from sandbox, specify 'https://test.salesforce.com'. To copy data from custom domain, specify, for

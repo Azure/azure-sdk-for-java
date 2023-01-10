@@ -16,6 +16,9 @@ public final class LinkTableRequestTargetStructureOptions {
     @JsonProperty(value = "type")
     private String type;
 
+    /** Creates an instance of LinkTableRequestTargetStructureOptions class. */
+    public LinkTableRequestTargetStructureOptions() {}
+
     /**
      * Get the type property: Target table structure type.
      *

@@ -24,6 +24,9 @@ public class SapTableResourceDataset extends Dataset {
     @JsonProperty(value = "typeProperties.tableName", required = true)
     private Object tableName;
 
+    /** Creates an instance of SapTableResourceDataset class. */
+    public SapTableResourceDataset() {}
+
     /**
      * Get the tableName property: The name of the SAP Table. Type: string (or Expression with resultType string).
      *

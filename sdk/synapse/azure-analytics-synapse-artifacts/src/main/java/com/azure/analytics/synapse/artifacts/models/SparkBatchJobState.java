@@ -65,6 +65,9 @@ public final class SparkBatchJobState {
     @JsonProperty(value = "jobCreationRequest")
     private SparkRequest jobCreationRequest;
 
+    /** Creates an instance of SparkBatchJobState class. */
+    public SparkBatchJobState() {}
+
     /**
      * Get the notStartedAt property: the time that at which "not_started" livy state was first seen.
      *
