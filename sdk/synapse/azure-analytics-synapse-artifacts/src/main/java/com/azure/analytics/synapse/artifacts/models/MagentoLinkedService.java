@@ -56,6 +56,9 @@ public class MagentoLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of MagentoLinkedService class. */
+    public MagentoLinkedService() {}
+
     /**
      * Get the host property: The URL of the Magento instance. (i.e. 192.168.222.110/magento3).
      *

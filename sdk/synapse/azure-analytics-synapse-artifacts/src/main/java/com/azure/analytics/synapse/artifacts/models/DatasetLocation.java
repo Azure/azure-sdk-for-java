@@ -54,6 +54,9 @@ public class DatasetLocation {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of DatasetLocation class. */
+    public DatasetLocation() {}
+
     /**
      * Get the folderPath property: Specify the folder path of dataset. Type: string (or Expression with resultType
      * string).

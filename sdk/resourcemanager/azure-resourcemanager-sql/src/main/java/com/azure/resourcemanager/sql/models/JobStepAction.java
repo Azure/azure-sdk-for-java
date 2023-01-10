@@ -29,6 +29,10 @@ public final class JobStepAction {
     @JsonProperty(value = "value", required = true)
     private String value;
 
+    /** Creates an instance of JobStepAction class. */
+    public JobStepAction() {
+    }
+
     /**
      * Get the type property: Type of action being executed by the job step.
      *

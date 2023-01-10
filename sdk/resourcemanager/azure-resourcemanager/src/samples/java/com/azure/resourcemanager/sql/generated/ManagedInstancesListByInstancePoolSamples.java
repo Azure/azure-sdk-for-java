@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagedInstances ListByInstancePool. */
 public final class ManagedInstancesListByInstancePoolSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2018-06-01-preview/examples/ManagedInstanceListByInstancePool.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceListByInstancePool.json
      */
     /**
      * Sample code: List managed instances by instance pool.
@@ -22,6 +22,24 @@ public final class ManagedInstancesListByInstancePoolSamples {
             .manager()
             .serviceClient()
             .getManagedInstances()
-            .listByInstancePool("Test1", "pool1", Context.NONE);
+            .listByInstancePool("Test1", "pool1", null, Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceListByInstancePoolWithExpandEqualsAdministrators.json
+     */
+    /**
+     * Sample code: List managed instances by instance pool with $expand=administrators/activedirectory.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void listManagedInstancesByInstancePoolWithExpandAdministratorsActivedirectory(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .sqlServers()
+            .manager()
+            .serviceClient()
+            .getManagedInstances()
+            .listByInstancePool("Test1", "pool1", null, Context.NONE);
     }
 }

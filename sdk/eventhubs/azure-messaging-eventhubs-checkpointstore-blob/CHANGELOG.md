@@ -6,6 +6,9 @@
 
 ### Breaking Changes
 
+- Remove `messaging.eventhubs.checkpoints` counter and replace it with `messaging.eventhubs.checkpoint.duration` 
+  histogram that can be used to count checkpoint calls. 
+
 ### Bugs Fixed
 
 ### Other Changes

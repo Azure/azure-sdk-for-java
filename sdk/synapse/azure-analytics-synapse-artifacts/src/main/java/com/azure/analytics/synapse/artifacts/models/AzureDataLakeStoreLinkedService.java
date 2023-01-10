@@ -79,6 +79,9 @@ public class AzureDataLakeStoreLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of AzureDataLakeStoreLinkedService class. */
+    public AzureDataLakeStoreLinkedService() {}
+
     /**
      * Get the dataLakeStoreUri property: Data Lake Store service URI. Type: string (or Expression with resultType
      * string).

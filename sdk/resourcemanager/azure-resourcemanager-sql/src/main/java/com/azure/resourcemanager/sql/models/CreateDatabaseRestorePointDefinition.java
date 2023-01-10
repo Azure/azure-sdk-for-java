@@ -17,6 +17,10 @@ public final class CreateDatabaseRestorePointDefinition {
     @JsonProperty(value = "restorePointLabel", required = true)
     private String restorePointLabel;
 
+    /** Creates an instance of CreateDatabaseRestorePointDefinition class. */
+    public CreateDatabaseRestorePointDefinition() {
+    }
+
     /**
      * Get the restorePointLabel property: The restore point label to apply.
      *

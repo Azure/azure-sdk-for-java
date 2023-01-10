@@ -55,6 +55,9 @@ public class ZendeskLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of ZendeskLinkedService class. */
+    public ZendeskLinkedService() {}
+
     /**
      * Get the authenticationType property: The authentication type to use.
      *

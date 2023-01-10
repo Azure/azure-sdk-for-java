@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.sql.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Usage Metric of a Subscription in a Location. */
-@Fluent
+@Immutable
 public final class SubscriptionUsageInner extends ProxyResource {
     /*
      * Resource properties.
      */
     @JsonProperty(value = "properties")
     private SubscriptionUsageProperties innerProperties;
+
+    /** Creates an instance of SubscriptionUsageInner class. */
+    public SubscriptionUsageInner() {
+    }
 
     /**
      * Get the innerProperties property: Resource properties.

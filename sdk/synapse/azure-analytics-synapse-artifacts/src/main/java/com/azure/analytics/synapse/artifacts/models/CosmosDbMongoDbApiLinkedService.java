@@ -32,6 +32,9 @@ public class CosmosDbMongoDbApiLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.database", required = true)
     private Object database;
 
+    /** Creates an instance of CosmosDbMongoDbApiLinkedService class. */
+    public CosmosDbMongoDbApiLinkedService() {}
+
     /**
      * Get the connectionString property: The CosmosDB (MongoDB API) connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.

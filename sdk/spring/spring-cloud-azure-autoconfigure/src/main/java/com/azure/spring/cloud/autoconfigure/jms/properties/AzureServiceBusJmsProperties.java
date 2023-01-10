@@ -37,9 +37,11 @@ public class AzureServiceBusJmsProperties implements InitializingBean {
      */
     private String topicClientId;
     /**
-     * Connection idle timeout duration.
+     * Connection idle timeout duration that how long the client expects Service Bus to keep a connection alive when no messages delivered.
+     * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#doc-doc-idle-time-out">AMQP specification</a>
+     * @see <a href="https://learn.microsoft.com/azure/service-bus-messaging/service-bus-amqp-troubleshoot#link-is-not-created">Service Bus AMQP Errors</a>
      */
-    private Duration idleTimeout = Duration.ofMinutes(30);
+    private Duration idleTimeout = Duration.ofMinutes(2);
     /**
      * Pricing tier for a Service Bus namespace.
      */

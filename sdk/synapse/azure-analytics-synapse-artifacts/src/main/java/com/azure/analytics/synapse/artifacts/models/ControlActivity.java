@@ -33,6 +33,9 @@ import java.util.List;
 })
 @Fluent
 public class ControlActivity extends Activity {
+    /** Creates an instance of ControlActivity class. */
+    public ControlActivity() {}
+
     /** {@inheritDoc} */
     @Override
     public ControlActivity setName(String name) {

@@ -16,142 +16,6 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in DatabaseBlobAuditingPoliciesClient. */
 public interface DatabaseBlobAuditingPoliciesClient {
     /**
-     * Gets a database's blob auditing policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's blob auditing policy along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DatabaseBlobAuditingPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName);
-
-    /**
-     * Gets a database's blob auditing policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's blob auditing policy on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DatabaseBlobAuditingPolicyInner> getAsync(String resourceGroupName, String serverName, String databaseName);
-
-    /**
-     * Gets a database's blob auditing policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's blob auditing policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseBlobAuditingPolicyInner get(String resourceGroupName, String serverName, String databaseName);
-
-    /**
-     * Gets a database's blob auditing policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's blob auditing policy along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabaseBlobAuditingPolicyInner> getWithResponse(
-        String resourceGroupName, String serverName, String databaseName, Context context);
-
-    /**
-     * Creates or updates a database's blob auditing policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The database blob auditing policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database blob auditing policy along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DatabaseBlobAuditingPolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, DatabaseBlobAuditingPolicyInner parameters);
-
-    /**
-     * Creates or updates a database's blob auditing policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The database blob auditing policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database blob auditing policy on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DatabaseBlobAuditingPolicyInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, String databaseName, DatabaseBlobAuditingPolicyInner parameters);
-
-    /**
-     * Creates or updates a database's blob auditing policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The database blob auditing policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database blob auditing policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseBlobAuditingPolicyInner createOrUpdate(
-        String resourceGroupName, String serverName, String databaseName, DatabaseBlobAuditingPolicyInner parameters);
-
-    /**
-     * Creates or updates a database's blob auditing policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The database blob auditing policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database blob auditing policy along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabaseBlobAuditingPolicyInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        DatabaseBlobAuditingPolicyInner parameters,
-        Context context);
-
-    /**
      * Lists auditing settings of a database.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -199,4 +63,140 @@ public interface DatabaseBlobAuditingPoliciesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DatabaseBlobAuditingPolicyInner> listByDatabase(
         String resourceGroupName, String serverName, String databaseName, Context context);
+
+    /**
+     * Gets a database's blob auditing policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database's blob auditing policy along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<DatabaseBlobAuditingPolicyInner>> getWithResponseAsync(
+        String resourceGroupName, String serverName, String databaseName);
+
+    /**
+     * Gets a database's blob auditing policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database's blob auditing policy on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<DatabaseBlobAuditingPolicyInner> getAsync(String resourceGroupName, String serverName, String databaseName);
+
+    /**
+     * Gets a database's blob auditing policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database's blob auditing policy along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DatabaseBlobAuditingPolicyInner> getWithResponse(
+        String resourceGroupName, String serverName, String databaseName, Context context);
+
+    /**
+     * Gets a database's blob auditing policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database's blob auditing policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DatabaseBlobAuditingPolicyInner get(String resourceGroupName, String serverName, String databaseName);
+
+    /**
+     * Creates or updates a database's blob auditing policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param parameters The database blob auditing policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database blob auditing policy along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<DatabaseBlobAuditingPolicyInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String serverName, String databaseName, DatabaseBlobAuditingPolicyInner parameters);
+
+    /**
+     * Creates or updates a database's blob auditing policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param parameters The database blob auditing policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database blob auditing policy on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<DatabaseBlobAuditingPolicyInner> createOrUpdateAsync(
+        String resourceGroupName, String serverName, String databaseName, DatabaseBlobAuditingPolicyInner parameters);
+
+    /**
+     * Creates or updates a database's blob auditing policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param parameters The database blob auditing policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database blob auditing policy along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DatabaseBlobAuditingPolicyInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        DatabaseBlobAuditingPolicyInner parameters,
+        Context context);
+
+    /**
+     * Creates or updates a database's blob auditing policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param parameters The database blob auditing policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database blob auditing policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DatabaseBlobAuditingPolicyInner createOrUpdate(
+        String resourceGroupName, String serverName, String databaseName, DatabaseBlobAuditingPolicyInner parameters);
 }

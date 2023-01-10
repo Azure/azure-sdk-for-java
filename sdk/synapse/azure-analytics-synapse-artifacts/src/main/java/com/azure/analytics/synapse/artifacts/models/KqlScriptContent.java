@@ -28,6 +28,9 @@ public final class KqlScriptContent {
     @JsonProperty(value = "currentConnection")
     private KqlScriptContentCurrentConnection currentConnection;
 
+    /** Creates an instance of KqlScriptContent class. */
+    public KqlScriptContent() {}
+
     /**
      * Get the query property: The query property.
      *

@@ -45,6 +45,9 @@ public class XmlDataset extends Dataset {
     @JsonProperty(value = "typeProperties.compression")
     private DatasetCompression compression;
 
+    /** Creates an instance of XmlDataset class. */
+    public XmlDataset() {}
+
     /**
      * Get the location property: The location of the json data storage.
      *

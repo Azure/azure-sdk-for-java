@@ -16,6 +16,9 @@ public final class ArtifactRenameRequest {
     @JsonProperty(value = "newName")
     private String newName;
 
+    /** Creates an instance of ArtifactRenameRequest class. */
+    public ArtifactRenameRequest() {}
+
     /**
      * Get the newName property: New name of the artifact.
      *

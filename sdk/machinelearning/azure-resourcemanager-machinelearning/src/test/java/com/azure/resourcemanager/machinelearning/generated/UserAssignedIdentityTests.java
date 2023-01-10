@@ -14,7 +14,7 @@ public final class UserAssignedIdentityTests {
         UserAssignedIdentity model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"1800db07-b48f-4242-81d2-188dacda3e06\",\"clientId\":\"8f926d0c-acdf-4a14-84c7-9877704a927c\"}")
+                    "{\"principalId\":\"ea3f4591-ab01-4a00-a297-553d4e34ec0d\",\"clientId\":\"1244c7d8-1ac2-400a-a909-286ba7adde7c\"}")
                 .toObject(UserAssignedIdentity.class);
     }
 

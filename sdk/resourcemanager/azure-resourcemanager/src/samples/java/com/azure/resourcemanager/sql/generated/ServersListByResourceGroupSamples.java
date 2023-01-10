@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Servers ListByResourceGroup. */
 public final class ServersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/ServerListByResourceGroup.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerListByResourceGroup.json
      */
     /**
      * Sample code: List servers by resource group.
@@ -17,6 +17,29 @@ public final class ServersListByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listServersByResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.sqlServers().manager().serviceClient().getServers().listByResourceGroup("sqlcrudtest-7398", Context.NONE);
+        azure
+            .sqlServers()
+            .manager()
+            .serviceClient()
+            .getServers()
+            .listByResourceGroup("sqlcrudtest-7398", null, Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ServerListByResourceGroupWithExpandEqualsAdministrators.json
+     */
+    /**
+     * Sample code: List servers by resource group with $expand=administrators/activedirectory.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void listServersByResourceGroupWithExpandAdministratorsActivedirectory(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .sqlServers()
+            .manager()
+            .serviceClient()
+            .getServers()
+            .listByResourceGroup("sqlcrudtest-7398", null, Context.NONE);
     }
 }
