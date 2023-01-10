@@ -15,6 +15,7 @@ import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
 import com.azure.communication.callautomation.models.MuteAllParticipantsOptions;
 import com.azure.communication.callautomation.models.MuteParticipantOptions;
+import com.azure.communication.callautomation.models.MuteParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantsOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantsResult;
 import com.azure.communication.callautomation.models.RepeatabilityHeaders;
@@ -22,6 +23,7 @@ import com.azure.communication.callautomation.models.TransferCallResult;
 import com.azure.communication.callautomation.models.TransferToParticipantCallOptions;
 import com.azure.communication.callautomation.models.UnmuteAllParticipantsOptions;
 import com.azure.communication.callautomation.models.UnmuteParticipantOptions;
+import com.azure.communication.callautomation.models.UnmuteParticipantsResult;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.Test;
@@ -32,7 +34,7 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
     @Test
@@ -301,22 +303,15 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
     public void muteParticipant() {
         CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
-                new SimpleEntry<String, Integer>(serializeObject(new MuteParticipantsResponseInternal()
-                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+                new SimpleEntry<String, Integer>(serializeObject(new MuteParticipantsResponseInternal()), 202)
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        /**
-         * TODO: When method's implemented.
         MuteParticipantsResult muteParticipantsResult = callConnectionAsync.muteParticipantAsync(
             new CommunicationUserIdentifier(CALL_TARGET_ID)).block();
 
         assertNotNull(muteParticipantsResult);
-        assertEquals(CALL_OPERATION_CONTEXT, muteParticipantsResult.getOperationContext());
-         */
-        assertThrows(RuntimeException.class, () ->
-            callConnectionAsync.muteParticipantAsync(new CommunicationUserIdentifier(CALL_TARGET_ID)).block()
-        );
+        assertNull(muteParticipantsResult.getOperationContext());
     }
 
     @Test
@@ -332,10 +327,8 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             new CommunicationUserIdentifier(CALL_TARGET_ID))
             .setOperationContext(CALL_OPERATION_CONTEXT);
 
-        /**
-         * TODO: To complete when method is implemented.
-        Response<MuteParticipantsResult> muteParticipantsResultResponse = callConnectionAsync.muteParticipantsWithResponse(
-            muteParticipantOptions).block();
+        Response<MuteParticipantsResult> muteParticipantsResultResponse =
+            callConnectionAsync.muteParticipantWithResponse(muteParticipantOptions).block();
 
         assertNotNull(muteParticipantsResultResponse);
         assertEquals(202, muteParticipantsResultResponse.getStatusCode());
@@ -345,32 +338,22 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(repeatabilityHeaders);
         assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
         assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
-         */
-        assertThrows(RuntimeException.class, () ->
-            callConnectionAsync.muteParticipantWithResponse(muteParticipantOptions).block()
-        );
     }
 
     @Test
     public void muteAllParticipantsWithInitiator() {
         CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
-                new SimpleEntry<String, Integer>(serializeObject(new MuteParticipantsResponseInternal()
-                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+                new SimpleEntry<String, Integer>(serializeObject(new MuteParticipantsResponseInternal()), 202)
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        /**
-         * TODO: When method's implemented.
-         MuteParticipantsResult muteParticipantsResult = callConnectionAsync.muteAllParticipantsAsync(
-         new CommunicationUserIdentifier(CALL_TARGET_ID)).block();
+        MuteParticipantsResult muteParticipantsResult = callConnectionAsync.muteAllParticipantsAsync(
+            new CommunicationUserIdentifier(CALL_TARGET_ID)
+        ).block();
 
-         assertNotNull(muteParticipantsResult);
-         assertEquals(CALL_OPERATION_CONTEXT, muteParticipantsResult.getOperationContext());
-         */
-        assertThrows(RuntimeException.class, () ->
-            callConnectionAsync.muteAllParticipantsAsync(new CommunicationUserIdentifier(CALL_TARGET_ID)).block()
-        );
+        assertNotNull(muteParticipantsResult);
+        assertNull(muteParticipantsResult.getOperationContext());
     }
 
     @Test
@@ -386,45 +369,33 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             .setRequestInitiator(new CommunicationUserIdentifier(CALL_TARGET_ID))
             .setOperationContext(CALL_OPERATION_CONTEXT);
 
-        /**
-         * TODO: To complete when method is implemented.
-         Response<MuteParticipantsResult> muteParticipantsResultResponse = callConnectionAsync.muteParticipantsWithResponse(
-         muteParticipantOptions).block();
+        Response<MuteParticipantsResult> muteParticipantsResultResponse =
+            callConnectionAsync.muteAllParticipantsWithResponse(muteParticipantOptions).block();
 
-         assertNotNull(muteParticipantsResultResponse);
-         assertEquals(202, muteParticipantsResultResponse.getStatusCode());
-         assertNotNull(muteParticipantsResultResponse.getValue());
+        assertNotNull(muteParticipantsResultResponse);
+        assertEquals(202, muteParticipantsResultResponse.getStatusCode());
+        assertNotNull(muteParticipantsResultResponse.getValue());
 
-         RepeatabilityHeaders repeatabilityHeaders = muteParticipantOptions.getRepeatabilityHeaders();
-         assertNotNull(repeatabilityHeaders);
-         assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
-         assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
-         */
-        assertThrows(RuntimeException.class, () ->
-            callConnectionAsync.muteAllParticipantsWithResponse(muteParticipantOptions).block()
-        );
+        RepeatabilityHeaders repeatabilityHeaders = muteParticipantOptions.getRepeatabilityHeaders();
+        assertNotNull(repeatabilityHeaders);
+        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
+        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
     }
 
     @Test
     public void muteAllParticipantsWithoutInitiator() {
         CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
-                new SimpleEntry<String, Integer>(serializeObject(new MuteParticipantsResponseInternal()
-                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+                new SimpleEntry<String, Integer>(serializeObject(new MuteParticipantsResponseInternal()), 202)
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        /**
-         * TODO: When method's implemented.
-         MuteParticipantsResult muteParticipantsResult = callConnectionAsync.muteAllParticipantsAsync(
-         new CommunicationUserIdentifier(CALL_TARGET_ID)).block();
+        MuteParticipantsResult muteParticipantsResult = callConnectionAsync.muteAllParticipantsAsync(
+            new CommunicationUserIdentifier(CALL_TARGET_ID)
+        ).block();
 
-         assertNotNull(muteParticipantsResult);
-         assertEquals(CALL_OPERATION_CONTEXT, muteParticipantsResult.getOperationContext());
-         */
-        assertThrows(RuntimeException.class, () ->
-            callConnectionAsync.muteAllParticipantsAsync(null).block()
-        );
+        assertNotNull(muteParticipantsResult);
+        assertNull(muteParticipantsResult.getOperationContext());
     }
 
     @Test
@@ -439,45 +410,33 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
         MuteAllParticipantsOptions muteParticipantOptions = new MuteAllParticipantsOptions()
             .setOperationContext(CALL_OPERATION_CONTEXT);
 
-        /**
-         * TODO: To complete when method is implemented.
-         Response<MuteParticipantsResult> muteParticipantsResultResponse = callConnectionAsync.muteParticipantsWithResponse(
-         muteParticipantOptions).block();
+        Response<MuteParticipantsResult> muteParticipantsResultResponse =
+            callConnectionAsync.muteAllParticipantsWithResponse(muteParticipantOptions).block();
 
-         assertNotNull(muteParticipantsResultResponse);
-         assertEquals(202, muteParticipantsResultResponse.getStatusCode());
-         assertNotNull(muteParticipantsResultResponse.getValue());
+        assertNotNull(muteParticipantsResultResponse);
+        assertEquals(202, muteParticipantsResultResponse.getStatusCode());
+        assertNotNull(muteParticipantsResultResponse.getValue());
 
-         RepeatabilityHeaders repeatabilityHeaders = muteParticipantOptions.getRepeatabilityHeaders();
-         assertNotNull(repeatabilityHeaders);
-         assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
-         assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
-         */
-        assertThrows(RuntimeException.class, () ->
-            callConnectionAsync.muteAllParticipantsWithResponse(muteParticipantOptions).block()
-        );
+        RepeatabilityHeaders repeatabilityHeaders = muteParticipantOptions.getRepeatabilityHeaders();
+        assertNotNull(repeatabilityHeaders);
+        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
+        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
     }
 
     @Test
     public void unmuteParticipant() {
         CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
-                new SimpleEntry<String, Integer>(serializeObject(new UnmuteParticipantsResponseInternal()
-                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+                new SimpleEntry<String, Integer>(serializeObject(new UnmuteParticipantsResponseInternal()), 202)
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        /**
-         * TODO: When method's implemented.
-         UnmuteParticipantsResult unmuteParticipantsResult = callConnectionAsync.unmuteParticipantAsync(
-         new CommunicationUserIdentifier(CALL_TARGET_ID)).block();
+        UnmuteParticipantsResult unmuteParticipantsResult = callConnectionAsync.unmuteParticipantAsync(
+            new CommunicationUserIdentifier(CALL_TARGET_ID)
+        ).block();
 
-         assertNotNull(unmuteParticipantsResult);
-         assertEquals(CALL_OPERATION_CONTEXT, muteParticipantsResult.getOperationContext());
-         */
-        assertThrows(RuntimeException.class, () ->
-            callConnectionAsync.unmuteParticipantAsync(new CommunicationUserIdentifier(CALL_TARGET_ID)).block()
-        );
+        assertNotNull(unmuteParticipantsResult);
+        assertNull(unmuteParticipantsResult.getOperationContext());
     }
 
     @Test
@@ -493,48 +452,35 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             new CommunicationUserIdentifier(CALL_TARGET_ID))
             .setOperationContext(CALL_OPERATION_CONTEXT);
 
-        /**
-         * TODO: To complete when method is implemented.
-         Response<UnmuteParticipantsResult> unmuteParticipantsResultResponse = callConnectionAsync.unmuteParticipantsWithResponse(
-         muteParticipantOptions).block();
+        Response<UnmuteParticipantsResult> unmuteParticipantsResultResponse =
+            callConnectionAsync.unmuteParticipantWithResponse(muteParticipantOptions).block();
 
-         assertNotNull(unmuteParticipantsResultResponse);
-         assertEquals(202, unmuteParticipantsResultResponse.getStatusCode());
-         assertNotNull(unmuteParticipantsResultResponse.getValue());
+        assertNotNull(unmuteParticipantsResultResponse);
+        assertEquals(202, unmuteParticipantsResultResponse.getStatusCode());
+        assertNotNull(unmuteParticipantsResultResponse.getValue());
 
-         RepeatabilityHeaders repeatabilityHeaders = muteParticipantOptions.getRepeatabilityHeaders();
-         assertNotNull(repeatabilityHeaders);
-         assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
-         assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
-         */
-        assertThrows(RuntimeException.class, () ->
-            callConnectionAsync.unmuteParticipantWithResponse(muteParticipantOptions).block()
-        );
+        RepeatabilityHeaders repeatabilityHeaders = muteParticipantOptions.getRepeatabilityHeaders();
+        assertNotNull(repeatabilityHeaders);
+        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
+        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
     }
 
     @Test
     public void unmuteAllParticipants() {
         CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
-                new SimpleEntry<String, Integer>(serializeObject(new UnmuteParticipantsResponseInternal()
-                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+                new SimpleEntry<String, Integer>(serializeObject(new UnmuteParticipantsResponseInternal()), 202)
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        /**
-         * TODO: When method's implemented.
-         UnmuteParticipantsResult unmuteParticipantsResult = callConnectionAsync.unmuteAllParticipantsAsync().block();
+        UnmuteParticipantsResult unmuteParticipantsResult = callConnectionAsync.unmuteAllParticipantsAsync().block();
 
-         assertNotNull(unmuteParticipantsResult);
-         assertEquals(CALL_OPERATION_CONTEXT, unmuteParticipantsResult.getOperationContext());
-         */
-        assertThrows(RuntimeException.class, () ->
-            callConnectionAsync.unmuteAllParticipantsAsync().block()
-        );
+        assertNotNull(unmuteParticipantsResult);
+        assertNull(unmuteParticipantsResult.getOperationContext());
     }
 
     @Test
-    public void unmuteAllParticipantsWithResponseWithInitiator() {
+    public void unmuteAllParticipantsWithResponse() {
         CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(serializeObject(new UnmuteParticipantsResponseInternal()
@@ -545,22 +491,16 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
         UnmuteAllParticipantsOptions unmuteAllParticipantOptions = new UnmuteAllParticipantsOptions()
             .setOperationContext(CALL_OPERATION_CONTEXT);
 
-        /**
-         * TODO: To complete when method is implemented.
-         Response<UnmuteParticipantsResult> unmuteParticipantsResultResponse = callConnectionAsync.unmuteAllParticipantsWithResponse(
-         unmuteAllParticipantOptions).block();
+        Response<UnmuteParticipantsResult> unmuteParticipantsResultResponse =
+            callConnectionAsync.unmuteAllParticipantsWithResponse(unmuteAllParticipantOptions).block();
 
-         assertNotNull(unmuteParticipantsResultResponse);
-         assertEquals(202, unmuteParticipantsResultResponse.getStatusCode());
-         assertNotNull(unmuteParticipantsResultResponse.getValue());
+        assertNotNull(unmuteParticipantsResultResponse);
+        assertEquals(202, unmuteParticipantsResultResponse.getStatusCode());
+        assertNotNull(unmuteParticipantsResultResponse.getValue());
 
-         RepeatabilityHeaders repeatabilityHeaders = unmuteAllParticipantOptions.getRepeatabilityHeaders();
-         assertNotNull(repeatabilityHeaders);
-         assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
-         assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
-         */
-        assertThrows(RuntimeException.class, () ->
-            callConnectionAsync.unmuteAllParticipantsWithResponse(unmuteAllParticipantOptions).block()
-        );
+        RepeatabilityHeaders repeatabilityHeaders = unmuteAllParticipantOptions.getRepeatabilityHeaders();
+        assertNotNull(repeatabilityHeaders);
+        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
+        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
     }
 }
