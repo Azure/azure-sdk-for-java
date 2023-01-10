@@ -100,7 +100,7 @@ public class EventHubConsumerClientTest {
     private Runnable onClientClosed;
 
     private EventHubConsumerClient consumer;
-    private RecoverableReactorConnection<EventHubReactorAmqpConnection> connectionProcessor;
+    private RecoverableReactorConnection<EventHubReactorAmqpConnection> recoverableConnection;
     private ConnectionOptions connectionOptions;
     private EventHubConsumerAsyncClient asyncConsumer;
     private AutoCloseable mockCloseable;
@@ -122,7 +122,7 @@ public class EventHubConsumerClientTest {
             AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS,
             Schedulers.parallel(), CLIENT_OPTIONS, SslDomain.VerifyMode.VERIFY_PEER, "test-product", "test-client-version");
 
-        connectionProcessor = new RecoverableReactorConnection<>(() -> connection,
+        recoverableConnection = new RecoverableReactorConnection<>(() -> connection,
             connectionOptions.getFullyQualifiedNamespace(), "event-hub-path", getRetryPolicy(connectionOptions.getRetry()), new HashMap<>());
 
         when(connection.getEndpointStates()).thenReturn(connectionStates.flux());
@@ -143,7 +143,7 @@ public class EventHubConsumerClientTest {
         when(connection.closeAsync()).thenReturn(Mono.empty());
 
         asyncConsumer = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, messageSerializer, CONSUMER_GROUP, PREFETCH, false, onClientClosed, CLIENT_IDENTIFIER,
+            recoverableConnection, messageSerializer, CONSUMER_GROUP, PREFETCH, false, onClientClosed, CLIENT_IDENTIFIER,
             DEFAULT_INSTRUMENTATION);
         consumer = new EventHubConsumerClient(asyncConsumer, Duration.ofSeconds(10));
     }
@@ -169,7 +169,7 @@ public class EventHubConsumerClientTest {
     public void lastEnqueuedEventInformationIsNull() {
         // Arrange
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
-            HOSTNAME, EVENT_HUB_NAME, connectionProcessor, messageSerializer, CONSUMER_GROUP,
+            HOSTNAME, EVENT_HUB_NAME, recoverableConnection, messageSerializer, CONSUMER_GROUP,
             PREFETCH, false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
         final EventHubConsumerClient consumer = new EventHubConsumerClient(runtimeConsumer, Duration.ofSeconds(5));
         final int numberOfEvents = 10;
@@ -199,7 +199,7 @@ public class EventHubConsumerClientTest {
         // Arrange
         final ReceiveOptions options = new ReceiveOptions().setTrackLastEnqueuedEventProperties(true);
         final EventHubConsumerAsyncClient runtimeConsumer = new EventHubConsumerAsyncClient(
-            HOSTNAME, EVENT_HUB_NAME, connectionProcessor, messageSerializer, CONSUMER_GROUP, PREFETCH,
+            HOSTNAME, EVENT_HUB_NAME, recoverableConnection, messageSerializer, CONSUMER_GROUP, PREFETCH,
             false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
         final EventHubConsumerClient consumer = new EventHubConsumerClient(runtimeConsumer, Duration.ofSeconds(5));
 

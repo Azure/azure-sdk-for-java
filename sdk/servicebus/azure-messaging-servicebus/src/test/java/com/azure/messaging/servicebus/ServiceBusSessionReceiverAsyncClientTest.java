@@ -77,7 +77,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
     private final FluxSink<Message> messageSink = messageProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, false);
 
-    private RecoverableReactorConnection<ServiceBusReactorAmqpConnection> connectionProcessor;
+    private RecoverableReactorConnection<ServiceBusReactorAmqpConnection> recoverableConnection;
     private ServiceBusSessionManager sessionManager;
 
     @Mock
@@ -133,7 +133,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
 
         when(connection.closeAsync()).thenReturn(Mono.empty());
 
-        connectionProcessor = new RecoverableReactorConnection<>(() -> connection,
+        recoverableConnection = new RecoverableReactorConnection<>(() -> connection,
             connectionOptions.getFullyQualifiedNamespace(), ENTITY_PATH, getRetryPolicy(connectionOptions.getRetry()),
             new HashMap<>());
     }
@@ -146,8 +146,8 @@ class ServiceBusSessionReceiverAsyncClientTest {
             sessionManager.close();
         }
 
-        if (connectionProcessor != null) {
-            connectionProcessor.dispose();
+        if (recoverableConnection != null) {
+            recoverableConnection.dispose();
         }
 
         Mockito.framework().clearInlineMock(this);
@@ -183,7 +183,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
         ServiceBusSessionReceiverAsyncClient client = new ServiceBusSessionReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, receiverOptions,
-            connectionProcessor, instrumentation,
+            recoverableConnection, instrumentation,
             messageSerializer, () -> { }, CLIENT_IDENTIFIER
         );
 
@@ -207,7 +207,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
     void acceptNextSession() {
         // Arrange
         ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, Duration.ZERO, false, null, null);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, recoverableConnection,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
 
         final int numberOfMessages = 5;
@@ -275,7 +275,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
         ServiceBusSessionReceiverAsyncClient client = new ServiceBusSessionReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, receiverOptions,
-            connectionProcessor, instrumentation,
+            recoverableConnection, instrumentation,
             messageSerializer, () -> { }, CLIENT_IDENTIFIER
         );
 
