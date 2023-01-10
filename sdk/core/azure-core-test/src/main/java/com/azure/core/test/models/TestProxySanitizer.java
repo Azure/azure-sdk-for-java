@@ -11,6 +11,8 @@ public class TestProxySanitizer {
     private final String regexKey;
     private final String redactedValue;
 
+    private String groupForReplace;
+
     /**
      * Creates an instance of TestProxySanitizer
      * @param regexKey the regex key to lookup for redaction
@@ -45,5 +47,24 @@ public class TestProxySanitizer {
      */
     public String getRedactedValue() {
         return redactedValue;
+    }
+
+    /**
+     * Get the group for replace
+     * @return the group for replace.
+     */
+    public String getGroupForReplace() {
+        return groupForReplace;
+    }
+
+    /**
+     * Set the group for replace.
+     *
+     * @param groupForReplace th value to set
+     * @return
+     */
+    public TestProxySanitizer setGroupForReplace(String groupForReplace) {
+        this.groupForReplace = groupForReplace;
+        return this;
     }
 }

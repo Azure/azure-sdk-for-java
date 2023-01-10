@@ -163,7 +163,7 @@ public class TestProxyTests extends TestBase {
         try {
             url = new UrlBuilder()
                 .setHost("localhost")
-                .setPath("/fr/models")
+                .setPath("/fr/path/1")
                 .setPort(3000)
                 .setScheme("http")
                 .toUrl();
@@ -183,7 +183,7 @@ public class TestProxyTests extends TestBase {
         RecordedTestProxyData recordedTestProxyData = readDataFromFile();
         RecordedTestProxyData.TestProxyDataRecord record = recordedTestProxyData.getTestProxyDataRecords().get(0);
         // default sanitizers
-        assertEquals("https://REDACTED:3000/fr/models", record.getUri());
+        assertEquals("https://REDACTED:3000/fr/path/1", record.getUri());
         assertEquals(REDACTED, record.getHeaders().get("Ocp-Apim-Subscription-Key"));
         // custom sanitizers
         assertEquals(REDACTED, record.getResponse().get("modelId"));
@@ -214,6 +214,42 @@ public class TestProxyTests extends TestBase {
         HttpResponse response = client.sendSync(request, Context.NONE);
 
         assertEquals(200, response.getStatusCode());
+    }
+
+    @Test
+    @Tag("Record")
+    public void testBodyRegexRedactRecord() {
+        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+
+        interceptorManager.addRecordSanitizers(customSanitizer);
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .policies(interceptorManager.getRecordPolicy()).build();
+        URL url;
+        try {
+            url = new UrlBuilder()
+                .setHost("localhost")
+                .setPath("/fr/path/2")
+                .setPort(3000)
+                .setScheme("http")
+                .toUrl();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
+        request.setHeader("Content-Type", "application/xml");
+
+        HttpResponse response = pipeline.sendSync(request, Context.NONE);
+
+        assertEquals(response.getStatusCode(), 200);
+
+        assertEquals(200, response.getStatusCode());
+        // RecordedTestProxyData recordedTestProxyData = readDataFromFile();
+        // RecordedTestProxyData.TestProxyDataRecord record = recordedTestProxyData.getTestProxyDataRecords().get(0);
+        // default regex sanitizers
+        // assertEquals("https://REDACTED:3000/fr/path/2", record.getUri());
     }
 
     private RecordedTestProxyData readDataFromFile() {
