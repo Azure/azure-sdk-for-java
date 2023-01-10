@@ -5,20 +5,21 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.RecoverableReactorConnection;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
-import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
+import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
@@ -49,12 +50,14 @@ import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.azure.core.amqp.implementation.RetryUtil.getRetryPolicy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -79,8 +82,8 @@ class ServiceBusSessionManagerTest {
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
     private static final Duration MAX_LOCK_RENEWAL = Duration.ofSeconds(5);
 
-    private static final String NAMESPACE = "my-namespace-foo.net";
-    private static final String ENTITY_PATH = "queue-name";
+    private static final String NAMESPACE = "contoso-shopping.servicebus.windows.net";
+    private static final String ENTITY_PATH = "orders-queue";
     private static final MessagingEntityType ENTITY_TYPE = MessagingEntityType.QUEUE;
     private static final String CLIENT_IDENTIFIER = "my-client-identifier";
 
@@ -91,14 +94,14 @@ class ServiceBusSessionManagerTest {
     private final FluxSink<Message> messageSink = messageProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private final Tracer tracer = null;
 
-    private ServiceBusConnectionProcessor connectionProcessor;
+    private RecoverableReactorConnection<ServiceBusReactorAmqpConnection> connectionProcessor;
     private ServiceBusSessionManager sessionManager;
     private AutoCloseable mocksCloseable;
 
     @Mock
     private ServiceBusReceiveLink amqpReceiveLink;
     @Mock
-    private ServiceBusAmqpConnection connection;
+    private ServiceBusReactorAmqpConnection connection;
     @Mock
     private TokenCredential tokenCredential;
     @Mock
@@ -141,24 +144,22 @@ class ServiceBusSessionManagerTest {
             "test-product", "test-version");
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
+        when(connection.connectAndAwaitToActive()).thenReturn(Mono.just(connection));
         endpointSink.next(AmqpEndpointState.ACTIVE);
 
         when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE))
             .thenReturn(Mono.just(managementNode));
+        when(connection.isDisposed()).thenReturn(false);
+        when(connection.closeAsync(any(AmqpShutdownSignal.class))).thenReturn(Mono.empty());
 
-        connectionProcessor =
-            Flux.<ServiceBusAmqpConnection>create(sink -> sink.next(connection))
-                .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                    connectionOptions.getRetry()));
+        connectionProcessor = new RecoverableReactorConnection<>(() -> connection,
+            connectionOptions.getFullyQualifiedNamespace(), ENTITY_PATH, getRetryPolicy(connectionOptions.getRetry()),
+            new HashMap<>());
     }
 
     @AfterEach
     void afterEach(TestInfo testInfo) throws Exception {
         LOGGER.info("===== [{}] Tearing down. =====", testInfo.getDisplayName());
-
-        // If this test class is made to run in parallel this will need to change to
-        // Mockito.framework().clearInlineMock(this), as that is scoped to the specific test object.
-        Mockito.framework().clearInlineMocks();
 
         if (mocksCloseable != null) {
             mocksCloseable.close();
@@ -171,6 +172,10 @@ class ServiceBusSessionManagerTest {
         if (connectionProcessor != null) {
             connectionProcessor.dispose();
         }
+
+        // If this test class is made to run in parallel this will need to change to
+        // Mockito.framework().clearInlineMock(this), as that is scoped to the specific test object.
+        Mockito.framework().clearInlineMocks();
     }
 
     @Test

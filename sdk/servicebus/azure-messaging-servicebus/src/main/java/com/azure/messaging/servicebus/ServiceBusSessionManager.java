@@ -8,13 +8,14 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.SessionErrorContext;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.RecoverableReactorConnection;
 import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
+import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.EmitterProcessor;
@@ -58,7 +59,7 @@ class ServiceBusSessionManager implements AutoCloseable {
     private final MessagingEntityType entityType;
     private final ReceiverOptions receiverOptions;
     private final ServiceBusReceiveLink receiveLink;
-    private final ServiceBusConnectionProcessor connectionProcessor;
+    private final RecoverableReactorConnection<ServiceBusReactorAmqpConnection> connectionProcessor;
     private final Duration operationTimeout;
     private final MessageSerializer messageSerializer;
     private final String identifier;
@@ -79,7 +80,7 @@ class ServiceBusSessionManager implements AutoCloseable {
     private volatile Flux<ServiceBusMessageContext> receiveFlux;
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
-        ServiceBusConnectionProcessor connectionProcessor,
+        RecoverableReactorConnection<ServiceBusReactorAmqpConnection> connectionProcessor,
         MessageSerializer messageSerializer, ReceiverOptions receiverOptions, ServiceBusReceiveLink receiveLink, String identifier) {
         this.entityPath = entityPath;
         this.entityType = entityType;
@@ -110,7 +111,7 @@ class ServiceBusSessionManager implements AutoCloseable {
     }
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
-        ServiceBusConnectionProcessor connectionProcessor,
+        RecoverableReactorConnection<ServiceBusReactorAmqpConnection> connectionProcessor,
         MessageSerializer messageSerializer, ReceiverOptions receiverOptions, String identifier) {
         this(entityPath, entityType, connectionProcessor,
             messageSerializer, receiverOptions, null, identifier);
@@ -259,6 +260,7 @@ class ServiceBusSessionManager implements AutoCloseable {
             ? sessionId
             : StringUtil.getRandomString("session-");
         return connectionProcessor
+            .get()
             .flatMap(connection -> {
                 return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
                 null, entityType, identifier, sessionId);
@@ -336,7 +338,7 @@ class ServiceBusSessionManager implements AutoCloseable {
     }
 
     private Mono<ServiceBusManagementNode> getManagementNode() {
-        return connectionProcessor.flatMap(connection -> connection.getManagementNode(entityPath, entityType));
+        return connectionProcessor.get().flatMap(connection -> connection.getManagementNode(entityPath, entityType));
     }
 
     /**

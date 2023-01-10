@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.implementation.RecoverableReactorConnection;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
@@ -12,8 +13,8 @@ import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.administration.models.SqlRuleAction;
 import com.azure.messaging.servicebus.administration.models.SqlRuleFilter;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
+import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -82,7 +83,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
 
     private final String entityPath;
     private final MessagingEntityType entityType;
-    private final ServiceBusConnectionProcessor connectionProcessor;
+    private final RecoverableReactorConnection<ServiceBusReactorAmqpConnection> connectionProcessor;
     private final Runnable onClientClose;
     private final AtomicBoolean isDisposed = new AtomicBoolean();
 
@@ -95,7 +96,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
      * @param onClientClose Operation to run when the client completes.
      */
     ServiceBusRuleManagerAsyncClient(String entityPath, MessagingEntityType entityType,
-        ServiceBusConnectionProcessor connectionProcessor, Runnable onClientClose) {
+        RecoverableReactorConnection<ServiceBusReactorAmqpConnection> connectionProcessor, Runnable onClientClose) {
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.entityType = Objects.requireNonNull(entityType, "'entityType' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
@@ -158,6 +159,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
         }
 
         return connectionProcessor
+            .get()
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMapMany(ServiceBusManagementNode::listRules);
     }
@@ -187,6 +189,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
         }
 
         return connectionProcessor
+            .get()
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(managementNode -> managementNode.deleteRule(ruleName));
     }
@@ -218,6 +221,7 @@ public class ServiceBusRuleManagerAsyncClient implements AutoCloseable {
         }
 
         return connectionProcessor
+            .get()
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(managementNode -> managementNode.createRule(ruleName, options));
     }
