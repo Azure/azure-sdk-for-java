@@ -22,13 +22,15 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class IterableOfByteBuffersInputStreamTest {
+public abstract class MultipleByteBufferBackedInputStreamTest {
 
     private static final Random RANDOM = new Random();
 
+    public abstract InputStream makeStream(List<ByteBuffer> content);
+
     @Test
     public void throwsOnNull() {
-        assertThrows(NullPointerException.class, () -> new IterableOfByteBuffersInputStream(null));
+        assertThrows(NullPointerException.class, () -> makeStream(null));
     }
 
     @Test
@@ -36,7 +38,7 @@ public class IterableOfByteBuffersInputStreamTest {
         byte[] data1 = new byte[1024];
         byte[] data2 = new byte[512];
 
-        IterableOfByteBuffersInputStream stream = new IterableOfByteBuffersInputStream(
+        InputStream stream = makeStream(
             Arrays.asList(ByteBuffer.wrap(data1), ByteBuffer.wrap(data2))
         );
 
@@ -63,7 +65,7 @@ public class IterableOfByteBuffersInputStreamTest {
 
         ByteBuffer buffer1 = ByteBuffer.wrap(data1);
         ByteBuffer buffer2 = ByteBuffer.wrap(data2);
-        IterableOfByteBuffersInputStream stream = new IterableOfByteBuffersInputStream(
+        InputStream stream = makeStream(
             Arrays.asList(buffer1, buffer2)
         );
 
@@ -76,7 +78,7 @@ public class IterableOfByteBuffersInputStreamTest {
     @ParameterizedTest
     @MethodSource("provideReadingArguments")
     public void testBufferedReading(List<ByteBuffer> buffers, byte[] expected) throws Exception {
-        IterableOfByteBuffersInputStream stream = new IterableOfByteBuffersInputStream(buffers);
+        InputStream stream = makeStream(buffers);
 
         byte[] bytes = readStream(stream);
 
@@ -86,7 +88,7 @@ public class IterableOfByteBuffersInputStreamTest {
     @ParameterizedTest
     @MethodSource("provideReadingArguments")
     public void testReadingByteByByte(List<ByteBuffer> buffers, byte[] expected) throws Exception {
-        IterableOfByteBuffersInputStream stream = new IterableOfByteBuffersInputStream(buffers);
+        InputStream stream = makeStream(buffers);
 
         byte[] bytes = readStreamByteByByte(stream);
 
