@@ -52,7 +52,7 @@ public class ListByteBufferInputStream extends InputStream {
 
     @Override
     public long skip(long n) throws IOException {
-        long skipAmount = Math.min(remaining(), n);
+        long skipAmount = Math.min(remainingInStream(), n);
         position += skipAmount;
         return skipAmount;
     }
@@ -75,16 +75,21 @@ public class ListByteBufferInputStream extends InputStream {
 
     @Override
     public int available() {
-        return (int)Math.min(remaining(), Integer.MAX_VALUE);
+        return remainingInBuffer();
     }
 
     @Override
     public void close() {
     }
 
-    private long remaining() {
+    private long remainingInStream() {
         BufferOffsetPair last = content.get(content.size() - 1);
         return last.offset + last.byteBuffer.remaining() - position;
+    }
+
+    private int remainingInBuffer() {
+        BufferOffsetPair buf = findCurrentBuffer();
+        return (int)(buf.offset + buf.byteBuffer.remaining() - position);
     }
 
     private BufferOffsetPair findCurrentBuffer() {
