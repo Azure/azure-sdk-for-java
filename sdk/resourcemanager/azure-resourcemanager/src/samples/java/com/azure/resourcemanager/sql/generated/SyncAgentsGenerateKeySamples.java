@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SyncAgents GenerateKey. */
 public final class SyncAgentsGenerateKeySamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/examples/SyncAgentGenerateKey.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncAgentGenerateKey.json
      */
     /**
      * Sample code: Generate a sync agent key.

@@ -47,6 +47,9 @@ public final class SparkServicePlugin {
     @JsonProperty(value = "currentState")
     private PluginCurrentState currentState;
 
+    /** Creates an instance of SparkServicePlugin class. */
+    public SparkServicePlugin() {}
+
     /**
      * Get the preparationStartedAt property: The preparationStartedAt property.
      *

@@ -32,6 +32,10 @@ public final class MicrosoftGraphWorkbookPivotTable extends MicrosoftGraphEntity
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWorkbookPivotTable class. */
+    public MicrosoftGraphWorkbookPivotTable() {
+    }
+
     /**
      * Get the name property: Name of the PivotTable.
      *

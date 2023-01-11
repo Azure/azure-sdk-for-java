@@ -26,7 +26,7 @@ public interface WebPubSubPrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private endpoint connections.
+     * @return a list of private endpoint connections as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String resourceName);
@@ -41,10 +41,27 @@ public interface WebPubSubPrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private endpoint connections.
+     * @return a list of private endpoint connections as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Get the specified private endpoint connection.
+     *
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified private endpoint connection along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PrivateEndpointConnectionInner> getWithResponse(
+        String privateEndpointConnectionName, String resourceGroupName, String resourceName, Context context);
 
     /**
      * Get the specified private endpoint connection.
@@ -63,21 +80,26 @@ public interface WebPubSubPrivateEndpointConnectionsClient {
         String privateEndpointConnectionName, String resourceGroupName, String resourceName);
 
     /**
-     * Get the specified private endpoint connection.
+     * Update the state of specified private endpoint connection.
      *
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
+     * @param parameters The resource of private endpoint and its properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection.
+     * @return a private endpoint connection to an azure resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> getWithResponse(
-        String privateEndpointConnectionName, String resourceGroupName, String resourceName, Context context);
+    Response<PrivateEndpointConnectionInner> updateWithResponse(
+        String privateEndpointConnectionName,
+        String resourceGroupName,
+        String resourceName,
+        PrivateEndpointConnectionInner parameters,
+        Context context);
 
     /**
      * Update the state of specified private endpoint connection.
@@ -100,28 +122,6 @@ public interface WebPubSubPrivateEndpointConnectionsClient {
         PrivateEndpointConnectionInner parameters);
 
     /**
-     * Update the state of specified private endpoint connection.
-     *
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param resourceName The name of the resource.
-     * @param parameters The resource of private endpoint and its properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private endpoint connection to an azure resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> updateWithResponse(
-        String privateEndpointConnectionName,
-        String resourceGroupName,
-        String resourceName,
-        PrivateEndpointConnectionInner parameters,
-        Context context);
-
-    /**
      * Delete the specified private endpoint connection.
      *
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -131,7 +131,7 @@ public interface WebPubSubPrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -148,7 +148,7 @@ public interface WebPubSubPrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(

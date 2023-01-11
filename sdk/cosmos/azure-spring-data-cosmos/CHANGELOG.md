@@ -1,14 +1,19 @@
 ## Release History
 
-### 3.30.0-beta.1 (Unreleased)
+### 3.31.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added support for multi-tenancy at the Database level via `CosmosFactory` - See [PR 32516](https://github.com/Azure/azure-sdk-for-java/pull/32516)
 
 #### Breaking Changes
 
 #### Bugs Fixed
 
 #### Other Changes
+
+### 3.30.0 (2022-11-16)
+### Other Changes
+* Updated `azure-cosmos` to version `4.39.0`.
 
 ### 3.29.1 (2022-10-21)
 #### Bugs Fixed

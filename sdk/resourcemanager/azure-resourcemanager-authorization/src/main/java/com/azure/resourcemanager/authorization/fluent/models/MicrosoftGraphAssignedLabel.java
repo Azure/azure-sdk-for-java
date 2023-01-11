@@ -32,6 +32,10 @@ public final class MicrosoftGraphAssignedLabel {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphAssignedLabel class. */
+    public MicrosoftGraphAssignedLabel() {
+    }
+
     /**
      * Get the displayName property: The display name of the label. Read-only.
      *

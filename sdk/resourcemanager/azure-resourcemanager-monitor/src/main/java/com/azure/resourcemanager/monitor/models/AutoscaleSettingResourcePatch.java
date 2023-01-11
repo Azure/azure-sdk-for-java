@@ -28,6 +28,10 @@ public final class AutoscaleSettingResourcePatch {
     @JsonProperty(value = "properties")
     private AutoscaleSetting innerProperties;
 
+    /** Creates an instance of AutoscaleSettingResourcePatch class. */
+    public AutoscaleSettingResourcePatch() {
+    }
+
     /**
      * Get the tags property: Resource tags.
      *

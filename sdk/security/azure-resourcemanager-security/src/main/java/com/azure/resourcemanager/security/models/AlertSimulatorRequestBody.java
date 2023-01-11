@@ -16,6 +16,10 @@ public final class AlertSimulatorRequestBody {
     @JsonProperty(value = "properties")
     private AlertSimulatorRequestProperties properties;
 
+    /** Creates an instance of AlertSimulatorRequestBody class. */
+    public AlertSimulatorRequestBody() {
+    }
+
     /**
      * Get the properties property: Alert Simulator request body data.
      *

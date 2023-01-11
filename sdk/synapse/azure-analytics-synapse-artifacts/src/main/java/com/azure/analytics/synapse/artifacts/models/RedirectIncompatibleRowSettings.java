@@ -34,6 +34,9 @@ public final class RedirectIncompatibleRowSettings {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of RedirectIncompatibleRowSettings class. */
+    public RedirectIncompatibleRowSettings() {}
+
     /**
      * Get the linkedServiceName property: Name of the Azure Storage, Storage SAS, or Azure Data Lake Store linked
      * service used for redirecting incompatible row. Must be specified if redirectIncompatibleRowSettings is specified.

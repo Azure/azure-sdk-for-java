@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.networkfunction.generated;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for AzureTrafficCollectors CreateOrUpdate. */
 public final class AzureTrafficCollectorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-05-01/examples/AzureTrafficCollectorCreate.json
+     * x-ms-original-file: specification/networkfunction/resource-manager/Microsoft.NetworkFunction/stable/2022-11-01/examples/AzureTrafficCollectorCreate.json
      */
     /**
      * Sample code: Create a traffic collector.
@@ -26,7 +25,6 @@ public final class AzureTrafficCollectorsCreateOrUpdateSamples {
             .withRegion("West US")
             .withExistingResourceGroup("rg1")
             .withTags(mapOf("key1", "value1"))
-            .withCollectorPolicies(Arrays.asList())
             .create();
     }
 

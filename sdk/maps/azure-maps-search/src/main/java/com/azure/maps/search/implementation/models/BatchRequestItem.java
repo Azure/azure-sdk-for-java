@@ -11,12 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class BatchRequestItem {
     /*
-     * This parameter contains a query string used to perform an unstructured
-     * geocoding operation. The query string will be passed verbatim to the
-     * search API for processing.
+     * This parameter contains a query string used to perform an unstructured geocoding operation. The query string
+     * will be passed verbatim to the search API for processing.
      */
     @JsonProperty(value = "query")
     private String query;
+
+    /** Creates an instance of BatchRequestItem class. */
+    public BatchRequestItem() {}
 
     /**
      * Get the query property: This parameter contains a query string used to perform an unstructured geocoding

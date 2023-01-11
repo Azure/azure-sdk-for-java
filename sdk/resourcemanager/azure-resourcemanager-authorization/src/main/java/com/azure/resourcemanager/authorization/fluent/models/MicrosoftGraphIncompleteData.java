@@ -33,6 +33,10 @@ public final class MicrosoftGraphIncompleteData {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphIncompleteData class. */
+    public MicrosoftGraphIncompleteData() {
+    }
+
     /**
      * Get the missingDataBeforeDateTime property: The service does not have source data before the specified time.
      *

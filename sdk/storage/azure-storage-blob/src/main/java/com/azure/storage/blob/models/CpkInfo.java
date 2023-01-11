@@ -8,8 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /** Parameter group. */
-@Fluent
 @JacksonXmlRootElement(localName = "cpk-info")
+@Fluent
 public final class CpkInfo {
 
     /*

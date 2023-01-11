@@ -25,6 +25,55 @@ import reactor.core.publisher.Mono;
  */
 public interface ManagedBackupShortTermRetentionPoliciesClient {
     /**
+     * Gets a managed database's short term retention policy list.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database's short term retention policy list as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ManagedBackupShortTermRetentionPolicyInner> listByDatabaseAsync(
+        String resourceGroupName, String managedInstanceName, String databaseName);
+
+    /**
+     * Gets a managed database's short term retention policy list.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database's short term retention policy list as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ManagedBackupShortTermRetentionPolicyInner> listByDatabase(
+        String resourceGroupName, String managedInstanceName, String databaseName);
+
+    /**
+     * Gets a managed database's short term retention policy list.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database's short term retention policy list as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ManagedBackupShortTermRetentionPolicyInner> listByDatabase(
+        String resourceGroupName, String managedInstanceName, String databaseName, Context context);
+
+    /**
      * Gets a managed database's short term retention policy.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
@@ -73,26 +122,6 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's short term retention policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedBackupShortTermRetentionPolicyInner get(
-        String resourceGroupName,
-        String managedInstanceName,
-        String databaseName,
-        ManagedShortTermRetentionPolicyName policyName);
-
-    /**
-     * Gets a managed database's short term retention policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param policyName The policy name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -106,6 +135,26 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
         String databaseName,
         ManagedShortTermRetentionPolicyName policyName,
         Context context);
+
+    /**
+     * Gets a managed database's short term retention policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param policyName The policy name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database's short term retention policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ManagedBackupShortTermRetentionPolicyInner get(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        ManagedShortTermRetentionPolicyName policyName);
 
     /**
      * Updates a managed database's short term retention policy.
@@ -428,53 +477,4 @@ public interface ManagedBackupShortTermRetentionPoliciesClient {
         ManagedShortTermRetentionPolicyName policyName,
         ManagedBackupShortTermRetentionPolicyInner parameters,
         Context context);
-
-    /**
-     * Gets a managed database's short term retention policy list.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's short term retention policy list as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ManagedBackupShortTermRetentionPolicyInner> listByDatabaseAsync(
-        String resourceGroupName, String managedInstanceName, String databaseName);
-
-    /**
-     * Gets a managed database's short term retention policy list.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's short term retention policy list as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedBackupShortTermRetentionPolicyInner> listByDatabase(
-        String resourceGroupName, String managedInstanceName, String databaseName);
-
-    /**
-     * Gets a managed database's short term retention policy list.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param managedInstanceName The name of the managed instance.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's short term retention policy list as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedBackupShortTermRetentionPolicyInner> listByDatabase(
-        String resourceGroupName, String managedInstanceName, String databaseName, Context context);
 }

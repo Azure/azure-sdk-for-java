@@ -93,6 +93,9 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private String encryptedCredential;
 
+    /** Creates an instance of AzureBlobStorageLinkedService class. */
+    public AzureBlobStorageLinkedService() {}
+
     /**
      * Get the connectionString property: The connection string. It is mutually exclusive with sasUri, serviceEndpoint
      * property. Type: string, SecureString or AzureKeyVaultSecretReference.

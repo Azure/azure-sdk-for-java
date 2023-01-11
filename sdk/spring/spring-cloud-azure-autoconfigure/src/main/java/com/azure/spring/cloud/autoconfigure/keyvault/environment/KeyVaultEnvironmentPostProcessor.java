@@ -8,6 +8,7 @@ import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultPropertySourceProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
 import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
+import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.service.implementation.keyvault.secrets.SecretClientBuilderFactory;
 import org.apache.commons.logging.Log;
 import org.springframework.boot.SpringApplication;
@@ -151,7 +152,9 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
      * @return secret client
      */
     SecretClient buildSecretClient(AzureKeyVaultSecretProperties secretProperties) {
-        return new SecretClientBuilderFactory(secretProperties).build().buildClient();
+        SecretClientBuilderFactory factory = new SecretClientBuilderFactory(secretProperties);
+        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT_SECRETS);
+        return factory.build().buildClient();
     }
 
     AzureKeyVaultSecretProperties loadProperties(ConfigurableEnvironment environment) {

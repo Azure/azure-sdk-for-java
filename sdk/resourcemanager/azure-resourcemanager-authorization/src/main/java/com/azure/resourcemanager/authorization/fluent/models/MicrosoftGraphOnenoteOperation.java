@@ -23,8 +23,7 @@ public final class MicrosoftGraphOnenoteOperation extends MicrosoftGraphOperatio
     private MicrosoftGraphOnenoteOperationError error;
 
     /*
-     * The operation percent complete if the operation is still in running
-     * status
+     * The operation percent complete if the operation is still in running status
      */
     @JsonProperty(value = "percentComplete")
     private String percentComplete;
@@ -36,8 +35,7 @@ public final class MicrosoftGraphOnenoteOperation extends MicrosoftGraphOperatio
     private String resourceId;
 
     /*
-     * The resource URI for the object. For example, the resource URI for a
-     * copied page or section.
+     * The resource URI for the object. For example, the resource URI for a copied page or section.
      */
     @JsonProperty(value = "resourceLocation")
     private String resourceLocation;
@@ -46,6 +44,10 @@ public final class MicrosoftGraphOnenoteOperation extends MicrosoftGraphOperatio
      * onenoteOperation
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of MicrosoftGraphOnenoteOperation class. */
+    public MicrosoftGraphOnenoteOperation() {
+    }
 
     /**
      * Get the error property: onenoteOperationError.

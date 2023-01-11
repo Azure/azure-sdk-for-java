@@ -17,6 +17,10 @@ public final class PrivateEndpointConnectionsResponseInner {
     @JsonProperty(value = "value")
     private List<PrivateEndpointConnectionInner> value;
 
+    /** Creates an instance of PrivateEndpointConnectionsResponseInner class. */
+    public PrivateEndpointConnectionsResponseInner() {
+    }
+
     /**
      * Get the value property: The list of available private link connections for a Digital Twin.
      *

@@ -19,11 +19,14 @@ import java.util.List;
 @Fluent
 public final class GeoJsonGeometryCollection extends GeoJsonGeometry {
     /*
-     * Contains a list of valid `GeoJSON` geometry objects. **Note** that
-     * coordinates in GeoJSON are in x, y order (longitude, latitude).
+     * Contains a list of valid `GeoJSON` geometry objects. **Note** that coordinates in GeoJSON are in x, y order
+     * (longitude, latitude).
      */
     @JsonProperty(value = "geometries", required = true)
     private List<GeoJsonGeometry> geometries;
+
+    /** Creates an instance of GeoJsonGeometryCollection class. */
+    public GeoJsonGeometryCollection() {}
 
     /**
      * Get the geometries property: Contains a list of valid `GeoJSON` geometry objects. **Note** that coordinates in

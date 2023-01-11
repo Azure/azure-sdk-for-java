@@ -12,52 +12,49 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class QosPolicy {
     /*
-     * QoS Flow 5G QoS Indicator value. The 5QI identifies a specific QoS
-     * forwarding treatment to be provided to a flow. This must not be a
-     * standardized 5QI value corresponding to a GBR (guaranteed bit rate) QoS
-     * Flow. The illegal GBR 5QI values are: 1, 2, 3, 4, 65, 66, 67, 71, 72,
-     * 73, 74, 75, 76, 82, 83, 84, and 85. See 3GPP TS23.501 section 5.7.2.1
-     * for a full description of the 5QI parameter, and table 5.7.4-1 for the
-     * definition of which are the GBR 5QI values.
+     * QoS Flow 5G QoS Indicator value. The 5QI identifies a specific QoS forwarding treatment to be provided to a
+     * flow. This must not be a standardized 5QI value corresponding to a GBR (guaranteed bit rate) QoS Flow. The
+     * illegal GBR 5QI values are: 1, 2, 3, 4, 65, 66, 67, 71, 72, 73, 74, 75, 76, 82, 83, 84, and 85. See 3GPP
+     * TS23.501 section 5.7.2.1 for a full description of the 5QI parameter, and table 5.7.4-1 for the definition of
+     * which are the GBR 5QI values.
      */
     @JsonProperty(value = "5qi")
     private Integer fiveQi;
 
     /*
-     * QoS Flow allocation and retention priority (ARP) level. Flows with
-     * higher priority preempt flows with lower priority, if the settings of
-     * `preemptionCapability` and `preemptionVulnerability` allow it. 1 is the
-     * highest level of priority. If this field is not specified then `5qi` is
-     * used to derive the ARP value. See 3GPP TS23.501 section 5.7.2.2 for a
-     * full description of the ARP parameters.
+     * QoS Flow allocation and retention priority (ARP) level. Flows with higher priority preempt flows with lower
+     * priority, if the settings of `preemptionCapability` and `preemptionVulnerability` allow it. 1 is the highest
+     * level of priority. If this field is not specified then `5qi` is used to derive the ARP value. See 3GPP TS23.501
+     * section 5.7.2.2 for a full description of the ARP parameters.
      */
     @JsonProperty(value = "allocationAndRetentionPriorityLevel")
     private Integer allocationAndRetentionPriorityLevel;
 
     /*
-     * QoS Flow preemption capability. The preemption capability of a QoS Flow
-     * controls whether it can preempt another QoS Flow with a lower priority
-     * level. See 3GPP TS23.501 section 5.7.2.2 for a full description of the
-     * ARP parameters.
+     * QoS Flow preemption capability. The preemption capability of a QoS Flow controls whether it can preempt another
+     * QoS Flow with a lower priority level. See 3GPP TS23.501 section 5.7.2.2 for a full description of the ARP
+     * parameters.
      */
     @JsonProperty(value = "preemptionCapability")
     private PreemptionCapability preemptionCapability;
 
     /*
-     * QoS Flow preemption vulnerability. The preemption vulnerability of a QoS
-     * Flow controls whether it can be preempted by a QoS Flow with a higher
-     * priority level. See 3GPP TS23.501 section 5.7.2.2 for a full description
+     * QoS Flow preemption vulnerability. The preemption vulnerability of a QoS Flow controls whether it can be
+     * preempted by a QoS Flow with a higher priority level. See 3GPP TS23.501 section 5.7.2.2 for a full description
      * of the ARP parameters.
      */
     @JsonProperty(value = "preemptionVulnerability")
     private PreemptionVulnerability preemptionVulnerability;
 
     /*
-     * The maximum bit rate (MBR) for all service data flows that use this data
-     * flow policy rule or service.
+     * The maximum bit rate (MBR) for all service data flows that use this data flow policy rule or service.
      */
     @JsonProperty(value = "maximumBitRate", required = true)
     private Ambr maximumBitRate;
+
+    /** Creates an instance of QosPolicy class. */
+    public QosPolicy() {
+    }
 
     /**
      * Get the fiveQi property: QoS Flow 5G QoS Indicator value. The 5QI identifies a specific QoS forwarding treatment

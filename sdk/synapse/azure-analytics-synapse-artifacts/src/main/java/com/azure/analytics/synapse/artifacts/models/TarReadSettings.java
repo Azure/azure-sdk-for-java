@@ -20,6 +20,9 @@ public final class TarReadSettings extends CompressionReadSettings {
     @JsonProperty(value = "preserveCompressionFileNameAsFolder")
     private Object preserveCompressionFileNameAsFolder;
 
+    /** Creates an instance of TarReadSettings class. */
+    public TarReadSettings() {}
+
     /**
      * Get the preserveCompressionFileNameAsFolder property: Preserve the compression file name as folder path. Type:
      * boolean (or Expression with resultType boolean).

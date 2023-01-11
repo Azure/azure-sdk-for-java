@@ -52,6 +52,7 @@ import static com.azure.search.documents.TestHelpers.assertHttpResponseException
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static com.azure.search.documents.TestHelpers.convertMapToValue;
+import static com.azure.search.documents.TestHelpers.equalDocumentSets;
 import static com.azure.search.documents.TestHelpers.readJsonFileToList;
 import static com.azure.search.documents.TestHelpers.setupSharedIndex;
 import static com.azure.search.documents.TestHelpers.uploadDocuments;
@@ -289,16 +290,20 @@ public class SearchSyncTests extends SearchTestBase {
         NonNullableModel doc2 = new NonNullableModel().key("456").buckets(new Bucket[]{});
 
         uploadDocuments(client, Arrays.asList(doc1, doc2));
-
         SearchPagedIterable results = client.search("*", new SearchOptions(), Context.NONE);
         assertNotNull(results);
         Iterator<SearchPagedResponse> iterator = results.iterableByPage().iterator();
         assertTrue(iterator.hasNext());
-
         SearchPagedResponse result = iterator.next();
         assertEquals(2, result.getValue().size());
-        assertObjectEquals(doc1, result.getValue().get(0).getDocument(NonNullableModel.class), true);
-        assertObjectEquals(doc2, result.getValue().get(1).getDocument(NonNullableModel.class), true);
+
+        List<NonNullableModel> expectedDocuments = new ArrayList<>();
+        expectedDocuments.add(doc1); expectedDocuments.add(doc2);
+
+        List<NonNullableModel> actualDocuments = new ArrayList<>();
+        result.getValue().forEach(val -> actualDocuments.add(val.getDocument(NonNullableModel.class)));
+
+        assertTrue(equalDocumentSets(expectedDocuments, actualDocuments));
     }
 
     @SuppressWarnings("UseOfObsoleteDateTimeApi")
@@ -541,9 +546,7 @@ public class SearchSyncTests extends SearchTestBase {
 
         List<Map<String, Object>> searchResultsList = getSearchResults(results);
         assertEquals(2, searchResultsList.size());
-        for (int i = 0; i < searchResultsList.size(); i++) {
-            assertObjectEquals(expectedDocsList.get(i), searchResultsList.get(i), true);
-        }
+        assertTrue(searchResultsList.containsAll(expectedDocsList));
     }
 
     @Test

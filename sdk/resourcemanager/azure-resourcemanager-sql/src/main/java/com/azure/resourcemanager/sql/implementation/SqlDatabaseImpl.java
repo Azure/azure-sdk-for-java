@@ -11,27 +11,32 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.fluent.models.DatabaseAutomaticTuningInner;
+import com.azure.resourcemanager.sql.fluent.models.DatabaseInner;
+import com.azure.resourcemanager.sql.fluent.models.DatabaseSecurityAlertPolicyInner;
+import com.azure.resourcemanager.sql.fluent.models.DatabaseUsageInner;
+import com.azure.resourcemanager.sql.fluent.models.LogicalDatabaseTransparentDataEncryptionInner;
+import com.azure.resourcemanager.sql.fluent.models.ReplicationLinkInner;
+import com.azure.resourcemanager.sql.fluent.models.RestorePointInner;
 import com.azure.resourcemanager.sql.models.AuthenticationType;
 import com.azure.resourcemanager.sql.models.CreateMode;
 import com.azure.resourcemanager.sql.models.DatabaseEdition;
 import com.azure.resourcemanager.sql.models.DatabaseSku;
 import com.azure.resourcemanager.sql.models.DatabaseStatus;
 import com.azure.resourcemanager.sql.models.DatabaseUpdate;
-import com.azure.resourcemanager.sql.models.ImportRequest;
+import com.azure.resourcemanager.sql.models.ImportNewDatabaseDefinition;
 import com.azure.resourcemanager.sql.models.ReplicationLink;
 import com.azure.resourcemanager.sql.models.ResourceMoveDefinition;
 import com.azure.resourcemanager.sql.models.RestorePoint;
 import com.azure.resourcemanager.sql.models.SampleName;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
 import com.azure.resourcemanager.sql.models.ServiceObjectiveName;
-import com.azure.resourcemanager.sql.models.ServiceTierAdvisor;
 import com.azure.resourcemanager.sql.models.Sku;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
 import com.azure.resourcemanager.sql.models.SqlDatabaseAutomaticTuning;
 import com.azure.resourcemanager.sql.models.SqlDatabaseBasicStorage;
-import com.azure.resourcemanager.sql.models.SqlDatabaseMetric;
-import com.azure.resourcemanager.sql.models.SqlDatabaseMetricDefinition;
 import com.azure.resourcemanager.sql.models.SqlDatabaseOperations;
 import com.azure.resourcemanager.sql.models.SqlDatabasePremiumServiceObjective;
 import com.azure.resourcemanager.sql.models.SqlDatabasePremiumStorage;
@@ -46,16 +51,6 @@ import com.azure.resourcemanager.sql.models.SqlSyncGroupOperations;
 import com.azure.resourcemanager.sql.models.SqlWarehouse;
 import com.azure.resourcemanager.sql.models.StorageKeyType;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryption;
-import com.azure.resourcemanager.sql.fluent.models.DatabaseAutomaticTuningInner;
-import com.azure.resourcemanager.sql.fluent.models.DatabaseInner;
-import com.azure.resourcemanager.sql.fluent.models.DatabaseSecurityAlertPolicyInner;
-import com.azure.resourcemanager.sql.fluent.models.DatabaseUsageInner;
-import com.azure.resourcemanager.sql.fluent.models.MetricDefinitionInner;
-import com.azure.resourcemanager.sql.fluent.models.MetricInner;
-import com.azure.resourcemanager.sql.fluent.models.ReplicationLinkInner;
-import com.azure.resourcemanager.sql.fluent.models.RestorePointInner;
-import com.azure.resourcemanager.sql.fluent.models.ServiceTierAdvisorInner;
-import com.azure.resourcemanager.sql.fluent.models.TransparentDataEncryptionInner;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionName;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import reactor.core.publisher.Mono;
@@ -67,7 +62,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation for SqlDatabase and its parent interfaces. */
 class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInner, SqlServerImpl, SqlServer>
@@ -92,7 +86,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
     protected String sqlServerName;
     protected String sqlServerLocation;
     private boolean isPatchUpdate;
-    private ImportRequest importRequestInner;
+    private ImportNewDatabaseDefinition importRequestInner;
 
     private SqlSyncGroupOperationsImpl syncGroups;
 
@@ -363,8 +357,21 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
 
     @Override
     public SqlDatabaseThreatDetectionPolicy.DefinitionStages.Blank defineThreatDetectionPolicy(String policyName) {
-        return new SqlDatabaseThreatDetectionPolicyImpl(
+        SqlDatabaseThreatDetectionPolicyImpl result = new SqlDatabaseThreatDetectionPolicyImpl(
             policyName, this, new DatabaseSecurityAlertPolicyInner(), this.sqlServerManager);
+        result.setPendingOperation(ExternalChildResourceImpl.PendingOperation.ToBeCreated);
+        return result;
+    }
+
+    @Override
+    public SqlDatabaseThreatDetectionPolicy.DefinitionStages.Blank defineThreatDetectionPolicy(SecurityAlertPolicyName policyName) {
+        SqlDatabaseThreatDetectionPolicyImpl result = new SqlDatabaseThreatDetectionPolicyImpl(
+            policyName == null ? SecurityAlertPolicyName.DEFAULT.toString() : policyName.toString(),
+            this,
+            new DatabaseSecurityAlertPolicyInner(),
+            this.sqlServerManager);
+        result.setPendingOperation(ExternalChildResourceImpl.PendingOperation.ToBeCreated);
+        return result;
     }
 
     @Override
@@ -373,7 +380,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             this
                 .sqlServerManager
                 .serviceClient()
-                .getDatabaseThreatDetectionPolicies()
+                .getDatabaseSecurityAlertPolicies()
                 .get(this.resourceGroupName, this.sqlServerName, this.name(), SecurityAlertPolicyName.DEFAULT);
         return policyInner != null
             ? new SqlDatabaseThreatDetectionPolicyImpl(policyInner.name(), this, policyInner, this.sqlServerManager)
@@ -456,59 +463,8 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
     }
 
     @Override
-    public List<SqlDatabaseMetric> listMetrics(String filter) {
-        List<SqlDatabaseMetric> sqlDatabaseMetrics = new ArrayList<>();
-        PagedIterable<MetricInner> metricInners =
-            this
-                .sqlServerManager
-                .serviceClient()
-                .getDatabases()
-                .listMetrics(this.resourceGroupName, this.sqlServerName, this.name(), filter);
-        for (MetricInner metricInner : metricInners) {
-            sqlDatabaseMetrics.add(new SqlDatabaseMetricImpl(metricInner));
-        }
-        return Collections.unmodifiableList(sqlDatabaseMetrics);
-    }
-
-    @Override
-    public PagedFlux<SqlDatabaseMetric> listMetricsAsync(final String filter) {
-        return PagedConverter.mapPage(this
-            .sqlServerManager
-            .serviceClient()
-            .getDatabases()
-            .listMetricsAsync(this.resourceGroupName, this.sqlServerName, this.name(), filter),
-            SqlDatabaseMetricImpl::new);
-    }
-
-    @Override
-    public List<SqlDatabaseMetricDefinition> listMetricDefinitions() {
-        List<SqlDatabaseMetricDefinition> sqlDatabaseMetricDefinitions = new ArrayList<>();
-        PagedIterable<MetricDefinitionInner> metricDefinitionInners =
-            this
-                .sqlServerManager
-                .serviceClient()
-                .getDatabases()
-                .listMetricDefinitions(this.resourceGroupName, this.sqlServerName, this.name());
-        for (MetricDefinitionInner metricDefinitionInner : metricDefinitionInners) {
-            sqlDatabaseMetricDefinitions.add(new SqlDatabaseMetricDefinitionImpl(metricDefinitionInner));
-        }
-
-        return Collections.unmodifiableList(sqlDatabaseMetricDefinitions);
-    }
-
-    @Override
-    public PagedFlux<SqlDatabaseMetricDefinition> listMetricDefinitionsAsync() {
-        return PagedConverter.mapPage(this
-            .sqlServerManager
-            .serviceClient()
-            .getDatabases()
-            .listMetricDefinitionsAsync(this.resourceGroupName, this.sqlServerName, this.name()),
-            SqlDatabaseMetricDefinitionImpl::new);
-    }
-
-    @Override
     public TransparentDataEncryption getTransparentDataEncryption() {
-        TransparentDataEncryptionInner transparentDataEncryptionInner =
+        LogicalDatabaseTransparentDataEncryptionInner transparentDataEncryptionInner =
             this
                 .sqlServerManager
                 .serviceClient()
@@ -535,38 +491,6 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
                         self.sqlServerName,
                         transparentDataEncryptionInner,
                         self.sqlServerManager));
-    }
-
-    @Override
-    public Map<String, ServiceTierAdvisor> listServiceTierAdvisors() {
-        Map<String, ServiceTierAdvisor> serviceTierAdvisorMap = new HashMap<>();
-        PagedIterable<ServiceTierAdvisorInner> serviceTierAdvisorInners =
-            this
-                .sqlServerManager
-                .serviceClient()
-                .getServiceTierAdvisors()
-                .listByDatabase(this.resourceGroupName, this.sqlServerName, this.name());
-        for (ServiceTierAdvisorInner serviceTierAdvisorInner : serviceTierAdvisorInners) {
-            serviceTierAdvisorMap
-                .put(
-                    serviceTierAdvisorInner.name(),
-                    new ServiceTierAdvisorImpl(
-                        this.resourceGroupName, this.sqlServerName, serviceTierAdvisorInner, this.sqlServerManager));
-        }
-        return Collections.unmodifiableMap(serviceTierAdvisorMap);
-    }
-
-    @Override
-    public PagedFlux<ServiceTierAdvisor> listServiceTierAdvisorsAsync() {
-        final SqlDatabaseImpl self = this;
-        return PagedConverter.mapPage(this
-            .sqlServerManager
-            .serviceClient()
-            .getServiceTierAdvisors()
-            .listByDatabaseAsync(this.resourceGroupName, this.sqlServerName, this.name()),
-                serviceTierAdvisorInner ->
-                    new ServiceTierAdvisorImpl(
-                        self.resourceGroupName, self.sqlServerName, serviceTierAdvisorInner, self.sqlServerManager));
     }
 
     @Override
@@ -633,13 +557,14 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
         if (this.importRequestInner != null) {
             this.importRequestInner.withDatabaseName(this.name());
             if (this.importRequestInner.edition() == null) {
-                this.importRequestInner.withEdition(this.edition());
+                this.importRequestInner.withEdition(this.edition().toString());
             }
-            if (this.importRequestInner.serviceObjectiveName() == null && this.innerModel().sku() != null) {
+            if (this.importRequestInner.serviceObjectiveName() == null) {
                 this
                     .importRequestInner
-                    .withServiceObjectiveName(ServiceObjectiveName.fromString(this.innerModel().sku().name()));
+                    .withServiceObjectiveName(this.innerModel().sku().name());
             }
+
             if (this.importRequestInner.maxSizeBytes() == null) {
                 this.importRequestInner.withMaxSizeBytes(String.valueOf(this.innerModel().maxSizeBytes()));
             }
@@ -647,16 +572,15 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             return this
                 .sqlServerManager
                 .serviceClient()
-                .getDatabases()
-                .importMethodAsync(this.resourceGroupName, this.sqlServerName, this.importRequestInner)
+                .getServers()
+                .importDatabaseAsync(this.resourceGroupName, this.sqlServerName, this.importRequestInner)
                 .then(
                     Mono
                         .defer(
                             () -> {
                                 if (self.elasticPoolId() != null) {
                                     self.importRequestInner = null;
-                                    return self
-                                        .withExistingElasticPoolId(self.elasticPoolId())
+                                    return self.withExistingElasticPool(ResourceUtils.nameFromResourceId(self.elasticPoolId()))
                                         .withPatchUpdate()
                                         .updateResourceAsync();
                                 } else {
@@ -856,10 +780,10 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
     }
 
     private void initializeImportRequestInner() {
-        this.importRequestInner = new ImportRequest();
+        this.importRequestInner = new ImportNewDatabaseDefinition();
         if (this.elasticPoolId() != null) {
-            this.importRequestInner.withEdition(DatabaseEdition.BASIC);
-            this.importRequestInner.withServiceObjectiveName(ServiceObjectiveName.BASIC);
+            this.importRequestInner.withEdition(DatabaseEdition.BASIC.toString());
+            this.importRequestInner.withServiceObjectiveName(ServiceObjectiveName.BASIC.toString());
             this.importRequestInner.withMaxSizeBytes(Long.toString(SqlDatabaseBasicStorage.MAX_2_GB.capacity()));
         } else {
             this.withStandardEdition(SqlDatabaseStandardServiceObjective.S0);
@@ -918,7 +842,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
     @Override
     public SqlDatabaseImpl withSqlAdministratorLoginAndPassword(
         String administratorLogin, String administratorPassword) {
-        this.importRequestInner.withAuthenticationType(AuthenticationType.SQL);
+        this.importRequestInner.withAuthenticationType(AuthenticationType.SQL.toString());
         this.importRequestInner.withAdministratorLogin(administratorLogin);
         this.importRequestInner.withAdministratorLoginPassword(administratorPassword);
         return this;
@@ -927,7 +851,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
     @Override
     public SqlDatabaseImpl withActiveDirectoryLoginAndPassword(
         String administratorLogin, String administratorPassword) {
-        this.importRequestInner.withAuthenticationType(AuthenticationType.ADPASSWORD);
+        this.importRequestInner.withAuthenticationType(AuthenticationType.ADPASSWORD.toString());
         this.importRequestInner.withAdministratorLogin(administratorLogin);
         this.importRequestInner.withAdministratorLoginPassword(administratorPassword);
         return this;

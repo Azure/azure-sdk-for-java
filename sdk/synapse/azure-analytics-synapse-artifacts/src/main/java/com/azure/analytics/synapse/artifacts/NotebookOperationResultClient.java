@@ -32,20 +32,6 @@ public final class NotebookOperationResultClient {
      * Get notebook operation result.
      *
      * @param operationId Operation ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void get(String operationId) {
-        this.serviceClient.get(operationId);
-    }
-
-    /**
-     * Get notebook operation result.
-     *
-     * @param operationId Operation ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -56,5 +42,19 @@ public final class NotebookOperationResultClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getWithResponse(String operationId, Context context) {
         return this.serviceClient.getWithResponse(operationId, context);
+    }
+
+    /**
+     * Get notebook operation result.
+     *
+     * @param operationId Operation ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void get(String operationId) {
+        this.serviceClient.get(operationId);
     }
 }

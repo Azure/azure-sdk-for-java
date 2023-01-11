@@ -22,6 +22,9 @@ public final class LinkConnectionTargetDatabaseTypeProperties {
     @JsonProperty(value = "dropExistingTargetTableOnStart")
     private Boolean dropExistingTargetTableOnStart;
 
+    /** Creates an instance of LinkConnectionTargetDatabaseTypeProperties class. */
+    public LinkConnectionTargetDatabaseTypeProperties() {}
+
     /**
      * Get the crossTableTransaction property: Enable cross table transaction consistency on target database.
      *

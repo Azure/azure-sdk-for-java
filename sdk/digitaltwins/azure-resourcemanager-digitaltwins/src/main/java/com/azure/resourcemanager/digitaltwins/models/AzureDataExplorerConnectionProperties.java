@@ -34,21 +34,19 @@ public final class AzureDataExplorerConnectionProperties extends TimeSeriesDatab
     private String adxDatabaseName;
 
     /*
-     * The name of the Azure Data Explorer table.
+     * The name of the Azure Data Explorer table. Defaults to AdtPropertyEvents.
      */
     @JsonProperty(value = "adxTableName")
     private String adxTableName;
 
     /*
-     * The URL of the EventHub namespace for identity-based authentication. It
-     * must include the protocol sb://
+     * The URL of the EventHub namespace for identity-based authentication. It must include the protocol sb://
      */
     @JsonProperty(value = "eventHubEndpointUri", required = true)
     private String eventHubEndpointUri;
 
     /*
-     * The EventHub name in the EventHub namespace for identity-based
-     * authentication.
+     * The EventHub name in the EventHub namespace for identity-based authentication.
      */
     @JsonProperty(value = "eventHubEntityPath", required = true)
     private String eventHubEntityPath;
@@ -60,11 +58,14 @@ public final class AzureDataExplorerConnectionProperties extends TimeSeriesDatab
     private String eventHubNamespaceResourceId;
 
     /*
-     * The EventHub consumer group to use when ADX reads from EventHub.
-     * Defaults to $Default.
+     * The EventHub consumer group to use when ADX reads from EventHub. Defaults to $Default.
      */
     @JsonProperty(value = "eventHubConsumerGroup")
     private String eventHubConsumerGroup;
+
+    /** Creates an instance of AzureDataExplorerConnectionProperties class. */
+    public AzureDataExplorerConnectionProperties() {
+    }
 
     /**
      * Get the adxResourceId property: The resource ID of the Azure Data Explorer cluster.
@@ -127,7 +128,7 @@ public final class AzureDataExplorerConnectionProperties extends TimeSeriesDatab
     }
 
     /**
-     * Get the adxTableName property: The name of the Azure Data Explorer table.
+     * Get the adxTableName property: The name of the Azure Data Explorer table. Defaults to AdtPropertyEvents.
      *
      * @return the adxTableName value.
      */
@@ -136,7 +137,7 @@ public final class AzureDataExplorerConnectionProperties extends TimeSeriesDatab
     }
 
     /**
-     * Set the adxTableName property: The name of the Azure Data Explorer table.
+     * Set the adxTableName property: The name of the Azure Data Explorer table. Defaults to AdtPropertyEvents.
      *
      * @param adxTableName the adxTableName value to set.
      * @return the AzureDataExplorerConnectionProperties object itself.
@@ -229,6 +230,13 @@ public final class AzureDataExplorerConnectionProperties extends TimeSeriesDatab
      */
     public AzureDataExplorerConnectionProperties withEventHubConsumerGroup(String eventHubConsumerGroup) {
         this.eventHubConsumerGroup = eventHubConsumerGroup;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerConnectionProperties withIdentity(ManagedIdentityReference identity) {
+        super.withIdentity(identity);
         return this;
     }
 

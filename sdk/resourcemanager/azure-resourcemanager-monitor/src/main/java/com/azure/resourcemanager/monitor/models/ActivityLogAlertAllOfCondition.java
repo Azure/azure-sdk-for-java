@@ -18,6 +18,10 @@ public final class ActivityLogAlertAllOfCondition {
     @JsonProperty(value = "allOf", required = true)
     private List<ActivityLogAlertLeafCondition> allOf;
 
+    /** Creates an instance of ActivityLogAlertAllOfCondition class. */
+    public ActivityLogAlertAllOfCondition() {
+    }
+
     /**
      * Get the allOf property: The list of Activity Log Alert rule conditions.
      *

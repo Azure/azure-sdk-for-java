@@ -183,6 +183,13 @@ public interface SignalRResource {
     SignalRCorsSettings cors();
 
     /**
+     * Gets the serverless property: Serverless settings.
+     *
+     * @return the serverless value.
+     */
+    ServerlessSettings serverless();
+
+    /**
      * Gets the upstream property: The settings for the Upstream when the service is in server-less mode.
      *
      * @return the upstream value.
@@ -234,6 +241,13 @@ public interface SignalRResource {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.signalr.fluent.models.SignalRResourceInner object.
@@ -297,6 +311,7 @@ public interface SignalRResource {
                 DefinitionStages.WithLiveTraceConfiguration,
                 DefinitionStages.WithResourceLogConfiguration,
                 DefinitionStages.WithCors,
+                DefinitionStages.WithServerless,
                 DefinitionStages.WithUpstream,
                 DefinitionStages.WithNetworkACLs,
                 DefinitionStages.WithPublicNetworkAccess,
@@ -418,6 +433,16 @@ public interface SignalRResource {
              */
             WithCreate withCors(SignalRCorsSettings cors);
         }
+        /** The stage of the SignalRResource definition allowing to specify serverless. */
+        interface WithServerless {
+            /**
+             * Specifies the serverless property: Serverless settings..
+             *
+             * @param serverless Serverless settings.
+             * @return the next definition stage.
+             */
+            WithCreate withServerless(ServerlessSettings serverless);
+        }
         /** The stage of the SignalRResource definition allowing to specify upstream. */
         interface WithUpstream {
             /**
@@ -494,6 +519,7 @@ public interface SignalRResource {
             UpdateStages.WithLiveTraceConfiguration,
             UpdateStages.WithResourceLogConfiguration,
             UpdateStages.WithCors,
+            UpdateStages.WithServerless,
             UpdateStages.WithUpstream,
             UpdateStages.WithNetworkACLs,
             UpdateStages.WithPublicNetworkAccess,
@@ -607,6 +633,16 @@ public interface SignalRResource {
              */
             Update withCors(SignalRCorsSettings cors);
         }
+        /** The stage of the SignalRResource update allowing to specify serverless. */
+        interface WithServerless {
+            /**
+             * Specifies the serverless property: Serverless settings..
+             *
+             * @param serverless Serverless settings.
+             * @return the next definition stage.
+             */
+            Update withServerless(ServerlessSettings serverless);
+        }
         /** The stage of the SignalRResource update allowing to specify upstream. */
         interface WithUpstream {
             /**
@@ -684,15 +720,6 @@ public interface SignalRResource {
     /**
      * Get the access keys of the resource.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access keys of the resource.
-     */
-    SignalRKeys listKeys();
-
-    /**
-     * Get the access keys of the resource.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -700,6 +727,15 @@ public interface SignalRResource {
      * @return the access keys of the resource along with {@link Response}.
      */
     Response<SignalRKeys> listKeysWithResponse(Context context);
+
+    /**
+     * Get the access keys of the resource.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the access keys of the resource.
+     */
+    SignalRKeys listKeys();
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.

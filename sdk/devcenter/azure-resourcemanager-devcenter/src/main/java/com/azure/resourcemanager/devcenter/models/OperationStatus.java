@@ -4,38 +4,40 @@
 
 package com.azure.resourcemanager.devcenter.models;
 
+import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.devcenter.fluent.models.OperationStatusInner;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /** An immutable client-side representation of OperationStatus. */
 public interface OperationStatus {
     /**
-     * Gets the id property: Fully qualified ID for the operation status.
+     * Gets the id property: Fully qualified ID for the async operation.
      *
      * @return the id value.
      */
     String id();
 
     /**
-     * Gets the name property: The operation id name.
+     * Gets the name property: Name of the async operation.
      *
      * @return the name value.
      */
     String name();
 
     /**
-     * Gets the status property: Provisioning state of the resource.
+     * Gets the status property: Operation status.
      *
      * @return the status value.
      */
     String status();
 
     /**
-     * Gets the resourceId property: The id of the resource.
+     * Gets the percentComplete property: Percent of the operation that is complete.
      *
-     * @return the resourceId value.
+     * @return the percentComplete value.
      */
-    String resourceId();
+    Float percentComplete();
 
     /**
      * Gets the startTime property: The start time of the operation.
@@ -52,11 +54,25 @@ public interface OperationStatus {
     OffsetDateTime endTime();
 
     /**
-     * Gets the percentComplete property: Percent of the operation that is complete.
+     * Gets the operations property: The operations list.
      *
-     * @return the percentComplete value.
+     * @return the operations value.
      */
-    Float percentComplete();
+    List<OperationStatusResult> operations();
+
+    /**
+     * Gets the error property: If present, details of the operation error.
+     *
+     * @return the error value.
+     */
+    ManagementError error();
+
+    /**
+     * Gets the resourceId property: The id of the resource.
+     *
+     * @return the resourceId value.
+     */
+    String resourceId();
 
     /**
      * Gets the properties property: Custom operation properties, populated only for a successful operation.
@@ -64,13 +80,6 @@ public interface OperationStatus {
      * @return the properties value.
      */
     Object properties();
-
-    /**
-     * Gets the error property: Operation Error message.
-     *
-     * @return the error value.
-     */
-    OperationStatusError error();
 
     /**
      * Gets the inner com.azure.resourcemanager.devcenter.fluent.models.OperationStatusInner object.

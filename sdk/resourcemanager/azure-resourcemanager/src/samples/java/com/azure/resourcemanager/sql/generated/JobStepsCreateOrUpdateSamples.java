@@ -17,7 +17,7 @@ import java.util.UUID;
 /** Samples for JobSteps CreateOrUpdate. */
 public final class JobStepsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/CreateOrUpdateJobStepMin.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateOrUpdateJobStepMin.json
      */
     /**
      * Sample code: Create or update a job step with minimal properties specified.
@@ -47,7 +47,7 @@ public final class JobStepsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/CreateOrUpdateJobStepMax.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/CreateOrUpdateJobStepMax.json
      */
     /**
      * Sample code: Create or update a job step with all properties specified.
@@ -95,7 +95,7 @@ public final class JobStepsCreateOrUpdateSamples {
                             .withRetryAttempts(42)
                             .withInitialRetryIntervalSeconds(11)
                             .withMaximumRetryIntervalSeconds(222)
-                            .withRetryIntervalBackoffMultiplier(3.0f)),
+                            .withRetryIntervalBackoffMultiplier(3.0F)),
                 Context.NONE);
     }
 }

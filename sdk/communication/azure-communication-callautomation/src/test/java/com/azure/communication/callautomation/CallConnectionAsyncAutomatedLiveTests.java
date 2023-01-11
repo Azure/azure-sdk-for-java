@@ -7,6 +7,7 @@ import com.azure.communication.callautomation.models.AddParticipantsOptions;
 import com.azure.communication.callautomation.models.AddParticipantsResult;
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
+import com.azure.communication.callautomation.models.CallSource;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.HangUpOptions;
@@ -69,7 +70,7 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
 
             // create a call
             List<CommunicationIdentifier> targets = new ArrayList<>(Arrays.asList(receiver));
-            CreateCallOptions createCallOptions = new CreateCallOptions(caller, targets,
+            CreateCallOptions createCallOptions = new CreateCallOptions(new CallSource(caller), targets,
                 DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).setRepeatabilityHeaders(null);
             Response<CreateCallResult> createCallResultResponse = callAsyncClient.createCallWithResponse(createCallOptions).block();
             assertNotNull(createCallResultResponse);
@@ -94,7 +95,7 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             callDestructors.add(answerCallResult.getCallConnectionAsync());
 
             // wait for callConnected
-            CallConnected callConnectedEvent = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
+            CallConnected callConnectedEvent = waitForEvent(CallConnected.class, receiverConnectionId, Duration.ofSeconds(10));
             assertNotNull(callConnectedEvent);
 
             // add another receiver to the call
@@ -125,13 +126,8 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             String anotherReceiverConnectionId = anotherAnswerCallResult.getCallConnectionProperties().getCallConnectionId();
             callDestructors.add(anotherAnswerCallResult.getCallConnectionAsync());
 
-            // clear the slot for next callConnectedEvent from another receiver call connection establishment.
-            if (eventStore.get(callerConnectionId) != null) {
-                eventStore.get(callerConnectionId).remove(CallConnected.class);
-            }
-
             // wait for callConnected
-            CallConnected anotherCallConnectedEvent = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
+            CallConnected anotherCallConnectedEvent = waitForEvent(CallConnected.class, anotherReceiverConnectionId, Duration.ofSeconds(10));
             assertNotNull(callConnectedEvent);
 
             // check participant number in the call

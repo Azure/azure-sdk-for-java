@@ -5,11 +5,11 @@
 package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.Resource;
 import com.azure.resourcemanager.monitor.models.ArmRoleReceiver;
 import com.azure.resourcemanager.monitor.models.AutomationRunbookReceiver;
 import com.azure.resourcemanager.monitor.models.AzureAppPushReceiver;
 import com.azure.resourcemanager.monitor.models.AzureFunctionReceiver;
-import com.azure.resourcemanager.monitor.models.AzureResource;
 import com.azure.resourcemanager.monitor.models.EmailReceiver;
 import com.azure.resourcemanager.monitor.models.EventHubReceiver;
 import com.azure.resourcemanager.monitor.models.ItsmReceiver;
@@ -23,12 +23,16 @@ import java.util.Map;
 
 /** An action group resource. */
 @Fluent
-public final class ActionGroupResourceInner extends AzureResource {
+public final class ActionGroupResourceInner extends Resource {
     /*
      * The action groups properties of the resource.
      */
     @JsonProperty(value = "properties")
     private ActionGroup innerProperties;
+
+    /** Creates an instance of ActionGroupResourceInner class. */
+    public ActionGroupResourceInner() {
+    }
 
     /**
      * Get the innerProperties property: The action groups properties of the resource.
@@ -364,9 +368,7 @@ public final class ActionGroupResourceInner extends AzureResource {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

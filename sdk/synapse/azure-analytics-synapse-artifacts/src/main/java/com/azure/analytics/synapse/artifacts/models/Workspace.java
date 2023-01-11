@@ -120,6 +120,9 @@ public class Workspace extends TrackedResource {
     @JsonProperty(value = "properties.adlaResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String adlaResourceId;
 
+    /** Creates an instance of Workspace class. */
+    public Workspace() {}
+
     /**
      * Get the identity property: Identity of the workspace.
      *

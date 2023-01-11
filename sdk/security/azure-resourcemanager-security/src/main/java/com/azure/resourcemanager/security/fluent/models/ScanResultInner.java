@@ -18,6 +18,10 @@ public final class ScanResultInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ScanResultProperties properties;
 
+    /** Creates an instance of ScanResultInner class. */
+    public ScanResultInner() {
+    }
+
     /**
      * Get the properties property: A vulnerability assessment scan result properties for a single rule.
      *

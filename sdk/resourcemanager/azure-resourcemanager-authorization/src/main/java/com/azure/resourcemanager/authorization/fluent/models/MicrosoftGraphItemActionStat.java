@@ -32,6 +32,10 @@ public final class MicrosoftGraphItemActionStat {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphItemActionStat class. */
+    public MicrosoftGraphItemActionStat() {
+    }
+
     /**
      * Get the actionCount property: The number of times the action took place. Read-only.
      *

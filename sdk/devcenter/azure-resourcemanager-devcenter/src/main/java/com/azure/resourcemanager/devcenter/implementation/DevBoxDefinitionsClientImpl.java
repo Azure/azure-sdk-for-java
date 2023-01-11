@@ -46,26 +46,26 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     private final DevBoxDefinitionsService service;
 
     /** The service client containing this operation class. */
-    private final DevCenterClientImpl client;
+    private final DevCenterManagementClientImpl client;
 
     /**
      * Initializes an instance of DevBoxDefinitionsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    DevBoxDefinitionsClientImpl(DevCenterClientImpl client) {
+    DevBoxDefinitionsClientImpl(DevCenterManagementClientImpl client) {
         this.service =
             RestProxy.create(DevBoxDefinitionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DevCenterClientDevBoxDefinitions to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for DevCenterManagementClientDevBoxDefinitions to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "DevCenterClientDevBo")
-    private interface DevBoxDefinitionsService {
+    @ServiceInterface(name = "DevCenterManagementC")
+    public interface DevBoxDefinitionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
@@ -204,7 +204,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * List Dev Box definitions for a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -264,7 +264,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * List Dev Box definitions for a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -322,7 +322,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * List Dev Box definitions for a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -341,7 +341,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * List Dev Box definitions for a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -359,7 +359,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * List Dev Box definitions for a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -379,7 +379,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * List Dev Box definitions for a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -395,7 +395,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * List Dev Box definitions for a devcenter.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -413,7 +413,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Gets a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -467,7 +467,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Gets a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param context The context to associate with this operation.
@@ -519,7 +519,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Gets a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -537,7 +537,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Gets a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param context The context to associate with this operation.
@@ -555,7 +555,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Gets a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -571,7 +571,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Creates or updates a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param body Represents a Dev Box definition.
@@ -633,7 +633,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Creates or updates a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param body Represents a Dev Box definition.
@@ -697,7 +697,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Creates or updates a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param body Represents a Dev Box definition.
@@ -724,7 +724,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Creates or updates a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param body Represents a Dev Box definition.
@@ -753,7 +753,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Creates or updates a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param body Represents a Dev Box definition.
@@ -771,7 +771,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Creates or updates a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param body Represents a Dev Box definition.
@@ -795,7 +795,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Creates or updates a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param body Represents a Dev Box definition.
@@ -815,7 +815,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Creates or updates a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param body Represents a Dev Box definition.
@@ -840,7 +840,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Creates or updates a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param body Represents a Dev Box definition.
@@ -858,7 +858,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Creates or updates a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param body Represents a Dev Box definition.
@@ -881,7 +881,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Partially updates a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param body Represents a Dev Box definition.
@@ -943,7 +943,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Partially updates a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param body Represents a Dev Box definition.
@@ -1007,7 +1007,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Partially updates a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param body Represents a Dev Box definition.
@@ -1034,7 +1034,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Partially updates a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param body Represents a Dev Box definition.
@@ -1063,7 +1063,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Partially updates a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param body Represents a Dev Box definition.
@@ -1081,7 +1081,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Partially updates a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param body Represents a Dev Box definition.
@@ -1104,7 +1104,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Partially updates a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param body Represents a Dev Box definition.
@@ -1124,7 +1124,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Partially updates a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param body Represents a Dev Box definition.
@@ -1149,7 +1149,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Partially updates a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param body Represents a Dev Box definition.
@@ -1167,7 +1167,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Partially updates a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param body Represents a Dev Box definition.
@@ -1190,7 +1190,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Deletes a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1244,7 +1244,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Deletes a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param context The context to associate with this operation.
@@ -1296,7 +1296,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Deletes a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1318,7 +1318,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Deletes a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param context The context to associate with this operation.
@@ -1341,7 +1341,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Deletes a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1358,7 +1358,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Deletes a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param context The context to associate with this operation.
@@ -1376,7 +1376,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Deletes a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1394,7 +1394,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Deletes a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param context The context to associate with this operation.
@@ -1414,7 +1414,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Deletes a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1429,7 +1429,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Deletes a Dev Box definition.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param context The context to associate with this operation.
@@ -1445,7 +1445,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * List Dev Box definitions configured for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1505,7 +1505,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * List Dev Box definitions configured for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -1563,7 +1563,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * List Dev Box definitions configured for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1582,7 +1582,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * List Dev Box definitions configured for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1600,7 +1600,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * List Dev Box definitions configured for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -1620,7 +1620,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * List Dev Box definitions configured for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1636,7 +1636,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * List Dev Box definitions configured for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -1654,7 +1654,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Gets a Dev Box definition configured for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1709,7 +1709,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Gets a Dev Box definition configured for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param context The context to associate with this operation.
@@ -1762,7 +1762,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Gets a Dev Box definition configured for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1780,7 +1780,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Gets a Dev Box definition configured for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param context The context to associate with this operation.
@@ -1798,7 +1798,7 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Gets a Dev Box definition configured for a project.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param devBoxDefinitionName The name of the Dev Box definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -67,12 +67,14 @@ public interface ExternalSecuritySolutions {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param externalSecuritySolutionsName Name of an external security solution.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific external Security Solution.
+     * @return a specific external Security Solution along with {@link Response}.
      */
-    ExternalSecuritySolution get(String resourceGroupName, String ascLocation, String externalSecuritySolutionsName);
+    Response<ExternalSecuritySolution> getWithResponse(
+        String resourceGroupName, String ascLocation, String externalSecuritySolutionsName, Context context);
 
     /**
      * Gets a specific external Security Solution.
@@ -82,12 +84,10 @@ public interface ExternalSecuritySolutions {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param externalSecuritySolutionsName Name of an external security solution.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific external Security Solution along with {@link Response}.
+     * @return a specific external Security Solution.
      */
-    Response<ExternalSecuritySolution> getWithResponse(
-        String resourceGroupName, String ascLocation, String externalSecuritySolutionsName, Context context);
+    ExternalSecuritySolution get(String resourceGroupName, String ascLocation, String externalSecuritySolutionsName);
 }

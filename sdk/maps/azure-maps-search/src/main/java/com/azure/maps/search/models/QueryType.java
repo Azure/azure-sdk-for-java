@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for QueryType. */
+/** The type of query being returned: NEARBY or NON_NEAR. */
 public final class QueryType extends ExpandableStringEnum<QueryType> {
     /** Static value NEARBY for QueryType. */
     public static final QueryType NEARBY = fromString("NEARBY");

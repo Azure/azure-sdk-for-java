@@ -59,6 +59,9 @@ public class AmazonS3LinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of AmazonS3LinkedService class. */
+    public AmazonS3LinkedService() {}
+
     /**
      * Get the authenticationType property: The authentication type of S3. Allowed value: AccessKey (default) or
      * TemporarySecurityCredentials. Type: string (or Expression with resultType string).

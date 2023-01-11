@@ -41,6 +41,10 @@ public final class RegulatoryComplianceControlProperties {
     @JsonProperty(value = "skippedAssessments", access = JsonProperty.Access.WRITE_ONLY)
     private Integer skippedAssessments;
 
+    /** Creates an instance of RegulatoryComplianceControlProperties class. */
+    public RegulatoryComplianceControlProperties() {
+    }
+
     /**
      * Get the description property: The description of the regulatory compliance control.
      *

@@ -74,6 +74,9 @@ public class QuickBooksLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of QuickBooksLinkedService class. */
+    public QuickBooksLinkedService() {}
+
     /**
      * Get the connectionProperties property: Properties used to connect to QuickBooks. It is mutually exclusive with
      * any other properties in the linked service. Type: object.

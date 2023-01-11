@@ -414,7 +414,6 @@ public interface GalleryApplicationVersionsClient {
      * @param galleryApplicationName The name of the gallery Application Definition in which the Application Version
      *     resides.
      * @param galleryApplicationVersionName The name of the gallery Application Version to be retrieved.
-     * @param expand The expand expression to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -423,48 +422,6 @@ public interface GalleryApplicationVersionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<GalleryApplicationVersionInner> getAsync(
-        String resourceGroupName,
-        String galleryName,
-        String galleryApplicationName,
-        String galleryApplicationVersionName,
-        ReplicationStatusTypes expand);
-
-    /**
-     * Retrieves information about a gallery Application Version.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition resides.
-     * @param galleryApplicationName The name of the gallery Application Definition in which the Application Version
-     *     resides.
-     * @param galleryApplicationVersionName The name of the gallery Application Version to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Version that you want to create or update on
-     *     successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<GalleryApplicationVersionInner> getAsync(
-        String resourceGroupName,
-        String galleryName,
-        String galleryApplicationName,
-        String galleryApplicationVersionName);
-
-    /**
-     * Retrieves information about a gallery Application Version.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition resides.
-     * @param galleryApplicationName The name of the gallery Application Definition in which the Application Version
-     *     resides.
-     * @param galleryApplicationVersionName The name of the gallery Application Version to be retrieved.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Version that you want to create or update.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    GalleryApplicationVersionInner get(
         String resourceGroupName,
         String galleryName,
         String galleryApplicationName,
@@ -494,6 +451,26 @@ public interface GalleryApplicationVersionsClient {
         String galleryApplicationVersionName,
         ReplicationStatusTypes expand,
         Context context);
+
+    /**
+     * Retrieves information about a gallery Application Version.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Application Gallery in which the Application Definition resides.
+     * @param galleryApplicationName The name of the gallery Application Definition in which the Application Version
+     *     resides.
+     * @param galleryApplicationVersionName The name of the gallery Application Version to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Application Version that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GalleryApplicationVersionInner get(
+        String resourceGroupName,
+        String galleryName,
+        String galleryApplicationName,
+        String galleryApplicationVersionName);
 
     /**
      * Delete a gallery Application Version.

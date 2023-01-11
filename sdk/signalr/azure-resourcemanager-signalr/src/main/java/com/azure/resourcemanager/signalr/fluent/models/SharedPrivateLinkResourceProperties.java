@@ -14,8 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SharedPrivateLinkResourceProperties {
     /*
-     * The group id from the provider of resource the shared private link
-     * resource is for
+     * The group id from the provider of resource the shared private link resource is for
      */
     @JsonProperty(value = "groupId", required = true)
     private String groupId;
@@ -33,8 +32,7 @@ public final class SharedPrivateLinkResourceProperties {
     private ProvisioningState provisioningState;
 
     /*
-     * The request message for requesting approval of the shared private link
-     * resource
+     * The request message for requesting approval of the shared private link resource
      */
     @JsonProperty(value = "requestMessage")
     private String requestMessage;
@@ -44,6 +42,10 @@ public final class SharedPrivateLinkResourceProperties {
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private SharedPrivateLinkResourceStatus status;
+
+    /** Creates an instance of SharedPrivateLinkResourceProperties class. */
+    public SharedPrivateLinkResourceProperties() {
+    }
 
     /**
      * Get the groupId property: The group id from the provider of resource the shared private link resource is for.

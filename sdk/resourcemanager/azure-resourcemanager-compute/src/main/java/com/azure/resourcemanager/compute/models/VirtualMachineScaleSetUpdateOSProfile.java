@@ -35,6 +35,10 @@ public final class VirtualMachineScaleSetUpdateOSProfile {
     @JsonProperty(value = "secrets")
     private List<VaultSecretGroup> secrets;
 
+    /** Creates an instance of VirtualMachineScaleSetUpdateOSProfile class. */
+    public VirtualMachineScaleSetUpdateOSProfile() {
+    }
+
     /**
      * Get the customData property: A base-64 encoded string of custom data.
      *

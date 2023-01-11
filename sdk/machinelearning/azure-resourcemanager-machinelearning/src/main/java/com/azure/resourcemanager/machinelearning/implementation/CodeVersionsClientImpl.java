@@ -58,7 +58,7 @@ public final class CodeVersionsClientImpl implements CodeVersionsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
-    private interface CodeVersionsService {
+    public interface CodeVersionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"

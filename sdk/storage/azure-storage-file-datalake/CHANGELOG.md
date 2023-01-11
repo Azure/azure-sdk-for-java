@@ -3,12 +3,23 @@
 ## 12.14.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for 2021-12-02 service version.
+- Added support for leasing operations on `DataLakeFileClient.appendWithResponse()` and `DataLakeFileClient.flushWithResponse()`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.13.1 (2022-11-15)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.33.0` to version `1.34.0`.
+- Upgraded `azure-core-http-netty` from `1.12.6` to version `1.12.7`.
+- Upgraded `azure-storage-blob` from `12.20.0` to version `12.20.1`.
 
 ## 12.13.0 (2022-10-11)
 

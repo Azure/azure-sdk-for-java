@@ -46,6 +46,9 @@ public class GoogleCloudStorageLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of GoogleCloudStorageLinkedService class. */
+    public GoogleCloudStorageLinkedService() {}
+
     /**
      * Get the accessKeyId property: The access key identifier of the Google Cloud Storage Identity and Access
      * Management (IAM) user. Type: string (or Expression with resultType string).

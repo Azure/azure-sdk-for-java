@@ -30,7 +30,11 @@ public final class AsyncStatus extends ExpandableStringEnum<AsyncStatus> {
         return fromString(name, AsyncStatus.class);
     }
 
-    /** @return known AsyncStatus values. */
+    /**
+     * Gets known AsyncStatus values.
+     *
+     * @return known AsyncStatus values.
+     */
     public static Collection<AsyncStatus> values() {
         return values(AsyncStatus.class);
     }

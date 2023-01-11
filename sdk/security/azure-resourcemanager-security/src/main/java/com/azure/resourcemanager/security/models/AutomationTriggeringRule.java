@@ -37,6 +37,10 @@ public final class AutomationTriggeringRule {
     @JsonProperty(value = "operator")
     private Operator operator;
 
+    /** Creates an instance of AutomationTriggeringRule class. */
+    public AutomationTriggeringRule() {
+    }
+
     /**
      * Get the propertyJPath property: The JPath of the entity model property that should be checked.
      *

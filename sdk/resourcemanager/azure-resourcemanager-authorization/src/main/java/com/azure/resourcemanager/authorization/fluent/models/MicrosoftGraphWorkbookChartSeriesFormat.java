@@ -32,6 +32,10 @@ public final class MicrosoftGraphWorkbookChartSeriesFormat extends MicrosoftGrap
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MicrosoftGraphWorkbookChartSeriesFormat class. */
+    public MicrosoftGraphWorkbookChartSeriesFormat() {
+    }
+
     /**
      * Get the fill property: workbookChartFill.
      *

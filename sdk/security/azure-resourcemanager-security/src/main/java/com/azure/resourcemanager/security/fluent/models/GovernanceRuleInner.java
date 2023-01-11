@@ -22,6 +22,10 @@ public final class GovernanceRuleInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private GovernanceRuleProperties innerProperties;
 
+    /** Creates an instance of GovernanceRuleInner class. */
+    public GovernanceRuleInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of a security governanceRule.
      *

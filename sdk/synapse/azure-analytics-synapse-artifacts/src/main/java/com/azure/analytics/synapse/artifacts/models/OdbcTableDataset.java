@@ -24,6 +24,9 @@ public class OdbcTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
+    /** Creates an instance of OdbcTableDataset class. */
+    public OdbcTableDataset() {}
+
     /**
      * Get the tableName property: The ODBC table name. Type: string (or Expression with resultType string).
      *

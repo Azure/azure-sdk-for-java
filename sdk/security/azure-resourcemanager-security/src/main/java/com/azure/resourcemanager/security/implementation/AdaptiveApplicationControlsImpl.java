@@ -29,15 +29,6 @@ public final class AdaptiveApplicationControlsImpl implements AdaptiveApplicatio
         this.serviceManager = serviceManager;
     }
 
-    public AdaptiveApplicationControlGroups list() {
-        AdaptiveApplicationControlGroupsInner inner = this.serviceClient().list();
-        if (inner != null) {
-            return new AdaptiveApplicationControlGroupsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AdaptiveApplicationControlGroups> listWithResponse(
         Boolean includePathRecommendations, Boolean summary, Context context) {
         Response<AdaptiveApplicationControlGroupsInner> inner =
@@ -53,10 +44,10 @@ public final class AdaptiveApplicationControlsImpl implements AdaptiveApplicatio
         }
     }
 
-    public AdaptiveApplicationControlGroup get(String ascLocation, String groupName) {
-        AdaptiveApplicationControlGroupInner inner = this.serviceClient().get(ascLocation, groupName);
+    public AdaptiveApplicationControlGroups list() {
+        AdaptiveApplicationControlGroupsInner inner = this.serviceClient().list();
         if (inner != null) {
-            return new AdaptiveApplicationControlGroupImpl(inner, this.manager());
+            return new AdaptiveApplicationControlGroupsImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -77,12 +68,21 @@ public final class AdaptiveApplicationControlsImpl implements AdaptiveApplicatio
         }
     }
 
-    public void deleteByResourceGroup(String ascLocation, String groupName) {
-        this.serviceClient().delete(ascLocation, groupName);
+    public AdaptiveApplicationControlGroup get(String ascLocation, String groupName) {
+        AdaptiveApplicationControlGroupInner inner = this.serviceClient().get(ascLocation, groupName);
+        if (inner != null) {
+            return new AdaptiveApplicationControlGroupImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public Response<Void> deleteWithResponse(String ascLocation, String groupName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(String ascLocation, String groupName, Context context) {
         return this.serviceClient().deleteWithResponse(ascLocation, groupName, context);
+    }
+
+    public void deleteByResourceGroup(String ascLocation, String groupName) {
+        this.serviceClient().delete(ascLocation, groupName);
     }
 
     public AdaptiveApplicationControlGroup getById(String id) {
@@ -145,7 +145,7 @@ public final class AdaptiveApplicationControlsImpl implements AdaptiveApplicatio
                                 "The resource ID '%s' is not valid. Missing path segment 'applicationWhitelistings'.",
                                 id)));
         }
-        this.deleteWithResponse(ascLocation, groupName, Context.NONE);
+        this.deleteByResourceGroupWithResponse(ascLocation, groupName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
@@ -166,7 +166,7 @@ public final class AdaptiveApplicationControlsImpl implements AdaptiveApplicatio
                                 "The resource ID '%s' is not valid. Missing path segment 'applicationWhitelistings'.",
                                 id)));
         }
-        return this.deleteWithResponse(ascLocation, groupName, context);
+        return this.deleteByResourceGroupWithResponse(ascLocation, groupName, context);
     }
 
     private AdaptiveApplicationControlsClient serviceClient() {

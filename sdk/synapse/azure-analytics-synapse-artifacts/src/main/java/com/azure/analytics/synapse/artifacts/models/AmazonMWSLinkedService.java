@@ -81,6 +81,9 @@ public class AmazonMWSLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of AmazonMWSLinkedService class. */
+    public AmazonMWSLinkedService() {}
+
     /**
      * Get the endpoint property: The endpoint of the Amazon MWS server, (i.e. mws.amazonservices.com).
      *

@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ResourceIdentityType. */
+/**
+ * The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created
+ * identity and a set of user-assigned identities. The type 'None' will remove any identities.
+ */
 public final class ResourceIdentityType extends ExpandableStringEnum<ResourceIdentityType> {
     /** Static value SystemAssigned for ResourceIdentityType. */
     public static final ResourceIdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");

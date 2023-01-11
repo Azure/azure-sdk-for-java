@@ -36,16 +36,6 @@ public final class PacketCoreControlPlanesImpl implements PacketCoreControlPlane
         this.serviceClient().delete(resourceGroupName, packetCoreControlPlaneName, context);
     }
 
-    public PacketCoreControlPlane getByResourceGroup(String resourceGroupName, String packetCoreControlPlaneName) {
-        PacketCoreControlPlaneInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, packetCoreControlPlaneName);
-        if (inner != null) {
-            return new PacketCoreControlPlaneImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PacketCoreControlPlane> getByResourceGroupWithResponse(
         String resourceGroupName, String packetCoreControlPlaneName, Context context) {
         Response<PacketCoreControlPlaneInner> inner =
@@ -56,6 +46,16 @@ public final class PacketCoreControlPlanesImpl implements PacketCoreControlPlane
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PacketCoreControlPlaneImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PacketCoreControlPlane getByResourceGroup(String resourceGroupName, String packetCoreControlPlaneName) {
+        PacketCoreControlPlaneInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, packetCoreControlPlaneName);
+        if (inner != null) {
+            return new PacketCoreControlPlaneImpl(inner, this.manager());
         } else {
             return null;
         }

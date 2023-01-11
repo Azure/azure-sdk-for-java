@@ -4,11 +4,11 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.ApiCreated event. */
-@Immutable
+@Fluent
 public final class ApiManagementApiCreatedEventData {
     /*
      * The fully qualified ID of the resource that the compliance state change

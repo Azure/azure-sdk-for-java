@@ -53,6 +53,10 @@ public final class SharedPrivateLinkResourceImpl
         return this.innerModel().status();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public SharedPrivateLinkResourceInner innerModel() {
         return this.innerObject;
     }

@@ -6,8 +6,11 @@ import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import reactor.test.StepVerifier;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -26,14 +29,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Unit tests for {@link  JedisRedisCheckpointStore}
+ * Unit tests for {@link JedisRedisCheckpointStore}
  */
 public class JedisRedisCheckpointStoreTests {
-    private JedisPool jedisPool;
-    private JedisRedisCheckpointStore store;
-    private Jedis jedis;
-    private JsonSerializer jsonSerializer;
-
+    private static final JsonSerializer JSON_SERIALIZER = JsonSerializerProviders.createInstance(true);
     private static final String FULLY_QUALIFIED_NAMESPACE = "fullyQualifiedNamespace";
     private static final String EVENT_HUB_NAME = "eventHubName";
     private static final String CONSUMER_GROUP = "consumerGroup";
@@ -41,12 +40,24 @@ public class JedisRedisCheckpointStoreTests {
     private static final byte[] PREFIX = JedisRedisCheckpointStore.prefixBuilder(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP);
     private static final byte[] KEY = JedisRedisCheckpointStore.keyBuilder(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP, PARTITION_ID);
 
+    @Mock
+    private JedisPool jedisPool;
+    @Mock
+    private Jedis jedis;
+    private JedisRedisCheckpointStore store;
+    private AutoCloseable closeable;
+
     @BeforeEach
     public void setup() {
-        jedisPool = mock(JedisPool.class);
-        jedis = mock(Jedis.class);
-        store = new JedisRedisCheckpointStore(jedisPool);
-        jsonSerializer = JsonSerializerProviders.createInstance(true);
+        this.closeable = MockitoAnnotations.openMocks(this);
+        this.store = new JedisRedisCheckpointStore(jedisPool);
+    }
+
+    @AfterEach
+    public void teardown() throws Exception {
+        if (closeable != null) {
+            closeable.close();
+        }
     }
 
     @Test
@@ -54,7 +65,7 @@ public class JedisRedisCheckpointStoreTests {
         Checkpoint checkpoint = createCheckpoint(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP, PARTITION_ID);
         Set<byte[]> value = new HashSet<>();
         value.add(KEY);
-        byte[] checkpointInBytes = jsonSerializer.serializeToBytes(checkpoint);
+        byte[] checkpointInBytes = JSON_SERIALIZER.serializeToBytes(checkpoint);
         List<byte[]> list = Collections.singletonList(checkpointInBytes);
 
         when(jedisPool.getResource()).thenReturn(jedis);
@@ -100,7 +111,7 @@ public class JedisRedisCheckpointStoreTests {
         PartitionOwnership partitionOwnership = createPartitionOwnership(FULLY_QUALIFIED_NAMESPACE, EVENT_HUB_NAME, CONSUMER_GROUP, PARTITION_ID);
         Set<byte[]> value = new HashSet<>();
         value.add(KEY);
-        byte[] partitionOwnershipToBytes = jsonSerializer.serializeToBytes(partitionOwnership);
+        byte[] partitionOwnershipToBytes = JSON_SERIALIZER.serializeToBytes(partitionOwnership);
         List<byte[]> list = Collections.singletonList(partitionOwnershipToBytes);
 
         when(jedisPool.getResource()).thenReturn(jedis);

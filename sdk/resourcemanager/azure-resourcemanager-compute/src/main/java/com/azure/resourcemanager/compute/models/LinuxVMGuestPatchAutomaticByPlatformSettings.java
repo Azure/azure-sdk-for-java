@@ -18,6 +18,10 @@ public final class LinuxVMGuestPatchAutomaticByPlatformSettings {
     @JsonProperty(value = "rebootSetting")
     private LinuxVMGuestPatchAutomaticByPlatformRebootSetting rebootSetting;
 
+    /** Creates an instance of LinuxVMGuestPatchAutomaticByPlatformSettings class. */
+    public LinuxVMGuestPatchAutomaticByPlatformSettings() {
+    }
+
     /**
      * Get the rebootSetting property: Specifies the reboot setting for all AutomaticByPlatform patch installation
      * operations.

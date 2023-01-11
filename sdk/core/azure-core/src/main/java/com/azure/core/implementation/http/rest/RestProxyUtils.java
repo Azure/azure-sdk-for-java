@@ -4,6 +4,7 @@
 package com.azure.core.implementation.http.rest;
 
 import com.azure.core.exception.UnexpectedLengthException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
@@ -12,7 +13,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FluxByteBufferContent;
@@ -54,8 +54,7 @@ public final class RestProxyUtils {
 
         return Mono.fromCallable(() -> {
             BinaryDataContent content = BinaryDataHelper.getContent(body);
-            long expectedLength = Long.parseLong(HttpHeadersHelper.getValueNoKeyFormatting(request.getHeaders(),
-                "content-length"));
+            long expectedLength = Long.parseLong(request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
             if (content instanceof InputStreamContent) {
                 InputStream validatingInputStream = new LengthValidatingInputStream(content.toStream(), expectedLength);
                 request.setBody(BinaryData.fromStream(validatingInputStream));
@@ -125,8 +124,7 @@ public final class RestProxyUtils {
             return null;
         }
 
-        final long expectedLength = Long.parseLong(HttpHeadersHelper.getValueNoKeyFormatting(request.getHeaders(),
-            "content-length"));
+        final long expectedLength = Long.parseLong(request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
         Long length = binaryData.getLength();
         BinaryDataContent bdc = BinaryDataHelper.getContent(binaryData);
         if (bdc instanceof FluxByteBufferContent) {

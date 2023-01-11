@@ -36,6 +36,9 @@ public class PhoenixObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties.schema")
     private Object schemaTypePropertiesSchema;
 
+    /** Creates an instance of PhoenixObjectDataset class. */
+    public PhoenixObjectDataset() {}
+
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.

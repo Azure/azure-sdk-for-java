@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for EnvironmentTypes ListByDevCenter. */
 public final class EnvironmentTypesListByDevCenterSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/EnvironmentTypes_List.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/EnvironmentTypes_List.json
      */
     /**
      * Sample code: EnvironmentTypes_ListByDevCenter.

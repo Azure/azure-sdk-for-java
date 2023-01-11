@@ -58,7 +58,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface LogAnalyticsService {
+    public interface LogAnalyticsService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess"

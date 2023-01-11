@@ -55,6 +55,9 @@ public class TeradataLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of TeradataLinkedService class. */
+    public TeradataLinkedService() {}
+
     /**
      * Get the connectionString property: Teradata ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
