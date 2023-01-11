@@ -260,7 +260,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
      * @param partitionKey must not be {@literal null}
      * @param domainType must not be {@literal null}
      * @param patchOperations must not be {@literal null}
-     * @param options must not be {@literal null}
+     * @param options Optional CosmosPatchItemRequestOptions, e.g. options.setFilterPredicate("FROM products p WHERE p.used = false");
      * @param <T> type class of domain type
      * @return the patched item
      */
