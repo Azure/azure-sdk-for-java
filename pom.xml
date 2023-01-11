@@ -34,6 +34,7 @@
     <module>sdk/batch</module>
     <module>sdk/batchai</module>
     <module>sdk/billing</module>
+    <module>sdk/billingbenefits</module>
     <module>sdk/boms</module>
     <module>sdk/botservice</module>
     <module>sdk/changeanalysis</module>
