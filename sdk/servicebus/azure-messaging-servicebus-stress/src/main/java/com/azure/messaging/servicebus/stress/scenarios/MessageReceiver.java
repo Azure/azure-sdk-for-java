@@ -43,9 +43,6 @@ public class MessageReceiver extends ServiceBusScenario {
             subscriptionName = options.getServicebusSubscriptionName();
         }
 
-        final String receiveCounterKey = "Number of received messages - "
-            + (queueName != null ? queueName : topicName + "/" + subscriptionName);
-
         ServiceBusReceiverClient client = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .retryOptions(new AmqpRetryOptions().setMaxRetries(20)
@@ -69,7 +66,6 @@ public class MessageReceiver extends ServiceBusScenario {
                         receivedMessage.getMessageId(),
                         receivedMessage.getLockToken());
                     client.complete(receivedMessage);
-                    rateMeter.add(receiveCounterKey, 1);
                     LOGGER.verbose("After complete. messageId: {}, lockToken: {}",
                         receivedMessage.getMessageId(),
                         receivedMessage.getLockToken());

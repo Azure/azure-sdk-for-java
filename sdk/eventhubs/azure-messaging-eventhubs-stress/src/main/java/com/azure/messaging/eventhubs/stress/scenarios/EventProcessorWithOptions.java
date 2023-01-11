@@ -134,7 +134,6 @@ public class EventProcessorWithOptions extends EventHubsScenario {
                 }
             }
 
-            addCountMetric(eventContext);
             logProcessEventStatus(ProcessStatus.PROCESSED, eventContext);
         };
 
@@ -157,7 +156,6 @@ public class EventProcessorWithOptions extends EventHubsScenario {
                     logProcessEventError(ProcessStage.UPDATE_CHECKPOINT, eventContext, t);
                 }
 
-                addCountMetric(eventContext);
                 logProcessEventStatus(ProcessStatus.PROCESSED, eventContext);
             }
         };
@@ -285,24 +283,6 @@ public class EventProcessorWithOptions extends EventHubsScenario {
         properties.put("ErrorTime", Instant.now().toString());
 
         telemetryClient.trackException(new Exception(errorContext.getThrowable()), properties, null);
-    }
-
-    private void addCountMetric(EventContext eventContext) {
-        String metricKey = String.format("Number of processed event - %s/%s/%s",
-            eventContext.getPartitionContext().getEventHubName(),
-            eventContext.getPartitionContext().getConsumerGroup(),
-            eventContext.getPartitionContext().getPartitionId()
-        );
-        rateMeter.add(metricKey, 1);
-    }
-
-    private void addCountMetric(EventBatchContext eventContext) {
-        String metricKey = String.format("Number of processed event batch - %s/%s/%s",
-            eventContext.getPartitionContext().getEventHubName(),
-            eventContext.getPartitionContext().getConsumerGroup(),
-            eventContext.getPartitionContext().getPartitionId()
-        );
-        rateMeter.add(metricKey, 1);
     }
 
     private int getNumberOfPartitions(String connectionString, String eventHub, String consumerGroup) {

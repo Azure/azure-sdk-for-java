@@ -32,9 +32,6 @@ public class MessageReceiverAsync extends ServiceBusScenario {
             subscriptionName = options.getServicebusSubscriptionName();
         }
 
-        final String receiveCounterKey = "Number of received messages - "
-            + (queueName != null ? queueName : topicName + "/" + subscriptionName);
-
         ServiceBusReceiverAsyncClient client = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .receiver()
@@ -48,7 +45,6 @@ public class MessageReceiverAsync extends ServiceBusScenario {
         client.receiveMessages()
             .flatMap(message -> {
                 LOGGER.verbose("message received: {}", message.getMessageId());
-                rateMeter.add(receiveCounterKey, 1);
                 return client.complete(message)
                     .onErrorResume(error -> {
                         LOGGER.error("error happened: {}", error.getMessage());
