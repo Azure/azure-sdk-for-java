@@ -3,5 +3,4 @@ spring:
     host: redis-test-container-host
     azure:
       passwordless-enabled: true
-    main:
-      allow-bean-definition-overriding: true
+

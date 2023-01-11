@@ -67,6 +67,15 @@ public class AzureRedisPasswordlessUT {
     @Configuration
     @Import({AzureJedisPasswordlessAutoConfiguration.class, RedisAutoConfiguration.class})
     static class AzureRedisPasswordlessUTConfig {
+        Supplier<String> redisCredential;
+
+        public AzureRedisPasswordlessUTConfig(Supplier<String> redisCredential) {
+            this.redisCredential = redisCredential;
+        }
+    }
+
+    @Configuration
+    static class SupplierConfig {
 
         @Bean(name = "azureRedisCredentialSupplier")
         Supplier<String> redisCredential() {
