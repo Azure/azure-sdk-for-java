@@ -4,4 +4,4 @@ spring:
     azure:
       passwordless-enabled: true
     main:
-        allow-bean-definition-overriding: true
+      allow-bean-definition-overriding: true
