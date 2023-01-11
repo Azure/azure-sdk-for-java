@@ -368,7 +368,7 @@ public final class TestHelpers {
     static byte[] loadResource(String fileName) {
         return LOADED_FILE_DATA.computeIfAbsent(fileName, fName -> {
             try {
-                URI fileUri = AutocompleteSyncTests.class.getClassLoader()
+                URI fileUri = AutocompleteTests.class.getClassLoader()
                     .getResource(fileName)
                     .toURI();
 
