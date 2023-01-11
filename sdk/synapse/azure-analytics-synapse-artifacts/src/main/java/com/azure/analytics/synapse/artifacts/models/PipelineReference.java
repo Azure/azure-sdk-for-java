@@ -28,6 +28,9 @@ public final class PipelineReference {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of PipelineReference class. */
+    public PipelineReference() {}
+
     /**
      * Get the type property: Pipeline reference type.
      *

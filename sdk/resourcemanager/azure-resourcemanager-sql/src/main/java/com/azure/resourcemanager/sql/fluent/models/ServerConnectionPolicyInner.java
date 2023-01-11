@@ -9,15 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.sql.models.ServerConnectionType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A server secure connection policy. */
+/** A server connection policy. */
 @Fluent
 public final class ServerConnectionPolicyInner extends ProxyResource {
-    /*
-     * Metadata used for the Azure portal experience.
-     */
-    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
-    private String kind;
-
     /*
      * Resource location.
      */
@@ -25,18 +19,19 @@ public final class ServerConnectionPolicyInner extends ProxyResource {
     private String location;
 
     /*
-     * The properties of the server secure connection policy.
+     * Metadata used for the Azure portal experience.
+     */
+    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
+    private String kind;
+
+    /*
+     * Resource properties.
      */
     @JsonProperty(value = "properties")
     private ServerConnectionPolicyProperties innerProperties;
 
-    /**
-     * Get the kind property: Metadata used for the Azure portal experience.
-     *
-     * @return the kind value.
-     */
-    public String kind() {
-        return this.kind;
+    /** Creates an instance of ServerConnectionPolicyInner class. */
+    public ServerConnectionPolicyInner() {
     }
 
     /**
@@ -49,7 +44,16 @@ public final class ServerConnectionPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the innerProperties property: The properties of the server secure connection policy.
+     * Get the kind property: Metadata used for the Azure portal experience.
+     *
+     * @return the kind value.
+     */
+    public String kind() {
+        return this.kind;
+    }
+
+    /**
+     * Get the innerProperties property: Resource properties.
      *
      * @return the innerProperties value.
      */

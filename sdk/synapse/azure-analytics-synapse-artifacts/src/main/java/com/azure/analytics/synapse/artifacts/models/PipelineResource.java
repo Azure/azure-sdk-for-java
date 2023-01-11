@@ -74,6 +74,9 @@ public class PipelineResource extends SubResource {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of PipelineResource class. */
+    public PipelineResource() {}
+
     /**
      * Get the description property: The description of the pipeline.
      *

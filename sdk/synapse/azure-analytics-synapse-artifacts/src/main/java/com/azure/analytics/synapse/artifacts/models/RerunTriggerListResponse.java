@@ -23,6 +23,9 @@ public final class RerunTriggerListResponse {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of RerunTriggerListResponse class. */
+    public RerunTriggerListResponse() {}
+
     /**
      * Get the value property: List of rerun triggers.
      *

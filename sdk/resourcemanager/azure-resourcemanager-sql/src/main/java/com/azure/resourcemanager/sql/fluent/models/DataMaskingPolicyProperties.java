@@ -19,17 +19,15 @@ public final class DataMaskingPolicyProperties {
     private DataMaskingState dataMaskingState;
 
     /*
-     * The list of the exempt principals. Specifies the semicolon-separated
-     * list of database users for which the data masking policy does not apply.
-     * The specified users receive data results without masking for all of the
-     * database queries.
+     * The list of the exempt principals. Specifies the semicolon-separated list of database users for which the data
+     * masking policy does not apply. The specified users receive data results without masking for all of the database
+     * queries.
      */
     @JsonProperty(value = "exemptPrincipals")
     private String exemptPrincipals;
 
     /*
-     * The list of the application principals. This is a legacy parameter and
-     * is no longer used.
+     * The list of the application principals. This is a legacy parameter and is no longer used.
      */
     @JsonProperty(value = "applicationPrincipals", access = JsonProperty.Access.WRITE_ONLY)
     private String applicationPrincipals;
@@ -39,6 +37,10 @@ public final class DataMaskingPolicyProperties {
      */
     @JsonProperty(value = "maskingLevel", access = JsonProperty.Access.WRITE_ONLY)
     private String maskingLevel;
+
+    /** Creates an instance of DataMaskingPolicyProperties class. */
+    public DataMaskingPolicyProperties() {
+    }
 
     /**
      * Get the dataMaskingState property: The state of the data masking policy.

@@ -192,10 +192,9 @@ class FunctionAppImpl
                                         manager().environment());
                                 addAppSettingIfNotModified(SETTING_WEB_JOBS_STORAGE, connectionString);
                                 addAppSettingIfNotModified(SETTING_WEB_JOBS_DASHBOARD, connectionString);
-                                if (OperatingSystem.WINDOWS.equals(operatingSystem())
-                                    && // as Portal logic, only Windows plan would have following appSettings
-                                    (appServicePlan == null
-                                        || isConsumptionOrPremiumAppServicePlan(appServicePlan.pricingTier()))) {
+                                if (appServicePlan == null
+                                    || isConsumptionOrPremiumAppServicePlan(appServicePlan.pricingTier())) {
+
                                     addAppSettingIfNotModified(
                                         SETTING_WEBSITE_CONTENTAZUREFILECONNECTIONSTRING, connectionString);
                                     addAppSettingIfNotModified(

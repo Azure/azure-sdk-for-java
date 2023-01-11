@@ -59,7 +59,7 @@ public class AzureCosmosAutoConfiguration extends AzureServiceConfigurationBase 
      */
     @Bean
     @ConditionalOnMissingBean
-    // TODO: spring data cosmos also defines a CosmosAsyncClient
+    // TODO (xiada): spring data cosmos also defines a CosmosAsyncClient
     public CosmosAsyncClient azureCosmosAsyncClient(CosmosClientBuilder builder) {
         return builder.buildAsyncClient();
     }

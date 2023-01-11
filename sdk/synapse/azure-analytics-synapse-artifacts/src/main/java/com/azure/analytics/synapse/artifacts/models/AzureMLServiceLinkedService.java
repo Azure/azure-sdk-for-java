@@ -64,6 +64,9 @@ public class AzureMLServiceLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of AzureMLServiceLinkedService class. */
+    public AzureMLServiceLinkedService() {}
+
     /**
      * Get the subscriptionId property: Azure ML Service workspace subscription ID. Type: string (or Expression with
      * resultType string).

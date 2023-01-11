@@ -57,6 +57,9 @@ public class InformixLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of InformixLinkedService class. */
+    public InformixLinkedService() {}
+
     /**
      * Get the connectionString property: The non-access credential portion of the connection string as well as an
      * optional encrypted credential. Type: string, SecureString or AzureKeyVaultSecretReference.

@@ -36,6 +36,9 @@ public class LookupActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.firstRowOnly")
     private Object firstRowOnly;
 
+    /** Creates an instance of LookupActivity class. */
+    public LookupActivity() {}
+
     /**
      * Get the source property: Dataset-specific source properties, same as copy activity source.
      *

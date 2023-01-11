@@ -36,6 +36,9 @@ public class GoogleBigQueryObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties.dataset")
     private Object dataset;
 
+    /** Creates an instance of GoogleBigQueryObjectDataset class. */
+    public GoogleBigQueryObjectDataset() {}
+
     /**
      * Get the tableName property: This property will be retired. Please consider using database + table properties
      * instead.

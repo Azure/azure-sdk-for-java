@@ -91,6 +91,9 @@ public class ExecuteSsisPackageActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.logLocation")
     private SsisLogLocation logLocation;
 
+    /** Creates an instance of ExecuteSsisPackageActivity class. */
+    public ExecuteSsisPackageActivity() {}
+
     /**
      * Get the packageLocation property: SSIS package location.
      *

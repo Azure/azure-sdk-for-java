@@ -50,6 +50,13 @@ public class RestServiceLinkedService extends LinkedService {
     private SecretBase password;
 
     /*
+     * The additional HTTP headers in the request to RESTful API used for authorization. Type: object (or Expression
+     * with resultType object).
+     */
+    @JsonProperty(value = "typeProperties.authHeaders")
+    private Object authHeaders;
+
+    /*
      * The application's client ID used in AadServicePrincipal authentication type.
      */
     @JsonProperty(value = "typeProperties.servicePrincipalId")
@@ -121,6 +128,9 @@ public class RestServiceLinkedService extends LinkedService {
      */
     @JsonProperty(value = "typeProperties.scope")
     private Object scope;
+
+    /** Creates an instance of RestServiceLinkedService class. */
+    public RestServiceLinkedService() {}
 
     /**
      * Get the url property: The base URL of the REST service.
@@ -221,6 +231,28 @@ public class RestServiceLinkedService extends LinkedService {
      */
     public RestServiceLinkedService setPassword(SecretBase password) {
         this.password = password;
+        return this;
+    }
+
+    /**
+     * Get the authHeaders property: The additional HTTP headers in the request to RESTful API used for authorization.
+     * Type: object (or Expression with resultType object).
+     *
+     * @return the authHeaders value.
+     */
+    public Object getAuthHeaders() {
+        return this.authHeaders;
+    }
+
+    /**
+     * Set the authHeaders property: The additional HTTP headers in the request to RESTful API used for authorization.
+     * Type: object (or Expression with resultType object).
+     *
+     * @param authHeaders the authHeaders value to set.
+     * @return the RestServiceLinkedService object itself.
+     */
+    public RestServiceLinkedService setAuthHeaders(Object authHeaders) {
+        this.authHeaders = authHeaders;
         return this;
     }
 

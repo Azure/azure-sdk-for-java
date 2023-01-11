@@ -42,6 +42,9 @@ public class AzureBlobFSDataset extends Dataset {
     @JsonProperty(value = "typeProperties.compression")
     private DatasetCompression compression;
 
+    /** Creates an instance of AzureBlobFSDataset class. */
+    public AzureBlobFSDataset() {}
+
     /**
      * Get the folderPath property: The path of the Azure Data Lake Storage Gen2 storage. Type: string (or Expression
      * with resultType string).

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WorkloadGroups Delete. */
 public final class WorkloadGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2019-06-01-preview/examples/DeleteWorkloadGroup.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DeleteWorkloadGroup.json
      */
     /**
      * Sample code: Delete a workload group.

@@ -4,12 +4,13 @@
 
 package com.azure.resourcemanager.sql.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Properties of a long term retention backup. */
-@Immutable
+@Fluent
 public final class LongTermRetentionBackupProperties {
     /*
      * The server name that the backup database belong to.
@@ -46,6 +47,22 @@ public final class LongTermRetentionBackupProperties {
      */
     @JsonProperty(value = "backupExpirationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime backupExpirationTime;
+
+    /*
+     * The storage redundancy type of the backup
+     */
+    @JsonProperty(value = "backupStorageRedundancy", access = JsonProperty.Access.WRITE_ONLY)
+    private BackupStorageRedundancy backupStorageRedundancy;
+
+    /*
+     * The storage redundancy type of the backup
+     */
+    @JsonProperty(value = "requestedBackupStorageRedundancy")
+    private BackupStorageRedundancy requestedBackupStorageRedundancy;
+
+    /** Creates an instance of LongTermRetentionBackupProperties class. */
+    public LongTermRetentionBackupProperties() {
+    }
 
     /**
      * Get the serverName property: The server name that the backup database belong to.
@@ -99,6 +116,36 @@ public final class LongTermRetentionBackupProperties {
      */
     public OffsetDateTime backupExpirationTime() {
         return this.backupExpirationTime;
+    }
+
+    /**
+     * Get the backupStorageRedundancy property: The storage redundancy type of the backup.
+     *
+     * @return the backupStorageRedundancy value.
+     */
+    public BackupStorageRedundancy backupStorageRedundancy() {
+        return this.backupStorageRedundancy;
+    }
+
+    /**
+     * Get the requestedBackupStorageRedundancy property: The storage redundancy type of the backup.
+     *
+     * @return the requestedBackupStorageRedundancy value.
+     */
+    public BackupStorageRedundancy requestedBackupStorageRedundancy() {
+        return this.requestedBackupStorageRedundancy;
+    }
+
+    /**
+     * Set the requestedBackupStorageRedundancy property: The storage redundancy type of the backup.
+     *
+     * @param requestedBackupStorageRedundancy the requestedBackupStorageRedundancy value to set.
+     * @return the LongTermRetentionBackupProperties object itself.
+     */
+    public LongTermRetentionBackupProperties withRequestedBackupStorageRedundancy(
+        BackupStorageRedundancy requestedBackupStorageRedundancy) {
+        this.requestedBackupStorageRedundancy = requestedBackupStorageRedundancy;
+        return this;
     }
 
     /**

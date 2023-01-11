@@ -28,6 +28,9 @@ public class TrackedResource extends Resource {
     @JsonProperty(value = "location", required = true)
     private String location;
 
+    /** Creates an instance of TrackedResource class. */
+    public TrackedResource() {}
+
     /**
      * Get the tags property: Resource tags.
      *

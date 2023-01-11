@@ -33,6 +33,24 @@ public final class SyncMemberProperties {
     private UUID sqlServerDatabaseId;
 
     /*
+     * ARM resource id of the sync member logical database, for sync members in Azure.
+     */
+    @JsonProperty(value = "syncMemberAzureDatabaseResourceId")
+    private String syncMemberAzureDatabaseResourceId;
+
+    /*
+     * Whether to use private link connection.
+     */
+    @JsonProperty(value = "usePrivateLinkConnection")
+    private Boolean usePrivateLinkConnection;
+
+    /*
+     * Private endpoint name of the sync member if use private link connection is enabled, for sync members in Azure.
+     */
+    @JsonProperty(value = "privateEndpointName", access = JsonProperty.Access.WRITE_ONLY)
+    private String privateEndpointName;
+
+    /*
      * Server name of the member database in the sync member
      */
     @JsonProperty(value = "serverName")
@@ -67,6 +85,10 @@ public final class SyncMemberProperties {
      */
     @JsonProperty(value = "syncState", access = JsonProperty.Access.WRITE_ONLY)
     private SyncMemberState syncState;
+
+    /** Creates an instance of SyncMemberProperties class. */
+    public SyncMemberProperties() {
+    }
 
     /**
      * Get the databaseType property: Database type of the sync member.
@@ -126,6 +148,58 @@ public final class SyncMemberProperties {
     public SyncMemberProperties withSqlServerDatabaseId(UUID sqlServerDatabaseId) {
         this.sqlServerDatabaseId = sqlServerDatabaseId;
         return this;
+    }
+
+    /**
+     * Get the syncMemberAzureDatabaseResourceId property: ARM resource id of the sync member logical database, for sync
+     * members in Azure.
+     *
+     * @return the syncMemberAzureDatabaseResourceId value.
+     */
+    public String syncMemberAzureDatabaseResourceId() {
+        return this.syncMemberAzureDatabaseResourceId;
+    }
+
+    /**
+     * Set the syncMemberAzureDatabaseResourceId property: ARM resource id of the sync member logical database, for sync
+     * members in Azure.
+     *
+     * @param syncMemberAzureDatabaseResourceId the syncMemberAzureDatabaseResourceId value to set.
+     * @return the SyncMemberProperties object itself.
+     */
+    public SyncMemberProperties withSyncMemberAzureDatabaseResourceId(String syncMemberAzureDatabaseResourceId) {
+        this.syncMemberAzureDatabaseResourceId = syncMemberAzureDatabaseResourceId;
+        return this;
+    }
+
+    /**
+     * Get the usePrivateLinkConnection property: Whether to use private link connection.
+     *
+     * @return the usePrivateLinkConnection value.
+     */
+    public Boolean usePrivateLinkConnection() {
+        return this.usePrivateLinkConnection;
+    }
+
+    /**
+     * Set the usePrivateLinkConnection property: Whether to use private link connection.
+     *
+     * @param usePrivateLinkConnection the usePrivateLinkConnection value to set.
+     * @return the SyncMemberProperties object itself.
+     */
+    public SyncMemberProperties withUsePrivateLinkConnection(Boolean usePrivateLinkConnection) {
+        this.usePrivateLinkConnection = usePrivateLinkConnection;
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointName property: Private endpoint name of the sync member if use private link connection is
+     * enabled, for sync members in Azure.
+     *
+     * @return the privateEndpointName value.
+     */
+    public String privateEndpointName() {
+        return this.privateEndpointName;
     }
 
     /**

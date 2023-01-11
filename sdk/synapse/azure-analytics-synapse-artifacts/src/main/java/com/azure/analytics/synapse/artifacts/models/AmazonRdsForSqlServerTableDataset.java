@@ -30,6 +30,9 @@ public class AmazonRdsForSqlServerTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.table")
     private Object table;
 
+    /** Creates an instance of AmazonRdsForSqlServerTableDataset class. */
+    public AmazonRdsForSqlServerTableDataset() {}
+
     /**
      * Get the schemaTypePropertiesSchema property: The schema name of the SQL Server dataset. Type: string (or
      * Expression with resultType string).

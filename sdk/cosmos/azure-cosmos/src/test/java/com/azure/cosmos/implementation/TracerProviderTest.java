@@ -167,4 +167,20 @@ public class TracerProviderTest {
         verify(tracerMock, times(1)).makeSpanCurrent(eq(sdkContext));
         assertThat(closed.get()).isTrue();
     }
+
+    @Test(groups = { "unit" })
+    public void testTraceProviderWithClientMetricsEnabled() {
+        Tracer tracerMock = Mockito.mock(Tracer.class);
+        String methodName = "get item";
+        String endpoint = "endpoint";
+        String instance = "instance";
+        Context context = new Context("foo", "bar");
+
+        ArgumentCaptor<StartSpanOptions> optionsCaptor = ArgumentCaptor.forClass(StartSpanOptions.class);
+        TracerProvider provider = new TracerProvider(tracerMock, false, true);
+        provider.startSpan(methodName, instance, endpoint, context);
+        verify(tracerMock, times(1)).start(eq(methodName), optionsCaptor.capture(), eq(context));
+
+        assertThat(optionsCaptor.getValue().getSpanKind()).isEqualTo(SpanKind.CLIENT);
+    }
 }
