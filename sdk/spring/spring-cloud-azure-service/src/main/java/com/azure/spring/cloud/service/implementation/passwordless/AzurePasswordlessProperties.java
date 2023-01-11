@@ -92,7 +92,9 @@ public class AzurePasswordlessProperties implements AzureProperties {
     public Properties toProperties() {
         Properties target = new Properties();
         for (AzurePasswordlessPropertiesMapping m : AzurePasswordlessPropertiesMapping.values()) {
-            m.setter.accept(target, m.getter.apply(this));
+            if (m.getter.apply(this) != null) {
+                m.setter.accept(target, m.getter.apply(this));
+            }
         }
         return target;
     }
