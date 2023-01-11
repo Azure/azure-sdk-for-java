@@ -9,22 +9,10 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.NameAvailabilityInner;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.NameAvailabilityRequest;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.CheckNameAvailabilityRequest;
 
 /** An instance of this class provides access to all the operations defined in CheckNameAvailabilitiesClient. */
 public interface CheckNameAvailabilitiesClient {
-    /**
-     * Check the availability of name for resource.
-     *
-     * @param nameAvailabilityRequest The required parameters for checking if resource name is available.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a resource name availability.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NameAvailabilityInner execute(NameAvailabilityRequest nameAvailabilityRequest);
-
     /**
      * Check the availability of name for resource.
      *
@@ -33,9 +21,21 @@ public interface CheckNameAvailabilitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a resource name availability.
+     * @return represents a resource name availability along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NameAvailabilityInner> executeWithResponse(
-        NameAvailabilityRequest nameAvailabilityRequest, Context context);
+        CheckNameAvailabilityRequest nameAvailabilityRequest, Context context);
+
+    /**
+     * Check the availability of name for resource.
+     *
+     * @param nameAvailabilityRequest The required parameters for checking if resource name is available.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a resource name availability.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NameAvailabilityInner execute(CheckNameAvailabilityRequest nameAvailabilityRequest);
 }
