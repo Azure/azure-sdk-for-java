@@ -105,13 +105,13 @@ public class NettyAsyncHttpClientBuilderTests {
     }
 
     /**
-     * Tests that constructing a {@link NettyAsyncHttpClient} from a pre-configured Netty {@link HttpClient} will use
+     * Tests that constructing a {@link NettyHttpClient} from a pre-configured Netty {@link HttpClient} will use
      * that as the underlying client.
      */
     @Test
     public void buildClientFromConfiguredClient() {
         HttpClient expectedClient = HttpClient.create().cookie(new DefaultCookie(COOKIE_NAME, COOKIE_VALUE));
-        NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(expectedClient)
+        NettyHttpClient nettyClient = (NettyHttpClient) new NettyAsyncHttpClientBuilder(expectedClient)
             .build();
 
         StepVerifier.create(nettyClient.send(new HttpRequest(HttpMethod.GET, prebuiltClientUrl)))
@@ -138,7 +138,7 @@ public class NettyAsyncHttpClientBuilderTests {
             throw new UnsupportedOperationException("Bad connection provider");
         };
 
-        NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder()
+        NettyHttpClient nettyClient = (NettyHttpClient) new NettyAsyncHttpClientBuilder()
             .connectionProvider(connectionProvider)
             .build();
 
@@ -156,7 +156,7 @@ public class NettyAsyncHttpClientBuilderTests {
         HttpClient validatorClient = nettyHttpClientWithProxyValidation(shouldHaveProxy, proxyType,
             usesAzureHttpProxyHandler);
 
-        NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(validatorClient)
+        NettyHttpClient nettyClient = (NettyHttpClient) new NettyAsyncHttpClientBuilder(validatorClient)
             .proxy(proxyOptions)
             .build();
 
@@ -236,7 +236,7 @@ public class NettyAsyncHttpClientBuilderTests {
 
     @Test
     public void buildWithConfigurationNone() {
-        NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder()
+        NettyHttpClient nettyClient = (NettyHttpClient) new NettyAsyncHttpClientBuilder()
             .configuration(Configuration.NONE)
             .build();
 
@@ -252,7 +252,7 @@ public class NettyAsyncHttpClientBuilderTests {
         HttpClient validatorClient = nettyHttpClientWithProxyValidation(shouldHaveProxy, ProxyOptions.Type.HTTP,
             usesAzureHttpProxyHandler);
 
-        NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(validatorClient)
+        NettyHttpClient nettyClient = (NettyHttpClient) new NettyAsyncHttpClientBuilder(validatorClient)
             .configuration(configuration)
             .build();
 
@@ -267,7 +267,7 @@ public class NettyAsyncHttpClientBuilderTests {
         HttpClient validatorClient = nettyHttpClientWithProxyValidation(shouldHaveProxy, ProxyOptions.Type.HTTP,
             usesAzureHttpProxyHandler);
 
-        NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(validatorClient)
+        NettyHttpClient nettyClient = (NettyHttpClient) new NettyAsyncHttpClientBuilder(validatorClient)
             .configuration(configuration)
             .build();
 
@@ -510,7 +510,7 @@ public class NettyAsyncHttpClientBuilderTests {
         HttpClient validatorClient = HttpClient.create().doAfterResponseSuccess((response, connection) ->
             assertNotNull(connection.channel().pipeline().get(LoggingHandler.class)));
 
-        NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(validatorClient)
+        NettyHttpClient nettyClient = (NettyHttpClient) new NettyAsyncHttpClientBuilder(validatorClient)
             .wiretap(true)
             .build();
 
@@ -524,7 +524,7 @@ public class NettyAsyncHttpClientBuilderTests {
      */
     @Test
     public void buildPortClient() {
-        NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder()
+        NettyHttpClient nettyClient = (NettyHttpClient) new NettyAsyncHttpClientBuilder()
             .port(server.port())
             .build();
 
@@ -550,7 +550,7 @@ public class NettyAsyncHttpClientBuilderTests {
 
         NioEventLoopGroup eventLoopGroup = new NioEventLoopGroup(1, (Runnable r) -> new Thread(r, expectedThreadName));
 
-        NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(validatorClient)
+        NettyHttpClient nettyClient = (NettyHttpClient) new NettyAsyncHttpClientBuilder(validatorClient)
             .eventLoopGroup(eventLoopGroup)
             .build();
 
@@ -582,7 +582,7 @@ public class NettyAsyncHttpClientBuilderTests {
             .httpResponseDecoder(httpResponseDecoderSpec -> httpResponseDecoderSpec.maxChunkSize(64 * 1024)
                 .validateHeaders(true));
 
-        NettyAsyncHttpClient azureHttpClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(nettyHttpClient)
+        NettyHttpClient azureHttpClient = (NettyHttpClient) new NettyAsyncHttpClientBuilder(nettyHttpClient)
             .build();
 
         HttpResponseDecoderSpec spec = azureHttpClient.nettyClient.configuration().decoder();

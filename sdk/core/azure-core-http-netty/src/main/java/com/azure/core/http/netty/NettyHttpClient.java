@@ -75,8 +75,8 @@ import static com.azure.core.http.netty.implementation.Utility.closeConnection;
  * @see HttpClient
  * @see NettyAsyncHttpClientBuilder
  */
-class NettyAsyncHttpClient implements HttpClient {
-    private static final ClientLogger LOGGER = new ClientLogger(NettyAsyncHttpClient.class);
+class NettyHttpClient implements HttpClient {
+    private static final ClientLogger LOGGER = new ClientLogger(NettyHttpClient.class);
     private static final byte[] EMPTY_BYTES = new byte[0];
 
     private static final String AZURE_EAGERLY_READ_RESPONSE = "azure-eagerly-read-response";
@@ -103,10 +103,10 @@ class NettyAsyncHttpClient implements HttpClient {
      * @param nettyClient the reactor-netty http client
      * @param disableBufferCopy Determines whether deep cloning of response buffers should be disabled.
      */
-    NettyAsyncHttpClient(reactor.netty.http.client.HttpClient nettyClient, boolean disableBufferCopy,
-        long readTimeout, long writeTimeout, long responseTimeout, boolean addProxyHandler, ProxyOptions proxyOptions,
-        Pattern nonProxyHostsPattern, AuthorizationChallengeHandler handler,
-        AtomicReference<ChallengeHolder> proxyChallengeHolder) {
+    NettyHttpClient(reactor.netty.http.client.HttpClient nettyClient, boolean disableBufferCopy,
+                    long readTimeout, long writeTimeout, long responseTimeout, boolean addProxyHandler, ProxyOptions proxyOptions,
+                    Pattern nonProxyHostsPattern, AuthorizationChallengeHandler handler,
+                    AtomicReference<ChallengeHolder> proxyChallengeHolder) {
         this.nettyClient = nettyClient;
         this.disableBufferCopy = disableBufferCopy;
         this.readTimeout = readTimeout;

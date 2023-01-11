@@ -434,8 +434,8 @@ public class NettyAsyncHttpClientTests {
     @Test
     public void httpClientWithDefaultResolverUsesNoopResolverWithProxy() {
         try (MockProxyServer mockProxyServer = new MockProxyServer()) {
-            NettyAsyncHttpClient httpClient =
-                (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder()
+            NettyHttpClient httpClient =
+                (NettyHttpClient) new NettyAsyncHttpClientBuilder()
                     .proxy(new ProxyOptions(
                         ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()))
                     .build();
@@ -447,8 +447,8 @@ public class NettyAsyncHttpClientTests {
     @Test
     public void httpClientWithConnectionProviderUsesNoopResolverWithProxy() {
         try (MockProxyServer mockProxyServer = new MockProxyServer()) {
-            NettyAsyncHttpClient httpClient =
-                (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder()
+            NettyHttpClient httpClient =
+                (NettyHttpClient) new NettyAsyncHttpClientBuilder()
                     .connectionProvider(ConnectionProvider.newConnection())
                     .proxy(new ProxyOptions(
                         ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()))
@@ -461,8 +461,8 @@ public class NettyAsyncHttpClientTests {
     @Test
     public void httpClientWithResolverUsesConfiguredResolverWithProxy() {
         try (MockProxyServer mockProxyServer = new MockProxyServer()) {
-            NettyAsyncHttpClient httpClient =
-                (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(
+            NettyHttpClient httpClient =
+                (NettyHttpClient) new NettyAsyncHttpClientBuilder(
                     reactor.netty.http.client.HttpClient.create().resolver(DefaultAddressResolverGroup.INSTANCE))
                     .proxy(new ProxyOptions(
                         ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()))

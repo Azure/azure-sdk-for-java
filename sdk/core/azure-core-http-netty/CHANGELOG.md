@@ -4,8 +4,6 @@
 
 ### Features Added
 
-- Added an override method `sendSync(HttpRequest request, Context context)` to remove reactor exceptions. 
-
 ### Breaking Changes
 
 ### Bugs Fixed

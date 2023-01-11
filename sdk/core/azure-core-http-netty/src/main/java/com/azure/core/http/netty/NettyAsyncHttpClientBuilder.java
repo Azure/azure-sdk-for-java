@@ -199,7 +199,7 @@ public class NettyAsyncHttpClientBuilder {
             }
         }
 
-        return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy,
+        return new NettyHttpClient(nettyHttpClient, disableBufferCopy,
             getTimeoutMillis(readTimeout, DEFAULT_READ_TIMEOUT), getTimeoutMillis(writeTimeout, DEFAULT_WRITE_TIMEOUT),
             getTimeoutMillis(responseTimeout, DEFAULT_RESPONSE_TIMEOUT), addProxyHandler, buildProxyOptions,
             nonProxyHostsPattern, handler, proxyChallengeHolder);
