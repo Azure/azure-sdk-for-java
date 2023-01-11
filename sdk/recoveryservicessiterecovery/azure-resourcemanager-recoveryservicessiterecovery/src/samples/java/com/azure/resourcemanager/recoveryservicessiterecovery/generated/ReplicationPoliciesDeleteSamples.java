@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationPolicies Delete. */
 public final class ReplicationPoliciesDeleteSamples {
     /*
@@ -18,6 +16,8 @@ public final class ReplicationPoliciesDeleteSamples {
      */
     public static void deleteThePolicy(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationPolicies().delete("vault1", "resourceGroupPS1", "protectionprofile1", Context.NONE);
+        manager
+            .replicationPolicies()
+            .delete("vault1", "resourceGroupPS1", "protectionprofile1", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RemoveProtectionContainerMappingInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RemoveProtectionContainerMappingInputProperties;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ReplicationProviderContainerUnmappingInput;
@@ -33,6 +32,6 @@ public final class ReplicationProtectionContainerMappingsDeleteSam {
                     .withProperties(
                         new RemoveProtectionContainerMappingInputProperties()
                             .withProviderSpecificInput(new ReplicationProviderContainerUnmappingInput())),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

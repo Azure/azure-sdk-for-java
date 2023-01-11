@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.TestMigrateInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.TestMigrateInputProperties;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.VMwareCbtTestMigrateInput;
@@ -38,6 +37,6 @@ public final class ReplicationMigrationItemsTestMigrateSamples {
                                         "/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationFabrics/vmwarefabric1/replicationProtectionContainers/vmwareContainer1/replicationMigrationItems/virtualmachine1/migrationRecoveryPoints/9e737191-317e-43d0-8c83-e32ac3b34686")
                                     .withNetworkId(
                                         "/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.Network/virtualNetworks/virtualNetwork1"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

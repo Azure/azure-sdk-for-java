@@ -23,6 +23,15 @@ public final class SqlServerLicenseType extends ExpandableStringEnum<SqlServerLi
     public static final SqlServerLicenseType AHUB = fromString("AHUB");
 
     /**
+     * Creates a new instance of SqlServerLicenseType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SqlServerLicenseType() {
+    }
+
+    /**
      * Creates or finds a SqlServerLicenseType from its string representation.
      *
      * @param name a name to look for.

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationEligibilityResultsOperation Get. */
 public final class ReplicationEligibilityResultsOperationGetSamples {
     /*
@@ -18,6 +16,8 @@ public final class ReplicationEligibilityResultsOperationGetSamples {
      */
     public static void getsTheValidationErrorsInCaseTheVMIsUnsuitableForProtection(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationEligibilityResultsOperations().getWithResponse("testRg1", "testVm1", Context.NONE);
+        manager
+            .replicationEligibilityResultsOperations()
+            .getWithResponse("testRg1", "testVm1", com.azure.core.util.Context.NONE);
     }
 }

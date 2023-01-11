@@ -26,6 +26,15 @@ public final class AgentVersionStatus extends ExpandableStringEnum<AgentVersionS
     public static final AgentVersionStatus SECURITY_UPDATE_REQUIRED = fromString("SecurityUpdateRequired");
 
     /**
+     * Creates a new instance of AgentVersionStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AgentVersionStatus() {
+    }
+
+    /**
      * Creates or finds a AgentVersionStatus from its string representation.
      *
      * @param name a name to look for.

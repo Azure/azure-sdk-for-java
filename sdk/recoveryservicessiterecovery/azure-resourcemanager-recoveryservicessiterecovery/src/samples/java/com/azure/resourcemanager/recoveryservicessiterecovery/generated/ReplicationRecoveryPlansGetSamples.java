@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationRecoveryPlans Get. */
 public final class ReplicationRecoveryPlansGetSamples {
     /*
@@ -18,6 +16,8 @@ public final class ReplicationRecoveryPlansGetSamples {
      */
     public static void getsTheRequestedRecoveryPlan(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationRecoveryPlans().getWithResponse("vault1", "resourceGroupPS1", "RPtest1", Context.NONE);
+        manager
+            .replicationRecoveryPlans()
+            .getWithResponse("vault1", "resourceGroupPS1", "RPtest1", com.azure.core.util.Context.NONE);
     }
 }
