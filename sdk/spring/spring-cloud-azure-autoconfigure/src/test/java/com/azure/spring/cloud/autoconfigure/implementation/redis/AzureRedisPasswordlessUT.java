@@ -69,7 +69,7 @@ public class AzureRedisPasswordlessUT {
     static class AzureRedisPasswordlessUTConfig {
         Supplier<String> redisCredential;
 
-        public AzureRedisPasswordlessUTConfig(Supplier<String> redisCredential) {
+        AzureRedisPasswordlessUTConfig(Supplier<String> redisCredential) {
             this.redisCredential = redisCredential;
         }
     }
