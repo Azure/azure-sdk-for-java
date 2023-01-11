@@ -11,8 +11,6 @@
 ### Operations_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
@@ -24,7 +22,7 @@ public final class OperationsListSamples {
      * @param manager Entry point to ResourceGraphManager.
      */
     public static void operationsList(com.azure.resourcemanager.resourcegraph.ResourceGraphManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -32,7 +30,6 @@ public final class OperationsListSamples {
 ### ResourceProvider_Resources
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.resourcegraph.models.FacetRequest;
 import com.azure.resourcemanager.resourcegraph.models.FacetRequestOptions;
 import com.azure.resourcemanager.resourcegraph.models.FacetSortOrder;
@@ -57,7 +54,7 @@ public final class ResourceProviderResourcesSamples {
                 new QueryRequest()
                     .withManagementGroups(Arrays.asList("e927f598-c1d4-4f72-8541-95d83a6a4ac8", "ProductionMG"))
                     .withQuery("Resources | project id, name, type, location, tags | limit 3"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -75,7 +72,7 @@ public final class ResourceProviderResourcesSamples {
                 new QueryRequest()
                     .withSubscriptions(Arrays.asList("cfbbd179-59d2-4052-aa06-9270a38aa9d6"))
                     .withQuery("Resources | project id, name, type, location, tags | limit 3"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -123,7 +120,7 @@ public final class ResourceProviderResourcesSamples {
                                         new FacetRequestOptions()
                                             .withFilter("resourceGroup contains 'test'")
                                             .withTop(3)))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -143,7 +140,7 @@ public final class ResourceProviderResourcesSamples {
                     .withQuery(
                         "Resources | project id, name, type, location | where type =~"
                             + " 'Microsoft.Compute/virtualMachines' | limit 3"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -162,7 +159,7 @@ public final class ResourceProviderResourcesSamples {
                 new QueryRequest()
                     .withSubscriptions(Arrays.asList("cfbbd179-59d2-4052-aa06-9270a38aa9d6"))
                     .withQuery("Resources | project id, name, type, location | summarize by location"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -182,7 +179,7 @@ public final class ResourceProviderResourcesSamples {
                     .withQuery(
                         "Resources | where type =~ 'Microsoft.Compute/virtualMachines' | summarize count() by"
                             + " tostring(properties.storageProfile.osDisk.osType)"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -202,7 +199,7 @@ public final class ResourceProviderResourcesSamples {
                     .withQuery(
                         "Resources | project id, name, type, location | where type =~"
                             + " 'Microsoft.Compute/virtualMachines' | summarize count() by location | top 3 by count_"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -220,10 +217,8 @@ public final class ResourceProviderResourcesSamples {
                 new QueryRequest()
                     .withSubscriptions(Arrays.asList("cfbbd179-59d2-4052-aa06-9270a38aa9d6"))
                     .withQuery("Resources | where name contains 'test' | project id, name, type, location")
-                    .withOptions(
-                        new QueryRequestOptions()
-                            .withSkipToken("eyAibm8iOiAibHVjayIsICJidXQiOiAibmljZSIsICJ0cnkiOiAiISIgfQ==")),
-                Context.NONE);
+                    .withOptions(new QueryRequestOptions().withSkipToken("fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -242,7 +237,7 @@ public final class ResourceProviderResourcesSamples {
                     .withSubscriptions(Arrays.asList("cfbbd179-59d2-4052-aa06-9270a38aa9d6"))
                     .withQuery("Resources | where name contains 'test' | project id, name, type, location")
                     .withOptions(new QueryRequestOptions().withTop(3).withSkip(0)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -258,7 +253,7 @@ public final class ResourceProviderResourcesSamples {
             .resourceProviders()
             .resourcesWithResponse(
                 new QueryRequest().withQuery("Resources | project id, name, type, location, tags | limit 3"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -277,7 +272,7 @@ public final class ResourceProviderResourcesSamples {
                     .withSubscriptions(Arrays.asList("cfbbd179-59d2-4052-aa06-9270a38aa9d6"))
                     .withQuery("Resources | where name contains 'test' | project id, name, type, location")
                     .withOptions(new QueryRequestOptions().withTop(2).withSkip(10)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```

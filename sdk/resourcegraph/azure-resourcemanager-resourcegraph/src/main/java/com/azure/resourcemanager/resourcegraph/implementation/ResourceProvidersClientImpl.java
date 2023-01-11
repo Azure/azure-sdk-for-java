@@ -51,7 +51,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "ResourceGraphClientR")
-    private interface ResourceProvidersService {
+    public interface ResourceProvidersService {
         @Headers({"Content-Type: application/json"})
         @Post("/providers/Microsoft.ResourceGraph/resources")
         @ExpectedResponses({200})
