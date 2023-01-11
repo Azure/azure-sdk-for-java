@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.StackEnsembleSettings;
 import com.azure.resourcemanager.machinelearning.models.StackMetaLearnerType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class StackEnsembleSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         StackEnsembleSettings model =
             BinaryData
                 .fromString(
@@ -22,8 +21,8 @@ public final class StackEnsembleSettingsTests {
         Assertions.assertEquals(StackMetaLearnerType.LOGISTIC_REGRESSION, model.stackMetaLearnerType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         StackEnsembleSettings model =
             new StackEnsembleSettings()
                 .withStackMetaLearnerKWargs("datandlqvtwknvgmmbu")

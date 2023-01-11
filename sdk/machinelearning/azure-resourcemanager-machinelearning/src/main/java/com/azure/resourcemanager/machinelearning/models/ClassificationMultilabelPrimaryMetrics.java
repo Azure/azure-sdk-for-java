@@ -32,6 +32,15 @@ public final class ClassificationMultilabelPrimaryMetrics
     public static final ClassificationMultilabelPrimaryMetrics IOU = fromString("IOU");
 
     /**
+     * Creates a new instance of ClassificationMultilabelPrimaryMetrics value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ClassificationMultilabelPrimaryMetrics() {
+    }
+
+    /**
      * Creates or finds a ClassificationMultilabelPrimaryMetrics from its string representation.
      *
      * @param name a name to look for.

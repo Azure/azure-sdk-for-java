@@ -29,6 +29,15 @@ public final class MountState extends ExpandableStringEnum<MountState> {
     public static final MountState UNMOUNTED = fromString("Unmounted");
 
     /**
+     * Creates a new instance of MountState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MountState() {
+    }
+
+    /**
      * Creates or finds a MountState from its string representation.
      *
      * @param name a name to look for.

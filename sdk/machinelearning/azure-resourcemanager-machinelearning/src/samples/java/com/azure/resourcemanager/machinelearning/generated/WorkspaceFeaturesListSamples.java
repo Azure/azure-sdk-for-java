@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceFeatures List. */
 public final class WorkspaceFeaturesListSamples {
     /*
@@ -17,6 +15,6 @@ public final class WorkspaceFeaturesListSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listWorkspaceFeatures(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.workspaceFeatures().list("myResourceGroup", "testworkspace", Context.NONE);
+        manager.workspaceFeatures().list("myResourceGroup", "testworkspace", com.azure.core.util.Context.NONE);
     }
 }

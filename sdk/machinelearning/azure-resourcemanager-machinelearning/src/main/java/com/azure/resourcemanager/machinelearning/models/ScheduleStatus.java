@@ -17,6 +17,15 @@ public final class ScheduleStatus extends ExpandableStringEnum<ScheduleStatus> {
     public static final ScheduleStatus DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of ScheduleStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScheduleStatus() {
+    }
+
+    /**
      * Creates or finds a ScheduleStatus from its string representation.
      *
      * @param name a name to look for.

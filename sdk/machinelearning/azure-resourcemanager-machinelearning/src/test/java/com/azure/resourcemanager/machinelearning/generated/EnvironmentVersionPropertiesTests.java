@@ -14,11 +14,10 @@ import com.azure.resourcemanager.machinelearning.models.Route;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class EnvironmentVersionPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         EnvironmentVersionProperties model =
             BinaryData
                 .fromString(
@@ -43,8 +42,8 @@ public final class EnvironmentVersionPropertiesTests {
         Assertions.assertEquals(OperatingSystemType.LINUX, model.osType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         EnvironmentVersionProperties model =
             new EnvironmentVersionProperties()
                 .withDescription("agst")

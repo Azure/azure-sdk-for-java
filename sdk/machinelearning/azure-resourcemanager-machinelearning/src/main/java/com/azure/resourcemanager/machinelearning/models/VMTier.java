@@ -24,6 +24,15 @@ public final class VMTier extends ExpandableStringEnum<VMTier> {
     public static final VMTier SPOT = fromString("Spot");
 
     /**
+     * Creates a new instance of VMTier value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VMTier() {
+    }
+
+    /**
      * Creates or finds a VMTier from its string representation.
      *
      * @param name a name to look for.

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Jobs Get. */
 public final class JobsGetSamples {
     /*
@@ -17,7 +15,7 @@ public final class JobsGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getCommandJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.jobs().getWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
+        manager.jobs().getWithResponse("test-rg", "my-aml-workspace", "string", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -29,7 +27,7 @@ public final class JobsGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getAutoMLJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.jobs().getWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
+        manager.jobs().getWithResponse("test-rg", "my-aml-workspace", "string", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -41,7 +39,7 @@ public final class JobsGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getSweepJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.jobs().getWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
+        manager.jobs().getWithResponse("test-rg", "my-aml-workspace", "string", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -53,6 +51,6 @@ public final class JobsGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getPipelineJob(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.jobs().getWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
+        manager.jobs().getWithResponse("test-rg", "my-aml-workspace", "string", com.azure.core.util.Context.NONE);
     }
 }

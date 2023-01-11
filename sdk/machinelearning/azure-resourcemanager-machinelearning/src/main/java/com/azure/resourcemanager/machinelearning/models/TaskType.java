@@ -41,6 +41,15 @@ public final class TaskType extends ExpandableStringEnum<TaskType> {
     public static final TaskType TEXT_NER = fromString("TextNER");
 
     /**
+     * Creates a new instance of TaskType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TaskType() {
+    }
+
+    /**
      * Creates or finds a TaskType from its string representation.
      *
      * @param name a name to look for.

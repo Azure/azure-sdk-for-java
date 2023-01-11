@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.CustomModelJobInput;
 import com.azure.resourcemanager.machinelearning.models.InputDeliveryMode;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CustomModelJobInputTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CustomModelJobInput model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class CustomModelJobInputTests {
         Assertions.assertEquals("bkjbz", model.uri());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CustomModelJobInput model =
             new CustomModelJobInput().withDescription("nsvk").withMode(InputDeliveryMode.DIRECT).withUri("bkjbz");
         model = BinaryData.fromObject(model).toObject(CustomModelJobInput.class);

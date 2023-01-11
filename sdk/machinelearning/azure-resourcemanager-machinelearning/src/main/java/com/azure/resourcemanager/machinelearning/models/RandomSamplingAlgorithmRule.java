@@ -17,6 +17,15 @@ public final class RandomSamplingAlgorithmRule extends ExpandableStringEnum<Rand
     public static final RandomSamplingAlgorithmRule SOBOL = fromString("Sobol");
 
     /**
+     * Creates a new instance of RandomSamplingAlgorithmRule value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RandomSamplingAlgorithmRule() {
+    }
+
+    /**
      * Creates or finds a RandomSamplingAlgorithmRule from its string representation.
      *
      * @param name a name to look for.

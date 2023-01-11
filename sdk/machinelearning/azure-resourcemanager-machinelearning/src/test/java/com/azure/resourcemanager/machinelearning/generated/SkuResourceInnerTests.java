@@ -11,11 +11,10 @@ import com.azure.resourcemanager.machinelearning.models.SkuScaleType;
 import com.azure.resourcemanager.machinelearning.models.SkuSetting;
 import com.azure.resourcemanager.machinelearning.models.SkuTier;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SkuResourceInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SkuResourceInner model =
             BinaryData
                 .fromString(
@@ -29,8 +28,8 @@ public final class SkuResourceInnerTests {
         Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SkuResourceInner model =
             new SkuResourceInner()
                 .withCapacity(

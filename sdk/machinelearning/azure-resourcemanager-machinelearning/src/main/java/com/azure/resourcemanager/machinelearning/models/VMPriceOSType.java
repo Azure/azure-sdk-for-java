@@ -21,6 +21,15 @@ public final class VMPriceOSType extends ExpandableStringEnum<VMPriceOSType> {
     public static final VMPriceOSType WINDOWS = fromString("Windows");
 
     /**
+     * Creates a new instance of VMPriceOSType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VMPriceOSType() {
+    }
+
+    /**
      * Creates or finds a VMPriceOSType from its string representation.
      *
      * @param name a name to look for.

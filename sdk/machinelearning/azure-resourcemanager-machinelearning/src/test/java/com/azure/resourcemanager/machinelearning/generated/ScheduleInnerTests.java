@@ -12,11 +12,10 @@ import com.azure.resourcemanager.machinelearning.models.TriggerBase;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ScheduleInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ScheduleInner model =
             BinaryData
                 .fromString(
@@ -32,8 +31,8 @@ public final class ScheduleInnerTests {
         Assertions.assertEquals("pddouifamowaziyn", model.properties().trigger().timeZone());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ScheduleInner model =
             new ScheduleInner()
                 .withProperties(

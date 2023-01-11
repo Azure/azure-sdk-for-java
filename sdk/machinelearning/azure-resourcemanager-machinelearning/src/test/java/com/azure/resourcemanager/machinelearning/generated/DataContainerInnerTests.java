@@ -11,11 +11,10 @@ import com.azure.resourcemanager.machinelearning.models.DataType;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DataContainerInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DataContainerInner model =
             BinaryData
                 .fromString(
@@ -28,8 +27,8 @@ public final class DataContainerInnerTests {
         Assertions.assertEquals(DataType.URI_FOLDER, model.properties().dataType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DataContainerInner model =
             new DataContainerInner()
                 .withProperties(

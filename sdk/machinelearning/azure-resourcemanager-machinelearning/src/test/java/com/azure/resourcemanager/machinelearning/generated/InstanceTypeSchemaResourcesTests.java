@@ -9,11 +9,10 @@ import com.azure.resourcemanager.machinelearning.models.InstanceTypeSchemaResour
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class InstanceTypeSchemaResourcesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         InstanceTypeSchemaResources model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class InstanceTypeSchemaResourcesTests {
         Assertions.assertEquals("vfxzopjh", model.limits().get("zxlioh"));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         InstanceTypeSchemaResources model =
             new InstanceTypeSchemaResources()
                 .withRequests(

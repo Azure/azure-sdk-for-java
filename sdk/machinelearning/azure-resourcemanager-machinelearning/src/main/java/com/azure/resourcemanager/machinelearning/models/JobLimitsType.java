@@ -17,6 +17,15 @@ public final class JobLimitsType extends ExpandableStringEnum<JobLimitsType> {
     public static final JobLimitsType SWEEP = fromString("Sweep");
 
     /**
+     * Creates a new instance of JobLimitsType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public JobLimitsType() {
+    }
+
+    /**
      * Creates or finds a JobLimitsType from its string representation.
      *
      * @param name a name to look for.

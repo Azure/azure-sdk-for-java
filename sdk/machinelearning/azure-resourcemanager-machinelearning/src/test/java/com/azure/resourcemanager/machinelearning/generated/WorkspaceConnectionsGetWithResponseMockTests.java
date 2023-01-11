@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.ConnectionCategory;
 import com.azure.resourcemanager.machinelearning.models.ValueFormat;
@@ -65,7 +64,7 @@ public final class WorkspaceConnectionsGetWithResponseMockTests {
         WorkspaceConnectionPropertiesV2BasicResource response =
             manager
                 .workspaceConnections()
-                .getWithResponse("ekymffztsilscvqs", "eiihfymko", "ihyeseu", Context.NONE)
+                .getWithResponse("ekymffztsilscvqs", "eiihfymko", "ihyeseu", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(ConnectionCategory.CONTAINER_REGISTRY, response.properties().category());

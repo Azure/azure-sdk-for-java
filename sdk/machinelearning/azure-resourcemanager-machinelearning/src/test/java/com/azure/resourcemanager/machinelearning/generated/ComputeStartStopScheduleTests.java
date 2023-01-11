@@ -18,11 +18,10 @@ import com.azure.resourcemanager.machinelearning.models.TriggerType;
 import com.azure.resourcemanager.machinelearning.models.WeekDay;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ComputeStartStopScheduleTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ComputeStartStopSchedule model =
             BinaryData
                 .fromString(
@@ -49,8 +48,8 @@ public final class ComputeStartStopScheduleTests {
         Assertions.assertEquals(ScheduleStatus.DISABLED, model.schedule().status());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ComputeStartStopSchedule model =
             new ComputeStartStopSchedule()
                 .withStatus(ScheduleStatus.ENABLED)

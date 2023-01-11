@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ImageLimitSettings;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ImageLimitSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ImageLimitSettings model =
             BinaryData
                 .fromString("{\"maxConcurrentTrials\":543709562,\"maxTrials\":848455814,\"timeout\":\"PT224H41M46S\"}")
@@ -22,8 +21,8 @@ public final class ImageLimitSettingsTests {
         Assertions.assertEquals(Duration.parse("PT224H41M46S"), model.timeout());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ImageLimitSettings model =
             new ImageLimitSettings()
                 .withMaxConcurrentTrials(543709562)
