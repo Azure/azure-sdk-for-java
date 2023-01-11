@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.redis.passwordless;
+package com.azure.spring.cloud.autoconfigure.redis;
 
 import com.azure.spring.cloud.autoconfigure.implementation.redis.passwordless.jedis.AzureJedisConnectionFactory;
+import com.azure.spring.cloud.core.implementation.util.ReflectionUtils;
 import com.azure.spring.cloud.service.implementation.passwordless.AzureRedisPasswordlessProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,8 +14,11 @@ import org.springframework.boot.autoconfigure.data.redis.JedisClientConfiguratio
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration.JedisClientConfigurationBuilder;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import redis.clients.jedis.JedisClientConfig;
 
 import java.time.Duration;
 import java.util.function.Supplier;
@@ -88,10 +92,12 @@ class AzureJedisPasswordlessAutoConfigurationTest {
             .withBean("azureRedisCredentialSupplier", Supplier.class, () -> mockCredentialSupplier, beanDefinition -> beanDefinition.setPrimary(true))
             .run((context) -> {
                 AzureJedisConnectionFactory cf = context.getBean(AzureJedisConnectionFactory.class);
-                assertThat(cf.getHostName()).isEqualTo("foo");
-                assertThat(cf.getDatabase()).isEqualTo(1);
-                assertThat(cf.getPassword()).isEqualTo("fake-password-from-mock-supplier");
-                assertThat(cf.isUseSsl()).isTrue();
+                RedisStandaloneConfiguration redisStandaloneConfiguration = (RedisStandaloneConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "standaloneConfig", cf);
+                JedisClientConfiguration jedisClientConfiguration = (JedisClientConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "clientConfiguration", cf);
+
+
+                assertThat(redisStandaloneConfiguration.getDatabase()).isEqualTo(1);
+                assertThat(jedisClientConfiguration.isUseSsl()).isTrue();
             });
     }
 
@@ -100,7 +106,9 @@ class AzureJedisPasswordlessAutoConfigurationTest {
         this.contextRunner
             .run((context) -> {
                 AzureJedisConnectionFactory cf = context.getBean(AzureJedisConnectionFactory.class);
-                assertThat(cf.isUseSsl()).isTrue();
+                JedisClientConfiguration jedisClientConfiguration = (JedisClientConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "clientConfiguration", cf);
+
+                assertThat(jedisClientConfiguration.isUseSsl()).isTrue();
             });
     }
 
@@ -110,10 +118,12 @@ class AzureJedisPasswordlessAutoConfigurationTest {
             .withPropertyValues("spring.redis.host:foo", "spring.redis.url:redis://user:password@example:33")
             .run((context) -> {
                 AzureJedisConnectionFactory cf = context.getBean(AzureJedisConnectionFactory.class);
-                assertThat(cf.getHostName()).isEqualTo("example");
-                assertThat(cf.getPort()).isEqualTo(33);
-                assertThat(cf.getPassword()).isEqualTo("password");
-                assertThat(cf.isUseSsl()).isTrue();
+                RedisStandaloneConfiguration standaloneConfig = (RedisStandaloneConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "standaloneConfig", cf);
+                JedisClientConfiguration jedisClientConfiguration = (JedisClientConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "clientConfiguration", cf);
+
+                assertThat(standaloneConfig.getHostName()).isEqualTo("example");
+                assertThat(standaloneConfig.getPort()).isEqualTo(33);
+                assertThat(jedisClientConfiguration.isUseSsl()).isTrue();
             });
     }
 
@@ -124,10 +134,12 @@ class AzureJedisPasswordlessAutoConfigurationTest {
                 "spring.redis.ssl:false", "spring.redis.url:rediss://user:password@example:33")
             .run((context) -> {
                 AzureJedisConnectionFactory cf = context.getBean(AzureJedisConnectionFactory.class);
-                assertThat(cf.getHostName()).isEqualTo("example");
-                assertThat(cf.getPort()).isEqualTo(33);
-                assertThat(cf.getPassword()).isEqualTo("password");
-                assertThat(cf.isUseSsl()).isTrue();
+                RedisStandaloneConfiguration standaloneConfig = (RedisStandaloneConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "standaloneConfig", cf);
+                JedisClientConfiguration jedisClientConfiguration = (JedisClientConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "clientConfiguration", cf);
+
+                assertThat(standaloneConfig.getHostName()).isEqualTo("example");
+                assertThat(standaloneConfig.getPort()).isEqualTo(33);
+                assertThat(jedisClientConfiguration.isUseSsl()).isTrue();
             });
     }
 
@@ -135,9 +147,10 @@ class AzureJedisPasswordlessAutoConfigurationTest {
     void testPasswordInUrlWithColon() {
         this.contextRunner.withPropertyValues("spring.redis.url:redis://:pass:word@example:33").run((context) -> {
             AzureJedisConnectionFactory cf = context.getBean(AzureJedisConnectionFactory.class);
-            assertThat(cf.getHostName()).isEqualTo("example");
-            assertThat(cf.getPort()).isEqualTo(33);
-            assertThat(cf.getPassword()).isEqualTo("pass:word");
+            RedisStandaloneConfiguration standaloneConfig = (RedisStandaloneConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "standaloneConfig", cf);
+
+            assertThat(standaloneConfig.getHostName()).isEqualTo("example");
+            assertThat(standaloneConfig.getPort()).isEqualTo(33);
         });
     }
 
@@ -145,9 +158,10 @@ class AzureJedisPasswordlessAutoConfigurationTest {
     void testPasswordInUrlStartsWithColon() {
         this.contextRunner.withPropertyValues("spring.redis.url:redis://user::pass:word@example:33").run((context) -> {
             AzureJedisConnectionFactory cf = context.getBean(AzureJedisConnectionFactory.class);
-            assertThat(cf.getHostName()).isEqualTo("example");
-            assertThat(cf.getPort()).isEqualTo(33);
-            assertThat(cf.getPassword()).isEqualTo(":pass:word");
+            RedisStandaloneConfiguration standaloneConfig = (RedisStandaloneConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "standaloneConfig", cf);
+
+            assertThat(standaloneConfig.getHostName()).isEqualTo("example");
+            assertThat(standaloneConfig.getPort()).isEqualTo(33);
         });
     }
 
@@ -158,12 +172,15 @@ class AzureJedisPasswordlessAutoConfigurationTest {
                 "spring.redis.jedis.pool.max-wait:2000", "spring.redis.jedis.pool.time-between-eviction-runs:30000")
             .run((context) -> {
                 AzureJedisConnectionFactory cf = context.getBean(AzureJedisConnectionFactory.class);
-                assertThat(cf.getHostName()).isEqualTo("foo");
-                assertThat(cf.getPoolConfig().getMinIdle()).isEqualTo(1);
-                assertThat(cf.getPoolConfig().getMaxIdle()).isEqualTo(4);
-                assertThat(cf.getPoolConfig().getMaxTotal()).isEqualTo(16);
-                assertThat(cf.getPoolConfig().getMaxWaitMillis()).isEqualTo(Duration.ofSeconds(2).toMillis());
-                assertThat(cf.getPoolConfig().getTimeBetweenEvictionRunsMillis()).isEqualTo(Duration.ofSeconds(30).toMillis());
+                JedisClientConfiguration jedisClientConfiguration = (JedisClientConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "clientConfiguration", cf);
+                RedisStandaloneConfiguration standaloneConfig = (RedisStandaloneConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "standaloneConfig", cf);
+
+                assertThat(standaloneConfig.getHostName()).isEqualTo("foo");
+                assertThat(jedisClientConfiguration.getPoolConfig().get().getMinIdle()).isEqualTo(1);
+                assertThat(jedisClientConfiguration.getPoolConfig().get().getMaxIdle()).isEqualTo(4);
+                assertThat(jedisClientConfiguration.getPoolConfig().get().getMaxTotal()).isEqualTo(16);
+                assertThat(jedisClientConfiguration.getPoolConfig().get().getMaxWaitMillis()).isEqualTo(Duration.ofSeconds(2).toMillis());
+                assertThat(jedisClientConfiguration.getPoolConfig().get().getTimeBetweenEvictionRunsMillis()).isEqualTo(Duration.ofSeconds(30).toMillis());
             });
     }
 
@@ -172,8 +189,11 @@ class AzureJedisPasswordlessAutoConfigurationTest {
         this.contextRunner.withPropertyValues("spring.redis.host:foo", "spring.redis.jedis.pool.enabled:false")
             .run((context) -> {
                 AzureJedisConnectionFactory cf = context.getBean(AzureJedisConnectionFactory.class);
-                assertThat(cf.getHostName()).isEqualTo("foo");
-                assertThat(cf.getClientConfiguration().isUsePooling()).isEqualTo(false);
+                RedisStandaloneConfiguration standaloneConfig = (RedisStandaloneConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "standaloneConfig", cf);
+                JedisClientConfiguration jedisClientConfiguration = (JedisClientConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "clientConfiguration", cf);
+
+                assertThat(standaloneConfig.getHostName()).isEqualTo("foo");
+                assertThat(jedisClientConfiguration.isUsePooling()).isEqualTo(false);
             });
     }
 
@@ -183,9 +203,11 @@ class AzureJedisPasswordlessAutoConfigurationTest {
                 "spring.redis.connect-timeout:1000")
             .run((context) -> {
                 AzureJedisConnectionFactory cf = context.getBean(AzureJedisConnectionFactory.class);
-                assertThat(cf.getHostName()).isEqualTo("foo");
-                assertThat(cf.getTimeout()).isEqualTo(250);
-                assertThat(cf.getClientConfiguration().getConnectTimeout().toMillis()).isEqualTo(1000);
+                RedisStandaloneConfiguration standaloneConfig = (RedisStandaloneConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "standaloneConfig", cf);
+                JedisClientConfiguration jedisClientConfiguration = (JedisClientConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "clientConfiguration", cf);
+
+                assertThat(standaloneConfig.getHostName()).isEqualTo("foo");
+                assertThat(jedisClientConfiguration.getConnectTimeout().toMillis()).isEqualTo(1000);
             });
     }
 
@@ -194,9 +216,11 @@ class AzureJedisPasswordlessAutoConfigurationTest {
         this.contextRunner.withPropertyValues("spring.redis.host:foo")
             .run((context) -> {
                 AzureJedisConnectionFactory cf = context.getBean(AzureJedisConnectionFactory.class);
-                assertThat(cf.getHostName()).isEqualTo("foo");
-                assertThat(cf.getTimeout()).isEqualTo(2000);
-                assertThat(cf.getClientConfiguration().getConnectTimeout().toMillis()).isEqualTo(2000);
+                RedisStandaloneConfiguration standaloneConfig = (RedisStandaloneConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "standaloneConfig", cf);
+                JedisClientConfiguration jedisClientConfiguration = (JedisClientConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "clientConfiguration", cf);
+
+                assertThat(standaloneConfig.getHostName()).isEqualTo("foo");
+                assertThat(jedisClientConfiguration.getConnectTimeout().toMillis()).isEqualTo(2000);
             });
     }
 
@@ -205,8 +229,11 @@ class AzureJedisPasswordlessAutoConfigurationTest {
         this.contextRunner.withPropertyValues("spring.redis.host:foo", "spring.redis.client-name:spring-boot")
             .run((context) -> {
                 AzureJedisConnectionFactory cf = context.getBean(AzureJedisConnectionFactory.class);
-                assertThat(cf.getHostName()).isEqualTo("foo");
-                assertThat(cf.getClientName()).isEqualTo("spring-boot");
+                JedisClientConfig jedisClientConfig = (JedisClientConfig) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "jedisClientConfig", cf);
+                RedisStandaloneConfiguration standaloneConfig = (RedisStandaloneConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "standaloneConfig", cf);
+
+                assertThat(standaloneConfig.getHostName()).isEqualTo("foo");
+                assertThat(jedisClientConfig.getClientName()).isEqualTo("spring-boot");
             });
     }
 

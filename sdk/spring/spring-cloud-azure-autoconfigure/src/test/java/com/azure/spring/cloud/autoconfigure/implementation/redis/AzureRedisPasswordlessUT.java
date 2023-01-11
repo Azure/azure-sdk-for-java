@@ -1,14 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.integration.tests.redis;
 
+package com.azure.spring.cloud.autoconfigure.implementation.redis;
+
+import com.azure.spring.cloud.autoconfigure.redis.AzureJedisPasswordlessAutoConfiguration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -26,17 +31,12 @@ import java.util.function.Supplier;
 @Testcontainers
 @ActiveProfiles("redis")
 @DisabledOnOs({OS.WINDOWS, OS.MAC})
-public class AzureRedisPasswordlessIT {
+public class AzureRedisPasswordlessUT {
 
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<Object, Object> redisTemplate;
 
     private static final String REDIS_PASSWORD = "fake-testcontainer-password";
-
-    @Bean(name = "azureRedisCredentialSupplier")
-    Supplier<String> redisCredential() {
-        return () -> REDIS_PASSWORD;
-    }
 
     @Container
     private static GenericContainer<?> redis =
@@ -49,18 +49,29 @@ public class AzureRedisPasswordlessIT {
     static void redisProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.redis.host", redis::getHost);
         registry.add("spring.redis.port", redis::getFirstMappedPort);
+        registry.add("spring.redis.ssl", () -> false);
         registry.add("spring.redis.azure.passwordless-enabled", () -> true);
     }
 
     @Test
     public void testRedisTemplate() {
-        Map valueMap = new HashMap();
+        Map<String, String> valueMap = new HashMap<>();
         valueMap.put("valueMap1", "map1");
         valueMap.put("valueMap2", "map2");
         valueMap.put("valueMap3", "map3");
         redisTemplate.opsForValue().multiSet(valueMap);
         String value = (String) redisTemplate.opsForValue().get("valueMap2");
         Assertions.assertEquals("map2", value);
+    }
+
+    @Configuration
+    @Import({AzureJedisPasswordlessAutoConfiguration.class, RedisAutoConfiguration.class})
+    static class AzureRedisPasswordlessUTConfig {
+
+        @Bean(name = "azureRedisCredentialSupplier")
+        Supplier<String> redisCredential() {
+            return () -> REDIS_PASSWORD;
+        }
     }
 
 }

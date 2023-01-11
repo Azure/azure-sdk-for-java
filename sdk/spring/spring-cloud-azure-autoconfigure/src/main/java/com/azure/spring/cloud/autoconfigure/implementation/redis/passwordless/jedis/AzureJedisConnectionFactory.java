@@ -5,7 +5,6 @@ package com.azure.spring.cloud.autoconfigure.implementation.redis.passwordless.j
 
 import com.azure.spring.cloud.service.implementation.redis.AzureJedisClientConfig;
 import com.azure.spring.cloud.service.implementation.redis.AzureJedisPool;
-import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
@@ -145,93 +144,6 @@ public class AzureJedisConnectionFactory implements InitializingBean, Disposable
         return clientConfiguration.isUsePooling();
     }
 
-    /**
-     * Returns the index of the database.
-     *
-     * @return the database index.
-     */
-    public int getDatabase() {
-        return RedisConfiguration.getDatabaseOrElse(standaloneConfig, standaloneConfig::getDatabase);
-    }
-
-    /**
-     * Returns the port used to connect to the Redis instance.
-     *
-     * @return the Redis port.
-     */
-    public int getPort() {
-        return standaloneConfig.getPort();
-    }
-
-    /**
-     * @return {@literal true} to use SSL, {@literal false} to use unencrypted connections.
-     */
-    public boolean isUseSsl() {
-        return clientConfiguration.isUseSsl();
-    }
-
-    /**
-     * Returns the Redis hostname.
-     *
-     * @return the hostName.
-     */
-    public String getHostName() {
-        return standaloneConfig.getHostName();
-    }
-
-    /**
-     * Returns the password used for authenticating with the Redis server.
-     *
-     * @return password for authentication.
-     */
-    @Nullable
-    public String getPassword() {
-        RedisPassword password = getRedisPassword();
-        if (password.isPresent()) {
-            return password.map(String::new).orElse(null);
-        } else if (credentialSupplier != null) {
-            return credentialSupplier.get();
-        }
-        return null;
-    }
-
-    /**
-     * Returns the poolConfig.
-     *
-     * @return the poolConfig
-     */
-    @SuppressWarnings("unchecked")
-    @Nullable
-    public GenericObjectPoolConfig<Jedis> getPoolConfig() {
-        return clientConfiguration.getPoolConfig().orElse(null);
-    }
-
-    /**
-     * @return the {@link JedisClientConfiguration}.
-     */
-    public JedisClientConfiguration getClientConfiguration() {
-        return clientConfiguration;
-    }
-
-    /**
-     * Returns the client name.
-     *
-     * @return the client name.
-     */
-    @Nullable
-    public String getClientName() {
-        return clientConfiguration.getClientName().orElse(null);
-    }
-
-    /**
-     * Returns the timeout.
-     *
-     * @return the timeout.
-     */
-    public int getTimeout() {
-        return getReadTimeout();
-    }
-
     private JedisConnection postProcessConnection(JedisConnection connection) {
         return connection;
     }
@@ -304,10 +216,6 @@ public class AzureJedisConnectionFactory implements InitializingBean, Disposable
         }
 
         return builder.build();
-    }
-
-    private int getReadTimeout() {
-        return Math.toIntExact(clientConfiguration.getReadTimeout().toMillis());
     }
 
     private RedisPassword getRedisPassword() {

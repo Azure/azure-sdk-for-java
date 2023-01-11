@@ -1,6 +1,7 @@
 spring:
-  redis:
-    username: redis-test-container-host
+    redis:
     host: redis-test-container-host
     azure:
       passwordless-enabled: true
+    main:
+        allow-bean-definition-overriding: true

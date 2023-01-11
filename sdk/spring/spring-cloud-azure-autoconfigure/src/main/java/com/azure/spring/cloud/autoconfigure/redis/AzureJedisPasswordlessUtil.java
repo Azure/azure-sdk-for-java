@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.redis.passwordless;
+package com.azure.spring.cloud.autoconfigure.redis;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.service.implementation.passwordless.AzureRedisPasswordlessProperties;
@@ -48,7 +48,7 @@ final class AzureJedisPasswordlessUtil {
     static JedisClientConfiguration getJedisClientConfiguration(RedisProperties redisProperties) {
 
         JedisClientConfiguration.JedisClientConfigurationBuilder builder = applyProperties(redisProperties, JedisClientConfiguration.builder());
-        builder.useSsl();
+
         RedisProperties.Pool pool = redisProperties.getJedis().getPool();
 
         if (isPoolEnabled(pool)) {
@@ -63,6 +63,7 @@ final class AzureJedisPasswordlessUtil {
 
     private static JedisClientConfiguration.JedisClientConfigurationBuilder applyProperties(RedisProperties properties, JedisClientConfiguration.JedisClientConfigurationBuilder builder) {
         PropertyMapper map = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        map.from(properties.isSsl()).whenTrue().toCall(builder::useSsl);
         map.from(properties.getTimeout()).to(builder::readTimeout);
         map.from(properties.getConnectTimeout()).to(builder::connectTimeout);
         map.from(properties.getClientName()).whenHasText().to(builder::clientName);

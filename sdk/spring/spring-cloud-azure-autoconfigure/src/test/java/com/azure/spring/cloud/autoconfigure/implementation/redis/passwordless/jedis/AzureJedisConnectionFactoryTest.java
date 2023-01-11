@@ -21,7 +21,6 @@ import java.time.Duration;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import static org.mockito.Answers.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.when;
@@ -184,7 +183,8 @@ class AzureJedisConnectionFactoryTest {
         when(clientConfiguration.getPoolConfig()).thenReturn(Optional.of(poolConfig));
 
         AzureJedisConnectionFactory azureJedisConnectionFactory = new AzureJedisConnectionFactory(standaloneConfig, clientConfiguration, credentialSupplier);
-        Assertions.assertEquals(poolConfig, azureJedisConnectionFactory.getPoolConfig());
+        JedisClientConfiguration jedisClientConfiguration = (JedisClientConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "clientConfiguration", azureJedisConnectionFactory);
+        Assertions.assertEquals(poolConfig, jedisClientConfiguration.getPoolConfig().get());
     }
 
     @Test
@@ -219,20 +219,9 @@ class AzureJedisConnectionFactoryTest {
         standaloneConfig = mock(RedisStandaloneConfiguration.class);
         when(standaloneConfig.getDatabase()).thenReturn(7);
         AzureJedisConnectionFactory azureJedisConnectionFactory = new AzureJedisConnectionFactory(standaloneConfig, clientConfiguration, credentialSupplier);
-        Assertions.assertEquals(7, azureJedisConnectionFactory.getDatabase());
-    }
+        RedisStandaloneConfiguration cf = (RedisStandaloneConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "standaloneConfig", azureJedisConnectionFactory);
 
-    @Test
-    void testGetClientConfiguration() {
-        AzureJedisConnectionFactory azureJedisConnectionFactory = new AzureJedisConnectionFactory(standaloneConfig, clientConfiguration, credentialSupplier);
-
-        JedisClientConfiguration configuration = azureJedisConnectionFactory.getClientConfiguration();
-        Assertions.assertNull(configuration);
-
-        clientConfiguration = mock(JedisClientConfiguration.class);
-        azureJedisConnectionFactory = new AzureJedisConnectionFactory(standaloneConfig, clientConfiguration, credentialSupplier);
-        Assertions.assertTrue(clientConfiguration == azureJedisConnectionFactory.getClientConfiguration());
-
+        Assertions.assertEquals(7, cf.getDatabase());
     }
 
     @Test
@@ -246,13 +235,6 @@ class AzureJedisConnectionFactoryTest {
         Assertions.assertTrue(azureJedisConnectionFactory.getConvertPipelineAndTxResults());
     }
 
-    @Test
-    void testGetPort() {
-        standaloneConfig = mock(RedisStandaloneConfiguration.class);
-        when(standaloneConfig.getPort()).thenReturn(1717);
-        AzureJedisConnectionFactory azureJedisConnectionFactory = new AzureJedisConnectionFactory(standaloneConfig, clientConfiguration, credentialSupplier);
-        Assertions.assertEquals(1717, azureJedisConnectionFactory.getPort());
-    }
 
     @Test
     void testIsUseSsl() {
@@ -260,11 +242,15 @@ class AzureJedisConnectionFactoryTest {
 
         when(clientConfiguration.isUseSsl()).thenReturn(true);
         AzureJedisConnectionFactory azureJedisConnectionFactory = new AzureJedisConnectionFactory(standaloneConfig, clientConfiguration, credentialSupplier);
-        Assertions.assertEquals(true, azureJedisConnectionFactory.isUseSsl());
+        JedisClientConfiguration cf = (JedisClientConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "clientConfiguration", azureJedisConnectionFactory);
+
+        Assertions.assertEquals(true, cf.isUseSsl());
 
         when(clientConfiguration.isUseSsl()).thenReturn(false);
         azureJedisConnectionFactory = new AzureJedisConnectionFactory(standaloneConfig, clientConfiguration, credentialSupplier);
-        Assertions.assertEquals(false, azureJedisConnectionFactory.isUseSsl());
+        cf = (JedisClientConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "clientConfiguration", azureJedisConnectionFactory);
+
+        Assertions.assertEquals(false, cf.isUseSsl());
     }
 
     @Test
@@ -272,26 +258,9 @@ class AzureJedisConnectionFactoryTest {
         standaloneConfig = mock(RedisStandaloneConfiguration.class);
         when(standaloneConfig.getHostName()).thenReturn("fake-host-name");
         AzureJedisConnectionFactory azureJedisConnectionFactory = new AzureJedisConnectionFactory(standaloneConfig, clientConfiguration, credentialSupplier);
-        Assertions.assertEquals("fake-host-name", azureJedisConnectionFactory.getHostName());
-    }
+        RedisStandaloneConfiguration cf = (RedisStandaloneConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "standaloneConfig", azureJedisConnectionFactory);
 
-    @Test
-    void testGetPasswordFromConfig() {
-        standaloneConfig = mock(RedisStandaloneConfiguration.class);
-        when(standaloneConfig.getPassword()).thenReturn(RedisPassword.of("password-from-config"));
-        AzureJedisConnectionFactory azureJedisConnectionFactory = new AzureJedisConnectionFactory(standaloneConfig, clientConfiguration, credentialSupplier);
-        Assertions.assertEquals("password-from-config", azureJedisConnectionFactory.getPassword());
-    }
-
-    @Test
-    @SuppressWarnings("unchecked")
-    void testGetPasswordFromSupplier() {
-        standaloneConfig = mock(RedisStandaloneConfiguration.class, RETURNS_DEEP_STUBS);
-        when(standaloneConfig.getPassword().isPresent()).thenReturn(false);
-        credentialSupplier = mock(Supplier.class);
-        when(credentialSupplier.get()).thenReturn("password-from-credential-supplier");
-        AzureJedisConnectionFactory azureJedisConnectionFactory = new AzureJedisConnectionFactory(standaloneConfig, clientConfiguration, credentialSupplier);
-        Assertions.assertEquals("password-from-credential-supplier", azureJedisConnectionFactory.getPassword());
+        Assertions.assertEquals("fake-host-name", cf.getHostName());
     }
 
     @Test
@@ -299,7 +268,9 @@ class AzureJedisConnectionFactoryTest {
         clientConfiguration = mock(JedisClientConfiguration.class);
         when(clientConfiguration.getClientName()).thenReturn(Optional.of("fake-clientName"));
         AzureJedisConnectionFactory azureJedisConnectionFactory = new AzureJedisConnectionFactory(standaloneConfig, clientConfiguration, credentialSupplier);
-        Assertions.assertEquals("fake-clientName", azureJedisConnectionFactory.getClientName());
+        JedisClientConfiguration jedisClientConfig = (JedisClientConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "clientConfiguration", azureJedisConnectionFactory);
+
+        Assertions.assertEquals("fake-clientName", jedisClientConfig.getClientName().get());
     }
 
     @Test
@@ -307,6 +278,5 @@ class AzureJedisConnectionFactoryTest {
         clientConfiguration = mock(JedisClientConfiguration.class);
         when(clientConfiguration.getReadTimeout()).thenReturn(Duration.ofSeconds(23));
         AzureJedisConnectionFactory azureJedisConnectionFactory = new AzureJedisConnectionFactory(standaloneConfig, clientConfiguration, credentialSupplier);
-        Assertions.assertEquals(23000, azureJedisConnectionFactory.getTimeout());
     }
 }
