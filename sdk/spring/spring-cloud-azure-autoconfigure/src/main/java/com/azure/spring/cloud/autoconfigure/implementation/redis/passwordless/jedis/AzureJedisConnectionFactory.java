@@ -12,7 +12,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.connection.RedisClusterConnection;
-import org.springframework.data.redis.connection.RedisConfiguration;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisPassword;
@@ -216,10 +215,6 @@ public class AzureJedisConnectionFactory implements InitializingBean, Disposable
         }
 
         return builder.build();
-    }
-
-    private RedisPassword getRedisPassword() {
-        return RedisConfiguration.getPasswordOrElse(this.standaloneConfig, standaloneConfig::getPassword);
     }
 
     private void assertInitialized() {

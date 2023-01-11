@@ -114,7 +114,7 @@ class AzureJedisPasswordlessAutoConfigurationTest {
     @Test
     void testRedisUrlConfiguration() {
         this.contextRunner
-            .withPropertyValues("spring.redis.host:foo","spring.redis.ssl:true", "spring.redis.url:redis://user:password@example:33")
+            .withPropertyValues("spring.redis.host:foo", "spring.redis.ssl:true", "spring.redis.url:redis://user:password@example:33")
             .run((context) -> {
                 AzureJedisConnectionFactory cf = context.getBean(AzureJedisConnectionFactory.class);
                 RedisStandaloneConfiguration standaloneConfig = (RedisStandaloneConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "standaloneConfig", cf);
