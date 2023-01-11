@@ -188,6 +188,7 @@ import java.util.stream.Collectors;
 public final class Utility {
     // default time interval for polling
     public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(30);
+    public static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
 
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
 
@@ -515,7 +516,7 @@ public final class Utility {
     }
 
     // Key Phrase Extraction
-    public static Response<ExtractKeyPhrasesResultCollection> toExtractKeyPhrasesResultCollectionResponse(
+    public static Response<ExtractKeyPhrasesResultCollection> toResultCollectionResponseLegacyApi(
         final Response<KeyPhraseResult> response) {
         final KeyPhraseResult keyPhraseResult = response.getValue();
         // List of documents results
@@ -543,7 +544,7 @@ public final class Utility {
                     : toBatchStatistics(keyPhraseResult.getStatistics())));
     }
 
-    public static Response<ExtractKeyPhrasesResultCollection> toExtractKeyPhrasesResultCollectionResponse2(
+    public static Response<ExtractKeyPhrasesResultCollection> toResultCollectionResponseLanguageApi(
         final Response<AnalyzeTextTaskResult> response) {
         final KeyPhraseResult keyPhraseResult = ((KeyPhraseTaskResult) response.getValue()).getResults();
         // List of documents results

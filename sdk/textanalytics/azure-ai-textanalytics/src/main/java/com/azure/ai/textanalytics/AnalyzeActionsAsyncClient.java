@@ -25,11 +25,13 @@ import com.azure.ai.textanalytics.implementation.models.AbstractiveSummarization
 import com.azure.ai.textanalytics.implementation.models.AbstractiveSummarizationResult;
 import com.azure.ai.textanalytics.implementation.models.AbstractiveSummarizationTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeBatchInput;
+import com.azure.ai.textanalytics.implementation.models.AnalyzeHeaders;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeJobState;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextJobState;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextJobsInput;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextLROResult;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextLROTask;
+import com.azure.ai.textanalytics.implementation.models.AnalyzeTextsSubmitJobHeaders;
 import com.azure.ai.textanalytics.implementation.models.CustomEntitiesLROTask;
 import com.azure.ai.textanalytics.implementation.models.CustomEntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.CustomEntitiesTask;
@@ -130,6 +132,7 @@ import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
@@ -138,6 +141,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
+import com.azure.core.util.polling.SyncPoller;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -146,6 +150,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -154,6 +159,7 @@ import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRAC
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
+import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExists;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.parseOperationId;
 import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
@@ -193,7 +199,6 @@ class AnalyzeActionsAsyncClient {
             EXTRACTIVE_SUMMARIZATION_TASKS, CUSTOM_ENTITY_RECOGNITION_TASKS, CUSTOM_SINGLE_CLASSIFICATION_TASKS,
             CUSTOM_MULTI_CLASSIFICATION_TASKS);
 
-
     // Language Tasks
     private static final String ABSTRACTIVE_SUMMARIZATION = "AbstractiveSummarization";
     private static final String ENTITY_RECOGNITION = "EntityRecognition";
@@ -213,7 +218,9 @@ class AnalyzeActionsAsyncClient {
             SENTIMENT_ANALYSIS, EXTRACTIVE_SUMMARIZATION, HEALTHCARE,
             CUSTOM_ENTITY_RECOGNITION, CUSTOM_SINGLE_LABEL_CLASSIFICATION, CUSTOM_MULTI_LABEL_CLASSIFICATION);
 
-    private final ClientLogger logger = new ClientLogger(AnalyzeActionsAsyncClient.class);
+    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
+    private static final ClientLogger LOGGER = new ClientLogger(AnalyzeActionsAsyncClient.class);
+
     private final TextAnalyticsClientImpl legacyService;
     private final AnalyzeTextsImpl service;
 
@@ -312,7 +319,7 @@ class AnalyzeActionsAsyncClient {
         }
     }
 
-    PollerFlux<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> beginAnalyzeActionsIterable(
+    SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> beginAnalyzeActionsIterable(
         Iterable<TextDocumentInput> documents, TextAnalyticsActions actions, AnalyzeActionsOptions options,
         Context context) {
         try {
@@ -322,6 +329,7 @@ class AnalyzeActionsAsyncClient {
                     TextAnalyticsServiceVersion.V3_1));
             inputDocumentsValidation(documents);
             options = getNotNullAnalyzeActionsOptions(options);
+            context = enableSyncRestProxy(context);
             final Context finalContext = getNotNullContext(context)
                                              .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
             final AnalyzeBatchInput analyzeBatchInput =
@@ -332,56 +340,46 @@ class AnalyzeActionsAsyncClient {
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
 
             if (service != null) {
-                return new PollerFlux<>(
+                return SyncPoller.createPoller(
                     DEFAULT_POLL_INTERVAL,
-                    activationOperation(
-                        service.submitJobWithResponseAsync(
-                            new AnalyzeTextJobsInput()
-                                .setDisplayName(actions.getDisplayName())
-                                .setAnalysisInput(new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
-                                .setTasks(getAnalyzeTextLROTasks(actions)),
-                            finalContext)
-                            .map(analyzeResponse -> {
-                                final AnalyzeActionsOperationDetail operationDetail =
-                                    new AnalyzeActionsOperationDetail();
-                                AnalyzeActionsOperationDetailPropertiesHelper.setOperationId(operationDetail,
-                                    parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
-                                return operationDetail;
-                            })),
-                    pollingOperationLanguageApi(operationId -> service.jobStatusWithResponseAsync(operationId,
+                    cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                        activationOperationLanguageApiSync(documents, actions, finalContext).apply(cxt)),
+                    pollingOperationLanguageApiSync(operationId -> service.jobStatusWithResponse(operationId,
                         finalIncludeStatistics, null, null, finalContext)),
-                    (activationResponse, pollingContext) ->
-                        Mono.error(new RuntimeException("Cancellation is not supported.")),
+                    getCancellationIsNotSupported(),
                     fetchingOperationIterable(
-                        operationId -> Mono.just(new AnalyzeActionsResultPagedIterable(getAnalyzeOperationFluxPage(
-                            operationId, null, null, finalIncludeStatistics, finalContext))))
+                        operationId -> getAnalyzeOperationPageIterable(
+                            operationId, null, null, finalIncludeStatistics, finalContext))
                 );
             }
 
             throwIfTargetServiceVersionFoundForActions(this.serviceVersion,
                 Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1), actions);
-            return new PollerFlux<>(
+            return SyncPoller.createPoller(
                 DEFAULT_POLL_INTERVAL,
-                activationOperation(
-                    legacyService.analyzeWithResponseAsync(analyzeBatchInput, finalContext)
-                        .map(analyzeResponse -> {
-                            final AnalyzeActionsOperationDetail operationDetail =
-                                new AnalyzeActionsOperationDetail();
-                            AnalyzeActionsOperationDetailPropertiesHelper.setOperationId(operationDetail,
-                                parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
-                            return operationDetail;
-                        })),
-                pollingOperation(operationId -> legacyService.analyzeStatusWithResponseAsync(operationId.toString(),
+                cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
+                    activationOperationLegacyApiSync(documents, actions, finalContext).apply(cxt)),
+                pollingOperationLegacyApiSync(operationId -> legacyService.analyzeStatusWithResponseSync(
+                    operationId.toString(),
                     finalIncludeStatistics, null, null, finalContext)),
-                (activationResponse, pollingContext) ->
-                    Mono.error(new RuntimeException("Cancellation is not supported.")),
+                getCancellationIsNotSupported(),
                 fetchingOperationIterable(
-                    operationId -> Mono.just(new AnalyzeActionsResultPagedIterable(getAnalyzeOperationFluxPage(
-                        operationId, null, null, finalIncludeStatistics, finalContext))))
-            );
+                    operationId -> getAnalyzeOperationPageIterable(
+                        operationId, null, null, finalIncludeStatistics, finalContext)));
         } catch (RuntimeException ex) {
-            return PollerFlux.error(ex);
+            throw LOGGER.logExceptionAsError(ex);
         }
+    }
+
+    private BiFunction<PollingContext<AnalyzeActionsOperationDetail>,
+        PollResponse<AnalyzeActionsOperationDetail>, AnalyzeActionsOperationDetail> getCancellationIsNotSupported() {
+        return (pollingContext, activationResponse) -> {
+            throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
+        };
+    }
+
+    private Context enableSyncRestProxy(Context context) {
+        return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }
 
     private List<AnalyzeTextLROTask> getAnalyzeTextLROTasks(TextAnalyticsActions actions) {
@@ -805,7 +803,52 @@ class AnalyzeActionsAsyncClient {
             try {
                 return operationResult.onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
-                return monoError(logger, ex);
+                return monoError(LOGGER, ex);
+            }
+        };
+    }
+
+    private Function<PollingContext<AnalyzeActionsOperationDetail>, AnalyzeActionsOperationDetail>
+        activationOperationLanguageApiSync(Iterable<TextDocumentInput> documents, TextAnalyticsActions actions,
+            Context context) {
+        return pollingContext -> {
+            try {
+                final ResponseBase<AnalyzeTextsSubmitJobHeaders, Void> analyzeResponse =
+                    service.submitJobWithResponse(
+                        new AnalyzeTextJobsInput()
+                            .setDisplayName(actions.getDisplayName())
+                            .setAnalysisInput(new MultiLanguageAnalysisInput()
+                                .setDocuments(toMultiLanguageInput(documents)))
+                            .setTasks(getAnalyzeTextLROTasks(actions)),
+                        context);
+                final AnalyzeActionsOperationDetail operationDetail = new AnalyzeActionsOperationDetail();
+                AnalyzeActionsOperationDetailPropertiesHelper.setOperationId(operationDetail,
+                    parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
+                return operationDetail;
+            } catch (RuntimeException ex) {
+                throw LOGGER.logExceptionAsError(ex);
+            }
+        };
+    }
+
+    private Function<PollingContext<AnalyzeActionsOperationDetail>, AnalyzeActionsOperationDetail>
+        activationOperationLegacyApiSync(Iterable<TextDocumentInput> documents, TextAnalyticsActions actions,
+            Context context) {
+        return pollingContext -> {
+            try {
+                final AnalyzeBatchInput analyzeBatchInput =
+                    new AnalyzeBatchInput()
+                        .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
+                        .setTasks(getJobManifestTasks(actions));
+                analyzeBatchInput.setDisplayName(actions.getDisplayName());
+                final ResponseBase<AnalyzeHeaders, Void> analyzeResponse =
+                    legacyService.analyzeWithResponseSync(analyzeBatchInput, context);
+                final AnalyzeActionsOperationDetail operationDetail = new AnalyzeActionsOperationDetail();
+                AnalyzeActionsOperationDetailPropertiesHelper.setOperationId(operationDetail,
+                    parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
+                return operationDetail;
+            } catch (RuntimeException ex) {
+                throw LOGGER.logExceptionAsError(ex);
             }
         };
     }
@@ -818,10 +861,11 @@ class AnalyzeActionsAsyncClient {
                     pollingContext.getLatestResponse();
                 final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
                 return pollingFunction.apply(operationId)
-                    .flatMap(modelResponse -> processAnalyzedModelResponse(modelResponse, operationResultPollResponse))
+                    .flatMap(modelResponse -> Mono.just(
+                        processAnalyzedModelResponse(modelResponse, operationResultPollResponse)))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
-                return monoError(logger, ex);
+                return monoError(LOGGER, ex);
             }
         };
     }
@@ -834,11 +878,41 @@ class AnalyzeActionsAsyncClient {
                     pollingContext.getLatestResponse();
                 final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
                 return pollingFunction.apply(operationId)
-                           .flatMap(modelResponse -> processAnalyzedModelResponseLanguageApi(
-                               modelResponse, operationResultPollResponse))
+                           .flatMap(modelResponse -> Mono.just(processAnalyzedModelResponseLanguageApi(
+                               modelResponse, operationResultPollResponse)))
                            .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
-                return monoError(logger, ex);
+                return monoError(LOGGER, ex);
+            }
+        };
+    }
+
+    private Function<PollingContext<AnalyzeActionsOperationDetail>, PollResponse<AnalyzeActionsOperationDetail>>
+        pollingOperationLanguageApiSync(Function<UUID, Response<AnalyzeTextJobState>> pollingFunction) {
+        return pollingContext -> {
+            try {
+                final PollResponse<AnalyzeActionsOperationDetail> operationResultPollResponse =
+                    pollingContext.getLatestResponse();
+                final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
+                return processAnalyzedModelResponseLanguageApi(pollingFunction.apply(operationId),
+                    operationResultPollResponse);
+            } catch (RuntimeException ex) {
+                throw LOGGER.logExceptionAsError((RuntimeException) mapToHttpResponseExceptionIfExists(ex));
+            }
+        };
+    }
+
+    private Function<PollingContext<AnalyzeActionsOperationDetail>, PollResponse<AnalyzeActionsOperationDetail>>
+        pollingOperationLegacyApiSync(Function<UUID, Response<AnalyzeJobState>> pollingFunction) {
+        return pollingContext -> {
+            try {
+                final PollResponse<AnalyzeActionsOperationDetail> operationResultPollResponse =
+                    pollingContext.getLatestResponse();
+                final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
+                return processAnalyzedModelResponse(pollingFunction.apply(operationId),
+                    operationResultPollResponse);
+            } catch (RuntimeException ex) {
+                throw LOGGER.logExceptionAsError((RuntimeException) mapToHttpResponseExceptionIfExists(ex));
             }
         };
     }
@@ -850,19 +924,19 @@ class AnalyzeActionsAsyncClient {
                 final UUID operationId = UUID.fromString(pollingContext.getLatestResponse().getValue().getOperationId());
                 return fetchingFunction.apply(operationId);
             } catch (RuntimeException ex) {
-                return monoError(logger, ex);
+                return monoError(LOGGER, ex);
             }
         };
     }
 
-    private Function<PollingContext<AnalyzeActionsOperationDetail>, Mono<AnalyzeActionsResultPagedIterable>>
-        fetchingOperationIterable(Function<UUID, Mono<AnalyzeActionsResultPagedIterable>> fetchingFunction) {
+    private Function<PollingContext<AnalyzeActionsOperationDetail>, AnalyzeActionsResultPagedIterable>
+        fetchingOperationIterable(Function<UUID, AnalyzeActionsResultPagedIterable> fetchingFunction) {
         return pollingContext -> {
             try {
                 final UUID operationId = UUID.fromString(pollingContext.getLatestResponse().getValue().getOperationId());
                 return fetchingFunction.apply(operationId);
             } catch (RuntimeException ex) {
-                return monoError(logger, ex);
+                throw LOGGER.logExceptionAsError((RuntimeException) mapToHttpResponseExceptionIfExists(ex));
             }
         };
     }
@@ -872,6 +946,32 @@ class AnalyzeActionsAsyncClient {
         return new AnalyzeActionsResultPagedFlux(
             () -> (continuationToken, pageSize) ->
                       getPage(continuationToken, operationId, top, skip, showStats, context).flux());
+    }
+
+    AnalyzeActionsResultPagedIterable getAnalyzeOperationPageIterable(UUID operationId, Integer top, Integer skip,
+        boolean showStats, Context context) {
+        return new AnalyzeActionsResultPagedIterable(
+            () -> (continuationToken, pageSize) ->
+                getPageSync(continuationToken, operationId, top, skip, showStats, context));
+    }
+
+    PagedResponse<AnalyzeActionsResult> getPageSync(String continuationToken, UUID operationId, Integer top,
+        Integer skip, boolean showStats, Context context) {
+        try {
+            if (continuationToken != null) {
+                final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
+                top = (Integer) continuationTokenMap.getOrDefault("$top", null);
+                skip = (Integer) continuationTokenMap.getOrDefault("$skip", null);
+                showStats = (Boolean) continuationTokenMap.getOrDefault(showStats, false);
+            }
+            return service != null
+                ? toAnalyzeActionsResultPagedResponseLanguageApi(service.jobStatusWithResponse(
+                operationId, showStats, top, skip, context))
+                : toAnalyzeActionsResultPagedResponseLegacyApi(legacyService.analyzeStatusWithResponseSync(
+                operationId.toString(), showStats, top, skip, context));
+        } catch (RuntimeException ex) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(mapToHttpResponseExceptionIfExists(ex)));
+        }
     }
 
     Mono<PagedResponse<AnalyzeActionsResult>> getPage(String continuationToken, UUID operationId, Integer top,
@@ -1039,7 +1139,7 @@ class AnalyzeActionsAsyncClient {
                     } else if (SENTIMENT_ANALYSIS_TASKS.equals(taskName)) {
                         actionResult = analyzeSentimentActionResults.get(taskIndex);
                     } else {
-                        throw logger.logExceptionAsError(new RuntimeException(
+                        throw LOGGER.logExceptionAsError(new RuntimeException(
                             "Invalid task name in target reference, " + taskName));
                     }
 
@@ -1242,7 +1342,7 @@ class AnalyzeActionsAsyncClient {
                         abstractiveSummarizationLROResult.getLastUpdateDateTime());
                     abstractSummaryActionResults.add(actionResult);
                 } else {
-                    throw logger.logExceptionAsError(new RuntimeException(
+                    throw LOGGER.logExceptionAsError(new RuntimeException(
                         "Invalid Long running operation task result: " + taskResult.getClass()));
                 }
             }
@@ -1281,7 +1381,7 @@ class AnalyzeActionsAsyncClient {
                     } else if (ABSTRACTIVE_SUMMARIZATION.equals(taskName)) {
                         actionResult = abstractSummaryActionResults.get(taskIndex);
                     } else {
-                        throw logger.logExceptionAsError(new RuntimeException(
+                        throw LOGGER.logExceptionAsError(new RuntimeException(
                             "Invalid task name in target reference, " + taskName));
                     }
 
@@ -1321,7 +1421,7 @@ class AnalyzeActionsAsyncClient {
         return analyzeActionsResult;
     }
 
-    private Mono<PollResponse<AnalyzeActionsOperationDetail>> processAnalyzedModelResponse(
+    private PollResponse<AnalyzeActionsOperationDetail> processAnalyzedModelResponse(
         Response<AnalyzeJobState> analyzeJobStateResponse,
         PollResponse<AnalyzeActionsOperationDetail> operationResultPollResponse) {
 
@@ -1356,10 +1456,10 @@ class AnalyzeActionsAsyncClient {
             operationResultPollResponse.getValue(), tasksResult.getCompleted());
         AnalyzeActionsOperationDetailPropertiesHelper.setActionsInTotal(operationResultPollResponse.getValue(),
             tasksResult.getTotal());
-        return Mono.just(new PollResponse<>(status, operationResultPollResponse.getValue()));
+        return new PollResponse<>(status, operationResultPollResponse.getValue());
     }
 
-    private Mono<PollResponse<AnalyzeActionsOperationDetail>> processAnalyzedModelResponseLanguageApi(
+    private PollResponse<AnalyzeActionsOperationDetail> processAnalyzedModelResponseLanguageApi(
         Response<AnalyzeTextJobState> analyzeJobStateResponse,
         PollResponse<AnalyzeActionsOperationDetail> operationResultPollResponse) {
 
@@ -1394,7 +1494,7 @@ class AnalyzeActionsAsyncClient {
             operationResultPollResponse.getValue(), tasksResult.getCompleted());
         AnalyzeActionsOperationDetailPropertiesHelper.setActionsInTotal(operationResultPollResponse.getValue(),
             tasksResult.getTotal());
-        return Mono.just(new PollResponse<>(status, operationResultPollResponse.getValue()));
+        return new PollResponse<>(status, operationResultPollResponse.getValue());
     }
 
     private Context getNotNullContext(Context context) {
@@ -1410,7 +1510,7 @@ class AnalyzeActionsAsyncClient {
             if (CoreUtils.isNullOrEmpty(errorMessage)) {
                 errorMessage = "Expected an error with a target field referencing an action but did not get one";
             }
-            throw logger.logExceptionAsError(new RuntimeException(errorMessage));
+            throw LOGGER.logExceptionAsError(new RuntimeException(errorMessage));
         }
         // action could be failed and the target reference is "#/tasks/keyPhraseExtractionTasks/0";
         final Matcher matcher = PATTERN_LEGACY_API.matcher(targetReference);
@@ -1427,7 +1527,7 @@ class AnalyzeActionsAsyncClient {
             if (CoreUtils.isNullOrEmpty(errorMessage)) {
                 errorMessage = "Expected an error with a target field referencing an action but did not get one";
             }
-            throw logger.logExceptionAsError(new RuntimeException(errorMessage));
+            throw LOGGER.logExceptionAsError(new RuntimeException(errorMessage));
         }
         final Matcher matcher = PATTERN_LANGUAGE_API.matcher(targetReference);
         String[] taskNameIdPair = new String[2];

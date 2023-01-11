@@ -28,7 +28,10 @@ import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
 import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
+import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExists;
 import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
+import static com.azure.ai.textanalytics.implementation.Utility.toAnalyzeSentimentResultCollectionResponseLanguageApi;
+import static com.azure.ai.textanalytics.implementation.Utility.toAnalyzeSentimentResultCollectionResponseLegacyApi;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -38,7 +41,7 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  * Helper class for managing sentiment analysis endpoint.
  */
 class AnalyzeSentimentAsyncClient {
-    private final ClientLogger logger = new ClientLogger(AnalyzeSentimentAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AnalyzeSentimentAsyncClient.class);
     private final TextAnalyticsClientImpl legacyService;
     private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
 
@@ -75,27 +78,7 @@ class AnalyzeSentimentAsyncClient {
         try {
             return withContext(context -> getAnalyzedSentimentResponse(documents, options, context));
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Helper function for calling service with max overloaded parameters that returns a mono {@link Response}
-     * which contains {@link AnalyzeSentimentResultCollection}.
-     *
-     * @param documents The list of documents to analyze sentiments for.
-     * @param options The additional configurable {@link AnalyzeSentimentOptions options} that may be passed when
-     * analyzing sentiments.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     *
-     * @return A mono {@link Response} contains {@link AnalyzeSentimentResultCollection}.
-     */
-    Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatchWithContext(
-        Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options, Context context) {
-        try {
-            return getAnalyzedSentimentResponse(documents, options, context);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return monoError(LOGGER, ex);
         }
     }
 
@@ -131,11 +114,11 @@ class AnalyzeSentimentAsyncClient {
                            options.isIncludeStatistics(),
                            getNotNullContext(context)
                                .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
-                       .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
+                       .doOnSubscribe(ignoredValue -> LOGGER.info("A batch of documents with count - {}",
                            getDocumentCount(documents)))
-                       .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}",
+                       .doOnSuccess(response -> LOGGER.info("Analyzed sentiment for a batch of documents - {}",
                            response))
-                       .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
+                       .doOnError(error -> LOGGER.warning("Failed to analyze sentiment - {}", error))
                        .map(Utility::toAnalyzeSentimentResultCollectionResponseLanguageApi)
                        .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         }
@@ -148,12 +131,57 @@ class AnalyzeSentimentAsyncClient {
             options.isIncludeOpinionMining(),
             StringIndexType.UTF16CODE_UNIT,
             getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
+            .doOnSubscribe(ignoredValue -> LOGGER.info("A batch of documents with count - {}",
                 getDocumentCount(documents)))
-            .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))
-            .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
+            .doOnSuccess(response -> LOGGER.info("Analyzed sentiment for a batch of documents - {}", response))
+            .doOnError(error -> LOGGER.warning("Failed to analyze sentiment - {}", error))
             .map(Utility::toAnalyzeSentimentResultCollectionResponseLegacyApi)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+    }
+
+    /**
+     * Call the service with REST response, convert to a {@link Mono} of {@link Response} which contains
+     * {@link AnalyzeSentimentResultCollection} from a {@link SimpleResponse} of {@link SentimentResponse}.
+     *
+     * @param documents A list of documents to be analyzed.
+     * @param options The additional configurable {@link AnalyzeSentimentOptions options} that may be passed when
+     * analyzing sentiments.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link Response} contains {@link AnalyzeSentimentResultCollection}.
+     */
+    Response<AnalyzeSentimentResultCollection> getAnalyzedSentimentResponseSync(
+        Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options, Context context) {
+        throwIfCallingNotAvailableFeatureInOptions(options);
+        inputDocumentsValidation(documents);
+        options = options == null ? new AnalyzeSentimentOptions() : options;
+        context = getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
+
+        try {
+            return (service != null)
+                ? toAnalyzeSentimentResultCollectionResponseLanguageApi(service.analyzeTextWithResponse(
+                    new AnalyzeTextSentimentAnalysisInput()
+                        .setParameters(
+                            new SentimentAnalysisTaskParameters()
+                                .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+                                .setOpinionMining(options.isIncludeOpinionMining())
+                                .setModelVersion(options.getModelVersion())
+                                .setLoggingOptOut(options.isServiceLogsDisabled()))
+                        .setAnalysisInput(
+                            new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
+                    options.isIncludeStatistics(),
+                    context))
+                : toAnalyzeSentimentResultCollectionResponseLegacyApi(legacyService.sentimentWithResponseSync(
+                    new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
+                    options.getModelVersion(),
+                    options.isIncludeStatistics(),
+                    options.isServiceLogsDisabled(),
+                    options.isIncludeOpinionMining(),
+                    StringIndexType.UTF16CODE_UNIT,
+                    context));
+        } catch (RuntimeException ex) {
+            throw LOGGER.logExceptionAsError((RuntimeException) mapToHttpResponseExceptionIfExists(ex));
+        }
     }
 
     private void throwIfCallingNotAvailableFeatureInOptions(AnalyzeSentimentOptions options) {
