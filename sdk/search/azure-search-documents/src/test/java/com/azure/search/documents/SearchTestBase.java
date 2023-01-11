@@ -53,6 +53,8 @@ import static com.azure.search.documents.TestHelpers.HOTEL_INDEX_NAME;
 import static com.azure.search.documents.TestHelpers.MAPPER;
 import static com.azure.search.documents.TestHelpers.SQL_DATASOURCE_NAME;
 import static com.azure.search.documents.indexes.DataSourceTests.FAKE_AZURE_SQL_CONNECTION_STRING;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Abstract base class for all Search API tests
@@ -400,5 +402,11 @@ public abstract class SearchTestBase extends TestBase {
             logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", "AZURE_TEST_MODE");
             return TestMode.PLAYBACK;
         }
+    }
+
+    protected void validateETagUpdate(String original, String updated) {
+        assertNotNull(original);
+        assertNotNull(updated);
+        assertNotEquals(original, updated);
     }
 }
