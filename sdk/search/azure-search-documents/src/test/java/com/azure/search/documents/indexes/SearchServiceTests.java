@@ -9,20 +9,28 @@ import com.azure.search.documents.indexes.models.SearchServiceCounters;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SearchServiceSyncTests extends SearchTestBase {
+public class SearchServiceTests extends SearchTestBase {
 
     @Test
-    public void getServiceStatsReturnsCorrectDefinition() {
+    public void getServiceStatsReturnsCorrectDefinitionSync() {
         SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
 
         validateServiceStatistics(serviceClient.getServiceStatistics());
     }
 
     @Test
-    public void getServiceStatsReturnsCorrectDefinitionWithResponse() {
+    public void getServiceStatsReturnsCorrectDefinitionAsync() {
+        StepVerifier.create(getSearchIndexClientBuilder().buildAsyncClient().getServiceStatistics())
+            .assertNext(SearchServiceTests::validateServiceStatistics)
+            .verifyComplete();
+    }
+
+    @Test
+    public void getServiceStatsReturnsCorrectDefinitionWithResponseSync() {
         SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
 
         SearchServiceStatistics searchServiceStatistics = serviceClient.getServiceStatisticsWithResponse(Context.NONE)
@@ -31,7 +39,14 @@ public class SearchServiceSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void getServiceStatsReturnsRequestId() {
+    public void getServiceStatsReturnsCorrectDefinitionWithResponseAsync() {
+        StepVerifier.create(getSearchIndexClientBuilder().buildAsyncClient().getServiceStatisticsWithResponse())
+            .assertNext(response -> validateServiceStatistics(response.getValue()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void getServiceStatsReturnsRequestIdSync() {
         SearchIndexClient serviceClient = getSearchIndexClientBuilder().buildClient();
 
         Response<SearchServiceStatistics> response = serviceClient.getServiceStatisticsWithResponse(Context.NONE);
@@ -48,6 +63,26 @@ public class SearchServiceSyncTests extends SearchTestBase {
         Assertions.assertNotNull(actualClientRequestId);
         Assertions.assertEquals(actualClientRequestId, actualRequestId);
         validateServiceStatistics(response.getValue());
+    }
+
+    @Test
+    public void getServiceStatsReturnsRequestIdAsync() {
+        StepVerifier.create(getSearchIndexClientBuilder().buildAsyncClient().getServiceStatisticsWithResponse())
+            .assertNext(response -> {
+                /*
+                 * The service will always return a request-id and will conditionally return client-request-id if
+                 * return-client-request-id is set to true. If client-request-id is sent in the request then request-id
+                 * will have the same value. This test validates that client-request-id is returned and that request-id
+                 * is equal to it.
+                 */
+                String actualRequestId = response.getHeaders().getValue("request-id");
+                String actualClientRequestId = response.getHeaders().getValue("client-request-id");
+
+                Assertions.assertNotNull(actualClientRequestId);
+                Assertions.assertEquals(actualClientRequestId, actualRequestId);
+                validateServiceStatistics(response.getValue());
+            })
+            .verifyComplete();
     }
 
     private static void validateServiceStatistics(SearchServiceStatistics searchServiceStatistics) {
