@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RecoveryPoints Get. */
 public final class RecoveryPointsGetSamples {
     /*
@@ -27,6 +25,6 @@ public final class RecoveryPointsGetSamples {
                 "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
                 "f8491e4f-817a-40dd-a90c-af773978c75b",
                 "b22134ea-620c-474b-9fa5-3c1cb47708e3",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

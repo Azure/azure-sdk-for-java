@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StorageClassificationMappings Get. */
 public final class StorageClassificationMappingsGetSamples {
     /*
@@ -26,6 +24,6 @@ public final class StorageClassificationMappingsGetSamples {
                 "2a48e3770ac08aa2be8bfbd94fcfb1cbf2dcc487b78fb9d3bd778304441b06a0",
                 "8891569e-aaef-4a46-a4a0-78c14f2d7b09",
                 "testStorageMapping",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

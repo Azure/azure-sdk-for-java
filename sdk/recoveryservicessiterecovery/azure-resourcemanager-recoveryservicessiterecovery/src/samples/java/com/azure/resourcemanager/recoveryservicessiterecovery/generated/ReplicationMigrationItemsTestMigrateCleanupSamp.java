@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.TestMigrateCleanupInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.TestMigrateCleanupInputProperties;
 
@@ -30,6 +29,6 @@ public final class ReplicationMigrationItemsTestMigrateCleanupSamp {
                 "virtualmachine1",
                 new TestMigrateCleanupInput()
                     .withProperties(new TestMigrateCleanupInputProperties().withComments("Test Failover Cleanup")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

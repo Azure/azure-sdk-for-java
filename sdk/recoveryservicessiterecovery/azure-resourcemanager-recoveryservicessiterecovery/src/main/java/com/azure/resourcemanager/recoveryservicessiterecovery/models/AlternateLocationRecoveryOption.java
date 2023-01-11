@@ -17,6 +17,15 @@ public final class AlternateLocationRecoveryOption extends ExpandableStringEnum<
     public static final AlternateLocationRecoveryOption NO_ACTION = fromString("NoAction");
 
     /**
+     * Creates a new instance of AlternateLocationRecoveryOption value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AlternateLocationRecoveryOption() {
+    }
+
+    /**
      * Creates or finds a AlternateLocationRecoveryOption from its string representation.
      *
      * @param name a name to look for.
