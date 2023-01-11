@@ -115,7 +115,7 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
                 assertThat(properties.getCredential().getClientSecret()).isEqualTo("azure-client-secret");
                 assertThat(properties.getRetry().getExponential().getBaseDelay()).isEqualTo(Duration.ofMinutes(2));
                 assertThat(properties.getRetry().getFixed().getDelay()).isEqualTo(Duration.ofSeconds(3));
-                assertThat(properties.getClient().getTransportType()).isEqualTo(AmqpTransportType.AMQP);
+                assertThat(properties.getClient().getTransportType()).isNull();
                 assertThat(properties.getConnectionString()).isEqualTo(CONNECTION_STRING);
 
                 assertThat(azureProperties.getCredential().getClientId()).isEqualTo("azure-client-id");
