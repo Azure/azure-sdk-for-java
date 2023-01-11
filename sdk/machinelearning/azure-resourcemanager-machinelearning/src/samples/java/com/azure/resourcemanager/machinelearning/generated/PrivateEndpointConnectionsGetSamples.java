@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections Get. */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
@@ -20,6 +18,7 @@ public final class PrivateEndpointConnectionsGetSamples {
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .privateEndpointConnections()
-            .getWithResponse("rg-1234", "testworkspace", "{privateEndpointConnectionName}", Context.NONE);
+            .getWithResponse(
+                "rg-1234", "testworkspace", "{privateEndpointConnectionName}", com.azure.core.util.Context.NONE);
     }
 }

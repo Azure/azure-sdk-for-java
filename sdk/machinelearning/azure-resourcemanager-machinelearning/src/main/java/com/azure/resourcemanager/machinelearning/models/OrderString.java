@@ -23,6 +23,15 @@ public final class OrderString extends ExpandableStringEnum<OrderString> {
     public static final OrderString UPDATED_AT_ASC = fromString("UpdatedAtAsc");
 
     /**
+     * Creates a new instance of OrderString value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OrderString() {
+    }
+
+    /**
      * Creates or finds a OrderString from its string representation.
      *
      * @param name a name to look for.

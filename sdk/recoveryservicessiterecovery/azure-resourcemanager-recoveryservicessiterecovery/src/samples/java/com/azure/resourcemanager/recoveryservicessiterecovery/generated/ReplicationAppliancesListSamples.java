@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationAppliances List. */
 public final class ReplicationAppliancesListSamples {
     /*
@@ -18,6 +16,6 @@ public final class ReplicationAppliancesListSamples {
      */
     public static void getsTheListOfAppliances(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationAppliances().list("vault1", "resourceGroupPS1", null, Context.NONE);
+        manager.replicationAppliances().list("vault1", "resourceGroupPS1", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -9,11 +9,10 @@ import com.azure.resourcemanager.machinelearning.models.AssetContainer;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AssetContainerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AssetContainer model =
             BinaryData
                 .fromString(
@@ -25,8 +24,8 @@ public final class AssetContainerTests {
         Assertions.assertEquals(false, model.isArchived());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AssetContainer model =
             new AssetContainer()
                 .withDescription("stawfsdjpvkv")

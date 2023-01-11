@@ -718,7 +718,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String workspaceName, String endpointName) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, endpointName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, workspaceName, endpointName).getSyncPoller();
     }
 
     /**
@@ -736,7 +736,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String workspaceName, String endpointName, Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, endpointName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, workspaceName, endpointName, context).getSyncPoller();
     }
 
     /**
@@ -1165,7 +1165,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
         String workspaceName,
         String endpointName,
         PartialMinimalTrackedResourceWithIdentity body) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, body).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, workspaceName, endpointName, body).getSyncPoller();
     }
 
     /**
@@ -1188,7 +1188,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
         String endpointName,
         PartialMinimalTrackedResourceWithIdentity body,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, endpointName, body, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, workspaceName, endpointName, body, context).getSyncPoller();
     }
 
     /**
@@ -1476,7 +1476,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OnlineEndpointInner>, OnlineEndpointInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String endpointName, OnlineEndpointInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, body).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, body).getSyncPoller();
     }
 
     /**
@@ -1499,7 +1499,9 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
         String endpointName,
         OnlineEndpointInner body,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, body, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, endpointName, body, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1932,7 +1934,7 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRegenerateKeys(
         String resourceGroupName, String workspaceName, String endpointName, RegenerateEndpointKeysRequest body) {
-        return beginRegenerateKeysAsync(resourceGroupName, workspaceName, endpointName, body).getSyncPoller();
+        return this.beginRegenerateKeysAsync(resourceGroupName, workspaceName, endpointName, body).getSyncPoller();
     }
 
     /**
@@ -1955,7 +1957,9 @@ public final class OnlineEndpointsClientImpl implements OnlineEndpointsClient {
         String endpointName,
         RegenerateEndpointKeysRequest body,
         Context context) {
-        return beginRegenerateKeysAsync(resourceGroupName, workspaceName, endpointName, body, context).getSyncPoller();
+        return this
+            .beginRegenerateKeysAsync(resourceGroupName, workspaceName, endpointName, body, context)
+            .getSyncPoller();
     }
 
     /**

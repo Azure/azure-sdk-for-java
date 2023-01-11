@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationRecoveryServicesProviders Purge. */
 public final class ReplicationRecoveryServicesProvidersPurgeSamples {
     /*
@@ -20,6 +18,11 @@ public final class ReplicationRecoveryServicesProvidersPurgeSamples {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager
             .replicationRecoveryServicesProviders()
-            .purge("vault1", "resourceGroupPS1", "cloud1", "241641e6-ee7b-4ee4-8141-821fadda43fa", Context.NONE);
+            .purge(
+                "vault1",
+                "resourceGroupPS1",
+                "cloud1",
+                "241641e6-ee7b-4ee4-8141-821fadda43fa",
+                com.azure.core.util.Context.NONE);
     }
 }

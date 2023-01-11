@@ -6,19 +6,18 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ComputeInstanceConnectivityEndpoints;
-import org.junit.jupiter.api.Test;
 
 public final class ComputeInstanceConnectivityEndpointsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ComputeInstanceConnectivityEndpoints model =
             BinaryData
                 .fromString("{\"publicIpAddress\":\"vbrdfjmzsyzfho\",\"privateIpAddress\":\"h\"}")
                 .toObject(ComputeInstanceConnectivityEndpoints.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ComputeInstanceConnectivityEndpoints model = new ComputeInstanceConnectivityEndpoints();
         model = BinaryData.fromObject(model).toObject(ComputeInstanceConnectivityEndpoints.class);
     }

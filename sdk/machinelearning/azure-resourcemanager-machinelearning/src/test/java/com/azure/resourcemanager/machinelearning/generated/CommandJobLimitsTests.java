@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.CommandJobLimits;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CommandJobLimitsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CommandJobLimits model =
             BinaryData
                 .fromString("{\"jobLimitsType\":\"Command\",\"timeout\":\"PT130H21M4S\"}")
@@ -20,8 +19,8 @@ public final class CommandJobLimitsTests {
         Assertions.assertEquals(Duration.parse("PT130H21M4S"), model.timeout());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CommandJobLimits model = new CommandJobLimits().withTimeout(Duration.parse("PT130H21M4S"));
         model = BinaryData.fromObject(model).toObject(CommandJobLimits.class);
         Assertions.assertEquals(Duration.parse("PT130H21M4S"), model.timeout());

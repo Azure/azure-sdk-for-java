@@ -26,7 +26,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.advisor.fluent.RecommendationsClient;
 import com.azure.resourcemanager.advisor.fluent.models.ResourceRecommendationBaseInner;
 import com.azure.resourcemanager.advisor.models.RecommendationsGenerateResponse;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RecommendationsClient. */
 public final class RecommendationsClientImpl implements RecommendationsClient {
-    private final ClientLogger logger = new ClientLogger(RecommendationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RecommendationsService service;
 
@@ -61,7 +58,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AdvisorManagementCli")
-    private interface RecommendationsService {
+    public interface RecommendationsService {
         @Headers({"Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/generateRecommendations")
         @ExpectedResponses({202})
@@ -128,7 +125,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RecommendationsGenerateResponse> generateWithResponseAsync() {
@@ -166,7 +163,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RecommendationsGenerateResponse> generateWithResponseAsync(Context context) {
@@ -199,23 +196,11 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> generateAsync() {
-        return generateWithResponseAsync().flatMap((RecommendationsGenerateResponse res) -> Mono.empty());
-    }
-
-    /**
-     * Initiates the recommendation generation or computation process for a subscription. This operation is
-     * asynchronous. The generated recommendations are stored in a cache in the Advisor service.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void generate() {
-        generateAsync().block();
+        return generateWithResponseAsync().flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -234,6 +219,18 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     }
 
     /**
+     * Initiates the recommendation generation or computation process for a subscription. This operation is
+     * asynchronous. The generated recommendations are stored in a cache in the Advisor service.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void generate() {
+        generateWithResponse(Context.NONE);
+    }
+
+    /**
      * Retrieves the status of the recommendation computation or generation process. Invoke this API after calling the
      * generation recommendation. The URI of this API is returned in the Location field of the response header.
      *
@@ -242,7 +239,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> getGenerateStatusWithResponseAsync(UUID operationId) {
@@ -286,7 +283,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> getGenerateStatusWithResponseAsync(UUID operationId, Context context) {
@@ -326,11 +323,28 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getGenerateStatusAsync(UUID operationId) {
-        return getGenerateStatusWithResponseAsync(operationId).flatMap((Response<Void> res) -> Mono.empty());
+        return getGenerateStatusWithResponseAsync(operationId).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Retrieves the status of the recommendation computation or generation process. Invoke this API after calling the
+     * generation recommendation. The URI of this API is returned in the Location field of the response header.
+     *
+     * @param operationId The operation ID, which can be found from the Location field in the generate recommendation
+     *     response header.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> getGenerateStatusWithResponse(UUID operationId, Context context) {
+        return getGenerateStatusWithResponseAsync(operationId, context).block();
     }
 
     /**
@@ -345,24 +359,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void getGenerateStatus(UUID operationId) {
-        getGenerateStatusAsync(operationId).block();
-    }
-
-    /**
-     * Retrieves the status of the recommendation computation or generation process. Invoke this API after calling the
-     * generation recommendation. The URI of this API is returned in the Location field of the response header.
-     *
-     * @param operationId The operation ID, which can be found from the Location field in the generate recommendation
-     *     response header.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getGenerateStatusWithResponse(UUID operationId, Context context) {
-        return getGenerateStatusWithResponseAsync(operationId, context).block();
+        getGenerateStatusWithResponse(operationId, Context.NONE);
     }
 
     /**
@@ -377,7 +374,8 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Advisor recommendations.
+     * @return the list of Advisor recommendations along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceRecommendationBaseInner>> listSinglePageAsync(
@@ -433,7 +431,8 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Advisor recommendations.
+     * @return the list of Advisor recommendations along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceRecommendationBaseInner>> listSinglePageAsync(
@@ -485,7 +484,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Advisor recommendations.
+     * @return the list of Advisor recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ResourceRecommendationBaseInner> listAsync(String filter, Integer top, String skipToken) {
@@ -499,7 +498,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Advisor recommendations.
+     * @return the list of Advisor recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ResourceRecommendationBaseInner> listAsync() {
@@ -523,7 +522,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Advisor recommendations.
+     * @return the list of Advisor recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ResourceRecommendationBaseInner> listAsync(
@@ -539,7 +538,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Advisor recommendations.
+     * @return the list of Advisor recommendations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceRecommendationBaseInner> list() {
@@ -562,7 +561,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Advisor recommendations.
+     * @return the list of Advisor recommendations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceRecommendationBaseInner> list(
@@ -579,7 +578,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return advisor Recommendation.
+     * @return advisor Recommendation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ResourceRecommendationBaseInner>> getWithResponseAsync(
@@ -622,7 +621,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return advisor Recommendation.
+     * @return advisor Recommendation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ResourceRecommendationBaseInner>> getWithResponseAsync(
@@ -656,19 +655,29 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return advisor Recommendation.
+     * @return advisor Recommendation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ResourceRecommendationBaseInner> getAsync(String resourceUri, String recommendationId) {
-        return getWithResponseAsync(resourceUri, recommendationId)
-            .flatMap(
-                (Response<ResourceRecommendationBaseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(resourceUri, recommendationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Obtains details of a cached recommendation.
+     *
+     * @param resourceUri The fully qualified Azure Resource Manager identifier of the resource to which the
+     *     recommendation applies.
+     * @param recommendationId The recommendation ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return advisor Recommendation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ResourceRecommendationBaseInner> getWithResponse(
+        String resourceUri, String recommendationId, Context context) {
+        return getWithResponseAsync(resourceUri, recommendationId, context).block();
     }
 
     /**
@@ -684,35 +693,19 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceRecommendationBaseInner get(String resourceUri, String recommendationId) {
-        return getAsync(resourceUri, recommendationId).block();
-    }
-
-    /**
-     * Obtains details of a cached recommendation.
-     *
-     * @param resourceUri The fully qualified Azure Resource Manager identifier of the resource to which the
-     *     recommendation applies.
-     * @param recommendationId The recommendation ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return advisor Recommendation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ResourceRecommendationBaseInner> getWithResponse(
-        String resourceUri, String recommendationId, Context context) {
-        return getWithResponseAsync(resourceUri, recommendationId, context).block();
+        return getWithResponse(resourceUri, recommendationId, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Advisor recommendations.
+     * @return the list of Advisor recommendations along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceRecommendationBaseInner>> listNextSinglePageAsync(String nextLink) {
@@ -743,12 +736,14 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Advisor recommendations.
+     * @return the list of Advisor recommendations along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceRecommendationBaseInner>> listNextSinglePageAsync(

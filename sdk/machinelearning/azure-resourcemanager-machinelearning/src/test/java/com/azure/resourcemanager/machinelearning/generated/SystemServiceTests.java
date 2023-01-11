@@ -6,11 +6,10 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.SystemService;
-import org.junit.jupiter.api.Test;
 
 public final class SystemServiceTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SystemService model =
             BinaryData
                 .fromString(
@@ -18,8 +17,8 @@ public final class SystemServiceTests {
                 .toObject(SystemService.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SystemService model = new SystemService();
         model = BinaryData.fromObject(model).toObject(SystemService.class);
     }

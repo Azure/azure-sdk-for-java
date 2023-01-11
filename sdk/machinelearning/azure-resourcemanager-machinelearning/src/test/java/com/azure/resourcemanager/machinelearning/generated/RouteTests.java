@@ -7,18 +7,17 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.Route;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class RouteTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         Route model = BinaryData.fromString("{\"path\":\"iykzkdncjdx\",\"port\":1933240221}").toObject(Route.class);
         Assertions.assertEquals("iykzkdncjdx", model.path());
         Assertions.assertEquals(1933240221, model.port());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         Route model = new Route().withPath("iykzkdncjdx").withPort(1933240221);
         model = BinaryData.fromObject(model).toObject(Route.class);
         Assertions.assertEquals("iykzkdncjdx", model.path());

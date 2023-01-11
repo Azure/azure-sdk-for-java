@@ -7,18 +7,17 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.PartialBatchDeployment;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PartialBatchDeploymentTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PartialBatchDeployment model =
             BinaryData.fromString("{\"description\":\"wwa\"}").toObject(PartialBatchDeployment.class);
         Assertions.assertEquals("wwa", model.description());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PartialBatchDeployment model = new PartialBatchDeployment().withDescription("wwa");
         model = BinaryData.fromObject(model).toObject(PartialBatchDeployment.class);
         Assertions.assertEquals("wwa", model.description());

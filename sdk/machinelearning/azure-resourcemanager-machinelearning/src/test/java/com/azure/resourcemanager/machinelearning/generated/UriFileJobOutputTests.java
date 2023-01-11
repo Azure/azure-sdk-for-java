@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.OutputDeliveryMode;
 import com.azure.resourcemanager.machinelearning.models.UriFileJobOutput;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class UriFileJobOutputTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         UriFileJobOutput model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class UriFileJobOutputTests {
         Assertions.assertEquals("dfj", model.uri());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         UriFileJobOutput model =
             new UriFileJobOutput().withDescription("esocwiqbuou").withMode(OutputDeliveryMode.UPLOAD).withUri("dfj");
         model = BinaryData.fromObject(model).toObject(UriFileJobOutput.class);

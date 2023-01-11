@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Workspaces PrepareNotebook. */
 public final class WorkspacesPrepareNotebookSamples {
     /*
@@ -17,6 +15,6 @@ public final class WorkspacesPrepareNotebookSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void prepareNotebook(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.workspaces().prepareNotebook("testrg123", "workspaces123", Context.NONE);
+        manager.workspaces().prepareNotebook("testrg123", "workspaces123", com.azure.core.util.Context.NONE);
     }
 }

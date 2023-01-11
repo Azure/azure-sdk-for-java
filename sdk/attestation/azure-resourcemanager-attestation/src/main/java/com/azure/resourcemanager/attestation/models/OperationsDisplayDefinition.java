@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.attestation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Display object with properties of the operation. */
 @Fluent
 public final class OperationsDisplayDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsDisplayDefinition.class);
-
     /*
      * Resource provider of the operation.
      */
@@ -37,6 +33,10 @@ public final class OperationsDisplayDefinition {
      */
     @JsonProperty(value = "description")
     private String description;
+
+    /** Creates an instance of OperationsDisplayDefinition class. */
+    public OperationsDisplayDefinition() {
+    }
 
     /**
      * Get the provider property: Resource provider of the operation.

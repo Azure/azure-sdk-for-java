@@ -41,6 +41,15 @@ public final class BlockedTransformers extends ExpandableStringEnum<BlockedTrans
     public static final BlockedTransformers HASH_ONE_HOT_ENCODER = fromString("HashOneHotEncoder");
 
     /**
+     * Creates a new instance of BlockedTransformers value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BlockedTransformers() {
+    }
+
+    /**
      * Creates or finds a BlockedTransformers from its string representation.
      *
      * @param name a name to look for.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ServerHAState. */
+/** A state of a HA server that is visible to user. */
 public final class ServerHAState extends ExpandableStringEnum<ServerHAState> {
     /** Static value NotEnabled for ServerHAState. */
     public static final ServerHAState NOT_ENABLED = fromString("NotEnabled");
@@ -29,6 +29,15 @@ public final class ServerHAState extends ExpandableStringEnum<ServerHAState> {
     public static final ServerHAState REMOVING_STANDBY = fromString("RemovingStandby");
 
     /**
+     * Creates a new instance of ServerHAState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServerHAState() {
+    }
+
+    /**
      * Creates or finds a ServerHAState from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +48,11 @@ public final class ServerHAState extends ExpandableStringEnum<ServerHAState> {
         return fromString(name, ServerHAState.class);
     }
 
-    /** @return known ServerHAState values. */
+    /**
+     * Gets known ServerHAState values.
+     *
+     * @return known ServerHAState values.
+     */
     public static Collection<ServerHAState> values() {
         return values(ServerHAState.class);
     }

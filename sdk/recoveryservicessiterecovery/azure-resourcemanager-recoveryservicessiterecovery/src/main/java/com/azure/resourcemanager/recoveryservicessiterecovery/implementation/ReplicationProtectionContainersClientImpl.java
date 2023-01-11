@@ -861,7 +861,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
         String fabricName,
         String protectionContainerName,
         CreateProtectionContainerInput creationInput) {
-        return beginCreateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, creationInput)
+        return this
+            .beginCreateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, creationInput)
             .getSyncPoller();
     }
 
@@ -889,7 +890,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
         String protectionContainerName,
         CreateProtectionContainerInput creationInput,
         Context context) {
-        return beginCreateAsync(
+        return this
+            .beginCreateAsync(
                 resourceName, resourceGroupName, fabricName, protectionContainerName, creationInput, context)
             .getSyncPoller();
     }
@@ -1257,7 +1259,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
         String fabricName,
         String protectionContainerName,
         DiscoverProtectableItemRequest discoverProtectableItemRequest) {
-        return beginDiscoverProtectableItemAsync(
+        return this
+            .beginDiscoverProtectableItemAsync(
                 resourceName, resourceGroupName, fabricName, protectionContainerName, discoverProtectableItemRequest)
             .getSyncPoller();
     }
@@ -1286,7 +1289,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
         String protectionContainerName,
         DiscoverProtectableItemRequest discoverProtectableItemRequest,
         Context context) {
-        return beginDiscoverProtectableItemAsync(
+        return this
+            .beginDiscoverProtectableItemAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -1614,7 +1618,9 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName) {
-        return beginDeleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName)
+            .getSyncPoller();
     }
 
     /**
@@ -1639,7 +1645,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
         String fabricName,
         String protectionContainerName,
         Context context) {
-        return beginDeleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, context)
+        return this
+            .beginDeleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, context)
             .getSyncPoller();
     }
 
@@ -1975,7 +1982,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
         String fabricName,
         String protectionContainerName,
         SwitchProtectionInput switchInput) {
-        return beginSwitchProtectionAsync(
+        return this
+            .beginSwitchProtectionAsync(
                 resourceName, resourceGroupName, fabricName, protectionContainerName, switchInput)
             .getSyncPoller();
     }
@@ -2004,7 +2012,8 @@ public final class ReplicationProtectionContainersClientImpl implements Replicat
         String protectionContainerName,
         SwitchProtectionInput switchInput,
         Context context) {
-        return beginSwitchProtectionAsync(
+        return this
+            .beginSwitchProtectionAsync(
                 resourceName, resourceGroupName, fabricName, protectionContainerName, switchInput, context)
             .getSyncPoller();
     }

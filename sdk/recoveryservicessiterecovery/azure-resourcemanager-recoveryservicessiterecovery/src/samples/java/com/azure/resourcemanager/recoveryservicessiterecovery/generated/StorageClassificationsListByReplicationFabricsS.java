@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StorageClassifications ListByReplicationFabrics. */
 public final class StorageClassificationsListByReplicationFabricsS {
     /*
@@ -24,6 +22,6 @@ public final class StorageClassificationsListByReplicationFabricsS {
                 "vault1",
                 "resourceGroupPS1",
                 "2a48e3770ac08aa2be8bfbd94fcfb1cbf2dcc487b78fb9d3bd778304441b06a0",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

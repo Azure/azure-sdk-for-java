@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.TestFailoverCleanupInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.TestFailoverCleanupInputProperties;
 
@@ -30,6 +29,6 @@ public final class ReplicationProtectedItemsTestFailoverCleanupSam {
                 "f8491e4f-817a-40dd-a90c-af773978c75b",
                 new TestFailoverCleanupInput()
                     .withProperties(new TestFailoverCleanupInputProperties().withComments("Test Failover Cleanup")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

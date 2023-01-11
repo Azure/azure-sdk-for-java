@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationRecoveryPlans FailoverCancel. */
 public final class ReplicationRecoveryPlansFailoverCancelSamples {
     /*
@@ -18,6 +16,8 @@ public final class ReplicationRecoveryPlansFailoverCancelSamples {
      */
     public static void executeCancelFailoverOfTheRecoveryPlan(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationRecoveryPlans().failoverCancel("vault1", "resourceGroupPS1", "RPtest1", Context.NONE);
+        manager
+            .replicationRecoveryPlans()
+            .failoverCancel("vault1", "resourceGroupPS1", "RPtest1", com.azure.core.util.Context.NONE);
     }
 }

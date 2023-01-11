@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationMigrationItems List. */
 public final class ReplicationMigrationItemsListSamples {
     /*
@@ -18,6 +16,8 @@ public final class ReplicationMigrationItemsListSamples {
      */
     public static void getsTheListOfMigrationItemsInTheVault(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationMigrationItems().list("migrationvault", "resourcegroup1", null, null, null, Context.NONE);
+        manager
+            .replicationMigrationItems()
+            .list("migrationvault", "resourcegroup1", null, null, null, com.azure.core.util.Context.NONE);
     }
 }

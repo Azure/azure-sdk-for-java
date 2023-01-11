@@ -13,11 +13,10 @@ import com.azure.resourcemanager.machinelearning.models.SkuSetting;
 import com.azure.resourcemanager.machinelearning.models.SkuTier;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SkuResourceArmPaginatedResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SkuResourceArmPaginatedResult model =
             BinaryData
                 .fromString(
@@ -32,8 +31,8 @@ public final class SkuResourceArmPaginatedResultTests {
         Assertions.assertEquals(SkuTier.STANDARD, model.value().get(0).sku().tier());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SkuResourceArmPaginatedResult model =
             new SkuResourceArmPaginatedResult()
                 .withNextLink("rmcaykgg")

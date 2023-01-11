@@ -23,6 +23,15 @@ public final class RecoveryPlanPointType extends ExpandableStringEnum<RecoveryPl
     public static final RecoveryPlanPointType LATEST_PROCESSED = fromString("LatestProcessed");
 
     /**
+     * Creates a new instance of RecoveryPlanPointType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecoveryPlanPointType() {
+    }
+
+    /**
      * Creates or finds a RecoveryPlanPointType from its string representation.
      *
      * @param name a name to look for.

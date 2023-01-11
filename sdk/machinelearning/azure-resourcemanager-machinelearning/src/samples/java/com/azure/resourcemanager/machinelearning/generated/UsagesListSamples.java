@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Usages List. */
 public final class UsagesListSamples {
     /*
@@ -17,6 +15,6 @@ public final class UsagesListSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listUsages(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.usages().list("eastus", Context.NONE);
+        manager.usages().list("eastus", com.azure.core.util.Context.NONE);
     }
 }

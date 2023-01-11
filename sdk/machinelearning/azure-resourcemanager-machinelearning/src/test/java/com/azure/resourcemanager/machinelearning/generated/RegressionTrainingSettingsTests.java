@@ -12,11 +12,10 @@ import com.azure.resourcemanager.machinelearning.models.StackMetaLearnerType;
 import java.time.Duration;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class RegressionTrainingSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         RegressionTrainingSettings model =
             BinaryData
                 .fromString(
@@ -36,8 +35,8 @@ public final class RegressionTrainingSettingsTests {
         Assertions.assertEquals(RegressionModels.DECISION_TREE, model.blockedTrainingAlgorithms().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         RegressionTrainingSettings model =
             new RegressionTrainingSettings()
                 .withEnableDnnTraining(true)

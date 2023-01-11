@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The resource model definition representing SKU for Azure Managed Instance - Azure Arc. */
 @Fluent
 public final class SqlManagedInstanceSku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlManagedInstanceSku.class);
-
     /*
      * The name of the SKU.
      */
     @JsonProperty(value = "name", required = true)
-    private String name;
+    private String name = "vCore";
 
     /*
      * The pricing tier for the instance.
@@ -27,15 +23,14 @@ public final class SqlManagedInstanceSku {
     private SqlManagedInstanceSkuTier tier;
 
     /*
-     * Whether dev/test is enabled. When the dev field is set to true, the
-     * resource is used for dev/test purpose.
+     * Whether dev/test is enabled. When the dev field is set to true, the resource is used for dev/test purpose.
      */
     @JsonProperty(value = "dev")
     private Boolean dev;
 
     /*
-     * The SKU size. When the name field is the combination of tier and some
-     * other value, this would be the standalone code.
+     * The SKU size. When the name field is the combination of tier and some other value, this would be the standalone
+     * code.
      */
     @JsonProperty(value = "size")
     private String size;

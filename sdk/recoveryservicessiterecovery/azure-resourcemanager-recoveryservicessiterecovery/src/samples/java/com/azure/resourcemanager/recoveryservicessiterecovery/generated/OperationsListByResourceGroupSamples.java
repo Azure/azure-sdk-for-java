@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Operations ListByResourceGroup. */
 public final class OperationsListByResourceGroupSamples {
     /*
@@ -18,6 +16,6 @@ public final class OperationsListByResourceGroupSamples {
      */
     public static void returnsTheListOfAvailableOperations(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.operations().listByResourceGroup("resourceGroupPS1", Context.NONE);
+        manager.operations().listByResourceGroup("resourceGroupPS1", com.azure.core.util.Context.NONE);
     }
 }

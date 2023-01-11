@@ -7,11 +7,10 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ImageModelDistributionSettings;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ImageModelDistributionSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ImageModelDistributionSettings model =
             BinaryData
                 .fromString(
@@ -47,8 +46,8 @@ public final class ImageModelDistributionSettingsTests {
         Assertions.assertEquals("lexhv", model.weightDecay());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ImageModelDistributionSettings model =
             new ImageModelDistributionSettings()
                 .withAmsGradient("v")

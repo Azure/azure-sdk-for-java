@@ -9,11 +9,10 @@ import com.azure.resourcemanager.machinelearning.models.UriFolderDataVersion;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class UriFolderDataVersionTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         UriFolderDataVersion model =
             BinaryData
                 .fromString(
@@ -27,8 +26,8 @@ public final class UriFolderDataVersionTests {
         Assertions.assertEquals("mpyzgleo", model.dataUri());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         UriFolderDataVersion model =
             new UriFolderDataVersion()
                 .withDescription("wwzvdaj")
