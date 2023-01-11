@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,12 +16,9 @@ import java.util.Map;
 /** The kubernetes resource limits and requests used to restrict or reserve resource usage. */
 @Fluent
 public final class K8SResourceRequirements {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(K8SResourceRequirements.class);
-
     /*
-     * Requests for a kubernetes resource type (e.g 'cpu', 'memory'). The 'cpu'
-     * request must be less than or equal to 'cpu' limit. Default 'cpu' is 2,
-     * minimum is 1. Default 'memory' is '4Gi', minimum is '2Gi. If sku.tier is
+     * Requests for a kubernetes resource type (e.g 'cpu', 'memory'). The 'cpu' request must be less than or equal to
+     * 'cpu' limit. Default 'cpu' is 2, minimum is 1. Default 'memory' is '4Gi', minimum is '2Gi. If sku.tier is
      * GeneralPurpose, maximum 'cpu' is 24 and maximum 'memory' is '128Gi'.
      */
     @JsonProperty(value = "requests")
@@ -30,9 +26,8 @@ public final class K8SResourceRequirements {
     private Map<String, String> requests;
 
     /*
-     * Limits for a kubernetes resource type (e.g 'cpu', 'memory'). The 'cpu'
-     * request must be less than or equal to 'cpu' limit. Default 'cpu' is 2,
-     * minimum is 1. Default 'memory' is '4Gi', minimum is '2Gi. If sku.tier is
+     * Limits for a kubernetes resource type (e.g 'cpu', 'memory'). The 'cpu' request must be less than or equal to
+     * 'cpu' limit. Default 'cpu' is 2, minimum is 1. Default 'memory' is '4Gi', minimum is '2Gi. If sku.tier is
      * GeneralPurpose, maximum 'cpu' is 24 and maximum 'memory' is '128Gi'.
      */
     @JsonProperty(value = "limits")
@@ -40,10 +35,13 @@ public final class K8SResourceRequirements {
     private Map<String, String> limits;
 
     /*
-     * The kubernetes resource limits and requests used to restrict or reserve
-     * resource usage.
+     * The kubernetes resource limits and requests used to restrict or reserve resource usage.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of K8SResourceRequirements class. */
+    public K8SResourceRequirements() {
+    }
 
     /**
      * Get the requests property: Requests for a kubernetes resource type (e.g 'cpu', 'memory'). The 'cpu' request must

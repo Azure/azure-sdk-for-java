@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ArcSqlServerLicenseType. */
+/** SQL Server license type. */
 public final class ArcSqlServerLicenseType extends ExpandableStringEnum<ArcSqlServerLicenseType> {
     /** Static value Paid for ArcSqlServerLicenseType. */
     public static final ArcSqlServerLicenseType PAID = fromString("Paid");
@@ -23,6 +23,15 @@ public final class ArcSqlServerLicenseType extends ExpandableStringEnum<ArcSqlSe
     public static final ArcSqlServerLicenseType UNDEFINED = fromString("Undefined");
 
     /**
+     * Creates a new instance of ArcSqlServerLicenseType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ArcSqlServerLicenseType() {
+    }
+
+    /**
      * Creates or finds a ArcSqlServerLicenseType from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class ArcSqlServerLicenseType extends ExpandableStringEnum<ArcSqlSe
         return fromString(name, ArcSqlServerLicenseType.class);
     }
 
-    /** @return known ArcSqlServerLicenseType values. */
+    /**
+     * Gets known ArcSqlServerLicenseType values.
+     *
+     * @return known ArcSqlServerLicenseType values.
+     */
     public static Collection<ArcSqlServerLicenseType> values() {
         return values(ArcSqlServerLicenseType.class);
     }
