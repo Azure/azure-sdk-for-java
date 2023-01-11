@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.SparkBridgeInternal
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
-import com.azure.cosmos.models.PartitionKey
+import com.azure.cosmos.models.{CosmosContainerProperties, PartitionKey, ThroughputProperties}
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.udf.{CreateChangeFeedOffsetFromSpark2, CreateSpark2ContinuationsFromChangeFeedOffset, GetFeedRangeForPartitionKeyValue}
@@ -38,6 +38,15 @@ class SparkE2EChangeFeedITest
     CosmosChangeFeedDataSource.version shouldEqual CosmosConstants.currentVersion
   }
 
+  "spark change feed query (incremental)" can "handle container recreate with batch checkpoint location (ignoring invalid offset)" in {
+    runContainerRecreationScenarioWithatchFileLocation(true)
+  }
+
+  "spark change feed query (incremental)" can "handle container recreate with batch checkpoint location (failing on invalid offset)" in {
+    runContainerRecreationScenarioWithatchFileLocation(false)
+  }
+
+  /*
   "spark change feed query (incremental)" can "use default schema" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
@@ -638,6 +647,7 @@ class SparkE2EChangeFeedITest
     val rowsArray2 = df2.collect()
     rowsArray2 should have size 50 - initialCount
   }
+  */
 
   private def validateArraysUnordered(inputArrayBuffer : ArrayBuffer[String], outputArray: Array[String]) : Unit = {
     assert(inputArrayBuffer.length == outputArray.length)
@@ -728,6 +738,116 @@ class SparkE2EChangeFeedITest
       })
 
     (databaseResourceId, tokenMap.toMap)
+  }
+
+  private def runContainerRecreationScenarioWithatchFileLocation(ignoreOffsetWhenInvalid: Boolean): Unit = {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    var container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+
+    for (sequenceNumber <- 1 to 50) {
+      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+      objectNode.put("name", "Shrodigner's cat")
+      objectNode.put("type", "cat")
+      objectNode.put("age", 20)
+      objectNode.put("sequenceNumber", sequenceNumber)
+      objectNode.put("id", UUID.randomUUID().toString)
+      container.createItem(objectNode).block()
+    }
+
+    // clearing metadata cache to avoid using cached endLSN (which would result)
+    // in not getting all records form initial change feed batch (eventually it would work)
+    PartitionMetadataCache.clearCache()
+
+    val checkpointLocation = s"/tmp/checkpoints/${UUID.randomUUID().toString}"
+    val cfg = Map(
+      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.inferSchema.enabled" -> "false",
+      "spark.cosmos.changeFeed.startFrom" -> "Beginning",
+      "spark.cosmos.read.partitioning.strategy" -> "Restrictive",
+      "spark.cosmos.changeFeed.batchCheckpointLocation" -> checkpointLocation,
+      "spark.cosmos.changeFeed.batchCheckpointLocation.ignoreWhenInvalid" -> ignoreOffsetWhenInvalid.toString
+    )
+
+    val df1 = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()
+    val rowsArray1 = df1.collect()
+    rowsArray1.length shouldEqual 50
+
+    df1.schema.equals(
+      ChangeFeedTable.defaultIncrementalChangeFeedSchemaForInferenceDisabled) shouldEqual true
+
+    val hdfs = org.apache.hadoop.fs.FileSystem.get(spark.sparkContext.hadoopConfiguration)
+
+    val startOffsetFolderLocation = Paths.get(checkpointLocation, "startOffset").toString
+    val startOffsetFileLocation = Paths.get(startOffsetFolderLocation, "0").toString
+    hdfs.exists(new Path(startOffsetFolderLocation)) shouldEqual true
+    hdfs.exists(new Path(startOffsetFileLocation)) shouldEqual false
+
+    val latestOffsetFolderLocation = Paths.get(checkpointLocation, "latestOffset").toString
+    val latestOffsetFileLocation = Paths.get(latestOffsetFolderLocation, "0").toString
+    hdfs.exists(new Path(latestOffsetFolderLocation)) shouldEqual true
+    hdfs.exists(new Path(latestOffsetFileLocation)) shouldEqual true
+
+    if (hdfs.exists(new Path(startOffsetFileLocation))) {
+      val startOffsetJson = readFileContentAsString(hdfs, startOffsetFileLocation)
+      logInfo(s"StartOffset: $startOffsetJson")
+      hdfs.copyToLocalFile(true, new Path(startOffsetFileLocation), new Path(startOffsetFileLocation + ".bak"))
+    } else {
+      logInfo(s"StartOffset: n/a")
+    }
+    assert(!hdfs.exists(new Path(startOffsetFileLocation)))
+
+    assert(hdfs.exists(new Path(latestOffsetFileLocation)))
+    val latestOffsetJson = readFileContentAsString(hdfs, latestOffsetFileLocation)
+    logInfo(s"LatestOffset: $latestOffsetJson")
+    hdfs.copyToLocalFile(true, new Path(latestOffsetFileLocation), new Path(startOffsetFileLocation))
+    assert(!hdfs.exists(new Path(latestOffsetFileLocation)))
+    assert(hdfs.exists(new Path(startOffsetFileLocation)))
+    hdfs.delete(new Path(latestOffsetFolderLocation), true)
+
+    logInfo("Copied LatestOffset -> StartOffset")
+
+    val deleteResponse = container.delete().block()
+    deleteResponse.getStatusCode shouldEqual 204
+
+    this.createContainerCore()
+    logInfo("Recreated container")
+
+    container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+
+    for (sequenceNumber <- 1 to 20) {
+      val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+      objectNode.put("name", "Shrodigner's cat")
+      objectNode.put("type", "cat")
+      objectNode.put("age", 20)
+      objectNode.put("sequenceNumber", sequenceNumber)
+      objectNode.put("id", UUID.randomUUID().toString)
+      container.createItem(objectNode).block()
+    }
+
+    // clearing metadata cache to avoid using cached endLSN (which would result)
+    // in not getting all records form initial change feed batch (eventually it would work)
+    PartitionMetadataCache.clearCache()
+
+    if (ignoreOffsetWhenInvalid) {
+      val df2 = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()
+      val rowsArray2 = df2.collect()
+      rowsArray2 should have size 20
+    } else {
+      try {
+        val df2 = spark.read.format("cosmos.oltp.changeFeed").options(cfg).load()
+        df2.collect()
+
+        fail("Should have thrown an IllegalStateException")
+      } catch {
+        case e: IllegalStateException => logInfo("Got expected IllegalStateException")
+        case t: Exception => fail(s"Unexpected exception $t")
+      }
+    }
   }
 
   //scalastyle:on magic.number

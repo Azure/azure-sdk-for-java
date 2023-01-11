@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.implementation.changefeed.common.{ChangeFeedState, ChangeFeedStateDeserializer}
 import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty}
 import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, LoggerHelper}
@@ -75,18 +76,41 @@ private class ChangeFeedBatch
           log.logInfo(s"Start offset retrieved from file location '$startOffsetLocation' for batchId: $batchId " +
             s"-> offset: '$offsetJson'.")
 
-          ChangeFeedOffset.fromJson(offsetJson).changeFeedState
+          val changeFeedStateBase64 = ChangeFeedOffset.fromJson(offsetJson).changeFeedState
+          val expectedContainerResourceId = container.read().block().getProperties.getResourceId
+          val offsetIsValid = SparkBridgeImplementationInternal.validateCollectionRidOfChangeFeedState(
+            changeFeedStateBase64,
+            expectedContainerResourceId,
+            changeFeedConfig.ignoreOffsetWhenInvalid
+          )
+
+          if (offsetIsValid) {
+            changeFeedStateBase64
+          } else {
+            val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(
+              container, changeFeedConfig, partitioningConfig, None)
+
+            log.logInfo(s"Invalid Start offset retrieved from file location '$startOffsetLocation' for batchId: $batchId " +
+              s"-> New offset retrieved from service: '$newOffsetJson'.")
+
+            newOffsetJson
+          }
         } else {
           val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(
             container, changeFeedConfig, partitioningConfig, None)
 
           log.logInfo(s"No Start offset retrieved from file location '$startOffsetLocation' for batchId: $batchId " +
-            s"-> offset retrieved from from service: '$newOffsetJson'.")
+            s"-> offset retrieved from service: '$newOffsetJson'.")
 
           newOffsetJson
         }
       } else {
-        CosmosPartitionPlanner.createInitialOffset(container, changeFeedConfig, partitioningConfig, None)
+        val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(container, changeFeedConfig, partitioningConfig, None)
+
+        log.logInfo(s"No offset file location provided for batchId: $batchId " +
+          s"-> offset retrieved from service: '$newOffsetJson'.")
+
+        newOffsetJson
       }
 
       // Calculates the Input partitions based on start Lsn and latest Lsn
