@@ -6,14 +6,11 @@ package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Display metadata associated with the operation. */
 @Fluent
 public final class OperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
-
     /*
      * The localized friendly form of the resource provider name.
      */
@@ -21,8 +18,7 @@ public final class OperationDisplay {
     private String provider;
 
     /*
-     * The localized friendly form of the resource type related to this
-     * action/operation.
+     * The localized friendly form of the resource type related to this action/operation.
      */
     @JsonProperty(value = "resource", required = true)
     private String resource;
@@ -38,6 +34,10 @@ public final class OperationDisplay {
      */
     @JsonProperty(value = "description", required = true)
     private String description;
+
+    /** Creates an instance of OperationDisplay class. */
+    public OperationDisplay() {
+    }
 
     /**
      * Get the provider property: The localized friendly form of the resource provider name.
@@ -126,24 +126,26 @@ public final class OperationDisplay {
      */
     public void validate() {
         if (provider() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property provider in model OperationDisplay"));
         }
         if (resource() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property resource in model OperationDisplay"));
         }
         if (operation() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property operation in model OperationDisplay"));
         }
         if (description() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property description in model OperationDisplay"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OperationDisplay.class);
 }

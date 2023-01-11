@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SqlVersion. */
+/** SQL Server version. */
 public final class SqlVersion extends ExpandableStringEnum<SqlVersion> {
     /** Static value SQL Server 2019 for SqlVersion. */
     public static final SqlVersion SQL_SERVER_2019 = fromString("SQL Server 2019");
@@ -18,6 +18,15 @@ public final class SqlVersion extends ExpandableStringEnum<SqlVersion> {
 
     /** Static value SQL Server 2016 for SqlVersion. */
     public static final SqlVersion SQL_SERVER_2016 = fromString("SQL Server 2016");
+
+    /**
+     * Creates a new instance of SqlVersion value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SqlVersion() {
+    }
 
     /**
      * Creates or finds a SqlVersion from its string representation.
@@ -30,7 +39,11 @@ public final class SqlVersion extends ExpandableStringEnum<SqlVersion> {
         return fromString(name, SqlVersion.class);
     }
 
-    /** @return known SqlVersion values. */
+    /**
+     * Gets known SqlVersion values.
+     *
+     * @return known SqlVersion values.
+     */
     public static Collection<SqlVersion> values() {
         return values(SqlVersion.class);
     }
