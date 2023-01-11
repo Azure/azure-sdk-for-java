@@ -1,15 +1,15 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.4.0 (2023-01-11)
 
 ### Features Added
 - Added `getEnpoint()` method to both App Configuration synchronous and asynchronous clients.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.35.0`.
+- Updated `azure-core-http-netty` to `1.12.8`.
 
 ## 1.3.9 (2022-11-09)
 
