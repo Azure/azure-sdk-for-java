@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs;
 
-import com.azure.core.amqp.AmqpTransportType;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AbstractAzureServiceConfigurationTests;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
