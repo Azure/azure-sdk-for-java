@@ -95,9 +95,8 @@ class AzureJedisPasswordlessAutoConfigurationTest {
                 RedisStandaloneConfiguration redisStandaloneConfiguration = (RedisStandaloneConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "standaloneConfig", cf);
                 JedisClientConfiguration jedisClientConfiguration = (JedisClientConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "clientConfiguration", cf);
 
-
                 assertThat(redisStandaloneConfiguration.getDatabase()).isEqualTo(1);
-                assertThat(jedisClientConfiguration.isUseSsl()).isTrue();
+                assertThat(jedisClientConfiguration.isUseSsl()).isFalse();
             });
     }
 
@@ -108,14 +107,14 @@ class AzureJedisPasswordlessAutoConfigurationTest {
                 AzureJedisConnectionFactory cf = context.getBean(AzureJedisConnectionFactory.class);
                 JedisClientConfiguration jedisClientConfiguration = (JedisClientConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "clientConfiguration", cf);
 
-                assertThat(jedisClientConfiguration.isUseSsl()).isTrue();
+                assertThat(jedisClientConfiguration.isUseSsl()).isFalse();
             });
     }
 
     @Test
     void testRedisUrlConfiguration() {
         this.contextRunner
-            .withPropertyValues("spring.redis.host:foo", "spring.redis.url:redis://user:password@example:33")
+            .withPropertyValues("spring.redis.host:foo","spring.redis.ssl:true", "spring.redis.url:redis://user:password@example:33")
             .run((context) -> {
                 AzureJedisConnectionFactory cf = context.getBean(AzureJedisConnectionFactory.class);
                 RedisStandaloneConfiguration standaloneConfig = (RedisStandaloneConfiguration) ReflectionUtils.getField(AzureJedisConnectionFactory.class, "standaloneConfig", cf);
