@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.10 (2023-01-11)
+## 1.4.0 (2023-01-11)
 
 ### Features Added
 - Added `getEnpoint()` method to both App Configuration synchronous and asynchronous clients.
