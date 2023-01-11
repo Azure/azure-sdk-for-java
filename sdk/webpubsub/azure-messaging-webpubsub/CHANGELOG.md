@@ -18,6 +18,8 @@
 #### Dependency Updates
 
 - Updated `api-version` to `2022-11-01`.
+- Upgraded `azure-core` from `1.34.0` to version `1.35.0`.
+- Upgraded `azure-core-http-netty` from `1.12.7` to version `1.12.8`.
 
 ## 1.1.8 (2022-11-09)
 
