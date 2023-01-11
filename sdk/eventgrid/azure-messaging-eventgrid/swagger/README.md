@@ -94,7 +94,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8c9845c7190792cb95c0deda1cb787512c4c7ca1/specification/eventgrid/data-plane/Microsoft.ContainerService/stable/2018-01-01/ContainerService.json
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/79ea998ed5312836275297bb6666c787f7fe2d22/specification/eventgrid/data-plane/Microsoft.ApiManagement/stable/2018-01-01/APIManagement.json
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8c9845c7190792cb95c0deda1cb787512c4c7ca1/specification/eventgrid/data-plane/Microsoft.HealthcareApis/stable/2018-01-01/HealthcareApis.json
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/b60b2d13cd8da02809fc3bfa037928d35bc82db3/specification/eventgrid/data-plane/Microsoft.DataBox/stable/2018-01-01/DataBox.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/b02aa8916df095f428b48d99f77f22b84e9b44da/specification/eventgrid/data-plane/Microsoft.DataBox/stable/2018-01-01/DataBox.json
 ```
 
 ### KeyVault updates

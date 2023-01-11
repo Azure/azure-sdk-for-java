@@ -10,12 +10,12 @@ import java.time.OffsetDateTime;
 
 /** Metadata related to the stage detail. */
 @Fluent
-public final class DataBoxCopyStartedEventDataStageDetails {
+public final class StageDetail {
     /*
      * Name of the current Stage
      */
     @JsonProperty(value = "name")
-    private Name name;
+    private DataBoxStage name;
 
     /*
      * The time at which the stage happened.
@@ -28,7 +28,7 @@ public final class DataBoxCopyStartedEventDataStageDetails {
      *
      * @return the name value.
      */
-    public Name getName() {
+    public DataBoxStage getName() {
         return this.name;
     }
 
@@ -36,9 +36,9 @@ public final class DataBoxCopyStartedEventDataStageDetails {
      * Set the name property: Name of the current Stage.
      *
      * @param name the name value to set.
-     * @return the DataBoxCopyStartedEventDataStageDetails object itself.
+     * @return the StageDetail object itself.
      */
-    public DataBoxCopyStartedEventDataStageDetails setName(Name name) {
+    public StageDetail setName(DataBoxStage name) {
         this.name = name;
         return this;
     }
@@ -56,9 +56,9 @@ public final class DataBoxCopyStartedEventDataStageDetails {
      * Set the time property: The time at which the stage happened.
      *
      * @param time the time value to set.
-     * @return the DataBoxCopyStartedEventDataStageDetails object itself.
+     * @return the StageDetail object itself.
      */
-    public DataBoxCopyStartedEventDataStageDetails setTime(OffsetDateTime time) {
+    public StageDetail setTime(OffsetDateTime time) {
         this.time = time;
         return this;
     }

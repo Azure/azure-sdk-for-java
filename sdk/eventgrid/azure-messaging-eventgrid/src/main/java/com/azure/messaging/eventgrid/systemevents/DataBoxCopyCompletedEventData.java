@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class DataBoxCopyCompletedEventData {
     /*
-     * Serial Number of the device associated with the event, separated by
-     * comma delimiter in case of multiple
+     * Serial Number of the device associated with the event. The list is comma
+     * separated if more than one serial number is associated.
      */
     @JsonProperty(value = "serialNumber")
     private String serialNumber;
@@ -21,11 +21,11 @@ public final class DataBoxCopyCompletedEventData {
      * Metadata related to the stage detail
      */
     @JsonProperty(value = "stageDetails")
-    private DataBoxCopyCompletedEventDataStageDetails stageDetails;
+    private StageDetail stageDetails;
 
     /**
-     * Get the serialNumber property: Serial Number of the device associated with the event, separated by comma
-     * delimiter in case of multiple.
+     * Get the serialNumber property: Serial Number of the device associated with the event. The list is comma separated
+     * if more than one serial number is associated.
      *
      * @return the serialNumber value.
      */
@@ -34,8 +34,8 @@ public final class DataBoxCopyCompletedEventData {
     }
 
     /**
-     * Set the serialNumber property: Serial Number of the device associated with the event, separated by comma
-     * delimiter in case of multiple.
+     * Set the serialNumber property: Serial Number of the device associated with the event. The list is comma separated
+     * if more than one serial number is associated.
      *
      * @param serialNumber the serialNumber value to set.
      * @return the DataBoxCopyCompletedEventData object itself.
@@ -50,7 +50,7 @@ public final class DataBoxCopyCompletedEventData {
      *
      * @return the stageDetails value.
      */
-    public DataBoxCopyCompletedEventDataStageDetails getStageDetails() {
+    public StageDetail getStageDetails() {
         return this.stageDetails;
     }
 
@@ -60,7 +60,7 @@ public final class DataBoxCopyCompletedEventData {
      * @param stageDetails the stageDetails value to set.
      * @return the DataBoxCopyCompletedEventData object itself.
      */
-    public DataBoxCopyCompletedEventData setStageDetails(DataBoxCopyCompletedEventDataStageDetails stageDetails) {
+    public DataBoxCopyCompletedEventData setStageDetails(StageDetail stageDetails) {
         this.stageDetails = stageDetails;
         return this;
     }
