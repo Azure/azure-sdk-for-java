@@ -128,6 +128,9 @@ public final class AppendBlobClient extends BlobClientBase {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
             }
             requestConditions = new AppendBlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        } else {
+            // creating new blob to overwrite existing blob
+            create(true);
         }
         return getBlobOutputStream(requestConditions);
     }

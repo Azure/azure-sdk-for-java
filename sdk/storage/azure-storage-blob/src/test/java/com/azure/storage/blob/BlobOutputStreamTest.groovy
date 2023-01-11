@@ -227,11 +227,10 @@ class BlobOutputStreamTest extends APISpec {
 
         when:
         def outputStream = appendBlobClient.getBlobOutputStream()
-//        for (int i = 0; i != 4; i++) {
-//            outputStream.write(Arrays.copyOfRange(data, i * FOUR_MB, ((i + 1) * FOUR_MB)))
-//        }
         outputStream.write(data)
         outputStream.close()
+        // assert that current stream is
+        convertInputStreamToByteArray(appendBlobClient.openInputStream()) == data
 
         def data2 = getRandomByteArray(FOUR_MB)
 
@@ -244,7 +243,7 @@ class BlobOutputStreamTest extends APISpec {
 
         then:
         appendBlobClient.getProperties().getBlobSize() == data2.length
-//        convertInputStreamToByteArray(appendBlobClient.openInputStream()) == data2
+        convertInputStreamToByteArray(appendBlobClient.openInputStream()) == data2
     }
 
     def convertInputStreamToByteArray(InputStream inputStream) {
