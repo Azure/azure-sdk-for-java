@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported container group and container instance update for `ContainerGroup`.
 
 ## 2.22.0 (2022-12-23)
 

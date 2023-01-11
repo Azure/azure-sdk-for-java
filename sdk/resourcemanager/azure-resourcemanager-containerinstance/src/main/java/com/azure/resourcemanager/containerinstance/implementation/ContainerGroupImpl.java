@@ -3,9 +3,8 @@
 
 package com.azure.resourcemanager.containerinstance.implementation;
 
-import com.azure.core.management.Resource;
-import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
+import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
 import com.azure.resourcemanager.containerinstance.fluent.models.ContainerGroupInner;
 import com.azure.resourcemanager.containerinstance.models.Container;
@@ -58,7 +57,7 @@ import java.util.Set;
 public class ContainerGroupImpl
     extends GroupableParentResourceImpl<
         ContainerGroup, ContainerGroupInner, ContainerGroupImpl, ContainerInstanceManager>
-    implements ContainerGroup, ContainerGroup.Definition, ContainerGroup.Update {
+    implements ContainerGroup, ContainerGroup.Definition, ContainerGroup.Update, ContainerGroup.UpdateStages.WithSystemAssignedIdentityBasedAccessOrUpdate {
 
     private String creatableStorageAccountKey;
     private Creatable<Network> creatableVirtualNetwork;
@@ -99,6 +98,7 @@ public class ContainerGroupImpl
         final ContainerGroupImpl self = this;
 
         if (!isInCreateMode() || newFileShares == null || creatableStorageAccountKey == null) {
+            // container group with storage account is not updatable
             return beforeCreation()
                 .then(
                     manager()
@@ -429,6 +429,14 @@ public class ContainerGroupImpl
         }
         this.innerModel().ipAddress().withDnsNameLabel(dnsPrefix).withType(ContainerGroupIpAddressType.PUBLIC);
 
+        return this;
+    }
+
+    @Override
+    public Update withoutDnsPrefix() {
+        if (this.innerModel().ipAddress() != null) {
+            this.innerModel().ipAddress().withDnsNameLabel(null).withType(ContainerGroupIpAddressType.PRIVATE);
+        }
         return this;
     }
 

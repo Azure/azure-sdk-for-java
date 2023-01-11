@@ -1316,8 +1316,110 @@ public interface ContainerGroup
     /** Grouping of the container group update stages. */
     interface UpdateStages {
 
-        /** /** The stage of the container group definition allowing to define new or update existing container instance. */
-        interface WithContainerInstanceDefineOrUpdate {
+        /** The stage of the container group update allowing to update the DNS prefix label. */
+        interface WithDnsPrefix {
+            /**
+             * Specifies the DNS prefix to be used to create the FQDN for the container group.
+             *
+             * @param dnsPrefix the DNS prefix to be used to create the FQDN for the container group
+             * @return the next stage of the update
+             */
+            Update withDnsPrefix(String dnsPrefix);
+
+            /**
+             * Specifies no DNS prefix to be used for the container group.
+             *
+             * @return the next stage of the update
+             */
+            Update withoutDnsPrefix();
+        }
+
+        /**
+         * The stage of the container instance update allowing to specify having system assigned managed service
+         * identity.
+         */
+        interface WithSystemAssignedManagedServiceIdentity {
+            /**
+             * Specifies a system assigned managed service identity for the container group.
+             *
+             * @return the next stage of the update
+             */
+            WithSystemAssignedIdentityBasedAccessOrUpdate withSystemAssignedManagedServiceIdentity();
+        }
+
+
+        /**
+         * The stage of the container instance update allowing to update system assigned managed service identity
+         * with specific role based access.
+         */
+        interface WithSystemAssignedIdentityBasedAccessOrUpdate extends Update {
+            /**
+             * Specifies a system assigned managed service identity with access to a specific resource with a specified
+             * role.
+             *
+             * @param resourceId the id of the resource you are setting up access to
+             * @param role access role to be assigned to the identity
+             * @return the next stage of the update
+             */
+            Update withSystemAssignedIdentityBasedAccessTo(
+                String resourceId, BuiltInRole role);
+
+            /**
+             * Specifies a system assigned managed service identity with access to the current resource group and with
+             * the specified role.
+             *
+             * @param role access role to be assigned to the identity
+             * @return the next stage of the update
+             */
+            Update withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(
+                BuiltInRole role);
+
+            /**
+             * Specifies a system assigned managed service identity with access to a specific resource with a specified
+             * role from the id.
+             *
+             * @param resourceId the id of the resource you are setting up access to
+             * @param roleDefinitionId id of the access role to be assigned to the identity
+             * @return the next stage of the update
+             */
+            DefinitionStages.WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessTo(
+                String resourceId, String roleDefinitionId);
+
+            /**
+             * Specifies a system assigned managed service identity with access to the current resource group and with
+             * the specified role from the id.
+             *
+             * @param roleDefinitionId id of the access role to be assigned to the identity
+             * @return the next stage of the update
+             */
+            DefinitionStages.WithSystemAssignedIdentityBasedAccessOrCreate withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(
+                String roleDefinitionId);
+        }
+
+        /**
+         * The stage of the container instance update allowing to specify user assigned managed service identity.
+         */
+        interface WithUserAssignedManagedServiceIdentity {
+            /**
+             * Specifies the definition of a not-yet-created user assigned identity to be associated with the virtual
+             * machine.
+             *
+             * @param creatableIdentity a creatable identity definition
+             * @return the next stage of the update
+             */
+            Update withNewUserAssignedManagedServiceIdentity(Creatable<Identity> creatableIdentity);
+
+            /**
+             * Specifies an existing user assigned identity to be associate with the container group.
+             *
+             * @param identity the identity
+             * @return the next stage of the definition
+             */
+            Update withExistingUserAssignedManagedServiceIdentity(Identity identity);
+        }
+
+        /** /** The stage of the container group definition allowing to update an existing container instance. */
+        interface WithContainerInstanceUpdate {
             /**
              * Begins the update of specified container instance.
              *
@@ -1686,8 +1788,7 @@ public interface ContainerGroup
             /**
              * The final stage of the container instance update.
              *
-             * <p>At this stage, any remaining optional settings can be specified, or the subnet definition can be
-             * attached to the parent virtual network definition.
+             * <p>At this stage, any remaining optional settings can be specified.
              *
              * @param <ParentT> the stage of the parent update to return to after updating this definition
              */
@@ -1704,6 +1805,12 @@ public interface ContainerGroup
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
-    interface Update extends Resource.UpdateWithTags<Update>, Appliable<ContainerGroup>, UpdateStages.WithContainerInstanceDefineOrUpdate {
+    interface Update extends
+        Resource.UpdateWithTags<Update>,
+        Appliable<ContainerGroup>,
+        UpdateStages.WithDnsPrefix,
+        UpdateStages.WithSystemAssignedManagedServiceIdentity,
+        UpdateStages.WithUserAssignedManagedServiceIdentity,
+        UpdateStages.WithContainerInstanceUpdate {
     }
 }

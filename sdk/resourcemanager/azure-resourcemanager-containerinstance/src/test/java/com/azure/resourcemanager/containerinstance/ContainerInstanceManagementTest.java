@@ -10,6 +10,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.msi.MsiManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
@@ -21,6 +22,7 @@ import java.util.List;
 
 public class ContainerInstanceManagementTest extends ResourceManagerTestBase {
     protected ContainerInstanceManager containerInstanceManager;
+    protected MsiManager msiManager;
     protected String rgName = "";
 
     @Override
@@ -48,6 +50,7 @@ public class ContainerInstanceManagementTest extends ResourceManagerTestBase {
         internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         containerInstanceManager = buildManager(ContainerInstanceManager.class, httpPipeline, profile);
+        msiManager = buildManager(MsiManager.class, httpPipeline, profile);
         setInternalContext(internalContext, containerInstanceManager);
     }
 
