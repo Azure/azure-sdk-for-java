@@ -22,6 +22,15 @@ public final class HyperVReplicaAzureRpRecoveryPointType
     public static final HyperVReplicaAzureRpRecoveryPointType LATEST_PROCESSED = fromString("LatestProcessed");
 
     /**
+     * Creates a new instance of HyperVReplicaAzureRpRecoveryPointType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HyperVReplicaAzureRpRecoveryPointType() {
+    }
+
+    /**
      * Creates or finds a HyperVReplicaAzureRpRecoveryPointType from its string representation.
      *
      * @param name a name to look for.

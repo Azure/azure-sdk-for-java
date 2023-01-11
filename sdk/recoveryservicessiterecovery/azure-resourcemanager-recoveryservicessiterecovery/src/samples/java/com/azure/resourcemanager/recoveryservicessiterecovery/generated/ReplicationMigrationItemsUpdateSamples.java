@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.MigrationItem;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateMigrationItemInputProperties;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.VMwareCbtUpdateMigrationItemInput;
@@ -30,7 +29,7 @@ public final class ReplicationMigrationItemsUpdateSamples {
                     "vmwarefabric1",
                     "vmwareContainer1",
                     "virtualmachine1",
-                    Context.NONE)
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

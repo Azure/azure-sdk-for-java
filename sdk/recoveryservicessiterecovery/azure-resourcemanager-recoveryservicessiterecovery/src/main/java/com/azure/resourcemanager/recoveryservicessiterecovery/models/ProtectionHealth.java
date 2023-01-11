@@ -23,6 +23,15 @@ public final class ProtectionHealth extends ExpandableStringEnum<ProtectionHealt
     public static final ProtectionHealth CRITICAL = fromString("Critical");
 
     /**
+     * Creates a new instance of ProtectionHealth value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProtectionHealth() {
+    }
+
+    /**
      * Creates or finds a ProtectionHealth from its string representation.
      *
      * @param name a name to look for.

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationvCenters Get. */
 public final class ReplicationvCentersGetSamples {
     /*
@@ -20,6 +18,6 @@ public final class ReplicationvCentersGetSamples {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager
             .replicationvCenters()
-            .getWithResponse("MadhaviVault", "MadhaviVRG", "MadhaviFabric", "esx-78", Context.NONE);
+            .getWithResponse("MadhaviVault", "MadhaviVRG", "MadhaviFabric", "esx-78", com.azure.core.util.Context.NONE);
     }
 }

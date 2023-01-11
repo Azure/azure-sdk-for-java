@@ -32,6 +32,15 @@ public final class MigrationItemOperation extends ExpandableStringEnum<Migration
     public static final MigrationItemOperation RESUME_REPLICATION = fromString("ResumeReplication");
 
     /**
+     * Creates a new instance of MigrationItemOperation value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MigrationItemOperation() {
+    }
+
+    /**
      * Creates or finds a MigrationItemOperation from its string representation.
      *
      * @param name a name to look for.

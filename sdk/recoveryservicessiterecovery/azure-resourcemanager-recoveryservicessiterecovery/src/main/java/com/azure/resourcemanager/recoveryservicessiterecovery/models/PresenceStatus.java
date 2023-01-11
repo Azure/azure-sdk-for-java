@@ -22,6 +22,15 @@ public final class PresenceStatus extends ExpandableStringEnum<PresenceStatus> {
     public static final PresenceStatus NOT_PRESENT = fromString("NotPresent");
 
     /**
+     * Creates a new instance of PresenceStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PresenceStatus() {
+    }
+
+    /**
      * Creates or finds a PresenceStatus from its string representation.
      *
      * @param name a name to look for.

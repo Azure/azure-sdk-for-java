@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationPolicies List. */
 public final class ReplicationPoliciesListSamples {
     /*
@@ -18,6 +16,6 @@ public final class ReplicationPoliciesListSamples {
      */
     public static void getsTheListOfReplicationPolicies(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationPolicies().list("vault1", "resourceGroupPS1", Context.NONE);
+        manager.replicationPolicies().list("vault1", "resourceGroupPS1", com.azure.core.util.Context.NONE);
     }
 }

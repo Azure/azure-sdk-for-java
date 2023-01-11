@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.JobQueryParameter;
 
 /** Samples for ReplicationJobs Export. */
@@ -29,6 +28,6 @@ public final class ReplicationJobsExportSamples {
                     .withEndTime("2017-05-04T14:26:51.9161395Z")
                     .withAffectedObjectTypes("")
                     .withJobStatus(""),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
