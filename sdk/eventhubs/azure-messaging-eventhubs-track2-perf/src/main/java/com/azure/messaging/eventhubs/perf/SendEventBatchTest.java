@@ -97,16 +97,4 @@ public class SendEventBatchTest extends ServiceBatchTest<EventHubsPerfOptions> {
         }
         return null;
     }
-
-    private String generateString(int targetLength) {
-        int leftLimit = 97; // letter 'a'
-        int rightLimit = 122; // letter 'z'
-        Random random = new Random();
-
-        String generatedString = random.ints(leftLimit, rightLimit + 1)
-            .limit(targetLength)
-            .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-            .toString();
-        return generatedString;
-    }
 }

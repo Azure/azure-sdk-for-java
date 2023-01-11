@@ -23,6 +23,12 @@ public class EventHubsPerfStressOptions extends PerfStressOptions {
     @Parameter(names = { "-pi", "--partitionId" }, description = "Target Partition Id")
     private int paritionId = 0;
 
+    @Parameter(names = {"-cg", "--consumerGroup"}, description = "Name of the consumer group.")
+    private String consumerGroup;
+
+    @Parameter(names = { "--prefetch" }, description = "Prefetch for the receiver.")
+    private int prefetch = 500;
+
     /**
      * Get the configured events for performance test.
      * @return The events.
@@ -61,5 +67,23 @@ public class EventHubsPerfStressOptions extends PerfStressOptions {
      */
     public int getPartitionId() {
         return paritionId;
+    }
+
+    /**
+     * Gets the consumer group for receiving messages.
+     *
+     * @return The consumer group for receiving messages.
+     */
+    public String getConsumerGroup() {
+        return consumerGroup;
+    }
+
+    /**
+     * Gets the prefetch for the receiver.
+     *
+     * @return The prefetch for the receiver.
+     */
+    public int getPrefetch() {
+        return prefetch;
     }
 }

@@ -4,12 +4,18 @@
 package com.azure.messaging.eventhubs.perf.core;
 
 import com.azure.core.util.CoreUtils;
-import com.azure.messaging.eventhubs.EventHubClientBuilder;
-import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
-import com.azure.messaging.eventhubs.EventHubProducerClient;
+import com.azure.messaging.eventhubs.*;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.perf.test.core.BatchPerfTest;
 import com.azure.perf.test.core.PerfStressOptions;
 import reactor.core.publisher.Mono;
+
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Represents the EventHubs Service Test.
@@ -21,6 +27,8 @@ public abstract class ServiceBatchTest<TOptions extends PerfStressOptions> exten
     protected EventHubClientBuilder eventHubClientBuilder;
     protected EventHubProducerAsyncClient eventHubProducerAsyncClient;
     protected EventHubProducerClient eventHubProducerClient;
+    protected final List<EventData> events;
+
 
     /**
      * Instantiates instance of the Service Test.
@@ -39,6 +47,16 @@ public abstract class ServiceBatchTest<TOptions extends PerfStressOptions> exten
         if (CoreUtils.isNullOrEmpty(eventHubName)) {
             throw new IllegalStateException("Environment variable EVENTHUB_NAME must be set");
         }
+
+        byte[] eventBytes = generateString(100).getBytes(StandardCharsets.UTF_8);
+
+        final ArrayList<EventData> eventsList = new ArrayList<>();
+        for (int number = 0; number < options.getCount(); number++) {
+            final EventData eventData = new EventData(eventBytes);
+            eventData.getProperties().put("index", number);
+            eventsList.add(eventData);
+        }
+        this.events = Collections.unmodifiableList(eventsList);
     }
 
     @Override
@@ -59,5 +77,43 @@ public abstract class ServiceBatchTest<TOptions extends PerfStressOptions> exten
             eventHubProducerClient.close();
             return 1;
         }).then();
+    }
+
+    Mono<Void> sendMessages(EventHubProducerAsyncClient client, String partitionId, int totalMessagesToSend) {
+        final CreateBatchOptions options = partitionId != null
+            ? new CreateBatchOptions().setPartitionId(partitionId)
+            : new CreateBatchOptions();
+
+        final AtomicInteger number = new AtomicInteger(totalMessagesToSend);
+        return Mono.defer(() -> client.createBatch(options)
+                .flatMap(batch -> {
+                    EventData event = events.get(0);
+                    while (batch.tryAdd(event)) {
+                        final int index = number.getAndDecrement() % events.size();
+                        if (index < 0) {
+                            break;
+                        }
+
+                        event = events.get(index);
+                    }
+
+                    return client.send(batch);
+                }))
+            .repeat(() -> number.get() > 0)
+            .then()
+            .doFinally(signal ->
+                System.out.printf("%s: Sent %d messages.%n", partitionId, totalMessagesToSend));
+    }
+
+    protected String generateString(int targetLength) {
+        int leftLimit = 97; // letter 'a'
+        int rightLimit = 122; // letter 'z'
+        Random random = new Random();
+
+        String generatedString = random.ints(leftLimit, rightLimit + 1)
+            .limit(targetLength)
+            .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+            .toString();
+        return generatedString;
     }
 }
