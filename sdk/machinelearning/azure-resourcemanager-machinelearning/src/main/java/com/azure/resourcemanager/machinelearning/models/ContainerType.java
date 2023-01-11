@@ -17,6 +17,15 @@ public final class ContainerType extends ExpandableStringEnum<ContainerType> {
     public static final ContainerType INFERENCE_SERVER = fromString("InferenceServer");
 
     /**
+     * Creates a new instance of ContainerType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ContainerType() {
+    }
+
+    /**
      * Creates or finds a ContainerType from its string representation.
      *
      * @param name a name to look for.

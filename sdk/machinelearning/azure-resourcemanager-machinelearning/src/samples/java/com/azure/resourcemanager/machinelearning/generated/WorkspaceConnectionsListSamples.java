@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceConnections List. */
 public final class WorkspaceConnectionsListSamples {
     /*
@@ -20,6 +18,11 @@ public final class WorkspaceConnectionsListSamples {
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .workspaceConnections()
-            .list("resourceGroup-1", "workspace-1", "www.facebook.com", "ContainerRegistry", Context.NONE);
+            .list(
+                "resourceGroup-1",
+                "workspace-1",
+                "www.facebook.com",
+                "ContainerRegistry",
+                com.azure.core.util.Context.NONE);
     }
 }

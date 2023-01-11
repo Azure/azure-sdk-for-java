@@ -6,17 +6,16 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.UsageName;
-import org.junit.jupiter.api.Test;
 
 public final class UsageNameTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         UsageName model =
             BinaryData.fromString("{\"value\":\"lokeyy\",\"localizedValue\":\"nj\"}").toObject(UsageName.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         UsageName model = new UsageName();
         model = BinaryData.fromObject(model).toObject(UsageName.class);
     }

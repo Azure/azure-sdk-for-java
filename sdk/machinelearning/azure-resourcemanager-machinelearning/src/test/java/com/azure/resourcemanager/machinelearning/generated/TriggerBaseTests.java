@@ -7,11 +7,10 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.TriggerBase;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class TriggerBaseTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         TriggerBase model =
             BinaryData
                 .fromString(
@@ -22,8 +21,8 @@ public final class TriggerBaseTests {
         Assertions.assertEquals("mzqwmvtxnjmxmcu", model.timeZone());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         TriggerBase model =
             new TriggerBase().withEndTime("plucfotangcfhnyk").withStartTime("ugswvx").withTimeZone("mzqwmvtxnjmxmcu");
         model = BinaryData.fromObject(model).toObject(TriggerBase.class);

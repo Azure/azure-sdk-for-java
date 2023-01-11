@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.MLTableJobOutput;
 import com.azure.resourcemanager.machinelearning.models.OutputDeliveryMode;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class MLTableJobOutputTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         MLTableJobOutput model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class MLTableJobOutputTests {
         Assertions.assertEquals("mlcfnzhmhsurl", model.uri());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         MLTableJobOutput model =
             new MLTableJobOutput()
                 .withDescription("qkpmmzpstau")

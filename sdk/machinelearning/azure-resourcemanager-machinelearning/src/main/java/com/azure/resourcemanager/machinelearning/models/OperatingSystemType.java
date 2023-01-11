@@ -17,6 +17,15 @@ public final class OperatingSystemType extends ExpandableStringEnum<OperatingSys
     public static final OperatingSystemType WINDOWS = fromString("Windows");
 
     /**
+     * Creates a new instance of OperatingSystemType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OperatingSystemType() {
+    }
+
+    /**
      * Creates or finds a OperatingSystemType from its string representation.
      *
      * @param name a name to look for.

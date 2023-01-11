@@ -9,7 +9,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearning.models.EndpointAuthMode;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.net.URL;
 import java.util.Map;
 
 /** Inference Endpoint base definition. */
@@ -46,13 +45,13 @@ public class EndpointPropertiesBaseInner {
      * Endpoint URI.
      */
     @JsonProperty(value = "scoringUri", access = JsonProperty.Access.WRITE_ONLY)
-    private URL scoringUri;
+    private String scoringUri;
 
     /*
      * Endpoint Swagger URI.
      */
     @JsonProperty(value = "swaggerUri", access = JsonProperty.Access.WRITE_ONLY)
-    private URL swaggerUri;
+    private String swaggerUri;
 
     /** Creates an instance of EndpointPropertiesBaseInner class. */
     public EndpointPropertiesBaseInner() {
@@ -147,7 +146,7 @@ public class EndpointPropertiesBaseInner {
      *
      * @return the scoringUri value.
      */
-    public URL scoringUri() {
+    public String scoringUri() {
         return this.scoringUri;
     }
 
@@ -156,7 +155,7 @@ public class EndpointPropertiesBaseInner {
      *
      * @return the swaggerUri value.
      */
-    public URL swaggerUri() {
+    public String swaggerUri() {
         return this.swaggerUri;
     }
 

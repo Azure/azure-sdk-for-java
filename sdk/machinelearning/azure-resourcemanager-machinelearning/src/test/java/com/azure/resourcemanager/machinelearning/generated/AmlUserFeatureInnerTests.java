@@ -7,11 +7,10 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.fluent.models.AmlUserFeatureInner;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AmlUserFeatureInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AmlUserFeatureInner model =
             BinaryData
                 .fromString("{\"id\":\"pkt\",\"displayName\":\"ylkmqp\",\"description\":\"yhlfb\"}")
@@ -21,8 +20,8 @@ public final class AmlUserFeatureInnerTests {
         Assertions.assertEquals("yhlfb", model.description());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AmlUserFeatureInner model =
             new AmlUserFeatureInner().withId("pkt").withDisplayName("ylkmqp").withDescription("yhlfb");
         model = BinaryData.fromObject(model).toObject(AmlUserFeatureInner.class);

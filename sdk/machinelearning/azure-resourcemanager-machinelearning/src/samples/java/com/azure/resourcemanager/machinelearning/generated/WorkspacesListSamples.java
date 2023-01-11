@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Workspaces List. */
 public final class WorkspacesListSamples {
     /*
@@ -18,6 +16,6 @@ public final class WorkspacesListSamples {
      */
     public static void getWorkspacesBySubscription(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.workspaces().list(null, Context.NONE);
+        manager.workspaces().list(null, com.azure.core.util.Context.NONE);
     }
 }

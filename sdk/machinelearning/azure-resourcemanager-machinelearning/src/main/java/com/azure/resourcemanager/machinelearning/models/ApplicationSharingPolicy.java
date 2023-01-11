@@ -23,6 +23,15 @@ public final class ApplicationSharingPolicy extends ExpandableStringEnum<Applica
     public static final ApplicationSharingPolicy SHARED = fromString("Shared");
 
     /**
+     * Creates a new instance of ApplicationSharingPolicy value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationSharingPolicy() {
+    }
+
+    /**
      * Creates or finds a ApplicationSharingPolicy from its string representation.
      *
      * @param name a name to look for.

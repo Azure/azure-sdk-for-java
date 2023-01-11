@@ -18,6 +18,15 @@ public final class UnitOfMeasure extends ExpandableStringEnum<UnitOfMeasure> {
     public static final UnitOfMeasure ONE_HOUR = fromString("OneHour");
 
     /**
+     * Creates a new instance of UnitOfMeasure value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UnitOfMeasure() {
+    }
+
+    /**
      * Creates or finds a UnitOfMeasure from its string representation.
      *
      * @param name a name to look for.

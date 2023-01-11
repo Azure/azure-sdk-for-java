@@ -29,6 +29,15 @@ public final class LogVerbosity extends ExpandableStringEnum<LogVerbosity> {
     public static final LogVerbosity CRITICAL = fromString("Critical");
 
     /**
+     * Creates a new instance of LogVerbosity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LogVerbosity() {
+    }
+
+    /**
      * Creates or finds a LogVerbosity from its string representation.
      *
      * @param name a name to look for.

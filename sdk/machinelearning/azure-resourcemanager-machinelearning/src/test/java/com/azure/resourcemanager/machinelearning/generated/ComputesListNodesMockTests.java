@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.AmlComputeNodeInformation;
 import java.nio.ByteBuffer;
@@ -61,6 +60,6 @@ public final class ComputesListNodesMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AmlComputeNodeInformation> response =
-            manager.computes().listNodes("yrqsdbpokszanm", "wgpterdiuw", "i", Context.NONE);
+            manager.computes().listNodes("yrqsdbpokszanm", "wgpterdiuw", "i", com.azure.core.util.Context.NONE);
     }
 }

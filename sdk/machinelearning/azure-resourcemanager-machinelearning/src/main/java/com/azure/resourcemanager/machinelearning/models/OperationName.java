@@ -29,6 +29,15 @@ public final class OperationName extends ExpandableStringEnum<OperationName> {
     public static final OperationName DELETE = fromString("Delete");
 
     /**
+     * Creates a new instance of OperationName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OperationName() {
+    }
+
+    /**
      * Creates or finds a OperationName from its string representation.
      *
      * @param name a name to look for.

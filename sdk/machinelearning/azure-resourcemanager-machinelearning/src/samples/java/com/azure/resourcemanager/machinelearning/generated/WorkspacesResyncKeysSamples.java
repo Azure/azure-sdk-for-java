@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Workspaces ResyncKeys. */
 public final class WorkspacesResyncKeysSamples {
     /*
@@ -17,6 +15,6 @@ public final class WorkspacesResyncKeysSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void resyncWorkspaceKeys(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.workspaces().resyncKeys("testrg123", "workspaces123", Context.NONE);
+        manager.workspaces().resyncKeys("testrg123", "workspaces123", com.azure.core.util.Context.NONE);
     }
 }

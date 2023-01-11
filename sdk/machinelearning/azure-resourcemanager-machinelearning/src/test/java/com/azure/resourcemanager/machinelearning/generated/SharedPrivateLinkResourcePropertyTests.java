@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.fluent.models.SharedPrivateLinkResourceProperty;
 import com.azure.resourcemanager.machinelearning.models.PrivateEndpointServiceConnectionStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SharedPrivateLinkResourcePropertyTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SharedPrivateLinkResourceProperty model =
             BinaryData
                 .fromString(
@@ -24,8 +23,8 @@ public final class SharedPrivateLinkResourcePropertyTests {
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED, model.status());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SharedPrivateLinkResourceProperty model =
             new SharedPrivateLinkResourceProperty()
                 .withPrivateLinkResourceId("s")
