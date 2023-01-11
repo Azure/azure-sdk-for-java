@@ -68,6 +68,9 @@ public class HubspotLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of HubspotLinkedService class. */
+    public HubspotLinkedService() {}
+
     /**
      * Get the clientId property: The client ID associated with your Hubspot application.
      *

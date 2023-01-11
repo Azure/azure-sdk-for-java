@@ -22,6 +22,10 @@ public final class ScopedResourceProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
+    /** Creates an instance of ScopedResourceProperties class. */
+    public ScopedResourceProperties() {
+    }
+
     /**
      * Get the linkedResourceId property: The resource id of the scoped Azure monitor resource.
      *

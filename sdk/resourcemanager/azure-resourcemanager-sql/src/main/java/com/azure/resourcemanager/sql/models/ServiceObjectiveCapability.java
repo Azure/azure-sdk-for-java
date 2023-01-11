@@ -79,6 +79,12 @@ public final class ServiceObjectiveCapability {
     private String computeModel;
 
     /*
+     * List of supported maintenance configurations
+     */
+    @JsonProperty(value = "supportedMaintenanceConfigurations", access = JsonProperty.Access.WRITE_ONLY)
+    private List<MaintenanceConfigurationCapability> supportedMaintenanceConfigurations;
+
+    /*
      * The status of the capability.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
@@ -89,6 +95,10 @@ public final class ServiceObjectiveCapability {
      */
     @JsonProperty(value = "reason")
     private String reason;
+
+    /** Creates an instance of ServiceObjectiveCapability class. */
+    public ServiceObjectiveCapability() {
+    }
 
     /**
      * Get the id property: The unique ID of the service objective.
@@ -190,6 +200,15 @@ public final class ServiceObjectiveCapability {
     }
 
     /**
+     * Get the supportedMaintenanceConfigurations property: List of supported maintenance configurations.
+     *
+     * @return the supportedMaintenanceConfigurations value.
+     */
+    public List<MaintenanceConfigurationCapability> supportedMaintenanceConfigurations() {
+        return this.supportedMaintenanceConfigurations;
+    }
+
+    /**
      * Get the status property: The status of the capability.
      *
      * @return the status value.
@@ -244,6 +263,9 @@ public final class ServiceObjectiveCapability {
         }
         if (supportedMinCapacities() != null) {
             supportedMinCapacities().forEach(e -> e.validate());
+        }
+        if (supportedMaintenanceConfigurations() != null) {
+            supportedMaintenanceConfigurations().forEach(e -> e.validate());
         }
     }
 }

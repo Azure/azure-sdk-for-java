@@ -19,6 +19,10 @@ public final class LogProfileCollection {
     @JsonProperty(value = "value", required = true)
     private List<LogProfileResourceInner> value;
 
+    /** Creates an instance of LogProfileCollection class. */
+    public LogProfileCollection() {
+    }
+
     /**
      * Get the value property: the values of the log profiles.
      *

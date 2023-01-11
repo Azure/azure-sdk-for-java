@@ -43,6 +43,10 @@ public final class ItsmReceiver {
     @JsonProperty(value = "region", required = true)
     private String region;
 
+    /** Creates an instance of ItsmReceiver class. */
+    public ItsmReceiver() {
+    }
+
     /**
      * Get the name property: The name of the Itsm receiver. Names must be unique across all receivers within an action
      * group.

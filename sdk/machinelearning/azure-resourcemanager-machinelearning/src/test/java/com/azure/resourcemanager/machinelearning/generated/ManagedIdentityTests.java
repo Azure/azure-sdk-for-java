@@ -16,10 +16,10 @@ public final class ManagedIdentityTests {
         ManagedIdentity model =
             BinaryData
                 .fromString(
-                    "{\"identityType\":\"Managed\",\"clientId\":\"dd0f49f5-db24-4169-b9f5-53147da3f246\",\"objectId\":\"07bfb568-5b32-45ee-82a2-ea5e6a4be770\",\"resourceId\":\"clg\"}")
+                    "{\"identityType\":\"Managed\",\"clientId\":\"88af37d5-2fc9-43d8-85fa-9fd7e9ddbcd2\",\"objectId\":\"ab466cea-7382-4652-9d5a-7dfd505ab499\",\"resourceId\":\"clg\"}")
                 .toObject(ManagedIdentity.class);
-        Assertions.assertEquals(UUID.fromString("dd0f49f5-db24-4169-b9f5-53147da3f246"), model.clientId());
-        Assertions.assertEquals(UUID.fromString("07bfb568-5b32-45ee-82a2-ea5e6a4be770"), model.objectId());
+        Assertions.assertEquals(UUID.fromString("88af37d5-2fc9-43d8-85fa-9fd7e9ddbcd2"), model.clientId());
+        Assertions.assertEquals(UUID.fromString("ab466cea-7382-4652-9d5a-7dfd505ab499"), model.objectId());
         Assertions.assertEquals("clg", model.resourceId());
     }
 
@@ -27,12 +27,12 @@ public final class ManagedIdentityTests {
     public void testSerialize() {
         ManagedIdentity model =
             new ManagedIdentity()
-                .withClientId(UUID.fromString("dd0f49f5-db24-4169-b9f5-53147da3f246"))
-                .withObjectId(UUID.fromString("07bfb568-5b32-45ee-82a2-ea5e6a4be770"))
+                .withClientId(UUID.fromString("88af37d5-2fc9-43d8-85fa-9fd7e9ddbcd2"))
+                .withObjectId(UUID.fromString("ab466cea-7382-4652-9d5a-7dfd505ab499"))
                 .withResourceId("clg");
         model = BinaryData.fromObject(model).toObject(ManagedIdentity.class);
-        Assertions.assertEquals(UUID.fromString("dd0f49f5-db24-4169-b9f5-53147da3f246"), model.clientId());
-        Assertions.assertEquals(UUID.fromString("07bfb568-5b32-45ee-82a2-ea5e6a4be770"), model.objectId());
+        Assertions.assertEquals(UUID.fromString("88af37d5-2fc9-43d8-85fa-9fd7e9ddbcd2"), model.clientId());
+        Assertions.assertEquals(UUID.fromString("ab466cea-7382-4652-9d5a-7dfd505ab499"), model.objectId());
         Assertions.assertEquals("clg", model.resourceId());
     }
 }

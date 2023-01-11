@@ -65,6 +65,9 @@ public class SynapseNotebookActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.numExecutors")
     private Integer numExecutors;
 
+    /** Creates an instance of SynapseNotebookActivity class. */
+    public SynapseNotebookActivity() {}
+
     /**
      * Get the notebook property: Synapse notebook reference.
      *

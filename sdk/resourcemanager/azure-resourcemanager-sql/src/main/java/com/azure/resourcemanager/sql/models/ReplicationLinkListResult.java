@@ -4,22 +4,32 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.sql.fluent.models.ReplicationLinkInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents the response to a List database replication link request. */
-@Fluent
+/** A list of replication links. */
+@Immutable
 public final class ReplicationLinkListResult {
     /*
-     * The list of database replication links housed in the database.
+     * Array of results.
      */
-    @JsonProperty(value = "value")
+    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReplicationLinkInner> value;
 
+    /*
+     * Link to retrieve next page of results.
+     */
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
+    private String nextLink;
+
+    /** Creates an instance of ReplicationLinkListResult class. */
+    public ReplicationLinkListResult() {
+    }
+
     /**
-     * Get the value property: The list of database replication links housed in the database.
+     * Get the value property: Array of results.
      *
      * @return the value value.
      */
@@ -28,14 +38,12 @@ public final class ReplicationLinkListResult {
     }
 
     /**
-     * Set the value property: The list of database replication links housed in the database.
+     * Get the nextLink property: Link to retrieve next page of results.
      *
-     * @param value the value value to set.
-     * @return the ReplicationLinkListResult object itself.
+     * @return the nextLink value.
      */
-    public ReplicationLinkListResult withValue(List<ReplicationLinkInner> value) {
-        this.value = value;
-        return this;
+    public String nextLink() {
+        return this.nextLink;
     }
 
     /**

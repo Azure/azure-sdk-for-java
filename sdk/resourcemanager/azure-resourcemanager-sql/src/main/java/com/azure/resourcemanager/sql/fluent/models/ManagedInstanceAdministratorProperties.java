@@ -37,6 +37,10 @@ public final class ManagedInstanceAdministratorProperties {
     @JsonProperty(value = "tenantId")
     private UUID tenantId;
 
+    /** Creates an instance of ManagedInstanceAdministratorProperties class. */
+    public ManagedInstanceAdministratorProperties() {
+    }
+
     /**
      * Get the administratorType property: Type of the managed instance administrator.
      *

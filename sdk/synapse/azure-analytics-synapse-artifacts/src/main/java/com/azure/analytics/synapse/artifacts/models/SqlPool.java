@@ -92,6 +92,9 @@ public class SqlPool extends TrackedResource {
     @JsonProperty(value = "properties.creationDate")
     private OffsetDateTime creationDate;
 
+    /** Creates an instance of SqlPool class. */
+    public SqlPool() {}
+
     /**
      * Get the sku property: Sku
      *

@@ -22,6 +22,9 @@ public final class AdditionalColumns {
     @JsonProperty(value = "value")
     private Object value;
 
+    /** Creates an instance of AdditionalColumns class. */
+    public AdditionalColumns() {}
+
     /**
      * Get the name property: Additional column name. Type: string (or Expression with resultType string).
      *

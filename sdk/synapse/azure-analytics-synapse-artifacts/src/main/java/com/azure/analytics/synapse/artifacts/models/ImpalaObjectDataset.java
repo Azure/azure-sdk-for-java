@@ -36,6 +36,9 @@ public class ImpalaObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties.schema")
     private Object schemaTypePropertiesSchema;
 
+    /** Creates an instance of ImpalaObjectDataset class. */
+    public ImpalaObjectDataset() {}
+
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for JobAgents Delete. */
 public final class JobAgentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/DeleteJobAgent.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/DeleteJobAgent.json
      */
     /**
      * Sample code: Delete a job agent.

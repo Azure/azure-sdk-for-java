@@ -70,7 +70,7 @@ public final class OnlineDeploymentsClientImpl implements OnlineDeploymentsClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
-    private interface OnlineDeploymentsService {
+    public interface OnlineDeploymentsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"

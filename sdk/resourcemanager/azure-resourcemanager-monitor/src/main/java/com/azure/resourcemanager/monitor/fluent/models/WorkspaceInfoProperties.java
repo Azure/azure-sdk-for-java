@@ -17,6 +17,10 @@ public final class WorkspaceInfoProperties {
     @JsonProperty(value = "customerId", required = true)
     private String customerId;
 
+    /** Creates an instance of WorkspaceInfoProperties class. */
+    public WorkspaceInfoProperties() {
+    }
+
     /**
      * Get the customerId property: Log Analytics workspace identifier.
      *

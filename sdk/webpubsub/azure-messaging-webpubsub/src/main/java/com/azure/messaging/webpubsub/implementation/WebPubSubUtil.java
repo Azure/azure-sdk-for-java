@@ -31,8 +31,9 @@ public final class WebPubSubUtil {
                 JsonToken jsonToken = parser.nextToken();
                 if (JsonToken.FIELD_NAME.equals(jsonToken)) {
                     String fieldName = parser.getCurrentName();
-                    System.out.println(fieldName);
                     if (TOKEN.equals(fieldName)) {
+                        // move parser forward to get value of "token"
+                        parser.nextToken();
                         return parser.getValueAsString();
                     }
                 }

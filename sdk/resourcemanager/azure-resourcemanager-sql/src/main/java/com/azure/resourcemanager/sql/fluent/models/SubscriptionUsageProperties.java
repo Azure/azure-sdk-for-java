@@ -34,6 +34,10 @@ public final class SubscriptionUsageProperties {
     @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private String unit;
 
+    /** Creates an instance of SubscriptionUsageProperties class. */
+    public SubscriptionUsageProperties() {
+    }
+
     /**
      * Get the displayName property: User-readable name of the metric.
      *

@@ -24,6 +24,9 @@ public class MariaDBTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
+    /** Creates an instance of MariaDBTableDataset class. */
+    public MariaDBTableDataset() {}
+
     /**
      * Get the tableName property: The table name. Type: string (or Expression with resultType string).
      *

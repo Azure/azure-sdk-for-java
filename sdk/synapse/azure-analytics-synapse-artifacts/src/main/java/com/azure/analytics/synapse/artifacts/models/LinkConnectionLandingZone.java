@@ -34,6 +34,9 @@ public final class LinkConnectionLandingZone {
     @JsonProperty(value = "sasToken")
     private SecureString sasToken;
 
+    /** Creates an instance of LinkConnectionLandingZone class. */
+    public LinkConnectionLandingZone() {}
+
     /**
      * Get the linkedService property: Linked service reference.
      *

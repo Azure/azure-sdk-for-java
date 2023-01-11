@@ -24,6 +24,9 @@ public class CosmosDbSqlApiCollectionDataset extends Dataset {
     @JsonProperty(value = "typeProperties.collectionName", required = true)
     private Object collectionName;
 
+    /** Creates an instance of CosmosDbSqlApiCollectionDataset class. */
+    public CosmosDbSqlApiCollectionDataset() {}
+
     /**
      * Get the collectionName property: CosmosDB (SQL API) collection name. Type: string (or Expression with resultType
      * string).

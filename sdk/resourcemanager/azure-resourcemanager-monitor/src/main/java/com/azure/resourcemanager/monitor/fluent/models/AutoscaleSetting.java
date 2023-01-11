@@ -57,6 +57,10 @@ public final class AutoscaleSetting {
     @JsonProperty(value = "targetResourceLocation")
     private String targetResourceLocation;
 
+    /** Creates an instance of AutoscaleSetting class. */
+    public AutoscaleSetting() {
+    }
+
     /**
      * Get the profiles property: the collection of automatic scaling profiles that specify different scaling parameters
      * for different time periods. A maximum of 20 profiles can be specified.

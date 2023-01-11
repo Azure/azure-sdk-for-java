@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ManagedInstanceProxyOverride. */
+/** Connection type used for connecting to the instance. */
 public final class ManagedInstanceProxyOverride extends ExpandableStringEnum<ManagedInstanceProxyOverride> {
     /** Static value Proxy for ManagedInstanceProxyOverride. */
     public static final ManagedInstanceProxyOverride PROXY = fromString("Proxy");

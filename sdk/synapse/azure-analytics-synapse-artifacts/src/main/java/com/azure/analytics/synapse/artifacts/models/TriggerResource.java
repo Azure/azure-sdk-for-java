@@ -16,6 +16,9 @@ public final class TriggerResource extends SubResource {
     @JsonProperty(value = "properties", required = true)
     private Trigger properties;
 
+    /** Creates an instance of TriggerResource class. */
+    public TriggerResource() {}
+
     /**
      * Get the properties property: Properties of the trigger.
      *

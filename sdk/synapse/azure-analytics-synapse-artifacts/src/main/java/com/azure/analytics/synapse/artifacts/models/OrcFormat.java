@@ -13,6 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("OrcFormat")
 @Fluent
 public final class OrcFormat extends DatasetStorageFormat {
+    /** Creates an instance of OrcFormat class. */
+    public OrcFormat() {}
+
     /** {@inheritDoc} */
     @Override
     public OrcFormat setSerializer(Object serializer) {

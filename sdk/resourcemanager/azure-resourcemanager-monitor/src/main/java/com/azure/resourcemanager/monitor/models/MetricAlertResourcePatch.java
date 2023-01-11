@@ -29,6 +29,10 @@ public final class MetricAlertResourcePatch {
     @JsonProperty(value = "properties")
     private MetricAlertPropertiesPatch innerProperties;
 
+    /** Creates an instance of MetricAlertResourcePatch class. */
+    public MetricAlertResourcePatch() {
+    }
+
     /**
      * Get the tags property: Resource tags.
      *

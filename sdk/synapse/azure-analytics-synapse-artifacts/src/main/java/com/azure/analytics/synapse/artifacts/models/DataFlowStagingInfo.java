@@ -20,7 +20,10 @@ public final class DataFlowStagingInfo {
      * Folder path for staging blob.
      */
     @JsonProperty(value = "folderPath")
-    private String folderPath;
+    private Object folderPath;
+
+    /** Creates an instance of DataFlowStagingInfo class. */
+    public DataFlowStagingInfo() {}
 
     /**
      * Get the linkedService property: Staging linked service reference.
@@ -47,7 +50,7 @@ public final class DataFlowStagingInfo {
      *
      * @return the folderPath value.
      */
-    public String getFolderPath() {
+    public Object getFolderPath() {
         return this.folderPath;
     }
 
@@ -57,7 +60,7 @@ public final class DataFlowStagingInfo {
      * @param folderPath the folderPath value to set.
      * @return the DataFlowStagingInfo object itself.
      */
-    public DataFlowStagingInfo setFolderPath(String folderPath) {
+    public DataFlowStagingInfo setFolderPath(Object folderPath) {
         this.folderPath = folderPath;
         return this;
     }

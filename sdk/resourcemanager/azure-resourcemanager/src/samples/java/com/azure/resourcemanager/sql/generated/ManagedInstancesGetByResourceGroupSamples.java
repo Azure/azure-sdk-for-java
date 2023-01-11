@@ -9,7 +9,25 @@ import com.azure.core.util.Context;
 /** Samples for ManagedInstances GetByResourceGroup. */
 public final class ManagedInstancesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2018-06-01-preview/examples/ManagedInstanceGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceGetWithExpandEqualsAdministrators.json
+     */
+    /**
+     * Sample code: Get managed instance with $expand=administrators/activedirectory.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void getManagedInstanceWithExpandAdministratorsActivedirectory(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .sqlServers()
+            .manager()
+            .serviceClient()
+            .getManagedInstances()
+            .getByResourceGroupWithResponse("testrg", "testinstance", null, Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ManagedInstanceGet.json
      */
     /**
      * Sample code: Get managed instance.
@@ -22,6 +40,6 @@ public final class ManagedInstancesGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getManagedInstances()
-            .getByResourceGroupWithResponse("testrg", "testinstance", Context.NONE);
+            .getByResourceGroupWithResponse("testrg", "testinstance", null, Context.NONE);
     }
 }

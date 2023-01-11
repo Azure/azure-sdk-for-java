@@ -21,7 +21,6 @@ import com.azure.storage.common.StorageOutputStream;
 import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -193,10 +192,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                 return Mono.error(this.lastError);
             }
 
-            Flux<ByteBuffer> fbb = Flux.range(0, 1).concatMap(pos -> Mono.fromCallable(() ->
-                ByteBuffer.wrap(data, (int) offset, writeLength)));
-
-            return this.appendBlock(fbb.subscribeOn(Schedulers.boundedElastic()), writeLength);
+            return this.appendBlock(Mono.fromCallable(() -> ByteBuffer.wrap(data, (int) offset, writeLength)).flux(),
+                writeLength);
         }
 
         @Override
@@ -347,16 +344,15 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                     writeLength)));
             }
 
-            Flux<ByteBuffer> fbb = Flux.range(0, 1)
-                .concatMap(pos -> Mono.fromCallable(() -> ByteBuffer.wrap(data, (int) offset, writeLength)));
-
             long pageOffset = pageRange.getStart();
             if (pageOffset + writeLength - 1 > pageRange.getEnd()) {
                 throw LOGGER.logExceptionAsError(
                     new RuntimeException("The input data length is larger than the page range."));
             }
             pageRange.setStart(pageRange.getStart() + writeLength);
-            return this.writePages(fbb.subscribeOn(Schedulers.boundedElastic()), writeLength, pageOffset);
+
+            return this.writePages(Mono.fromCallable(() -> ByteBuffer.wrap(data, (int) offset, writeLength)).flux(),
+                writeLength, pageOffset);
         }
 
         @Override

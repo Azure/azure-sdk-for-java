@@ -16,6 +16,10 @@ public final class ServerDnsAliasProperties {
     @JsonProperty(value = "azureDnsRecord", access = JsonProperty.Access.WRITE_ONLY)
     private String azureDnsRecord;
 
+    /** Creates an instance of ServerDnsAliasProperties class. */
+    public ServerDnsAliasProperties() {
+    }
+
     /**
      * Get the azureDnsRecord property: The fully qualified DNS record for alias.
      *
