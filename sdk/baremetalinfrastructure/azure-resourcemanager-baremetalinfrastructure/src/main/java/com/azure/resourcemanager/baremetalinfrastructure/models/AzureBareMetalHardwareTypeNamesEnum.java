@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AzureBareMetalHardwareTypeNamesEnum. */
+/** Name of the hardware type (vendor and/or their product name). */
 public final class AzureBareMetalHardwareTypeNamesEnum
     extends ExpandableStringEnum<AzureBareMetalHardwareTypeNamesEnum> {
     /** Static value Cisco_UCS for AzureBareMetalHardwareTypeNamesEnum. */
@@ -16,6 +16,15 @@ public final class AzureBareMetalHardwareTypeNamesEnum
 
     /** Static value HPE for AzureBareMetalHardwareTypeNamesEnum. */
     public static final AzureBareMetalHardwareTypeNamesEnum HPE = fromString("HPE");
+
+    /**
+     * Creates a new instance of AzureBareMetalHardwareTypeNamesEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AzureBareMetalHardwareTypeNamesEnum() {
+    }
 
     /**
      * Creates or finds a AzureBareMetalHardwareTypeNamesEnum from its string representation.
@@ -28,7 +37,11 @@ public final class AzureBareMetalHardwareTypeNamesEnum
         return fromString(name, AzureBareMetalHardwareTypeNamesEnum.class);
     }
 
-    /** @return known AzureBareMetalHardwareTypeNamesEnum values. */
+    /**
+     * Gets known AzureBareMetalHardwareTypeNamesEnum values.
+     *
+     * @return known AzureBareMetalHardwareTypeNamesEnum values.
+     */
     public static Collection<AzureBareMetalHardwareTypeNamesEnum> values() {
         return values(AzureBareMetalHardwareTypeNamesEnum.class);
     }
