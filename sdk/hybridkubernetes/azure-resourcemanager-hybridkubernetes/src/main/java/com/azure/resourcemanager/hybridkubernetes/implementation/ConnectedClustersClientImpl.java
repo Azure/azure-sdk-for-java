@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridkubernetes.fluent.ConnectedClustersClient;
@@ -46,8 +45,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ConnectedClustersClient. */
 public final class ConnectedClustersClientImpl implements ConnectedClustersClient {
-    private final ClientLogger logger = new ClientLogger(ConnectedClustersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ConnectedClustersService service;
 
@@ -71,7 +68,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "HybridKubernetesMana")
-    private interface ConnectedClustersService {
+    public interface ConnectedClustersService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Kubernetes"
@@ -197,7 +194,9 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * Register a new Kubernetes cluster with Azure Resource Manager.
+     *
+     * <p>API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -205,7 +204,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -253,7 +252,9 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * Register a new Kubernetes cluster with Azure Resource Manager.
+     *
+     * <p>API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -262,7 +263,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -307,7 +308,9 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * Register a new Kubernetes cluster with Azure Resource Manager.
+     *
+     * <p>API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -315,7 +318,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return the {@link PollerFlux} for polling of represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginCreateAsync(
@@ -329,11 +332,13 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
                 this.client.getHttpPipeline(),
                 ConnectedClusterInner.class,
                 ConnectedClusterInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
-     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * Register a new Kubernetes cluster with Azure Resource Manager.
+     *
+     * <p>API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -342,7 +347,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return the {@link PollerFlux} for polling of represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginCreateAsync(
@@ -357,7 +362,9 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * Register a new Kubernetes cluster with Azure Resource Manager.
+     *
+     * <p>API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -365,16 +372,18 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return the {@link SyncPoller} for polling of represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginCreate(
         String resourceGroupName, String clusterName, ConnectedClusterInner connectedCluster) {
-        return beginCreateAsync(resourceGroupName, clusterName, connectedCluster).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, clusterName, connectedCluster).getSyncPoller();
     }
 
     /**
-     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * Register a new Kubernetes cluster with Azure Resource Manager.
+     *
+     * <p>API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -383,16 +392,18 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return the {@link SyncPoller} for polling of represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginCreate(
         String resourceGroupName, String clusterName, ConnectedClusterInner connectedCluster, Context context) {
-        return beginCreateAsync(resourceGroupName, clusterName, connectedCluster, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, clusterName, connectedCluster, context).getSyncPoller();
     }
 
     /**
-     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * Register a new Kubernetes cluster with Azure Resource Manager.
+     *
+     * <p>API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -400,7 +411,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConnectedClusterInner> createAsync(
@@ -411,7 +422,9 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * Register a new Kubernetes cluster with Azure Resource Manager.
+     *
+     * <p>API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -420,7 +433,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConnectedClusterInner> createAsync(
@@ -431,7 +444,9 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * Register a new Kubernetes cluster with Azure Resource Manager.
+     *
+     * <p>API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -448,7 +463,9 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * Register a new Kubernetes cluster with Azure Resource Manager.
+     *
+     * <p>API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -466,7 +483,9 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * API to update certain properties of the connected cluster resource.
+     * Updates a connected cluster.
+     *
+     * <p>API to update certain properties of the connected cluster resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -474,7 +493,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectedClusterInner>> updateWithResponseAsync(
@@ -522,7 +541,9 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * API to update certain properties of the connected cluster resource.
+     * Updates a connected cluster.
+     *
+     * <p>API to update certain properties of the connected cluster resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -531,7 +552,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectedClusterInner>> updateWithResponseAsync(
@@ -576,7 +597,9 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * API to update certain properties of the connected cluster resource.
+     * Updates a connected cluster.
+     *
+     * <p>API to update certain properties of the connected cluster resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -584,24 +607,39 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConnectedClusterInner> updateAsync(
         String resourceGroupName, String clusterName, ConnectedClusterPatch connectedClusterPatch) {
         return updateWithResponseAsync(resourceGroupName, clusterName, connectedClusterPatch)
-            .flatMap(
-                (Response<ConnectedClusterInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * API to update certain properties of the connected cluster resource.
+     * Updates a connected cluster.
+     *
+     * <p>API to update certain properties of the connected cluster resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kubernetes cluster on which get is called.
+     * @param connectedClusterPatch Parameters supplied to update Connected Cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a connected cluster along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ConnectedClusterInner> updateWithResponse(
+        String resourceGroupName, String clusterName, ConnectedClusterPatch connectedClusterPatch, Context context) {
+        return updateWithResponseAsync(resourceGroupName, clusterName, connectedClusterPatch, context).block();
+    }
+
+    /**
+     * Updates a connected cluster.
+     *
+     * <p>API to update certain properties of the connected cluster resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -614,37 +652,21 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectedClusterInner update(
         String resourceGroupName, String clusterName, ConnectedClusterPatch connectedClusterPatch) {
-        return updateAsync(resourceGroupName, clusterName, connectedClusterPatch).block();
+        return updateWithResponse(resourceGroupName, clusterName, connectedClusterPatch, Context.NONE).getValue();
     }
 
     /**
-     * API to update certain properties of the connected cluster resource.
+     * Get the properties of the specified connected cluster.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Kubernetes cluster on which get is called.
-     * @param connectedClusterPatch Parameters supplied to update Connected Cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConnectedClusterInner> updateWithResponse(
-        String resourceGroupName, String clusterName, ConnectedClusterPatch connectedClusterPatch, Context context) {
-        return updateWithResponseAsync(resourceGroupName, clusterName, connectedClusterPatch, context).block();
-    }
-
-    /**
-     * Returns the properties of the specified connected cluster, including name, identity, properties, and additional
-     * cluster details.
+     * <p>Returns the properties of the specified connected cluster, including name, identity, properties, and
+     * additional cluster details.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectedClusterInner>> getByResourceGroupWithResponseAsync(
@@ -685,8 +707,10 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * Returns the properties of the specified connected cluster, including name, identity, properties, and additional
-     * cluster details.
+     * Get the properties of the specified connected cluster.
+     *
+     * <p>Returns the properties of the specified connected cluster, including name, identity, properties, and
+     * additional cluster details.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -694,7 +718,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectedClusterInner>> getByResourceGroupWithResponseAsync(
@@ -732,32 +756,49 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * Returns the properties of the specified connected cluster, including name, identity, properties, and additional
-     * cluster details.
+     * Get the properties of the specified connected cluster.
+     *
+     * <p>Returns the properties of the specified connected cluster, including name, identity, properties, and
+     * additional cluster details.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
+     * @return represents a connected cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConnectedClusterInner> getByResourceGroupAsync(String resourceGroupName, String clusterName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, clusterName)
-            .flatMap(
-                (Response<ConnectedClusterInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Returns the properties of the specified connected cluster, including name, identity, properties, and additional
-     * cluster details.
+     * Get the properties of the specified connected cluster.
+     *
+     * <p>Returns the properties of the specified connected cluster, including name, identity, properties, and
+     * additional cluster details.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kubernetes cluster on which get is called.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a connected cluster along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ConnectedClusterInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String clusterName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, clusterName, context).block();
+    }
+
+    /**
+     * Get the properties of the specified connected cluster.
+     *
+     * <p>Returns the properties of the specified connected cluster, including name, identity, properties, and
+     * additional cluster details.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -768,36 +809,20 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectedClusterInner getByResourceGroup(String resourceGroupName, String clusterName) {
-        return getByResourceGroupAsync(resourceGroupName, clusterName).block();
+        return getByResourceGroupWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
     }
 
     /**
-     * Returns the properties of the specified connected cluster, including name, identity, properties, and additional
-     * cluster details.
+     * Delete a connected cluster.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Kubernetes cluster on which get is called.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a connected cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConnectedClusterInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String clusterName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, clusterName, context).block();
-    }
-
-    /**
-     * Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
+     * <p>Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName) {
@@ -837,7 +862,9 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
+     * Delete a connected cluster.
+     *
+     * <p>Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -845,7 +872,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -883,25 +910,30 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
+     * Delete a connected cluster.
+     *
+     * <p>Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, clusterName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
-     * Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
+     * Delete a connected cluster.
+     *
+     * <p>Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -909,7 +941,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -922,22 +954,26 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
+     * Delete a connected cluster.
+     *
+     * <p>Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName) {
-        return beginDeleteAsync(resourceGroupName, clusterName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName).getSyncPoller();
     }
 
     /**
-     * Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
+     * Delete a connected cluster.
+     *
+     * <p>Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -945,23 +981,25 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName, context).getSyncPoller();
     }
 
     /**
-     * Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
+     * Delete a connected cluster.
+     *
+     * <p>Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String clusterName) {
@@ -969,7 +1007,9 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
+     * Delete a connected cluster.
+     *
+     * <p>Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -977,7 +1017,7 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, Context context) {
@@ -987,7 +1027,9 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
+     * Delete a connected cluster.
+     *
+     * <p>Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -1001,7 +1043,9 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
+     * Delete a connected cluster.
+     *
+     * <p>Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -1016,7 +1060,9 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * Gets cluster user credentials of the connected cluster with a specified resource group and name.
+     * Gets cluster user credentials of a connected cluster
+     *
+     * <p>Gets cluster user credentials of the connected cluster with a specified resource group and name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -1024,7 +1070,8 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster user credentials of the connected cluster with a specified resource group and name.
+     * @return cluster user credentials of the connected cluster with a specified resource group and name along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CredentialResultsInner>> listClusterUserCredentialWithResponseAsync(
@@ -1071,7 +1118,9 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * Gets cluster user credentials of the connected cluster with a specified resource group and name.
+     * Gets cluster user credentials of a connected cluster
+     *
+     * <p>Gets cluster user credentials of the connected cluster with a specified resource group and name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -1080,7 +1129,8 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster user credentials of the connected cluster with a specified resource group and name.
+     * @return cluster user credentials of the connected cluster with a specified resource group and name along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CredentialResultsInner>> listClusterUserCredentialWithResponseAsync(
@@ -1124,7 +1174,9 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * Gets cluster user credentials of the connected cluster with a specified resource group and name.
+     * Gets cluster user credentials of a connected cluster
+     *
+     * <p>Gets cluster user credentials of the connected cluster with a specified resource group and name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -1132,24 +1184,41 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster user credentials of the connected cluster with a specified resource group and name.
+     * @return cluster user credentials of the connected cluster with a specified resource group and name on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CredentialResultsInner> listClusterUserCredentialAsync(
         String resourceGroupName, String clusterName, ListClusterUserCredentialProperties properties) {
         return listClusterUserCredentialWithResponseAsync(resourceGroupName, clusterName, properties)
-            .flatMap(
-                (Response<CredentialResultsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Gets cluster user credentials of the connected cluster with a specified resource group and name.
+     * Gets cluster user credentials of a connected cluster
+     *
+     * <p>Gets cluster user credentials of the connected cluster with a specified resource group and name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kubernetes cluster on which get is called.
+     * @param properties ListClusterUserCredential properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster user credentials of the connected cluster with a specified resource group and name along with
+     *     {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CredentialResultsInner> listClusterUserCredentialWithResponse(
+        String resourceGroupName, String clusterName, ListClusterUserCredentialProperties properties, Context context) {
+        return listClusterUserCredentialWithResponseAsync(resourceGroupName, clusterName, properties, context).block();
+    }
+
+    /**
+     * Gets cluster user credentials of a connected cluster
+     *
+     * <p>Gets cluster user credentials of the connected cluster with a specified resource group and name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -1162,35 +1231,21 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CredentialResultsInner listClusterUserCredential(
         String resourceGroupName, String clusterName, ListClusterUserCredentialProperties properties) {
-        return listClusterUserCredentialAsync(resourceGroupName, clusterName, properties).block();
+        return listClusterUserCredentialWithResponse(resourceGroupName, clusterName, properties, Context.NONE)
+            .getValue();
     }
 
     /**
-     * Gets cluster user credentials of the connected cluster with a specified resource group and name.
+     * Lists all connected clusters
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Kubernetes cluster on which get is called.
-     * @param properties ListClusterUserCredential properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cluster user credentials of the connected cluster with a specified resource group and name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CredentialResultsInner> listClusterUserCredentialWithResponse(
-        String resourceGroupName, String clusterName, ListClusterUserCredentialProperties properties, Context context) {
-        return listClusterUserCredentialWithResponseAsync(resourceGroupName, clusterName, properties, context).block();
-    }
-
-    /**
-     * API to enumerate registered connected K8s clusters under a Resource Group.
+     * <p>API to enumerate registered connected K8s clusters under a Resource Group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectedClusterInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1235,14 +1290,17 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * API to enumerate registered connected K8s clusters under a Resource Group.
+     * Lists all connected clusters
+     *
+     * <p>API to enumerate registered connected K8s clusters under a Resource Group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectedClusterInner>> listByResourceGroupSinglePageAsync(
@@ -1285,13 +1343,15 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * API to enumerate registered connected K8s clusters under a Resource Group.
+     * Lists all connected clusters
+     *
+     * <p>API to enumerate registered connected K8s clusters under a Resource Group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConnectedClusterInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1301,14 +1361,16 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * API to enumerate registered connected K8s clusters under a Resource Group.
+     * Lists all connected clusters
+     *
+     * <p>API to enumerate registered connected K8s clusters under a Resource Group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConnectedClusterInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1318,13 +1380,15 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * API to enumerate registered connected K8s clusters under a Resource Group.
+     * Lists all connected clusters
+     *
+     * <p>API to enumerate registered connected K8s clusters under a Resource Group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectedClusterInner> listByResourceGroup(String resourceGroupName) {
@@ -1332,14 +1396,16 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * API to enumerate registered connected K8s clusters under a Resource Group.
+     * Lists all connected clusters
+     *
+     * <p>API to enumerate registered connected K8s clusters under a Resource Group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectedClusterInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1347,11 +1413,14 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * API to enumerate registered connected K8s clusters under a Subscription.
+     * Lists all connected clusters
+     *
+     * <p>API to enumerate registered connected K8s clusters under a Subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectedClusterInner>> listSinglePageAsync() {
@@ -1391,13 +1460,16 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * API to enumerate registered connected K8s clusters under a Subscription.
+     * Lists all connected clusters
+     *
+     * <p>API to enumerate registered connected K8s clusters under a Subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectedClusterInner>> listSinglePageAsync(Context context) {
@@ -1434,11 +1506,13 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * API to enumerate registered connected K8s clusters under a Subscription.
+     * Lists all connected clusters
+     *
+     * <p>API to enumerate registered connected K8s clusters under a Subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConnectedClusterInner> listAsync() {
@@ -1447,13 +1521,15 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * API to enumerate registered connected K8s clusters under a Subscription.
+     * Lists all connected clusters
+     *
+     * <p>API to enumerate registered connected K8s clusters under a Subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConnectedClusterInner> listAsync(Context context) {
@@ -1462,11 +1538,13 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * API to enumerate registered connected K8s clusters under a Subscription.
+     * Lists all connected clusters
+     *
+     * <p>API to enumerate registered connected K8s clusters under a Subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectedClusterInner> list() {
@@ -1474,13 +1552,15 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     }
 
     /**
-     * API to enumerate registered connected K8s clusters under a Subscription.
+     * Lists all connected clusters
+     *
+     * <p>API to enumerate registered connected K8s clusters under a Subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectedClusterInner> list(Context context) {
@@ -1490,11 +1570,13 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectedClusterInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1526,12 +1608,14 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectedClusterInner>> listByResourceGroupNextSinglePageAsync(
@@ -1563,11 +1647,13 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectedClusterInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1599,12 +1685,14 @@ public final class ConnectedClustersClientImpl implements ConnectedClustersClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of connected Clusters.
+     * @return the paginated list of connected Clusters along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectedClusterInner>> listBySubscriptionNextSinglePageAsync(

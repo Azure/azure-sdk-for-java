@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.hybridkubernetes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridkubernetes.fluent.models.ConnectedClusterInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The paginated list of connected Clusters. */
 @Fluent
 public final class ConnectedClusterList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectedClusterList.class);
-
     /*
      * The list of connected clusters
      */
@@ -27,6 +23,10 @@ public final class ConnectedClusterList {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of ConnectedClusterList class. */
+    public ConnectedClusterList() {
+    }
 
     /**
      * Get the value property: The list of connected clusters.
