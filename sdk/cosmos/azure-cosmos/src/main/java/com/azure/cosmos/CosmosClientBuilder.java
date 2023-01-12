@@ -121,7 +121,7 @@ public class CosmosClientBuilder implements
     private CosmosClientTelemetryConfig clientTelemetryConfig;
     private ApiType apiType = null;
     private Boolean clientTelemetryEnabledOverride = null;
-    private EagerConnectionConfig eagerConnectionConfig;
+    private ProactiveContainerInitConfig proactiveContainerInitConfig;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -430,8 +430,13 @@ public class CosmosClientBuilder implements
         return credential;
     }
 
-    EagerConnectionConfig getConnectionConfig() {
-        return eagerConnectionConfig;
+    /**
+     * Gets the {@link ProactiveContainerInitConfig} to be used
+     *
+     * @return {@link ProactiveContainerInitConfig}
+     * */
+    ProactiveContainerInitConfig getProactiveContainerInitConfig() {
+        return proactiveContainerInitConfig;
     }
 
     /**
@@ -685,8 +690,18 @@ public class CosmosClientBuilder implements
         return this;
     }
 
-    public CosmosClientBuilder openConnectionsAndInitCaches(EagerConnectionConfig eagerConnectionConfig) {
-        this.eagerConnectionConfig = eagerConnectionConfig;
+    /**
+     * Enables proactive connections to replicas which hold the partitions of the specified containers.
+     *
+     * <p>
+     *     Use the {@link ProactiveContainerInitConfigBuilder} class to instantiate {@link ProactiveContainerInitConfig} class
+     * </p>
+     * @param proactiveContainerInitConfig which encapsulates a list of container identities and no of
+     *                                     proactive connection regions
+     * @return current CosmosClientBuilder
+     * */
+    public CosmosClientBuilder openConnectionsAndInitCaches(ProactiveContainerInitConfig proactiveContainerInitConfig) {
+        this.proactiveContainerInitConfig = proactiveContainerInitConfig;
         return this;
     }
 
@@ -842,7 +857,7 @@ public class CosmosClientBuilder implements
         validateConfig();
         buildConnectionPolicy();
         CosmosAsyncClient cosmosAsyncClient = new CosmosAsyncClient(this);
-        cosmosAsyncClient.openConnectionsAndInitCaches().subscribe();
+        cosmosAsyncClient.openConnectionsAndInitCaches();
         return cosmosAsyncClient;
     }
 
@@ -852,7 +867,6 @@ public class CosmosClientBuilder implements
      * @return CosmosClient
      */
     public CosmosClient buildClient() {
-
         validateConfig();
         buildConnectionPolicy();
         CosmosClient cosmosClient = new CosmosClient(this);
@@ -897,6 +911,9 @@ public class CosmosClientBuilder implements
                     LocationHelper.getLocationEndpoint(uri, trimmedPreferredRegion);
                 }
             );
+
+            ifThrowIllegalArgException(this.proactiveContainerInitConfig.getNumProactiveConnectionRegions() > this.preferredRegions.size(), "no. of regions to proactively connect to" +
+                    "cannot be greater than no. of preferred regions");
         }
 
         ifThrowIllegalArgException(this.serviceEndpoint == null,

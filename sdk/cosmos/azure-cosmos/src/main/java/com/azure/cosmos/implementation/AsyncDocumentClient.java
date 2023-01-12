@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.EagerConnectionConfig;
+import com.azure.cosmos.ProactiveContainerInitConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
@@ -1656,12 +1656,13 @@ public interface AsyncDocumentClient {
      */
     void enableThroughputControlGroup(ThroughputControlGroupInternal group);
 
-    /***
-     *  Warming up the caches and connections to all replicas of the container for the current read region.
+    /**
+     * Warm up caches and open connections for containers specified by
+     * {@link ProactiveContainerInitConfig#getCosmosContainerIdentities()} to replicas in
+     * {@link ProactiveContainerInitConfig#getNumProactiveConnectionRegions()} preferred regions.
      *
-     * @param containerLink the container link.
+     * @param proactiveContainerInitConfig the instance encapsulating a list of container identities and no. of proactive connection regions
+     * @return A flux of {@link OpenConnectionResponse}.
      */
-    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink);
-
-    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(EagerConnectionConfig eagerConnectionConfig);
+    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(ProactiveContainerInitConfig proactiveContainerInitConfig);
 }

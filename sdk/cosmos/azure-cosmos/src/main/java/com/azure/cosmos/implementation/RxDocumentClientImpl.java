@@ -11,7 +11,7 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.EagerConnectionConfig;
+import com.azure.cosmos.ProactiveContainerInitConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
 import com.azure.cosmos.implementation.batch.PartitionKeyRangeServerBatchRequest;
@@ -4305,16 +4305,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.throughputControlStore.enableThroughputControlGroup(group);
     }
 
+    // TODO: Add check argument for list of container identities
     @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
-        checkArgument(StringUtils.isNotEmpty(containerLink), "Argument 'containerLink' should not be null nor empty");
-
-        return this.storeModel.openConnectionsAndInitCaches(containerLink);
-    }
-
-    @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(EagerConnectionConfig eagerConnectionConfig) {
-        return this.storeModel.openConnectionsAndInitCaches(eagerConnectionConfig);
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(ProactiveContainerInitConfig proactiveContainerInitConfig) {
+        return this.storeModel.openConnectionsAndInitCaches(proactiveContainerInitConfig);
     }
 
     private static SqlQuerySpec createLogicalPartitionScanQuerySpec(

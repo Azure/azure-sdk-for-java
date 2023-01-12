@@ -143,21 +143,19 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         cosmosContainerIdentities.add(new CosmosContainerIdentity(containerLink1));
         cosmosContainerIdentities.add(new CosmosContainerIdentity(containerLink1));
 
-        EagerConnectionConfig eagerConnectionConfig = new EagerConnectionConfigBuilder()
-                .addContainerIdentities(cosmosContainerIdentities)
-                .addEagerConnectionRegions(regions)
+        ProactiveContainerInitConfig proactiveContainerInitConfig = new ProactiveContainerInitConfigBuilder(cosmosContainerIdentities)
+                .setProactiveConnectionRegions(2)
                 .build();
 
         CosmosClient cosmosClient = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
-                .openConnectionsAndInitCaches(eagerConnectionConfig)
+                .openConnectionsAndInitCaches(proactiveContainerInitConfig)
                 .contentResponseOnWriteEnabled(true)
                 .preferredRegions(Arrays.asList("East US", "West US"))
                 .endpointDiscoveryEnabled(true)
                 .directMode()
                 .buildClient();
-
     }
 
     @Test(groups = {"simple"}, dataProvider = "useAsyncParameterProvider")

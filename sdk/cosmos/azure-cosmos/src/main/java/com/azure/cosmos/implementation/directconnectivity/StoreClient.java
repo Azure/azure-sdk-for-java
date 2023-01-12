@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.EagerConnectionConfig;
+import com.azure.cosmos.ProactiveContainerInitConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
@@ -135,13 +135,8 @@ public class StoreClient implements IStoreClient {
     }
 
     @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
-        return this.replicatedResourceClient.openConnectionsAndInitCaches(containerLink);
-    }
-
-    @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(EagerConnectionConfig eagerConnectionConfig) {
-        return this.replicatedResourceClient.openConnectionsAndInitCaches(eagerConnectionConfig);
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(ProactiveContainerInitConfig proactiveContainerInitConfig) {
+        return this.replicatedResourceClient.openConnectionsAndInitCaches(proactiveContainerInitConfig);
     }
 
     private void handleUnsuccessfulStoreResponse(RxDocumentServiceRequest request, CosmosException exception) {

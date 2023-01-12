@@ -3,19 +3,8 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.EagerConnectionConfig;
-import com.azure.cosmos.EagerConnectionConfigBuilder;
-import com.azure.cosmos.implementation.ApiType;
-import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.Constants;
-import com.azure.cosmos.implementation.DiagnosticsClientContext;
-import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
-import com.azure.cosmos.implementation.IOpenConnectionsHandler;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.UserAgentContainer;
+import com.azure.cosmos.ProactiveContainerInitConfig;
+import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -96,51 +85,56 @@ public class GlobalAddressResolver implements IAddressResolver {
         }
     }
 
-    @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
-        checkArgument(StringUtils.isNotEmpty(containerLink), "Argument 'containerLink' should not be null nor empty");
+//    @Override
+//    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
+//        checkArgument(StringUtils.isNotEmpty(containerLink), "Argument 'containerLink' should not be null nor empty");
+//
+//        // Strip the leading "/", which follows the same format for document requests
+//        // TODO: currently, the cache key used for collectionCache is inconsistent: some are using path with "/", some use path with stripped leading "/",
+//        // TODO: ideally it should have been consistent across
+//        String cacheKey = StringUtils.strip(containerLink, Constants.Properties.PATH_SEPARATOR);
+//        return this.collectionCache.resolveByNameAsync(null, cacheKey, null)
+//                .flatMapMany(collection -> {
+//                    if (collection == null) {
+//                        logger.warn("Can not find the collection, no connections will be opened");
+//                        return Mono.empty();
+//                    }
+//
+//                    return this.routingMapProvider.tryGetOverlappingRangesAsync(
+//                                    null,
+//                                    collection.getResourceId(),
+//                                    PartitionKeyInternalHelper.FullRange,
+//                                    true,
+//                                    null)
+//                            .map(valueHolder -> {
+//
+//                                if(valueHolder == null || valueHolder.v == null || valueHolder.v.size() == 0) {
+//                                    logger.warn(
+//                                            "There is no pkRanges found for collection {}, no connections will be opened",
+//                                            collection.getResourceId());
+//                                    return new ArrayList<PartitionKeyRangeIdentity>();
+//                                }
+//
+//                                return valueHolder.v
+//                                        .stream()
+//                                        .map(pkRange -> new PartitionKeyRangeIdentity(collection.getResourceId(), pkRange.getId()))
+//                                        .collect(Collectors.toList());
+//                            })
+//                            .flatMapMany(pkRangeIdentities -> this.openConnectionsAndInitCachesInternal(collection, pkRangeIdentities, new ProactiveContainerInitConfigBuilder(new ArrayList<>()).buildDefaultConfig()));
+//                });
+//    }
 
+    @Override
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(ProactiveContainerInitConfig proactiveContainerInitConfig) {
         // Strip the leading "/", which follows the same format for document requests
         // TODO: currently, the cache key used for collectionCache is inconsistent: some are using path with "/", some use path with stripped leading "/",
         // TODO: ideally it should have been consistent across
-        String cacheKey = StringUtils.strip(containerLink, Constants.Properties.PATH_SEPARATOR);
-        return this.collectionCache.resolveByNameAsync(null, cacheKey, null)
-                .flatMapMany(collection -> {
-                    if (collection == null) {
-                        logger.warn("Can not find the collection, no connections will be opened");
-                        return Mono.empty();
-                    }
 
-                    return this.routingMapProvider.tryGetOverlappingRangesAsync(
-                                    null,
-                                    collection.getResourceId(),
-                                    PartitionKeyInternalHelper.FullRange,
-                                    true,
-                                    null)
-                            .map(valueHolder -> {
+        // 1. Obtain current read region if no. of proactive regions is 1
+        // 2. Obtain current read region and first preferred remote write region if no. of proactive regions is 2
 
-                                if(valueHolder == null || valueHolder.v == null || valueHolder.v.size() == 0) {
-                                    logger.warn(
-                                            "There is no pkRanges found for collection {}, no connections will be opened",
-                                            collection.getResourceId());
-                                    return new ArrayList<PartitionKeyRangeIdentity>();
-                                }
 
-                                return valueHolder.v
-                                        .stream()
-                                        .map(pkRange -> new PartitionKeyRangeIdentity(collection.getResourceId(), pkRange.getId()))
-                                        .collect(Collectors.toList());
-                            })
-                            .flatMapMany(pkRangeIdentities -> this.openConnectionsAndInitCachesInternal(collection, pkRangeIdentities, new EagerConnectionConfigBuilder().buildEmptyConfig()));
-                });
-    }
-
-    @Override
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(EagerConnectionConfig eagerConnectionConfig) {
-        // Strip the leading "/", which follows the same format for document requests
-        // TODO: currently, the cache key used for collectionCache is inconsistent: some are using path with "/", some use path with stripped leading "/",
-        // TODO: ideally it should have been consistent across
-        return Flux.fromIterable(eagerConnectionConfig.getCosmosContainerIdentities())
+        return Flux.fromIterable(proactiveContainerInitConfig.getCosmosContainerIdentities())
                 .flatMap(containerIdentity -> Mono.just(StringUtils.strip(containerIdentity.getContainerLink(), Constants.Properties.PATH_SEPARATOR)))
                 .flatMap(cacheKey -> this.collectionCache.resolveByNameAsync(null, cacheKey, null)
                         .flatMapMany(collection -> {
@@ -169,30 +163,30 @@ public class GlobalAddressResolver implements IAddressResolver {
                                                 .map(pkRange -> new PartitionKeyRangeIdentity(collection.getResourceId(), pkRange.getId()))
                                                 .collect(Collectors.toList());
                                     })
-                                    .flatMapMany(pkRangeIdentities -> this.openConnectionsAndInitCachesInternal(collection, pkRangeIdentities, eagerConnectionConfig));
+                                    .flatMapMany(pkRangeIdentities -> this.openConnectionsAndInitCachesInternal(collection, pkRangeIdentities, proactiveContainerInitConfig));
                         }));
     }
 
     private Flux<OpenConnectionResponse> openConnectionsAndInitCachesInternal(
             DocumentCollection collection,
             List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities,
-            EagerConnectionConfig eagerConnectionConfig
+            ProactiveContainerInitConfig proactiveContainerInitConfig
             ) {
 
-        // TODO: Check if containerConnectionConfig has preferredRegions set
-        // TODO: for proactively adding opening connections for all regions
-        if (!eagerConnectionConfig.getEagerConnectionRegions().equals(Collections.emptySet())) {
+        List<String> preferredLocations = connectionPolicy.getPreferredRegions().subList(0, proactiveContainerInitConfig.getNumProactiveConnectionRegions() - 1);
+        List<String> proactiveConnectionRegions = preferredLocations.subList(0, proactiveContainerInitConfig.getNumProactiveConnectionRegions() - 1);
+
+        if (proactiveContainerInitConfig.getNumProactiveConnectionRegions() > 0) {
             return Flux.fromStream(this.endpointManager.getReadEndpoints().stream())
                     .flatMap(readEndpoint -> {
-                        // TODO: Open connections only for regions present in preferredRegions
-                        // TODO: use locationCache maybe to determine region for URI
                         if (this.addressCacheByEndpoint.containsKey(readEndpoint)) {
-                            return this.addressCacheByEndpoint.get(readEndpoint)
-                                    .addressCache
-                                    .openConnectionsAndInitCaches(collection, partitionKeyRangeIdentities);
+                            String endpointRegion = this.endpointManager.getRegionName(readEndpoint, OperationType.Create);
+                            if (proactiveConnectionRegions.contains(endpointRegion)) {
+                                return this.addressCacheByEndpoint.get(readEndpoint)
+                                        .addressCache
+                                        .openConnectionsAndInitCaches(collection, partitionKeyRangeIdentities);
+                            }
                         }
-
-
                         return Flux.empty();
                     });
         }

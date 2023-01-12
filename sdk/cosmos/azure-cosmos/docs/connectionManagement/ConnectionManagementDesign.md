@@ -68,7 +68,7 @@
       * Do we use `int numEagerConnectionRegions;` instead?
   * `CosmosClientBuilder`
     * Methods to possibly add/enhance:
-      * `public CosmosClientBuilder openConnectionsAndInitCaches(EagerConnectionConfig eagerConnectionConfig)`
+      * `public CosmosClientBuilder openConnectionsAndInitCaches(EagerConnectionConfig proactiveContainerInitConfig)`
       * `public CosmosAsyncClient buildAsync()`
       * `public CosmosClient build()`
   * CosmosAsyncClient
@@ -83,7 +83,7 @@
         * Should be package-private.
         * Invoked on build
 * Open connection enhancement
-  * `openConnectionsAndInitCaches(eagerConnectionConfig)` definition can be added to the following interfaces:
+  * `openConnectionsAndInitCaches(proactiveContainerInitConfig)` definition can be added to the following interfaces:
     * `AsyncDocumentClient`
     * `RxStoreModel`
     * `IStoreClient`
@@ -92,7 +92,7 @@
     * `AddressSelector`
     * `IAddressResolver`
   * `GlobalAddressResolver`
-    * This would implement `openConnectionsAndInitCaches(eagerConnectionConfig)`
+    * This would implement `openConnectionsAndInitCaches(proactiveContainerInitConfig)`
       * This would have logic to stream all read/write endpoints and pick regions to be eagerly connected with.
       * Open connections to filtered out regions.
       * Questions

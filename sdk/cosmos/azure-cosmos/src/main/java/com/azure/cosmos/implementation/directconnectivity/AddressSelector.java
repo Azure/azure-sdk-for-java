@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.EagerConnectionConfig;
+import com.azure.cosmos.ProactiveContainerInitConfig;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
@@ -86,12 +86,8 @@ public class AddressSelector {
         );
     }
 
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
-        return this.addressResolver.openConnectionsAndInitCaches(containerLink);
-    }
-
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(EagerConnectionConfig eagerConnectionConfig) {
-        return this.addressResolver.openConnectionsAndInitCaches(eagerConnectionConfig);
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(ProactiveContainerInitConfig proactiveContainerInitConfig) {
+        return this.addressResolver.openConnectionsAndInitCaches(proactiveContainerInitConfig);
     }
 
 }

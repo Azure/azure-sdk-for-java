@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
@@ -17,6 +18,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
+import java.util.List;
 
 /**
  * Provides a client-side logical representation of the Azure Cosmos DB service.
@@ -135,8 +137,8 @@ public final class CosmosClient implements Closeable {
     }
 
     // TODO: Improve exception handling here
-    void openConnectionsAndInitCaches() {
-        asyncClientWrapper.openConnectionsAndInitCaches().blockLast();
+    List<OpenConnectionResponse> openConnectionsAndInitCaches() {
+        return asyncClientWrapper.openConnectionsAndInitCaches();
     }
 
     CosmosDatabaseResponse blockDatabaseResponse(Mono<CosmosDatabaseResponse> databaseMono) {

@@ -7,16 +7,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.cosmos.implementation.ApiType;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.Database;
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.Permission;
-import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.TracerProvider;
+import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
@@ -87,7 +78,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final boolean clientMetricsEnabled;
     private final boolean isSendClientTelemetryToServiceEnabled;
     private final MeterRegistry clientMetricRegistrySnapshot;
-    private final EagerConnectionConfig eagerConnectionConfig;
+    private final ProactiveContainerInitConfig proactiveContainerInitConfig;
 
     static {
         ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
@@ -111,7 +102,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.tokenCredential = builder.getTokenCredential();
         this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         this.enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
-        this.eagerConnectionConfig = builder.getConnectionConfig();
+        this.proactiveContainerInitConfig = builder.getProactiveContainerInitConfig();
         ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor
             telemetryConfigAccessor = ImplementationBridgeHelpers
             .CosmosClientTelemetryConfigHelper
@@ -595,16 +586,21 @@ public final class CosmosAsyncClient implements Closeable {
         return new GlobalThroughputControlConfigBuilder(this, databaseId, containerId);
     }
 
+    List<OpenConnectionResponse> openConnectionsAndInitCaches() {
+        return openConnectionsAndInitCachesInternal().block();
+    }
+
+    private Mono<List<OpenConnectionResponse>> openConnectionsAndInitCachesInternal() {
+        if (this.proactiveContainerInitConfig != null) {
+            return this.asyncDocumentClient
+                    .openConnectionsAndInitCaches(this.proactiveContainerInitConfig)
+                    .collectList();
+        }
+        return Mono.just(new ArrayList<>());
+    }
+
     // TODO: Find a way to set isInitialized to true for containers whose
     // TODO: connections have been opened
-    Flux<Void> openConnectionsAndInitCaches() {
-        if (this.eagerConnectionConfig != null) {
-            return Flux.just(this.eagerConnectionConfig)
-                    .flatMap(eagerConnectionConfig -> this.asyncDocumentClient.openConnectionsAndInitCaches(eagerConnectionConfig))
-                    .flatMap(openConnectionResponse -> Mono.empty());
-        }
-        return Flux.empty();
-    }
 
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options){
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
