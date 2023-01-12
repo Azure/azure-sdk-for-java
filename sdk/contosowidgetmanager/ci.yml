@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/contosowidgetmanager/ci.yml
+      - sdk/contosowidgetmanager/azure-contoso-widgetmanager/
+    exclude:
+      - sdk/contosowidgetmanager/pom.xml
+      - sdk/contosowidgetmanager/azure-contoso-widgetmanager/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/contosowidgetmanager/ci.yml
+      - sdk/contosowidgetmanager/azure-contoso-widgetmanager/
+    exclude:
+      - sdk/contosowidgetmanager/pom.xml
+      - sdk/contosowidgetmanager/azure-contoso-widgetmanager/pom.xml
+
+parameters:
+  - name: release_azurecontosowidgetmanager
+    displayName: azure-contoso-widgetmanager
+    type: boolean
+    default: true
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: contosowidgetmanager
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-contoso-widgetmanager
+        groupId: com.azure
+        safeName: azurecontosowidgetmanager
+        releaseInBatch: ${{ parameters.release_azurecontosowidgetmanager }}
