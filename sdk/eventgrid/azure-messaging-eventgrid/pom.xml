@@ -57,6 +57,8 @@
 
       --add-reads com.azure.messaging.eventgrid=com.azure.core.serializer.json.jackson
     </javaModulesSurefireArgLine>
+    <javadoc.sourcepath>${basedir}/src/main/java:${basedir}/../../core/azure-core/src/main/java</javadoc.sourcepath>
+    <javadoc.excludePackageNames>com.azure.core.*</javadoc.excludePackageNames>
   </properties>
 
   <developers>

@@ -40,9 +40,6 @@ public class AzureCliCredential implements TokenCredential {
         identitySyncClient = builder.buildSyncClient();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return identityClient.authenticateWithAzureCli(request)
