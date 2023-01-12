@@ -10,7 +10,7 @@ import com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties
  */
 public class ServiceBusConsumerProperties extends ProcessorProperties {
 
-    private boolean requeueRejected = false;
+    private boolean requeueRejected;
 
     /**
      * Controls if the failed messages are routed to the DLQ
