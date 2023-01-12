@@ -119,14 +119,6 @@ public final class SearchField {
     private LexicalAnalyzerName indexAnalyzerName;
 
     /*
-     * The name of the normalizer to use for the field. This option can be used only with fields with filterable,
-     * sortable, or facetable enabled. Once the normalizer is chosen, it cannot be changed for the field. Must be null
-     * for complex fields.
-     */
-    @JsonProperty(value = "normalizer")
-    private LexicalNormalizerName normalizerName;
-
-    /*
      * A list of the names of synonym maps to associate with this field. This option can be used only with searchable
      * fields. Currently only one synonym map per field is supported. Assigning a synonym map to a field ensures that
      * query terms targeting that field are expanded at query-time using the rules in the synonym map. This attribute
@@ -430,30 +422,6 @@ public final class SearchField {
      */
     public SearchField setIndexAnalyzerName(LexicalAnalyzerName indexAnalyzerName) {
         this.indexAnalyzerName = indexAnalyzerName;
-        return this;
-    }
-
-    /**
-     * Get the normalizerName property: The name of the normalizer to use for the field. This option can be used only
-     * with fields with filterable, sortable, or facetable enabled. Once the normalizer is chosen, it cannot be changed
-     * for the field. Must be null for complex fields.
-     *
-     * @return the normalizerName value.
-     */
-    public LexicalNormalizerName getNormalizerName() {
-        return this.normalizerName;
-    }
-
-    /**
-     * Set the normalizerName property: The name of the normalizer to use for the field. This option can be used only
-     * with fields with filterable, sortable, or facetable enabled. Once the normalizer is chosen, it cannot be changed
-     * for the field. Must be null for complex fields.
-     *
-     * @param normalizerName the normalizerName value to set.
-     * @return the SearchField object itself.
-     */
-    public SearchField setNormalizerName(LexicalNormalizerName normalizerName) {
-        this.normalizerName = normalizerName;
         return this;
     }
 

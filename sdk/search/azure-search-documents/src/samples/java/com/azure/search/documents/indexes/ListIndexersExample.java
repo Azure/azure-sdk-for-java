@@ -34,16 +34,16 @@ public class ListIndexersExample {
     }
 
     private static void listIndexers(SearchIndexerAsyncClient indexerAsyncClient) {
-        PagedResponse<SearchIndexer> response = indexerAsyncClient.listIndexers()
+        PagedResponse<SearchIndexer> response = indexerAsyncClient.listIndexers(null)
             .byPage().blockFirst();
 
         if (response != null) {
-            System.out.printf("Response code: %s%n", response.getStatusCode());
+            System.out.println(String.format("Response code: %s", response.getStatusCode()));
 
             List<SearchIndexer> indexers = response.getValue();
             System.out.println("Found the following indexers:");
             for (SearchIndexer indexer : indexers) {
-                System.out.printf("Indexer name: %s, ETag: %s%n", indexer.getName(), indexer.getETag());
+                System.out.println(String.format("Indexer name: %s, ETag: %s", indexer.getName(), indexer.getETag()));
             }
         }
     }

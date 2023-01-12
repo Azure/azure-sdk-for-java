@@ -17,8 +17,11 @@ public final class ClassicTokenizerConverter {
         if (obj == null) {
             return null;
         }
+        ClassicTokenizer classicTokenizer = new ClassicTokenizer(obj.getName());
 
-        return new ClassicTokenizer(obj.getName()).setMaxTokenLength(obj.getMaxTokenLength());
+        Integer maxTokenLength = obj.getMaxTokenLength();
+        classicTokenizer.setMaxTokenLength(maxTokenLength);
+        return classicTokenizer;
     }
 
     /**
@@ -28,9 +31,14 @@ public final class ClassicTokenizerConverter {
         if (obj == null) {
             return null;
         }
+        com.azure.search.documents.indexes.implementation.models.ClassicTokenizer classicTokenizer =
+            new com.azure.search.documents.indexes.implementation.models.ClassicTokenizer(obj.getName());
 
-        return new com.azure.search.documents.indexes.implementation.models.ClassicTokenizer(obj.getName())
-            .setMaxTokenLength(obj.getMaxTokenLength());
+
+        Integer maxTokenLength = obj.getMaxTokenLength();
+        classicTokenizer.setMaxTokenLength(maxTokenLength);
+
+        return classicTokenizer;
     }
 
     private ClassicTokenizerConverter() {

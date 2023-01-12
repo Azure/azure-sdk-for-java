@@ -18,8 +18,10 @@ import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
@@ -28,7 +30,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class SynonymMapManagementSyncTests extends SearchTestBase {
@@ -332,6 +333,9 @@ public class SynonymMapManagementSyncTests extends SearchTestBase {
     public void canListSynonymMapsWithSelectedField() {
         SynonymMap synonymMap1 = createTestSynonymMap();
         SynonymMap synonymMap2 = createTestSynonymMap();
+        Set<String> expectedNames = new HashSet<>();
+        expectedNames.add(synonymMap1.getName());
+        expectedNames.add(synonymMap2.getName());
 
         client.createSynonymMap(synonymMap1);
         synonymMapsToDelete.add(synonymMap1.getName());
@@ -344,8 +348,7 @@ public class SynonymMapManagementSyncTests extends SearchTestBase {
         result.forEach(Assertions::assertNotNull);
 
         assertEquals(2, result.size());
-        assertTrue(result.contains(synonymMap1.getName()));
-        assertTrue(result.contains(synonymMap2.getName()));
+        expectedNames.containsAll(result);
     }
 
     @Test

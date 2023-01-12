@@ -4,7 +4,6 @@
 package com.azure.search.documents.implementation.util;
 
 import com.azure.core.models.GeoPoint;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.MemberNameConverter;
 import com.azure.core.util.serializer.MemberNameConverterProviders;
@@ -14,7 +13,6 @@ import com.azure.search.documents.indexes.SearchableField;
 import com.azure.search.documents.indexes.SimpleField;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
-import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import reactor.util.annotation.Nullable;
@@ -52,9 +50,6 @@ public final class FieldBuilder {
     private static final int MAX_DEPTH = 10000;
     private static final Map<Type, SearchFieldDataType> SUPPORTED_NONE_PARAMETERIZED_TYPE = new HashMap<>();
     private static final Set<Type> UNSUPPORTED_TYPES = new HashSet<>();
-
-    private static final SearchFieldDataType COLLECTION_STRING
-        = SearchFieldDataType.collection(SearchFieldDataType.STRING);
 
     static {
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Integer.class, SearchFieldDataType.INT32);
@@ -113,15 +108,13 @@ public final class FieldBuilder {
     private static List<SearchField> build(Class<?> currentClass, Stack<Class<?>> classChain,
         MemberNameConverter serializer) {
         if (classChain.contains(currentClass)) {
-            LOGGER.warning("There is circular dependencies {}, {}", classChain, currentClass);
+            LOGGER.warning(String.format("There is circular dependencies %s, %s", classChain, currentClass));
             return null;
         }
-
         if (classChain.size() > MAX_DEPTH) {
             throw LOGGER.logExceptionAsError(new RuntimeException(
                 "The dependency graph is too deep. Please review your schema."));
         }
-
         classChain.push(currentClass);
         List<SearchField> searchFields = getDeclaredFieldsAndMethods(currentClass)
             .filter(FieldBuilder::fieldOrMethodIgnored)
@@ -242,14 +235,18 @@ public final class FieldBuilder {
             return ((Class<?>) arrayOrListType).getComponentType();
         }
 
-        throw LOGGER.logExceptionAsError(
-            new RuntimeException("Collection type '" + arrayOrListType.getTypeName() + "' is not supported."));
+        throw LOGGER.logExceptionAsError(new RuntimeException(String.format(
+            "Collection type %s is not supported.", arrayOrListType.getTypeName())));
     }
 
     private static SearchField convertToBasicSearchField(String fieldName, Type type) {
-        SearchFieldDataType dataType = covertToSearchFieldDataType(type, false);
 
-        return (dataType == null) ? null : new SearchField(fieldName, dataType);
+        SearchFieldDataType dataType = covertToSearchFieldDataType(type, false);
+        if (dataType == null) {
+            return null;
+        }
+
+        return new SearchField(fieldName, dataType);
     }
 
     private static SearchField enrichWithAnnotation(SearchField searchField, Member member) {
@@ -258,99 +255,55 @@ public final class FieldBuilder {
 
         if (simpleField != null && searchableField != null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "@SimpleField and @SearchableField cannot be present simultaneously for " + member.getName()));
+                String.format("@SimpleFieldProperty and @SearchableFieldProperty cannot be present simultaneously "
+                    + "for %s", member.getName())));
         }
-
-        if (simpleField == null && searchableField == null) {
-            return searchField;
-        }
-
-        boolean key, hidden, filterable, sortable, facetable;
-        boolean searchable = searchableField != null;
-        String analyzerName = null;
-        String searchAnalyzerName = null;
-        String indexAnalyzerName = null;
-        String normalizerName;
-        String[] synonymMapNames = null;
-
         if (simpleField != null) {
-            key = simpleField.isKey();
-            hidden = simpleField.isHidden();
-            filterable = simpleField.isFilterable();
-            sortable = simpleField.isSortable();
-            facetable = simpleField.isFacetable();
-            normalizerName = simpleField.normalizerName();
-        } else {
-            key = searchableField.isKey();
-            hidden = searchableField.isHidden();
-            filterable = searchableField.isFilterable();
-            sortable = searchableField.isSortable();
-            facetable = searchableField.isFacetable();
-            analyzerName = searchableField.analyzerName();
-            searchAnalyzerName = searchableField.searchAnalyzerName();
-            indexAnalyzerName = searchableField.indexAnalyzerName();
-            normalizerName = searchableField.normalizerName();
-            synonymMapNames = searchableField.synonymMapNames();
-        }
-
-        StringBuilder errorMessage = new StringBuilder();
-        boolean isStringOrCollectionString = searchField.getType() == SearchFieldDataType.STRING
-            || searchField.getType() == COLLECTION_STRING;
-        boolean hasAnalyzerName = !CoreUtils.isNullOrEmpty(analyzerName);
-        boolean hasSearchAnalyzerName = !CoreUtils.isNullOrEmpty(searchAnalyzerName);
-        boolean hasIndexAnalyzerName = !CoreUtils.isNullOrEmpty(indexAnalyzerName);
-        boolean hasNormalizerName = !CoreUtils.isNullOrEmpty(normalizerName);
-        if (searchable) {
-            if (!isStringOrCollectionString) {
-                errorMessage.append("SearchField can only be used on string properties. Property '")
-                    .append(member.getName()).append("' returns a '").append(searchField.getType()).append("' value. ");
+            searchField.setSearchable(false)
+                .setSortable(simpleField.isSortable())
+                .setFilterable(simpleField.isFilterable())
+                .setFacetable(simpleField.isFacetable())
+                .setKey(simpleField.isKey())
+                .setHidden(simpleField.isHidden());
+        } else if (searchableField != null) {
+            if (!searchField.getType().equals(SearchFieldDataType.STRING)
+                && !searchField.getType().equals(SearchFieldDataType.collection(SearchFieldDataType.STRING))) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(String.format("SearchFieldProperty can only"
+                        + " be used on string properties. Property %s returns a %s value.",
+                    member.getName(), searchField.getType())));
             }
 
-            // Searchable fields are allowed to have either no analyzer names configure or one of the following
-            // analyzerName is set and searchAnalyzerName and indexAnalyzerName are not set
-            // searchAnalyzerName and indexAnalyzerName are set and analyzerName is not set
-            if ((!hasAnalyzerName && (hasSearchAnalyzerName != hasIndexAnalyzerName))
-                || (hasAnalyzerName && (hasSearchAnalyzerName || hasIndexAnalyzerName))) {
-                errorMessage.append("Please specify either analyzer or both searchAnalyzer and indexAnalyzer. ");
+            searchField.setSearchable(true)
+                .setSortable(searchableField.isSortable())
+                .setFilterable(searchableField.isFilterable())
+                .setFacetable(searchableField.isFacetable())
+                .setKey(searchableField.isKey())
+                .setHidden(searchableField.isHidden());
+            String analyzer = searchableField.analyzerName();
+            String searchAnalyzer = searchableField.searchAnalyzerName();
+            String indexAnalyzer = searchableField.indexAnalyzerName();
+            if (!analyzer.isEmpty() && (!searchAnalyzer.isEmpty() || !indexAnalyzer.isEmpty())) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(
+                    "Please specify either analyzer or both searchAnalyzer and indexAnalyzer."));
+            }
+            if (!searchableField.analyzerName().isEmpty()) {
+                searchField.setAnalyzerName(LexicalAnalyzerName.fromString(
+                    searchableField.analyzerName()));
+            }
+            if (!searchableField.searchAnalyzerName().isEmpty()) {
+                searchField.setAnalyzerName(LexicalAnalyzerName.fromString(
+                    searchableField.searchAnalyzerName()));
+            }
+            if (!searchableField.indexAnalyzerName().isEmpty()) {
+                searchField.setAnalyzerName(LexicalAnalyzerName.fromString(
+                    searchableField.indexAnalyzerName()));
+            }
+            if (searchableField.synonymMapNames().length != 0) {
+                List<String> synonymMaps = Arrays.stream(searchableField.synonymMapNames())
+                    .filter(synonym -> !synonym.trim().isEmpty()).collect(Collectors.toList());
+                searchField.setSynonymMapNames(synonymMaps);
             }
         }
-
-        // Any field is allowed to have a normalizer but it must be either a STRING or Collection(STRING) and have one
-        // of filterable, sortable, or facetable set to true.
-        if (hasNormalizerName && (!isStringOrCollectionString || !(filterable || sortable || facetable))) {
-            errorMessage.append("A field with a normalizer name can only be used on string properties and must have ")
-                .append("one of filterable, sortable, or facetable set to true. ");
-        }
-
-        if (errorMessage.length() > 0) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(errorMessage.toString()));
-        }
-
-        searchField.setKey(key)
-            .setHidden(hidden)
-            .setSearchable(searchable)
-            .setFilterable(filterable)
-            .setSortable(sortable)
-            .setFacetable(facetable);
-
-        if (hasAnalyzerName) {
-            searchField.setAnalyzerName(LexicalAnalyzerName.fromString(analyzerName));
-        } else if (hasSearchAnalyzerName || hasIndexAnalyzerName) {
-            searchField.setAnalyzerName(LexicalAnalyzerName.fromString(searchAnalyzerName));
-            searchField.setAnalyzerName(LexicalAnalyzerName.fromString(indexAnalyzerName));
-        }
-
-        if (hasNormalizerName) {
-            searchField.setNormalizerName(LexicalNormalizerName.fromString(normalizerName));
-        }
-
-        if (!CoreUtils.isNullOrEmpty(synonymMapNames)) {
-            List<String> synonymMaps = Arrays.stream(searchableField.synonymMapNames())
-                .filter(synonym -> !synonym.trim().isEmpty())
-                .collect(Collectors.toList());
-            searchField.setSynonymMapNames(synonymMaps);
-        }
-
         return searchField;
     }
 
@@ -368,9 +321,11 @@ public final class FieldBuilder {
         if (!(type instanceof ParameterizedType)) {
             if (UNSUPPORTED_TYPES.contains(type)) {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                    "Type '" + type.getTypeName() + "' is not supported. Please use @FieldIgnore to exclude the field "
-                        + "and manually build SearchField to the list if the field is needed. For more information, "
-                        + "refer to link: aka.ms/azsdk/java/search/fieldbuilder"));
+                    String.format("Type '%s' is not supported. "
+                            + "Please use @FieldIgnore to exclude the field "
+                            + "and manually build SearchField to the list if the field is needed. %n"
+                            + "For more information, refer to link: aka.ms/azsdk/java/search/fieldbuilder",
+                        type.getTypeName())));
             }
             return;
         }
@@ -381,13 +336,13 @@ public final class FieldBuilder {
         }
 
         if (hasArrayOrCollectionWrapped) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Only single-dimensional array is supported."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Only single-dimensional array is supported."));
         }
 
         if (!List.class.isAssignableFrom((Class<?>) parameterizedType.getRawType())) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Collection type '" + type.getTypeName() + "' is not supported"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("Collection type %s is not supported", type.getTypeName())));
         }
     }
 

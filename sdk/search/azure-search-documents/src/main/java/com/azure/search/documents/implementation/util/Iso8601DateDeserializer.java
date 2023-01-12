@@ -9,15 +9,15 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.UntypedObjectDeserializer;
 
 import java.io.IOException;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
 final class Iso8601DateDeserializer extends UntypedObjectDeserializer {
     private static final long serialVersionUID = 1L;
-
     private final UntypedObjectDeserializer defaultDeserializer;
+    private static final String ISO8601_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
     Iso8601DateDeserializer(final UntypedObjectDeserializer defaultDeserializer) {
         super(null, null);
@@ -43,8 +43,8 @@ final class Iso8601DateDeserializer extends UntypedObjectDeserializer {
 
     private Object parseDateType(Object obj) {
         try {
-            return DateTimeFormatter.ISO_INSTANT.parse((String) obj);
-        } catch (DateTimeParseException e) {
+            return new SimpleDateFormat(ISO8601_FORMAT).parse((String) obj);
+        } catch (ParseException e) {
             return obj;
         }
     }

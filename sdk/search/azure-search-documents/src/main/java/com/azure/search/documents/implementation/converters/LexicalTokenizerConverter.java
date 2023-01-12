@@ -88,6 +88,9 @@ public final class LexicalTokenizerConverter {
         if (obj instanceof KeywordTokenizer) {
             return KeywordTokenizerConverter.map((KeywordTokenizer) obj);
         }
+        if (obj instanceof KeywordTokenizer) {
+            return KeywordTokenizerConverter.map((KeywordTokenizer) obj);
+        }
         if (obj instanceof MicrosoftLanguageTokenizer) {
             return MicrosoftLanguageTokenizerConverter.map((MicrosoftLanguageTokenizer) obj);
         }

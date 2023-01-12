@@ -52,7 +52,6 @@ import static com.azure.search.documents.TestHelpers.assertHttpResponseException
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static com.azure.search.documents.TestHelpers.convertMapToValue;
-import static com.azure.search.documents.TestHelpers.equalDocumentSets;
 import static com.azure.search.documents.TestHelpers.readJsonFileToList;
 import static com.azure.search.documents.TestHelpers.setupSharedIndex;
 import static com.azure.search.documents.TestHelpers.uploadDocuments;
@@ -277,11 +276,11 @@ public class SearchSyncTests extends SearchTestBase {
 
         Date startEpoch = Date.from(Instant.ofEpochMilli(1275346800000L));
         NonNullableModel doc1 = new NonNullableModel()
-            .key("132")
+            .key("123")
             .count(3)
             .isEnabled(true)
             .rating(5)
-            .ratio(3.25)
+            .ratio(3.14)
             .startDate(new Date(startEpoch.getTime()))
             .endDate(new Date(startEpoch.getTime()))
             .topLevelBucket(new Bucket().bucketName("A").count(12))
@@ -290,20 +289,16 @@ public class SearchSyncTests extends SearchTestBase {
         NonNullableModel doc2 = new NonNullableModel().key("456").buckets(new Bucket[]{});
 
         uploadDocuments(client, Arrays.asList(doc1, doc2));
+
         SearchPagedIterable results = client.search("*", new SearchOptions(), Context.NONE);
         assertNotNull(results);
         Iterator<SearchPagedResponse> iterator = results.iterableByPage().iterator();
         assertTrue(iterator.hasNext());
+
         SearchPagedResponse result = iterator.next();
         assertEquals(2, result.getValue().size());
-
-        List<NonNullableModel> expectedDocuments = new ArrayList<>();
-        expectedDocuments.add(doc1); expectedDocuments.add(doc2);
-
-        List<NonNullableModel> actualDocuments = new ArrayList<>();
-        result.getValue().forEach(val -> actualDocuments.add(val.getDocument(NonNullableModel.class)));
-
-        assertTrue(equalDocumentSets(expectedDocuments, actualDocuments));
+        assertObjectEquals(doc1, result.getValue().get(0).getDocument(NonNullableModel.class), true);
+        assertObjectEquals(doc2, result.getValue().get(1).getDocument(NonNullableModel.class), true);
     }
 
     @SuppressWarnings("UseOfObsoleteDateTimeApi")
@@ -411,8 +406,7 @@ public class SearchSyncTests extends SearchTestBase {
         client = getSearchClientBuilder(INDEX_NAME).buildClient();
 
         SearchOptions searchOptions = new SearchOptions()
-            .setFilter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z")
-            .setOrderBy("HotelId asc");
+            .setFilter("Rating gt 3 and LastRenovationDate gt 2000-01-01T00:00:00Z");
         SearchPagedIterable results = client.search("*", searchOptions, Context.NONE);
         assertNotNull(results);
 
@@ -546,7 +540,9 @@ public class SearchSyncTests extends SearchTestBase {
 
         List<Map<String, Object>> searchResultsList = getSearchResults(results);
         assertEquals(2, searchResultsList.size());
-        assertTrue(searchResultsList.containsAll(expectedDocsList));
+        for (int i = 0; i < searchResultsList.size(); i++) {
+            assertObjectEquals(expectedDocsList.get(i), searchResultsList.get(i), true);
+        }
     }
 
     @Test
@@ -632,8 +628,7 @@ public class SearchSyncTests extends SearchTestBase {
         SearchOptions searchOptions = new SearchOptions()
             .setScoringProfile("nearest")
             .setScoringParameters(new ScoringParameter("myloc", new GeoPoint(-122.0, 49.0)))
-            .setFilter("Rating eq 5 or Rating eq 1")
-            .setOrderBy("HotelId desc");
+            .setFilter("Rating eq 5 or Rating eq 1");
 
         List<Map<String, Object>> response = getSearchResults(client.search("hotel", searchOptions, Context.NONE));
         assertEquals(2, response.size());
@@ -975,7 +970,7 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     String createIndexWithNonNullableTypes() {
-        SearchIndex index = new SearchIndex(testResourceNamer.randomName("non-nullable-index", 64))
+        SearchIndex index = new SearchIndex("non-nullable-index")
             .setFields(Arrays.asList(
                 new SearchField("Key", SearchFieldDataType.STRING)
                     .setHidden(false)
@@ -1011,7 +1006,7 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     String createIndexWithValueTypes() {
-        SearchIndex index = new SearchIndex(testResourceNamer.randomName("testindex", 64))
+        SearchIndex index = new SearchIndex("testindex")
             .setFields(Arrays.asList(
                 new SearchField("Key", SearchFieldDataType.STRING)
                     .setKey(true)
@@ -1035,7 +1030,7 @@ public class SearchSyncTests extends SearchTestBase {
 
     List<Map<String, Object>> createDocsListWithValueTypes() {
         Map<String, Object> element1 = new HashMap<>();
-        element1.put("Key", "132");
+        element1.put("Key", "123");
         element1.put("IntValue", 0);
 
         Map<String, Object> subElement1 = new HashMap<>();
