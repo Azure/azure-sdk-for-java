@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Link with additional information about a product. */
 @Fluent
 public final class ProductLink {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProductLink.class);
-
     /*
      * The description of the link.
      */
@@ -25,6 +21,10 @@ public final class ProductLink {
      */
     @JsonProperty(value = "uri")
     private String uri;
+
+    /** Creates an instance of ProductLink class. */
+    public ProductLink() {
+    }
 
     /**
      * Get the displayName property: The description of the link.
