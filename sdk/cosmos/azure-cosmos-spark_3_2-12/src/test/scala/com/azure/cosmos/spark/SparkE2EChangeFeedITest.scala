@@ -46,7 +46,6 @@ class SparkE2EChangeFeedITest
     runContainerRecreationScenarioWithatchFileLocation(false)
   }
 
-  /*
   "spark change feed query (incremental)" can "use default schema" in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
@@ -647,7 +646,6 @@ class SparkE2EChangeFeedITest
     val rowsArray2 = df2.collect()
     rowsArray2 should have size 50 - initialCount
   }
-  */
 
   private def validateArraysUnordered(inputArrayBuffer : ArrayBuffer[String], outputArray: Array[String]) : Unit = {
     assert(inputArrayBuffer.length == outputArray.length)
@@ -740,7 +738,7 @@ class SparkE2EChangeFeedITest
     (databaseResourceId, tokenMap.toMap)
   }
 
-  private def runContainerRecreationScenarioWithatchFileLocation(ignoreOffsetWhenInvalid: Boolean): Unit = {
+  private def runContainerRecreationScenarioWithBatchFileLocation(ignoreOffsetWhenInvalid: Boolean): Unit = {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
@@ -799,14 +797,15 @@ class SparkE2EChangeFeedITest
     } else {
       logInfo(s"StartOffset: n/a")
     }
-    assert(!hdfs.exists(new Path(startOffsetFileLocation)))
+    hdfs.exists(new Path(startOffsetFileLocation)) shouldEqual false
 
-    assert(hdfs.exists(new Path(latestOffsetFileLocation)))
+
+    hdfs.exists(new Path(latestOffsetFileLocation)) shouldEqual true
     val latestOffsetJson = readFileContentAsString(hdfs, latestOffsetFileLocation)
     logInfo(s"LatestOffset: $latestOffsetJson")
     hdfs.copyToLocalFile(true, new Path(latestOffsetFileLocation), new Path(startOffsetFileLocation))
-    assert(!hdfs.exists(new Path(latestOffsetFileLocation)))
-    assert(hdfs.exists(new Path(startOffsetFileLocation)))
+    hdfs.exists(new Path(latestOffsetFileLocation)) shouldEqual false
+    hdfs.exists(new Path(startOffsetFileLocation)) shouldEqual true
     hdfs.delete(new Path(latestOffsetFolderLocation), true)
 
     logInfo("Copied LatestOffset -> StartOffset")
@@ -844,7 +843,7 @@ class SparkE2EChangeFeedITest
 
         fail("Should have thrown an IllegalStateException")
       } catch {
-        case e: IllegalStateException => logInfo("Got expected IllegalStateException")
+        case _: IllegalStateException => logInfo("Got expected IllegalStateException")
         case t: Exception => fail(s"Unexpected exception $t")
       }
     }

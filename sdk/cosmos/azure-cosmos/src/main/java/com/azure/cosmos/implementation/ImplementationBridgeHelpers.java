@@ -61,7 +61,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 public class ImplementationBridgeHelpers {
-    public final static Logger logger = LoggerFactory.getLogger(ImplementationBridgeHelpers.class);
+    private final static Logger logger = LoggerFactory.getLogger(ImplementationBridgeHelpers.class);
 
     private static void  initializeAllAccessors() {
         BridgeInternal.initializeAllAccessors();

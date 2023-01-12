@@ -1187,7 +1187,7 @@ private object CosmosChangeFeedConfig {
     mandatory = false,
     parseFromStringFunction = ignoreOffsetWhenInvalidString => ignoreOffsetWhenInvalidString.toBoolean,
     helpMessage = "Flag that indicates whether invalid offset files (for example for different or " +
-      "recreated container should be silently ignored")
+      "recreated container should be silently ignored)")
 
   private val maxItemCountPerTriggerHint = CosmosConfigEntry[Long](
     key = CosmosConfigNames.ChangeFeedItemCountPerTriggerHint,

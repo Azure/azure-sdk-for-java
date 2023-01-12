@@ -66,13 +66,9 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
     expectedCollectionRid: String,
     ignoreOffsetWhenInvalid: Boolean
   ): Boolean = {
-    val state = ChangeFeedState
-      .fromString(continuation)
-
+    val state = ChangeFeedState.fromString(continuation)
     val isOffsetValid = state.getContainerRid.equalsIgnoreCase(expectedCollectionRid)
-
     if (!isOffsetValid) {
-
       val message = s"The provided change feed continuation state is for a different container. Offset's " +
         s"container: ${state.getContainerRid}, Current container: $expectedCollectionRid, " +
         s"Continuation: $continuation"
