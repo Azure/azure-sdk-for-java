@@ -14,7 +14,9 @@ import com.azure.search.documents.test.environment.models.Hotel;
 import com.azure.search.documents.test.environment.models.HotelAddress;
 import com.azure.search.documents.test.environment.models.HotelRoom;
 import com.azure.search.documents.test.environment.models.ModelWithPrimitiveCollections;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
 
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -26,6 +28,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 import static com.azure.search.documents.TestHelpers.assertMapEquals;
@@ -36,9 +39,8 @@ import static java.lang.Double.NaN;
 import static java.lang.Double.POSITIVE_INFINITY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class LookupSyncTests extends SearchTestBase {
+public class LookupTests extends SearchTestBase {
     private final List<String> indexesToDelete = new ArrayList<>();
-    private SearchClient client;
 
     @Override
     protected void afterTest() {
@@ -57,9 +59,16 @@ public class LookupSyncTests extends SearchTestBase {
         return getSearchClientBuilder(indexName).buildClient();
     }
 
+    private SearchAsyncClient setupAsyncClient(Supplier<String> indexSupplier) {
+        String indexName = indexSupplier.get();
+        indexesToDelete.add(indexName);
+
+        return getSearchClientBuilder(indexName).buildAsyncClient();
+    }
+
     @Test
-    public void canGetStaticallyTypedDocument() {
-        client = setupClient(this::createHotelIndex);
+    public void canGetStaticallyTypedDocumentSync() {
+        SearchClient client = setupClient(this::createHotelIndex);
 
         Hotel expected = prepareExpectedHotel();
         uploadDocument(client, expected);
@@ -69,8 +78,19 @@ public class LookupSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canGetStaticallyTypedDocumentWithNullOrEmptyValues() {
-        client = setupClient(this::createHotelIndex);
+    public void canGetStaticallyTypedDocumentAsync() {
+        SearchAsyncClient asyncClient = setupAsyncClient(this::createHotelIndex);
+
+        Hotel expected = prepareExpectedHotel();
+        uploadDocument(asyncClient, expected);
+
+        getAndValidateDocumentAsync(asyncClient, expected.hotelId(), Hotel.class, expected,
+            (ignored, actual) -> assertObjectEquals(expected, actual, true, "boundingBox"));
+    }
+
+    @Test
+    public void canGetStaticallyTypedDocumentWithNullOrEmptyValuesSync() {
+        SearchClient client = setupClient(this::createHotelIndex);
 
         Hotel expected = prepareEmptyHotel();
         uploadDocument(client, expected);
@@ -80,8 +100,19 @@ public class LookupSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canGetStaticallyTypedDocumentWithPascalCaseFields() {
-        client = setupClient(this::createHotelIndex);
+    public void canGetStaticallyTypedDocumentWithNullOrEmptyValuesAsync() {
+        SearchAsyncClient asyncClient = setupAsyncClient(this::createHotelIndex);
+
+        Hotel expected = prepareEmptyHotel();
+        uploadDocument(asyncClient, expected);
+
+        getAndValidateDocumentAsync(asyncClient, expected.hotelId(), Hotel.class, expected,
+            (ignored, actual) -> assertObjectEquals(expected, actual, true));
+    }
+
+    @Test
+    public void canGetStaticallyTypedDocumentWithPascalCaseFieldsSync() {
+        SearchClient client = setupClient(this::createHotelIndex);
 
         Hotel expected = preparePascalCaseFieldsHotel();
         uploadDocument(client, expected);
@@ -91,8 +122,19 @@ public class LookupSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canRoundtripStaticallyTypedPrimitiveCollections() {
-        client = setupClient(this::setupIndexWithDataTypes);
+    public void canGetStaticallyTypedDocumentWithPascalCaseFieldsAsync() {
+        SearchAsyncClient asyncClient = setupAsyncClient(this::createHotelIndex);
+
+        Hotel expected = preparePascalCaseFieldsHotel();
+        uploadDocument(asyncClient, expected);
+
+        getAndValidateDocumentAsync(asyncClient, expected.hotelId(), Hotel.class, expected,
+            (ignored, actual) -> assertObjectEquals(expected, actual, true));
+    }
+
+    @Test
+    public void canRoundTripStaticallyTypedPrimitiveCollectionsSync() {
+        SearchClient client = setupClient(this::setupIndexWithDataTypes);
 
         ModelWithPrimitiveCollections expected = preparePrimitivesModel();
         uploadDocument(client, expected);
@@ -102,8 +144,19 @@ public class LookupSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void getStaticallyTypedDocumentSetsUnselectedFieldsToNull() {
-        client = setupClient(this::createHotelIndex);
+    public void canRoundTripStaticallyTypedPrimitiveCollectionsAsync() {
+        SearchAsyncClient asyncClient = setupAsyncClient(this::setupIndexWithDataTypes);
+
+        ModelWithPrimitiveCollections expected = preparePrimitivesModel();
+        uploadDocument(asyncClient, expected);
+
+        getAndValidateDocumentAsync(asyncClient, expected.key(),ModelWithPrimitiveCollections.class, expected,
+            (ignored, actual) -> assertObjectEquals(expected, actual, true, "boundingBox"));
+    }
+
+    @Test
+    public void getStaticallyTypedDocumentSetsUnselectedFieldsToNullSync() {
+        SearchClient client = setupClient(this::createHotelIndex);
 
         Hotel indexedDoc = prepareSelectedFieldsHotel();
         Hotel expected = new Hotel()
@@ -122,8 +175,27 @@ public class LookupSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void canGetDynamicDocumentWithNullOrEmptyValues() {
-        client = setupClient(this::createHotelIndex);
+    public void getStaticallyTypedDocumentSetsUnselectedFieldsToNullAsync() {
+        SearchAsyncClient asyncClient = setupAsyncClient(this::createHotelIndex);
+
+        Hotel indexedDoc = prepareSelectedFieldsHotel();
+        Hotel expected = new Hotel()
+            .hotelName("Countryside Hotel")
+            .description("Save up to 50% off traditional hotels.  Free WiFi, great location near downtown, "
+                + "full kitchen, washer & dryer, 24/7 support, bowling alley, fitness center and more.")
+            .address(new HotelAddress().city("Durham"))
+            .rooms(Arrays.asList(new HotelRoom().baseRate(2.44), new HotelRoom().baseRate(7.69)));
+
+        uploadDocument(asyncClient, indexedDoc);
+
+        List<String> selectedFields = Arrays.asList("Description", "HotelName", "Address/City", "Rooms/BaseRate");
+        getAndValidateDocumentAsync(asyncClient, indexedDoc.hotelId(), Hotel.class, selectedFields, expected,
+            (ignored, actual) -> assertObjectEquals(expected, actual, true));
+    }
+
+    @Test
+    public void canGetDynamicDocumentWithNullOrEmptyValuesSync() {
+        SearchClient client = setupClient(this::createHotelIndex);
 
         SearchDocument expectedDoc = new SearchDocument();
         expectedDoc.put("HotelId", "1");
@@ -145,7 +217,7 @@ public class LookupSyncTests extends SearchTestBase {
         expectedDoc.put("Rooms", Collections.singletonList(room));
 
         uploadDocument(client, expectedDoc);
-        // Select only the fields set in the test case so we don't get superfluous data back.
+        // Select only the fields set in the test case.
         List<String> selectedFields = Arrays.asList("HotelId", "HotelName", "Tags", "ParkingIncluded", "LastRenovationDate", "Rating", "Location", "Address", "Rooms/BaseRate", "Rooms/BedOptions", "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
 
         Response<SearchDocument> response = client.getDocumentWithResponse("1", SearchDocument.class,
@@ -154,8 +226,39 @@ public class LookupSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void getDynamicDocumentWithEmptyObjectsReturnsObjectsFullOfNulls() {
-        client = setupClient(this::createHotelIndex);
+    public void canGetDynamicDocumentWithNullOrEmptyValuesAsync() {
+        SearchAsyncClient asyncClient = setupAsyncClient(this::createHotelIndex);
+
+        SearchDocument expectedDoc = new SearchDocument();
+        expectedDoc.put("HotelId", "1");
+        expectedDoc.put("HotelName", null);
+        expectedDoc.put("Tags", Collections.emptyList());
+        expectedDoc.put("ParkingIncluded", null);
+        expectedDoc.put("LastRenovationDate", null);
+        expectedDoc.put("Rating", null);
+        expectedDoc.put("Location", null);
+        expectedDoc.put("Address", null);
+
+        SearchDocument room = new SearchDocument();
+        room.put("BaseRate", null);
+        room.put("BedOptions", null);
+        room.put("SleepsCount", null);
+        room.put("SmokingAllowed", null);
+        room.put("Tags", Collections.emptyList());
+
+        expectedDoc.put("Rooms", Collections.singletonList(room));
+
+        uploadDocument(asyncClient, expectedDoc);
+        // Select only the fields set in the test case.
+        List<String> selectedFields = Arrays.asList("HotelId", "HotelName", "Tags", "ParkingIncluded", "LastRenovationDate", "Rating", "Location", "Address", "Rooms/BaseRate", "Rooms/BedOptions", "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
+
+        getAndValidateDocumentAsync(asyncClient, "1", SearchDocument.class, selectedFields, expectedDoc,
+            (ignored, actual) -> assertObjectEquals(expectedDoc, actual, true));
+    }
+
+    @Test
+    public void getDynamicDocumentWithEmptyObjectsReturnsObjectsFullOfNullsSync() {
+        SearchClient client = setupClient(this::createHotelIndex);
 
         SearchDocument originalDoc = new SearchDocument();
         originalDoc.put("HotelId", "1");
@@ -174,7 +277,7 @@ public class LookupSyncTests extends SearchTestBase {
         expectedDoc.put("Address", address);
 
         uploadDocument(client, originalDoc);
-        // Select only the fields set in the test case so we don't get superfluous data back.
+        // Select only the fields set in the test case.
         List<String> selectedFields = Arrays.asList("HotelId", "Address");
 
         Response<SearchDocument> response = client.getDocumentWithResponse("1", SearchDocument.class,
@@ -183,8 +286,36 @@ public class LookupSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void emptyDynamicallyTypedPrimitiveCollectionsRoundtripAsObjectArrays() {
-        client = setupClient(this::setupIndexWithDataTypes);
+    public void getDynamicDocumentWithEmptyObjectsReturnsObjectsFullOfNullsAsync() {
+        SearchAsyncClient asyncClient = setupAsyncClient(this::createHotelIndex);
+
+        SearchDocument originalDoc = new SearchDocument();
+        originalDoc.put("HotelId", "1");
+        originalDoc.put("Address", new SearchDocument());
+
+
+        SearchDocument expectedDoc = new SearchDocument();
+        expectedDoc.put("HotelId", "1");
+
+        SearchDocument address = new SearchDocument();
+        address.put("StreetAddress", null);
+        address.put("City", null);
+        address.put("StateProvince", null);
+        address.put("Country", null);
+        address.put("PostalCode", null);
+        expectedDoc.put("Address", address);
+
+        uploadDocument(asyncClient, originalDoc);
+        // Select only the fields set in the test case.
+        List<String> selectedFields = Arrays.asList("HotelId", "Address");
+
+        getAndValidateDocumentAsync(asyncClient, "1", SearchDocument.class, selectedFields, expectedDoc,
+            (ignored, actual) -> assertObjectEquals(expectedDoc, actual, true));
+    }
+
+    @Test
+    public void emptyDynamicallyTypedPrimitiveCollectionsRoundTripAsObjectArraysSync() {
+        SearchClient client = setupClient(this::setupIndexWithDataTypes);
 
         String docKey = "3";
 
@@ -215,8 +346,39 @@ public class LookupSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void emptyDynamicObjectsInCollectionExpandedOnGetWhenCollectionFieldSelected() {
-        client = setupClient(this::createHotelIndex);
+    public void emptyDynamicallyTypedPrimitiveCollectionsRoundTripAsObjectArraysAsync() {
+        SearchAsyncClient asyncClient = setupAsyncClient(this::setupIndexWithDataTypes);
+
+        String docKey = "3";
+
+        SearchDocument originalDoc = new SearchDocument();
+        originalDoc.put("Key", docKey);
+        originalDoc.put("Dates", new Object[]{});
+        originalDoc.put("Doubles", new Double[]{});
+        originalDoc.put("Bools", new boolean[]{});
+        originalDoc.put("Longs", new Long[]{});
+        originalDoc.put("Strings", new String[]{});
+        originalDoc.put("Ints", new int[]{});
+        originalDoc.put("Points", new Object[]{});
+
+        SearchDocument expectedDoc = new SearchDocument();
+        expectedDoc.put("Key", docKey);
+        expectedDoc.put("Doubles", Collections.emptyList());
+        expectedDoc.put("Bools", Collections.emptyList());
+        expectedDoc.put("Longs", Collections.emptyList());
+        expectedDoc.put("Strings", Collections.emptyList());
+        expectedDoc.put("Ints", Collections.emptyList());
+        expectedDoc.put("Points", Collections.emptyList());
+        expectedDoc.put("Dates", Collections.emptyList());
+
+        uploadDocument(asyncClient, originalDoc);
+
+        getAndValidateDocumentAsync(asyncClient, docKey, SearchDocument.class, expectedDoc, Assertions::assertEquals);
+    }
+
+    @Test
+    public void emptyDynamicObjectsInCollectionExpandedOnGetWhenCollectionFieldSelectedSync() {
+        SearchClient client = setupClient(this::createHotelIndex);
 
         SearchDocument originalDoc = new SearchDocument();
         originalDoc.put("HotelId", "1");
@@ -263,8 +425,55 @@ public class LookupSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void getDynamicDocumentCannotAlwaysDetermineCorrectType() {
-        client = setupClient(this::createHotelIndex);
+    public void emptyDynamicObjectsInCollectionExpandedOnGetWhenCollectionFieldSelectedAsync() {
+        SearchAsyncClient asyncClient = setupAsyncClient(this::createHotelIndex);
+
+        SearchDocument originalDoc = new SearchDocument();
+        originalDoc.put("HotelId", "1");
+
+        SearchDocument originalRoom = new SearchDocument();
+        originalRoom.put("BaseRate", null);
+        originalRoom.put("BedOptions", null);
+        originalRoom.put("SleepsCount", null);
+        originalRoom.put("SmokingAllowed", null);
+        originalRoom.put("Tags", Collections.emptyList());
+        originalDoc.put("Rooms", Arrays.asList(new SearchDocument(), originalRoom));
+
+        SearchDocument expectedDoc = new SearchDocument();
+        expectedDoc.put("HotelId", "1");
+
+        SearchDocument expectedRoom1 = new SearchDocument();
+        expectedRoom1.put("Description", null);
+        expectedRoom1.put("Description_fr", null);
+        expectedRoom1.put("Type", null);
+        expectedRoom1.put("BaseRate", null);
+        expectedRoom1.put("BedOptions", null);
+        expectedRoom1.put("SleepsCount", null);
+        expectedRoom1.put("SmokingAllowed", null);
+        expectedRoom1.put("Tags", Collections.emptyList());
+
+        SearchDocument expectedRoom2 = new SearchDocument();
+        expectedRoom2.put("Description", null);
+        expectedRoom2.put("Description_fr", null);
+        expectedRoom2.put("Type", null);
+        expectedRoom2.put("BaseRate", null);
+        expectedRoom2.put("BedOptions", null);
+        expectedRoom2.put("SleepsCount", null);
+        expectedRoom2.put("SmokingAllowed", null);
+        expectedRoom2.put("Tags", Collections.emptyList());
+
+        expectedDoc.put("Rooms", Arrays.asList(expectedRoom1, expectedRoom2));
+
+        uploadDocument(asyncClient, originalDoc);
+        List<String> selectedFields = Arrays.asList("HotelId", "Rooms");
+
+        getAndValidateDocumentAsync(asyncClient, "1", SearchDocument.class, selectedFields, expectedDoc,
+            (expected, actual) -> assertObjectEquals(expected, actual, true));
+    }
+
+    @Test
+    public void getDynamicDocumentCannotAlwaysDetermineCorrectTypeSync() {
+        SearchClient client = setupClient(this::createHotelIndex);
 
         SearchDocument indexedDoc = new SearchDocument();
         indexedDoc.put("HotelId", "1");
@@ -275,22 +484,47 @@ public class LookupSyncTests extends SearchTestBase {
 
         SearchDocument expectedDoc = new SearchDocument();
         expectedDoc.put("HotelId", "1");
-        expectedDoc.put("LastRenovationDate", OffsetDateTime.of(2017, 1, 13, 21, 3,
-            0, 755000000, ZoneOffset.UTC));
+        expectedDoc.put("LastRenovationDate", OffsetDateTime.of(2017, 1, 13, 21, 3, 0, 755000000, ZoneOffset.UTC));
         expectedDoc.put("Location", new GeoPoint(-73.975403, 40.760586));
         expectedDoc.put("Rooms", Collections.singletonList(new SearchDocument(Collections.singletonMap("BaseRate", "NaN"))));
 
         client.indexDocuments(new IndexDocumentsBatch<>().addUploadActions(Collections.singletonList(indexedDoc)));
 
-        // Select only the fields set in the test case so we don't get superfluous data back.
+        // Select only the fields set in the test case.
         List<String> selectedFields = Arrays.asList("HotelId", "LastRenovationDate", "Location", "Rooms/BaseRate");
         assertMapEquals(expectedDoc, client.getDocumentWithResponse("1", SearchDocument.class, selectedFields,
             Context.NONE).getValue(), true, "boundingBox", "properties");
     }
 
     @Test
-    public void canGetDocumentWithBase64EncodedKey() {
-        client = setupClient(this::createHotelIndex);
+    public void getDynamicDocumentCannotAlwaysDetermineCorrectTypeAsync() {
+        SearchAsyncClient asyncClient = setupAsyncClient(this::createHotelIndex);
+
+        SearchDocument indexedDoc = new SearchDocument();
+        indexedDoc.put("HotelId", "1");
+        indexedDoc.put("LastRenovationDate", "2017-01-13T14:03:00.7552052-07:00");
+        // Test that we don't confuse Geo-JSON & complex types.
+        indexedDoc.put("Location", new GeoPoint(-73.975403, 40.760586));
+        indexedDoc.put("Rooms", Collections.singletonList(new SearchDocument(Collections.singletonMap("BaseRate", NaN))));
+
+        SearchDocument expectedDoc = new SearchDocument();
+        expectedDoc.put("HotelId", "1");
+        expectedDoc.put("LastRenovationDate", OffsetDateTime.of(2017, 1, 13, 21, 3, 0, 755000000, ZoneOffset.UTC));
+        expectedDoc.put("Location", new GeoPoint(-73.975403, 40.760586));
+        expectedDoc.put("Rooms", Collections.singletonList(new SearchDocument(Collections.singletonMap("BaseRate", "NaN"))));
+
+        asyncClient.indexDocuments(new IndexDocumentsBatch<>().addUploadActions(Collections.singletonList(indexedDoc)))
+            .block();
+
+        // Select only the fields set in the test case.
+        List<String> selectedFields = Arrays.asList("HotelId", "LastRenovationDate", "Location", "Rooms/BaseRate");
+        getAndValidateDocumentAsync(asyncClient, "1", SearchDocument.class, selectedFields, expectedDoc,
+            (expected, actual) -> assertMapEquals(expected, actual, true, "boundingBox", "properties"));
+    }
+
+    @Test
+    public void canGetDocumentWithBase64EncodedKeySync() {
+        SearchClient client = setupClient(this::createHotelIndex);
 
         String complexKey = Base64.getEncoder().encodeToString(new byte[]{1, 2, 3, 4, 5});
 
@@ -303,8 +537,24 @@ public class LookupSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void roundTrippingDateTimeOffsetNormalizesToUtc() {
-        client = setupClient(this::createHotelIndex);
+    public void canGetDocumentWithBase64EncodedKeyAsync() {
+        SearchAsyncClient asyncClient = setupAsyncClient(this::createHotelIndex);
+
+        String complexKey = Base64.getEncoder().encodeToString(new byte[]{1, 2, 3, 4, 5});
+
+        SearchDocument expectedDoc = new SearchDocument();
+        expectedDoc.put("HotelId", complexKey);
+
+        asyncClient.indexDocuments(new IndexDocumentsBatch<>().addUploadActions(Collections.singletonList(expectedDoc)))
+            .block();
+
+        getAndValidateDocumentAsync(asyncClient, complexKey, SearchDocument.class, new ArrayList<>(expectedDoc.keySet()),
+            expectedDoc, Assertions::assertEquals);
+    }
+
+    @Test
+    public void roundTrippingDateTimeOffsetNormalizesToUtcSync() {
+        SearchClient client = setupClient(this::createHotelIndex);
 
         SearchDocument indexedDoc = new SearchDocument();
         indexedDoc.put("HotelId", "1");
@@ -322,8 +572,28 @@ public class LookupSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void emptyDynamicObjectsOmittedFromCollectionOnGetWhenSubFieldsSelected() {
-        client = setupClient(this::createHotelIndex);
+    public void roundTrippingDateTimeOffsetNormalizesToUtcAsync() {
+        SearchAsyncClient asyncClient = setupAsyncClient(this::createHotelIndex);
+
+        SearchDocument indexedDoc = new SearchDocument();
+        indexedDoc.put("HotelId", "1");
+        indexedDoc.put("LastRenovationDate", OffsetDateTime.parse("2010-06-27T00:00:00-08:00"));
+
+        SearchDocument expectedDoc = new SearchDocument();
+        expectedDoc.put("HotelId", "1");
+
+        expectedDoc.put("LastRenovationDate", OffsetDateTime.parse("2010-06-27T08:00Z"));
+
+        asyncClient.indexDocuments(new IndexDocumentsBatch<>().addUploadActions(Collections.singletonList(indexedDoc)))
+            .block();
+
+        getAndValidateDocumentAsync(asyncClient, "1", SearchDocument.class, new ArrayList<>(expectedDoc.keySet()),
+            expectedDoc, (expected, actual) -> assertMapEquals(expected, actual, false));
+    }
+
+    @Test
+    public void emptyDynamicObjectsOmittedFromCollectionOnGetWhenSubFieldsSelectedSync() {
+        SearchClient client = setupClient(this::createHotelIndex);
 
         SearchDocument originalDoc = new SearchDocument();
         originalDoc.put("HotelId", "1");
@@ -356,8 +626,42 @@ public class LookupSyncTests extends SearchTestBase {
     }
 
     @Test
-    public void dynamicallyTypedPrimitiveCollectionsDoNotAllRoundtripCorrectly() {
-        client = setupClient(this::setupIndexWithDataTypes);
+    public void emptyDynamicObjectsOmittedFromCollectionOnGetWhenSubFieldsSelectedAsync() {
+        SearchAsyncClient asyncClient = setupAsyncClient(this::createHotelIndex);
+
+        SearchDocument originalDoc = new SearchDocument();
+        originalDoc.put("HotelId", "1");
+
+        SearchDocument originalRoom = new SearchDocument();
+        originalRoom.put("BaseRate", null);
+        originalRoom.put("BedOptions", null);
+        originalRoom.put("SleepsCount", null);
+        originalRoom.put("SmokingAllowed", null);
+        originalRoom.put("Tags", Collections.emptyList());
+        originalDoc.put("Rooms", Arrays.asList(new SearchDocument(), originalRoom));
+
+        SearchDocument expectedDoc = new SearchDocument();
+        expectedDoc.put("HotelId", "1");
+
+        SearchDocument expectedRoom = new SearchDocument();
+        expectedRoom.put("BaseRate", null);
+        expectedRoom.put("BedOptions", null);
+        expectedRoom.put("SleepsCount", null);
+        expectedRoom.put("SmokingAllowed", null);
+        expectedRoom.put("Tags", Collections.emptyList());
+        expectedDoc.put("Rooms", Collections.singletonList(expectedRoom));
+
+        uploadDocument(asyncClient, originalDoc);
+        List<String> selectedFields = Arrays.asList("HotelId", "Rooms/BaseRate", "Rooms/BedOptions",
+            "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
+
+        getAndValidateDocumentAsync(asyncClient, "1", SearchDocument.class, selectedFields, expectedDoc,
+            (expected, actual) -> assertObjectEquals(expected, actual, true));
+    }
+
+    @Test
+    public void dynamicallyTypedPrimitiveCollectionsDoNotAllRoundTripCorrectlySync() {
+        SearchClient client = setupClient(this::setupIndexWithDataTypes);
 
         String docKey = "1";
         OffsetDateTime dateTime = OffsetDateTime.parse("2019-08-13T14:30:00Z");
@@ -391,8 +695,43 @@ public class LookupSyncTests extends SearchTestBase {
         assertMapEquals(expectedDoc, actualDoc, true, "properties");
     }
 
+    @Test
+    public void dynamicallyTypedPrimitiveCollectionsDoNotAllRoundTripCorrectlyAsync() {
+        SearchAsyncClient asyncClient = setupAsyncClient(this::setupIndexWithDataTypes);
+
+        String docKey = "1";
+        OffsetDateTime dateTime = OffsetDateTime.parse("2019-08-13T14:30:00Z");
+        GeoPoint geoPoint = new GeoPoint(100.0, 1.0);
+
+        SearchDocument indexedDoc = new SearchDocument();
+        indexedDoc.put("Key", docKey);
+        indexedDoc.put("Dates", new OffsetDateTime[]{dateTime});
+        indexedDoc.put("Doubles", new Double[]{0.0, 5.8, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN});
+        indexedDoc.put("Bools", new Boolean[]{true, false});
+        indexedDoc.put("Longs", new Long[]{9999999999999999L, 832372345832523L});
+        indexedDoc.put("Strings", new String[]{"hello", "bye"});
+        indexedDoc.put("Ints", new int[]{1, 2, 3, 4, -13, 5, 0});
+        indexedDoc.put("Points", new GeoPoint[] { geoPoint });
+
+        // This is the expected document when querying the document later
+        SearchDocument expectedDoc = new SearchDocument();
+        expectedDoc.put("Key", docKey);
+        expectedDoc.put("Doubles", Arrays.asList(0.0, 5.8, "INF", "-INF", "NaN"));
+        expectedDoc.put("Bools", Arrays.asList(true, false));
+        expectedDoc.put("Longs", Arrays.asList(9999999999999999L, 832372345832523L));
+        expectedDoc.put("Strings", Arrays.asList("hello", "bye"));
+        expectedDoc.put("Ints", Arrays.asList(1, 2, 3, 4, -13, 5, 0));
+        //expectedDoc.put("Points", Collections.singletonList(geoPoint));
+        expectedDoc.put("Dates", Collections.singletonList(dateTime));
+
+        uploadDocument(asyncClient, indexedDoc);
+
+        getAndValidateDocumentAsync(asyncClient, docKey, SearchDocument.class, expectedDoc,
+            (expected, actual) -> assertMapEquals(expected, actual, true, "properties"));
+    }
+
     @SuppressWarnings({"deprecation", "UseOfObsoleteDateTimeApi"})
-    Hotel prepareExpectedHotel() {
+    static Hotel prepareExpectedHotel() {
         Date expectDate = Date.from(Instant.ofEpochMilli(1277582400000L));
         return new Hotel().hotelId("1")
             .hotelName("Fancy Stay")
@@ -413,20 +752,32 @@ public class LookupSyncTests extends SearchTestBase {
             .rooms(new ArrayList<>());
     }
 
-    Hotel prepareEmptyHotel() {
-        return new Hotel().hotelId("1")
-            .tags(new ArrayList<>())
-            .rooms(Collections.singletonList(
-                new HotelRoom().tags(new String[0])
-            ));
+    private static <T> void getAndValidateDocumentAsync(SearchAsyncClient asyncClient, String key, Class<T> type,
+        T expected, BiConsumer<T, T> comparator) {
+        StepVerifier.create(asyncClient.getDocument(key, type))
+            .assertNext(actual -> comparator.accept(expected, actual))
+            .verifyComplete();
     }
 
-    Hotel preparePascalCaseFieldsHotel() {
+    private static <T> void getAndValidateDocumentAsync(SearchAsyncClient asyncClient, String key, Class<T> type,
+        List<String> selectedFields, T expected, BiConsumer<T, T> comparator) {
+        StepVerifier.create(asyncClient.getDocumentWithResponse(key, type, selectedFields))
+            .assertNext(actual -> comparator.accept(expected, actual.getValue()))
+            .verifyComplete();
+    }
+
+    static Hotel prepareEmptyHotel() {
+        return new Hotel().hotelId("1")
+            .tags(new ArrayList<>())
+            .rooms(Collections.singletonList(new HotelRoom().tags(new String[0])));
+    }
+
+    static Hotel preparePascalCaseFieldsHotel() {
         return new Hotel().hotelId("132").hotelName("Lord of the Rings").description("J.R.R").descriptionFr("Tolkien");
     }
 
     @SuppressWarnings({"deprecation", "UseOfObsoleteDateTimeApi"})
-    Hotel prepareSelectedFieldsHotel() {
+    static Hotel prepareSelectedFieldsHotel() {
         return new Hotel()
             .hotelId("2")
             .hotelName("Countryside Hotel")
@@ -461,7 +812,7 @@ public class LookupSyncTests extends SearchTestBase {
                     .tags(new String[] { "coffee maker" })));
     }
 
-    ModelWithPrimitiveCollections preparePrimitivesModel() {
+    static ModelWithPrimitiveCollections preparePrimitivesModel() {
         return new ModelWithPrimitiveCollections()
             .key("1")
             .bools(new Boolean[]{true, false})

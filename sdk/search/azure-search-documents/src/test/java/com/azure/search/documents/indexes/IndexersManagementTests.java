@@ -237,12 +237,8 @@ public class IndexersManagementTests extends SearchTestBase {
         Map<String, SearchIndexer> actualIndexers = searchIndexerClient.listIndexers().stream()
             .collect(Collectors.toMap(SearchIndexer::getName, si -> si));
 
-        assertEquals(expectedIndexers.size(), actualIndexers.size());
-        actualIndexers.forEach((name, actual) -> {
-            SearchIndexer expected = expectedIndexers.get(name);
-            assertNotNull(expected);
-            assertObjectEquals(expected, actual, true, "etag");
-        });
+        compareMaps(expectedIndexers, actualIndexers,
+            (expected, actual) -> assertObjectEquals(expected, actual, true, "etag"));
     }
 
     @Test
@@ -269,14 +265,8 @@ public class IndexersManagementTests extends SearchTestBase {
             .collect(Collectors.toMap(SearchIndexer::getName, si -> si));
 
         StepVerifier.create(listMono)
-            .assertNext(actualIndexers -> {
-                assertEquals(expectedIndexers.size(), actualIndexers.size());
-                actualIndexers.forEach((name, actual) -> {
-                    SearchIndexer expected = expectedIndexers.get(name);
-                    assertNotNull(expected);
-                    assertObjectEquals(expected, actual, true, "etag");
-                });
-            })
+            .assertNext(actualIndexers -> compareMaps(expectedIndexers, actualIndexers,
+                (expected, actual) -> assertObjectEquals(expected, actual, true, "etag")))
             .verifyComplete();
     }
 

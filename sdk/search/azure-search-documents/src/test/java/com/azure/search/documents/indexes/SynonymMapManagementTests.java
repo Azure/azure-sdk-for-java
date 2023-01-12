@@ -555,12 +555,7 @@ public class SynonymMapManagementTests extends SearchTestBase {
         Map<String, SynonymMap> actualSynonyms = client.listSynonymMaps().stream()
             .collect(Collectors.toMap(SynonymMap::getName, sm -> sm));
 
-        assertEquals(expectedSynonyms.size(), actualSynonyms.size());
-        actualSynonyms.forEach((name, actual) -> {
-            SynonymMap expected = expectedSynonyms.get(name);
-            assertNotNull(expected);
-            assertObjectEquals(expected, actual, true);
-        });
+        compareMaps(expectedSynonyms, actualSynonyms, (expected, actual) -> assertObjectEquals(expected, actual, true));
     }
 
     @Test
@@ -578,14 +573,8 @@ public class SynonymMapManagementTests extends SearchTestBase {
         expectedSynonyms.put(synonymMap2.getName(), synonymMap2);
 
         StepVerifier.create(asyncClient.listSynonymMaps().collectMap(SynonymMap::getName))
-            .assertNext(actualSynonyms -> {
-                assertEquals(expectedSynonyms.size(), actualSynonyms.size());
-                actualSynonyms.forEach((name, actual) -> {
-                    SynonymMap expected = expectedSynonyms.get(name);
-                    assertNotNull(expected);
-                    assertObjectEquals(expected, actual, true);
-                });
-            })
+            .assertNext(actualSynonyms -> compareMaps(expectedSynonyms, actualSynonyms,
+                (expected, actual) -> assertObjectEquals(expected, actual, true)))
             .verifyComplete();
     }
 

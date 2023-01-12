@@ -402,12 +402,7 @@ public class IndexManagementTests extends SearchTestBase {
         Map<String, SearchIndex> actualIndexes = client.listIndexes().stream()
             .collect(Collectors.toMap(SearchIndex::getName, si -> si));
 
-        assertEquals(expectedIndexes.size(), actualIndexes.size());
-        actualIndexes.forEach((name, actual) -> {
-            SearchIndex expected = expectedIndexes.get(name);
-            assertNotNull(expected);
-            assertObjectEquals(expected, actual, true);
-        });
+        compareMaps(expectedIndexes, actualIndexes, (expected, actual) -> assertObjectEquals(expected, actual, true));
     }
 
     @Test
@@ -424,15 +419,9 @@ public class IndexManagementTests extends SearchTestBase {
         expectedIndexes.put(index1.getName(), index1);
         expectedIndexes.put(index2.getName(), index2);
 
-        StepVerifier.create(asyncClient.listIndexes().collect(Collectors.toMap(SearchIndex::getName, si -> si)))
-            .assertNext(actualIndexes -> {
-                assertEquals(expectedIndexes.size(), actualIndexes.size());
-                actualIndexes.forEach((name, actual) -> {
-                    SearchIndex expected = expectedIndexes.get(name);
-                    assertNotNull(expected);
-                    assertObjectEquals(expected, actual, true);
-                });
-            })
+        StepVerifier.create(asyncClient.listIndexes().collectMap(SearchIndex::getName))
+            .assertNext(actualIndexes -> compareMaps(expectedIndexes, actualIndexes,
+                (expected, actual) -> assertObjectEquals(expected, actual, true)))
             .verifyComplete();
     }
 

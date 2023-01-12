@@ -439,12 +439,8 @@ public class SkillsetManagementTests extends SearchTestBase {
         Map<String, SearchIndexerSkillset> actualSkillsets = client.listSkillsets().stream()
             .collect(Collectors.toMap(SearchIndexerSkillset::getName, skillset -> skillset));
 
-        assertEquals(expectedSkillsets.size(), actualSkillsets.size());
-        actualSkillsets.forEach((name, actual) -> {
-            SearchIndexerSkillset expected = expectedSkillsets.get(name);
-            assertNotNull(expectedSkillsets);
-            assertObjectEquals(expected, actual, true);
-        });
+        compareMaps(expectedSkillsets, actualSkillsets,
+            (expected, actual) -> assertObjectEquals(expected, actual, true));
     }
 
     @Test
@@ -461,16 +457,9 @@ public class SkillsetManagementTests extends SearchTestBase {
         expectedSkillsets.put(skillset1.getName(), skillset1);
         expectedSkillsets.put(skillset2.getName(), skillset2);
 
-        StepVerifier.create(asyncClient.listSkillsets()
-                .collect(Collectors.toMap(SearchIndexerSkillset::getName, skillset -> skillset)))
-            .assertNext(actualSkillsets -> {
-                assertEquals(expectedSkillsets.size(), actualSkillsets.size());
-                actualSkillsets.forEach((name, actual) -> {
-                    SearchIndexerSkillset expected = expectedSkillsets.get(name);
-                    assertNotNull(expectedSkillsets);
-                    assertObjectEquals(expected, actual, true);
-                });
-            })
+        StepVerifier.create(asyncClient.listSkillsets().collectMap(SearchIndexerSkillset::getName))
+            .assertNext(actualSkillsets -> compareMaps(expectedSkillsets, actualSkillsets,
+                (expected, actual) -> assertObjectEquals(expected, actual, true)))
             .verifyComplete();
     }
 

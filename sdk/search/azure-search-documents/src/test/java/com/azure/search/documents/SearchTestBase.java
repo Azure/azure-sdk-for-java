@@ -47,12 +47,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 import static com.azure.search.documents.TestHelpers.BLOB_DATASOURCE_NAME;
 import static com.azure.search.documents.TestHelpers.HOTEL_INDEX_NAME;
 import static com.azure.search.documents.TestHelpers.MAPPER;
 import static com.azure.search.documents.TestHelpers.SQL_DATASOURCE_NAME;
 import static com.azure.search.documents.indexes.DataSourceTests.FAKE_AZURE_SQL_CONNECTION_STRING;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -408,5 +410,17 @@ public abstract class SearchTestBase extends TestBase {
         assertNotNull(original);
         assertNotNull(updated);
         assertNotEquals(original, updated);
+    }
+
+    protected <T> void compareMaps(Map<String, T> expectedMap, Map<String, T> actualMap,
+        BiConsumer<T, T> comparisonFunction) {
+        assertEquals(expectedMap.size(), actualMap.size());
+
+        actualMap.forEach((key, actual) -> {
+            T expected = expectedMap.get(key);
+            assertNotNull(expected, "Actual map contained an entry that doesn't exist in the expected map: " + key);
+
+            comparisonFunction.accept(expected, actual);
+        });
     }
 }

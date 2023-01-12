@@ -94,12 +94,7 @@ public class DataSourceTests extends SearchTestBase {
         Map<String, SearchIndexerDataSourceConnection> actualDataSources = client.listDataSourceConnections().stream()
             .collect(Collectors.toMap(SearchIndexerDataSourceConnection::getName, ds -> ds));
 
-        assertEquals(expectedDataSources.size(), actualDataSources.size());
-        expectedDataSources.forEach((name, expectedDs) -> {
-            SearchIndexerDataSourceConnection actualDs = actualDataSources.get(name);
-            assertNotNull(actualDs, "Missing expected data source.");
-            assertDataSourceEquals(expectedDs, actualDs);
-        });
+        compareMaps(expectedDataSources, actualDataSources, DataSourceTests::assertDataSourceEquals);
     }
 
     @Test
@@ -119,14 +114,8 @@ public class DataSourceTests extends SearchTestBase {
                 .collectMap(SearchIndexerDataSourceConnection::getName);
 
         StepVerifier.create(listMono)
-            .assertNext(actualDataSources -> {
-                assertEquals(expectedDataSources.size(), actualDataSources.size());
-                expectedDataSources.forEach((name, expectedDs) -> {
-                    SearchIndexerDataSourceConnection actualDs = actualDataSources.get(name);
-                    assertNotNull(actualDs, "Missing expected data source.");
-                    assertDataSourceEquals(expectedDs, actualDs);
-                });
-            })
+            .assertNext(actualDataSources -> compareMaps(expectedDataSources, actualDataSources,
+                DataSourceTests::assertDataSourceEquals))
             .verifyComplete();
     }
 
