@@ -62,7 +62,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     private final int prefetch;
     private final String entityPath;
     private final String partitionId;
-    private final Disposable connectionProcessor;
+    private final Disposable recoverableConnection;
     private final int maxQueueSize;
     private final Context context;
     private final EventHubsConsumerInstrumentation instrumentation;
@@ -94,19 +94,19 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
      * @param entityPath Entity path.
      * @param prefetch The number if messages to initially fetch.
      * @param partitionId Partition id to receive from.
-     * @param connectionProcessor A {@link Disposable} reference to the connection-processor which produces
+     * @param recoverableConnection A {@link Disposable} reference to the recoverable-connection which produces
      *                           the connection on which receive-links are hosted. It is used to eagerly check
-     *                           if the connection-processor is disposed so that this link-processor can self dispose.
+     *                           if the recoverable-connection is disposed so that this link-processor can self dispose.
      * @param instrumentation    Tracing and metrics instrumentation helper.
      *
      * @throws NullPointerException if {@code retryPolicy} is null.
      * @throws IllegalArgumentException if {@code prefetch} is less than 0.
      */
-    public AmqpReceiveLinkProcessor(String entityPath, int prefetch, String partitionId,  Disposable connectionProcessor, EventHubsConsumerInstrumentation instrumentation) {
+    public AmqpReceiveLinkProcessor(String entityPath, int prefetch, String partitionId, Disposable recoverableConnection, EventHubsConsumerInstrumentation instrumentation) {
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.partitionId = Objects.requireNonNull(partitionId, "'partitionId' cannot be null.");
-        this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
-            "'connectionProcessor' cannot be null.");
+        this.recoverableConnection = Objects.requireNonNull(recoverableConnection,
+            "'recoverableConnection' cannot be null.");
 
         String subscriberId = StringUtil.getRandomString("rlp");
         Map<String, Object> loggingContext = new HashMap<>(1);
@@ -290,7 +290,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                         onError(error);
                     },
                     () -> {
-                        if (connectionProcessor.isDisposed() || isTerminated()
+                        if (recoverableConnection.isDisposed() || isTerminated()
                             || UPSTREAM.get(this) == Operators.cancelledSubscription()) {
 
                             logger.atInfo()
@@ -415,7 +415,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             return;
         }
 
-        if (connectionProcessor.isDisposed()) {
+        if (recoverableConnection.isDisposed()) {
             logger.atInfo()
                 .addKeyValue(LINK_NAME_KEY, currentLinkName)
                 .log("Parent connection is disposed. Not reopening on error.");
