@@ -7,6 +7,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.search.documents.implementation.util.SearchPagedResponseAccessHelper;
 import com.azure.search.documents.models.AnswerResult;
 import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.SearchResult;
@@ -28,6 +29,30 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
     private final Double coverage;
     private final Map<String, List<FacetResult>> facets;
     private final List<AnswerResult> answers;
+
+    static {
+        SearchPagedResponseAccessHelper.setAccessor(new SearchPagedResponseAccessHelper.SearchPagedResponseAccessor() {
+            @Override
+            public Double getCoverage(SearchPagedResponse response) {
+                return response.getCoverage();
+            }
+
+            @Override
+            public Map<String, List<FacetResult>> getFacets(SearchPagedResponse response) {
+                return response.getFacets();
+            }
+
+            @Override
+            public Long getCount(SearchPagedResponse response) {
+                return response.getCount();
+            }
+
+            @Override
+            public List<AnswerResult> getAnswers(SearchPagedResponse response) {
+                return response.getAnswers();
+            }
+        });
+    }
 
     /**
      * Constructor

@@ -6,12 +6,14 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
+import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,7 +31,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class SearchAliasTests extends SearchTestBase {
     private SearchIndexClient indexClient;
+    private SearchIndexAsyncClient indexAsyncClient;
     private SearchClient searchClient;
+    private SearchAsyncClient searchAsyncClient;
 
     @BeforeAll
     public static void beforeAll() {
@@ -58,14 +62,20 @@ public class SearchAliasTests extends SearchTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        indexClient = getSearchIndexClientBuilder().buildClient();
-        searchClient = setupSearchClient(this::createHotelIndex);
+
+        SearchIndexClientBuilder indexClientBuilder = getSearchIndexClientBuilder();
+        indexClient = indexClientBuilder.buildClient();
+        indexAsyncClient = indexClientBuilder.buildAsyncClient();
+
+        SearchClientBuilder searchClientBuilder = setupSearchClient(this::createHotelIndex);
+        searchClient = searchClientBuilder.buildClient();
+        searchAsyncClient = searchClientBuilder.buildAsyncClient();
     }
 
-    private SearchClient setupSearchClient(Supplier<String> indexSupplier) {
+    private SearchClientBuilder setupSearchClient(Supplier<String> indexSupplier) {
         String indexName = indexSupplier.get();
 
-        return getSearchClientBuilder(indexName).buildClient();
+        return getSearchClientBuilder(indexName);
     }
 
     @Override
@@ -99,7 +109,7 @@ public class SearchAliasTests extends SearchTestBase {
     }
 
     @Test
-    public void canCreateAlias() {
+    public void canCreateAliasSync() {
         SearchAlias expectedAlias = new SearchAlias(testResourceNamer.randomName("my-alias", 32),
             Collections.singletonList(searchClient.getIndexName()));
         SearchAlias searchAlias = indexClient.createAlias(expectedAlias);
@@ -109,19 +119,46 @@ public class SearchAliasTests extends SearchTestBase {
     }
 
     @Test
-    public void cannotCreateAliasOnNonExistentIndex() {
+    public void canCreateAliasAsync() {
+        SearchAlias expectedAlias = new SearchAlias(testResourceNamer.randomName("my-alias", 32),
+            Collections.singletonList(searchClient.getIndexName()));
+
+        StepVerifier.create(indexAsyncClient.createAlias(expectedAlias))
+            .assertNext(searchAlias -> {
+                assertEquals(expectedAlias.getName(), searchAlias.getName());
+                assertEquals(expectedAlias.getIndexes(), searchAlias.getIndexes());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void cannotCreateAliasOnNonExistentIndexSync() {
         assertThrows(HttpResponseException.class, () -> indexClient.createAlias(new SearchAlias("my-alias",
             Collections.singletonList("index-that-does-not-exist"))));
     }
 
     @Test
-    public void cannotCreateAliasWithInvalidName() {
+    public void cannotCreateAliasOnNonExistentIndexAsync() {
+        StepVerifier.create(indexAsyncClient.createAlias(new SearchAlias("my-alias",
+                Collections.singletonList("index-that-does-not-exist"))))
+            .verifyError(HttpResponseException.class);
+    }
+
+    @Test
+    public void cannotCreateAliasWithInvalidNameSync() {
         assertThrows(HttpResponseException.class, () -> indexClient.createAlias(new SearchAlias("--invalid--alias-name",
             Collections.singletonList(searchClient.getIndexName()))));
     }
 
     @Test
-    public void cannotCreateMultipleAliasesWithTheSameName() {
+    public void cannotCreateAliasWithInvalidNameAsync() {
+        StepVerifier.create(indexAsyncClient.createAlias(new SearchAlias("--invalid--alias-name",
+                Collections.singletonList(searchClient.getIndexName()))))
+            .verifyError(HttpResponseException.class);
+    }
+
+    @Test
+    public void cannotCreateMultipleAliasesWithTheSameNameSync() {
         SearchAlias expectedAlias = new SearchAlias(testResourceNamer.randomName("my-alias", 32),
             Collections.singletonList(searchClient.getIndexName()));
         SearchAlias searchAlias = indexClient.createAlias(expectedAlias);
@@ -134,13 +171,37 @@ public class SearchAliasTests extends SearchTestBase {
     }
 
     @Test
-    public void cannotCreateAliasWithMultipleIndexes() {
+    public void cannotCreateMultipleAliasesWithTheSameNameAsync() {
+        SearchAlias expectedAlias = new SearchAlias(testResourceNamer.randomName("my-alias", 32),
+            Collections.singletonList(searchClient.getIndexName()));
+
+        StepVerifier.create(indexAsyncClient.createAlias(expectedAlias))
+            .assertNext(searchAlias -> {
+                assertEquals(expectedAlias.getName(), searchAlias.getName());
+                assertEquals(expectedAlias.getIndexes(), searchAlias.getIndexes());
+            })
+            .verifyComplete();
+
+        StepVerifier.create(indexAsyncClient.createAlias(new SearchAlias(expectedAlias.getName(),
+                Collections.singletonList(searchClient.getIndexName()))))
+            .verifyError(HttpResponseException.class);
+    }
+
+    @Test
+    public void cannotCreateAliasWithMultipleIndexesSync() {
         assertThrows(HttpResponseException.class, () -> indexClient.createAlias(new SearchAlias("my-alias",
             Arrays.asList(searchClient.getIndexName(), createHotelIndex()))));
     }
 
     @Test
-    public void canCreateMultipleAliasesReferencingTheSameIndex() {
+    public void cannotCreateAliasWithMultipleIndexesAsync() {
+        StepVerifier.create(indexAsyncClient.createAlias(new SearchAlias("my-alias",
+                Arrays.asList(searchClient.getIndexName(), createHotelIndex()))))
+            .verifyError(HttpResponseException.class);
+    }
+
+    @Test
+    public void canCreateMultipleAliasesReferencingTheSameIndexSync() {
         SearchAlias firstExpectedAlias = new SearchAlias(testResourceNamer.randomName("my-alias", 32),
             Collections.singletonList(searchClient.getIndexName()));
         SearchAlias searchAlias = indexClient.createAlias(firstExpectedAlias);
@@ -157,7 +218,30 @@ public class SearchAliasTests extends SearchTestBase {
     }
 
     @Test
-    public void canUpdateAliasAfterCreation() {
+    public void canCreateMultipleAliasesReferencingTheSameIndexAsync() {
+        SearchAlias firstExpectedAlias = new SearchAlias(testResourceNamer.randomName("my-alias", 32),
+            Collections.singletonList(searchClient.getIndexName()));
+
+        StepVerifier.create(indexAsyncClient.createAlias(firstExpectedAlias))
+            .assertNext(searchAlias -> {
+                assertEquals(firstExpectedAlias.getName(), searchAlias.getName());
+                assertEquals(firstExpectedAlias.getIndexes(), searchAlias.getIndexes());
+            })
+            .verifyComplete();
+
+        SearchAlias secondExpectedAlias = new SearchAlias(testResourceNamer.randomName("my-alias", 32),
+            Collections.singletonList(searchClient.getIndexName()));
+
+        StepVerifier.create(indexAsyncClient.createAlias(secondExpectedAlias))
+            .assertNext(searchAlias -> {
+                assertEquals(secondExpectedAlias.getName(), searchAlias.getName());
+                assertEquals(secondExpectedAlias.getIndexes(), searchAlias.getIndexes());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void canUpdateAliasAfterCreationSync() {
         String aliasName = testResourceNamer.randomName("my-alias", 32);
         indexClient.createAlias(new SearchAlias(aliasName, Collections.singletonList(searchClient.getIndexName())));
 
@@ -166,6 +250,22 @@ public class SearchAliasTests extends SearchTestBase {
 
         assertEquals(expectedUpdatedAlias.getName(), updatedAlias.getName());
         assertEquals(expectedUpdatedAlias.getIndexes(), updatedAlias.getIndexes());
+    }
+
+    @Test
+    public void canUpdateAliasAfterCreationAsync() {
+        String aliasName = testResourceNamer.randomName("my-alias", 32);
+        indexAsyncClient.createAlias(new SearchAlias(aliasName, Collections.singletonList(searchClient.getIndexName())))
+            .block();
+
+        SearchAlias expectedUpdatedAlias = new SearchAlias(aliasName, Collections.singletonList(createHotelIndex()));
+
+        StepVerifier.create(indexAsyncClient.createOrUpdateAlias(expectedUpdatedAlias))
+            .assertNext(updatedAlias -> {
+                assertEquals(expectedUpdatedAlias.getName(), updatedAlias.getName());
+                assertEquals(expectedUpdatedAlias.getIndexes(), updatedAlias.getIndexes());
+            })
+            .verifyComplete();
     }
 
     // @Test
@@ -184,7 +284,7 @@ public class SearchAliasTests extends SearchTestBase {
     }
 
     @Test
-    public void canRetrieveAlias() {
+    public void canRetrieveAliasSync() {
         SearchAlias expectedAlias = new SearchAlias(testResourceNamer.randomName("my-alias", 32),
             Collections.singletonList(searchClient.getIndexName()));
         indexClient.createAlias(expectedAlias);
@@ -196,7 +296,21 @@ public class SearchAliasTests extends SearchTestBase {
     }
 
     @Test
-    public void canDeleteAlias() {
+    public void canRetrieveAliasAsync() {
+        SearchAlias expectedAlias = new SearchAlias(testResourceNamer.randomName("my-alias", 32),
+            Collections.singletonList(searchClient.getIndexName()));
+        indexAsyncClient.createAlias(expectedAlias).block();
+
+        StepVerifier.create(indexAsyncClient.getAlias(expectedAlias.getName()))
+            .assertNext(actualAlias -> {
+                assertEquals(expectedAlias.getName(), actualAlias.getName());
+                assertEquals(expectedAlias.getIndexes(), actualAlias.getIndexes());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void canDeleteAliasSync() {
         String aliasName = testResourceNamer.randomName("my-alias", 32);
         indexClient.createAlias(new SearchAlias(aliasName, Collections.singletonList(searchClient.getIndexName())));
 
@@ -206,6 +320,20 @@ public class SearchAliasTests extends SearchTestBase {
         TestHelpers.sleepIfRunningAgainstService(1000);
 
         assertThrows(HttpResponseException.class, () -> indexClient.getIndex(aliasName));
+    }
+
+    @Test
+    public void canDeleteAliasAsync() {
+        String aliasName = testResourceNamer.randomName("my-alias", 32);
+        indexAsyncClient.createAlias(new SearchAlias(aliasName, Collections.singletonList(searchClient.getIndexName())))
+            .block();
+
+        StepVerifier.create(indexAsyncClient.deleteAlias(aliasName)).verifyComplete();
+
+        // Wait for 1 second for the alias to update
+        TestHelpers.sleepIfRunningAgainstService(1000);
+
+        StepVerifier.create(indexAsyncClient.getIndex(aliasName)).verifyError(HttpResponseException.class);
     }
 
     // @Test
@@ -223,7 +351,7 @@ public class SearchAliasTests extends SearchTestBase {
     }
 
     @Test
-    public void cannotDeleteIndexWithAlias() {
+    public void cannotDeleteIndexWithAliasSync() {
         String aliasName = testResourceNamer.randomName("my-alias", 32);
         indexClient.createAlias(new SearchAlias(aliasName, Collections.singletonList(searchClient.getIndexName())));
 
@@ -235,7 +363,24 @@ public class SearchAliasTests extends SearchTestBase {
     }
 
     @Test
-    public void canListAliases() {
+    public void cannotDeleteIndexWithAliasAsync() {
+        String aliasName = testResourceNamer.randomName("my-alias", 32);
+        indexAsyncClient.createAlias(new SearchAlias(aliasName, Collections.singletonList(searchClient.getIndexName())))
+            .block();
+
+        // Alias changes take up to 10 seconds to propagate.
+        TestHelpers.sleepIfRunningAgainstService(10000);
+
+        StepVerifier.create(indexAsyncClient.deleteIndex(searchAsyncClient.getIndexName()))
+            .verifyError(HttpResponseException.class);
+
+        StepVerifier.create(indexAsyncClient.getIndex(searchAsyncClient.getIndexName()))
+            .expectNextCount(1)
+            .verifyComplete();
+    }
+
+    @Test
+    public void canListAliasesSync() {
         String firstAliasName = testResourceNamer.randomName("my-alias", 32);
         indexClient.createAlias(new SearchAlias(firstAliasName,
             Collections.singletonList(searchClient.getIndexName())));
@@ -256,7 +401,31 @@ public class SearchAliasTests extends SearchTestBase {
     }
 
     @Test
-    public void canInspectAliasUsageInServiceStatistics() {
+    public void canListAliasesAsync() {
+        String firstAliasName = testResourceNamer.randomName("my-alias", 32);
+        indexAsyncClient.createAlias(new SearchAlias(firstAliasName,
+            Collections.singletonList(searchClient.getIndexName()))).block();
+
+        String secondAliasName = testResourceNamer.randomName("my-alias", 32);
+        indexAsyncClient.createAlias(new SearchAlias(secondAliasName,
+            Collections.singletonList(searchClient.getIndexName()))).block();
+
+        String thirdAliasName = testResourceNamer.randomName("my-alias", 32);
+        indexAsyncClient.createAlias(new SearchAlias(thirdAliasName,
+            Collections.singletonList(searchClient.getIndexName()))).block();
+
+        StepVerifier.create(indexAsyncClient.listAliases().collectList())
+            .assertNext(aliases -> {
+                assertEquals(3, aliases.size());
+                assertTrue(aliases.stream().anyMatch(alias -> alias.getName().equals(firstAliasName)));
+                assertTrue(aliases.stream().anyMatch(alias -> alias.getName().equals(secondAliasName)));
+                assertTrue(aliases.stream().anyMatch(alias -> alias.getName().equals(thirdAliasName)));
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void canInspectAliasUsageInServiceStatisticsSync() {
         indexClient.createAlias(new SearchAlias(testResourceNamer.randomName("my-alias", 32),
             Collections.singletonList(searchClient.getIndexName())));
         indexClient.createAlias(new SearchAlias(testResourceNamer.randomName("my-alias", 32),
@@ -266,5 +435,20 @@ public class SearchAliasTests extends SearchTestBase {
 
         SearchServiceStatistics serviceStatistics = indexClient.getServiceStatistics();
         assertEquals(3, serviceStatistics.getCounters().getAliasCounter().getUsage());
+    }
+
+    @Test
+    public void canInspectAliasUsageInServiceStatisticsAsync() {
+        indexAsyncClient.createAlias(new SearchAlias(testResourceNamer.randomName("my-alias", 32),
+            Collections.singletonList(searchClient.getIndexName()))).block();
+        indexAsyncClient.createAlias(new SearchAlias(testResourceNamer.randomName("my-alias", 32),
+            Collections.singletonList(searchClient.getIndexName()))).block();
+        indexAsyncClient.createAlias(new SearchAlias(testResourceNamer.randomName("my-alias", 32),
+            Collections.singletonList(searchClient.getIndexName()))).block();
+
+        StepVerifier.create(indexAsyncClient.getServiceStatistics())
+            .assertNext(serviceStatistics -> assertEquals(3,
+                serviceStatistics.getCounters().getAliasCounter().getUsage()))
+            .verifyComplete();
     }
 }

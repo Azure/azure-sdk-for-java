@@ -284,6 +284,13 @@ public final class TestHelpers {
         return documents;
     }
 
+    public static List<Map<String, Object>> uploadDocumentsJson(SearchAsyncClient client, String dataJson) {
+        List<Map<String, Object>> documents = readJsonFileToList(dataJson);
+        uploadDocuments(client, documents);
+
+        return documents;
+    }
+
     public static HttpPipeline getHttpPipeline(SearchClient searchClient) {
         return searchClient.getHttpPipeline();
     }
