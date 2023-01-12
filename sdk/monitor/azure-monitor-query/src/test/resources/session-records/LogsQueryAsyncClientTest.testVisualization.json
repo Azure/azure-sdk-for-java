@@ -1,0 +1,28 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.loganalytics.io/v1/workspaces/d2d0e126-fa1e-4b0a-b647-250cdd471e68/query",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-monitor-query/1.1.0-beta.1 (14.0.2; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "1266",
+      "Access-Control-Allow-Origin" : "*",
+      "X-Content-Type-Options" : "nosniff",
+      "Connection" : "keep-alive",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 16 Mar 2022 23:19:45 GMT",
+      "via" : "1.1 draft-oms-85847646b4-z5q5m",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Access-Control-Expose-Headers" : "Retry-After,Age,WWW-Authenticate,x-resource-identities,x-ms-status-location",
+      "Vary" : "Accept-Encoding,Accept-Encoding",
+      "Body" : "{\"tables\":[{\"name\":\"PrimaryResult\",\"columns\":[{\"name\":\"s\",\"type\":\"string\"},{\"name\":\"i\",\"type\":\"long\"}],\"rows\":[[\"a\",1],[\"b\",2],[\"c\",3]]}],\"render\":{\"visualization\":\"columnchart\",\"title\":\"the chart title\",\"accumulate\":false,\"isQuerySorted\":false,\"kind\":null,\"legend\":null,\"series\":null,\"yMin\":\"NaN\",\"yMax\":\"NaN\",\"xAxis\":null,\"xColumn\":null,\"xTitle\":\"the x axis title\",\"yAxis\":null,\"yColumns\":null,\"ySplit\":null,\"yTitle\":null,\"anomalyColumns\":null},\"statistics\":{\"query\":{\"executionTime\":0.0156356,\"resourceUsage\":{\"cache\":{\"memory\":{\"hits\":0,\"misses\":0,\"total\":0},\"disk\":{\"hits\":0,\"misses\":0,\"total\":0},\"shards\":{\"hot\":{\"hitbytes\":0,\"missbytes\":0,\"retrievebytes\":0},\"cold\":{\"hitbytes\":0,\"missbytes\":0,\"retrievebytes\":0},\"bypassbytes\":0}},\"cpu\":{\"user\":\"00:00:00\",\"kernel\":\"00:00:00\",\"totalCpu\":\"00:00:00\"},\"memory\":{\"peakPerNode\":524384},\"network\":{\"interClusterTotalBytes\":615,\"crossClusterTotalBytes\":0}},\"inputDatasetStatistics\":{\"extents\":{\"total\":0,\"scanned\":0,\"scannedMinDatetime\":\"0001-01-01T00:00:00.0000000Z\",\"scannedMaxDatetime\":\"0001-01-01T00:00:00.0000000Z\"},\"rows\":{\"total\":0,\"scanned\":0},\"rowstores\":{\"scannedRows\":0,\"scannedValuesSize\":0},\"shards\":{\"queriesGeneric\":0,\"queriesSpecialized\":0}},\"datasetStatistics\":[{\"tableRowCount\":3,\"tableSize\":55}]}}}",
+      "Age" : "28",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -1,14 +1,13 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 package com.azure.monitor.query;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -39,10 +38,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- * Unit tests for {@link MetricsQueryClient}.
- */
-public class MetricsQueryClientTest extends TestBase {
+public class MetricsQueryAsyncClientTest extends TestBase {
     private static final String RESOURCE_URI = Configuration.getGlobalConfiguration()
             .get("AZURE_MONITOR_METRICS_RESOURCE_URI",
                     "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics");
@@ -88,17 +84,24 @@ public class MetricsQueryClientTest extends TestBase {
         MetricsQueryClientBuilder clientBuilder = new MetricsQueryClientBuilder();
         if (getTestMode() == TestMode.PLAYBACK) {
             clientBuilder
-                .credential(request -> Mono.just(new AccessToken("fakeToken", OffsetDateTime.now().plusDays(1))))
-                .httpClient(interceptorManager.getPlaybackClient());
+                    .credential(request -> Mono.just(new AccessToken("fakeToken", OffsetDateTime.now().plusDays(1))))
+                    .httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
         } else if (getTestMode() == TestMode.RECORD) {
             clientBuilder
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .credential(getCredential());
+                    .addPolicy(interceptorManager.getRecordPolicy())
+                    .credential(getCredential());
         } else if (getTestMode() == TestMode.LIVE) {
             clientBuilder.credential(getCredential());
         }
         this.client = clientBuilder
                 .buildClient();
+    }
+
+    private HttpClient getAssertingHttpClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+                .assertAsync()
+                .skipRequest((request, context) -> false)
+                .build();
     }
 
     private TokenCredential getCredential() {
@@ -108,15 +111,15 @@ public class MetricsQueryClientTest extends TestBase {
     @Test
     public void testMetricsQuery() {
         Response<MetricsQueryResult> metricsResponse = client
-            .queryResourceWithResponse(RESOURCE_URI, Arrays.asList("SuccessfulCalls"),
-                new MetricsQueryOptions()
-                    .setMetricNamespace("Microsoft.CognitiveServices/accounts")
-                    .setTimeInterval(new QueryTimeInterval(Duration.ofDays(10)))
-                    .setGranularity(Duration.ofHours(1))
-                    .setTop(100)
-                    .setAggregations(Arrays.asList(AggregationType.COUNT, AggregationType.TOTAL,
-                            AggregationType.MAXIMUM, AggregationType.MINIMUM, AggregationType.AVERAGE)),
-                Context.NONE);
+                .queryResourceWithResponse(RESOURCE_URI, Arrays.asList("SuccessfulCalls"),
+                        new MetricsQueryOptions()
+                                .setMetricNamespace("Microsoft.CognitiveServices/accounts")
+                                .setTimeInterval(new QueryTimeInterval(Duration.ofDays(10)))
+                                .setGranularity(Duration.ofHours(1))
+                                .setTop(100)
+                                .setAggregations(Arrays.asList(AggregationType.COUNT, AggregationType.TOTAL,
+                                        AggregationType.MAXIMUM, AggregationType.MINIMUM, AggregationType.AVERAGE)),
+                        Context.NONE);
 
         MetricsQueryResult metricsQueryResult = metricsResponse.getValue();
         List<MetricResult> metrics = metricsQueryResult.getMetrics();
@@ -128,9 +131,9 @@ public class MetricsQueryClientTest extends TestBase {
         assertEquals(1, successfulCallsMetric.getTimeSeries().size());
 
         Assertions.assertTrue(successfulCallsMetric.getTimeSeries()
-            .stream()
-            .flatMap(timeSeriesElement -> timeSeriesElement.getValues().stream())
-            .anyMatch(metricsValue -> Double.compare(0.0, metricsValue.getCount()) == 0));
+                .stream()
+                .flatMap(timeSeriesElement -> timeSeriesElement.getValues().stream())
+                .anyMatch(metricsValue -> Double.compare(0.0, metricsValue.getCount()) == 0));
     }
 
     @ParameterizedTest
