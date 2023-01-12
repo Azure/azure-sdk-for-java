@@ -691,7 +691,9 @@ public class CosmosClientBuilder implements
     }
 
     /**
-     * Enables proactive connections to replicas which hold the partitions of the specified containers.
+     * Sets the {@link ProactiveContainerInitConfig} which enable warming up of caches and connections
+     * associated with containers obtained from {@link ProactiveContainerInitConfig#getCosmosContainerIdentities()} to replicas
+     * obtained from the first {@link ProactiveContainerInitConfig#getNumProactiveConnectionRegions()} preferred regions.
      *
      * <p>
      *     Use the {@link ProactiveContainerInitConfigBuilder} class to instantiate {@link ProactiveContainerInitConfig} class

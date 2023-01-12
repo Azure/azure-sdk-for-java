@@ -28,7 +28,7 @@ public final class ProactiveContainerInitConfigBuilder {
     /**
      * Sets the no. of regions to proactively connect to.
      * <p>
-     * <br> The no of proactive regions to connect to belong to the preferred list of regions
+     * <br>The no of proactive regions to connect to belong to the preferred list of regions
      * <br>In order to minimize latencies associated with warming up caches and opening connections
      * the no. of proactive connection regions cannot be more than 2.
      * </p>
