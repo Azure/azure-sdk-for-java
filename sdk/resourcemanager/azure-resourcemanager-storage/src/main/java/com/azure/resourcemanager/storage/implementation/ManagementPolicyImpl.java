@@ -7,20 +7,19 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.ManagementPoliciesClient;
-import com.azure.resourcemanager.storage.models.BlobTypes;
+import com.azure.resourcemanager.storage.fluent.models.ManagementPolicyInner;
 import com.azure.resourcemanager.storage.models.ManagementPolicy;
-import com.azure.resourcemanager.storage.models.ManagementPolicyBaseBlob;
 import com.azure.resourcemanager.storage.models.ManagementPolicyName;
 import com.azure.resourcemanager.storage.models.ManagementPolicyRule;
 import com.azure.resourcemanager.storage.models.ManagementPolicySchema;
-import com.azure.resourcemanager.storage.models.ManagementPolicySnapShot;
 import com.azure.resourcemanager.storage.models.PolicyRule;
-import com.azure.resourcemanager.storage.fluent.models.ManagementPolicyInner;
+import reactor.core.publisher.Mono;
+
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import reactor.core.publisher.Mono;
+import java.util.stream.Collectors;
 
 class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, ManagementPolicyInner, ManagementPolicyImpl>
     implements ManagementPolicy, ManagementPolicy.Definition, ManagementPolicy.Update {
@@ -131,55 +130,11 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
     @Override
     public List<PolicyRule> rules() {
         List<ManagementPolicyRule> originalRules = this.policy().rules();
-        List<PolicyRule> returnRules = new ArrayList<>();
-        for (ManagementPolicyRule originalRule : originalRules) {
-            List<String> originalBlobTypes = originalRule.definition().filters().blobTypes();
-            List<BlobTypes> returnBlobTypes = new ArrayList<>();
-            for (String originalBlobType : originalBlobTypes) {
-                returnBlobTypes.add(BlobTypes.fromString(originalBlobType));
-            }
-            PolicyRule returnRule =
-                new PolicyRuleImpl(originalRule.name())
-                    .withLifecycleRuleType()
-                    .withBlobTypesToFilterFor(returnBlobTypes);
-
-            // building up prefixes to filter on
-            if (originalRule.definition().filters().prefixMatch() != null) {
-                ((PolicyRuleImpl) returnRule)
-                    .withPrefixesToFilterFor(originalRule.definition().filters().prefixMatch());
-            }
-
-            // building up actions on base blob
-            ManagementPolicyBaseBlob originalBaseBlobActions = originalRule.definition().actions().baseBlob();
-            if (originalBaseBlobActions != null) {
-                if (originalBaseBlobActions.tierToCool() != null) {
-                    ((PolicyRuleImpl) returnRule)
-                        .withTierToCoolActionOnBaseBlob(
-                            originalBaseBlobActions.tierToCool().daysAfterModificationGreaterThan());
-                }
-                if (originalBaseBlobActions.tierToArchive() != null) {
-                    ((PolicyRuleImpl) returnRule)
-                        .withTierToArchiveActionOnBaseBlob(
-                            originalBaseBlobActions.tierToArchive().daysAfterModificationGreaterThan());
-                }
-                if (originalBaseBlobActions.delete() != null) {
-                    ((PolicyRuleImpl) returnRule)
-                        .withDeleteActionOnBaseBlob(
-                            originalBaseBlobActions.delete().daysAfterModificationGreaterThan());
-                }
-            }
-
-            // build up actions on snapshot
-            ManagementPolicySnapShot originalSnapshotActions = originalRule.definition().actions().snapshot();
-            if (originalSnapshotActions != null) {
-                if (originalSnapshotActions.delete() != null) {
-                    ((PolicyRuleImpl) returnRule)
-                        .withDeleteActionOnSnapShot(originalSnapshotActions.delete().daysAfterCreationGreaterThan());
-                }
-            }
-            returnRules.add(returnRule);
-        }
-        return Collections.unmodifiableList(returnRules);
+        return originalRules == null
+            ? Collections.emptyList()
+            : originalRules.stream()
+            .map(rule -> new PolicyRuleImpl(rule, this))
+            .collect(Collectors.toList());
     }
 
     @Override
