@@ -18,6 +18,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Remove the `public` access modifier from bean methods [#32514](https://github.com/Azure/azure-sdk-for-java/pull/32514).
 - Remove Cloud Foundry support [#32616](https://github.com/Azure/azure-sdk-for-java/pull/32616).
 - Change the default value of `spring.jms.servicebus.idle-timeout` from 30 minutes to 2 minutes [#32817](https://github.com/Azure/azure-sdk-for-java/pull/32817).
+- Change the default value of `spring.cloud.azure.eventhubs.processor.load-balancing.strategy` from `BALANCED` to `GREEDY` [#32913](https://github.com/Azure/azure-sdk-for-java/pull/32913).
 
 #### Bugs Fixed
 - Remove unused class `RestTemplateProxyCustomizerConfiguration` [#32616](https://github.com/Azure/azure-sdk-for-java/pull/32616)
@@ -33,6 +34,18 @@ This section includes changes in `spring-cloud-azure-core`, `spring-cloud-azure-
 
 #### Bugs Fixed
 - Remove warning logs about client properties while using Kafka passwordless. [#32235](https://github.com/Azure/azure-sdk-for-java/issues/32235)
+
+### Spring Messaging Event Hubs
+This section includes changes in `spring-messaging-azure-eventhubs` module.
+
+#### Breaking Changes
+- Change the default load-balancing strategy from `BALANCED` to `GREEDY` [#32913](https://github.com/Azure/azure-sdk-for-java/pull/32913).
+
+### Spring Cloud Stream Event Hubs Binder
+This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` module.
+
+#### Breaking Changes
+- Change the default value of `spring.cloud.stream.eventhubs.bindings.<binding-name>.consumer.load-balancing.strategy` from `BALANCED` to `GREEDY` [#32913](https://github.com/Azure/azure-sdk-for-java/pull/32913).
 
 ## 6.0.0-beta.4 (2022-12-07)
 Upgrade Spring Boot dependencies version to 3.0.0-RC2 and Spring Cloud dependencies version to 2022.0.0-RC2.

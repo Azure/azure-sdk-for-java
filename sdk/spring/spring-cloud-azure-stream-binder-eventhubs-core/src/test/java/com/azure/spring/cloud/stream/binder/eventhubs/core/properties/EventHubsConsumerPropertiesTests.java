@@ -44,7 +44,7 @@ public class EventHubsConsumerPropertiesTests {
     void loadBalancingDefaults() {
         LoadBalancingProperties loadBalancing = consumerProperties.getLoadBalancing();
         assertNotNull(loadBalancing);
-        assertEquals(LoadBalancingStrategy.BALANCED, loadBalancing.getStrategy());
+        assertNull(loadBalancing.getStrategy());
     }
 
     @Test
