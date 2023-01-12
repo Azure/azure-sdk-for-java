@@ -85,7 +85,7 @@ resource if you plan to access multiple cognitive services under a single endpoi
 create a Language service resource.
 
 You can create the resource using the [Azure Portal][create_new_resource_in_azure_portal] or 
-[Azure CLI][create_new_resource_in_azure_cli] following the steps in [this document][azure_cli_doc].
+[Azure CLI][azure_cli_doc] following the steps in [this document][create_new_resource_in_azure_cli].
 
 ### Authenticate the client
 In order to interact with the Language service, you will need to create an instance of the Text Analytics client,
