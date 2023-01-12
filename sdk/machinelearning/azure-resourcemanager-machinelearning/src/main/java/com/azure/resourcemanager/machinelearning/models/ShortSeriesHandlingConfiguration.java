@@ -23,6 +23,15 @@ public final class ShortSeriesHandlingConfiguration extends ExpandableStringEnum
     public static final ShortSeriesHandlingConfiguration DROP = fromString("Drop");
 
     /**
+     * Creates a new instance of ShortSeriesHandlingConfiguration value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ShortSeriesHandlingConfiguration() {
+    }
+
+    /**
      * Creates or finds a ShortSeriesHandlingConfiguration from its string representation.
      *
      * @param name a name to look for.

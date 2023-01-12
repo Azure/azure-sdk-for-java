@@ -7,18 +7,17 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.WorkspaceConnectionPersonalAccessToken;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class WorkspaceConnectionPersonalAccessTokenTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         WorkspaceConnectionPersonalAccessToken model =
             BinaryData.fromString("{\"pat\":\"phuuuerctato\"}").toObject(WorkspaceConnectionPersonalAccessToken.class);
         Assertions.assertEquals("phuuuerctato", model.pat());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         WorkspaceConnectionPersonalAccessToken model =
             new WorkspaceConnectionPersonalAccessToken().withPat("phuuuerctato");
         model = BinaryData.fromObject(model).toObject(WorkspaceConnectionPersonalAccessToken.class);

@@ -13,10 +13,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ConfigurationsC
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ConfigurationInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Configuration;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Configurations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ConfigurationsImpl implements Configurations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConfigurationsImpl.class);
 
     private final ConfigurationsClient innerClient;
 
@@ -40,15 +39,6 @@ public final class ConfigurationsImpl implements Configurations {
         return Utils.mapPage(inner, inner1 -> new ConfigurationImpl(inner1, this.manager()));
     }
 
-    public Configuration get(String resourceGroupName, String serverName, String configurationName) {
-        ConfigurationInner inner = this.serviceClient().get(resourceGroupName, serverName, configurationName);
-        if (inner != null) {
-            return new ConfigurationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Configuration> getWithResponse(
         String resourceGroupName, String serverName, String configurationName, Context context) {
         Response<ConfigurationInner> inner =
@@ -64,10 +54,19 @@ public final class ConfigurationsImpl implements Configurations {
         }
     }
 
+    public Configuration get(String resourceGroupName, String serverName, String configurationName) {
+        ConfigurationInner inner = this.serviceClient().get(resourceGroupName, serverName, configurationName);
+        if (inner != null) {
+            return new ConfigurationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public Configuration getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -75,7 +74,7 @@ public final class ConfigurationsImpl implements Configurations {
         }
         String serverName = Utils.getValueFromIdByName(id, "flexibleServers");
         if (serverName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -83,7 +82,7 @@ public final class ConfigurationsImpl implements Configurations {
         }
         String configurationName = Utils.getValueFromIdByName(id, "configurations");
         if (configurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -95,7 +94,7 @@ public final class ConfigurationsImpl implements Configurations {
     public Response<Configuration> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -103,7 +102,7 @@ public final class ConfigurationsImpl implements Configurations {
         }
         String serverName = Utils.getValueFromIdByName(id, "flexibleServers");
         if (serverName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -111,7 +110,7 @@ public final class ConfigurationsImpl implements Configurations {
         }
         String configurationName = Utils.getValueFromIdByName(id, "configurations");
         if (configurationName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

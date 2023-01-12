@@ -7,17 +7,13 @@ package com.azure.resourcemanager.azurearcdata.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.azurearcdata.models.SqlServerInstanceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** A SqlServerInstance. */
 @Fluent
 public final class SqlServerInstanceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlServerInstanceInner.class);
-
     /*
      * null
      */
@@ -29,6 +25,10 @@ public final class SqlServerInstanceInner extends Resource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of SqlServerInstanceInner class. */
+    public SqlServerInstanceInner() {
+    }
 
     /**
      * Get the properties property: null.

@@ -13,11 +13,10 @@ import com.azure.resourcemanager.machinelearning.models.VMPriceOSType;
 import com.azure.resourcemanager.machinelearning.models.VMTier;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class EstimatedVMPricesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         EstimatedVMPrices model =
             BinaryData
                 .fromString(
@@ -30,8 +29,8 @@ public final class EstimatedVMPricesTests {
         Assertions.assertEquals(VMTier.LOW_PRIORITY, model.values().get(0).vmTier());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         EstimatedVMPrices model =
             new EstimatedVMPrices()
                 .withBillingCurrency(BillingCurrency.USD)

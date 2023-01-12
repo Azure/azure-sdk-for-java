@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ModelVersions List. */
 public final class ModelVersionsListSamples {
     /*
@@ -33,6 +31,6 @@ public final class ModelVersionsListSamples {
                 "string",
                 null,
                 null,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

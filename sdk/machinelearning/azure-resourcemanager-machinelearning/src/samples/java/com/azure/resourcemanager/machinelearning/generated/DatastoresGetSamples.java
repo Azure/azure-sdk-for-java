@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Datastores Get. */
 public final class DatastoresGetSamples {
     /*
@@ -17,6 +15,6 @@ public final class DatastoresGetSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getDatastore(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.datastores().getWithResponse("test-rg", "my-aml-workspace", "string", Context.NONE);
+        manager.datastores().getWithResponse("test-rg", "my-aml-workspace", "string", com.azure.core.util.Context.NONE);
     }
 }

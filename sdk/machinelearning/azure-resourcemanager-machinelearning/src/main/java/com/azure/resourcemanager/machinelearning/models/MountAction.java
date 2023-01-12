@@ -17,6 +17,15 @@ public final class MountAction extends ExpandableStringEnum<MountAction> {
     public static final MountAction UNMOUNT = fromString("Unmount");
 
     /**
+     * Creates a new instance of MountAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MountAction() {
+    }
+
+    /**
      * Creates or finds a MountAction from its string representation.
      *
      * @param name a name to look for.

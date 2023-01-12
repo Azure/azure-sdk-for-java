@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.ComputeSecrets;
 import java.nio.ByteBuffer;
@@ -59,6 +58,9 @@ public final class ComputesListKeysWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ComputeSecrets response =
-            manager.computes().listKeysWithResponse("lilw", "ghjhjvmabzzbwa", "b", Context.NONE).getValue();
+            manager
+                .computes()
+                .listKeysWithResponse("lilw", "ghjhjvmabzzbwa", "b", com.azure.core.util.Context.NONE)
+                .getValue();
     }
 }

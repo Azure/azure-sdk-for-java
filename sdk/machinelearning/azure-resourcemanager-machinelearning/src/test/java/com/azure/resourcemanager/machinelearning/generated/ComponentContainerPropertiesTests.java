@@ -9,11 +9,10 @@ import com.azure.resourcemanager.machinelearning.models.ComponentContainerProper
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ComponentContainerPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ComponentContainerProperties model =
             BinaryData
                 .fromString(
@@ -25,8 +24,8 @@ public final class ComponentContainerPropertiesTests {
         Assertions.assertEquals(false, model.isArchived());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ComponentContainerProperties model =
             new ComponentContainerProperties()
                 .withDescription("gitvg")

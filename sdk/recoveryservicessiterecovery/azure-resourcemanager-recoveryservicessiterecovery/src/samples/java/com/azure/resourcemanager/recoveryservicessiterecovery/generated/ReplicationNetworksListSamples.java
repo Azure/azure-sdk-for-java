@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationNetworks List. */
 public final class ReplicationNetworksListSamples {
     /*
@@ -18,6 +16,6 @@ public final class ReplicationNetworksListSamples {
      */
     public static void getsTheListOfNetworksViewOnlyAPI(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationNetworks().list("srce2avaultbvtaC27", "srcBvte2a14C27", Context.NONE);
+        manager.replicationNetworks().list("srce2avaultbvtaC27", "srcBvte2a14C27", com.azure.core.util.Context.NONE);
     }
 }

@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.PrivateLinkResourceListResult;
 import java.nio.ByteBuffer;
@@ -61,7 +60,10 @@ public final class PrivateLinkResourcesListWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateLinkResourceListResult response =
-            manager.privateLinkResources().listWithResponse("hxqqmqip", "y", Context.NONE).getValue();
+            manager
+                .privateLinkResources()
+                .listWithResponse("hxqqmqip", "y", com.azure.core.util.Context.NONE)
+                .getValue();
 
         Assertions.assertEquals("c", response.value().get(0).location());
         Assertions.assertEquals("fshksnyzmspamwb", response.value().get(0).tags().get("m"));

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationFabrics List. */
 public final class ReplicationFabricsListSamples {
     /*
@@ -18,6 +16,6 @@ public final class ReplicationFabricsListSamples {
      */
     public static void getsTheListOfASRFabrics(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationFabrics().list("vault1", "resourceGroupPS1", Context.NONE);
+        manager.replicationFabrics().list("vault1", "resourceGroupPS1", com.azure.core.util.Context.NONE);
     }
 }

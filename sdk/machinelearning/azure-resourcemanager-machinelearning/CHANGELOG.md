@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,17 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2023-01-11)
+
+- Azure Resource Manager Machine Learning client library for Java. This package contains Microsoft Azure SDK for Machine Learning Management SDK. These APIs allow end users to operate on Azure Machine Learning Workspace resources. Package tag package-2022-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.EndpointPropertiesBase` was modified
+
+* `java.net.URL swaggerUri()` -> `java.lang.String swaggerUri()`
+* `java.net.URL scoringUri()` -> `java.lang.String scoringUri()`
 
 ## 1.0.0-beta.3 (2023-01-10)
 

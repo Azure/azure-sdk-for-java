@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for OnlineDeployments Delete. */
 public final class OnlineDeploymentsDeleteSamples {
     /*
@@ -18,6 +16,8 @@ public final class OnlineDeploymentsDeleteSamples {
      */
     public static void deleteOnlineDeployment(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.onlineDeployments().delete("testrg123", "workspace123", "testEndpoint", "testDeployment", Context.NONE);
+        manager
+            .onlineDeployments()
+            .delete("testrg123", "workspace123", "testEndpoint", "testDeployment", com.azure.core.util.Context.NONE);
     }
 }

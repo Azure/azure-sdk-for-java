@@ -48,6 +48,15 @@ public final class HealthErrorCategory extends ExpandableStringEnum<HealthErrorC
         fromString("AgentAutoUpdateRunAsAccountExpired");
 
     /**
+     * Creates a new instance of HealthErrorCategory value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HealthErrorCategory() {
+    }
+
+    /**
      * Creates or finds a HealthErrorCategory from its string representation.
      *
      * @param name a name to look for.

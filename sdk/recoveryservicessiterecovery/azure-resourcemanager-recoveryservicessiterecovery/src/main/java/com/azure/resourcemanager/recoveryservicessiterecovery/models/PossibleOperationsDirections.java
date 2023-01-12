@@ -17,6 +17,15 @@ public final class PossibleOperationsDirections extends ExpandableStringEnum<Pos
     public static final PossibleOperationsDirections RECOVERY_TO_PRIMARY = fromString("RecoveryToPrimary");
 
     /**
+     * Creates a new instance of PossibleOperationsDirections value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PossibleOperationsDirections() {
+    }
+
+    /**
      * Creates or finds a PossibleOperationsDirections from its string representation.
      *
      * @param name a name to look for.

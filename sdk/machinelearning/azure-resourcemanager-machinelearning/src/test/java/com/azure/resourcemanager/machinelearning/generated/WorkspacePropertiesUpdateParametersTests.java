@@ -10,11 +10,10 @@ import com.azure.resourcemanager.machinelearning.models.CosmosDbSettings;
 import com.azure.resourcemanager.machinelearning.models.PublicNetworkAccess;
 import com.azure.resourcemanager.machinelearning.models.ServiceManagedResourcesSettings;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class WorkspacePropertiesUpdateParametersTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         WorkspacePropertiesUpdateParameters model =
             BinaryData
                 .fromString(
@@ -30,8 +29,8 @@ public final class WorkspacePropertiesUpdateParametersTests {
         Assertions.assertEquals("mbmbexppbh", model.containerRegistry());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         WorkspacePropertiesUpdateParameters model =
             new WorkspacePropertiesUpdateParameters()
                 .withDescription("qfou")

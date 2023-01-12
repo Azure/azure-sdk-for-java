@@ -13,11 +13,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DataContainerResourceArmPaginatedResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DataContainerResourceArmPaginatedResult model =
             BinaryData
                 .fromString(
@@ -29,8 +28,8 @@ public final class DataContainerResourceArmPaginatedResultTests {
         Assertions.assertEquals(DataType.URI_FILE, model.value().get(0).properties().dataType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DataContainerResourceArmPaginatedResult model =
             new DataContainerResourceArmPaginatedResult()
                 .withNextLink("ufxqknpirgnepttw")

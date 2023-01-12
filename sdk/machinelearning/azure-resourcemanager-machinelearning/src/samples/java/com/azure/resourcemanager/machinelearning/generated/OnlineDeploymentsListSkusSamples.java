@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for OnlineDeployments ListSkus. */
 public final class OnlineDeploymentsListSkusSamples {
     /*
@@ -20,7 +18,14 @@ public final class OnlineDeploymentsListSkusSamples {
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .onlineDeployments()
-            .listSkus("test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", 1, null, Context.NONE);
+            .listSkus(
+                "test-rg",
+                "my-aml-workspace",
+                "testEndpointName",
+                "testDeploymentName",
+                1,
+                null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -35,6 +40,13 @@ public final class OnlineDeploymentsListSkusSamples {
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager
             .onlineDeployments()
-            .listSkus("test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName", 1, null, Context.NONE);
+            .listSkus(
+                "test-rg",
+                "my-aml-workspace",
+                "testEndpointName",
+                "testDeploymentName",
+                1,
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }

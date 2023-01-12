@@ -53,6 +53,15 @@ public final class ReplicationProtectedItemOperation extends ExpandableStringEnu
     public static final ReplicationProtectedItemOperation COMPLETE_MIGRATION = fromString("CompleteMigration");
 
     /**
+     * Creates a new instance of ReplicationProtectedItemOperation value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ReplicationProtectedItemOperation() {
+    }
+
+    /**
      * Creates or finds a ReplicationProtectedItemOperation from its string representation.
      *
      * @param name a name to look for.

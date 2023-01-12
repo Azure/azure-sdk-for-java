@@ -12,11 +12,10 @@ import com.azure.resourcemanager.machinelearning.models.StackMetaLearnerType;
 import java.time.Duration;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClassificationTrainingSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ClassificationTrainingSettings model =
             BinaryData
                 .fromString(
@@ -36,8 +35,8 @@ public final class ClassificationTrainingSettingsTests {
         Assertions.assertEquals(ClassificationModels.LOGISTIC_REGRESSION, model.blockedTrainingAlgorithms().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ClassificationTrainingSettings model =
             new ClassificationTrainingSettings()
                 .withEnableDnnTraining(false)

@@ -20,6 +20,15 @@ public final class RecoveryPlanGroupType extends ExpandableStringEnum<RecoveryPl
     public static final RecoveryPlanGroupType FAILOVER = fromString("Failover");
 
     /**
+     * Creates a new instance of RecoveryPlanGroupType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecoveryPlanGroupType() {
+    }
+
+    /**
      * Creates or finds a RecoveryPlanGroupType from its string representation.
      *
      * @param name a name to look for.

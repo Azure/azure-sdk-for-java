@@ -9,11 +9,10 @@ import com.azure.resourcemanager.machinelearning.models.CodeContainerProperties;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CodeContainerPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CodeContainerProperties model =
             BinaryData
                 .fromString(
@@ -25,8 +24,8 @@ public final class CodeContainerPropertiesTests {
         Assertions.assertEquals(true, model.isArchived());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CodeContainerProperties model =
             new CodeContainerProperties()
                 .withDescription("zraehtwd")

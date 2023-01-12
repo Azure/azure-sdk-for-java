@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ResyncInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ResyncInputProperties;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.VMwareCbtResyncInput;
@@ -33,6 +32,6 @@ public final class ReplicationMigrationItemsResyncSamples {
                     .withProperties(
                         new ResyncInputProperties()
                             .withProviderSpecificDetails(new VMwareCbtResyncInput().withSkipCbtReset("true"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

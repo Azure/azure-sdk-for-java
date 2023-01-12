@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.ComponentContainer;
 import java.nio.ByteBuffer;
@@ -63,7 +62,7 @@ public final class ComponentContainersGetWithResponseMockTests {
         ComponentContainer response =
             manager
                 .componentContainers()
-                .getWithResponse("ucumlddauqml", "feothxu", "rigrjdljlkq", Context.NONE)
+                .getWithResponse("ucumlddauqml", "feothxu", "rigrjdljlkq", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals("l", response.properties().description());

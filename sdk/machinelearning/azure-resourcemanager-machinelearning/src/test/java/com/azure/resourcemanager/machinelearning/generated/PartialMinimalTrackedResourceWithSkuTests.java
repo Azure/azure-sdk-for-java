@@ -11,11 +11,10 @@ import com.azure.resourcemanager.machinelearning.models.SkuTier;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PartialMinimalTrackedResourceWithSkuTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PartialMinimalTrackedResourceWithSku model =
             BinaryData
                 .fromString(
@@ -29,8 +28,8 @@ public final class PartialMinimalTrackedResourceWithSkuTests {
         Assertions.assertEquals(SkuTier.PREMIUM, model.sku().tier());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PartialMinimalTrackedResourceWithSku model =
             new PartialMinimalTrackedResourceWithSku()
                 .withTags(mapOf("ftgz", "agltsxoa"))

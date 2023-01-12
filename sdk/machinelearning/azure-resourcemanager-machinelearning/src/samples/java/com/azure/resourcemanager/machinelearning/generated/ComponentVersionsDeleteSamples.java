@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ComponentVersions Delete. */
 public final class ComponentVersionsDeleteSamples {
     /*
@@ -18,6 +16,8 @@ public final class ComponentVersionsDeleteSamples {
      */
     public static void deleteComponentVersion(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.componentVersions().deleteWithResponse("test-rg", "my-aml-workspace", "string", "string", Context.NONE);
+        manager
+            .componentVersions()
+            .deleteWithResponse("test-rg", "my-aml-workspace", "string", "string", com.azure.core.util.Context.NONE);
     }
 }

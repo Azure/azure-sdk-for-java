@@ -83,13 +83,6 @@ public interface ResourceRecommendationBase {
     String recommendationTypeId();
 
     /**
-     * Gets the risk property: The potential risk of not implementing the recommendation.
-     *
-     * @return the risk value.
-     */
-    Risk risk();
-
-    /**
      * Gets the shortDescription property: A summary of the recommendation.
      *
      * @return the shortDescription value.

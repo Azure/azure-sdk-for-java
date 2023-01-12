@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationJobs Cancel. */
 public final class ReplicationJobsCancelSamples {
     /*
@@ -20,6 +18,7 @@ public final class ReplicationJobsCancelSamples {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager
             .replicationJobs()
-            .cancel("vault1", "resourceGroupPS1", "2653c648-fc72-4316-86f3-fdf8eaa0066b", Context.NONE);
+            .cancel(
+                "vault1", "resourceGroupPS1", "2653c648-fc72-4316-86f3-fdf8eaa0066b", com.azure.core.util.Context.NONE);
     }
 }

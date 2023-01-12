@@ -10,11 +10,10 @@ import com.azure.resourcemanager.machinelearning.models.AmlOperationDisplay;
 import com.azure.resourcemanager.machinelearning.models.AmlOperationListResult;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AmlOperationListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AmlOperationListResult model =
             BinaryData
                 .fromString(
@@ -28,8 +27,8 @@ public final class AmlOperationListResultTests {
         Assertions.assertEquals(false, model.value().get(0).isDataAction());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AmlOperationListResult model =
             new AmlOperationListResult()
                 .withValue(

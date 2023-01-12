@@ -22,11 +22,10 @@ import com.azure.resourcemanager.machinelearning.models.StochasticOptimizer;
 import java.time.Duration;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ImageClassificationMultilabelTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ImageClassificationMultilabel model =
             BinaryData
                 .fromString(
@@ -120,8 +119,8 @@ public final class ImageClassificationMultilabelTests {
         Assertions.assertEquals(60.747284942704425D, model.validationDataSize());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ImageClassificationMultilabel model =
             new ImageClassificationMultilabel()
                 .withLogVerbosity(LogVerbosity.DEBUG)

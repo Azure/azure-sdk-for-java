@@ -1148,7 +1148,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         String protectionContainerName,
         String migrationItemName,
         EnableMigrationInput input) {
-        return beginCreateAsync(
+        return this
+            .beginCreateAsync(
                 resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName, input)
             .getSyncPoller();
     }
@@ -1179,7 +1180,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         String migrationItemName,
         EnableMigrationInput input,
         Context context) {
-        return beginCreateAsync(
+        return this
+            .beginCreateAsync(
                 resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName, input, context)
             .getSyncPoller();
     }
@@ -1580,7 +1582,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         String protectionContainerName,
         String migrationItemName) {
         final String deleteOption = null;
-        return beginDeleteAsync(
+        return this
+            .beginDeleteAsync(
                 resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName, deleteOption)
             .getSyncPoller();
     }
@@ -1611,7 +1614,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         String migrationItemName,
         String deleteOption,
         Context context) {
-        return beginDeleteAsync(
+        return this
+            .beginDeleteAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -2044,7 +2048,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         String protectionContainerName,
         String migrationItemName,
         UpdateMigrationItemInput input) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName, input)
             .getSyncPoller();
     }
@@ -2075,7 +2080,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         String migrationItemName,
         UpdateMigrationItemInput input,
         Context context) {
-        return beginUpdateAsync(
+        return this
+            .beginUpdateAsync(
                 resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName, input, context)
             .getSyncPoller();
     }
@@ -2464,7 +2470,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         String protectionContainerName,
         String migrationItemName,
         MigrateInput migrateInput) {
-        return beginMigrateAsync(
+        return this
+            .beginMigrateAsync(
                 resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName, migrateInput)
             .getSyncPoller();
     }
@@ -2495,7 +2502,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         String migrationItemName,
         MigrateInput migrateInput,
         Context context) {
-        return beginMigrateAsync(
+        return this
+            .beginMigrateAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -2909,7 +2917,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         String protectionContainerName,
         String migrationItemName,
         PauseReplicationInput pauseReplicationInput) {
-        return beginPauseReplicationAsync(
+        return this
+            .beginPauseReplicationAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -2945,7 +2954,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         String migrationItemName,
         PauseReplicationInput pauseReplicationInput,
         Context context) {
-        return beginPauseReplicationAsync(
+        return this
+            .beginPauseReplicationAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -3371,7 +3381,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         String protectionContainerName,
         String migrationItemName,
         ResumeReplicationInput resumeReplicationInput) {
-        return beginResumeReplicationAsync(
+        return this
+            .beginResumeReplicationAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -3407,7 +3418,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         String migrationItemName,
         ResumeReplicationInput resumeReplicationInput,
         Context context) {
-        return beginResumeReplicationAsync(
+        return this
+            .beginResumeReplicationAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -3824,7 +3836,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         String protectionContainerName,
         String migrationItemName,
         ResyncInput input) {
-        return beginResyncAsync(
+        return this
+            .beginResyncAsync(
                 resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName, input)
             .getSyncPoller();
     }
@@ -3855,7 +3868,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         String migrationItemName,
         ResyncInput input,
         Context context) {
-        return beginResyncAsync(
+        return this
+            .beginResyncAsync(
                 resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName, input, context)
             .getSyncPoller();
     }
@@ -4251,7 +4265,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         String protectionContainerName,
         String migrationItemName,
         TestMigrateInput testMigrateInput) {
-        return beginTestMigrateAsync(
+        return this
+            .beginTestMigrateAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -4287,7 +4302,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         String migrationItemName,
         TestMigrateInput testMigrateInput,
         Context context) {
-        return beginTestMigrateAsync(
+        return this
+            .beginTestMigrateAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -4713,7 +4729,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         String protectionContainerName,
         String migrationItemName,
         TestMigrateCleanupInput testMigrateCleanupInput) {
-        return beginTestMigrateCleanupAsync(
+        return this
+            .beginTestMigrateCleanupAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
@@ -4749,7 +4766,8 @@ public final class ReplicationMigrationItemsClientImpl implements ReplicationMig
         String migrationItemName,
         TestMigrateCleanupInput testMigrateCleanupInput,
         Context context) {
-        return beginTestMigrateCleanupAsync(
+        return this
+            .beginTestMigrateCleanupAsync(
                 resourceName,
                 resourceGroupName,
                 fabricName,
