@@ -5,8 +5,7 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.SparkBridgeInternal
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
-import com.azure.cosmos.models.{CosmosContainerProperties, PartitionKey, ThroughputProperties}
-import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty}
+import com.azure.cosmos.models.PartitionKey
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.udf.{CreateChangeFeedOffsetFromSpark2, CreateSpark2ContinuationsFromChangeFeedOffset, GetFeedRangeForPartitionKeyValue}
 import org.apache.hadoop.fs.{FileSystem, Path}
@@ -39,11 +38,11 @@ class SparkE2EChangeFeedITest
   }
 
   "spark change feed query (incremental)" can "handle container recreate with batch checkpoint location (ignoring invalid offset)" in {
-    runContainerRecreationScenarioWithatchFileLocation(true)
+    runContainerRecreationScenarioWithBatchFileLocation(true)
   }
 
   "spark change feed query (incremental)" can "handle container recreate with batch checkpoint location (failing on invalid offset)" in {
-    runContainerRecreationScenarioWithatchFileLocation(false)
+    runContainerRecreationScenarioWithBatchFileLocation(false)
   }
 
   "spark change feed query (incremental)" can "use default schema" in {
