@@ -163,7 +163,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
         /**
          * Whether to enable auto-complete.
          */
-        private Boolean autoComplete = true;
+        private Boolean autoComplete;
         /**
          * Prefetch count of the consumer.
          */
@@ -175,7 +175,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
         /**
          * Mode for receiving messages.
          */
-        private ServiceBusReceiveMode receiveMode = ServiceBusReceiveMode.PEEK_LOCK;
+        private ServiceBusReceiveMode receiveMode;
         /**
          * Name for a topic subscription.
          */
