@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConnectivityStatus. */
+/** Represents the connectivity status of the connected cluster. */
 public final class ConnectivityStatus extends ExpandableStringEnum<ConnectivityStatus> {
     /** Static value Connecting for ConnectivityStatus. */
     public static final ConnectivityStatus CONNECTING = fromString("Connecting");
@@ -23,6 +23,15 @@ public final class ConnectivityStatus extends ExpandableStringEnum<ConnectivityS
     public static final ConnectivityStatus EXPIRED = fromString("Expired");
 
     /**
+     * Creates a new instance of ConnectivityStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectivityStatus() {
+    }
+
+    /**
      * Creates or finds a ConnectivityStatus from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class ConnectivityStatus extends ExpandableStringEnum<ConnectivityS
         return fromString(name, ConnectivityStatus.class);
     }
 
-    /** @return known ConnectivityStatus values. */
+    /**
+     * Gets known ConnectivityStatus values.
+     *
+     * @return known ConnectivityStatus values.
+     */
     public static Collection<ConnectivityStatus> values() {
         return values(ConnectivityStatus.class);
     }

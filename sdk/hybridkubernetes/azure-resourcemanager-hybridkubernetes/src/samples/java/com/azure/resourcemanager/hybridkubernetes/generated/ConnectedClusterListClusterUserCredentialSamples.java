@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.hybridkubernetes.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridkubernetes.models.AuthenticationMethod;
 import com.azure.resourcemanager.hybridkubernetes.models.ListClusterUserCredentialProperties;
 
@@ -28,7 +27,7 @@ public final class ConnectedClusterListClusterUserCredentialSamples {
                 new ListClusterUserCredentialProperties()
                     .withAuthenticationMethod(AuthenticationMethod.AAD)
                     .withClientProxy(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -49,7 +48,7 @@ public final class ConnectedClusterListClusterUserCredentialSamples {
                 new ListClusterUserCredentialProperties()
                     .withAuthenticationMethod(AuthenticationMethod.AAD)
                     .withClientProxy(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -70,7 +69,7 @@ public final class ConnectedClusterListClusterUserCredentialSamples {
                 new ListClusterUserCredentialProperties()
                     .withAuthenticationMethod(AuthenticationMethod.TOKEN)
                     .withClientProxy(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -91,6 +90,6 @@ public final class ConnectedClusterListClusterUserCredentialSamples {
                 new ListClusterUserCredentialProperties()
                     .withAuthenticationMethod(AuthenticationMethod.TOKEN)
                     .withClientProxy(false),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
