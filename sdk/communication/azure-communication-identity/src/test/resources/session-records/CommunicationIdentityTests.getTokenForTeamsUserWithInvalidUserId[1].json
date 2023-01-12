@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.communication.azure.com/teamsUser/:exchangeAccessToken?api-version=2022-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-identity/1.5.0-beta.1 (11.0.17; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "0b512c8c-60e4-42e5-ae1a-7eb06111d8d8",
+      "x-ms-client-request-id" : "2d6b4b90-fd4a-4bf0-8add-a67206927faf",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -12,13 +12,13 @@
       "X-Cache" : "CONFIG_NOCACHE",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Date" : "Mon, 09 Jan 2023 14:38:33 GMT",
+      "Date" : "Thu, 12 Jan 2023 09:57:06 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "134ms",
-      "MS-CV" : "JPkH4R3aO0+tI/wVQ3q8jw.0",
-      "X-Azure-Ref" : "06ia8YwAAAAAVLUoKk79PSI19Q01QIRfsSEVMMDFFREdFMjAxNQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Processing-Time" : "103ms",
+      "MS-CV" : "VwIStxGWl06CjxZWFYJ/8A.0",
+      "X-Azure-Ref" : "0ctm/YwAAAADPK9qzi69ZR4LFwX4txXG9SEVMMDFFREdFMjAxOAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "Body" : "{\"error\":{\"code\":\"ValidationError\",\"message\":\"UserId: The UserId field is required.\",\"target\":\"UserId\"}}",
-      "x-ms-client-request-id" : "0b512c8c-60e4-42e5-ae1a-7eb06111d8d8",
+      "x-ms-client-request-id" : "2d6b4b90-fd4a-4bf0-8add-a67206927faf",
       "Request-Context" : "appId=",
       "Content-Type" : "application/json"
     },

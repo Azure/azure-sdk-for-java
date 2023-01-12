@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.communication.azure.com/teamsUser/:exchangeAccessToken?api-version=2022-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-identity/1.5.0-beta.1 (11.0.17; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "071def1c-ab83-4ed7-b316-834bf18b3985",
+      "x-ms-client-request-id" : "864d9d33-5079-41b2-9259-ddb08d4bfa05",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -13,13 +13,13 @@
       "api-supported-versions" : "2021-10-31-preview, 2022-06-01, 2022-10-01",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Date" : "Mon, 09 Jan 2023 14:38:01 GMT",
+      "Date" : "Thu, 12 Jan 2023 09:57:03 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
-      "X-Processing-Time" : "135ms",
-      "MS-CV" : "NPnvzjRnBkqxsXkPS/gq1A.0",
-      "X-Azure-Ref" : "0yia8YwAAAADYfss/2QL0QI2Vvs77FuZpSEVMMDFFREdFMjAxNQA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Processing-Time" : "376ms",
+      "MS-CV" : "vi3S9gp+FUKn0WsIMWPMkQ.0",
+      "X-Azure-Ref" : "0cNm/YwAAAAAe+9RSQsCnTquL2DbSsdkrSEVMMDFFREdFMjAxMgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "Body" : "{\"error\":{\"code\":\"ValidationError\",\"message\":\"Provided AAD token issued for unexpected user.\",\"target\":\"userId\"}}",
-      "x-ms-client-request-id" : "071def1c-ab83-4ed7-b316-834bf18b3985",
+      "x-ms-client-request-id" : "864d9d33-5079-41b2-9259-ddb08d4bfa05",
       "Request-Context" : "appId=",
       "Content-Type" : "application/json"
     },

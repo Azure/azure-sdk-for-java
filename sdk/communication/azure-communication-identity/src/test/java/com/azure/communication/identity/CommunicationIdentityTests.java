@@ -20,7 +20,6 @@ import java.util.List;
 import static com.azure.communication.identity.CteTestHelper.skipExchangeAadTeamsTokenTest;
 import static com.azure.communication.identity.TokenCustomExpirationTimeHelper.assertTokenExpirationWithinAllowedDeviation;
 import static com.azure.communication.identity.models.CommunicationTokenScope.CHAT;
-import static com.azure.communication.identity.models.CommunicationTokenScope.VOIP;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CommunicationIdentityTests extends CommunicationIdentityClientTestBase {
@@ -36,8 +35,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
         // Action & Assert
         CommunicationUserIdentifier communicationUser = client.createUser();
-        assertNotNull(communicationUser.getId());
-        assertFalse(communicationUser.getId().isEmpty());
+        verifyUserNotEmpty(communicationUser);
     }
 
 
@@ -49,8 +47,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
         // Action & Assert
         CommunicationUserIdentifier communicationUser = client.createUser();
-        assertNotNull(communicationUser.getId());
-        assertFalse(communicationUser.getId().isEmpty());
+        verifyUserNotEmpty(communicationUser);
     }
 
     @Test
@@ -74,51 +71,21 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
         // Action & Assert
         Response<CommunicationUserIdentifier> response = client.createUserWithResponse(null);
-        assertNotNull(response.getValue().getId());
-        assertFalse(response.getValue().getId().isEmpty());
+        verifyUserNotEmpty(response.getValue());
         assertEquals(201, response.getStatusCode(), "Expect status code to be 201");
     }
 
-    @Test
-    public void createUserAndTokenWithChatScope() {
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenScopeTestHelper#getTokenScopes")
+    public void createUserAndToken(String testName, List<CommunicationTokenScope> scopes) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "createUserAndTokenSync");
-        List<CommunicationTokenScope> scopes = Arrays.asList(CHAT);
+        client = setupClient(builder, "createUserAndTokenWith" + testName + TEST_SUFFIX);
 
         // Action & Assert
         CommunicationUserIdentifierAndToken result = client.createUserAndToken(scopes);
-        assertNotNull(result.getUser().getId());
-        assertNotNull(result.getUserToken());
-        assertFalse(result.getUser().getId().isEmpty());
-    }
-
-    @Test
-    public void createUserAndTokenWithVoipScope() {
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "createUserAndTokenSync");
-        List<CommunicationTokenScope> scopes = Arrays.asList(VOIP);
-
-        // Action & Assert
-        CommunicationUserIdentifierAndToken result = client.createUserAndToken(scopes);
-        assertNotNull(result.getUser().getId());
-        assertNotNull(result.getUserToken());
-        assertFalse(result.getUser().getId().isEmpty());
-    }
-
-    @Test
-    public void createUserAndTokenWithMultipleScopes() {
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "createUserAndTokenSync");
-        List<CommunicationTokenScope> scopes = Arrays.asList(VOIP, CHAT);
-
-        // Action & Assert
-        CommunicationUserIdentifierAndToken result = client.createUserAndToken(scopes);
-        assertNotNull(result.getUser().getId());
-        assertNotNull(result.getUserToken());
-        assertFalse(result.getUser().getId().isEmpty());
+        verifyUserNotEmpty(result.getUser());
+        verifyTokenNotEmpty(result.getUserToken());
     }
 
     @Test
@@ -138,13 +105,11 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "createUserAndTokenWithResponseSync");
         List<CommunicationTokenScope> scopes = Arrays.asList(CHAT);
         // Action & Assert
-        Response<CommunicationUserIdentifierAndToken> response =
-            client.createUserAndTokenWithResponse(scopes, Context.NONE);
+        Response<CommunicationUserIdentifierAndToken> response = client.createUserAndTokenWithResponse(scopes, Context.NONE);
         CommunicationUserIdentifierAndToken result = response.getValue();
         assertEquals(201, response.getStatusCode());
-        assertNotNull(result.getUser().getId());
-        assertNotNull(result.getUserToken());
-        assertFalse(result.getUser().getId().isEmpty());
+        verifyUserNotEmpty(result.getUser());
+        verifyTokenNotEmpty(result.getUserToken());
     }
 
     @ParameterizedTest(name = "{0}")
@@ -157,10 +122,8 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
         // Action & Assert
         CommunicationUserIdentifierAndToken result = client.createUserAndToken(scopes, tokenExpiresIn);
-
-        assertNotNull(result.getUser().getId());
-        assertNotNull(result.getUserToken());
-        assertFalse(result.getUser().getId().isEmpty());
+        verifyUserNotEmpty(result.getUser());
+        verifyTokenNotEmpty(result.getUserToken());
         assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, result.getUserToken().getExpiresAt());
     }
 
@@ -173,13 +136,11 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         List<CommunicationTokenScope> scopes = Arrays.asList(CHAT);
 
         // Action & Assert
-        Response<CommunicationUserIdentifierAndToken> response =
-            client.createUserAndTokenWithResponse(scopes, tokenExpiresIn, Context.NONE);
+        Response<CommunicationUserIdentifierAndToken> response = client.createUserAndTokenWithResponse(scopes, tokenExpiresIn, Context.NONE);
         CommunicationUserIdentifierAndToken result = response.getValue();
         assertEquals(201, response.getStatusCode());
-        assertNotNull(result.getUser().getId());
-        assertNotNull(result.getUserToken());
-        assertFalse(result.getUser().getId().isEmpty());
+        verifyUserNotEmpty(result.getUser());
+        verifyTokenNotEmpty(result.getUserToken());
         assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, result.getUserToken().getExpiresAt());
     }
 
@@ -266,9 +227,8 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
             client.createUserAndTokenWithResponse(scopes, null);
         CommunicationUserIdentifierAndToken result = response.getValue();
         assertEquals(201, response.getStatusCode());
-        assertNotNull(result.getUser().getId());
-        assertNotNull(result.getUserToken());
-        assertFalse(result.getUser().getId().isEmpty());
+        verifyUserNotEmpty(result.getUser());
+        verifyTokenNotEmpty(result.getUserToken());
     }
 
     @Test
@@ -349,39 +309,13 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         assertEquals(204, response.getStatusCode(), "Expect status code to be 204");
     }
 
-    @Test
-    public void getTokenWithChatScope() {
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenScopeTestHelper#getTokenScopes")
+    public void getToken(String testName, List<CommunicationTokenScope> scopes) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "getTokenSync");
+        client = setupClient(builder, "getTokenWith" + testName + TEST_SUFFIX);
         CommunicationUserIdentifier communicationUser = client.createUser();
-        List<CommunicationTokenScope> scopes = Arrays.asList(CHAT);
-
-        // Action & Assert
-        AccessToken issuedToken = client.getToken(communicationUser, scopes);
-        verifyTokenNotEmpty(issuedToken);
-    }
-
-    @Test
-    public void getTokenWithVoipScope() {
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "getTokenSync");
-        CommunicationUserIdentifier communicationUser = client.createUser();
-        List<CommunicationTokenScope> scopes = Arrays.asList(VOIP);
-
-        // Action & Assert
-        AccessToken issuedToken = client.getToken(communicationUser, scopes);
-        verifyTokenNotEmpty(issuedToken);
-    }
-
-    @Test
-    public void getTokenWithMultipleScopes() {
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        client = setupClient(builder, "getTokenSync");
-        CommunicationUserIdentifier communicationUser = client.createUser();
-        List<CommunicationTokenScope> scopes = Arrays.asList(CHAT, VOIP);
 
         // Action & Assert
         AccessToken issuedToken = client.getToken(communicationUser, scopes);

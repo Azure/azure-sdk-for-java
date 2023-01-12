@@ -21,7 +21,6 @@ import java.util.List;
 import static com.azure.communication.identity.CteTestHelper.skipExchangeAadTeamsTokenTest;
 import static com.azure.communication.identity.TokenCustomExpirationTimeHelper.assertTokenExpirationWithinAllowedDeviation;
 import static com.azure.communication.identity.models.CommunicationTokenScope.CHAT;
-import static com.azure.communication.identity.models.CommunicationTokenScope.VOIP;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CommunicationIdentityAsyncTests extends CommunicationIdentityClientTestBase {
@@ -37,10 +36,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         // Action & Assert
         Mono<CommunicationUserIdentifier> response = asyncClient.createUser();
         StepVerifier.create(response)
-            .assertNext(item -> {
-                assertNotNull(item.getId());
-                assertFalse(item.getId().isEmpty());
-            })
+            .assertNext(this::verifyUserNotEmpty)
             .verifyComplete();
     }
 
@@ -53,9 +49,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         // Action & Assert
         Mono<CommunicationUserIdentifier> response = asyncClient.createUser();
         StepVerifier.create(response)
-            .assertNext(item -> {
-                assertNotNull(item.getId());
-            })
+            .assertNext(this::verifyUserNotEmpty)
             .verifyComplete();
     }
 
@@ -69,60 +63,25 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         Mono<Response<CommunicationUserIdentifier>> response = asyncClient.createUserWithResponse();
         StepVerifier.create(response)
             .assertNext(item -> {
-                assertNotNull(item.getValue().getId());
-                assertFalse(item.getValue().getId().isEmpty());
+                verifyUserNotEmpty(item.getValue());
                 assertEquals(201, item.getStatusCode(), "Expect status code to be 201");
             })
             .verifyComplete();
     }
 
-    @Test
-    public void createUserAndTokenWithChatScope() {
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenScopeTestHelper#getTokenScopes")
+    public void createUserAndToken(String testName, List<CommunicationTokenScope> scopes) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        asyncClient = setupAsyncClient(builder, "createUserAndToken");
-        List<CommunicationTokenScope> scopes = Arrays.asList(CHAT);
+        asyncClient = setupAsyncClient(builder, "createUserAndTokenWith" + testName);
 
         // Action & Assert
         Mono<CommunicationUserIdentifierAndToken> createUserAndToken = asyncClient.createUserAndToken(scopes);
         StepVerifier.create(createUserAndToken)
             .assertNext(result -> {
-                assertNotNull(result.getUserToken());
-                assertNotNull(result.getUser());
-            })
-            .verifyComplete();
-    }
-
-    @Test
-    public void createUserAndTokenWithVoipScope() {
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        asyncClient = setupAsyncClient(builder, "createUserAndToken");
-        List<CommunicationTokenScope> scopes = Arrays.asList(VOIP);
-
-        // Action & Assert
-        Mono<CommunicationUserIdentifierAndToken> createUserAndToken = asyncClient.createUserAndToken(scopes);
-        StepVerifier.create(createUserAndToken)
-            .assertNext(result -> {
-                assertNotNull(result.getUserToken());
-                assertNotNull(result.getUser());
-            })
-            .verifyComplete();
-    }
-
-    @Test
-    public void createUserAndTokenWithMultipleScopes() {
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        asyncClient = setupAsyncClient(builder, "createUserAndToken");
-        List<CommunicationTokenScope> scopes = Arrays.asList(CHAT, VOIP);
-
-        // Action & Assert
-        Mono<CommunicationUserIdentifierAndToken> createUserAndToken = asyncClient.createUserAndToken(scopes);
-        StepVerifier.create(createUserAndToken)
-            .assertNext(result -> {
-                assertNotNull(result.getUserToken());
-                assertNotNull(result.getUser());
+                verifyUserNotEmpty(result.getUser());
+                verifyTokenNotEmpty(result.getUserToken());
             })
             .verifyComplete();
     }
@@ -139,8 +98,8 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         Mono<CommunicationUserIdentifierAndToken> createUserAndToken = asyncClient.createUserAndToken(scopes, tokenExpiresIn);
         StepVerifier.create(createUserAndToken)
             .assertNext(result -> {
-                assertNotNull(result.getUserToken());
-                assertNotNull(result.getUser());
+                verifyUserNotEmpty(result.getUser());
+                verifyTokenNotEmpty(result.getUserToken());
                 assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, result.getUserToken().getExpiresAt());
             })
             .verifyComplete();
@@ -177,8 +136,8 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         StepVerifier.create(createUserAndToken)
             .assertNext(result -> {
                 assertEquals(201, result.getStatusCode());
-                assertNotNull(result.getValue().getUserToken());
-                assertNotNull(result.getValue().getUser());
+                verifyUserNotEmpty(result.getValue().getUser());
+                verifyTokenNotEmpty(result.getValue().getUserToken());
                 assertTokenExpirationWithinAllowedDeviation(tokenExpiresIn, result.getValue().getUserToken().getExpiresAt());
             })
             .verifyComplete();
@@ -250,8 +209,8 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         StepVerifier.create(createUserAndToken)
             .assertNext(result -> {
                 assertEquals(201, result.getStatusCode());
-                assertNotNull(result.getValue().getUserToken());
-                assertNotNull(result.getValue().getUser());
+                verifyUserNotEmpty(result.getValue().getUser());
+                verifyTokenNotEmpty(result.getValue().getUserToken());
             })
             .verifyComplete();
     }
@@ -402,55 +361,18 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             .verifyError(NullPointerException.class);
     }
 
-
-    @Test
-    public void getTokenWithChatScope() {
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("com.azure.communication.identity.TokenScopeTestHelper#getTokenScopes")
+    public void getToken(String testName, List<CommunicationTokenScope> scopes) {
         // Arrange
         CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        asyncClient = setupAsyncClient(builder, "getToken");
-
-        // Action & Assert
-        StepVerifier.create(
-            asyncClient.createUser()
-                .flatMap(communicationUser -> {
-                    List<CommunicationTokenScope> scopes = Arrays.asList(CHAT);
-                    return asyncClient.getToken(communicationUser, scopes);
-                }))
-            .assertNext(issuedToken -> verifyTokenNotEmpty(issuedToken))
-            .verifyComplete();
-    }
-
-    @Test
-    public void getTokenWithVoipScope() {
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        asyncClient = setupAsyncClient(builder, "getToken");
+        asyncClient = setupAsyncClient(builder, "getTokenWith" + testName);
 
         // Action & Assert
         StepVerifier.create(
                 asyncClient.createUser()
-                    .flatMap(communicationUser -> {
-                        List<CommunicationTokenScope> scopes = Arrays.asList(VOIP);
-                        return asyncClient.getToken(communicationUser, scopes);
-                    }))
-            .assertNext(issuedToken -> verifyTokenNotEmpty(issuedToken))
-            .verifyComplete();
-    }
-
-    @Test
-    public void getTokenWithMultipleScopes() {
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        asyncClient = setupAsyncClient(builder, "getToken");
-
-        // Action & Assert
-        StepVerifier.create(
-                asyncClient.createUser()
-                    .flatMap(communicationUser -> {
-                        List<CommunicationTokenScope> scopes = Arrays.asList(CHAT, VOIP);
-                        return asyncClient.getToken(communicationUser, scopes);
-                    }))
-            .assertNext(issuedToken -> verifyTokenNotEmpty(issuedToken))
+                    .flatMap(communicationUser -> asyncClient.getToken(communicationUser, scopes)))
+            .assertNext(this::verifyTokenNotEmpty)
             .verifyComplete();
     }
 
