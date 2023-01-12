@@ -7,11 +7,10 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ContainerResourceSettings;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ContainerResourceSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ContainerResourceSettings model =
             BinaryData
                 .fromString("{\"cpu\":\"ustcpoq\",\"gpu\":\"vnwqjwgo\",\"memory\":\"lejjjkxy\"}")
@@ -21,8 +20,8 @@ public final class ContainerResourceSettingsTests {
         Assertions.assertEquals("lejjjkxy", model.memory());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ContainerResourceSettings model =
             new ContainerResourceSettings().withCpu("ustcpoq").withGpu("vnwqjwgo").withMemory("lejjjkxy");
         model = BinaryData.fromObject(model).toObject(ContainerResourceSettings.class);

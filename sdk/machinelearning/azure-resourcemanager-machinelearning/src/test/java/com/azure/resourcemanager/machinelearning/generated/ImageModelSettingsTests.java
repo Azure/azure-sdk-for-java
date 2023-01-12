@@ -11,11 +11,10 @@ import com.azure.resourcemanager.machinelearning.models.LearningRateScheduler;
 import com.azure.resourcemanager.machinelearning.models.MLFlowModelJobInput;
 import com.azure.resourcemanager.machinelearning.models.StochasticOptimizer;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ImageModelSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ImageModelSettings model =
             BinaryData
                 .fromString(
@@ -57,8 +56,8 @@ public final class ImageModelSettingsTests {
         Assertions.assertEquals(80.28705F, model.weightDecay());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ImageModelSettings model =
             new ImageModelSettings()
                 .withAdvancedSettings("va")

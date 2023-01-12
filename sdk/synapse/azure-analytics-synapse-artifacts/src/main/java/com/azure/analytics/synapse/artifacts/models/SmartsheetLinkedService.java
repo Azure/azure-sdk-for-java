@@ -31,6 +31,9 @@ public class SmartsheetLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of SmartsheetLinkedService class. */
+    public SmartsheetLinkedService() {}
+
     /**
      * Get the apiToken property: The api token for the Smartsheet source.
      *

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.baremetalinfrastructure.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
@@ -18,6 +16,6 @@ public final class OperationsListSamples {
      */
     public static void listAllManagementOperationsSupportedByTheAzureBareMetalRP(
         com.azure.resourcemanager.baremetalinfrastructure.BareMetalInfrastructureManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

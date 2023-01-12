@@ -64,6 +64,9 @@ public class OracleServiceCloudLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of OracleServiceCloudLinkedService class. */
+    public OracleServiceCloudLinkedService() {}
+
     /**
      * Get the host property: The URL of the Oracle Service Cloud instance.
      *

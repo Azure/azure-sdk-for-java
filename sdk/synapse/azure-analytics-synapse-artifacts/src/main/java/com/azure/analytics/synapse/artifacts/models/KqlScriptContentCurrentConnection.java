@@ -34,6 +34,9 @@ public final class KqlScriptContentCurrentConnection {
     @JsonProperty(value = "type")
     private String type;
 
+    /** Creates an instance of KqlScriptContentCurrentConnection class. */
+    public KqlScriptContentCurrentConnection() {}
+
     /**
      * Get the name property: The name property.
      *

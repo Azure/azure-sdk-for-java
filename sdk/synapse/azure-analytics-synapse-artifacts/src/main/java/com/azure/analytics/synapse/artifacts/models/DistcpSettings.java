@@ -30,6 +30,9 @@ public final class DistcpSettings {
     @JsonProperty(value = "distcpOptions")
     private Object distcpOptions;
 
+    /** Creates an instance of DistcpSettings class. */
+    public DistcpSettings() {}
+
     /**
      * Get the resourceManagerEndpoint property: Specifies the Yarn ResourceManager endpoint. Type: string (or
      * Expression with resultType string).

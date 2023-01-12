@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationJobs Restart. */
 public final class ReplicationJobsRestartSamples {
     /*
@@ -20,6 +18,7 @@ public final class ReplicationJobsRestartSamples {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager
             .replicationJobs()
-            .restart("vault1", "resourceGroupPS1", "0664564c-353e-401a-ab0c-722257c10e25", Context.NONE);
+            .restart(
+                "vault1", "resourceGroupPS1", "0664564c-353e-401a-ab0c-722257c10e25", com.azure.core.util.Context.NONE);
     }
 }

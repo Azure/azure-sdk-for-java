@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.CustomTargetLags;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CustomTargetLagsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CustomTargetLags model =
             BinaryData
                 .fromString("{\"mode\":\"Custom\",\"values\":[915823701,1407190218,425904374]}")
@@ -20,8 +19,8 @@ public final class CustomTargetLagsTests {
         Assertions.assertEquals(915823701, model.values().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CustomTargetLags model = new CustomTargetLags().withValues(Arrays.asList(915823701, 1407190218, 425904374));
         model = BinaryData.fromObject(model).toObject(CustomTargetLags.class);
         Assertions.assertEquals(915823701, model.values().get(0));

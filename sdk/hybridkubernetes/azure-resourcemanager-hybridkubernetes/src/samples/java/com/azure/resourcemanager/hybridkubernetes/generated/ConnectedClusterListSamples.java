@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.hybridkubernetes.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ConnectedCluster List. */
 public final class ConnectedClusterListSamples {
     /*
@@ -17,6 +15,6 @@ public final class ConnectedClusterListSamples {
      * @param manager Entry point to HybridKubernetesManager.
      */
     public static void getClustersExample(com.azure.resourcemanager.hybridkubernetes.HybridKubernetesManager manager) {
-        manager.connectedClusters().list(Context.NONE);
+        manager.connectedClusters().list(com.azure.core.util.Context.NONE);
     }
 }

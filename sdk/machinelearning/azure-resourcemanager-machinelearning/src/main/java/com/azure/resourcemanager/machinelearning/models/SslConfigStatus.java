@@ -20,6 +20,15 @@ public final class SslConfigStatus extends ExpandableStringEnum<SslConfigStatus>
     public static final SslConfigStatus AUTO = fromString("Auto");
 
     /**
+     * Creates a new instance of SslConfigStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SslConfigStatus() {
+    }
+
+    /**
      * Creates or finds a SslConfigStatus from its string representation.
      *
      * @param name a name to look for.

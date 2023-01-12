@@ -14,6 +14,15 @@ public final class UsageUnit extends ExpandableStringEnum<UsageUnit> {
     public static final UsageUnit COUNT = fromString("Count");
 
     /**
+     * Creates a new instance of UsageUnit value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UsageUnit() {
+    }
+
+    /**
      * Creates or finds a UsageUnit from its string representation.
      *
      * @param name a name to look for.

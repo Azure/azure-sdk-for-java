@@ -23,6 +23,15 @@ public final class RcmComponentStatus extends ExpandableStringEnum<RcmComponentS
     public static final RcmComponentStatus UNKNOWN = fromString("Unknown");
 
     /**
+     * Creates a new instance of RcmComponentStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RcmComponentStatus() {
+    }
+
+    /**
      * Creates or finds a RcmComponentStatus from its string representation.
      *
      * @param name a name to look for.

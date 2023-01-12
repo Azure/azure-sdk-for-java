@@ -14,7 +14,7 @@ public class RetryConfigurationProperties implements RetryOptionsProvider.RetryO
     /**
      * Retry backoff mode.
      */
-    private RetryOptionsProvider.RetryMode mode = RetryOptionsProvider.RetryMode.EXPONENTIAL;
+    private RetryOptionsProvider.RetryMode mode;
 
     @NestedConfigurationProperty
     private final ExponentialRetryConfigurationProperties exponential = new ExponentialRetryConfigurationProperties();

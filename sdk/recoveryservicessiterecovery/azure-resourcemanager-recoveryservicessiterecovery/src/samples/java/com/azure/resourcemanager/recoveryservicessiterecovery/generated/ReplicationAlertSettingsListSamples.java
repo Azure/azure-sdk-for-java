@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationAlertSettings List. */
 public final class ReplicationAlertSettingsListSamples {
     /*
@@ -18,6 +16,6 @@ public final class ReplicationAlertSettingsListSamples {
      */
     public static void getsTheListOfConfiguredEmailNotificationAlertConfigurations(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationAlertSettings().list("vault1", "resourceGroupPS1", Context.NONE);
+        manager.replicationAlertSettings().list("vault1", "resourceGroupPS1", com.azure.core.util.Context.NONE);
     }
 }

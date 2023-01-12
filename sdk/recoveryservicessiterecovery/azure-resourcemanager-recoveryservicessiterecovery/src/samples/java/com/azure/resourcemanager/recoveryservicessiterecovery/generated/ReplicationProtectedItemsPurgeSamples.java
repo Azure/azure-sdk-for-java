@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationProtectedItems Purge. */
 public final class ReplicationProtectedItemsPurgeSamples {
     /*
@@ -26,6 +24,6 @@ public final class ReplicationProtectedItemsPurgeSamples {
                 "cloud1",
                 "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
                 "c0c14913-3d7a-48ea-9531-cc99e0e686e6",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

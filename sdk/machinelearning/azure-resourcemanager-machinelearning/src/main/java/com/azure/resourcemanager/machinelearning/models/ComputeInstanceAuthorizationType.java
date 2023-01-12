@@ -18,6 +18,15 @@ public final class ComputeInstanceAuthorizationType extends ExpandableStringEnum
     public static final ComputeInstanceAuthorizationType PERSONAL = fromString("personal");
 
     /**
+     * Creates a new instance of ComputeInstanceAuthorizationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ComputeInstanceAuthorizationType() {
+    }
+
+    /**
      * Creates or finds a ComputeInstanceAuthorizationType from its string representation.
      *
      * @param name a name to look for.

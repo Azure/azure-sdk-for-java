@@ -153,7 +153,7 @@
 /sdk/mixedreality/azure-mixedreality-authentication @craigktreasure
 
 # PRLabel: %Remote Rendering
-/sdk/remoterendering/                               @MalcolmTyrrell
+/sdk/remoterendering/                               @MichaelZp0 @ChristopherManthei
 
 # PRLabel: %Schema Registry
 /sdk/schemaregistry/                                @conniey @sjkwak @srnagar

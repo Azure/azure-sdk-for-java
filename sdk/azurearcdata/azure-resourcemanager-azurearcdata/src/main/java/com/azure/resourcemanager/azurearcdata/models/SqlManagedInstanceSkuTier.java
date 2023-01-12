@@ -7,7 +7,7 @@ package com.azure.resourcemanager.azurearcdata.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for SqlManagedInstanceSkuTier. */
+/** The pricing tier for the instance. */
 public enum SqlManagedInstanceSkuTier {
     /** Enum value GeneralPurpose. */
     GENERAL_PURPOSE("GeneralPurpose"),
@@ -30,6 +30,9 @@ public enum SqlManagedInstanceSkuTier {
      */
     @JsonCreator
     public static SqlManagedInstanceSkuTier fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         SqlManagedInstanceSkuTier[] items = SqlManagedInstanceSkuTier.values();
         for (SqlManagedInstanceSkuTier item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum SqlManagedInstanceSkuTier {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

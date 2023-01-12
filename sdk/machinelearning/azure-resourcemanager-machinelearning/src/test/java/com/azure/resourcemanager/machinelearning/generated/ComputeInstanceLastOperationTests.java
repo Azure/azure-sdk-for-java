@@ -11,11 +11,10 @@ import com.azure.resourcemanager.machinelearning.models.OperationStatus;
 import com.azure.resourcemanager.machinelearning.models.OperationTrigger;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ComputeInstanceLastOperationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ComputeInstanceLastOperation model =
             BinaryData
                 .fromString(
@@ -27,8 +26,8 @@ public final class ComputeInstanceLastOperationTests {
         Assertions.assertEquals(OperationTrigger.IDLE_SHUTDOWN, model.operationTrigger());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ComputeInstanceLastOperation model =
             new ComputeInstanceLastOperation()
                 .withOperationName(OperationName.REIMAGE)

@@ -6,17 +6,16 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.AutoTargetRollingWindowSize;
-import org.junit.jupiter.api.Test;
 
 public final class AutoTargetRollingWindowSizeTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AutoTargetRollingWindowSize model =
             BinaryData.fromString("{\"mode\":\"Auto\"}").toObject(AutoTargetRollingWindowSize.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AutoTargetRollingWindowSize model = new AutoTargetRollingWindowSize();
         model = BinaryData.fromObject(model).toObject(AutoTargetRollingWindowSize.class);
     }

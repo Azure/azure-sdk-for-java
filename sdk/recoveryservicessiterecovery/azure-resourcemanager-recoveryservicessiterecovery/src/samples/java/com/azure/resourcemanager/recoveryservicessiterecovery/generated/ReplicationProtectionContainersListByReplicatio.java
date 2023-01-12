@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationProtectionContainers ListByReplicationFabrics. */
 public final class ReplicationProtectionContainersListByReplicatio {
     /*
@@ -20,6 +18,6 @@ public final class ReplicationProtectionContainersListByReplicatio {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager
             .replicationProtectionContainers()
-            .listByReplicationFabrics("vault1", "resourceGroupPS1", "cloud1", Context.NONE);
+            .listByReplicationFabrics("vault1", "resourceGroupPS1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

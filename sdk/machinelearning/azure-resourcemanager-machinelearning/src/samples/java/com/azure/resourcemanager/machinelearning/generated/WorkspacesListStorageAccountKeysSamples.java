@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Workspaces ListStorageAccountKeys. */
 public final class WorkspacesListStorageAccountKeysSamples {
     /*
@@ -17,6 +15,8 @@ public final class WorkspacesListStorageAccountKeysSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listWorkspaceKeys(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.workspaces().listStorageAccountKeysWithResponse("testrg123", "workspaces123", Context.NONE);
+        manager
+            .workspaces()
+            .listStorageAccountKeysWithResponse("testrg123", "workspaces123", com.azure.core.util.Context.NONE);
     }
 }

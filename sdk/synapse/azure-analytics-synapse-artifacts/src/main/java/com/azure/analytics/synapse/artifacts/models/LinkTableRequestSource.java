@@ -22,6 +22,9 @@ public final class LinkTableRequestSource {
     @JsonProperty(value = "schemaName")
     private String schemaName;
 
+    /** Creates an instance of LinkTableRequestSource class. */
+    public LinkTableRequestSource() {}
+
     /**
      * Get the tableName property: Source table table name.
      *

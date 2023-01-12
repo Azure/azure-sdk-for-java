@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationProtectionIntents List. */
 public final class ReplicationProtectionIntentsListSamples {
     /*
@@ -18,6 +16,8 @@ public final class ReplicationProtectionIntentsListSamples {
      */
     public static void getsTheListOfReplicationProtectionIntentObjects(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationProtectionIntents().list("2007vttp", "resourceGroupPS1", null, null, Context.NONE);
+        manager
+            .replicationProtectionIntents()
+            .list("2007vttp", "resourceGroupPS1", null, null, com.azure.core.util.Context.NONE);
     }
 }

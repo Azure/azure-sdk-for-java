@@ -61,6 +61,10 @@ public final class SqlServerInstanceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public SqlServerInstanceInner innerModel() {
         return this.innerObject;
     }

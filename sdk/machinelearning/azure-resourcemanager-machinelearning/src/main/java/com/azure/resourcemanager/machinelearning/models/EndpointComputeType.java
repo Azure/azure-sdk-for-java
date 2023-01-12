@@ -20,6 +20,15 @@ public final class EndpointComputeType extends ExpandableStringEnum<EndpointComp
     public static final EndpointComputeType AZURE_MLCOMPUTE = fromString("AzureMLCompute");
 
     /**
+     * Creates a new instance of EndpointComputeType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EndpointComputeType() {
+    }
+
+    /**
      * Creates or finds a EndpointComputeType from its string representation.
      *
      * @param name a name to look for.

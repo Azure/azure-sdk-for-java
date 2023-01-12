@@ -51,20 +51,27 @@ public final class HttpResponseBodyDecoder {
         HttpResponseDecodeData decodeData) {
         ensureRequestSet(httpResponse);
 
-        if (isErrorStatus(httpResponse.getStatusCode(), decodeData)) {
+        // Check for HEAD HTTP method first as it's possible for the underlying HttpClient to treat a non-existent
+        // response body as an empty byte array.
+        if (httpResponse.getRequest().getHttpMethod() == HttpMethod.HEAD) {
+            // RFC: A response to a HEAD method should not have a body. If so, it must be ignored
+            return null;
+        } else if (isErrorStatus(httpResponse.getStatusCode(), decodeData)) {
             try {
                 return deserializeBody(body,
                     decodeData.getUnexpectedException(httpResponse.getStatusCode()).getExceptionBodyType(),
                     null, serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
-            } catch (IOException | MalformedValueException ex) {
-                // This translates in RestProxy as a RestException with no deserialized body.
-                // The response content will still be accessible via the .response() member.
+            } catch (IOException | MalformedValueException | IllegalStateException ex) {
+                // MalformedValueException is thrown by Jackson, IllegalStateException is thrown by the TEXT
+                // serialization encoding handler, and IOException can be thrown by both Jackson and TEXT.
+                //
+                // There has been an issue deserializing the error response body. This may be an error in the service
+                // return.
+                //
+                // Return the exception as the body type, RestProxyBase will handle this later.
                 LOGGER.warning("Failed to deserialize the error entity.", ex);
-                return null;
+                return ex;
             }
-        } else if (httpResponse.getRequest().getHttpMethod() == HttpMethod.HEAD) {
-            // RFC: A response to a HEAD method should not have a body. If so, it must be ignored
-            return null;
         } else {
             if (!decodeData.isReturnTypeDecodeable()) {
                 return null;
@@ -89,13 +96,13 @@ public final class HttpResponseBodyDecoder {
     static Type decodedType(final HttpResponse httpResponse, final HttpResponseDecodeData decodeData) {
         ensureRequestSet(httpResponse);
 
-        if (isErrorStatus(httpResponse.getStatusCode(), decodeData)) {
+        if (httpResponse.getRequest().getHttpMethod() == HttpMethod.HEAD) {
+            // RFC: A response to a HEAD method should not have a body. If so, it must be ignored
+            return null;
+        } else if (isErrorStatus(httpResponse.getStatusCode(), decodeData)) {
             // For error cases we always try to decode the non-empty response body
             // either to a strongly typed exception model or to Object
             return decodeData.getUnexpectedException(httpResponse.getStatusCode()).getExceptionBodyType();
-        } else if (httpResponse.getRequest().getHttpMethod() == HttpMethod.HEAD) {
-            // RFC: A response to a HEAD method should not have a body. If so, it must be ignored
-            return null;
         } else {
             return decodeData.isReturnTypeDecodeable() ? extractEntityTypeFromReturnType(decodeData) : null;
         }

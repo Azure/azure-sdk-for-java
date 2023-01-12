@@ -47,29 +47,37 @@ public final class Utility {
             return "";
         }
 
-        if (stringToDecode.contains("+")) {
-            StringBuilder outBuilder = new StringBuilder();
+        int lastIndexOfPlus = 0;
+        int indexOfPlus = stringToDecode.indexOf('+');
 
-            int startDex = 0;
-            for (int m = 0; m < stringToDecode.length(); m++) {
-                if (stringToDecode.charAt(m) == '+') {
-                    if (m > startDex) {
-                        outBuilder.append(decode(stringToDecode.substring(startDex, m)));
-                    }
-
-                    outBuilder.append("+");
-                    startDex = m + 1;
-                }
-            }
-
-            if (startDex != stringToDecode.length()) {
-                outBuilder.append(decode(stringToDecode.substring(startDex)));
-            }
-
-            return outBuilder.toString();
-        } else {
+        if (indexOfPlus == -1) {
+            // No '+' characters to preserve.
             return decode(stringToDecode);
         }
+
+        // Create a StringBuilder large enough to contain the decoded string.
+        // This will create a StringBuilder larger than the final string as decoding shrinks in size ('%20' -> ' ').
+        StringBuilder outBuilder = new StringBuilder(stringToDecode.length());
+
+        do {
+            // Decode the range of characters between the last two '+'s found.
+            outBuilder.append(decode(stringToDecode.substring(lastIndexOfPlus, indexOfPlus)));
+
+            // Append the preserved '+'/
+            outBuilder.append('+');
+
+            // Set the last found plus index to the index after the '+' just found.
+            lastIndexOfPlus = indexOfPlus + 1;
+
+            // Continue until no further '+' characters are found.
+        } while ((indexOfPlus = stringToDecode.indexOf('+', lastIndexOfPlus)) != -1);
+
+        // If the last found plus wasn't the last character decode the remaining string.
+        if (lastIndexOfPlus != stringToDecode.length()) {
+            outBuilder.append(decode(stringToDecode.substring(lastIndexOfPlus)));
+        }
+
+        return outBuilder.toString();
     }
 
     /*
@@ -96,33 +104,44 @@ public final class Utility {
             return null;
         }
 
-        if (stringToEncode.length() == 0) {
+        if (stringToEncode.isEmpty()) {
             return "";
         }
 
-        if (stringToEncode.contains(" ")) {
-            StringBuilder outBuilder = new StringBuilder();
+        int lastIndexOfSpace = 0;
+        int indexOfSpace = stringToEncode.indexOf(' ');
 
-            int startDex = 0;
-            for (int m = 0; m < stringToEncode.length(); m++) {
-                if (stringToEncode.charAt(m) == ' ') {
-                    if (m > startDex) {
-                        outBuilder.append(encode(stringToEncode.substring(startDex, m)));
-                    }
-
-                    outBuilder.append("%20");
-                    startDex = m + 1;
-                }
-            }
-
-            if (startDex != stringToEncode.length()) {
-                outBuilder.append(encode(stringToEncode.substring(startDex)));
-            }
-
-            return outBuilder.toString();
-        } else {
+        if (indexOfSpace == -1) {
+            // No ' ' characters to escape.
             return encode(stringToEncode);
         }
+
+        // Create a StringBuilder with an estimated size large enough to contain the encoded string.
+        // It's unknown how many characters will need encoding so this is a best effort as encoding increases size
+        // (' ' -> '%20').
+        // Use 2x the string length, this means every third character will need to be encoded to three characters.
+        // 90 characters / 3 = 30 encodings of 3 characters = 90, 2 * 90 = 180.
+        StringBuilder outBuilder = new StringBuilder(stringToEncode.length() * 2);
+
+        do {
+            // Encode the range of characters between the last two ' 's found.
+            outBuilder.append(encode(stringToEncode.substring(lastIndexOfSpace, indexOfSpace)));
+
+            // Append the preserved ' '.
+            outBuilder.append("%20");
+
+            // Set the last found space index to the index after the ' ' just found.
+            lastIndexOfSpace = indexOfSpace + 1;
+
+            // Continue until no further ' ' characters are found.
+        } while ((indexOfSpace = stringToEncode.indexOf(' ', lastIndexOfSpace)) != -1);
+
+        // If the last found space wasn't the last character encode the remaining string.
+        if (lastIndexOfSpace != stringToEncode.length()) {
+            outBuilder.append(encode(stringToEncode.substring(lastIndexOfSpace)));
+        }
+
+        return outBuilder.toString();
     }
 
     /*
@@ -309,7 +328,7 @@ public final class Utility {
      * @return The updated url.
      */
     public static String appendQueryParameter(String url, String key, String value) {
-        return (url.contains("?"))
+        return (url.indexOf('?') != -1)
             ? url + "&" + key + "=" + value
             : url + "?" + key + "=" + value;
     }

@@ -20,6 +20,15 @@ public final class SamplingAlgorithmType extends ExpandableStringEnum<SamplingAl
     public static final SamplingAlgorithmType BAYESIAN = fromString("Bayesian");
 
     /**
+     * Creates a new instance of SamplingAlgorithmType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SamplingAlgorithmType() {
+    }
+
+    /**
      * Creates or finds a SamplingAlgorithmType from its string representation.
      *
      * @param name a name to look for.

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.MigrateInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.MigrateInputProperties;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.VMwareCbtMigrateInput;
@@ -32,6 +31,6 @@ public final class ReplicationMigrationItemsMigrateSamples {
                     .withProperties(
                         new MigrateInputProperties()
                             .withProviderSpecificDetails(new VMwareCbtMigrateInput().withPerformShutdown("true"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

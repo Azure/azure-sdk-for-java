@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.advisor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.advisor.fluent.models.ConfigDataInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of Advisor configurations. */
 @Fluent
 public final class ConfigurationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationListResult.class);
-
     /*
      * The list of configurations.
      */
@@ -27,6 +23,10 @@ public final class ConfigurationListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of ConfigurationListResult class. */
+    public ConfigurationListResult() {
+    }
 
     /**
      * Get the value property: The list of configurations.

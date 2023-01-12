@@ -842,7 +842,7 @@ public final class ReplicationRecoveryPlansClientImpl implements ReplicationReco
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryPlanInner>, RecoveryPlanInner> beginCreate(
         String resourceName, String resourceGroupName, String recoveryPlanName, CreateRecoveryPlanInput input) {
-        return beginCreateAsync(resourceName, resourceGroupName, recoveryPlanName, input).getSyncPoller();
+        return this.beginCreateAsync(resourceName, resourceGroupName, recoveryPlanName, input).getSyncPoller();
     }
 
     /**
@@ -867,7 +867,7 @@ public final class ReplicationRecoveryPlansClientImpl implements ReplicationReco
         String recoveryPlanName,
         CreateRecoveryPlanInput input,
         Context context) {
-        return beginCreateAsync(resourceName, resourceGroupName, recoveryPlanName, input, context).getSyncPoller();
+        return this.beginCreateAsync(resourceName, resourceGroupName, recoveryPlanName, input, context).getSyncPoller();
     }
 
     /**
@@ -1135,7 +1135,7 @@ public final class ReplicationRecoveryPlansClientImpl implements ReplicationReco
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceName, String resourceGroupName, String recoveryPlanName) {
-        return beginDeleteAsync(resourceName, resourceGroupName, recoveryPlanName).getSyncPoller();
+        return this.beginDeleteAsync(resourceName, resourceGroupName, recoveryPlanName).getSyncPoller();
     }
 
     /**
@@ -1155,7 +1155,7 @@ public final class ReplicationRecoveryPlansClientImpl implements ReplicationReco
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceName, String resourceGroupName, String recoveryPlanName, Context context) {
-        return beginDeleteAsync(resourceName, resourceGroupName, recoveryPlanName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceName, resourceGroupName, recoveryPlanName, context).getSyncPoller();
     }
 
     /**
@@ -1440,7 +1440,7 @@ public final class ReplicationRecoveryPlansClientImpl implements ReplicationReco
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryPlanInner>, RecoveryPlanInner> beginUpdate(
         String resourceName, String resourceGroupName, String recoveryPlanName, UpdateRecoveryPlanInput input) {
-        return beginUpdateAsync(resourceName, resourceGroupName, recoveryPlanName, input).getSyncPoller();
+        return this.beginUpdateAsync(resourceName, resourceGroupName, recoveryPlanName, input).getSyncPoller();
     }
 
     /**
@@ -1465,7 +1465,7 @@ public final class ReplicationRecoveryPlansClientImpl implements ReplicationReco
         String recoveryPlanName,
         UpdateRecoveryPlanInput input,
         Context context) {
-        return beginUpdateAsync(resourceName, resourceGroupName, recoveryPlanName, input, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceName, resourceGroupName, recoveryPlanName, input, context).getSyncPoller();
     }
 
     /**
@@ -1742,7 +1742,7 @@ public final class ReplicationRecoveryPlansClientImpl implements ReplicationReco
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryPlanInner>, RecoveryPlanInner> beginFailoverCancel(
         String resourceName, String resourceGroupName, String recoveryPlanName) {
-        return beginFailoverCancelAsync(resourceName, resourceGroupName, recoveryPlanName).getSyncPoller();
+        return this.beginFailoverCancelAsync(resourceName, resourceGroupName, recoveryPlanName).getSyncPoller();
     }
 
     /**
@@ -1762,7 +1762,9 @@ public final class ReplicationRecoveryPlansClientImpl implements ReplicationReco
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryPlanInner>, RecoveryPlanInner> beginFailoverCancel(
         String resourceName, String resourceGroupName, String recoveryPlanName, Context context) {
-        return beginFailoverCancelAsync(resourceName, resourceGroupName, recoveryPlanName, context).getSyncPoller();
+        return this
+            .beginFailoverCancelAsync(resourceName, resourceGroupName, recoveryPlanName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2026,7 +2028,7 @@ public final class ReplicationRecoveryPlansClientImpl implements ReplicationReco
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryPlanInner>, RecoveryPlanInner> beginFailoverCommit(
         String resourceName, String resourceGroupName, String recoveryPlanName) {
-        return beginFailoverCommitAsync(resourceName, resourceGroupName, recoveryPlanName).getSyncPoller();
+        return this.beginFailoverCommitAsync(resourceName, resourceGroupName, recoveryPlanName).getSyncPoller();
     }
 
     /**
@@ -2046,7 +2048,9 @@ public final class ReplicationRecoveryPlansClientImpl implements ReplicationReco
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryPlanInner>, RecoveryPlanInner> beginFailoverCommit(
         String resourceName, String resourceGroupName, String recoveryPlanName, Context context) {
-        return beginFailoverCommitAsync(resourceName, resourceGroupName, recoveryPlanName, context).getSyncPoller();
+        return this
+            .beginFailoverCommitAsync(resourceName, resourceGroupName, recoveryPlanName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2344,7 +2348,7 @@ public final class ReplicationRecoveryPlansClientImpl implements ReplicationReco
         String resourceGroupName,
         String recoveryPlanName,
         RecoveryPlanPlannedFailoverInput input) {
-        return beginPlannedFailoverAsync(resourceName, resourceGroupName, recoveryPlanName, input).getSyncPoller();
+        return this.beginPlannedFailoverAsync(resourceName, resourceGroupName, recoveryPlanName, input).getSyncPoller();
     }
 
     /**
@@ -2369,7 +2373,8 @@ public final class ReplicationRecoveryPlansClientImpl implements ReplicationReco
         String recoveryPlanName,
         RecoveryPlanPlannedFailoverInput input,
         Context context) {
-        return beginPlannedFailoverAsync(resourceName, resourceGroupName, recoveryPlanName, input, context)
+        return this
+            .beginPlannedFailoverAsync(resourceName, resourceGroupName, recoveryPlanName, input, context)
             .getSyncPoller();
     }
 
@@ -2653,7 +2658,7 @@ public final class ReplicationRecoveryPlansClientImpl implements ReplicationReco
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryPlanInner>, RecoveryPlanInner> beginReprotect(
         String resourceName, String resourceGroupName, String recoveryPlanName) {
-        return beginReprotectAsync(resourceName, resourceGroupName, recoveryPlanName).getSyncPoller();
+        return this.beginReprotectAsync(resourceName, resourceGroupName, recoveryPlanName).getSyncPoller();
     }
 
     /**
@@ -2673,7 +2678,7 @@ public final class ReplicationRecoveryPlansClientImpl implements ReplicationReco
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryPlanInner>, RecoveryPlanInner> beginReprotect(
         String resourceName, String resourceGroupName, String recoveryPlanName, Context context) {
-        return beginReprotectAsync(resourceName, resourceGroupName, recoveryPlanName, context).getSyncPoller();
+        return this.beginReprotectAsync(resourceName, resourceGroupName, recoveryPlanName, context).getSyncPoller();
     }
 
     /**
@@ -2962,7 +2967,7 @@ public final class ReplicationRecoveryPlansClientImpl implements ReplicationReco
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RecoveryPlanInner>, RecoveryPlanInner> beginTestFailover(
         String resourceName, String resourceGroupName, String recoveryPlanName, RecoveryPlanTestFailoverInput input) {
-        return beginTestFailoverAsync(resourceName, resourceGroupName, recoveryPlanName, input).getSyncPoller();
+        return this.beginTestFailoverAsync(resourceName, resourceGroupName, recoveryPlanName, input).getSyncPoller();
     }
 
     /**
@@ -2987,7 +2992,8 @@ public final class ReplicationRecoveryPlansClientImpl implements ReplicationReco
         String recoveryPlanName,
         RecoveryPlanTestFailoverInput input,
         Context context) {
-        return beginTestFailoverAsync(resourceName, resourceGroupName, recoveryPlanName, input, context)
+        return this
+            .beginTestFailoverAsync(resourceName, resourceGroupName, recoveryPlanName, input, context)
             .getSyncPoller();
     }
 
@@ -3299,7 +3305,9 @@ public final class ReplicationRecoveryPlansClientImpl implements ReplicationReco
         String resourceGroupName,
         String recoveryPlanName,
         RecoveryPlanTestFailoverCleanupInput input) {
-        return beginTestFailoverCleanupAsync(resourceName, resourceGroupName, recoveryPlanName, input).getSyncPoller();
+        return this
+            .beginTestFailoverCleanupAsync(resourceName, resourceGroupName, recoveryPlanName, input)
+            .getSyncPoller();
     }
 
     /**
@@ -3324,7 +3332,8 @@ public final class ReplicationRecoveryPlansClientImpl implements ReplicationReco
         String recoveryPlanName,
         RecoveryPlanTestFailoverCleanupInput input,
         Context context) {
-        return beginTestFailoverCleanupAsync(resourceName, resourceGroupName, recoveryPlanName, input, context)
+        return this
+            .beginTestFailoverCleanupAsync(resourceName, resourceGroupName, recoveryPlanName, input, context)
             .getSyncPoller();
     }
 
@@ -3642,7 +3651,9 @@ public final class ReplicationRecoveryPlansClientImpl implements ReplicationReco
         String resourceGroupName,
         String recoveryPlanName,
         RecoveryPlanUnplannedFailoverInput input) {
-        return beginUnplannedFailoverAsync(resourceName, resourceGroupName, recoveryPlanName, input).getSyncPoller();
+        return this
+            .beginUnplannedFailoverAsync(resourceName, resourceGroupName, recoveryPlanName, input)
+            .getSyncPoller();
     }
 
     /**
@@ -3667,7 +3678,8 @@ public final class ReplicationRecoveryPlansClientImpl implements ReplicationReco
         String recoveryPlanName,
         RecoveryPlanUnplannedFailoverInput input,
         Context context) {
-        return beginUnplannedFailoverAsync(resourceName, resourceGroupName, recoveryPlanName, input, context)
+        return this
+            .beginUnplannedFailoverAsync(resourceName, resourceGroupName, recoveryPlanName, input, context)
             .getSyncPoller();
     }
 

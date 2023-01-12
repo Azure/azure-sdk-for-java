@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.HyperVReplicaAzurePolicyInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.Policy;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdatePolicyInputProperties;
@@ -24,7 +23,7 @@ public final class ReplicationPoliciesUpdateSamples {
         Policy resource =
             manager
                 .replicationPolicies()
-                .getWithResponse("vault1", "resourceGroupPS1", "protectionprofile1", Context.NONE)
+                .getWithResponse("vault1", "resourceGroupPS1", "protectionprofile1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

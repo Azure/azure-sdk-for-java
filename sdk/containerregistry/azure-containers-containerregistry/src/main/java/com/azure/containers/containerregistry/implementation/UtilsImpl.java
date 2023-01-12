@@ -6,7 +6,6 @@ package com.azure.containers.containerregistry.implementation;
 import com.azure.containers.containerregistry.ContainerRegistryServiceVersion;
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryCredentialsPolicy;
 import com.azure.containers.containerregistry.implementation.authentication.ContainerRegistryTokenService;
-import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.implementation.models.ManifestAttributesBase;
 import com.azure.containers.containerregistry.implementation.models.TagAttributesBase;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
@@ -178,13 +177,9 @@ public final class UtilsImpl {
         return httpPipeline;
     }
 
+    @SuppressWarnings("unchecked")
     private static ArrayList<HttpPipelinePolicy> clone(ArrayList<HttpPipelinePolicy> policies) {
-        ArrayList<HttpPipelinePolicy> clonedPolicy = new ArrayList<>();
-        for (HttpPipelinePolicy policy:policies) {
-            clonedPolicy.add(policy);
-        }
-
-        return clonedPolicy;
+        return (ArrayList<HttpPipelinePolicy>) policies.clone();
     }
 
     /**
@@ -249,15 +244,15 @@ public final class UtilsImpl {
      * @return The exception returned by the public methods.
      */
     public static Throwable mapException(Throwable exception) {
-        AcrErrorsException acrException = null;
+        HttpResponseException acrException = null;
 
-        if (exception instanceof AcrErrorsException) {
-            acrException = ((AcrErrorsException) exception);
+        if (exception instanceof HttpResponseException) {
+            acrException = ((HttpResponseException) exception);
         } else if (exception instanceof RuntimeException) {
             RuntimeException runtimeException = (RuntimeException) exception;
             Throwable throwable = runtimeException.getCause();
-            if (throwable instanceof AcrErrorsException) {
-                acrException = (AcrErrorsException) throwable;
+            if (throwable instanceof HttpResponseException) {
+                acrException = (HttpResponseException) throwable;
             }
         }
 
@@ -265,25 +260,10 @@ public final class UtilsImpl {
             return exception;
         }
 
-        final HttpResponse errorHttpResponse = acrException.getResponse();
-        final int statusCode = errorHttpResponse.getStatusCode();
-        final String errorDetail = acrException.getMessage();
-
-        switch (statusCode) {
-            case 401:
-                return new ClientAuthenticationException(errorDetail, acrException.getResponse(), exception);
-            case 404:
-                return new ResourceNotFoundException(errorDetail, acrException.getResponse(), exception);
-            case 409:
-                return new ResourceExistsException(errorDetail, acrException.getResponse(), exception);
-            case 412:
-                return new ResourceModifiedException(errorDetail, acrException.getResponse(), exception);
-            default:
-                return new HttpResponseException(errorDetail, acrException.getResponse(), exception);
-        }
+        return mapAcrErrorsException(acrException);
     }
 
-    public static HttpResponseException mapAcrErrorsException(AcrErrorsException acrException) {
+    public static HttpResponseException mapAcrErrorsException(HttpResponseException acrException) {
         final HttpResponse errorHttpResponse = acrException.getResponse();
         final int statusCode = errorHttpResponse.getStatusCode();
         final String errorDetail = acrException.getMessage();

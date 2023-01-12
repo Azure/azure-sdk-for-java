@@ -31,6 +31,9 @@ public class MongoDbV2LinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.database", required = true)
     private Object database;
 
+    /** Creates an instance of MongoDbV2LinkedService class. */
+    public MongoDbV2LinkedService() {}
+
     /**
      * Get the connectionString property: The MongoDB connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.

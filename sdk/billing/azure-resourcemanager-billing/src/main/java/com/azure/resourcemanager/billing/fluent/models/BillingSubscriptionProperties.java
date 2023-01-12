@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.Amount;
 import com.azure.resourcemanager.billing.models.BillingSubscriptionStatusType;
 import com.azure.resourcemanager.billing.models.Reseller;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
@@ -17,8 +15,6 @@ import java.util.UUID;
 /** The billing properties of a subscription. */
 @Fluent
 public final class BillingSubscriptionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingSubscriptionProperties.class);
-
     /*
      * The name of the subscription.
      */
@@ -68,16 +64,15 @@ public final class BillingSubscriptionProperties {
     private String costCenter;
 
     /*
-     * The ID of the customer for whom the subscription was created. The field
-     * is applicable only for Microsoft Partner Agreement billing account.
+     * The ID of the customer for whom the subscription was created. The field is applicable only for Microsoft Partner
+     * Agreement billing account.
      */
     @JsonProperty(value = "customerId", access = JsonProperty.Access.WRITE_ONLY)
     private String customerId;
 
     /*
-     * The name of the customer for whom the subscription was created. The
-     * field is applicable only for Microsoft Partner Agreement billing
-     * account.
+     * The name of the customer for whom the subscription was created. The field is applicable only for Microsoft
+     * Partner Agreement billing account.
      */
     @JsonProperty(value = "customerDisplayName", access = JsonProperty.Access.WRITE_ONLY)
     private String customerDisplayName;
@@ -113,11 +108,15 @@ public final class BillingSubscriptionProperties {
     private String skuDescription;
 
     /*
-     * The suspension reason for a subscription. Applies only to subscriptions
-     * in Microsoft Online Services Program billing accounts.
+     * The suspension reason for a subscription. Applies only to subscriptions in Microsoft Online Services Program
+     * billing accounts.
      */
     @JsonProperty(value = "suspensionReasons", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> suspensionReasons;
+
+    /** Creates an instance of BillingSubscriptionProperties class. */
+    public BillingSubscriptionProperties() {
+    }
 
     /**
      * Get the displayName property: The name of the subscription.

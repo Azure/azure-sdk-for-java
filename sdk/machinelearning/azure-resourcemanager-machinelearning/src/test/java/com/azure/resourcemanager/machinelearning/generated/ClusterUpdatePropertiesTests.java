@@ -10,11 +10,10 @@ import com.azure.resourcemanager.machinelearning.models.ScaleSettings;
 import com.azure.resourcemanager.machinelearning.models.ScaleSettingsInformation;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClusterUpdatePropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ClusterUpdateProperties model =
             BinaryData
                 .fromString(
@@ -27,8 +26,8 @@ public final class ClusterUpdatePropertiesTests {
                 Duration.parse("PT89H36M53S"), model.properties().scaleSettings().nodeIdleTimeBeforeScaleDown());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ClusterUpdateProperties model =
             new ClusterUpdateProperties()
                 .withProperties(
