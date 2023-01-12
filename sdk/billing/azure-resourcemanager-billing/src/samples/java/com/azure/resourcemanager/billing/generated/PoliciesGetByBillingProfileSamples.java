@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Policies GetByBillingProfile. */
 public final class PoliciesGetByBillingProfileSamples {
     /*
@@ -19,6 +17,7 @@ public final class PoliciesGetByBillingProfileSamples {
     public static void policyByBillingProfile(com.azure.resourcemanager.billing.BillingManager manager) {
         manager
             .policies()
-            .getByBillingProfileWithResponse("{billingAccountName}", "{billingProfileName}", Context.NONE);
+            .getByBillingProfileWithResponse(
+                "{billingAccountName}", "{billingProfileName}", com.azure.core.util.Context.NONE);
     }
 }

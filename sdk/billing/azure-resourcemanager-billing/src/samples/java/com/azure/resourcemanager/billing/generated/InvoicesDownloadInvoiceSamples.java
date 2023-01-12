@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Invoices DownloadInvoice. */
 public final class InvoicesDownloadInvoiceSamples {
     /*
@@ -17,6 +15,8 @@ public final class InvoicesDownloadInvoiceSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void invoiceDownload(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoices().downloadInvoice("{billingAccountName}", "{invoiceName}", "DRS_12345", Context.NONE);
+        manager
+            .invoices()
+            .downloadInvoice("{billingAccountName}", "{invoiceName}", "DRS_12345", com.azure.core.util.Context.NONE);
     }
 }
