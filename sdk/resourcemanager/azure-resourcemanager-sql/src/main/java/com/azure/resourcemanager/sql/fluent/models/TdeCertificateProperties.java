@@ -23,6 +23,10 @@ public final class TdeCertificateProperties {
     @JsonProperty(value = "certPassword")
     private String certPassword;
 
+    /** Creates an instance of TdeCertificateProperties class. */
+    public TdeCertificateProperties() {
+    }
+
     /**
      * Get the privateBlob property: The base64 encoded certificate private blob.
      *

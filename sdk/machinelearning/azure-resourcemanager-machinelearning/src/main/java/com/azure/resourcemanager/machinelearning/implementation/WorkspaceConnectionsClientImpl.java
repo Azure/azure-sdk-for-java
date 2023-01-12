@@ -59,7 +59,7 @@ public final class WorkspaceConnectionsClientImpl implements WorkspaceConnection
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
-    private interface WorkspaceConnectionsService {
+    public interface WorkspaceConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"

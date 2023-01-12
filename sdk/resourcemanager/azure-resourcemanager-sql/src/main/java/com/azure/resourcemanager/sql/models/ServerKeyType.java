@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ServerKeyType. */
+/** The encryption protector type like 'ServiceManaged', 'AzureKeyVault'. */
 public final class ServerKeyType extends ExpandableStringEnum<ServerKeyType> {
     /** Static value ServiceManaged for ServerKeyType. */
     public static final ServerKeyType SERVICE_MANAGED = fromString("ServiceManaged");

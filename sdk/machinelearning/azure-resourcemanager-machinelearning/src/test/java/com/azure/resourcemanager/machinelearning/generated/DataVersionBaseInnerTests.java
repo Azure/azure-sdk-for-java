@@ -10,11 +10,10 @@ import com.azure.resourcemanager.machinelearning.models.DataVersionBasePropertie
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DataVersionBaseInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DataVersionBaseInner model =
             BinaryData
                 .fromString(
@@ -28,8 +27,8 @@ public final class DataVersionBaseInnerTests {
         Assertions.assertEquals("vpkjpr", model.properties().dataUri());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DataVersionBaseInner model =
             new DataVersionBaseInner()
                 .withProperties(

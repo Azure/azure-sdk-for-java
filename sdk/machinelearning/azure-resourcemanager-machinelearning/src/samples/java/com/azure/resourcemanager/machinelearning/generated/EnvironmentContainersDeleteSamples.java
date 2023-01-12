@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for EnvironmentContainers Delete. */
 public final class EnvironmentContainersDeleteSamples {
     /*
@@ -18,6 +16,8 @@ public final class EnvironmentContainersDeleteSamples {
      */
     public static void deleteEnvironmentContainer(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.environmentContainers().deleteWithResponse("testrg123", "testworkspace", "testContainer", Context.NONE);
+        manager
+            .environmentContainers()
+            .deleteWithResponse("testrg123", "testworkspace", "testContainer", com.azure.core.util.Context.NONE);
     }
 }

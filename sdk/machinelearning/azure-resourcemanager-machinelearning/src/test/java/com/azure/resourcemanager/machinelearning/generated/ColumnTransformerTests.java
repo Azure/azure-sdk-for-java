@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ColumnTransformer;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ColumnTransformerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ColumnTransformer model =
             BinaryData
                 .fromString("{\"fields\":[\"dsmjtgr\",\"gdgkki\"],\"parameters\":\"dataplkcsm\"}")
@@ -20,8 +19,8 @@ public final class ColumnTransformerTests {
         Assertions.assertEquals("dsmjtgr", model.fields().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ColumnTransformer model =
             new ColumnTransformer().withFields(Arrays.asList("dsmjtgr", "gdgkki")).withParameters("dataplkcsm");
         model = BinaryData.fromObject(model).toObject(ColumnTransformer.class);

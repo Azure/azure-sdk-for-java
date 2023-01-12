@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.DiscoverProtectableItemRequest;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.DiscoverProtectableItemRequestProperties;
 
@@ -33,6 +32,6 @@ public final class ReplicationProtectionContainersDiscoverProtecta {
                             .withFriendlyName("Test")
                             .withIpAddress("10.150.2.3")
                             .withOsType("Windows")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

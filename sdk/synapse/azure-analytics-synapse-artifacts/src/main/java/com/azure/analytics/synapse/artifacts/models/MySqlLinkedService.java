@@ -37,6 +37,9 @@ public class MySqlLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of MySqlLinkedService class. */
+    public MySqlLinkedService() {}
+
     /**
      * Get the connectionString property: The connection string.
      *

@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.TargetUtilizationScaleSettings;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class TargetUtilizationScaleSettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         TargetUtilizationScaleSettings model =
             BinaryData
                 .fromString(
@@ -24,8 +23,8 @@ public final class TargetUtilizationScaleSettingsTests {
         Assertions.assertEquals(93995844, model.targetUtilizationPercentage());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         TargetUtilizationScaleSettings model =
             new TargetUtilizationScaleSettings()
                 .withMaxInstances(1095681099)

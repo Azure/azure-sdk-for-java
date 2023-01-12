@@ -29,6 +29,9 @@ public final class LinkedServiceReference {
     @JsonProperty(value = "parameters")
     private Map<String, Object> parameters;
 
+    /** Creates an instance of LinkedServiceReference class. */
+    public LinkedServiceReference() {}
+
     /**
      * Get the type property: Linked service reference type.
      *

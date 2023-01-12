@@ -47,6 +47,10 @@ public final class WorkloadClassifierProperties {
     @JsonProperty(value = "importance")
     private String importance;
 
+    /** Creates an instance of WorkloadClassifierProperties class. */
+    public WorkloadClassifierProperties() {
+    }
+
     /**
      * Get the memberName property: The workload classifier member name.
      *

@@ -17,6 +17,15 @@ public final class TargetRollingWindowSizeMode extends ExpandableStringEnum<Targ
     public static final TargetRollingWindowSizeMode CUSTOM = fromString("Custom");
 
     /**
+     * Creates a new instance of TargetRollingWindowSizeMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TargetRollingWindowSizeMode() {
+    }
+
+    /**
      * Creates or finds a TargetRollingWindowSizeMode from its string representation.
      *
      * @param name a name to look for.

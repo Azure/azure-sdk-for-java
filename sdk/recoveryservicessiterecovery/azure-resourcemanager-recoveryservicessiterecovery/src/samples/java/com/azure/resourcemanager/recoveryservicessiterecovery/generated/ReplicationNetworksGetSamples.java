@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationNetworks Get. */
 public final class ReplicationNetworksGetSamples {
     /*
@@ -25,6 +23,6 @@ public final class ReplicationNetworksGetSamples {
                 "srcBvte2a14C27",
                 "b0cef6e9a4437b81803d0b55ada4f700ab66caae59c35d62723a1589c0cd13ac",
                 "93ce99d7-1219-4914-aa61-73fe5023988e",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

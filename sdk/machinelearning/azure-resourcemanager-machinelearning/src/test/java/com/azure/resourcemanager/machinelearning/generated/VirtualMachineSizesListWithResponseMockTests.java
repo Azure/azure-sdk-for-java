@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.VirtualMachineSizeListResult;
 import java.nio.ByteBuffer;
@@ -61,7 +60,7 @@ public final class VirtualMachineSizesListWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         VirtualMachineSizeListResult response =
-            manager.virtualMachineSizes().listWithResponse("bpfiddhlrufz", Context.NONE).getValue();
+            manager.virtualMachineSizes().listWithResponse("bpfiddhlrufz", com.azure.core.util.Context.NONE).getValue();
 
         Assertions.assertEquals("mw", response.value().get(0).supportedComputeTypes().get(0));
     }

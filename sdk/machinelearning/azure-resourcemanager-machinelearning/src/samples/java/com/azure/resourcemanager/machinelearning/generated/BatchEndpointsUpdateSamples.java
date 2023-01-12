@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.machinelearning.models.BatchEndpoint;
 import com.azure.resourcemanager.machinelearning.models.ManagedServiceIdentityType;
@@ -29,7 +28,7 @@ public final class BatchEndpointsUpdateSamples {
         BatchEndpoint resource =
             manager
                 .batchEndpoints()
-                .getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", Context.NONE)
+                .getWithResponse("test-rg", "my-aml-workspace", "testEndpointName", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

@@ -7,18 +7,17 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ComputeInstanceVersion;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ComputeInstanceVersionTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ComputeInstanceVersion model =
             BinaryData.fromString("{\"runtime\":\"z\"}").toObject(ComputeInstanceVersion.class);
         Assertions.assertEquals("z", model.runtime());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ComputeInstanceVersion model = new ComputeInstanceVersion().withRuntime("z");
         model = BinaryData.fromObject(model).toObject(ComputeInstanceVersion.class);
         Assertions.assertEquals("z", model.runtime());

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ExtendedServerBlobAuditingPolicies Get. */
 public final class ExtendedServerBlobAuditingPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/ExtendedServerBlobAuditingGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/ExtendedServerBlobAuditingGet.json
      */
     /**
      * Sample code: Get a server's blob extended auditing policy.

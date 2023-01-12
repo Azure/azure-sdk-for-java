@@ -22,11 +22,10 @@ import com.azure.resourcemanager.machinelearning.models.ValidationMetricType;
 import java.time.Duration;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ImageObjectDetectionBaseTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ImageObjectDetectionBase model =
             BinaryData
                 .fromString(
@@ -132,8 +131,8 @@ public final class ImageObjectDetectionBaseTests {
         Assertions.assertEquals("hwzdanojisgglmv", model.searchSpace().get(0).validationMetricType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ImageObjectDetectionBase model =
             new ImageObjectDetectionBase()
                 .withLimitSettings(

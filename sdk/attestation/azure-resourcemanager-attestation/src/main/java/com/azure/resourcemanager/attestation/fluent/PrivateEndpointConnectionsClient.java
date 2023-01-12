@@ -21,7 +21,8 @@ public interface PrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connection associated with the specified storage account.
+     * @return list of private endpoint connection associated with the specified storage account as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String providerName);
@@ -35,10 +36,29 @@ public interface PrivateEndpointConnectionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of private endpoint connection associated with the specified storage account.
+     * @return list of private endpoint connection associated with the specified storage account as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String providerName, Context context);
+
+    /**
+     * Gets the specified private endpoint connection associated with the attestation provider.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param providerName The name of the attestation provider.
+     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
+     *     resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified private endpoint connection associated with the attestation provider along with {@link
+     *     Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PrivateEndpointConnectionInner> getWithResponse(
+        String resourceGroupName, String providerName, String privateEndpointConnectionName, Context context);
 
     /**
      * Gets the specified private endpoint connection associated with the attestation provider.
@@ -57,21 +77,26 @@ public interface PrivateEndpointConnectionsClient {
         String resourceGroupName, String providerName, String privateEndpointConnectionName);
 
     /**
-     * Gets the specified private endpoint connection associated with the attestation provider.
+     * Update the state of specified private endpoint connection associated with the attestation provider.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param providerName The name of the attestation provider.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
+     * @param properties The private endpoint connection properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the attestation provider.
+     * @return the Private Endpoint Connection resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> getWithResponse(
-        String resourceGroupName, String providerName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnectionInner> createWithResponse(
+        String resourceGroupName,
+        String providerName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner properties,
+        Context context);
 
     /**
      * Update the state of specified private endpoint connection associated with the attestation provider.
@@ -94,26 +119,21 @@ public interface PrivateEndpointConnectionsClient {
         PrivateEndpointConnectionInner properties);
 
     /**
-     * Update the state of specified private endpoint connection associated with the attestation provider.
+     * Deletes the specified private endpoint connection associated with the attestation provider.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param providerName The name of the attestation provider.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      *     resource.
-     * @param properties The private endpoint connection properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> createWithResponse(
-        String resourceGroupName,
-        String providerName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner properties,
-        Context context);
+    Response<Void> deleteWithResponse(
+        String resourceGroupName, String providerName, String privateEndpointConnectionName, Context context);
 
     /**
      * Deletes the specified private endpoint connection associated with the attestation provider.
@@ -128,21 +148,4 @@ public interface PrivateEndpointConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String providerName, String privateEndpointConnectionName);
-
-    /**
-     * Deletes the specified private endpoint connection associated with the attestation provider.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName The name of the attestation provider.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String providerName, String privateEndpointConnectionName, Context context);
 }

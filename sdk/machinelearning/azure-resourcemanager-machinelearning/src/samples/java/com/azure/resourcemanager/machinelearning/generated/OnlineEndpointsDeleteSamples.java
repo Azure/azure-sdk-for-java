@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for OnlineEndpoints Delete. */
 public final class OnlineEndpointsDeleteSamples {
     /*
@@ -17,6 +15,8 @@ public final class OnlineEndpointsDeleteSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void deleteOnlineEndpoint(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.onlineEndpoints().delete("test-rg", "my-aml-workspace", "testEndpointName", Context.NONE);
+        manager
+            .onlineEndpoints()
+            .delete("test-rg", "my-aml-workspace", "testEndpointName", com.azure.core.util.Context.NONE);
     }
 }

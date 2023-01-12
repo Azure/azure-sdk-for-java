@@ -32,6 +32,15 @@ public final class WeekDay extends ExpandableStringEnum<WeekDay> {
     public static final WeekDay SUNDAY = fromString("Sunday");
 
     /**
+     * Creates a new instance of WeekDay value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WeekDay() {
+    }
+
+    /**
      * Creates or finds a WeekDay from its string representation.
      *
      * @param name a name to look for.

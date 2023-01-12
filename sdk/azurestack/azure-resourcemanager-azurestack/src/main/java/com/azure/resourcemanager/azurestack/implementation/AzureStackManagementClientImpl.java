@@ -15,6 +15,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -24,7 +25,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.azurestack.fluent.AzureStackManagementClient;
 import com.azure.resourcemanager.azurestack.fluent.CloudManifestFilesClient;
 import com.azure.resourcemanager.azurestack.fluent.CustomerSubscriptionsClient;
-import com.azure.resourcemanager.azurestack.fluent.LinkedSubscriptionsClient;
+import com.azure.resourcemanager.azurestack.fluent.DeploymentLicensesClient;
 import com.azure.resourcemanager.azurestack.fluent.OperationsClient;
 import com.azure.resourcemanager.azurestack.fluent.ProductsClient;
 import com.azure.resourcemanager.azurestack.fluent.RegistrationsClient;
@@ -34,15 +35,12 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the AzureStackManagementClientImpl type. */
 @ServiceClient(builder = AzureStackManagementClientBuilder.class)
 public final class AzureStackManagementClientImpl implements AzureStackManagementClient {
-    private final ClientLogger logger = new ClientLogger(AzureStackManagementClientImpl.class);
-
     /**
      * Subscription credentials that uniquely identify Microsoft Azure subscription. The subscription ID forms part of
      * the URI for every service call.
@@ -143,6 +141,18 @@ public final class AzureStackManagementClientImpl implements AzureStackManagemen
         return this.cloudManifestFiles;
     }
 
+    /** The DeploymentLicensesClient object to access its operations. */
+    private final DeploymentLicensesClient deploymentLicenses;
+
+    /**
+     * Gets the DeploymentLicensesClient object to access its operations.
+     *
+     * @return the DeploymentLicensesClient object.
+     */
+    public DeploymentLicensesClient getDeploymentLicenses() {
+        return this.deploymentLicenses;
+    }
+
     /** The CustomerSubscriptionsClient object to access its operations. */
     private final CustomerSubscriptionsClient customerSubscriptions;
 
@@ -179,18 +189,6 @@ public final class AzureStackManagementClientImpl implements AzureStackManagemen
         return this.registrations;
     }
 
-    /** The LinkedSubscriptionsClient object to access its operations. */
-    private final LinkedSubscriptionsClient linkedSubscriptions;
-
-    /**
-     * Gets the LinkedSubscriptionsClient object to access its operations.
-     *
-     * @return the LinkedSubscriptionsClient object.
-     */
-    public LinkedSubscriptionsClient getLinkedSubscriptions() {
-        return this.linkedSubscriptions;
-    }
-
     /**
      * Initializes an instance of AzureStackManagementClient client.
      *
@@ -214,13 +212,13 @@ public final class AzureStackManagementClientImpl implements AzureStackManagemen
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-06-01-preview";
+        this.apiVersion = "2022-06-01";
         this.operations = new OperationsClientImpl(this);
         this.cloudManifestFiles = new CloudManifestFilesClientImpl(this);
+        this.deploymentLicenses = new DeploymentLicensesClientImpl(this);
         this.customerSubscriptions = new CustomerSubscriptionsClientImpl(this);
         this.products = new ProductsClientImpl(this);
         this.registrations = new RegistrationsClientImpl(this);
-        this.linkedSubscriptions = new LinkedSubscriptionsClientImpl(this);
     }
 
     /**
@@ -239,10 +237,7 @@ public final class AzureStackManagementClientImpl implements AzureStackManagemen
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -306,7 +301,7 @@ public final class AzureStackManagementClientImpl implements AzureStackManagemen
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -365,4 +360,6 @@ public final class AzureStackManagementClientImpl implements AzureStackManagemen
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureStackManagementClientImpl.class);
 }

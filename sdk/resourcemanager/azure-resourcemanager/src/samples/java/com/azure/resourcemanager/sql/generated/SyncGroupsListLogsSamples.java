@@ -10,7 +10,7 @@ import com.azure.resourcemanager.sql.models.SyncGroupsType;
 /** Samples for SyncGroups ListLogs. */
 public final class SyncGroupsListLogsSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/examples/SyncGroupGetLog.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncGroupGetLog.json
      */
     /**
      * Sample code: Get sync group logs.

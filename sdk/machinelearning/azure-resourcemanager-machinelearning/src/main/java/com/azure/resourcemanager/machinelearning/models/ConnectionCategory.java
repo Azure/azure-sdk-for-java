@@ -20,6 +20,15 @@ public final class ConnectionCategory extends ExpandableStringEnum<ConnectionCat
     public static final ConnectionCategory GIT = fromString("Git");
 
     /**
+     * Creates a new instance of ConnectionCategory value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectionCategory() {
+    }
+
+    /**
      * Creates or finds a ConnectionCategory from its string representation.
      *
      * @param name a name to look for.

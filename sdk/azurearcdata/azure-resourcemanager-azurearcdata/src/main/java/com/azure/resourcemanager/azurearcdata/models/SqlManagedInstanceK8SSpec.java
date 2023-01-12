@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** The kubernetes spec information. */
 @Fluent
 public final class SqlManagedInstanceK8SSpec {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlManagedInstanceK8SSpec.class);
-
     /*
      * The kubernetes scheduling information.
      */
@@ -25,11 +22,9 @@ public final class SqlManagedInstanceK8SSpec {
     private K8SScheduling scheduling;
 
     /*
-     * This option specifies the number of SQL Managed Instance replicas that
-     * will be deployed in your Kubernetes cluster for high availability
-     * purposes. If sku.tier is BusinessCritical, allowed values are '2' or '3'
-     * with default of '3'. If sku.tier is GeneralPurpose, replicas must be
-     * '1'.
+     * This option specifies the number of SQL Managed Instance replicas that will be deployed in your Kubernetes
+     * cluster for high availability purposes. If sku.tier is BusinessCritical, allowed values are '2' or '3' with
+     * default of '3'. If sku.tier is GeneralPurpose, replicas must be '1'.
      */
     @JsonProperty(value = "replicas")
     private Integer replicas;
@@ -38,6 +33,10 @@ public final class SqlManagedInstanceK8SSpec {
      * The kubernetes spec information.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of SqlManagedInstanceK8SSpec class. */
+    public SqlManagedInstanceK8SSpec() {
+    }
 
     /**
      * Get the scheduling property: The kubernetes scheduling information.

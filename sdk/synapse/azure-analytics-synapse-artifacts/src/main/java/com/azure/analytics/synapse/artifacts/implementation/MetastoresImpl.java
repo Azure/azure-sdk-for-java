@@ -179,22 +179,6 @@ public final class MetastoresImpl {
      * @param id The name of the database to be created. The name can contain only alphanumeric characters and should
      *     not exceed 24 characters.
      * @param registerBody The body for the register request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MetastoreRegistrationResponse register(String id, MetastoreRegisterObject registerBody) {
-        return registerAsync(id, registerBody).block();
-    }
-
-    /**
-     * Register files in Syms.
-     *
-     * @param id The name of the database to be created. The name can contain only alphanumeric characters and should
-     *     not exceed 24 characters.
-     * @param registerBody The body for the register request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -205,6 +189,22 @@ public final class MetastoresImpl {
     public Response<MetastoreRegistrationResponse> registerWithResponse(
             String id, MetastoreRegisterObject registerBody, Context context) {
         return registerWithResponseAsync(id, registerBody, context).block();
+    }
+
+    /**
+     * Register files in Syms.
+     *
+     * @param id The name of the database to be created. The name can contain only alphanumeric characters and should
+     *     not exceed 24 characters.
+     * @param registerBody The body for the register request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MetastoreRegistrationResponse register(String id, MetastoreRegisterObject registerBody) {
+        return registerWithResponse(id, registerBody, Context.NONE).getValue();
     }
 
     /**
@@ -275,20 +275,6 @@ public final class MetastoresImpl {
      * Gets status of the database.
      *
      * @param id The id parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of the database.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MetastoreRequestSuccessResponse getDatabaseOperations(String id) {
-        return getDatabaseOperationsAsync(id).block();
-    }
-
-    /**
-     * Gets status of the database.
-     *
-     * @param id The id parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -298,6 +284,20 @@ public final class MetastoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetastoreRequestSuccessResponse> getDatabaseOperationsWithResponse(String id, Context context) {
         return getDatabaseOperationsWithResponseAsync(id, context).block();
+    }
+
+    /**
+     * Gets status of the database.
+     *
+     * @param id The id parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status of the database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MetastoreRequestSuccessResponse getDatabaseOperations(String id) {
+        return getDatabaseOperationsWithResponse(id, Context.NONE).getValue();
     }
 
     /**
@@ -374,21 +374,6 @@ public final class MetastoresImpl {
      *
      * @param id The name of the database to be updated.
      * @param updateBody The body for the update request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MetastoreUpdationResponse update(String id, MetastoreUpdateObject updateBody) {
-        return updateAsync(id, updateBody).block();
-    }
-
-    /**
-     * Update files in Syms.
-     *
-     * @param id The name of the database to be updated.
-     * @param updateBody The body for the update request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -399,6 +384,21 @@ public final class MetastoresImpl {
     public Response<MetastoreUpdationResponse> updateWithResponse(
             String id, MetastoreUpdateObject updateBody, Context context) {
         return updateWithResponseAsync(id, updateBody, context).block();
+    }
+
+    /**
+     * Update files in Syms.
+     *
+     * @param id The name of the database to be updated.
+     * @param updateBody The body for the update request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MetastoreUpdationResponse update(String id, MetastoreUpdateObject updateBody) {
+        return updateWithResponse(id, updateBody, Context.NONE).getValue();
     }
 
     /**
@@ -468,19 +468,6 @@ public final class MetastoresImpl {
      * Remove files in Syms.
      *
      * @param id The id parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String id) {
-        deleteAsync(id).block();
-    }
-
-    /**
-     * Remove files in Syms.
-     *
-     * @param id The id parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -490,5 +477,18 @@ public final class MetastoresImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String id, Context context) {
         return deleteWithResponseAsync(id, context).block();
+    }
+
+    /**
+     * Remove files in Syms.
+     *
+     * @param id The id parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String id) {
+        deleteWithResponse(id, Context.NONE);
     }
 }

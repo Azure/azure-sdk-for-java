@@ -11,7 +11,7 @@ import com.azure.resourcemanager.sql.models.ManagedShortTermRetentionPolicyName;
 /** Samples for ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicies CreateOrUpdate. */
 public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-03-01-preview/examples/UpdateManagedShortTermRetentionPolicyRestorableDropped.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/UpdateManagedShortTermRetentionPolicyRestorableDropped.json
      */
     /**
      * Sample code: Update the short term retention policy for the restorable dropped database.
@@ -30,7 +30,7 @@ public final class ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolic
                 "testsvr",
                 "testdb,131403269876900000",
                 ManagedShortTermRetentionPolicyName.DEFAULT,
-                new ManagedBackupShortTermRetentionPolicyInner(),
+                new ManagedBackupShortTermRetentionPolicyInner().withRetentionDays(14),
                 Context.NONE);
     }
 }

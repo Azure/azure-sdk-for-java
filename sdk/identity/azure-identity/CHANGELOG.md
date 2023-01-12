@@ -10,6 +10,17 @@
 
 ### Other Changes
 
+## 1.7.3 (2023-01-06)
+
+### Bugs Fixed
+- No longer statically accessing environment variables. [#32781](https://github.com/Azure/azure-sdk-for-java/issues/32781)
+- Use `ThreadLocalRandom` instead of `Random` to better enable static compilation. [#32744](https://github.com/Azure/azure-sdk-for-java/issues/32744)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.34.0` to version `1.35.0`.
+
 ## 1.7.2 (2022-12-09)
 
 ### Bugs Fixed

@@ -29,6 +29,15 @@ public final class InputDeliveryMode extends ExpandableStringEnum<InputDeliveryM
     public static final InputDeliveryMode EVAL_DOWNLOAD = fromString("EvalDownload");
 
     /**
+     * Creates a new instance of InputDeliveryMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public InputDeliveryMode() {
+    }
+
+    /**
      * Creates or finds a InputDeliveryMode from its string representation.
      *
      * @param name a name to look for.

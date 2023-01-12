@@ -50,7 +50,7 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMachineLearning")
-    private interface VirtualMachineSizesService {
+    public interface VirtualMachineSizesService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/locations/{location}/vmSizes")
         @ExpectedResponses({200})

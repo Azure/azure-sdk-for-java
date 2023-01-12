@@ -18,7 +18,9 @@ public final class LinkTableStatus {
     private String id;
 
     /*
-     * Link table status
+     * Link table status, please refer to this
+     * [articles](https://learn.microsoft.com/azure/synapse-analytics/synapse-link/sql-database-synapse-link#monitoring)
+     * for details.
      */
     @JsonProperty(value = "status")
     private String status;
@@ -65,6 +67,9 @@ public final class LinkTableStatus {
     @JsonProperty(value = "lastTransactionCommitTime")
     private OffsetDateTime lastTransactionCommitTime;
 
+    /** Creates an instance of LinkTableStatus class. */
+    public LinkTableStatus() {}
+
     /**
      * Get the id property: ID provided by the client.
      *
@@ -86,7 +91,9 @@ public final class LinkTableStatus {
     }
 
     /**
-     * Get the status property: Link table status.
+     * Get the status property: Link table status, please refer to this
+     * [articles](https://learn.microsoft.com/azure/synapse-analytics/synapse-link/sql-database-synapse-link#monitoring)
+     * for details.
      *
      * @return the status value.
      */
@@ -95,7 +102,9 @@ public final class LinkTableStatus {
     }
 
     /**
-     * Set the status property: Link table status.
+     * Set the status property: Link table status, please refer to this
+     * [articles](https://learn.microsoft.com/azure/synapse-analytics/synapse-link/sql-database-synapse-link#monitoring)
+     * for details.
      *
      * @param status the status value to set.
      * @return the LinkTableStatus object itself.

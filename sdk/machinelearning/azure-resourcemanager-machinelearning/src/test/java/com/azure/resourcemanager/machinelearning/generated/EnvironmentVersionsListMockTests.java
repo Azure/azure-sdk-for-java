@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.AutoRebuildSetting;
 import com.azure.resourcemanager.machinelearning.models.EnvironmentVersion;
@@ -75,7 +74,7 @@ public final class EnvironmentVersionsListMockTests {
                     1855345037,
                     "nsewouxl",
                     ListViewType.ACTIVE_ONLY,
-                    Context.NONE);
+                    com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("fey", response.iterator().next().properties().description());
         Assertions.assertEquals("ocvvujexayglxrk", response.iterator().next().properties().properties().get("jnmzp"));

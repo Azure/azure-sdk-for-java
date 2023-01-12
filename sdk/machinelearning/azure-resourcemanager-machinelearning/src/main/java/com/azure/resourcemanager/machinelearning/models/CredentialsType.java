@@ -26,6 +26,15 @@ public final class CredentialsType extends ExpandableStringEnum<CredentialsType>
     public static final CredentialsType SERVICE_PRINCIPAL = fromString("ServicePrincipal");
 
     /**
+     * Creates a new instance of CredentialsType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CredentialsType() {
+    }
+
+    /**
      * Creates or finds a CredentialsType from its string representation.
      *
      * @param name a name to look for.

@@ -10,15 +10,9 @@ import com.azure.resourcemanager.sql.models.DataMaskingFunction;
 import com.azure.resourcemanager.sql.models.DataMaskingRuleState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents a database data masking rule. */
+/** A database data masking rule. */
 @Fluent
 public final class DataMaskingRuleInner extends ProxyResource {
-    /*
-     * The properties of the resource.
-     */
-    @JsonProperty(value = "properties")
-    private DataMaskingRuleProperties innerProperties;
-
     /*
      * The location of the data masking rule.
      */
@@ -31,13 +25,14 @@ public final class DataMaskingRuleInner extends ProxyResource {
     @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
-    /**
-     * Get the innerProperties property: The properties of the resource.
-     *
-     * @return the innerProperties value.
+    /*
+     * Resource properties.
      */
-    private DataMaskingRuleProperties innerProperties() {
-        return this.innerProperties;
+    @JsonProperty(value = "properties")
+    private DataMaskingRuleProperties innerProperties;
+
+    /** Creates an instance of DataMaskingRuleInner class. */
+    public DataMaskingRuleInner() {
     }
 
     /**
@@ -59,35 +54,21 @@ public final class DataMaskingRuleInner extends ProxyResource {
     }
 
     /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private DataMaskingRuleProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the id property: The rule Id.
      *
      * @return the id value.
      */
     public String idPropertiesId() {
         return this.innerProperties() == null ? null : this.innerProperties().id();
-    }
-
-    /**
-     * Get the aliasName property: The alias name. This is a legacy parameter and is no longer used.
-     *
-     * @return the aliasName value.
-     */
-    public String aliasName() {
-        return this.innerProperties() == null ? null : this.innerProperties().aliasName();
-    }
-
-    /**
-     * Set the aliasName property: The alias name. This is a legacy parameter and is no longer used.
-     *
-     * @param aliasName the aliasName value to set.
-     * @return the DataMaskingRuleInner object itself.
-     */
-    public DataMaskingRuleInner withAliasName(String aliasName) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DataMaskingRuleProperties();
-        }
-        this.innerProperties().withAliasName(aliasName);
-        return this;
     }
 
     /**
@@ -185,6 +166,29 @@ public final class DataMaskingRuleInner extends ProxyResource {
             this.innerProperties = new DataMaskingRuleProperties();
         }
         this.innerProperties().withColumnName(columnName);
+        return this;
+    }
+
+    /**
+     * Get the aliasName property: The alias name. This is a legacy parameter and is no longer used.
+     *
+     * @return the aliasName value.
+     */
+    public String aliasName() {
+        return this.innerProperties() == null ? null : this.innerProperties().aliasName();
+    }
+
+    /**
+     * Set the aliasName property: The alias name. This is a legacy parameter and is no longer used.
+     *
+     * @param aliasName the aliasName value to set.
+     * @return the DataMaskingRuleInner object itself.
+     */
+    public DataMaskingRuleInner withAliasName(String aliasName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataMaskingRuleProperties();
+        }
+        this.innerProperties().withAliasName(aliasName);
         return this;
     }
 

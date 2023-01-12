@@ -9,6 +9,8 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -452,6 +454,63 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         return insert(containerName, objectToSave, null);
     }
 
+    /**
+     * Patches item
+     *
+     * applies partial update (patch) to an item
+     * @param id must not be {@literal null}
+     * @param partitionKey must not be {@literal null}
+     * @param domainType must not be {@literal null}
+     * @param patchOperations must not be {@literal null}
+     * @param <T> type class of domain type
+     * @return the patched item
+     */
+    @Override
+    public <T> Mono<T> patch(Object id, PartitionKey partitionKey, Class<T> domainType, CosmosPatchOperations patchOperations) {
+        return patch(id, partitionKey, domainType, patchOperations,  null);
+    }
+
+    /**
+     * applies partial update (patch) to an item with CosmosPatchItemRequestOptions
+     *
+     * @param id must not be {@literal null}
+     * @param partitionKey must not be {@literal null}
+     * @param domainType must not be {@literal null}
+     * @param patchOperations must not be {@literal null}
+     * @param options Optional CosmosPatchItemRequestOptions, e.g. options.setFilterPredicate("FROM products p WHERE p.used = false");
+     * @param <T> type class of domain type
+     * @return the patched item
+     */
+    public <T> Mono<T> patch(Object id, PartitionKey partitionKey, Class<T> domainType, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options) {
+        Assert.notNull(patchOperations, "expected non-null cosmosPatchOperations");
+
+        final String containerName = getContainerName(domainType);
+        Assert.notNull(id, "id should not be null");
+        Assert.notNull(partitionKey, "partitionKey should not be null, empty or only whitespaces");
+        Assert.notNull(patchOperations, "patchOperations should not be null, empty or only whitespaces");
+
+        LOGGER.debug("execute patchItem in database {} container {}", this.getDatabaseName(), containerName);
+
+        if (options == null) {
+            options = new CosmosPatchItemRequestOptions();
+        }
+
+        return this.getCosmosAsyncClient()
+            .getDatabase(this.getDatabaseName())
+            .getContainer(containerName)
+            .patchItem(id.toString(), partitionKey, patchOperations, options, JsonNode.class)
+            .publishOn(Schedulers.parallel())
+            .onErrorResume(throwable ->
+                CosmosExceptionUtils.exceptionHandler("Failed to patch item", throwable,
+                    this.responseDiagnosticsProcessor))
+            .flatMap(cosmosItemResponse -> {
+                CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
+                    cosmosItemResponse.getDiagnostics(), null);
+                return Mono.just(toDomainObject(domainType, cosmosItemResponse.getItem()));
+            });
+
+    }
+
     @SuppressWarnings("unchecked")
     private <T> void generateIdIfNullAndAutoGenerationEnabled(T originalItem, Class<?> type) {
         CosmosEntityInformation<?, ?> entityInfo = CosmosEntityInformation.getInstance(type);
@@ -774,8 +833,8 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     }
 
     private <T> Flux<JsonNode> findItems(@NonNull CosmosQuery query,
-                                     @NonNull String containerName,
-                                     @NonNull Class<T> domainType) {
+                                         @NonNull String containerName,
+                                         @NonNull Class<T> domainType) {
         final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
         final CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         cosmosQueryRequestOptions.setQueryMetricsEnabled(this.queryMetricsEnabled);

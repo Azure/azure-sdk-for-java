@@ -182,7 +182,8 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
             .serviceClient()
             .getServerDnsAliases()
             .acquireAsync(resourceGroupName, serverName, dnsAliasName,
-                new ServerDnsAliasAcquisition().withOldServerDnsAliasId(sqlServerId + DNS_ALIASES + dnsAliasName));
+                new ServerDnsAliasAcquisition().withOldServerDnsAliasId(sqlServerId + DNS_ALIASES + dnsAliasName))
+            .then();
     }
 
     @Override
@@ -212,7 +213,8 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
                 resourceId.resourceGroupName(),
                 resourceId.name(),
                 dnsAliasName,
-                new ServerDnsAliasAcquisition().withOldServerDnsAliasId(newSqlServerId + DNS_ALIASES + dnsAliasName));
+                new ServerDnsAliasAcquisition().withOldServerDnsAliasId(newSqlServerId + DNS_ALIASES + dnsAliasName))
+            .then();
     }
 
     @Override

@@ -15,15 +15,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateLinkResourceTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PrivateLinkResource model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"groupId\":\"yngudivk\",\"requiredMembers\":[\"wbxqzvszjfau\",\"j\"],\"requiredZoneNames\":[\"xivetvt\",\"qaqtdoqmcbxvwvxy\"]},\"identity\":{\"principalId\":\"32f0a15c-9d0f-4665-9934-dd004d9e6f37\",\"tenantId\":\"0a9fd039-af07-4b29-9ba3-2d6d8b7996bd\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"blytk\":{\"principalId\":\"93de6bf1-d4f0-45b0-ab30-b65f0cfcd897\",\"clientId\":\"010def7c-5866-4701-ae82-9aa1864bd83c\"},\"pe\":{\"principalId\":\"513a121e-f9cc-438a-b084-9dd3b75d2483\",\"clientId\":\"40270554-d298-4679-abab-ba14be614b55\"},\"fbkrvrnsvs\":{\"principalId\":\"97d20f73-ec05-42a1-8b26-532b85eb2531\",\"clientId\":\"1a51f6e4-679c-4a13-8557-202831ac364a\"}}},\"location\":\"johxcrsb\",\"tags\":{\"wbhsqfsub\":\"asrru\",\"rxbpyb\":\"gjb\",\"twss\":\"rfbjf\"},\"sku\":{\"name\":\"ftpvjzbexil\",\"tier\":\"Basic\",\"size\":\"qqnvwpmq\",\"family\":\"ruoujmk\",\"capacity\":1426920839},\"id\":\"qytjrybnwjewgd\",\"name\":\"jervnaenqpehi\",\"type\":\"doy\"}")
+                    "{\"properties\":{\"groupId\":\"yngudivk\",\"requiredMembers\":[\"wbxqzvszjfau\",\"j\"],\"requiredZoneNames\":[\"xivetvt\",\"qaqtdoqmcbxvwvxy\"]},\"identity\":{\"principalId\":\"5fc3592b-d219-44be-b65a-2e2b3de76d9f\",\"tenantId\":\"712bd8ad-1151-45f2-bf61-d3e7de7dee99\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"blytk\":{\"principalId\":\"a95d1cdd-f7ed-4f87-a472-8a4bf616620d\",\"clientId\":\"f6f8621d-afad-499a-badb-6ecb26a9f3bb\"},\"pe\":{\"principalId\":\"fca7d1ee-b91d-42ac-9117-8d0ab41ca837\",\"clientId\":\"02cc4e93-4a44-44b6-a4b9-9f73d769c0c8\"},\"fbkrvrnsvs\":{\"principalId\":\"6434654b-4b63-4930-a988-6c07d2c784db\",\"clientId\":\"52f29274-c586-42d1-b67f-e1d18d5fb113\"}}},\"location\":\"johxcrsb\",\"tags\":{\"wbhsqfsub\":\"asrru\",\"rxbpyb\":\"gjb\",\"twss\":\"rfbjf\"},\"sku\":{\"name\":\"ftpvjzbexil\",\"tier\":\"Basic\",\"size\":\"qqnvwpmq\",\"family\":\"ruoujmk\",\"capacity\":1426920839},\"id\":\"qytjrybnwjewgd\",\"name\":\"jervnaenqpehi\",\"type\":\"doy\"}")
                 .toObject(PrivateLinkResource.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
         Assertions.assertEquals("johxcrsb", model.location());
@@ -36,8 +35,8 @@ public final class PrivateLinkResourceTests {
         Assertions.assertEquals("xivetvt", model.requiredZoneNames().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrivateLinkResource model =
             new PrivateLinkResource()
                 .withIdentity(

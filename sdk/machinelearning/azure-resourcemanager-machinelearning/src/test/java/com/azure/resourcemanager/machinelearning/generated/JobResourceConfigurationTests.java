@@ -9,11 +9,10 @@ import com.azure.resourcemanager.machinelearning.models.JobResourceConfiguration
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class JobResourceConfigurationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         JobResourceConfiguration model =
             BinaryData
                 .fromString(
@@ -25,8 +24,8 @@ public final class JobResourceConfigurationTests {
         Assertions.assertEquals("dbirkfpksokdgo", model.shmSize());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         JobResourceConfiguration model =
             new JobResourceConfiguration()
                 .withInstanceCount(1548314621)

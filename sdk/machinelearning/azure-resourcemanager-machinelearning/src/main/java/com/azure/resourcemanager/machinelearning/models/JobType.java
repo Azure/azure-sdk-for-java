@@ -23,6 +23,15 @@ public final class JobType extends ExpandableStringEnum<JobType> {
     public static final JobType PIPELINE = fromString("Pipeline");
 
     /**
+     * Creates a new instance of JobType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public JobType() {
+    }
+
+    /**
      * Creates or finds a JobType from its string representation.
      *
      * @param name a name to look for.

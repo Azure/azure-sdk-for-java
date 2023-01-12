@@ -77,6 +77,9 @@ public final class WorkspaceRepositoryConfiguration {
     @JsonProperty(value = "clientSecret")
     private GitHubClientSecret clientSecret;
 
+    /** Creates an instance of WorkspaceRepositoryConfiguration class. */
+    public WorkspaceRepositoryConfiguration() {}
+
     /**
      * Get the type property: Type of workspace repositoryID configuration. Example WorkspaceVSTSConfiguration,
      * WorkspaceGitHubConfiguration.

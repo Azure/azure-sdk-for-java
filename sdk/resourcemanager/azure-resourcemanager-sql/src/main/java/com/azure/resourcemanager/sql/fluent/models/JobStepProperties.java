@@ -15,23 +15,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class JobStepProperties {
     /*
-     * The job step's index within the job. If not specified when creating the
-     * job step, it will be created as the last step. If not specified when
-     * updating the job step, the step id is not modified.
+     * The job step's index within the job. If not specified when creating the job step, it will be created as the last
+     * step. If not specified when updating the job step, the step id is not modified.
      */
     @JsonProperty(value = "stepId")
     private Integer stepId;
 
     /*
-     * The resource ID of the target group that the job step will be executed
-     * on.
+     * The resource ID of the target group that the job step will be executed on.
      */
     @JsonProperty(value = "targetGroup", required = true)
     private String targetGroup;
 
     /*
-     * The resource ID of the job credential that will be used to connect to
-     * the targets.
+     * The resource ID of the job credential that will be used to connect to the targets.
      */
     @JsonProperty(value = "credential", required = true)
     private String credential;
@@ -53,6 +50,10 @@ public final class JobStepProperties {
      */
     @JsonProperty(value = "executionOptions")
     private JobStepExecutionOptions executionOptions;
+
+    /** Creates an instance of JobStepProperties class. */
+    public JobStepProperties() {
+    }
 
     /**
      * Get the stepId property: The job step's index within the job. If not specified when creating the job step, it

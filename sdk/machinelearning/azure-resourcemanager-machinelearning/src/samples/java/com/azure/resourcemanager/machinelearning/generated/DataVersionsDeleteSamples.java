@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DataVersions Delete. */
 public final class DataVersionsDeleteSamples {
     /*
@@ -17,6 +15,8 @@ public final class DataVersionsDeleteSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void deleteDataVersionBase(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.dataVersions().deleteWithResponse("test-rg", "my-aml-workspace", "string", "string", Context.NONE);
+        manager
+            .dataVersions()
+            .deleteWithResponse("test-rg", "my-aml-workspace", "string", "string", com.azure.core.util.Context.NONE);
     }
 }

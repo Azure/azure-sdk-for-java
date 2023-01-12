@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StorageClassifications List. */
 public final class StorageClassificationsListSamples {
     /*
@@ -18,6 +16,6 @@ public final class StorageClassificationsListSamples {
      */
     public static void getsTheListOfStorageClassificationObjectsUnderAVault(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.storageClassifications().list("vault1", "resourceGroupPS1", Context.NONE);
+        manager.storageClassifications().list("vault1", "resourceGroupPS1", com.azure.core.util.Context.NONE);
     }
 }

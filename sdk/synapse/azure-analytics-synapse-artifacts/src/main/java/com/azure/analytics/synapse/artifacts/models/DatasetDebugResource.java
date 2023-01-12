@@ -16,6 +16,9 @@ public final class DatasetDebugResource extends SubResourceDebugResource {
     @JsonProperty(value = "properties", required = true)
     private Dataset properties;
 
+    /** Creates an instance of DatasetDebugResource class. */
+    public DatasetDebugResource() {}
+
     /**
      * Get the properties property: Dataset properties.
      *

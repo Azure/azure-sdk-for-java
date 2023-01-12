@@ -4,23 +4,32 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseUsageInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response to a list database metrics request. */
-@Fluent
+/** A list of database usage metrics. */
+@Immutable
 public final class DatabaseUsageListResult {
     /*
-     * The list of database usages for the database.
+     * Array of results.
      */
-    @JsonProperty(value = "value", required = true)
+    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<DatabaseUsageInner> value;
 
+    /*
+     * Link to retrieve next page of results.
+     */
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
+    private String nextLink;
+
+    /** Creates an instance of DatabaseUsageListResult class. */
+    public DatabaseUsageListResult() {
+    }
+
     /**
-     * Get the value property: The list of database usages for the database.
+     * Get the value property: Array of results.
      *
      * @return the value value.
      */
@@ -29,14 +38,12 @@ public final class DatabaseUsageListResult {
     }
 
     /**
-     * Set the value property: The list of database usages for the database.
+     * Get the nextLink property: Link to retrieve next page of results.
      *
-     * @param value the value value to set.
-     * @return the DatabaseUsageListResult object itself.
+     * @return the nextLink value.
      */
-    public DatabaseUsageListResult withValue(List<DatabaseUsageInner> value) {
-        this.value = value;
-        return this;
+    public String nextLink() {
+        return this.nextLink;
     }
 
     /**
@@ -45,14 +52,8 @@ public final class DatabaseUsageListResult {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model DatabaseUsageListResult"));
-        } else {
+        if (value() != null) {
             value().forEach(e -> e.validate());
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(DatabaseUsageListResult.class);
 }

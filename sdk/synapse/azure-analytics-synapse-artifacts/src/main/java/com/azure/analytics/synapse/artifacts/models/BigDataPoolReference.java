@@ -22,6 +22,9 @@ public final class BigDataPoolReference {
     @JsonProperty(value = "referenceName", required = true)
     private String referenceName;
 
+    /** Creates an instance of BigDataPoolReference class. */
+    public BigDataPoolReference() {}
+
     /**
      * Get the type property: Big data pool reference type.
      *

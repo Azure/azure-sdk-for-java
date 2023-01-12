@@ -17,6 +17,15 @@ public final class NCrossValidationsMode extends ExpandableStringEnum<NCrossVali
     public static final NCrossValidationsMode CUSTOM = fromString("Custom");
 
     /**
+     * Creates a new instance of NCrossValidationsMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NCrossValidationsMode() {
+    }
+
+    /**
      * Creates or finds a NCrossValidationsMode from its string representation.
      *
      * @param name a name to look for.

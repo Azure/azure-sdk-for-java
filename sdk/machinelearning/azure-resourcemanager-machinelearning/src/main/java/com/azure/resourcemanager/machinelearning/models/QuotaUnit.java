@@ -14,6 +14,15 @@ public final class QuotaUnit extends ExpandableStringEnum<QuotaUnit> {
     public static final QuotaUnit COUNT = fromString("Count");
 
     /**
+     * Creates a new instance of QuotaUnit value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public QuotaUnit() {
+    }
+
+    /**
      * Creates or finds a QuotaUnit from its string representation.
      *
      * @param name a name to look for.

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ReplicationFabrics Delete. */
 public final class ReplicationFabricsDeleteSamples {
     /*
@@ -18,6 +16,6 @@ public final class ReplicationFabricsDeleteSamples {
      */
     public static void deletesTheSite(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationFabrics().delete("vault1", "resourceGroupPS1", "cloud1", Context.NONE);
+        manager.replicationFabrics().delete("vault1", "resourceGroupPS1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

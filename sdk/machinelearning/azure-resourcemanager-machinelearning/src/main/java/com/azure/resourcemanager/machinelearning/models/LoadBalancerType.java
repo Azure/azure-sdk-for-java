@@ -17,6 +17,15 @@ public final class LoadBalancerType extends ExpandableStringEnum<LoadBalancerTyp
     public static final LoadBalancerType INTERNAL_LOAD_BALANCER = fromString("InternalLoadBalancer");
 
     /**
+     * Creates a new instance of LoadBalancerType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LoadBalancerType() {
+    }
+
+    /**
      * Creates or finds a LoadBalancerType from its string representation.
      *
      * @param name a name to look for.
