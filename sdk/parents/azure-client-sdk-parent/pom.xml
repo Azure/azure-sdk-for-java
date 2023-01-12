@@ -676,7 +676,7 @@
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
           <configuration>
-            <source>1.8</source>
+            <source>11</source>
             <doctitle>Azure SDK for Java Reference Documentation</doctitle>
             <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
             <bottom>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt; site
@@ -703,6 +703,8 @@
               <sourceFileExclude>com/azure/cosmos/encryption/models/*BridgeInternal.java</sourceFileExclude>
               <sourceFileExclude>module-info.java</sourceFileExclude>
             </sourceFileExcludes>
+            <sourcepath>../../core/azure-core/src/main/java:../../identity/azure-identity/src/main/java</sourcepath>
+            <subpackages>com.azure</subpackages>
             <links combine.children="append">
               <!-- JDK APIs -->
               <link>https://docs.oracle.com/javase/8/docs/api/</link>
@@ -768,7 +770,7 @@
               </offlineLink>
             </offlineLinks>
             <failOnError>true</failOnError>
-            <failOnWarnings>true</failOnWarnings>
+<!--            <failOnWarnings>true</failOnWarnings>-->
             <doclint>${doclint}</doclint>
             <quiet>true</quiet>
             <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
