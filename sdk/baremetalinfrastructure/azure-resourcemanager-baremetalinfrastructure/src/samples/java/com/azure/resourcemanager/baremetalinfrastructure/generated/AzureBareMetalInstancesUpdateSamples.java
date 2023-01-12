@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.baremetalinfrastructure.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.baremetalinfrastructure.models.Tags;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +23,10 @@ public final class AzureBareMetalInstancesUpdateSamples {
         manager
             .azureBareMetalInstances()
             .updateWithResponse(
-                "myResourceGroup", "myABMInstance", new Tags().withTags(mapOf("testkey", "testvalue")), Context.NONE);
+                "myResourceGroup",
+                "myABMInstance",
+                new Tags().withTags(mapOf("testkey", "testvalue")),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -39,7 +41,8 @@ public final class AzureBareMetalInstancesUpdateSamples {
         com.azure.resourcemanager.baremetalinfrastructure.BareMetalInfrastructureManager manager) {
         manager
             .azureBareMetalInstances()
-            .updateWithResponse("myResourceGroup", "myABMInstance", new Tags().withTags(mapOf()), Context.NONE);
+            .updateWithResponse(
+                "myResourceGroup", "myABMInstance", new Tags().withTags(mapOf()), com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

@@ -5,38 +5,35 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.MarketplacePurchasesPolicy;
 import com.azure.resourcemanager.billing.models.ReservationPurchasesPolicy;
 import com.azure.resourcemanager.billing.models.ViewChargesPolicy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a policy. */
 @Fluent
 public final class PolicyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyProperties.class);
-
     /*
-     * The policy that controls whether Azure marketplace purchases are allowed
-     * for a billing profile.
+     * The policy that controls whether Azure marketplace purchases are allowed for a billing profile.
      */
     @JsonProperty(value = "marketplacePurchases")
     private MarketplacePurchasesPolicy marketplacePurchases;
 
     /*
-     * The policy that controls whether Azure reservation purchases are allowed
-     * for a billing profile.
+     * The policy that controls whether Azure reservation purchases are allowed for a billing profile.
      */
     @JsonProperty(value = "reservationPurchases")
     private ReservationPurchasesPolicy reservationPurchases;
 
     /*
-     * The policy that controls whether users with Azure RBAC access to a
-     * subscription can view its charges.
+     * The policy that controls whether users with Azure RBAC access to a subscription can view its charges.
      */
     @JsonProperty(value = "viewCharges")
     private ViewChargesPolicy viewCharges;
+
+    /** Creates an instance of PolicyProperties class. */
+    public PolicyProperties() {
+    }
 
     /**
      * Get the marketplacePurchases property: The policy that controls whether Azure marketplace purchases are allowed

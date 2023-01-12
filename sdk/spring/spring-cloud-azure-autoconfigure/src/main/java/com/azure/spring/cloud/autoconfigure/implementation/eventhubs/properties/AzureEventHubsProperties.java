@@ -307,7 +307,7 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
             /**
              * The load balancing strategy for claiming partition ownership.
              */
-            private LoadBalancingStrategy strategy = LoadBalancingStrategy.BALANCED;
+            private LoadBalancingStrategy strategy;
             /**
              * The time duration after which the ownership of partition expires.
              */

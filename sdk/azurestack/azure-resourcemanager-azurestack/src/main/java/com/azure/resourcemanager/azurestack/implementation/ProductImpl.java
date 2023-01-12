@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.azurestack.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.azurestack.fluent.models.ProductInner;
 import com.azure.resourcemanager.azurestack.models.Compatibility;
 import com.azure.resourcemanager.azurestack.models.IconUris;
@@ -36,8 +35,8 @@ public final class ProductImpl implements Product {
         return this.innerModel().type();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
+    public String etag() {
+        return this.innerModel().etag();
     }
 
     public String displayName() {
@@ -115,10 +114,6 @@ public final class ProductImpl implements Product {
 
     public Compatibility compatibility() {
         return this.innerModel().compatibility();
-    }
-
-    public String etag() {
-        return this.innerModel().etag();
     }
 
     public ProductInner innerModel() {

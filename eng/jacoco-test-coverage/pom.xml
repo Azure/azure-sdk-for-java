@@ -103,7 +103,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-containers-containerregistry</artifactId>
-      <version>1.1.0-beta.2</version> <!-- {x-version-update;com.azure:azure-containers-containerregistry;current} -->
+      <version>1.1.0-beta.3</version> <!-- {x-version-update;com.azure:azure-containers-containerregistry;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -113,7 +113,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-analytics-synapse-artifacts</artifactId>
-      <version>1.0.0-beta.12</version> <!-- {x-version-update;com.azure:azure-analytics-synapse-artifacts;current} -->
+      <version>1.0.0-beta.13</version> <!-- {x-version-update;com.azure:azure-analytics-synapse-artifacts;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -193,7 +193,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
+      <version>1.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -218,7 +218,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity-extensions</artifactId>
-      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity-extensions;current} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-identity-extensions;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -283,7 +283,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-monitor-query</artifactId>
-      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-monitor-query;current} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-monitor-query;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

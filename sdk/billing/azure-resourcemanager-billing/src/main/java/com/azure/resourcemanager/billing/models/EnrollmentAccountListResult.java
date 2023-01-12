@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.models.EnrollmentAccountSummaryInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Result of listing enrollment accounts. */
 @Immutable
 public final class EnrollmentAccountListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnrollmentAccountListResult.class);
-
     /*
      * The list of enrollment accounts.
      */
@@ -27,6 +23,10 @@ public final class EnrollmentAccountListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of EnrollmentAccountListResult class. */
+    public EnrollmentAccountListResult() {
+    }
 
     /**
      * Get the value property: The list of enrollment accounts.

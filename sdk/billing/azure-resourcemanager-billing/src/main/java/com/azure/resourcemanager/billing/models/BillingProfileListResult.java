@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.models.BillingProfileInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of billing profiles. */
 @Immutable
 public final class BillingProfileListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingProfileListResult.class);
-
     /*
      * The list of billing profiles.
      */
@@ -23,10 +19,20 @@ public final class BillingProfileListResult {
     private List<BillingProfileInner> value;
 
     /*
+     * Total number of records.
+     */
+    @JsonProperty(value = "totalCount", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer totalCount;
+
+    /*
      * The link (url) to the next page of results.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of BillingProfileListResult class. */
+    public BillingProfileListResult() {
+    }
 
     /**
      * Get the value property: The list of billing profiles.
@@ -35,6 +41,15 @@ public final class BillingProfileListResult {
      */
     public List<BillingProfileInner> value() {
         return this.value;
+    }
+
+    /**
+     * Get the totalCount property: Total number of records.
+     *
+     * @return the totalCount value.
+     */
+    public Integer totalCount() {
+        return this.totalCount;
     }
 
     /**

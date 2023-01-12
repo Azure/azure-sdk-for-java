@@ -1,5 +1,15 @@
 # Release History
 
+## 1.1.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.1.0-beta.2 (2023-01-11)
 
 ### Other Changes
@@ -9,13 +19,6 @@
 
 - Upgraded `azure-core` from `1.27.0` to version `1.35.0`.
 - Upgraded `azure-core-http-netty` from `1.11.9` to version `1.12.8`.
-
-## 1.1.0-beta.1 (2022-04-08)
-
-### Features Added
-
-- Added interfaces from `com.azure.core.client.traits` to `ContainerRegistryClientBuilder`.
-- Added support for `ContainerRegistryBlobAsyncClient`.
 
 ## 1.0.11 (2023-01-09)
 
@@ -87,6 +90,13 @@
 
 - Upgraded `azure-core` from `1.27.0` to version `1.28.0`.
 - Upgraded `azure-core-http-netty` from `1.11.9` to version `1.12.0`.
+
+## 1.1.0-beta.1 (2022-04-08)
+
+### Features Added
+
+- Added interfaces from `com.azure.core.client.traits` to `ContainerRegistryClientBuilder`.
+- Added support for `ContainerRegistryBlobAsyncClient`.
 
 ## 1.0.3 (2022-04-06)
 

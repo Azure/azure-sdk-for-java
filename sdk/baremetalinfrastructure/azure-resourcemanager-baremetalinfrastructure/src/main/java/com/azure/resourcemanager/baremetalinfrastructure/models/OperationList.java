@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.baremetalinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.baremetalinfrastructure.fluent.models.OperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of AzureBareMetal operations. */
 @Fluent
 public final class OperationList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationList.class);
-
     /*
      * List of AzureBareMetal operations
      */
     @JsonProperty(value = "value")
     private List<OperationInner> value;
+
+    /** Creates an instance of OperationList class. */
+    public OperationList() {
+    }
 
     /**
      * Get the value property: List of AzureBareMetal operations.
