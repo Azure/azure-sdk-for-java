@@ -84,31 +84,8 @@ The Language service supports both [multi-service and single-service access][ser
 resource if you plan to access multiple cognitive services under a single endpoint/key. For Language service access only,
 create a Language service resource.
 
-You can create either resource using the 
-
-**Option 1:** [Azure Portal][create_new_resource] 
-
-**Option 2:** [Azure CLI][azure_cli]
-
-Below is an example of how you can create a Language service resource using the CLI:
-
-```bash
-# Create a new resource group to hold the Language service resource -
-# if using an existing resource group, skip this step
-az group create --name <your-resource-group> --location <location>
-```
-
-```bash
-# Create language service
-az cognitiveservices account create \
-    --name <your-resource-name> \
-    --resource-group <your-resource-group-name> \
-    --kind TextAnalytics \
-    --sku <sku> \
-    --location <location> \
-    --yes
-```
-For more information about creating the resource or how to get the location and sku information see [here][azure_cli]
+You can create the resource using the [Azure Portal][create_new_resource_in_azure_portal] or 
+[Azure CLI][azure_cli_doc] following the steps in [this document][create_new_resource_in_azure_cli].
 
 ### Authenticate the client
 In order to interact with the Language service, you will need to create an instance of the Text Analytics client,
@@ -654,7 +631,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [aad_credential]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
 [api_reference_doc]: https://aka.ms/azsdk-java-textanalytics-ref-docs
 [authentication]: https://docs.microsoft.com/azure/cognitive-services/authentication
-[azure_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli?tabs=windows
+[azure_cli_doc]: https://learn.microsoft.com/cli/azure/
 [azure_cli_endpoint]: https://docs.microsoft.com/cli/azure/cognitiveservices/account?view=azure-cli-latest#az-cognitiveservices-account-show
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
@@ -665,7 +642,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-[create_new_resource]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#create-a-new-azure-cognitive-services-resource
+[create_new_resource_in_azure_portal]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#create-a-new-azure-cognitive-services-resource
+[create_new_resource_in_azure_cli]: https://learn.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli?tabs=windows
 [custom_entities_recognition_overview]: https://docs.microsoft.com/azure/cognitive-services/language-service/custom-named-entity-recognition/overview
 [custom_subdomain]: https://docs.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
 [custom_text_classification_overview]: https://docs.microsoft.com/azure/cognitive-services/language-service/custom-text-classification/overview
