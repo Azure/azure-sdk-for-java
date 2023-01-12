@@ -116,7 +116,7 @@ public final class AppendBlobClient extends BlobClientBase {
      * <p>
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
-     * @param overwrite Whether to overwrite, should data exist on the blob.
+     * @param overwrite Whether an existing blob should be deleted and recreated, should data exist on the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream(boolean overwrite) {
