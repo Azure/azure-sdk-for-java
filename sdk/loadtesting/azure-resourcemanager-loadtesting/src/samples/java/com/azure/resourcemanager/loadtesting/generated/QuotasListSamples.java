@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.loadtesting.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Quotas List. */
 public final class QuotasListSamples {
     /*
@@ -17,6 +15,6 @@ public final class QuotasListSamples {
      * @param manager Entry point to LoadTestManager.
      */
     public static void quotasList(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
-        manager.quotas().list("westus", Context.NONE);
+        manager.quotas().list("westus", com.azure.core.util.Context.NONE);
     }
 }

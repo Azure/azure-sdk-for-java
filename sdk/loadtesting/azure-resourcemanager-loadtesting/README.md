@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-loadtesting</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -55,7 +55,7 @@ In addition, Azure subscription ID can be configured via `AZURE_SUBSCRIPTION_ID`
 
 With above configuration, `azure` client can be authenticated using the following code:
 
-```java readme-sample-authn
+```java
 AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
@@ -73,163 +73,6 @@ See [Authentication][authenticate] for more options.
 See [API design][design] for general introduction on design and key concepts on Azure Management Libraries.
 
 ## Examples
-
-### Create a new Azure Load Testing resource
-
-Create an Azure Load Testing resource.
-
-```java readme-sample-createloadtestresource-basic
-LoadTestResource resource = manager
-    .loadTests()
-    .define("sample-loadtesting-resource")
-    .withRegion(Region.US_WEST2)
-    .withExistingResourceGroup("sample-rg")
-    .create();
-```
-
-Create an Azure Load Testing resource configured with CMK encryption.
-
-```java readme-sample-createloadtestresource-encryption
-// map of user-assigned managed identities to be assigned to the loadtest resource
-Map<String, UserAssignedIdentity> map = new HashMap<String, UserAssignedIdentity>();
-map.put("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/sample-rg/providers/microsoft.managedidentity/userassignedidentities/identity1", new UserAssignedIdentity());
-
-// encryption identity must be assigned to the load test resource, before using it
-LoadTestResource resource = manager
-    .loadTests()
-    .define("sample-loadtesting-resource")
-    .withRegion(Region.US_WEST2)
-    .withExistingResourceGroup("sample-rg")
-    .withIdentity(
-        new ManagedServiceIdentity()
-        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-        .withUserAssignedIdentities(map)
-    )
-    .withEncryption(
-        new EncryptionProperties()
-        .withIdentity(
-            new EncryptionPropertiesIdentity()
-            .withResourceId("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/sample-rg/providers/microsoft.managedidentity/userassignedidentities/identity1")
-            .withType(Type.USER_ASSIGNED)
-        )
-        .withKeyUrl("https://sample-kv.vault.azure.net/keys/cmkkey/2d1ccd5c50234ea2a0858fe148b69cde")
-    )
-    .create();
-```
-
-### Get details of an Azure Load Testing resource
-
-```java readme-sample-getloadtestresource
-LoadTestResource resource = manager
-    .loadTests()
-    .getByResourceGroup("sample-rg", "sample-loadtesting-resource");
-```
-
-### Update an Azure Load Testing resource
-
-Update an Azure Load Testing resource to configure CMK encryption using system-assigned managed identity.
-
-```java readme-sample-updateloadtestresource-encryption
-LoadTestResource resource = manager
-    .loadTests()
-    .getByResourceGroup("sample-rg", "sample-loadtesting-resource");
-
-LoadTestResource resourcePostUpdate = resource
-    .update()
-    .withIdentity(
-        new ManagedServiceIdentity()
-        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-    )
-    .withEncryption(
-        new EncryptionProperties()
-        .withIdentity(
-            new EncryptionPropertiesIdentity()
-            .withResourceId(null)
-            .withType(Type.SYSTEM_ASSIGNED)
-            // make sure that system-assigned managed identity is enabled on the resource and the identity has been granted required permissions to access the key.
-        )
-        .withKeyUrl("https://sample-kv.vault.azure.net/keys/cmkkey/2d1ccd5c50234ea2a0858fe148b69cde")
-    )
-    .apply();
-```
-
-Update an Azure Load Testing resource to update user-assigned managed identities.
-
-```java readme-sample-updateloadtestresource-mi
-Map<String, UserAssignedIdentity> map = new HashMap<String, UserAssignedIdentity>();
-// Note: the value of <identity1> set to null, removes the previously assigned managed identity from the load test resource
-map.put("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/sample-rg/providers/microsoft.managedidentity/userassignedidentities/identity1", null);
-map.put("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/sample-rg/providers/microsoft.managedidentity/userassignedidentities/identity2", new UserAssignedIdentity());
-
-LoadTestResource resource = manager
-    .loadTests()
-    .getByResourceGroup("sample-rg", "sample-loadtesting-resource");
-
-LoadTestResource resourcePostUpdate = resource
-    .update()
-    .withIdentity(
-        new ManagedServiceIdentity()
-        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-        .withUserAssignedIdentities(map)
-    )
-    .apply();
-```
-
-### Delete an Azure Load Testing resource
-
-```java readme-sample-deleteloadtestresource
-manager
-    .loadTests()
-    .deleteByResourceGroup("sample-rg", "sample-loadtesting-resource");
-```
-
-### Quota Operations
-
-Get quota values for all quota buckets.
-
-```java readme-sample-list-all-quota-buckets
-PagedIterable<QuotaResource> resource = manager
-    .quotas()
-    .list("westus2");
-
-for (QuotaResource quotaResource : resource) {
-    // use the quotaResource
-    System.out.println(quotaResource.limit());
-}
-```
-
-Get quota values for a particular quota bucket.
-
-```java readme-sample-get-quota-bucket
-QuotaResource resource = manager
-    .quotas()
-    .get("westus2", "maxConcurrentTestRuns");
-System.out.println(resource.limit());
-```
-
-Check quota availability.
-
-```java readme-sample-check-quota-availability
-QuotaResource resource = manager
-    .quotas()
-    .get("westus2", "maxConcurrentTestRuns");
-
-QuotaBucketRequestPropertiesDimensions dimensions = new QuotaBucketRequestPropertiesDimensions()
-    .withLocation("westus2")
-    .withSubscriptionId(manager.serviceClient().getSubscriptionId());
-
-QuotaBucketRequest request = new QuotaBucketRequest()
-    .withCurrentQuota(resource.limit())
-    .withCurrentUsage(resource.usage())
-    .withNewQuota(resource.limit())
-    .withDimensions(dimensions);
-
-CheckQuotaAvailabilityResponse availability = manager
-    .quotas()
-    .checkAvailability("westus2", "maxConcurrentTestRuns", request);
-
-System.out.println(availability.isAvailable());
-```
 
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtesting/azure-resourcemanager-loadtesting/SAMPLE.md)
 

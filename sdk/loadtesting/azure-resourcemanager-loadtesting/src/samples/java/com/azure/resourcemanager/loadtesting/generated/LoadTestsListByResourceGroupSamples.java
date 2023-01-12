@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.loadtesting.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LoadTests ListByResourceGroup. */
 public final class LoadTestsListByResourceGroupSamples {
     /*
@@ -17,6 +15,6 @@ public final class LoadTestsListByResourceGroupSamples {
      * @param manager Entry point to LoadTestManager.
      */
     public static void loadTestsListByResourceGroup(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
-        manager.loadTests().listByResourceGroup("dummyrg", Context.NONE);
+        manager.loadTests().listByResourceGroup("dummyrg", com.azure.core.util.Context.NONE);
     }
 }

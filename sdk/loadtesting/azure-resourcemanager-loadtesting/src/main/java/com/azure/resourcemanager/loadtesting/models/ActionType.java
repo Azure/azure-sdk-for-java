@@ -14,6 +14,15 @@ public final class ActionType extends ExpandableStringEnum<ActionType> {
     public static final ActionType INTERNAL = fromString("Internal");
 
     /**
+     * Creates a new instance of ActionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ActionType() {
+    }
+
+    /**
      * Creates or finds a ActionType from its string representation.
      *
      * @param name a name to look for.

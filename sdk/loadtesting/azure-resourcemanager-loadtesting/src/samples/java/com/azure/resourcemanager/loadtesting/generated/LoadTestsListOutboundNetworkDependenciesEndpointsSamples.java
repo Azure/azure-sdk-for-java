@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.loadtesting.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for LoadTests ListOutboundNetworkDependenciesEndpoints. */
 public final class LoadTestsListOutboundNetworkDependenciesEndpointsSamples {
     /*
@@ -20,6 +18,6 @@ public final class LoadTestsListOutboundNetworkDependenciesEndpointsSamples {
         manager
             .loadTests()
             .listOutboundNetworkDependenciesEndpoints(
-                "default-azureloadtest-japaneast", "sampleloadtest", Context.NONE);
+                "default-azureloadtest-japaneast", "sampleloadtest", com.azure.core.util.Context.NONE);
     }
 }

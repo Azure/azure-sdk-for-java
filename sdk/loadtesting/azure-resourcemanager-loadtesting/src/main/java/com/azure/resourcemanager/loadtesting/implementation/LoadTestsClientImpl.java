@@ -821,7 +821,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, loadTestName, loadTestResource).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, loadTestName, loadTestResource).getSyncPoller();
     }
 
     /**
@@ -839,7 +839,9 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LoadTestResourceInner>, LoadTestResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String loadTestName, LoadTestResourceInner loadTestResource, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, loadTestName, loadTestResource, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, loadTestName, loadTestResource, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1106,7 +1108,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
         String resourceGroupName,
         String loadTestName,
         LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody) {
-        return beginUpdateAsync(resourceGroupName, loadTestName, loadTestResourcePatchRequestBody).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, loadTestName, loadTestResourcePatchRequestBody).getSyncPoller();
     }
 
     /**
@@ -1127,7 +1129,8 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
         String loadTestName,
         LoadTestResourcePatchRequestBody loadTestResourcePatchRequestBody,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, loadTestName, loadTestResourcePatchRequestBody, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, loadTestName, loadTestResourcePatchRequestBody, context)
             .getSyncPoller();
     }
 
@@ -1360,7 +1363,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String loadTestName) {
-        return beginDeleteAsync(resourceGroupName, loadTestName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, loadTestName).getSyncPoller();
     }
 
     /**
@@ -1377,7 +1380,7 @@ public final class LoadTestsClientImpl implements LoadTestsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String loadTestName, Context context) {
-        return beginDeleteAsync(resourceGroupName, loadTestName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, loadTestName, context).getSyncPoller();
     }
 
     /**
