@@ -5,6 +5,7 @@
 ### Bugs Fixed
 
 - Fixed a bug that `StorageAccount.infrastructureEncryptionEnabled()` always returns `false`.
+- Fixed a bug that `PolicyRule` doesn't accept all base blob actions.
 
 ## 2.22.0 (2022-12-23)
 
