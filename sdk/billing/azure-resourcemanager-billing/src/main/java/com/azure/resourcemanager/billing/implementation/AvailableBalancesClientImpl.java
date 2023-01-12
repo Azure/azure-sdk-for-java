@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.AvailableBalancesClient;
 import com.azure.resourcemanager.billing.fluent.models.AvailableBalanceInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AvailableBalancesClient. */
 public final class AvailableBalancesClientImpl implements AvailableBalancesClient {
-    private final ClientLogger logger = new ClientLogger(AvailableBalancesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AvailableBalancesService service;
 
@@ -53,7 +50,7 @@ public final class AvailableBalancesClientImpl implements AvailableBalancesClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "BillingManagementCli")
-    private interface AvailableBalancesService {
+    public interface AvailableBalancesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
@@ -79,7 +76,7 @@ public final class AvailableBalancesClientImpl implements AvailableBalancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the latest Azure credit balance.
+     * @return the latest Azure credit balance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AvailableBalanceInner>> getWithResponseAsync(
@@ -125,7 +122,7 @@ public final class AvailableBalancesClientImpl implements AvailableBalancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the latest Azure credit balance.
+     * @return the latest Azure credit balance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AvailableBalanceInner>> getWithResponseAsync(
@@ -161,19 +158,31 @@ public final class AvailableBalancesClientImpl implements AvailableBalancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the latest Azure credit balance.
+     * @return the latest Azure credit balance on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AvailableBalanceInner> getAsync(String billingAccountName, String billingProfileName) {
         return getWithResponseAsync(billingAccountName, billingProfileName)
-            .flatMap(
-                (Response<AvailableBalanceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * The available credit balance for a billing profile. This is the balance that can be used for pay now to settle
+     * due or past due invoices. The operation is supported only for billing accounts with agreement type Microsoft
+     * Customer Agreement.
+     *
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the latest Azure credit balance along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AvailableBalanceInner> getWithResponse(
+        String billingAccountName, String billingProfileName, Context context) {
+        return getWithResponseAsync(billingAccountName, billingProfileName, context).block();
     }
 
     /**
@@ -190,25 +199,6 @@ public final class AvailableBalancesClientImpl implements AvailableBalancesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AvailableBalanceInner get(String billingAccountName, String billingProfileName) {
-        return getAsync(billingAccountName, billingProfileName).block();
-    }
-
-    /**
-     * The available credit balance for a billing profile. This is the balance that can be used for pay now to settle
-     * due or past due invoices. The operation is supported only for billing accounts with agreement type Microsoft
-     * Customer Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param billingProfileName The ID that uniquely identifies a billing profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the latest Azure credit balance.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AvailableBalanceInner> getWithResponse(
-        String billingAccountName, String billingProfileName, Context context) {
-        return getWithResponseAsync(billingAccountName, billingProfileName, context).block();
+        return getWithResponse(billingAccountName, billingProfileName, Context.NONE).getValue();
     }
 }

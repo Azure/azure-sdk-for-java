@@ -785,14 +785,14 @@ class CosmosConfigSpec extends UnitSpec {
              isValid,
              field.name,
              configString,
-             Some(CosmosPatchColumnConfig(field.name, operationType, mappingPath)))
+             Some(CosmosPatchColumnConfig(field.name, operationType, mappingPath, false)))
         } else {
           testParameters +=
            PatchColumnConfigParameterTest(
              isValid,
              field.name,
              configString,
-             Some(CosmosPatchColumnConfig(field.name, operationType, mappingPath)),
+             Some(CosmosPatchColumnConfig(field.name, operationType, mappingPath, false)),
              Some(errorMessage))
         }
 
@@ -841,8 +841,10 @@ class CosmosConfigSpec extends UnitSpec {
     val schema = CosmosPatchTestHelper.getPatchConfigTestSchema()
 
     val overrideConfig = Map(
-      "longTypeColumn" -> CosmosPatchColumnConfig("longTypeColumn", CosmosPatchOperationTypes.Increment, "/longTypeColumn"),
-      "stringTypeColumn" -> CosmosPatchColumnConfig("stringTypeColumn", CosmosPatchOperationTypes.Add, "/newPath")
+      "longTypeColumn" -> CosmosPatchColumnConfig(
+        "longTypeColumn", CosmosPatchOperationTypes.Increment, "/longTypeColumn", false),
+      "stringTypeColumn" -> CosmosPatchColumnConfig(
+        "stringTypeColumn", CosmosPatchOperationTypes.Add, "/newPath", false)
     )
 
     var aggregratedConfigString = "["
@@ -891,7 +893,7 @@ class CosmosConfigSpec extends UnitSpec {
     val testParameters = new ListBuffer[PatchColumnConfigParameterTest]
     CosmosPatchOperationTypes.values.foreach(operationType => {
 
-      val columnConfig = CosmosPatchColumnConfig("dummyColumn", operationType, "/dummyColumn")
+      val columnConfig = CosmosPatchColumnConfig("dummyColumn", operationType, "/dummyColumn", false)
       operationType match {
         case CosmosPatchOperationTypes.Remove | CosmosPatchOperationTypes.None =>
           testParameters +=

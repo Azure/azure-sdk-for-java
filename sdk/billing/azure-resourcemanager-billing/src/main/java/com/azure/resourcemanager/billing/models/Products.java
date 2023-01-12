@@ -20,7 +20,7 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of products.
+     * @return the list of products as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Product> listByCustomer(String billingAccountName, String customerName);
 
@@ -34,7 +34,7 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of products.
+     * @return the list of products as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Product> listByCustomer(String billingAccountName, String customerName, Context context);
 
@@ -46,7 +46,7 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of products.
+     * @return the list of products as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Product> listByBillingAccount(String billingAccountName);
 
@@ -62,7 +62,7 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of products.
+     * @return the list of products as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Product> listByBillingAccount(String billingAccountName, String filter, Context context);
 
@@ -75,7 +75,7 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of products.
+     * @return the list of products as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Product> listByBillingProfile(String billingAccountName, String billingProfileName);
 
@@ -92,7 +92,7 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of products.
+     * @return the list of products as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Product> listByBillingProfile(
         String billingAccountName, String billingProfileName, String filter, Context context);
@@ -107,7 +107,7 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of products.
+     * @return the list of products as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Product> listByInvoiceSection(
         String billingAccountName, String billingProfileName, String invoiceSectionName);
@@ -126,7 +126,7 @@ public interface Products {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of products.
+     * @return the list of products as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Product> listByInvoiceSection(
         String billingAccountName,
@@ -134,6 +134,20 @@ public interface Products {
         String invoiceSectionName,
         String filter,
         Context context);
+
+    /**
+     * Gets a product by ID. The operation is supported only for billing accounts with agreement type Microsoft Customer
+     * Agreement.
+     *
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param productName The ID that uniquely identifies a product.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a product by ID along with {@link Response}.
+     */
+    Response<Product> getWithResponse(String billingAccountName, String productName, Context context);
 
     /**
      * Gets a product by ID. The operation is supported only for billing accounts with agreement type Microsoft Customer
@@ -149,18 +163,20 @@ public interface Products {
     Product get(String billingAccountName, String productName);
 
     /**
-     * Gets a product by ID. The operation is supported only for billing accounts with agreement type Microsoft Customer
-     * Agreement.
+     * Updates the properties of a Product. Currently, auto renew can be updated. The operation is supported only for
+     * billing accounts with agreement type Microsoft Customer Agreement.
      *
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param productName The ID that uniquely identifies a product.
+     * @param parameters Request parameters that are provided to the update product operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a product by ID.
+     * @return a product along with {@link Response}.
      */
-    Response<Product> getWithResponse(String billingAccountName, String productName, Context context);
+    Response<Product> updateWithResponse(
+        String billingAccountName, String productName, ProductInner parameters, Context context);
 
     /**
      * Updates the properties of a Product. Currently, auto renew can be updated. The operation is supported only for
@@ -175,37 +191,6 @@ public interface Products {
      * @return a product.
      */
     Product update(String billingAccountName, String productName, ProductInner parameters);
-
-    /**
-     * Updates the properties of a Product. Currently, auto renew can be updated. The operation is supported only for
-     * billing accounts with agreement type Microsoft Customer Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param productName The ID that uniquely identifies a product.
-     * @param parameters Request parameters that are provided to the update product operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a product.
-     */
-    Response<Product> updateWithResponse(
-        String billingAccountName, String productName, ProductInner parameters, Context context);
-
-    /**
-     * Moves a product's charges to a new invoice section. The new invoice section must belong to the same billing
-     * profile as the existing invoice section. This operation is supported only for products that are purchased with a
-     * recurring charge and for billing accounts with agreement type Microsoft Customer Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param productName The ID that uniquely identifies a product.
-     * @param parameters Request parameters that are provided to the move product operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a product.
-     */
-    Product move(String billingAccountName, String productName, TransferProductRequestProperties parameters);
 
     /**
      * Moves a product's charges to a new invoice section. The new invoice section must belong to the same billing
@@ -225,6 +210,38 @@ public interface Products {
         String billingAccountName, String productName, TransferProductRequestProperties parameters, Context context);
 
     /**
+     * Moves a product's charges to a new invoice section. The new invoice section must belong to the same billing
+     * profile as the existing invoice section. This operation is supported only for products that are purchased with a
+     * recurring charge and for billing accounts with agreement type Microsoft Customer Agreement.
+     *
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param productName The ID that uniquely identifies a product.
+     * @param parameters Request parameters that are provided to the move product operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a product.
+     */
+    Product move(String billingAccountName, String productName, TransferProductRequestProperties parameters);
+
+    /**
+     * Validates if a product's charges can be moved to a new invoice section. This operation is supported only for
+     * products that are purchased with a recurring charge and for billing accounts with agreement type Microsoft
+     * Customer Agreement.
+     *
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param productName The ID that uniquely identifies a product.
+     * @param parameters Request parameters that are provided to the validate move eligibility operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the product transfer eligibility validation along with {@link Response}.
+     */
+    Response<ValidateProductTransferEligibilityResult> validateMoveWithResponse(
+        String billingAccountName, String productName, TransferProductRequestProperties parameters, Context context);
+
+    /**
      * Validates if a product's charges can be moved to a new invoice section. This operation is supported only for
      * products that are purchased with a recurring charge and for billing accounts with agreement type Microsoft
      * Customer Agreement.
@@ -239,21 +256,4 @@ public interface Products {
      */
     ValidateProductTransferEligibilityResult validateMove(
         String billingAccountName, String productName, TransferProductRequestProperties parameters);
-
-    /**
-     * Validates if a product's charges can be moved to a new invoice section. This operation is supported only for
-     * products that are purchased with a recurring charge and for billing accounts with agreement type Microsoft
-     * Customer Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param productName The ID that uniquely identifies a product.
-     * @param parameters Request parameters that are provided to the validate move eligibility operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the product transfer eligibility validation.
-     */
-    Response<ValidateProductTransferEligibilityResult> validateMoveWithResponse(
-        String billingAccountName, String productName, TransferProductRequestProperties parameters, Context context);
 }

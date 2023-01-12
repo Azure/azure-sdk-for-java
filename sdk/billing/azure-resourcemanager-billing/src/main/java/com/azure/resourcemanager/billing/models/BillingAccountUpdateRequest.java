@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.models.BillingAccountProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The request properties of the billing account that can be updated. */
 @Fluent
 public final class BillingAccountUpdateRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingAccountUpdateRequest.class);
-
     /*
      * A billing property.
      */
     @JsonProperty(value = "properties")
     private BillingAccountProperties innerProperties;
+
+    /** Creates an instance of BillingAccountUpdateRequest class. */
+    public BillingAccountUpdateRequest() {
+    }
 
     /**
      * Get the innerProperties property: A billing property.

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.billing.fluent.models.InvoiceSectionInner;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +28,7 @@ public final class InvoiceSectionsCreateOrUpdateSamples {
                 new InvoiceSectionInner()
                     .withDisplayName("invoiceSection1")
                     .withLabels(mapOf("costCategory", "Support", "pcCode", "A123456")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

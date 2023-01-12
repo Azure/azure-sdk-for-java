@@ -3,6 +3,7 @@
 ### 4.16.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added an option to use raw json when applying partial updates via WriteStrategy `ItemPatch`- See [PR 32610](https://github.com/Azure/azure-sdk-for-java/pull/32610)
 * Added the `spark.cosmos.read.maxIntegratedCacheStalenessInMS` configuration key
   to make `MaxIntegratedCacheStaleness` tunable for caching queries. - See [PR 32592](https://github.com/Azure/azure-sdk-for-java/pull/32592)
 
