@@ -27,7 +27,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.InstructionsClient;
 import com.azure.resourcemanager.billing.fluent.models.InstructionInner;
 import com.azure.resourcemanager.billing.models.InstructionListResult;
@@ -35,8 +34,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in InstructionsClient. */
 public final class InstructionsClientImpl implements InstructionsClient {
-    private final ClientLogger logger = new ClientLogger(InstructionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final InstructionsService service;
 
@@ -60,7 +57,7 @@ public final class InstructionsClientImpl implements InstructionsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "BillingManagementCli")
-    private interface InstructionsService {
+    public interface InstructionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
@@ -125,7 +122,8 @@ public final class InstructionsClientImpl implements InstructionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing instructions used during invoice generation.
+     * @return the list of billing instructions used during invoice generation along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InstructionInner>> listByBillingProfileSinglePageAsync(
@@ -178,7 +176,8 @@ public final class InstructionsClientImpl implements InstructionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing instructions used during invoice generation.
+     * @return the list of billing instructions used during invoice generation along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InstructionInner>> listByBillingProfileSinglePageAsync(
@@ -222,7 +221,8 @@ public final class InstructionsClientImpl implements InstructionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing instructions used during invoice generation.
+     * @return the list of billing instructions used during invoice generation as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InstructionInner> listByBillingProfileAsync(
@@ -241,7 +241,8 @@ public final class InstructionsClientImpl implements InstructionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing instructions used during invoice generation.
+     * @return the list of billing instructions used during invoice generation as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InstructionInner> listByBillingProfileAsync(
@@ -259,7 +260,8 @@ public final class InstructionsClientImpl implements InstructionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing instructions used during invoice generation.
+     * @return the list of billing instructions used during invoice generation as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InstructionInner> listByBillingProfile(String billingAccountName, String billingProfileName) {
@@ -275,7 +277,8 @@ public final class InstructionsClientImpl implements InstructionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing instructions used during invoice generation.
+     * @return the list of billing instructions used during invoice generation as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InstructionInner> listByBillingProfile(
@@ -292,7 +295,7 @@ public final class InstructionsClientImpl implements InstructionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the instruction by name.
+     * @return the instruction by name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<InstructionInner>> getWithResponseAsync(
@@ -342,7 +345,7 @@ public final class InstructionsClientImpl implements InstructionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the instruction by name.
+     * @return the instruction by name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<InstructionInner>> getWithResponseAsync(
@@ -388,20 +391,31 @@ public final class InstructionsClientImpl implements InstructionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the instruction by name.
+     * @return the instruction by name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<InstructionInner> getAsync(
         String billingAccountName, String billingProfileName, String instructionName) {
         return getWithResponseAsync(billingAccountName, billingProfileName, instructionName)
-            .flatMap(
-                (Response<InstructionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get the instruction by name. These are custom billing instructions and are only applicable for certain customers.
+     *
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param instructionName Instruction Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the instruction by name along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<InstructionInner> getWithResponse(
+        String billingAccountName, String billingProfileName, String instructionName, Context context) {
+        return getWithResponseAsync(billingAccountName, billingProfileName, instructionName, context).block();
     }
 
     /**
@@ -417,25 +431,7 @@ public final class InstructionsClientImpl implements InstructionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InstructionInner get(String billingAccountName, String billingProfileName, String instructionName) {
-        return getAsync(billingAccountName, billingProfileName, instructionName).block();
-    }
-
-    /**
-     * Get the instruction by name. These are custom billing instructions and are only applicable for certain customers.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param billingProfileName The ID that uniquely identifies a billing profile.
-     * @param instructionName Instruction Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the instruction by name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<InstructionInner> getWithResponse(
-        String billingAccountName, String billingProfileName, String instructionName, Context context) {
-        return getWithResponseAsync(billingAccountName, billingProfileName, instructionName, context).block();
+        return getWithResponse(billingAccountName, billingProfileName, instructionName, Context.NONE).getValue();
     }
 
     /**
@@ -449,7 +445,7 @@ public final class InstructionsClientImpl implements InstructionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instruction.
+     * @return an instruction along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<InstructionInner>> putWithResponseAsync(
@@ -507,7 +503,7 @@ public final class InstructionsClientImpl implements InstructionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instruction.
+     * @return an instruction along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<InstructionInner>> putWithResponseAsync(
@@ -565,20 +561,38 @@ public final class InstructionsClientImpl implements InstructionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instruction.
+     * @return an instruction on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<InstructionInner> putAsync(
         String billingAccountName, String billingProfileName, String instructionName, InstructionInner parameters) {
         return putWithResponseAsync(billingAccountName, billingProfileName, instructionName, parameters)
-            .flatMap(
-                (Response<InstructionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates or updates an instruction. These are custom billing instructions and are only applicable for certain
+     * customers.
+     *
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param instructionName Instruction Name.
+     * @param parameters The new instruction.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an instruction along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<InstructionInner> putWithResponse(
+        String billingAccountName,
+        String billingProfileName,
+        String instructionName,
+        InstructionInner parameters,
+        Context context) {
+        return putWithResponseAsync(billingAccountName, billingProfileName, instructionName, parameters, context)
+            .block();
     }
 
     /**
@@ -597,42 +611,20 @@ public final class InstructionsClientImpl implements InstructionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InstructionInner put(
         String billingAccountName, String billingProfileName, String instructionName, InstructionInner parameters) {
-        return putAsync(billingAccountName, billingProfileName, instructionName, parameters).block();
-    }
-
-    /**
-     * Creates or updates an instruction. These are custom billing instructions and are only applicable for certain
-     * customers.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param billingProfileName The ID that uniquely identifies a billing profile.
-     * @param instructionName Instruction Name.
-     * @param parameters The new instruction.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an instruction.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<InstructionInner> putWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String instructionName,
-        InstructionInner parameters,
-        Context context) {
-        return putWithResponseAsync(billingAccountName, billingProfileName, instructionName, parameters, context)
-            .block();
+        return putWithResponse(billingAccountName, billingProfileName, instructionName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing instructions used during invoice generation.
+     * @return the list of billing instructions used during invoice generation along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InstructionInner>> listByBillingProfileNextSinglePageAsync(String nextLink) {
@@ -664,12 +656,14 @@ public final class InstructionsClientImpl implements InstructionsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of billing instructions used during invoice generation.
+     * @return the list of billing instructions used during invoice generation along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InstructionInner>> listByBillingProfileNextSinglePageAsync(

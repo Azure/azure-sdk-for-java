@@ -6,22 +6,22 @@ package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.models.EnrollmentAccountProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** An enrollment account. */
 @Fluent
 public final class EnrollmentAccount extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnrollmentAccount.class);
-
     /*
      * The properties of an enrollment account.
      */
     @JsonProperty(value = "properties")
     private EnrollmentAccountProperties innerProperties;
+
+    /** Creates an instance of EnrollmentAccount class. */
+    public EnrollmentAccount() {
+    }
 
     /**
      * Get the innerProperties property: The properties of an enrollment account.

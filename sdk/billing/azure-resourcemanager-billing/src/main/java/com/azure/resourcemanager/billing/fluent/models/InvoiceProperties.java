@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.models.Amount;
 import com.azure.resourcemanager.billing.models.Document;
 import com.azure.resourcemanager.billing.models.InvoiceDocumentType;
@@ -13,7 +12,6 @@ import com.azure.resourcemanager.billing.models.InvoiceStatus;
 import com.azure.resourcemanager.billing.models.InvoiceType;
 import com.azure.resourcemanager.billing.models.PaymentProperties;
 import com.azure.resourcemanager.billing.models.RebillDetails;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -23,8 +21,6 @@ import java.util.Map;
 /** The properties of the invoice. */
 @Immutable
 public final class InvoiceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InvoiceProperties.class);
-
     /*
      * The due date for the invoice.
      */
@@ -50,9 +46,8 @@ public final class InvoiceProperties {
     private Amount amountDue;
 
     /*
-     * The amount of Azure prepayment applied to the charges. This field is
-     * applicable to billing accounts with agreement type Microsoft Customer
-     * Agreement.
+     * The amount of Azure prepayment applied to the charges. This field is applicable to billing accounts with
+     * agreement type Microsoft Customer Agreement.
      */
     @JsonProperty(value = "azurePrepaymentApplied", access = JsonProperty.Access.WRITE_ONLY)
     private Amount azurePrepaymentApplied;
@@ -64,39 +59,36 @@ public final class InvoiceProperties {
     private Amount billedAmount;
 
     /*
-     * The total refund for returns and cancellations during the invoice
-     * billing period. This field is applicable to billing accounts with
-     * agreement type Microsoft Customer Agreement.
+     * The total refund for returns and cancellations during the invoice billing period. This field is applicable to
+     * billing accounts with agreement type Microsoft Customer Agreement.
      */
     @JsonProperty(value = "creditAmount", access = JsonProperty.Access.WRITE_ONLY)
     private Amount creditAmount;
 
     /*
-     * The amount of free Azure credits applied to the charges. This field is
-     * applicable to billing accounts with agreement type Microsoft Customer
-     * Agreement.
+     * The amount of free Azure credits applied to the charges. This field is applicable to billing accounts with
+     * agreement type Microsoft Customer Agreement.
      */
     @JsonProperty(value = "freeAzureCreditApplied", access = JsonProperty.Access.WRITE_ONLY)
     private Amount freeAzureCreditApplied;
 
     /*
-     * The pre-tax amount due. This field is applicable to billing accounts
-     * with agreement type Microsoft Customer Agreement.
+     * The pre-tax amount due. This field is applicable to billing accounts with agreement type Microsoft Customer
+     * Agreement.
      */
     @JsonProperty(value = "subTotal", access = JsonProperty.Access.WRITE_ONLY)
     private Amount subTotal;
 
     /*
-     * The amount of tax charged for the billing period. This field is
-     * applicable to billing accounts with agreement type Microsoft Customer
-     * Agreement.
+     * The amount of tax charged for the billing period. This field is applicable to billing accounts with agreement
+     * type Microsoft Customer Agreement.
      */
     @JsonProperty(value = "taxAmount", access = JsonProperty.Access.WRITE_ONLY)
     private Amount taxAmount;
 
     /*
-     * The amount due when the invoice was generated. This field is applicable
-     * to billing accounts with agreement type Microsoft Customer Agreement.
+     * The amount due when the invoice was generated. This field is applicable to billing accounts with agreement type
+     * Microsoft Customer Agreement.
      */
     @JsonProperty(value = "totalAmount", access = JsonProperty.Access.WRITE_ONLY)
     private Amount totalAmount;
@@ -120,9 +112,8 @@ public final class InvoiceProperties {
     private InvoiceType invoiceType;
 
     /*
-     * Specifies if the invoice is generated as part of monthly invoicing cycle
-     * or not. This field is applicable to billing accounts with agreement type
-     * Microsoft Customer Agreement.
+     * Specifies if the invoice is generated as part of monthly invoicing cycle or not. This field is applicable to
+     * billing accounts with agreement type Microsoft Customer Agreement.
      */
     @JsonProperty(value = "isMonthlyInvoice", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isMonthlyInvoice;
@@ -171,15 +162,15 @@ public final class InvoiceProperties {
     private InvoiceDocumentType documentType;
 
     /*
-     * The Id of the active invoice which is originally billed after this
-     * invoice was voided. This field is applicable to the void invoices only.
+     * The Id of the active invoice which is originally billed after this invoice was voided. This field is applicable
+     * to the void invoices only.
      */
     @JsonProperty(value = "billedDocumentId", access = JsonProperty.Access.WRITE_ONLY)
     private String billedDocumentId;
 
     /*
-     * The Id of the invoice which got voided and this credit note was issued
-     * as a result. This field is applicable to the credit notes only.
+     * The Id of the invoice which got voided and this credit note was issued as a result. This field is applicable to
+     * the credit notes only.
      */
     @JsonProperty(value = "creditForDocumentId", access = JsonProperty.Access.WRITE_ONLY)
     private String creditForDocumentId;
@@ -189,6 +180,10 @@ public final class InvoiceProperties {
      */
     @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
+
+    /** Creates an instance of InvoiceProperties class. */
+    public InvoiceProperties() {
+    }
 
     /**
      * Get the dueDate property: The due date for the invoice.

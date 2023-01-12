@@ -15,11 +15,10 @@ import com.azure.resourcemanager.billing.fluent.models.InvoiceInner;
 import com.azure.resourcemanager.billing.models.DownloadUrl;
 import com.azure.resourcemanager.billing.models.Invoice;
 import com.azure.resourcemanager.billing.models.Invoices;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 
 public final class InvoicesImpl implements Invoices {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InvoicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(InvoicesImpl.class);
 
     private final InvoicesClient innerClient;
 
@@ -66,15 +65,6 @@ public final class InvoicesImpl implements Invoices {
         return Utils.mapPage(inner, inner1 -> new InvoiceImpl(inner1, this.manager()));
     }
 
-    public Invoice get(String billingAccountName, String invoiceName) {
-        InvoiceInner inner = this.serviceClient().get(billingAccountName, invoiceName);
-        if (inner != null) {
-            return new InvoiceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Invoice> getWithResponse(String billingAccountName, String invoiceName, Context context) {
         Response<InvoiceInner> inner = this.serviceClient().getWithResponse(billingAccountName, invoiceName, context);
         if (inner != null) {
@@ -88,8 +78,8 @@ public final class InvoicesImpl implements Invoices {
         }
     }
 
-    public Invoice getById(String invoiceName) {
-        InvoiceInner inner = this.serviceClient().getById(invoiceName);
+    public Invoice get(String billingAccountName, String invoiceName) {
+        InvoiceInner inner = this.serviceClient().get(billingAccountName, invoiceName);
         if (inner != null) {
             return new InvoiceImpl(inner, this.manager());
         } else {
@@ -105,6 +95,15 @@ public final class InvoicesImpl implements Invoices {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new InvoiceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Invoice getById(String invoiceName) {
+        InvoiceInner inner = this.serviceClient().getById(invoiceName);
+        if (inner != null) {
+            return new InvoiceImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -164,15 +163,6 @@ public final class InvoicesImpl implements Invoices {
         return Utils.mapPage(inner, inner1 -> new InvoiceImpl(inner1, this.manager()));
     }
 
-    public Invoice getBySubscriptionAndInvoiceId(String invoiceName) {
-        InvoiceInner inner = this.serviceClient().getBySubscriptionAndInvoiceId(invoiceName);
-        if (inner != null) {
-            return new InvoiceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Invoice> getBySubscriptionAndInvoiceIdWithResponse(String invoiceName, Context context) {
         Response<InvoiceInner> inner =
             this.serviceClient().getBySubscriptionAndInvoiceIdWithResponse(invoiceName, context);
@@ -182,6 +172,15 @@ public final class InvoicesImpl implements Invoices {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new InvoiceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Invoice getBySubscriptionAndInvoiceId(String invoiceName) {
+        InvoiceInner inner = this.serviceClient().getBySubscriptionAndInvoiceId(invoiceName);
+        if (inner != null) {
+            return new InvoiceImpl(inner, this.manager());
         } else {
             return null;
         }

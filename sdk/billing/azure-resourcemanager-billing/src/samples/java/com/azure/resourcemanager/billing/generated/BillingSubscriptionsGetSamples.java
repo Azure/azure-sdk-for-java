@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for BillingSubscriptions Get. */
 public final class BillingSubscriptionsGetSamples {
     /*
@@ -17,6 +15,6 @@ public final class BillingSubscriptionsGetSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void billingSubscription(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.billingSubscriptions().getWithResponse("{billingAccountName}", Context.NONE);
+        manager.billingSubscriptions().getWithResponse("{billingAccountName}", com.azure.core.util.Context.NONE);
     }
 }

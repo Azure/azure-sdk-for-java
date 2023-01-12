@@ -6,21 +6,21 @@ package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** An instruction. */
 @Fluent
 public final class InstructionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InstructionInner.class);
-
     /*
      * A billing instruction used during invoice generation.
      */
     @JsonProperty(value = "properties")
     private InstructionProperties innerProperties;
+
+    /** Creates an instance of InstructionInner class. */
+    public InstructionInner() {
+    }
 
     /**
      * Get the innerProperties property: A billing instruction used during invoice generation.
