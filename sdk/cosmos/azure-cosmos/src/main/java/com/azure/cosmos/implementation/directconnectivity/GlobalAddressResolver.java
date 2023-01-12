@@ -4,7 +4,18 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ProactiveContainerInitConfig;
-import com.azure.cosmos.implementation.*;
+import com.azure.cosmos.implementation.ApiType;
+import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
+import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
+import com.azure.cosmos.implementation.IOpenConnectionsHandler;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -85,55 +96,11 @@ public class GlobalAddressResolver implements IAddressResolver {
         }
     }
 
-//    @Override
-//    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
-//        checkArgument(StringUtils.isNotEmpty(containerLink), "Argument 'containerLink' should not be null nor empty");
-//
-//        // Strip the leading "/", which follows the same format for document requests
-//        // TODO: currently, the cache key used for collectionCache is inconsistent: some are using path with "/", some use path with stripped leading "/",
-//        // TODO: ideally it should have been consistent across
-//        String cacheKey = StringUtils.strip(containerLink, Constants.Properties.PATH_SEPARATOR);
-//        return this.collectionCache.resolveByNameAsync(null, cacheKey, null)
-//                .flatMapMany(collection -> {
-//                    if (collection == null) {
-//                        logger.warn("Can not find the collection, no connections will be opened");
-//                        return Mono.empty();
-//                    }
-//
-//                    return this.routingMapProvider.tryGetOverlappingRangesAsync(
-//                                    null,
-//                                    collection.getResourceId(),
-//                                    PartitionKeyInternalHelper.FullRange,
-//                                    true,
-//                                    null)
-//                            .map(valueHolder -> {
-//
-//                                if(valueHolder == null || valueHolder.v == null || valueHolder.v.size() == 0) {
-//                                    logger.warn(
-//                                            "There is no pkRanges found for collection {}, no connections will be opened",
-//                                            collection.getResourceId());
-//                                    return new ArrayList<PartitionKeyRangeIdentity>();
-//                                }
-//
-//                                return valueHolder.v
-//                                        .stream()
-//                                        .map(pkRange -> new PartitionKeyRangeIdentity(collection.getResourceId(), pkRange.getId()))
-//                                        .collect(Collectors.toList());
-//                            })
-//                            .flatMapMany(pkRangeIdentities -> this.openConnectionsAndInitCachesInternal(collection, pkRangeIdentities, new ProactiveContainerInitConfigBuilder(new ArrayList<>()).buildDefaultConfig()));
-//                });
-//    }
-
     @Override
     public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(ProactiveContainerInitConfig proactiveContainerInitConfig) {
         // Strip the leading "/", which follows the same format for document requests
         // TODO: currently, the cache key used for collectionCache is inconsistent: some are using path with "/", some use path with stripped leading "/",
         // TODO: ideally it should have been consistent across
-
-        // 1. Obtain current read region if no. of proactive regions is 1
-        // 2. Obtain current read region and first preferred remote write region if no. of proactive regions is 2
-
-
         return Flux.fromIterable(proactiveContainerInitConfig.getCosmosContainerIdentities())
                 .flatMap(containerIdentity -> Mono.just(StringUtils.strip(containerIdentity.getContainerLink(), Constants.Properties.PATH_SEPARATOR)))
                 .flatMap(cacheKey -> this.collectionCache.resolveByNameAsync(null, cacheKey, null)
@@ -173,12 +140,14 @@ public class GlobalAddressResolver implements IAddressResolver {
             ProactiveContainerInitConfig proactiveContainerInitConfig
             ) {
 
+        // TODO: Logic yet to be refined/tested
         List<String> preferredLocations = connectionPolicy.getPreferredRegions().subList(0, proactiveContainerInitConfig.getNumProactiveConnectionRegions() - 1);
         List<String> proactiveConnectionRegions = preferredLocations.subList(0, proactiveContainerInitConfig.getNumProactiveConnectionRegions() - 1);
 
         if (proactiveContainerInitConfig.getNumProactiveConnectionRegions() > 0) {
             return Flux.fromStream(this.endpointManager.getReadEndpoints().stream())
                     .flatMap(readEndpoint -> {
+                        // TODO: Logic yet to be refined/tested
                         if (this.addressCacheByEndpoint.containsKey(readEndpoint)) {
                             String endpointRegion = this.endpointManager.getRegionName(readEndpoint, OperationType.Create);
                             if (proactiveConnectionRegions.contains(endpointRegion)) {

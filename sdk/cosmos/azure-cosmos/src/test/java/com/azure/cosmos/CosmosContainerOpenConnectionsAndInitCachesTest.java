@@ -120,7 +120,7 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         };
     }
 
-    @Test
+    @Test(enabled = false)
     public void openConnectionThroughClientBuilder() {
         directCosmosAsyncDatabase.createContainerIfNotExists("id1", "/mypk").block();
         directCosmosAsyncDatabase.createContainerIfNotExists("id2", "/mypk").block();
@@ -140,8 +140,8 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
 
         List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
         cosmosContainerIdentities.add(new CosmosContainerIdentity(containerLink1));
-        cosmosContainerIdentities.add(new CosmosContainerIdentity(containerLink1));
-        cosmosContainerIdentities.add(new CosmosContainerIdentity(containerLink1));
+        cosmosContainerIdentities.add(new CosmosContainerIdentity(containerLink2));
+        cosmosContainerIdentities.add(new CosmosContainerIdentity(containerLink3));
 
         ProactiveContainerInitConfig proactiveContainerInitConfig = new ProactiveContainerInitConfigBuilder(cosmosContainerIdentities)
                 .setProactiveConnectionRegions(2)

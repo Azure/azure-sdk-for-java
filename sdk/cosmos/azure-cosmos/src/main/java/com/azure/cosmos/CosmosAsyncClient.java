@@ -7,7 +7,17 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.cosmos.implementation.*;
+import com.azure.cosmos.implementation.ApiType;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
+import com.azure.cosmos.implementation.Permission;
+import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
@@ -598,9 +608,6 @@ public final class CosmosAsyncClient implements Closeable {
         }
         return Mono.just(new ArrayList<>());
     }
-
-    // TODO: Find a way to set isInitialized to true for containers whose
-    // TODO: connections have been opened
 
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options){
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
