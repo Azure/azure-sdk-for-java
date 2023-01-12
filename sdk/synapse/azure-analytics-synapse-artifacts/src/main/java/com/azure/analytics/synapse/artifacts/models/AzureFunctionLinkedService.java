@@ -37,6 +37,9 @@ public class AzureFunctionLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of AzureFunctionLinkedService class. */
+    public AzureFunctionLinkedService() {}
+
     /**
      * Get the functionAppUrl property: The endpoint of the Azure Function App. URL will be in the format
      * https://&lt;accountName&gt;.azurewebsites.net.

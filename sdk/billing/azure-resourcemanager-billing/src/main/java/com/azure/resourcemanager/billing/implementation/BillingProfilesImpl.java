@@ -13,10 +13,9 @@ import com.azure.resourcemanager.billing.fluent.BillingProfilesClient;
 import com.azure.resourcemanager.billing.fluent.models.BillingProfileInner;
 import com.azure.resourcemanager.billing.models.BillingProfile;
 import com.azure.resourcemanager.billing.models.BillingProfiles;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BillingProfilesImpl implements BillingProfiles {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingProfilesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BillingProfilesImpl.class);
 
     private final BillingProfilesClient innerClient;
 
@@ -40,15 +39,6 @@ public final class BillingProfilesImpl implements BillingProfiles {
         return Utils.mapPage(inner, inner1 -> new BillingProfileImpl(inner1, this.manager()));
     }
 
-    public BillingProfile get(String billingAccountName, String billingProfileName) {
-        BillingProfileInner inner = this.serviceClient().get(billingAccountName, billingProfileName);
-        if (inner != null) {
-            return new BillingProfileImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<BillingProfile> getWithResponse(
         String billingAccountName, String billingProfileName, String expand, Context context) {
         Response<BillingProfileInner> inner =
@@ -59,6 +49,15 @@ public final class BillingProfilesImpl implements BillingProfiles {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new BillingProfileImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public BillingProfile get(String billingAccountName, String billingProfileName) {
+        BillingProfileInner inner = this.serviceClient().get(billingAccountName, billingProfileName);
+        if (inner != null) {
+            return new BillingProfileImpl(inner, this.manager());
         } else {
             return null;
         }

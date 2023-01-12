@@ -6,14 +6,11 @@ package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Address details. */
 @Fluent
 public final class AddressDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AddressDetails.class);
-
     /*
      * First name.
      */
@@ -97,6 +94,10 @@ public final class AddressDetails {
      */
     @JsonProperty(value = "phoneNumber")
     private String phoneNumber;
+
+    /** Creates an instance of AddressDetails class. */
+    public AddressDetails() {
+    }
 
     /**
      * Get the firstName property: First name.
@@ -385,14 +386,16 @@ public final class AddressDetails {
      */
     public void validate() {
         if (addressLine1() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property addressLine1 in model AddressDetails"));
         }
         if (country() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property country in model AddressDetails"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AddressDetails.class);
 }

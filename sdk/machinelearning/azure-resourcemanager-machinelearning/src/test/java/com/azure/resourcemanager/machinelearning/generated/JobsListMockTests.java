@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.JobBase;
 import com.azure.resourcemanager.machinelearning.models.ListViewType;
@@ -72,7 +71,7 @@ public final class JobsListMockTests {
                     "oehgfmqmskkixvlz",
                     "xplhpeva",
                     ListViewType.ALL,
-                    Context.NONE);
+                    com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("jnxjkht", response.iterator().next().properties().description());
         Assertions.assertEquals("vyouweui", response.iterator().next().properties().properties().get("xfwkz"));

@@ -22,6 +22,10 @@ public final class Context {
     @JsonProperty(value = "contextType")
     private String contextType;
 
+    /** Creates an instance of Context class. */
+    public Context() {
+    }
+
     /**
      * Get the notificationSource property: The source of the notification request.
      *

@@ -7,11 +7,10 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.BuildContext;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class BuildContextTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         BuildContext model =
             BinaryData
                 .fromString("{\"contextUri\":\"mfpjbabw\",\"dockerfilePath\":\"fcxsspuunnoxy\"}")
@@ -20,8 +19,8 @@ public final class BuildContextTests {
         Assertions.assertEquals("fcxsspuunnoxy", model.dockerfilePath());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         BuildContext model = new BuildContext().withContextUri("mfpjbabw").withDockerfilePath("fcxsspuunnoxy");
         model = BinaryData.fromObject(model).toObject(BuildContext.class);
         Assertions.assertEquals("mfpjbabw", model.contextUri());

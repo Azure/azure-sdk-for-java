@@ -9,6 +9,10 @@ import com.azure.core.annotation.Fluent;
 /** Text settings. */
 @Fluent
 public final class LogFileSettingsText extends LogFileTextSettings {
+    /** Creates an instance of LogFileSettingsText class. */
+    public LogFileSettingsText() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public LogFileSettingsText withRecordStartTimestampFormat(

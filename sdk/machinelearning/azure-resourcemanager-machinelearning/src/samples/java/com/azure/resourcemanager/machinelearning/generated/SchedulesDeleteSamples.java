@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Schedules Delete. */
 public final class SchedulesDeleteSamples {
     /*
@@ -17,6 +15,6 @@ public final class SchedulesDeleteSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void deleteSchedule(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.schedules().delete("test-rg", "my-aml-workspace", "string", Context.NONE);
+        manager.schedules().delete("test-rg", "my-aml-workspace", "string", com.azure.core.util.Context.NONE);
     }
 }

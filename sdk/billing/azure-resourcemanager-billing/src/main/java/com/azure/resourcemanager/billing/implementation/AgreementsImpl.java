@@ -13,10 +13,9 @@ import com.azure.resourcemanager.billing.fluent.AgreementsClient;
 import com.azure.resourcemanager.billing.fluent.models.AgreementInner;
 import com.azure.resourcemanager.billing.models.Agreement;
 import com.azure.resourcemanager.billing.models.Agreements;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AgreementsImpl implements Agreements {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgreementsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AgreementsImpl.class);
 
     private final AgreementsClient innerClient;
 
@@ -39,15 +38,6 @@ public final class AgreementsImpl implements Agreements {
         return Utils.mapPage(inner, inner1 -> new AgreementImpl(inner1, this.manager()));
     }
 
-    public Agreement get(String billingAccountName, String agreementName) {
-        AgreementInner inner = this.serviceClient().get(billingAccountName, agreementName);
-        if (inner != null) {
-            return new AgreementImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Agreement> getWithResponse(
         String billingAccountName, String agreementName, String expand, Context context) {
         Response<AgreementInner> inner =
@@ -58,6 +48,15 @@ public final class AgreementsImpl implements Agreements {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AgreementImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Agreement get(String billingAccountName, String agreementName) {
+        AgreementInner inner = this.serviceClient().get(billingAccountName, agreementName);
+        if (inner != null) {
+            return new AgreementImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -41,7 +41,6 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -420,7 +419,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         if (binaryData == null) {
             Flux<ByteBuffer> dataFlux = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
                     options.getDataStream(), options.getLength(), BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true)
-                .subscribeOn(Schedulers.boundedElastic())
                 : options.getDataFlux();
             dataMono = BinaryData.fromFlux(dataFlux, options.getLength(), false);
         } else {
@@ -439,7 +437,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
                 requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
                 requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
                 tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
-                options.isLegalHold(), options.getHeaders(), getCustomerProvidedKey(),
+                options.isLegalHold(), null, options.getHeaders(), getCustomerProvidedKey(),
                 encryptionScope, finalContext.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 BlockBlobsUploadHeaders hd = rb.getDeserializedHeaders();

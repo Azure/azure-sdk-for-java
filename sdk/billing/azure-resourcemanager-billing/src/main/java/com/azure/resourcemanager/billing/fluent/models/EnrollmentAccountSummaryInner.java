@@ -4,22 +4,22 @@
 
 package com.azure.resourcemanager.billing.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An enrollment account resource. */
-@Fluent
+@Immutable
 public final class EnrollmentAccountSummaryInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnrollmentAccountSummaryInner.class);
-
     /*
      * An enrollment account.
      */
     @JsonProperty(value = "properties")
     private EnrollmentAccountSummaryProperties innerProperties;
+
+    /** Creates an instance of EnrollmentAccountSummaryInner class. */
+    public EnrollmentAccountSummaryInner() {
+    }
 
     /**
      * Get the innerProperties property: An enrollment account.

@@ -33,11 +33,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ForecastingTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         Forecasting model =
             BinaryData
                 .fromString(
@@ -105,8 +104,8 @@ public final class ForecastingTests {
         Assertions.assertEquals("jfkakfqfrke", model.weightColumnName());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         Forecasting model =
             new Forecasting()
                 .withLogVerbosity(LogVerbosity.ERROR)

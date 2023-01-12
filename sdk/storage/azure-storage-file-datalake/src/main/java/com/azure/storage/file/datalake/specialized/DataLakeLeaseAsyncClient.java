@@ -99,12 +99,12 @@ public final class DataLakeLeaseAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient.acquireLease#int -->
      *
-     * @param duration The duration of the lease between 15 and 60 seconds or -1 for an infinite duration.
+     * @param durationInSeconds The duration of the lease between 15 and 60 seconds or -1 for an infinite duration.
      * @return A reactive response containing the lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> acquireLease(int duration) {
-        return acquireLeaseWithResponse(duration, null).flatMap(FluxUtil::toMono);
+    public Mono<String> acquireLease(int durationInSeconds) {
+        return acquireLeaseWithResponse(durationInSeconds, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -123,16 +123,16 @@ public final class DataLakeLeaseAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient.acquireLeaseWithResponse#int-RequestConditions -->
      *
-     * @param duration The duration of the lease between 15 and 60 seconds or -1 for an infinite duration.
+     * @param durationInSeconds The duration of the lease between 15 and 60 seconds or -1 for an infinite duration.
      * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
      * request. The request will fail if the specified condition is not satisfied.
      * @return A reactive response containing the lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<String>> acquireLeaseWithResponse(int duration,
+    public Mono<Response<String>> acquireLeaseWithResponse(int durationInSeconds,
         RequestConditions modifiedRequestConditions) {
-        return this.blobLeaseAsyncClient.acquireLeaseWithResponse(duration, modifiedRequestConditions)
+        return this.blobLeaseAsyncClient.acquireLeaseWithResponse(durationInSeconds, modifiedRequestConditions)
             .onErrorMap(DataLakeImplUtils::transformBlobStorageException);
     }
 

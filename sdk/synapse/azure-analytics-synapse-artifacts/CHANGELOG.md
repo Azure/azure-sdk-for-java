@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.12 (Unreleased)
+## 1.0.0-beta.13 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,30 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.12 (2023-01-12)
+
+### Features Added
+
+- Added `workspaceResourceId` to `AzureSynapseArtifactsLinkedService`.
+- Added `pythonCodeReference`, `filesV2`, `scanFolder`, `configurationType`, `targetSparkConfiguration` and `sparkConfig` properties to `SynapseSparkJobDefinitionActivity`.
+- Added `authHeaders` property to `RestServiceLinkedService`.
+- Added new APIs of Pause/Resume for Synapse Link in `LinkConnectionClient`.
+- Added `PowerBIWorkspaceLinkedService`.
+
+### Breaking Changes
+
+- Renamed API `createOrUpdateLinkConnection` to `createOrUpdate` in `LinkConnectionClient`.
+- Renamed API `deleteLinkConnection` to `delete` in `LinkConnectionClient`.
+- Renamed API `getLinkConnection` to `get` in `LinkConnectionClient`.
+- Renamed API `listLinkConnectionsByWorkspace` to `listByWorkspace` in `LinkConnectionClient`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to `1.35.0`.
+- Upgraded `azure-core-http-netty` to `1.12.8`.
 
 ## 1.0.0-beta.11 (2022-09-19)
 

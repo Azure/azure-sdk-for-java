@@ -9,11 +9,10 @@ import com.azure.resourcemanager.machinelearning.models.DataVersionBasePropertie
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DataVersionBasePropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DataVersionBaseProperties model =
             BinaryData
                 .fromString(
@@ -27,8 +26,8 @@ public final class DataVersionBasePropertiesTests {
         Assertions.assertEquals("vh", model.dataUri());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DataVersionBaseProperties model =
             new DataVersionBaseProperties()
                 .withDescription("dqkdlwwqfbu")

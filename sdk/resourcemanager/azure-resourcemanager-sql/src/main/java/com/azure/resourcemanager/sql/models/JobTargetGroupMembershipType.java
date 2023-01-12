@@ -7,7 +7,7 @@ package com.azure.resourcemanager.sql.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for JobTargetGroupMembershipType. */
+/** Whether the target is included or excluded from the group. */
 public enum JobTargetGroupMembershipType {
     /** Enum value Include. */
     INCLUDE("Include"),
@@ -30,6 +30,9 @@ public enum JobTargetGroupMembershipType {
      */
     @JsonCreator
     public static JobTargetGroupMembershipType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         JobTargetGroupMembershipType[] items = JobTargetGroupMembershipType.values();
         for (JobTargetGroupMembershipType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum JobTargetGroupMembershipType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

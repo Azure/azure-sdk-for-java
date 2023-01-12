@@ -20,6 +20,10 @@ public final class DatabaseAutomaticTuningInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private DatabaseAutomaticTuningProperties innerProperties;
 
+    /** Creates an instance of DatabaseAutomaticTuningInner class. */
+    public DatabaseAutomaticTuningInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

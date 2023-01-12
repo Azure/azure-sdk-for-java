@@ -74,7 +74,7 @@ public final class SqlManagedInstancesCreateSamples {
                                     .withAdditionalProperties(mapOf()))
                             .withAdditionalProperties(mapOf("additionalProperty", 1234)))
                     .withBasicLoginInformation(
-                        new BasicLoginInformation().withUsername("username").withPassword("********"))
+                        new BasicLoginInformation().withUsername("username").withPassword("fakeTokenPlaceholder"))
                     .withLicenseType(ArcSqlManagedInstanceLicenseType.LICENSE_INCLUDED)
                     .withClusterId(
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/connectedk8s")

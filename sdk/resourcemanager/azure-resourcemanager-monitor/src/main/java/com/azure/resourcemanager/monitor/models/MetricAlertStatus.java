@@ -34,6 +34,10 @@ public final class MetricAlertStatus {
     @JsonProperty(value = "properties")
     private MetricAlertStatusProperties properties;
 
+    /** Creates an instance of MetricAlertStatus class. */
+    public MetricAlertStatus() {
+    }
+
     /**
      * Get the name property: The status name.
      *

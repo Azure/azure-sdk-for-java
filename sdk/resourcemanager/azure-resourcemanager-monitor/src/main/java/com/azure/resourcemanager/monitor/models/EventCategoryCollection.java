@@ -22,6 +22,10 @@ public final class EventCategoryCollection {
     @JsonProperty(value = "value", required = true)
     private List<LocalizableStringInner> value;
 
+    /** Creates an instance of EventCategoryCollection class. */
+    public EventCategoryCollection() {
+    }
+
     /**
      * Get the value property: the list that includes the Azure event categories.
      *

@@ -8,19 +8,18 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.SkuSetting;
 import com.azure.resourcemanager.machinelearning.models.SkuTier;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SkuSettingTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SkuSetting model =
             BinaryData.fromString("{\"name\":\"nnbsoqeqa\",\"tier\":\"Premium\"}").toObject(SkuSetting.class);
         Assertions.assertEquals("nnbsoqeqa", model.name());
         Assertions.assertEquals(SkuTier.PREMIUM, model.tier());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SkuSetting model = new SkuSetting().withName("nnbsoqeqa").withTier(SkuTier.PREMIUM);
         model = BinaryData.fromObject(model).toObject(SkuSetting.class);
         Assertions.assertEquals("nnbsoqeqa", model.name());

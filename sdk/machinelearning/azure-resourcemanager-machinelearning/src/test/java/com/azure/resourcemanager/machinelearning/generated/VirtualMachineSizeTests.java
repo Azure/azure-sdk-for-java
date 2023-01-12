@@ -14,11 +14,10 @@ import com.azure.resourcemanager.machinelearning.models.VMTier;
 import com.azure.resourcemanager.machinelearning.models.VirtualMachineSize;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VirtualMachineSizeTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VirtualMachineSize model =
             BinaryData
                 .fromString(
@@ -32,8 +31,8 @@ public final class VirtualMachineSizeTests {
         Assertions.assertEquals("pkc", model.supportedComputeTypes().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         VirtualMachineSize model =
             new VirtualMachineSize()
                 .withEstimatedVMPrices(

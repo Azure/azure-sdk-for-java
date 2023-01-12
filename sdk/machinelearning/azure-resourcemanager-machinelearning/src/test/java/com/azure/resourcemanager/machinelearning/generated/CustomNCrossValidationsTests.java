@@ -7,18 +7,17 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.CustomNCrossValidations;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CustomNCrossValidationsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CustomNCrossValidations model =
             BinaryData.fromString("{\"mode\":\"Custom\",\"value\":691698964}").toObject(CustomNCrossValidations.class);
         Assertions.assertEquals(691698964, model.value());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CustomNCrossValidations model = new CustomNCrossValidations().withValue(691698964);
         model = BinaryData.fromObject(model).toObject(CustomNCrossValidations.class);
         Assertions.assertEquals(691698964, model.value());

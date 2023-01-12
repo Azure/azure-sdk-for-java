@@ -15,7 +15,6 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>spring-cloud-azure-native-configuration</module>
       </modules>
     </profile>
 
@@ -23,7 +22,6 @@
       <id>dev</id>
       <modules>
         <module>../../eng/code-quality-reports</module>
-        <module>spring-cloud-azure-native-configuration</module>
       </modules>
     </profile>
   </profiles>

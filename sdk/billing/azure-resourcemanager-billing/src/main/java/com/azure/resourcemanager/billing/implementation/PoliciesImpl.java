@@ -14,10 +14,9 @@ import com.azure.resourcemanager.billing.fluent.models.PolicyInner;
 import com.azure.resourcemanager.billing.models.CustomerPolicy;
 import com.azure.resourcemanager.billing.models.Policies;
 import com.azure.resourcemanager.billing.models.Policy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PoliciesImpl implements Policies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PoliciesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PoliciesImpl.class);
 
     private final PoliciesClient innerClient;
 
@@ -26,15 +25,6 @@ public final class PoliciesImpl implements Policies {
     public PoliciesImpl(PoliciesClient innerClient, com.azure.resourcemanager.billing.BillingManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public Policy getByBillingProfile(String billingAccountName, String billingProfileName) {
-        PolicyInner inner = this.serviceClient().getByBillingProfile(billingAccountName, billingProfileName);
-        if (inner != null) {
-            return new PolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<Policy> getByBillingProfileWithResponse(
@@ -52,8 +42,8 @@ public final class PoliciesImpl implements Policies {
         }
     }
 
-    public Policy update(String billingAccountName, String billingProfileName, PolicyInner parameters) {
-        PolicyInner inner = this.serviceClient().update(billingAccountName, billingProfileName, parameters);
+    public Policy getByBillingProfile(String billingAccountName, String billingProfileName) {
+        PolicyInner inner = this.serviceClient().getByBillingProfile(billingAccountName, billingProfileName);
         if (inner != null) {
             return new PolicyImpl(inner, this.manager());
         } else {
@@ -76,10 +66,10 @@ public final class PoliciesImpl implements Policies {
         }
     }
 
-    public CustomerPolicy getByCustomer(String billingAccountName, String customerName) {
-        CustomerPolicyInner inner = this.serviceClient().getByCustomer(billingAccountName, customerName);
+    public Policy update(String billingAccountName, String billingProfileName, PolicyInner parameters) {
+        PolicyInner inner = this.serviceClient().update(billingAccountName, billingProfileName, parameters);
         if (inner != null) {
-            return new CustomerPolicyImpl(inner, this.manager());
+            return new PolicyImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -100,9 +90,8 @@ public final class PoliciesImpl implements Policies {
         }
     }
 
-    public CustomerPolicy updateCustomer(
-        String billingAccountName, String customerName, CustomerPolicyInner parameters) {
-        CustomerPolicyInner inner = this.serviceClient().updateCustomer(billingAccountName, customerName, parameters);
+    public CustomerPolicy getByCustomer(String billingAccountName, String customerName) {
+        CustomerPolicyInner inner = this.serviceClient().getByCustomer(billingAccountName, customerName);
         if (inner != null) {
             return new CustomerPolicyImpl(inner, this.manager());
         } else {
@@ -120,6 +109,16 @@ public final class PoliciesImpl implements Policies {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CustomerPolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CustomerPolicy updateCustomer(
+        String billingAccountName, String customerName, CustomerPolicyInner parameters) {
+        CustomerPolicyInner inner = this.serviceClient().updateCustomer(billingAccountName, customerName, parameters);
+        if (inner != null) {
+            return new CustomerPolicyImpl(inner, this.manager());
         } else {
             return null;
         }

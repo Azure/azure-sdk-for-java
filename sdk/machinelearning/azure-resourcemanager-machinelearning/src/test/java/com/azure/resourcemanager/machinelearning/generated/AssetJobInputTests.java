@@ -8,19 +8,18 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.AssetJobInput;
 import com.azure.resourcemanager.machinelearning.models.InputDeliveryMode;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AssetJobInputTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AssetJobInput model =
             BinaryData.fromString("{\"mode\":\"ReadOnlyMount\",\"uri\":\"fgbrtt\"}").toObject(AssetJobInput.class);
         Assertions.assertEquals(InputDeliveryMode.READ_ONLY_MOUNT, model.mode());
         Assertions.assertEquals("fgbrtt", model.uri());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AssetJobInput model = new AssetJobInput().withMode(InputDeliveryMode.READ_ONLY_MOUNT).withUri("fgbrtt");
         model = BinaryData.fromObject(model).toObject(AssetJobInput.class);
         Assertions.assertEquals(InputDeliveryMode.READ_ONLY_MOUNT, model.mode());

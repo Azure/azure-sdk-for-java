@@ -35,17 +35,11 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.DatabasesClient;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseInner;
-import com.azure.resourcemanager.sql.fluent.models.ImportExportResponseInner;
-import com.azure.resourcemanager.sql.fluent.models.MetricDefinitionInner;
-import com.azure.resourcemanager.sql.fluent.models.MetricInner;
+import com.azure.resourcemanager.sql.fluent.models.ImportExportOperationResultInner;
 import com.azure.resourcemanager.sql.models.DatabaseListResult;
 import com.azure.resourcemanager.sql.models.DatabaseUpdate;
-import com.azure.resourcemanager.sql.models.ExportRequest;
-import com.azure.resourcemanager.sql.models.ExtensionName;
-import com.azure.resourcemanager.sql.models.ImportExtensionRequest;
-import com.azure.resourcemanager.sql.models.ImportRequest;
-import com.azure.resourcemanager.sql.models.MetricDefinitionListResult;
-import com.azure.resourcemanager.sql.models.MetricListResult;
+import com.azure.resourcemanager.sql.models.ExportDatabaseDefinition;
+import com.azure.resourcemanager.sql.models.ImportExistingDatabaseDefinition;
 import com.azure.resourcemanager.sql.models.ReplicaType;
 import com.azure.resourcemanager.sql.models.ResourceMoveDefinition;
 import java.nio.ByteBuffer;
@@ -79,90 +73,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceInterface(name = "SqlManagementClientD")
     private interface DatabasesService {
         @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/import")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> importMethod(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @BodyParam("application/json") ImportRequest parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/extensions/{extensionName}")
-        @ExpectedResponses({201, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createImportOperation(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("extensionName") ExtensionName extensionName,
-            @BodyParam("application/json") ImportExtensionRequest parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/export")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> export(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @BodyParam("application/json") ExportRequest parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/metrics")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MetricListResult>> listMetrics(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/metricDefinitions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MetricDefinitionListResult>> listMetricDefinitions(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases")
@@ -172,6 +82,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
+            @QueryParam("$skipToken") String skipToken,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
@@ -243,19 +154,69 @@ public final class DatabasesClientImpl implements DatabasesClient {
             Context context);
 
         @Headers({"Content-Type: application/json"})
-        @Get(
+        @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/elasticPools/{elasticPoolName}/databases")
-        @ExpectedResponses({200})
+                + "/{serverName}/databases/{databaseName}/export")
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatabaseListResult>> listByElasticPool(
+        Mono<Response<Flux<ByteBuffer>>> export(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
-            @PathParam("elasticPoolName") String elasticPoolName,
+            @PathParam("databaseName") String databaseName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ExportDatabaseDefinition parameters,
             @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/databases/{databaseName}/failover")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> failover(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName,
+            @QueryParam("replicaType") ReplicaType replicaType,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/databases/{databaseName}/import")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> importMethod(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ImportExistingDatabaseDefinition parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/databases/{databaseName}/move")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> rename(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ResourceMoveDefinition parameters,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -305,36 +266,35 @@ public final class DatabasesClientImpl implements DatabasesClient {
             @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
+        @Headers({"Content-Type: application/json"})
+        @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/move")
+                + "/{serverName}/elasticPools/{elasticPoolName}/databases")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> rename(
+        Mono<Response<DatabaseListResult>> listByElasticPool(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
+            @PathParam("elasticPoolName") String elasticPoolName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ResourceMoveDefinition parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
+        @Headers({"Content-Type: application/json"})
+        @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/failover")
-        @ExpectedResponses({200, 202})
+                + "/{serverName}/inaccessibleDatabases")
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> failover(
+        Mono<Response<DatabaseListResult>> listInaccessibleByServer(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @QueryParam("replicaType") ReplicaType replicaType,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -356,1372 +316,16 @@ public final class DatabasesClientImpl implements DatabasesClient {
             @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept,
             Context context);
-    }
 
-    /**
-     * Imports a bacpac into a new database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> importMethodWithResponseAsync(
-        String resourceGroupName, String serverName, ImportRequest parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2014-04-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .importMethod(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            parameters,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Imports a bacpac into a new database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> importMethodWithResponseAsync(
-        String resourceGroupName, String serverName, ImportRequest parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2014-04-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .importMethod(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                parameters,
-                accept,
-                context);
-    }
-
-    /**
-     * Imports a bacpac into a new database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of response for Import/Export Get operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginImportMethodAsync(
-        String resourceGroupName, String serverName, ImportRequest parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            importMethodWithResponseAsync(resourceGroupName, serverName, parameters);
-        return this
-            .client
-            .<ImportExportResponseInner, ImportExportResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ImportExportResponseInner.class,
-                ImportExportResponseInner.class,
-                this.client.getContext());
-    }
-
-    /**
-     * Imports a bacpac into a new database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of response for Import/Export Get operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginImportMethodAsync(
-        String resourceGroupName, String serverName, ImportRequest parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            importMethodWithResponseAsync(resourceGroupName, serverName, parameters, context);
-        return this
-            .client
-            .<ImportExportResponseInner, ImportExportResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ImportExportResponseInner.class,
-                ImportExportResponseInner.class,
-                context);
-    }
-
-    /**
-     * Imports a bacpac into a new database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for Import/Export Get operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginImportMethod(
-        String resourceGroupName, String serverName, ImportRequest parameters) {
-        return beginImportMethodAsync(resourceGroupName, serverName, parameters).getSyncPoller();
-    }
-
-    /**
-     * Imports a bacpac into a new database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for Import/Export Get operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginImportMethod(
-        String resourceGroupName, String serverName, ImportRequest parameters, Context context) {
-        return beginImportMethodAsync(resourceGroupName, serverName, parameters, context).getSyncPoller();
-    }
-
-    /**
-     * Imports a bacpac into a new database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ImportExportResponseInner> importMethodAsync(
-        String resourceGroupName, String serverName, ImportRequest parameters) {
-        return beginImportMethodAsync(resourceGroupName, serverName, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Imports a bacpac into a new database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ImportExportResponseInner> importMethodAsync(
-        String resourceGroupName, String serverName, ImportRequest parameters, Context context) {
-        return beginImportMethodAsync(resourceGroupName, serverName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Imports a bacpac into a new database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ImportExportResponseInner importMethod(
-        String resourceGroupName, String serverName, ImportRequest parameters) {
-        return importMethodAsync(resourceGroupName, serverName, parameters).block();
-    }
-
-    /**
-     * Imports a bacpac into a new database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ImportExportResponseInner importMethod(
-        String resourceGroupName, String serverName, ImportRequest parameters, Context context) {
-        return importMethodAsync(resourceGroupName, serverName, parameters, context).block();
-    }
-
-    /**
-     * Creates an import operation that imports a bacpac into an existing database. The existing database must be empty.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to import into.
-     * @param extensionName The name of the operation to perform.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createImportOperationWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ExtensionName extensionName,
-        ImportExtensionRequest parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (extensionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter extensionName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2014-04-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createImportOperation(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            extensionName,
-                            parameters,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Creates an import operation that imports a bacpac into an existing database. The existing database must be empty.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to import into.
-     * @param extensionName The name of the operation to perform.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createImportOperationWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ExtensionName extensionName,
-        ImportExtensionRequest parameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (extensionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter extensionName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2014-04-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .createImportOperation(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                extensionName,
-                parameters,
-                accept,
-                context);
-    }
-
-    /**
-     * Creates an import operation that imports a bacpac into an existing database. The existing database must be empty.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to import into.
-     * @param extensionName The name of the operation to perform.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of response for Import/Export Get operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginCreateImportOperationAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ExtensionName extensionName,
-        ImportExtensionRequest parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createImportOperationWithResponseAsync(
-                resourceGroupName, serverName, databaseName, extensionName, parameters);
-        return this
-            .client
-            .<ImportExportResponseInner, ImportExportResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ImportExportResponseInner.class,
-                ImportExportResponseInner.class,
-                this.client.getContext());
-    }
-
-    /**
-     * Creates an import operation that imports a bacpac into an existing database. The existing database must be empty.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to import into.
-     * @param extensionName The name of the operation to perform.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of response for Import/Export Get operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ImportExportResponseInner>, ImportExportResponseInner>
-        beginCreateImportOperationAsync(
-            String resourceGroupName,
-            String serverName,
-            String databaseName,
-            ExtensionName extensionName,
-            ImportExtensionRequest parameters,
-            Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createImportOperationWithResponseAsync(
-                resourceGroupName, serverName, databaseName, extensionName, parameters, context);
-        return this
-            .client
-            .<ImportExportResponseInner, ImportExportResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ImportExportResponseInner.class,
-                ImportExportResponseInner.class,
-                context);
-    }
-
-    /**
-     * Creates an import operation that imports a bacpac into an existing database. The existing database must be empty.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to import into.
-     * @param extensionName The name of the operation to perform.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for Import/Export Get operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginCreateImportOperation(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ExtensionName extensionName,
-        ImportExtensionRequest parameters) {
-        return beginCreateImportOperationAsync(resourceGroupName, serverName, databaseName, extensionName, parameters)
-            .getSyncPoller();
-    }
-
-    /**
-     * Creates an import operation that imports a bacpac into an existing database. The existing database must be empty.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to import into.
-     * @param extensionName The name of the operation to perform.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for Import/Export Get operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginCreateImportOperation(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ExtensionName extensionName,
-        ImportExtensionRequest parameters,
-        Context context) {
-        return beginCreateImportOperationAsync(
-                resourceGroupName, serverName, databaseName, extensionName, parameters, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Creates an import operation that imports a bacpac into an existing database. The existing database must be empty.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to import into.
-     * @param extensionName The name of the operation to perform.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ImportExportResponseInner> createImportOperationAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ExtensionName extensionName,
-        ImportExtensionRequest parameters) {
-        return beginCreateImportOperationAsync(resourceGroupName, serverName, databaseName, extensionName, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates an import operation that imports a bacpac into an existing database. The existing database must be empty.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to import into.
-     * @param extensionName The name of the operation to perform.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ImportExportResponseInner> createImportOperationAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ExtensionName extensionName,
-        ImportExtensionRequest parameters,
-        Context context) {
-        return beginCreateImportOperationAsync(
-                resourceGroupName, serverName, databaseName, extensionName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates an import operation that imports a bacpac into an existing database. The existing database must be empty.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to import into.
-     * @param extensionName The name of the operation to perform.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ImportExportResponseInner createImportOperation(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ExtensionName extensionName,
-        ImportExtensionRequest parameters) {
-        return createImportOperationAsync(resourceGroupName, serverName, databaseName, extensionName, parameters)
-            .block();
-    }
-
-    /**
-     * Creates an import operation that imports a bacpac into an existing database. The existing database must be empty.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to import into.
-     * @param extensionName The name of the operation to perform.
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ImportExportResponseInner createImportOperation(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ExtensionName extensionName,
-        ImportExtensionRequest parameters,
-        Context context) {
-        return createImportOperationAsync(
-                resourceGroupName, serverName, databaseName, extensionName, parameters, context)
-            .block();
-    }
-
-    /**
-     * Exports a database to a bacpac.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to be exported.
-     * @param parameters The required parameters for exporting a database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> exportWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, ExportRequest parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2014-04-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .export(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            parameters,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Exports a database to a bacpac.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to be exported.
-     * @param parameters The required parameters for exporting a database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> exportWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, ExportRequest parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2014-04-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .export(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                parameters,
-                accept,
-                context);
-    }
-
-    /**
-     * Exports a database to a bacpac.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to be exported.
-     * @param parameters The required parameters for exporting a database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of response for Import/Export Get operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginExportAsync(
-        String resourceGroupName, String serverName, String databaseName, ExportRequest parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            exportWithResponseAsync(resourceGroupName, serverName, databaseName, parameters);
-        return this
-            .client
-            .<ImportExportResponseInner, ImportExportResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ImportExportResponseInner.class,
-                ImportExportResponseInner.class,
-                this.client.getContext());
-    }
-
-    /**
-     * Exports a database to a bacpac.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to be exported.
-     * @param parameters The required parameters for exporting a database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of response for Import/Export Get operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginExportAsync(
-        String resourceGroupName, String serverName, String databaseName, ExportRequest parameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            exportWithResponseAsync(resourceGroupName, serverName, databaseName, parameters, context);
-        return this
-            .client
-            .<ImportExportResponseInner, ImportExportResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ImportExportResponseInner.class,
-                ImportExportResponseInner.class,
-                context);
-    }
-
-    /**
-     * Exports a database to a bacpac.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to be exported.
-     * @param parameters The required parameters for exporting a database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for Import/Export Get operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginExport(
-        String resourceGroupName, String serverName, String databaseName, ExportRequest parameters) {
-        return beginExportAsync(resourceGroupName, serverName, databaseName, parameters).getSyncPoller();
-    }
-
-    /**
-     * Exports a database to a bacpac.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to be exported.
-     * @param parameters The required parameters for exporting a database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of response for Import/Export Get operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ImportExportResponseInner>, ImportExportResponseInner> beginExport(
-        String resourceGroupName, String serverName, String databaseName, ExportRequest parameters, Context context) {
-        return beginExportAsync(resourceGroupName, serverName, databaseName, parameters, context).getSyncPoller();
-    }
-
-    /**
-     * Exports a database to a bacpac.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to be exported.
-     * @param parameters The required parameters for exporting a database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ImportExportResponseInner> exportAsync(
-        String resourceGroupName, String serverName, String databaseName, ExportRequest parameters) {
-        return beginExportAsync(resourceGroupName, serverName, databaseName, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Exports a database to a bacpac.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to be exported.
-     * @param parameters The required parameters for exporting a database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ImportExportResponseInner> exportAsync(
-        String resourceGroupName, String serverName, String databaseName, ExportRequest parameters, Context context) {
-        return beginExportAsync(resourceGroupName, serverName, databaseName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Exports a database to a bacpac.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to be exported.
-     * @param parameters The required parameters for exporting a database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ImportExportResponseInner export(
-        String resourceGroupName, String serverName, String databaseName, ExportRequest parameters) {
-        return exportAsync(resourceGroupName, serverName, databaseName, parameters).block();
-    }
-
-    /**
-     * Exports a database to a bacpac.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to be exported.
-     * @param parameters The required parameters for exporting a database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for Import/Export Get operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ImportExportResponseInner export(
-        String resourceGroupName, String serverName, String databaseName, ExportRequest parameters, Context context) {
-        return exportAsync(resourceGroupName, serverName, databaseName, parameters, context).block();
-    }
-
-    /**
-     * Returns database metrics.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param filter An OData filter expression that describes a subset of metrics to return.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metrics request along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MetricInner>> listMetricsSinglePageAsync(
-        String resourceGroupName, String serverName, String databaseName, String filter) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (filter == null) {
-            return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
-        }
-        final String apiVersion = "2014-04-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listMetrics(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<MetricInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Returns database metrics.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param filter An OData filter expression that describes a subset of metrics to return.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metrics request along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MetricInner>> listMetricsSinglePageAsync(
-        String resourceGroupName, String serverName, String databaseName, String filter, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        if (filter == null) {
-            return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
-        }
-        final String apiVersion = "2014-04-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listMetrics(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                filter,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
-    }
-
-    /**
-     * Returns database metrics.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param filter An OData filter expression that describes a subset of metrics to return.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metrics request as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MetricInner> listMetricsAsync(
-        String resourceGroupName, String serverName, String databaseName, String filter) {
-        return new PagedFlux<>(() -> listMetricsSinglePageAsync(resourceGroupName, serverName, databaseName, filter));
-    }
-
-    /**
-     * Returns database metrics.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param filter An OData filter expression that describes a subset of metrics to return.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metrics request as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MetricInner> listMetricsAsync(
-        String resourceGroupName, String serverName, String databaseName, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listMetricsSinglePageAsync(resourceGroupName, serverName, databaseName, filter, context));
-    }
-
-    /**
-     * Returns database metrics.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param filter An OData filter expression that describes a subset of metrics to return.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metrics request as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricInner> listMetrics(
-        String resourceGroupName, String serverName, String databaseName, String filter) {
-        return new PagedIterable<>(listMetricsAsync(resourceGroupName, serverName, databaseName, filter));
-    }
-
-    /**
-     * Returns database metrics.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param filter An OData filter expression that describes a subset of metrics to return.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metrics request as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricInner> listMetrics(
-        String resourceGroupName, String serverName, String databaseName, String filter, Context context) {
-        return new PagedIterable<>(listMetricsAsync(resourceGroupName, serverName, databaseName, filter, context));
-    }
-
-    /**
-     * Returns database metric definitions.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metric definitions request along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MetricDefinitionInner>> listMetricDefinitionsSinglePageAsync(
-        String resourceGroupName, String serverName, String databaseName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        final String apiVersion = "2014-04-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listMetricDefinitions(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            accept,
-                            context))
-            .<PagedResponse<MetricDefinitionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Returns database metric definitions.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metric definitions request along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MetricDefinitionInner>> listMetricDefinitionsSinglePageAsync(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
-        final String apiVersion = "2014-04-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listMetricDefinitions(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
-    }
-
-    /**
-     * Returns database metric definitions.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metric definitions request as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MetricDefinitionInner> listMetricDefinitionsAsync(
-        String resourceGroupName, String serverName, String databaseName) {
-        return new PagedFlux<>(() -> listMetricDefinitionsSinglePageAsync(resourceGroupName, serverName, databaseName));
-    }
-
-    /**
-     * Returns database metric definitions.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metric definitions request as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MetricDefinitionInner> listMetricDefinitionsAsync(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
-        return new PagedFlux<>(
-            () -> listMetricDefinitionsSinglePageAsync(resourceGroupName, serverName, databaseName, context));
-    }
-
-    /**
-     * Returns database metric definitions.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metric definitions request as paginated response with {@link
-     *     PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricDefinitionInner> listMetricDefinitions(
-        String resourceGroupName, String serverName, String databaseName) {
-        return new PagedIterable<>(listMetricDefinitionsAsync(resourceGroupName, serverName, databaseName));
-    }
-
-    /**
-     * Returns database metric definitions.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metric definitions request as paginated response with {@link
-     *     PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MetricDefinitionInner> listMetricDefinitions(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
-        return new PagedIterable<>(listMetricDefinitionsAsync(resourceGroupName, serverName, databaseName, context));
+        @Headers({"Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<DatabaseListResult>> listInaccessibleByServerNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -1730,6 +334,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param skipToken The skipToken parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1737,7 +342,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName) {
+        String resourceGroupName, String serverName, String skipToken) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1757,7 +362,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1767,8 +371,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             this.client.getEndpoint(),
                             resourceGroupName,
                             serverName,
+                            skipToken,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .<PagedResponse<DatabaseInner>>map(
@@ -1789,6 +394,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param skipToken The skipToken parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1797,7 +403,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName, Context context) {
+        String resourceGroupName, String serverName, String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1817,7 +423,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1825,8 +430,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 this.client.getEndpoint(),
                 resourceGroupName,
                 serverName,
+                skipToken,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context)
             .map(
@@ -1846,15 +452,16 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param skipToken The skipToken parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of databases as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DatabaseInner> listByServerAsync(String resourceGroupName, String serverName) {
+    public PagedFlux<DatabaseInner> listByServerAsync(String resourceGroupName, String serverName, String skipToken) {
         return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName),
+            () -> listByServerSinglePageAsync(resourceGroupName, serverName, skipToken),
             nextLink -> listByServerNextSinglePageAsync(nextLink));
     }
 
@@ -1864,6 +471,26 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of databases as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DatabaseInner> listByServerAsync(String resourceGroupName, String serverName) {
+        final String skipToken = null;
+        return new PagedFlux<>(
+            () -> listByServerSinglePageAsync(resourceGroupName, serverName, skipToken),
+            nextLink -> listByServerNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets a list of databases.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param skipToken The skipToken parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1871,9 +498,10 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return a list of databases as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DatabaseInner> listByServerAsync(String resourceGroupName, String serverName, Context context) {
+    private PagedFlux<DatabaseInner> listByServerAsync(
+        String resourceGroupName, String serverName, String skipToken, Context context) {
         return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
+            () -> listByServerSinglePageAsync(resourceGroupName, serverName, skipToken, context),
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
@@ -1890,7 +518,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseInner> listByServer(String resourceGroupName, String serverName) {
-        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName));
+        final String skipToken = null;
+        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, skipToken));
     }
 
     /**
@@ -1899,6 +528,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
+     * @param skipToken The skipToken parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1906,8 +536,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return a list of databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatabaseInner> listByServer(String resourceGroupName, String serverName, Context context) {
-        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, context));
+    public PagedIterable<DatabaseInner> listByServer(
+        String resourceGroupName, String serverName, String skipToken, Context context) {
+        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, skipToken, context));
     }
 
     /**
@@ -1947,7 +578,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1959,7 +589,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             serverName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -2003,7 +633,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2013,7 +642,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 serverName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -2043,23 +672,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner get(String resourceGroupName, String serverName, String databaseName) {
-        return getAsync(resourceGroupName, serverName, databaseName).block();
-    }
-
-    /**
-     * Gets a database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2070,6 +682,23 @@ public final class DatabasesClientImpl implements DatabasesClient {
     public Response<DatabaseInner> getWithResponse(
         String resourceGroupName, String serverName, String databaseName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, context).block();
+    }
+
+    /**
+     * Gets a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatabaseInner get(String resourceGroupName, String serverName, String databaseName) {
+        return getWithResponse(resourceGroupName, serverName, databaseName, Context.NONE).getValue();
     }
 
     /**
@@ -2115,7 +744,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2127,7 +755,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             serverName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
                             accept,
                             context))
@@ -2178,7 +806,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2188,7 +815,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 serverName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
                 accept,
                 context);
@@ -2407,7 +1034,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -2418,7 +1044,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             serverName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -2461,7 +1087,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01-preview";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -2470,7 +1095,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 serverName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 context);
     }
 
@@ -2672,7 +1297,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2684,7 +1308,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             serverName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             parameters,
                             accept,
                             context))
@@ -2735,7 +1359,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2745,7 +1368,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 serverName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 parameters,
                 accept,
                 context);
@@ -2927,21 +1550,22 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Gets a list of databases in an elastic pool.
+     * Exports a database.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
+     * @param databaseName The name of the database.
+     * @param parameters The database export request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases in an elastic pool along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * @return an ImportExport operation result resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabaseInner>> listByElasticPoolSinglePageAsync(
-        String resourceGroupName, String serverName, String elasticPoolName) {
+    public Mono<Response<Flux<ByteBuffer>>> exportWithResponseAsync(
+        String resourceGroupName, String serverName, String databaseName, ExportDatabaseDefinition parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2955,9 +1579,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
-        if (elasticPoolName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter elasticPoolName is required and cannot be null."));
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -2965,50 +1588,51 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01-preview";
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .listByElasticPool(
+                        .export(
                             this.client.getEndpoint(),
                             resourceGroupName,
                             serverName,
-                            elasticPoolName,
+                            databaseName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
+                            parameters,
                             accept,
                             context))
-            .<PagedResponse<DatabaseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets a list of databases in an elastic pool.
+     * Exports a database.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
+     * @param databaseName The name of the database.
+     * @param parameters The database export request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases in an elastic pool along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * @return an ImportExport operation result resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabaseInner>> listByElasticPoolSinglePageAsync(
-        String resourceGroupName, String serverName, String elasticPoolName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> exportWithResponseAsync(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        ExportDatabaseDefinition parameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -3022,9 +1646,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
-        if (elasticPoolName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter elasticPoolName is required and cannot be null."));
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -3032,106 +1655,1044 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01-preview";
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByElasticPool(
+            .export(
                 this.client.getEndpoint(),
                 resourceGroupName,
                 serverName,
-                elasticPoolName,
+                databaseName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
+                parameters,
                 accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+                context);
     }
 
     /**
-     * Gets a list of databases in an elastic pool.
+     * Exports a database.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
+     * @param databaseName The name of the database.
+     * @param parameters The database export request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases in an elastic pool as paginated response with {@link PagedFlux}.
+     * @return the {@link PollerFlux} for polling of an ImportExport operation result resource.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DatabaseInner> listByElasticPoolAsync(
-        String resourceGroupName, String serverName, String elasticPoolName) {
-        return new PagedFlux<>(
-            () -> listByElasticPoolSinglePageAsync(resourceGroupName, serverName, elasticPoolName),
-            nextLink -> listByElasticPoolNextSinglePageAsync(nextLink));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner> beginExportAsync(
+        String resourceGroupName, String serverName, String databaseName, ExportDatabaseDefinition parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            exportWithResponseAsync(resourceGroupName, serverName, databaseName, parameters);
+        return this
+            .client
+            .<ImportExportOperationResultInner, ImportExportOperationResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ImportExportOperationResultInner.class,
+                ImportExportOperationResultInner.class,
+                this.client.getContext());
     }
 
     /**
-     * Gets a list of databases in an elastic pool.
+     * Exports a database.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
+     * @param databaseName The name of the database.
+     * @param parameters The database export request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases in an elastic pool as paginated response with {@link PagedFlux}.
+     * @return the {@link PollerFlux} for polling of an ImportExport operation result resource.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DatabaseInner> listByElasticPoolAsync(
-        String resourceGroupName, String serverName, String elasticPoolName, Context context) {
-        return new PagedFlux<>(
-            () -> listByElasticPoolSinglePageAsync(resourceGroupName, serverName, elasticPoolName, context),
-            nextLink -> listByElasticPoolNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner> beginExportAsync(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        ExportDatabaseDefinition parameters,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            exportWithResponseAsync(resourceGroupName, serverName, databaseName, parameters, context);
+        return this
+            .client
+            .<ImportExportOperationResultInner, ImportExportOperationResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ImportExportOperationResultInner.class,
+                ImportExportOperationResultInner.class,
+                context);
     }
 
     /**
-     * Gets a list of databases in an elastic pool.
+     * Exports a database.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
+     * @param databaseName The name of the database.
+     * @param parameters The database export request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases in an elastic pool as paginated response with {@link PagedIterable}.
+     * @return the {@link SyncPoller} for polling of an ImportExport operation result resource.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatabaseInner> listByElasticPool(
-        String resourceGroupName, String serverName, String elasticPoolName) {
-        return new PagedIterable<>(listByElasticPoolAsync(resourceGroupName, serverName, elasticPoolName));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner> beginExport(
+        String resourceGroupName, String serverName, String databaseName, ExportDatabaseDefinition parameters) {
+        return beginExportAsync(resourceGroupName, serverName, databaseName, parameters).getSyncPoller();
     }
 
     /**
-     * Gets a list of databases in an elastic pool.
+     * Exports a database.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
+     * @param databaseName The name of the database.
+     * @param parameters The database export request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of databases in an elastic pool as paginated response with {@link PagedIterable}.
+     * @return the {@link SyncPoller} for polling of an ImportExport operation result resource.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatabaseInner> listByElasticPool(
-        String resourceGroupName, String serverName, String elasticPoolName, Context context) {
-        return new PagedIterable<>(listByElasticPoolAsync(resourceGroupName, serverName, elasticPoolName, context));
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner> beginExport(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        ExportDatabaseDefinition parameters,
+        Context context) {
+        return beginExportAsync(resourceGroupName, serverName, databaseName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Exports a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param parameters The database export request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an ImportExport operation result resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ImportExportOperationResultInner> exportAsync(
+        String resourceGroupName, String serverName, String databaseName, ExportDatabaseDefinition parameters) {
+        return beginExportAsync(resourceGroupName, serverName, databaseName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Exports a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param parameters The database export request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an ImportExport operation result resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ImportExportOperationResultInner> exportAsync(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        ExportDatabaseDefinition parameters,
+        Context context) {
+        return beginExportAsync(resourceGroupName, serverName, databaseName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Exports a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param parameters The database export request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an ImportExport operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ImportExportOperationResultInner export(
+        String resourceGroupName, String serverName, String databaseName, ExportDatabaseDefinition parameters) {
+        return exportAsync(resourceGroupName, serverName, databaseName, parameters).block();
+    }
+
+    /**
+     * Exports a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param parameters The database export request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an ImportExport operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ImportExportOperationResultInner export(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        ExportDatabaseDefinition parameters,
+        Context context) {
+        return exportAsync(resourceGroupName, serverName, databaseName, parameters, context).block();
+    }
+
+    /**
+     * Failovers a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database to failover.
+     * @param replicaType The type of replica to be failed over.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(
+        String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .failover(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            serverName,
+                            databaseName,
+                            replicaType,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Failovers a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database to failover.
+     * @param replicaType The type of replica to be failed over.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(
+        String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        context = this.client.mergeContext(context);
+        return service
+            .failover(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                serverName,
+                databaseName,
+                replicaType,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                context);
+    }
+
+    /**
+     * Failovers a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database to failover.
+     * @param replicaType The type of replica to be failed over.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginFailoverAsync(
+        String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            failoverWithResponseAsync(resourceGroupName, serverName, databaseName, replicaType);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Failovers a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database to failover.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<Void>, Void> beginFailoverAsync(
+        String resourceGroupName, String serverName, String databaseName) {
+        final ReplicaType replicaType = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            failoverWithResponseAsync(resourceGroupName, serverName, databaseName, replicaType);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Failovers a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database to failover.
+     * @param replicaType The type of replica to be failed over.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginFailoverAsync(
+        String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            failoverWithResponseAsync(resourceGroupName, serverName, databaseName, replicaType, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Failovers a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database to failover.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginFailover(
+        String resourceGroupName, String serverName, String databaseName) {
+        final ReplicaType replicaType = null;
+        return beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType).getSyncPoller();
+    }
+
+    /**
+     * Failovers a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database to failover.
+     * @param replicaType The type of replica to be failed over.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginFailover(
+        String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType, Context context) {
+        return beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType, context).getSyncPoller();
+    }
+
+    /**
+     * Failovers a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database to failover.
+     * @param replicaType The type of replica to be failed over.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> failoverAsync(
+        String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType) {
+        return beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Failovers a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database to failover.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> failoverAsync(String resourceGroupName, String serverName, String databaseName) {
+        final ReplicaType replicaType = null;
+        return beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Failovers a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database to failover.
+     * @param replicaType The type of replica to be failed over.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> failoverAsync(
+        String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType, Context context) {
+        return beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Failovers a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database to failover.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void failover(String resourceGroupName, String serverName, String databaseName) {
+        final ReplicaType replicaType = null;
+        failoverAsync(resourceGroupName, serverName, databaseName, replicaType).block();
+    }
+
+    /**
+     * Failovers a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database to failover.
+     * @param replicaType The type of replica to be failed over.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void failover(
+        String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType, Context context) {
+        failoverAsync(resourceGroupName, serverName, databaseName, replicaType, context).block();
+    }
+
+    /**
+     * Imports a bacpac into a new database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param parameters The database import request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an ImportExport operation result resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> importMethodWithResponseAsync(
+        String resourceGroupName, String serverName, String databaseName, ImportExistingDatabaseDefinition parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .importMethod(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            serverName,
+                            databaseName,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            parameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Imports a bacpac into a new database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param parameters The database import request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an ImportExport operation result resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> importMethodWithResponseAsync(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        ImportExistingDatabaseDefinition parameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .importMethod(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                serverName,
+                databaseName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                parameters,
+                accept,
+                context);
+    }
+
+    /**
+     * Imports a bacpac into a new database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param parameters The database import request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an ImportExport operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner>
+        beginImportMethodAsync(
+            String resourceGroupName,
+            String serverName,
+            String databaseName,
+            ImportExistingDatabaseDefinition parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            importMethodWithResponseAsync(resourceGroupName, serverName, databaseName, parameters);
+        return this
+            .client
+            .<ImportExportOperationResultInner, ImportExportOperationResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ImportExportOperationResultInner.class,
+                ImportExportOperationResultInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Imports a bacpac into a new database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param parameters The database import request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of an ImportExport operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner>
+        beginImportMethodAsync(
+            String resourceGroupName,
+            String serverName,
+            String databaseName,
+            ImportExistingDatabaseDefinition parameters,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            importMethodWithResponseAsync(resourceGroupName, serverName, databaseName, parameters, context);
+        return this
+            .client
+            .<ImportExportOperationResultInner, ImportExportOperationResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ImportExportOperationResultInner.class,
+                ImportExportOperationResultInner.class,
+                context);
+    }
+
+    /**
+     * Imports a bacpac into a new database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param parameters The database import request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an ImportExport operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner> beginImportMethod(
+        String resourceGroupName, String serverName, String databaseName, ImportExistingDatabaseDefinition parameters) {
+        return beginImportMethodAsync(resourceGroupName, serverName, databaseName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Imports a bacpac into a new database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param parameters The database import request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of an ImportExport operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ImportExportOperationResultInner>, ImportExportOperationResultInner> beginImportMethod(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        ImportExistingDatabaseDefinition parameters,
+        Context context) {
+        return beginImportMethodAsync(resourceGroupName, serverName, databaseName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Imports a bacpac into a new database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param parameters The database import request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an ImportExport operation result resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ImportExportOperationResultInner> importMethodAsync(
+        String resourceGroupName, String serverName, String databaseName, ImportExistingDatabaseDefinition parameters) {
+        return beginImportMethodAsync(resourceGroupName, serverName, databaseName, parameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Imports a bacpac into a new database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param parameters The database import request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an ImportExport operation result resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ImportExportOperationResultInner> importMethodAsync(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        ImportExistingDatabaseDefinition parameters,
+        Context context) {
+        return beginImportMethodAsync(resourceGroupName, serverName, databaseName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Imports a bacpac into a new database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param parameters The database import request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an ImportExport operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ImportExportOperationResultInner importMethod(
+        String resourceGroupName, String serverName, String databaseName, ImportExistingDatabaseDefinition parameters) {
+        return importMethodAsync(resourceGroupName, serverName, databaseName, parameters).block();
+    }
+
+    /**
+     * Imports a bacpac into a new database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param parameters The database import request parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an ImportExport operation result resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ImportExportOperationResultInner importMethod(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        ImportExistingDatabaseDefinition parameters,
+        Context context) {
+        return importMethodAsync(resourceGroupName, serverName, databaseName, parameters, context).block();
+    }
+
+    /**
+     * Renames a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database to rename.
+     * @param parameters The resource move definition for renaming this database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> renameWithResponseAsync(
+        String resourceGroupName, String serverName, String databaseName, ResourceMoveDefinition parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .rename(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            serverName,
+                            databaseName,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            parameters,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Renames a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database to rename.
+     * @param parameters The resource move definition for renaming this database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> renameWithResponseAsync(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        ResourceMoveDefinition parameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        context = this.client.mergeContext(context);
+        return service
+            .rename(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                serverName,
+                databaseName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Renames a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database to rename.
+     * @param parameters The resource move definition for renaming this database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> renameAsync(
+        String resourceGroupName, String serverName, String databaseName, ResourceMoveDefinition parameters) {
+        return renameWithResponseAsync(resourceGroupName, serverName, databaseName, parameters)
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Renames a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database to rename.
+     * @param parameters The resource move definition for renaming this database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> renameWithResponse(
+        String resourceGroupName,
+        String serverName,
+        String databaseName,
+        ResourceMoveDefinition parameters,
+        Context context) {
+        return renameWithResponseAsync(resourceGroupName, serverName, databaseName, parameters, context).block();
+    }
+
+    /**
+     * Renames a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database to rename.
+     * @param parameters The resource move definition for renaming this database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void rename(
+        String resourceGroupName, String serverName, String databaseName, ResourceMoveDefinition parameters) {
+        renameWithResponse(resourceGroupName, serverName, databaseName, parameters, Context.NONE);
     }
 
     /**
@@ -3171,7 +2732,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3183,7 +2743,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             serverName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -3227,7 +2787,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3237,7 +2796,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 serverName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -3442,7 +3001,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3454,7 +3012,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             serverName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -3498,7 +3056,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3508,7 +3065,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 serverName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 accept,
                 context);
     }
@@ -3713,7 +3270,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01-preview";
         return FluxUtil
             .withContext(
                 context ->
@@ -3724,7 +3280,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                             serverName,
                             databaseName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -3767,7 +3323,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-10-01-preview";
         context = this.client.mergeContext(context);
         return service
             .upgradeDataWarehouse(
@@ -3776,7 +3331,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
                 serverName,
                 databaseName,
                 this.client.getSubscriptionId(),
-                apiVersion,
+                this.client.getApiVersion(),
                 context);
     }
 
@@ -3939,21 +3494,21 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Renames a database.
+     * Gets a list of databases in an elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database to rename.
-     * @param parameters The resource move definition for renaming this database.
+     * @param elasticPoolName The name of the elastic pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return a list of databases in an elastic pool along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> renameWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, ResourceMoveDefinition parameters) {
+    private Mono<PagedResponse<DatabaseInner>> listByElasticPoolSinglePageAsync(
+        String resourceGroupName, String serverName, String elasticPoolName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -3967,8 +3522,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        if (elasticPoolName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter elasticPoolName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -3976,49 +3532,49 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .rename(
+                        .listByElasticPool(
                             this.client.getEndpoint(),
                             resourceGroupName,
                             serverName,
-                            databaseName,
+                            elasticPoolName,
                             this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
+                            this.client.getApiVersion(),
+                            accept,
                             context))
+            .<PagedResponse<DatabaseInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Renames a database.
+     * Gets a list of databases in an elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database to rename.
-     * @param parameters The resource move definition for renaming this database.
+     * @param elasticPoolName The name of the elastic pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return a list of databases in an elastic pool along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> renameWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ResourceMoveDefinition parameters,
-        Context context) {
+    private Mono<PagedResponse<DatabaseInner>> listByElasticPoolSinglePageAsync(
+        String resourceGroupName, String serverName, String elasticPoolName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -4032,8 +3588,9 @@ public final class DatabasesClientImpl implements DatabasesClient {
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        if (elasticPoolName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter elasticPoolName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono
@@ -4041,103 +3598,122 @@ public final class DatabasesClientImpl implements DatabasesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2017-10-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .rename(
+            .listByElasticPool(
                 this.client.getEndpoint(),
                 resourceGroupName,
                 serverName,
-                databaseName,
+                elasticPoolName,
                 this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                context);
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
-     * Renames a database.
+     * Gets a list of databases in an elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database to rename.
-     * @param parameters The resource move definition for renaming this database.
+     * @param elasticPoolName The name of the elastic pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return a list of databases in an elastic pool as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> renameAsync(
-        String resourceGroupName, String serverName, String databaseName, ResourceMoveDefinition parameters) {
-        return renameWithResponseAsync(resourceGroupName, serverName, databaseName, parameters)
-            .flatMap(ignored -> Mono.empty());
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DatabaseInner> listByElasticPoolAsync(
+        String resourceGroupName, String serverName, String elasticPoolName) {
+        return new PagedFlux<>(
+            () -> listByElasticPoolSinglePageAsync(resourceGroupName, serverName, elasticPoolName),
+            nextLink -> listByElasticPoolNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Renames a database.
+     * Gets a list of databases in an elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database to rename.
-     * @param parameters The resource move definition for renaming this database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void rename(
-        String resourceGroupName, String serverName, String databaseName, ResourceMoveDefinition parameters) {
-        renameAsync(resourceGroupName, serverName, databaseName, parameters).block();
-    }
-
-    /**
-     * Renames a database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to rename.
-     * @param parameters The resource move definition for renaming this database.
+     * @param elasticPoolName The name of the elastic pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return a list of databases in an elastic pool as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> renameWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ResourceMoveDefinition parameters,
-        Context context) {
-        return renameWithResponseAsync(resourceGroupName, serverName, databaseName, parameters, context).block();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<DatabaseInner> listByElasticPoolAsync(
+        String resourceGroupName, String serverName, String elasticPoolName, Context context) {
+        return new PagedFlux<>(
+            () -> listByElasticPoolSinglePageAsync(resourceGroupName, serverName, elasticPoolName, context),
+            nextLink -> listByElasticPoolNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Failovers a database.
+     * Gets a list of databases in an elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database to failover.
-     * @param replicaType The type of replica to be failed over.
+     * @param elasticPoolName The name of the elastic pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return a list of databases in an elastic pool as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DatabaseInner> listByElasticPool(
+        String resourceGroupName, String serverName, String elasticPoolName) {
+        return new PagedIterable<>(listByElasticPoolAsync(resourceGroupName, serverName, elasticPoolName));
+    }
+
+    /**
+     * Gets a list of databases in an elastic pool.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of databases in an elastic pool as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DatabaseInner> listByElasticPool(
+        String resourceGroupName, String serverName, String elasticPoolName, Context context) {
+        return new PagedIterable<>(listByElasticPoolAsync(resourceGroupName, serverName, elasticPoolName, context));
+    }
+
+    /**
+     * Gets a list of inaccessible databases in a logical server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of inaccessible databases in a logical server along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType) {
+    private Mono<PagedResponse<DatabaseInner>> listInaccessibleByServerSinglePageAsync(
+        String resourceGroupName, String serverName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -4151,49 +3727,53 @@ public final class DatabasesClientImpl implements DatabasesClient {
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .failover(
+                        .listInaccessibleByServer(
                             this.client.getEndpoint(),
                             resourceGroupName,
                             serverName,
-                            databaseName,
-                            replicaType,
                             this.client.getSubscriptionId(),
-                            apiVersion,
+                            this.client.getApiVersion(),
+                            accept,
                             context))
+            .<PagedResponse<DatabaseInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Failovers a database.
+     * Gets a list of inaccessible databases in a logical server.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database to failover.
-     * @param replicaType The type of replica to be failed over.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return a list of inaccessible databases in a logical server along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType, Context context) {
+    private Mono<PagedResponse<DatabaseInner>> listInaccessibleByServerSinglePageAsync(
+        String resourceGroupName, String serverName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -4207,237 +3787,111 @@ public final class DatabasesClientImpl implements DatabasesClient {
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
-        if (databaseName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
-        }
         if (this.client.getSubscriptionId() == null) {
             return Mono
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2018-06-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .failover(
+            .listInaccessibleByServer(
                 this.client.getEndpoint(),
                 resourceGroupName,
                 serverName,
-                databaseName,
-                replicaType,
                 this.client.getSubscriptionId(),
-                apiVersion,
-                context);
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
-     * Failovers a database.
+     * Gets a list of inaccessible databases in a logical server.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database to failover.
-     * @param replicaType The type of replica to be failed over.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return a list of inaccessible databases in a logical server as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginFailoverAsync(
-        String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            failoverWithResponseAsync(resourceGroupName, serverName, databaseName, replicaType);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DatabaseInner> listInaccessibleByServerAsync(String resourceGroupName, String serverName) {
+        return new PagedFlux<>(
+            () -> listInaccessibleByServerSinglePageAsync(resourceGroupName, serverName),
+            nextLink -> listInaccessibleByServerNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Failovers a database.
+     * Gets a list of inaccessible databases in a logical server.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database to failover.
-     * @param replicaType The type of replica to be failed over.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return a list of inaccessible databases in a logical server as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginFailoverAsync(
-        String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            failoverWithResponseAsync(resourceGroupName, serverName, databaseName, replicaType, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<DatabaseInner> listInaccessibleByServerAsync(
+        String resourceGroupName, String serverName, Context context) {
+        return new PagedFlux<>(
+            () -> listInaccessibleByServerSinglePageAsync(resourceGroupName, serverName, context),
+            nextLink -> listInaccessibleByServerNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Failovers a database.
+     * Gets a list of inaccessible databases in a logical server.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database to failover.
-     * @param replicaType The type of replica to be failed over.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return a list of inaccessible databases in a logical server as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginFailover(
-        String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType) {
-        return beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType).getSyncPoller();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DatabaseInner> listInaccessibleByServer(String resourceGroupName, String serverName) {
+        return new PagedIterable<>(listInaccessibleByServerAsync(resourceGroupName, serverName));
     }
 
     /**
-     * Failovers a database.
+     * Gets a list of inaccessible databases in a logical server.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param databaseName The name of the database to failover.
-     * @param replicaType The type of replica to be failed over.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return a list of inaccessible databases in a logical server as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginFailover(
-        String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType, Context context) {
-        return beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType, context).getSyncPoller();
-    }
-
-    /**
-     * Failovers a database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to failover.
-     * @param replicaType The type of replica to be failed over.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> failoverAsync(
-        String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType) {
-        return beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Failovers a database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to failover.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> failoverAsync(String resourceGroupName, String serverName, String databaseName) {
-        final ReplicaType replicaType = null;
-        return beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Failovers a database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to failover.
-     * @param replicaType The type of replica to be failed over.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> failoverAsync(
-        String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType, Context context) {
-        return beginFailoverAsync(resourceGroupName, serverName, databaseName, replicaType, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Failovers a database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to failover.
-     * @param replicaType The type of replica to be failed over.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void failover(String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType) {
-        failoverAsync(resourceGroupName, serverName, databaseName, replicaType).block();
-    }
-
-    /**
-     * Failovers a database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to failover.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void failover(String resourceGroupName, String serverName, String databaseName) {
-        final ReplicaType replicaType = null;
-        failoverAsync(resourceGroupName, serverName, databaseName, replicaType).block();
-    }
-
-    /**
-     * Failovers a database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database to failover.
-     * @param replicaType The type of replica to be failed over.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void failover(
-        String resourceGroupName, String serverName, String databaseName, ReplicaType replicaType, Context context) {
-        failoverAsync(resourceGroupName, serverName, databaseName, replicaType, context).block();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DatabaseInner> listInaccessibleByServer(
+        String resourceGroupName, String serverName, Context context) {
+        return new PagedIterable<>(listInaccessibleByServerAsync(resourceGroupName, serverName, context));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4472,7 +3926,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4508,7 +3963,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4543,7 +3999,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -4565,6 +4022,81 @@ public final class DatabasesClientImpl implements DatabasesClient {
         context = this.client.mergeContext(context);
         return service
             .listByElasticPoolNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of databases along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<DatabaseInner>> listInaccessibleByServerNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.listInaccessibleByServerNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<DatabaseInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of databases along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<DatabaseInner>> listInaccessibleByServerNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listInaccessibleByServerNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

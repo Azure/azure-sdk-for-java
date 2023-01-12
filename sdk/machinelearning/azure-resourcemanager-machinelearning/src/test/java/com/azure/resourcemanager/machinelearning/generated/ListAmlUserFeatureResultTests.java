@@ -6,11 +6,10 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ListAmlUserFeatureResult;
-import org.junit.jupiter.api.Test;
 
 public final class ListAmlUserFeatureResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ListAmlUserFeatureResult model =
             BinaryData
                 .fromString(
@@ -18,8 +17,8 @@ public final class ListAmlUserFeatureResultTests {
                 .toObject(ListAmlUserFeatureResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ListAmlUserFeatureResult model = new ListAmlUserFeatureResult();
         model = BinaryData.fromObject(model).toObject(ListAmlUserFeatureResult.class);
     }

@@ -16,6 +16,21 @@ public interface BillingRoleDefinitions {
      *
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingRoleDefinitionName The ID that uniquely identifies a role definition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the definition for a role on a billing account along with {@link Response}.
+     */
+    Response<BillingRoleDefinition> getByBillingAccountWithResponse(
+        String billingAccountName, String billingRoleDefinitionName, Context context);
+
+    /**
+     * Gets the definition for a role on a billing account. The operation is supported for billing accounts with
+     * agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
+     *
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingRoleDefinitionName The ID that uniquely identifies a role definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -24,19 +39,25 @@ public interface BillingRoleDefinitions {
     BillingRoleDefinition getByBillingAccount(String billingAccountName, String billingRoleDefinitionName);
 
     /**
-     * Gets the definition for a role on a billing account. The operation is supported for billing accounts with
-     * agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
+     * Gets the definition for a role on an invoice section. The operation is supported only for billing accounts with
+     * agreement type Microsoft Customer Agreement.
      *
      * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param billingRoleDefinitionName The ID that uniquely identifies a role definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the definition for a role on a billing account.
+     * @return the definition for a role on an invoice section along with {@link Response}.
      */
-    Response<BillingRoleDefinition> getByBillingAccountWithResponse(
-        String billingAccountName, String billingRoleDefinitionName, Context context);
+    Response<BillingRoleDefinition> getByInvoiceSectionWithResponse(
+        String billingAccountName,
+        String billingProfileName,
+        String invoiceSectionName,
+        String billingRoleDefinitionName,
+        Context context);
 
     /**
      * Gets the definition for a role on an invoice section. The operation is supported only for billing accounts with
@@ -58,25 +79,20 @@ public interface BillingRoleDefinitions {
         String billingRoleDefinitionName);
 
     /**
-     * Gets the definition for a role on an invoice section. The operation is supported only for billing accounts with
-     * agreement type Microsoft Customer Agreement.
+     * Gets the definition for a role on a billing profile. The operation is supported for billing accounts with
+     * agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
      *
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
-     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @param billingRoleDefinitionName The ID that uniquely identifies a role definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the definition for a role on an invoice section.
+     * @return the definition for a role on a billing profile along with {@link Response}.
      */
-    Response<BillingRoleDefinition> getByInvoiceSectionWithResponse(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String billingRoleDefinitionName,
-        Context context);
+    Response<BillingRoleDefinition> getByBillingProfileWithResponse(
+        String billingAccountName, String billingProfileName, String billingRoleDefinitionName, Context context);
 
     /**
      * Gets the definition for a role on a billing profile. The operation is supported for billing accounts with
@@ -94,22 +110,6 @@ public interface BillingRoleDefinitions {
         String billingAccountName, String billingProfileName, String billingRoleDefinitionName);
 
     /**
-     * Gets the definition for a role on a billing profile. The operation is supported for billing accounts with
-     * agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param billingProfileName The ID that uniquely identifies a billing profile.
-     * @param billingRoleDefinitionName The ID that uniquely identifies a role definition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the definition for a role on a billing profile.
-     */
-    Response<BillingRoleDefinition> getByBillingProfileWithResponse(
-        String billingAccountName, String billingProfileName, String billingRoleDefinitionName, Context context);
-
-    /**
      * Lists the role definitions for a billing account. The operation is supported for billing accounts with agreement
      * type Microsoft Partner Agreement or Microsoft Customer Agreement.
      *
@@ -117,7 +117,7 @@ public interface BillingRoleDefinitions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role definitions.
+     * @return the list of role definitions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingRoleDefinition> listByBillingAccount(String billingAccountName);
 
@@ -130,7 +130,7 @@ public interface BillingRoleDefinitions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role definitions.
+     * @return the list of role definitions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingRoleDefinition> listByBillingAccount(String billingAccountName, Context context);
 
@@ -144,7 +144,7 @@ public interface BillingRoleDefinitions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role definitions.
+     * @return the list of role definitions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingRoleDefinition> listByInvoiceSection(
         String billingAccountName, String billingProfileName, String invoiceSectionName);
@@ -160,7 +160,7 @@ public interface BillingRoleDefinitions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role definitions.
+     * @return the list of role definitions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingRoleDefinition> listByInvoiceSection(
         String billingAccountName, String billingProfileName, String invoiceSectionName, Context context);
@@ -174,7 +174,7 @@ public interface BillingRoleDefinitions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role definitions.
+     * @return the list of role definitions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingRoleDefinition> listByBillingProfile(String billingAccountName, String billingProfileName);
 
@@ -188,7 +188,7 @@ public interface BillingRoleDefinitions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of role definitions.
+     * @return the list of role definitions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingRoleDefinition> listByBillingProfile(
         String billingAccountName, String billingProfileName, Context context);

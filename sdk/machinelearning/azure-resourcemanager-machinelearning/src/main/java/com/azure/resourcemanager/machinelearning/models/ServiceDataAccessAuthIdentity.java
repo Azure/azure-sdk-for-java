@@ -22,6 +22,15 @@ public final class ServiceDataAccessAuthIdentity extends ExpandableStringEnum<Se
         fromString("WorkspaceUserAssignedIdentity");
 
     /**
+     * Creates a new instance of ServiceDataAccessAuthIdentity value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServiceDataAccessAuthIdentity() {
+    }
+
+    /**
      * Creates or finds a ServiceDataAccessAuthIdentity from its string representation.
      *
      * @param name a name to look for.

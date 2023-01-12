@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SyncGroups Get. */
 public final class SyncGroupsGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2015-05-01-preview/examples/SyncGroupGet.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/SyncGroupGet.json
      */
     /**
      * Sample code: Get a sync group.

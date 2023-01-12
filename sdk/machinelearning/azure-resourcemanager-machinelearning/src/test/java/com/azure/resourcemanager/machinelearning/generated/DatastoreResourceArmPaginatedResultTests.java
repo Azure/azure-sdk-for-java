@@ -12,11 +12,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DatastoreResourceArmPaginatedResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DatastoreResourceArmPaginatedResult model =
             BinaryData
                 .fromString(
@@ -26,8 +25,8 @@ public final class DatastoreResourceArmPaginatedResultTests {
         Assertions.assertEquals("yeua", model.value().get(0).properties().description());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DatastoreResourceArmPaginatedResult model =
             new DatastoreResourceArmPaginatedResult()
                 .withNextLink("fmluiqtqzfavyvn")

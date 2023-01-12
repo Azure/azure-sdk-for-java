@@ -14,7 +14,7 @@ public interface Operations {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Advisor operations.
+     * @return the list of Advisor operations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<OperationEntity> list();
 
@@ -25,7 +25,7 @@ public interface Operations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Advisor operations.
+     * @return the list of Advisor operations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<OperationEntity> list(Context context);
 }

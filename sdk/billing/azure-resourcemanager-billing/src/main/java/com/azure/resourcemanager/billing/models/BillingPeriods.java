@@ -17,7 +17,7 @@ public interface BillingPeriods {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing billing periods.
+     * @return result of listing billing periods as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingPeriod> list();
 
@@ -36,9 +36,22 @@ public interface BillingPeriods {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing billing periods.
+     * @return result of listing billing periods as paginated response with {@link PagedIterable}.
      */
     PagedIterable<BillingPeriod> list(String filter, String skiptoken, Integer top, Context context);
+
+    /**
+     * Gets a named billing period. This is only supported for Azure Web-Direct subscriptions. Other subscription types
+     * which were not purchased directly through the Azure web portal are not supported through this preview API.
+     *
+     * @param billingPeriodName The name of a BillingPeriod resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a named billing period along with {@link Response}.
+     */
+    Response<BillingPeriod> getWithResponse(String billingPeriodName, Context context);
 
     /**
      * Gets a named billing period. This is only supported for Azure Web-Direct subscriptions. Other subscription types
@@ -51,17 +64,4 @@ public interface BillingPeriods {
      * @return a named billing period.
      */
     BillingPeriod get(String billingPeriodName);
-
-    /**
-     * Gets a named billing period. This is only supported for Azure Web-Direct subscriptions. Other subscription types
-     * which were not purchased directly through the Azure web portal are not supported through this preview API.
-     *
-     * @param billingPeriodName The name of a BillingPeriod resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a named billing period.
-     */
-    Response<BillingPeriod> getWithResponse(String billingPeriodName, Context context);
 }

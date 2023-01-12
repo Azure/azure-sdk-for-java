@@ -24,6 +24,10 @@ public final class JobTargetGroupListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of JobTargetGroupListResult class. */
+    public JobTargetGroupListResult() {
+    }
+
     /**
      * Get the value property: Array of results.
      *

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.sql.models.ResourceMoveDefinition;
 /** Samples for Databases Rename. */
 public final class DatabasesRenameSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/preview/2017-10-01-preview/examples/RenameDatabase.json
+     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/RenameDatabase.json
      */
     /**
      * Sample code: Renames a database.

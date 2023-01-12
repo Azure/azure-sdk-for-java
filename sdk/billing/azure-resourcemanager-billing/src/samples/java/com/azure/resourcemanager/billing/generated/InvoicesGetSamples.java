@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Invoices Get. */
 public final class InvoicesGetSamples {
     /*
@@ -17,7 +15,7 @@ public final class InvoicesGetSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void invoice(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoices().getWithResponse("{billingAccountName}", "{invoiceName}", Context.NONE);
+        manager.invoices().getWithResponse("{billingAccountName}", "{invoiceName}", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -29,7 +27,7 @@ public final class InvoicesGetSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void creditNote(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoices().getWithResponse("{billingAccountName}", "{invoiceName}", Context.NONE);
+        manager.invoices().getWithResponse("{billingAccountName}", "{invoiceName}", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -41,7 +39,7 @@ public final class InvoicesGetSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void voidInvoice(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoices().getWithResponse("{billingAccountName}", "{invoiceName}", Context.NONE);
+        manager.invoices().getWithResponse("{billingAccountName}", "{invoiceName}", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -53,6 +51,6 @@ public final class InvoicesGetSamples {
      * @param manager Entry point to BillingManager.
      */
     public static void invoiceWithRebillDetails(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoices().getWithResponse("{billingAccountName}", "{invoiceName}", Context.NONE);
+        manager.invoices().getWithResponse("{billingAccountName}", "{invoiceName}", com.azure.core.util.Context.NONE);
     }
 }

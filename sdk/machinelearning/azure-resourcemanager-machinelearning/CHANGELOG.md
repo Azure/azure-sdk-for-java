@@ -1,6 +1,27 @@
 # Release History
 
-## 1.0.0-beta.3 (2022-11-09)
+## 1.1.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0 (2023-01-11)
+
+- Azure Resource Manager Machine Learning client library for Java. This package contains Microsoft Azure SDK for Machine Learning Management SDK. These APIs allow end users to operate on Azure Machine Learning Workspace resources. Package tag package-2022-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.EndpointPropertiesBase` was modified
+
+* `java.net.URL swaggerUri()` -> `java.lang.String swaggerUri()`
+* `java.net.URL scoringUri()` -> `java.lang.String scoringUri()`
+
+## 1.0.0-beta.3 (2023-01-10)
 
 - Azure Resource Manager Machine Learning client library for Java. This package contains Microsoft Azure SDK for Machine Learning Management SDK. These APIs allow end users to operate on Azure Machine Learning Workspace resources. Package tag package-2022-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -284,15 +305,15 @@
 
 #### `models.ImageClassificationMultilabel` was modified
 
-* `dataSettings()` was removed
 * `withDataSettings(models.ImageVerticalDataSettings)` was removed
+* `dataSettings()` was removed
 
 #### `models.AzureBlobDatastore` was modified
 
-* `models.DatastoreDetails withDescription(java.lang.String)` -> `models.DatastoreProperties withDescription(java.lang.String)`
-* `models.DatastoreDetails withTags(java.util.Map)` -> `models.DatastoreProperties withTags(java.util.Map)`
 * `models.DatastoreDetails withProperties(java.util.Map)` -> `models.DatastoreProperties withProperties(java.util.Map)`
 * `models.DatastoreDetails withCredentials(models.DatastoreCredentials)` -> `models.DatastoreProperties withCredentials(models.DatastoreCredentials)`
+* `models.DatastoreDetails withTags(java.util.Map)` -> `models.DatastoreProperties withTags(java.util.Map)`
+* `models.DatastoreDetails withDescription(java.lang.String)` -> `models.DatastoreProperties withDescription(java.lang.String)`
 
 #### `models.CodeVersions` was modified
 
@@ -303,16 +324,13 @@
 #### `models.ComponentContainers` was modified
 
 * `models.ComponentContainerData$DefinitionStages$Blank define(java.lang.String)` -> `models.ComponentContainer$DefinitionStages$Blank define(java.lang.String)`
-* `models.ComponentContainerData get(java.lang.String,java.lang.String,java.lang.String)` -> `models.ComponentContainer get(java.lang.String,java.lang.String,java.lang.String)`
 * `models.ComponentContainerData getById(java.lang.String)` -> `models.ComponentContainer getById(java.lang.String)`
+* `models.ComponentContainerData get(java.lang.String,java.lang.String,java.lang.String)` -> `models.ComponentContainer get(java.lang.String,java.lang.String,java.lang.String)`
 
 #### `models.ImageModelSettingsObjectDetection` was modified
 
 * `withCheckpointDatasetId(java.lang.String)` was removed
 * `withCheckpointFilename(java.lang.String)` was removed
-* `withCheckpointDatasetId(java.lang.String)` was removed
-* `withCheckpointFilename(java.lang.String)` was removed
-* `withSplitRatio(java.lang.Float)` was removed
 * `withSplitRatio(java.lang.Float)` was removed
 
 #### `models.ImageSweepSettings` was modified
@@ -322,9 +340,9 @@
 
 #### `models.DataContainers` was modified
 
-* `models.DataContainerData get(java.lang.String,java.lang.String,java.lang.String)` -> `models.DataContainer get(java.lang.String,java.lang.String,java.lang.String)`
 * `models.DataContainerData getById(java.lang.String)` -> `models.DataContainer getById(java.lang.String)`
 * `models.DataContainerData$DefinitionStages$Blank define(java.lang.String)` -> `models.DataContainer$DefinitionStages$Blank define(java.lang.String)`
+* `models.DataContainerData get(java.lang.String,java.lang.String,java.lang.String)` -> `models.DataContainer get(java.lang.String,java.lang.String,java.lang.String)`
 
 #### `models.ImageInstanceSegmentation` was modified
 
@@ -334,53 +352,52 @@
 #### `models.OnlineEndpoints` was modified
 
 * `models.OnlineEndpointData getById(java.lang.String)` -> `models.OnlineEndpoint getById(java.lang.String)`
-* `models.OnlineEndpointData$DefinitionStages$Blank define(java.lang.String)` -> `models.OnlineEndpoint$DefinitionStages$Blank define(java.lang.String)`
 * `models.OnlineEndpointData get(java.lang.String,java.lang.String,java.lang.String)` -> `models.OnlineEndpoint get(java.lang.String,java.lang.String,java.lang.String)`
+* `models.OnlineEndpointData$DefinitionStages$Blank define(java.lang.String)` -> `models.OnlineEndpoint$DefinitionStages$Blank define(java.lang.String)`
 
 #### `models.PartialBatchDeployment` was modified
 
-* `withMaxConcurrencyPerInstance(java.lang.Integer)` was removed
-* `environmentId()` was removed
-* `outputAction()` was removed
-* `retrySettings()` was removed
-* `properties()` was removed
-* `withCodeConfiguration(models.PartialCodeConfiguration)` was removed
-* `withLoggingLevel(models.BatchLoggingLevel)` was removed
 * `withRetrySettings(models.PartialBatchRetrySettings)` was removed
-* `withEnvironmentId(java.lang.String)` was removed
 * `model()` was removed
-* `withProperties(java.util.Map)` was removed
-* `miniBatchSize()` was removed
-* `compute()` was removed
-* `withCompute(java.lang.String)` was removed
-* `withOutputFileName(java.lang.String)` was removed
-* `outputFileName()` was removed
-* `withEnvironmentVariables(java.util.Map)` was removed
-* `withErrorThreshold(java.lang.Integer)` was removed
-* `maxConcurrencyPerInstance()` was removed
-* `environmentVariables()` was removed
 * `withOutputAction(models.BatchOutputAction)` was removed
 * `codeConfiguration()` was removed
-* `withMiniBatchSize(java.lang.Long)` was removed
-* `withModel(models.PartialAssetReferenceBase)` was removed
-* `loggingLevel()` was removed
+* `properties()` was removed
+* `miniBatchSize()` was removed
+* `maxConcurrencyPerInstance()` was removed
+* `retrySettings()` was removed
+* `withOutputFileName(java.lang.String)` was removed
 * `errorThreshold()` was removed
+* `outputFileName()` was removed
+* `withProperties(java.util.Map)` was removed
+* `withEnvironmentId(java.lang.String)` was removed
+* `loggingLevel()` was removed
+* `environmentVariables()` was removed
+* `withModel(models.PartialAssetReferenceBase)` was removed
+* `withCompute(java.lang.String)` was removed
+* `withCodeConfiguration(models.PartialCodeConfiguration)` was removed
+* `withMiniBatchSize(java.lang.Long)` was removed
+* `compute()` was removed
+* `environmentId()` was removed
+* `outputAction()` was removed
+* `withLoggingLevel(models.BatchLoggingLevel)` was removed
+* `withEnvironmentVariables(java.util.Map)` was removed
+* `withErrorThreshold(java.lang.Integer)` was removed
+* `withMaxConcurrencyPerInstance(java.lang.Integer)` was removed
 
 #### `models.ImageClassificationBase` was modified
 
-* `withDataSettings(models.ImageVerticalDataSettings)` was removed
 * `withDataSettings(models.ImageVerticalDataSettings)` was removed
 
 #### `models.BatchDeployments` was modified
 
 * `models.BatchDeploymentData getById(java.lang.String)` -> `models.BatchDeployment getById(java.lang.String)`
-* `models.BatchDeploymentData$DefinitionStages$Blank define(java.lang.String)` -> `models.BatchDeployment$DefinitionStages$Blank define(java.lang.String)`
 * `models.BatchDeploymentData get(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` -> `models.BatchDeployment get(java.lang.String,java.lang.String,java.lang.String,java.lang.String)`
+* `models.BatchDeploymentData$DefinitionStages$Blank define(java.lang.String)` -> `models.BatchDeployment$DefinitionStages$Blank define(java.lang.String)`
 
 #### `models.TableVerticalFeaturizationSettings` was modified
 
-* `withDropColumns(java.util.List)` was removed
 * `dropColumns()` was removed
+* `withDropColumns(java.util.List)` was removed
 
 #### `models.EndpointPropertiesBase` was modified
 
@@ -389,21 +406,20 @@
 
 #### `models.BatchEndpoints` was modified
 
-* `models.BatchEndpointData$DefinitionStages$Blank define(java.lang.String)` -> `models.BatchEndpoint$DefinitionStages$Blank define(java.lang.String)`
 * `models.BatchEndpointData get(java.lang.String,java.lang.String,java.lang.String)` -> `models.BatchEndpoint get(java.lang.String,java.lang.String,java.lang.String)`
+* `models.BatchEndpointData$DefinitionStages$Blank define(java.lang.String)` -> `models.BatchEndpoint$DefinitionStages$Blank define(java.lang.String)`
 * `models.BatchEndpointData getById(java.lang.String)` -> `models.BatchEndpoint getById(java.lang.String)`
 
 #### `models.ImageModelDistributionSettingsClassification` was modified
 
 * `withSplitRatio(java.lang.String)` was removed
-* `withSplitRatio(java.lang.String)` was removed
 
 #### `models.AzureDataLakeGen1Datastore` was modified
 
 * `models.DatastoreDetails withCredentials(models.DatastoreCredentials)` -> `models.DatastoreProperties withCredentials(models.DatastoreCredentials)`
-* `models.DatastoreDetails withDescription(java.lang.String)` -> `models.DatastoreProperties withDescription(java.lang.String)`
-* `models.DatastoreDetails withTags(java.util.Map)` -> `models.DatastoreProperties withTags(java.util.Map)`
 * `models.DatastoreDetails withProperties(java.util.Map)` -> `models.DatastoreProperties withProperties(java.util.Map)`
+* `models.DatastoreDetails withTags(java.util.Map)` -> `models.DatastoreProperties withTags(java.util.Map)`
+* `models.DatastoreDetails withDescription(java.lang.String)` -> `models.DatastoreProperties withDescription(java.lang.String)`
 
 #### `models.Workspaces` was modified
 
@@ -411,110 +427,101 @@
 
 #### `models.ManagedOnlineDeployment` was modified
 
-* `models.OnlineDeploymentDetails withModelMountPath(java.lang.String)` -> `models.OnlineDeploymentProperties withModelMountPath(java.lang.String)`
-* `models.OnlineDeploymentDetails withRequestSettings(models.OnlineRequestSettings)` -> `models.OnlineDeploymentProperties withRequestSettings(models.OnlineRequestSettings)`
+* `models.OnlineDeploymentDetails withReadinessProbe(models.ProbeSettings)` -> `models.OnlineDeploymentProperties withReadinessProbe(models.ProbeSettings)`
+* `models.OnlineDeploymentDetails withCodeConfiguration(models.CodeConfiguration)` -> `models.OnlineDeploymentProperties withCodeConfiguration(models.CodeConfiguration)`
+* `models.OnlineDeploymentDetails withEnvironmentId(java.lang.String)` -> `models.OnlineDeploymentProperties withEnvironmentId(java.lang.String)`
+* `models.OnlineDeploymentDetails withEgressPublicNetworkAccess(models.EgressPublicNetworkAccessType)` -> `models.OnlineDeploymentProperties withEgressPublicNetworkAccess(models.EgressPublicNetworkAccessType)`
+* `models.OnlineDeploymentDetails withDescription(java.lang.String)` -> `models.OnlineDeploymentProperties withDescription(java.lang.String)`
+* `models.OnlineDeploymentDetails withModel(java.lang.String)` -> `models.OnlineDeploymentProperties withModel(java.lang.String)`
 * `models.OnlineDeploymentDetails withProperties(java.util.Map)` -> `models.OnlineDeploymentProperties withProperties(java.util.Map)`
+* `models.OnlineDeploymentDetails withEnvironmentVariables(java.util.Map)` -> `models.OnlineDeploymentProperties withEnvironmentVariables(java.util.Map)`
 * `models.OnlineDeploymentDetails withInstanceType(java.lang.String)` -> `models.OnlineDeploymentProperties withInstanceType(java.lang.String)`
 * `withPrivateNetworkConnection(java.lang.Boolean)` was removed
-* `models.OnlineDeploymentDetails withEgressPublicNetworkAccess(models.EgressPublicNetworkAccessType)` -> `models.OnlineDeploymentProperties withEgressPublicNetworkAccess(models.EgressPublicNetworkAccessType)`
-* `models.OnlineDeploymentDetails withAppInsightsEnabled(java.lang.Boolean)` -> `models.OnlineDeploymentProperties withAppInsightsEnabled(java.lang.Boolean)`
-* `models.OnlineDeploymentDetails withReadinessProbe(models.ProbeSettings)` -> `models.OnlineDeploymentProperties withReadinessProbe(models.ProbeSettings)`
 * `models.OnlineDeploymentDetails withScaleSettings(models.OnlineScaleSettings)` -> `models.OnlineDeploymentProperties withScaleSettings(models.OnlineScaleSettings)`
-* `models.OnlineDeploymentDetails withEnvironmentId(java.lang.String)` -> `models.OnlineDeploymentProperties withEnvironmentId(java.lang.String)`
-* `models.OnlineDeploymentDetails withModel(java.lang.String)` -> `models.OnlineDeploymentProperties withModel(java.lang.String)`
-* `models.OnlineDeploymentDetails withDescription(java.lang.String)` -> `models.OnlineDeploymentProperties withDescription(java.lang.String)`
-* `models.OnlineDeploymentDetails withEnvironmentVariables(java.util.Map)` -> `models.OnlineDeploymentProperties withEnvironmentVariables(java.util.Map)`
-* `models.OnlineDeploymentDetails withCodeConfiguration(models.CodeConfiguration)` -> `models.OnlineDeploymentProperties withCodeConfiguration(models.CodeConfiguration)`
-* `withPrivateNetworkConnection(java.lang.Boolean)` was removed
+* `models.OnlineDeploymentDetails withAppInsightsEnabled(java.lang.Boolean)` -> `models.OnlineDeploymentProperties withAppInsightsEnabled(java.lang.Boolean)`
+* `models.OnlineDeploymentDetails withModelMountPath(java.lang.String)` -> `models.OnlineDeploymentProperties withModelMountPath(java.lang.String)`
+* `models.OnlineDeploymentDetails withRequestSettings(models.OnlineRequestSettings)` -> `models.OnlineDeploymentProperties withRequestSettings(models.OnlineRequestSettings)`
 * `models.OnlineDeploymentDetails withLivenessProbe(models.ProbeSettings)` -> `models.OnlineDeploymentProperties withLivenessProbe(models.ProbeSettings)`
 
 #### `models.EnvironmentContainers` was modified
 
 * `models.EnvironmentContainerData get(java.lang.String,java.lang.String,java.lang.String)` -> `models.EnvironmentContainer get(java.lang.String,java.lang.String,java.lang.String)`
-* `models.EnvironmentContainerData getById(java.lang.String)` -> `models.EnvironmentContainer getById(java.lang.String)`
 * `models.EnvironmentContainerData$DefinitionStages$Blank define(java.lang.String)` -> `models.EnvironmentContainer$DefinitionStages$Blank define(java.lang.String)`
+* `models.EnvironmentContainerData getById(java.lang.String)` -> `models.EnvironmentContainer getById(java.lang.String)`
 
 #### `models.UriFolderDataVersion` was modified
 
+* `models.DataVersionBaseDetails withDescription(java.lang.String)` -> `models.DataVersionBaseProperties withDescription(java.lang.String)`
 * `models.DataVersionBaseDetails withTags(java.util.Map)` -> `models.DataVersionBaseProperties withTags(java.util.Map)`
+* `models.DataVersionBaseDetails withProperties(java.util.Map)` -> `models.DataVersionBaseProperties withProperties(java.util.Map)`
 * `models.DataVersionBaseDetails withDataUri(java.lang.String)` -> `models.DataVersionBaseProperties withDataUri(java.lang.String)`
 * `models.DataVersionBaseDetails withIsAnonymous(java.lang.Boolean)` -> `models.DataVersionBaseProperties withIsAnonymous(java.lang.Boolean)`
-* `models.DataVersionBaseDetails withDescription(java.lang.String)` -> `models.DataVersionBaseProperties withDescription(java.lang.String)`
 * `models.DataVersionBaseDetails withIsArchived(java.lang.Boolean)` -> `models.DataVersionBaseProperties withIsArchived(java.lang.Boolean)`
-* `models.DataVersionBaseDetails withProperties(java.util.Map)` -> `models.DataVersionBaseProperties withProperties(java.util.Map)`
 
 #### `models.Datastores` was modified
 
 * `models.DatastoreData get(java.lang.String,java.lang.String,java.lang.String)` -> `models.Datastore get(java.lang.String,java.lang.String,java.lang.String)`
-* `models.DatastoreData getById(java.lang.String)` -> `models.Datastore getById(java.lang.String)`
 * `models.DatastoreData$DefinitionStages$Blank define(java.lang.String)` -> `models.Datastore$DefinitionStages$Blank define(java.lang.String)`
+* `models.DatastoreData getById(java.lang.String)` -> `models.Datastore getById(java.lang.String)`
 
 #### `models.PipelineJob` was modified
 
-* `withSchedule(models.ScheduleBase)` was removed
-* `models.JobBaseDetails withDisplayName(java.lang.String)` -> `models.JobBaseProperties withDisplayName(java.lang.String)`
 * `models.JobBaseDetails withDescription(java.lang.String)` -> `models.JobBaseProperties withDescription(java.lang.String)`
 * `models.JobBaseDetails withTags(java.util.Map)` -> `models.JobBaseProperties withTags(java.util.Map)`
-* `models.JobBaseDetails withProperties(java.util.Map)` -> `models.JobBaseProperties withProperties(java.util.Map)`
-* `models.JobBaseDetails withIdentity(models.IdentityConfiguration)` -> `models.JobBaseProperties withIdentity(models.IdentityConfiguration)`
 * `models.JobBaseDetails withServices(java.util.Map)` -> `models.JobBaseProperties withServices(java.util.Map)`
-* `models.JobBaseDetails withIsArchived(java.lang.Boolean)` -> `models.JobBaseProperties withIsArchived(java.lang.Boolean)`
-* `models.JobBaseDetails withComputeId(java.lang.String)` -> `models.JobBaseProperties withComputeId(java.lang.String)`
-* `models.JobBaseDetails withExperimentName(java.lang.String)` -> `models.JobBaseProperties withExperimentName(java.lang.String)`
 * `withSchedule(models.ScheduleBase)` was removed
+* `models.JobBaseDetails withIdentity(models.IdentityConfiguration)` -> `models.JobBaseProperties withIdentity(models.IdentityConfiguration)`
+* `models.JobBaseDetails withDisplayName(java.lang.String)` -> `models.JobBaseProperties withDisplayName(java.lang.String)`
+* `models.JobBaseDetails withIsArchived(java.lang.Boolean)` -> `models.JobBaseProperties withIsArchived(java.lang.Boolean)`
+* `models.JobBaseDetails withExperimentName(java.lang.String)` -> `models.JobBaseProperties withExperimentName(java.lang.String)`
+* `models.JobBaseDetails withProperties(java.util.Map)` -> `models.JobBaseProperties withProperties(java.util.Map)`
+* `models.JobBaseDetails withComputeId(java.lang.String)` -> `models.JobBaseProperties withComputeId(java.lang.String)`
 
 #### `models.RecurrenceSchedule` was modified
 
-* `interval()` was removed
 * `withStartTime(java.time.OffsetDateTime)` was removed
-* `withScheduleStatus(models.ScheduleStatus)` was removed
+* `pattern()` was removed
 * `withScheduleStatus(models.ScheduleStatus)` was removed
 * `withTimeZone(java.lang.String)` was removed
 * `withPattern(models.RecurrencePattern)` was removed
-* `withEndTime(java.time.OffsetDateTime)` was removed
-* `withEndTime(java.time.OffsetDateTime)` was removed
-* `pattern()` was removed
-* `withFrequency(models.RecurrenceFrequency)` was removed
-* `withTimeZone(java.lang.String)` was removed
 * `withInterval(int)` was removed
-* `withStartTime(java.time.OffsetDateTime)` was removed
+* `withEndTime(java.time.OffsetDateTime)` was removed
+* `withFrequency(models.RecurrenceFrequency)` was removed
+* `interval()` was removed
 * `frequency()` was removed
 
 #### `models.Classification` was modified
 
-* `models.TrainingSettings trainingSettings()` -> `models.ClassificationTrainingSettings trainingSettings()`
-* `blockedModels()` was removed
 * `withAllowedModels(java.util.List)` was removed
 * `allowedModels()` was removed
 * `withTrainingSettings(models.TrainingSettings)` was removed
-* `withBlockedModels(java.util.List)` was removed
+* `blockedModels()` was removed
 * `dataSettings()` was removed
 * `withDataSettings(models.TableVerticalDataSettings)` was removed
+* `models.TrainingSettings trainingSettings()` -> `models.ClassificationTrainingSettings trainingSettings()`
+* `withBlockedModels(java.util.List)` was removed
 
 #### `models.AzureDataLakeGen2Datastore` was modified
 
 * `models.DatastoreDetails withCredentials(models.DatastoreCredentials)` -> `models.DatastoreProperties withCredentials(models.DatastoreCredentials)`
-* `models.DatastoreDetails withProperties(java.util.Map)` -> `models.DatastoreProperties withProperties(java.util.Map)`
 * `models.DatastoreDetails withTags(java.util.Map)` -> `models.DatastoreProperties withTags(java.util.Map)`
+* `models.DatastoreDetails withProperties(java.util.Map)` -> `models.DatastoreProperties withProperties(java.util.Map)`
 * `models.DatastoreDetails withDescription(java.lang.String)` -> `models.DatastoreProperties withDescription(java.lang.String)`
 
 #### `models.ImageModelSettingsClassification` was modified
 
 * `withCheckpointDatasetId(java.lang.String)` was removed
-* `withCheckpointDatasetId(java.lang.String)` was removed
 * `withCheckpointFilename(java.lang.String)` was removed
 * `withSplitRatio(java.lang.Float)` was removed
-* `withSplitRatio(java.lang.Float)` was removed
-* `withCheckpointFilename(java.lang.String)` was removed
 
 #### `models.UriFileDataVersion` was modified
 
-* `models.DataVersionBaseDetails withDescription(java.lang.String)` -> `models.DataVersionBaseProperties withDescription(java.lang.String)`
-* `models.DataVersionBaseDetails withProperties(java.util.Map)` -> `models.DataVersionBaseProperties withProperties(java.util.Map)`
 * `models.DataVersionBaseDetails withIsArchived(java.lang.Boolean)` -> `models.DataVersionBaseProperties withIsArchived(java.lang.Boolean)`
-* `models.DataVersionBaseDetails withDataUri(java.lang.String)` -> `models.DataVersionBaseProperties withDataUri(java.lang.String)`
-* `models.DataVersionBaseDetails withTags(java.util.Map)` -> `models.DataVersionBaseProperties withTags(java.util.Map)`
 * `models.DataVersionBaseDetails withIsAnonymous(java.lang.Boolean)` -> `models.DataVersionBaseProperties withIsAnonymous(java.lang.Boolean)`
+* `models.DataVersionBaseDetails withTags(java.util.Map)` -> `models.DataVersionBaseProperties withTags(java.util.Map)`
+* `models.DataVersionBaseDetails withDataUri(java.lang.String)` -> `models.DataVersionBaseProperties withDataUri(java.lang.String)`
+* `models.DataVersionBaseDetails withProperties(java.util.Map)` -> `models.DataVersionBaseProperties withProperties(java.util.Map)`
+* `models.DataVersionBaseDetails withDescription(java.lang.String)` -> `models.DataVersionBaseProperties withDescription(java.lang.String)`
 
 #### `models.WorkspaceConnections` was modified
 
@@ -533,8 +540,8 @@
 
 #### `models.NlpVertical` was modified
 
-* `withDataSettings(models.NlpVerticalDataSettings)` was removed
 * `dataSettings()` was removed
+* `withDataSettings(models.NlpVerticalDataSettings)` was removed
 
 #### `models.TrialComponent` was modified
 
@@ -543,40 +550,40 @@
 
 #### `models.Regression` was modified
 
-* `dataSettings()` was removed
 * `withAllowedModels(java.util.List)` was removed
-* `models.TrainingSettings trainingSettings()` -> `models.RegressionTrainingSettings trainingSettings()`
+* `allowedModels()` was removed
 * `blockedModels()` was removed
 * `withBlockedModels(java.util.List)` was removed
-* `allowedModels()` was removed
 * `withTrainingSettings(models.TrainingSettings)` was removed
+* `models.TrainingSettings trainingSettings()` -> `models.RegressionTrainingSettings trainingSettings()`
+* `dataSettings()` was removed
 * `withDataSettings(models.TableVerticalDataSettings)` was removed
 
 #### `models.MLTableData` was modified
 
 * `models.DataVersionBaseDetails withProperties(java.util.Map)` -> `models.DataVersionBaseProperties withProperties(java.util.Map)`
+* `models.DataVersionBaseDetails withIsArchived(java.lang.Boolean)` -> `models.DataVersionBaseProperties withIsArchived(java.lang.Boolean)`
 * `models.DataVersionBaseDetails withTags(java.util.Map)` -> `models.DataVersionBaseProperties withTags(java.util.Map)`
 * `models.DataVersionBaseDetails withDescription(java.lang.String)` -> `models.DataVersionBaseProperties withDescription(java.lang.String)`
 * `models.DataVersionBaseDetails withIsAnonymous(java.lang.Boolean)` -> `models.DataVersionBaseProperties withIsAnonymous(java.lang.Boolean)`
 * `models.DataVersionBaseDetails withDataUri(java.lang.String)` -> `models.DataVersionBaseProperties withDataUri(java.lang.String)`
-* `models.DataVersionBaseDetails withIsArchived(java.lang.Boolean)` -> `models.DataVersionBaseProperties withIsArchived(java.lang.Boolean)`
 
 #### `models.Forecasting` was modified
 
-* `allowedModels()` was removed
-* `withBlockedModels(java.util.List)` was removed
 * `models.TrainingSettings trainingSettings()` -> `models.ForecastingTrainingSettings trainingSettings()`
 * `withDataSettings(models.TableVerticalDataSettings)` was removed
+* `withBlockedModels(java.util.List)` was removed
 * `dataSettings()` was removed
-* `withAllowedModels(java.util.List)` was removed
+* `allowedModels()` was removed
 * `withTrainingSettings(models.TrainingSettings)` was removed
+* `withAllowedModels(java.util.List)` was removed
 * `blockedModels()` was removed
 
 #### `models.AzureFileDatastore` was modified
 
 * `models.DatastoreDetails withTags(java.util.Map)` -> `models.DatastoreProperties withTags(java.util.Map)`
-* `models.DatastoreDetails withDescription(java.lang.String)` -> `models.DatastoreProperties withDescription(java.lang.String)`
 * `models.DatastoreDetails withProperties(java.util.Map)` -> `models.DatastoreProperties withProperties(java.util.Map)`
+* `models.DatastoreDetails withDescription(java.lang.String)` -> `models.DatastoreProperties withDescription(java.lang.String)`
 * `models.DatastoreDetails withCredentials(models.DatastoreCredentials)` -> `models.DatastoreProperties withCredentials(models.DatastoreCredentials)`
 
 #### `models.ImageModelDistributionSettings` was modified
@@ -587,24 +594,24 @@
 #### `models.OnlineDeployments` was modified
 
 * `models.OnlineDeploymentData getById(java.lang.String)` -> `models.OnlineDeployment getById(java.lang.String)`
-* `models.OnlineDeploymentData get(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` -> `models.OnlineDeployment get(java.lang.String,java.lang.String,java.lang.String,java.lang.String)`
 * `models.OnlineDeploymentData$DefinitionStages$Blank define(java.lang.String)` -> `models.OnlineDeployment$DefinitionStages$Blank define(java.lang.String)`
+* `models.OnlineDeploymentData get(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` -> `models.OnlineDeployment get(java.lang.String,java.lang.String,java.lang.String,java.lang.String)`
 
 #### `models.ImageVertical` was modified
 
-* `dataSettings()` was removed
 * `withDataSettings(models.ImageVerticalDataSettings)` was removed
+* `dataSettings()` was removed
 
 #### `models.TextClassificationMultilabel` was modified
 
-* `withDataSettings(models.NlpVerticalDataSettings)` was removed
 * `dataSettings()` was removed
+* `withDataSettings(models.NlpVerticalDataSettings)` was removed
 
 #### `models.ComponentVersions` was modified
 
+* `models.ComponentVersionData$DefinitionStages$Blank define(java.lang.String)` -> `models.ComponentVersion$DefinitionStages$Blank define(java.lang.String)`
 * `models.ComponentVersionData get(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` -> `models.ComponentVersion get(java.lang.String,java.lang.String,java.lang.String,java.lang.String)`
 * `models.ComponentVersionData getById(java.lang.String)` -> `models.ComponentVersion getById(java.lang.String)`
-* `models.ComponentVersionData$DefinitionStages$Blank define(java.lang.String)` -> `models.ComponentVersion$DefinitionStages$Blank define(java.lang.String)`
 
 #### `models.ImageClassification` was modified
 
@@ -613,67 +620,65 @@
 
 #### `models.CodeContainers` was modified
 
-* `models.CodeContainerData getById(java.lang.String)` -> `models.CodeContainer getById(java.lang.String)`
-* `models.CodeContainerData get(java.lang.String,java.lang.String,java.lang.String)` -> `models.CodeContainer get(java.lang.String,java.lang.String,java.lang.String)`
 * `models.CodeContainerData$DefinitionStages$Blank define(java.lang.String)` -> `models.CodeContainer$DefinitionStages$Blank define(java.lang.String)`
+* `models.CodeContainerData get(java.lang.String,java.lang.String,java.lang.String)` -> `models.CodeContainer get(java.lang.String,java.lang.String,java.lang.String)`
+* `models.CodeContainerData getById(java.lang.String)` -> `models.CodeContainer getById(java.lang.String)`
 
 #### `models.Jobs` was modified
 
-* `models.JobBaseData get(java.lang.String,java.lang.String,java.lang.String)` -> `models.JobBase get(java.lang.String,java.lang.String,java.lang.String)`
 * `cancelWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
 * `models.JobBaseData$DefinitionStages$Blank define(java.lang.String)` -> `models.JobBase$DefinitionStages$Blank define(java.lang.String)`
+* `models.JobBaseData get(java.lang.String,java.lang.String,java.lang.String)` -> `models.JobBase get(java.lang.String,java.lang.String,java.lang.String)`
 * `models.JobBaseData getById(java.lang.String)` -> `models.JobBase getById(java.lang.String)`
 * `list(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.ListViewType,java.lang.Boolean,java.lang.String,com.azure.core.util.Context)` was removed
 
 #### `models.TableVertical` was modified
 
+* `dataSettings()` was removed
+* `withDataSettings(models.TableVerticalDataSettings)` was removed
 * `trainingSettings()` was removed
 * `withTrainingSettings(models.TrainingSettings)` was removed
-* `withDataSettings(models.TableVerticalDataSettings)` was removed
-* `dataSettings()` was removed
 
 #### `models.DataVersions` was modified
 
-* `models.DataVersionBaseData$DefinitionStages$Blank define(java.lang.String)` -> `models.DataVersionBase$DefinitionStages$Blank define(java.lang.String)`
 * `models.DataVersionBaseData get(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` -> `models.DataVersionBase get(java.lang.String,java.lang.String,java.lang.String,java.lang.String)`
+* `models.DataVersionBaseData$DefinitionStages$Blank define(java.lang.String)` -> `models.DataVersionBase$DefinitionStages$Blank define(java.lang.String)`
 * `models.DataVersionBaseData getById(java.lang.String)` -> `models.DataVersionBase getById(java.lang.String)`
 
 #### `models.ImageObjectDetectionBase` was modified
 
 * `withDataSettings(models.ImageVerticalDataSettings)` was removed
-* `withDataSettings(models.ImageVerticalDataSettings)` was removed
 
 #### `models.TextNer` was modified
 
-* `withDataSettings(models.NlpVerticalDataSettings)` was removed
 * `dataSettings()` was removed
+* `withDataSettings(models.NlpVerticalDataSettings)` was removed
 
 #### `models.EnvironmentVersions` was modified
 
-* `models.EnvironmentVersionData getById(java.lang.String)` -> `models.EnvironmentVersion getById(java.lang.String)`
 * `models.EnvironmentVersionData get(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` -> `models.EnvironmentVersion get(java.lang.String,java.lang.String,java.lang.String,java.lang.String)`
 * `models.EnvironmentVersionData$DefinitionStages$Blank define(java.lang.String)` -> `models.EnvironmentVersion$DefinitionStages$Blank define(java.lang.String)`
+* `models.EnvironmentVersionData getById(java.lang.String)` -> `models.EnvironmentVersion getById(java.lang.String)`
 
 #### `models.CommandJob` was modified
 
-* `models.JobBaseDetails withProperties(java.util.Map)` -> `models.JobBaseProperties withProperties(java.util.Map)`
-* `models.JobBaseDetails withExperimentName(java.lang.String)` -> `models.JobBaseProperties withExperimentName(java.lang.String)`
-* `withResources(models.ResourceConfiguration)` was removed
-* `models.JobBaseDetails withComputeId(java.lang.String)` -> `models.JobBaseProperties withComputeId(java.lang.String)`
-* `models.JobBaseDetails withServices(java.util.Map)` -> `models.JobBaseProperties withServices(java.util.Map)`
-* `models.ResourceConfiguration resources()` -> `models.JobResourceConfiguration resources()`
-* `models.JobBaseDetails withDisplayName(java.lang.String)` -> `models.JobBaseProperties withDisplayName(java.lang.String)`
-* `models.JobBaseDetails withIsArchived(java.lang.Boolean)` -> `models.JobBaseProperties withIsArchived(java.lang.Boolean)`
-* `withSchedule(models.ScheduleBase)` was removed
-* `withSchedule(models.ScheduleBase)` was removed
-* `models.JobBaseDetails withIdentity(models.IdentityConfiguration)` -> `models.JobBaseProperties withIdentity(models.IdentityConfiguration)`
 * `models.JobBaseDetails withDescription(java.lang.String)` -> `models.JobBaseProperties withDescription(java.lang.String)`
+* `models.JobBaseDetails withExperimentName(java.lang.String)` -> `models.JobBaseProperties withExperimentName(java.lang.String)`
+* `withSchedule(models.ScheduleBase)` was removed
 * `models.JobBaseDetails withTags(java.util.Map)` -> `models.JobBaseProperties withTags(java.util.Map)`
+* `models.JobBaseDetails withServices(java.util.Map)` -> `models.JobBaseProperties withServices(java.util.Map)`
+* `withResources(models.ResourceConfiguration)` was removed
+* `models.ResourceConfiguration resources()` -> `models.JobResourceConfiguration resources()`
+* `models.JobBaseDetails withProperties(java.util.Map)` -> `models.JobBaseProperties withProperties(java.util.Map)`
+* `models.JobBaseDetails withComputeId(java.lang.String)` -> `models.JobBaseProperties withComputeId(java.lang.String)`
+* `models.JobBaseDetails withIsArchived(java.lang.Boolean)` -> `models.JobBaseProperties withIsArchived(java.lang.Boolean)`
+* `models.JobBaseDetails withDisplayName(java.lang.String)` -> `models.JobBaseProperties withDisplayName(java.lang.String)`
+* `models.JobBaseDetails withIdentity(models.IdentityConfiguration)` -> `models.JobBaseProperties withIdentity(models.IdentityConfiguration)`
 
 #### `models.SslConfiguration` was modified
 
-* `models.SslConfigurationStatus status()` -> `models.SslConfigStatus status()`
 * `withStatus(models.SslConfigurationStatus)` was removed
+* `models.SslConfigurationStatus status()` -> `models.SslConfigStatus status()`
 
 #### `models.ImageObjectDetection` was modified
 
@@ -682,94 +687,90 @@
 
 #### `models.ModelVersions` was modified
 
-* `models.ModelVersionData getById(java.lang.String)` -> `models.ModelVersion getById(java.lang.String)`
 * `models.ModelVersionData get(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` -> `models.ModelVersion get(java.lang.String,java.lang.String,java.lang.String,java.lang.String)`
 * `models.ModelVersionData$DefinitionStages$Blank define(java.lang.String)` -> `models.ModelVersion$DefinitionStages$Blank define(java.lang.String)`
+* `models.ModelVersionData getById(java.lang.String)` -> `models.ModelVersion getById(java.lang.String)`
 
 #### `models.ImageModelSettings` was modified
 
-* `withSplitRatio(java.lang.Float)` was removed
 * `splitRatio()` was removed
 * `checkpointDatasetId()` was removed
-* `withCheckpointDatasetId(java.lang.String)` was removed
-* `withCheckpointFilename(java.lang.String)` was removed
 * `checkpointFilename()` was removed
+* `withCheckpointDatasetId(java.lang.String)` was removed
+* `withSplitRatio(java.lang.Float)` was removed
+* `withCheckpointFilename(java.lang.String)` was removed
 
 #### `models.SweepJob` was modified
 
-* `models.JobBaseDetails withIdentity(models.IdentityConfiguration)` -> `models.JobBaseProperties withIdentity(models.IdentityConfiguration)`
 * `models.JobBaseDetails withDisplayName(java.lang.String)` -> `models.JobBaseProperties withDisplayName(java.lang.String)`
 * `models.JobBaseDetails withTags(java.util.Map)` -> `models.JobBaseProperties withTags(java.util.Map)`
-* `models.JobBaseDetails withDescription(java.lang.String)` -> `models.JobBaseProperties withDescription(java.lang.String)`
 * `withSchedule(models.ScheduleBase)` was removed
-* `models.JobBaseDetails withIsArchived(java.lang.Boolean)` -> `models.JobBaseProperties withIsArchived(java.lang.Boolean)`
 * `models.JobBaseDetails withExperimentName(java.lang.String)` -> `models.JobBaseProperties withExperimentName(java.lang.String)`
-* `withSchedule(models.ScheduleBase)` was removed
-* `models.JobBaseDetails withProperties(java.util.Map)` -> `models.JobBaseProperties withProperties(java.util.Map)`
 * `models.JobBaseDetails withComputeId(java.lang.String)` -> `models.JobBaseProperties withComputeId(java.lang.String)`
+* `models.JobBaseDetails withProperties(java.util.Map)` -> `models.JobBaseProperties withProperties(java.util.Map)`
+* `models.JobBaseDetails withDescription(java.lang.String)` -> `models.JobBaseProperties withDescription(java.lang.String)`
 * `models.JobBaseDetails withServices(java.util.Map)` -> `models.JobBaseProperties withServices(java.util.Map)`
+* `models.JobBaseDetails withIdentity(models.IdentityConfiguration)` -> `models.JobBaseProperties withIdentity(models.IdentityConfiguration)`
+* `models.JobBaseDetails withIsArchived(java.lang.Boolean)` -> `models.JobBaseProperties withIsArchived(java.lang.Boolean)`
 
 #### `models.ModelContainers` was modified
 
-* `models.ModelContainerData getById(java.lang.String)` -> `models.ModelContainer getById(java.lang.String)`
 * `models.ModelContainerData get(java.lang.String,java.lang.String,java.lang.String)` -> `models.ModelContainer get(java.lang.String,java.lang.String,java.lang.String)`
 * `models.ModelContainerData$DefinitionStages$Blank define(java.lang.String)` -> `models.ModelContainer$DefinitionStages$Blank define(java.lang.String)`
+* `models.ModelContainerData getById(java.lang.String)` -> `models.ModelContainer getById(java.lang.String)`
 
 #### `models.ScheduleBase` was modified
 
+* `withScheduleStatus(models.ScheduleStatus)` was removed
+* `timeZone()` was removed
+* `scheduleStatus()` was removed
 * `withStartTime(java.time.OffsetDateTime)` was removed
 * `endTime()` was removed
-* `withTimeZone(java.lang.String)` was removed
-* `scheduleStatus()` was removed
-* `withEndTime(java.time.OffsetDateTime)` was removed
 * `startTime()` was removed
-* `timeZone()` was removed
-* `withScheduleStatus(models.ScheduleStatus)` was removed
+* `withEndTime(java.time.OffsetDateTime)` was removed
+* `withTimeZone(java.lang.String)` was removed
 
 #### `models.ImageModelDistributionSettingsObjectDetection` was modified
 
 * `withSplitRatio(java.lang.String)` was removed
-* `withSplitRatio(java.lang.String)` was removed
 
 #### `models.TextClassification` was modified
 
-* `withDataSettings(models.NlpVerticalDataSettings)` was removed
 * `dataSettings()` was removed
+* `withDataSettings(models.NlpVerticalDataSettings)` was removed
 
 #### `models.AutoMLJob` was modified
 
-* `models.JobBaseDetails withIsArchived(java.lang.Boolean)` -> `models.JobBaseProperties withIsArchived(java.lang.Boolean)`
-* `withSchedule(models.ScheduleBase)` was removed
-* `models.JobBaseDetails withProperties(java.util.Map)` -> `models.JobBaseProperties withProperties(java.util.Map)`
-* `withResources(models.ResourceConfiguration)` was removed
-* `models.JobBaseDetails withTags(java.util.Map)` -> `models.JobBaseProperties withTags(java.util.Map)`
-* `models.JobBaseDetails withServices(java.util.Map)` -> `models.JobBaseProperties withServices(java.util.Map)`
-* `models.JobBaseDetails withDisplayName(java.lang.String)` -> `models.JobBaseProperties withDisplayName(java.lang.String)`
-* `models.ResourceConfiguration resources()` -> `models.JobResourceConfiguration resources()`
-* `models.JobBaseDetails withExperimentName(java.lang.String)` -> `models.JobBaseProperties withExperimentName(java.lang.String)`
 * `models.JobBaseDetails withDescription(java.lang.String)` -> `models.JobBaseProperties withDescription(java.lang.String)`
-* `models.JobBaseDetails withComputeId(java.lang.String)` -> `models.JobBaseProperties withComputeId(java.lang.String)`
-* `withSchedule(models.ScheduleBase)` was removed
+* `models.ResourceConfiguration resources()` -> `models.JobResourceConfiguration resources()`
 * `models.JobBaseDetails withIdentity(models.IdentityConfiguration)` -> `models.JobBaseProperties withIdentity(models.IdentityConfiguration)`
+* `withSchedule(models.ScheduleBase)` was removed
+* `models.JobBaseDetails withDisplayName(java.lang.String)` -> `models.JobBaseProperties withDisplayName(java.lang.String)`
+* `models.JobBaseDetails withServices(java.util.Map)` -> `models.JobBaseProperties withServices(java.util.Map)`
+* `withResources(models.ResourceConfiguration)` was removed
+* `models.JobBaseDetails withIsArchived(java.lang.Boolean)` -> `models.JobBaseProperties withIsArchived(java.lang.Boolean)`
+* `models.JobBaseDetails withExperimentName(java.lang.String)` -> `models.JobBaseProperties withExperimentName(java.lang.String)`
+* `models.JobBaseDetails withTags(java.util.Map)` -> `models.JobBaseProperties withTags(java.util.Map)`
+* `models.JobBaseDetails withComputeId(java.lang.String)` -> `models.JobBaseProperties withComputeId(java.lang.String)`
+* `models.JobBaseDetails withProperties(java.util.Map)` -> `models.JobBaseProperties withProperties(java.util.Map)`
 
 #### `models.KubernetesOnlineDeployment` was modified
 
-* `models.OnlineDeploymentDetails withInstanceType(java.lang.String)` -> `models.OnlineDeploymentProperties withInstanceType(java.lang.String)`
-* `models.OnlineDeploymentDetails withRequestSettings(models.OnlineRequestSettings)` -> `models.OnlineDeploymentProperties withRequestSettings(models.OnlineRequestSettings)`
-* `withPrivateNetworkConnection(java.lang.Boolean)` was removed
-* `models.OnlineDeploymentDetails withAppInsightsEnabled(java.lang.Boolean)` -> `models.OnlineDeploymentProperties withAppInsightsEnabled(java.lang.Boolean)`
-* `models.OnlineDeploymentDetails withModel(java.lang.String)` -> `models.OnlineDeploymentProperties withModel(java.lang.String)`
-* `models.OnlineDeploymentDetails withProperties(java.util.Map)` -> `models.OnlineDeploymentProperties withProperties(java.util.Map)`
 * `models.OnlineDeploymentDetails withCodeConfiguration(models.CodeConfiguration)` -> `models.OnlineDeploymentProperties withCodeConfiguration(models.CodeConfiguration)`
+* `models.OnlineDeploymentDetails withModel(java.lang.String)` -> `models.OnlineDeploymentProperties withModel(java.lang.String)`
+* `models.OnlineDeploymentDetails withRequestSettings(models.OnlineRequestSettings)` -> `models.OnlineDeploymentProperties withRequestSettings(models.OnlineRequestSettings)`
+* `models.OnlineDeploymentDetails withInstanceType(java.lang.String)` -> `models.OnlineDeploymentProperties withInstanceType(java.lang.String)`
 * `models.OnlineDeploymentDetails withModelMountPath(java.lang.String)` -> `models.OnlineDeploymentProperties withModelMountPath(java.lang.String)`
-* `models.OnlineDeploymentDetails withDescription(java.lang.String)` -> `models.OnlineDeploymentProperties withDescription(java.lang.String)`
+* `models.OnlineDeploymentDetails withAppInsightsEnabled(java.lang.Boolean)` -> `models.OnlineDeploymentProperties withAppInsightsEnabled(java.lang.Boolean)`
 * `withPrivateNetworkConnection(java.lang.Boolean)` was removed
-* `models.OnlineDeploymentDetails withReadinessProbe(models.ProbeSettings)` -> `models.OnlineDeploymentProperties withReadinessProbe(models.ProbeSettings)`
-* `models.OnlineDeploymentDetails withEgressPublicNetworkAccess(models.EgressPublicNetworkAccessType)` -> `models.OnlineDeploymentProperties withEgressPublicNetworkAccess(models.EgressPublicNetworkAccessType)`
-* `models.OnlineDeploymentDetails withScaleSettings(models.OnlineScaleSettings)` -> `models.OnlineDeploymentProperties withScaleSettings(models.OnlineScaleSettings)`
+* `models.OnlineDeploymentDetails withDescription(java.lang.String)` -> `models.OnlineDeploymentProperties withDescription(java.lang.String)`
 * `models.OnlineDeploymentDetails withEnvironmentVariables(java.util.Map)` -> `models.OnlineDeploymentProperties withEnvironmentVariables(java.util.Map)`
 * `models.OnlineDeploymentDetails withEnvironmentId(java.lang.String)` -> `models.OnlineDeploymentProperties withEnvironmentId(java.lang.String)`
+* `models.OnlineDeploymentDetails withReadinessProbe(models.ProbeSettings)` -> `models.OnlineDeploymentProperties withReadinessProbe(models.ProbeSettings)`
 * `models.OnlineDeploymentDetails withLivenessProbe(models.ProbeSettings)` -> `models.OnlineDeploymentProperties withLivenessProbe(models.ProbeSettings)`
+* `models.OnlineDeploymentDetails withScaleSettings(models.OnlineScaleSettings)` -> `models.OnlineDeploymentProperties withScaleSettings(models.OnlineScaleSettings)`
+* `models.OnlineDeploymentDetails withProperties(java.util.Map)` -> `models.OnlineDeploymentProperties withProperties(java.util.Map)`
+* `models.OnlineDeploymentDetails withEgressPublicNetworkAccess(models.EgressPublicNetworkAccessType)` -> `models.OnlineDeploymentProperties withEgressPublicNetworkAccess(models.EgressPublicNetworkAccessType)`
 
 ### Features Added
 
@@ -1063,67 +1064,56 @@
 
 #### `models.ImageClassificationMultilabel` was modified
 
-* `withValidationDataSize(java.lang.Double)` was added
-* `withTrainingData(models.MLTableJobInput)` was added
-* `validationData()` was added
-* `withTrainingData(models.MLTableJobInput)` was added
-* `withTargetColumnName(java.lang.String)` was added
-* `validationDataSize()` was added
 * `withValidationData(models.MLTableJobInput)` was added
+* `withTrainingData(models.MLTableJobInput)` was added
 * `withTargetColumnName(java.lang.String)` was added
+* `withValidationDataSize(java.lang.Double)` was added
+* `validationDataSize()` was added
+* `validationData()` was added
 
 #### `models.ImageModelSettingsObjectDetection` was modified
 
-* `withCheckpointModel(models.MLFlowModelJobInput)` was added
 * `withCheckpointModel(models.MLFlowModelJobInput)` was added
 
 #### `models.SynapseSpark` was modified
 
 * `withComputeLocation(java.lang.String)` was added
-* `withComputeLocation(java.lang.String)` was added
 
 #### `models.ImageInstanceSegmentation` was modified
 
-* `withTrainingData(models.MLTableJobInput)` was added
+* `withTargetColumnName(java.lang.String)` was added
 * `withValidationData(models.MLTableJobInput)` was added
-* `validationData()` was added
-* `withValidationDataSize(java.lang.Double)` was added
-* `withTargetColumnName(java.lang.String)` was added
 * `withTrainingData(models.MLTableJobInput)` was added
-* `withTargetColumnName(java.lang.String)` was added
+* `withValidationDataSize(java.lang.Double)` was added
 * `validationDataSize()` was added
+* `validationData()` was added
 
 #### `models.Aks` was modified
 
-* `withComputeLocation(java.lang.String)` was added
 * `withComputeLocation(java.lang.String)` was added
 
 #### `models.DataLakeAnalytics` was modified
 
 * `withComputeLocation(java.lang.String)` was added
-* `withComputeLocation(java.lang.String)` was added
 
 #### `models.ComputeStartStopSchedule` was modified
 
+* `status()` was added
+* `withRecurrence(models.RecurrenceTrigger)` was added
 * `recurrence()` was added
 * `cron()` was added
 * `withStatus(models.ScheduleStatus)` was added
-* `withTriggerType(models.TriggerType)` was added
 * `triggerType()` was added
 * `withCron(models.CronTrigger)` was added
-* `status()` was added
-* `withRecurrence(models.RecurrenceTrigger)` was added
+* `withTriggerType(models.TriggerType)` was added
 
 #### `models.ImageClassificationBase` was modified
 
-* `withValidationData(models.MLTableJobInput)` was added
 * `withValidationDataSize(java.lang.Double)` was added
 * `withValidationData(models.MLTableJobInput)` was added
-* `withValidationDataSize(java.lang.Double)` was added
 
 #### `models.Kubernetes` was modified
 
-* `withComputeLocation(java.lang.String)` was added
 * `withComputeLocation(java.lang.String)` was added
 
 #### `models.Workspace$Definition` was modified
@@ -1132,69 +1122,61 @@
 
 #### `models.PipelineJob` was modified
 
+* `withComponentId(java.lang.String)` was added
 * `sourceJobId()` was added
-* `withComponentId(java.lang.String)` was added
 * `withSourceJobId(java.lang.String)` was added
-* `withComponentId(java.lang.String)` was added
 
 #### `models.RecurrenceSchedule` was modified
 
+* `minutes()` was added
+* `monthDays()` was added
+* `hours()` was added
+* `withMinutes(java.util.List)` was added
+* `withWeekDays(java.util.List)` was added
 * `withHours(java.util.List)` was added
 * `weekDays()` was added
 * `withMonthDays(java.util.List)` was added
-* `withMinutes(java.util.List)` was added
-* `withWeekDays(java.util.List)` was added
-* `hours()` was added
-* `monthDays()` was added
-* `minutes()` was added
 
 #### `models.Classification` was modified
 
-* `withTrainingData(models.MLTableJobInput)` was added
-* `testDataSize()` was added
-* `withTestData(models.MLTableJobInput)` was added
-* `withTestDataSize(java.lang.Double)` was added
-* `withCvSplitColumnNames(java.util.List)` was added
-* `nCrossValidations()` was added
-* `validationData()` was added
-* `withTargetColumnName(java.lang.String)` was added
-* `withValidationData(models.MLTableJobInput)` was added
-* `weightColumnName()` was added
-* `positiveLabel()` was added
-* `testData()` was added
 * `withNCrossValidations(models.NCrossValidations)` was added
-* `cvSplitColumnNames()` was added
-* `validationDataSize()` was added
-* `withPositiveLabel(java.lang.String)` was added
+* `testDataSize()` was added
 * `withTrainingData(models.MLTableJobInput)` was added
-* `withWeightColumnName(java.lang.String)` was added
 * `withTargetColumnName(java.lang.String)` was added
-* `withTrainingSettings(models.ClassificationTrainingSettings)` was added
+* `withTestData(models.MLTableJobInput)` was added
 * `withValidationDataSize(java.lang.Double)` was added
+* `positiveLabel()` was added
+* `validationData()` was added
+* `validationDataSize()` was added
+* `withTestDataSize(java.lang.Double)` was added
+* `weightColumnName()` was added
+* `withCvSplitColumnNames(java.util.List)` was added
+* `withTrainingSettings(models.ClassificationTrainingSettings)` was added
+* `testData()` was added
+* `withWeightColumnName(java.lang.String)` was added
+* `withValidationData(models.MLTableJobInput)` was added
+* `cvSplitColumnNames()` was added
+* `nCrossValidations()` was added
+* `withPositiveLabel(java.lang.String)` was added
 
 #### `models.VirtualMachine` was modified
 
-* `withComputeLocation(java.lang.String)` was added
 * `withComputeLocation(java.lang.String)` was added
 
 #### `models.AmlCompute` was modified
 
 * `withComputeLocation(java.lang.String)` was added
-* `withComputeLocation(java.lang.String)` was added
 
 #### `models.ImageModelSettingsClassification` was modified
 
-* `withCheckpointModel(models.MLFlowModelJobInput)` was added
 * `withCheckpointModel(models.MLFlowModelJobInput)` was added
 
 #### `models.Databricks` was modified
 
 * `withComputeLocation(java.lang.String)` was added
-* `withComputeLocation(java.lang.String)` was added
 
 #### `models.ComputeInstance` was modified
 
-* `withComputeLocation(java.lang.String)` was added
 * `withComputeLocation(java.lang.String)` was added
 
 #### `models.Workspace` was modified
@@ -1216,25 +1198,23 @@
 
 #### `models.Regression` was modified
 
+* `withTestDataSize(java.lang.Double)` was added
+* `withTrainingData(models.MLTableJobInput)` was added
+* `cvSplitColumnNames()` was added
 * `withValidationData(models.MLTableJobInput)` was added
-* `weightColumnName()` was added
+* `withTargetColumnName(java.lang.String)` was added
+* `validationDataSize()` was added
+* `validationData()` was added
+* `withCvSplitColumnNames(java.util.List)` was added
 * `withNCrossValidations(models.NCrossValidations)` was added
-* `withTrainingData(models.MLTableJobInput)` was added
-* `testData()` was added
-* `withTrainingSettings(models.RegressionTrainingSettings)` was added
+* `nCrossValidations()` was added
 * `withValidationDataSize(java.lang.Double)` was added
-* `withTargetColumnName(java.lang.String)` was added
-* `withTrainingData(models.MLTableJobInput)` was added
-* `withTargetColumnName(java.lang.String)` was added
 * `testDataSize()` was added
 * `withTestData(models.MLTableJobInput)` was added
-* `validationData()` was added
-* `withTestDataSize(java.lang.Double)` was added
-* `cvSplitColumnNames()` was added
+* `withTrainingSettings(models.RegressionTrainingSettings)` was added
 * `withWeightColumnName(java.lang.String)` was added
-* `withCvSplitColumnNames(java.util.List)` was added
-* `nCrossValidations()` was added
-* `validationDataSize()` was added
+* `weightColumnName()` was added
+* `testData()` was added
 
 #### `MachineLearningManager` was modified
 
@@ -1242,25 +1222,23 @@
 
 #### `models.Forecasting` was modified
 
+* `withTrainingSettings(models.ForecastingTrainingSettings)` was added
+* `validationData()` was added
 * `withTestData(models.MLTableJobInput)` was added
+* `withTargetColumnName(java.lang.String)` was added
+* `testData()` was added
+* `withNCrossValidations(models.NCrossValidations)` was added
+* `withWeightColumnName(java.lang.String)` was added
+* `withTrainingData(models.MLTableJobInput)` was added
+* `withValidationDataSize(java.lang.Double)` was added
+* `withCvSplitColumnNames(java.util.List)` was added
 * `validationDataSize()` was added
 * `nCrossValidations()` was added
 * `testDataSize()` was added
-* `withTargetColumnName(java.lang.String)` was added
-* `withTrainingData(models.MLTableJobInput)` was added
-* `testData()` was added
-* `cvSplitColumnNames()` was added
-* `withTestDataSize(java.lang.Double)` was added
-* `withTrainingData(models.MLTableJobInput)` was added
-* `withTrainingSettings(models.ForecastingTrainingSettings)` was added
-* `withWeightColumnName(java.lang.String)` was added
-* `weightColumnName()` was added
-* `withValidationDataSize(java.lang.Double)` was added
-* `withCvSplitColumnNames(java.util.List)` was added
-* `validationData()` was added
-* `withNCrossValidations(models.NCrossValidations)` was added
-* `withTargetColumnName(java.lang.String)` was added
 * `withValidationData(models.MLTableJobInput)` was added
+* `withTestDataSize(java.lang.Double)` was added
+* `weightColumnName()` was added
+* `cvSplitColumnNames()` was added
 
 #### `models.Compute` was modified
 
@@ -1268,24 +1246,22 @@
 
 #### `models.AutoMLVertical` was modified
 
-* `targetColumnName()` was added
 * `trainingData()` was added
-* `withTrainingData(models.MLTableJobInput)` was added
 * `withTargetColumnName(java.lang.String)` was added
+* `targetColumnName()` was added
+* `withTrainingData(models.MLTableJobInput)` was added
 
 #### `models.ImageVertical` was modified
 
-* `withValidationDataSize(java.lang.Double)` was added
-* `validationData()` was added
 * `validationDataSize()` was added
+* `validationData()` was added
+* `withValidationDataSize(java.lang.Double)` was added
 * `withValidationData(models.MLTableJobInput)` was added
 
 #### `models.TextClassificationMultilabel` was modified
 
-* `withTargetColumnName(java.lang.String)` was added
 * `withTrainingData(models.MLTableJobInput)` was added
 * `withValidationData(models.MLTableJobInput)` was added
-* `withTrainingData(models.MLTableJobInput)` was added
 * `withTargetColumnName(java.lang.String)` was added
 * `validationData()` was added
 
@@ -1295,57 +1271,50 @@
 
 #### `models.ImageClassification` was modified
 
-* `withTargetColumnName(java.lang.String)` was added
-* `validationData()` was added
 * `withTrainingData(models.MLTableJobInput)` was added
-* `withValidationDataSize(java.lang.Double)` was added
 * `withValidationData(models.MLTableJobInput)` was added
-* `withTrainingData(models.MLTableJobInput)` was added
+* `validationData()` was added
 * `validationDataSize()` was added
 * `withTargetColumnName(java.lang.String)` was added
+* `withValidationDataSize(java.lang.Double)` was added
 
 #### `models.Jobs` was modified
 
-* `cancel(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `list(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.ListViewType,com.azure.core.util.Context)` was added
+* `cancel(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 #### `models.TableVertical` was modified
 
-* `withWeightColumnName(java.lang.String)` was added
-* `withNCrossValidations(models.NCrossValidations)` was added
+* `cvSplitColumnNames()` was added
+* `nCrossValidations()` was added
+* `withValidationData(models.MLTableJobInput)` was added
 * `testData()` was added
-* `withCvSplitColumnNames(java.util.List)` was added
 * `withValidationDataSize(java.lang.Double)` was added
+* `withCvSplitColumnNames(java.util.List)` was added
 * `validationData()` was added
 * `withTestDataSize(java.lang.Double)` was added
 * `weightColumnName()` was added
 * `testDataSize()` was added
-* `nCrossValidations()` was added
-* `cvSplitColumnNames()` was added
-* `withValidationData(models.MLTableJobInput)` was added
-* `validationDataSize()` was added
 * `withTestData(models.MLTableJobInput)` was added
+* `validationDataSize()` was added
+* `withNCrossValidations(models.NCrossValidations)` was added
+* `withWeightColumnName(java.lang.String)` was added
 
 #### `models.ImageObjectDetectionBase` was modified
 
 * `withValidationData(models.MLTableJobInput)` was added
 * `withValidationDataSize(java.lang.Double)` was added
-* `withValidationDataSize(java.lang.Double)` was added
-* `withValidationData(models.MLTableJobInput)` was added
 
 #### `models.TextNer` was modified
 
+* `withTrainingData(models.MLTableJobInput)` was added
+* `withTargetColumnName(java.lang.String)` was added
 * `withValidationData(models.MLTableJobInput)` was added
-* `withTargetColumnName(java.lang.String)` was added
-* `withTrainingData(models.MLTableJobInput)` was added
 * `validationData()` was added
-* `withTargetColumnName(java.lang.String)` was added
-* `withTrainingData(models.MLTableJobInput)` was added
 
 #### `models.CommandJob` was modified
 
 * `withResources(models.JobResourceConfiguration)` was added
-* `withComponentId(java.lang.String)` was added
 * `withComponentId(java.lang.String)` was added
 
 #### `models.SslConfiguration` was modified
@@ -1355,56 +1324,48 @@
 #### `models.DataFactory` was modified
 
 * `withComputeLocation(java.lang.String)` was added
-* `withComputeLocation(java.lang.String)` was added
 
 #### `models.ImageObjectDetection` was modified
 
 * `withTrainingData(models.MLTableJobInput)` was added
-* `withValidationDataSize(java.lang.Double)` was added
-* `validationDataSize()` was added
-* `withTargetColumnName(java.lang.String)` was added
 * `withValidationData(models.MLTableJobInput)` was added
-* `withTrainingData(models.MLTableJobInput)` was added
+* `validationDataSize()` was added
+* `withValidationDataSize(java.lang.Double)` was added
 * `validationData()` was added
 * `withTargetColumnName(java.lang.String)` was added
 
 #### `models.ImageModelSettings` was modified
 
-* `checkpointModel()` was added
 * `withCheckpointModel(models.MLFlowModelJobInput)` was added
+* `checkpointModel()` was added
 
 #### `models.SweepJob` was modified
 
 * `withComponentId(java.lang.String)` was added
-* `withComponentId(java.lang.String)` was added
 
 #### `models.ScheduleBase` was modified
 
-* `provisioningStatus()` was added
-* `withId(java.lang.String)` was added
-* `withProvisioningStatus(models.ScheduleProvisioningState)` was added
-* `id()` was added
 * `status()` was added
 * `withStatus(models.ScheduleStatus)` was added
+* `provisioningStatus()` was added
+* `withProvisioningStatus(models.ScheduleProvisioningState)` was added
+* `id()` was added
+* `withId(java.lang.String)` was added
 
 #### `models.TextClassification` was modified
 
+* `withTrainingData(models.MLTableJobInput)` was added
 * `validationData()` was added
-* `withTrainingData(models.MLTableJobInput)` was added
 * `withValidationData(models.MLTableJobInput)` was added
-* `withTargetColumnName(java.lang.String)` was added
-* `withTrainingData(models.MLTableJobInput)` was added
 * `withTargetColumnName(java.lang.String)` was added
 
 #### `models.AutoMLJob` was modified
 
-* `withComponentId(java.lang.String)` was added
 * `withResources(models.JobResourceConfiguration)` was added
 * `withComponentId(java.lang.String)` was added
 
 #### `models.HDInsight` was modified
 
-* `withComputeLocation(java.lang.String)` was added
 * `withComputeLocation(java.lang.String)` was added
 
 ## 1.0.0-beta.2 (2022-05-27)

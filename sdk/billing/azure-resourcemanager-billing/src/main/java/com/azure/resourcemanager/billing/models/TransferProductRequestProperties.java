@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of the product to initiate a transfer. */
 @Fluent
 public final class TransferProductRequestProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TransferProductRequestProperties.class);
-
     /*
      * The destination invoice section id.
      */
     @JsonProperty(value = "destinationInvoiceSectionId")
     private String destinationInvoiceSectionId;
+
+    /** Creates an instance of TransferProductRequestProperties class. */
+    public TransferProductRequestProperties() {
+    }
 
     /**
      * Get the destinationInvoiceSectionId property: The destination invoice section id.

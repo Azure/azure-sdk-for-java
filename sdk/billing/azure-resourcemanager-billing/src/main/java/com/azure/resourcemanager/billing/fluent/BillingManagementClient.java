@@ -136,13 +136,6 @@ public interface BillingManagementClient {
     BillingPropertiesClient getBillingProperties();
 
     /**
-     * Gets the OperationsClient object to access its operations.
-     *
-     * @return the OperationsClient object.
-     */
-    OperationsClient getOperations();
-
-    /**
      * Gets the BillingRoleDefinitionsClient object to access its operations.
      *
      * @return the BillingRoleDefinitionsClient object.
@@ -183,4 +176,11 @@ public interface BillingManagementClient {
      * @return the BillingPeriodsClient object.
      */
     BillingPeriodsClient getBillingPeriods();
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     *
+     * @return the OperationsClient object.
+     */
+    OperationsClient getOperations();
 }

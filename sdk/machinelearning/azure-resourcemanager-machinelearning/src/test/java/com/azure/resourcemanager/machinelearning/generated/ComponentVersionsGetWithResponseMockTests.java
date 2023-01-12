@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.ComponentVersion;
 import java.nio.ByteBuffer;
@@ -63,7 +62,8 @@ public final class ComponentVersionsGetWithResponseMockTests {
         ComponentVersion response =
             manager
                 .componentVersions()
-                .getWithResponse("fdvbbaexxjfwtg", "fkkauigvmua", "mczfedyuepsvplt", "dajjvywe", Context.NONE)
+                .getWithResponse(
+                    "fdvbbaexxjfwtg", "fkkauigvmua", "mczfedyuepsvplt", "dajjvywe", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals("vfnkwmygjjekrk", response.properties().description());

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Workspaces ListNotebookAccessToken. */
 public final class WorkspacesListNotebookAccessTokenSamples {
     /*
@@ -17,6 +15,8 @@ public final class WorkspacesListNotebookAccessTokenSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void listWorkspaceKeys(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.workspaces().listNotebookAccessTokenWithResponse("workspace-1234", "testworkspace", Context.NONE);
+        manager
+            .workspaces()
+            .listNotebookAccessTokenWithResponse("workspace-1234", "testworkspace", com.azure.core.util.Context.NONE);
     }
 }

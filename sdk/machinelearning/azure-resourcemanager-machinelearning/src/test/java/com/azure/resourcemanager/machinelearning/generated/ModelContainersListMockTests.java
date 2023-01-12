@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.ListViewType;
 import com.azure.resourcemanager.machinelearning.models.ModelContainer;
@@ -65,7 +64,7 @@ public final class ModelContainersListMockTests {
         PagedIterable<ModelContainer> response =
             manager
                 .modelContainers()
-                .list("xlxicwgp", "hdcfm", "z", 1474735813, ListViewType.ACTIVE_ONLY, Context.NONE);
+                .list("xlxicwgp", "hdcfm", "z", 1474735813, ListViewType.ACTIVE_ONLY, com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("skwgqr", response.iterator().next().properties().description());
         Assertions.assertEquals("umdrcjlvkrkegty", response.iterator().next().properties().properties().get("zuppiyx"));

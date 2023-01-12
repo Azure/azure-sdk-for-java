@@ -72,6 +72,10 @@ public class MultiMetricCriteria {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of MultiMetricCriteria class. */
+    public MultiMetricCriteria() {
+    }
+
     /**
      * Get the name property: Name of the criteria.
      *

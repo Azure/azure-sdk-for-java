@@ -8,18 +8,15 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectivityStatus;
 import com.azure.resourcemanager.hybridkubernetes.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Properties of the connected cluster. */
 @Fluent
 public final class ConnectedClusterProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectedClusterProperties.class);
-
     /*
-     * Base64 encoded public certificate used by the agent to do the initial
-     * handshake to the backend services in Azure.
+     * Base64 encoded public certificate used by the agent to do the initial handshake to the backend services in
+     * Azure.
      */
     @JsonProperty(value = "agentPublicKeyCertificate", required = true)
     private String agentPublicKeyCertificate;
@@ -61,8 +58,7 @@ public final class ConnectedClusterProperties {
     private String distribution;
 
     /*
-     * The infrastructure on which the Kubernetes cluster represented by this
-     * connected cluster is running on.
+     * The infrastructure on which the Kubernetes cluster represented by this connected cluster is running on.
      */
     @JsonProperty(value = "infrastructure")
     private String infrastructure;
@@ -80,8 +76,7 @@ public final class ConnectedClusterProperties {
     private OffsetDateTime managedIdentityCertificateExpirationTime;
 
     /*
-     * Time representing the last instance when heart beat was received from
-     * the cluster
+     * Time representing the last instance when heart beat was received from the cluster
      */
     @JsonProperty(value = "lastConnectivityTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastConnectivityTime;
@@ -91,6 +86,10 @@ public final class ConnectedClusterProperties {
      */
     @JsonProperty(value = "connectivityStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ConnectivityStatus connectivityStatus;
+
+    /** Creates an instance of ConnectedClusterProperties class. */
+    public ConnectedClusterProperties() {
+    }
 
     /**
      * Get the agentPublicKeyCertificate property: Base64 encoded public certificate used by the agent to do the initial
@@ -256,10 +255,12 @@ public final class ConnectedClusterProperties {
      */
     public void validate() {
         if (agentPublicKeyCertificate() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property agentPublicKeyCertificate in model ConnectedClusterProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectedClusterProperties.class);
 }

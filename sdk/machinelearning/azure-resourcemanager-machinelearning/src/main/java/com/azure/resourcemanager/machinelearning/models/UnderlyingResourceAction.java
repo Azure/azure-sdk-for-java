@@ -17,6 +17,15 @@ public final class UnderlyingResourceAction extends ExpandableStringEnum<Underly
     public static final UnderlyingResourceAction DETACH = fromString("Detach");
 
     /**
+     * Creates a new instance of UnderlyingResourceAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UnderlyingResourceAction() {
+    }
+
+    /**
      * Creates or finds a UnderlyingResourceAction from its string representation.
      *
      * @param name a name to look for.

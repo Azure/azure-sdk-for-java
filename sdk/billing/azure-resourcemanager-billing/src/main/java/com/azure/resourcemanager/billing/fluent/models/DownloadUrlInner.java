@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** A secure URL that can be used to download a an entity until the URL expires. */
 @Immutable
 public final class DownloadUrlInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DownloadUrlInner.class);
-
     /*
      * The time in UTC when the download URL will expire.
      */
@@ -26,6 +22,10 @@ public final class DownloadUrlInner {
      */
     @JsonProperty(value = "url", access = JsonProperty.Access.WRITE_ONLY)
     private String url;
+
+    /** Creates an instance of DownloadUrlInner class. */
+    public DownloadUrlInner() {
+    }
 
     /**
      * Get the expiryTime property: The time in UTC when the download URL will expire.

@@ -7,11 +7,10 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.OutputPathAssetReference;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OutputPathAssetReferenceTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OutputPathAssetReference model =
             BinaryData
                 .fromString("{\"referenceType\":\"OutputPath\",\"jobId\":\"h\",\"path\":\"mexznlwkb\"}")
@@ -20,8 +19,8 @@ public final class OutputPathAssetReferenceTests {
         Assertions.assertEquals("mexznlwkb", model.path());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OutputPathAssetReference model = new OutputPathAssetReference().withJobId("h").withPath("mexznlwkb");
         model = BinaryData.fromObject(model).toObject(OutputPathAssetReference.class);
         Assertions.assertEquals("h", model.jobId());

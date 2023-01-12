@@ -53,6 +53,10 @@ public final class InstanceFailoverGroupProperties {
     @JsonProperty(value = "managedInstancePairs", required = true)
     private List<ManagedInstancePairInfo> managedInstancePairs;
 
+    /** Creates an instance of InstanceFailoverGroupProperties class. */
+    public InstanceFailoverGroupProperties() {
+    }
+
     /**
      * Get the readWriteEndpoint property: Read-write endpoint of the failover group instance.
      *

@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.AddressClient;
 import com.azure.resourcemanager.billing.fluent.models.ValidateAddressResponseInner;
 import com.azure.resourcemanager.billing.models.AddressDetails;
@@ -29,8 +28,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AddressClient. */
 public final class AddressClientImpl implements AddressClient {
-    private final ClientLogger logger = new ClientLogger(AddressClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AddressService service;
 
@@ -53,7 +50,7 @@ public final class AddressClientImpl implements AddressClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "BillingManagementCli")
-    private interface AddressService {
+    public interface AddressService {
         @Headers({"Content-Type: application/json"})
         @Post("/providers/Microsoft.Billing/validateAddress")
         @ExpectedResponses({200})
@@ -73,7 +70,7 @@ public final class AddressClientImpl implements AddressClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the address validation.
+     * @return result of the address validation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ValidateAddressResponseInner>> validateWithResponseAsync(AddressDetails address) {
@@ -103,7 +100,7 @@ public final class AddressClientImpl implements AddressClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the address validation.
+     * @return result of the address validation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ValidateAddressResponseInner>> validateWithResponseAsync(
@@ -132,19 +129,26 @@ public final class AddressClientImpl implements AddressClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the address validation.
+     * @return result of the address validation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ValidateAddressResponseInner> validateAsync(AddressDetails address) {
-        return validateWithResponseAsync(address)
-            .flatMap(
-                (Response<ValidateAddressResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return validateWithResponseAsync(address).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Validates an address. Use the operation to validate an address before using it as soldTo or a billTo address.
+     *
+     * @param address Address details.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the address validation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ValidateAddressResponseInner> validateWithResponse(AddressDetails address, Context context) {
+        return validateWithResponseAsync(address, context).block();
     }
 
     /**
@@ -158,21 +162,6 @@ public final class AddressClientImpl implements AddressClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidateAddressResponseInner validate(AddressDetails address) {
-        return validateAsync(address).block();
-    }
-
-    /**
-     * Validates an address. Use the operation to validate an address before using it as soldTo or a billTo address.
-     *
-     * @param address Address details.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the address validation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ValidateAddressResponseInner> validateWithResponse(AddressDetails address, Context context) {
-        return validateWithResponseAsync(address, context).block();
+        return validateWithResponse(address, Context.NONE).getValue();
     }
 }

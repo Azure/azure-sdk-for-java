@@ -5,21 +5,17 @@
 package com.azure.resourcemanager.baremetalinfrastructure.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.baremetalinfrastructure.models.AzureBareMetalInstancePowerStateEnum;
 import com.azure.resourcemanager.baremetalinfrastructure.models.AzureBareMetalProvisioningStatesEnum;
 import com.azure.resourcemanager.baremetalinfrastructure.models.HardwareProfile;
 import com.azure.resourcemanager.baremetalinfrastructure.models.NetworkProfile;
 import com.azure.resourcemanager.baremetalinfrastructure.models.OSProfile;
 import com.azure.resourcemanager.baremetalinfrastructure.models.StorageProfile;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of an AzureBareMetal instance. */
 @Fluent
 public final class AzureBareMetalInstanceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBareMetalInstanceProperties.class);
-
     /*
      * Specifies the hardware settings for the AzureBareMetal instance.
      */
@@ -69,8 +65,7 @@ public final class AzureBareMetalInstanceProperties {
     private String hwRevision;
 
     /*
-     * ARM ID of another AzureBareMetalInstance that will share a network with
-     * this AzureBareMetalInstance
+     * ARM ID of another AzureBareMetalInstance that will share a network with this AzureBareMetalInstance
      */
     @JsonProperty(value = "partnerNodeId")
     private String partnerNodeId;
@@ -80,6 +75,10 @@ public final class AzureBareMetalInstanceProperties {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private AzureBareMetalProvisioningStatesEnum provisioningState;
+
+    /** Creates an instance of AzureBareMetalInstanceProperties class. */
+    public AzureBareMetalInstanceProperties() {
+    }
 
     /**
      * Get the hardwareProfile property: Specifies the hardware settings for the AzureBareMetal instance.

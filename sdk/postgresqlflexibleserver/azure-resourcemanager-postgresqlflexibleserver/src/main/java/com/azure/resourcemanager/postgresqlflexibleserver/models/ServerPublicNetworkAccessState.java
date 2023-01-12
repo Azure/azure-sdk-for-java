@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ServerPublicNetworkAccessState. */
+/** public network access is enabled or not. */
 public final class ServerPublicNetworkAccessState extends ExpandableStringEnum<ServerPublicNetworkAccessState> {
     /** Static value Enabled for ServerPublicNetworkAccessState. */
     public static final ServerPublicNetworkAccessState ENABLED = fromString("Enabled");
 
     /** Static value Disabled for ServerPublicNetworkAccessState. */
     public static final ServerPublicNetworkAccessState DISABLED = fromString("Disabled");
+
+    /**
+     * Creates a new instance of ServerPublicNetworkAccessState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServerPublicNetworkAccessState() {
+    }
 
     /**
      * Creates or finds a ServerPublicNetworkAccessState from its string representation.
@@ -27,7 +36,11 @@ public final class ServerPublicNetworkAccessState extends ExpandableStringEnum<S
         return fromString(name, ServerPublicNetworkAccessState.class);
     }
 
-    /** @return known ServerPublicNetworkAccessState values. */
+    /**
+     * Gets known ServerPublicNetworkAccessState values.
+     *
+     * @return known ServerPublicNetworkAccessState values.
+     */
     public static Collection<ServerPublicNetworkAccessState> values() {
         return values(ServerPublicNetworkAccessState.class);
     }

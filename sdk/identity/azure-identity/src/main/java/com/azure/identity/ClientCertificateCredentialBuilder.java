@@ -7,7 +7,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.io.InputStream;
-import java.util.HashMap;
 
 /**
  * Fluent credential builder for instantiating a {@link ClientCertificateCredential}.
@@ -16,6 +15,7 @@ import java.util.HashMap;
  */
 public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase<ClientCertificateCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(ClientCertificateCredentialBuilder.class);
+    private static final String CLASS_NAME = ClientCertificateCredentialBuilder.class.getSimpleName();
 
     private String clientCertificatePath;
     private InputStream clientCertificate;
@@ -127,11 +127,9 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      * @return a {@link ClientCertificateCredential} with the current configurations.
      */
     public ClientCertificateCredential build() {
-        ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
-                put("clientId", clientId);
-                put("tenantId", tenantId);
-                put("clientCertificate", clientCertificate == null ? clientCertificatePath : clientCertificate);
-            }}, LOGGER);
+        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "tenantId", tenantId,
+            "clientCertificate", clientCertificate == null ? clientCertificatePath : clientCertificate);
+
         if (clientCertificate != null && clientCertificatePath != null) {
             throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("Both certificate input stream and "
                     + "certificate path are provided in ClientCertificateCredentialBuilder. Only one of them should "

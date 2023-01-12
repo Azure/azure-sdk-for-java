@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Workspaces Delete. */
 public final class WorkspacesDeleteSamples {
     /*
@@ -17,6 +15,6 @@ public final class WorkspacesDeleteSamples {
      * @param manager Entry point to MachineLearningManager.
      */
     public static void deleteWorkspace(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager.workspaces().delete("workspace-1234", "testworkspace", Context.NONE);
+        manager.workspaces().delete("workspace-1234", "testworkspace", com.azure.core.util.Context.NONE);
     }
 }

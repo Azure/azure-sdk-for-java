@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.models.BillingProfileInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,13 +15,9 @@ import java.util.List;
  */
 @Fluent
 public final class BillingProfilesOnExpand {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingProfilesOnExpand.class);
-
     /*
-     * Indicates whether there are more billing profiles than the ones listed
-     * in this collection. The collection lists a maximum of 50 billing
-     * profiles. To get all billing profiles, use the list billing profiles
-     * API.
+     * Indicates whether there are more billing profiles than the ones listed in this collection. The collection lists
+     * a maximum of 50 billing profiles. To get all billing profiles, use the list billing profiles API.
      */
     @JsonProperty(value = "hasMoreResults", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean hasMoreResults;
@@ -33,6 +27,10 @@ public final class BillingProfilesOnExpand {
      */
     @JsonProperty(value = "value")
     private List<BillingProfileInner> value;
+
+    /** Creates an instance of BillingProfilesOnExpand class. */
+    public BillingProfilesOnExpand() {
+    }
 
     /**
      * Get the hasMoreResults property: Indicates whether there are more billing profiles than the ones listed in this

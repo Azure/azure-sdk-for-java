@@ -1,5 +1,39 @@
 # Release History
 
+## 4.6.0-beta.1 (Unreleased)
+Upgrade Spring Boot dependencies version to 2.7.7 and Spring Cloud dependencies version to 2021.0.5
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
+- Enhance the Event Hubs/Service Bus/Storage Queue message converter to support Spring autoconfiguration-pattern. [#30741](https://github.com/Azure/azure-sdk-for-java/issues/30741)
+- Support the PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD property. [#30252](https://github.com/Azure/azure-sdk-for-java/issues/30252)
+
+#### Breaking Changes
+- Delete properties: `spring.jms.serviebus.username`, `spring.jms.serviebus.password` and `spring.jms.serviebus.remote-uri` [#32467](https://github.com/Azure/azure-sdk-for-java/pull/32467).
+- Change the default value of `spring.jms.servicebus.idle-timeout` from 30 minutes to 2 minutes [#32799](https://github.com/Azure/azure-sdk-for-java/pull/32799).
+- Change the default value of `spring.cloud.azure.eventhubs.processor.load-balancing.strategy` from `BALANCED` to `GREEDY` [#32897](https://github.com/Azure/azure-sdk-for-java/pull/32897).
+
+
+### Spring Cloud Azure Core
+This section includes changes in `spring-cloud-azure-core`, `spring-cloud-azure-service`, and `spring-cloud-azure-resourcemanager` modules.
+
+#### Bugs Fixed
+- Remove warning logs about client properties while using Kafka passwordless. [#32235](https://github.com/Azure/azure-sdk-for-java/issues/32235)
+
+### Spring Messaging Event Hubs
+This section includes changes in `spring-messaging-azure-eventhubs` module.
+
+#### Breaking Changes
+- Change the default load-balancing strategy from `BALANCED` to `GREEDY` [#32897](https://github.com/Azure/azure-sdk-for-java/pull/32897).
+
+### Spring Cloud Stream Event Hubs Binder
+This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` module.
+
+#### Breaking Changes
+- Change the default value of `spring.cloud.stream.eventhubs.bindings.<binding-name>.consumer.load-balancing.strategy` from `BALANCED` to `GREEDY` [#32897](https://github.com/Azure/azure-sdk-for-java/pull/32897).
+
 ## 6.0.0-beta.4 (2022-12-07)
 Upgrade Spring Boot dependencies version to 3.0.0-RC2 and Spring Cloud dependencies version to 2022.0.0-RC2.
 

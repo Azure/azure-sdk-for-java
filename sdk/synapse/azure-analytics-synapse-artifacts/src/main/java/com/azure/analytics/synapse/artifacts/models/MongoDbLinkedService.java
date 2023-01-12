@@ -82,6 +82,9 @@ public class MongoDbLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of MongoDbLinkedService class. */
+    public MongoDbLinkedService() {}
+
     /**
      * Get the server property: The IP address or server name of the MongoDB server. Type: string (or Expression with
      * resultType string).
