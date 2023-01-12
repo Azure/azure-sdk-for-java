@@ -34,7 +34,7 @@ public class ListByteBufferContent extends BinaryDataContent {
     }
     @Override
     public Long getLength() {
-        return content.stream().mapToLong(Buffer::remaining).count();
+        return content.stream().mapToLong(Buffer::remaining).sum();
     }
 
     @Override
@@ -54,8 +54,7 @@ public class ListByteBufferContent extends BinaryDataContent {
 
     @Override
     public InputStream toStream() {
-        //TODO implementation that can support long-length
-        return null;
+        return new IterableOfByteBuffersInputStream(content);
     }
 
     @Override
@@ -93,10 +92,9 @@ public class ListByteBufferContent extends BinaryDataContent {
         int offset = 0;
 
         for (ByteBuffer bb : content) {
+            bb = bb.duplicate();
             int count = bb.remaining();
-            bb.mark();
             bb.get(bytes, offset, count);
-            bb.flip();
             offset += count;
         }
 
