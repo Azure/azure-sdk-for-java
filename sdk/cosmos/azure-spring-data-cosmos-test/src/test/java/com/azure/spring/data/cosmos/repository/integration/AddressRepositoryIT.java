@@ -38,6 +38,7 @@ import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS2_PARTITIO
 import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS4_PARTITION3;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -269,7 +270,7 @@ public class AddressRepositoryIT {
     @Test
     public void testPatchEntityRemove() {
         Address patchedAddress = repository.save(TestConstants.POSTAL_CODE, new PartitionKey(CITY), Address.class, patchRemoveOperation);
-        assertThat(patchedAddress.getStreet()).isEqualTo(null);
+        assertNull(patchedAddress.getStreet());
     }
     @Test
     public void testPatchPreConditionSuccess() {
