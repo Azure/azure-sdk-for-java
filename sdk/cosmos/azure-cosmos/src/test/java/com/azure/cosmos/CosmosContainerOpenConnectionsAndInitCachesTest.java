@@ -21,6 +21,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
@@ -130,18 +131,14 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         CosmosAsyncContainer cosmosContainer2 = directCosmosAsyncDatabase.getContainer("id2");
         CosmosAsyncContainer cosmosContainer3 = directCosmosAsyncDatabase.getContainer("id3");
 
-        String containerLink1 = cosmosContainer1.getLink();
-        String containerLink2 = cosmosContainer2.getLink();
-        String containerLink3 = cosmosContainer3.getLink();
-
         List<String> regions = new ArrayList<>();
         regions.add("East US");
         regions.add("West US");
 
         List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
-        cosmosContainerIdentities.add(new CosmosContainerIdentity(containerLink1));
-        cosmosContainerIdentities.add(new CosmosContainerIdentity(containerLink2));
-        cosmosContainerIdentities.add(new CosmosContainerIdentity(containerLink3));
+        cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosContainer1.getDatabase().getId(), cosmosContainer1.getId()));
+        cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosContainer2.getDatabase().getId(), cosmosContainer2.getId()));
+        cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosContainer3.getDatabase().getId(), cosmosContainer3.getId()));
 
         ProactiveContainerInitConfig proactiveContainerInitConfig = new ProactiveContainerInitConfigBuilder(cosmosContainerIdentities)
                 .setProactiveConnectionRegions(2)

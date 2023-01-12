@@ -913,7 +913,10 @@ public class CosmosClientBuilder implements
                     LocationHelper.getLocationEndpoint(uri, trimmedPreferredRegion);
                 }
             );
+        }
 
+        if (proactiveContainerInitConfig != null) {
+            ifThrowIllegalArgException(preferredRegions == null, "preferredRegions cannot be null when proactiveContainerInitConfig has been set");
             ifThrowIllegalArgException(this.proactiveContainerInitConfig.getNumProactiveConnectionRegions() > this.preferredRegions.size(), "no. of regions to proactively connect to" +
                     "cannot be greater than no. of preferred regions");
         }

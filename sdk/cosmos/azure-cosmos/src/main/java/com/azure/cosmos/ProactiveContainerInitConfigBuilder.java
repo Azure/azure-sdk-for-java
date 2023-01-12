@@ -3,6 +3,8 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.models.CosmosContainerIdentity;
+
 import java.util.List;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
@@ -21,7 +23,7 @@ public final class ProactiveContainerInitConfigBuilder {
      * @param cosmosContainerIdentities the container identities - this parameter must be non-empty
      */
     public ProactiveContainerInitConfigBuilder(List<CosmosContainerIdentity> cosmosContainerIdentities) {
-        checkArgument(!cosmosContainerIdentities.isEmpty(), "The list of container identities should be non-empty.");
+        checkArgument(cosmosContainerIdentities == null || !cosmosContainerIdentities.isEmpty(), "The list of container identities cannot be null or empty.");
         this.cosmosContainerIdentities = cosmosContainerIdentities;
     }
 
