@@ -64,6 +64,16 @@
         ]
       },
       {
+        "type": "Microsoft.Authorization/roleAssignments",
+        "apiVersion": "2019-04-01-preview",
+        "name": "[guid(resourceGroup().id, deployment().name, parameters('baseName'), variables('contributorRoleId'))]",
+        "properties": {
+          "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('contributorRoleId'))]",
+          "principalId": "[parameters('testApplicationOid')]",
+          "scope": "[resourceGroup().id]"
+        }
+      },
+      {
         "type": "Microsoft.Communication/EmailServices",
         "apiVersion": "2021-10-01-preview",
         "name": "[variables('emailServiceName')]",
