@@ -5,14 +5,17 @@ package com.azure.communication.email;
 
 import com.azure.communication.email.models.*;
 import com.azure.core.http.HttpClient;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@Timeout(value = 2, unit = TimeUnit.MINUTES)
 public class EmailAsyncClientTests extends EmailTestBase {
 
     private EmailAsyncClient emailAsyncClient;
@@ -24,7 +27,7 @@ public class EmailAsyncClientTests extends EmailTestBase {
 
     @ParameterizedTest
     @MethodSource("getTestParameters")
-    public void sendEmailToSingleRecipient(HttpClient httpClient) {
+    public void sendEmailToSingleRecipientAsync(HttpClient httpClient) {
         emailAsyncClient = getEmailAsyncClient(httpClient);
 
         EmailAddress emailAddress = new EmailAddress(RECIPIENT_ADDRESS);
@@ -49,7 +52,7 @@ public class EmailAsyncClientTests extends EmailTestBase {
 
     @ParameterizedTest
     @MethodSource("getTestParameters")
-    public void sendEmailToMultipleRecipients(HttpClient httpClient) {
+    public void sendEmailToMultipleRecipientsAsync(HttpClient httpClient) {
         emailAsyncClient = getEmailAsyncClient(httpClient);
 
         EmailAddress emailAddress = new EmailAddress(RECIPIENT_ADDRESS);
@@ -84,7 +87,7 @@ public class EmailAsyncClientTests extends EmailTestBase {
 
     @ParameterizedTest
     @MethodSource("getTestParameters")
-    public void sendEmailWithAttachment(HttpClient httpClient) {
+    public void sendEmailWithAttachmentAsync(HttpClient httpClient) {
         emailAsyncClient = getEmailAsyncClient(httpClient);
 
         EmailAddress emailAddress = new EmailAddress(RECIPIENT_ADDRESS);
@@ -150,7 +153,7 @@ public class EmailAsyncClientTests extends EmailTestBase {
 
     @ParameterizedTest
     @MethodSource("getTestParameters")
-    public void sendEmailWithoutToRecipient(HttpClient httpClient) {
+    public void sendEmailWithoutToRecipientAsync(HttpClient httpClient) {
         emailAsyncClient = getEmailAsyncClient(httpClient);
 
         EmailAddress emailAddress = new EmailAddress(RECIPIENT_ADDRESS);
