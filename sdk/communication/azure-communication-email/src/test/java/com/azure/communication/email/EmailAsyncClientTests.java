@@ -27,7 +27,7 @@ public class EmailAsyncClientTests extends EmailTestBase {
 
     @ParameterizedTest
     @MethodSource("getTestParameters")
-    public void sendEmailToSingleRecipientAsync(HttpClient httpClient) {
+    public void sendEmailToSingleRecipient(HttpClient httpClient) {
         emailAsyncClient = getEmailAsyncClient(httpClient);
 
         EmailAddress emailAddress = new EmailAddress(RECIPIENT_ADDRESS);
@@ -52,7 +52,7 @@ public class EmailAsyncClientTests extends EmailTestBase {
 
     @ParameterizedTest
     @MethodSource("getTestParameters")
-    public void sendEmailToMultipleRecipientsAsync(HttpClient httpClient) {
+    public void sendEmailToMultipleRecipients(HttpClient httpClient) {
         emailAsyncClient = getEmailAsyncClient(httpClient);
 
         EmailAddress emailAddress = new EmailAddress(RECIPIENT_ADDRESS);
@@ -87,7 +87,7 @@ public class EmailAsyncClientTests extends EmailTestBase {
 
     @ParameterizedTest
     @MethodSource("getTestParameters")
-    public void sendEmailWithAttachmentAsync(HttpClient httpClient) {
+    public void sendEmailWithAttachment(HttpClient httpClient) {
         emailAsyncClient = getEmailAsyncClient(httpClient);
 
         EmailAddress emailAddress = new EmailAddress(RECIPIENT_ADDRESS);
@@ -153,7 +153,7 @@ public class EmailAsyncClientTests extends EmailTestBase {
 
     @ParameterizedTest
     @MethodSource("getTestParameters")
-    public void sendEmailWithoutToRecipientAsync(HttpClient httpClient) {
+    public void sendEmailWithoutToRecipient(HttpClient httpClient) {
         emailAsyncClient = getEmailAsyncClient(httpClient);
 
         EmailAddress emailAddress = new EmailAddress(RECIPIENT_ADDRESS);
