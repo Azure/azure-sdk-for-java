@@ -3,12 +3,9 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.ResourceType;
-import com.azure.cosmos.implementation.RxDocumentClientImpl;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.*;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.AsyncCacheNonBlocking;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
@@ -22,12 +19,13 @@ import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.models.CosmosContainerIdentity;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,7 +53,14 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
     private CosmosDatabase gatewayCosmosDatabase;
     private CosmosContainer gatewayCosmosContainer;
 
+    private CosmosClient directCosmosClientWithOpenConnections;
+    private CosmosAsyncClient directCosmosAsyncClientWithOpenConnections;
+
+    private CosmosContainer containerWithOpenConnections1;
+    private CosmosContainer containerWithOpenConnections2;
     private final static String CONTAINER_ID = "InitializedTestContainer";
+    private final static String CONTAINER_ID_1 = "TestContainer1";
+    private final static String CONTAINER_ID_2 = "TestContainer2";
 
     @BeforeClass(groups = {"simple"})
     public void beforeClass() {
@@ -96,6 +101,7 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
                 .contentResponseOnWriteEnabled(true)
                 .gatewayMode()
                 .buildClient();
+
         gatewayCosmosDatabase = gatewayCosmosClient.getDatabase(directCosmosAsyncDatabase.getId());
         gatewayCosmosContainer = gatewayCosmosDatabase.getContainer(directCosmosAsyncContainer.getId());
     }
@@ -106,10 +112,19 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
             this.directCosmosAsyncContainer.delete().block();
         }
 
+        if (this.containerWithOpenConnections1 != null) {
+            this.containerWithOpenConnections1.delete();
+        }
+
+        if (this.containerWithOpenConnections2 != null) {
+            this.containerWithOpenConnections2.delete();
+        }
+
         safeCloseAsync(directCosmosAsyncClient);
         safeCloseAsync(gatewayCosmosAsyncClient);
         safeCloseSyncClient(directCosmosClient);
         safeCloseSyncClient(gatewayCosmosClient);
+        safeCloseAsync(directCosmosAsyncClientWithOpenConnections);
     }
 
     @DataProvider(name = "useAsyncParameterProvider")
@@ -121,15 +136,14 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         };
     }
 
-    @Test(enabled = false)
+    @Test
+    @Ignore
     public void openConnectionThroughClientBuilder() {
         directCosmosAsyncDatabase.createContainerIfNotExists("id1", "/mypk").block();
         directCosmosAsyncDatabase.createContainerIfNotExists("id2", "/mypk").block();
-        directCosmosAsyncDatabase.createContainerIfNotExists("id3", "/mypk").block();
 
         CosmosAsyncContainer cosmosContainer1 = directCosmosAsyncDatabase.getContainer("id1");
         CosmosAsyncContainer cosmosContainer2 = directCosmosAsyncDatabase.getContainer("id2");
-        CosmosAsyncContainer cosmosContainer3 = directCosmosAsyncDatabase.getContainer("id3");
 
         List<String> regions = new ArrayList<>();
         regions.add("East US");
@@ -138,13 +152,12 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
         List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
         cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosContainer1.getDatabase().getId(), cosmosContainer1.getId()));
         cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosContainer2.getDatabase().getId(), cosmosContainer2.getId()));
-        cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosContainer3.getDatabase().getId(), cosmosContainer3.getId()));
 
         ProactiveContainerInitConfig proactiveContainerInitConfig = new ProactiveContainerInitConfigBuilder(cosmosContainerIdentities)
                 .setProactiveConnectionRegions(2)
                 .build();
 
-        CosmosClient cosmosClient = new CosmosClientBuilder()
+        CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .openConnectionsAndInitCaches(proactiveContainerInitConfig)
@@ -152,7 +165,63 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
                 .preferredRegions(Arrays.asList("East US", "West US"))
                 .endpointDiscoveryEnabled(true)
                 .directMode()
-                .buildClient();
+                .buildAsyncClient();
+
+        RntbdTransportClient rntbdTransportClient = (RntbdTransportClient) ReflectionUtils.getTransportClient(cosmosAsyncClient);
+        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) cosmosAsyncClient.getDocClientWrapper();
+        RntbdEndpoint.Provider provider = ReflectionUtils.getRntbdEndpointProvider(rntbdTransportClient);
+        GlobalAddressResolver globalAddressResolver = ReflectionUtils.getGlobalAddressResolver(rxDocumentClient);
+
+        ConcurrentHashMap<String, ?> routingMap = getRoutingMap(rxDocumentClient);
+        ConcurrentHashMap<String, ?> collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
+        Set<String> endpoints = ConcurrentHashMap.newKeySet();
+
+        Flux<CosmosAsyncContainer> containerFlux = Flux.fromArray(new CosmosAsyncContainer[]{cosmosContainer1, cosmosContainer2});
+        Flux<Utils.ValueHolder<List<PartitionKeyRange>>> partitionKeyRangeFlux = Flux.fromArray(new CosmosAsyncContainer[]{cosmosContainer1, cosmosContainer2})
+                        .flatMap(CosmosAsyncContainer::read)
+                        .flatMap(containerResponse -> {
+                            return rxDocumentClient
+                                    .getPartitionKeyRangeCache()
+                                    .tryGetOverlappingRangesAsync(
+                                            null,
+                                            containerResponse.getProperties().getResourceId(),
+                                            PartitionKeyInternalHelper.FullRange,
+                                            true,
+                                            null);
+                        });
+
+        Flux.zip(containerFlux, partitionKeyRangeFlux)
+                .flatMapIterable(containerToPartitionKeyRanges -> {
+                    List<ImmutablePair<PartitionKeyRange, CosmosAsyncContainer>> pkrToContainer = new ArrayList<>();
+                    for (PartitionKeyRange pkr : containerToPartitionKeyRanges.getT2().v) {
+                        pkrToContainer.add(new ImmutablePair<>(pkr, containerToPartitionKeyRanges.getT1()));
+                    }
+                    return pkrToContainer;
+                })
+                .flatMap(partitionKeyRangeToContainer -> {
+                    RxDocumentServiceRequest dummyRequest = RxDocumentServiceRequest.createFromName(
+                            mockDiagnosticsClientContext(),
+                            OperationType.Read,
+                            partitionKeyRangeToContainer.getRight().getLink() + "/docId",
+                            ResourceType.Document);
+                    dummyRequest.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(partitionKeyRangeToContainer.getLeft().getId()));
+                    // TODO: resolves addresses for only a single region
+                    return globalAddressResolver.resolveAsync(dummyRequest, false);
+                })
+                .doOnNext(addressInformations -> {
+                    for (AddressInformation address : addressInformations) {
+                        endpoints.add(address.getPhysicalUri().getURI().getAuthority());
+                    }
+                })
+                .blockLast();
+
+        assertThat(provider.count()).isEqualTo(proactiveContainerInitConfig.getNumProactiveConnectionRegions() * endpoints.size());
+        assertThat(collectionInfoByNameMap.size()).isEqualTo(cosmosContainerIdentities.size());
+        assertThat(routingMap.size()).isEqualTo(cosmosContainerIdentities.size());
+
+        cosmosContainer1.delete().block();
+        cosmosContainer2.delete().block();
+        safeCloseAsync(cosmosAsyncClient);
     }
 
     @Test(groups = {"simple"}, dataProvider = "useAsyncParameterProvider")
