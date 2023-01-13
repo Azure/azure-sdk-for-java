@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.indexes;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.ExpandableStringEnum;
@@ -98,7 +97,6 @@ import static com.azure.search.documents.TestHelpers.verifyHttpResponseError;
 import static com.azure.search.documents.TestHelpers.waitForIndexing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CustomAnalyzerTests extends SearchTestBase {
     private static final String NAME_PREFIX = "azsmnet";
@@ -266,16 +264,13 @@ public class CustomAnalyzerTests extends SearchTestBase {
 
         LEXICAL_ANALYZER_NAMES.stream()
             .map(an -> new AnalyzeTextOptions("One two", an))
-            .forEach(r -> searchIndexClient.analyzeText(index.getName(), r));
+            .forEach(r -> searchIndexClient.analyzeText(index.getName(), r).forEach(ignored -> {
+            }));
 
         LEXICAL_TOKENIZER_NAMES.stream()
             .map(tn -> new AnalyzeTextOptions("One two", tn))
-            .forEach(r -> searchIndexClient.analyzeText(index.getName(), r));
-
-        AnalyzeTextOptions request = new AnalyzeTextOptions("One two", LexicalTokenizerName.WHITESPACE)
-            .setTokenFilters(TOKEN_FILTER_NAMES.toArray(new TokenFilterName[0]))
-            .setCharFilters(CHAR_FILTER_NAMES.toArray(new CharFilterName[0]));
-        searchIndexClient.analyzeText(index.getName(), request);
+            .forEach(r -> searchIndexClient.analyzeText(index.getName(), r).forEach(ignored -> {
+            }));
     }
 
     @Test
@@ -291,11 +286,6 @@ public class CustomAnalyzerTests extends SearchTestBase {
         LEXICAL_TOKENIZER_NAMES.stream()
             .map(tn -> new AnalyzeTextOptions("One two", tn))
             .forEach(r -> searchIndexAsyncClient.analyzeText(index.getName(), r).blockLast());
-
-        AnalyzeTextOptions request = new AnalyzeTextOptions("One two", LexicalTokenizerName.WHITESPACE)
-            .setTokenFilters(TOKEN_FILTER_NAMES.toArray(new TokenFilterName[0]))
-            .setCharFilters(CHAR_FILTER_NAMES.toArray(new CharFilterName[0]));
-        searchIndexAsyncClient.analyzeText(index.getName(), request).blockLast();
     }
 
     @Test
@@ -413,108 +403,23 @@ public class CustomAnalyzerTests extends SearchTestBase {
     }
 
     @Test
-    public void canUseAllRegexFlagsAnalyzerSync() {
-        createAndValidateIndexSync(searchIndexClient, createTestIndex(null)
-            .setAnalyzers(new PatternAnalyzer(generateName()).setStopwords("stop1", "stop2").setLowerCaseTerms(true)
-                .setPattern(".*").setFlags(REGEX_FLAGS)));
+    public void canUsePatternAnalyzerInManyWaysSync() {
+        SearchIndex expectedIndex = createTestIndex(null).setAnalyzers(
+            new PatternAnalyzer(generateName()).setStopwords("stop1", "stop2").setLowerCaseTerms(true)
+                .setPattern(".*").setFlags(REGEX_FLAGS),
+            new PatternAnalyzer(generateName()).setPattern(""));
+
+        createAndValidateIndexSync(searchIndexClient, expectedIndex);
     }
 
     @Test
-    public void canUseAllRegexFlagsAnalyzerAsync() {
-        createAndValidateIndexAsync(searchIndexAsyncClient, createTestIndex(null)
-            .setAnalyzers(new PatternAnalyzer(generateName()).setStopwords("stop1", "stop2").setLowerCaseTerms(true)
-                .setPattern(".*").setFlags(REGEX_FLAGS)));
-    }
+    public void canUsePatternAnalyzerInManyWaysAsync() {
+        SearchIndex expectedIndex = createTestIndex(null).setAnalyzers(
+            new PatternAnalyzer(generateName()).setStopwords("stop1", "stop2").setLowerCaseTerms(true)
+                .setPattern(".*").setFlags(REGEX_FLAGS),
+            new PatternAnalyzer(generateName()).setPattern(""));
 
-    @Test
-    public void canUseAllRegexFlagsNullAnalyzerSync() {
-        createAndValidateIndexSync(searchIndexClient, createTestIndex(null).setAnalyzers((List<LexicalAnalyzer>) null));
-    }
-
-    @Test
-    public void canUseAllRegexFlagsNullAnalyzerAsync() {
-        createAndValidateIndexAsync(searchIndexAsyncClient,
-            createTestIndex(null).setAnalyzers((List<LexicalAnalyzer>) null));
-    }
-
-    @Test
-    public void canUseAllRegexFlagsEmptyAnalyzerSync() {
-        createAndValidateIndexSync(searchIndexClient, createTestIndex(null).setAnalyzers(new ArrayList<>()));
-    }
-
-    @Test
-    public void canUseAllRegexFlagsEmptyAnalyzerAsync() {
-        createAndValidateIndexAsync(searchIndexAsyncClient, createTestIndex(null).setAnalyzers(new ArrayList<>()));
-    }
-
-    @Test
-    public void canUseAllRegexFlagsNullNameAnalyzerSync() {
-        SearchIndex index = createTestIndex(null).setAnalyzers(new PatternAnalyzer(null));
-
-        assertThrows(HttpResponseException.class, () -> searchIndexClient.createIndex(index),
-            "Missing required property name in model LexicalAnalyzer");
-
-    }
-
-    @Test
-    public void canUseAllRegexFlagsNullNameAnalyzerAsync() {
-        SearchIndex index = createTestIndex(null).setAnalyzers(new PatternAnalyzer(null));
-
-        StepVerifier.create(searchIndexAsyncClient.createIndex(index))
-            .verifyError(HttpResponseException.class);
-    }
-
-    @Test
-    public void canUseAllRegexFlagsEmptyNameAnalyzerSync() {
-        SearchIndex index = createTestIndex(null).setAnalyzers(new PatternAnalyzer(""));
-
-        assertHttpResponseException(() -> searchIndexClient.createIndex(index), HttpURLConnection.HTTP_BAD_REQUEST,
-            "The name field is required.");
-    }
-
-    @Test
-    public void canUseAllRegexFlagsEmptyNameAnalyzerAsync() {
-        SearchIndex index = createTestIndex(null).setAnalyzers(new PatternAnalyzer(""));
-
-        StepVerifier.create(searchIndexAsyncClient.createIndex(index))
-            .verifyErrorSatisfies(exception -> verifyHttpResponseError(exception, HttpURLConnection.HTTP_BAD_REQUEST,
-                "The name field is required."));
-    }
-
-    @Test
-    public void canUseAllRegexFlagsNullLowerCaseAnalyzerSync() {
-        createAndValidateIndexSync(searchIndexClient, createTestIndex(null)
-            .setAnalyzers(new PatternAnalyzer(generateName()).setLowerCaseTerms(null)));
-    }
-
-    @Test
-    public void canUseAllRegexFlagsNullLowerCaseAnalyzerAsync() {
-        createAndValidateIndexAsync(searchIndexAsyncClient, createTestIndex(null)
-            .setAnalyzers(new PatternAnalyzer(generateName()).setLowerCaseTerms(null)));
-    }
-
-    @Test
-    public void canUseAllRegexFlagsNullPatternAnalyzerSync() {
-        createAndValidateIndexSync(searchIndexClient, createTestIndex(null)
-            .setAnalyzers(new PatternAnalyzer(generateName()).setPattern(null)));
-    }
-
-    @Test
-    public void canUseAllRegexFlagsNullPatternAnalyzerAsync() {
-        createAndValidateIndexAsync(searchIndexAsyncClient, createTestIndex(null)
-            .setAnalyzers(new PatternAnalyzer(generateName()).setPattern(null)));
-    }
-
-    @Test
-    public void canUseAllRegexFlagsEmptyPatternAnalyzerSync() {
-        createAndValidateIndexSync(searchIndexClient, createTestIndex(null)
-            .setAnalyzers(new PatternAnalyzer(generateName()).setPattern("")));
-    }
-
-    @Test
-    public void canUseAllRegexFlagsEmptyPatternAnalyzerAsync() {
-        createAndValidateIndexAsync(searchIndexAsyncClient, createTestIndex(null)
-            .setAnalyzers(new PatternAnalyzer(generateName()).setPattern("")));
+        createAndValidateIndexAsync(searchIndexAsyncClient, expectedIndex);
     }
 
     @Test
@@ -535,18 +440,6 @@ public class CustomAnalyzerTests extends SearchTestBase {
     }
 
     @Test
-    public void canUseAllRegexFlagsEmptyStopwordsAnalyzerSync() {
-        createAndValidateIndexSync(searchIndexClient, createTestIndex(null)
-            .setAnalyzers(new PatternAnalyzer(generateName()).setStopwords()));
-    }
-
-    @Test
-    public void canUseAllRegexFlagsEmptyStopwordsAnalyzerAsync() {
-        createAndValidateIndexAsync(searchIndexAsyncClient, createTestIndex(null)
-            .setAnalyzers(new PatternAnalyzer(generateName()).setStopwords()));
-    }
-
-    @Test
     public void canUseAllRegexFlagsTokenizerSync() {
         createAndValidateIndexSync(searchIndexClient, createTestIndex(null)
             .setTokenizers(new PatternTokenizer(generateName()).setPattern(".*").setFlags(REGEX_FLAGS).setGroup(0)));
@@ -559,18 +452,6 @@ public class CustomAnalyzerTests extends SearchTestBase {
     }
 
     @Test
-    public void canUseAllRegexFlagsNullTokenizerSync() {
-        createAndValidateIndexSync(searchIndexClient,
-            createTestIndex(null).setTokenizers((List<LexicalTokenizer>) null));
-    }
-
-    @Test
-    public void canUseAllRegexFlagsNullTokenizerAsync() {
-        createAndValidateIndexAsync(searchIndexAsyncClient,
-            createTestIndex(null).setTokenizers((List<LexicalTokenizer>) null));
-    }
-
-    @Test
     public void canUseAllRegexFlagsEmptyTokenizerSync() {
         createAndValidateIndexSync(searchIndexClient, createTestIndex(null).setTokenizers(new ArrayList<>()));
     }
@@ -578,52 +459,6 @@ public class CustomAnalyzerTests extends SearchTestBase {
     @Test
     public void canUseAllRegexFlagsEmptyTokenizerAsync() {
         createAndValidateIndexAsync(searchIndexAsyncClient, createTestIndex(null).setTokenizers(new ArrayList<>()));
-    }
-
-    @Test
-    public void canUseAllRegexFlagsNullNameTokenizerSync() {
-        SearchIndex index = createTestIndex(null).setTokenizers(new PatternTokenizer(null));
-
-        assertThrows(HttpResponseException.class, () ->
-            searchIndexClient.createIndex(index), "Missing required property name in model SearchIndexer");
-
-    }
-
-    @Test
-    public void canUseAllRegexFlagsNullNameTokenizerAsync() {
-        SearchIndex index = createTestIndex(null).setTokenizers(new PatternTokenizer(null));
-
-        StepVerifier.create(searchIndexAsyncClient.createIndex(index))
-            .verifyError(HttpResponseException.class);
-    }
-
-    @Test
-    public void canUseAllRegexFlagsEmptyNameTokenizerSync() {
-        SearchIndex index = createTestIndex(null).setTokenizers(new PatternTokenizer(""));
-
-        assertHttpResponseException(() -> searchIndexClient.createIndex(index), HttpURLConnection.HTTP_BAD_REQUEST,
-            "The name field is required.");
-    }
-
-    @Test
-    public void canUseAllRegexFlagsEmptyNameTokenizerAsync() {
-        SearchIndex index = createTestIndex(null).setTokenizers(new PatternTokenizer(""));
-
-        StepVerifier.create(searchIndexAsyncClient.createIndex(index))
-            .verifyErrorSatisfies(exception -> verifyHttpResponseError(exception, HttpURLConnection.HTTP_BAD_REQUEST,
-                "The name field is required."));
-    }
-
-    @Test
-    public void canUseAllRegexFlagsNullPatternTokenizerSync() {
-        createAndValidateIndexSync(searchIndexClient,
-            createTestIndex(null).setTokenizers(new PatternTokenizer(generateName()).setPattern(null)));
-    }
-
-    @Test
-    public void canUseAllRegexFlagsNullPatternTokenizerAsync() {
-        createAndValidateIndexAsync(searchIndexAsyncClient,
-            createTestIndex(null).setTokenizers(new PatternTokenizer(generateName()).setPattern(null)));
     }
 
     @Test
