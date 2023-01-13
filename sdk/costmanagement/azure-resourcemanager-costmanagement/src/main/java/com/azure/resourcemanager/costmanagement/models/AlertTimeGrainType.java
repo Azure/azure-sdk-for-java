@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AlertTimeGrainType. */
+/** Type of timegrain cadence. */
 public final class AlertTimeGrainType extends ExpandableStringEnum<AlertTimeGrainType> {
     /** Static value None for AlertTimeGrainType. */
     public static final AlertTimeGrainType NONE = fromString("None");
@@ -32,6 +32,15 @@ public final class AlertTimeGrainType extends ExpandableStringEnum<AlertTimeGrai
     public static final AlertTimeGrainType BILLING_ANNUAL = fromString("BillingAnnual");
 
     /**
+     * Creates a new instance of AlertTimeGrainType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AlertTimeGrainType() {
+    }
+
+    /**
      * Creates or finds a AlertTimeGrainType from its string representation.
      *
      * @param name a name to look for.
@@ -42,7 +51,11 @@ public final class AlertTimeGrainType extends ExpandableStringEnum<AlertTimeGrai
         return fromString(name, AlertTimeGrainType.class);
     }
 
-    /** @return known AlertTimeGrainType values. */
+    /**
+     * Gets known AlertTimeGrainType values.
+     *
+     * @return known AlertTimeGrainType values.
+     */
     public static Collection<AlertTimeGrainType> values() {
         return values(AlertTimeGrainType.class);
     }
