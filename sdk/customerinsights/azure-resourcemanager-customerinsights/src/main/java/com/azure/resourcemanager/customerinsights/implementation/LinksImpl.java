@@ -13,10 +13,9 @@ import com.azure.resourcemanager.customerinsights.fluent.LinksClient;
 import com.azure.resourcemanager.customerinsights.fluent.models.LinkResourceFormatInner;
 import com.azure.resourcemanager.customerinsights.models.LinkResourceFormat;
 import com.azure.resourcemanager.customerinsights.models.Links;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LinksImpl implements Links {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinksImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LinksImpl.class);
 
     private final LinksClient innerClient;
 
@@ -26,15 +25,6 @@ public final class LinksImpl implements Links {
         LinksClient innerClient, com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public LinkResourceFormat get(String resourceGroupName, String hubName, String linkName) {
-        LinkResourceFormatInner inner = this.serviceClient().get(resourceGroupName, hubName, linkName);
-        if (inner != null) {
-            return new LinkResourceFormatImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<LinkResourceFormat> getWithResponse(
@@ -52,13 +42,22 @@ public final class LinksImpl implements Links {
         }
     }
 
-    public void delete(String resourceGroupName, String hubName, String linkName) {
-        this.serviceClient().delete(resourceGroupName, hubName, linkName);
+    public LinkResourceFormat get(String resourceGroupName, String hubName, String linkName) {
+        LinkResourceFormatInner inner = this.serviceClient().get(resourceGroupName, hubName, linkName);
+        if (inner != null) {
+            return new LinkResourceFormatImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String hubName, String linkName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, hubName, linkName, context);
+    }
+
+    public void delete(String resourceGroupName, String hubName, String linkName) {
+        this.serviceClient().delete(resourceGroupName, hubName, linkName);
     }
 
     public PagedIterable<LinkResourceFormat> listByHub(String resourceGroupName, String hubName) {
@@ -75,7 +74,7 @@ public final class LinksImpl implements Links {
     public LinkResourceFormat getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -83,14 +82,14 @@ public final class LinksImpl implements Links {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String linkName = Utils.getValueFromIdByName(id, "links");
         if (linkName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'links'.", id)));
@@ -101,7 +100,7 @@ public final class LinksImpl implements Links {
     public Response<LinkResourceFormat> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -109,14 +108,14 @@ public final class LinksImpl implements Links {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String linkName = Utils.getValueFromIdByName(id, "links");
         if (linkName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'links'.", id)));
@@ -127,7 +126,7 @@ public final class LinksImpl implements Links {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -135,25 +134,25 @@ public final class LinksImpl implements Links {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String linkName = Utils.getValueFromIdByName(id, "links");
         if (linkName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'links'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, hubName, linkName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, hubName, linkName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -161,14 +160,14 @@ public final class LinksImpl implements Links {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String linkName = Utils.getValueFromIdByName(id, "links");
         if (linkName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'links'.", id)));

@@ -5,29 +5,31 @@
 package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.datalakeanalytics.fluent.models.UpdateStorageAccountProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters used to update an Azure Storage account. */
-@JsonFlatten
 @Fluent
-public class UpdateStorageAccountParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateStorageAccountParameters.class);
-
+public final class UpdateStorageAccountParameters {
     /*
-     * The updated access key associated with this Azure Storage account that
-     * will be used to connect to it.
+     * The Azure Storage account properties to use when updating an Azure Storage account.
      */
-    @JsonProperty(value = "properties.accessKey")
-    private String accessKey;
+    @JsonProperty(value = "properties")
+    private UpdateStorageAccountProperties innerProperties;
 
-    /*
-     * The optional suffix for the storage account.
+    /** Creates an instance of UpdateStorageAccountParameters class. */
+    public UpdateStorageAccountParameters() {
+    }
+
+    /**
+     * Get the innerProperties property: The Azure Storage account properties to use when updating an Azure Storage
+     * account.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.suffix")
-    private String suffix;
+    private UpdateStorageAccountProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the accessKey property: The updated access key associated with this Azure Storage account that will be used
@@ -36,7 +38,7 @@ public class UpdateStorageAccountParameters {
      * @return the accessKey value.
      */
     public String accessKey() {
-        return this.accessKey;
+        return this.innerProperties() == null ? null : this.innerProperties().accessKey();
     }
 
     /**
@@ -47,7 +49,10 @@ public class UpdateStorageAccountParameters {
      * @return the UpdateStorageAccountParameters object itself.
      */
     public UpdateStorageAccountParameters withAccessKey(String accessKey) {
-        this.accessKey = accessKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateStorageAccountProperties();
+        }
+        this.innerProperties().withAccessKey(accessKey);
         return this;
     }
 
@@ -57,7 +62,7 @@ public class UpdateStorageAccountParameters {
      * @return the suffix value.
      */
     public String suffix() {
-        return this.suffix;
+        return this.innerProperties() == null ? null : this.innerProperties().suffix();
     }
 
     /**
@@ -67,7 +72,10 @@ public class UpdateStorageAccountParameters {
      * @return the UpdateStorageAccountParameters object itself.
      */
     public UpdateStorageAccountParameters withSuffix(String suffix) {
-        this.suffix = suffix;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateStorageAccountProperties();
+        }
+        this.innerProperties().withSuffix(suffix);
         return this;
     }
 
@@ -77,5 +85,8 @@ public class UpdateStorageAccountParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -29,6 +29,15 @@ public final class WindowsVMGuestPatchMode extends ExpandableStringEnum<WindowsV
     public static final WindowsVMGuestPatchMode AUTOMATIC_BY_PLATFORM = fromString("AutomaticByPlatform");
 
     /**
+     * Creates a new instance of WindowsVMGuestPatchMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WindowsVMGuestPatchMode() {
+    }
+
+    /**
      * Creates or finds a WindowsVMGuestPatchMode from its string representation.
      *
      * @param name a name to look for.

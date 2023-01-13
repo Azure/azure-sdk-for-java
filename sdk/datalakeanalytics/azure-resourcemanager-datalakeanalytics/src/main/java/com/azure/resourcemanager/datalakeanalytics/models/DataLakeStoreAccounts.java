@@ -19,7 +19,8 @@ public interface DataLakeStoreAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account.
+     * @return the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account as
+     *     paginated response with {@link PagedIterable}.
      */
     PagedIterable<DataLakeStoreAccountInformation> listByAccount(String resourceGroupName, String accountName);
 
@@ -43,7 +44,8 @@ public interface DataLakeStoreAccounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account.
+     * @return the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account as
+     *     paginated response with {@link PagedIterable}.
      */
     PagedIterable<DataLakeStoreAccountInformation> listByAccount(
         String resourceGroupName,
@@ -62,24 +64,12 @@ public interface DataLakeStoreAccounts {
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param dataLakeStoreAccountName The name of the Data Lake Store account to add.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void add(String resourceGroupName, String accountName, String dataLakeStoreAccountName);
-
-    /**
-     * Updates the specified Data Lake Analytics account to include the additional Data Lake Store account.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Analytics account.
-     * @param dataLakeStoreAccountName The name of the Data Lake Store account to add.
      * @param parameters The details of the Data Lake Store account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> addWithResponse(
         String resourceGroupName,
@@ -87,6 +77,34 @@ public interface DataLakeStoreAccounts {
         String dataLakeStoreAccountName,
         AddDataLakeStoreParameters parameters,
         Context context);
+
+    /**
+     * Updates the specified Data Lake Analytics account to include the additional Data Lake Store account.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Analytics account.
+     * @param dataLakeStoreAccountName The name of the Data Lake Store account to add.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void add(String resourceGroupName, String accountName, String dataLakeStoreAccountName);
+
+    /**
+     * Gets the specified Data Lake Store account details in the specified Data Lake Analytics account.
+     *
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Analytics account.
+     * @param dataLakeStoreAccountName The name of the Data Lake Store account to retrieve.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Data Lake Store account details in the specified Data Lake Analytics account along with
+     *     {@link Response}.
+     */
+    Response<DataLakeStoreAccountInformation> getWithResponse(
+        String resourceGroupName, String accountName, String dataLakeStoreAccountName, Context context);
 
     /**
      * Gets the specified Data Lake Store account details in the specified Data Lake Analytics account.
@@ -102,18 +120,18 @@ public interface DataLakeStoreAccounts {
     DataLakeStoreAccountInformation get(String resourceGroupName, String accountName, String dataLakeStoreAccountName);
 
     /**
-     * Gets the specified Data Lake Store account details in the specified Data Lake Analytics account.
+     * Updates the Data Lake Analytics account specified to remove the specified Data Lake Store account.
      *
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
-     * @param dataLakeStoreAccountName The name of the Data Lake Store account to retrieve.
+     * @param dataLakeStoreAccountName The name of the Data Lake Store account to remove.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store account details in the specified Data Lake Analytics account.
+     * @return the {@link Response}.
      */
-    Response<DataLakeStoreAccountInformation> getWithResponse(
+    Response<Void> deleteWithResponse(
         String resourceGroupName, String accountName, String dataLakeStoreAccountName, Context context);
 
     /**
@@ -127,19 +145,4 @@ public interface DataLakeStoreAccounts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void delete(String resourceGroupName, String accountName, String dataLakeStoreAccountName);
-
-    /**
-     * Updates the Data Lake Analytics account specified to remove the specified Data Lake Store account.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Analytics account.
-     * @param dataLakeStoreAccountName The name of the Data Lake Store account to remove.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String dataLakeStoreAccountName, Context context);
 }

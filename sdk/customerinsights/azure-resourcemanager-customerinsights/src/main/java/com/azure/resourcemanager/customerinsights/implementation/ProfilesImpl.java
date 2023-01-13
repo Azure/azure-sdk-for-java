@@ -15,13 +15,12 @@ import com.azure.resourcemanager.customerinsights.fluent.models.ProfileResourceF
 import com.azure.resourcemanager.customerinsights.models.KpiDefinition;
 import com.azure.resourcemanager.customerinsights.models.ProfileResourceFormat;
 import com.azure.resourcemanager.customerinsights.models.Profiles;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public final class ProfilesImpl implements Profiles {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProfilesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProfilesImpl.class);
 
     private final ProfilesClient innerClient;
 
@@ -31,15 +30,6 @@ public final class ProfilesImpl implements Profiles {
         ProfilesClient innerClient, com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public ProfileResourceFormat get(String resourceGroupName, String hubName, String profileName) {
-        ProfileResourceFormatInner inner = this.serviceClient().get(resourceGroupName, hubName, profileName);
-        if (inner != null) {
-            return new ProfileResourceFormatImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<ProfileResourceFormat> getWithResponse(
@@ -57,8 +47,13 @@ public final class ProfilesImpl implements Profiles {
         }
     }
 
-    public void delete(String resourceGroupName, String hubName, String profileName, String localeCode) {
-        this.serviceClient().delete(resourceGroupName, hubName, profileName, localeCode);
+    public ProfileResourceFormat get(String resourceGroupName, String hubName, String profileName) {
+        ProfileResourceFormatInner inner = this.serviceClient().get(resourceGroupName, hubName, profileName);
+        if (inner != null) {
+            return new ProfileResourceFormatImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public void delete(String resourceGroupName, String hubName, String profileName) {
@@ -82,20 +77,6 @@ public final class ProfilesImpl implements Profiles {
         return Utils.mapPage(inner, inner1 -> new ProfileResourceFormatImpl(inner1, this.manager()));
     }
 
-    public List<KpiDefinition> getEnrichingKpis(String resourceGroupName, String hubName, String profileName) {
-        List<KpiDefinitionInner> inner = this.serviceClient().getEnrichingKpis(resourceGroupName, hubName, profileName);
-        if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new KpiDefinitionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
     public Response<List<KpiDefinition>> getEnrichingKpisWithResponse(
         String resourceGroupName, String hubName, String profileName, Context context) {
         Response<List<KpiDefinitionInner>> inner =
@@ -115,10 +96,24 @@ public final class ProfilesImpl implements Profiles {
         }
     }
 
+    public List<KpiDefinition> getEnrichingKpis(String resourceGroupName, String hubName, String profileName) {
+        List<KpiDefinitionInner> inner = this.serviceClient().getEnrichingKpis(resourceGroupName, hubName, profileName);
+        if (inner != null) {
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new KpiDefinitionImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public ProfileResourceFormat getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -126,14 +121,14 @@ public final class ProfilesImpl implements Profiles {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String profileName = Utils.getValueFromIdByName(id, "profiles");
         if (profileName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'profiles'.", id)));
@@ -145,7 +140,7 @@ public final class ProfilesImpl implements Profiles {
     public Response<ProfileResourceFormat> getByIdWithResponse(String id, String localeCode, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -153,14 +148,14 @@ public final class ProfilesImpl implements Profiles {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String profileName = Utils.getValueFromIdByName(id, "profiles");
         if (profileName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'profiles'.", id)));
@@ -171,7 +166,7 @@ public final class ProfilesImpl implements Profiles {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -179,14 +174,14 @@ public final class ProfilesImpl implements Profiles {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String profileName = Utils.getValueFromIdByName(id, "profiles");
         if (profileName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'profiles'.", id)));
@@ -198,7 +193,7 @@ public final class ProfilesImpl implements Profiles {
     public void deleteByIdWithResponse(String id, String localeCode, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -206,14 +201,14 @@ public final class ProfilesImpl implements Profiles {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String profileName = Utils.getValueFromIdByName(id, "profiles");
         if (profileName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'profiles'.", id)));

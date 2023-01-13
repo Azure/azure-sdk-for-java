@@ -26,9 +26,9 @@ public interface InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the interaction resource format.
+     * @return the {@link SyncPoller} for polling of the interaction resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<InteractionResourceFormatInner>, InteractionResourceFormatInner> beginCreateOrUpdate(
         String resourceGroupName, String hubName, String interactionName, InteractionResourceFormatInner parameters);
 
@@ -43,9 +43,9 @@ public interface InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the interaction resource format.
+     * @return the {@link SyncPoller} for polling of the interaction resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<InteractionResourceFormatInner>, InteractionResourceFormatInner> beginCreateOrUpdate(
         String resourceGroupName,
         String hubName,
@@ -89,6 +89,23 @@ public interface InteractionsClient {
         String interactionName,
         InteractionResourceFormatInner parameters,
         Context context);
+
+    /**
+     * Gets information about the specified interaction.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param interactionName The name of the interaction.
+     * @param localeCode Locale of interaction to retrieve, default is en-us.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified interaction along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<InteractionResourceFormatInner> getWithResponse(
+        String resourceGroupName, String hubName, String interactionName, String localeCode, Context context);
 
     /**
      * Gets information about the specified interaction.
@@ -105,23 +122,6 @@ public interface InteractionsClient {
     InteractionResourceFormatInner get(String resourceGroupName, String hubName, String interactionName);
 
     /**
-     * Gets information about the specified interaction.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param interactionName The name of the interaction.
-     * @param localeCode Locale of interaction to retrieve, default is en-us.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified interaction.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<InteractionResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String interactionName, String localeCode, Context context);
-
-    /**
      * Gets all interactions in the hub.
      *
      * @param resourceGroupName The name of the resource group.
@@ -129,7 +129,7 @@ public interface InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all interactions in the hub.
+     * @return all interactions in the hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<InteractionResourceFormatInner> listByHub(String resourceGroupName, String hubName);
@@ -144,11 +144,27 @@ public interface InteractionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all interactions in the hub.
+     * @return all interactions in the hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<InteractionResourceFormatInner> listByHub(
         String resourceGroupName, String hubName, String localeCode, Context context);
+
+    /**
+     * Suggests relationships to create relationship links.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param interactionName The name of the interaction.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of suggest relationship links operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SuggestRelationshipLinksResponseInner> suggestRelationshipLinksWithResponse(
+        String resourceGroupName, String hubName, String interactionName, Context context);
 
     /**
      * Suggests relationships to create relationship links.
@@ -164,20 +180,4 @@ public interface InteractionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     SuggestRelationshipLinksResponseInner suggestRelationshipLinks(
         String resourceGroupName, String hubName, String interactionName);
-
-    /**
-     * Suggests relationships to create relationship links.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param interactionName The name of the interaction.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of suggest relationship links operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SuggestRelationshipLinksResponseInner> suggestRelationshipLinksWithResponse(
-        String resourceGroupName, String hubName, String interactionName, Context context);
 }

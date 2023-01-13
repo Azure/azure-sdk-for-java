@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.frontdoor.fluent.RulesEnginesClient;
@@ -41,8 +40,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RulesEnginesClient. */
 public final class RulesEnginesClientImpl implements RulesEnginesClient {
-    private final ClientLogger logger = new ClientLogger(RulesEnginesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RulesEnginesService service;
 
@@ -66,7 +63,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "FrontDoorManagementC")
-    private interface RulesEnginesService {
+    public interface RulesEnginesService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors"
@@ -150,7 +147,8 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Rules Engine Configurations.
+     * @return result of the request to list Rules Engine Configurations along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RulesEngineInner>> listByFrontDoorSinglePageAsync(
@@ -209,7 +207,8 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Rules Engine Configurations.
+     * @return result of the request to list Rules Engine Configurations along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RulesEngineInner>> listByFrontDoorSinglePageAsync(
@@ -264,7 +263,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Rules Engine Configurations.
+     * @return result of the request to list Rules Engine Configurations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RulesEngineInner> listByFrontDoorAsync(String resourceGroupName, String frontDoorName) {
@@ -282,7 +281,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Rules Engine Configurations.
+     * @return result of the request to list Rules Engine Configurations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RulesEngineInner> listByFrontDoorAsync(
@@ -300,7 +299,8 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Rules Engine Configurations.
+     * @return result of the request to list Rules Engine Configurations as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RulesEngineInner> listByFrontDoor(String resourceGroupName, String frontDoorName) {
@@ -316,7 +316,8 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Rules Engine Configurations.
+     * @return result of the request to list Rules Engine Configurations as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RulesEngineInner> listByFrontDoor(
@@ -333,7 +334,8 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Rules Engine Configuration with the specified name within the specified Front Door.
+     * @return a Rules Engine Configuration with the specified name within the specified Front Door along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RulesEngineInner>> getWithResponseAsync(
@@ -389,7 +391,8 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Rules Engine Configuration with the specified name within the specified Front Door.
+     * @return a Rules Engine Configuration with the specified name within the specified Front Door along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RulesEngineInner>> getWithResponseAsync(
@@ -441,19 +444,32 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Rules Engine Configuration with the specified name within the specified Front Door.
+     * @return a Rules Engine Configuration with the specified name within the specified Front Door on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RulesEngineInner> getAsync(String resourceGroupName, String frontDoorName, String rulesEngineName) {
         return getWithResponseAsync(resourceGroupName, frontDoorName, rulesEngineName)
-            .flatMap(
-                (Response<RulesEngineInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a Rules Engine Configuration with the specified name within the specified Front Door.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param frontDoorName Name of the Front Door which is globally unique.
+     * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Rules Engine Configuration with the specified name within the specified Front Door along with {@link
+     *     Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RulesEngineInner> getWithResponse(
+        String resourceGroupName, String frontDoorName, String rulesEngineName, Context context) {
+        return getWithResponseAsync(resourceGroupName, frontDoorName, rulesEngineName, context).block();
     }
 
     /**
@@ -469,25 +485,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RulesEngineInner get(String resourceGroupName, String frontDoorName, String rulesEngineName) {
-        return getAsync(resourceGroupName, frontDoorName, rulesEngineName).block();
-    }
-
-    /**
-     * Gets a Rules Engine Configuration with the specified name within the specified Front Door.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Rules Engine Configuration with the specified name within the specified Front Door.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RulesEngineInner> getWithResponse(
-        String resourceGroupName, String frontDoorName, String rulesEngineName, Context context) {
-        return getWithResponseAsync(resourceGroupName, frontDoorName, rulesEngineName, context).block();
+        return getWithResponse(resourceGroupName, frontDoorName, rulesEngineName, Context.NONE).getValue();
     }
 
     /**
@@ -502,7 +500,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a rules engine configuration containing a list of rules that will run to modify the runtime behavior of
-     *     the request and response.
+     *     the request and response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -571,7 +569,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a rules engine configuration containing a list of rules that will run to modify the runtime behavior of
-     *     the request and response.
+     *     the request and response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -636,10 +634,10 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a rules engine configuration containing a list of rules that will run to modify the runtime behavior of
-     *     the request and response.
+     * @return the {@link PollerFlux} for polling of a rules engine configuration containing a list of rules that will
+     *     run to modify the runtime behavior of the request and response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RulesEngineInner>, RulesEngineInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String frontDoorName,
@@ -650,7 +648,11 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
         return this
             .client
             .<RulesEngineInner, RulesEngineInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RulesEngineInner.class, RulesEngineInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                RulesEngineInner.class,
+                RulesEngineInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -665,10 +667,10 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a rules engine configuration containing a list of rules that will run to modify the runtime behavior of
-     *     the request and response.
+     * @return the {@link PollerFlux} for polling of a rules engine configuration containing a list of rules that will
+     *     run to modify the runtime behavior of the request and response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RulesEngineInner>, RulesEngineInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String frontDoorName,
@@ -696,16 +698,17 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a rules engine configuration containing a list of rules that will run to modify the runtime behavior of
-     *     the request and response.
+     * @return the {@link SyncPoller} for polling of a rules engine configuration containing a list of rules that will
+     *     run to modify the runtime behavior of the request and response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RulesEngineInner>, RulesEngineInner> beginCreateOrUpdate(
         String resourceGroupName,
         String frontDoorName,
         String rulesEngineName,
         RulesEngineInner rulesEngineParameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, frontDoorName, rulesEngineName, rulesEngineParameters)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, frontDoorName, rulesEngineName, rulesEngineParameters)
             .getSyncPoller();
     }
 
@@ -721,18 +724,18 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a rules engine configuration containing a list of rules that will run to modify the runtime behavior of
-     *     the request and response.
+     * @return the {@link SyncPoller} for polling of a rules engine configuration containing a list of rules that will
+     *     run to modify the runtime behavior of the request and response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RulesEngineInner>, RulesEngineInner> beginCreateOrUpdate(
         String resourceGroupName,
         String frontDoorName,
         String rulesEngineName,
         RulesEngineInner rulesEngineParameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, frontDoorName, rulesEngineName, rulesEngineParameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, frontDoorName, rulesEngineName, rulesEngineParameters, context)
             .getSyncPoller();
     }
 
@@ -748,7 +751,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a rules engine configuration containing a list of rules that will run to modify the runtime behavior of
-     *     the request and response.
+     *     the request and response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RulesEngineInner> createOrUpdateAsync(
@@ -774,7 +777,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a rules engine configuration containing a list of rules that will run to modify the runtime behavior of
-     *     the request and response.
+     *     the request and response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RulesEngineInner> createOrUpdateAsync(
@@ -847,7 +850,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -903,7 +906,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -955,16 +958,17 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String frontDoorName, String rulesEngineName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, frontDoorName, rulesEngineName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -977,9 +981,9 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String frontDoorName, String rulesEngineName, Context context) {
         context = this.client.mergeContext(context);
@@ -999,12 +1003,12 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String frontDoorName, String rulesEngineName) {
-        return beginDeleteAsync(resourceGroupName, frontDoorName, rulesEngineName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, frontDoorName, rulesEngineName).getSyncPoller();
     }
 
     /**
@@ -1017,12 +1021,12 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String frontDoorName, String rulesEngineName, Context context) {
-        return beginDeleteAsync(resourceGroupName, frontDoorName, rulesEngineName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, frontDoorName, rulesEngineName, context).getSyncPoller();
     }
 
     /**
@@ -1034,7 +1038,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String frontDoorName, String rulesEngineName) {
@@ -1053,7 +1057,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1097,11 +1101,13 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Rules Engine Configurations.
+     * @return result of the request to list Rules Engine Configurations along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RulesEngineInner>> listByFrontDoorNextSinglePageAsync(String nextLink) {
@@ -1132,12 +1138,14 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Rules Engine Configurations.
+     * @return result of the request to list Rules Engine Configurations along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RulesEngineInner>> listByFrontDoorNextSinglePageAsync(String nextLink, Context context) {

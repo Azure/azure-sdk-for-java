@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.IntervalInMins;
 import com.azure.resourcemanager.compute.models.RequestRateByIntervalInput;
 import java.time.OffsetDateTime;
@@ -12,7 +11,7 @@ import java.time.OffsetDateTime;
 /** Samples for LogAnalytics ExportRequestRateByInterval. */
 public final class LogAnalyticsExportRequestRateByIntervalSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/logAnalyticExamples/LogAnalytics_RequestRateByInterval.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/logAnalyticExamples/LogAnalytics_RequestRateByInterval.json
      */
     /**
      * Sample code: Export logs which contain all Api requests made to Compute Resource Provider within the given time
@@ -36,6 +35,6 @@ public final class LogAnalyticsExportRequestRateByIntervalSamples {
                     .withToTime(OffsetDateTime.parse("2018-01-23T01:54:06.862601Z"))
                     .withGroupByResourceName(true)
                     .withIntervalLength(IntervalInMins.FIVE_MINS),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

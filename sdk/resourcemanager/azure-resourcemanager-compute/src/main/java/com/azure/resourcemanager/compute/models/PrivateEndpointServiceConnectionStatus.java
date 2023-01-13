@@ -21,6 +21,15 @@ public final class PrivateEndpointServiceConnectionStatus
     public static final PrivateEndpointServiceConnectionStatus REJECTED = fromString("Rejected");
 
     /**
+     * Creates a new instance of PrivateEndpointServiceConnectionStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PrivateEndpointServiceConnectionStatus() {
+    }
+
+    /**
      * Creates or finds a PrivateEndpointServiceConnectionStatus from its string representation.
      *
      * @param name a name to look for.

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The definition of a forecast. */
 @Fluent
 public final class ForecastDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ForecastDefinition.class);
-
     /*
      * The type of the forecast.
      */
@@ -21,8 +18,7 @@ public final class ForecastDefinition {
     private ForecastType type;
 
     /*
-     * The time frame for pulling data for the forecast. If custom, then a
-     * specific time period must be provided.
+     * The time frame for pulling data for the forecast. If custom, then a specific time period must be provided.
      */
     @JsonProperty(value = "timeframe", required = true)
     private ForecastTimeframeType timeframe;
@@ -37,7 +33,7 @@ public final class ForecastDefinition {
      * Has definition for data in this forecast.
      */
     @JsonProperty(value = "dataset", required = true)
-    private QueryDataset dataset;
+    private ForecastDataset dataset;
 
     /*
      * a boolean determining if actualCost will be included
@@ -50,6 +46,10 @@ public final class ForecastDefinition {
      */
     @JsonProperty(value = "includeFreshPartialCost")
     private Boolean includeFreshPartialCost;
+
+    /** Creates an instance of ForecastDefinition class. */
+    public ForecastDefinition() {
+    }
 
     /**
      * Get the type property: The type of the forecast.
@@ -118,7 +118,7 @@ public final class ForecastDefinition {
      *
      * @return the dataset value.
      */
-    public QueryDataset dataset() {
+    public ForecastDataset dataset() {
         return this.dataset;
     }
 
@@ -128,7 +128,7 @@ public final class ForecastDefinition {
      * @param dataset the dataset value to set.
      * @return the ForecastDefinition object itself.
      */
-    public ForecastDefinition withDataset(QueryDataset dataset) {
+    public ForecastDefinition withDataset(ForecastDataset dataset) {
         this.dataset = dataset;
         return this;
     }
@@ -180,12 +180,12 @@ public final class ForecastDefinition {
      */
     public void validate() {
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property type in model ForecastDefinition"));
         }
         if (timeframe() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property timeframe in model ForecastDefinition"));
         }
@@ -193,11 +193,13 @@ public final class ForecastDefinition {
             timePeriod().validate();
         }
         if (dataset() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property dataset in model ForecastDefinition"));
         } else {
             dataset().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ForecastDefinition.class);
 }

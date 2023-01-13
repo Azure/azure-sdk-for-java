@@ -5,16 +5,13 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Msi identity details of the resource. */
 @Fluent
 public class ResourceIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceIdentity.class);
-
     /*
      * Identity type
      */
@@ -37,7 +34,12 @@ public class ResourceIdentity {
      * User Assigned Identities
      */
     @JsonProperty(value = "userAssignedIdentities")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserAssignedIdentity> userAssignedIdentities;
+
+    /** Creates an instance of ResourceIdentity class. */
+    public ResourceIdentity() {
+    }
 
     /**
      * Get the type property: Identity type.

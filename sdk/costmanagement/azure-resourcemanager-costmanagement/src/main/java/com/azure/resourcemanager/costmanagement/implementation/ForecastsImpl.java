@@ -14,10 +14,9 @@ import com.azure.resourcemanager.costmanagement.models.ExternalCloudProviderType
 import com.azure.resourcemanager.costmanagement.models.ForecastDefinition;
 import com.azure.resourcemanager.costmanagement.models.Forecasts;
 import com.azure.resourcemanager.costmanagement.models.QueryResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ForecastsImpl implements Forecasts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ForecastsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ForecastsImpl.class);
 
     private final ForecastsClient innerClient;
 
@@ -27,15 +26,6 @@ public final class ForecastsImpl implements Forecasts {
         ForecastsClient innerClient, com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public QueryResult usage(String scope, ForecastDefinition parameters) {
-        QueryResultInner inner = this.serviceClient().usage(scope, parameters);
-        if (inner != null) {
-            return new QueryResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<QueryResult> usageWithResponse(
@@ -52,14 +42,8 @@ public final class ForecastsImpl implements Forecasts {
         }
     }
 
-    public QueryResult externalCloudProviderUsage(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        ForecastDefinition parameters) {
-        QueryResultInner inner =
-            this
-                .serviceClient()
-                .externalCloudProviderUsage(externalCloudProviderType, externalCloudProviderId, parameters);
+    public QueryResult usage(String scope, ForecastDefinition parameters) {
+        QueryResultInner inner = this.serviceClient().usage(scope, parameters);
         if (inner != null) {
             return new QueryResultImpl(inner, this.manager());
         } else {
@@ -84,6 +68,21 @@ public final class ForecastsImpl implements Forecasts {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new QueryResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public QueryResult externalCloudProviderUsage(
+        ExternalCloudProviderType externalCloudProviderType,
+        String externalCloudProviderId,
+        ForecastDefinition parameters) {
+        QueryResultInner inner =
+            this
+                .serviceClient()
+                .externalCloudProviderUsage(externalCloudProviderType, externalCloudProviderId, parameters);
+        if (inner != null) {
+            return new QueryResultImpl(inner, this.manager());
         } else {
             return null;
         }

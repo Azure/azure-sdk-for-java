@@ -13,10 +13,9 @@ import com.azure.resourcemanager.customerinsights.fluent.ConnectorMappingsClient
 import com.azure.resourcemanager.customerinsights.fluent.models.ConnectorMappingResourceFormatInner;
 import com.azure.resourcemanager.customerinsights.models.ConnectorMappingResourceFormat;
 import com.azure.resourcemanager.customerinsights.models.ConnectorMappings;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ConnectorMappingsImpl implements ConnectorMappings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectorMappingsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectorMappingsImpl.class);
 
     private final ConnectorMappingsClient innerClient;
 
@@ -27,17 +26,6 @@ public final class ConnectorMappingsImpl implements ConnectorMappings {
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public ConnectorMappingResourceFormat get(
-        String resourceGroupName, String hubName, String connectorName, String mappingName) {
-        ConnectorMappingResourceFormatInner inner =
-            this.serviceClient().get(resourceGroupName, hubName, connectorName, mappingName);
-        if (inner != null) {
-            return new ConnectorMappingResourceFormatImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<ConnectorMappingResourceFormat> getWithResponse(
@@ -55,13 +43,24 @@ public final class ConnectorMappingsImpl implements ConnectorMappings {
         }
     }
 
-    public void delete(String resourceGroupName, String hubName, String connectorName, String mappingName) {
-        this.serviceClient().delete(resourceGroupName, hubName, connectorName, mappingName);
+    public ConnectorMappingResourceFormat get(
+        String resourceGroupName, String hubName, String connectorName, String mappingName) {
+        ConnectorMappingResourceFormatInner inner =
+            this.serviceClient().get(resourceGroupName, hubName, connectorName, mappingName);
+        if (inner != null) {
+            return new ConnectorMappingResourceFormatImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String hubName, String connectorName, String mappingName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, hubName, connectorName, mappingName, context);
+    }
+
+    public void delete(String resourceGroupName, String hubName, String connectorName, String mappingName) {
+        this.serviceClient().delete(resourceGroupName, hubName, connectorName, mappingName);
     }
 
     public PagedIterable<ConnectorMappingResourceFormat> listByConnector(
@@ -81,7 +80,7 @@ public final class ConnectorMappingsImpl implements ConnectorMappings {
     public ConnectorMappingResourceFormat getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -89,21 +88,21 @@ public final class ConnectorMappingsImpl implements ConnectorMappings {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String connectorName = Utils.getValueFromIdByName(id, "connectors");
         if (connectorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'connectors'.", id)));
         }
         String mappingName = Utils.getValueFromIdByName(id, "mappings");
         if (mappingName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'mappings'.", id)));
@@ -114,7 +113,7 @@ public final class ConnectorMappingsImpl implements ConnectorMappings {
     public Response<ConnectorMappingResourceFormat> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -122,21 +121,21 @@ public final class ConnectorMappingsImpl implements ConnectorMappings {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String connectorName = Utils.getValueFromIdByName(id, "connectors");
         if (connectorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'connectors'.", id)));
         }
         String mappingName = Utils.getValueFromIdByName(id, "mappings");
         if (mappingName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'mappings'.", id)));
@@ -147,7 +146,7 @@ public final class ConnectorMappingsImpl implements ConnectorMappings {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -155,32 +154,32 @@ public final class ConnectorMappingsImpl implements ConnectorMappings {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String connectorName = Utils.getValueFromIdByName(id, "connectors");
         if (connectorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'connectors'.", id)));
         }
         String mappingName = Utils.getValueFromIdByName(id, "mappings");
         if (mappingName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'mappings'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, hubName, connectorName, mappingName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, hubName, connectorName, mappingName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -188,21 +187,21 @@ public final class ConnectorMappingsImpl implements ConnectorMappings {
         }
         String hubName = Utils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
         String connectorName = Utils.getValueFromIdByName(id, "connectors");
         if (connectorName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'connectors'.", id)));
         }
         String mappingName = Utils.getValueFromIdByName(id, "mappings");
         if (mappingName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'mappings'.", id)));

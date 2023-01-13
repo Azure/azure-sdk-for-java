@@ -20,6 +20,15 @@ public final class SharedGalleryHostCaching extends ExpandableStringEnum<SharedG
     public static final SharedGalleryHostCaching READ_WRITE = fromString("ReadWrite");
 
     /**
+     * Creates a new instance of SharedGalleryHostCaching value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SharedGalleryHostCaching() {
+    }
+
+    /**
      * Creates or finds a SharedGalleryHostCaching from its string representation.
      *
      * @param name a name to look for.

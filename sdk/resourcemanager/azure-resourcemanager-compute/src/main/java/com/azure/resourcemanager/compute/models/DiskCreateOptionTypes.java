@@ -26,6 +26,15 @@ public final class DiskCreateOptionTypes extends ExpandableStringEnum<DiskCreate
     public static final DiskCreateOptionTypes ATTACH = fromString("Attach");
 
     /**
+     * Creates a new instance of DiskCreateOptionTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DiskCreateOptionTypes() {
+    }
+
+    /**
      * Creates or finds a DiskCreateOptionTypes from its string representation.
      *
      * @param name a name to look for.

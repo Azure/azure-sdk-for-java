@@ -29,6 +29,15 @@ public final class PatchInstallationState extends ExpandableStringEnum<PatchInst
     public static final PatchInstallationState PENDING = fromString("Pending");
 
     /**
+     * Creates a new instance of PatchInstallationState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PatchInstallationState() {
+    }
+
+    /**
      * Creates or finds a PatchInstallationState from its string representation.
      *
      * @param name a name to look for.

@@ -20,6 +20,15 @@ public final class IpVersions extends ExpandableStringEnum<IpVersions> {
     public static final IpVersions IPV6 = fromString("IPv6");
 
     /**
+     * Creates a new instance of IpVersions value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IpVersions() {
+    }
+
+    /**
      * Creates or finds a IpVersions from its string representation.
      *
      * @param name a name to look for.

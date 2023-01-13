@@ -28,6 +28,15 @@ public final class DiskEncryptionSetIdentityType extends ExpandableStringEnum<Di
     public static final DiskEncryptionSetIdentityType NONE = fromString("None");
 
     /**
+     * Creates a new instance of DiskEncryptionSetIdentityType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DiskEncryptionSetIdentityType() {
+    }
+
+    /**
      * Creates or finds a DiskEncryptionSetIdentityType from its string representation.
      *
      * @param name a name to look for.

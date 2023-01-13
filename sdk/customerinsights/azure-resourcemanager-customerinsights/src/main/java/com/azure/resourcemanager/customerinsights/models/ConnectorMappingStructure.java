@@ -6,14 +6,11 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Connector mapping property structure. */
 @Fluent
 public final class ConnectorMappingStructure {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectorMappingStructure.class);
-
     /*
      * The property name of the mapping entity.
      */
@@ -37,6 +34,10 @@ public final class ConnectorMappingStructure {
      */
     @JsonProperty(value = "isEncrypted")
     private Boolean isEncrypted;
+
+    /** Creates an instance of ConnectorMappingStructure class. */
+    public ConnectorMappingStructure() {
+    }
 
     /**
      * Get the propertyName property: The property name of the mapping entity.
@@ -125,16 +126,18 @@ public final class ConnectorMappingStructure {
      */
     public void validate() {
         if (propertyName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property propertyName in model ConnectorMappingStructure"));
         }
         if (columnName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property columnName in model ConnectorMappingStructure"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectorMappingStructure.class);
 }

@@ -6,6 +6,8 @@ import com.azure.cosmos.implementation.TestConfigurations
 import com.azure.cosmos.spark.CosmosPatchOperationTypes.CosmosPatchOperationTypes
 import com.azure.cosmos.spark.ItemWriteStrategy.ItemWriteStrategy
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
+import org.apache.spark.sql.functions.{col, from_json}
+import org.apache.spark.sql.types.{MapType, StringType, StructField, StructType}
 
 class SparkE2EWriteITest
   extends IntegrationSpec
@@ -332,7 +334,7 @@ class SparkE2EWriteITest
 
   private case class PatchParameterTest(bulkEnabled: Boolean, defaultOptionType: CosmosPatchOperationTypes, patchColumnConfigString: String, patchConditionFilter: String)
 
-  private val patchParameterTest = Seq(
+  private var patchParameterTest = Seq(
     PatchParameterTest(bulkEnabled = true, CosmosPatchOperationTypes.Set, "[col(color).op(replace), col(spin).path(/spin).op(increment)]", "from c where exists(c.color)"),
     PatchParameterTest(bulkEnabled = false, CosmosPatchOperationTypes.Set, "[col(color).op(replace), col(spin).path(/spin).op(increment)]", "from c where exists(c.color)"),
   )
@@ -393,6 +395,98 @@ class SparkE2EWriteITest
       quark.get("id").asText() shouldEqual "Quark"
       quark.get("color").asText() shouldEqual "green"
       quark.get("spin").asDouble() shouldEqual 0.53
+    }
+  }
+
+  patchParameterTest = Seq(
+    PatchParameterTest(bulkEnabled = true, CosmosPatchOperationTypes.Replace, "[col(car).op(replace)]", "from c where exists(c.id)"),
+    PatchParameterTest(bulkEnabled = false, CosmosPatchOperationTypes.Replace, "[col(car).op(replace)]", "from c where exists(c.id)"),
+    PatchParameterTest(bulkEnabled = true, CosmosPatchOperationTypes.Replace, "[col(car).op(replace).rawJson]", "from c where exists(c.id)"),
+    PatchParameterTest(bulkEnabled = false, CosmosPatchOperationTypes.Replace, "[col(car).op(replace).rawJson]", "from c where exists(c.id)"),
+  )
+
+  for (PatchParameterTest(bulkEnabled, patchDefaultOperationType, patchColumnConfigString, patchConditionFilter) <- patchParameterTest) {
+    it should s"support patch with bulkEnabled = $bulkEnabled defaultOperationType = $patchDefaultOperationType columnConfigString = $patchColumnConfigString patchConditionFilter = $patchConditionFilter " in {
+      val cosmosEndpoint = TestConfigurations.HOST
+      val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+      val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+        "spark.cosmos.accountKey" -> cosmosMasterKey,
+        "spark.cosmos.database" -> cosmosDatabase,
+        "spark.cosmos.container" -> cosmosContainer,
+        "spark.cosmos.serialization.inclusionMode" -> "NonDefault"
+      )
+
+      val cfgPatch = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+        "spark.cosmos.accountKey" -> cosmosMasterKey,
+        "spark.cosmos.database" -> cosmosDatabase,
+        "spark.cosmos.container" -> cosmosContainer,
+        "spark.cosmos.write.strategy" -> ItemWriteStrategy.ItemPatch.toString,
+        "spark.cosmos.write.bulk.enabled" -> bulkEnabled.toString,
+        "spark.cosmos.write.patch.defaultOperationType" -> patchDefaultOperationType.toString,
+        "spark.cosmos.write.patch.columnConfigs" -> patchColumnConfigString
+      )
+
+      val newSpark = getSpark
+
+      // scalastyle:off underscore.import
+      // scalastyle:off import.grouping
+      import spark.implicits._
+      val spark = newSpark
+      // scalastyle:on underscore.import
+      // scalastyle:on import.grouping
+
+      val dfWithJson= Seq(
+        ("Quark", "Quark", "Red", 1.0 / 2, "", "{ \"manufacturer\": \"BMW\", \"carType\": \"X3\" }")
+      ).toDF("particle name", "id", "color", "spin", "empty", "childNodeJson")
+
+      val df = dfWithJson
+        .withColumn("car", from_json(col("childNodeJson"), StructType(Array(StructField("manufacturer", StringType, true), StructField("carType", StringType, true)))))
+        .drop("childNodeJson")
+      df.show(false)
+      df.write.format("cosmos.oltp").mode("Append").options(cfg).save()
+
+      // verify data is written
+      // wait for a second to allow replication is completed.
+      Thread.sleep(1000)
+
+      // the item with the same id/pk will be persisted based on the upsert config
+      var quarks = queryItems("SELECT * FROM r where r.id = 'Quark'").toArray
+      quarks should have size 1
+
+      var quark = quarks(0)
+      quark.get("particle name").asText() shouldEqual "Quark"
+      quark.get("id").asText() shouldEqual "Quark"
+      quark.get("car").get("carType").asText() shouldEqual "X3"
+
+      val patchDf = if(patchColumnConfigString.endsWith(".rawJson]")) {
+        Seq(("Quark", "{ \"manufacturer\": \"BMW\", \"carType\": \"X5\" }"))
+          .toDF("id", "car")
+      } else {
+        Seq(("Quark", "{ \"manufacturer\": \"BMW\", \"carType\": \"X5\" }"))
+          .toDF("id", "childNodeJson")
+          .withColumn("car", from_json(col("childNodeJson"), StructType(Array(StructField("manufacturer", StringType, true), StructField("carType", StringType, true)))))
+          .drop("childNodeJson")
+      }
+
+      logInfo(s"Schema of patchDf: ${patchDf.schema}")
+
+      patchDf.write.format("cosmos.oltp").mode("Append").options(cfgPatch).save()
+
+      // verify data is written
+      // wait for a second to allow replication is completed.
+      Thread.sleep(1000)
+
+      // the item with the same id/pk will be persisted based on the upsert config
+      quarks = queryItems("SELECT * FROM r where r.id = 'Quark'").toArray
+      quarks should have size 1
+
+      logInfo(s"JSON returned from query: ${quarks(0)}")
+
+      quark = quarks(0)
+      quark.get("particle name").asText() shouldEqual "Quark"
+      quark.get("id").asText() shouldEqual "Quark"
+      quark.get("car").get("carType").asText() shouldEqual "X5"
     }
   }
   //scalastyle:on magic.number

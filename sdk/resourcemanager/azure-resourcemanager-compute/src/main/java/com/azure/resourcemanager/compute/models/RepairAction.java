@@ -23,6 +23,15 @@ public final class RepairAction extends ExpandableStringEnum<RepairAction> {
     public static final RepairAction REIMAGE = fromString("Reimage");
 
     /**
+     * Creates a new instance of RepairAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RepairAction() {
+    }
+
+    /**
      * Creates or finds a RepairAction from its string representation.
      *
      * @param name a name to look for.

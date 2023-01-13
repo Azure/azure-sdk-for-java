@@ -20,6 +20,15 @@ public final class CloudServiceSlotType extends ExpandableStringEnum<CloudServic
     public static final CloudServiceSlotType STAGING = fromString("Staging");
 
     /**
+     * Creates a new instance of CloudServiceSlotType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CloudServiceSlotType() {
+    }
+
+    /**
      * Creates or finds a CloudServiceSlotType from its string representation.
      *
      * @param name a name to look for.

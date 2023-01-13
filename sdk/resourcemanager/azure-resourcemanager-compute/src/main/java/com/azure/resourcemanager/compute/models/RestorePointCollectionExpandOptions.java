@@ -15,6 +15,15 @@ public final class RestorePointCollectionExpandOptions
     public static final RestorePointCollectionExpandOptions RESTORE_POINTS = fromString("restorePoints");
 
     /**
+     * Creates a new instance of RestorePointCollectionExpandOptions value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RestorePointCollectionExpandOptions() {
+    }
+
+    /**
      * Creates or finds a RestorePointCollectionExpandOptions from its string representation.
      *
      * @param name a name to look for.

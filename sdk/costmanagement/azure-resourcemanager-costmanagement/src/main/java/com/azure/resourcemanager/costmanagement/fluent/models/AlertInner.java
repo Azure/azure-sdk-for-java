@@ -6,12 +6,10 @@ package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.costmanagement.models.AlertPropertiesDefinition;
 import com.azure.resourcemanager.costmanagement.models.AlertPropertiesDetails;
 import com.azure.resourcemanager.costmanagement.models.AlertSource;
 import com.azure.resourcemanager.costmanagement.models.AlertStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -19,8 +17,6 @@ import java.util.Map;
 /** An individual alert. */
 @Fluent
 public final class AlertInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertInner.class);
-
     /*
      * The properties property.
      */
@@ -33,6 +29,10 @@ public final class AlertInner extends ProxyResource {
     @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /** Creates an instance of AlertInner class. */
+    public AlertInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties property.

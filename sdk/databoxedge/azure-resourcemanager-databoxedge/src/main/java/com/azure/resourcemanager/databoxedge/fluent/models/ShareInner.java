@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databoxedge.models.ArmBaseModel;
 import com.azure.resourcemanager.databoxedge.models.AzureContainerInfo;
@@ -17,77 +16,30 @@ import com.azure.resourcemanager.databoxedge.models.RefreshDetails;
 import com.azure.resourcemanager.databoxedge.models.ShareAccessProtocol;
 import com.azure.resourcemanager.databoxedge.models.ShareStatus;
 import com.azure.resourcemanager.databoxedge.models.UserAccessRight;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents a share on the Data Box Edge/Gateway device. */
-@JsonFlatten
 @Fluent
-public class ShareInner extends ArmBaseModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ShareInner.class);
-
+public final class ShareInner extends ArmBaseModel {
     /*
-     * Description for the share.
+     * The share properties.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    @JsonProperty(value = "properties", required = true)
+    private ShareProperties innerProperties = new ShareProperties();
 
-    /*
-     * Current status of the share.
-     */
-    @JsonProperty(value = "properties.shareStatus", required = true)
-    private ShareStatus shareStatus;
+    /** Creates an instance of ShareInner class. */
+    public ShareInner() {
+    }
 
-    /*
-     * Current monitoring status of the share.
+    /**
+     * Get the innerProperties property: The share properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.monitoringStatus", required = true)
-    private MonitoringStatus monitoringStatus;
-
-    /*
-     * Azure container mapping for the share.
-     */
-    @JsonProperty(value = "properties.azureContainerInfo")
-    private AzureContainerInfo azureContainerInfo;
-
-    /*
-     * Access protocol to be used by the share.
-     */
-    @JsonProperty(value = "properties.accessProtocol", required = true)
-    private ShareAccessProtocol accessProtocol;
-
-    /*
-     * Mapping of users and corresponding access rights on the share (required
-     * for SMB protocol).
-     */
-    @JsonProperty(value = "properties.userAccessRights")
-    private List<UserAccessRight> userAccessRights;
-
-    /*
-     * List of IP addresses and corresponding access rights on the
-     * share(required for NFS protocol).
-     */
-    @JsonProperty(value = "properties.clientAccessRights")
-    private List<ClientAccessRight> clientAccessRights;
-
-    /*
-     * Details of the refresh job on this share.
-     */
-    @JsonProperty(value = "properties.refreshDetails")
-    private RefreshDetails refreshDetails;
-
-    /*
-     * Share mount point to the role.
-     */
-    @JsonProperty(value = "properties.shareMappings", access = JsonProperty.Access.WRITE_ONLY)
-    private List<MountPointMap> shareMappings;
-
-    /*
-     * Data policy of the share.
-     */
-    @JsonProperty(value = "properties.dataPolicy")
-    private DataPolicy dataPolicy;
+    private ShareProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the description property: Description for the share.
@@ -95,7 +47,7 @@ public class ShareInner extends ArmBaseModel {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -105,7 +57,10 @@ public class ShareInner extends ArmBaseModel {
      * @return the ShareInner object itself.
      */
     public ShareInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ShareProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -115,7 +70,7 @@ public class ShareInner extends ArmBaseModel {
      * @return the shareStatus value.
      */
     public ShareStatus shareStatus() {
-        return this.shareStatus;
+        return this.innerProperties() == null ? null : this.innerProperties().shareStatus();
     }
 
     /**
@@ -125,7 +80,10 @@ public class ShareInner extends ArmBaseModel {
      * @return the ShareInner object itself.
      */
     public ShareInner withShareStatus(ShareStatus shareStatus) {
-        this.shareStatus = shareStatus;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ShareProperties();
+        }
+        this.innerProperties().withShareStatus(shareStatus);
         return this;
     }
 
@@ -135,7 +93,7 @@ public class ShareInner extends ArmBaseModel {
      * @return the monitoringStatus value.
      */
     public MonitoringStatus monitoringStatus() {
-        return this.monitoringStatus;
+        return this.innerProperties() == null ? null : this.innerProperties().monitoringStatus();
     }
 
     /**
@@ -145,7 +103,10 @@ public class ShareInner extends ArmBaseModel {
      * @return the ShareInner object itself.
      */
     public ShareInner withMonitoringStatus(MonitoringStatus monitoringStatus) {
-        this.monitoringStatus = monitoringStatus;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ShareProperties();
+        }
+        this.innerProperties().withMonitoringStatus(monitoringStatus);
         return this;
     }
 
@@ -155,7 +116,7 @@ public class ShareInner extends ArmBaseModel {
      * @return the azureContainerInfo value.
      */
     public AzureContainerInfo azureContainerInfo() {
-        return this.azureContainerInfo;
+        return this.innerProperties() == null ? null : this.innerProperties().azureContainerInfo();
     }
 
     /**
@@ -165,7 +126,10 @@ public class ShareInner extends ArmBaseModel {
      * @return the ShareInner object itself.
      */
     public ShareInner withAzureContainerInfo(AzureContainerInfo azureContainerInfo) {
-        this.azureContainerInfo = azureContainerInfo;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ShareProperties();
+        }
+        this.innerProperties().withAzureContainerInfo(azureContainerInfo);
         return this;
     }
 
@@ -175,7 +139,7 @@ public class ShareInner extends ArmBaseModel {
      * @return the accessProtocol value.
      */
     public ShareAccessProtocol accessProtocol() {
-        return this.accessProtocol;
+        return this.innerProperties() == null ? null : this.innerProperties().accessProtocol();
     }
 
     /**
@@ -185,7 +149,10 @@ public class ShareInner extends ArmBaseModel {
      * @return the ShareInner object itself.
      */
     public ShareInner withAccessProtocol(ShareAccessProtocol accessProtocol) {
-        this.accessProtocol = accessProtocol;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ShareProperties();
+        }
+        this.innerProperties().withAccessProtocol(accessProtocol);
         return this;
     }
 
@@ -196,7 +163,7 @@ public class ShareInner extends ArmBaseModel {
      * @return the userAccessRights value.
      */
     public List<UserAccessRight> userAccessRights() {
-        return this.userAccessRights;
+        return this.innerProperties() == null ? null : this.innerProperties().userAccessRights();
     }
 
     /**
@@ -207,7 +174,10 @@ public class ShareInner extends ArmBaseModel {
      * @return the ShareInner object itself.
      */
     public ShareInner withUserAccessRights(List<UserAccessRight> userAccessRights) {
-        this.userAccessRights = userAccessRights;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ShareProperties();
+        }
+        this.innerProperties().withUserAccessRights(userAccessRights);
         return this;
     }
 
@@ -218,7 +188,7 @@ public class ShareInner extends ArmBaseModel {
      * @return the clientAccessRights value.
      */
     public List<ClientAccessRight> clientAccessRights() {
-        return this.clientAccessRights;
+        return this.innerProperties() == null ? null : this.innerProperties().clientAccessRights();
     }
 
     /**
@@ -229,7 +199,10 @@ public class ShareInner extends ArmBaseModel {
      * @return the ShareInner object itself.
      */
     public ShareInner withClientAccessRights(List<ClientAccessRight> clientAccessRights) {
-        this.clientAccessRights = clientAccessRights;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ShareProperties();
+        }
+        this.innerProperties().withClientAccessRights(clientAccessRights);
         return this;
     }
 
@@ -239,7 +212,7 @@ public class ShareInner extends ArmBaseModel {
      * @return the refreshDetails value.
      */
     public RefreshDetails refreshDetails() {
-        return this.refreshDetails;
+        return this.innerProperties() == null ? null : this.innerProperties().refreshDetails();
     }
 
     /**
@@ -249,7 +222,10 @@ public class ShareInner extends ArmBaseModel {
      * @return the ShareInner object itself.
      */
     public ShareInner withRefreshDetails(RefreshDetails refreshDetails) {
-        this.refreshDetails = refreshDetails;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ShareProperties();
+        }
+        this.innerProperties().withRefreshDetails(refreshDetails);
         return this;
     }
 
@@ -259,7 +235,7 @@ public class ShareInner extends ArmBaseModel {
      * @return the shareMappings value.
      */
     public List<MountPointMap> shareMappings() {
-        return this.shareMappings;
+        return this.innerProperties() == null ? null : this.innerProperties().shareMappings();
     }
 
     /**
@@ -268,7 +244,7 @@ public class ShareInner extends ArmBaseModel {
      * @return the dataPolicy value.
      */
     public DataPolicy dataPolicy() {
-        return this.dataPolicy;
+        return this.innerProperties() == null ? null : this.innerProperties().dataPolicy();
     }
 
     /**
@@ -278,7 +254,10 @@ public class ShareInner extends ArmBaseModel {
      * @return the ShareInner object itself.
      */
     public ShareInner withDataPolicy(DataPolicy dataPolicy) {
-        this.dataPolicy = dataPolicy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ShareProperties();
+        }
+        this.innerProperties().withDataPolicy(dataPolicy);
         return this;
     }
 
@@ -290,35 +269,14 @@ public class ShareInner extends ArmBaseModel {
     @Override
     public void validate() {
         super.validate();
-        if (shareStatus() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property shareStatus in model ShareInner"));
-        }
-        if (monitoringStatus() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property monitoringStatus in model ShareInner"));
-        }
-        if (azureContainerInfo() != null) {
-            azureContainerInfo().validate();
-        }
-        if (accessProtocol() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property accessProtocol in model ShareInner"));
-        }
-        if (userAccessRights() != null) {
-            userAccessRights().forEach(e -> e.validate());
-        }
-        if (clientAccessRights() != null) {
-            clientAccessRights().forEach(e -> e.validate());
-        }
-        if (refreshDetails() != null) {
-            refreshDetails().validate();
-        }
-        if (shareMappings() != null) {
-            shareMappings().forEach(e -> e.validate());
+                    new IllegalArgumentException("Missing required property innerProperties in model ShareInner"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ShareInner.class);
 }

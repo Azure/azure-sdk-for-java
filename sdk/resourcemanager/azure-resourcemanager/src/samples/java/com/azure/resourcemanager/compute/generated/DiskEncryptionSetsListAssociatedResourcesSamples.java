@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DiskEncryptionSets ListAssociatedResources. */
 public final class DiskEncryptionSetsListAssociatedResourcesSamples {
     /*
@@ -23,6 +21,6 @@ public final class DiskEncryptionSetsListAssociatedResourcesSamples {
             .manager()
             .serviceClient()
             .getDiskEncryptionSets()
-            .listAssociatedResources("myResourceGroup", "myDiskEncryptionSet", Context.NONE);
+            .listAssociatedResources("myResourceGroup", "myDiskEncryptionSet", com.azure.core.util.Context.NONE);
     }
 }

@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.customerinsights.fluent.ConnectorsClient;
@@ -41,8 +40,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ConnectorsClient. */
 public final class ConnectorsClientImpl implements ConnectorsClient {
-    private final ClientLogger logger = new ClientLogger(ConnectorsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ConnectorsService service;
 
@@ -66,7 +63,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CustomerInsightsMana")
-    private interface ConnectorsService {
+    public interface ConnectorsService {
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
@@ -151,7 +148,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connector resource format.
+     * @return the connector resource format along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -212,7 +209,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connector resource format.
+     * @return the connector resource format along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -273,9 +270,9 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connector resource format.
+     * @return the {@link PollerFlux} for polling of the connector resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ConnectorResourceFormatInner>, ConnectorResourceFormatInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String hubName, String connectorName, ConnectorResourceFormatInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -287,7 +284,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
                 this.client.getHttpPipeline(),
                 ConnectorResourceFormatInner.class,
                 ConnectorResourceFormatInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -301,9 +298,9 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connector resource format.
+     * @return the {@link PollerFlux} for polling of the connector resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ConnectorResourceFormatInner>, ConnectorResourceFormatInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String hubName,
@@ -333,12 +330,12 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connector resource format.
+     * @return the {@link SyncPoller} for polling of the connector resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectorResourceFormatInner>, ConnectorResourceFormatInner> beginCreateOrUpdate(
         String resourceGroupName, String hubName, String connectorName, ConnectorResourceFormatInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, hubName, connectorName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, hubName, connectorName, parameters).getSyncPoller();
     }
 
     /**
@@ -352,16 +349,18 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connector resource format.
+     * @return the {@link SyncPoller} for polling of the connector resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConnectorResourceFormatInner>, ConnectorResourceFormatInner> beginCreateOrUpdate(
         String resourceGroupName,
         String hubName,
         String connectorName,
         ConnectorResourceFormatInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, hubName, connectorName, parameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, hubName, connectorName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -374,7 +373,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connector resource format.
+     * @return the connector resource format on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConnectorResourceFormatInner> createOrUpdateAsync(
@@ -395,7 +394,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connector resource format.
+     * @return the connector resource format on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConnectorResourceFormatInner> createOrUpdateAsync(
@@ -459,7 +458,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connector in the hub.
+     * @return a connector in the hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectorResourceFormatInner>> getWithResponseAsync(
@@ -513,7 +512,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connector in the hub.
+     * @return a connector in the hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectorResourceFormatInner>> getWithResponseAsync(
@@ -563,20 +562,31 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connector in the hub.
+     * @return a connector in the hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConnectorResourceFormatInner> getAsync(
         String resourceGroupName, String hubName, String connectorName) {
         return getWithResponseAsync(resourceGroupName, hubName, connectorName)
-            .flatMap(
-                (Response<ConnectorResourceFormatInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a connector in the hub.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param connectorName The name of the connector.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a connector in the hub along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ConnectorResourceFormatInner> getWithResponse(
+        String resourceGroupName, String hubName, String connectorName, Context context) {
+        return getWithResponseAsync(resourceGroupName, hubName, connectorName, context).block();
     }
 
     /**
@@ -592,25 +602,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConnectorResourceFormatInner get(String resourceGroupName, String hubName, String connectorName) {
-        return getAsync(resourceGroupName, hubName, connectorName).block();
-    }
-
-    /**
-     * Gets a connector in the hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param connectorName The name of the connector.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a connector in the hub.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConnectorResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String connectorName, Context context) {
-        return getWithResponseAsync(resourceGroupName, hubName, connectorName, context).block();
+        return getWithResponse(resourceGroupName, hubName, connectorName, Context.NONE).getValue();
     }
 
     /**
@@ -622,7 +614,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -674,7 +666,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -722,15 +714,16 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String hubName, String connectorName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, hubName, connectorName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -743,9 +736,9 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String hubName, String connectorName, Context context) {
         context = this.client.mergeContext(context);
@@ -765,12 +758,12 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String hubName, String connectorName) {
-        return beginDeleteAsync(resourceGroupName, hubName, connectorName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, hubName, connectorName).getSyncPoller();
     }
 
     /**
@@ -783,12 +776,12 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String hubName, String connectorName, Context context) {
-        return beginDeleteAsync(resourceGroupName, hubName, connectorName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, hubName, connectorName, context).getSyncPoller();
     }
 
     /**
@@ -800,7 +793,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String hubName, String connectorName) {
@@ -819,7 +812,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String hubName, String connectorName, Context context) {
@@ -867,7 +860,8 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the connectors in the specified hub.
+     * @return all the connectors in the specified hub along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectorResourceFormatInner>> listByHubSinglePageAsync(
@@ -925,7 +919,8 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the connectors in the specified hub.
+     * @return all the connectors in the specified hub along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectorResourceFormatInner>> listByHubSinglePageAsync(
@@ -979,7 +974,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the connectors in the specified hub.
+     * @return all the connectors in the specified hub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConnectorResourceFormatInner> listByHubAsync(String resourceGroupName, String hubName) {
@@ -997,7 +992,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the connectors in the specified hub.
+     * @return all the connectors in the specified hub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConnectorResourceFormatInner> listByHubAsync(
@@ -1015,7 +1010,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the connectors in the specified hub.
+     * @return all the connectors in the specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectorResourceFormatInner> listByHub(String resourceGroupName, String hubName) {
@@ -1031,7 +1026,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the connectors in the specified hub.
+     * @return all the connectors in the specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectorResourceFormatInner> listByHub(
@@ -1042,11 +1037,13 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list connector operation.
+     * @return the response of list connector operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectorResourceFormatInner>> listByHubNextSinglePageAsync(String nextLink) {
@@ -1077,12 +1074,14 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list connector operation.
+     * @return the response of list connector operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectorResourceFormatInner>> listByHubNextSinglePageAsync(

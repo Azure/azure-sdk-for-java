@@ -23,7 +23,7 @@ public interface OrdersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of order entities.
+     * @return list of order entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OrderInner> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName);
@@ -37,10 +37,24 @@ public interface OrdersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of order entities.
+     * @return list of order entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OrderInner> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName, Context context);
+
+    /**
+     * Gets a specific order by name.
+     *
+     * @param deviceName The device name.
+     * @param resourceGroupName The resource group name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific order by name along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<OrderInner> getWithResponse(String deviceName, String resourceGroupName, Context context);
 
     /**
      * Gets a specific order by name.
@@ -56,20 +70,6 @@ public interface OrdersClient {
     OrderInner get(String deviceName, String resourceGroupName);
 
     /**
-     * Gets a specific order by name.
-     *
-     * @param deviceName The device name.
-     * @param resourceGroupName The resource group name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific order by name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OrderInner> getWithResponse(String deviceName, String resourceGroupName, Context context);
-
-    /**
      * Creates or updates an order.
      *
      * @param deviceName The order details of a device.
@@ -78,9 +78,9 @@ public interface OrdersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the order details.
+     * @return the {@link SyncPoller} for polling of the order details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OrderInner>, OrderInner> beginCreateOrUpdate(
         String deviceName, String resourceGroupName, OrderInner order);
 
@@ -94,9 +94,9 @@ public interface OrdersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the order details.
+     * @return the {@link SyncPoller} for polling of the order details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OrderInner>, OrderInner> beginCreateOrUpdate(
         String deviceName, String resourceGroupName, OrderInner order, Context context);
 
@@ -137,9 +137,9 @@ public interface OrdersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String deviceName, String resourceGroupName);
 
     /**
@@ -151,9 +151,9 @@ public interface OrdersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String deviceName, String resourceGroupName, Context context);
 
     /**

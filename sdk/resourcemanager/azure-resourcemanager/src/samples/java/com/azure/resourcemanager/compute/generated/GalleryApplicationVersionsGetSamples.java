@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.ReplicationStatusTypes;
 
 /** Samples for GalleryApplicationVersions Get. */
@@ -24,7 +23,12 @@ public final class GalleryApplicationVersionsGetSamples {
             .serviceClient()
             .getGalleryApplicationVersions()
             .getWithResponse(
-                "myResourceGroup", "myGalleryName", "myGalleryApplicationName", "1.0.0", null, Context.NONE);
+                "myResourceGroup",
+                "myGalleryName",
+                "myGalleryApplicationName",
+                "1.0.0",
+                null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -48,6 +52,6 @@ public final class GalleryApplicationVersionsGetSamples {
                 "myGalleryApplicationName",
                 "1.0.0",
                 ReplicationStatusTypes.REPLICATION_STATUS,
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CloudServiceRoles Get. */
 public final class CloudServiceRolesGetSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudServiceRole_Get.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/CloudServiceRole_Get.json
      */
     /**
      * Sample code: Get Cloud Service Role.
@@ -22,6 +20,6 @@ public final class CloudServiceRolesGetSamples {
             .manager()
             .serviceClient()
             .getCloudServiceRoles()
-            .getWithResponse("{role-name}", "ConstosoRG", "{cs-name}", Context.NONE);
+            .getWithResponse("{role-name}", "ConstosoRG", "{cs-name}", com.azure.core.util.Context.NONE);
     }
 }

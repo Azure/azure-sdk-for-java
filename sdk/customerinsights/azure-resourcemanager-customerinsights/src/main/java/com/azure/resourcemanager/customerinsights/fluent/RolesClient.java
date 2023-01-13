@@ -20,7 +20,7 @@ public interface RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the roles for the hub.
+     * @return all the roles for the hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RoleResourceFormatInner> listByHub(String resourceGroupName, String hubName);
@@ -34,7 +34,7 @@ public interface RolesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the roles for the hub.
+     * @return all the roles for the hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RoleResourceFormatInner> listByHub(String resourceGroupName, String hubName, Context context);

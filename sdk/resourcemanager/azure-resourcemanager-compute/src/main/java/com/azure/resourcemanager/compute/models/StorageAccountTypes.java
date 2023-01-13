@@ -40,6 +40,15 @@ public final class StorageAccountTypes extends ExpandableStringEnum<StorageAccou
     public static final StorageAccountTypes PREMIUM_V2_LRS = fromString("PremiumV2_LRS");
 
     /**
+     * Creates a new instance of StorageAccountTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StorageAccountTypes() {
+    }
+
+    /**
      * Creates or finds a StorageAccountTypes from its string representation.
      *
      * @param name a name to look for.

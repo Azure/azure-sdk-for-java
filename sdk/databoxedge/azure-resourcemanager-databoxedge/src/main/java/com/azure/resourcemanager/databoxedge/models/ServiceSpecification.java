@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Service specification. */
 @Fluent
 public final class ServiceSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceSpecification.class);
-
     /*
      * Metric specification as defined by shoebox.
      */
     @JsonProperty(value = "metricSpecifications")
     private List<MetricSpecificationV1> metricSpecifications;
+
+    /** Creates an instance of ServiceSpecification class. */
+    public ServiceSpecification() {
+    }
 
     /**
      * Get the metricSpecifications property: Metric specification as defined by shoebox.

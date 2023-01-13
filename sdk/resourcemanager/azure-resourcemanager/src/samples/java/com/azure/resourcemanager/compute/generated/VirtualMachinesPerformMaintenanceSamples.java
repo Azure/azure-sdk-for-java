@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachines PerformMaintenance. */
 public final class VirtualMachinesPerformMaintenanceSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachines_PerformMaintenance_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_PerformMaintenance_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachines_PerformMaintenance_MinimumSet_Gen.
@@ -23,11 +21,11 @@ public final class VirtualMachinesPerformMaintenanceSamples {
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .performMaintenance("rgcompute", "aaaaaaaaaa", Context.NONE);
+            .performMaintenance("rgcompute", "aaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachines_PerformMaintenance_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineExamples/VirtualMachines_PerformMaintenance_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachines_PerformMaintenance_MaximumSet_Gen.
@@ -41,6 +39,6 @@ public final class VirtualMachinesPerformMaintenanceSamples {
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .performMaintenance("rgcompute", "aaaaaaa", Context.NONE);
+            .performMaintenance("rgcompute", "aaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

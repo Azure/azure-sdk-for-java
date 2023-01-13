@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Snapshots Delete. */
 public final class SnapshotsDeleteSamples {
     /*
@@ -22,6 +20,6 @@ public final class SnapshotsDeleteSamples {
             .manager()
             .serviceClient()
             .getSnapshots()
-            .delete("myResourceGroup", "mySnapshot", Context.NONE);
+            .delete("myResourceGroup", "mySnapshot", com.azure.core.util.Context.NONE);
     }
 }

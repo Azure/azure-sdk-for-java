@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.AccessLevel;
 import com.azure.resourcemanager.compute.models.GrantAccessData;
 
@@ -28,6 +27,6 @@ public final class SnapshotsGrantAccessSamples {
                 "myResourceGroup",
                 "mySnapshot",
                 new GrantAccessData().withAccess(AccessLevel.READ).withDurationInSeconds(300),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

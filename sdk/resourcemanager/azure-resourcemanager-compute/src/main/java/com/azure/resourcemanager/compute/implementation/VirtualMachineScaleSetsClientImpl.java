@@ -524,7 +524,7 @@ public final class VirtualMachineScaleSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -578,7 +578,7 @@ public final class VirtualMachineScaleSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -699,7 +699,7 @@ public final class VirtualMachineScaleSetsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -757,7 +757,7 @@ public final class VirtualMachineScaleSetsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -840,7 +840,7 @@ public final class VirtualMachineScaleSetsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineScaleSetInner>, VirtualMachineScaleSetInner> beginCreateOrUpdate(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, parameters).getSyncPoller();
     }
 
     /**
@@ -858,7 +858,7 @@ public final class VirtualMachineScaleSetsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineScaleSetInner>, VirtualMachineScaleSetInner> beginCreateOrUpdate(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, parameters, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -974,7 +974,7 @@ public final class VirtualMachineScaleSetsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1032,7 +1032,7 @@ public final class VirtualMachineScaleSetsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1114,7 +1114,7 @@ public final class VirtualMachineScaleSetsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineScaleSetInner>, VirtualMachineScaleSetInner> beginUpdate(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, vmScaleSetName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, vmScaleSetName, parameters).getSyncPoller();
     }
 
     /**
@@ -1132,7 +1132,7 @@ public final class VirtualMachineScaleSetsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineScaleSetInner>, VirtualMachineScaleSetInner> beginUpdate(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetUpdate parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, vmScaleSetName, parameters, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, vmScaleSetName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1242,7 +1242,7 @@ public final class VirtualMachineScaleSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1294,7 +1294,7 @@ public final class VirtualMachineScaleSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1388,7 +1388,7 @@ public final class VirtualMachineScaleSetsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmScaleSetName) {
         final Boolean forceDeletion = null;
-        return beginDeleteAsync(resourceGroupName, vmScaleSetName, forceDeletion).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, vmScaleSetName, forceDeletion).getSyncPoller();
     }
 
     /**
@@ -1406,7 +1406,7 @@ public final class VirtualMachineScaleSetsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vmScaleSetName, Boolean forceDeletion, Context context) {
-        return beginDeleteAsync(resourceGroupName, vmScaleSetName, forceDeletion, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, vmScaleSetName, forceDeletion, context).getSyncPoller();
     }
 
     /**
@@ -1531,7 +1531,7 @@ public final class VirtualMachineScaleSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1585,7 +1585,7 @@ public final class VirtualMachineScaleSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1689,7 +1689,7 @@ public final class VirtualMachineScaleSetsClientImpl
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1748,7 +1748,7 @@ public final class VirtualMachineScaleSetsClientImpl
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1849,7 +1849,7 @@ public final class VirtualMachineScaleSetsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String vmScaleSetName) {
         final VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
-        return beginDeallocateAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs).getSyncPoller();
+        return this.beginDeallocateAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs).getSyncPoller();
     }
 
     /**
@@ -1871,7 +1871,7 @@ public final class VirtualMachineScaleSetsClientImpl
         String vmScaleSetName,
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs,
         Context context) {
-        return beginDeallocateAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs, context).getSyncPoller();
+        return this.beginDeallocateAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs, context).getSyncPoller();
     }
 
     /**
@@ -2017,7 +2017,7 @@ public final class VirtualMachineScaleSetsClientImpl
         } else {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2081,7 +2081,7 @@ public final class VirtualMachineScaleSetsClientImpl
         } else {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2191,7 +2191,8 @@ public final class VirtualMachineScaleSetsClientImpl
     public SyncPoller<PollResult<Void>, Void> beginDeleteInstances(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetVMInstanceRequiredIDs vmInstanceIDs) {
         final Boolean forceDeletion = null;
-        return beginDeleteInstancesAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs, forceDeletion)
+        return this
+            .beginDeleteInstancesAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs, forceDeletion)
             .getSyncPoller();
     }
 
@@ -2216,7 +2217,8 @@ public final class VirtualMachineScaleSetsClientImpl
         VirtualMachineScaleSetVMInstanceRequiredIDs vmInstanceIDs,
         Boolean forceDeletion,
         Context context) {
-        return beginDeleteInstancesAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs, forceDeletion, context)
+        return this
+            .beginDeleteInstancesAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs, forceDeletion, context)
             .getSyncPoller();
     }
 
@@ -2363,7 +2365,7 @@ public final class VirtualMachineScaleSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2414,7 +2416,7 @@ public final class VirtualMachineScaleSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2506,7 +2508,7 @@ public final class VirtualMachineScaleSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2561,7 +2563,7 @@ public final class VirtualMachineScaleSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2668,7 +2670,7 @@ public final class VirtualMachineScaleSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2713,7 +2715,7 @@ public final class VirtualMachineScaleSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2828,7 +2830,7 @@ public final class VirtualMachineScaleSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2889,7 +2891,7 @@ public final class VirtualMachineScaleSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3021,7 +3023,7 @@ public final class VirtualMachineScaleSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3081,7 +3083,7 @@ public final class VirtualMachineScaleSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3217,7 +3219,7 @@ public final class VirtualMachineScaleSetsClientImpl
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3281,7 +3283,7 @@ public final class VirtualMachineScaleSetsClientImpl
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3395,7 +3397,7 @@ public final class VirtualMachineScaleSetsClientImpl
     public SyncPoller<PollResult<Void>, Void> beginPowerOff(String resourceGroupName, String vmScaleSetName) {
         final Boolean skipShutdown = null;
         final VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
-        return beginPowerOffAsync(resourceGroupName, vmScaleSetName, skipShutdown, vmInstanceIDs).getSyncPoller();
+        return this.beginPowerOffAsync(resourceGroupName, vmScaleSetName, skipShutdown, vmInstanceIDs).getSyncPoller();
     }
 
     /**
@@ -3421,7 +3423,8 @@ public final class VirtualMachineScaleSetsClientImpl
         Boolean skipShutdown,
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs,
         Context context) {
-        return beginPowerOffAsync(resourceGroupName, vmScaleSetName, skipShutdown, vmInstanceIDs, context)
+        return this
+            .beginPowerOffAsync(resourceGroupName, vmScaleSetName, skipShutdown, vmInstanceIDs, context)
             .getSyncPoller();
     }
 
@@ -3577,7 +3580,7 @@ public final class VirtualMachineScaleSetsClientImpl
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3635,7 +3638,7 @@ public final class VirtualMachineScaleSetsClientImpl
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -3732,7 +3735,7 @@ public final class VirtualMachineScaleSetsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String vmScaleSetName) {
         final VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
-        return beginRestartAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs).getSyncPoller();
+        return this.beginRestartAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs).getSyncPoller();
     }
 
     /**
@@ -3753,7 +3756,7 @@ public final class VirtualMachineScaleSetsClientImpl
         String vmScaleSetName,
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs,
         Context context) {
-        return beginRestartAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs, context).getSyncPoller();
+        return this.beginRestartAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs, context).getSyncPoller();
     }
 
     /**
@@ -3887,7 +3890,7 @@ public final class VirtualMachineScaleSetsClientImpl
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -3945,7 +3948,7 @@ public final class VirtualMachineScaleSetsClientImpl
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4042,7 +4045,7 @@ public final class VirtualMachineScaleSetsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String vmScaleSetName) {
         final VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
-        return beginStartAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs).getSyncPoller();
     }
 
     /**
@@ -4063,7 +4066,7 @@ public final class VirtualMachineScaleSetsClientImpl
         String vmScaleSetName,
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs,
         Context context) {
-        return beginStartAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs, context).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs, context).getSyncPoller();
     }
 
     /**
@@ -4198,7 +4201,7 @@ public final class VirtualMachineScaleSetsClientImpl
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4257,7 +4260,7 @@ public final class VirtualMachineScaleSetsClientImpl
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4358,7 +4361,7 @@ public final class VirtualMachineScaleSetsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRedeploy(String resourceGroupName, String vmScaleSetName) {
         final VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
-        return beginRedeployAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs).getSyncPoller();
+        return this.beginRedeployAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs).getSyncPoller();
     }
 
     /**
@@ -4380,7 +4383,7 @@ public final class VirtualMachineScaleSetsClientImpl
         String vmScaleSetName,
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs,
         Context context) {
-        return beginRedeployAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs, context).getSyncPoller();
+        return this.beginRedeployAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs, context).getSyncPoller();
     }
 
     /**
@@ -4521,7 +4524,7 @@ public final class VirtualMachineScaleSetsClientImpl
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4581,7 +4584,7 @@ public final class VirtualMachineScaleSetsClientImpl
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4687,7 +4690,7 @@ public final class VirtualMachineScaleSetsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPerformMaintenance(String resourceGroupName, String vmScaleSetName) {
         final VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
-        return beginPerformMaintenanceAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs).getSyncPoller();
+        return this.beginPerformMaintenanceAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs).getSyncPoller();
     }
 
     /**
@@ -4710,7 +4713,9 @@ public final class VirtualMachineScaleSetsClientImpl
         String vmScaleSetName,
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs,
         Context context) {
-        return beginPerformMaintenanceAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs, context).getSyncPoller();
+        return this
+            .beginPerformMaintenanceAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs, context)
+            .getSyncPoller();
     }
 
     /**
@@ -4856,7 +4861,7 @@ public final class VirtualMachineScaleSetsClientImpl
         } else {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -4916,7 +4921,7 @@ public final class VirtualMachineScaleSetsClientImpl
         } else {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4993,7 +4998,7 @@ public final class VirtualMachineScaleSetsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdateInstances(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetVMInstanceRequiredIDs vmInstanceIDs) {
-        return beginUpdateInstancesAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs).getSyncPoller();
+        return this.beginUpdateInstancesAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs).getSyncPoller();
     }
 
     /**
@@ -5014,7 +5019,9 @@ public final class VirtualMachineScaleSetsClientImpl
         String vmScaleSetName,
         VirtualMachineScaleSetVMInstanceRequiredIDs vmInstanceIDs,
         Context context) {
-        return beginUpdateInstancesAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs, context).getSyncPoller();
+        return this
+            .beginUpdateInstancesAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs, context)
+            .getSyncPoller();
     }
 
     /**
@@ -5135,7 +5142,7 @@ public final class VirtualMachineScaleSetsClientImpl
         if (vmScaleSetReimageInput != null) {
             vmScaleSetReimageInput.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -5195,7 +5202,7 @@ public final class VirtualMachineScaleSetsClientImpl
         if (vmScaleSetReimageInput != null) {
             vmScaleSetReimageInput.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -5302,7 +5309,7 @@ public final class VirtualMachineScaleSetsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReimage(String resourceGroupName, String vmScaleSetName) {
         final VirtualMachineScaleSetReimageParameters vmScaleSetReimageInput = null;
-        return beginReimageAsync(resourceGroupName, vmScaleSetName, vmScaleSetReimageInput).getSyncPoller();
+        return this.beginReimageAsync(resourceGroupName, vmScaleSetName, vmScaleSetReimageInput).getSyncPoller();
     }
 
     /**
@@ -5325,7 +5332,9 @@ public final class VirtualMachineScaleSetsClientImpl
         String vmScaleSetName,
         VirtualMachineScaleSetReimageParameters vmScaleSetReimageInput,
         Context context) {
-        return beginReimageAsync(resourceGroupName, vmScaleSetName, vmScaleSetReimageInput, context).getSyncPoller();
+        return this
+            .beginReimageAsync(resourceGroupName, vmScaleSetName, vmScaleSetReimageInput, context)
+            .getSyncPoller();
     }
 
     /**
@@ -5472,7 +5481,7 @@ public final class VirtualMachineScaleSetsClientImpl
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -5531,7 +5540,7 @@ public final class VirtualMachineScaleSetsClientImpl
         if (vmInstanceIDs != null) {
             vmInstanceIDs.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -5632,7 +5641,7 @@ public final class VirtualMachineScaleSetsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReimageAll(String resourceGroupName, String vmScaleSetName) {
         final VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = null;
-        return beginReimageAllAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs).getSyncPoller();
+        return this.beginReimageAllAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs).getSyncPoller();
     }
 
     /**
@@ -5654,7 +5663,7 @@ public final class VirtualMachineScaleSetsClientImpl
         String vmScaleSetName,
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs,
         Context context) {
-        return beginReimageAllAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs, context).getSyncPoller();
+        return this.beginReimageAllAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs, context).getSyncPoller();
     }
 
     /**
@@ -5798,7 +5807,7 @@ public final class VirtualMachineScaleSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -5861,7 +5870,7 @@ public final class VirtualMachineScaleSetsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -5985,7 +5994,7 @@ public final class VirtualMachineScaleSetsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -6045,7 +6054,7 @@ public final class VirtualMachineScaleSetsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -6154,7 +6163,7 @@ public final class VirtualMachineScaleSetsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -6211,7 +6220,7 @@ public final class VirtualMachineScaleSetsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -6285,7 +6294,9 @@ public final class VirtualMachineScaleSetsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSetOrchestrationServiceState(
         String resourceGroupName, String vmScaleSetName, OrchestrationServiceStateInput parameters) {
-        return beginSetOrchestrationServiceStateAsync(resourceGroupName, vmScaleSetName, parameters).getSyncPoller();
+        return this
+            .beginSetOrchestrationServiceStateAsync(resourceGroupName, vmScaleSetName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -6303,7 +6314,8 @@ public final class VirtualMachineScaleSetsClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSetOrchestrationServiceState(
         String resourceGroupName, String vmScaleSetName, OrchestrationServiceStateInput parameters, Context context) {
-        return beginSetOrchestrationServiceStateAsync(resourceGroupName, vmScaleSetName, parameters, context)
+        return this
+            .beginSetOrchestrationServiceStateAsync(resourceGroupName, vmScaleSetName, parameters, context)
             .getSyncPoller();
     }
 

@@ -150,6 +150,10 @@ public final class KpiResourceFormatImpl
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public KpiResourceFormatInner innerModel() {
         return this.innerObject;
     }
@@ -247,12 +251,12 @@ public final class KpiResourceFormatImpl
         return this;
     }
 
-    public void reprocess() {
-        serviceManager.kpis().reprocess(resourceGroupName, hubName, kpiName);
-    }
-
     public Response<Void> reprocessWithResponse(Context context) {
         return serviceManager.kpis().reprocessWithResponse(resourceGroupName, hubName, kpiName, context);
+    }
+
+    public void reprocess() {
+        serviceManager.kpis().reprocess(resourceGroupName, hubName, kpiName);
     }
 
     public KpiResourceFormatImpl withEntityType(EntityTypes entityType) {

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.DedicatedHostGroupInner;
 import com.azure.resourcemanager.compute.models.DedicatedHostGroupPropertiesAdditionalCapabilities;
 import java.util.Arrays;
@@ -14,7 +13,7 @@ import java.util.Map;
 /** Samples for DedicatedHostGroups CreateOrUpdate. */
 public final class DedicatedHostGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or update a dedicated host group.
@@ -36,11 +35,11 @@ public final class DedicatedHostGroupsCreateOrUpdateSamples {
                     .withZones(Arrays.asList("1"))
                     .withPlatformFaultDomainCount(3)
                     .withSupportAutomaticPlacement(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate_WithUltraSSD.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHostGroup_CreateOrUpdate_WithUltraSSD.json
      */
     /**
      * Sample code: Create or update a dedicated host group with Ultra SSD support.
@@ -65,7 +64,7 @@ public final class DedicatedHostGroupsCreateOrUpdateSamples {
                     .withSupportAutomaticPlacement(true)
                     .withAdditionalCapabilities(
                         new DedicatedHostGroupPropertiesAdditionalCapabilities().withUltraSsdEnabled(true)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

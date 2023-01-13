@@ -20,6 +20,15 @@ public final class ExpandTypesForGetCapacityReservationGroups
         fromString("virtualMachines/$ref");
 
     /**
+     * Creates a new instance of ExpandTypesForGetCapacityReservationGroups value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExpandTypesForGetCapacityReservationGroups() {
+    }
+
+    /**
      * Creates or finds a ExpandTypesForGetCapacityReservationGroups from its string representation.
      *
      * @param name a name to look for.
