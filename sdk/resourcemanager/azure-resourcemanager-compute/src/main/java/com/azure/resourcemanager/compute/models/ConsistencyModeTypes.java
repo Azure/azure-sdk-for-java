@@ -23,6 +23,15 @@ public final class ConsistencyModeTypes extends ExpandableStringEnum<Consistency
     public static final ConsistencyModeTypes APPLICATION_CONSISTENT = fromString("ApplicationConsistent");
 
     /**
+     * Creates a new instance of ConsistencyModeTypes value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConsistencyModeTypes() {
+    }
+
+    /**
      * Creates or finds a ConsistencyModeTypes from its string representation.
      *
      * @param name a name to look for.

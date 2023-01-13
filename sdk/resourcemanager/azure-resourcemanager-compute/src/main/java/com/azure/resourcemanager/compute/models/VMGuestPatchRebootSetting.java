@@ -20,6 +20,15 @@ public final class VMGuestPatchRebootSetting extends ExpandableStringEnum<VMGues
     public static final VMGuestPatchRebootSetting ALWAYS = fromString("Always");
 
     /**
+     * Creates a new instance of VMGuestPatchRebootSetting value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VMGuestPatchRebootSetting() {
+    }
+
+    /**
      * Creates or finds a VMGuestPatchRebootSetting from its string representation.
      *
      * @param name a name to look for.

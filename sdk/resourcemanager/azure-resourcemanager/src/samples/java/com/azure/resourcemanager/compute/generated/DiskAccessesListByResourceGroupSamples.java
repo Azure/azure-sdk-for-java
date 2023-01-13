@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DiskAccesses ListByResourceGroup. */
 public final class DiskAccessesListByResourceGroupSamples {
     /*
@@ -23,6 +21,6 @@ public final class DiskAccessesListByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getDiskAccesses()
-            .listByResourceGroup("myResourceGroup", Context.NONE);
+            .listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

@@ -20,6 +20,15 @@ public final class OrchestrationServiceState extends ExpandableStringEnum<Orches
     public static final OrchestrationServiceState SUSPENDED = fromString("Suspended");
 
     /**
+     * Creates a new instance of OrchestrationServiceState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OrchestrationServiceState() {
+    }
+
+    /**
      * Creates or finds a OrchestrationServiceState from its string representation.
      *
      * @param name a name to look for.

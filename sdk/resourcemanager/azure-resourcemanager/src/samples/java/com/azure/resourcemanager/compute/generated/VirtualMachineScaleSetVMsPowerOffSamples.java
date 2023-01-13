@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachineScaleSetVMs PowerOff. */
 public final class VirtualMachineScaleSetVMsPowerOffSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_PowerOff_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_PowerOff_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetVMs_PowerOff_MaximumSet_Gen.
@@ -23,11 +21,11 @@ public final class VirtualMachineScaleSetVMsPowerOffSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetVMs()
-            .powerOff("rgcompute", "aaaaaa", "aaaaaaaaa", true, Context.NONE);
+            .powerOff("rgcompute", "aaaaaa", "aaaaaaaaa", true, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_PowerOff_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_PowerOff_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineScaleSetVMs_PowerOff_MinimumSet_Gen.
@@ -41,6 +39,11 @@ public final class VirtualMachineScaleSetVMsPowerOffSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetVMs()
-            .powerOff("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaa", null, Context.NONE);
+            .powerOff(
+                "rgcompute",
+                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "aaaaaaaaaaaaaaaaaaaaaa",
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }

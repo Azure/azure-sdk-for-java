@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.customerinsights.fluent.ViewsClient;
 import com.azure.resourcemanager.customerinsights.fluent.models.ViewResourceFormatInner;
 import com.azure.resourcemanager.customerinsights.models.ViewListResult;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ViewsClient. */
 public final class ViewsClientImpl implements ViewsClient {
-    private final ClientLogger logger = new ClientLogger(ViewsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ViewsService service;
 
@@ -60,7 +57,7 @@ public final class ViewsClientImpl implements ViewsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CustomerInsightsMana")
-    private interface ViewsService {
+    public interface ViewsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
@@ -147,7 +144,8 @@ public final class ViewsClientImpl implements ViewsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available views for given user in the specified hub.
+     * @return all available views for given user in the specified hub along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ViewResourceFormatInner>> listByHubSinglePageAsync(
@@ -210,7 +208,8 @@ public final class ViewsClientImpl implements ViewsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available views for given user in the specified hub.
+     * @return all available views for given user in the specified hub along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ViewResourceFormatInner>> listByHubSinglePageAsync(
@@ -269,7 +268,7 @@ public final class ViewsClientImpl implements ViewsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available views for given user in the specified hub.
+     * @return all available views for given user in the specified hub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ViewResourceFormatInner> listByHubAsync(String resourceGroupName, String hubName, String userId) {
@@ -288,7 +287,7 @@ public final class ViewsClientImpl implements ViewsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available views for given user in the specified hub.
+     * @return all available views for given user in the specified hub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ViewResourceFormatInner> listByHubAsync(
@@ -307,7 +306,7 @@ public final class ViewsClientImpl implements ViewsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available views for given user in the specified hub.
+     * @return all available views for given user in the specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ViewResourceFormatInner> listByHub(String resourceGroupName, String hubName, String userId) {
@@ -324,7 +323,7 @@ public final class ViewsClientImpl implements ViewsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available views for given user in the specified hub.
+     * @return all available views for given user in the specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ViewResourceFormatInner> listByHub(
@@ -342,7 +341,7 @@ public final class ViewsClientImpl implements ViewsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the view resource format.
+     * @return the view resource format along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ViewResourceFormatInner>> createOrUpdateWithResponseAsync(
@@ -403,7 +402,7 @@ public final class ViewsClientImpl implements ViewsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the view resource format.
+     * @return the view resource format along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ViewResourceFormatInner>> createOrUpdateWithResponseAsync(
@@ -464,20 +463,36 @@ public final class ViewsClientImpl implements ViewsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the view resource format.
+     * @return the view resource format on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ViewResourceFormatInner> createOrUpdateAsync(
         String resourceGroupName, String hubName, String viewName, ViewResourceFormatInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, hubName, viewName, parameters)
-            .flatMap(
-                (Response<ViewResourceFormatInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Creates a view or updates an existing view in the hub.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param viewName The name of the view.
+     * @param parameters Parameters supplied to the CreateOrUpdate View operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the view resource format along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ViewResourceFormatInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String hubName,
+        String viewName,
+        ViewResourceFormatInner parameters,
+        Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, hubName, viewName, parameters, context).block();
     }
 
     /**
@@ -495,30 +510,7 @@ public final class ViewsClientImpl implements ViewsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ViewResourceFormatInner createOrUpdate(
         String resourceGroupName, String hubName, String viewName, ViewResourceFormatInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, hubName, viewName, parameters).block();
-    }
-
-    /**
-     * Creates a view or updates an existing view in the hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param viewName The name of the view.
-     * @param parameters Parameters supplied to the CreateOrUpdate View operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the view resource format.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ViewResourceFormatInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String hubName,
-        String viewName,
-        ViewResourceFormatInner parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, hubName, viewName, parameters, context).block();
+        return createOrUpdateWithResponse(resourceGroupName, hubName, viewName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -531,7 +523,7 @@ public final class ViewsClientImpl implements ViewsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a view in the hub.
+     * @return a view in the hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ViewResourceFormatInner>> getWithResponseAsync(
@@ -590,7 +582,7 @@ public final class ViewsClientImpl implements ViewsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a view in the hub.
+     * @return a view in the hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ViewResourceFormatInner>> getWithResponseAsync(
@@ -645,20 +637,32 @@ public final class ViewsClientImpl implements ViewsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a view in the hub.
+     * @return a view in the hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ViewResourceFormatInner> getAsync(
         String resourceGroupName, String hubName, String viewName, String userId) {
         return getWithResponseAsync(resourceGroupName, hubName, viewName, userId)
-            .flatMap(
-                (Response<ViewResourceFormatInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a view in the hub.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param viewName The name of the view.
+     * @param userId The user ID. Use * to retrieve hub level view.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a view in the hub along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ViewResourceFormatInner> getWithResponse(
+        String resourceGroupName, String hubName, String viewName, String userId, Context context) {
+        return getWithResponseAsync(resourceGroupName, hubName, viewName, userId, context).block();
     }
 
     /**
@@ -675,26 +679,7 @@ public final class ViewsClientImpl implements ViewsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ViewResourceFormatInner get(String resourceGroupName, String hubName, String viewName, String userId) {
-        return getAsync(resourceGroupName, hubName, viewName, userId).block();
-    }
-
-    /**
-     * Gets a view in the hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param viewName The name of the view.
-     * @param userId The user ID. Use * to retrieve hub level view.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a view in the hub.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ViewResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String viewName, String userId, Context context) {
-        return getWithResponseAsync(resourceGroupName, hubName, viewName, userId, context).block();
+        return getWithResponse(resourceGroupName, hubName, viewName, userId, Context.NONE).getValue();
     }
 
     /**
@@ -707,7 +692,7 @@ public final class ViewsClientImpl implements ViewsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -764,7 +749,7 @@ public final class ViewsClientImpl implements ViewsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -817,12 +802,30 @@ public final class ViewsClientImpl implements ViewsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String hubName, String viewName, String userId) {
-        return deleteWithResponseAsync(resourceGroupName, hubName, viewName, userId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, hubName, viewName, userId).flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Deletes a view in the specified hub.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param viewName The name of the view.
+     * @param userId The user ID. Use * to retrieve hub level view.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(
+        String resourceGroupName, String hubName, String viewName, String userId, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, hubName, viewName, userId, context).block();
     }
 
     /**
@@ -838,36 +841,19 @@ public final class ViewsClientImpl implements ViewsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String hubName, String viewName, String userId) {
-        deleteAsync(resourceGroupName, hubName, viewName, userId).block();
-    }
-
-    /**
-     * Deletes a view in the specified hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param viewName The name of the view.
-     * @param userId The user ID. Use * to retrieve hub level view.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String hubName, String viewName, String userId, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, hubName, viewName, userId, context).block();
+        deleteWithResponse(resourceGroupName, hubName, viewName, userId, Context.NONE);
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list view operation.
+     * @return the response of list view operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ViewResourceFormatInner>> listByHubNextSinglePageAsync(String nextLink) {
@@ -898,12 +884,14 @@ public final class ViewsClientImpl implements ViewsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list view operation.
+     * @return the response of list view operation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ViewResourceFormatInner>> listByHubNextSinglePageAsync(

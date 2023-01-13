@@ -5,39 +5,39 @@
 package com.azure.resourcemanager.frontdoor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.frontdoor.models.NetworkExperimentResourceState;
 import com.azure.resourcemanager.frontdoor.models.State;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Defines an Network Experiment Profile and lists of Experiments. */
-@JsonFlatten
 @Fluent
-public class ProfileInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProfileInner.class);
+public final class ProfileInner extends Resource {
+    /*
+     * The properties of a Profile
+     */
+    @JsonProperty(value = "properties")
+    private ProfileProperties innerProperties;
 
     /*
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * Gets a unique read-only string that changes whenever the resource is updated.
      */
     @JsonProperty(value = "etag")
     private String etag;
 
-    /*
-     * Resource status.
-     */
-    @JsonProperty(value = "properties.resourceState", access = JsonProperty.Access.WRITE_ONLY)
-    private NetworkExperimentResourceState resourceState;
+    /** Creates an instance of ProfileInner class. */
+    public ProfileInner() {
+    }
 
-    /*
-     * The state of the Experiment
+    /**
+     * Get the innerProperties property: The properties of a Profile.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.enabledState")
-    private State enabledState;
+    private ProfileProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
@@ -59,35 +59,6 @@ public class ProfileInner extends Resource {
         return this;
     }
 
-    /**
-     * Get the resourceState property: Resource status.
-     *
-     * @return the resourceState value.
-     */
-    public NetworkExperimentResourceState resourceState() {
-        return this.resourceState;
-    }
-
-    /**
-     * Get the enabledState property: The state of the Experiment.
-     *
-     * @return the enabledState value.
-     */
-    public State enabledState() {
-        return this.enabledState;
-    }
-
-    /**
-     * Set the enabledState property: The state of the Experiment.
-     *
-     * @param enabledState the enabledState value to set.
-     * @return the ProfileInner object itself.
-     */
-    public ProfileInner withEnabledState(State enabledState) {
-        this.enabledState = enabledState;
-        return this;
-    }
-
     /** {@inheritDoc} */
     @Override
     public ProfileInner withLocation(String location) {
@@ -103,10 +74,45 @@ public class ProfileInner extends Resource {
     }
 
     /**
+     * Get the resourceState property: Resource status.
+     *
+     * @return the resourceState value.
+     */
+    public NetworkExperimentResourceState resourceState() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceState();
+    }
+
+    /**
+     * Get the enabledState property: The state of the Experiment.
+     *
+     * @return the enabledState value.
+     */
+    public State enabledState() {
+        return this.innerProperties() == null ? null : this.innerProperties().enabledState();
+    }
+
+    /**
+     * Set the enabledState property: The state of the Experiment.
+     *
+     * @param enabledState the enabledState value to set.
+     * @return the ProfileInner object itself.
+     */
+    public ProfileInner withEnabledState(State enabledState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProfileProperties();
+        }
+        this.innerProperties().withEnabledState(enabledState);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

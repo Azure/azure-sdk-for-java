@@ -8,6 +8,7 @@
 #### Bugs Fixed
 * Fixed issue on noisy `CancellationException` log - See [PR 31882](https://github.com/Azure/azure-sdk-for-java/pull/31882)
 * Fixed issue with `TracerProvider` constructor inadvertently disabling tracing when `isClientMetricsEnabled` is true - See [PR 32787](https://github.com/Azure/azure-sdk-for-java/pull/32787)
+* Added improvement in handling for idle connection being closed unexpectedly - See [PR 32936](https://github.com/Azure/azure-sdk-for-java/pull/32936)
 
 #### Other Changes
 * Reduced log noisiness when bulk ingestion completes and sink is already terminated or cancelled. - See [PR 32601](https://github.com/Azure/azure-sdk-for-java/pull/32601)

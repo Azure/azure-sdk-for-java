@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for CloudServicesUpdateDomain WalkUpdateDomain. */
 public final class CloudServicesUpdateDomainWalkUpdateDomainSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudServiceUpdateDomain_Update.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/CloudServiceUpdateDomain_Update.json
      */
     /**
      * Sample code: Update Cloud Service to specified Domain.
@@ -22,6 +20,6 @@ public final class CloudServicesUpdateDomainWalkUpdateDomainSamples {
             .manager()
             .serviceClient()
             .getCloudServicesUpdateDomains()
-            .walkUpdateDomain("ConstosoRG", "{cs-name}", 1, null, Context.NONE);
+            .walkUpdateDomain("ConstosoRG", "{cs-name}", 1, null, com.azure.core.util.Context.NONE);
     }
 }

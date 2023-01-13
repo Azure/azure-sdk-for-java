@@ -25,9 +25,9 @@ public interface RelationshipLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the relationship link resource format.
+     * @return the {@link SyncPoller} for polling of the relationship link resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RelationshipLinkResourceFormatInner>, RelationshipLinkResourceFormatInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -46,9 +46,9 @@ public interface RelationshipLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the relationship link resource format.
+     * @return the {@link SyncPoller} for polling of the relationship link resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RelationshipLinkResourceFormatInner>, RelationshipLinkResourceFormatInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -103,13 +103,15 @@ public interface RelationshipLinksClient {
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship link.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified relationship Link.
+     * @return information about the specified relationship Link along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RelationshipLinkResourceFormatInner get(String resourceGroupName, String hubName, String relationshipLinkName);
+    Response<RelationshipLinkResourceFormatInner> getWithResponse(
+        String resourceGroupName, String hubName, String relationshipLinkName, Context context);
 
     /**
      * Gets information about the specified relationship Link.
@@ -117,15 +119,13 @@ public interface RelationshipLinksClient {
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship link.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified relationship Link.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RelationshipLinkResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String relationshipLinkName, Context context);
+    RelationshipLinkResourceFormatInner get(String resourceGroupName, String hubName, String relationshipLinkName);
 
     /**
      * Deletes a relationship link within a hub.
@@ -136,9 +136,9 @@ public interface RelationshipLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String hubName, String relationshipLinkName);
 
@@ -152,9 +152,9 @@ public interface RelationshipLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String hubName, String relationshipLinkName, Context context);
 
@@ -193,7 +193,7 @@ public interface RelationshipLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all relationship links in the hub.
+     * @return all relationship links in the hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RelationshipLinkResourceFormatInner> listByHub(String resourceGroupName, String hubName);
@@ -207,7 +207,7 @@ public interface RelationshipLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all relationship links in the hub.
+     * @return all relationship links in the hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RelationshipLinkResourceFormatInner> listByHub(

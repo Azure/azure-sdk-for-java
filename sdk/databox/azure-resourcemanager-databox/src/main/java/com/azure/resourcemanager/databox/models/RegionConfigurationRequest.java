@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Request body to get the configuration for the region. */
 @Fluent
 public final class RegionConfigurationRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegionConfigurationRequest.class);
-
     /*
      * Request body to get the availability for scheduling orders.
      */
@@ -25,6 +21,10 @@ public final class RegionConfigurationRequest {
      */
     @JsonProperty(value = "transportAvailabilityRequest")
     private TransportAvailabilityRequest transportAvailabilityRequest;
+
+    /** Creates an instance of RegionConfigurationRequest class. */
+    public RegionConfigurationRequest() {
+    }
 
     /**
      * Get the scheduleAvailabilityRequest property: Request body to get the availability for scheduling orders.

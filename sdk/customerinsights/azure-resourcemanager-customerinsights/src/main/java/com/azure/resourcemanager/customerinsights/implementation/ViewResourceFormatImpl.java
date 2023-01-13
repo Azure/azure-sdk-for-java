@@ -62,6 +62,10 @@ public final class ViewResourceFormatImpl
         return this.innerModel().created();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ViewResourceFormatInner innerModel() {
         return this.innerObject;
     }

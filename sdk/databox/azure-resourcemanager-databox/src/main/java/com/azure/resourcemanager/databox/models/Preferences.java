@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Preferences related to the order. */
 @Fluent
 public final class Preferences {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Preferences.class);
-
     /*
      * Preferred data center region.
      */
@@ -32,6 +28,10 @@ public final class Preferences {
      */
     @JsonProperty(value = "encryptionPreferences")
     private EncryptionPreferences encryptionPreferences;
+
+    /** Creates an instance of Preferences class. */
+    public Preferences() {
+    }
 
     /**
      * Get the preferredDataCenterRegion property: Preferred data center region.

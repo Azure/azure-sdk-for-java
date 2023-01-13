@@ -5,8 +5,7 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +13,6 @@ import java.util.Map;
 /** System generated entities. */
 @Fluent
 public final class PredictionSystemGeneratedEntities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PredictionSystemGeneratedEntities.class);
-
     /*
      * Generated interaction types.
      */
@@ -32,7 +29,12 @@ public final class PredictionSystemGeneratedEntities {
      * Generated KPIs.
      */
     @JsonProperty(value = "generatedKpis")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> generatedKpis;
+
+    /** Creates an instance of PredictionSystemGeneratedEntities class. */
+    public PredictionSystemGeneratedEntities() {
+    }
 
     /**
      * Get the generatedInteractionTypes property: Generated interaction types.

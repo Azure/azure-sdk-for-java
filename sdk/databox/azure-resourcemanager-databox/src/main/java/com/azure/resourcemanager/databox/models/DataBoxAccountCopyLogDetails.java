@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("DataBox")
 @Immutable
 public final class DataBoxAccountCopyLogDetails extends CopyLogDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataBoxAccountCopyLogDetails.class);
-
     /*
      * Account name.
      */
@@ -31,11 +27,14 @@ public final class DataBoxAccountCopyLogDetails extends CopyLogDetails {
     private String copyLogLink;
 
     /*
-     * Link for copy verbose logs. This will be set only when
-     * LogCollectionLevel is set to Verbose.
+     * Link for copy verbose logs. This will be set only when LogCollectionLevel is set to Verbose.
      */
     @JsonProperty(value = "copyVerboseLogLink", access = JsonProperty.Access.WRITE_ONLY)
     private String copyVerboseLogLink;
+
+    /** Creates an instance of DataBoxAccountCopyLogDetails class. */
+    public DataBoxAccountCopyLogDetails() {
+    }
 
     /**
      * Get the accountName property: Account name.

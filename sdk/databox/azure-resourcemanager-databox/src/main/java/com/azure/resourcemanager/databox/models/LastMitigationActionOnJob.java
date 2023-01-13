@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Last Mitigation Action Performed On Job. */
 @Fluent
 public final class LastMitigationActionOnJob {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LastMitigationActionOnJob.class);
-
     /*
      * Action performed date time
      */
@@ -23,8 +19,7 @@ public final class LastMitigationActionOnJob {
 
     /*
      * Action performed by customer,
-     * possibility is that mitigation might happen by customer or service or by
-     * ops
+     * possibility is that mitigation might happen by customer or service or by ops
      */
     @JsonProperty(value = "isPerformedByCustomer")
     private Boolean isPerformedByCustomer;
@@ -34,6 +29,10 @@ public final class LastMitigationActionOnJob {
      */
     @JsonProperty(value = "customerResolution")
     private CustomerResolutionCode customerResolution;
+
+    /** Creates an instance of LastMitigationActionOnJob class. */
+    public LastMitigationActionOnJob() {
+    }
 
     /**
      * Get the actionDateTimeInUtc property: Action performed date time.

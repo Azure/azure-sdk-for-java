@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.customerinsights.fluent.models.HubInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response of list hub operation. */
 @Fluent
 public final class HubListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HubListResult.class);
-
     /*
      * Results of the list operation.
      */
@@ -27,6 +23,10 @@ public final class HubListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of HubListResult class. */
+    public HubListResult() {
+    }
 
     /**
      * Get the value property: Results of the list operation.

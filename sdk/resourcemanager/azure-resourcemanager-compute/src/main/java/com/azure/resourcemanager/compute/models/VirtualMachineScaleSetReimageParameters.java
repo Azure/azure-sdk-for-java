@@ -53,6 +53,20 @@ public final class VirtualMachineScaleSetReimageParameters extends VirtualMachin
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineScaleSetReimageParameters withExactVersion(String exactVersion) {
+        super.withExactVersion(exactVersion);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineScaleSetReimageParameters withOsProfile(OSProfileProvisioningData osProfile) {
+        super.withOsProfile(osProfile);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

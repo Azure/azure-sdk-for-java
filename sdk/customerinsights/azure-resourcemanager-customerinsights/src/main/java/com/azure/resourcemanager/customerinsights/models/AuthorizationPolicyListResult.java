@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.customerinsights.fluent.models.AuthorizationPolicyResourceFormatInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response of list authorization policy operation. */
 @Fluent
 public final class AuthorizationPolicyListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AuthorizationPolicyListResult.class);
-
     /*
      * Results of the list operation.
      */
@@ -27,6 +23,10 @@ public final class AuthorizationPolicyListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of AuthorizationPolicyListResult class. */
+    public AuthorizationPolicyListResult() {
+    }
 
     /**
      * Get the value property: Results of the list operation.

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -26,8 +24,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class JobSecrets {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobSecrets.class);
-
     /*
      * Dc Access Security Code for Customer Managed Shipping
      */
@@ -39,6 +35,10 @@ public class JobSecrets {
      */
     @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private CloudError error;
+
+    /** Creates an instance of JobSecrets class. */
+    public JobSecrets() {
+    }
 
     /**
      * Get the dcAccessSecurityCode property: Dc Access Security Code for Customer Managed Shipping.

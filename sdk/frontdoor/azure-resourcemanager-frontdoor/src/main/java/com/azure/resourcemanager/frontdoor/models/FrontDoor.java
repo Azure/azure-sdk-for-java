@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.frontdoor.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.frontdoor.fluent.models.FrontDoorInner;
@@ -47,6 +48,43 @@ public interface FrontDoor {
      * @return the tags value.
      */
     Map<String, String> tags();
+
+    /**
+     * Gets the resourceState property: Resource status of the Front Door or Front Door SubResource.
+     *
+     * <p>Resource status of the Front Door.
+     *
+     * @return the resourceState value.
+     */
+    FrontDoorResourceState resourceState();
+
+    /**
+     * Gets the provisioningState property: Provisioning state of the Front Door.
+     *
+     * @return the provisioningState value.
+     */
+    String provisioningState();
+
+    /**
+     * Gets the cname property: The host that each frontendEndpoint must CNAME to.
+     *
+     * @return the cname value.
+     */
+    String cname();
+
+    /**
+     * Gets the frontdoorId property: The Id of the frontdoor.
+     *
+     * @return the frontdoorId value.
+     */
+    String frontdoorId();
+
+    /**
+     * Gets the rulesEngines property: Rules Engine Configurations available to routing rules.
+     *
+     * @return the rulesEngines value.
+     */
+    List<RulesEngine> rulesEngines();
 
     /**
      * Gets the friendlyName property: A friendly name for the frontDoor.
@@ -106,41 +144,6 @@ public interface FrontDoor {
     FrontDoorEnabledState enabledState();
 
     /**
-     * Gets the resourceState property: Resource status of the Front Door.
-     *
-     * @return the resourceState value.
-     */
-    FrontDoorResourceState resourceState();
-
-    /**
-     * Gets the provisioningState property: Provisioning state of the Front Door.
-     *
-     * @return the provisioningState value.
-     */
-    String provisioningState();
-
-    /**
-     * Gets the cname property: The host that each frontendEndpoint must CNAME to.
-     *
-     * @return the cname value.
-     */
-    String cname();
-
-    /**
-     * Gets the frontdoorId property: The Id of the frontdoor.
-     *
-     * @return the frontdoorId value.
-     */
-    String frontdoorId();
-
-    /**
-     * Gets the rulesEngines property: Rules Engine Configurations available to routing rules.
-     *
-     * @return the rulesEngines value.
-     */
-    List<RulesEngine> rulesEngines();
-
-    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -153,6 +156,13 @@ public interface FrontDoor {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.frontdoor.fluent.models.FrontDoorInner object.
@@ -469,4 +479,28 @@ public interface FrontDoor {
      * @return the refreshed resource.
      */
     FrontDoor refresh(Context context);
+
+    /**
+     * Validates the custom domain mapping to ensure it maps to the correct Front Door endpoint in DNS.
+     *
+     * @param customDomainProperties Custom domain to be validated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return output of custom domain validation along with {@link Response}.
+     */
+    Response<ValidateCustomDomainOutput> validateCustomDomainWithResponse(
+        ValidateCustomDomainInput customDomainProperties, Context context);
+
+    /**
+     * Validates the custom domain mapping to ensure it maps to the correct Front Door endpoint in DNS.
+     *
+     * @param customDomainProperties Custom domain to be validated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return output of custom domain validation.
+     */
+    ValidateCustomDomainOutput validateCustomDomain(ValidateCustomDomainInput customDomainProperties);
 }

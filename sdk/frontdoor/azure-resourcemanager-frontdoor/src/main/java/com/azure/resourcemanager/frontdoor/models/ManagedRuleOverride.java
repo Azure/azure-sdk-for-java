@@ -6,15 +6,12 @@ package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines a managed rule group override setting. */
 @Fluent
 public final class ManagedRuleOverride {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedRuleOverride.class);
-
     /*
      * Identifier for the managed rule.
      */
@@ -22,8 +19,7 @@ public final class ManagedRuleOverride {
     private String ruleId;
 
     /*
-     * Describes if the managed rule is in enabled or disabled state. Defaults
-     * to Disabled if not specified.
+     * Describes if the managed rule is in enabled or disabled state. Defaults to Disabled if not specified.
      */
     @JsonProperty(value = "enabledState")
     private ManagedRuleEnabledState enabledState;
@@ -39,6 +35,10 @@ public final class ManagedRuleOverride {
      */
     @JsonProperty(value = "exclusions")
     private List<ManagedRuleExclusion> exclusions;
+
+    /** Creates an instance of ManagedRuleOverride class. */
+    public ManagedRuleOverride() {
+    }
 
     /**
      * Get the ruleId property: Identifier for the managed rule.
@@ -129,7 +129,7 @@ public final class ManagedRuleOverride {
      */
     public void validate() {
         if (ruleId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property ruleId in model ManagedRuleOverride"));
         }
@@ -137,4 +137,6 @@ public final class ManagedRuleOverride {
             exclusions().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedRuleOverride.class);
 }

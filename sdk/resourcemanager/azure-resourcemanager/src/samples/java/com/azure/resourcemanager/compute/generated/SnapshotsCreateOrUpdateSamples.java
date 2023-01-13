@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.SnapshotInner;
 import com.azure.resourcemanager.compute.models.CreationData;
 import com.azure.resourcemanager.compute.models.DiskCreateOption;
@@ -36,7 +35,7 @@ public final class SnapshotsCreateOrUpdateSamples {
                             .withCreateOption(DiskCreateOption.COPY)
                             .withSourceResourceId(
                                 "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot1")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -65,7 +64,7 @@ public final class SnapshotsCreateOrUpdateSamples {
                             .withCreateOption(DiskCreateOption.COPY_START)
                             .withSourceResourceId(
                                 "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot1")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -92,7 +91,7 @@ public final class SnapshotsCreateOrUpdateSamples {
                         new CreationData()
                             .withCreateOption(DiskCreateOption.IMPORT)
                             .withSourceUri("https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -121,6 +120,6 @@ public final class SnapshotsCreateOrUpdateSamples {
                             .withStorageAccountId(
                                 "subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount")
                             .withSourceUri("https://mystorageaccount.blob.core.windows.net/osimages/osimage.vhd")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

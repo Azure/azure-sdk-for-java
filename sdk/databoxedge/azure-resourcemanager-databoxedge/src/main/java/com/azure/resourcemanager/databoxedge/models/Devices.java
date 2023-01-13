@@ -15,7 +15,8 @@ public interface Devices {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Data Box Edge/Data Box Gateway devices in a subscription.
+     * @return all the Data Box Edge/Data Box Gateway devices in a subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<DataBoxEdgeDevice> list();
 
@@ -28,7 +29,8 @@ public interface Devices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Data Box Edge/Data Box Gateway devices in a subscription.
+     * @return all the Data Box Edge/Data Box Gateway devices in a subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<DataBoxEdgeDevice> list(String expand, Context context);
 
@@ -39,7 +41,8 @@ public interface Devices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Data Box Edge/Data Box Gateway devices in a resource group.
+     * @return all the Data Box Edge/Data Box Gateway devices in a resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<DataBoxEdgeDevice> listByResourceGroup(String resourceGroupName);
 
@@ -53,9 +56,24 @@ public interface Devices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Data Box Edge/Data Box Gateway devices in a resource group.
+     * @return all the Data Box Edge/Data Box Gateway devices in a resource group as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<DataBoxEdgeDevice> listByResourceGroup(String resourceGroupName, String expand, Context context);
+
+    /**
+     * Gets the properties of the Data Box Edge/Data Box Gateway device.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param deviceName The device name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the Data Box Edge/Data Box Gateway device along with {@link Response}.
+     */
+    Response<DataBoxEdgeDevice> getByResourceGroupWithResponse(
+        String resourceGroupName, String deviceName, Context context);
 
     /**
      * Gets the properties of the Data Box Edge/Data Box Gateway device.
@@ -68,20 +86,6 @@ public interface Devices {
      * @return the properties of the Data Box Edge/Data Box Gateway device.
      */
     DataBoxEdgeDevice getByResourceGroup(String resourceGroupName, String deviceName);
-
-    /**
-     * Gets the properties of the Data Box Edge/Data Box Gateway device.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param deviceName The device name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the Data Box Edge/Data Box Gateway device.
-     */
-    Response<DataBoxEdgeDevice> getByResourceGroupWithResponse(
-        String resourceGroupName, String deviceName, Context context);
 
     /**
      * Deletes the Data Box Edge/Data Box Gateway device.
@@ -134,26 +138,27 @@ public interface Devices {
      *
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return additional information for the specified Data Box Edge/Data Box Gateway device.
+     * @return additional information for the specified Data Box Edge/Data Box Gateway device along with {@link
+     *     Response}.
      */
-    DataBoxEdgeDeviceExtendedInfo getExtendedInformation(String deviceName, String resourceGroupName);
+    Response<DataBoxEdgeDeviceExtendedInfo> getExtendedInformationWithResponse(
+        String deviceName, String resourceGroupName, Context context);
 
     /**
      * Gets additional information for the specified Data Box Edge/Data Box Gateway device.
      *
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return additional information for the specified Data Box Edge/Data Box Gateway device.
      */
-    Response<DataBoxEdgeDeviceExtendedInfo> getExtendedInformationWithResponse(
-        String deviceName, String resourceGroupName, Context context);
+    DataBoxEdgeDeviceExtendedInfo getExtendedInformation(String deviceName, String resourceGroupName);
 
     /**
      * Installs the updates on the Data Box Edge/Data Box Gateway device.
@@ -183,26 +188,26 @@ public interface Devices {
      *
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network settings of the specified Data Box Edge/Data Box Gateway device.
+     * @return the network settings of the specified Data Box Edge/Data Box Gateway device along with {@link Response}.
      */
-    NetworkSettings getNetworkSettings(String deviceName, String resourceGroupName);
+    Response<NetworkSettings> getNetworkSettingsWithResponse(
+        String deviceName, String resourceGroupName, Context context);
 
     /**
      * Gets the network settings of the specified Data Box Edge/Data Box Gateway device.
      *
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the network settings of the specified Data Box Edge/Data Box Gateway device.
      */
-    Response<NetworkSettings> getNetworkSettingsWithResponse(
-        String deviceName, String resourceGroupName, Context context);
+    NetworkSettings getNetworkSettings(String deviceName, String resourceGroupName);
 
     /**
      * Scans for updates on a Data Box Edge/Data Box Gateway device.
@@ -259,6 +264,21 @@ public interface Devices {
      *
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the availability of updates based on the last scan of the device along with {@link
+     *     Response}.
+     */
+    Response<UpdateSummary> getUpdateSummaryWithResponse(String deviceName, String resourceGroupName, Context context);
+
+    /**
+     * Gets information about the availability of updates based on the last scan of the device. It also gets information
+     * about any ongoing download or install jobs on the device.
+     *
+     * @param deviceName The device name.
+     * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -267,18 +287,19 @@ public interface Devices {
     UpdateSummary getUpdateSummary(String deviceName, String resourceGroupName);
 
     /**
-     * Gets information about the availability of updates based on the last scan of the device. It also gets information
-     * about any ongoing download or install jobs on the device.
+     * Uploads registration certificate for the device.
      *
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
+     * @param parameters The upload certificate request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the availability of updates based on the last scan of the device.
+     * @return the upload registration certificate response along with {@link Response}.
      */
-    Response<UpdateSummary> getUpdateSummaryWithResponse(String deviceName, String resourceGroupName, Context context);
+    Response<UploadCertificateResponse> uploadCertificateWithResponse(
+        String deviceName, String resourceGroupName, UploadCertificateRequest parameters, Context context);
 
     /**
      * Uploads registration certificate for the device.
@@ -295,28 +316,13 @@ public interface Devices {
         String deviceName, String resourceGroupName, UploadCertificateRequest parameters);
 
     /**
-     * Uploads registration certificate for the device.
-     *
-     * @param deviceName The device name.
-     * @param resourceGroupName The resource group name.
-     * @param parameters The upload certificate request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the upload registration certificate response.
-     */
-    Response<UploadCertificateResponse> uploadCertificateWithResponse(
-        String deviceName, String resourceGroupName, UploadCertificateRequest parameters, Context context);
-
-    /**
      * Gets the properties of the Data Box Edge/Data Box Gateway device.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the Data Box Edge/Data Box Gateway device.
+     * @return the properties of the Data Box Edge/Data Box Gateway device along with {@link Response}.
      */
     DataBoxEdgeDevice getById(String id);
 
@@ -328,7 +334,7 @@ public interface Devices {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the Data Box Edge/Data Box Gateway device.
+     * @return the properties of the Data Box Edge/Data Box Gateway device along with {@link Response}.
      */
     Response<DataBoxEdgeDevice> getByIdWithResponse(String id, Context context);
 

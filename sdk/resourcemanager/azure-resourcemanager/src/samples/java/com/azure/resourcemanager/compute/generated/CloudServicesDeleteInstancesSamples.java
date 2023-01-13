@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.RoleInstances;
 import java.util.Arrays;
 
 /** Samples for CloudServices DeleteInstances. */
 public final class CloudServicesDeleteInstancesSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudServiceRoleInstance_Delete_ByCloudService.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-09-04/examples/CloudServiceRoleInstance_Delete_ByCloudService.json
      */
     /**
      * Sample code: Delete Cloud Service Role Instances in a Cloud Service.
@@ -29,6 +28,6 @@ public final class CloudServicesDeleteInstancesSamples {
                 "ConstosoRG",
                 "{cs-name}",
                 new RoleInstances().withRoleInstances(Arrays.asList("ContosoFrontend_IN_0", "ContosoBackend_IN_1")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
