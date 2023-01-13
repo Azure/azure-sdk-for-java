@@ -4,15 +4,11 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.caches.AsyncCacheNonBlocking;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
@@ -25,18 +21,13 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
-import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -122,103 +113,6 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
                 { true },
                 { false }
         };
-    }
-
-    @Test(enabled = false)
-    public void openConnectionThroughClientBuilder() {
-        directCosmosAsyncDatabase.createContainerIfNotExists("id1", "/mypk").block();
-        directCosmosAsyncDatabase.createContainerIfNotExists("id2", "/mypk").block();
-
-        CosmosAsyncContainer cosmosContainer1 = directCosmosAsyncDatabase.getContainer("id1");
-        CosmosAsyncContainer cosmosContainer2 = directCosmosAsyncDatabase.getContainer("id2");
-
-        List<String> regions = new ArrayList<>();
-        regions.add("East US");
-
-        List<CosmosContainerIdentity> cosmosContainerIdentities = new ArrayList<>();
-        cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosContainer1.getDatabase().getId(), cosmosContainer1.getId()));
-        cosmosContainerIdentities.add(new CosmosContainerIdentity(cosmosContainer2.getDatabase().getId(), cosmosContainer2.getId()));
-
-        ProactiveContainerInitConfig proactiveContainerInitConfig = new ProactiveContainerInitConfigBuilder(cosmosContainerIdentities)
-                .setProactiveConnectionRegions(1)
-                .build();
-
-        CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
-                .endpoint(TestConfigurations.HOST)
-                .key(TestConfigurations.MASTER_KEY)
-                .openConnectionsAndInitCaches(proactiveContainerInitConfig)
-                .contentResponseOnWriteEnabled(true)
-                .preferredRegions(Arrays.asList("East US"))
-                .endpointDiscoveryEnabled(true)
-                .directMode()
-                .buildAsyncClient();
-
-        RntbdTransportClient rntbdTransportClient = (RntbdTransportClient) ReflectionUtils.getTransportClient(cosmosAsyncClient);
-        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) cosmosAsyncClient.getDocClientWrapper();
-        RntbdEndpoint.Provider provider = ReflectionUtils.getRntbdEndpointProvider(rntbdTransportClient);
-        GlobalAddressResolver globalAddressResolver = ReflectionUtils.getGlobalAddressResolver(rxDocumentClient);
-        GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
-
-        ConcurrentHashMap<String, ?> routingMap = getRoutingMap(rxDocumentClient);
-        ConcurrentHashMap<String, ?> collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
-        Set<String> endpoints = ConcurrentHashMap.newKeySet();
-        int count = provider.count();
-        List<URI> proactiveConnectionEndpoints = globalEndpointManager.getReadEndpoints().subList(0, proactiveContainerInitConfig.getNumProactiveConnectionRegions());
-
-        Flux<CosmosAsyncContainer> containerFlux = Flux.fromArray(new CosmosAsyncContainer[]{cosmosContainer1, cosmosContainer2});
-        Flux<Utils.ValueHolder<List<PartitionKeyRange>>> partitionKeyRangeFlux = Flux.fromArray(new CosmosAsyncContainer[]{cosmosContainer1, cosmosContainer2})
-                        .flatMap(CosmosAsyncContainer::read)
-                        .flatMap(containerResponse -> {
-                            return rxDocumentClient
-                                    .getPartitionKeyRangeCache()
-                                    .tryGetOverlappingRangesAsync(
-                                            null,
-                                            containerResponse.getProperties().getResourceId(),
-                                            PartitionKeyInternalHelper.FullRange,
-                                            true,
-                                            null);
-                        });
-
-        // 1. Extract all preferred read regions to proactively connect to
-        // 2. Resolve partition addresses for one read region, then mark read region as unavailable
-        // 3. This will force resolveAsync to use the next preferred read region
-        // 4. This way we can verify that connections have been opened to all replicas across all proactive
-        // connection regions
-        for (URI readEndpoint : proactiveConnectionEndpoints) {
-            Flux.zip(containerFlux, partitionKeyRangeFlux)
-                    .flatMapIterable(containerToPartitionKeyRanges -> {
-                        List<ImmutablePair<PartitionKeyRange, CosmosAsyncContainer>> pkrToContainer = new ArrayList<>();
-                        for (PartitionKeyRange pkr : containerToPartitionKeyRanges.getT2().v) {
-                            pkrToContainer.add(new ImmutablePair<>(pkr, containerToPartitionKeyRanges.getT1()));
-                        }
-                        return pkrToContainer;
-                    })
-                    .flatMap(partitionKeyRangeToContainer -> {
-                        RxDocumentServiceRequest dummyRequest = RxDocumentServiceRequest.createFromName(
-                                mockDiagnosticsClientContext(),
-                                OperationType.Read,
-                                partitionKeyRangeToContainer.getRight().getLink() + "/docId",
-                                ResourceType.Document);
-                        dummyRequest.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity(partitionKeyRangeToContainer.getLeft().getId()));
-                        return globalAddressResolver.resolveAsync(dummyRequest, false);
-                    })
-                    .doOnNext(addressInformations -> {
-                        for (AddressInformation address : addressInformations) {
-                            endpoints.add(address.getPhysicalUri().getURI().getAuthority());
-                        }
-                    })
-                    .blockLast();
-
-            globalEndpointManager.markEndpointUnavailableForRead(readEndpoint);
-        }
-
-        assertThat(provider.count()).isEqualTo(endpoints.size());
-        assertThat(collectionInfoByNameMap.size()).isEqualTo(cosmosContainerIdentities.size());
-        assertThat(routingMap.size()).isEqualTo(cosmosContainerIdentities.size());
-
-        cosmosContainer1.delete().block();
-        cosmosContainer2.delete().block();
-        safeCloseAsync(cosmosAsyncClient);
     }
 
     @Test(groups = {"simple"}, dataProvider = "useAsyncParameterProvider")
