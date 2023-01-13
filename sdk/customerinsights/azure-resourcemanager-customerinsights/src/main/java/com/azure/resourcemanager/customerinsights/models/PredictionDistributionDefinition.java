@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The definition of the prediction distribution. */
 @Fluent
 public final class PredictionDistributionDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PredictionDistributionDefinition.class);
-
     /*
      * Total positive in the distribution.
      */
@@ -32,6 +28,10 @@ public final class PredictionDistributionDefinition {
      */
     @JsonProperty(value = "distributions")
     private List<PredictionDistributionDefinitionDistributionsItem> distributions;
+
+    /** Creates an instance of PredictionDistributionDefinition class. */
+    public PredictionDistributionDefinition() {
+    }
 
     /**
      * Get the totalPositives property: Total positive in the distribution.

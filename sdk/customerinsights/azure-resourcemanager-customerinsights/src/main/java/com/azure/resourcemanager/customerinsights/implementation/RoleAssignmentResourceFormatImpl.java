@@ -130,6 +130,10 @@ public final class RoleAssignmentResourceFormatImpl
         return this.innerModel().segments();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public RoleAssignmentResourceFormatInner innerModel() {
         return this.innerObject;
     }

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The definition of suggested relationship for the type. */
 @Immutable
 public final class RelationshipsLookup {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RelationshipsLookup.class);
-
     /*
      * The relationship profile.
      */
@@ -44,6 +40,10 @@ public final class RelationshipsLookup {
      */
     @JsonProperty(value = "existingRelationshipName", access = JsonProperty.Access.WRITE_ONLY)
     private String existingRelationshipName;
+
+    /** Creates an instance of RelationshipsLookup class. */
+    public RelationshipsLookup() {
+    }
 
     /**
      * Get the profileName property: The relationship profile.

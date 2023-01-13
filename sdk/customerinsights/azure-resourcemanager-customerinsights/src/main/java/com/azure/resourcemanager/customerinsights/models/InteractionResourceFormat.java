@@ -35,53 +35,80 @@ public interface InteractionResourceFormat {
     String type();
 
     /**
-     * Gets the attributes property: The attributes for the Type.
+     * Gets the idPropertyNames property: The id property names. Properties which uniquely identify an interaction
+     * instance.
      *
-     * @return the attributes value.
+     * @return the idPropertyNames value.
      */
-    Map<String, List<String>> attributes();
+    List<String> idPropertyNames();
 
     /**
-     * Gets the description property: Localized descriptions for the property.
+     * Gets the participantProfiles property: Profiles that participated in the interaction.
      *
-     * @return the description value.
+     * @return the participantProfiles value.
      */
-    Map<String, String> description();
+    List<Participant> participantProfiles();
 
     /**
-     * Gets the displayName property: Localized display names for the property.
+     * Gets the primaryParticipantProfilePropertyName property: The primary participant property name for an interaction
+     * ,This is used to logically represent the agent of the interaction, Specify the participant name here from
+     * ParticipantName.
      *
-     * @return the displayName value.
+     * @return the primaryParticipantProfilePropertyName value.
      */
-    Map<String, String> displayName();
+    String primaryParticipantProfilePropertyName();
 
     /**
-     * Gets the localizedAttributes property: Any custom localized attributes for the Type.
+     * Gets the dataSourcePrecedenceRules property: This is specific to interactions modeled as activities. Data sources
+     * are used to determine where data is stored and also in precedence rules.
      *
-     * @return the localizedAttributes value.
+     * @return the dataSourcePrecedenceRules value.
      */
-    Map<String, Map<String, String>> localizedAttributes();
+    List<DataSourcePrecedence> dataSourcePrecedenceRules();
 
     /**
-     * Gets the smallImage property: Small Image associated with the Property or EntityType.
+     * Gets the isActivity property: An interaction can be tagged as an activity only during create. This enables the
+     * interaction to be editable and can enable merging of properties from multiple data sources based on precedence,
+     * which is defined at a link level.
      *
-     * @return the smallImage value.
+     * @return the isActivity value.
      */
-    String smallImage();
+    Boolean isActivity();
 
     /**
-     * Gets the mediumImage property: Medium Image associated with the Property or EntityType.
+     * Gets the namePropertiesName property: The data source name.
      *
-     * @return the mediumImage value.
+     * @return the namePropertiesName value.
      */
-    String mediumImage();
+    String namePropertiesName();
 
     /**
-     * Gets the largeImage property: Large Image associated with the Property or EntityType.
+     * Gets the dataSourceType property: The data source type.
      *
-     * @return the largeImage value.
+     * @return the dataSourceType value.
      */
-    String largeImage();
+    DataSourceType dataSourceType();
+
+    /**
+     * Gets the status property: The data source status.
+     *
+     * @return the status value.
+     */
+    Status status();
+
+    /**
+     * Gets the idPropertiesId property: The data source ID.
+     *
+     * @return the idPropertiesId value.
+     */
+    Integer idPropertiesId();
+
+    /**
+     * Gets the dataSourceReferenceId property: The data source reference id.
+     *
+     * @return the dataSourceReferenceId value.
+     */
+    String dataSourceReferenceId();
 
     /**
      * Gets the apiEntitySetName property: The api entity set name. This becomes the odata entity set name for the
@@ -156,80 +183,60 @@ public interface InteractionResourceFormat {
     String typeName();
 
     /**
-     * Gets the idPropertyNames property: The id property names. Properties which uniquely identify an interaction
-     * instance.
+     * Gets the attributes property: The attributes for the Type.
      *
-     * @return the idPropertyNames value.
+     * @return the attributes value.
      */
-    List<String> idPropertyNames();
+    Map<String, List<String>> attributes();
 
     /**
-     * Gets the participantProfiles property: Profiles that participated in the interaction.
+     * Gets the description property: Localized descriptions for the property.
      *
-     * @return the participantProfiles value.
+     * @return the description value.
      */
-    List<Participant> participantProfiles();
+    Map<String, String> description();
 
     /**
-     * Gets the primaryParticipantProfilePropertyName property: The primary participant property name for an interaction
-     * ,This is used to logically represent the agent of the interaction, Specify the participant name here from
-     * ParticipantName.
+     * Gets the displayName property: Localized display names for the property.
      *
-     * @return the primaryParticipantProfilePropertyName value.
+     * @return the displayName value.
      */
-    String primaryParticipantProfilePropertyName();
+    Map<String, String> displayName();
 
     /**
-     * Gets the dataSourcePrecedenceRules property: This is specific to interactions modeled as activities. Data sources
-     * are used to determine where data is stored and also in precedence rules.
+     * Gets the localizedAttributes property: Any custom localized attributes for the Type.
      *
-     * @return the dataSourcePrecedenceRules value.
+     * @return the localizedAttributes value.
      */
-    List<DataSourcePrecedence> dataSourcePrecedenceRules();
+    Map<String, Map<String, String>> localizedAttributes();
 
     /**
-     * Gets the isActivity property: An interaction can be tagged as an activity only during create. This enables the
-     * interaction to be editable and can enable merging of properties from multiple data sources based on precedence,
-     * which is defined at a link level.
+     * Gets the smallImage property: Small Image associated with the Property or EntityType.
      *
-     * @return the isActivity value.
+     * @return the smallImage value.
      */
-    Boolean isActivity();
+    String smallImage();
 
     /**
-     * Gets the namePropertiesDefaultDataSourceName property: The data source name.
+     * Gets the mediumImage property: Medium Image associated with the Property or EntityType.
      *
-     * @return the namePropertiesDefaultDataSourceName value.
+     * @return the mediumImage value.
      */
-    String namePropertiesDefaultDataSourceName();
+    String mediumImage();
 
     /**
-     * Gets the dataSourceType property: The data source type.
+     * Gets the largeImage property: Large Image associated with the Property or EntityType.
      *
-     * @return the dataSourceType value.
+     * @return the largeImage value.
      */
-    DataSourceType dataSourceType();
+    String largeImage();
 
     /**
-     * Gets the status property: The data source status.
+     * Gets the name of the resource group.
      *
-     * @return the status value.
+     * @return the name of the resource group.
      */
-    Status status();
-
-    /**
-     * Gets the idPropertiesDefaultDataSourceId property: The data source ID.
-     *
-     * @return the idPropertiesDefaultDataSourceId value.
-     */
-    Integer idPropertiesDefaultDataSourceId();
-
-    /**
-     * Gets the dataSourceReferenceId property: The data source reference id.
-     *
-     * @return the dataSourceReferenceId value.
-     */
-    String dataSourceReferenceId();
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.customerinsights.fluent.models.InteractionResourceFormatInner object.
@@ -263,13 +270,10 @@ public interface InteractionResourceFormat {
          * the resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithAttributes,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithDisplayName,
-                DefinitionStages.WithLocalizedAttributes,
-                DefinitionStages.WithSmallImage,
-                DefinitionStages.WithMediumImage,
-                DefinitionStages.WithLargeImage,
+            extends DefinitionStages.WithIdPropertyNames,
+                DefinitionStages.WithParticipantProfiles,
+                DefinitionStages.WithPrimaryParticipantProfilePropertyName,
+                DefinitionStages.WithIsActivity,
                 DefinitionStages.WithApiEntitySetName,
                 DefinitionStages.WithEntityType,
                 DefinitionStages.WithFields,
@@ -277,10 +281,13 @@ public interface InteractionResourceFormat {
                 DefinitionStages.WithSchemaItemTypeLink,
                 DefinitionStages.WithTimestampFieldName,
                 DefinitionStages.WithTypeName,
-                DefinitionStages.WithIdPropertyNames,
-                DefinitionStages.WithParticipantProfiles,
-                DefinitionStages.WithPrimaryParticipantProfilePropertyName,
-                DefinitionStages.WithIsActivity {
+                DefinitionStages.WithAttributes,
+                DefinitionStages.WithDescription,
+                DefinitionStages.WithDisplayName,
+                DefinitionStages.WithLocalizedAttributes,
+                DefinitionStages.WithSmallImage,
+                DefinitionStages.WithMediumImage,
+                DefinitionStages.WithLargeImage {
             /**
              * Executes the create request.
              *
@@ -296,75 +303,57 @@ public interface InteractionResourceFormat {
              */
             InteractionResourceFormat create(Context context);
         }
-        /** The stage of the InteractionResourceFormat definition allowing to specify attributes. */
-        interface WithAttributes {
+        /** The stage of the InteractionResourceFormat definition allowing to specify idPropertyNames. */
+        interface WithIdPropertyNames {
             /**
-             * Specifies the attributes property: The attributes for the Type..
+             * Specifies the idPropertyNames property: The id property names. Properties which uniquely identify an
+             * interaction instance..
              *
-             * @param attributes The attributes for the Type.
+             * @param idPropertyNames The id property names. Properties which uniquely identify an interaction instance.
              * @return the next definition stage.
              */
-            WithCreate withAttributes(Map<String, List<String>> attributes);
+            WithCreate withIdPropertyNames(List<String> idPropertyNames);
         }
-        /** The stage of the InteractionResourceFormat definition allowing to specify description. */
-        interface WithDescription {
+        /** The stage of the InteractionResourceFormat definition allowing to specify participantProfiles. */
+        interface WithParticipantProfiles {
             /**
-             * Specifies the description property: Localized descriptions for the property..
+             * Specifies the participantProfiles property: Profiles that participated in the interaction..
              *
-             * @param description Localized descriptions for the property.
+             * @param participantProfiles Profiles that participated in the interaction.
              * @return the next definition stage.
              */
-            WithCreate withDescription(Map<String, String> description);
+            WithCreate withParticipantProfiles(List<Participant> participantProfiles);
         }
-        /** The stage of the InteractionResourceFormat definition allowing to specify displayName. */
-        interface WithDisplayName {
+        /**
+         * The stage of the InteractionResourceFormat definition allowing to specify
+         * primaryParticipantProfilePropertyName.
+         */
+        interface WithPrimaryParticipantProfilePropertyName {
             /**
-             * Specifies the displayName property: Localized display names for the property..
+             * Specifies the primaryParticipantProfilePropertyName property: The primary participant property name for
+             * an interaction ,This is used to logically represent the agent of the interaction, Specify the participant
+             * name here from ParticipantName..
              *
-             * @param displayName Localized display names for the property.
+             * @param primaryParticipantProfilePropertyName The primary participant property name for an interaction
+             *     ,This is used to logically represent the agent of the interaction, Specify the participant name here
+             *     from ParticipantName.
              * @return the next definition stage.
              */
-            WithCreate withDisplayName(Map<String, String> displayName);
+            WithCreate withPrimaryParticipantProfilePropertyName(String primaryParticipantProfilePropertyName);
         }
-        /** The stage of the InteractionResourceFormat definition allowing to specify localizedAttributes. */
-        interface WithLocalizedAttributes {
+        /** The stage of the InteractionResourceFormat definition allowing to specify isActivity. */
+        interface WithIsActivity {
             /**
-             * Specifies the localizedAttributes property: Any custom localized attributes for the Type..
+             * Specifies the isActivity property: An interaction can be tagged as an activity only during create. This
+             * enables the interaction to be editable and can enable merging of properties from multiple data sources
+             * based on precedence, which is defined at a link level..
              *
-             * @param localizedAttributes Any custom localized attributes for the Type.
+             * @param isActivity An interaction can be tagged as an activity only during create. This enables the
+             *     interaction to be editable and can enable merging of properties from multiple data sources based on
+             *     precedence, which is defined at a link level.
              * @return the next definition stage.
              */
-            WithCreate withLocalizedAttributes(Map<String, Map<String, String>> localizedAttributes);
-        }
-        /** The stage of the InteractionResourceFormat definition allowing to specify smallImage. */
-        interface WithSmallImage {
-            /**
-             * Specifies the smallImage property: Small Image associated with the Property or EntityType..
-             *
-             * @param smallImage Small Image associated with the Property or EntityType.
-             * @return the next definition stage.
-             */
-            WithCreate withSmallImage(String smallImage);
-        }
-        /** The stage of the InteractionResourceFormat definition allowing to specify mediumImage. */
-        interface WithMediumImage {
-            /**
-             * Specifies the mediumImage property: Medium Image associated with the Property or EntityType..
-             *
-             * @param mediumImage Medium Image associated with the Property or EntityType.
-             * @return the next definition stage.
-             */
-            WithCreate withMediumImage(String mediumImage);
-        }
-        /** The stage of the InteractionResourceFormat definition allowing to specify largeImage. */
-        interface WithLargeImage {
-            /**
-             * Specifies the largeImage property: Large Image associated with the Property or EntityType..
-             *
-             * @param largeImage Large Image associated with the Property or EntityType.
-             * @return the next definition stage.
-             */
-            WithCreate withLargeImage(String largeImage);
+            WithCreate withIsActivity(Boolean isActivity);
         }
         /** The stage of the InteractionResourceFormat definition allowing to specify apiEntitySetName. */
         interface WithApiEntitySetName {
@@ -441,57 +430,75 @@ public interface InteractionResourceFormat {
              */
             WithCreate withTypeName(String typeName);
         }
-        /** The stage of the InteractionResourceFormat definition allowing to specify idPropertyNames. */
-        interface WithIdPropertyNames {
+        /** The stage of the InteractionResourceFormat definition allowing to specify attributes. */
+        interface WithAttributes {
             /**
-             * Specifies the idPropertyNames property: The id property names. Properties which uniquely identify an
-             * interaction instance..
+             * Specifies the attributes property: The attributes for the Type..
              *
-             * @param idPropertyNames The id property names. Properties which uniquely identify an interaction instance.
+             * @param attributes The attributes for the Type.
              * @return the next definition stage.
              */
-            WithCreate withIdPropertyNames(List<String> idPropertyNames);
+            WithCreate withAttributes(Map<String, List<String>> attributes);
         }
-        /** The stage of the InteractionResourceFormat definition allowing to specify participantProfiles. */
-        interface WithParticipantProfiles {
+        /** The stage of the InteractionResourceFormat definition allowing to specify description. */
+        interface WithDescription {
             /**
-             * Specifies the participantProfiles property: Profiles that participated in the interaction..
+             * Specifies the description property: Localized descriptions for the property..
              *
-             * @param participantProfiles Profiles that participated in the interaction.
+             * @param description Localized descriptions for the property.
              * @return the next definition stage.
              */
-            WithCreate withParticipantProfiles(List<Participant> participantProfiles);
+            WithCreate withDescription(Map<String, String> description);
         }
-        /**
-         * The stage of the InteractionResourceFormat definition allowing to specify
-         * primaryParticipantProfilePropertyName.
-         */
-        interface WithPrimaryParticipantProfilePropertyName {
+        /** The stage of the InteractionResourceFormat definition allowing to specify displayName. */
+        interface WithDisplayName {
             /**
-             * Specifies the primaryParticipantProfilePropertyName property: The primary participant property name for
-             * an interaction ,This is used to logically represent the agent of the interaction, Specify the participant
-             * name here from ParticipantName..
+             * Specifies the displayName property: Localized display names for the property..
              *
-             * @param primaryParticipantProfilePropertyName The primary participant property name for an interaction
-             *     ,This is used to logically represent the agent of the interaction, Specify the participant name here
-             *     from ParticipantName.
+             * @param displayName Localized display names for the property.
              * @return the next definition stage.
              */
-            WithCreate withPrimaryParticipantProfilePropertyName(String primaryParticipantProfilePropertyName);
+            WithCreate withDisplayName(Map<String, String> displayName);
         }
-        /** The stage of the InteractionResourceFormat definition allowing to specify isActivity. */
-        interface WithIsActivity {
+        /** The stage of the InteractionResourceFormat definition allowing to specify localizedAttributes. */
+        interface WithLocalizedAttributes {
             /**
-             * Specifies the isActivity property: An interaction can be tagged as an activity only during create. This
-             * enables the interaction to be editable and can enable merging of properties from multiple data sources
-             * based on precedence, which is defined at a link level..
+             * Specifies the localizedAttributes property: Any custom localized attributes for the Type..
              *
-             * @param isActivity An interaction can be tagged as an activity only during create. This enables the
-             *     interaction to be editable and can enable merging of properties from multiple data sources based on
-             *     precedence, which is defined at a link level.
+             * @param localizedAttributes Any custom localized attributes for the Type.
              * @return the next definition stage.
              */
-            WithCreate withIsActivity(Boolean isActivity);
+            WithCreate withLocalizedAttributes(Map<String, Map<String, String>> localizedAttributes);
+        }
+        /** The stage of the InteractionResourceFormat definition allowing to specify smallImage. */
+        interface WithSmallImage {
+            /**
+             * Specifies the smallImage property: Small Image associated with the Property or EntityType..
+             *
+             * @param smallImage Small Image associated with the Property or EntityType.
+             * @return the next definition stage.
+             */
+            WithCreate withSmallImage(String smallImage);
+        }
+        /** The stage of the InteractionResourceFormat definition allowing to specify mediumImage. */
+        interface WithMediumImage {
+            /**
+             * Specifies the mediumImage property: Medium Image associated with the Property or EntityType..
+             *
+             * @param mediumImage Medium Image associated with the Property or EntityType.
+             * @return the next definition stage.
+             */
+            WithCreate withMediumImage(String mediumImage);
+        }
+        /** The stage of the InteractionResourceFormat definition allowing to specify largeImage. */
+        interface WithLargeImage {
+            /**
+             * Specifies the largeImage property: Large Image associated with the Property or EntityType..
+             *
+             * @param largeImage Large Image associated with the Property or EntityType.
+             * @return the next definition stage.
+             */
+            WithCreate withLargeImage(String largeImage);
         }
     }
     /**
@@ -503,13 +510,10 @@ public interface InteractionResourceFormat {
 
     /** The template for InteractionResourceFormat update. */
     interface Update
-        extends UpdateStages.WithAttributes,
-            UpdateStages.WithDescription,
-            UpdateStages.WithDisplayName,
-            UpdateStages.WithLocalizedAttributes,
-            UpdateStages.WithSmallImage,
-            UpdateStages.WithMediumImage,
-            UpdateStages.WithLargeImage,
+        extends UpdateStages.WithIdPropertyNames,
+            UpdateStages.WithParticipantProfiles,
+            UpdateStages.WithPrimaryParticipantProfilePropertyName,
+            UpdateStages.WithIsActivity,
             UpdateStages.WithApiEntitySetName,
             UpdateStages.WithEntityType,
             UpdateStages.WithFields,
@@ -517,10 +521,13 @@ public interface InteractionResourceFormat {
             UpdateStages.WithSchemaItemTypeLink,
             UpdateStages.WithTimestampFieldName,
             UpdateStages.WithTypeName,
-            UpdateStages.WithIdPropertyNames,
-            UpdateStages.WithParticipantProfiles,
-            UpdateStages.WithPrimaryParticipantProfilePropertyName,
-            UpdateStages.WithIsActivity {
+            UpdateStages.WithAttributes,
+            UpdateStages.WithDescription,
+            UpdateStages.WithDisplayName,
+            UpdateStages.WithLocalizedAttributes,
+            UpdateStages.WithSmallImage,
+            UpdateStages.WithMediumImage,
+            UpdateStages.WithLargeImage {
         /**
          * Executes the update request.
          *
@@ -538,75 +545,56 @@ public interface InteractionResourceFormat {
     }
     /** The InteractionResourceFormat update stages. */
     interface UpdateStages {
-        /** The stage of the InteractionResourceFormat update allowing to specify attributes. */
-        interface WithAttributes {
+        /** The stage of the InteractionResourceFormat update allowing to specify idPropertyNames. */
+        interface WithIdPropertyNames {
             /**
-             * Specifies the attributes property: The attributes for the Type..
+             * Specifies the idPropertyNames property: The id property names. Properties which uniquely identify an
+             * interaction instance..
              *
-             * @param attributes The attributes for the Type.
+             * @param idPropertyNames The id property names. Properties which uniquely identify an interaction instance.
              * @return the next definition stage.
              */
-            Update withAttributes(Map<String, List<String>> attributes);
+            Update withIdPropertyNames(List<String> idPropertyNames);
         }
-        /** The stage of the InteractionResourceFormat update allowing to specify description. */
-        interface WithDescription {
+        /** The stage of the InteractionResourceFormat update allowing to specify participantProfiles. */
+        interface WithParticipantProfiles {
             /**
-             * Specifies the description property: Localized descriptions for the property..
+             * Specifies the participantProfiles property: Profiles that participated in the interaction..
              *
-             * @param description Localized descriptions for the property.
+             * @param participantProfiles Profiles that participated in the interaction.
              * @return the next definition stage.
              */
-            Update withDescription(Map<String, String> description);
+            Update withParticipantProfiles(List<Participant> participantProfiles);
         }
-        /** The stage of the InteractionResourceFormat update allowing to specify displayName. */
-        interface WithDisplayName {
+        /**
+         * The stage of the InteractionResourceFormat update allowing to specify primaryParticipantProfilePropertyName.
+         */
+        interface WithPrimaryParticipantProfilePropertyName {
             /**
-             * Specifies the displayName property: Localized display names for the property..
+             * Specifies the primaryParticipantProfilePropertyName property: The primary participant property name for
+             * an interaction ,This is used to logically represent the agent of the interaction, Specify the participant
+             * name here from ParticipantName..
              *
-             * @param displayName Localized display names for the property.
+             * @param primaryParticipantProfilePropertyName The primary participant property name for an interaction
+             *     ,This is used to logically represent the agent of the interaction, Specify the participant name here
+             *     from ParticipantName.
              * @return the next definition stage.
              */
-            Update withDisplayName(Map<String, String> displayName);
+            Update withPrimaryParticipantProfilePropertyName(String primaryParticipantProfilePropertyName);
         }
-        /** The stage of the InteractionResourceFormat update allowing to specify localizedAttributes. */
-        interface WithLocalizedAttributes {
+        /** The stage of the InteractionResourceFormat update allowing to specify isActivity. */
+        interface WithIsActivity {
             /**
-             * Specifies the localizedAttributes property: Any custom localized attributes for the Type..
+             * Specifies the isActivity property: An interaction can be tagged as an activity only during create. This
+             * enables the interaction to be editable and can enable merging of properties from multiple data sources
+             * based on precedence, which is defined at a link level..
              *
-             * @param localizedAttributes Any custom localized attributes for the Type.
+             * @param isActivity An interaction can be tagged as an activity only during create. This enables the
+             *     interaction to be editable and can enable merging of properties from multiple data sources based on
+             *     precedence, which is defined at a link level.
              * @return the next definition stage.
              */
-            Update withLocalizedAttributes(Map<String, Map<String, String>> localizedAttributes);
-        }
-        /** The stage of the InteractionResourceFormat update allowing to specify smallImage. */
-        interface WithSmallImage {
-            /**
-             * Specifies the smallImage property: Small Image associated with the Property or EntityType..
-             *
-             * @param smallImage Small Image associated with the Property or EntityType.
-             * @return the next definition stage.
-             */
-            Update withSmallImage(String smallImage);
-        }
-        /** The stage of the InteractionResourceFormat update allowing to specify mediumImage. */
-        interface WithMediumImage {
-            /**
-             * Specifies the mediumImage property: Medium Image associated with the Property or EntityType..
-             *
-             * @param mediumImage Medium Image associated with the Property or EntityType.
-             * @return the next definition stage.
-             */
-            Update withMediumImage(String mediumImage);
-        }
-        /** The stage of the InteractionResourceFormat update allowing to specify largeImage. */
-        interface WithLargeImage {
-            /**
-             * Specifies the largeImage property: Large Image associated with the Property or EntityType..
-             *
-             * @param largeImage Large Image associated with the Property or EntityType.
-             * @return the next definition stage.
-             */
-            Update withLargeImage(String largeImage);
+            Update withIsActivity(Boolean isActivity);
         }
         /** The stage of the InteractionResourceFormat update allowing to specify apiEntitySetName. */
         interface WithApiEntitySetName {
@@ -683,56 +671,75 @@ public interface InteractionResourceFormat {
              */
             Update withTypeName(String typeName);
         }
-        /** The stage of the InteractionResourceFormat update allowing to specify idPropertyNames. */
-        interface WithIdPropertyNames {
+        /** The stage of the InteractionResourceFormat update allowing to specify attributes. */
+        interface WithAttributes {
             /**
-             * Specifies the idPropertyNames property: The id property names. Properties which uniquely identify an
-             * interaction instance..
+             * Specifies the attributes property: The attributes for the Type..
              *
-             * @param idPropertyNames The id property names. Properties which uniquely identify an interaction instance.
+             * @param attributes The attributes for the Type.
              * @return the next definition stage.
              */
-            Update withIdPropertyNames(List<String> idPropertyNames);
+            Update withAttributes(Map<String, List<String>> attributes);
         }
-        /** The stage of the InteractionResourceFormat update allowing to specify participantProfiles. */
-        interface WithParticipantProfiles {
+        /** The stage of the InteractionResourceFormat update allowing to specify description. */
+        interface WithDescription {
             /**
-             * Specifies the participantProfiles property: Profiles that participated in the interaction..
+             * Specifies the description property: Localized descriptions for the property..
              *
-             * @param participantProfiles Profiles that participated in the interaction.
+             * @param description Localized descriptions for the property.
              * @return the next definition stage.
              */
-            Update withParticipantProfiles(List<Participant> participantProfiles);
+            Update withDescription(Map<String, String> description);
         }
-        /**
-         * The stage of the InteractionResourceFormat update allowing to specify primaryParticipantProfilePropertyName.
-         */
-        interface WithPrimaryParticipantProfilePropertyName {
+        /** The stage of the InteractionResourceFormat update allowing to specify displayName. */
+        interface WithDisplayName {
             /**
-             * Specifies the primaryParticipantProfilePropertyName property: The primary participant property name for
-             * an interaction ,This is used to logically represent the agent of the interaction, Specify the participant
-             * name here from ParticipantName..
+             * Specifies the displayName property: Localized display names for the property..
              *
-             * @param primaryParticipantProfilePropertyName The primary participant property name for an interaction
-             *     ,This is used to logically represent the agent of the interaction, Specify the participant name here
-             *     from ParticipantName.
+             * @param displayName Localized display names for the property.
              * @return the next definition stage.
              */
-            Update withPrimaryParticipantProfilePropertyName(String primaryParticipantProfilePropertyName);
+            Update withDisplayName(Map<String, String> displayName);
         }
-        /** The stage of the InteractionResourceFormat update allowing to specify isActivity. */
-        interface WithIsActivity {
+        /** The stage of the InteractionResourceFormat update allowing to specify localizedAttributes. */
+        interface WithLocalizedAttributes {
             /**
-             * Specifies the isActivity property: An interaction can be tagged as an activity only during create. This
-             * enables the interaction to be editable and can enable merging of properties from multiple data sources
-             * based on precedence, which is defined at a link level..
+             * Specifies the localizedAttributes property: Any custom localized attributes for the Type..
              *
-             * @param isActivity An interaction can be tagged as an activity only during create. This enables the
-             *     interaction to be editable and can enable merging of properties from multiple data sources based on
-             *     precedence, which is defined at a link level.
+             * @param localizedAttributes Any custom localized attributes for the Type.
              * @return the next definition stage.
              */
-            Update withIsActivity(Boolean isActivity);
+            Update withLocalizedAttributes(Map<String, Map<String, String>> localizedAttributes);
+        }
+        /** The stage of the InteractionResourceFormat update allowing to specify smallImage. */
+        interface WithSmallImage {
+            /**
+             * Specifies the smallImage property: Small Image associated with the Property or EntityType..
+             *
+             * @param smallImage Small Image associated with the Property or EntityType.
+             * @return the next definition stage.
+             */
+            Update withSmallImage(String smallImage);
+        }
+        /** The stage of the InteractionResourceFormat update allowing to specify mediumImage. */
+        interface WithMediumImage {
+            /**
+             * Specifies the mediumImage property: Medium Image associated with the Property or EntityType..
+             *
+             * @param mediumImage Medium Image associated with the Property or EntityType.
+             * @return the next definition stage.
+             */
+            Update withMediumImage(String mediumImage);
+        }
+        /** The stage of the InteractionResourceFormat update allowing to specify largeImage. */
+        interface WithLargeImage {
+            /**
+             * Specifies the largeImage property: Large Image associated with the Property or EntityType..
+             *
+             * @param largeImage Large Image associated with the Property or EntityType.
+             * @return the next definition stage.
+             */
+            Update withLargeImage(String largeImage);
         }
     }
     /**
@@ -753,20 +760,20 @@ public interface InteractionResourceFormat {
     /**
      * Suggests relationships to create relationship links.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of suggest relationship links operation along with {@link Response}.
+     */
+    Response<SuggestRelationshipLinksResponse> suggestRelationshipLinksWithResponse(Context context);
+
+    /**
+     * Suggests relationships to create relationship links.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of suggest relationship links operation.
      */
     SuggestRelationshipLinksResponse suggestRelationshipLinks();
-
-    /**
-     * Suggests relationships to create relationship links.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of suggest relationship links operation.
-     */
-    Response<SuggestRelationshipLinksResponse> suggestRelationshipLinksWithResponse(Context context);
 }

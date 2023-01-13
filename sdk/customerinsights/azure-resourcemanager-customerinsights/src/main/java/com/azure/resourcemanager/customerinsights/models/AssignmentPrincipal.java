@@ -6,15 +6,13 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The AssignmentPrincipal. */
 @Fluent
 public final class AssignmentPrincipal {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AssignmentPrincipal.class);
-
     /*
      * The principal id being assigned to.
      */
@@ -31,7 +29,12 @@ public final class AssignmentPrincipal {
      * Other metadata for the principal.
      */
     @JsonProperty(value = "principalMetadata")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> principalMetadata;
+
+    /** Creates an instance of AssignmentPrincipal class. */
+    public AssignmentPrincipal() {
+    }
 
     /**
      * Get the principalId property: The principal id being assigned to.
@@ -100,15 +103,17 @@ public final class AssignmentPrincipal {
      */
     public void validate() {
         if (principalId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property principalId in model AssignmentPrincipal"));
         }
         if (principalType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property principalType in model AssignmentPrincipal"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AssignmentPrincipal.class);
 }
